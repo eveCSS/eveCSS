@@ -89,6 +89,11 @@ public class TypeValue {
 		this.values = values;
 	}
 
+	/**
+	 * This method gives back if this TypeValue is discrete.
+	 * 
+	 * @return Gives back 'true' if this TypeValue is discrete and 'false' if not.
+	 */
 	public boolean isDiscrete() {
 		if( values == null ) {
 			return false;
@@ -106,6 +111,11 @@ public class TypeValue {
 		return false;
 	}
 	
+	/**
+	 * If this TypeValue is discrete, this method gives back List of String that contains all possible values.
+	 * 
+	 * @return A List that contains all possible discrete values. If this TypeValue is not discrete null will be returned.
+	 */
 	public List<String> getDiscreteValues() {
 		if( this.isDiscrete() ) {
 			StringBuffer buffer = new StringBuffer( this.values );
