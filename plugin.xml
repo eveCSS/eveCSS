@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Eve-Viewer"
+            class="de.ptb.epics.eve.viewer.EveViewerPerspective"
+          id="EveViewerPerspective">
+      </perspective>
+      <perspective
+            class="de.ptb.epics.eve.viewer.EveViewerOfflinePerspective"
+            id="EveViewerOfflinePerspective"
+            name="Eve-Viewer-Offline"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            name="Playlist"
+            icon="icons/css.gif"
+            class="de.ptb.epics.eve.viewer.PlayListView"
+            id="PlayListView">
+      </view>
+      <view
+            name="Graph"
+            icon="icons/css.gif"
+            class="de.ptb.epics.eve.viewer.GraphView"
+            id="GraphView">
+      </view>
+      <view
+            name="Measuring Station"
+            icon="icons/css.gif"
+            class="de.ptb.epics.eve.viewer.MeasuringStationView"
+            id="MeasuringStationView">
+      </view>
+      <view
+            name="Messages"
+            icon="icons/css.gif"
+            class="de.ptb.epics.eve.viewer.MessagesView"
+            id="MessagesView">
+      </view>
+      <view
+            class="de.ptb.epics.eve.viewer.DeviceInspectorViewer"
+            icon="icons/css.gif"
+            id="DeviceInspectorView"
+            name="Device Inspector"/>
+      <view
+            class="de.ptb.epics.eve.viewer.DeviceOptionsViewer"
+            icon="icons/css.gif"
+            id="DeviceOptionsView"
+            name="Device Options"/>
+      <view
+            class="de.ptb.epics.eve.viewer.PlotView"
+            icon="icons/css.gif"
+            id="PlotView"
+            name="Plot"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="SamplePerspective">
+         <view
+               relative="View3"
+               visible="true"
+               relationship="stack"
+               id="View4">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="de.ptb.epics.eve.viewer.engineControlActionSet"
+            label="Engine Control Action Set"
+            visible="false">
+         <menu
+               id="engineControlMenu"
+               label="Engine Control">
+            <separator name="engineControlGroup"/>
+         </menu>
+         <action
+               class="de.ptb.epics.eve.viewer.actions.KillAction"
+               icon="icons/sample.gif"
+               id="de.ptb.epics.eve.viewer.actions.KillAction"
+               label="Kill"
+               menubarPath="engineControlMenu/engineControlGroup"
+               style="push"
+               toolbarPath="engineControlGroup"
+               tooltip="Kill"/>
+         
+        
+         <action
+               class="de.ptb.epics.eve.viewer.actions.SkipAction"
+               icon="icons/skip.gif"
+               id="de.ptb.epics.eve.viewer.actions.SkipAction"
+               label="Skip"
+               menubarPath="engineControlMenu/engineControlGroup"
+               style="push"
+               toolbarPath="engineControlGroup"
+               tooltip="Skip"/>
+          <action
+               class="de.ptb.epics.eve.viewer.actions.StopAction"
+               icon="icons/stop.gif"
+               id="de.ptb.epics.eve.viewer.StopAction"
+               label="Stop"
+               menubarPath="engineControlMenu/engineControlGroup"
+               style="push"
+               toolbarPath="engineControlGroup"
+               tooltip="Stop"/>
+         <action
+               class="de.ptb.epics.eve.viewer.actions.PauseAction"
+               icon="icons/pause.gif"
+               id="de.ptb.epics.eve.viewer.actions.PauseAction"
+               label="Pause"
+               menubarPath="engineControlMenu/engineControlGroup"
+               style="push"
+               toolbarPath="engineControlGroup"
+               tooltip="Pause"/>
+         <action
+               class="de.ptb.epics.eve.viewer.actions.PlayAction"
+               icon="icons/play.gif"
+               id="de.ptb.epics.eve.viewer.actions.PlayAction"
+               label="Play"
+               menubarPath="engineControlMenu/engineControlGroup"
+               style="push"
+               toolbarPath="engineControlGroup"
+               tooltip="Play"/>
+      </actionSet>
+      <actionSet
+            id="de.ptb.epics.eve.viewer.triggerActionSet"
+            label="Trigger Action Set"
+            visible="false">
+         <menu
+               id="triggerMenu"
+               label="Trigger Menu">
+            <separator name="triggerGroup"/>
+         </menu>
+         <action
+               class="de.ptb.epics.eve.viewer.actions.TriggerAction"
+               id="de.ptb.epics.eve.viewer.actions.TriggerAction"
+               label="Trigger"
+               menubarPath="triggerMenu/triggerGroup"
+               toolbarPath="triggerGroup"
+               tooltip="Trigger"/>
+      </actionSet>
+      <actionSet
+            id="de.ptb.epics.eve.viewer.engineConnectionActionSet"
+            label="Engine Connection Action Set"
+            visible="false">
+         <menu
+               id="engineConnectionMenu"
+               label="Engine Connection">
+            <separator name="engineConnectionGroup"/>
+         </menu>
+         
+         <action
+               class="de.ptb.epics.eve.viewer.actions.StartAndConnectAction"
+               icon="icons/sample.gif"
+               id="de.ptb.epics.eve.viewer.actions.StartAndConnectAction"
+               label="Start Engine and Connect"
+               menubarPath="engineConnectionMenu/engineConnectionGroup"
+               style="push"
+               tooltip="Start Engine and Connect"/>
+         <action
+               class="de.ptb.epics.eve.viewer.actions.DisconnectAction"
+               icon="icons/sample.gif"
+               id="de.ptb.epics.eve.viewer.actions.DisconnectAction"
+               label="Disconnect"
+               menubarPath="engineConnectionMenu/engineConnectionGroup"
+               style="push"
+               tooltip="Disconnect"/>
+         <action
+               class="de.ptb.epics.eve.viewer.actions.ConnectAction"
+               icon="icons/sample.gif"
+               id="de.ptb.epics.eve.viewer.actions.ConnectAction"
+               label="Connect"
+               menubarPath="engineConnectionMenu/engineConnectionGroup"
+               style="push"
+               tooltip="Connect"/>
+      </actionSet>
+   </extension>
+
+</plugin>
