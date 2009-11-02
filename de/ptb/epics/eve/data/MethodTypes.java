@@ -42,15 +42,15 @@ public enum MethodTypes {
 	GETCB,
 	
 	/**
-	 * Indicates that a value ins putted an read in this access and
-	 * that a callback will ocure after the process. 
+	 * Read and write access, no callback
 	 */
-	GETPUTCB,
+	GETPUT,
 	
 	/**
-	 * Indicates that the access if for noticing changes.
+	 * Read and write access, with callback
 	 */
-	MONITOR;
+	GETPUTCB;
+	
 	
 	/**
 	 * This static Method is translating a name for the method type like it's used in the
@@ -75,8 +75,8 @@ public enum MethodTypes {
 			return MethodTypes.GETCB;
 		} else if( name.equals( "GETPUTCB" ) ) {
 			return MethodTypes.GETPUTCB;
-		} else if( name.equals( "monitor" ) ) {
-			return MethodTypes.MONITOR;
+		} else if( name.equals( "GETPUT" ) ) {
+			return MethodTypes.GETPUT;
 		}
 		return null;
 	}
@@ -102,10 +102,10 @@ public enum MethodTypes {
 				return "GET";
 			case GETCB:
 				return "GETCB";
+			case GETPUT:
+				return "GETPUT";
 			case GETPUTCB:
 				return "GETPUTCB";
-			case MONITOR:
-				return "monitor";
 		}
 		
 		return null;

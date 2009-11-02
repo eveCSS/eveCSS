@@ -20,12 +20,13 @@ package de.ptb.epics.eve.data;
  */
 public enum DataTypes {
 
+	// TODO correct Datatypes onoff and openclose
 	/**
-	 * On/Off datatype is used at some Devices to switch them on or off.
+	 * On/Off is used to display On or Off for data of type integer.
 	 */
 	ONOFF,
 	/**
-	 * Open/Close datatype is used to open or close a device i.e. a beamshutter.
+	 * Open/Close is used to display Open or Close for data of type integer.
 	 */
 	OPENCLOSE,
 	/**
@@ -39,7 +40,19 @@ public enum DataTypes {
 	/**
 	 * Normal String datatype.
 	 */
-	STRING;
+	STRING,
+	
+	/**
+	 * DateTime may be an absolute datetime spec: yyyy-mm-dd hh:mm:ss.sss
+	 * or an absolute time without date hh:mm:ss.sss which assumes today as date
+	 * or an relative time hh:mm:ss.sss or an relative time ss.sss
+	 * Examples: 2009-10-01 17:09:20.000 (abs) valid absolute datetime
+	 *           2009-10-01 17:09:20.000 (rel) invalid relative datetime
+	 *                      17:09:20.000 (abs) valid absolute datetime assuming date today
+	 *                      17:09:20.000 (rel) valid relative time (duration of 1580 secs)
+	 *                      1580.0 		 (rel) valid relative time (duration of 1580 secs)
+	 */
+	DATETIME;
 	
 	/**
 	 * This method is used to find out if a value can exist unter this data type.
@@ -79,7 +92,13 @@ public enum DataTypes {
 						return true;
 						
 		case STRING:	return true;
-			
+		case DATETIME:	
+						if (value.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}[0-9.]*"))
+							return true;
+						else if (value.matches("\\d{2}:\\d{2}:\\d{2}[0-9.]*"))
+							return true;
+						else
+							return isValuePossible(DOUBLE, value);
 		
 		}
 		
@@ -110,6 +129,8 @@ public enum DataTypes {
 			return DataTypes.DOUBLE;
 		} else if( name.equals( "string" ) ) {
 			return DataTypes.STRING;
+		} else if( name.equals( "datetime" ) ) {
+			return DataTypes.DATETIME;
 		} 
 		return null;
 		
@@ -138,6 +159,8 @@ public enum DataTypes {
 				return "double";
 			case STRING:
 				return "string";
+			case DATETIME:
+				return "datetime";
 		}
 		
 		return null;
@@ -160,6 +183,7 @@ public enum DataTypes {
 			case OPENCLOSE:
 			case STRING:
 				return new ComparisonTypes[]{ ComparisonTypes.EQ, ComparisonTypes.NE };
+			case DATETIME:
 			case INT:
 			case DOUBLE:
 				return new ComparisonTypes[]{ ComparisonTypes.EQ, ComparisonTypes.NE, ComparisonTypes.GT, ComparisonTypes.LT };
@@ -168,13 +192,13 @@ public enum DataTypes {
 	}
 	
 	/**
-	 * This static method gives back if a comparision type is possible for a Datatype.
+	 * This static method gives back if a comparison type is possible for a Datatype.
 	 * 
 	 * I.e. EQ and NE are working for a string but GT and LT makes no sense in that way.
 	 * 
 	 * @param dataType The Datatype
 	 * @param comparisonType The comparison type that should be checked.
-	 * @return Gives back 'true' if the comparision type if possible for the given datantype and 'false' if not.
+	 * @return Gives back 'true' if the comparison type if possible for the given datatype and 'false' if not.
 	 */
 	public static boolean isComparisonTypePossible( final DataTypes dataType, final ComparisonTypes comparisonType ) {
 		ComparisonTypes[] comparisonTypes = DataTypes.getPossibleComparisonTypes( dataType );

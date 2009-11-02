@@ -28,7 +28,12 @@ public enum EventTypes {
 	 * Used for schedule events, this are events which are defined in a
 	 * relation to a Scan Modul an occures when the Scan Modul has finished.
 	 */
-	SCHEDULE;
+	SCHEDULE,
+	
+	/**
+	 * Used for detector ready event, which may be sent if a detector is ready with taking data.
+	 */
+	DETECTOR;
 	
 	/**
 	 * This static method translates a String of a MethodType, like it's used
@@ -47,6 +52,8 @@ public enum EventTypes {
 			return EventTypes.MONITOR;
 		} else if( name.equals( "schedule" ) ) {
 			return EventTypes.SCHEDULE;
+		} else if( name.equals( "detector" ) ) {
+			return EventTypes.DETECTOR;
 		}
 		return null;
 	}
