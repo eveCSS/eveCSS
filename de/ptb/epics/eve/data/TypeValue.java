@@ -13,10 +13,11 @@ import java.util.List;
 
 /**
  * 
- * The class TypeValue is a very fundemental class in the datatype system of the Scan Modul Editor.
- * Very often an Device have more limitations in it's possible values than just the primitve datatypes.
+ * The class TypeValue is a very fundamental class in the datatype system of the Scan Modul Editor.
+ * Very often a device has more limitations in it's possible values than just the primitive datatypes.
  * In this case you have a discrete amount of values like green, red and blue. So the TypeValue class
  * gets intialized with the DataTypes.STRING and value "green red blue".
+ * Integer or Double values may have a range defined, 
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.4
@@ -37,7 +38,7 @@ public class TypeValue {
 	private String values;
 	
 	/**
-	 * This contructor is used if a TypeValue object should be initialzed that has no further limitations than the base type.
+	 * This constructor is used if a TypeValue object should be initialized that has no further limitations than the base type.
 	 * 
 	 * @param type The basic primitive datatype on which this definition based.
 	 */
@@ -48,7 +49,22 @@ public class TypeValue {
 	}
 	
 	/**
-	 * This constructor ist used if a TypeValue object should be initialized that has a limitation of the possible values.
+	 * we have a range constraint
+	 */
+	boolean hasRange;
+	
+	/**
+	 * value must be one of a set of discrete values
+	 */
+	boolean isDiscrete;
+
+	/**
+	 * string list containing the discrete values or the range borders
+	 */
+	List<String> elements;
+
+	/**
+	 * This constructor is used if a TypeValue object should be initialized that has a limitation of the possible values.
 	 * 
 	 * @param type The basic primitive datatype on which this definition based.
 	 * @param value The possible values seperated by a whitespace
@@ -57,8 +73,9 @@ public class TypeValue {
 		if( type == null ) {
 			throw new IllegalArgumentException( "The parameter 'type' must not be null!" );
 		}
+		elements = new ArrayList<String>();
 		this.type = type;
-		this.values = values;
+		setValues(values);
 		
 	}
 	
@@ -72,12 +89,32 @@ public class TypeValue {
 	}
 	
 	/**
-	 * Returns the possible values.
+	 * Build a string with the discrete values or range specification.
 	 * 
-	 * @return The possible values.
+	 * @return the discrete values or range specification.
 	 */
 	public String getValues() {
-		return this.values;
+		StringBuffer returnString = new StringBuffer();
+		String token="";
+		
+		if (isDiscrete){
+			token = ", ";
+		}
+		else if (hasRange){
+			token = " to ";
+		}
+		else if (elements.size() == 1){
+			return elements.get(0);
+		}
+		
+
+		int count = 0;
+		for (String string : elements){
+			if (count > 0) returnString.append(token);
+			returnString.append(string);
+			++count;
+		}
+		return returnString.toString();
 	}
 
 	/**
@@ -86,29 +123,51 @@ public class TypeValue {
 	 * @param values A String of the possible Values seperated by a single space.
 	 */
 	public void setValues( final String values ) {
-		this.values = values;
+
+		hasRange = false;
+		isDiscrete = false;
+		if( values == null ) return;
+		
+		if (((type == DataTypes.INT)||(type == DataTypes.DOUBLE)) && values.contains("to")) {
+			// we have a range
+			String[] splits = values.split( "to" );
+			if ( splits.length == 2){
+				hasRange=true;
+				try {
+					if (type == DataTypes.INT){
+						elements.add(Integer.toString(Integer.parseInt(splits[0].trim())));
+						elements.add(Integer.toString(Integer.parseInt(splits[1].trim())));
+					}
+					else {
+						elements.add(Double.toString(Double.parseDouble(splits[0].trim())));
+						elements.add(Double.toString(Double.parseDouble(splits[1].trim())));
+					}
+				} catch( final NumberFormatException e ) {
+					hasRange=false;
+				}
+			}
+		}
+		else if (values.contains(",")){
+			// we have discrete values
+			String[] splits = values.split( "," );
+			for (String string : splits){
+				string.trim().replace("\"", "");
+				if (string.length() > 0) elements.add(string);
+			}
+			if (elements.size() > 0) isDiscrete = true;
+		}
+		else if (values.length() > 0){
+			elements.add(values);
+		}
 	}
 
 	/**
 	 * This method gives back if this TypeValue is discrete.
 	 * 
-	 * @return Gives back 'true' if this TypeValue is discrete and 'false' if not.
+	 * @return 'true' if this TypeValue is discrete, 'false' if not.
 	 */
 	public boolean isDiscrete() {
-		if( values == null ) {
-			return false;
-		}
-		StringBuffer buffer = new StringBuffer( this.values );
-		boolean escape = false;
-		escape = false;
-		for( int i = 0; i < buffer.length(); ++i ) {
-			if( buffer.charAt( i ) == '"' ) {
-				escape = !escape;
-			} else if( !escape && buffer.charAt( i ) == ',' ) {
-				return true;
-			}
-		}
-		return false;
+		return isDiscrete;
 	}
 	
 	/**
@@ -117,51 +176,12 @@ public class TypeValue {
 	 * @return A List that contains all possible discrete values. If this TypeValue is not discrete null will be returned.
 	 */
 	public List<String> getDiscreteValues() {
-		if( this.isDiscrete() ) {
-			StringBuffer buffer = new StringBuffer( this.values );
-			boolean escape = false;
-			
-			for( int i = 0; i < buffer.length(); ++i ) {
-				if( buffer.charAt( i ) == '"' ) {
-					escape = !escape;
-				} else if( !escape && buffer.charAt( i ) == ' ' ) {
-					buffer.deleteCharAt( i );
-					--i;
-				}
-			}
-			
-			escape = false;
-			
-			int lastIndex = 0;
-			List<String> elements = new ArrayList<String>();
-			for( int i = 0; i < buffer.length(); ++i ) {
-				if( buffer.charAt( i ) == '"' ) {
-					escape = !escape;
-				} else if( !escape && buffer.charAt( i ) == ',' ) {
-					StringBuffer buffer2 = new StringBuffer( buffer.substring( lastIndex, i ) );
-					if( buffer2.charAt( 0 ) == '"' ) {
-						buffer2.deleteCharAt( 0 );
-					}
-					if( buffer2.charAt( buffer2.length() - 1 ) == '"' ) {
-						buffer2.deleteCharAt( buffer2.length() - 1 );
-					}
-					elements.add( buffer2.toString() );
-					lastIndex = i + 1;
-				}
-			}
-			StringBuffer buffer2 = new StringBuffer( buffer.substring( lastIndex, buffer.length() ) );
-			if( buffer2.charAt( 0 ) == '"' ) {
-				buffer2.deleteCharAt( 0 );
-			}
-			if( buffer2.charAt( buffer2.length() - 1 ) == '"' ) {
-				buffer2.deleteCharAt( buffer2.length() - 1 );
-			}
-			elements.add( buffer2.toString() );
-			
-			return elements;
-		} else {
+
+		if( isDiscrete )
+			return new ArrayList<String>(elements);
+		else
 			return null;
-		}
+
 	}
 	
 	/**
@@ -171,103 +191,79 @@ public class TypeValue {
 	 * @return Returns true if the value fits the constrains, false if not.
 	 */
 	public boolean isValuePossible( final String value ) {
-		if( value == null ) {
-			throw new IllegalArgumentException( "The parameter value must not be null" );
-		}
-		
-		if( !DataTypes.isValuePossible( this.type, value ) ) {
+		if (formatValue(value) == null )
 			return false;
-		}
-		
-		if( values == null ) {
+		else
 			return true;
-		}
-		
-		
-		StringBuffer buffer = new StringBuffer( this.values );
-		
-		boolean escape = false;
-		for( int i = 0; i < buffer.length(); ++i ) {
-			if( buffer.charAt( i ) == '"' ) {
-				escape = !escape;
-			} else if( !escape && buffer.charAt( i ) == ' ' ) {
-				buffer.deleteCharAt( i );
-				--i;
-			}
-		}
-		
-		escape = false;
-		
-		if( this.isDiscrete() ) {
-			escape = false;
-			int lastIndex = 0;
-			List<String> elements = new ArrayList<String>();
-			for( int i = 0; i < buffer.length(); ++i ) {
-				if( buffer.charAt( i ) == '"' ) {
-					escape = !escape;
-				} else if( !escape && buffer.charAt( i ) == ',' ) {
-					StringBuffer buffer2 = new StringBuffer( buffer.substring( lastIndex, i ) );
-					if( buffer2.charAt( 0 ) == '"' ) {
-						buffer2.deleteCharAt( 0 );
-					}
-					if( buffer2.charAt( buffer2.length() - 1 ) == '"' ) {
-						buffer2.deleteCharAt( buffer2.length() - 1 );
-					}
-					elements.add( buffer2.toString() );
-					lastIndex = i + 1;
-				}
-			}
-			StringBuffer buffer2 = new StringBuffer( buffer.substring( lastIndex, buffer.length() ) );
-			if( buffer2.charAt( 0 ) == '"' ) {
-				buffer2.deleteCharAt( 0 );
-			}
-			if( buffer2.charAt( buffer2.length() - 1 ) == '"' ) {
-				buffer2.deleteCharAt( buffer2.length() - 1 );
-			}
-			elements.add( buffer2.toString() );
-			
-			
-			Iterator<String> it = elements.iterator();
-			if( this.type == DataTypes.INT ) {
-				int val = Integer.parseInt( value );
-				while( it.hasNext() ) {
-					if( Integer.parseInt( it.next() ) == val )
-						return true;
-				}
-			} else if( this.type == DataTypes.DOUBLE ) {
-				double val = Double.parseDouble( value );
-				while( it.hasNext() ) {
-					if( Double.parseDouble( it.next() ) == val )
-						return true;
-						
-				}
-			} else {
-				while( it.hasNext() ) {
-					if( it.next().equals( value ) )
-						return true;
-				}
-			}
-			
-		} else {
-			String[] values = this.values.split( "to" );
-			if( values.length != 2 ) {
-				this.values = null;
-				return true;
-			}
-			System.err.println( this.values );
-			System.err.println( value );
-			if( this.type == DataTypes.INT ) {
-				if( Integer.parseInt( value ) > Integer.parseInt( values[0] ) && Integer.parseInt( value ) < Integer.parseInt( values[1] ) ) {
-					return true;
-				}
-			} else if( this.type == DataTypes.DOUBLE ) {
-				if( Double.parseDouble( value ) >= Double.parseDouble( values[0] ) && Double.parseDouble( value ) <= Double.parseDouble( values[1] ) ) {
-					return true;
-				}
-			}
-		}
-		
-		return false;
 	}
 
+	/**
+	 * Return a string formatted to the corresponding DataTypes.
+	 * If the string can be converted, return a well-formatted string, else return null.
+	 * 
+	 * @param value string to be formatted
+	 * @return a formatted string or null
+	 */
+	public String formatValue(String value){
+		
+		String returnString = DataTypes.formatValue(type, value);
+
+		if (returnString != null){
+			if (isDiscrete) {
+				if (!elements.contains(returnString))
+					returnString = null;
+			}
+			else if (hasRange){
+				if (type == DataTypes.INT){
+					Integer intval = Integer.parseInt(returnString);
+					if (!((Integer.parseInt(elements.get(0)) <= intval) && 
+							(Integer.parseInt(elements.get(1)) >= intval))) {
+						returnString = null;					
+					}
+				}
+				else if (type == DataTypes.DOUBLE){
+					Double dblval = Double.parseDouble(returnString);
+					if (!((Double.parseDouble(elements.get(0)) <= dblval) && 
+							(Double.parseDouble(elements.get(1)) >= dblval))) {
+						returnString = null;					
+					}			
+				}
+			}
+		}
+		return returnString;
+	}
+
+	/**
+	 * Return a string formatted to the corresponding DataTypes or a valid default value.
+	 * If the string can be converted, return a well-formatted string else a valid default value.
+	 * 
+	 * @param value string to be formatted
+	 * @return a formatted string or null
+	 */
+	public String formatValueDefault(String value){
+		
+		String returnString = formatValue(value);
+		if (returnString == null ){
+			if (isDiscrete || hasRange)
+				returnString = elements.get(0);
+			else
+				returnString = DataTypes.formatValueDefault(type, value);
+		}
+		return returnString;
+	}
+
+	/**
+	 * Return a well-formatted string with a valid default value, which 
+	 * is the low limit (range) or the first element (set) or the default for this data type
+	 * 
+	 * @return a default value
+	 */
+	public String getDefaultValue(){
+
+		if (isDiscrete || hasRange)
+			return elements.get(0);
+		else
+			return DataTypes.getDefaultValue(type);
+
+	}
 }

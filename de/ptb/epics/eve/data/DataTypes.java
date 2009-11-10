@@ -7,12 +7,16 @@
  *******************************************************************************/
 package de.ptb.epics.eve.data;
 
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 /**
  * 
- * This enum defines some special data types which are used inside of an EPICS enviornment.
+ * This enum defines some special data types which are used inside of an EPICS environment.
  * It also provides some static methods which finds out if a value can exist at on this data type.
- * This definitions are methods are used by severeal classes of the Scan Modul Editor project.
+ * This definitions are methods are used by several classes of the Scan Modul Editor project.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.4
@@ -93,9 +97,9 @@ public enum DataTypes {
 						
 		case STRING:	return true;
 		case DATETIME:	
-						if (value.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}[0-9.]*"))
+						if (value.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$"))
 							return true;
-						else if (value.matches("\\d{2}:\\d{2}:\\d{2}[0-9.]*"))
+						else if (value.matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$"))
 							return true;
 						else
 							return isValuePossible(DOUBLE, value);
@@ -105,7 +109,131 @@ public enum DataTypes {
 		return false;
 		
 	}
-	
+
+	/**
+	 * Return a string formatted to the corresponding DataTypes.
+	 * If the string can be converted, return a well-formatted string, else return null.
+	 * 
+	 * @param value string to be formatted
+	 * @return a formatted string or null
+	 */
+	public static String formatValue(final DataTypes type, final String value){
+		
+		if( value == null ) {
+			throw new IllegalArgumentException( "The parameter value must not be null" );
+		}
+		
+		if( !DataTypes.isValuePossible( type, value ) ) {
+			return null;
+		}
+
+		String returnString = null;
+
+		if (type == DataTypes.INT){
+			Integer intval = Integer.parseInt(value.trim());
+			returnString = intval.toString();
+		}
+		else if (type == DataTypes.DOUBLE){
+			Double intval = Double.parseDouble(value.trim());
+			returnString = intval.toString();
+		}
+		else  if (type == DataTypes.DATETIME) {
+			if (value.contains("-")){
+				// date included
+				if (value.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$"))
+					returnString =  value;
+			}
+			else if (value.contains(":")){
+				// no date included
+				if (value.matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) 
+					returnString = value;
+					// TODO don't compile on every call
+					Pattern p = Pattern.compile("(\\d+):(\\d+):(\\d+)([.]\\d{1,3})?$");
+					Matcher m = p.matcher(value);
+					m.find();
+					Integer hours = Integer.parseInt(m.group(1));
+					Integer minutes = Integer.parseInt(m.group(2));					
+					Integer seconds = Integer.parseInt(m.group(3));
+					Double fractalSeconds = 0.0;
+					if (m.group(4) != null) fractalSeconds = Double.parseDouble(m.group(4));
+					if (seconds > 59) {
+						minutes += seconds/60;
+						seconds %= 60;
+					}
+					if (minutes > 59) {
+						hours += minutes/60;
+						minutes %= 60;
+					}
+					if (hours > 23){
+						hours %= 24;
+					}
+					if (fractalSeconds > 0.0){
+						fractalSeconds += seconds.doubleValue();
+						returnString =  String.format(new Locale("us"), "%1$02d:%2$02d:%3$06.3f", hours, minutes, fractalSeconds);
+					}
+					else {
+						returnString =  String.format(new Locale("us"), "%1$02d:%2$02d:%3$02d", hours, minutes, seconds);
+					}
+			}
+			else {
+				// we assume a double value as seconds
+				try {
+					Double dseconds = Double.parseDouble(value.trim());
+					Integer secs= dseconds.intValue();
+					int hours = secs / 3600;
+					int minutes = secs / 60 - hours * 60;
+					dseconds -= new Integer(hours * 3600 + minutes *60).doubleValue();
+					secs %= 60;
+					if (dseconds > secs.doubleValue()){
+						returnString =  String.format(new Locale("us"), "%1$02d:%2$02d:%3$06.3f", hours, minutes, dseconds);
+					}
+					else {
+						returnString =  String.format(new Locale("us"), "%1$02d:%2$02d:%3$02d", hours, minutes, secs);
+					}
+				} catch( final NumberFormatException e ) {
+					returnString = null;
+				}
+			}
+		}
+		return returnString;
+	}
+
+	/**
+	 * Convenience function returns a formatted string or default value
+	 * 
+	 * @param value string to be formatted
+	 * @param type data type of value
+	 * @return a formatted string or null
+	 */
+	public static String formatValueDefault(final DataTypes type, final String value){
+		
+		String returnString = formatValue(type, value);
+		if (returnString != null ) 
+			return returnString;
+		else
+			return getDefaultValue(type);
+	}
+
+	/**
+	 * Return a well-formatted string with a valid default value.
+	 * 
+	 * @param type data type for which a default value is returned
+	 * @return a default value
+	 */
+	public static String getDefaultValue(final DataTypes type){
+		
+		switch( type ) {
+		
+		case ONOFF:		return "OFF";
+		case OPENCLOSE:	return "CLOSE";		
+		case INT:		return new Integer(0).toString();
+		case DOUBLE:	return new Double(0.0).toString();
+		case STRING:	return "<unknown>";
+		case DATETIME:	return "00:00:00";
+		}
+		return "";
+	}
+
 	/**
 	 * This static Method is translating a name for the data type like it's used in the
 	 * measuring station description or the scan description into the correpondenting DataType.
