@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.viewer.actions;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.jface.action.Action;
@@ -27,10 +28,10 @@ public class AddFileToPlayListAction extends Action implements IWorkbenchAction 
 		FileDialog fileDialog = new FileDialog( shell, SWT.OPEN | SWT.MULTI );
 		fileDialog.open();
 		String[] names = fileDialog.getFileNames(); 
-		
+
 		for( int i = 0; i < names.length; ++i ) {
 			try {
-				Activator.getDefault().getEcp1Client().getPlayListController().addLocalFile( names[i] );
+				Activator.getDefault().getEcp1Client().getPlayListController().addLocalFile( fileDialog.getFilterPath() + File.separator + names[i] );
 				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Adding file with the name: " + names[i] + "." ) );
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
