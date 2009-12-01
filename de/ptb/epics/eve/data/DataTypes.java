@@ -129,7 +129,11 @@ public enum DataTypes {
 
 		String returnString = null;
 
-		if (type == DataTypes.INT){
+		
+		if (type == DataTypes.STRING){
+			returnString = value;
+		}
+		else if (type == DataTypes.INT){
 			Integer intval = Integer.parseInt(value.trim());
 			returnString = intval.toString();
 		}

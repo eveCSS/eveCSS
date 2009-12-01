@@ -119,8 +119,11 @@ public class TypeValue {
 
 	/**
 	 * Sets the possible values of this TypeValue.
+	 * - a string with comma-separated values
+	 * - a range of int or doubles in the following format <startval>to<endval> 
+	 * - an arbitrary string without a comma
 	 * 
-	 * @param values A String of the possible Values seperated by a single space.
+	 * @param values A String of the possible values
 	 */
 	public void setValues( final String values ) {
 

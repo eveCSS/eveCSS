@@ -75,6 +75,8 @@ public enum EventTypes {
 				return "monitor";
 			case SCHEDULE:
 				return "schedule";
+			case DETECTOR:
+				return "detector";
 		}
 		return null;
 	}
