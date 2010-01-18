@@ -18,8 +18,8 @@ public class XMLFileDispatcher implements INewXMLFileListener {
 	public void newXMLFileReceived( final byte[] xmlData ) {
 		try {
 			
-			
-			final MeasuringStation measuringStation = MeasuringStationLoader.loadFromByteArray( xmlData );
+			MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader();
+			final MeasuringStation measuringStation = measuringStationLoader.loadFromByteArray( xmlData );
 			Activator.getDefault().getWorkbench().getDisplay().syncExec( new Runnable() {
 
 				public void run() {

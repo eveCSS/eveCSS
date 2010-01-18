@@ -13,8 +13,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
-import de.ptb.epics.eve.viewer.MessagesTableContentProvider;
-import de.ptb.epics.eve.viewer.dialogs.MessageSourcesFilterDialog;
+
 
 public class SaveMessagesToFileAction extends Action implements IWorkbenchAction {
 

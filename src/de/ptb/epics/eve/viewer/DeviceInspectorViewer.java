@@ -63,12 +63,15 @@ public class DeviceInspectorViewer extends ViewPart {
 		
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
+		gridLayout.marginHeight = 0;
 		this.motoAxisesComposite.setLayout( gridLayout );
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
+		gridLayout.marginHeight = 0;
 		this.detectorChannelsComposite.setLayout( gridLayout );
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
+		gridLayout.marginHeight = 0;
 		this.devicesComposite.setLayout( gridLayout );
 		
 		DropTarget target = new DropTarget( parent, DND.DROP_COPY );

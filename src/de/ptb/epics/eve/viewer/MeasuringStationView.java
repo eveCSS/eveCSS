@@ -8,14 +8,20 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.viewer.actions.LoadMeasuringStationAction;
 
 /**
  * A simple view implementation, which only displays a label.
@@ -33,6 +39,8 @@ public final class MeasuringStationView extends ViewPart {
 	
 	private DragSource source;
 	
+	private LoadMeasuringStationAction loadMeasuringStationAction;
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -46,6 +54,13 @@ public final class MeasuringStationView extends ViewPart {
 	 */
 	@Override
 	public void createPartControl( final Composite parent ) {
+		
+		this.loadMeasuringStationAction = new LoadMeasuringStationAction( this );
+		this.loadMeasuringStationAction.setText( "Load measuring station description." );
+		this.loadMeasuringStationAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_OBJ_FILE ) );
+		this.getViewSite().getActionBars().getToolBarManager().add( this.loadMeasuringStationAction );
+		
+		
 		final FillLayout fillLayout = new FillLayout();
 		parent.setLayout( fillLayout );
 		this.treeViewer = new TreeViewer( parent );
@@ -81,6 +96,32 @@ public final class MeasuringStationView extends ViewPart {
 
 			
 
+			
+		});
+		
+		this.treeViewer.getTree().addSelectionListener( new SelectionListener() {
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				TreeItem[] items = treeViewer.getTree().getSelection();
+				if( items.length > 0 ) {
+					if( items[0].getData() instanceof AbstractDevice ) {
+						IViewReference[] ref = getSite().getPage().getViewReferences();
+						DeviceOptionsViewer view = null;
+						for( int i = 0; i < ref.length; ++i ) {
+							if( ref[i].getId().equals( "DeviceOptionsView" ) ) {
+								view = (DeviceOptionsViewer)ref[i].getPart( false );
+							}
+						}
+						view.setDevice( (AbstractDevice)items[0].getData() );
+					}
+				}
+				
+			}
 			
 		});
 	}

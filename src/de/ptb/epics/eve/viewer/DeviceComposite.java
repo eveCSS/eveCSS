@@ -2,12 +2,17 @@ package de.ptb.epics.eve.viewer;
 
 import org.csstudio.platform.model.pvs.IProcessVariableAddress;
 import org.csstudio.platform.model.pvs.ProcessVariableAdressFactory;
+import org.csstudio.platform.simpledal.ConnectionException;
 import org.csstudio.platform.simpledal.ConnectionState;
 import org.csstudio.platform.simpledal.IProcessVariableConnectionService;
 import org.csstudio.platform.simpledal.IProcessVariableValueListener;
 import org.csstudio.platform.simpledal.ProcessVariableConnectionServiceFactory;
 import org.csstudio.platform.simpledal.ValueType;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -20,6 +25,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.epics.css.dal.Timestamp;
 
+import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.measuringstation.Device;
 
 public class DeviceComposite extends Composite implements IProcessVariableValueListener {
@@ -48,8 +54,15 @@ public class DeviceComposite extends Composite implements IProcessVariableValueL
 	
 	private void initialize() {
 		
+		//this.setBackground( new Color( this.getBackground().getDevice(), 255, 0, 0 ) );
+		
+		IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
+		ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
+
+		
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 6;
+		gridLayout.marginHeight = 0;
 		
 		this.setLayout( gridLayout );
 		
@@ -66,7 +79,7 @@ public class DeviceComposite extends Composite implements IProcessVariableValueL
 		this.currentValueLabel.setText( "?" );
 		gridData = new GridData();
 		//gridData.horizontalAlignment = SWT.BEGINNING;
-		gridData.widthHint = 20;
+		gridData.widthHint = 80;
 		this.currentValueLabel.setLayoutData( gridData );
 		
 		if( this.device.isDiscrete()) {
@@ -77,6 +90,7 @@ public class DeviceComposite extends Composite implements IProcessVariableValueL
 			gridData.horizontalAlignment = GridData.FILL;
 			gridData.verticalAlignment = GridData.FILL;
 			this.inputCombo.setLayoutData( gridData );
+			this.inputCombo.setItems( this.device.getValue().getDiscreteValues().toArray( new String[0] ) );
 		} else {
 			this.inputText = new Text( this, SWT.BORDER );
 			gridData = new GridData();
@@ -92,7 +106,19 @@ public class DeviceComposite extends Composite implements IProcessVariableValueL
 			if( this.device.getUnit().getValue() != null ) {
 				this.unitLabel.setText( this.device.getUnit().getValue() );
 			} else {
-				// Einheit vom Netz lesen.
+				String prefix = null;
+				if( this.device.getUnit().getAccess().getTransport() == TransportTypes.CA ) {
+					prefix = "dal-epics://";
+				} else if( this.device.getUnit().getAccess().getTransport() == TransportTypes.LOCAL ) {
+					prefix = "local://";
+				}
+				IProcessVariableAddress pv = pvFactory.createProcessVariableAdress( prefix + this.device.getUnit().getAccess().getVariableID() );
+				try {
+					final String unit = service.readValueSynchronously( pv, Helper.dataTypesToValueType( this.device.getUnit().getAccess().getType() ) ).toString();
+					this.unitLabel.setText( unit );
+				} catch( ConnectionException e ) {
+					this.unitLabel.setText( "?" );
+				}
 			}
 		}
 		gridData = new GridData();
@@ -103,6 +129,47 @@ public class DeviceComposite extends Composite implements IProcessVariableValueL
 		
 		this.setButton = new Button( this, SWT.PUSH );
 		this.setButton.setText( "Set" );
+		this.setButton.addSelectionListener( new SelectionListener() {
+
+			public void widgetDefaultSelected( final SelectionEvent e ) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void widgetSelected( final SelectionEvent e ) {
+				IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
+				ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance();
+				String prefix = null;
+				if( device.getValue().getAccess().getTransport() == TransportTypes.CA ) {
+					prefix = "dal-epics://";
+				} else if( device.getValue().getAccess().getTransport() == TransportTypes.LOCAL ) {
+					prefix = "local://";
+				}
+				IProcessVariableAddress pv = pvFactory.createProcessVariableAdress( prefix + device.getValue().getAccess().getVariableID() );
+				try {
+					Object o = null;
+					switch( device.getValue().getValue().getType() ) {
+					
+						case INT:
+							o = Integer.parseInt( inputText != null?inputText.getText():inputCombo.getText() );
+							break;
+							
+						case DOUBLE: 
+							o = Double.parseDouble( inputText != null?inputText.getText():inputCombo.getText() );
+							break;
+						
+						default:
+							o = inputText != null?inputText.getText():inputCombo.getText();
+					
+					}
+					service.writeValueSynchronously( pv, o, Helper.dataTypesToValueType( device.getValue().getValue().getType() ) );
+				} catch( final ConnectionException e1 ) {
+					
+					e1.printStackTrace();
+				}
+			}
+			
+		});
 		
 		this.currentStateLabel = new Label( this, SWT.NONE );
 		this.currentStateLabel.setText( "Disconnected" );
@@ -112,17 +179,33 @@ public class DeviceComposite extends Composite implements IProcessVariableValueL
 		gridData.widthHint = 150;
 		this.currentStateLabel.setLayoutData( gridData );
 		
-		RowData rowData = new RowData();
+		String prefix = null;
+		if( device.getValue().getAccess().getTransport() == TransportTypes.CA ) {
+			prefix = "dal-epics://";
+		} else if( device.getValue().getAccess().getTransport() == TransportTypes.LOCAL ) {
+			prefix = "local://";
+		}
 		
-		IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-
-		ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
-		IProcessVariableAddress pv = pvFactory.createProcessVariableAdress( "" );
+		IProcessVariableAddress pv = pvFactory.createProcessVariableAdress( prefix + this.device.getValue().getAccess().getVariableID() );
 		
-		service.register( this, pv,  Helper.dataTypesToValueType( this.device.getValue().getValue().getType() ) );
+		/*try {
+			this.currentValueLabel.setText( service.readValueSynchronously( pv, Helper.dataTypesToValueType( this.device.getValue().getType() ) ).toString() );
+		} catch (ConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
+		service.register( this, pv,  Helper.dataTypesToValueType( this.device.getValue().getType() ) );
+		//service.readValueAsynchronously( pv, Helper.dataTypesToValueType( this.device.getValue().getType() ), this );
 		
 	}
 
+	public void dispose() {
+		IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
+		service.unregister( this );
+		super.dispose();
+	}
+	
 	public void connectionStateChanged( final ConnectionState connectionState ) {
 		
 		this.currentStateLabel.getDisplay().syncExec( new Runnable() {
