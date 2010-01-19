@@ -28,6 +28,12 @@ import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Device;
 
+/**
+ * This class represents the DeviceInspector view that provides interaction with motor axises
+ * 
+ * @author Stephan Rehfeld <stephan.rehfeld@ptb.de>
+ *
+ */
 public class DeviceInspectorViewer extends ViewPart {
 
 	private ExpandBar bar;
@@ -49,30 +55,6 @@ public class DeviceInspectorViewer extends ViewPart {
 		this.devices = new ArrayList< AbstractDevice >();
 		
 		parent.setLayout( new GridLayout() );
-		this.bar = new ExpandBar( parent, SWT.V_SCROLL);
-		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		this.bar.setLayoutData( gridData );
-		
-		this.motoAxisesComposite = new Composite( this.bar, SWT.NONE );
-		this.detectorChannelsComposite = new Composite( this.bar, SWT.NONE );
-		this.devicesComposite = new Composite( this.bar, SWT.NONE );
-		
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 1;
-		gridLayout.marginHeight = 0;
-		this.motoAxisesComposite.setLayout( gridLayout );
-		gridLayout = new GridLayout();
-		gridLayout.numColumns = 1;
-		gridLayout.marginHeight = 0;
-		this.detectorChannelsComposite.setLayout( gridLayout );
-		gridLayout = new GridLayout();
-		gridLayout.numColumns = 1;
-		gridLayout.marginHeight = 0;
-		this.devicesComposite.setLayout( gridLayout );
 		
 		DropTarget target = new DropTarget( parent, DND.DROP_COPY );
 		final TextTransfer textTransfer = TextTransfer.getInstance();
@@ -81,6 +63,7 @@ public class DeviceInspectorViewer extends ViewPart {
 		DropTargetListener dropListener = new DropTargetListener() {
 
 			public void dragEnter( final DropTargetEvent event ) {
+				System.out.println( "DragEnter" );
 				if( (event.operations & DND.DROP_COPY) != 0 ) {
 					for( int i = 0; i < event.dataTypes.length; ++i ) {
 						if( textTransfer.isSupportedType( event.dataTypes[i] ) ) {
@@ -91,7 +74,7 @@ public class DeviceInspectorViewer extends ViewPart {
 					}
 					
 				}
-				System.out.println( "DragEnter" );
+				
 				
 			}
 
@@ -104,7 +87,7 @@ public class DeviceInspectorViewer extends ViewPart {
 			}
 
 			public void dragOver( final DropTargetEvent event ) {
-				System.out.println( "DragOver" );
+				
 			}
 
 			public void drop( final DropTargetEvent event ) {
@@ -176,19 +159,54 @@ public class DeviceInspectorViewer extends ViewPart {
 		
 		};
 		
+		
+		target.addDropListener( dropListener );
+
+		
+		this.bar = new ExpandBar( parent, SWT.V_SCROLL);
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		this.bar.setLayoutData( gridData );
+		
+		target = new DropTarget( this.bar, DND.DROP_COPY );
+		target.setTransfer( types );
 		target.addDropListener( dropListener );
 		
+		this.motoAxisesComposite = new Composite( this.bar, SWT.NONE );
 		target = new DropTarget( this.motoAxisesComposite, DND.DROP_COPY );
 		target.setTransfer( types );
 		target.addDropListener( dropListener );
 		
+		this.detectorChannelsComposite = new Composite( this.bar, SWT.NONE );
 		target = new DropTarget( this.detectorChannelsComposite, DND.DROP_COPY );
 		target.setTransfer( types );
 		target.addDropListener( dropListener );
 		
+		this.devicesComposite = new Composite( this.bar, SWT.NONE );
 		target = new DropTarget( this.devicesComposite, DND.DROP_COPY );
 		target.setTransfer( types );
 		target.addDropListener( dropListener );
+		
+		
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		gridLayout.marginHeight = 0;
+		this.motoAxisesComposite.setLayout( gridLayout );
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		gridLayout.marginHeight = 0;
+		this.detectorChannelsComposite.setLayout( gridLayout );
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		gridLayout.marginHeight = 0;
+		this.devicesComposite.setLayout( gridLayout );
+		
+				
+		
+		
 		
 		this.item0 = new ExpandItem ( this.bar, SWT.NONE, 0);
 		item0.setText("Motor Axis");
@@ -205,9 +223,7 @@ public class DeviceInspectorViewer extends ViewPart {
 		item2.setHeight( this.devicesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item2.setControl( this.devicesComposite );
 		
-		target = new DropTarget( this.bar, DND.DROP_COPY );
-		target.setData( types );
-		target.addDropListener( dropListener );
+		
 		
 	}
 

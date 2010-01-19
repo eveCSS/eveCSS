@@ -23,6 +23,24 @@ import org.epics.css.dal.Timestamp;
 import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 
+
+/**
+ * This composite connects to a given motor axis and provides interactive widgets for it.
+ * 
+ * The shows the following properties:
+ * - Name
+ * - Current Value
+ * - Unit
+ * 
+ * Over and above that is has controls to:
+ * - Set a new position
+ * - Set an offset
+ * - Tweak for- and backward.
+ * 
+ * 
+ * @author Stephan Rehfeld
+ *
+ */
 public class MotorAxisComposite extends Composite implements IProcessVariableValueListener {
 
 	private MotorAxis motorAxis;
@@ -470,7 +488,7 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 						newText = "unknown";
 						
 				}
-				
+				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, motorAxis.getFullIdentifyer() + " changed connection state to " + newText + "." ) );
 				currentStateLabel.setText( newText );
 				
 			}

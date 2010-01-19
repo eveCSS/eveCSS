@@ -3,6 +3,8 @@ package de.ptb.epics.eve.viewer;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import de.ptb.epics.eve.ecp1.client.model.Error;
+
 public class ViewerMessage {
 	
 		private final Calendar messageDateTime;
@@ -22,6 +24,16 @@ public class ViewerMessage {
 			this.messageSource = messageSource;
 			this.messageType = messageType;
 			this.message = message;
+		}
+		
+		public ViewerMessage( final Error error ) {
+			
+			this.messageDateTime = new GregorianCalendar( 1990, 0, 1, 0, 0 );
+			this.messageDateTime.add( Calendar.SECOND, error.getGerenalTimeStamp() );
+			this.messageSource = MessageSource.ENGINE;
+			this.messageType = MessageTypes.convertFromErrorSeverity( error.getErrorSeverity() );
+			this.message = "Facility: " + error.getErrorFacility() + " Type: " + error.getErrorType() + " Message " + error.getText();
+			
 		}
 
 		public String getMessage() {

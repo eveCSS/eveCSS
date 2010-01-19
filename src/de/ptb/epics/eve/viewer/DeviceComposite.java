@@ -28,30 +28,93 @@ import org.epics.css.dal.Timestamp;
 import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.measuringstation.Device;
 
+/**
+ * This composite presents a connection to a device.
+ * 
+ * The connection is established with simplDAL. The compisite provides the following Information:
+ * - Name of the device
+ * - Current value of the devide
+ * - The unit of the device.
+ * - A label that shows the current connection state to the device.
+ * 
+ * As interactive control if provides
+ * - Depending on the datatype a text input or combobox and
+ * - a set button for setting a device.
+ * 
+ * @author Stephan Rehfeld <stephan.rehfeld@ptb.de>
+ *
+ */
 public class DeviceComposite extends Composite implements IProcessVariableValueListener {
 
-	private Device device;
+	/**
+	 * The Device where this composite is connected to.
+	 * 
+	 */
+	private final Device device;
 	
+	/**
+	 * The label that contains the name of the device.
+	 * 
+	 */
 	private Label deviceNameLabel;
 	
+	/**
+	 * The label that contains the current value of the device.
+	 * 
+	 */
 	private Label currentValueLabel;
 	
+	/**
+	 * The combobox to set the new value of the device.
+	 * 
+	 */
 	private Combo inputCombo;
+	
+	/**
+	 * The text input to set the new value of the device.
+	 * 
+	 */
 	private Text inputText;
 	
+	/**
+	 * The label that contains the unit of the device.
+	 * 
+	 */
 	private Label unitLabel;
 	
+	/**
+	 * The button that sets sends the new value to the device.
+	 * 
+	 */
 	private Button setButton;
 	
+	/**
+	 * The label that contains the current connection state to the device. 
+	 *
+	 */
 	private Label currentStateLabel;
 	
+	/**
+	 * This constructor creates a new DeviceComposite that is connected to a device.
+	 * 
+	 * @param parent The parent composite of this composite.
+	 * @param style The style, normally SWT.NONE
+	 * @param device The Device to which this composite is connected to. Must not be null.
+	 */
 	public DeviceComposite( final Composite parent, final int style, final Device device ) {
 		super( parent, style );
+		if( device == null ) {
+			throw new IllegalArgumentException( "The parameter 'device' must not be null!" );
+		}
 		this.device = device;
 		
 		initialize();
 	}
 	
+	/**
+	 * This methods creates all widgets of the composite and connects them with simpleDAL.
+	 * 
+	 */
 	private void initialize() {
 		
 		//this.setBackground( new Color( this.getBackground().getDevice(), 255, 0, 0 ) );
@@ -200,12 +263,23 @@ public class DeviceComposite extends Composite implements IProcessVariableValueL
 		
 	}
 
+	/**
+	 * This method disconnects the composite from simpleDAL.
+	 * 
+	 */
 	public void dispose() {
 		IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
 		service.unregister( this );
 		super.dispose();
 	}
 	
+	/**
+	 * This methods gets called by simpleDAL when receognized a change of the connection state to the process variable.
+	 * 
+	 * On call, the label of the connection state gets changed.
+	 * 
+	 * @param connectionState The new connection state.
+	 */
 	public void connectionStateChanged( final ConnectionState connectionState ) {
 		
 		this.currentStateLabel.getDisplay().syncExec( new Runnable() {
@@ -235,7 +309,7 @@ public class DeviceComposite extends Composite implements IProcessVariableValueL
 						newText = "unknown";
 						
 				}
-				
+				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, device.getFullIdentifyer() + " changed connection state to " + newText + "." ) );
 				currentStateLabel.setText( newText );
 				
 			}
@@ -243,11 +317,19 @@ public class DeviceComposite extends Composite implements IProcessVariableValueL
 		});
 	}
 
+	/**
+	 * This method gets called when an error occured on the simpleDAL Connection. 
+	 *
+	 */
 	public void errorOccured( final String error ) {
 		
 		
 	}
 
+	/**
+	 * This method gets called when an error occured on the simpleDAL Connection. 
+	 *
+	 */
 	public void valueChanged( final Object value, final Timestamp timestamp ) {
 		
 		this.currentValueLabel.getDisplay().syncExec( new Runnable() {

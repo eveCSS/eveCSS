@@ -21,10 +21,17 @@
  */
 package de.ptb.epics.eve.viewer;
 
+import java.util.List;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
+
+import de.ptb.epics.eve.data.scandescription.Chain;
+import de.ptb.epics.eve.data.scandescription.ScanModul;
 
 /**
  * A simple view implementation, which only displays a label.
@@ -32,15 +39,20 @@ import org.eclipse.ui.part.ViewPart;
  * @author Sven Wende
  *
  */
-public final class GraphView extends ViewPart {
+public final class GraphView extends ViewPart implements IUpdateListener {
 
+	private Text statusText;
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void createPartControl(final Composite parent) {
-		Label label = new Label(parent, SWT.NONE);
-		label.setText("View 1");
+	public void createPartControl( final Composite parent ) {
+		parent.setLayout( new FillLayout() );
+		this.statusText = new Text( parent, SWT.MULTI );
+		this.statusText.setEditable( false );
+		Activator.getDefault().getChainStatusAnalyzer().addUpdateLisner( this );
+		this.rebuildText();
 	}
 
 	/**
@@ -49,6 +61,85 @@ public final class GraphView extends ViewPart {
 	@Override
 	public void setFocus() {
 
+	}
+
+	public void updateOccured() {
+		this.rebuildText();
+		
+	}
+	
+	private void rebuildText() {
+		final StringBuffer stringBuffer = new StringBuffer();
+		
+		final List< Chain > idleChains = Activator.getDefault().getChainStatusAnalyzer().getIdleChains();
+		if( idleChains.size() > 0 ) {
+			stringBuffer.append( "Idle Chains: " );
+			for( int i = 0; i < idleChains.size(); ++i ) {
+				stringBuffer.append( idleChains.get( i ).getId() );
+				stringBuffer.append( ", " );
+			}
+			stringBuffer.append( '\n' );
+		}
+		
+		final List< Chain > runningChains = Activator.getDefault().getChainStatusAnalyzer().getRunningChains();
+		if( runningChains.size() > 0 ) {
+			stringBuffer.append( "Running Chains: " );
+			for( int i = 0; i < runningChains.size(); ++i ) {
+				stringBuffer.append( runningChains.get( i ).getId() );
+				stringBuffer.append( ", " );
+			}
+			stringBuffer.append( '\n' );
+		}
+		
+		final List< ScanModul > initializingScanModules = Activator.getDefault().getChainStatusAnalyzer().getInitializingScanModules();
+		if( initializingScanModules.size() > 0 ) {
+			stringBuffer.append( "Initializing Scan Modules: " );
+			for( int i = 0; i < initializingScanModules.size(); ++i ) {
+				stringBuffer.append( initializingScanModules.get( i ).getId() );
+				stringBuffer.append( ", " );
+			}
+			stringBuffer.append( '\n' );
+		}
+		
+		final List< ScanModul > executingScanModules = Activator.getDefault().getChainStatusAnalyzer().getExecutingScanModules();
+		if( executingScanModules.size() > 0 ) {
+			stringBuffer.append( "Executing Scan Modules: " );
+			for( int i = 0; i < executingScanModules.size(); ++i ) {
+				stringBuffer.append( executingScanModules.get( i ).getId() );
+				stringBuffer.append( ", " );
+			}
+			stringBuffer.append( '\n' );
+		}
+		
+		final List< ScanModul > pausedScanModules = Activator.getDefault().getChainStatusAnalyzer().getPausedScanModules();
+		if( pausedScanModules.size() > 0 ) {
+			stringBuffer.append( "Paused Scan Modules: " );
+			for( int i = 0; i < pausedScanModules.size(); ++i ) {
+				stringBuffer.append( pausedScanModules.get( i ).getId() );
+				stringBuffer.append( ", " );
+			}
+			stringBuffer.append( '\n' );
+		}
+		
+		final List< ScanModul > waitingScanModules = Activator.getDefault().getChainStatusAnalyzer().getWaitingScanModules();
+		if( waitingScanModules.size() > 0 ) {
+			stringBuffer.append( "Waiting Scan Modules: " );
+			for( int i = 0; i < waitingScanModules.size(); ++i ) {
+				stringBuffer.append( waitingScanModules.get( i ).getId() );
+				stringBuffer.append( ", " );
+			}
+			stringBuffer.append( '\n' );
+		}
+		
+		this.statusText.getDisplay().syncExec( new Runnable() {
+
+			public void run() {
+				statusText.setText( stringBuffer.toString() );
+				
+			}
+			
+			
+		});
 	}
 
 }

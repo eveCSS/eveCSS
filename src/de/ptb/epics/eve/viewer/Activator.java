@@ -4,6 +4,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.ecp1.client.ECP1Client;
 
 /**
@@ -18,6 +19,11 @@ public class Activator extends AbstractUIPlugin {
 	private static Activator plugin;
 	private final MessagesContainer messagesContainer;
 	private final XMLFileDispatcher xmlFileDispatcher;
+	private final MeasurementDataDispatcher measurementDataDispatcher;
+	private final EngineErrorReader engineErrorReader;
+	private final ChainStatusAnalyzer chainStatusAnalyzer;
+	
+	private ScanDescription currentScanDescription;
 	
 	private ECP1Client ecp1Client;
 	
@@ -29,7 +35,13 @@ public class Activator extends AbstractUIPlugin {
 		this.ecp1Client = new ECP1Client();
 		this.messagesContainer = new MessagesContainer();
 		this.xmlFileDispatcher = new XMLFileDispatcher();
+		this.engineErrorReader = new EngineErrorReader();
+		this.chainStatusAnalyzer = new ChainStatusAnalyzer();
+		this.measurementDataDispatcher = new MeasurementDataDispatcher();
 		this.ecp1Client.getPlayListController().addNewXMLFileListener( this.xmlFileDispatcher );
+		this.ecp1Client.addMeasurementDataListener( measurementDataDispatcher );
+		this.ecp1Client.addErrorListener( this.engineErrorReader );
+		this.ecp1Client.addChainStatusListener( this.chainStatusAnalyzer );
 	}
 
 	/*
@@ -76,4 +88,17 @@ public class Activator extends AbstractUIPlugin {
 	public MessagesContainer getMessagesContainer() {
 		return this.messagesContainer;
 	}
+	
+	public ScanDescription getCurrentScanDescription() {
+		return this.currentScanDescription;
+	}
+	
+	public void setCurrentScanDescription( final ScanDescription currentScanDescription ) {
+		this.currentScanDescription = currentScanDescription;
+	}
+	
+	public ChainStatusAnalyzer getChainStatusAnalyzer() {
+		return this.chainStatusAnalyzer;
+	}
+	
 }

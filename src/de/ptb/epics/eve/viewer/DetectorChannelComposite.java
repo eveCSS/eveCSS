@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.viewer;
 
+import java.awt.TrayIcon.MessageType;
+
 import org.csstudio.platform.model.pvs.IProcessVariableAddress;
 import org.csstudio.platform.model.pvs.ProcessVariableAdressFactory;
 import org.csstudio.platform.simpledal.ConnectionException;
@@ -22,24 +24,86 @@ import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Function;
 
+
+/**
+ * The detector Channel composite is used by the DeviceInspectorView to interact with a detector.
+ * 
+ * It carries the following informations:
+ * - Name of the detector channel
+ * - The current Value of the detector channel.
+ * - The Unit of the detector
+ * 
+ * As interactive parts it has:
+ * - A button to trigger the detector.
+ * 
+ * @author Stephan Rehfeld <stephan.rehfeld@ptb.de>
+ *
+ */
 public class DetectorChannelComposite extends Composite implements IProcessVariableValueListener {
 
-	private DetectorChannel detectorChannel;
+	/**
+	 * The detector channel where this composite is connected to.
+	 * 
+	 */
+	private final DetectorChannel detectorChannel;
 	
+	/**
+	 * The label, which shows the name of the detector channel.
+	 * 
+	 */
 	private Label detectorChannelNameLabel;
+	
+	/**
+	 * The label, which shows the current value of the detector channel.
+	 * 
+	 */
 	private Label currentValueLabel;
+	
+	/**
+	 * The label, which shows the unit of the detector channel.
+	 * 
+	 */
 	private Label unitLabel;
+	
+	/**
+	 * The label that shows the method of the detector channel.
+	 * 
+	 */
 	private Label methodLabel;
+	
+	/**
+	 * The label that shows the current connection state the the pv of the detector channel.
+	 * 
+	 */
 	private Label currentStateLabel;
+	
+	/**
+	 * The button, that sends a trigger signal to the detector.
+	 * 
+	 */
 	private Button triggerButton;
 	
+	/**
+	 * This constructor creates a new DetectorChannelComposite connected to a given Detector Channel.
+	 * 
+	 * @param parent The parent composite of the detector channel.
+	 * @param style The style of the detector channel.
+	 * @param detectorChannel The detector channel where the composite should be connected to. Must not be null!
+	 */
 	public DetectorChannelComposite( final Composite parent, final int style, final DetectorChannel detectorChannel ) {
 		super( parent, style );
+		if( detectorChannel == null ) {
+			throw new IllegalArgumentException( "The parameter 'detectorChannel' must not be null!" );
+		}
 		this.detectorChannel = detectorChannel;
 		
 		initialize();
 	}
 	
+	/**
+	 * This method initializes the detector channel composite and connects it to the given detector channel.
+	 * 
+	 */
 	private void initialize() {
 
 		//this.setBackground( new Color( this.getBackground().getDevice(), 255, 0, 0 ) );
@@ -176,12 +240,23 @@ public class DetectorChannelComposite extends Composite implements IProcessVaria
 		
 	}
 
+	/**
+	 * This methods disposes the detector channels widget and disconnects the composite from the simpleDAL service.
+	 * 
+	 */
 	public void dispose() {
 		IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
 		service.unregister( this );
 		super.dispose();
 	}
 	
+	/**
+	 * This methods gets called by simpleDAL when receognized a change of the connection state to the process variable.
+	 * 
+	 * On call, the label of the connection state gets changed.
+	 * 
+	 * @param connectionState The new connection state.
+	 */
 	public void connectionStateChanged( final ConnectionState connectionState ) {
 		this.currentStateLabel.getDisplay().syncExec( new Runnable() {
 
@@ -210,7 +285,7 @@ public class DetectorChannelComposite extends Composite implements IProcessVaria
 						newText = "unknown";
 						
 				}
-				
+				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, detectorChannel.getFullIdentifyer() + " changed connection state to " + newText + "." ) );
 				currentStateLabel.setText( newText );
 				
 			}
@@ -219,11 +294,20 @@ public class DetectorChannelComposite extends Composite implements IProcessVaria
 		
 	}
 
+	/**
+	 * This method gets called when an error occured on the simpleDAL Connection. 
+	 *
+	 */
 	public void errorOccured( final String error ) {
-		// TODO Auto-generated method stub
-		
+		Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.ERROR, error ) );
 	}
 
+	/**
+	 * This method gets called when the value of the detector has changed.  
+	 *
+	 * @param value The new value
+	 * @param timestamp The timestamp of the value.
+	 */
 	public void valueChanged( final Object value, final Timestamp timestamp) {
 		this.currentValueLabel.getDisplay().syncExec( new Runnable() {
 

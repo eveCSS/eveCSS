@@ -11,6 +11,8 @@ import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
+import de.ptb.epics.eve.data.scandescription.ScanDescription;
+import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
 import de.ptb.epics.eve.ecp1.client.interfaces.INewXMLFileListener;
 
 public class XMLFileDispatcher implements INewXMLFileListener {
@@ -18,7 +20,7 @@ public class XMLFileDispatcher implements INewXMLFileListener {
 	public void newXMLFileReceived( final byte[] xmlData ) {
 		try {
 			
-			MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader();
+			final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader();
 			final MeasuringStation measuringStation = measuringStationLoader.loadFromByteArray( xmlData );
 			Activator.getDefault().getWorkbench().getDisplay().syncExec( new Runnable() {
 
@@ -34,13 +36,18 @@ public class XMLFileDispatcher implements INewXMLFileListener {
 					
 				}} );
 			
-		} catch (ParserConfigurationException e) {
+			final ScanDescriptionLoader scanDescriptionLoader = new ScanDescriptionLoader();
+			scanDescriptionLoader.setMeasuringStation( measuringStation );
+			scanDescriptionLoader.loadFromByteArray( xmlData );
+			final ScanDescription scanDescription = scanDescriptionLoader.getScanDescription();
+			Activator.getDefault().setCurrentScanDescription( scanDescription );
+		} catch( final ParserConfigurationException e ) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (SAXException e) {
+		} catch( final SAXException e ) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch( final IOException e ) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
