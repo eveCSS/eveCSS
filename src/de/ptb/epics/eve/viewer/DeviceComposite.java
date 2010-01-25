@@ -33,7 +33,7 @@ import de.ptb.epics.eve.data.measuringstation.Device;
  * 
  * The connection is established with simplDAL. The compisite provides the following Information:
  * - Name of the device
- * - Current value of the devide
+ * - Current value of the device
  * - The unit of the device.
  * - A label that shows the current connection state to the device.
  * 

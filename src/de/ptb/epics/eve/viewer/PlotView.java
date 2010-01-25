@@ -95,6 +95,16 @@ public class PlotView extends ViewPart {
 	private Label detector2StandDevLabel;
 	private Label detector2currentStandDevLabel;
 
+	
+	private Label emptyLabel11;
+	private Label emptyLabel12;
+	
+	private Label detector1FWHMLabel;
+	private Label detector1currentFWHMLabel;
+	
+	private Label detector2FWHMLabel;
+	private Label detector2currentFWHMLabel;
+	
 	private PlotWindow plotWindow;
 	
 	{
@@ -340,6 +350,33 @@ public class PlotView extends ViewPart {
 		gridData.horizontalSpan = 2;
 		this.detector2currentStandDevLabel.setLayoutData( gridData );
 		
+		this.emptyLabel11 = new Label( parent, SWT.NONE );
+		this.emptyLabel12 = new Label( parent, SWT.NONE );;
+		
+		this.detector1FWHMLabel = new Label( parent, SWT.NONE );
+		this.detector1FWHMLabel.setText( "FWHM:" );
+		
+		this.detector1currentFWHMLabel = new Label( parent, SWT.NONE );
+		this.detector1currentFWHMLabel.setText( "?" );
+		
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.FILL;
+		gridData.horizontalSpan = 2;
+		this.detector1currentFWHMLabel.setLayoutData( gridData );
+		
+		this.detector2FWHMLabel = new Label( parent, SWT.NONE );
+		this.detector2FWHMLabel.setText( "FWHM:" );
+		
+		this.detector2currentFWHMLabel = new Label( parent, SWT.NONE );
+		this.detector2currentFWHMLabel.setText( "?" );
+		
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.FILL;
+		gridData.horizontalSpan = 2;
+		this.detector2currentFWHMLabel.setLayoutData( gridData );
+		
 	}
 
 	public void measurementData( final MeasurementData measurementData ) {
@@ -350,17 +387,42 @@ public class PlotView extends ViewPart {
 						this.detector1CurrentValueLabel.getDisplay().syncExec( new Runnable() {
 
 							public void run() {
-								detector1currentMaxLabel.setText( measurementData.getValues().get( 0 ).toString() );
+								detector1CurrentValueLabel.setText( measurementData.getValues().get( 0 ).toString() );
 							}
 							
 						});
 						break;
 					case CENTER:
+						this.detector1currentCenterLabel.getDisplay().syncExec( new Runnable() {
+
+							public void run() {
+								detector1currentCenterLabel.setText( measurementData.getValues().get( 0 ).toString() );
+								
+							}
+							
+						});
 						break;
 					case EDGE:
+						this.detector1currentEdgeLabel.getDisplay().syncExec( new Runnable() {
+
+							public void run() {
+								detector1currentEdgeLabel.setText( measurementData.getValues().get( 0 ).toString() );
+								
+							}
+							
+						});
 						break;
+						
 					case MIN:
+						this.detector1currentMinLabel.getDisplay().syncExec( new Runnable() {
+
+							public void run() {
+								detector1currentMinLabel.setText( measurementData.getValues().get( 0 ).toString() );
+							}
+							
+						});
 						break;
+						
 					case MAX:
 						this.detector1currentMaxLabel.getDisplay().syncExec( new Runnable() {
 
@@ -371,6 +433,13 @@ public class PlotView extends ViewPart {
 						});
 						break;
 					case FWHM:
+						this.detector1currentFWHMLabel.getDisplay().syncExec( new Runnable() {
+
+							public void run() {
+								detector1currentFWHMLabel.setText( measurementData.getValues().get( 0 ).toString() );
+							}
+							
+						});
 						break;
 					case MEAN_VALUE:
 						this.detector1currentMeanLabel.getDisplay().syncExec( new Runnable() {
@@ -383,6 +452,97 @@ public class PlotView extends ViewPart {
 
 						break;
 					case STANDARD_DEVIATION:
+						this.detector1currentStandDevLabel.getDisplay().syncExec( new Runnable() {
+
+							public void run() {
+								detector1currentStandDevLabel.setText( measurementData.getValues().get( 0 ).toString() );
+							}
+							
+						});
+
+						break;
+				}
+			}
+		} else if( this.detectorChannel2 != null ) {
+			if( this.detectorChannel2.getName().equals( measurementData.getName() ) ) {
+				switch( measurementData.getDataModifyer() ) {
+					case UNMODIFIED:
+						this.detector2CurrentValueLabel.getDisplay().syncExec( new Runnable() {
+
+							public void run() {
+								detector2CurrentValueLabel.setText( measurementData.getValues().get( 0 ).toString() );
+							}
+							
+						});
+						break;
+					case CENTER:
+						this.detector2currentCenterLabel.getDisplay().syncExec( new Runnable() {
+
+							public void run() {
+								detector2currentCenterLabel.setText( measurementData.getValues().get( 0 ).toString() );
+								
+							}
+							
+						});
+						break;
+					case EDGE:
+						this.detector2currentEdgeLabel.getDisplay().syncExec( new Runnable() {
+
+							public void run() {
+								detector2currentEdgeLabel.setText( measurementData.getValues().get( 0 ).toString() );
+								
+							}
+							
+						});
+						break;
+						
+					case MIN:
+						this.detector2currentMinLabel.getDisplay().syncExec( new Runnable() {
+
+							public void run() {
+								detector2currentMinLabel.setText( measurementData.getValues().get( 0 ).toString() );
+							}
+							
+						});
+						break;
+						
+					case MAX:
+						this.detector2currentMaxLabel.getDisplay().syncExec( new Runnable() {
+
+							public void run() {
+								detector2currentMaxLabel.setText( measurementData.getValues().get( 0 ).toString() );
+							}
+							
+						});
+						break;
+					case FWHM:
+						this.detector2currentFWHMLabel.getDisplay().syncExec( new Runnable() {
+
+							public void run() {
+								detector2currentFWHMLabel.setText( measurementData.getValues().get( 0 ).toString() );
+							}
+							
+						});
+						break;
+					case MEAN_VALUE:
+						this.detector2currentMeanLabel.getDisplay().syncExec( new Runnable() {
+
+							public void run() {
+								detector2currentMeanLabel.setText( measurementData.getValues().get( 0 ).toString() );
+							}
+							
+						});
+
+						break;
+					case STANDARD_DEVIATION:
+						this.detector2currentStandDevLabel.getDisplay().syncExec( new Runnable() {
+
+							public void run() {
+								detector2currentStandDevLabel.setText( measurementData.getValues().get( 0 ).toString() );
+							}
+							
+						});
+
 						break;
 				}
 			}
