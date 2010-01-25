@@ -22,6 +22,8 @@ import org.epics.css.dal.Timestamp;
 
 import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
+import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 
 
 /**
@@ -41,12 +43,13 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
  * @author Stephan Rehfeld
  *
  */
-public class MotorAxisComposite extends Composite implements IProcessVariableValueListener {
+public class MotorAxisComposite extends Composite implements IProcessVariableValueListener, IMeasurementDataListener {
 
 	private MotorAxis motorAxis;
 	
 	private Label motorAxisNameLabel;
 	private Label valueLabel;
+	private Label engineValueLabel;
 	private Text targetValueText;
 	private Combo targetValueCombo;
 	
@@ -511,6 +514,20 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 			}
 			
 		});
+		
+	}
+
+	public void measurementDataTransmitted( final MeasurementData measurementData ) {
+		if( this.motorAxis.getName().equals( measurementData.getName() ) ) {
+			this.engineValueLabel.getDisplay().syncExec( new Runnable() {
+
+				public void run() {
+					engineValueLabel.setText( measurementData.getValues().get( 0 ).toString() );
+					
+				}
+				
+			});
+		}
 		
 	}
 }

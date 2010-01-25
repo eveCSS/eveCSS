@@ -27,6 +27,8 @@ import org.epics.css.dal.Timestamp;
 
 import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.measuringstation.Device;
+import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
+import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 
 /**
  * This composite presents a connection to a device.
@@ -44,7 +46,7 @@ import de.ptb.epics.eve.data.measuringstation.Device;
  * @author Stephan Rehfeld <stephan.rehfeld@ptb.de>
  *
  */
-public class DeviceComposite extends Composite implements IProcessVariableValueListener {
+public class DeviceComposite extends Composite implements IProcessVariableValueListener, IMeasurementDataListener {
 
 	/**
 	 * The Device where this composite is connected to.
@@ -63,6 +65,8 @@ public class DeviceComposite extends Composite implements IProcessVariableValueL
 	 * 
 	 */
 	private Label currentValueLabel;
+	
+	private Label currentEngineValueLabel;
 	
 	/**
 	 * The combobox to set the new value of the device.
@@ -124,7 +128,7 @@ public class DeviceComposite extends Composite implements IProcessVariableValueL
 
 		
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 6;
+		gridLayout.numColumns = 7;
 		gridLayout.marginHeight = 0;
 		
 		this.setLayout( gridLayout );
@@ -144,6 +148,12 @@ public class DeviceComposite extends Composite implements IProcessVariableValueL
 		//gridData.horizontalAlignment = SWT.BEGINNING;
 		gridData.widthHint = 80;
 		this.currentValueLabel.setLayoutData( gridData );
+		
+		this.currentEngineValueLabel = new Label( this, SWT.NONE );
+		this.currentEngineValueLabel.setText( "(?)" );
+		gridData = new GridData();
+		gridData.widthHint = 80;
+		this.currentEngineValueLabel.setLayoutData( gridData );
 		
 		if( this.device.isDiscrete()) {
 			this.inputCombo = new Combo( this, SWT.NONE );
@@ -339,6 +349,20 @@ public class DeviceComposite extends Composite implements IProcessVariableValueL
 			}
 			
 		});
+		
+	}
+
+	public void measurementDataTransmitted( final MeasurementData measurementData ) {
+		if( this.device.getName().equals( measurementData.getName() ) ) {
+			this.currentEngineValueLabel.getDisplay().syncExec( new Runnable() {
+
+				public void run() {
+					currentEngineValueLabel.setText( measurementData.getValues().get( 0 ).toString() );
+					
+				}
+				
+			});
+		}
 		
 	}
 	

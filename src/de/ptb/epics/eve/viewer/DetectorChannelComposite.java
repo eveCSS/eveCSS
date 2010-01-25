@@ -23,6 +23,8 @@ import org.epics.css.dal.Timestamp;
 import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Function;
+import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
+import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 
 
 /**
@@ -39,7 +41,7 @@ import de.ptb.epics.eve.data.measuringstation.Function;
  * @author Stephan Rehfeld <stephan.rehfeld@ptb.de>
  *
  */
-public class DetectorChannelComposite extends Composite implements IProcessVariableValueListener {
+public class DetectorChannelComposite extends Composite implements IProcessVariableValueListener, IMeasurementDataListener {
 
 	/**
 	 * The detector channel where this composite is connected to.
@@ -58,6 +60,8 @@ public class DetectorChannelComposite extends Composite implements IProcessVaria
 	 * 
 	 */
 	private Label currentValueLabel;
+	
+	private Label currentEngineValueLabel;
 	
 	/**
 	 * The label, which shows the unit of the detector channel.
@@ -112,7 +116,7 @@ public class DetectorChannelComposite extends Composite implements IProcessVaria
 		ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
 
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 6;
+		gridLayout.numColumns = 7;
 		gridLayout.marginHeight = 0;
 		
 		this.setLayout( gridLayout );
@@ -129,6 +133,13 @@ public class DetectorChannelComposite extends Composite implements IProcessVaria
 		gridData = new GridData();
 		gridData.widthHint = 80;
 		this.currentValueLabel.setLayoutData( gridData );
+		
+		this.currentEngineValueLabel = new Label( this, SWT.NONE );
+		this.currentEngineValueLabel.setText( "(?)" );
+		gridData = new GridData();
+		gridData.widthHint = 80;
+		this.currentEngineValueLabel.setLayoutData( gridData );
+		
 		
 		this.unitLabel = new Label( this, SWT.NONE );
 		if( this.detectorChannel.getUnit() != null ) {
@@ -316,6 +327,20 @@ public class DetectorChannelComposite extends Composite implements IProcessVaria
 			}
 			
 		});
+		
+	}
+	
+	public void measurementDataTransmitted( final MeasurementData measurementData ) {
+		if( this.detectorChannel.getName().equals( measurementData.getName() ) ) {
+			this.currentEngineValueLabel.getDisplay().syncExec( new Runnable() {
+
+				public void run() {
+					currentEngineValueLabel.setText( measurementData.getValues().get( 0 ).toString() );
+					
+				}
+				
+			});
+		}
 		
 	}
 
