@@ -5,6 +5,7 @@ import java.util.Iterator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -34,14 +35,50 @@ public class PlotView extends ViewPart {
 	private Label normalizeLabel;
 	private Combo normalizeComboBox;
 	
-	private Label detector1PeakLabel;
-	private Label detector1currentPeakLabel;
+	private Label detector1MinLabel;
+	private Label detector1currentMinLabel;
+	private Button detector1GotoMinButton;
 	
-	private Label detector2PeakLabel;
-	private Label detector2currentPeakLabel;
+	private Label detector2MinLabel;
+	private Label detector2currentMinLabel;
+	private Button detector2GotoMinButton;
 	
 	private Label emptyLabel1;
 	private Label emptyLabel2;
+	
+	private Label detector1MaxLabel;
+	private Label detector1currentMaxLabel;
+	private Button detector1GotoMaxButton;
+	
+	private Label detector2MaxLabel;
+	private Label detector2currentMaxLabel;
+	private Button detector2GotoMaxButton;
+	
+	private Label emptyLabel3;
+	private Label emptyLabel4;
+	
+	private Label detector1CenterLabel;
+	private Label detector1currentCenterLabel;
+	private Button detector1GotoCenterButton;
+	
+	private Label detector2CenterLabel;
+	private Label detector2currentCenterLabel;
+	private Button detector2GotoCenterButton;
+	
+	private Label emptyLabel5;
+	private Label emptyLabel6;
+	
+	private Label detector1EdgeLabel;
+	private Label detector1currentEdgeLabel;
+	private Button detector1GotoEdgeButton;
+	
+	private Label detector2EdgeLabel;
+	private Label detector2currentEdgeLabel;
+	private Button detector2GotoEdgeButton;
+	
+	private Label emptyLabel7;
+	private Label emptyLabel8;
+	
 	
 	private Label detector1MeanLabel;
 	private Label detector1currentMeanLabel;
@@ -49,8 +86,8 @@ public class PlotView extends ViewPart {
 	private Label detector2MeanLabel;
 	private Label detector2currentMeanLabel;
 	
-	private Label emptyLabel3;
-	private Label emptyLabel4;
+	private Label emptyLabel9;
+	private Label emptyLabel10;
 	
 	private Label detector1StandDevLabel;
 	private Label detector1currentStandDevLabel;
@@ -69,7 +106,7 @@ public class PlotView extends ViewPart {
 		
 		final GridLayout gridLayout = new GridLayout();
 		
-		gridLayout.numColumns = 6;
+		gridLayout.numColumns = 8;
 
 		parent.setLayout( gridLayout );
 		
@@ -94,6 +131,7 @@ public class PlotView extends ViewPart {
 		
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
+		gridData.horizontalSpan = 2;
 		
 		this.detector1CurrentValueLabel.setLayoutData( gridData );
 		
@@ -107,6 +145,7 @@ public class PlotView extends ViewPart {
 		
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
+		gridData.horizontalSpan = 2;
 		
 		this.detector2CurrentValueLabel.setLayoutData( gridData );
 		
@@ -118,35 +157,136 @@ public class PlotView extends ViewPart {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
 		this.normalizeComboBox.setLayoutData( gridData );
+		final String[] normalizeItems = { "None", "Detector1 / Detector 2", "Detector 2 / Detector 1" };
+		this.normalizeComboBox.setItems( normalizeItems ); 
 		
-		this.detector1PeakLabel = new Label( parent, SWT.NONE );
-		this.detector1PeakLabel.setText( "Peak:" );
+		this.detector1MinLabel = new Label( parent, SWT.NONE );
+		this.detector1MinLabel.setText( "Min:" );
 		
-		this.detector1currentPeakLabel = new Label( parent, SWT.NONE );
-		this.detector1currentPeakLabel.setText( "?" );
-		
-		gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalAlignment = SWT.FILL;
-		this.detector1currentPeakLabel.setLayoutData( gridData );
-		
-		this.detector2PeakLabel = new Label( parent, SWT.NONE );
-		this.detector2PeakLabel.setText( "Peak:" );
-		
-		this.detector2currentPeakLabel = new Label( parent, SWT.NONE );
-		this.detector2currentPeakLabel.setText( "?" );
+		this.detector1currentMinLabel = new Label( parent, SWT.NONE );
+		this.detector1currentMinLabel.setText( "?" );
 		
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
-		this.detector2currentPeakLabel.setLayoutData( gridData );
+		this.detector1currentMinLabel.setLayoutData( gridData );
+		
+		this.detector1GotoMinButton = new Button( parent, SWT.NONE );
+		this.detector1GotoMinButton.setText( "Goto" );
+		
+		this.detector2MinLabel = new Label( parent, SWT.NONE );
+		this.detector2MinLabel.setText( "Min:" );
+		
+		this.detector2currentMinLabel = new Label( parent, SWT.NONE );
+		this.detector2currentMinLabel.setText( "?" );
+		
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.FILL;
+		this.detector2currentMinLabel.setLayoutData( gridData );
+		
+		this.detector2GotoMinButton = new Button( parent, SWT.NONE );
+		this.detector2GotoMinButton.setText( "Goto " );
 		
 		this.emptyLabel1 = new Label( parent, SWT.NONE );
 		this.emptyLabel2 = new Label( parent, SWT.NONE );
+		
+		this.detector1MaxLabel = new Label( parent, SWT.NONE );
+		this.detector1MaxLabel.setText( "Max:" );
+		
+		this.detector1currentMaxLabel = new Label( parent, SWT.NONE );
+		this.detector1currentMaxLabel.setText( "?" );
+		
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
-		this.emptyLabel2.setLayoutData( gridData );
+		this.detector1currentMaxLabel.setLayoutData( gridData );
+		
+		this.detector1GotoMaxButton = new Button( parent, SWT.NONE );
+		this.detector1GotoMaxButton.setText( "Goto" );
+		
+		this.detector2MaxLabel = new Label( parent, SWT.NONE );
+		this.detector2MaxLabel.setText( "Max:" );
+		
+		this.detector2currentMaxLabel = new Label( parent, SWT.NONE );
+		this.detector2currentMaxLabel.setText( "?" );
+		
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.FILL;
+		this.detector2currentMaxLabel.setLayoutData( gridData );
+		
+		this.detector2GotoMaxButton = new Button( parent, SWT.NONE );
+		this.detector2GotoMaxButton.setText( "Goto" );
+		
+		
+		this.emptyLabel3 = new Label( parent, SWT.NONE );
+		this.emptyLabel4 = new Label( parent, SWT.NONE );
+		
+		this.detector1CenterLabel = new Label( parent, SWT.NONE );
+		this.detector1CenterLabel.setText( "Center:" );
+		
+		this.detector1currentCenterLabel = new Label( parent, SWT.NONE );
+		this.detector1currentCenterLabel.setText( "?" );
+		
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.FILL;
+		this.detector1currentCenterLabel.setLayoutData( gridData );
+		
+		this.detector1GotoCenterButton = new Button( parent, SWT.NONE );
+		this.detector1GotoCenterButton.setText( "Goto" );
+		
+		this.detector2CenterLabel = new Label( parent, SWT.NONE );
+		this.detector2CenterLabel.setText( "Center:" );
+		
+		this.detector2currentCenterLabel = new Label( parent, SWT.NONE );
+		this.detector2currentCenterLabel.setText( "?" );
+		
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.FILL;
+		this.detector2currentCenterLabel.setLayoutData( gridData );
+		
+		this.detector2GotoCenterButton = new Button( parent, SWT.NONE );
+		this.detector2GotoCenterButton.setText( "Goto" );
+		
+		
+		this.emptyLabel5 = new Label( parent, SWT.NONE );
+		this.emptyLabel6 = new Label( parent, SWT.NONE );
+		
+		this.detector1EdgeLabel = new Label( parent, SWT.NONE );
+		this.detector1EdgeLabel.setText( "Edge:" );
+		
+		this.detector1currentEdgeLabel = new Label( parent, SWT.NONE );
+		this.detector1currentEdgeLabel.setText( "?" );
+		
+		this.detector1GotoEdgeButton = new Button( parent, SWT.NONE );
+		this.detector1GotoEdgeButton.setText( "Goto" );
+		
+		
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.FILL;
+		this.detector1currentEdgeLabel.setLayoutData( gridData );
+		
+		this.detector2EdgeLabel = new Label( parent, SWT.NONE );
+		this.detector2EdgeLabel.setText( "Edge:" );
+		
+		this.detector2currentEdgeLabel = new Label( parent, SWT.NONE );
+		this.detector2currentEdgeLabel.setText( "?" );
+		
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.FILL;
+		this.detector2currentCenterLabel.setLayoutData( gridData );
+		
+		this.detector2GotoEdgeButton = new Button( parent, SWT.NONE );
+		this.detector2GotoEdgeButton.setText( "Goto" );
+		
+		
+		this.emptyLabel7 = new Label( parent, SWT.NONE );
+		this.emptyLabel8 = new Label( parent, SWT.NONE );
 		
 		
 		this.detector1MeanLabel = new Label( parent, SWT.NONE );
@@ -158,6 +298,7 @@ public class PlotView extends ViewPart {
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
+		gridData.horizontalSpan = 2;
 		this.detector1currentMeanLabel.setLayoutData( gridData );
 		
 		this.detector2MeanLabel = new Label( parent, SWT.NONE );
@@ -169,16 +310,12 @@ public class PlotView extends ViewPart {
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
+		gridData.horizontalSpan = 2;
 		this.detector2currentMeanLabel.setLayoutData( gridData );
 		
-		this.emptyLabel3 = new Label( parent, SWT.NONE );
-		this.emptyLabel4 = new Label( parent, SWT.NONE );
-		gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalAlignment = SWT.FILL;
-		this.emptyLabel4.setLayoutData( gridData );
+		this.emptyLabel9 = new Label( parent, SWT.NONE );
+		this.emptyLabel10 = new Label( parent, SWT.NONE );;
 		
-
 		this.detector1StandDevLabel = new Label( parent, SWT.NONE );
 		this.detector1StandDevLabel.setText( "StandDev:" );
 		
@@ -188,6 +325,7 @@ public class PlotView extends ViewPart {
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
+		gridData.horizontalSpan = 2;
 		this.detector1currentStandDevLabel.setLayoutData( gridData );
 		
 		this.detector2StandDevLabel = new Label( parent, SWT.NONE );
@@ -199,6 +337,7 @@ public class PlotView extends ViewPart {
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
+		gridData.horizontalSpan = 2;
 		this.detector2currentStandDevLabel.setLayoutData( gridData );
 		
 	}
@@ -211,7 +350,7 @@ public class PlotView extends ViewPart {
 						this.detector1CurrentValueLabel.getDisplay().syncExec( new Runnable() {
 
 							public void run() {
-								detector1currentPeakLabel.setText( measurementData.getValues().get( 0 ).toString() );
+								detector1currentMaxLabel.setText( measurementData.getValues().get( 0 ).toString() );
 							}
 							
 						});
@@ -223,10 +362,10 @@ public class PlotView extends ViewPart {
 					case MIN:
 						break;
 					case MAX:
-						this.detector1currentPeakLabel.getDisplay().syncExec( new Runnable() {
+						this.detector1currentMaxLabel.getDisplay().syncExec( new Runnable() {
 
 							public void run() {
-								detector1currentPeakLabel.setText( measurementData.getValues().get( 0 ).toString() );
+								detector1currentMaxLabel.setText( measurementData.getValues().get( 0 ).toString() );
 							}
 							
 						});
