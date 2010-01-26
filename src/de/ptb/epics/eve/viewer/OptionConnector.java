@@ -82,7 +82,7 @@ public class OptionConnector implements IModelUpdateProvider, IProcessVariableVa
 	
 	public void detach() {
 		final IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-		service.unregister( this );
+		//service.unregister( this );
 	}
 	
 	public void setValue( final String value ) {

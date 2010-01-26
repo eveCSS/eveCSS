@@ -18,6 +18,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.epics.css.dal.Timestamp;
 
 import de.ptb.epics.eve.data.TransportTypes;
@@ -41,13 +43,15 @@ import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
  * @author Stephan Rehfeld <stephan.rehfeld@ptb.de>
  *
  */
-public class DetectorChannelComposite extends Composite implements IProcessVariableValueListener, IMeasurementDataListener {
+public class DetectorChannelComposite extends Composite implements IProcessVariableValueListener, IMeasurementDataListener, SelectionListener {
 
 	/**
 	 * The detector channel where this composite is connected to.
 	 * 
 	 */
 	private final DetectorChannel detectorChannel;
+	
+	private Button closeButton;
 	
 	/**
 	 * The label, which shows the name of the detector channel.
@@ -116,12 +120,16 @@ public class DetectorChannelComposite extends Composite implements IProcessVaria
 		ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
 
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 7;
+		gridLayout.numColumns = 8;
 		gridLayout.marginHeight = 0;
 		
 		this.setLayout( gridLayout );
 		
 		GridData gridData = new GridData();
+		
+		this.closeButton = new Button( this, SWT.NONE );
+		this.closeButton.setImage( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ).createImage() );
+		this.closeButton.addSelectionListener( this );
 		
 		this.detectorChannelNameLabel = new Label( this, SWT.NONE );
 		this.detectorChannelNameLabel.setText( this.detectorChannel.getFullIdentifyer() );
@@ -335,7 +343,7 @@ public class DetectorChannelComposite extends Composite implements IProcessVaria
 			this.currentEngineValueLabel.getDisplay().syncExec( new Runnable() {
 
 				public void run() {
-					currentEngineValueLabel.setText( measurementData.getValues().get( 0 ).toString() );
+					currentEngineValueLabel.setText( "(" + measurementData.getValues().get( 0 ).toString() + ")" );
 					
 				}
 				
@@ -344,4 +352,20 @@ public class DetectorChannelComposite extends Composite implements IProcessVaria
 		
 	}
 
+	public void widgetDefaultSelected(SelectionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void widgetSelected(SelectionEvent e) {
+		this.dispose();
+		this.getParent().layout();
+		this.getParent().redraw();
+		
+	}
+
+	public DetectorChannel getDetectorChannel() {
+		return this.detectorChannel;
+	}
+	
 }

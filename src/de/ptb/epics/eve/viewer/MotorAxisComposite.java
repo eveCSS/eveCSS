@@ -18,6 +18,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.epics.css.dal.Timestamp;
 
 import de.ptb.epics.eve.data.TransportTypes;
@@ -43,9 +45,11 @@ import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
  * @author Stephan Rehfeld
  *
  */
-public class MotorAxisComposite extends Composite implements IProcessVariableValueListener, IMeasurementDataListener {
+public class MotorAxisComposite extends Composite implements IProcessVariableValueListener, IMeasurementDataListener, SelectionListener {
 
 	private MotorAxis motorAxis;
+	
+	private Button closeButton;
 	
 	private Label motorAxisNameLabel;
 	private Label valueLabel;
@@ -82,11 +86,14 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 		ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
 
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 8;
+		gridLayout.numColumns = 10;
 		gridLayout.marginHeight = 0;
 		this.setLayout( gridLayout );
 		
 		
+		this.closeButton = new Button( this, SWT.NONE );
+		this.closeButton.setImage( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ).createImage() );
+		this.closeButton.addSelectionListener( this );
 		
 		this.motorAxisNameLabel = new Label( this, SWT.NONE );
 		GridData gridData = new GridData();
@@ -99,6 +106,13 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 		gridData.widthHint = 80;
 		this.valueLabel.setLayoutData( gridData );
 		this.valueLabel.setText( "?" );
+		
+		this.engineValueLabel = new Label( this, SWT.NONE );
+		gridData = new GridData();
+		gridData.widthHint = 80;
+		this.engineValueLabel.setLayoutData( gridData );
+		this.engineValueLabel.setText( "(?)" );
+		
 		
 		if( this.motorAxis.getGoto() != null && this.motorAxis.getGoto().isDiscrete() ) {
 			this.targetValueCombo = new Combo( this, SWT.NONE );
@@ -253,6 +267,10 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 		}
 		
 		this.emptyLabel1 = new Label( this, SWT.NONE );
+		gridData = new GridData();
+		gridData.horizontalSpan = 3;
+		this.emptyLabel1.setLayoutData( gridData );
+		
 		
 		this.stepLeftButton = new Button( this, SWT.PUSH );
 		gridData = new GridData();
@@ -461,6 +479,8 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 		IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
 		service.unregister( this );
 		super.dispose();
+		this.getParent().layout();
+		this.getParent().redraw();
 	}
 	
 	public void connectionStateChanged( final ConnectionState connectionState ) {
@@ -522,12 +542,28 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 			this.engineValueLabel.getDisplay().syncExec( new Runnable() {
 
 				public void run() {
-					engineValueLabel.setText( measurementData.getValues().get( 0 ).toString() );
+					engineValueLabel.setText( "(" + measurementData.getValues().get( 0 ).toString() + ")" );
 					
 				}
 				
 			});
 		}
 		
+	}
+
+	public void widgetDefaultSelected(SelectionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void widgetSelected(SelectionEvent e) {
+		this.dispose();
+		this.getParent().layout();
+		this.getParent().redraw();
+		
+	}
+
+	public MotorAxis getMotorAxis() {
+		return this.motorAxis;
 	}
 }

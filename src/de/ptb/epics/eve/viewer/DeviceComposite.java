@@ -23,6 +23,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.epics.css.dal.Timestamp;
 
 import de.ptb.epics.eve.data.TransportTypes;
@@ -46,13 +48,16 @@ import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
  * @author Stephan Rehfeld <stephan.rehfeld@ptb.de>
  *
  */
-public class DeviceComposite extends Composite implements IProcessVariableValueListener, IMeasurementDataListener {
+public class DeviceComposite extends Composite implements IProcessVariableValueListener, IMeasurementDataListener, SelectionListener {
 
 	/**
 	 * The Device where this composite is connected to.
 	 * 
 	 */
 	private final Device device;
+	
+	
+	private Button closeButton;
 	
 	/**
 	 * The label that contains the name of the device.
@@ -128,12 +133,16 @@ public class DeviceComposite extends Composite implements IProcessVariableValueL
 
 		
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 7;
+		gridLayout.numColumns = 8;
 		gridLayout.marginHeight = 0;
 		
 		this.setLayout( gridLayout );
 		
 		GridData gridData = new GridData();
+		
+		this.closeButton = new Button( this, SWT.NONE );
+		this.closeButton.setImage( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ).createImage() );
+		this.closeButton.addSelectionListener( this );
 		
 		this.deviceNameLabel = new Label( this, SWT.NONE );
 		this.deviceNameLabel.setText( this.device.getName() );
@@ -357,13 +366,28 @@ public class DeviceComposite extends Composite implements IProcessVariableValueL
 			this.currentEngineValueLabel.getDisplay().syncExec( new Runnable() {
 
 				public void run() {
-					currentEngineValueLabel.setText( measurementData.getValues().get( 0 ).toString() );
+					currentEngineValueLabel.setText( "(" + measurementData.getValues().get( 0 ).toString() + ")" );
 					
 				}
 				
 			});
 		}
 		
+	}
+
+	public void widgetDefaultSelected(SelectionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void widgetSelected(SelectionEvent e) {
+		this.dispose();
+		this.getParent().layout();
+		this.getParent().redraw();
+	}
+	
+	public Device getDevice() {
+		return this.device;
 	}
 	
 }
