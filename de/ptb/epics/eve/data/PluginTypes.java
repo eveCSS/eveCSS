@@ -32,6 +32,9 @@ public enum PluginTypes {
 	 */
 	DISPLAY,
 	
+	/**
+	 * Says, that the Plugin is a postscanpositions plugin, that moves an axis to a position after
+	 */
 	POSTSCANPOSITIONING;
 	
 	/**
@@ -40,7 +43,7 @@ public enum PluginTypes {
 	 * Possible values are: position, save and display
 	
 	 * @param type The type, that should be translated. Must not be null!
-	 * @return The correspondentin string. Null if the Type was invalid.
+	 * @return The correspondenting string. Null if the Type was invalid.
 	 */
 	public static String typeToString( final PluginTypes type ) {
 		if( type == null ) {
