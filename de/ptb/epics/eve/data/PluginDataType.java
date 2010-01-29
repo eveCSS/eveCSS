@@ -139,6 +139,28 @@ public enum PluginDataType {
 		return null;
 		
 	}
+
+	/**
+	 * Return a well-formatted string with a valid default value.
+	 * 
+	 * @param type data type for which a default value is returned
+	 * @return a default value
+	 */
+	public static String getDefaultValue(final PluginDataType type){
+		
+		switch( type ) {
+		
+		case ONOFF:		return "OFF";
+		case OPENCLOSE:	return "CLOSE";		
+		case INT:		return new Integer(0).toString();
+		case DOUBLE:	return new Double(0.0).toString();
+		case STRING:	return "<unknown>";
+		case AXISID:	return "";
+		case CHANNELID:	return "";
+		case DEVICEID:	return "";
+		}
+		return "";
+	}
 	
 	/**
 	 * This static method translates a PluginDataType into a String, like it's used in the measuring
