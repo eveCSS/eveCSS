@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="de.ptb.epics.eve.editor.EveEditorPerspective"
+            id="EveEditorPerpective"
+            name="Eve-Editor">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="de.ptb.epics.eve.editor.EveEditorPreferencePage"
+            id="de.ptb.epics.eve.editor.EveEditorPreferencePage"
+            name="Eve Editor">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="de.ptb.epics.eve.editor.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="de.ptb.epics.eve.editor.graphical.GraphicalEditor"
+            default="true"
+            extensions="scml"
+            filenames="*.scml"
+            id="de.ptb.epics.eve.editor.graphical.GraphicalEditor"
+            name="de.ptb.epics.eve.editor.graphical.GraphicalEditor">
+      </editor>
+   </extension>
+
+</plugin>
