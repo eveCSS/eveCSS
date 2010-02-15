@@ -34,5 +34,44 @@
             name="de.ptb.epics.eve.editor.graphical.GraphicalEditor">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="de.ptb.epics.eve.editor.views.ScanView"
+            id="de.ptb.epics.eve.editor.views.ScanView"
+            name="Scan View"
+            restorable="true">
+      </view>
+      <view
+            class="de.ptb.epics.eve.editor.views.ScanModulView"
+            id="de.ptb.epics.eve.editor.views.ScanModulView"
+            name="Scan Modul View"
+            restorable="true">
+      </view>
+      <view
+            class="de.ptb.epics.eve.editor.views.ErrorView"
+            id="de.ptb.epics.eve.editor.views.ErrorView"
+            name="Errors"
+            restorable="true">
+      </view>
+      <view
+            class="de.ptb.epics.eve.editor.views.MotorAxisView"
+            id="de.ptb.epics.eve.editor.views.MotorAxisView"
+            name="Motor Axis View"
+            restorable="true">
+      </view>
+      <view
+            class="de.ptb.epics.eve.editor.views.DetectorChannelView"
+            id="de.ptb.epics.eve.editor.views.DetectorChannelView"
+            name="Detector Channel View"
+            restorable="true">
+      </view>
+      <view
+            class="de.ptb.epics.eve.editor.views.PlotWindowView"
+            id="de.ptb.epics.eve.editor.views.PlotWindowView"
+            name="Plot Window View"
+            restorable="true">
+      </view>
+   </extension>
 
 </plugin>
