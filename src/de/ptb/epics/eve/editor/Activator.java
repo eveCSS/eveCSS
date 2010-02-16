@@ -35,11 +35,14 @@ public class Activator extends AbstractUIPlugin {
 		super.start( context );
 		plugin = this;
 		
+		
 		final String measuringStationDescrition = this.getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION );
-		final File measuringStationDescriptionFile = new File( measuringStationDescrition );
-		final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader();
-		measuringStationLoader.load( measuringStationDescriptionFile );
-		this.measuringStation = measuringStationLoader.getMeasuringStation();
+		if( !measuringStationDescrition.equals( "" ) ) {
+			final File measuringStationDescriptionFile = new File( measuringStationDescrition );
+			final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader();
+			measuringStationLoader.load( measuringStationDescriptionFile );
+			this.measuringStation = measuringStationLoader.getMeasuringStation();
+		}
 	}
 
 	/*
