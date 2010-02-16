@@ -1,6 +1,8 @@
 package de.ptb.epics.eve.editor.graphical;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -32,12 +34,16 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.EditorPart;
 import org.xml.sax.SAXException;
 
+import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
+import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionSaverToXMLusingXerces;
+import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.graphical.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.EventEditPart;
@@ -47,7 +53,7 @@ import de.ptb.epics.eve.editor.views.ScanModulView;
 
 
 
-public class GraphicalEditor extends EditorPart {
+public class GraphicalEditor extends EditorPart implements IModelUpdateListener {
 
 	private ScrollingGraphicalViewer viewer;
 	private ScanDescription scanDescription;
@@ -64,10 +70,27 @@ public class GraphicalEditor extends EditorPart {
 	
 	private SelectionListener selectionListener;
 	
+	private boolean dirty;
+	
 	@Override
 	public void doSave( final IProgressMonitor monitor ) {
+		final FileStoreEditorInput fileStoreEditorInput = (FileStoreEditorInput)this.getEditorInput();
+		final File scanDescriptionFile = new File( fileStoreEditorInput.getURI() );
 		
 		
+		try {
+			final FileOutputStream os = new FileOutputStream( scanDescriptionFile );	
+			final MeasuringStation measuringStation = Activator.getDefault().getMeasuringStation();
+			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = new ScanDescriptionSaverToXMLusingXerces( os, measuringStation, this.scanDescription );
+			scanDescriptionSaver.save();
+			
+			this.dirty = false;
+			this.firePropertyChange( PROP_DIRTY );
+			
+		} catch( final FileNotFoundException e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -88,6 +111,7 @@ public class GraphicalEditor extends EditorPart {
 		try {
 			scanDescriptionLoader.load( scanDescriptionFile );
 			this.scanDescription = scanDescriptionLoader.getScanDescription();
+			this.scanDescription.addModelUpdateListener( this );
 		} catch( final ParserConfigurationException e ) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -98,16 +122,18 @@ public class GraphicalEditor extends EditorPart {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		this.dirty = false;
+		this.firePropertyChange( PROP_DIRTY );
 	}
 
 	@Override
 	public boolean isDirty() {
-		return false;
+		return this.dirty;
 	}
 
 	@Override
 	public boolean isSaveAsAllowed() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -392,6 +418,12 @@ public class GraphicalEditor extends EditorPart {
 		this.addNestedScanModulMenuItem.addSelectionListener( this.selectionListener );
 		this.deleteScanModulMenuItem.addSelectionListener( this.selectionListener );
 		this.renameScanModulMenuItem.addSelectionListener( this.selectionListener );
+	}
+
+	@Override
+	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
+		this.firePropertyChange( PROP_DIRTY );
+		this.dirty = true;
 	}
 
 }

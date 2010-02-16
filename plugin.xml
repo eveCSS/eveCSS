@@ -73,5 +73,19 @@
             restorable="true">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="de.ptb.epics.eve"
+            name="EVE">
+      </category>
+      <wizard
+            category="de.ptb.epics.eve"
+            class="de.ptb.epics.eve.editor.wizards.NewScanDescriptionWizard"
+            icon="icons/sample.gif"
+            id="de.ptb.epics.eve.editor.wizards.NewScanDescriptionWizard"
+            name="Scan Description">
+      </wizard>
+   </extension>
 
 </plugin>
