@@ -8,7 +8,6 @@
 package de.ptb.epics.eve.data;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -32,10 +31,6 @@ public class TypeValue {
 	 */
 	private final DataTypes type;
 	
-	/**
-	 * The possible values seperated by a whitespace.
-	 */
-	private String values;
 	
 	/**
 	 * This constructor is used if a TypeValue object should be initialized that has no further limitations than the base type.

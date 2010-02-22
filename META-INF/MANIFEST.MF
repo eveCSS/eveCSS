@@ -3,5 +3,5 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Data
 Bundle-SymbolicName: de.ptb.epics.eve.data
 Bundle-Version: 1.0.0
-Bundle-Localization: plugin
 Export-Package: de.ptb.epics.eve.data
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
