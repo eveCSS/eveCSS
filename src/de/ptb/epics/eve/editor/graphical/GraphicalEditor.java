@@ -8,7 +8,10 @@ import java.util.Iterator;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Point;
@@ -23,6 +26,7 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
@@ -96,6 +100,30 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	@Override
 	public void doSaveAs() {
 		
+		final FileDialog dialog = new FileDialog( this.getEditorSite().getShell(), SWT.SAVE );
+		final String fileName = dialog.open();
+		
+		final File scanDescriptionFile = new File( fileName );
+		
+		try {
+			final FileOutputStream os = new FileOutputStream( scanDescriptionFile );	
+			final MeasuringStation measuringStation = Activator.getDefault().getMeasuringStation();
+			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = new ScanDescriptionSaverToXMLusingXerces( os, measuringStation, this.scanDescription );
+			scanDescriptionSaver.save();
+			
+			final IFileStore fileStore = EFS.getLocalFileSystem().getStore( new Path( fileName ) );
+			final FileStoreEditorInput fileStoreEditorInput = new FileStoreEditorInput( fileStore );
+			this.setInput( fileStoreEditorInput );
+			
+			this.dirty = false;
+			this.firePropertyChange( PROP_DIRTY );
+			
+			this.setPartName( fileStoreEditorInput.getName() );
+			
+		} catch( final FileNotFoundException e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -247,7 +275,9 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		for( int i = 0; i < ref.length; ++i ) {
 			if( ref[i].getId().equals( ErrorView.ID ) ) {
 				view = (ErrorView)ref[i].getPart( false );
-				view.setScanDescription( this.scanDescription );
+				if( view != null ) {
+					view.setScanDescription( this.scanDescription );
+				}
 			}
 		}
 		
@@ -422,8 +452,9 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 
 	@Override
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-		this.firePropertyChange( PROP_DIRTY );
 		this.dirty = true;
+		this.firePropertyChange( PROP_DIRTY );
+		
 	}
 
 }

@@ -87,5 +87,38 @@
             name="Scan Description">
       </wizard>
    </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="de.ptb.epics.eve.editor.handOverActionSet"
+            label="Hand-Over"
+            visible="false">
+         <menu
+               id="handOverMenu"
+               label="Hand Over">
+            <separator
+                  name="handOverGroup">
+            </separator>
+         </menu>
+         <action
+               class="de.ptb.epics.eve.editor.actions.HandOverSilentAction"
+               id="de.ptb.epics.eve.editor.actions.HandOverSilentAction"
+               label="HandOverSilent"
+               menubarPath="handOverMenu/handOverGroup"
+               style="push"
+               toolbarPath="handOverGroup"
+               tooltip="Hand Over Silent">
+         </action>
+         <action
+               class="de.ptb.epics.eve.editor.actions.HandOverAction"
+               id="de.ptb.epics.eve.editor.actions.HandOverAction"
+               label="HandOver"
+               menubarPath="handOverMenu/handOverGroup"
+               style="push"
+               toolbarPath="handOverGroup"
+               tooltip="Hand Over">
+         </action>
+      </actionSet>
+   </extension>
 
 </plugin>

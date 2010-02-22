@@ -87,7 +87,7 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 	 */
 
 	private void initialize() {
-		fileText.setText( "~/scandescription.scml" );
+		fileText.setText( "" );
 	}
 
 	/**

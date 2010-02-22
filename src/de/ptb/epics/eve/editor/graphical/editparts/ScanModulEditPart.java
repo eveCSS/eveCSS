@@ -143,8 +143,10 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 	public void refresh() {
 		final ScanModul scanModul = (ScanModul)this.getModel();
 		((ScanModuleFigure)this.figure).setText( scanModul.getName() );
-		scanModul.setX( this.figure.getBounds().x );
-		scanModul.setY( this.figure.getBounds().y );
+		if( (scanModul.getX() != this.figure.getBounds().x) || scanModul.getY() != this.figure.getBounds().y ) {
+		    scanModul.setX( this.figure.getBounds().x );
+			scanModul.setY( this.figure.getBounds().y );
+		}
 		super.refresh();
 	}
 
