@@ -1,5 +1,10 @@
 package de.ptb.epics.eve.viewer;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -99,6 +104,40 @@ public class Activator extends AbstractUIPlugin {
 	
 	public ChainStatusAnalyzer getChainStatusAnalyzer() {
 		return this.chainStatusAnalyzer;
+	}
+
+	public void addScanDescription( final File file ) {
+		
+		if( !this.ecp1Client.isRunning() ) {
+			
+			InputDialog inputDialog = new InputDialog( this.getWorkbench().getActiveWorkbenchWindow().getShell(), "Connect", "Please enter the address of the EVE-engine!", "", null );
+			
+			if( InputDialog.OK == inputDialog.open() ) {
+				String input = inputDialog.getValue();
+				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Trying to connect to: " + input + "." ) );
+				int port = 31107;
+				int index  = input.lastIndexOf( ":" );
+				if( index != -1 ) {
+					port = Integer.parseInt( input.substring( index + 1) );
+					input = input.substring( 0, index );
+				}
+				try {
+					Activator.getDefault().getEcp1Client().connect( new InetSocketAddress( input, port ), "" );
+					Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Connection established to: " + input + "." ) );
+				} catch( final IOException e ) {
+					Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.ERROR, "Cannot establish connection! Reasion: " + e.getMessage() + "." ) );
+					e.printStackTrace();
+				}
+			}
+		}
+		if( this.ecp1Client.isRunning() ) {
+			try {
+				this.ecp1Client.getPlayListController().addLocalFile( file );
+			} catch( final IOException e ) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 	
 }
