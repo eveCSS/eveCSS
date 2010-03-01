@@ -9,6 +9,7 @@ package de.ptb.epics.eve.editor.views;
 
 import java.util.Iterator;
 
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -77,8 +78,10 @@ public class PlotWindowView extends ViewPart {
 	
 	private Label yAxis1DetectorChannelErrorLabel = null;
 	
-	private Button yAxis1UseForNormalizationCheckBox = null;
-	
+	private Label yAxis1NormalizeChannelLabel = null;
+	private Combo yAxis1NormalizeChannelComboBox = null;
+	private Label yAxis1NormalizeChannelErrorLabel = null;
+
 	private Label yAxis1ColorLabel = null;
 	
 	private Combo yAxis1ColorComboBox = null;
@@ -109,8 +112,10 @@ public class PlotWindowView extends ViewPart {
 	
 	private Label yAxis2DetectorChannelErrorLabel = null;
 	
-	private Button yAxis2UseForNormalizationCheckBox = null;
-	
+	private Label yAxis2NormalizeChannelLabel = null;
+	private Combo yAxis2NormalizeChannelComboBox = null;
+	private Label yAxis2NormalizeChannelErrorLabel = null;
+
 	private Label yAxis2ColorLabel = null;
 	
 	private Combo yAxis2ColorComboBox = null;
@@ -205,10 +210,15 @@ public class PlotWindowView extends ViewPart {
 			}
 
 			public void widgetSelected( final SelectionEvent e ) {
-				plotWindow.setXAxis( (MotorAxis)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( motorAxisComboBox.getText() ) );
-				
+				if( motorAxisComboBox.getText().equals( "" )) {
+					// keine erlaubte Auswahl
+					// TODO Wie wird hier eine Fehlerbehandlung durchgeführt? Was muß dabei alles registriert werden?
+					throw new IllegalArgumentException( "The parameter 'Motor Axis' must not be null!" );
+				}
+				else {
+					plotWindow.setXAxis( (MotorAxis)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( motorAxisComboBox.getText() ) );
+				}
 			}
-			
 		});
 		
 		this.motorAxisErrorLabel = new Label( this.xAxisComposite, SWT.NONE );
@@ -235,7 +245,7 @@ public class PlotWindowView extends ViewPart {
 		this.scaleTypeLabel = new Label( this.xAxisComposite, SWT.NONE );
 		this.scaleTypeLabel.setText( "Scale Type:" );
 
-		this.scaleTypeComboBox = new Combo( this.xAxisComposite, SWT.NONE );
+		this.scaleTypeComboBox = new Combo( this.xAxisComposite, SWT.READ_ONLY );
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
@@ -244,7 +254,6 @@ public class PlotWindowView extends ViewPart {
 		this.scaleTypeComboBox.addSelectionListener( new SelectionListener() {
 
 			public void widgetDefaultSelected( final SelectionEvent e ) {
-				
 				
 			}
 
@@ -271,18 +280,19 @@ public class PlotWindowView extends ViewPart {
 		this.yAxis1DetectorChannelComboBox.addModifyListener( new ModifyListener() {
 
 			public void modifyText( final ModifyEvent e ) {
-				if( yAxis1DetectorChannelComboBox.getText().equals( "" ) ) {
+				if( yAxis1DetectorChannelComboBox.getText().equals( "" ) || 
+					yAxis1DetectorChannelComboBox.getText().equals( "none" ) ) {
 					if( yAxis[0] != null ) {
 						plotWindow.removeYAxis( yAxis[0] );
 						yAxis[0] = null;
 					}
-					yAxis1UseForNormalizationCheckBox.setEnabled( false );
+					yAxis1NormalizeChannelComboBox.setEnabled( false );
 					yAxis1ColorComboBox.setEnabled( false );
 					yAxis1LinestyleComboBox.setEnabled( false );
 					yAxis1MarkstyleComboBox.setEnabled( false );
 					yAxis1ScaletypeComboBox.setEnabled( false );
 					
-					yAxis1UseForNormalizationCheckBox.setSelection( false );
+					yAxis1NormalizeChannelComboBox.setText( "none" );
 					yAxis1ColorComboBox.setText( "" );
 					yAxis1LinestyleComboBox.setText( "" );
 					yAxis1MarkstyleComboBox.setText( "" );
@@ -291,54 +301,58 @@ public class PlotWindowView extends ViewPart {
 					if( yAxis[0] == null ) {
 						yAxis[0] = new YAxis();
 						plotWindow.addYAxis( yAxis[0] );
-						
+						// Voreinstellungen für Color, Linestyle und Markstyle wird gesetzt
+						yAxis[0].setColor(yAxis1ColorComboBox.getItem(0));
+						yAxis[0].setLinestyle(yAxis1LinestyleComboBox.getItem(0));
+						yAxis[0].setMarkstyle(yAxis1MarkstyleComboBox.getItem(0));
 					}
-					yAxis1UseForNormalizationCheckBox.setEnabled( true );
+					yAxis1NormalizeChannelComboBox.setEnabled( true );
 					yAxis1ColorComboBox.setEnabled( true );
 					yAxis1LinestyleComboBox.setEnabled( true );
 					yAxis1MarkstyleComboBox.setEnabled( true );
 					yAxis1ScaletypeComboBox.setEnabled( true );
 					
-					//yAxis1UseForNormalizationCheckBox.setSelection( yAxis[0].get );
 					yAxis1ColorComboBox.setText( yAxis[0].getColor() );
 					yAxis1LinestyleComboBox.setText( yAxis[0].getLinestyle() );
 					yAxis1MarkstyleComboBox.setText( yAxis[0].getMarkstyle() );
 					yAxis1ScaletypeComboBox.setText( PlotModes.modeToString( yAxis[0].getMode() ) );
 					
 					yAxis[0].setDetectorChannel( (DetectorChannel)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( yAxis1DetectorChannelComboBox.getText() ) );
-					
 				}
-				
 			}
 			
 		});
-		
+
 		this.yAxis1DetectorChannelErrorLabel = new Label( this.yAxis1Composite, SWT.NONE );
 		
-		this.yAxis1UseForNormalizationCheckBox = new Button( this.yAxis1Composite, SWT.CHECK );
+		this.yAxis1NormalizeChannelLabel = new Label( this.yAxis1Composite, SWT.NONE );
+		this.yAxis1NormalizeChannelLabel.setText( "Normalize Channel:" );
+		
+		this.yAxis1NormalizeChannelComboBox = new Combo( this.yAxis1Composite, SWT.READ_ONLY );
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 3;
-		this.yAxis1UseForNormalizationCheckBox.setLayoutData( gridData );
-		this.yAxis1UseForNormalizationCheckBox.setText( "Use for normalization" );
-		this.yAxis1UseForNormalizationCheckBox.addSelectionListener( new SelectionListener() {
+		this.yAxis1NormalizeChannelComboBox.setLayoutData( gridData );
+		this.yAxis1NormalizeChannelComboBox.addModifyListener( new ModifyListener() {
 
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-				
-			}
-
-			public void widgetSelected( final SelectionEvent e ) {
-				System.err.println( "Normalization noch implementieren" );
-				
+			public void modifyText( final ModifyEvent e ) {
+				if( yAxis1NormalizeChannelComboBox.getText().equals( "" ) ) {
+				} else if( yAxis1NormalizeChannelComboBox.getText().equals( "none" ) ) {
+					if (yAxis[0] != null)
+						yAxis[0].clearNormalizeChannel();
+				} else {
+					yAxis[0].setNormalizeChannel( (DetectorChannel)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( yAxis1NormalizeChannelComboBox.getText() ) );
+				}
 			}
 			
 		});
+		
+		this.yAxis1NormalizeChannelErrorLabel = new Label( this.yAxis1Composite, SWT.NONE );
 		
 		this.yAxis1ColorLabel = new Label( this.yAxis1Composite, SWT.NONE );
 		this.yAxis1ColorLabel.setText( "Color:" );
 		
-		this.yAxis1ColorComboBox = new Combo( this.yAxis1Composite, SWT.NONE );
+		this.yAxis1ColorComboBox = new Combo( this.yAxis1Composite, SWT.READ_ONLY );
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
@@ -361,9 +375,9 @@ public class PlotWindowView extends ViewPart {
 		this.yAxis1ColorErrorLabel = new Label( this.yAxis1Composite, SWT.NONE );
 		
 		this.yAxis1LinestyleLabel = new Label( this.yAxis1Composite, SWT.NONE );
-		this.yAxis1LinestyleLabel.setText( "Linestyle::" );
+		this.yAxis1LinestyleLabel.setText( "Linestyle:" );
 		
-		this.yAxis1LinestyleComboBox = new Combo( this.yAxis1Composite, SWT.NONE );
+		this.yAxis1LinestyleComboBox = new Combo( this.yAxis1Composite, SWT.READ_ONLY );
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
@@ -389,7 +403,7 @@ public class PlotWindowView extends ViewPart {
 		this.yAxis1MarkstyleLabel = new Label( this.yAxis1Composite, SWT.NONE );
 		this.yAxis1MarkstyleLabel.setText( "Markstyle:" );
 		
-		this.yAxis1MarkstyleComboBox = new Combo( this.yAxis1Composite, SWT.NONE );
+		this.yAxis1MarkstyleComboBox = new Combo( this.yAxis1Composite, SWT.READ_ONLY );
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
@@ -416,7 +430,7 @@ public class PlotWindowView extends ViewPart {
 		this.yAxis1ScaletypeLabel = new Label( this.yAxis1Composite, SWT.NONE );
 		this.yAxis1ScaletypeLabel.setText( "Scaletype:" );
 		
-		this.yAxis1ScaletypeComboBox = new Combo( this.yAxis1Composite, SWT.NONE );
+		this.yAxis1ScaletypeComboBox = new Combo( this.yAxis1Composite, SWT.READ_ONLY );
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
@@ -455,18 +469,19 @@ public class PlotWindowView extends ViewPart {
 		this.yAxis2DetectorChannelComboBox.addModifyListener( new ModifyListener() {
 
 			public void modifyText( final ModifyEvent e ) {
-				if( yAxis2DetectorChannelComboBox.getText().equals( "" ) ) {
+				if( yAxis2DetectorChannelComboBox.getText().equals( "" ) ||
+					yAxis2DetectorChannelComboBox.getText().equals( "none" ) ) {
 					if( yAxis[1] != null ) {
 						plotWindow.removeYAxis( yAxis[1] );
 						yAxis[1] = null;
 					}
-					yAxis2UseForNormalizationCheckBox.setEnabled( false );
+					yAxis2NormalizeChannelComboBox.setEnabled( false );
 					yAxis2ColorComboBox.setEnabled( false );
 					yAxis2LinestyleComboBox.setEnabled( false );
 					yAxis2MarkstyleComboBox.setEnabled( false );
 					yAxis2ScaletypeComboBox.setEnabled( false );
 					
-					yAxis2UseForNormalizationCheckBox.setSelection( false );
+					yAxis2NormalizeChannelComboBox.setText( "none" );
 					yAxis2ColorComboBox.setText( "" );
 					yAxis2LinestyleComboBox.setText( "" );
 					yAxis2MarkstyleComboBox.setText( "" );
@@ -475,50 +490,62 @@ public class PlotWindowView extends ViewPart {
 					if( yAxis[1] == null ) {
 						yAxis[1] = new YAxis();
 						plotWindow.addYAxis( yAxis[1] );
-						
+						// Voreinstellungen für Color, Linestyle und Markstyle wird gesetzt
+						if (yAxis2ColorComboBox.getItemCount() > 1)
+							yAxis[1].setColor(yAxis2ColorComboBox.getItem(1));
+						else
+							yAxis[1].setColor(yAxis2ColorComboBox.getItem(0));
+						if (yAxis2LinestyleComboBox.getItemCount() > 1)
+							yAxis[1].setLinestyle(yAxis2LinestyleComboBox.getItem(1));
+						else
+							yAxis[1].setLinestyle(yAxis2LinestyleComboBox.getItem(0));
+						if (yAxis2MarkstyleComboBox.getItemCount() > 1)
+							yAxis[1].setMarkstyle(yAxis2MarkstyleComboBox.getItem(1));
+						else
+							yAxis[1].setMarkstyle(yAxis2MarkstyleComboBox.getItem(0));
 					}
-					yAxis2UseForNormalizationCheckBox.setEnabled( true );
+					yAxis2NormalizeChannelComboBox.setEnabled( true );
 					yAxis2ColorComboBox.setEnabled( true );
 					yAxis2LinestyleComboBox.setEnabled( true );
 					yAxis2MarkstyleComboBox.setEnabled( true );
 					yAxis2ScaletypeComboBox.setEnabled( true );
 					
-					//yAxis1UseForNormalizationCheckBox.setSelection( yAxis[0].get );
 					yAxis2ColorComboBox.setText( yAxis[1].getColor() );
 					yAxis2LinestyleComboBox.setText( yAxis[1].getLinestyle() );
 					yAxis2MarkstyleComboBox.setText( yAxis[1].getMarkstyle() );
 					yAxis2ScaletypeComboBox.setText( PlotModes.modeToString( yAxis[1].getMode() ) );
 					
 					yAxis[1].setDetectorChannel( (DetectorChannel)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( yAxis2DetectorChannelComboBox.getText() ) );
-					
 				}
-				
 			}
-			
 		});
-		
 		
 		this.yAxis2DetectorChannelErrorLabel = new Label( this.yAxis2Composite, SWT.NONE );
 		
-		this.yAxis2UseForNormalizationCheckBox = new Button( this.yAxis2Composite, SWT.CHECK );
+		this.yAxis2NormalizeChannelLabel = new Label( this.yAxis2Composite, SWT.NONE );
+		this.yAxis2NormalizeChannelLabel.setText( "Normalize Channel:" );
+		
+		this.yAxis2NormalizeChannelComboBox = new Combo( this.yAxis2Composite, SWT.READ_ONLY );
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 3;
-		this.yAxis2UseForNormalizationCheckBox.setLayoutData( gridData );
-		this.yAxis2UseForNormalizationCheckBox.setText( "Use for normalization" );
-		this.yAxis2UseForNormalizationCheckBox.addSelectionListener( new SelectionListener() {
+		this.yAxis2NormalizeChannelComboBox.setLayoutData( gridData );
+		this.yAxis2NormalizeChannelComboBox.addModifyListener( new ModifyListener() {
 
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-				
-			}
-
-			public void widgetSelected( final SelectionEvent e ) {
-				System.err.println( "Normalization noch implementieren" );
-				
+			public void modifyText( final ModifyEvent e ) {
+				if( yAxis2NormalizeChannelComboBox.getText().equals( "" ) ) {
+				} else if( yAxis2NormalizeChannelComboBox.getText().equals( "none" ) ) {
+					if (yAxis[1] != null)
+						yAxis[1].clearNormalizeChannel();
+				} else {
+					yAxis[1].setNormalizeChannel( (DetectorChannel)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( yAxis2NormalizeChannelComboBox.getText() ) );
+				}
 			}
 			
 		});
+
+		
+		this.yAxis2NormalizeChannelErrorLabel = new Label( this.yAxis2Composite, SWT.NONE );
 		
 		this.yAxis2ColorLabel = new Label( this.yAxis2Composite, SWT.NONE );
 		this.yAxis2ColorLabel.setText( "Color:" );
@@ -546,9 +573,9 @@ public class PlotWindowView extends ViewPart {
 		this.yAxis2ColorErrorLabel = new Label( this.yAxis2Composite, SWT.NONE );
 		
 		this.yAxis2LinestyleLabel = new Label( this.yAxis2Composite, SWT.NONE );
-		this.yAxis2LinestyleLabel.setText( "Linestyle::" );
+		this.yAxis2LinestyleLabel.setText( "Linestyle:" );
 		
-		this.yAxis2LinestyleComboBox = new Combo( this.yAxis2Composite, SWT.CHECK );
+		this.yAxis2LinestyleComboBox = new Combo( this.yAxis2Composite, SWT.READ_ONLY );
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
@@ -575,7 +602,7 @@ public class PlotWindowView extends ViewPart {
 		this.yAxis2MarkstyleLabel = new Label( this.yAxis2Composite, SWT.NONE );
 		this.yAxis2MarkstyleLabel.setText( "Markstyle:" );
 		
-		this.yAxis2MarkstyleComboBox = new Combo( this.yAxis2Composite, SWT.NONE );
+		this.yAxis2MarkstyleComboBox = new Combo( this.yAxis2Composite, SWT.READ_ONLY );
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
@@ -603,7 +630,7 @@ public class PlotWindowView extends ViewPart {
 		this.yAxis2ScaletypeLabel = new Label( this.yAxis2Composite, SWT.NONE );
 		this.yAxis2ScaletypeLabel.setText( "Scaletype:" );
 	
-		this.yAxis2ScaletypeComboBox = new Combo( this.yAxis2Composite, SWT.NONE );
+		this.yAxis2ScaletypeComboBox = new Combo( this.yAxis2Composite, SWT.READ_ONLY );
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
@@ -654,14 +681,14 @@ public class PlotWindowView extends ViewPart {
 		this.scaleTypeComboBox.setEnabled( enabled );
 		
 		this.yAxis1DetectorChannelComboBox.setEnabled( enabled );
-		/*this.yAxis1UseForNormalizationCheckBox.setEnabled( enabled );
+		/*this.yAxis1NormalizeChannelCheckBox.setEnabled( enabled );
 		this.yAxis1ColorComboBox.setEnabled( enabled );
 		this.yAxis1LinestyleComboBox.setEnabled( enabled );
 		this.yAxis1MarkstyleComboBox.setEnabled( enabled );
 		this.yAxis1ScaletypeComboBox.setEnabled( enabled );*/
 		
 		this.yAxis2DetectorChannelComboBox.setEnabled( enabled );
-		/*this.yAxis2UseForNormalizationCheckBox.setEnabled( enabled );
+		/*this.yAxis2NormalizeChannelCheckBox.setEnabled( enabled );
 		this.yAxis2ColorComboBox.setEnabled( enabled );
 		this.yAxis2LinestyleComboBox.setEnabled( enabled );
 		this.yAxis2MarkstyleComboBox.setEnabled( enabled );
@@ -695,54 +722,45 @@ public class PlotWindowView extends ViewPart {
 			}
 			
 			this.plotWindowIDSpinner.setSelection( this.plotWindow.getId() );
-			
 			this.motorAxisComboBox.setText( this.plotWindow.getXAxis()!=null?plotWindow.getXAxis().getFullIdentifyer():"" );
 			this.preInitWindowCheckBox.setSelection( this.plotWindow.isInit() );
 			this.scaleTypeComboBox.setText( PlotModes.modeToString( this.plotWindow.getMode() ) );
 			if( this.yAxis[ 0 ] != null ) {
-				
 				this.yAxis1DetectorChannelComboBox.setText( yAxis[ 0 ].getDetectorChannel().getFullIdentifyer() );
-				/*this.yAxis1UseForNormalizationCheckBox.setSelection( false );
-				this.yAxis1ColorComboBox.setText( "" );
-				this.yAxis1LinestyleComboBox.setText( "" );
-				this.yAxis1MarkstyleComboBox.setText( "" );
-				this.yAxis1ScaletypeComboBox.setText( "" );*/
+				if (yAxis[0].getNormalizeChannel() != null)
+					this.yAxis1NormalizeChannelComboBox.setText( yAxis[ 0 ].getNormalizeChannel().getFullIdentifyer() );
+				else
+					this.yAxis1NormalizeChannelComboBox.setText("none");
 			} else {
-				this.yAxis1DetectorChannelComboBox.setText( "" );
+				this.yAxis1DetectorChannelComboBox.setText( "none" );
 			}
 						
 			if( this.yAxis[ 1 ] != null ) {
 				this.yAxis2DetectorChannelComboBox.setText( yAxis[ 1 ].getDetectorChannel().getFullIdentifyer() );
-				/*this.yAxis2UseForNormalizationCheckBox.setSelection( false );
-				this.yAxis2ColorComboBox.setText( "" );
-				this.yAxis2LinestyleComboBox.setText( "" );
-				this.yAxis2MarkstyleComboBox.setText( "" );
-				this.yAxis2ScaletypeComboBox.setText( "" );*/
+				if (yAxis[1].getNormalizeChannel() != null)
+					this.yAxis2NormalizeChannelComboBox.setText( yAxis[ 1 ].getNormalizeChannel().getFullIdentifyer() );
+				else
+					this.yAxis2NormalizeChannelComboBox.setText("none");
 			}  else {
-				this.yAxis2DetectorChannelComboBox.setText( "" );
+				this.yAxis2DetectorChannelComboBox.setText( "none" );
 			}
 			this.setEnabledForAll( true );
 		} else {
+			//TODO Frage an Stephan: warum wird hier kein removeYAxis() oder clearYAxis() aufgerufen werden?
 			this.yAxis[ 0 ] = null;
 			this.yAxis[ 1 ] = null;
 			this.plotWindowIDSpinner.setSelection( 0 );
-			this.motorAxisComboBox.setText( "" );
+			
 			this.preInitWindowCheckBox.setSelection( false );
 			this.scaleTypeComboBox.setText( "" );
-			
-			this.yAxis1DetectorChannelComboBox.setText( "" );
-			this.yAxis1UseForNormalizationCheckBox.setSelection( false );
-			this.yAxis1ColorComboBox.setText( "" );
-			this.yAxis1LinestyleComboBox.setText( "" );
-			this.yAxis1MarkstyleComboBox.setText( "" );
-			this.yAxis1ScaletypeComboBox.setText( "" );
-			
-			this.yAxis2DetectorChannelComboBox.setText( "" );
-			this.yAxis2UseForNormalizationCheckBox.setSelection( false );
-			this.yAxis2ColorComboBox.setText( "" );
-			this.yAxis2LinestyleComboBox.setText( "" );
-			this.yAxis2MarkstyleComboBox.setText( "" );
-			this.yAxis2ScaletypeComboBox.setText( "" );
+
+			/* Durch den Aufruf von setScanModul werden die Inhalte der 3 ComboBoxen neu gesetzt und brauchen hier nicht
+			 * eingestellt zu werden.
+			 */
+//			this.motorAxisComboBox.setText( "" );
+//			this.yAxis1DetectorChannelComboBox.setText( "none" );
+//			this.yAxis2DetectorChannelComboBox.setText( "none" );
+
 			this.setEnabledForAll( false );
 		}
 	}
@@ -757,6 +775,7 @@ public class PlotWindowView extends ViewPart {
 				cur_axis_feld[i] = cur_axis[i].getMotorAxis().getFullIdentifyer();
 			}
 			this.motorAxisComboBox.setItems(cur_axis_feld);
+			this.motorAxisComboBox.add("", 0);	
 		
 			// Es werden nur die Channels erlaubt die in diesem ScanModul verwendet werden.
 			Channel[] cur_channel = scanModul.getChannels();
@@ -765,8 +784,14 @@ public class PlotWindowView extends ViewPart {
 				cur_ch_feld[i] = cur_channel[i].getDetectorChannel().getFullIdentifyer();
 			}
 			this.yAxis1DetectorChannelComboBox.setItems(cur_ch_feld);
+			this.yAxis1DetectorChannelComboBox.add("none", 0);	
+			this.yAxis1NormalizeChannelComboBox.setItems(cur_ch_feld);
+			this.yAxis1NormalizeChannelComboBox.add("none", 0);	
 			this.yAxis2DetectorChannelComboBox.setItems(cur_ch_feld);
-		
+			this.yAxis2DetectorChannelComboBox.add("none", 0);	
+			this.yAxis2NormalizeChannelComboBox.setItems(cur_ch_feld);
+			this.yAxis2NormalizeChannelComboBox.add("none", 0);	
+
 		}
 		this.scanModul = scanModul;
 	}

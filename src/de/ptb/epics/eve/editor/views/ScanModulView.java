@@ -292,6 +292,7 @@ public class ScanModulView extends ViewPart {
 		plotWindowChangeIDMenuItem.setEnabled(false);
 
 		plotWindowsTable.setMenu(menu);
+
 		plotWindowsTable.addSelectionListener( new SelectionListener() {
 
 			public void widgetDefaultSelected( final SelectionEvent e ) {
@@ -310,7 +311,6 @@ public class ScanModulView extends ViewPart {
 				}
 				if( plotWindowView != null ) {
 					final PlotWindow plotWindow = (PlotWindow)plotWindowsTable.getSelection()[0].getData();
-					plotWindowView.setScanModul( currentScanModul );
 					plotWindowView.setPlotWindow( plotWindow );
 				}
 			}
@@ -758,6 +758,7 @@ public class ScanModulView extends ViewPart {
 		
 		if( plotWindowView != null ) {
 			plotWindowView.setPlotWindow( null );
+			plotWindowView.setScanModul( currentScanModul );
 		}
 		
 		this.filling = true;
@@ -1039,7 +1040,6 @@ public class ScanModulView extends ViewPart {
 							plotWindow.setId(newID);
 							currentScanModul.add(plotWindow);
 							fillFields();
-
 						} else if (e.widget == motorAxisRemoveMenuItem) {
 							TableItem[] selectedItems = motorAxisTable
 									.getSelection();
