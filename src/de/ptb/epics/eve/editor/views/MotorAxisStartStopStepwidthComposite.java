@@ -273,7 +273,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 	
 	private void autoFill() {
 		if( this.axis != null ) {
-			if( this.axis.getStepfunction().equals( "Add" ) ) {
+			if( this.axis.getStepfunctionString().equals( "Add" ) ) {
 				if( this.autoFillStartRadioButton.getSelection() ) {
 					if( !this.axis.getMotorAxis().getGoto().isDiscrete() ) {
 						if( !this.stopCombo.getText().equals( "" ) && !this.stepwidthText.getText().equals( "" ) && !this.stepamountText.getText().equals( "" ) ) {
@@ -401,7 +401,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 						}
 					} 
 				}
-			} else if( this.axis.getStepfunction().equals( "Multiply" ) ) {
+			} else if( this.axis.getStepfunctionString().equals( "Multiply" ) ) {
 				
 			}
 		}

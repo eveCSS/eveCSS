@@ -166,6 +166,14 @@ public class ScanModulView extends ViewPart {
 	public void createPartControl(final Composite parent) {
 		// TODO Auto-generated method stub
 		
+		parent.setLayout(new FillLayout());
+		
+		if( Activator.getDefault().getMeasuringStation() == null ) {
+			final Label errorLabel = new Label( parent, SWT.NONE );
+			errorLabel.setText( "No Measuring Station has been loaded. Please check Preferences!" );
+			return;
+		}
+		
 		final java.util.List<Event> events = Activator.getDefault()
 				.getMeasuringStation().getEvents();
 		this.eventIDs = new String[events.size()];
@@ -175,7 +183,7 @@ public class ScanModulView extends ViewPart {
 			this.eventIDs[i++] = it.next().getID();
 		}
 
-		parent.setLayout(new FillLayout());
+		
 
 		this.top = new Composite(parent, SWT.NONE);
 		this.top.setLayout(new GridLayout());
@@ -1276,7 +1284,7 @@ public class ScanModulView extends ViewPart {
 			TableItem item = new TableItem(this.motorAxisTable, SWT.NONE);
 			item.setText(new String[] {
 					axis[i].getMotorAxis().getFullIdentifyer(),
-					axis[i].getStepfunction() });
+					axis[i].getStepfunctionString() });
 			item.setData(axis[i]);
 			// Table Eintrag wird aus der Combo-Box entfernt
 			motorAxisCombo.remove(axis[i].getMotorAxis().getFullIdentifyer());

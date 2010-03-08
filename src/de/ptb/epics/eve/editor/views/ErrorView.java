@@ -11,6 +11,7 @@ import java.util.Iterator;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.widgets.Table;
@@ -22,6 +23,7 @@ import de.ptb.epics.eve.data.scandescription.errorhandling.ModelError;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.editor.Activator;
 
 public class ErrorView extends ViewPart implements IModelErrorListener, IModelUpdateListener {
 
@@ -35,6 +37,13 @@ public class ErrorView extends ViewPart implements IModelErrorListener, IModelUp
 
 	@Override
 	public void createPartControl(Composite parent) {
+		parent.setLayout(new FillLayout());
+		
+		if( Activator.getDefault().getMeasuringStation() == null ) {
+			final Label errorLabel = new Label( parent, SWT.NONE );
+			errorLabel.setText( "No Measuring Station has been loaded. Please check Preferences!" );
+			return;
+		}
 		// TODO Auto-generated method stub
 		top = new Composite(parent, SWT.NONE);
 		top.setLayout(new FillLayout());

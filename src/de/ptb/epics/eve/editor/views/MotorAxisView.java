@@ -48,9 +48,15 @@ public class MotorAxisView extends ViewPart {
 
 	@Override
 	public void createPartControl( final Composite parent ) {
-		this.stepfunctions = Activator.getDefault().getMeasuringStation().getSelections().getStepfunctions();
 		
-		parent.setLayout( new FillLayout() );
+		parent.setLayout(new FillLayout());
+		
+		if( Activator.getDefault().getMeasuringStation() == null ) {
+			final Label errorLabel = new Label( parent, SWT.NONE );
+			errorLabel.setText( "No Measuring Station has been loaded. Please check Preferences!" );
+			return;
+		}
+		this.stepfunctions = Activator.getDefault().getMeasuringStation().getSelections().getStepfunctions();
 		
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
@@ -76,7 +82,7 @@ public class MotorAxisView extends ViewPart {
 			public void modifyText(ModifyEvent e) {
 				if( axis != null ) {
 					axis.setStepfunction( stepFunctionCombo.getText() );
-					if( axis.getStepfunction().equals( "File" ) ) {
+					if( axis.getStepfunctionString().equals( "File" ) ) {
 						holderComposite.dispose();
 						holderComposite = new MotorAxisFileComposite( top, SWT.NONE );
 						
@@ -91,7 +97,7 @@ public class MotorAxisView extends ViewPart {
 						holderComposite.layout();
 						holderComposite.setVisible( true );
 						top.layout();
-					} else if( axis.getStepfunction().equals( "Plugin" ) ) { 
+					} else if( axis.getStepfunctionString().equals( "Plugin" ) ) { 
 						if( axis.getPositionPluginController() == null ) {
 							axis.setPositionPluginController( new PluginController() );
 						}
@@ -109,7 +115,7 @@ public class MotorAxisView extends ViewPart {
 						holderComposite.layout();
 						holderComposite.setVisible( true );
 						top.layout();
-					} else if( axis.getStepfunction().equals( "Positionlist" ) ) {
+					} else if( axis.getStepfunctionString().equals( "Positionlist" ) ) {
 						holderComposite.dispose();
 						holderComposite = new MotorAxisPositionlistComposite( top, SWT.NONE );
 						((MotorAxisPositionlistComposite)holderComposite).setAxis( axis );
@@ -196,7 +202,7 @@ public class MotorAxisView extends ViewPart {
 		this.stepamount = stepamount;
 		if( this.axis != null ) {
 			this.setPartName( this.axis.getMotorAxis().getFullIdentifyer() );
-			this.stepFunctionCombo.setText( this.axis.getStepfunction() );
+			this.stepFunctionCombo.setText( this.axis.getStepfunctionString() );
 			this.positionModeCombo.setText( PositionMode.typeToString( this.axis.getPositionMode() ) );
 			
 			this.stepFunctionCombo.setEnabled( true );

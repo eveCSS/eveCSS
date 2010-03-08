@@ -23,6 +23,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 
@@ -154,6 +155,14 @@ public class PlotWindowView extends ViewPart {
 
 	@Override
 	public void createPartControl( final Composite parent ) {
+		
+		parent.setLayout(new FillLayout());
+		
+		if( Activator.getDefault().getMeasuringStation() == null ) {
+			final Label errorLabel = new Label( parent, SWT.NONE );
+			errorLabel.setText( "No Measuring Station has been loaded. Please check Preferences!" );
+			return;
+		}
 		top = new Composite( parent, SWT.NONE );
 		top.setLayout( new GridLayout() );
 	

@@ -8,6 +8,7 @@
 package de.ptb.epics.eve.editor.views;
 
 
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -29,6 +30,7 @@ import org.eclipse.swt.layout.GridData;
 
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.editor.Activator;
 
 public class DetectorChannelView extends ViewPart {
 
@@ -66,6 +68,13 @@ public class DetectorChannelView extends ViewPart {
 
 	@Override
 	public void createPartControl( final Composite parent ) {
+		parent.setLayout(new FillLayout());
+		
+		if( Activator.getDefault().getMeasuringStation() == null ) {
+			final Label errorLabel = new Label( parent, SWT.NONE );
+			errorLabel.setText( "No Measuring Station has been loaded. Please check Preferences!" );
+			return;
+		}
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
 		GridData gridData;

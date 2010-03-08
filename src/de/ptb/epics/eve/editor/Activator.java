@@ -39,9 +39,17 @@ public class Activator extends AbstractUIPlugin {
 		final String measuringStationDescrition = this.getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION );
 		if( !measuringStationDescrition.equals( "" ) ) {
 			final File measuringStationDescriptionFile = new File( measuringStationDescrition );
-			final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader();
-			measuringStationLoader.load( measuringStationDescriptionFile );
-			this.measuringStation = measuringStationLoader.getMeasuringStation();
+			if( measuringStationDescriptionFile.exists() ) {
+				try {
+					final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader();
+					measuringStationLoader.load( measuringStationDescriptionFile );
+					this.measuringStation = measuringStationLoader.getMeasuringStation();
+				} catch( final Throwable th ) {
+					this.measuringStation = null;
+				}
+			} else {
+				this.measuringStation = null;
+			}
 		}
 	}
 

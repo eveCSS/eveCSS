@@ -113,6 +113,11 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 			
 		parent.setLayout( new FillLayout() );
 		
+		if( Activator.getDefault().getMeasuringStation() == null ) {
+			final Label errorLabel = new Label( parent, SWT.NONE );
+			errorLabel.setText( "No Measuring Station has been loaded. Please check Preferences!" );
+			return;
+		}
 		
 		this.top = new Composite(parent, SWT.NONE);
 		//this.top.setLayout( new FillLayout() );
