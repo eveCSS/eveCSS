@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
+    xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <version>0.3.5</version>
+    <chain id="1">
+        <comment>1 Timer axis, start/stop/step, add</comment>
+        <savefilename>Dateiname.txt</savefilename>
+        <confirmsave>false</confirmsave>
+        <autonumber>true</autonumber>
+        <savescandescription>true</savescandescription>
+        <scanmodules>
+            <scanmodule id="1">
+                <type>classic</type>
+                <name>BasisScan</name>
+                <xpos>129</xpos>
+                <ypos>58</ypos>
+                <parent>0</parent>
+                <settletime>3.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>Counter01.01</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>relative</positionmode>
+                    <start type="int">0</start>
+                    <stop type="int">30</stop>
+                    <stepwidth type="int">5</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent1</channelid>
+                    <averagecount>1</averagecount>
+                    <maxattempts>0</maxattempts>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+            </scanmodule>
+            <scanmodule id="3">
+                <type>classic</type>
+                <name>NestedScan</name>
+                <xpos>240</xpos>
+                <ypos>138</ypos>
+                <parent>0</parent>
+                <settletime>3.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>Counter02.01</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>relative</positionmode>
+                    <start type="int">0</start>
+                    <stop type="int">10</stop>
+                    <stepwidth type="int">2</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smaxis>
+                    <axisid>Timer02.01</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="datetime">00:00:00</start>
+                    <stop type="datetime">00:00:00</stop>
+                    <stepwidth type="datetime">00:00:00</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smaxis>
+                    <axisid>Timer01.01</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="datetime">00:00:00</start>
+                    <stop type="datetime">00:00:00</stop>
+                    <stepwidth type="datetime">00:00:00</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smaxis>
+                    <axisid>Counter01.01</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="int">0</start>
+                    <stop type="int">0</stop>
+                    <stepwidth type="int">0</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smaxis>
+                    <axisid>PPSMC:23715000</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">10.0</start>
+                    <stop type="double">10.0</stop>
+                    <stepwidth type="double">10.0</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent1</channelid>
+                    <averagecount>1</averagecount>
+                    <maxattempts>0</maxattempts>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+            </scanmodule>
+            <scanmodule id="2">
+                <type>classic</type>
+                <name>AppendScan</name>
+                <xpos>279</xpos>
+                <ypos>63</ypos>
+                <parent>0</parent>
+                <settletime>3.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <prescan>
+                    <id>PPSMC:23715001.SET</id>
+                    <value type="string">Use</value>
+                </prescan>
+                <smaxis>
+                    <axisid>Counter01.01</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="int">1</start>
+                    <stop type="int">10</stop>
+                    <stepwidth type="int">2</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent1</channelid>
+                    <averagecount>1</averagecount>
+                    <maxattempts>0</maxattempts>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <postscan>
+                    <id>PPSMC:23715001.SET</id>
+                    <reset_originalvalue>true</reset_originalvalue>
+                </postscan>
+                <plot id="1">
+                    <xaxis>
+                        <id>PPSMC:23715000</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent1</id>
+                        <mode>linear</mode>
+                        <linestyle>solid</linestyle>
+                        <color>blue</color>
+                        <markstyle>star</markstyle>
+                    </yaxis>
+                </plot>
+            </scanmodule>
+            <scanmodule id="4">
+                <type>classic</type>
+                <name>New Scan Modul</name>
+                <xpos>409</xpos>
+                <ypos>63</ypos>
+                <parent>0</parent>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+            </scanmodule>
+        </scanmodules>
+    </chain>
+    <plugins>
+        <plugin type="position">
+            <name>plugin1</name>
+            <location>/path/to/plugin1</location>
+        </plugin>
+        <plugin type="position">
+            <name>plugin2</name>
+            <location>/path/to/plugin2</location>
+        </plugin>
+        <plugin type="save">
+            <name>HDFspezial</name>
+            <location>HDFspezial.slib</location>
+        </plugin>
+    </plugins>
+    <detectors>
+        <detector>
+            <class>ringCurrent</class>
+            <name>BESSYRingStrom</name>
+            <id>ringCurrent</id>
+            <unit>
+                <unitstring>Ampere</unitstring>
+            </unit>
+            <channel>
+                <name>RingStrom</name>
+                <id>ringCurrent1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca">ringCurrent1</access>
+                </read>
+            </channel>
+        </detector>
+        <detector>
+            <class>Keithley617</class>
+            <name>Keithley 617</name>
+            <id>K0617:22225</id>
+            <unit>
+                <access method="GETCB" type="string" transport="ca">K0617:22225.EGU</access>
+            </unit>
+            <trigger>
+                <access method="PUTCB" type="int" transport="ca">K0617:22225.TRIG</access>
+                <value type="int">1</value>
+            </trigger>
+            <channel>
+                <name>Kanal 1</name>
+                <id>K0617:22225.1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca">K0617:22225.VAL</access>
+                </read>
+            </channel>
+            <option>
+                <name>ZeroCheck</name>
+                <id>K6559:22225zeroChk</id>
+                <value>
+                    <access method="GETPUTCB" type="OnOff" transport="ca">K6559:22225zeroChk</access>
+                    <value type="OnOff">1, 0</value>
+                </value>
+                <displaygroup>detail</displaygroup>
+            </option>
+            <option>
+                <name>Function</name>
+                <id>K6559:22225function</id>
+                <value>
+                    <access method="GETPUTCB" type="string" transport="ca">K6559:22225function</access>
+                    <value type="string">Voltage, Current, Resistance</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+        </detector>
+    </detectors>
+    <motors>
+        <motor>
+            <class>Timer</class>
+            <name>T1</name>
+            <id>Timer01</id>
+            <axis>
+                <name>Wecker</name>
+                <id>Timer01.01</id>
+                <goto>
+                    <access method="PUTCB" type="datetime" transport="local">Timer</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="datetime" transport="local">Timer</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="local">Timer</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
+        <motor>
+            <class>Timer</class>
+            <name>T2</name>
+            <id>Timer02</id>
+            <axis>
+                <name>Wecker 2</name>
+                <id>Timer02.01</id>
+                <goto>
+                    <access method="PUTCB" type="datetime" transport="local">Timer</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="datetime" transport="local">Timer</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="local">Timer</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
+        <motor>
+            <class>KlasseC1</class>
+            <name>C1</name>
+            <id>Counter01</id>
+            <axis>
+                <name>Zaehler 1</name>
+                <id>Counter01.01</id>
+                <goto>
+                    <access method="PUTCB" type="int" transport="local">Counter</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="int" transport="local">Counter</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="local">Counter</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
+        <motor>
+            <class></class>
+            <name>C2</name>
+            <id>Counter02</id>
+            <axis>
+                <name>Zaehler 2</name>
+                <id>Counter02.01</id>
+                <goto>
+                    <access method="PUTCB" type="int" transport="local">Counter</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="int" transport="local">Counter</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="local">Counter</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
+        <motor>
+            <class>PPSMC</class>
+            <name>TestMotor</name>
+            <id>PPSMC:23715</id>
+            <unit>
+                <access method="GETCB" type="string" transport="ca">PPSMC:23715000.EGU</access>
+            </unit>
+            <axis>
+                <name>X-Position</name>
+                <id>PPSMC:23715000</id>
+                <goto>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="100.0">PPSMC:23715000</access>
+                    <value type="double">10.0, 12.0, 13.1</value>
+                </goto>
+                <position>
+                    <access method="GETCB" type="double" transport="ca">PPSMC:23715000.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">PPSMC:23715000.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <status>
+                    <access method="GETCB" type="int" transport="ca">PPSMC:23715000.MSTA</access>
+                </status>
+                <deadband>
+                    <access method="GETCB" type="double" transport="ca">PPSMC:23715000.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:23715000.OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:23715000.TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="GETCB" type="int" transport="ca">PPSMC:23715000.TWF</access>
+                    <value type="int">1</value>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="GETCB" type="int" transport="ca">PPSMC:23715000.TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>
+                <option>
+                    <name>Velocity</name>
+                    <id>PPSMC:23715000.VELO</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">PPSMC:23715000.VELO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Lock Local</name>
+                    <id>PPSMC:23715dislocal</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">PPSMC:23715dislocal</access>
+                        <value type="string">Enable, Disable</value>
+                    </value>
+                </option>
+            </axis>
+            <axis>
+                <name>Y-Position</name>
+                <id>PPSMC:23715001</id>
+                <goto>
+                    <access method="PUTCB" type="double" transport="ca" timeout="100.0">PPSMC:23715001</access>
+                    <value type="double">10.0, 12.0, 13.1</value>
+                </goto>
+                <position>
+                    <access method="GETCB" type="double" transport="ca">PPSMC:23715001.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUTCB" type="int" transport="ca">PPSMC:23715001.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <status>
+                    <access method="GETCB" type="int" transport="ca">PPSMC:23715001.MSTA</access>
+                </status>
+                <option>
+                    <name>Velocity</name>
+                    <id>PPSMC:23715001.VELO</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">PPSMC:23715001.VELO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>
+        </motor>
+    </motors>
+    <devices>
+        <device>
+            <class>SMC200</class>
+            <name>Load Motor</name>
+            <id>PPSMC:23715001.SET</id>
+            <value>
+                <access method="GETPUTCB" type="string" transport="ca">PPSMC:23715001.SET</access>
+                <value type="string"></value>
+            </value>
+            <unit>
+                <access method="GETCB" type="string" transport="ca">PPSMC:23715001.EGU</access>
+            </unit>
+        </device>
+        <device>
+            <class></class>
+            <name>Motor-RBV</name>
+            <id>Event-PPSMC:23715001</id>
+            <value>
+                <access method="GETCB" type="double" transport="ca">PPSMC:23715001.RBV</access>
+                <value type="double"></value>
+            </value>
+        </device>
+        <device>
+            <class></class>
+            <name>Dummy-Topup</name>
+            <id>TOPUP:228</id>
+            <value>
+                <access method="GETCB" type="double" transport="ca" monitor="true">PPSMC:23715001.RBV</access>
+                <value type="double"></value>
+            </value>
+        </device>
+    </devices>
+    <smselection>
+        <stepfunction>Add,Multiply,File,Plugin,Positionlist</stepfunction>
+        <linestyle>solid,dashed,dotted</linestyle>
+        <color>blue,green,yellow,red,black</color>
+        <markstyle>star,point,circle</markstyle>
+        <smtype>classic, advanced</smtype>
+    </smselection>
+</tns:scml>

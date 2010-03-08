@@ -1,0 +1,3583 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
+    xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <version>0.3.5</version>
+    <chain id="1">
+        <comment>GO Schleuse</comment>
+        <savefilename>/messung/sx700/daten/2009/KW39_09/CZ/039_test.hdf</savefilename>
+        <confirmsave>false</confirmsave>
+        <autonumber>true</autonumber>
+        <savescandescription>false</savescandescription>
+        <scanmodules>
+            <scanmodule id="1">
+                <type>classic</type>
+                <name>Erster Scan</name>
+                <xpos>132</xpos>
+                <ypos>80</ypos>
+                <parent>0</parent>
+                <nested>2</nested>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>OMS58:21606001</axisid>
+                    <stepfunction>File</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <stepfilename>/messung/sx700/daten/2009/KW39_09/CZ/Bestrahlung_GO_no3_4_5_X.list</stepfilename>
+                </smaxis>
+                <smaxis>
+                    <axisid>OMS58:21601001AY</axisid>
+                    <stepfunction>File</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <stepfilename>/messung/sx700/daten/2009/KW39_09/CZ/Bestrahlung_GO_no3_4_5_Y.list</stepfilename>
+                </smaxis>
+                <smaxis>
+                    <axisid>OMS58:21601000AT</axisid>
+                    <stepfunction>File</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <stepfilename>/messung/sx700</stepfilename>
+                </smaxis>
+                <smaxis>
+                    <axisid>OMS58:21606002</axisid>
+                    <stepfunction>File</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <stepfilename>/messung/sx700/daten/2009/KW39_09/CZ/Bestrahlung_GO_no3_4_5_Tilt.list</stepfilename>
+                </smaxis>
+                <smaxis>
+                    <axisid>OMS58:21606000</axisid>
+                    <stepfunction>File</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <stepfilename>/messung/sx700/daten/2009/KW39_09/CZ/Bestrahlung_GO_no3_4_5_DetX.list</stepfilename>
+                </smaxis>
+                <smaxis>
+                    <axisid>OMS58:21602001</axisid>
+                    <stepfunction>File</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <stepfilename>/messung/sx700/daten/2009/KW39_09/CZ/Bestrahlung_GO_no3_4_5_2Theta.list</stepfilename>
+                </smaxis>
+                <smaxis>
+                    <axisid>OMS58:21606003</axisid>
+                    <stepfunction>File</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <stepfilename>/messung/sx700/daten/2009/KW39_09/CZ/Bestrahlung_GO_no3_4_5_DetRot.list</stepfilename>
+                </smaxis>
+            </scanmodule>
+            <scanmodule id="2">
+                <type>classic</type>
+                <name>Wavelength</name>
+                <xpos>253</xpos>
+                <ypos>203</ypos>
+                <parent>1</parent>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>Energ:21200000nm.1</axisid>
+                    <stepfunction>Plugin</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <smaxis>
+                        <axisid>OMS58:21204000</axisid>
+                        <stepfunction>Add</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <start type="double">1.0</start>
+                        <stop type="double">2.0</stop>
+                        <stepwidth type="double">0.1</stepwidth>
+                        <ismainaxis>false</ismainaxis>
+                    </smaxis>
+                    <smaxis>
+                        <axisid>OMS58:21204002</axisid>
+                        <stepfunction>Add</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <start type="double">0.0</start>
+                        <stop type="double">0</stop>
+                        <stepwidth type="double">0</stepwidth>
+                        <ismainaxis>false</ismainaxis>
+                    </smaxis>
+                    <smaxis>
+                        <axisid>OMS58:21203000</axisid>
+                        <stepfunction>Add</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <start type="double">0.0</start>
+                        <stop type="double">0.0</stop>
+                        <stepwidth type="double">0.0</stepwidth>
+                        <ismainaxis>false</ismainaxis>
+                    </smaxis>
+                    <smaxis>
+                        <axisid>OMS58:21204003</axisid>
+                        <stepfunction>Add</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <start type="double">0</start>
+                        <stop type="double">0</stop>
+                        <stepwidth type="double">0</stepwidth>
+                        <ismainaxis>false</ismainaxis>
+                    </smaxis>
+                    <smaxis>
+                        <axisid>Timer.1</axisid>
+                        <stepfunction>Positionlist</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <positionlist>1</positionlist>
+                    </smaxis>
+                    <smchannel>
+                        <channelid>K0617:23328.1</channelid>
+                        <averagecount>1</averagecount>
+                        <maxattempts>0</maxattempts>
+                        <confirmtrigger>false</confirmtrigger>
+                        <sendreadyevent>true</sendreadyevent>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>K0617:23327.1</channelid>
+                        <averagecount>1</averagecount>
+                        <maxattempts>0</maxattempts>
+                        <confirmtrigger>false</confirmtrigger>
+                        <sendreadyevent>true</sendreadyevent>
+                        <redoevent type="schedule">
+                            <incident>End</incident>
+                            <chainid>0</chainid>
+                            <smid>0</smid>
+                        </redoevent>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>ringCurrent1</channelid>
+                        <averagecount>1</averagecount>
+                        <maxattempts>0</maxattempts>
+                        <confirmtrigger>false</confirmtrigger>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>ringCurrent2</channelid>
+                        <averagecount>1</averagecount>
+                        <maxattempts>0</maxattempts>
+                        <confirmtrigger>false</confirmtrigger>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>ringLifeTime1</channelid>
+                        <averagecount>1</averagecount>
+                        <maxattempts>0</maxattempts>
+                        <confirmtrigger>false</confirmtrigger>
+                    </smchannel>
+                    <plot id="1">
+                        <xaxis>
+                            <id>Energ:21200000nm.1</id>
+                            <mode>linear</mode>
+                        </xaxis>
+                        <init>false</init>
+                        <yaxis>
+                            <id>K0617:23328.1</id>
+                            <mode>linear</mode>
+                            <linestyle>solid</linestyle>
+                            <color>blue</color>
+                            <markstyle>point</markstyle>
+                        </yaxis>
+                        <yaxis>
+                            <id>ringCurrent1</id>
+                            <mode>linear</mode>
+                            <linestyle>solid</linestyle>
+                            <color>green</color>
+                            <markstyle>point</markstyle>
+                        </yaxis>
+                    </plot>
+                </smaxis>
+            </scanmodule>
+        </scanmodules>
+        <plugins>
+            <plugin type="position">
+                <name>plugin1</name>
+                <location>/path/to/plugin1</location>
+                <parameter name="threshhold" datatype="double" mandatory="true">0.1to1.0</parameter>
+            </plugin>
+            <plugin type="position">
+                <name>ReferenceAdd</name>
+                <location>/path/to/referenceadd</location>
+                <parameter name="summand" datatype="double" mandatory="true"></parameter>
+                <parameter name="referenceaxis" datatype="axisid" mandatory="true"></parameter>
+            </plugin>
+            <plugin type="position">
+                <name>ReferenceMultiply</name>
+                <location>/path/to/referenceadd</location>
+                <parameter name="factor" datatype="double" mandatory="true"></parameter>
+                <parameter name="referenceaxis" datatype="channelid" mandatory="true"></parameter>
+            </plugin>
+            <plugin type="position">
+                <name>plugin2</name>
+                <location>/path/to/plugin2</location>
+            </plugin>
+            <plugin type="save">
+                <name>HDFspezial</name>
+                <location>HDFspezial.slib</location>
+                <parameter name="version" datatype="string"
+                    default="HDF5" mandatory="true">HDF4, HDF5</parameter>
+                <parameter name="structure" datatype="string" mandatory="true">classic, new</parameter>
+                <parameter name="savetimer" datatype="double" mandatory="true">0.1to1.0</parameter>
+            </plugin>
+            <plugin type="save">
+                <name>HDF5</name>
+                <location>/home/eden/eclipse/eve/evePlugins/lib</location>
+                <parameter name="extent" datatype="int" default="50" mandatory="false">55</parameter>
+            </plugin>
+            <plugin type="postscanpositioning">
+                <name>GOTO-Peak</name>
+                <location>/path/to/plugin3</location>
+                <parameter name="direction" datatype="string" mandatory="false">positive,negative</parameter>
+            </plugin>
+        </plugins>
+        <detectors>
+            <detector>
+                <class>Keithley617</class>
+                <name>Keithley_4</name>
+                <id>K0617:23325</id>
+                <unit>
+                    <access method="GETCB" type="string" transport="ca">K0617:23325.EGU</access>
+                </unit>
+                <trigger>
+                    <access method="PUTCB" type="int" transport="ca">K0617:23325.PROC</access>
+                    <value type="int">1</value>
+                </trigger>
+                <channel>
+                    <name></name>
+                    <id>K0617:23325.1</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">K0617:23325.VAL</access>
+                    </read>
+                </channel>
+                <option>
+                    <name>Function</name>
+                    <id>K0617:23325function</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K0617:23325function</access>
+                        <value type="string">Volts, Amps, Ohms, Coulombs, Ext Feedback, V/I Ohms</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Range</name>
+                    <id>K0617:23325range</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K0617:23325range</access>
+                        <value type="string">Auto, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, CancelAuto</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>ZeroCheck</name>
+                    <id>K0617:23325zeroChk</id>
+                    <value>
+                        <access method="GETPUTCB" type="OnOff" transport="ca">K0617:23325zeroChk</access>
+                        <value type="OnOff">1, 0</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>ZeroCorrect</name>
+                    <id>K0617:23325zeroCor</id>
+                    <value>
+                        <access method="GETPUTCB" type="OnOff" transport="ca">K0617:23325zeroCor</access>
+                        <value type="OnOff">1, 0</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>ZeroSuppress</name>
+                    <id>K0617:23325blSupp</id>
+                    <value>
+                        <access method="GETPUTCB" type="OnOff" transport="ca">K0617:23325blSupp</access>
+                        <value type="OnOff">1, 0</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>VoltageSourceMode</name>
+                    <id>K0617:23325vsMode</id>
+                    <value>
+                        <access method="GETPUTCB" type="OnOff" transport="ca">K0617:23325vsMode</access>
+                        <value type="OnOff">1, 0</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>ShowOnDisplay</name>
+                    <id>K0617:23325display</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K0617:23325display</access>
+                        <value type="string">Electrometer, Voltage Source</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Initialize</name>
+                    <id>K0617:23325sdc</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K0617:23325sdc</access>
+                        <value type="string">Init only, SDC+Init</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </detector>
+            <detector>
+                <class>Keithley617</class>
+                <name>Keithley_5</name>
+                <id>K0617:23326</id>
+                <unit>
+                    <access method="GETCB" type="string" transport="ca">K0617:23326.EGU</access>
+                </unit>
+                <trigger>
+                    <access method="PUTCB" type="int" transport="ca">K0617:23326.PROC</access>
+                    <value type="int">1</value>
+                </trigger>
+                <channel>
+                    <name></name>
+                    <id>K0617:23326.1</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">K0617:23326.VAL</access>
+                    </read>
+                </channel>
+                <option>
+                    <name>Function</name>
+                    <id>K0617:23326function</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K0617:23326function</access>
+                        <value type="string">Volts, Amps, Ohms, Coulombs, Ext Feedback, V/I Ohms</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Range</name>
+                    <id>K0617:23326range</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K0617:23326range</access>
+                        <value type="string">Auto, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, CancelAuto</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>ZeroCheck</name>
+                    <id>K0617:23326zeroChk</id>
+                    <value>
+                        <access method="GETPUTCB" type="OnOff" transport="ca">K0617:23326zeroChk</access>
+                        <value type="OnOff">1, 0</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>ZeroCor</name>
+                    <id>K0617:23326zeroCor</id>
+                    <value>
+                        <access method="GETPUTCB" type="OnOff" transport="ca">K0617:23326zeroCor</access>
+                        <value type="OnOff">1, 0</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </detector>
+            <detector>
+                <class>Keithley617</class>
+                <name>Keithley_2</name>
+                <id>K0617:23327</id>
+                <unit>
+                    <access method="GETCB" type="string" transport="ca">K0617:23327.EGU</access>
+                </unit>
+                <trigger>
+                    <access method="PUTCB" type="int" transport="ca">K0617:23327.PROC</access>
+                    <value type="int">1</value>
+                </trigger>
+                <channel>
+                    <name></name>
+                    <id>K0617:23327.1</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">K0617:23327.VAL</access>
+                    </read>
+                </channel>
+                <option>
+                    <name>Function</name>
+                    <id>K0617:23327function</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K0617:23327function</access>
+                        <value type="string">Volts, Amps, Ohms, Coulombs, Ext Feedback, V/I Ohms</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Range</name>
+                    <id>K0617:23327range</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K0617:23327range</access>
+                        <value type="string">Auto, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, CancelAuto</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>ZeroCheck</name>
+                    <id>K0617:23327zeroChk</id>
+                    <value>
+                        <access method="GETPUTCB" type="OnOff" transport="ca">K0617:23327zeroChk</access>
+                        <value type="OnOff">1, 0</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>ZeroCor</name>
+                    <id>K0617:23327zeroCor</id>
+                    <value>
+                        <access method="GETPUTCB" type="OnOff" transport="ca">K0617:23327zeroCor</access>
+                        <value type="OnOff">1, 0</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </detector>
+            <detector>
+                <class>Keithley617</class>
+                <name>Keithley_1</name>
+                <id>K0617:23328</id>
+                <unit>
+                    <access method="GETCB" type="string" transport="ca">K0617:23328.EGU</access>
+                </unit>
+                <trigger>
+                    <access method="PUTCB" type="int" transport="ca">K0617:23328.PROC</access>
+                    <value type="int">1</value>
+                </trigger>
+                <channel>
+                    <name></name>
+                    <id>K0617:23328.1</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">K0617:23328.VAL</access>
+                    </read>
+                </channel>
+                <option>
+                    <name>Function</name>
+                    <id>K0617:23328function</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K0617:23328function</access>
+                        <value type="string">Volts, Amps, Ohms, Coulombs, Ext Feedback, V/I Ohms</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Range</name>
+                    <id>K0617:23328range</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K0617:23328range</access>
+                        <value type="string">Auto, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, CancelAuto</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>ZeroCheck</name>
+                    <id>K0617:23328zeroChk</id>
+                    <value>
+                        <access method="GETPUTCB" type="OnOff" transport="ca">K0617:23328zeroChk</access>
+                        <value type="OnOff">1, 0</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>ZeroCor</name>
+                    <id>K0617:23328zeroCor</id>
+                    <value>
+                        <access method="GETPUTCB" type="OnOff" transport="ca">K0617:23328zeroCor</access>
+                        <value type="OnOff">1, 0</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </detector>
+            <detector>
+                <class>Keithley6430</class>
+                <name>K6430</name>
+                <id>K6430:23324</id>
+                <unit>
+                    <access method="GETCB" type="string" transport="ca">K6430:22324rawData.EGU</access>
+                </unit>
+                <trigger>
+                    <access method="PUTCB" type="int" transport="ca">6430:23324rawData.PROC</access>
+                    <value type="int">1</value>
+                </trigger>
+                <channel>
+                    <name></name>
+                    <id>K6430:23324.1</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">K6430:23324.VAL</access>
+                    </read>
+                </channel>
+                <option>
+                    <name>Initialize</name>
+                    <id>K6430:23324sdc</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K6430:23324sdc</access>
+                        <value type="string">Init only, SDC+Init</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>autoZero</name>
+                    <id>K6430:23324autoZero</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K6430:23324autoZero</access>
+                        <value type="string">On, Off, Once</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>autoRangeLowLimit</name>
+                    <id>K6430:23324autoLoLim</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K6430:23324autoLoLim</access>
+                        <value type="string">Curr: 2 pA, Curr: 2 nA, Volt: 0 V, Volt: 2 V, Ohms: 0 O, Ohms: 2 MO</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>filter</name>
+                    <id>K6430:23324filter</id>
+                    <value>
+                        <access method="GETPUTCB" type="OnOff" transport="ca">K6430:23324filter</access>
+                        <value type="OnOff">1, 0</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>senseFunction</name>
+                    <id>K6430:23324senseFnctn</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K6430:23324senseFnctn</access>
+                        <value type="string">Volts+Amps, Resistance</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>intTime</name>
+                    <id>K6430:23324senselCurr</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K6430:23324senselCurr</access>
+                        <value type="string">.02 s, .04 s, .10 s, .20s</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>RangeCurrent</name>
+                    <id>K6430:23324senseRCurr</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K6430:23324senseRCurr</access>
+                        <value type="string">Auto On, 10 pA, 100 pA, 1 nA, 10 nA, 100 nA, 1 uA, 10 uA, 100 uA, 1 mA, 10 mA, Auto Off</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>RangeVoltage</name>
+                    <id>K6430:23324senseRVolt</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K6430:23324senseRVolt</access>
+                        <value type="string">Auto On, 0.2 V, 2 V, 20 V, 200 V, Auto Off</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>RangeResistance</name>
+                    <id>K6430:23324senseROhms</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K6430:23324senseROhms</access>
+                        <value type="string">Auto On, 2 M, 20 M, 200 M, 2 G, 20 G, 200 G, Auto Off</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>complianceCurrent</name>
+                    <id>K6430:23324compCurr</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K6430:23324compCurr</access>
+                        <value type="string">10 pA, 100 pA, 1 nA, 10 nA, 100 nA, 1 uA, 10 uA, 100 uA, 1 mA, 10 mA</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>complianceVoltage</name>
+                    <id>K6430:23324compVolt</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K6430:23324compCurr</access>
+                        <value type="string">0.2 V, 2 V, 20 V, 200 V</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>baselineSuppress</name>
+                    <id>K6430:23324blSupp</id>
+                    <value>
+                        <access method="GETPUTCB" type="OnOff" transport="ca">K6430:23324blSupp</access>
+                        <value type="OnOff">1, 0</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>suppressedValue/EGU</name>
+                    <id>K6430:23324offset</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">K6430:23324offset</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>sourceFunction</name>
+                    <id>K6430:23324sourceFnctn</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">K6430:23324sourceFnctn</access>
+                        <value type="string">Volt,  Curr</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>sourceOutput</name>
+                    <id>K6430:23324sourceState</id>
+                    <value>
+                        <access method="GETPUTCB" type="OnOff" transport="ca">K6430:23324sourceState</access>
+                        <value type="OnOff">1, 0</value>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </detector>
+            <detector>
+                <class>Ortec0974</class>
+                <name>OrtecMama</name>
+                <id>O0974:22709</id>
+                <trigger>
+                    <access method="PUTCB" type="int" transport="ca">O0974:22709trigger.PROC</access>
+                    <value type="int">1</value>
+                </trigger>
+                <channel>
+                    <name>Counter_Int_time</name>
+                    <id>O0974:2270901</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">O0974:2270901.VAL</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Counter_Ch2</name>
+                    <id>O0974:2270902</id>
+                    <read>
+                        <access method="GETCB" type="int" transport="ca">O0974:2270902.VAL</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Counter_Ch3</name>
+                    <id>O0974:2270903</id>
+                    <read>
+                        <access method="GETCB" type="int" transport="ca">O0974:2270903.VAL</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Ortec_Ch4</name>
+                    <id>O0974:2270904</id>
+                    <read>
+                        <access method="GETCB" type="int" transport="ca">O0974:2270904.VAL</access>
+                    </read>
+                </channel>
+                <option>
+                    <name>Initialize</name>
+                    <id>O0974:22709sdc</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">O0974:22709sdc</access>
+                        <value type="string">Init only, SDC+Init</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>TimeBase</name>
+                    <id>O0974:22709timeBase</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">O0974:22709timeBase</access>
+                        <value type="string">minute, second</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>DisplayedChannel</name>
+                    <id>O0974:22709display</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">O0974:22709display</access>
+                        <value type="string">channel 1, channel 2, channel 3, channel 4</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>IntegrationTime</name>
+                    <id>O0974:22709intTime.B</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">O0974:22709intTime.B</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>LastErraticCommand</name>
+                    <id>O0974:22709erraticCmd&gt;</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">O0974:22709erraticCmd</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>ErraticCommandResponse</name>
+                    <id>O0974:22709lastError</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">O0974:22709lastError</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </detector>
+            <detector>
+                <class>VacuumGauge</class>
+                <name>TPG256base</name>
+                <id>TPG256:212/1trig</id>
+                <trigger>
+                    <access method="PUTCB" type="int" transport="ca">TPG256:212/1sensorNum.PROC</access>
+                    <value type="int">1</value>
+                </trigger>
+                <channel>
+                    <name>Seg_3</name>
+                    <id>TPG256:212/101trig</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">TPG256:212/101.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">TPG256:212/101.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Seg_4</name>
+                    <id>TPG256:212/102trig</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">TPG256:212/102.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">TPG256:212/102.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Seg_5</name>
+                    <id>TPG256:212/103trig</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">TPG256:212/103.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">TPG256:212/103.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Seg_6</name>
+                    <id>TPG256:212/104trig</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">TPG256:212/104.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">TPG256:212/104.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Seg_7</name>
+                    <id>TPG256:212/105trig</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">TPG256:212/105.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">TPG256:212/105.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Seg_8</name>
+                    <id>TPG256:212/106trig</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">TPG256:212/106.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">TPG256:212/106.EGU</access>
+                    </unit>
+                </channel>
+            </detector>
+            <detector>
+                <class>ReadOnlyDetector</class>
+                <name></name>
+                <id>ringCurrent</id>
+                <unit>
+                    <unitstring>mA</unitstring>
+                </unit>
+                <channel>
+                    <name>Ring_1</name>
+                    <id>ringCurrent1</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">ringCurrent1</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Ring_2</name>
+                    <id>ringCurrent2</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">ringCurrent2</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Bessy_Ringstrom</name>
+                    <id>MDIZ3T5G:current</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">MDIZ3T5G:current</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Bessy_Lebensdauer</name>
+                    <id>MDIZ3T5G:lt10</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">MDIZ3T5G:lt10</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Lebensdauer_1</name>
+                    <id>ringLifeTime1</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">ringLifeTime1</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Lebensdauer_2</name>
+                    <id>ringLifeTime2</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">ringLifeTime2</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Ring_3</name>
+                    <id>ringCurrent3</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">ringCurrent3</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Ring_4</name>
+                    <id>ringCurrent4</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">ringCurrent4</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Lebensdauer_3</name>
+                    <id>ringLifeTime3</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">ringLifeTime3</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Lebensdauer_4</name>
+                    <id>ringLifeTime4</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">ringLifeTime4</access>
+                    </read>
+                </channel>
+            </detector>
+            <detector>
+                <class>Timer</class>
+                <name>Clock</name>
+                <id>TimerDet</id>
+                <unit>
+                    <unitstring>s</unitstring>
+                </unit>
+                <channel>
+                    <name>1</name>
+                    <id>TimerDet.1</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="local">EPQTIMER</access>
+                    </read>
+                </channel>
+            </detector>
+            <detector>
+                <class>ReadOnlyDetector</class>
+                <name></name>
+                <id>aaaaa</id>
+                <channel>
+                    <name>PreMirror-tilt_SCU</name>
+                    <id>esdAi:21200001</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">esdAi:21200001</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">esdAi:21200001.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>PreMirror-Kipp_SCU</name>
+                    <id>esdAi:21200002</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">esdAi:21200002</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">esdAi:21200002.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>PreMirrot-tilt</name>
+                    <id>esdAi:21200009</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">esdAi:21200009</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">esdAi:21200009.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>PreMirror-hor</name>
+                    <id>esdAi:21200010</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">esdAi:21200010</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">esdAi:21200010.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>PreMirror-vert-R</name>
+                    <id>esdAi:21200011</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">esdAi:21200011</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">esdAi:21200011.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>PreMirror-vert-L</name>
+                    <id>esdAi:21200012</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">esdAi:21200012</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">esdAi:21200012.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>PreMirror-theta</name>
+                    <id>esdAi:21200013</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">esdAi:21200013</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">esdAi:21200013.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Seg_3</name>
+                    <id>TP256:212/101ronly</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">TP256:212/101</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">TP256:212/101.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Seg_4</name>
+                    <id>TP256:212/102ronly</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">TP256:212/102</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">TP256:212/102.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Seg_5</name>
+                    <id>TP256:212/103ronly</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">TP256:212/103</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">TP256:212/103.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Seg_6</name>
+                    <id>TP256:212/104ronly</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">TP256:212/104</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">TP256:212/104.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Seg_7</name>
+                    <id>TP256:212/105ronly</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">TP256:212/105</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">TP256:212/105.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Seg_8</name>
+                    <id>TP256:212/106ronly</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">TP256:212/106</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">TP256:212/106.EGU</access>
+                    </unit>
+                </channel>
+            </detector>
+            <detector>
+                <class>ReadNoUnitDetector</class>
+                <name>SX700</name>
+                <id>OMS58:212000noUnit</id>
+                <channel>
+                    <name>-Mirror-Steps</name>
+                    <id>OMS58:21200000noUnit.1</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21200000.RRBV</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>-Grating-Steps</name>
+                    <id>OMS58:21200001noUnit</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21200001.RRBV</access>
+                    </read>
+                </channel>
+            </detector>
+            <detector>
+                <class>Prema5000</class>
+                <name></name>
+                <id>P5000:23307</id>
+                <channel>
+                    <name>SLM-hor</name>
+                    <id>P5000:2330701</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">P5000:2330701.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">P5000:2330701.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>SLM-ver</name>
+                    <id>P5000:2330702</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">P5000:2330702.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">P5000:2330702.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Prema_2</name>
+                    <id>P5000:2330703</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">P5000:2330703.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">P5000:2330703.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Prema_3</name>
+                    <id>P5000:2330704</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">P5000:2330704.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">P5000:2330704.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Prema_4</name>
+                    <id>P5000:2330705</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">P5000:2330705.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">P5000:2330705.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Prema_5</name>
+                    <id>P5000:2330706</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">P5000:2330706.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">P5000:2330706.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Prema_6</name>
+                    <id>P5000:2330707</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">P5000:2330707.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">P5000:2330707.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Prema_7</name>
+                    <id>P5000:2330708</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">P5000:2330708.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">P5000:2330708.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Prema_8</name>
+                    <id>P5000:2330709</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">P5000:2330709.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">P5000:2330709.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Prema_9</name>
+                    <id>P5000:2330710</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">P5000:2330710.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">P5000:2330710.EGU</access>
+                    </unit>
+                </channel>
+                <option>
+                    <name>function</name>
+                    <id>P5000:23307function</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">P5000:23307function</access>
+                        <value type="string">Volts, Amps, Ohms, Coulombs, Ext Feedback, V/I Ohms</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </detector>
+            <detector>
+                <class>Keithley6517</class>
+                <name>Keithley_3</name>
+                <id>K6517:23329</id>
+                <trigger>
+                    <access method="PUTCB" type="int" transport="ca">K6517:2332900.PROC</access>
+                    <value type="int">1</value>
+                </trigger>
+                <channel>
+                    <name></name>
+                    <id>K6517:2332900</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">K6517:2332900.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">K6517:2332900.EGU</access>
+                    </unit>
+                </channel>
+            </detector>
+            <detector>
+                <class>ReadOnlyDetector</class>
+                <name></name>
+                <id>bbbbb</id>
+                <channel>
+                    <name>AMO_Theta</name>
+                    <id>AmoDP30:216/11001</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">AmoDP30:216/11001</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">AmoDP30:216/11001.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>AMO_Sample-Y</name>
+                    <id>AmoDP30:216/11000</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">AmoDP30:216/11000</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">AmoDP30:216/11000.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>AMO_Sample-Z</name>
+                    <id>AmoDP30:216/9001</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">AmoDP30:216/9001</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">AmoDP30:216/9001.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>AMO_Gegengewicht</name>
+                    <id>AmoDP30:216/9000</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">AmoDP30:216/9000</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">AmoDP30:216/9000.EGU</access>
+                    </unit>
+                </channel>
+            </detector>
+            <detector>
+                <class>Ag34970</class>
+                <name></name>
+                <id>A4970:24109</id>
+                <trigger>
+                    <access method="PUTCB" type="int" transport="ca">A4970:24109trigger.PROC</access>
+                    <value type="int">1</value>
+                </trigger>
+                <channel>
+                    <name>Theta_Temp</name>
+                    <id>A4970:24109101</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109101.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109101.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>2Theta_Temp</name>
+                    <id>A4970:24109102</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109102.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109102.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Sample-X_Temp</name>
+                    <id>A4970:24109103</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109103.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109103.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Sample-Y_Temp</name>
+                    <id>A4970:24109104</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109104.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109104.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Sample-Z_Temp</name>
+                    <id>A4970:24109105</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109105.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109105.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Sample-Tilt_Temp</name>
+                    <id>A4970:24109111</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109111.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109111.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Det.-X_Temp</name>
+                    <id>A4970:24109106</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109106.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109106.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Det.-Rot_Temp</name>
+                    <id>A4970:24109107</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109107.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109107.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Det.-R_Temp</name>
+                    <id>A4970:24109108</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109108.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109108.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Gegengewicht_Temp</name>
+                    <id>A4970:24109109</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109109.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109109.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>Phi_Temp</name>
+                    <id>A4970:24109110</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109110.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109110.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>x12_Temp</name>
+                    <id>A4970:24109112</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109112.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109112.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>x13_Temp</name>
+                    <id>A4970:24109113</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109113.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109113.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>x14_Temp</name>
+                    <id>A4970:24109114</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109114.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109114.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>x15_Temp</name>
+                    <id>A4970:24109115</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109115.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109115.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>x16_Temp</name>
+                    <id>A4970:24109116</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109116.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109116.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>x17_Temp</name>
+                    <id>A4970:24109117</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109117.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109117.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>x18_Temp</name>
+                    <id>A4970:24109118</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109118.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109118.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>x19_Temp</name>
+                    <id>A4970:24109119</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109119.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109119.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>x20_Temp</name>
+                    <id>A4970:24109120</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109120.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109120.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>x21_Temp</name>
+                    <id>A4970:24109121</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109121.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109121.EGU</access>
+                    </unit>
+                </channel>
+                <channel>
+                    <name>x22_Temp</name>
+                    <id>A4970:24109122</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">A4970:24109122.VAL</access>
+                    </read>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">A4970:24109122.EGU</access>
+                    </unit>
+                </channel>
+            </detector>
+            <detector>
+                <class>BessyBeamlinePressure</class>
+                <name></name>
+                <id>MR09V21B107L:Pressure</id>
+                <channel>
+                    <name>Big-Ref-Pressure</name>
+                    <id>MR09V21B107L:Pressure.1</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">MR09V21B107L:Pressure.RRBV</access>
+                    </read>
+                </channel>
+            </detector>
+            <detector>
+                <class>DAC</class>
+                <name></name>
+                <id>bigRef_memo</id>
+                <channel>
+                    <name>tilt_a0</name>
+                    <id>bigRef_memo00</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo00</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>tilt_x0</name>
+                    <id>bigRef_memo01</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo01</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>tilt_z0</name>
+                    <id>bigRef_memo02</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo02</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>DetAxis_z0</name>
+                    <id>bigRef_memo03</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo03</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>DetAxis_y0</name>
+                    <id>bigRef_memo04</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo04</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>theta_0</name>
+                    <id>bigRef_memo05</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo05</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>PhiAxis_x0</name>
+                    <id>bigRef_memo06</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo06</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>PhiAxis_y0</name>
+                    <id>bigRef_memo07</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo07</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Umklapp</name>
+                    <id>bigRef_memo08</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo08</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Be-Edge</name>
+                    <id>bigRef_memo09</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo09</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Kr-Edge</name>
+                    <id>bigRef_memo10</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo10</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>MeasureDir</name>
+                    <id>bigRef_memo11</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo11</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>MeasureFile</name>
+                    <id>bigRef_memo12</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo12</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>MeasureSubFile</name>
+                    <id>bigRef_memo13</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo13</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hoehe_2Theta</name>
+                    <id>bigRef_memo14</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo14</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardhigh_2Theta</name>
+                    <id>bigRef_memo15</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo15</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardlow_2Theta</name>
+                    <id>bigRef_memo16</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo16</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardhigh_DetR</name>
+                    <id>bigRef_memo17</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo17</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardlow_DetR</name>
+                    <id>bigRef_memo18</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo18</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardhigh_DetX</name>
+                    <id>bigRef_memo19</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo19</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardlow_DetX</name>
+                    <id>bigRef_memo20</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo20</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardhigh_DetRot</name>
+                    <id>bigRef_memo21</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo21</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardlow_DetRot</name>
+                    <id>bigRef_memo22</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo22</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardhigh_SX</name>
+                    <id>bigRef_memo23</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo23</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardlow_SX</name>
+                    <id>bigRef_memo24</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo24</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardhigh_SY</name>
+                    <id>bigRef_memo25</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo25</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardlow_SY</name>
+                    <id>bigRef_memo26</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo26</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardhigh_SZ</name>
+                    <id>bigRef_memo27</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo27</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardlow_SZ</name>
+                    <id>bigRef_memo28</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo28</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardhigh_Theta</name>
+                    <id>bigRef_memo29</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo29</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardlow_Theta</name>
+                    <id>bigRef_memo30</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo30</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardhigh_Tilt</name>
+                    <id>bigRef_memo31</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo31</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardlow_Tilt</name>
+                    <id>bigRef_memo32</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo32</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardhigh_Phi</name>
+                    <id>bigRef_memo33</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo33</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Hardlow_Phi</name>
+                    <id>bigRef_memo34</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">bigRef_memo34</access>
+                    </read>
+                </channel>
+            </detector>
+            <detector>
+                <class>CalcRecord</class>
+                <name>SX700-</name>
+                <id>Energ:212000</id>
+                <channel>
+                    <name>Mi-rad</name>
+                    <id>Energ:21200000SXcosMi</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">Energ:21200000SXcos</access>
+                    </read>
+                </channel>
+                <channel>
+                    <name>Gr-rad</name>
+                    <id>Energ:21200001SXcosGr</id>
+                    <read>
+                        <access method="GETCB" type="double" transport="ca">Energ:21200001SXcos</access>
+                    </read>
+                </channel>
+            </detector>
+        </detectors>
+        <motors>
+            <motor>
+                <class>Timer</class>
+                <name>General Purpose Timer</name>
+                <id>Timer</id>
+                <axis>
+                    <name>Timer1</name>
+                    <id>Timer.1</id>
+                    <goto>
+                        <access method="PUTCB" type="datetime" transport="local">EPQTIMER</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="datetime" transport="local">EPQTIMER</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="local">EPQTIMER</access>
+                        <value type="int">1</value>
+                    </stop>
+                </axis>
+            </motor>
+            <motor>
+                <class>SetValue</class>
+                <name>OUT</name>
+                <id>esdAo:2120000</id>
+                <axis>
+                    <name>1</name>
+                    <id>esdAo:212000001</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">esdAo:212000001.VAL</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">esdAo:212000001.VAL</access>
+                    </position>
+                    <stop>
+                        <access method="PUTCB" type="int" transport="ca">esdAo:212000001.PROC</access>
+                    </stop>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">esdAo:212000001.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>2</name>
+                    <id>esdAo:212000002</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">esdAo:212000002.VAL</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">esdAo:212000002.VAL</access>
+                    </position>
+                    <stop>
+                        <access method="PUTCB" type="int" transport="ca">esdAo:212000002.PROC</access>
+                    </stop>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">esdAo:212000002.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>3</name>
+                    <id>esdAo:212000003</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">esdAo:212000003.VAL</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">esdAo:212000003.VAL</access>
+                    </position>
+                    <stop>
+                        <access method="PUTCB" type="int" transport="ca">esdAo:212000003.PROC</access>
+                    </stop>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">esdAo:212000003.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>4</name>
+                    <id>esdAo:212000004</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">esdAo:212000004.VAL</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">esdAo:212000004.VAL</access>
+                    </position>
+                    <stop>
+                        <access method="PUTCB" type="int" transport="ca">esdAo:212000004.PROC</access>
+                    </stop>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">esdAo:212000004.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>SetValue</class>
+                <name>Bias_</name>
+                <id>K0617:233set</id>
+                <axis>
+                    <name>1</name>
+                    <id>K0617:23328vsVal</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">K0617:23328vsVal.VAL</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">K0617:23328vsVal.VAL</access>
+                    </position>
+                    <stop>
+                        <access method="PUTCB" type="int" transport="ca">K0617:23328vsVal.PROC</access>
+                    </stop>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">K0617:23328vsVal.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>2</name>
+                    <id>K0617:23327vsVal</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">K0617:23327vsVal.VAL</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">K0617:23327vsVal.VAL</access>
+                    </position>
+                    <stop>
+                        <access method="PUTCB" type="int" transport="ca">K0617:23327vsVal.PROC</access>
+                    </stop>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">K0617:23327vsVal.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>3</name>
+                    <id>K5617:23329vsVal</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">K5617:23329vsVal.VAL</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">K5617:23329vsVal.VAL</access>
+                    </position>
+                    <stop>
+                        <access method="PUTCB" type="int" transport="ca">K5617:23329vsVal.PROC</access>
+                    </stop>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">K5617:23329vsVal.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>4</name>
+                    <id>K0617:23325vsVal</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">K0617:23325vsVal.VAL</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">K0617:23325vsVal.VAL</access>
+                    </position>
+                    <stop>
+                        <access method="PUTCB" type="int" transport="ca">K0617:23325vsVal.PROC</access>
+                    </stop>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">K0617:23325vsVal.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>5</name>
+                    <id>K0617:23326vsVal</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">K0617:23326vsVal.VAL</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">K0617:23326vsVal.VAL</access>
+                    </position>
+                    <stop>
+                        <access method="PUTCB" type="int" transport="ca">K0617:23326vsVal.PROC</access>
+                    </stop>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">K0617:23326vsVal.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>PPSMC</class>
+                <name>Kreuztisch</name>
+                <id>PPSMC:23715</id>
+                <unit>
+                    <access method="GETCB" type="string" transport="ca">PPSMC:23715000.EGU</access>
+                </unit>
+                <axis>
+                    <name>X-Position</name>
+                    <id>PPSMC:23715000</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">PPSMC:23715000</access>
+                        <value type="double">10.0, 12.0, 13.1</value>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:23715000.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">PPSMC:23715000.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">PPSMC:23715000.MSTA</access>
+                    </status>
+                    <trigger>
+                        <access method="PUTCB" type="int" transport="ca">PPSMC:23715000.TRIG</access>
+                        <value type="int">1</value>
+                    </trigger>
+                    <option>
+                        <name>Velocity</name>
+                        <id>PPSMC:23715000.VELO</id>
+                        <value>
+                            <access method="GETPUTCB" type="double"
+                                count="1" transport="ca">PPSMC:23715000.VELO</access>
+                        </value>
+                        <displaygroup>summary</displaygroup>
+                    </option>
+                </axis>
+                <axis>
+                    <name>Y-Position</name>
+                    <id>PPSMC:23715001</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">PPSMC:23715001</access>
+                        <value type="double">10.0, 12.0, 13.1</value>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:23715001.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">PPSMC:23715001.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">PPSMC:23715001.MSTA</access>
+                    </status>
+                    <trigger>
+                        <access method="PUTCB" type="int" transport="ca">PPSMC:23715001.TRIG</access>
+                        <value type="int">1</value>
+                    </trigger>
+                    <option>
+                        <name>Velocity</name>
+                        <id>PPSMC:23715001.VELO</id>
+                        <value>
+                            <access method="GETPUTCB" type="double"
+                                count="1" transport="ca">PPSMC:23715001.VELO</access>
+                        </value>
+                        <displaygroup>summary</displaygroup>
+                    </option>
+                </axis>
+                <axis>
+                    <name>Z-Position</name>
+                    <id>PPSMC:23715002</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">PPSMC:23715002</access>
+                        <value type="double">-10.0 to 10.0</value>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:23715002.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">PPSMC:23715002.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">PPSMC:23715002.MSTA</access>
+                    </status>
+                    <trigger>
+                        <access method="PUTCB" type="int" transport="ca">PPSMC:23715002.TRIG</access>
+                        <value type="int">1</value>
+                    </trigger>
+                    <option>
+                        <name>Velocity</name>
+                        <id>PPSMC:23715002.VELO</id>
+                        <value>
+                            <access method="GETPUTCB" type="double"
+                                count="1" transport="ca">PPSMC:23715002.VELO</access>
+                        </value>
+                        <displaygroup>summary</displaygroup>
+                    </option>
+                </axis>
+                <option>
+                    <name>Lock Local</name>
+                    <id>PPSMC:23715dislocal</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">PPSMC:23715dislocal</access>
+                        <value type="string">Enable, Disable</value>
+                    </value>
+                </option>
+            </motor>
+            <motor>
+                <class>ServoMotor</class>
+                <name>SX700-</name>
+                <id>OMS58:212000servo</id>
+                <axis>
+                    <name>Mirror</name>
+                    <id>OMS58:21200000servo</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21200000</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21200000.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21200000.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21200000.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21200000.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Grating</name>
+                    <id>OMS58:21200001servo</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21200001</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21200001.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21200001.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21200001.MSTA</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21200001.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>SX700_Energy</class>
+                <name>SX700-Energy</name>
+                <id>Energ:21200000ev</id>
+                <axis>
+                    <name></name>
+                    <id>Energ:21200000ev.1</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">Energ:21200000cff</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">Energ:21200000rbv</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">Energ:21200000stop</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">Energ:21200000rbv.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">Energ:21200000rbv.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>SX700_Wavelength</class>
+                <name>SX700-Wavelength</name>
+                <id>Energ:21200000nm</id>
+                <axis>
+                    <name></name>
+                    <id>Energ:21200000nm.1</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">Energ:21200000w12e.A</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">Energ:21200000rwl</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">Energ:21200000nostop</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">Energ:21200000rbv.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">Energ:21200000rwl.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>DiscretePositionMotor</class>
+                <name>HIOS</name>
+                <id>OMS58:212050filter</id>
+                <axis>
+                    <name>_Filter</name>
+                    <id>OMS58:21205002filter</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21205002_Mnu</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21205002.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21205002.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21205002.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21205002.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>DiscretePositionMotor_S</class>
+                <name>HIOS</name>
+                <id>OMS58:212050filterS</id>
+                <axis>
+                    <name>_Filter_S</name>
+                    <id>OMS58:21205002filterS</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21205002_Mnu</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21205002_MnuO</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21205002.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21205002.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21205002.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>PseudoMotorD</class>
+                <name></name>
+                <id>:21203000pseudoD</id>
+                <axis>
+                    <name>PreMirrorHoRu</name>
+                    <id>:21203000pseudoD.1</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">SlotD:21203000.A</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">SlotD:21203000rbv</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">Slot_:21203000stop</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">SlotD:21203000rbv.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">SlotD:21203000rbv.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>VorBlendePosHor</name>
+                    <id>:21201000pseudoD</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">SlotD:21201000.A</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">SlotD:21201000rbv</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">Slot_:21201000stop</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">SlotD:21201000rbv.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">SlotD:21201000rbv.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>VorBlendePosVert</name>
+                    <id>:21201002pseudoD</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">SlotD:21201002.A</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">SlotD:21201002rbv</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">Slot_:21201002stop</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">SlotD:21201002rbv.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">SlotD:21201002rbv.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>Cff</class>
+                <name>SX700-Cff</name>
+                <id>Energ:21200000cff</id>
+                <axis>
+                    <name></name>
+                    <id>Energ:21200000cff.1</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">Energ:21200000cffFunc.CALC</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">Energ:21200000rbcff</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">Energ:21200000nostop</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">Energ:21200000cffFunc.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>SX700AngMotor</class>
+                <name>Angle</name>
+                <id>Energ:21200000angle</id>
+                <axis>
+                    <name>Mirror</name>
+                    <id>Energ:21200000angle.1</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">Energ:21200000SXcos.A</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">Energ:21200000rbr7</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">Energ:21200000stop</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">Energ:21200000beta.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Grating</name>
+                    <id>Energ:21200001</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">Energ:21200001SXcos.A</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">Energ:21200001rbr7</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">Energ:21200000stop</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">Energ:21200000beta.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>Motor</class>
+                <name>VorBlende</name>
+                <id>OMS58:212010</id>
+                <axis>
+                    <name>-L</name>
+                    <id>OMS58:21201000</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21201000</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21201000.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21201000.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21201000.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21201000.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>-R</name>
+                    <id>OMS58:21201001</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21201001</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21201001.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21201001.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21201001.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21201001.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>-O</name>
+                    <id>OMS58:21201002</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21201002</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21201002.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21201002.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21201002.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21201002.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>-U</name>
+                    <id>OMS58:21201003</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21201003</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21201003.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21201003.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21201003.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21201003.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>Scanner</class>
+                <name>Scanner_Mot</name>
+                <id>K0705:23317scanner</id>
+                <axis>
+                    <name>Scanner_Mot</name>
+                    <id>K0705:23317scanner.1</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">K0705:23317</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">K0705:23317</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">K0705:23317.PROC</access>
+                        <value type="int">1</value>
+                    </stop>
+                </axis>
+            </motor>
+            <motor>
+                <class>Motor</class>
+                <name>Pre-Mirror-</name>
+                <id>OMS58:212030</id>
+                <axis>
+                    <name>vert-L</name>
+                    <id>OMS58:21203000</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21203000</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21203000.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21203000.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21203000.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21203000.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>vert-R</name>
+                    <id>OMS58:21203001</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21203001</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21203001.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21203001.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21203001.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21203001.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>hor</name>
+                    <id>OMS58:21203002</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21203002</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21203002.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21203002.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21203002.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21203002.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>theta</name>
+                    <id>OMS58:21203003</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21203003</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21203003.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21203003.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21203003.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21203003.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>Motor</class>
+                <name></name>
+                <id>OMS58:212040</id>
+                <axis>
+                    <name>Pre-Mirror-tilt</name>
+                    <id>OMS58:21204000</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21204000</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21204000.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21204000.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21204000.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21204000.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Exp-Tisch</name>
+                    <id>OMS58:21204001</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21204001</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21204001.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21204001.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21204001.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21204001.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Opt1_neu</name>
+                    <id>OMS58:21204002</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21204002</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21204002.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21204002.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21204002.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21204002.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Opt2_neu</name>
+                    <id>OMS58:21204003</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21204003</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21204003.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21204003.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21204003.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21204003.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>Motor</class>
+                <name></name>
+                <id>OMS58:212050</id>
+                <axis>
+                    <name>SLM-H</name>
+                    <id>OMS58:21205000</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21205000</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21205000.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21205000.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21205000.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21205000.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>SLM-V</name>
+                    <id>OMS58:21205001</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21205001</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21205001.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21205001.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21205001.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21205001.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>HIOS-Filter</name>
+                    <id>OMS58:21205002</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21205002</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21205002.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21205002.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21205002.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21205002.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Cooled_Diode</name>
+                    <id>OMS58:21205003</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21205003</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21205003.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21205003.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21205003.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21205003.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>Motor</class>
+                <name></name>
+                <id>OMS58:212060</id>
+                <axis>
+                    <name>HORS-theta1</name>
+                    <id>OMS58:21206000</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21206000</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21206000.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21206000.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21206000.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21206000.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>HORS-theta2</name>
+                    <id>OMS58:21206001</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21206001</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21206001.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21206001.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21206001.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21206001.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>HORS-Z</name>
+                    <id>OMS58:21206002</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21206002</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21206002.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21206002.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21206002.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21206002.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>ASP</name>
+                    <id>OMS58:21206003</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21206003</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21206003.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21206003.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21206003.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21206003.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>Motor</class>
+                <name></name>
+                <id>OMS58:212070</id>
+                <axis>
+                    <name>Blende2-Y</name>
+                    <id>OMS58:21207000</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21207000</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21207000.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21207000.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21207000.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21207000.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Optional-1</name>
+                    <id>OMS58:21207001</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21207001</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21207001.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21207001.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21207001.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21207001.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Optional-X</name>
+                    <id>OMS58:21207002</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21207002</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21207002.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21207002.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21207002.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21207002.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Optional-Y</name>
+                    <id>OMS58:21207003</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21207003</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21207003.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21207003.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21207003.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21207003.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>Motor</class>
+                <name></name>
+                <id>OMS58:212080</id>
+                <axis>
+                    <name>Diode-Y</name>
+                    <id>OMS58:21208000</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21208000</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21208000.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21208000.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21208000.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21208000.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Blende-X</name>
+                    <id>OMS58:21208001</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21208001</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21208001.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21208001.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21208001.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21208001.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Diode-X</name>
+                    <id>OMS58:21208002</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21208002</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21208002.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21208002.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21208002.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21208002.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Gaszelle</name>
+                    <id>OMS58:21208003</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21208003</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21208003.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21208003.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21208003.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21208003.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>PseudoMotorS</class>
+                <name></name>
+                <id>:21203000pseudoS</id>
+                <axis>
+                    <name>PreMirrorKipp</name>
+                    <id>:21203000pseudoS.1</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">SlotS:21203000.A</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">SlotS:21203000rbv</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">Slot_:21203000stop</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">SlotS:21203000rbv.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">SlotS:21203000rbv.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>VorBlendeGapHor</name>
+                    <id>:21201000pseudoS</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">SlotS:21201000.A</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">SlotS:21201000rbv</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">Slot_:21201000stop</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">SlotS:21201000rbv.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">SlotS:21201000rbv.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>VorBlendeGapVert</name>
+                    <id>:21201002pseudoS</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">SlotS:21201002.A</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">SlotS:21201002rbv</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">Slot_:21201002stop</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">SlotS:21201002rbv.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">SlotS:21201002rbv.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>MotorCommon</class>
+                <name>BIG_REF_Mama</name>
+                <id>OMS58:21601</id>
+                <trigger>
+                    <access method="PUTCB" type="int" transport="ca">OMS58:21601.PROC</access>
+                    <value type="int">1</value>
+                </trigger>
+                <axis>
+                    <name>Theta</name>
+                    <id>OMS58:21601000AT</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21601000AT</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21601000AT.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21601000AT.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21601000AT.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21601000AT.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Sample-Y</name>
+                    <id>OMS58:21601001AY</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21601001AY</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21601001AY.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21601001AY.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21601001AY.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21601001AY.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Sample-Z</name>
+                    <id>OMS58:21601003AZ</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21601003AZ</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21601003AZ.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21601003AZ.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21601003AZ.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21601003AZ.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Gegengewicht</name>
+                    <id>OMS58:21601002AG</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21601002AG</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21601002AG.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21601002AG.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21601002AG.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21601002AG.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>Motor</class>
+                <name></name>
+                <id>OMS58:21602</id>
+                <axis>
+                    <name>2Theta</name>
+                    <id>OMS58:21602001</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21602001</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21602001.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21602001.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21602001.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21602001.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Phi</name>
+                    <id>OMS58:21602000</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21602000</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21602000.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21602000.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21602000.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21602000.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Det.-X</name>
+                    <id>OMS58:21606000</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21606000</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21606000.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21606000.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21606000.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21606000.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Sample-X</name>
+                    <id>OMS58:21606001</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21606001</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21606001.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21606001.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21606001.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21606001.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Sample-Tilt</name>
+                    <id>OMS58:21606002</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21606002</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21606002.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21606002.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21606002.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21606002.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Blende-Y</name>
+                    <id>OMS58:21603000</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21603000</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21603000.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21603000.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21603000.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21603000.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Optional_2</name>
+                    <id>OMS58:21603002</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21603002</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21603002.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21603002.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21603002.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21603002.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Det.-Rot</name>
+                    <id>OMS58:21606003</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21606003</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21606003.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21606003.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21606003.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21606003.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Det.-R</name>
+                    <id>OMS58:21603003</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21603003</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21603003.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21603003.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21603003.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21603003.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>KB-oben</name>
+                    <id>OMS58:21604000</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21604000</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21604000.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21604000.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21604000.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21604000.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>KB-unten</name>
+                    <id>OMS58:21604001</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21604001</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21604001.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21604001.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21604001.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21604001.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>KB-rechts</name>
+                    <id>OMS58:21604002</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21604002</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21604002.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21604002.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21604002.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21604002.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>KB-links</name>
+                    <id>OMS58:21604003</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21604003</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21604003.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21604003.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21604003.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21604003.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Ref-Tisch</name>
+                    <id>OMS58:21600000</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21600000</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21600000.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21600000.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21600000.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21600000.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Probenteller</name>
+                    <id>arrMotBr:216</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">arrMotBr:216</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">arrMotBr:216.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">arrMotBr:216.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">arrMotBr:216.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">arrMotBr:216.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Test</name>
+                    <id>OMS58:21600001</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21600001</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21600001.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21600001.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21600001.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21600001.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>PseudoMotorS</class>
+                <name></name>
+                <id>:21604000pseudoS</id>
+                <axis>
+                    <name>KB-gap-vert</name>
+                    <id>:21604000pseudoS.1</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">SlotS:21604000.A</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">SlotS:21604000rbv</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">Slot_:21604000stop</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">SlotS:21604000rbv.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">SlotS:21604000rbv.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>KB-gap-hor</name>
+                    <id>:21604002pseudoS</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">SlotS:21604002.A</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">SlotS:21604002rbv</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">Slot_:21604002stop</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">SlotS:21604002rbv.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">SlotS:21604002rbv.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>PseudoMotorD</class>
+                <name></name>
+                <id>:21604000pseudoD</id>
+                <axis>
+                    <name>KB-pos-vert</name>
+                    <id>:21604000pseudoD.1</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">SlotD:21604000.A</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">SlotD:21604000rbv</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">Slot_:21604000stop</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">SlotD:21604000rbv.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">SlotD:21604000rbv.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>KB-pos-hor</name>
+                    <id>:21604002pseudoD</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">SlotD:21604002.A</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">SlotD:21604002rbv</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">Slot_:21604002stop</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">SlotD:21604002rbv.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">SlotD:21604002rbv.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+            <motor>
+                <class>DiscretePositionMotor</class>
+                <name></name>
+                <id>OMS58:216020discrete</id>
+                <axis>
+                    <name>2_Theta</name>
+                    <id>OMS58:21602001discrete</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21602001_Mnu</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21602001.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21602001.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21602001.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21602001.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Det_X</name>
+                    <id>OMS58:21606000discrete</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21606000_Mnu</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21606000.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21606000.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21606000.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21606000.EGU</access>
+                    </unit>
+                </axis>
+                <axis>
+                    <name>Det_Rot</name>
+                    <id>OMS58:21606003discrete</id>
+                    <goto>
+                        <access method="PUTCB" type="double" transport="ca">OMS58:21606003_Mnu</access>
+                    </goto>
+                    <position>
+                        <access method="GETCB" type="double" transport="ca">OMS58:21606003.RBV</access>
+                    </position>
+                    <stop>
+                        <access method="PUT" type="int" transport="ca">OMS58:21606003.STOP</access>
+                        <value type="int">1</value>
+                    </stop>
+                    <status>
+                        <access method="GETCB" type="int" transport="ca">OMS58:21606003.STAT</access>
+                    </status>
+                    <unit>
+                        <access method="GETCB" type="string" transport="ca">OMS58:21606003.EGU</access>
+                    </unit>
+                </axis>
+            </motor>
+        </motors>
+        <devices>
+            <device>
+                <class>Switch</class>
+                <name>Shutter1</name>
+                <id>EKout:2160012</id>
+                <value>
+                    <access method="PUTCB" type="OnOff" transport="ca">EKout:2160012</access>
+                    <value type="OnOff">1, 0</value>
+                </value>
+            </device>
+            <device>
+                <class>Switch</class>
+                <name>Big-Ref-CCD</name>
+                <id>EKout:2160013</id>
+                <value>
+                    <access method="PUTCB" type="OnOff" transport="ca">EKout:2160013</access>
+                    <value type="OnOff">1, 0</value>
+                </value>
+            </device>
+            <device>
+                <class>Switch</class>
+                <name>Scanner</name>
+                <id>K0705:23317switch</id>
+                <value>
+                    <access method="PUTCB" type="string" transport="ca">K0705:23317</access>
+                    <value type="string">open all, 1.channel, 2.channel, 3.channel, 4.channel, 5.channel, 6.channel, 7.channel, 8.channel, 9.channel, 10.channel</value>
+                </value>
+            </device>
+            <device>
+                <class>BeamShutter</class>
+                <name>Beam_Shutter</name>
+                <id>BSR21B007L:Opened</id>
+                <value>
+                    <access method="PUTCB" type="OpenClose" transport="ca">BSR21B007L:Opened.VAL</access>
+                    <value type="OpenClose">Open, Close</value>
+                </value>
+            </device>
+            <device>
+                <class>SMC200</class>
+                <name>Heater</name>
+                <id>SMC200:229HT</id>
+                <value>
+                    <access method="PUTCB" type="double" transport="ca">SMC200:229HT.VAL</access>
+                    <value type="double"></value>
+                </value>
+                <unit>
+                    <access method="GETCB" type="string" transport="ca">SMC200:229HT.EGU</access>
+                </unit>
+            </device>
+        </devices>
+        <smselection>
+            <stepfunction>Add,Multiply,File,Plugin,Positionlist</stepfunction>
+            <linestyle>solid,dashed,dotted</linestyle>
+            <color>blue,green,yellow,red,black</color>
+            <markstyle>star,point,circle</markstyle>
+            <smtype>classic, advanced</smtype>
+        </smselection>
+    </chain>
