@@ -515,7 +515,8 @@ public class ScanModulView extends ViewPart {
 					Axis[] axis = currentScanModul.getAxis();
 					for( int i = 0; i < axis.length; ++i ) {
 						if( axis[i].getMotorAxis().getFullIdentifyer().equals( axisName ) ) {
-							int stepamount = -1;
+							double stepamount = -1.0;
+							
 							for( int j = 0; j < axis.length; ++j ) {
 								if( axis[j].isMainAxis() ) {
 									stepamount = axis[j].getStepCount();
@@ -523,7 +524,6 @@ public class ScanModulView extends ViewPart {
 								}
 							}
 							motorAxisView.setAxis( axis[i], stepamount, currentScanModul );
-							
 						}
 					}
 					
@@ -1284,7 +1284,7 @@ public class ScanModulView extends ViewPart {
 			TableItem item = new TableItem(this.motorAxisTable, SWT.NONE);
 			item.setText(new String[] {
 					axis[i].getMotorAxis().getFullIdentifyer(),
-					axis[i].getStepfunctionString() });
+					axis[i].getStepfunction() });
 			item.setData(axis[i]);
 			// Table Eintrag wird aus der Combo-Box entfernt
 			motorAxisCombo.remove(axis[i].getMotorAxis().getFullIdentifyer());

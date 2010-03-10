@@ -41,7 +41,7 @@ public class MotorAxisView extends ViewPart {
 	private Composite holderComposite;
 	
 	private Axis axis;
-	private int stepamount;
+	private double stepamount;
 	private String[] stepfunctions;
 	
 	private ScanModul scanModul;
@@ -82,10 +82,9 @@ public class MotorAxisView extends ViewPart {
 			public void modifyText(ModifyEvent e) {
 				if( axis != null ) {
 					axis.setStepfunction( stepFunctionCombo.getText() );
-					if( axis.getStepfunctionString().equals( "File" ) ) {
+					if( axis.getStepfunction().equals( "File" ) ) {
 						holderComposite.dispose();
 						holderComposite = new MotorAxisFileComposite( top, SWT.NONE );
-						
 						((MotorAxisFileComposite)holderComposite).setAxis( axis );
 						GridData gridData = new GridData();
 						gridData.horizontalAlignment = GridData.FILL;
@@ -97,13 +96,12 @@ public class MotorAxisView extends ViewPart {
 						holderComposite.layout();
 						holderComposite.setVisible( true );
 						top.layout();
-					} else if( axis.getStepfunctionString().equals( "Plugin" ) ) { 
+					} else if( axis.getStepfunction().equals( "Plugin" ) ) { 
 						if( axis.getPositionPluginController() == null ) {
 							axis.setPositionPluginController( new PluginController() );
 						}
 						holderComposite.dispose();
 						holderComposite = new MotorAxisPluginComposite( top, SWT.NONE );
-						
 						((MotorAxisPluginComposite)holderComposite).setAxis( axis, scanModul );
 						GridData gridData = new GridData();
 						gridData.horizontalAlignment = GridData.FILL;
@@ -115,7 +113,7 @@ public class MotorAxisView extends ViewPart {
 						holderComposite.layout();
 						holderComposite.setVisible( true );
 						top.layout();
-					} else if( axis.getStepfunctionString().equals( "Positionlist" ) ) {
+					} else if( axis.getStepfunction().equals( "Positionlist" ) ) {
 						holderComposite.dispose();
 						holderComposite = new MotorAxisPositionlistComposite( top, SWT.NONE );
 						((MotorAxisPositionlistComposite)holderComposite).setAxis( axis );
@@ -125,18 +123,13 @@ public class MotorAxisView extends ViewPart {
 						gridData.grabExcessHorizontalSpace = true;
 						gridData.grabExcessVerticalSpace = true;
 						gridData.horizontalSpan = 3;
-						
 						holderComposite.setLayoutData( gridData );
-						
 						holderComposite.layout();
 						holderComposite.setVisible( true );
-						
 						top.layout();
-						
 					} else {
 						holderComposite.dispose();
 						holderComposite = new MotorAxisStartStopStepwidthComposite( top, SWT.NONE );
-						
 						((MotorAxisStartStopStepwidthComposite)holderComposite).setAxis( axis, stepamount );
 						GridData gridData = new GridData();
 						gridData.horizontalAlignment = GridData.FILL;
@@ -197,12 +190,12 @@ public class MotorAxisView extends ViewPart {
 
 	}
 
-	public void setAxis( final Axis axis, final int stepamount ) {
+	public void setAxis( final Axis axis, final double stepamount ) {
 		this.axis = axis;
 		this.stepamount = stepamount;
 		if( this.axis != null ) {
 			this.setPartName( this.axis.getMotorAxis().getFullIdentifyer() );
-			this.stepFunctionCombo.setText( this.axis.getStepfunctionString() );
+			this.stepFunctionCombo.setText( this.axis.getStepfunction() );
 			this.positionModeCombo.setText( PositionMode.typeToString( this.axis.getPositionMode() ) );
 			
 			this.stepFunctionCombo.setEnabled( true );
@@ -226,9 +219,9 @@ public class MotorAxisView extends ViewPart {
 		}
 	}
 
-	public void setAxis( final Axis axis, final int stepamount, final ScanModul scanModul ) {
+	public void setAxis( final Axis axis, final double stepamount, final ScanModul scanModul ) {
 		this.scanModul = scanModul;
 		setAxis(axis, stepamount);
 	}
-
+	
 }  //  @jve:decl-index=0:visual-constraint="-17,-49,363,149"
