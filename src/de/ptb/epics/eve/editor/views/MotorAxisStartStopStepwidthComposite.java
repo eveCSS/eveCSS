@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Combo;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.ScanModul;
 
 public class MotorAxisStartStopStepwidthComposite extends Composite {
 
@@ -61,10 +62,10 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 			}
 			public void widgetSelected( final SelectionEvent e ) {
 				if (autoFillStartRadioButton.getSelection()) {
-					startCombo.setEnabled(false);
+					startCombo.setEnabled( false );
 				}
 				else
-				   startCombo.setEnabled(true);
+				   startCombo.setEnabled( true );
 			}
 		});
 
@@ -124,10 +125,10 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 			}
 			public void widgetSelected( final SelectionEvent e ) {
 				if (autoFillStopRadioButton.getSelection()) {
-					stopCombo.setEnabled(false);
+					stopCombo.setEnabled( false );
 				}
 				else
-				   stopCombo.setEnabled(true);
+				   stopCombo.setEnabled( true );
 			}
 		});
 
@@ -187,10 +188,10 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 			}
 			public void widgetSelected( final SelectionEvent e ) {
 				if (autoFillStepwidthRadioButton.getSelection()) {
-					stepwidthText.setEnabled(false);
+					stepwidthText.setEnabled( false );
 				}
 				else {
-				   stepwidthText.setEnabled(true);
+				   stepwidthText.setEnabled( true );
 				}
 			}
 		});
@@ -234,13 +235,13 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 			}
 			public void widgetSelected( final SelectionEvent e ) {
 				if (autoFillStepamountRadioButton.getSelection()) {
-					stepamountText.setEnabled(false);
+					stepamountText.setEnabled( false );
 				}
 				else { 
 					// nur wenn main axis erlaubt ist, darf auch stepamount wieder erlaubt werden
 					if (mainAxisCheckBox.isEnabled()) {
-						stepamountText.setEnabled(true);
-						autoFillStepamountRadioButton.setEnabled(true);
+						stepamountText.setEnabled( true );
+						autoFillStepamountRadioButton.setEnabled( true );
 					}
 				}
 			}
@@ -249,21 +250,23 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		this.stepamountText = new Text( this, SWT.BORDER );
 		this.stepamountText.addModifyListener( new ModifyListener() {
 			public void modifyText( final ModifyEvent e ) {
-			if( axis != null ) {
-				if( axis.getMotorAxis().getGoto().isDiscrete() ) {
-					try {
-						axis.setStepCount(Integer.parseInt(stepamountText.getText()));
-						autoFill();
-					} catch( final NumberFormatException ex ) {
-						final double stepamount_d = Double.parseDouble( stepamountText.getText() );
-						final int stepamount = (int)stepamount_d;
-						stepamountText.setText("" + stepamount);
-						stepamountText.setSelection(stepamountText.getCharCount());
+				if( axis != null ) {
+					if( axis.getMotorAxis().getGoto().isDiscrete() ) {
+						try {
+							axis.setStepCount(Integer.parseInt(stepamountText.getText()));
+							recalculateStepwidth();
+							autoFill();
+						} catch( final NumberFormatException ex ) {
+							final double stepamount_d = Double.parseDouble( stepamountText.getText() );
+							final int stepamount = (int)stepamount_d;
+							stepamountText.setText("" + stepamount);
+							stepamountText.setSelection(stepamountText.getCharCount());
+						}
 					}
-				}
-				else {
-					axis.setStepCount(Double.parseDouble(stepamountText.getText()));
-					autoFill();
+					else {
+						axis.setStepCount(Double.parseDouble(stepamountText.getText()));
+						recalculateStepwidth();
+						autoFill();
 					}
 				}
 			}
@@ -324,12 +327,13 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 				this.stepamountText.setEnabled( false );
 				this.autoFillStepamountRadioButton.setEnabled( false );
 				// Stepwidth RadioButton wird voreingestellt 
-				this.autoFillStepwidthRadioButton.setSelection(true);
+				this.autoFillStepwidthRadioButton.setSelection( true );
+				this.stepwidthText.setEnabled( false );
 			} else {
 				// Stepcount RadioButton wird voreingestellt 
-				this.autoFillStepamountRadioButton.setSelection(true);
-				this.autoFillStepamountRadioButton.setEnabled(false);
-				this.stepamountText.setEnabled(false);
+				this.autoFillStepamountRadioButton.setSelection( true );
+				this.autoFillStepamountRadioButton.setEnabled( false );
+				this.stepamountText.setEnabled( false );
 			}
 			if( this.mainAxisCheckBox.getSelection() || stepamount == -1.0 ) {
 				this.mainAxisCheckBox.setEnabled( true );
@@ -493,11 +497,11 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 						if( !this.startCombo.getText().equals( "" ) && !this.stopCombo.getText().equals( "" ) && !this.stepwidthText.getText().equals( "" ) ) {
 							try {
 								List< String > values = this.axis.getMotorAxis().getGoto().getDiscreteValues();
-								
+
 								final int start = values.indexOf( this.startCombo.getText() );
 								final int stop = values.indexOf( this.stopCombo.getText() );
 								final int stepwidth = Integer.parseInt( this.stepwidthText.getText() );
-								
+
 								if ( !this.stepamountText.getText().equals("")) {
 									// stepamount Eintrag schon vorhanden
 									final double stepamount_d = Double.parseDouble( this.stepamountText.getText() );
@@ -522,4 +526,58 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		}
 	}
 
+	/**
+	 * Wenn sich Stepcount der main Axis ändert, wird die Stepwidth aller anderen Achsen neu berechnet.
+	 */
+	private void recalculateStepwidth() {
+		if (axis.isMainAxis()) {
+			ScanModul scanModul = axis.getScanModul();
+			Axis[] axis = scanModul.getAxis();
+			
+			for( int i = 0; i < axis.length; ++i ) {
+				if( !axis[i].isMainAxis() ) {
+					// Axis ist keine mainAxis und wird neu berechnet
+					if( !axis[i].getMotorAxis().getGoto().isDiscrete() ) {
+						// Achse i ist eine normale Achse
+						final double start = Double.parseDouble(axis[i].getStart());
+						final double stop = Double.parseDouble( axis[i].getStop() );
+						final double stepwidth = Double.parseDouble( axis[i].getStepwidth() );
+						final double stepamount = Double.parseDouble( stepamountText.getText() );
+						if ( stepwidth == (( stop - start) / stepamount )) {
+							// Wert wird nicht nochmal gesetzt
+						}
+						else {
+							axis[i].setStepwidth("" + (( stop - start) / stepamount ) );
+						}
+					} else {
+						// Achse i ist eine diskrete Achse
+						int start = 0;
+						int stop = 0;
+							
+						String[] werte = axis[i].getMotorAxis().getGoto().getDiscreteValues().toArray( new String[0] );
+						// Schleife über Werte durchlaufen lassen
+						for( int j = 0; j < werte.length; ++j ) {
+							if (werte[j].equals(axis[i].getStart())) {
+								start = j;
+							}
+							if (werte[j].equals(axis[i].getStop())) {
+								stop = j; 
+							}
+						}
+						final double stepwidth_d = Double.parseDouble( axis[i].getStepwidth() );
+						final int stepwidth = (int)stepwidth_d;
+						final double stepamount_d = Double.parseDouble( stepamountText.getText() );
+						final int stepamount = (int)stepamount_d;
+
+						if ( stepwidth == (( stop - start) / stepamount )) {
+							// Wert wird nicht nochmal gesetzt
+						}
+						else {
+							axis[i].setStepwidth("" + (( stop - start) / stepamount ) );
+						}
+					}
+				}
+			}
+		}
+	}
 }

@@ -150,7 +150,7 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 				} else if( controlEventManager.getParentScanModul() != null )  {
 					scanDescriptionEvents = controlEventManager.getParentScanModul().getChain().getScanDescription().getEvents().toArray( new Event[0] );
 				} else if( controlEventManager.getParentChannel() != null ) {
-					scanDescriptionEvents = controlEventManager.getParentChannel().getParentScanModul().getChain().getScanDescription().getEvents().toArray( new Event[0] );
+					scanDescriptionEvents = controlEventManager.getParentChannel().getScanModul().getChain().getScanDescription().getEvents().toArray( new Event[0] );
 				}
 				
 				eventIDs = new String[measuringStationEvents.length + scanDescriptionEvents.length ];
@@ -188,7 +188,7 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 							} else if( controlEventManager.getParentScanModul() != null ) {
 								event = controlEventManager.getParentScanModul().getChain().getScanDescription().getEventById( eventsCombo.getText() );
 							} else if( controlEventManager.getParentChannel() != null ) {
-								event = controlEventManager.getParentChannel().getParentScanModul().getChain().getScanDescription().getEventById( eventsCombo.getText() );
+								event = controlEventManager.getParentChannel().getScanModul().getChain().getScanDescription().getEventById( eventsCombo.getText() );
 							}
 						}
 						ControlEvent newEvent;

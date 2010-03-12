@@ -451,7 +451,7 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 			//	
 			//	this.savePluginComboErrorLabel.setImage(image);
 			}
-			
+		
 			
 			
 			} catch( Exception ex ) {

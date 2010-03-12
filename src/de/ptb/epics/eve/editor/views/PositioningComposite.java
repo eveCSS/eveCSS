@@ -222,7 +222,7 @@ public class PositioningComposite extends Composite implements IModelUpdateListe
 			}
 			this.motorAxisCombo.setItems(cur_feld);
 		
-			// die Achsen für die es schon Positionings werden wieder entfernt
+			// die Achsen für die es schon Positionings gibt, werden wieder entfernt
 			Positioning[] positionings = scanModul.getPositionings();
 			for( int i = 0; i < positionings.length; ++i ) {
 				this.motorAxisCombo.remove(positionings[i].getMotorAxis().getFullIdentifyer());

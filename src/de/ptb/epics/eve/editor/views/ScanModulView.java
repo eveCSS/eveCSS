@@ -995,7 +995,7 @@ public class ScanModulView extends ViewPart {
 										.getAbstractDeviceByFullIdentifyer(
 												motorAxisCombo.getText());
 								if (motorAxis != null) {
-									Axis axis = new Axis();
+									Axis axis = new Axis( currentScanModul );
 									axis.setMotorAxis(motorAxis);
 									currentScanModul.add(axis);
 									fillFields();

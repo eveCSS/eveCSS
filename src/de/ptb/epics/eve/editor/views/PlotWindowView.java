@@ -763,7 +763,8 @@ public class PlotWindowView extends ViewPart {
 			this.preInitWindowCheckBox.setSelection( false );
 			this.scaleTypeComboBox.setText( "" );
 
-			/* Durch den Aufruf von setScanModul werden die Inhalte der 3 ComboBoxen neu gesetzt und brauchen hier nicht
+			/* Durch den Aufruf von setScanModul werden die Inhalte der 3 ComboBoxen 
+			 * neu gesetzt und brauchen hier nicht
 			 * eingestellt zu werden.
 			 */
 //			this.motorAxisComboBox.setText( "" );

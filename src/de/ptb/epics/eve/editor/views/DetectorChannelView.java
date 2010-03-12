@@ -278,13 +278,13 @@ public class DetectorChannelView extends ViewPart {
 				
 				// we create an event and add it to the list if selected 
 				// or remove the event with same id from the list if deselected
-				Event detReadyEvent = new Event(currentChannel.getAbstractDevice().getID(), currentChannel.getAbstractDevice().getName(), currentChannel.getParentScanModul().getChain().getId(), currentChannel.getParentScanModul().getId());
+				Event detReadyEvent = new Event(currentChannel.getAbstractDevice().getID(), currentChannel.getAbstractDevice().getName(), currentChannel.getScanModul().getChain().getId(), currentChannel.getScanModul().getId());
 
 				if( detectorReadyEventCheckBox.getSelection() ) {
-					currentChannel.getParentScanModul().getChain().getScanDescription().add( detReadyEvent );
+					currentChannel.getScanModul().getChain().getScanDescription().add( detReadyEvent );
 					currentChannel.setDetectorReadyEvent(detReadyEvent);
 				} else {
-					currentChannel.getParentScanModul().getChain().getScanDescription().removeEventById( detReadyEvent.getID() );
+					currentChannel.getScanModul().getChain().getScanDescription().removeEventById( detReadyEvent.getID() );
 					currentChannel.setDetectorReadyEvent(null);
 				}
 			}

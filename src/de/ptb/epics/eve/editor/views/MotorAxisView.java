@@ -71,7 +71,7 @@ public class MotorAxisView extends ViewPart {
 		gridData.horizontalAlignment = GridData.FILL;
 		this.stepfunctionLabel.setLayoutData( gridData );
 		
-		this.stepFunctionCombo = new Combo( this.top, SWT.NONE );
+		this.stepFunctionCombo = new Combo( this.top, SWT.READ_ONLY );
 		this.stepFunctionCombo.setItems( this.stepfunctions );
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -158,7 +158,7 @@ public class MotorAxisView extends ViewPart {
 		gridData.horizontalAlignment = GridData.FILL;
 		this.positionModeLabel.setLayoutData( gridData );
 		
-		this.positionModeCombo = new Combo( this.top, SWT.NONE );
+		this.positionModeCombo = new Combo( this.top, SWT.READ_ONLY );
 		this.positionModeCombo.setItems( PositionMode.getPossiblePositionModes() );
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
