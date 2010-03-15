@@ -257,7 +257,8 @@ public class ScanModulView extends ViewPart {
 		this.saveMotorpositionsLabel.setLayoutData(gridData);
 
 		this.saveMotorpositionsCombo = new Combo(this.generalComposite,
-				SWT.DROP_DOWN | SWT.READ_ONLY);
+				SWT.NONE);
+//		SWT.DROP_DOWN | SWT.READ_ONLY);
 		this.saveMotorpositionsCombo.setItems(new String[] { "never", "before",
 				"after", "both" });
 		gridData = new GridData();
@@ -837,6 +838,8 @@ public class ScanModulView extends ViewPart {
 		this.settleTimeText.addModifyListener(this.modifyListener);
 		this.confirmTriggerCheckBox
 				.addSelectionListener(this.selectionListener);
+//TODO Neuer Listener
+		this.saveMotorpositionsCombo.addModifyListener(this.modifyListener);
 		this.addMotorAxisButton.addSelectionListener(this.selectionListener);
 		this.addDetectorChannelButton
 				.addSelectionListener(this.selectionListener);

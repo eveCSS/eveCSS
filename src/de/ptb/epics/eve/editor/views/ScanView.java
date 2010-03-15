@@ -88,7 +88,7 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 	
 	private Button savePluginOptionsButton = null;
 	
-	private Button saveScanDescriptionCheckbox = null;
+	private Button saveScanDescriptionCheckBox = null;
 	
 	private Text commentInput = null;
 
@@ -224,11 +224,11 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 		this.savePluginOptionsButton.setLayoutData( gridData );
 
 		// Save Scan Description Box / Labels
-		this.saveScanDescriptionCheckbox = new Button( this.savingComposite, SWT.CHECK );
-		this.saveScanDescriptionCheckbox.setText( "Save Scan-Description" );
+		this.saveScanDescriptionCheckBox = new Button( this.savingComposite, SWT.CHECK );
+		this.saveScanDescriptionCheckBox.setText( "Save Scan-Description" );
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
-		this.saveScanDescriptionCheckbox.setLayoutData( gridData );
+		this.saveScanDescriptionCheckBox.setLayoutData( gridData );
 		
 		@SuppressWarnings("unused")
 		Label filler12 = new Label( this.savingComposite, SWT.NONE );
@@ -395,7 +395,7 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 		this.autoNumberCheckBox.setEnabled(enabled);
 		this.savePlugingCombo.setEnabled(enabled);
 		this.eventsTabFolder.setEnabled(enabled);
-		this.saveScanDescriptionCheckbox.setEnabled( enabled );
+		this.saveScanDescriptionCheckBox.setEnabled( enabled );
 		this.commentInput.setEnabled( enabled );
 		if( enabled ) {
 			if( this.currentChain.getSavePluginController().getPlugin() != null ) {
@@ -420,7 +420,7 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 			this.manualSaveCheckBox.setSelection( this.currentChain.isConfirmSave() );
 			this.autoNumberCheckBox.setSelection( this.currentChain.isAutoNumber() );
 			
-			this.saveScanDescriptionCheckbox.setSelection( this.currentChain.isSaveScanDescription() );
+			this.saveScanDescriptionCheckBox.setSelection( this.currentChain.isSaveScanDescription() );
 			
 			this.savePlugingCombo.setText( (this.currentChain.getSavePluginController().getPlugin() !=null)?this.currentChain.getSavePluginController().getPlugin().getName():"" );
 				
@@ -462,7 +462,7 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 			this.filenameInput.setText( "" );
 			this.manualSaveCheckBox.setSelection( false );
 			this.autoNumberCheckBox.setSelection( false );
-			this.saveScanDescriptionCheckbox.setSelection( false );
+			this.saveScanDescriptionCheckBox.setSelection( false );
 			this.savePlugingCombo.setText( "" );
 			this.pauseEventComposite.setControlEventManager( null );
 			this.redoEventComposite.setControlEventManager( null );
@@ -504,7 +504,7 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 		this.savePlugingCombo.addModifyListener( this.modifyListener );
 		this.manualSaveCheckBox.addSelectionListener( this.selectionListener );
 		this.autoNumberCheckBox.addSelectionListener( this.selectionListener );
-		this.saveScanDescriptionCheckbox.addSelectionListener( this.selectionListener );
+		this.saveScanDescriptionCheckBox.addSelectionListener( this.selectionListener );
 		this.commentInput.addModifyListener( this.modifyListener );
 		this.savePluginOptionsButton.addSelectionListener( this.selectionListener );
 	}
@@ -546,6 +546,8 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 				if( !filling ) {
 					if( e.widget == manualSaveCheckBox ) {
 						currentChain.setConfirmSave( manualSaveCheckBox.getSelection() );
+					} else if( e.widget == saveScanDescriptionCheckBox ) {
+						currentChain.setSaveScanDescription( saveScanDescriptionCheckBox.getSelection() );
 					} else if( e.widget == autoNumberCheckBox ) {
 						currentChain.setAutoNumber( autoNumberCheckBox.getSelection() );
 					} else if( e.widget == savePluginOptionsButton ) {
