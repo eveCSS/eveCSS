@@ -431,11 +431,21 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								if ( !this.stepwidthText.getText().equals("")) {
 									// stepwidth Eintrag schon vorhanden
 									final double stepwidth = Double.parseDouble( this.stepwidthText.getText() );
-									if ( stepwidth == (( stop - start) / stepamount )) {
+									// Wenn Zähler oder Nenner gleich 0, besondere Behandlung
+									if ((stop - start == 0) || (stepamount == 0)) {
+										if ( stepwidth == 0) {
+											// Wert wird nicht nochmal gesetzt
+										}
+										else {
+											this.stepwidthText.setText( "0" );
+										}
+									}
+									else if ( stepwidth == (( stop - start) / stepamount )) {
 										// Wert wird nicht nochmal gesetzt
 									}
-									else
-										this.stepwidthText.setText( "" + (( stop - start) / stepamount ) );
+									else {
+											this.stepwidthText.setText( "" + (( stop - start) / stepamount ) );
+									}
 								}
 								else
 									this.stepwidthText.setText( "" + ( (stop - start ) / stepamount ) );
@@ -481,7 +491,16 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								if ( !this.stepamountText.getText().equals("")) {
 									// stepamount Eintrag schon vorhanden
 									final double stepamount = Double.parseDouble( this.stepamountText.getText() );
-									if ( stepamount == (( stop - start) / stepwidth )) {
+									// Wenn Zähler oder Nenner gleich 0, besondere Behandlung
+									if ((stop - start == 0) || (stepwidth == 0)) {
+										if ( stepamount == 0) {
+											// Wert wird nicht nochmal gesetzt
+										}
+										else {
+											this.stepamountText.setText( "0" );
+										}
+									}
+									else if ( stepamount == (( stop - start) / stepwidth )) {
 										// Wert wird nicht nochmal gesetzt
 									}
 									else
@@ -543,7 +562,17 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 						final double stop = Double.parseDouble( axis[i].getStop() );
 						final double stepwidth = Double.parseDouble( axis[i].getStepwidth() );
 						final double stepamount = Double.parseDouble( stepamountText.getText() );
-						if ( stepwidth == (( stop - start) / stepamount )) {
+
+						// Wenn Zähler oder Nenner gleich 0, besondere Behandlung
+						if ((stop - start == 0) || (stepamount == 0)) {
+							if ( stepwidth == 0) {
+								// Wert wird nicht nochmal gesetzt
+							}
+							else {
+								axis[i].setStepwidth( "0" );
+							}
+						}
+						else if ( stepwidth == (( stop - start) / stepamount )) {
 							// Wert wird nicht nochmal gesetzt
 						}
 						else {
@@ -569,7 +598,16 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 						final double stepamount_d = Double.parseDouble( stepamountText.getText() );
 						final int stepamount = (int)stepamount_d;
 
-						if ( stepwidth == (( stop - start) / stepamount )) {
+						// Wenn Zähler oder Nenner gleich 0, besondere Behandlung
+						if ((stop - start == 0) || (stepamount == 0)) {
+							if ( stepwidth == 0) {
+								// Wert wird nicht nochmal gesetzt
+							}
+							else {
+								axis[i].setStepwidth( "0" );
+							}
+						}
+						else if ( stepwidth == (( stop - start) / stepamount )) {
 							// Wert wird nicht nochmal gesetzt
 						}
 						else {

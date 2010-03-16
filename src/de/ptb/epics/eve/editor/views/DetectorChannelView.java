@@ -112,7 +112,7 @@ public class DetectorChannelView extends ViewPart {
 		this.averageErrorLabel.setLayoutData( gridData );
 		
 		this.maxDeviationLabel = new Label( this.top, SWT.NONE );
-		this.maxDeviationLabel.setText( "Max. Deviation:" );
+		this.maxDeviationLabel.setText( "Max. Deviation (%):" );
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.maxDeviationLabel.setLayoutData( gridData );
