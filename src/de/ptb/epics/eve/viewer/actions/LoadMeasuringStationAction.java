@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
+import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.MeasuringStationView;
 
 public class LoadMeasuringStationAction extends Action implements IWorkbenchAction {
@@ -38,7 +39,13 @@ public class LoadMeasuringStationAction extends Action implements IWorkbenchActi
 		
 		final File file = new File( name );
 		
-		final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader();
+		final String measuringStationDescription = de.ptb.epics.eve.preferences.Activator.getDefault().getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION );
+		final int lastSeperatorIndex = measuringStationDescription.lastIndexOf( File.separatorChar );
+		final String schemaFileLocation = measuringStationDescription.substring( 0, lastSeperatorIndex + 1 ) + "scml.xsd";
+		final File schemaFile = new File( schemaFileLocation );
+		
+		
+		final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader( schemaFile );
 		try {
 			measuringStationLoader.load( file );
 			final MeasuringStation measuringStation = measuringStationLoader.getMeasuringStation();

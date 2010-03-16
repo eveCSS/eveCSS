@@ -1,6 +1,5 @@
 package de.ptb.epics.eve.viewer;
 
-import java.awt.TrayIcon.MessageType;
 
 import org.csstudio.platform.model.pvs.IProcessVariableAddress;
 import org.csstudio.platform.model.pvs.ProcessVariableAdressFactory;
@@ -12,7 +11,6 @@ import org.csstudio.platform.simpledal.ProcessVariableConnectionServiceFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;

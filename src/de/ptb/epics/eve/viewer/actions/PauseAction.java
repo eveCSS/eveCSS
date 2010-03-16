@@ -6,6 +6,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.jface.dialogs.MessageDialog;
 
+import de.ptb.epics.eve.viewer.Activator;
+
 /**
  * Our sample action implements workbench action delegate.
  * The action proxy will be created by the workbench and
@@ -29,10 +31,7 @@ public class PauseAction implements IWorkbenchWindowActionDelegate {
 	 * @see IWorkbenchWindowActionDelegate#run
 	 */
 	public void run(IAction action) {
-		MessageDialog.openInformation(
-			window.getShell(),
-			"Viewer",
-			"The pause function has not been implemented yet!");
+		Activator.getDefault().getEcp1Client().getPlayController().pause();
 	}
 
 	/**

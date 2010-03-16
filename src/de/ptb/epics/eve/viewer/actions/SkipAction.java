@@ -6,6 +6,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.jface.dialogs.MessageDialog;
 
+import de.ptb.epics.eve.viewer.Activator;
+
 /**
  * Our sample action implements workbench action delegate.
  * The action proxy will be created by the workbench and
@@ -22,17 +24,8 @@ public class SkipAction implements IWorkbenchWindowActionDelegate {
 	public SkipAction() {
 	}
 
-	/**
-	 * The action has been activated. The argument of the
-	 * method represents the 'real' action sitting
-	 * in the workbench UI.
-	 * @see IWorkbenchWindowActionDelegate#run
-	 */
 	public void run(IAction action) {
-		MessageDialog.openInformation(
-			window.getShell(),
-			"Viewer",
-			"The skip function has not been implemented yet!");
+		Activator.getDefault().getEcp1Client().getPlayController().breakExecution();
 	}
 
 	/**

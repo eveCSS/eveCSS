@@ -5,6 +5,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.jface.dialogs.MessageDialog;
+import de.ptb.epics.eve.viewer.Activator;
 
 /**
  * Our sample action implements workbench action delegate.
@@ -29,10 +30,7 @@ public class StopAction implements IWorkbenchWindowActionDelegate {
 	 * @see IWorkbenchWindowActionDelegate#run
 	 */
 	public void run(IAction action) {
-		MessageDialog.openInformation(
-			window.getShell(),
-			"Viewer",
-			"The stop function has not been implemented yet!");
+		Activator.getDefault().getEcp1Client().getPlayController().stop();
 	}
 
 	/**
@@ -58,7 +56,7 @@ public class StopAction implements IWorkbenchWindowActionDelegate {
 	 * be able to provide parent shell for the message dialog.
 	 * @see IWorkbenchWindowActionDelegate#init
 	 */
-	public void init(IWorkbenchWindow window) {
+	public void init( final IWorkbenchWindow window ) {
 		this.window = window;
 	}
 }
