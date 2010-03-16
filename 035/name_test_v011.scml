@@ -20,8 +20,8 @@
             <scanmodule id="1">
                 <type>classic</type>
                 <name>BasisScan</name>
-                <xpos>144</xpos>
-                <ypos>97</ypos>
+                <xpos>145</xpos>
+                <ypos>98</ypos>
                 <parent>0</parent>
                 <appended>2</appended>
                 <settletime>3.0</settletime>
@@ -49,7 +49,7 @@
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
                     <start type="double">10.0</start>
-                    <stop type="double">16.8</stop>
+                    <stop type="double">28.9</stop>
                     <stepwidth type="double">1</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
@@ -57,10 +57,10 @@
                     <axisid>PPSMC:23715001</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="double">1.0</start>
-                    <stop type="double">17.0</stop>
-                    <stepwidth type="double">2.611</stepwidth>
-                    <ismainaxis>true</ismainaxis>
+                    <start type="double">-43.0</start>
+                    <stop type="double">25.4</stop>
+                    <stepwidth type="double">3.4666666666666663</stepwidth>
+                    <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smaxis>
                     <axisid>PPSMC:23715002</axisid>
@@ -482,7 +482,7 @@
                 <id>PPSMC:23715000</id>
                 <goto>
                     <access method="PUTCB" type="double" transport="ca">PPSMC:23715000</access>
-                    <value type="double">10.0, 12.0, 13.1, 16.8</value>
+                    <value type="double">10.0, 12.0, 13.1, 14.7, 16.8, 20.5, 23.7, 25.1, 28.9</value>
                 </goto>
                 <position>
                     <access method="GETCB" type="double" transport="ca">PPSMC:23715000.RBV</access>

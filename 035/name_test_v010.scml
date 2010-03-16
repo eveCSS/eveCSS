@@ -20,8 +20,8 @@
             <scanmodule id="1">
                 <type>classic</type>
                 <name>BasisScan</name>
-                <xpos>145</xpos>
-                <ypos>98</ypos>
+                <xpos>119</xpos>
+                <ypos>122</ypos>
                 <parent>0</parent>
                 <appended>2</appended>
                 <settletime>3.0</settletime>
@@ -46,52 +46,46 @@
                 </prescan>
                 <smaxis>
                     <axisid>PPSMC:23715000</axisid>
-                    <stepfunction>Add</stepfunction>
+                    <stepfunction>File</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="double">10.0</start>
-                    <stop type="double">13.1</stop>
-                    <stepwidth type="double">2</stepwidth>
-                    <ismainaxis>false</ismainaxis>
+                    <stepfilename>/soft/home/scherr/eclipse/sme_v2/de.ptb.epics.eve.testfiles/035/position_file.txt</stepfilename>
                 </smaxis>
                 <smaxis>
                     <axisid>PPSMC:23715001</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="double">15.0</start>
-                    <stop type="double">17.0</stop>
-                    <stepwidth type="double">2.7</stepwidth>
-                    <ismainaxis>false</ismainaxis>
+                    <start type="double">-43.0</start>
+                    <stop type="double">25.4</stop>
+                    <stepwidth type="double">35.2</stepwidth>
+                    <ismainaxis>true</ismainaxis>
                 </smaxis>
                 <smaxis>
                     <axisid>PPSMC:23715002</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="double">7.0</start>
-                    <stop type="double">18.0</stop>
-                    <stepwidth type="double">0.5</stepwidth>
+                    <start type="string">Mg</start>
+                    <stop type="string">Pb</stop>
+                    <stepwidth type="string">2</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smchannel>
                     <channelid>ringCurrent1</channelid>
-                    <averagecount>1</averagecount>
                     <maxattempts>0</maxattempts>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
                 <smchannel>
                     <channelid>P5000:2370700.1</channelid>
-                    <averagecount>0</averagecount>
+                    <maxdeviation>5.0</maxdeviation>
                     <maxattempts>0</maxattempts>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
                 <smchannel>
                     <channelid>K0617:22225.2</channelid>
-                    <averagecount>0</averagecount>
                     <maxattempts>0</maxattempts>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
                 <smchannel>
                     <channelid>K0617:22225.1</channelid>
-                    <averagecount>0</averagecount>
                     <maxattempts>0</maxattempts>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
@@ -107,6 +101,15 @@
                     <id>P5000:23707range</id>
                     <value type="string">2 -&gt;V mA kO</value>
                 </postscan>
+                <positioning>
+                    <axis_id>PPSMC:23715000</axis_id>
+                    <channel_id>P5000:2370700.1</channel_id>
+                    <normalize_id>ringCurrent1</normalize_id>
+                    <plugin name="GOTO-Peak">
+                        <parameter name="location">/path/to/plugin3</parameter>
+                        <parameter name="direction">positive</parameter>
+                    </plugin>
+                </positioning>
                 <plot id="1">
                     <xaxis>
                         <id>Counter02.01</id>
@@ -169,7 +172,7 @@
             <scanmodule id="2">
                 <type>classic</type>
                 <name>Zweites Scan Modul</name>
-                <xpos>252</xpos>
+                <xpos>253</xpos>
                 <ypos>55</ypos>
                 <parent>1</parent>
                 <triggerconfirm>false</triggerconfirm>
@@ -183,18 +186,51 @@
                     <stepwidth type="int">0</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
+                <smaxis>
+                    <axisid>PPSMC:23715000</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">10.0</start>
+                    <stop type="double">10.0</stop>
+                    <stepwidth type="double">10.0</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smaxis>
+                    <axisid>PPSMC:23715001</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">0.0</start>
+                    <stop type="double">0.0</stop>
+                    <stepwidth type="double">0.0</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
                 <smchannel>
                     <channelid>K0617:22225.1</channelid>
-                    <averagecount>0</averagecount>
                     <maxattempts>0</maxattempts>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
                 <smchannel>
                     <channelid>K0617:23326.1</channelid>
-                    <averagecount>0</averagecount>
                     <maxattempts>0</maxattempts>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
+                <positioning>
+                    <axis_id>PPSMC:23715000</axis_id>
+                    <channel_id>K0617:23326.1</channel_id>
+                    <plugin name="GOTO-Center">
+                        <parameter name="location">/path/to/plugin3</parameter>
+                        <parameter name="direction">positive</parameter>
+                    </plugin>
+                </positioning>
+                <positioning>
+                    <axis_id>PPSMC:23715001</axis_id>
+                    <channel_id>K0617:22225.1</channel_id>
+                    <normalize_id>K0617:23326.1</normalize_id>
+                    <plugin name="GOTO-Peak">
+                        <parameter name="location">/path/to/plugin3</parameter>
+                        <parameter name="direction">positive</parameter>
+                    </plugin>
+                </positioning>
             </scanmodule>
         </scanmodules>
     </chain>
@@ -482,7 +518,7 @@
                 <id>PPSMC:23715000</id>
                 <goto>
                     <access method="PUTCB" type="double" transport="ca">PPSMC:23715000</access>
-                    <value type="double">10.0, 12.0, 13.1, 16.8</value>
+                    <value type="double">10.0, 12.0, 13.1, 14.7, 16.8, 20.5, 23.7, 25.1, 28.9</value>
                 </goto>
                 <position>
                     <access method="GETCB" type="double" transport="ca">PPSMC:23715000.RBV</access>
@@ -543,7 +579,7 @@
                 <id>PPSMC:23715002</id>
                 <goto>
                     <access method="PUTCB" type="double" transport="ca">PPSMC:23715002</access>
-                    <value type="double">-10.0 to 20.0</value>
+                    <value type="string">Fe, Mg, Al, Pb, Si</value>
                 </goto>
                 <position>
                     <access method="GETCB" type="double" transport="ca">PPSMC:23715002.RBV</access>
@@ -577,6 +613,51 @@
                     <value type="string">Enable, Disable</value>
                 </value>
             </option>
+        </motor>
+        <motor>
+            <class>ServoMotor</class>
+            <name>SX700-</name>
+            <id>OMS58:212000servo</id>
+            <axis>
+                <name>Mirror</name>
+                <id>OMS58:21200000servo</id>
+                <goto>
+                    <access method="PUTCB" type="double" transport="ca">OMS58:21200000</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="double" transport="ca">OMS58:21200000.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">OMS58:21200000.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <status>
+                    <access method="GETCB" type="int" transport="ca">OMS58:21200000.STAT</access>
+                </status>
+                <unit>
+                    <access method="GETCB" type="string" transport="ca">OMS58:21200000.EGU</access>
+                </unit>
+            </axis>
+            <axis>
+                <name>Grating</name>
+                <id>OMS58:21200001servo</id>
+                <goto>
+                    <access method="PUTCB" type="double" transport="ca">OMS58:21200001</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="double" transport="ca">OMS58:21200001.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">OMS58:21200001.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <status>
+                    <access method="GETCB" type="int" transport="ca">OMS58:21200001.MSTA</access>
+                </status>
+                <unit>
+                    <access method="GETCB" type="string" transport="ca">OMS58:21200001.EGU</access>
+                </unit>
+            </axis>
         </motor>
     </motors>
     <devices>
