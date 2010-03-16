@@ -1287,7 +1287,7 @@ public class ScanModulView extends ViewPart {
 			TableItem item = new TableItem(this.motorAxisTable, SWT.NONE);
 			item.setText(new String[] {
 					axis[i].getMotorAxis().getFullIdentifyer(),
-					axis[i].getStepfunction() });
+					axis[i].getStepfunctionString() });
 			item.setData(axis[i]);
 			// Table Eintrag wird aus der Combo-Box entfernt
 			motorAxisCombo.remove(axis[i].getMotorAxis().getFullIdentifyer());

@@ -134,8 +134,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		this.setPartName( input.getName() );
 		final FileStoreEditorInput fileStoreEditorInput = (FileStoreEditorInput)input;
 		final File scanDescriptionFile = new File( fileStoreEditorInput.getURI() );
-		final ScanDescriptionLoader scanDescriptionLoader = new ScanDescriptionLoader();
-		scanDescriptionLoader.setMeasuringStation( Activator.getDefault().getMeasuringStation() );
+		final ScanDescriptionLoader scanDescriptionLoader = new ScanDescriptionLoader( Activator.getDefault().getMeasuringStation(), Activator.getDefault().getSchemaFile() );
 		try {
 			scanDescriptionLoader.load( scanDescriptionFile );
 			this.scanDescription = scanDescriptionLoader.getScanDescription();

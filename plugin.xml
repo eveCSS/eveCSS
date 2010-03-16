@@ -10,20 +10,6 @@
       </perspective>
    </extension>
    <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            class="de.ptb.epics.eve.editor.EveEditorPreferencePage"
-            id="de.ptb.epics.eve.editor.EveEditorPreferencePage"
-            name="Eve Editor">
-      </page>
-   </extension>
-   <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="de.ptb.epics.eve.editor.PreferenceInitializer">
-      </initializer>
-   </extension>
-   <extension
          point="org.eclipse.ui.editors">
       <editor
             class="de.ptb.epics.eve.editor.graphical.GraphicalEditor"

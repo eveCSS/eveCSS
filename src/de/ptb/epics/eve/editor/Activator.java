@@ -7,6 +7,7 @@ import org.osgi.framework.BundleContext;
 
 import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
+import de.ptb.epics.eve.preferences.PreferenceConstants;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -20,6 +21,8 @@ public class Activator extends AbstractUIPlugin {
 	private static Activator plugin;
 	
 	private MeasuringStation measuringStation;
+	
+	private File schemaFile;
 	
 	/**
 	 * The constructor
@@ -36,12 +39,20 @@ public class Activator extends AbstractUIPlugin {
 		plugin = this;
 		
 		
-		final String measuringStationDescrition = this.getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION );
-		if( !measuringStationDescrition.equals( "" ) ) {
-			final File measuringStationDescriptionFile = new File( measuringStationDescrition );
+		
+		final String measuringStationDescription = de.ptb.epics.eve.preferences.Activator.getDefault().getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION );
+		
+		if( !measuringStationDescription.equals( "" ) ) { 
+			final int lastSeperatorIndex = measuringStationDescription.lastIndexOf( File.separatorChar );
+			final String schemaFileLocation = measuringStationDescription.substring( 0, lastSeperatorIndex + 1 ) + "scml.xsd";
+			this.schemaFile = new File( schemaFileLocation );
+		}
+		
+		if( !measuringStationDescription.equals( "" ) ) {
+			final File measuringStationDescriptionFile = new File( measuringStationDescription );
 			if( measuringStationDescriptionFile.exists() ) {
 				try {
-					final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader();
+					final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader( this.schemaFile );
 					measuringStationLoader.load( measuringStationDescriptionFile );
 					this.measuringStation = measuringStationLoader.getMeasuringStation();
 				} catch( final Throwable th ) {
@@ -75,4 +86,8 @@ public class Activator extends AbstractUIPlugin {
 		return this.measuringStation;
 	}
 
+	public File getSchemaFile() {
+		return this.schemaFile;
+	}
+	
 }
