@@ -5,37 +5,37 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="Eve-Viewer"
-            class="de.ptb.epics.eve.viewer.EveViewerPerspective"
-          id="EveViewerPerspective">
+            name="%perspective.name"
+            class="de.ptb.epics.eve.viewer.EveEnginePerspective"
+          id="EveEnginePerspective">
       </perspective>
       <perspective
-            class="de.ptb.epics.eve.viewer.EveViewerOfflinePerspective"
-            id="EveViewerOfflinePerspective"
-            name="Eve-Viewer-Offline"/>
+            class="de.ptb.epics.eve.viewer.EveDevicePerspective"
+            id="EveDevicePerspective"
+            name="%perspective.name.0"/>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
-            name="Playlist"
+            name="%view.name"
             icon="icons/css.gif"
             class="de.ptb.epics.eve.viewer.PlayListView"
             id="PlayListView">
       </view>
       <view
-            name="Graph"
+            name="%view.name.0"
             icon="icons/css.gif"
             class="de.ptb.epics.eve.viewer.GraphView"
             id="GraphView">
       </view>
       <view
-            name="Measuring Station"
+            name="%view.name.1"
             icon="icons/css.gif"
             class="de.ptb.epics.eve.viewer.MeasuringStationView"
             id="MeasuringStationView">
       </view>
       <view
-            name="Messages"
+            name="%view.name.2"
             icon="icons/css.gif"
             class="de.ptb.epics.eve.viewer.MessagesView"
             id="MessagesView">
@@ -44,17 +44,17 @@
             class="de.ptb.epics.eve.viewer.DeviceInspectorViewer"
             icon="icons/css.gif"
             id="DeviceInspectorView"
-            name="Device Inspector"/>
+            name="%view.name.3"/>
       <view
             class="de.ptb.epics.eve.viewer.DeviceOptionsViewer"
             icon="icons/css.gif"
             id="DeviceOptionsView"
-            name="Device Options"/>
+            name="%view.name.4"/>
       <view
             class="de.ptb.epics.eve.viewer.PlotView"
             icon="icons/css.gif"
             id="PlotView"
-            name="Plot"/>
+            name="%view.name.5"/>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -72,85 +72,78 @@
          point="org.eclipse.ui.actionSets">
       <actionSet
             id="de.ptb.epics.eve.viewer.engineControlActionSet"
-            label="Engine Control Action Set"
+            label="%actionSet.label"
             visible="false">
          <menu
                id="engineControlMenu"
-               label="Engine Control">
+               label="%menu.label">
             <separator name="engineControlGroup"/>
          </menu>
+         <action
+               class="de.ptb.epics.eve.viewer.actions.TriggerAction"
+               icon="icons/sample.gif"
+               id="de.ptb.epics.eve.viewer.actions.TriggerAction"
+               label="%action.label.4"
+               menubarPath="engineControlMenu/engineControlGroup"
+               style="push"
+               toolbarPath="engineControlGroup"
+               tooltip="%action.tooltip.4">
+         </action>
          <action
                class="de.ptb.epics.eve.viewer.actions.KillAction"
                icon="icons/sample.gif"
                id="de.ptb.epics.eve.viewer.actions.KillAction"
-               label="Kill"
+               label="%action.label"
                menubarPath="engineControlMenu/engineControlGroup"
                style="push"
                toolbarPath="engineControlGroup"
-               tooltip="Kill"/>
+               tooltip="%action.tooltip"/>
          
         
          <action
                class="de.ptb.epics.eve.viewer.actions.SkipAction"
                icon="icons/skip.gif"
                id="de.ptb.epics.eve.viewer.actions.SkipAction"
-               label="Skip"
+               label="%action.label.0"
                menubarPath="engineControlMenu/engineControlGroup"
                style="push"
                toolbarPath="engineControlGroup"
-               tooltip="Skip"/>
+               tooltip="%action.tooltip.0"/>
           <action
                class="de.ptb.epics.eve.viewer.actions.StopAction"
                icon="icons/stop.gif"
                id="de.ptb.epics.eve.viewer.StopAction"
-               label="Stop"
+               label="%action.label.1"
                menubarPath="engineControlMenu/engineControlGroup"
                style="push"
                toolbarPath="engineControlGroup"
-               tooltip="Stop"/>
+               tooltip="%action.tooltip.1"/>
          <action
                class="de.ptb.epics.eve.viewer.actions.PauseAction"
                icon="icons/pause.gif"
                id="de.ptb.epics.eve.viewer.actions.PauseAction"
-               label="Pause"
+               label="%action.label.2"
                menubarPath="engineControlMenu/engineControlGroup"
                style="push"
                toolbarPath="engineControlGroup"
-               tooltip="Pause"/>
+               tooltip="%action.tooltip.2"/>
          <action
                class="de.ptb.epics.eve.viewer.actions.PlayAction"
                icon="icons/play.gif"
                id="de.ptb.epics.eve.viewer.actions.PlayAction"
-               label="Play"
+               label="%action.label.3"
                menubarPath="engineControlMenu/engineControlGroup"
                style="push"
                toolbarPath="engineControlGroup"
-               tooltip="Play"/>
-      </actionSet>
-      <actionSet
-            id="de.ptb.epics.eve.viewer.triggerActionSet"
-            label="Trigger Action Set"
-            visible="false">
-         <menu
-               id="triggerMenu"
-               label="Trigger Menu">
-            <separator name="triggerGroup"/>
-         </menu>
-         <action
-               class="de.ptb.epics.eve.viewer.actions.TriggerAction"
-               id="de.ptb.epics.eve.viewer.actions.TriggerAction"
-               label="Trigger"
-               menubarPath="triggerMenu/triggerGroup"
-               toolbarPath="triggerGroup"
-               tooltip="Trigger"/>
+               tooltip="%action.tooltip.3"/>
       </actionSet>
       <actionSet
             id="de.ptb.epics.eve.viewer.engineConnectionActionSet"
-            label="Engine Connection Action Set"
+            label="%actionSet.label.1"
             visible="false">
          <menu
                id="engineConnectionMenu"
-               label="Engine Connection">
+               label="%menu.label.1">
             <separator name="engineConnectionGroup"/>
          </menu>
          
@@ -158,26 +151,26 @@
                class="de.ptb.epics.eve.viewer.actions.StartAndConnectAction"
                icon="icons/sample.gif"
                id="de.ptb.epics.eve.viewer.actions.StartAndConnectAction"
-               label="Start Engine and Connect"
+               label="%action.label.5"
                menubarPath="engineConnectionMenu/engineConnectionGroup"
                style="push"
-               tooltip="Start Engine and Connect"/>
+               tooltip="%action.tooltip.5"/>
          <action
                class="de.ptb.epics.eve.viewer.actions.DisconnectAction"
                icon="icons/sample.gif"
                id="de.ptb.epics.eve.viewer.actions.DisconnectAction"
-               label="Disconnect"
+               label="%action.label.6"
                menubarPath="engineConnectionMenu/engineConnectionGroup"
                style="push"
-               tooltip="Disconnect"/>
+               tooltip="%action.tooltip.6"/>
          <action
                class="de.ptb.epics.eve.viewer.actions.ConnectAction"
                icon="icons/sample.gif"
                id="de.ptb.epics.eve.viewer.actions.ConnectAction"
-               label="Connect"
+               label="%action.label.7"
                menubarPath="engineConnectionMenu/engineConnectionGroup"
                style="push"
-               tooltip="Connect"/>
+               tooltip="%action.tooltip.7"/>
       </actionSet>
    </extension>
 

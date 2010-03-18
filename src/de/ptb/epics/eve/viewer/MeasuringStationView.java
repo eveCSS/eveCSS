@@ -21,6 +21,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.actions.LoadMeasuringStationAction;
 
 /**
@@ -55,12 +56,13 @@ public final class MeasuringStationView extends ViewPart {
 	@Override
 	public void createPartControl( final Composite parent ) {
 		
-		this.loadMeasuringStationAction = new LoadMeasuringStationAction( this );
-		this.loadMeasuringStationAction.setText( "Load measuring station description." );
-		this.loadMeasuringStationAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_OBJ_FILE ) );
-		this.getViewSite().getActionBars().getToolBarManager().add( this.loadMeasuringStationAction );
-		
-		
+		measuringStation = Activator.getDefault().getMeasuringStation();
+		if( measuringStation == null ) {
+			final Label errorLabel = new Label( parent, SWT.NONE );
+			errorLabel.setText( "No device description has been loaded. Please check Preferences!" );
+			return;
+		}
+				
 		final FillLayout fillLayout = new FillLayout();
 		parent.setLayout( fillLayout );
 		this.treeViewer = new TreeViewer( parent );
@@ -124,6 +126,7 @@ public final class MeasuringStationView extends ViewPart {
 			}
 			
 		});
+		setMeasuringStation(measuringStation);
 	}
 
 	public void setMeasuringStation( final MeasuringStation measuringStation ) {

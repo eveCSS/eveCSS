@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Viewer
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: de.ptb.epics.eve.viewer; singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: de.ptb.epics.eve.viewer.Activator
-Bundle-Vendor: Physikalisch Technische Bundesanstalt
+Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -23,4 +23,6 @@ Eclipse-LazyStart: true
 Bundle-ClassPath: de.ptb.epics.ecp1.client.jar,
  de.ptb.epics.ecp1.intern.jar,
  .
-Export-Package: de.ptb.epics.eve.viewer
+Export-Package: de.ptb.epics.eve.viewer,
+ de.ptb.epics.eve.viewer.actions,
+ de.ptb.epics.eve.viewer.dialogs

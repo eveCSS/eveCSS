@@ -1,0 +1,10 @@
+
+h3. Noch zu tun
+
+(Hilfe mit F1)
+
+* Hilfe-System: am 20100315 vereinbart, dass
+** die Klassen (z.B. Chain, ScanModule, SmMotors, SMAxis) in der scandescription erhalten eine validate-Methode, die die Klasse verifiziert und einen Fehler-Enum und Fehler-Text erzeugt, sowie einen errorUpdate aufruft. Dieser Fehler kann von den Fehler-Widgets in der GUI abonniert werden.  Die validate-Methoden können auch die im Baum tiefer liegenden validate-Routinen aufrufen. Das betrifft nur Fehler, die in der GUI korrigiert werden können.
+** hierarchie-übergreifende Fehler bei events werden vermieden, indem z.B. beim Löschen eines Events die validate-Methoden der Klassen aufgerufen werden, die das Event verwenden. Die verwendenden Klassen sind im Event gelistet. Gibt es noch andere hierarchie-übergreifende Fehler?
+** Andere Fehler, z.B. doppelte Ids für scanmodule etc., die nicht in der GUI behoben werden können, werden von der XML-Einlese-Routine, bzw später von CutandPaste angezeigt bzw. korrigiert.
+

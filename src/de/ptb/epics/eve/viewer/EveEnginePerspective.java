@@ -30,7 +30,7 @@ import org.eclipse.ui.IPerspectiveFactory;
  * @author Sven Wende
  * 
  */
-public final class EveViewerPerspective implements IPerspectiveFactory {
+public final class EveEnginePerspective implements IPerspectiveFactory {
 
 	/**
 	 * {@inheritDoc}
@@ -48,7 +48,6 @@ public final class EveViewerPerspective implements IPerspectiveFactory {
 		
 		
 		layout.addActionSet( "de.ptb.epics.eve.viewer.engineControlActionSet" );
-		layout.addActionSet( "de.ptb.epics.eve.viewer.triggerActionSet" );
 		layout.addActionSet( "de.ptb.epics.eve.viewer.engineConnectionActionSet" );
 		//layout.addActionSet( "de.ptb.epics.eve.viewer.actionSet" );
 	}

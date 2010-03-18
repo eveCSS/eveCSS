@@ -6,11 +6,15 @@ import java.net.InetSocketAddress;
 
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-
+import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.ecp1.client.ECP1Client;
+import de.ptb.epics.eve.preferences.PreferenceConstants;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -27,7 +31,8 @@ public class Activator extends AbstractUIPlugin {
 	private final MeasurementDataDispatcher measurementDataDispatcher;
 	private final EngineErrorReader engineErrorReader;
 	private final ChainStatusAnalyzer chainStatusAnalyzer;
-	
+	private MeasuringStation measuringStation;
+
 	private ScanDescription currentScanDescription;
 	
 	private ECP1Client ecp1Client;
@@ -55,6 +60,28 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public void start( final BundleContext context ) throws Exception {
 		super.start(context);
+		
+		
+		final String measuringStationDescription = de.ptb.epics.eve.preferences.Activator.getDefault().getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION );
+		
+		if( !measuringStationDescription.equals( "" ) ) { 
+			final int lastSeperatorIndex = measuringStationDescription.lastIndexOf( File.separatorChar );
+			final String schemaFileLocation = measuringStationDescription.substring( 0, lastSeperatorIndex + 1 ) + "scml.xsd";
+			final File schemaFile = new File( schemaFileLocation );
+			final File measuringStationDescriptionFile = new File( measuringStationDescription );
+
+			if( measuringStationDescriptionFile.exists() ) {
+				try {
+					final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader( schemaFile );
+					measuringStationLoader.load( measuringStationDescriptionFile );
+					measuringStation = measuringStationLoader.getMeasuringStation();
+
+				} catch( final Throwable th ) {
+					measuringStation = null;
+					th.printStackTrace();
+				}
+			}
+		}		
 	}
 
 	/*
@@ -73,6 +100,10 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
+	}
+
+	public MeasuringStation getMeasuringStation() {
+		return this.measuringStation;
 	}
 
 	/**
