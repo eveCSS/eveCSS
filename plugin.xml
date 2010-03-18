@@ -4,6 +4,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            category="org.csstudio.platform.ui.css.applications"
             class="de.ptb.epics.eve.preferences.EvePreferencePage"
             id="de.ptb.epics.eve.preferences.EvePreferencePage"
             name="Eve">

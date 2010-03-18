@@ -13,7 +13,7 @@ public class EvePreferencePage extends FieldEditorPreferencePage implements IWor
 	}
 	
 	public void createFieldEditors() {
-		addField( new FileFieldEditor( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION, "Measuring Station description:", this.getFieldEditorParent() ) );
+		addField( new FileFieldEditor( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION, "device definition file:", this.getFieldEditorParent() ) );
 	}
 
 	public void init( final IWorkbench workbench ) {
