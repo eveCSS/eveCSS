@@ -37,7 +37,7 @@ public class HandOverAction implements IWorkbenchWindowActionDelegate {
 		de.ptb.epics.eve.editor.Activator.getDefault().getWorkbench().saveAllEditors( true );
 		
 		IPerspectiveRegistry reg = WorkbenchPlugin.getDefault().getPerspectiveRegistry();
-		PerspectiveDescriptor perspectiveDescriptor = (PerspectiveDescriptor)reg.findPerspectiveWithId( "EveViewerPerspective" );
+		PerspectiveDescriptor perspectiveDescriptor = (PerspectiveDescriptor)reg.findPerspectiveWithId( "EveEnginePerspective" );
 		
 		final IEditorPart currentEditor = window.getActivePage().getActiveEditor();
 		if( currentEditor instanceof GraphicalEditor ) {

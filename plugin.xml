@@ -6,7 +6,7 @@
       <perspective
             class="de.ptb.epics.eve.editor.EveEditorPerspective"
             id="EveEditorPerpective"
-            name="Eve-Editor">
+            name="%perspective.name">
       </perspective>
    </extension>
    <extension
@@ -17,7 +17,7 @@
             extensions="scml"
             filenames="*.scml"
             id="de.ptb.epics.eve.editor.graphical.GraphicalEditor"
-            name="de.ptb.epics.eve.editor.graphical.GraphicalEditor">
+            name="%editor.name">
       </editor>
    </extension>
    <extension
@@ -25,37 +25,37 @@
       <view
             class="de.ptb.epics.eve.editor.views.ScanView"
             id="de.ptb.epics.eve.editor.views.ScanView"
-            name="Scan View"
+            name="%view.name"
             restorable="true">
       </view>
       <view
             class="de.ptb.epics.eve.editor.views.ScanModulView"
             id="de.ptb.epics.eve.editor.views.ScanModulView"
-            name="Scan Modul View"
+            name="%view.name.0"
             restorable="true">
       </view>
       <view
             class="de.ptb.epics.eve.editor.views.ErrorView"
             id="de.ptb.epics.eve.editor.views.ErrorView"
-            name="Errors"
+            name="%view.name.1"
             restorable="true">
       </view>
       <view
             class="de.ptb.epics.eve.editor.views.MotorAxisView"
             id="de.ptb.epics.eve.editor.views.MotorAxisView"
-            name="Motor Axis View"
+            name="%view.name.2"
             restorable="true">
       </view>
       <view
             class="de.ptb.epics.eve.editor.views.DetectorChannelView"
             id="de.ptb.epics.eve.editor.views.DetectorChannelView"
-            name="Detector Channel View"
+            name="%view.name.3"
             restorable="true">
       </view>
       <view
             class="de.ptb.epics.eve.editor.views.PlotWindowView"
             id="de.ptb.epics.eve.editor.views.PlotWindowView"
-            name="Plot Window View"
+            name="%view.name.4"
             restorable="true">
       </view>
    </extension>
@@ -63,25 +63,25 @@
          point="org.eclipse.ui.newWizards">
       <category
             id="de.ptb.epics.eve"
-            name="EVE">
+            name="%category.name">
       </category>
       <wizard
             category="de.ptb.epics.eve"
             class="de.ptb.epics.eve.editor.wizards.NewScanDescriptionWizard"
             icon="icons/sample.gif"
             id="de.ptb.epics.eve.editor.wizards.NewScanDescriptionWizard"
-            name="Scan Description">
+            name="%wizard.name">
       </wizard>
    </extension>
    <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
             id="de.ptb.epics.eve.editor.handOverActionSet"
-            label="Hand-Over"
+            label="%actionSet.label"
             visible="false">
          <menu
                id="handOverMenu"
-               label="Hand Over">
+               label="%menu.label">
             <separator
                   name="handOverGroup">
             </separator>
@@ -89,20 +89,20 @@
          <action
                class="de.ptb.epics.eve.editor.actions.HandOverSilentAction"
                id="de.ptb.epics.eve.editor.actions.HandOverSilentAction"
-               label="HandOverSilent"
+               label="%action.label"
                menubarPath="handOverMenu/handOverGroup"
                style="push"
                toolbarPath="handOverGroup"
-               tooltip="Hand Over Silent">
+               tooltip="%action.tooltip">
          </action>
          <action
                class="de.ptb.epics.eve.editor.actions.HandOverAction"
                id="de.ptb.epics.eve.editor.actions.HandOverAction"
-               label="HandOver"
+               label="%action.label.0"
                menubarPath="handOverMenu/handOverGroup"
                style="push"
                toolbarPath="handOverGroup"
-               tooltip="Hand Over">
+               tooltip="%action.tooltip.0">
          </action>
       </actionSet>
    </extension>
