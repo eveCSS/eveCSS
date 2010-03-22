@@ -35,13 +35,13 @@ import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 /**
  * This composite presents a connection to a device.
  * 
- * The connection is established with simplDAL. The compisite provides the following Information:
+ * The connection is established with simplDAL. The composite provides the following Information:
  * - Name of the device
  * - Current value of the device
  * - The unit of the device.
  * - A label that shows the current connection state to the device.
  * 
- * As interactive control if provides
+ * As interactive control it provides
  * - Depending on the datatype a text input or combobox and
  * - a set button for setting a device.
  * 

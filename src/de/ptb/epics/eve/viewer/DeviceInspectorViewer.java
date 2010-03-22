@@ -27,7 +27,9 @@ import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.Device;
 
 /**
@@ -40,7 +42,7 @@ public class DeviceInspectorViewer extends ViewPart implements DisposeListener {
 
 	private ExpandBar bar;
 	
-	private Composite motoAxisesComposite;
+	private Composite motorAxesComposite;
 	private Composite detectorChannelsComposite;
 	private Composite devicesComposite;
 	
@@ -107,57 +109,33 @@ public class DeviceInspectorViewer extends ViewPart implements DisposeListener {
 							if( device != null ) {
 								if( device instanceof MotorAxis ) {
 									if( !devices.contains( device ) ) {
-										MotorAxisComposite motorAxisComposite = new MotorAxisComposite( motoAxisesComposite, SWT.NONE, (MotorAxis)device );
-										motorAxisComposite.addDisposeListener( own );
-										Activator.getDefault().getEcp1Client().addMeasurementDataListener( motorAxisComposite );
-										
-										GridData gridData = new GridData();
-										gridData.horizontalAlignment = SWT.FILL;
-										gridData.grabExcessHorizontalSpace = true;
-										motorAxisComposite.setLayoutData( gridData );
-										motoAxisesComposite.layout();
-										item0.setHeight( motoAxisesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-										devices.add( device );
-										
-										DropTarget target = new DropTarget( motorAxisComposite, DND.DROP_COPY );
-										target.setTransfer( types );
-										target.addDropListener( this );
+										addMotorAxisEntry( device );
 									}
 								} else if( device instanceof DetectorChannel ){
 									if( !devices.contains( device ) ) {
-										DetectorChannelComposite detectorChannelComposite = new DetectorChannelComposite( detectorChannelsComposite, SWT.NONE, (DetectorChannel)device );
-										detectorChannelComposite.addDisposeListener( own );
-										Activator.getDefault().getEcp1Client().addMeasurementDataListener( detectorChannelComposite );
-										GridData gridData = new GridData();
-										gridData.horizontalAlignment = SWT.FILL;
-										gridData.grabExcessHorizontalSpace = true;
-										detectorChannelComposite.setLayoutData( gridData );
-										detectorChannelsComposite.layout();
-										item1.setHeight( detectorChannelsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-										devices.add( device );
-										
-										DropTarget target = new DropTarget( detectorChannelComposite, DND.DROP_COPY );
-										target.setTransfer( types );
-										target.addDropListener( this );
+										addDetectorChannelEntry( device );
 									}
 								} else if( device instanceof Device ){
 									if( !devices.contains( device ) ) {
-										DeviceComposite deviceComposite = new DeviceComposite( devicesComposite, SWT.NONE, (Device)device );
-										deviceComposite.addDisposeListener( own );
-										Activator.getDefault().getEcp1Client().addMeasurementDataListener( deviceComposite );
-										GridData gridData = new GridData();
-										gridData.horizontalAlignment = SWT.FILL;
-										gridData.grabExcessHorizontalSpace = true;
-										deviceComposite.setLayoutData( gridData );
-										devicesComposite.layout();
-										item2.setHeight( devicesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-										devices.add( device );
-										
-										DropTarget target = new DropTarget( deviceComposite, DND.DROP_COPY );
-										target.setTransfer( types );
-										target.addDropListener( this );
+										addDeviceEntry( device);
 									}
-									
+								
+								} else if( device instanceof Motor ){
+									final Motor motor = (Motor)device;
+									if( motor.getAxis().size() > 0 ) {
+										List<MotorAxis> axisList = motor.getAxis();
+										for (MotorAxis axis : axisList) {
+											addMotorAxisEntry( axis );
+										}
+									}
+								} else if( device instanceof Detector ){
+									final Detector detector = (Detector)device;
+									if( detector.getChannels().size() > 0 ) {
+										List<DetectorChannel> channelList = detector.getChannels();
+										for (DetectorChannel channel : channelList) {
+											addDetectorChannelEntry( channel );
+										}
+									}
 								}
 							}
 							break;
@@ -167,6 +145,60 @@ public class DeviceInspectorViewer extends ViewPart implements DisposeListener {
 				}
 				
 			}
+
+			private void addMotorAxisEntry( final AbstractDevice device){
+				MotorAxisComposite motorAxisComposite = new MotorAxisComposite( motorAxesComposite, SWT.NONE, (MotorAxis)device );
+				motorAxisComposite.addDisposeListener( own );
+				Activator.getDefault().getEcp1Client().addMeasurementDataListener( motorAxisComposite );
+				
+				GridData gridData = new GridData();
+				gridData.horizontalAlignment = SWT.FILL;
+				gridData.grabExcessHorizontalSpace = true;
+				motorAxisComposite.setLayoutData( gridData );
+				motorAxesComposite.layout();
+				item0.setHeight( motorAxesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+				devices.add( device );
+				
+				DropTarget target = new DropTarget( motorAxisComposite, DND.DROP_COPY );
+				target.setTransfer( types );
+				target.addDropListener( this );
+
+			}
+			
+			private void addDetectorChannelEntry( final AbstractDevice device){
+				DetectorChannelComposite detectorChannelComposite = new DetectorChannelComposite( detectorChannelsComposite, SWT.NONE, (DetectorChannel)device );
+				detectorChannelComposite.addDisposeListener( own );
+				Activator.getDefault().getEcp1Client().addMeasurementDataListener( detectorChannelComposite );
+				GridData gridData = new GridData();
+				gridData.horizontalAlignment = SWT.FILL;
+				gridData.grabExcessHorizontalSpace = true;
+				detectorChannelComposite.setLayoutData( gridData );
+				detectorChannelsComposite.layout();
+				item1.setHeight( detectorChannelsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+				devices.add( device );
+				
+				DropTarget target = new DropTarget( detectorChannelComposite, DND.DROP_COPY );
+				target.setTransfer( types );
+				target.addDropListener( this );
+			}
+
+			private void addDeviceEntry( final AbstractDevice device){
+				DeviceComposite deviceComposite = new DeviceComposite( devicesComposite, SWT.NONE, (Device)device );
+				deviceComposite.addDisposeListener( own );
+				Activator.getDefault().getEcp1Client().addMeasurementDataListener( deviceComposite );
+				GridData gridData = new GridData();
+				gridData.horizontalAlignment = SWT.FILL;
+				gridData.grabExcessHorizontalSpace = true;
+				deviceComposite.setLayoutData( gridData );
+				devicesComposite.layout();
+				item2.setHeight( devicesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+				devices.add( device );
+				
+				DropTarget target = new DropTarget( deviceComposite, DND.DROP_COPY );
+				target.setTransfer( types );
+				target.addDropListener( this );
+			}
+			
 
 			public void dropAccept( final DropTargetEvent event ) {
 				
@@ -190,8 +222,8 @@ public class DeviceInspectorViewer extends ViewPart implements DisposeListener {
 		target.setTransfer( types );
 		target.addDropListener( dropListener );
 		
-		this.motoAxisesComposite = new Composite( this.bar, SWT.NONE );
-		target = new DropTarget( this.motoAxisesComposite, DND.DROP_COPY );
+		this.motorAxesComposite = new Composite( this.bar, SWT.NONE );
+		target = new DropTarget( this.motorAxesComposite, DND.DROP_COPY );
 		target.setTransfer( types );
 		target.addDropListener( dropListener );
 		
@@ -209,7 +241,7 @@ public class DeviceInspectorViewer extends ViewPart implements DisposeListener {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
 		gridLayout.marginHeight = 0;
-		this.motoAxisesComposite.setLayout( gridLayout );
+		this.motorAxesComposite.setLayout( gridLayout );
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
 		gridLayout.marginHeight = 0;
@@ -225,8 +257,8 @@ public class DeviceInspectorViewer extends ViewPart implements DisposeListener {
 		
 		this.item0 = new ExpandItem ( this.bar, SWT.NONE, 0);
 		item0.setText("Motor Axis");
-		item0.setHeight( this.motoAxisesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		item0.setControl( this.motoAxisesComposite );
+		item0.setHeight( this.motorAxesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		item0.setControl( this.motorAxesComposite );
 		
 		this.item1 = new ExpandItem ( this.bar, SWT.NONE, 0);
 		item1.setText("Detector Channels");
@@ -259,11 +291,11 @@ public class DeviceInspectorViewer extends ViewPart implements DisposeListener {
 			final DeviceComposite deviceComposite = (DeviceComposite)e.widget;
 			this.devices.remove( deviceComposite.getDevice() );
 		}
-		this.motoAxisesComposite.layout();
+		this.motorAxesComposite.layout();
 		this.detectorChannelsComposite.layout();
 		this.devicesComposite.layout();
 		
-		item0.setHeight( this.motoAxisesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		item0.setHeight( this.motorAxesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item1.setHeight( this.detectorChannelsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item2.setHeight( this.devicesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 	}

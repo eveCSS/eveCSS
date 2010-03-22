@@ -11,6 +11,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -50,6 +55,7 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 	private MotorAxis motorAxis;
 	
 	private Button closeButton;
+	private Button expandButton;
 	
 	private Label motorAxisNameLabel;
 	private Label valueLabel;
@@ -59,59 +65,115 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 	
 	private Label unitLabel;
 	private Button runButton;
-	private Label currentStateLabel;
 	private Text offsetText;
 	private Button setOffsetButton;
 	
 	private Label emptyLabel1;
-	private Button stepLeftButton;
-	private Text tweakText;
-	private Button stepRightButton;
 	private Label emptyLabel2;
 	private Label emptyLabel3;
 	private Label emptyLabel4;
 	private Label emptyLabel5;
+	private GridLayout gridLayout;
+	private Font newFont;
+	
+	private Button stepLeftButton;
+	private Text tweakText;
+	private Button stepRightButton;
+	
+	// TODO define colors application-wide
+	final Color colorInitial = new Color( this.getForeground().getDevice(), 0, 0, 0 );
+	final Color colorAlarm = new Color( this.getForeground().getDevice(), 255, 0, 0 );
+	final Color colorOk = new Color( this.getForeground().getDevice(), 0, 180, 0 );
+	final Color colorUnknown = new Color( this.getForeground().getDevice(), 255, 255, 255 );
 	
 	public MotorAxisComposite( final Composite parent, final int style, final MotorAxis motorAxis ) {
 		super( parent, style );
 		this.motorAxis = motorAxis;
 		
+		gridLayout = new GridLayout();
 		initialize();
 	}
 	
 	private void initialize() {
-		
+
+		// TODO is there a way to set a font view-wide instead of setting it in each widget?
+		FontData[] fontData = this.getFont().getFontData();
+		for (int i = 0; i < fontData.length; i++) {
+			fontData[i].setHeight(11);
+		}
+		newFont = new Font(this.getForeground().getDevice(), fontData);
+
 		//this.setBackground( new Color( this.getBackground().getDevice(), 255, 0, 0 ) );
 		IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
 		ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
 
-		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 10;
 		gridLayout.marginHeight = 0;
 		this.setLayout( gridLayout );
 		
+		// TODO create a static icon image in the view
+		ImageData imageData = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ).getImageData();
+		Image deleteIcon = new Image(this.getForeground().getDevice(), imageData.scaledTo(12, 12));
+		final Image plusIcon = de.ptb.epics.eve.viewer.Activator.getImageDescriptor("/icons/greenPlus12.12.gif").createImage();
+		final Image minusIcon = de.ptb.epics.eve.viewer.Activator.getImageDescriptor("/icons/greenMinus12.12.gif").createImage();
 		
 		this.closeButton = new Button( this, SWT.NONE );
-		this.closeButton.setImage( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ).createImage() );
+		this.closeButton.setImage(deleteIcon);
 		this.closeButton.addSelectionListener( this );
 		
+		this.expandButton = new Button( this, SWT.NONE );
+		this.expandButton.setImage(plusIcon);
+		this.expandButton.addSelectionListener( new SelectionListener() {
+
+			public void widgetDefaultSelected( final SelectionEvent e ) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void widgetSelected( final SelectionEvent e ) {
+				if ((stepLeftButton == null) || (stepLeftButton.isDisposed())) {
+					System.out.print("init stepLeft\n");
+					initializeTweak();
+					expandButton.setImage(minusIcon);
+				}
+				else {
+					System.out.print("dispose stepLeft\n");
+					expandButton.setImage(plusIcon);
+					emptyLabel1.dispose();
+					stepLeftButton.dispose();
+					tweakText.dispose();
+					stepRightButton.dispose();
+					emptyLabel2.dispose();
+				}
+				expandButton.getParent().layout(true);
+				expandButton.getParent().redraw();
+				expandButton.getParent().getParent().layout(true);
+				expandButton.getParent().getParent().redraw();
+			}
+		});
+
 		this.motorAxisNameLabel = new Label( this, SWT.NONE );
+		this.motorAxisNameLabel.setForeground(colorInitial);
 		GridData gridData = new GridData();
-		gridData.widthHint = 200;
+		gridData.widthHint = 100;
 		this.motorAxisNameLabel.setLayoutData( gridData );
-		this.motorAxisNameLabel.setText( this.motorAxis.getFullIdentifyer() );
-		
+		this.motorAxisNameLabel.setText( this.motorAxis.getName() );
+		this.motorAxisNameLabel.setFont(newFont);
+
 		this.valueLabel = new Label( this, SWT.NONE );
 		gridData = new GridData();
 		gridData.widthHint = 80;
 		this.valueLabel.setLayoutData( gridData );
 		this.valueLabel.setText( "?" );
+		this.valueLabel.setFont(newFont);
 		
+		// TODO we want to see this label only if an engine is connected
 		this.engineValueLabel = new Label( this, SWT.NONE );
 		gridData = new GridData();
 		gridData.widthHint = 80;
 		this.engineValueLabel.setLayoutData( gridData );
-		this.engineValueLabel.setText( "(?)" );
+		this.engineValueLabel.setText( "-" );
+		this.engineValueLabel.setFont(newFont);
 		
 		
 		if( this.motorAxis.getGoto() != null && this.motorAxis.getGoto().isDiscrete() ) {
@@ -121,17 +183,22 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 			gridData.grabExcessHorizontalSpace = true;
 			this.targetValueCombo.setLayoutData( gridData );
 			this.targetValueCombo.setItems( this.motorAxis.getGoto().getDiscreteValues().toArray( new String[0] ) );
+			this.targetValueCombo.setFont(newFont);
 		} else {
 			this.targetValueText = new Text( this, SWT.BORDER );
 			gridData = new GridData();
 			gridData.horizontalAlignment = SWT.FILL;
 			gridData.grabExcessHorizontalSpace = true;
 			this.targetValueText.setLayoutData( gridData );
+			this.targetValueText.setFont(newFont);
 		}
 		this.unitLabel = new Label( this, SWT.NONE );
 		gridData = new GridData();
 		gridData.widthHint = 30;
 		this.unitLabel.setLayoutData( gridData );
+		this.unitLabel.setText( "u" );
+		this.unitLabel.setFont(newFont);
+		
 		if( this.motorAxis.getUnit() != null ) {
 			if( this.motorAxis.getUnit().getValue() != null ) {
 				this.unitLabel.setText( this.motorAxis.getUnit().getValue() );
@@ -154,6 +221,10 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 		
 		this.runButton = new Button( this, SWT.PUSH );
 		this.runButton.setText( "Run" );
+		this.runButton.setFont(newFont);
+		gridData = new GridData();
+		gridData.heightHint = 22;
+		this.runButton.setLayoutData( gridData );
 		this.runButton.addSelectionListener( new SelectionListener() {
 
 			public void widgetDefaultSelected( final SelectionEvent e ) {
@@ -198,14 +269,11 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 			
 		});
 		
-		this.currentStateLabel = new Label( this, SWT.NONE );
-		gridData = new GridData();
-		gridData.widthHint = 150;
-		this.currentStateLabel.setLayoutData( gridData );
-		this.currentStateLabel.setText( "disconnected" );
 		
 		this.offsetText = new Text( this, SWT.BORDER );
+		this.offsetText.setFont(newFont);
 		gridData = new GridData();
+		gridData.heightHint = 20;
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.offsetText.setLayoutData( gridData );
@@ -217,6 +285,10 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 		
 		this.setOffsetButton = new Button( this, SWT.PUSH );
 		this.setOffsetButton.setText( "Set" );
+		this.setOffsetButton.setFont(newFont);
+		gridData = new GridData();
+		gridData.heightHint = 22;
+		this.setOffsetButton.setLayoutData( gridData );
 		if( this.motorAxis.getOffset() != null ) {
 			this.setOffsetButton.addSelectionListener( new SelectionListener() {
 
@@ -265,18 +337,51 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 		} else {
 			this.setOffsetButton.setEnabled( false );
 		}
+
+		//initializeTweak();
 		
+		
+		String prefix = null;
+		if( this.motorAxis.getPosition().getAccess().getTransport() == TransportTypes.CA ) {
+			prefix = "dal-epics://";
+		} else if( this.motorAxis.getPosition().getAccess().getTransport() == TransportTypes.LOCAL ) {
+			prefix = "local://";
+		}
+		
+		IProcessVariableAddress pv = pvFactory.createProcessVariableAdress( prefix + this.motorAxis.getPosition().getAccess().getVariableID() );
+	
+		/*try {
+			this.valueLabel.setText( service.readValueSynchronously( pv, Helper.dataTypesToValueType( this.motorAxis.getPosition().getType() ) ).toString() );
+		} catch( final ConnectionException e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
+		service.register( this, pv,  Helper.dataTypesToValueType( this.motorAxis.getPosition().getType() ) );
+		//service.readValueAsynchronously( pv, Helper.dataTypesToValueType( this.motorAxis.getPosition().getType() ), this );
+	
+	}
+
+	
+	
+	
+	
+	public void initializeTweak() {
 		this.emptyLabel1 = new Label( this, SWT.NONE );
+		GridData gridData = new GridData();
 		gridData = new GridData();
-		gridData.horizontalSpan = 3;
+		gridData.heightHint = 20;
+		gridData.horizontalSpan = 4;
 		this.emptyLabel1.setLayoutData( gridData );
 		
 		
 		this.stepLeftButton = new Button( this, SWT.PUSH );
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.RIGHT;
+		gridData.heightHint = 20;
 		this.stepLeftButton.setLayoutData( gridData );
 		this.stepLeftButton.setText( "<" );
+		this.stepLeftButton.setFont(newFont);
 	
 		if( this.motorAxis.getTweakReverse() != null && this.motorAxis.getTweakValue() != null && this.motorAxis.getTweakForward() != null ) {
 			this.stepLeftButton.addSelectionListener( new SelectionListener() {
@@ -357,7 +462,9 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 		
 		
 		this.tweakText = new Text( this, SWT.BORDER );
+		this.tweakText.setFont(newFont);
 		gridData = new GridData();
+		gridData.heightHint = 20;
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.tweakText.setLayoutData( gridData );
@@ -368,7 +475,12 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 		}
 		
 		this.stepRightButton = new Button( this, SWT.PUSH );
+		gridData = new GridData();
+		gridData.horizontalAlignment = SWT.LEFT;
+		gridData.heightHint = 20;
+		this.stepRightButton.setLayoutData( gridData );
 		this.stepRightButton.setText( ">" );
+		this.stepRightButton.setFont(newFont);
 		if( this.motorAxis.getTweakReverse() != null && this.motorAxis.getTweakValue() != null && this.motorAxis.getTweakForward() != null ) {
 			
 			this.stepRightButton.addSelectionListener( new SelectionListener() {
@@ -445,36 +557,17 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 			});
 		} else {
 			this.stepRightButton.setEnabled( false );
-		}
-
-		
-		
+		}		
 		this.emptyLabel2 = new Label( this, SWT.NONE );
-		this.emptyLabel3 = new Label( this, SWT.NONE );
-		this.emptyLabel4 = new Label( this, SWT.NONE );
-		this.emptyLabel5 = new Label( this, SWT.NONE );
-		
-		String prefix = null;
-		if( this.motorAxis.getPosition().getAccess().getTransport() == TransportTypes.CA ) {
-			prefix = "dal-epics://";
-		} else if( this.motorAxis.getPosition().getAccess().getTransport() == TransportTypes.LOCAL ) {
-			prefix = "local://";
-		}
-		
-		IProcessVariableAddress pv = pvFactory.createProcessVariableAdress( prefix + this.motorAxis.getPosition().getAccess().getVariableID() );
-	
-		/*try {
-			this.valueLabel.setText( service.readValueSynchronously( pv, Helper.dataTypesToValueType( this.motorAxis.getPosition().getType() ) ).toString() );
-		} catch( final ConnectionException e ) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
-		service.register( this, pv,  Helper.dataTypesToValueType( this.motorAxis.getPosition().getType() ) );
-		//service.readValueAsynchronously( pv, Helper.dataTypesToValueType( this.motorAxis.getPosition().getType() ), this );
-	
+		gridData = new GridData();
+		gridData = new GridData();
+		gridData.heightHint = 20;
+		gridData.horizontalSpan = 3;
+		this.emptyLabel2.setLayoutData( gridData );
 	}
-
+	
+	
+	
 	public void dispose() {
 		IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
 		service.unregister( this );
@@ -484,45 +577,41 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 	}
 	
 	public void connectionStateChanged( final ConnectionState connectionState ) {
-		this.currentStateLabel.getDisplay().syncExec( new Runnable() {
+		this.motorAxisNameLabel.getDisplay().syncExec( new Runnable() {
 
 			public void run() {
 				
 				String newText = "";
+				Color newColor=colorInitial;
 				switch( connectionState ) {
-				
 					case CONNECTED:
 						newText = "connected";
+						newColor = colorOk;
 						break;
-						
 					case CONNECTION_FAILED:
 						newText = "connection failed";
+						newColor = colorAlarm;
 						break;
-						
 					case CONNECTION_LOST:
 						newText = "connection lost";
+						newColor = colorAlarm;
 						break;
-						
 					case INITIAL:
 						newText = "initial";
+						newColor = colorInitial;
 						break;
-						
 					case UNKNOWN:
 						newText = "unknown";
-						
+						newColor = colorUnknown;
 				}
 				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, motorAxis.getFullIdentifyer() + " changed connection state to " + newText + "." ) );
-				currentStateLabel.setText( newText );
-				
+				motorAxisNameLabel.setForeground(newColor);
 			}
-			
 		});
-		
 	}
 
 	public void errorOccured( final String error ) {
 		System.err.println( "!!!!!!!!!!!!!!!!" + error );
-		
 	}
 
 	public void valueChanged( final Object value, final Timestamp timestamp ) {

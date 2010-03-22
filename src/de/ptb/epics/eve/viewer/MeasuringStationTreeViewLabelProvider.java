@@ -33,18 +33,10 @@ public class MeasuringStationTreeViewLabelProvider implements ILabelProvider {
 				return "Detectors";
 			} else if( obj instanceof Device ) {
 				return "Devices";
-			} else if( obj instanceof Event ) {
-				return "Events";
 			}
 		} else if( element instanceof AbstractDevice ) {
 			final AbstractDevice device = (AbstractDevice)element;
 			return device.getName();
-		} else if( element instanceof Event ) {
-			final Event event = (Event)element;
-			return event.getName();
-		} else if( element instanceof PlugIn ) {
-			final PlugIn plugin = (PlugIn)element;
-			return plugin.getName();
 		}
 		return null;
 	}

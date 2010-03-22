@@ -21,8 +21,6 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 
 	private MeasuringStation measuringStation;
 	
-	private List<Event> events;
-	
 	private List<Device> devices;
 	
 	private List<Motor> motors;
@@ -48,10 +46,6 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 				returnList.add( this.devices );
 			}
 			
-			if( measuringStation.getEvents().size() > 0 ) {
-				this.events = measuringStation.getEvents();
-				returnList.add( this.events );
-			}
 			return returnList.toArray();
 			
 		} else if( parentElement instanceof List ) {
@@ -81,11 +75,7 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 				returnList.addAll( device.getOptions() );
 			}
 			return returnList.toArray();
-		} else if( parentElement instanceof MotorAxis ) {
-			return ((MotorAxis)parentElement).getOptions().toArray();
-		} else if( parentElement instanceof DetectorChannel ) {
-			return ((DetectorChannel)parentElement).getOptions().toArray();
-		}
+		} 
 		return null;
 	}
 
@@ -98,8 +88,6 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 			return this.detectors;
 		} else if( element instanceof Device ) {
 			return this.devices;
-		} else if( element instanceof Event ) {
-			return this.events;
 		} else if( element instanceof MotorAxis ) {
 			final MotorAxis motorAxis = (MotorAxis)element;
 			return motorAxis.getParent();
@@ -157,10 +145,6 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 				returnList.add( this.devices );
 			}
 			
-			if( measuringStation.getEvents().size() > 0 ) {
-				this.events = measuringStation.getEvents();
-				returnList.add( this.events );
-			}
 			return returnList.toArray();
 			
 		} else if( inputElement instanceof List ) {
