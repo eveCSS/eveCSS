@@ -3,17 +3,17 @@ package de.ptb.epics.eve.viewer;
 import org.csstudio.platform.model.pvs.IProcessVariableAddress;
 import org.csstudio.platform.model.pvs.ProcessVariableAdressFactory;
 import org.csstudio.platform.simpledal.ConnectionException;
-import org.csstudio.platform.simpledal.ConnectionState;
 import org.csstudio.platform.simpledal.IProcessVariableConnectionService;
 import org.csstudio.platform.simpledal.IProcessVariableValueListener;
 import org.csstudio.platform.simpledal.ProcessVariableConnectionServiceFactory;
+import org.csstudio.platform.simpledal.ProcessVariableValueAdapter;
+import org.csstudio.platform.simpledal.ValueType;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.GridData;
@@ -21,6 +21,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
@@ -50,7 +51,7 @@ import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
  * @author Stephan Rehfeld
  *
  */
-public class MotorAxisComposite extends Composite implements IProcessVariableValueListener, IMeasurementDataListener, SelectionListener {
+public class MotorAxisComposite extends Composite implements IMeasurementDataListener, SelectionListener {
 
 	private MotorAxis motorAxis;
 	
@@ -58,64 +59,48 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 	private Button expandButton;
 	
 	private Label motorAxisNameLabel;
-	private Label valueLabel;
+	private Control valueLabel;
 	private Label engineValueLabel;
 	private Text targetValueText;
 	private Combo targetValueCombo;
 	
-	private Label unitLabel;
+	private Control unitLabel;
 	private Button runButton;
-	private Text offsetText;
+	private Control offsetText;
 	private Button setOffsetButton;
 	
 	private Label emptyLabel1;
 	private Label emptyLabel2;
-	private Label emptyLabel3;
-	private Label emptyLabel4;
-	private Label emptyLabel5;
 	private GridLayout gridLayout;
 	private Font newFont;
 	
 	private Button stepLeftButton;
-	private Text tweakText;
+	private Control tweakText;
 	private Button stepRightButton;
 	
-	// TODO define colors application-wide
-	final Color colorInitial = new Color( this.getForeground().getDevice(), 0, 0, 0 );
-	final Color colorAlarm = new Color( this.getForeground().getDevice(), 255, 0, 0 );
-	final Color colorOk = new Color( this.getForeground().getDevice(), 0, 180, 0 );
-	final Color colorUnknown = new Color( this.getForeground().getDevice(), 255, 255, 255 );
+	private Boolean expanded;
 	
 	public MotorAxisComposite( final Composite parent, final int style, final MotorAxis motorAxis ) {
 		super( parent, style );
 		this.motorAxis = motorAxis;
 		
 		gridLayout = new GridLayout();
+		expanded = false;
 		initialize();
 	}
 	
 	private void initialize() {
 
-		// TODO is there a way to set a font view-wide instead of setting it in each widget?
-		FontData[] fontData = this.getFont().getFontData();
-		for (int i = 0; i < fontData.length; i++) {
-			fontData[i].setHeight(11);
-		}
-		newFont = new Font(this.getForeground().getDevice(), fontData);
+		newFont = Activator.getDefault().getFont("VIEWERFONT");
 
-		//this.setBackground( new Color( this.getBackground().getDevice(), 255, 0, 0 ) );
-		IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-		ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
-
-		gridLayout.numColumns = 10;
+		gridLayout.numColumns = 9;
 		gridLayout.marginHeight = 0;
 		this.setLayout( gridLayout );
 		
-		// TODO create a static icon image in the view
 		ImageData imageData = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ).getImageData();
 		Image deleteIcon = new Image(this.getForeground().getDevice(), imageData.scaledTo(12, 12));
-		final Image plusIcon = de.ptb.epics.eve.viewer.Activator.getImageDescriptor("/icons/greenPlus12.12.gif").createImage();
-		final Image minusIcon = de.ptb.epics.eve.viewer.Activator.getImageDescriptor("/icons/greenMinus12.12.gif").createImage();
+		final Image plusIcon = Activator.getDefault().getImageRegistry().get("GREENPLUS12");
+		final Image minusIcon = Activator.getDefault().getImageRegistry().get("GREENMINUS12");
 		
 		this.closeButton = new Button( this, SWT.NONE );
 		this.closeButton.setImage(deleteIcon);
@@ -131,43 +116,47 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 			}
 
 			public void widgetSelected( final SelectionEvent e ) {
-				if ((stepLeftButton == null) || (stepLeftButton.isDisposed())) {
-					System.out.print("init stepLeft\n");
-					initializeTweak();
+				if (!expanded) {
+					expanded = true;
+					expandComposite();
 					expandButton.setImage(minusIcon);
 				}
 				else {
-					System.out.print("dispose stepLeft\n");
+					expanded = false;
+					unexpandComposite();
 					expandButton.setImage(plusIcon);
-					emptyLabel1.dispose();
-					stepLeftButton.dispose();
-					tweakText.dispose();
-					stepRightButton.dispose();
-					emptyLabel2.dispose();
 				}
+				// TODO which do we need?
 				expandButton.getParent().layout(true);
-				expandButton.getParent().redraw();
+				expandButton.getParent().pack(true);
 				expandButton.getParent().getParent().layout(true);
-				expandButton.getParent().getParent().redraw();
+				expandButton.getParent().getParent().pack(true);
 			}
 		});
-
+		
+		// axis name
 		this.motorAxisNameLabel = new Label( this, SWT.NONE );
-		this.motorAxisNameLabel.setForeground(colorInitial);
 		GridData gridData = new GridData();
 		gridData.widthHint = 100;
 		this.motorAxisNameLabel.setLayoutData( gridData );
 		this.motorAxisNameLabel.setText( this.motorAxis.getName() );
 		this.motorAxisNameLabel.setFont(newFont);
 
-		this.valueLabel = new Label( this, SWT.NONE );
+		// axis position
+		if ((motorAxis.getPosition() != null) && ( motorAxis.getPosition().getAccess().getTransport() == TransportTypes.CA )) {
+			this.valueLabel = new PvLabelComposite( this, SWT.NONE, this.motorAxis.getPosition().getAccess().getVariableID() );
+		}			
+		else {
+			this.valueLabel = new Label( this, SWT.NONE );
+			((Label) this.valueLabel).setText("unknown");
+		}
 		gridData = new GridData();
 		gridData.widthHint = 80;
 		this.valueLabel.setLayoutData( gridData );
-		this.valueLabel.setText( "?" );
 		this.valueLabel.setFont(newFont);
 		
 		// TODO we want to see this label only if an engine is connected
+		// position from engine
 		this.engineValueLabel = new Label( this, SWT.NONE );
 		gridData = new GridData();
 		gridData.widthHint = 80;
@@ -175,49 +164,38 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 		this.engineValueLabel.setText( "-" );
 		this.engineValueLabel.setFont(newFont);
 		
-		
+		// goto position Box: TextInput or Combo
+		gridData = new GridData();
+		gridData.horizontalAlignment = SWT.FILL;
+		gridData.widthHint = 160;
+		//gridData.grabExcessHorizontalSpace = true;
 		if( this.motorAxis.getGoto() != null && this.motorAxis.getGoto().isDiscrete() ) {
 			this.targetValueCombo = new Combo( this, SWT.NONE );
-			gridData = new GridData();
-			gridData.horizontalAlignment = SWT.FILL;
-			gridData.grabExcessHorizontalSpace = true;
-			this.targetValueCombo.setLayoutData( gridData );
 			this.targetValueCombo.setItems( this.motorAxis.getGoto().getDiscreteValues().toArray( new String[0] ) );
+			this.targetValueCombo.setLayoutData( gridData );
 			this.targetValueCombo.setFont(newFont);
 		} else {
 			this.targetValueText = new Text( this, SWT.BORDER );
-			gridData = new GridData();
-			gridData.horizontalAlignment = SWT.FILL;
-			gridData.grabExcessHorizontalSpace = true;
 			this.targetValueText.setLayoutData( gridData );
 			this.targetValueText.setFont(newFont);
 		}
-		this.unitLabel = new Label( this, SWT.NONE );
+
+		// unit Label
+		if ((motorAxis.getUnit() != null) && (motorAxis.getUnit().getAccess() != null) &&( motorAxis.getUnit().getAccess().getTransport() == TransportTypes.CA )) {
+			this.unitLabel = new PvLabelComposite( this, SWT.NONE, this.motorAxis.getUnit().getAccess().getVariableID() );
+			((PvLabelComposite) this.unitLabel).setText("unit");
+		}			
+		else {
+			this.unitLabel = new Label( this, SWT.NONE );
+			if ((motorAxis.getUnit() != null) && (motorAxis.getUnit().getValue() != null))
+				((Label) this.unitLabel).setText(this.motorAxis.getUnit().getValue());
+			else
+				((Label) this.unitLabel).setText("unit");
+		}
 		gridData = new GridData();
 		gridData.widthHint = 30;
 		this.unitLabel.setLayoutData( gridData );
-		this.unitLabel.setText( "u" );
 		this.unitLabel.setFont(newFont);
-		
-		if( this.motorAxis.getUnit() != null ) {
-			if( this.motorAxis.getUnit().getValue() != null ) {
-				this.unitLabel.setText( this.motorAxis.getUnit().getValue() );
-			} else {
-				String prefix = null;
-				if( this.motorAxis.getUnit().getAccess().getTransport() == TransportTypes.CA ) {
-					prefix = "dal-epics://";
-				} else if( this.motorAxis.getUnit().getAccess().getTransport() == TransportTypes.LOCAL ) {
-					prefix = "local://";
-				}
-				IProcessVariableAddress pv = pvFactory.createProcessVariableAdress( prefix + this.motorAxis.getUnit().getAccess().getVariableID() );
-				try {
-					final String unit = service.readValueSynchronously( pv, Helper.dataTypesToValueType( this.motorAxis.getUnit().getAccess().getType() ) ).toString();
-					this.unitLabel.setText( unit );
-				} catch( final ConnectionException e ) {
-					this.unitLabel.setText( "?" );
-				}
-			}
-		}
 		
 		this.runButton = new Button( this, SWT.PUSH );
 		this.runButton.setText( "Run" );
@@ -233,140 +211,40 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 			}
 
 			public void widgetSelected( final SelectionEvent e ) {
-				IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-				ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
-				String prefix = null;
-				if( motorAxis.getGoto().getAccess().getTransport() == TransportTypes.CA ) {
-					prefix = "dal-epics://";
-				} else if( motorAxis.getGoto().getAccess().getTransport() == TransportTypes.LOCAL ) {
-					prefix = "local://";
-				}
-				IProcessVariableAddress pv = pvFactory.createProcessVariableAdress( prefix + motorAxis.getGoto().getAccess().getVariableID() );
-				try {
-					Object o = null;
-					switch( motorAxis.getGoto().getType() ) {
-					
-						case INT:
-							o = Integer.parseInt( targetValueText != null?targetValueText.getText():targetValueCombo.getText() );
-							break;
-							
-						case DOUBLE: 
-							o = Double.parseDouble( targetValueText != null?targetValueText.getText():targetValueCombo.getText() );
-							break;
-						
-						default:
-							o = targetValueText != null?targetValueText.getText():targetValueCombo.getText();
-					
-					}
-					service.writeValueSynchronously( pv, o, Helper.dataTypesToValueType( motorAxis.getGoto().getType() ) );
 
-				} catch( final ConnectionException e1 ) {
-					
-					e1.printStackTrace();
-				}
-				
+				if( motorAxis.getGoto().getAccess().getTransport() == TransportTypes.CA ) {
+					String prefix = "dal-epics://";
+					IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
+					ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
+					IProcessVariableAddress pv = pvFactory.createProcessVariableAdress( prefix + motorAxis.getGoto().getAccess().getVariableID() );
+					try {
+						service.writeValueSynchronously( pv, targetValueText != null?targetValueText.getText():targetValueCombo.getText(), Helper.dataTypesToValueType( motorAxis.getGoto().getType() ) );
+					} catch( final ConnectionException e1 ) {
+						e1.printStackTrace();
+					}
+				}	
 			}
 			
 		});
 		
-		
-		this.offsetText = new Text( this, SWT.BORDER );
+		if ((motorAxis.getOffset() != null) && ( motorAxis.getOffset().getAccess().getTransport() == TransportTypes.CA )){
+			this.offsetText = new PvTextComposite( this, SWT.NONE, motorAxis.getOffset().getAccess().getVariableID() );
+			//((PvTextComposite)offsetText).dalregister();
+		}
+		else {
+			this.offsetText = new Text( this, SWT.BORDER );
+			this.offsetText.setEnabled( false );
+		}
 		this.offsetText.setFont(newFont);
 		gridData = new GridData();
 		gridData.heightHint = 20;
 		gridData.horizontalAlignment = SWT.FILL;
-		gridData.grabExcessHorizontalSpace = true;
+		//gridData.grabExcessHorizontalSpace = true;
 		this.offsetText.setLayoutData( gridData );
-		if( this.motorAxis.getOffset() != null ) {
-			
-		} else {
-			this.offsetText.setEnabled( false );
-		}
-		
-		this.setOffsetButton = new Button( this, SWT.PUSH );
-		this.setOffsetButton.setText( "Set" );
-		this.setOffsetButton.setFont(newFont);
-		gridData = new GridData();
-		gridData.heightHint = 22;
-		this.setOffsetButton.setLayoutData( gridData );
-		if( this.motorAxis.getOffset() != null ) {
-			this.setOffsetButton.addSelectionListener( new SelectionListener() {
-
-				public void widgetDefaultSelected( final SelectionEvent e ) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				public void widgetSelected( final SelectionEvent e ) {
-					IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-					ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
-					String prefix = null;
-					if( motorAxis.getOffset().getAccess().getTransport() == TransportTypes.CA ) {
-						prefix = "dal-epics://";
-					} else if( motorAxis.getOffset().getAccess().getTransport() == TransportTypes.LOCAL ) {
-						prefix = "local://";
-					}
-					IProcessVariableAddress pv = pvFactory.createProcessVariableAdress( prefix + motorAxis.getOffset().getAccess().getVariableID() );
-					
-					try {
-						Object o = null;
-						switch( motorAxis.getOffset().getType() ) {
-						
-							case INT:
-								o = Integer.parseInt( offsetText.getText() );
-								break;
-								
-							case DOUBLE: 
-								o = Double.parseDouble( offsetText.getText() );
-								break;
-							
-							default:
-								o = offsetText.getText();
-						
-						}
-						service.writeValueSynchronously( pv, o, Helper.dataTypesToValueType( motorAxis.getOffset().getType() ) );
-					} catch( final ConnectionException e1 ) {
-						
-						e1.printStackTrace();
-					}
-
-					
-				}
-				
-			});
-		} else {
-			this.setOffsetButton.setEnabled( false );
-		}
-
-		//initializeTweak();
-		
-		
-		String prefix = null;
-		if( this.motorAxis.getPosition().getAccess().getTransport() == TransportTypes.CA ) {
-			prefix = "dal-epics://";
-		} else if( this.motorAxis.getPosition().getAccess().getTransport() == TransportTypes.LOCAL ) {
-			prefix = "local://";
-		}
-		
-		IProcessVariableAddress pv = pvFactory.createProcessVariableAdress( prefix + this.motorAxis.getPosition().getAccess().getVariableID() );
-	
-		/*try {
-			this.valueLabel.setText( service.readValueSynchronously( pv, Helper.dataTypesToValueType( this.motorAxis.getPosition().getType() ) ).toString() );
-		} catch( final ConnectionException e ) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
-		service.register( this, pv,  Helper.dataTypesToValueType( this.motorAxis.getPosition().getType() ) );
-		//service.readValueAsynchronously( pv, Helper.dataTypesToValueType( this.motorAxis.getPosition().getType() ), this );
-	
 	}
-
 	
 	
-	
-	
-	public void initializeTweak() {
+	private void expandComposite() {
 		this.emptyLabel1 = new Label( this, SWT.NONE );
 		GridData gridData = new GridData();
 		gridData = new GridData();
@@ -383,97 +261,62 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 		this.stepLeftButton.setText( "<" );
 		this.stepLeftButton.setFont(newFont);
 	
-		if( this.motorAxis.getTweakReverse() != null && this.motorAxis.getTweakValue() != null && this.motorAxis.getTweakForward() != null ) {
+		if( this.motorAxis.getTweakReverse() == null ) {
+			this.stepLeftButton.setEnabled( false );
+		}
+		else {
 			this.stepLeftButton.addSelectionListener( new SelectionListener() {
 
 				public void widgetDefaultSelected( final SelectionEvent e ) {
-					
-					
+								
 				}
 
 				public void widgetSelected( final SelectionEvent e ) {
-					IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-					ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
-					String prefix = null;
-					if( motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.CA ) {
-						prefix = "dal-epics://";
-					} else if( motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.LOCAL ) {
-						prefix = "local://";
-					}
-					IProcessVariableAddress tweakValuePv = pvFactory.createProcessVariableAdress( prefix + motorAxis.getTweakValue().getAccess().getVariableID() );
-					try {
-						Object o = null;
-						switch( motorAxis.getTweakValue().getType() ) {
-					
-							case INT:
-								o = Integer.parseInt( tweakText != null?tweakText.getText():tweakText.getText() );
-								break;
+
+					if( motorAxis.getTweakReverse().getAccess().getTransport() == TransportTypes.CA ) {
+						String prefix = "dal-epics://";
+				
+						IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
+						ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
+						IProcessVariableAddress tweakLeftPv = pvFactory.createProcessVariableAdress( prefix + motorAxis.getTweakReverse().getAccess().getVariableID() );
+						try {
+							Object o = null;
+							switch( motorAxis.getTweakReverse().getType() ) {	
+								case INT:
+									o = Integer.parseInt( motorAxis.getTweakReverse().getValue().getValues() );
+									break;
 							
-							case DOUBLE: 
-								o = Double.parseDouble( tweakText != null?tweakText.getText():tweakText.getText() );
-								break;
+								case DOUBLE: 
+									o = Double.parseDouble( motorAxis.getTweakReverse().getValue().getValues() );
+									break;
 						
-							default:
-								o = tweakText != null?tweakText.getText():tweakText.getText();
+								default:
+									o = motorAxis.getTweakReverse().getValue().getValues();
 					
+							}
+							service.writeValueSynchronously( tweakLeftPv, o, Helper.dataTypesToValueType( motorAxis.getTweakReverse().getType() ) );
+						} catch( final ConnectionException e1 ) {
+							e1.printStackTrace();
 						}
-						service.writeValueSynchronously( tweakValuePv, o, Helper.dataTypesToValueType( motorAxis.getTweakValue().getType() ) );
-					} catch( final ConnectionException e1 ) {
-					
-						e1.printStackTrace();
 					}
-				
-					if( motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.CA ) {
-						prefix = "dal-epics://";
-					} else if( motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.LOCAL ) {
-						prefix = "local://";
-					}
-				
-					IProcessVariableAddress tweakLeftPv = pvFactory.createProcessVariableAdress( prefix + motorAxis.getTweakReverse().getAccess().getVariableID() );
-					try {
-						Object o = null;
-						switch( motorAxis.getTweakReverse().getType() ) {
-					
-							case INT:
-								o = Integer.parseInt( motorAxis.getTweakReverse().getValue().getValues() );
-								break;
-							
-							case DOUBLE: 
-								o = Double.parseDouble( motorAxis.getTweakReverse().getValue().getValues() );
-								break;
-						
-							default:
-								o = motorAxis.getTweakReverse().getValue().getValues();
-					
-						}
-						service.writeValueSynchronously( tweakLeftPv, o, Helper.dataTypesToValueType( motorAxis.getTweakReverse().getType() ) );
-					} catch( final ConnectionException e1 ) {
-					
-						e1.printStackTrace();
-					}
-				
-				
 				}
-			
 			});
-		} else {
-			this.stepLeftButton.setEnabled( false );
+		} 		
+		
+		if ((motorAxis.getTweakValue() != null) && ( motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.CA )){
+			this.tweakText = new PvTextComposite( this, SWT.NONE, motorAxis.getTweakValue().getAccess().getVariableID() );
 		}
-		
-		
-		this.tweakText = new Text( this, SWT.BORDER );
+		else {
+			this.tweakText = new Text( this, SWT.BORDER );
+			this.tweakText.setEnabled( false );
+		}
 		this.tweakText.setFont(newFont);
 		gridData = new GridData();
 		gridData.heightHint = 20;
 		gridData.horizontalAlignment = SWT.FILL;
-		gridData.grabExcessHorizontalSpace = true;
+		//gridData.grabExcessHorizontalSpace = true;
 		this.tweakText.setLayoutData( gridData );
-		if( this.motorAxis.getTweakReverse() != null && this.motorAxis.getTweakValue() != null && this.motorAxis.getTweakForward() != null ) {
-			
-		} else {
-			this.tweakText.setEnabled( false );
-		}
-		
+
 		this.stepRightButton = new Button( this, SWT.PUSH );
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.LEFT;
@@ -481,149 +324,73 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 		this.stepRightButton.setLayoutData( gridData );
 		this.stepRightButton.setText( ">" );
 		this.stepRightButton.setFont(newFont);
-		if( this.motorAxis.getTweakReverse() != null && this.motorAxis.getTweakValue() != null && this.motorAxis.getTweakForward() != null ) {
+		if( this.motorAxis.getTweakForward() == null ) {
+			this.stepRightButton.setEnabled( false );
+		}
+		else {
 			
 			this.stepRightButton.addSelectionListener( new SelectionListener() {
 
 				public void widgetDefaultSelected( final SelectionEvent e ) {
-				
 					
-				
 				}
 
 				public void widgetSelected( final SelectionEvent e ) {
-					IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-					ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
-					String prefix = null;
-					if( motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.CA ) {
-						prefix = "dal-epics://";
-					} else if( motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.LOCAL ) {
-						prefix = "local://";
-					}
-					IProcessVariableAddress tweakValuePv = pvFactory.createProcessVariableAdress( prefix + motorAxis.getTweakValue().getAccess().getVariableID() );
-					try {
-						Object o = null;
-						switch( motorAxis.getTweakValue().getType() ) {
 					
-							case INT:
-								o = Integer.parseInt( tweakText != null?tweakText.getText():tweakText.getText() );
-								break;
+					if( motorAxis.getTweakForward().getAccess().getTransport() == TransportTypes.CA ) {
+
+						String prefix = "dal-epics://";
+						IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
+						ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
+						IProcessVariableAddress tweakRightPv = pvFactory.createProcessVariableAdress( prefix + motorAxis.getTweakForward().getAccess().getVariableID() );
+						try {
+							Object o = null;
+							switch( motorAxis.getTweakForward().getType() ) {
+					
+								case INT:
+									o = Integer.parseInt( motorAxis.getTweakForward().getValue().getValues() );
+									break;
 							
-							case DOUBLE: 
-								o = Double.parseDouble( tweakText != null?tweakText.getText():tweakText.getText() );
-								break;
+								case DOUBLE: 
+									o = Double.parseDouble( motorAxis.getTweakForward().getValue().getValues() );
+									break;
 						
-							default:
-								o = tweakText != null?tweakText.getText():tweakText.getText();
+								default:
+									o = motorAxis.getTweakForward().getValue().getValues();
 					
+							}
+							service.writeValueSynchronously( tweakRightPv, o, Helper.dataTypesToValueType( motorAxis.getTweakForward().getType() ) );
+						} catch( final ConnectionException e1 ) {
+							e1.printStackTrace();
 						}
-						service.writeValueSynchronously( tweakValuePv, o, Helper.dataTypesToValueType( motorAxis.getTweakValue().getType() ) );
-					} catch( final ConnectionException e1 ) {
-					
-						e1.printStackTrace();
 					}
-				
-					if( motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.CA ) {
-						prefix = "dal-epics://";
-					} else if( motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.LOCAL ) {
-						prefix = "local://";
-					}
-				
-					IProcessVariableAddress tweakRightPv = pvFactory.createProcessVariableAdress( prefix + motorAxis.getTweakForward().getAccess().getVariableID() );
-					try {
-						Object o = null;
-						switch( motorAxis.getTweakForward().getType() ) {
-					
-							case INT:
-								o = Integer.parseInt( motorAxis.getTweakForward().getValue().getValues() );
-								break;
-							
-							case DOUBLE: 
-								o = Double.parseDouble( motorAxis.getTweakForward().getValue().getValues() );
-								break;
-						
-							default:
-								o = motorAxis.getTweakForward().getValue().getValues();
-					
-						}
-						service.writeValueSynchronously( tweakRightPv, o, Helper.dataTypesToValueType( motorAxis.getTweakForward().getType() ) );
-					} catch( final ConnectionException e1 ) {
-					
-						e1.printStackTrace();
-					}
-				
 				}
-			
 			});
-		} else {
-			this.stepRightButton.setEnabled( false );
-		}		
+		}
 		this.emptyLabel2 = new Label( this, SWT.NONE );
 		gridData = new GridData();
 		gridData = new GridData();
 		gridData.heightHint = 20;
-		gridData.horizontalSpan = 3;
+		gridData.horizontalSpan = 2;
 		this.emptyLabel2.setLayoutData( gridData );
 	}
 	
-	
+	private void unexpandComposite() {
+		emptyLabel1.dispose();
+		stepLeftButton.dispose();
+		tweakText.dispose();
+		stepRightButton.dispose();
+		emptyLabel2.dispose();
+	}
 	
 	public void dispose() {
-		IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-		service.unregister( this );
 		super.dispose();
+		if (expanded) unexpandComposite();
+		valueLabel.dispose();
+		unitLabel.dispose();
+		offsetText.dispose();
 		this.getParent().layout();
 		this.getParent().redraw();
-	}
-	
-	public void connectionStateChanged( final ConnectionState connectionState ) {
-		this.motorAxisNameLabel.getDisplay().syncExec( new Runnable() {
-
-			public void run() {
-				
-				String newText = "";
-				Color newColor=colorInitial;
-				switch( connectionState ) {
-					case CONNECTED:
-						newText = "connected";
-						newColor = colorOk;
-						break;
-					case CONNECTION_FAILED:
-						newText = "connection failed";
-						newColor = colorAlarm;
-						break;
-					case CONNECTION_LOST:
-						newText = "connection lost";
-						newColor = colorAlarm;
-						break;
-					case INITIAL:
-						newText = "initial";
-						newColor = colorInitial;
-						break;
-					case UNKNOWN:
-						newText = "unknown";
-						newColor = colorUnknown;
-				}
-				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, motorAxis.getFullIdentifyer() + " changed connection state to " + newText + "." ) );
-				motorAxisNameLabel.setForeground(newColor);
-			}
-		});
-	}
-
-	public void errorOccured( final String error ) {
-		System.err.println( "!!!!!!!!!!!!!!!!" + error );
-	}
-
-	public void valueChanged( final Object value, final Timestamp timestamp ) {
-		
-		this.valueLabel.getDisplay().syncExec( new Runnable() {
-
-			public void run() {
-				valueLabel.setText( value.toString() );
-			}
-			
-		});
-		
 	}
 
 	public void measurementDataTransmitted( final MeasurementData measurementData ) {
@@ -637,7 +404,6 @@ public class MotorAxisComposite extends Composite implements IProcessVariableVal
 				
 			});
 		}
-		
 	}
 
 	public void widgetDefaultSelected(SelectionEvent e) {

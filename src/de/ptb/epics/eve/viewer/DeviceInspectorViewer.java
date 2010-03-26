@@ -33,7 +33,7 @@ import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.Device;
 
 /**
- * This class represents the DeviceInspector view that provides interaction with motor axises
+ * This class represents the DeviceInspector view that provides interaction with motor axes
  * 
  * @author Stephan Rehfeld <stephan.rehfeld@ptb.de>
  *
@@ -125,7 +125,7 @@ public class DeviceInspectorViewer extends ViewPart implements DisposeListener {
 									if( motor.getAxis().size() > 0 ) {
 										List<MotorAxis> axisList = motor.getAxis();
 										for (MotorAxis axis : axisList) {
-											addMotorAxisEntry( axis );
+											if (!devices.contains(axis)) addMotorAxisEntry(axis);
 										}
 									}
 								} else if( device instanceof Detector ){
@@ -133,7 +133,7 @@ public class DeviceInspectorViewer extends ViewPart implements DisposeListener {
 									if( detector.getChannels().size() > 0 ) {
 										List<DetectorChannel> channelList = detector.getChannels();
 										for (DetectorChannel channel : channelList) {
-											addDetectorChannelEntry( channel );
+											if (!devices.contains(channel)) addDetectorChannelEntry( channel );
 										}
 									}
 								}

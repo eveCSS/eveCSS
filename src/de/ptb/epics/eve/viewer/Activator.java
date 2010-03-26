@@ -5,7 +5,14 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.resource.ColorRegistry;
+import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -32,7 +39,9 @@ public class Activator extends AbstractUIPlugin {
 	private final EngineErrorReader engineErrorReader;
 	private final ChainStatusAnalyzer chainStatusAnalyzer;
 	private MeasuringStation measuringStation;
-
+	private ColorRegistry colorreg;
+	private FontRegistry fontreg;
+	
 	private ScanDescription currentScanDescription;
 	
 	private ECP1Client ecp1Client;
@@ -52,6 +61,8 @@ public class Activator extends AbstractUIPlugin {
 		this.ecp1Client.addMeasurementDataListener( measurementDataDispatcher );
 		this.ecp1Client.addErrorListener( this.engineErrorReader );
 		this.ecp1Client.addChainStatusListener( this.chainStatusAnalyzer );
+		this.colorreg = new ColorRegistry();
+		this.fontreg = new FontRegistry();
 	}
 
 	/*
@@ -61,6 +72,23 @@ public class Activator extends AbstractUIPlugin {
 	public void start( final BundleContext context ) throws Exception {
 		super.start(context);
 		
+		// register fonts, colors and images
+		Font defaultFont = fontreg.defaultFont();
+		FontData[] fontData = defaultFont.getFontData();
+		// Use a smaller font if system font is higher 11
+		for (int i = 0; i < fontData.length; i++) {
+			if (fontData[i].getHeight() > 11) fontData[i].setHeight(11);
+		}
+		fontreg.put("VIEWERFONT", fontData);
+		
+		colorreg.put("COLOR_PV_INITIAL", new RGB(0, 0, 0));
+		colorreg.put("COLOR_PV_ALARM", new RGB(255, 0, 0));
+		colorreg.put("COLOR_PV_OK", new RGB(0, 180, 0));
+		colorreg.put("COLOR_PV_UNKNOWN", new RGB(130, 130, 130));
+		
+		ImageRegistry imagereg = getImageRegistry();
+		imagereg.put("GREENPLUS12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenPlus12.12.gif").createImage());
+		imagereg.put("GREENMINUS12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenMinus12.12.gif").createImage());
 		
 		final String measuringStationDescription = de.ptb.epics.eve.preferences.Activator.getDefault().getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION );
 		
@@ -115,6 +143,22 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor( final String path ) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
+	
+	public Color getColor(String colorname){
+		Color color = colorreg.get(colorname);
+		if (color == null)
+			return colorreg.get("COLOR_PV_INITIAL");
+		else
+			return color;
+	}
+	
+	public Font getFont(String fontname){
+		Font font = fontreg.get(fontname);
+		if (font == null)
+			return fontreg.defaultFont();
+		else
+			return font;
 	}
 	
 	public ECP1Client getEcp1Client() {
