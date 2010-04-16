@@ -24,6 +24,7 @@ public enum EventTypes {
 	 * description and represents a state at the measuring station.
 	 */
 	MONITOR,
+	
 	/**
 	 * Used for schedule events, this are events which are defined in a
 	 * relation to a Scan Modul an occures when the Scan Modul has finished.
