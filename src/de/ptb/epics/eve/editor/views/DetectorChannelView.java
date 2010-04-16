@@ -8,10 +8,14 @@
 package de.ptb.epics.eve.editor.views;
 
 
+import java.util.Iterator;
+
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -30,6 +34,9 @@ import org.eclipse.swt.layout.GridData;
 
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
+import de.ptb.epics.eve.data.scandescription.errors.ChannelErrorTypes;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.editor.Activator;
 
 public class DetectorChannelView extends ViewPart {
@@ -350,7 +357,21 @@ public class DetectorChannelView extends ViewPart {
 			this.eventsTabFolder.setEnabled(true);
 			
 			this.redoEventComposite.setControlEventManager( this.currentChannel.getRedoControlEventManager() );
+			
+			this.maxDeviationErrorLabel.setImage( null );
+			this.minimumErrorLabel.setImage( null );
 		
+			final Iterator< IModelError > it = this.currentChannel.getModelErrors().iterator();
+			while( it.hasNext() ) {
+				final IModelError modelError = it.next();
+				if( modelError instanceof ChannelError ) {
+					final ChannelError channelError = (ChannelError) modelError;
+					if( channelError.getErrorType() == ChannelErrorTypes.MAX_DEVIATION_NOT_POSSIBLE ) {
+						this.maxDeviationErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+					} else if( channelError.getErrorType() == ChannelErrorTypes.MINIMUM_NOT_POSSIBLE ) {
+						this.minimumErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+					}
+				}			}
 		} else {
 			this.averageText.setText( "" );
 			this.maxDeviationText.setText( "" );
@@ -367,6 +388,9 @@ public class DetectorChannelView extends ViewPart {
 			this.confirmTriggerManualCheckBox.setEnabled( false );
 			this.detectorReadyEventCheckBox.setEnabled( false );
 			this.setPartName( "Detector Channel View" );
+			
+			this.maxDeviationErrorLabel.setImage( null );
+			this.minimumErrorLabel.setImage( null );
 		}
 	}
 

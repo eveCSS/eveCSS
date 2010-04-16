@@ -7,13 +7,19 @@
  *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
 
+import java.util.Iterator;
+
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.Postscan;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.data.scandescription.errors.PrePostscanError;
 
 public class PostscanLabelProvider implements ITableLabelProvider {
 
@@ -58,7 +64,20 @@ public class PostscanLabelProvider implements ITableLabelProvider {
 			Image bild = getImage(((Postscan) postscan).isReset());
 			return bild;
 		}
+		
+		final Postscan pos = (Postscan)postscan;
+		if( colIndex == 1 ) {
+			final Iterator< IModelError > it = pos.getModelErrors().iterator();
+			while( it.hasNext() ) {
+				final IModelError modelError = it.next();
+				if( modelError instanceof PrePostscanError ) {
+					//final PrePostscanError prePostscanError = (PrePostscanError)modelError;
+					return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
+				}
+			}
+		}
 		return null;
+		
 	}
 	
 	public String getColumnText( final Object postscan, final int colIndex ) {

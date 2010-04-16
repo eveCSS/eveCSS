@@ -39,18 +39,18 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import de.ptb.epics.eve.data.PluginTypes;
-import de.ptb.epics.eve.data.scandescription.errornotification.IModelErrorListener;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
-import de.ptb.epics.eve.data.scandescription.errorhandling.ModelError;
-import de.ptb.epics.eve.data.scandescription.errorhandling.reasons.InvalidFileName;
 import de.ptb.epics.eve.data.scandescription.Chain;
+import de.ptb.epics.eve.data.scandescription.errors.ChainError;
+import de.ptb.epics.eve.data.scandescription.errors.ChainErrorTypes;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.Helper;
 import de.ptb.epics.eve.editor.dialogs.PluginControllerDialog;
 
-public class ScanView extends ViewPart implements IModelErrorListener, IModelUpdateListener {
+public class ScanView extends ViewPart implements IModelUpdateListener {
 
 	public static final String ID = "de.ptb.epics.eve.editor.views.ScanView"; // TODO Needs to be whatever is mentioned in plugin.xml
 
@@ -106,11 +106,15 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 	private ExpandItem item1;
 	private ExpandItem item2;
 	
-	private ModelError filenameError;
+	private CTabItem pauseTabItem;
+	private CTabItem redoTabItem;
+	private CTabItem breakTabItem;
+	private CTabItem stopTabItem;
 	
+		
 	@Override
 	public void createPartControl( final Composite parent ) {
-			
+	    
 		parent.setLayout( new FillLayout() );
 		
 		if( Activator.getDefault().getMeasuringStation() == null ) {
@@ -153,6 +157,7 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
 		this.filenameErrorLabel.setLayoutData( gridData );
+		this.filenameErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
 		
 		// File Browse Button
 		GridData gridData11 = new GridData();
@@ -373,18 +378,18 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 		redoEventComposite = new EventComposite( eventsTabFolder, SWT.NONE);
 		breakEventComposite = new EventComposite( eventsTabFolder, SWT.NONE );
 		stopEventComposite = new EventComposite( eventsTabFolder, SWT.NONE );
-		CTabItem tabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
-		tabItem.setText( "Pause" );
-		tabItem.setControl(pauseEventComposite);
-		CTabItem tabItem1 = new CTabItem(eventsTabFolder, SWT.FLAT);
-		tabItem1.setText( "Redo" );
-		tabItem1.setControl(redoEventComposite);
-		CTabItem tabItem3 = new CTabItem(eventsTabFolder, SWT.FLAT);
-		tabItem3.setText( "Break" );
-		tabItem3.setControl(breakEventComposite);
-		CTabItem tabItem4 = new CTabItem(eventsTabFolder, SWT.FLAT);
-		tabItem4.setText( "Stop" );
-		tabItem4.setControl(stopEventComposite);
+		this.pauseTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
+		this.pauseTabItem.setText( "Pause" );
+		this.pauseTabItem.setControl(pauseEventComposite);
+		this.redoTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
+		this.redoTabItem.setText( "Redo" );
+		this.redoTabItem.setControl(redoEventComposite);
+		this.breakTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
+		this.breakTabItem.setText( "Break" );
+		this.breakTabItem.setControl(breakEventComposite);
+		this.stopTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
+		this.stopTabItem.setText( "Stop" );
+		this.stopTabItem.setControl(stopEventComposite);
 		
 	}
 
@@ -406,9 +411,6 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 		} else {
 			this.savePluginOptionsButton.setEnabled( enabled );
 		}
-		//this.pauseEventComposite.setEnabledForAll(enabled);
-		//this.redoEventComposite.setEnabledForAll(enabled);
-		//this.breakEventComposite.setEnabledForAll(enabled);
 	
 	}
 
@@ -422,40 +424,74 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 			
 			this.saveScanDescriptionCheckBox.setSelection( this.currentChain.isSaveScanDescription() );
 			
-			this.savePlugingCombo.setText( (this.currentChain.getSavePluginController().getPlugin() !=null)?this.currentChain.getSavePluginController().getPlugin().getName():"" );
+			this.savePlugingCombo.setText( (this.currentChain.getSavePluginController().getPlugin() !=null)?this.currentChain.getSavePluginController().getPlugin().getName():"" );		
+			
+			if( this.currentChain.getSavePluginController().getModelErrors().size() > 0 ) {
+				this.savePluginComboErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+				this.savePluginComboErrorLabel.setToolTipText( "There is at least one error in the plug in configuration!" );
+			} else {
+				this.savePluginComboErrorLabel.setImage( null );
+				this.savePluginComboErrorLabel.setToolTipText( "" );
 				
+			}
+			
 			this.commentInput.setText( this.currentChain.getComment() );
 			
-			this.pauseEventComposite.setControlEventManager( this.currentChain.getPauseControlEventManager() );
-			this.redoEventComposite.setControlEventManager( this.currentChain.getRedoControlEventManager() );
-			this.breakEventComposite.setControlEventManager( this.currentChain.getBreakControlEventManager() );
-			// TODO implement getStopControlEventManager
-			// this.stopEventComposite.setControlEventManager( this.currentChain.getStopControlEventManager() );
+			if( this.pauseEventComposite.getControlEventManager() != this.currentChain.getPauseControlEventManager() ) {
+				this.pauseEventComposite.setControlEventManager( this.currentChain.getPauseControlEventManager() );
+			}
+			if( this.redoEventComposite.getControlEventManager() != this.currentChain.getRedoControlEventManager() ) {
+				this.redoEventComposite.setControlEventManager( this.currentChain.getRedoControlEventManager() );
+			}
+			if( this.breakEventComposite.getControlEventManager() != this.currentChain.getRedoControlEventManager() ) {
+				this.breakEventComposite.setControlEventManager( this.currentChain.getBreakControlEventManager() );
+			}
+			if( this.stopEventComposite.getControlEventManager() != this.currentChain.getStopControlEventManager() ) {
+				this.stopEventComposite.setControlEventManager( this.currentChain.getStopControlEventManager() );
+			}
 			
-			Iterator<ModelError> it = this.currentChain.getFullErrorList().iterator();
+			final List< IModelError > errorList = this.currentChain.getModelErrors();
+			final Iterator< IModelError > it = errorList.iterator();
+			
+			this.filenameErrorLabel.setImage( null );
+			this.filenameErrorLabel.setToolTipText( "" );
+			
+			
 			while( it.hasNext() ) {
-				ModelError modelError = it.next();
-				if( modelError.getLocation() instanceof de.ptb.epics.eve.data.scandescription.errorhandling.locations.Chain ) {
-					de.ptb.epics.eve.data.scandescription.errorhandling.locations.Chain chain = (de.ptb.epics.eve.data.scandescription.errorhandling.locations.Chain)modelError.getLocation();
-					if( chain.getChain() == this.currentChain ) {
-						if( modelError.getReason() instanceof InvalidFileName ) {
-							InvalidFileName invalidFilename = (InvalidFileName)modelError.getReason();
-							this.filenameErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
-							this.filenameErrorLabel.setToolTipText( invalidFilename.getReasonText() );
-							this.filenameError = modelError;
-							this.filenameError.addModelUpdateListener( this );
-							this.savingComposite.layout();
-						}
+				final IModelError modelError = it.next();
+				if( modelError instanceof ChainError ) {
+					final ChainError chainError = (ChainError)modelError;
+					this.filenameErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+					if( chainError.getErrorType() == ChainErrorTypes.FILENAME_EMPTY ) {
+						this.filenameErrorLabel.setToolTipText( "The filename must not be empty!" );
+					} else if( chainError.getErrorType() == ChainErrorTypes.FILENAME_ILLEGAL_CHARACTER ) {
+						this.filenameErrorLabel.setToolTipText( "The filename contains illegal character!" );
 					}
 				}
-			//	
-			//	this.savePluginComboErrorLabel.setImage(image);
-			}
-		
-			
+			}			
 			
 			} catch( Exception ex ) {
 				ex.printStackTrace();
+			}
+			if( this.currentChain.getPauseControlEventManager().getModelErrors().size() > 0 ) {
+				this.pauseTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+			} else {
+				this.pauseTabItem.setImage( null );
+			}
+			if( this.currentChain.getBreakControlEventManager().getModelErrors().size() > 0 ) {
+				this.breakTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+			} else {
+				this.breakTabItem.setImage( null );
+			}
+			if( this.currentChain.getRedoControlEventManager().getModelErrors().size() > 0 ) {
+				this.redoTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+			} else {
+				this.redoTabItem.setImage( null );
+			}
+			if( this.currentChain.getStopControlEventManager().getModelErrors().size() > 0 ) {
+				this.stopTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+			} else {
+				this.stopTabItem.setImage( null );
 			}
 		} 
 		else {
@@ -481,22 +517,21 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 		return currentChain;
 	}
 
-	public void setCurrentChain(Chain currentChain) {
-		if( this.currentChain != currentChain ) {
-			if( this.currentChain != null ) {
-				this.currentChain.removeModelErrorListener( this );
-			}
-			this.currentChain = currentChain;
-			if( this.currentChain != null ) {
-				this.currentChain.addModelErrorListener( this );
-				this.setEnabledForAll( true );
-				this.setPartName( "Scan: " + this.currentChain.getId() );
-			} else {
-				this.setEnabledForAll( false );
-				this.setPartName( "No Scan loaded" );
-			}
-			this.fillFields();
+	public void setCurrentChain( final Chain currentChain ) {
+		if( this.currentChain != null ) {
+			this.currentChain.removeModelUpdateListener( this );
 		}
+		this.currentChain = currentChain;
+		if( this.currentChain != null ) {
+			this.currentChain.addModelUpdateListener( this );
+			this.setEnabledForAll( true );
+			this.setPartName( "Scan: " + this.currentChain.getId() );
+			this.fillFields();
+		} else {
+			this.setEnabledForAll( false );
+			this.setPartName( "No Scan loaded" );
+		}
+		
 	}
 	
 	private void appendListener() {
@@ -561,42 +596,9 @@ public class ScanView extends ViewPart implements IModelErrorListener, IModelUpd
 		};
 	}
 
-	public void errorOccured( final ModelError modelError ) {
-		if( modelError.getLocation() instanceof de.ptb.epics.eve.data.scandescription.errorhandling.locations.Chain ) {
-			de.ptb.epics.eve.data.scandescription.errorhandling.locations.Chain chain = (de.ptb.epics.eve.data.scandescription.errorhandling.locations.Chain)modelError.getLocation();
-			if( chain.getChain() == this.currentChain ) {
-				if( modelError.getReason() instanceof InvalidFileName ) {
-					InvalidFileName invalidFilename = (InvalidFileName)modelError.getReason();
-					this.filenameErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
-					this.filenameErrorLabel.setToolTipText( invalidFilename.getReasonText() );
-					this.filenameError = modelError;
-					this.filenameError.addModelUpdateListener( this );
-					this.savingComposite.layout();
-				}
-			}
-		}
-	}
-
-	public void errorSolved( final ModelError modelError ) {
-		if( modelError.getLocation() instanceof de.ptb.epics.eve.data.scandescription.errorhandling.locations.Chain ) {
-			de.ptb.epics.eve.data.scandescription.errorhandling.locations.Chain chain = (de.ptb.epics.eve.data.scandescription.errorhandling.locations.Chain)modelError.getLocation();
-			if( chain.getChain() == this.currentChain ) {
-				if( modelError.getReason() instanceof InvalidFileName ) {
-					this.filenameErrorLabel.setImage( null );
-					this.filenameErrorLabel.setToolTipText( "" );
-					this.filenameError.removeModelUpdateListener( this );
-					this.filenameError = null;
-					this.savingComposite.layout();
-				}
-			}
-		}
-		
-	}
-	
+	@Override
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-		if( modelUpdateEvent.getSender() == this.filenameError ) {
-			this.filenameErrorLabel.setToolTipText( this.filenameError.getReason().getReasonText() );
-		}
+		this.fillFields();
 		
 	}
 	

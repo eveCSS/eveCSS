@@ -7,16 +7,32 @@
  *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
 
+import java.util.Iterator;
+
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.Prescan;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.data.scandescription.errors.PrePostscanError;
 
 public class PrescanLabelProvider implements ITableLabelProvider {
 
 	public Image getColumnImage( final Object prescan, final int colIndex ) {
-		// TODO Auto-generated method stub
+		final Prescan pos = (Prescan)prescan;
+		if( colIndex == 1 ) {
+			final Iterator< IModelError > it = pos.getModelErrors().iterator();
+			while( it.hasNext() ) {
+				final IModelError modelError = it.next();
+				if( modelError instanceof PrePostscanError ) {
+					//final PrePostscanError prePostscanError = (PrePostscanError)modelError;
+					return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
+				}
+			}
+		}
 		return null;
 	}
 

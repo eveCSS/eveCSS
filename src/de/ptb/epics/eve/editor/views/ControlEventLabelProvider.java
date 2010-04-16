@@ -7,9 +7,6 @@
  *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
 
-
-import java.util.Iterator;
-
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -18,8 +15,6 @@ import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.ComparisonTypes;
-import de.ptb.epics.eve.data.scandescription.errorhandling.ModelError;
-import de.ptb.epics.eve.data.scandescription.errorhandling.reasons.TypeValueMismatch;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
 
@@ -29,11 +24,8 @@ public class ControlEventLabelProvider implements ITableLabelProvider {
 		
 		switch( colIndex ) {
 			case 2:
-				Iterator<ModelError> it = ((ControlEvent)controlEvent).getFullErrorList().iterator();
-				while( it.hasNext() ) {
-					if( it.next().getReason() instanceof TypeValueMismatch ) {
-						return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
-					}
+				if( ((ControlEvent)controlEvent).getModelErrors().size() > 0 ) {
+					return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
 				}
 				break;
 		

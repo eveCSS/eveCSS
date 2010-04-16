@@ -18,14 +18,13 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.TableColumn;
 
-import de.ptb.epics.eve.data.scandescription.errornotification.IModelErrorListener;
-import de.ptb.epics.eve.data.scandescription.errorhandling.ModelError;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 
-public class ErrorView extends ViewPart implements IModelErrorListener, IModelUpdateListener {
+public class ErrorView extends ViewPart implements IModelUpdateListener {
 
 	public static final String ID = "de.ptb.epics.eve.editor.views.ErrorView"; // TODO Needs to be whatever is mentioned in plugin.xml  //  @jve:decl-index=0:
 
@@ -73,63 +72,45 @@ public class ErrorView extends ViewPart implements IModelErrorListener, IModelUp
 	
 	public void setScanDescription( final ScanDescription scanDescription ) {
 		if( currentScanDescription != null ) {
-			this.currentScanDescription.removeModelErrorListener( this );
+			this.currentScanDescription.removeModelUpdateListener( this );
+			
 		}
 		this.currentScanDescription = scanDescription;
 		
 		TableItem[] tableItems = this.errorTable.getItems();
 		for( int i = 0; i < tableItems.length; ++i ) {
-			((ModelError)tableItems[i].getData()).removeModelUpdateListener( this );
 			tableItems[i].dispose();
 		}
 		
 		this.errorTable.removeAll();
 		
 		if( currentScanDescription != null ) {
-			this.currentScanDescription.addModelErrorListener( this );
-			final Iterator<ModelError> it = this.currentScanDescription.getFullErrorList().iterator();
+			this.currentScanDescription.addModelUpdateListener( this );
+			final Iterator< IModelError > it = this.currentScanDescription.getModelErrors().iterator();
 			while( it.hasNext() ) {
-				final ModelError modelError = it.next();
-				modelError.addModelUpdateListener( this );
+				final IModelError modelError = it.next();
 				TableItem tableItem = new TableItem( this.errorTable, 0 );
 				tableItem.setData( modelError );
 				tableItem.setText( 0, "" );
-				tableItem.setText( 1, modelError.getLocation().getLocationText() );
-				tableItem.setText( 2, modelError.getReason().getReasonText() );
+				tableItem.setText( 1, modelError.toString() );
+				tableItem.setText( 2, "" );
 			}
 		}
-	}
-
-	public void errorOccured( final ModelError modelError ) {
-		TableItem tableItem = new TableItem( this.errorTable, 0 );
-		tableItem.setData( modelError );
-		tableItem.setText( 0, "" );
-		tableItem.setText( 1, modelError.getLocation().getLocationText() );
-		tableItem.setText( 2, modelError.getReason().getReasonText() );
-		modelError.addModelUpdateListener( this );
-	}
-
-	public void errorSolved( final ModelError modelError ) {
-		TableItem[] tableItems = this.errorTable.getItems();
-		for( int i = 0; i < tableItems.length; ++i ) {
-			if( tableItems[i].getData() == modelError ) {
-				this.errorTable.remove( i );
-				tableItems[i].dispose();
-				break;
-			}
-		}
-		modelError.removeModelUpdateListener( this );
 	}
 
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
 		
-		if( modelUpdateEvent.getSender() instanceof ModelError ) {
-			TableItem[] tableItems = this.errorTable.getItems();
-			for( int i = 0; i < tableItems.length; ++i ) {
-				if( tableItems[i].getData() == modelUpdateEvent.getSender() ) {
-					tableItems[i].setText( 1, ((ModelError)tableItems[i].getData()).getLocation().getLocationText() );
-					tableItems[i].setText( 2, ((ModelError)tableItems[i].getData()).getReason().getReasonText() );
-				}
+		this.errorTable.removeAll();
+		
+		if( currentScanDescription != null ) {
+			final Iterator< IModelError > it = this.currentScanDescription.getModelErrors().iterator();
+			while( it.hasNext() ) {
+				final IModelError modelError = it.next();
+				TableItem tableItem = new TableItem( this.errorTable, 0 );
+				tableItem.setData( modelError );
+				tableItem.setText( 0, "" );
+				tableItem.setText( 1, modelError.toString() );
+				tableItem.setText( 2, "" );
 			}
 		}
 		

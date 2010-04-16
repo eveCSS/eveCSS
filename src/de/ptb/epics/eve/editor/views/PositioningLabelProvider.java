@@ -7,16 +7,61 @@
  *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
 
+import java.util.Iterator;
+
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.Positioning;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.data.scandescription.errors.PluginError;
+import de.ptb.epics.eve.data.scandescription.errors.PluginErrorTypes;
+import de.ptb.epics.eve.data.scandescription.errors.PositioningError;
+import de.ptb.epics.eve.data.scandescription.errors.PositioningErrorTypes;
 
 public class PositioningLabelProvider implements ITableLabelProvider {
 
 	public Image getColumnImage( final Object positioning, final int colIndex ) {
-		// TODO Auto-generated method stub
+		final Positioning pos = (Positioning)positioning;
+		if( colIndex == 1 ) {
+			final Iterator< IModelError > it = pos.getModelErrors().iterator();
+			while( it.hasNext() )  {
+				final IModelError modelError = it.next();
+				if( modelError instanceof PluginError ) {
+					final PluginError pluginError = (PluginError)modelError;
+					if( pluginError.getPluginErrorType() == PluginErrorTypes.PLUING_NOT_SET ) {
+						return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
+					}
+				}
+			}
+		} else if( colIndex == 2 ) {
+			final Iterator< IModelError > it = pos.getModelErrors().iterator();
+			while( it.hasNext() )  {
+				final IModelError modelError = it.next();
+				if( modelError instanceof PositioningError ) {
+					final PositioningError positioningError = (PositioningError)modelError;
+					if( positioningError.getErrorType() == PositioningErrorTypes.NO_DETECTOR_CHANNEL_SET ) {
+						return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
+					}
+				}
+			}
+		} else if( colIndex == 4 ) {
+			final Iterator< IModelError > it = pos.getModelErrors().iterator();
+			while( it.hasNext() )  {
+				final IModelError modelError = it.next();
+				if( modelError instanceof PluginError ) {
+					final PluginError pluginError = (PluginError)modelError;
+					if( pluginError.getPluginErrorType() == PluginErrorTypes.MISSING_MANDATORY_PARAMETER ) {
+						return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
+					} else if( pluginError.getPluginErrorType() == PluginErrorTypes.WRONG_VALUE ) {
+						return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
+					}
+				}
+			}
+		}
 		return null;
 	}
 

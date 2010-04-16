@@ -7,6 +7,7 @@
  *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.events.FocusEvent;
@@ -20,12 +21,17 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.errors.AxisError;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 
 public class MotorAxisStartStopStepwidthComposite extends Composite {
 
@@ -41,6 +47,11 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 	private Button autoFillStepwidthRadioButton;
 	private Button autoFillStepamountRadioButton;
 	
+	private Label startErrorLabel;
+	private Label stopErrorLabel;
+	private Label stepwidthErrorLabel;
+	private Label stepAmountErrorLabel;
+	
 //	private boolean recursion;
 	
 	public MotorAxisStartStopStepwidthComposite( final Composite parent, final int style ) {
@@ -51,7 +62,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 
 	private void initialize() {
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 2;
+		gridLayout.numColumns = 3;
 		this.setLayout( gridLayout );
 
 		this.autoFillStartRadioButton = new Button( this, SWT.RADIO );
@@ -117,6 +128,8 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		gridData.grabExcessHorizontalSpace = true;
 		this.startCombo.setLayoutData( gridData );
 		
+		this.startErrorLabel = new Label( this, SWT.NONE );
+		
 		this.autoFillStopRadioButton = new Button( this, SWT.RADIO );
 		this.autoFillStopRadioButton.setText( "Stop:" );
 		this.autoFillStopRadioButton.setToolTipText( "Mark to enable auto-fill for stop value." );
@@ -180,6 +193,8 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		gridData.grabExcessHorizontalSpace = true;
 		this.stopCombo.setLayoutData( gridData );
 
+		this.stopErrorLabel = new Label( this, SWT.NONE );
+		
 		this.autoFillStepwidthRadioButton = new Button( this, SWT.RADIO );
 		this.autoFillStepwidthRadioButton.setText( "Stepwidth:" );
 		this.autoFillStepwidthRadioButton.setToolTipText( "Mark to enable auto-fill for stepwidth value." );
@@ -226,6 +241,8 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.stepwidthText.setLayoutData( gridData );
+		
+		this.stepwidthErrorLabel = new Label( this, SWT.NONE );
 		
 		this.autoFillStepamountRadioButton = new Button( this, SWT.RADIO );
 		this.autoFillStepamountRadioButton.setText( "Stepcount:" );
@@ -275,6 +292,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalSpan = 2;
 		this.stepamountText.setLayoutData( gridData );
 		
 		this.mainAxisCheckBox = new Button( this, SWT.CHECK );
@@ -282,7 +300,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalSpan = 2;
+		gridData.horizontalSpan = 3;
 		this.mainAxisCheckBox.setLayoutData( gridData );
 		this.mainAxisCheckBox.addSelectionListener( new SelectionListener() {
 			public void widgetDefaultSelected( final SelectionEvent e ) {
@@ -338,12 +356,60 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 			if( this.mainAxisCheckBox.getSelection() || stepamount == -1.0 ) {
 				this.mainAxisCheckBox.setEnabled( true );
 			}
+			
+			this.startErrorLabel.setImage( null );
+			this.startErrorLabel.setToolTipText( "" );
+			this.stopErrorLabel.setImage( null );
+			this.stopErrorLabel.setToolTipText( "" );
+			this.stepwidthErrorLabel.setImage( null );
+			this.stepwidthErrorLabel.setToolTipText( "" );
+			final Iterator< IModelError > it = this.axis.getModelErrors().iterator();
+			while( it.hasNext() ) {
+				final IModelError modelError = it.next();
+				if( modelError instanceof AxisError ) {
+					final AxisError axisError = (AxisError)modelError;
+					switch( axisError.getErrorType() ) {
+						case START_NOT_SET:
+							this.startErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+							this.startErrorLabel.setToolTipText( "Start values hat not been set!" );
+							break;
+							
+						case START_VALUE_NOT_POSSIBLE:
+							this.startErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+							this.startErrorLabel.setToolTipText( "Start values not possible!" );
+							break;
+							
+						case STOP_NOT_SET:
+							this.stopErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+							this.stopErrorLabel.setToolTipText( "Stop values hat not been set!" );
+							break;
+							
+						case STOP_VALUE_NOT_POSSIBLE:
+							this.stopErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+							this.stopErrorLabel.setToolTipText( "Stop values not possible!" );
+							break;
+							
+						case STEPWIDTH_NOT_SET:
+							this.stepwidthErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+							this.stepwidthErrorLabel.setToolTipText( "Stepwidth values hat not been set!" );
+							break;
+						
+					}
+				}
+			}
+			
 		} else {
 			this.startCombo.setEnabled( false );
 			this.stopCombo.setEnabled( false );
 			this.stepwidthText.setEnabled( false );
 			this.stepamountText.setEnabled( false );
 			this.mainAxisCheckBox.setEnabled( false );
+			this.startErrorLabel.setImage( null );
+			this.startErrorLabel.setToolTipText( "" );
+			this.stopErrorLabel.setImage( null );
+			this.stopErrorLabel.setToolTipText( "" );
+			this.stepwidthErrorLabel.setImage( null );
+			this.stepwidthErrorLabel.setToolTipText( "" );
 		}
 	}
 	

@@ -7,6 +7,8 @@
  *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
 
+import java.util.Iterator;
+
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.events.ModifyEvent;
@@ -20,13 +22,19 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.errors.AxisError;
+import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 
 public class MotorAxisFileComposite extends Composite {
 
 	private Label filenameLabel = null;
 	private Text filenameText = null;
+	private Label filenameErrorLabel = null;
 	private Button searchButton = null;
 	private Axis axis = null;
 	
@@ -37,7 +45,7 @@ public class MotorAxisFileComposite extends Composite {
 
 	private void initialize() {
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 3;
+		gridLayout.numColumns = 4;
 		this.setLayout( gridLayout );
 		this.filenameLabel = new Label(this, SWT.NONE);
 		this.filenameLabel.setText("Filename:");
@@ -48,6 +56,7 @@ public class MotorAxisFileComposite extends Composite {
 		gridData.horizontalAlignment = GridData.FILL;
 		this.filenameText.setLayoutData( gridData );
 		
+		this.filenameErrorLabel = new Label(this, SWT.NONE);
 		
 		this.searchButton = new Button( this, SWT.NONE );
 		this.searchButton.setText( "Search" );
@@ -87,10 +96,26 @@ public class MotorAxisFileComposite extends Composite {
 		this.axis = axis;
 		if( this.axis != null ) {
 			this.filenameText.setText( this.axis.getPositionfile()==null?"":this.axis.getPositionfile() );
+			
+			this.filenameErrorLabel.setImage( null );
+			
+			final Iterator< IModelError > it = this.axis.getModelErrors().iterator();
+			while( it.hasNext() ) {
+				final IModelError modelError = it.next();
+				if( modelError instanceof AxisError ) {
+					final AxisError axisError = (AxisError)modelError;
+					if( axisError.getErrorType() == AxisErrorTypes.FILENAME_NOT_SET ) {
+						this.filenameErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+						break;
+					}
+				}
+			}
+			
 			this.filenameText.setEnabled( true );
 			this.searchButton.setEnabled( true );
 		} else {
 			this.filenameText.setText( "" );
+			this.filenameErrorLabel.setImage( null );
 			this.filenameText.setEnabled( false );
 			this.searchButton.setEnabled( false );
 		}

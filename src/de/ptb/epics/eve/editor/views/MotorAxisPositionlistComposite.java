@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views;
 
+import java.util.Iterator;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -8,13 +10,19 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.errors.AxisError;
+import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 
 public class MotorAxisPositionlistComposite extends Composite  {
 	
 	private Label positionlistLabel;
 	private Text positionlistInput;
+	private Label positionlistErrorLabel;
 	private Label amountLabel;
 	private Text amountText;
 	
@@ -28,7 +36,7 @@ public class MotorAxisPositionlistComposite extends Composite  {
 	private void initialize() {
 		
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 2;
+		gridLayout.numColumns = 3;
 		this.setLayout( gridLayout );
 
 		
@@ -66,6 +74,8 @@ public class MotorAxisPositionlistComposite extends Composite  {
 			
 		});
 		
+		this.positionlistLabel = new Label( this, SWT.NONE );
+		
 		this.amountLabel = new Label( this, SWT.NONE );
 		this.amountLabel.setText( "Amount of positions:" );
 		gridData = new GridData();
@@ -76,6 +86,7 @@ public class MotorAxisPositionlistComposite extends Composite  {
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 2;
 		this.amountText.setLayoutData( gridData );
 		this.amountText.setEnabled( false );
 		
@@ -89,11 +100,21 @@ public class MotorAxisPositionlistComposite extends Composite  {
 			if( this.axis.getPositionlist() != null ) { 
 				this.positionlistInput.setText( axis.getPositionlist() ); 
 			}
+			final Iterator< IModelError > it = this.axis.getModelErrors().iterator();
+			while( it.hasNext() ) {
+				final IModelError modelError = it.next();
+				if( modelError instanceof AxisError ) {
+					final AxisError axisError = (AxisError)modelError;
+					if( axisError.getErrorType() == AxisErrorTypes.FILENAME_NOT_SET ) {
+						this.positionlistErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+						break;
+					}
+				}
+			}
 			this.positionlistLabel.setEnabled( true );
 		} else {
 			this.positionlistInput.setText( "" );
 			this.positionlistLabel.setEnabled( false );
 		}
 	}
-
 }

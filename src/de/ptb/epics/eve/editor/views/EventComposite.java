@@ -290,6 +290,10 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 	}
 	
 
+	public ControlEventManager getControlEventManager() {
+		return this.controlEventManager;
+	}
+	
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
 		
 		if( modelUpdateEvent.getMessage() instanceof ControlEventMessage ) {
