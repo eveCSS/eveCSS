@@ -57,7 +57,7 @@ public class PvTextComposite extends Composite implements IProcessVariableValueL
 		final String writepvname = pvname;
 		textWidget.addFocusListener( new FocusListener() {
 		
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
 				ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance();
@@ -71,7 +71,6 @@ public class PvTextComposite extends Composite implements IProcessVariableValueL
 				}
 			}
 		
-			@Override
 			public void focusGained(FocusEvent e) {
 				textWidget.setForeground(Activator.getDefault().getColor("COLOR_PV_INITIAL"));
 			
@@ -79,19 +78,19 @@ public class PvTextComposite extends Composite implements IProcessVariableValueL
 		});	
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
 	 */
-	@Override
 	public void widgetDefaultSelected(SelectionEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
 	 */
-	@Override
 	public void widgetSelected(SelectionEvent e) {
 		// TODO Auto-generated method stub
 
