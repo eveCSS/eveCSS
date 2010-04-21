@@ -129,7 +129,7 @@ public class PositioningComposite extends Composite implements IModelUpdateListe
 	    
 	    this.tableViewer.setColumnProperties( props );
 	    
-	    this.motorAxisCombo = new Combo(this, SWT.NONE);
+	    this.motorAxisCombo = new Combo(this, SWT.READ_ONLY);
 		
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -167,6 +167,7 @@ public class PositioningComposite extends Composite implements IModelUpdateListe
 
 						// Table Eintrag wird aus der Combo-Box entfernt
 						motorAxisCombo.remove(motorAxisCombo.getText());
+						System.out.println("MotorAxisCombo: " + motorAxisCombo.getText() + " wird entfernt");
 					}
 					tableViewer.refresh();
 				}

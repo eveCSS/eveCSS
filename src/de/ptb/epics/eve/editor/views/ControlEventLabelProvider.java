@@ -7,6 +7,8 @@
  *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
 
+import java.util.Iterator;
+
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -18,15 +20,37 @@ import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
 
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+
 public class ControlEventLabelProvider implements ITableLabelProvider {
 	
 	public Image getColumnImage( Object controlEvent, int colIndex ) {
 		
 		switch( colIndex ) {
 			case 2:
+
+
+				/*************
+				final ControlEvent cEvent = (ControlEvent)controlEvent;
+
+				final Iterator< IModelError > it = cEvent.getModelErrors().iterator();
+				while( it.hasNext() ) {
+					final IModelError modelError = it.next();
+					System.out.println("modelError: " + modelError.toString());
+				
+				}
+				System.out.println("ControlEvent: Bei Fehler in Spalte 2 rotes X anzeigen");
+			 *********************/
+				
+
+				// die folgenden Zeilen sind original von Stephan. Alles was davor
+				// steht ist rumprobieren von mir (Hartmut 20.4.10)
 				if( ((ControlEvent)controlEvent).getModelErrors().size() > 0 ) {
+					System.out.println("   Fehler vorhanden");
 					return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
 				}
+
+				
 				break;
 		
 		}
@@ -43,19 +67,19 @@ public class ControlEventLabelProvider implements ITableLabelProvider {
 				break;
 				
 			case 1:
-				if( ((ControlEvent)controlEvent).getEvent().getType() != EventTypes.SCHEDULE )  {
+				if( ((ControlEvent)controlEvent).getEvent().getType() == EventTypes.MONITOR )  {
 					returnValue = ComparisonTypes.typeToString( ((ControlEvent)controlEvent).getLimit().getComparison() );
 				}
 				break;
 				
 			case 2:
-				if( ((ControlEvent)controlEvent).getEvent().getType() != EventTypes.SCHEDULE )  {
+				if( ((ControlEvent)controlEvent).getEvent().getType() == EventTypes.MONITOR )  {
 					returnValue = ((ControlEvent)controlEvent).getLimit().getValue();
 				}
 				break;
 				
 			case 3:
-				if( ((ControlEvent)controlEvent).getEvent().getType() != EventTypes.SCHEDULE )  {
+				if( ((ControlEvent)controlEvent).getEvent().getType() == EventTypes.MONITOR )  {
 					returnValue = "" + ((PauseEvent)controlEvent).isContinueIfFalse();
 				}
 				break;

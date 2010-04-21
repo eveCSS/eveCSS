@@ -8,7 +8,6 @@
 package de.ptb.epics.eve.editor.views;
 
 import java.util.List;
-import java.util.Map;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.CellEditor;
@@ -34,7 +33,6 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.measuringstation.Event;
-import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
@@ -43,6 +41,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventType
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
+
 
 public class EventComposite extends Composite implements IModelUpdateListener {
 
@@ -62,7 +61,6 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 		
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
-	
 		
 		this.setLayout( gridLayout );
 		
@@ -78,7 +76,7 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 		
 		TableColumn column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 0 );
 	    column.setText( "Source" );
-	    column.setWidth( 140 );
+	    column.setWidth( 200 );
 	    
 	    this.tableViewer.getTable().setHeaderVisible( true );
 	    this.tableViewer.getTable().setLinesVisible( true );
@@ -110,6 +108,7 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 	    	public void run() {
 	    		
 	    		controlEventManager.removeControlEvent( (ControlEvent)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
+				createEventChoice();
 	    	}
 	    };
 	    
@@ -123,7 +122,7 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 	    this.tableViewer.getControl().setMenu( menu );
 	    manager.add( deleteAction );
 	    
-		this.eventsCombo = new Combo(this, SWT.NONE);
+		this.eventsCombo = new Combo(this, SWT.READ_ONLY);
 		
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -138,29 +137,14 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 		gridData.verticalAlignment = GridData.CENTER;
 		this.addButton.setLayoutData( gridData );
 		this.createListener();
+
 		this.eventsCombo.addFocusListener( new FocusListener() {
 
 			public void focusGained( final FocusEvent e ) {
+				// TODO: warum wird hier der TextBuffer gelesen und an die gleiche
+				// Stelle wieder geschrieben. Hat das einen Sinn? (Hartmut 16.4.10)
 				final String currentTextBuffer = eventsCombo.getText();
-				Event[] measuringStationEvents = Activator.getDefault().getMeasuringStation().getEvents().toArray( new Event[0] );
-				Event[] scanDescriptionEvents = null;
-				
-				if( controlEventManager.getParentChain() != null ) {
-					scanDescriptionEvents = controlEventManager.getParentChain().getScanDescription().getEvents().toArray( new Event[0] );
-				} else if( controlEventManager.getParentScanModul() != null )  {
-					scanDescriptionEvents = controlEventManager.getParentScanModul().getChain().getScanDescription().getEvents().toArray( new Event[0] );
-				} else if( controlEventManager.getParentChannel() != null ) {
-					scanDescriptionEvents = controlEventManager.getParentChannel().getParentScanModul().getChain().getScanDescription().getEvents().toArray( new Event[0] );
-				}
-				
-				eventIDs = new String[measuringStationEvents.length + scanDescriptionEvents.length ];
-				for( int i = 0; i < measuringStationEvents.length; ++i ) {
-					eventIDs[i] = measuringStationEvents[i].getID();
-				}
-				for( int i = measuringStationEvents.length; i < eventIDs.length; ++i ) {
-					eventIDs[i] = scanDescriptionEvents[i-measuringStationEvents.length].getID();
-				}
-				eventsCombo.setItems( eventIDs );
+				createEventChoice();
 				eventsCombo.setText( currentTextBuffer );
 			}
 
@@ -170,6 +154,47 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 		}) ;
 	}
 
+	public void setEventChoice() {
+		createEventChoice();
+	}
+
+	private void createEventChoice() {
+		Event[] measuringStationEvents = Activator.getDefault().getMeasuringStation().getEvents().toArray( new Event[0] );
+		Event[] scanDescriptionEvents = null;
+
+		if( controlEventManager.getParentChain() != null ) {
+			scanDescriptionEvents = controlEventManager.getParentChain().getScanDescription().getEvents().toArray( new Event[0] );
+		} else if( controlEventManager.getParentScanModul() != null )  {
+			scanDescriptionEvents = controlEventManager.getParentScanModul().getChain().getScanDescription().getEvents().toArray( new Event[0] );
+		} else if( controlEventManager.getParentChannel() != null ) {
+			scanDescriptionEvents = controlEventManager.getParentChannel().getParentScanModul().getChain().getScanDescription().getEvents().toArray( new Event[0] );
+		}
+
+		List<? extends ControlEvent> vorhListe = controlEventManager.getControlEventsList();
+
+		eventIDs = new String[measuringStationEvents.length + scanDescriptionEvents.length ];
+		for( int i = 0; i < measuringStationEvents.length; ++i ) {
+			eventIDs[i] = measuringStationEvents[i].getName();
+		}
+
+		for( int i = measuringStationEvents.length; i < eventIDs.length; ++i ) {
+			eventIDs[i] = scanDescriptionEvents[i-measuringStationEvents.length].getName();
+		}
+		eventsCombo.setItems( eventIDs );
+
+		// durchlaufen durch die vorhandenen Events,
+		// alle Namen die schon gesetzt sind mit remove wieder entfernen.
+		for( int i = measuringStationEvents.length; i < eventIDs.length; ++i ) {
+			for (ControlEvent cevent : vorhListe) {
+				if (cevent.getId() != null) {
+					if (cevent.getId().equals(scanDescriptionEvents[i-measuringStationEvents.length].getID())) {
+						eventsCombo.remove(scanDescriptionEvents[i-measuringStationEvents.length].getNameID());
+					}
+				}
+			}
+		}
+	}
+	
 	private void createListener() {
 	
 		this.addButton.addSelectionListener( new SelectionListener() {
@@ -181,14 +206,22 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 
 				public void widgetSelected( final SelectionEvent e ) {
 					if( !eventsCombo.getText().equals( "" ) ) {
-						Event event = Activator.getDefault().getMeasuringStation().getEventById( eventsCombo.getText() );
+						// Wenn Klammern vorhanden, wird nur der Text innerhalb der Klammern verwendet
+						// Die ID der Events steht innerhalb von Klammern
+						
+						int stelleAnfang = eventsCombo.getText().indexOf("(");
+						int stelleEnde = eventsCombo.getText().indexOf(")");
+						String addEvent = eventsCombo.getText().substring( stelleAnfang + 2, stelleEnde - 1);
+							
+						Event event = Activator.getDefault().getMeasuringStation().getEventById( addEvent );
+						
 						if( event == null ) {
 							if( controlEventManager.getParentChain() != null ) {
-								event = controlEventManager.getParentChain().getScanDescription().getEventById( eventsCombo.getText() );
+								event = controlEventManager.getParentChain().getScanDescription().getEventById( addEvent );
 							} else if( controlEventManager.getParentScanModul() != null ) {
-								event = controlEventManager.getParentScanModul().getChain().getScanDescription().getEventById( eventsCombo.getText() );
+								event = controlEventManager.getParentScanModul().getChain().getScanDescription().getEventById( addEvent );
 							} else if( controlEventManager.getParentChannel() != null ) {
-								event = controlEventManager.getParentChannel().getParentScanModul().getChain().getScanDescription().getEventById( eventsCombo.getText() );
+								event = controlEventManager.getParentChannel().getParentScanModul().getChain().getScanDescription().getEventById( addEvent );
 							}
 						}
 						ControlEvent newEvent;
@@ -198,12 +231,15 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 							newEvent = new PauseEvent(event.getType());
 						}
 						newEvent.setEvent( event );
+						// Id des neuen Events wird gesetzt
+						newEvent.setId(addEvent);
 						controlEventManager.addControlEvent( newEvent );
+						
+						// Auswahl der Events wird aktualisiert
+						createEventChoice();
 					}
 				}
-			
 			}
-		
 		);
 	}
 	
@@ -224,15 +260,15 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 				}
 				
 				TableColumn column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 0 );
-			    column.setText( "Source" );
-			    column.setWidth( 140 );
+			    column.setText( "SourceA" );
+			    column.setWidth( 200 );
 			    
 			    column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 1 );
-			    column.setText( "Operator" );
+			    column.setText( "OperatorB" );
 			    column.setWidth( 60 );
 
 			    column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 2 );
-			    column.setText( "Limit" );
+			    column.setText( "LimitC" );
 			    column.setWidth( 50 );
 			    
 			    final CellEditor[] editors = new CellEditor[3];
@@ -256,7 +292,7 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 				
 				TableColumn column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 0 );
 			    column.setText( "Source" );
-			    column.setWidth( 140 );
+			    column.setWidth( 200 );
 			    
 			    column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 1 );
 			    column.setText( "Operator" );
@@ -264,7 +300,7 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 
 			    column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 2 );
 			    column.setText( "Limit" );
-			    column.setWidth( 100 );
+			    column.setWidth( 50 );
 			    
 			    column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 3 );
 			    column.setText( "CIF" );
@@ -276,7 +312,7 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 			    editors[1] = new ComboBoxCellEditor( this.tableViewer.getTable(), operators, SWT.READ_ONLY );
 			    editors[2] = new TextCellEditor( this.tableViewer.getTable() );
 			    editors[3] = new CheckboxCellEditor( this.tableViewer.getTable() );
-			    
+
 			    this.tableViewer.setCellEditors( editors );
 			    
 			    final String[] props = { "source", "operator", "limit", "cif" };

@@ -44,9 +44,10 @@ public class PositioningCellModifyer implements ICellModifier {
 			// Es werden nur die Channels erlaubt die in diesem ScanModul verwendet werden
 			ScanModul scanModul = (ScanModul)this.tableViewer.getInput();
 			Channel[] cur_channel = scanModul.getChannels();
-			String[] cur_feld = new String[cur_channel.length];
+			String[] cur_feld = new String[cur_channel.length + 1];
+			cur_feld[0] = "none";
 			for (int i=0; i<cur_channel.length; ++i) {
-				cur_feld[i] = cur_channel[i].getDetectorChannel().getFullIdentifyer();
+				cur_feld[i+1] = cur_channel[i].getDetectorChannel().getFullIdentifyer();
 			}
 	    	((ComboBoxCellEditor)this.tableViewer.getCellEditors()[3]).setItems(cur_feld);
 			return property.equals( "normalize" );

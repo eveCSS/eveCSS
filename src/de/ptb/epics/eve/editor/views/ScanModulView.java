@@ -14,7 +14,9 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -47,6 +49,8 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.Helper;
 
@@ -217,6 +221,7 @@ public class ScanModulView extends ViewPart {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
 		this.triggerDelayErrorLabel.setLayoutData(gridData);
+		this.triggerDelayErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
 
 		this.triggerDelayUnitLabel = new Label(this.generalComposite, SWT.NONE);
 		this.triggerDelayUnitLabel.setText("ms");
@@ -237,6 +242,7 @@ public class ScanModulView extends ViewPart {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
 		this.settleTimeErrorLabel.setLayoutData(gridData);
+		this.settleTimeErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
 
 		this.settleTimeUnitLabel = new Label(this.generalComposite, SWT.NONE);
 		this.settleTimeUnitLabel.setText("ms");
@@ -256,15 +262,15 @@ public class ScanModulView extends ViewPart {
 		gridData.horizontalSpan = 1;
 		this.saveMotorpositionsLabel.setLayoutData(gridData);
 
-		this.saveMotorpositionsCombo = new Combo(this.generalComposite,
-				SWT.NONE);
-//		SWT.DROP_DOWN | SWT.READ_ONLY);
+		this.saveMotorpositionsCombo = new Combo(this.generalComposite, SWT.READ_ONLY);
 		this.saveMotorpositionsCombo.setItems(new String[] { "never", "before",
 				"after", "both" });
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		this.saveMotorpositionsCombo.setLayoutData(gridData);
-
+// TODO: Die Änderungen von MotorPositionsCombo werden nicht erkannt (Zum Abspeichern)
+// bei createListener oder appendListener nachsehen was da fehlt! (Hartmut 16.4.10)
+		
 		this.item0 = new ExpandItem(this.bar, SWT.NONE, 0);
 		item0.setText("General");
 		item0.setHeight(this.generalComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
@@ -371,7 +377,7 @@ public class ScanModulView extends ViewPart {
 	 * 
 	 */
 	private void createMotorAxisCombo() {
-		motorAxisCombo = new Combo(motorAxisComposite, SWT.NONE);
+		motorAxisCombo = new Combo(motorAxisComposite, SWT.READ_ONLY);
 		// hier wird nur eine sortierte Liste erstellt mit allen Motorachsen
 		this.motorStrings = (Activator.getDefault().getMeasuringStation()
 		.getAxisFullIdentifyer().toArray(new String[0]));
@@ -383,7 +389,7 @@ public class ScanModulView extends ViewPart {
 	 * 
 	 */
 	private void createDetectorChannelCombo() {
-		detectorChannelCombo = new Combo(detectorChannelComposite, SWT.NONE);
+		detectorChannelCombo = new Combo(detectorChannelComposite, SWT.READ_ONLY);
 		// hier wird nur eine sortierte Liste erstellt mit allen Detektorkanälen
 		this.detectorStrings = (Activator.getDefault()
 				.getMeasuringStation().getChannelsFullIdentifyer().toArray(new String[0]));
@@ -408,7 +414,21 @@ public class ScanModulView extends ViewPart {
 		gridData.horizontalAlignment = GridData.FILL;
 		eventsTabFolder = new CTabFolder(this.eventsComposite, SWT.NONE);
 		eventsTabFolder.setLayoutData(gridData);
+		eventsTabFolder.addSelectionListener(new SelectionListener() {
 
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				// Einträge in der Auswahlliste werden aktualisiert
+				CTabItem wahlItem = eventsTabFolder.getSelection();
+				EventComposite wahlComposite = (EventComposite)wahlItem.getControl();
+				wahlComposite.setEventChoice();
+			}
+		});
+		
 		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
 		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
@@ -838,15 +858,14 @@ public class ScanModulView extends ViewPart {
 		this.settleTimeText.addModifyListener(this.modifyListener);
 		this.confirmTriggerCheckBox
 				.addSelectionListener(this.selectionListener);
-//TODO Neuer Listener
+//TODO Neuer Listener, funktioniert aber noch nicht so wie er soll, das Save-Zeichen
+		// für das XML-File wird nicht erzeugt (Hartmut 16.4.10)
 		this.saveMotorpositionsCombo.addModifyListener(this.modifyListener);
 		this.addMotorAxisButton.addSelectionListener(this.selectionListener);
 		this.addDetectorChannelButton
 				.addSelectionListener(this.selectionListener);
 		this.addPlotWindowButton.addSelectionListener(this.selectionListener);
 
-		this.motorAxisCombo.addModifyListener(this.modifyListener);
-		this.detectorChannelCombo.addModifyListener(this.modifyListener);
 		this.motorAxisRemoveMenuItem
 				.addSelectionListener(this.selectionListener);
 		this.detectorChannelRemoveMenuItem
@@ -873,12 +892,14 @@ public class ScanModulView extends ViewPart {
 					if (e.widget == triggerDelayText) {
 
 						if (triggerDelayText.getText().equals("")) {
-							Color oldColor = triggerDelayText.getBackground();
+System.out.println("triggerDelayText ist leer");
+
+/*							Color oldColor = triggerDelayText.getBackground();
 							triggerDelayText.setBackground(new Color(oldColor
-									.getDevice(), 255, 255, 255));
+									.getDevice(), 255, 11, 11));
 							oldColor.dispose();
-							currentScanModul
-									.setTriggerdelay(Double.NEGATIVE_INFINITY);
+	*/						currentScanModul
+									.setTriggerdelay(Double.NaN);
 						} else {
 							try {
 								currentScanModul
@@ -890,6 +911,7 @@ public class ScanModulView extends ViewPart {
 								triggerDelayText.setBackground(new Color(
 										oldColor.getDevice(), 255, 255, 255));
 								oldColor.dispose();
+								System.out.println("triggerDelayText ist OK");
 							} catch (Exception ex) {
 								Color oldColor = triggerDelayText
 										.getBackground();
@@ -898,6 +920,7 @@ public class ScanModulView extends ViewPart {
 								oldColor.dispose();
 								currentScanModul
 										.setTriggerdelay(Double.NEGATIVE_INFINITY);
+								System.out.println("triggerDelayText beinhaltet Zeichen");
 							}
 						}
 
@@ -926,36 +949,6 @@ public class ScanModulView extends ViewPart {
 								currentScanModul
 										.setSettletime(Double.NEGATIVE_INFINITY);
 							}
-						}
-					} else if (e.widget == motorAxisCombo) {
-						if (Helper.contains(motorAxisCombo.getItems(),
-								motorAxisCombo.getText())
-								|| motorAxisCombo.getText().equals("")) {
-							Color oldColor = motorAxisCombo.getBackground();
-							motorAxisCombo.setBackground(new Color(oldColor
-									.getDevice(), 255, 255, 255));
-							oldColor.dispose();
-						} else {
-							Color oldColor = motorAxisCombo.getBackground();
-							motorAxisCombo.setBackground(new Color(oldColor
-									.getDevice(), 255, 0, 0));
-							oldColor.dispose();
-						}
-					} else if (e.widget == detectorChannelCombo) {
-						if (Helper.contains(detectorChannelCombo.getItems(),
-								detectorChannelCombo.getText())
-								|| detectorChannelCombo.getText().equals("")) {
-							Color oldColor = detectorChannelCombo
-									.getBackground();
-							detectorChannelCombo.setBackground(new Color(
-									oldColor.getDevice(), 255, 255, 255));
-							oldColor.dispose();
-						} else {
-							Color oldColor = detectorChannelCombo
-									.getBackground();
-							detectorChannelCombo.setBackground(new Color(
-									oldColor.getDevice(), 255, 0, 0));
-							oldColor.dispose();
 						}
 					} else if (e.widget == saveMotorpositionsCombo) {
 						currentScanModul
@@ -1071,6 +1064,7 @@ public class ScanModulView extends ViewPart {
 								currentScanModul
 										.remove((Channel) selectedItems[i]
 												.getData());
+
 							}
 							detectorChannelsTable.remove(selectedIndexes);
 							IViewReference[] ref = getSite().getPage().getViewReferences();
@@ -1221,7 +1215,7 @@ public class ScanModulView extends ViewPart {
 			}
 
 		};
-
+		
 		this.itemControlListener = new ControlListener() {
 
 			public void controlMoved(final ControlEvent e) {
@@ -1260,16 +1254,13 @@ public class ScanModulView extends ViewPart {
 				if (amount > 0) {
 					height /= amount;
 					if (item1.getExpanded()) {
-						item1.setHeight(height < 150 ? 150 : height);
-						System.out.println("item1: " + height);
+						item1.setHeight(height < 200 ? 200 : height);
 					}
 					if (item2.getExpanded()) {
 						item2.setHeight(height < 150 ? 150 : height);
-						System.out.println("item2: " + height);
 					}
 					if (item3.getExpanded()) {
 						item3.setHeight(height < 150 ? 150 : height);
-						System.out.println("item3: " + height);
 					}
 				}
 			}

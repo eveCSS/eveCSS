@@ -113,10 +113,13 @@ public class DetectorChannelView extends ViewPart {
 			}
 			
 		});
+
 		this.averageErrorLabel = new Label( this.top, SWT.NONE );
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		this.averageErrorLabel.setLayoutData( gridData );
+//		gridData = new GridData();
+//		gridData.horizontalAlignment = GridData.FILL;
+//		this.averageErrorLabel.setLayoutData( gridData );
+		this.averageErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
+		this.averageErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
 		
 		this.maxDeviationLabel = new Label( this.top, SWT.NONE );
 		this.maxDeviationLabel.setText( "Max. Deviation (%):" );
@@ -147,9 +150,12 @@ public class DetectorChannelView extends ViewPart {
 		});
 		
 		this.maxDeviationErrorLabel = new Label( this.top, SWT.NONE );
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		this.maxDeviationErrorLabel.setData( gridData );
+//		gridData = new GridData();
+//		gridData.horizontalAlignment = GridData.FILL;
+//		this.maxDeviationErrorLabel.setData( gridData );
+		this.maxDeviationErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
+		this.maxDeviationErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
+		// TODO: maxDeviation darf nur ein Zahlenwert sein
 		
 		this.minimumLabel = new Label( this.top, SWT.NONE );
 		this.minimumLabel.setText( "Minumum:" );
@@ -181,9 +187,12 @@ public class DetectorChannelView extends ViewPart {
 		});
 		
 		this.minimumErrorLabel = new Label( this.top, SWT.NONE );
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		this.minimumErrorLabel.setData( gridData );
+//		gridData = new GridData();
+//		gridData.horizontalAlignment = GridData.FILL;
+//		this.minimumErrorLabel.setData( gridData );
+		this.minimumErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
+		this.minimumErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
+		// TODO: minimum darf nur ein Zahlenwert sein
 		
 		this.maxAttemptsLabel = new Label( this.top, SWT.NONE );
 		this.maxAttemptsLabel.setText( "Max. Attempts:" );
@@ -212,9 +221,11 @@ public class DetectorChannelView extends ViewPart {
 		});
 		
 		this.maxAttemptsErrorLabel = new Label( this.top, SWT.NONE );
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		this.maxAttemptsErrorLabel.setData( gridData );
+//		gridData = new GridData();
+//		gridData.horizontalAlignment = GridData.FILL;
+//		this.maxAttemptsErrorLabel.setData( gridData );
+		this.maxAttemptsErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
+		this.maxAttemptsErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
 		
 		this.confirmTriggerManualCheckBox = new Button( this.top, SWT.CHECK );
 		this.confirmTriggerManualCheckBox.setText( "Confirm Trigger manual" );
@@ -256,18 +267,15 @@ public class DetectorChannelView extends ViewPart {
 		this.item0.setHeight( this.eventComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		this.item0.setControl( this.eventComposite );
 	
-		this.eventComposite.addControlListener( new ControlListener() {
+		this.bar.addControlListener( new ControlListener() {
 
 			public void controlMoved( final ControlEvent e ) {
-				int height = bar.getSize().y - item0.getHeaderHeight() - (item0.getExpanded()?item0.getHeight():0) - 20;
-				item0.setHeight( height<200?200:height );
 			}
 
 			public void controlResized( final ControlEvent e ) {
-				int height = bar.getSize().y - item0.getHeaderHeight() - (item0.getExpanded()?item0.getHeight():0) - 20;
+				int height = bar.getSize().y - item0.getHeaderHeight() - 20;
 				item0.setHeight( height<200?200:height );
 			}
-			
 		});
 
 		this.detectorReadyEventCheckBox = new Button( this.eventComposite, SWT.CHECK );
@@ -285,7 +293,7 @@ public class DetectorChannelView extends ViewPart {
 				
 				// we create an event and add it to the list if selected 
 				// or remove the event with same id from the list if deselected
-				Event detReadyEvent = new Event(currentChannel.getAbstractDevice().getID(), currentChannel.getAbstractDevice().getName(), currentChannel.getParentScanModul().getChain().getId(), currentChannel.getParentScanModul().getId());
+				Event detReadyEvent = new Event(currentChannel.getAbstractDevice().getID(), currentChannel.getAbstractDevice().getParent().getName(), currentChannel.getAbstractDevice().getName(), currentChannel.getParentScanModul().getChain().getId(), currentChannel.getParentScanModul().getId());
 
 				if( detectorReadyEventCheckBox.getSelection() ) {
 					currentChannel.getParentScanModul().getChain().getScanDescription().add( detReadyEvent );
@@ -295,7 +303,6 @@ public class DetectorChannelView extends ViewPart {
 					currentChannel.setDetectorReadyEvent(null);
 				}
 			}
-			
 		});
 		
 		gridData = new GridData();
@@ -306,6 +313,20 @@ public class DetectorChannelView extends ViewPart {
 
 		eventsTabFolder = new CTabFolder(this.eventComposite, SWT.FLAT );
 		eventsTabFolder.setLayoutData( gridData );
+		eventsTabFolder.addSelectionListener(new SelectionListener() {
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				// Einträge in der Auswahlliste werden aktualisiert
+				CTabItem wahlItem = eventsTabFolder.getSelection();
+				EventComposite wahlComposite = (EventComposite)wahlItem.getControl();
+				wahlComposite.setEventChoice();
+			}
+		});
 		
 		redoEventComposite = new EventComposite( eventsTabFolder, SWT.NONE);
 		CTabItem tabItem1 = new CTabItem(eventsTabFolder, SWT.FLAT);
@@ -346,7 +367,6 @@ public class DetectorChannelView extends ViewPart {
 			this.confirmTriggerManualCheckBox.setSelection( this.currentChannel.isConfirmTrigger() );
 			this.detectorReadyEventCheckBox.setSelection( this.currentChannel.getDetectorReadyEvent() != null );
 			this.setPartName( channel.getAbstractDevice().getFullIdentifyer() );
-			
 
 			this.averageText.setEnabled( true );
 			this.maxDeviationText.setEnabled( true );
@@ -357,6 +377,10 @@ public class DetectorChannelView extends ViewPart {
 			this.eventsTabFolder.setEnabled(true);
 			
 			this.redoEventComposite.setControlEventManager( this.currentChannel.getRedoControlEventManager() );
+			
+			// TODO: Warum funktioniert hier die Fehlerbehandlung noch nicht
+			// richtig? Wenn in MaxDeviation ein negativer Wert steht, sollte
+			// das als Fehler ausgewertet werden. (Hartmut 21.4.10)
 			
 			this.maxDeviationErrorLabel.setImage( null );
 			this.minimumErrorLabel.setImage( null );

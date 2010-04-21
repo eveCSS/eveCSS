@@ -34,17 +34,22 @@ public class PostscanLabelProvider implements ITableLabelProvider {
 	 * Note: An image registry owns all of the image objects registered with it,
 	 * and automatically disposes of them the SWT Display is disposed.
 	 */ 
+	
 	static {
-		String iconPath = "icons/"; 
+		String iconPath = "../"; 
 		//TODO Frage: Kann hier das image auch irgendwo von SWT hergeholt werden?
+		// Wie muß der iconPath gesetzt sein, damit auch darüberliegende Verzeichnisse
+		// durchsucht werden? (Hartmut 19.4.10)
 		imageRegistry.put(CHECKED_IMAGE, ImageDescriptor.createFromFile(
 				PostscanComposite.class, 
-				iconPath + CHECKED_IMAGE + ".gif"
+				CHECKED_IMAGE + ".gif"
+//				iconPath + CHECKED_IMAGE + ".gif"
 				)
 			);
 		imageRegistry.put(UNCHECKED_IMAGE, ImageDescriptor.createFromFile(
 				PostscanComposite.class, 
-				iconPath + UNCHECKED_IMAGE + ".gif"
+				UNCHECKED_IMAGE + ".gif"
+//				iconPath + UNCHECKED_IMAGE + ".gif"
 				)
 			);	
 	}

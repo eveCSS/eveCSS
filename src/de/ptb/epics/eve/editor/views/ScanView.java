@@ -195,7 +195,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		// Save Plugin Box / Labels
 		this.savePluginLabel = new Label( this.savingComposite, SWT.NONE );
 		this.savePluginLabel.setText( "File format:" );
-		this.savePlugingCombo = new Combo( this.savingComposite, SWT.NONE );
+		this.savePlugingCombo = new Combo( this.savingComposite, SWT.READ_ONLY );
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
@@ -355,15 +355,13 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		this.pluginComposite = new Composite( this.bar, SWT.NONE );
 		this.pluginComposite.setLayout( gridLayout );
 		//this.pluginComposite.setLayout( new FillLayout() );
-		
-		
+
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.pluginComposite.setLayoutData( gridData );
-
 		
 		eventsTabFolder = new CTabFolder(this.pluginComposite, SWT.FLAT );
 		gridData = new GridData();
@@ -372,7 +370,20 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		this.eventsTabFolder.setLayoutData( gridData );
-	
+		eventsTabFolder.addSelectionListener(new SelectionListener() {
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				// Einträge in der Auswahlliste werden aktualisiert
+				CTabItem wahlItem = eventsTabFolder.getSelection();
+				EventComposite wahlComposite = (EventComposite)wahlItem.getControl();
+				wahlComposite.setEventChoice();
+			}
+		});
 		
 		pauseEventComposite = new EventComposite( eventsTabFolder, SWT.NONE );
 		redoEventComposite = new EventComposite( eventsTabFolder, SWT.NONE);
@@ -416,6 +427,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 
 	private void fillFields() {
 		this.filling = true;
+
 		if( this.currentChain != null ) {
 			try {
 			this.filenameInput.setText( (this.currentChain.getSaveFilename()!=null)?this.currentChain.getSaveFilename():"" );
@@ -455,7 +467,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			
 			this.filenameErrorLabel.setImage( null );
 			this.filenameErrorLabel.setToolTipText( "" );
-			
+
 			
 			while( it.hasNext() ) {
 				final IModelError modelError = it.next();
@@ -552,6 +564,8 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 					if( e.widget == filenameInput ) {
 						currentChain.setSaveFilename( filenameInput.getText() );
 					} else if( e.widget == savePlugingCombo ) {
+						// TODO: hier kann eigentlich kein Fehler mehr auftauchen, da das Plugin
+						// jetzt nur noch ausgewählt und nicht mehr verändert werden kann (Hartmut 20.4.10)
 						if( savePlugingCombo.getText().equals("") || Helper.contains( savePlugingCombo.getItems(), savePlugingCombo.getText() ) ) {
 							currentChain.getSavePluginController().setPlugin( Activator.getDefault().getMeasuringStation().getPluginByName( savePlugingCombo.getText() ) );
 							savePluginComboErrorLabel.setImage( null );	

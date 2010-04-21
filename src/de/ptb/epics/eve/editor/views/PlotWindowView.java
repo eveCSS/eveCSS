@@ -18,6 +18,8 @@ import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -202,6 +204,10 @@ public class PlotWindowView extends ViewPart {
 		});
 		
 		this.plotWindowIDErrorLabel = new Label( this.xAxisComposite, SWT.NONE );
+		this.plotWindowIDErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
+		this.plotWindowIDErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
+		// TODO: Die Plot ID innerhalb eines Scan-Moduls muß eindeutig sein. In dem ID-Feld
+		// darf keine vorhandene ID-Nummer eingetragen werden.
 		
 		this.motorAxisLabel = new Label( this.xAxisComposite, SWT.NONE );
 		this.motorAxisLabel.setText( "Motor Axis:" );
@@ -231,6 +237,9 @@ public class PlotWindowView extends ViewPart {
 		});
 		
 		this.motorAxisErrorLabel = new Label( this.xAxisComposite, SWT.NONE );
+		this.motorAxisErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK) );
+		this.motorAxisErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
+		// TODO: Es darf keinen Plot ohne Motor Axis geben
 		
 		this.preInitWindowCheckBox = new Button( this.xAxisComposite, SWT.CHECK );
 		gridData = new GridData();
@@ -333,6 +342,9 @@ public class PlotWindowView extends ViewPart {
 		});
 
 		this.yAxis1DetectorChannelErrorLabel = new Label( this.yAxis1Composite, SWT.NONE );
+		this.yAxis1DetectorChannelErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK) );
+		this.yAxis1DetectorChannelErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
+		// Es muß entweder y-axis1 oder y-axis2 gesetzt sein, sonst gibt es einen Fehler
 		
 		this.yAxis1NormalizeChannelLabel = new Label( this.yAxis1Composite, SWT.NONE );
 		this.yAxis1NormalizeChannelLabel.setText( "Normalize Channel:" );
@@ -530,7 +542,10 @@ public class PlotWindowView extends ViewPart {
 		});
 		
 		this.yAxis2DetectorChannelErrorLabel = new Label( this.yAxis2Composite, SWT.NONE );
-		
+		this.yAxis2DetectorChannelErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK) );
+		this.yAxis2DetectorChannelErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
+		// Es muß entweder y-axis1 oder y-axis2 gesetzt sein, sonst gibt es einen Fehler
+
 		this.yAxis2NormalizeChannelLabel = new Label( this.yAxis2Composite, SWT.NONE );
 		this.yAxis2NormalizeChannelLabel.setText( "Normalize Channel:" );
 		

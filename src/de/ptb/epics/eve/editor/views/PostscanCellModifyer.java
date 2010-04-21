@@ -26,6 +26,7 @@ public class PostscanCellModifyer implements ICellModifier {
 	
 	public boolean canModify( final Object element, final String property ) {
 		if (property.equals("value")) {
+			System.out.println("PostscanCellModifyer, value wurde modifiziert");
 			// mögliche Auswahl muß erstellt werden
 			final Postscan postscan = (Postscan)element;
 			if (postscan.isReset())

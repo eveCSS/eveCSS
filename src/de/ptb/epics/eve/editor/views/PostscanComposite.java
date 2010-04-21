@@ -99,7 +99,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 	    
 	    this.tableViewer.setColumnProperties( props );
 	    
-	    this.postscanCombo = new Combo(this, SWT.NONE);
+	    this.postscanCombo = new Combo(this, SWT.READ_ONLY);
 		
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;

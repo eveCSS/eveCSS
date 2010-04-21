@@ -92,7 +92,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 	    
 	    this.tableViewer.setColumnProperties( props );
 	    
-	    this.prescanCombo = new Combo(this, SWT.NONE);
+	    this.prescanCombo = new Combo(this, SWT.READ_ONLY);
 		
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;

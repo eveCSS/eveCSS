@@ -26,6 +26,7 @@ public class PrescanCellModifyer implements ICellModifier {
 	
 	public boolean canModify( final Object element, final String property ) {
 		if (property.equals("value")) {
+
 			// mögliche Auswahl muß erstellt werden
 			final Prescan prescan = (Prescan)element;
 
