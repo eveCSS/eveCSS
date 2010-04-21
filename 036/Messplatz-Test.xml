@@ -387,6 +387,15 @@
                 <value type="double"></value>
             </value>
         </device>
+        <device>
+            <class></class>
+            <name>Dummy-Nr.2</name>
+            <id>TOPUP:234</id>
+            <value>
+                <access monitor="true" method="GETCB" transport="ca" type="double">PPSMC:23715001.RBV</access>
+                <value type="double"></value>
+            </value>
+        </device>
     </devices>
     <smselection>
         <stepfunction>Add,Multiply,File,Plugin,Positionlist</stepfunction>

@@ -16,12 +16,18 @@
             <limit type="string" comparison="eq">50</limit>
             <continue_if_false>false</continue_if_false>
         </pauseevent>
+        <pauseevent type="schedule">
+            <incident>End</incident>
+            <chainid>0</chainid>
+            <smid>0</smid>
+            <continue_if_false>false</continue_if_false>
+        </pauseevent>
         <scanmodules>
             <scanmodule id="1">
                 <type>classic</type>
                 <name>BasisScan</name>
-                <xpos>109</xpos>
-                <ypos>98</ypos>
+                <xpos>147</xpos>
+                <ypos>115</ypos>
                 <parent>0</parent>
                 <appended>2</appended>
                 <settletime>4.5</settletime>
@@ -78,6 +84,7 @@
                     <minimum>1.0E-8</minimum>
                     <maxattempts>0</maxattempts>
                     <confirmtrigger>true</confirmtrigger>
+                    <sendreadyevent>true</sendreadyevent>
                 </smchannel>
                 <smchannel>
                     <channelid>P5000:2370700.1</channelid>
@@ -86,6 +93,7 @@
                     <minimum>1.0E-8</minimum>
                     <maxattempts>5</maxattempts>
                     <confirmtrigger>true</confirmtrigger>
+                    <sendreadyevent>true</sendreadyevent>
                 </smchannel>
                 <smchannel>
                     <channelid>K0617:22225.2</channelid>
@@ -616,6 +624,15 @@
             <class></class>
             <name>Dummy-Topup</name>
             <id>TOPUP:228</id>
+            <value>
+                <access method="GETCB" type="double" transport="ca" monitor="true">PPSMC:23715001.RBV</access>
+                <value type="double"></value>
+            </value>
+        </device>
+        <device>
+            <class></class>
+            <name>Dummy-Nr.2</name>
+            <id>TOPUP:234</id>
             <value>
                 <access method="GETCB" type="double" transport="ca" monitor="true">PPSMC:23715001.RBV</access>
                 <value type="double"></value>
