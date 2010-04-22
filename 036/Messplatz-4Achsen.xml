@@ -12,8 +12,10 @@
             <location>/path/to/plugin2</location>
         </plugin>
         <plugin type="save">
-            <name>HDFspezial</name>
-            <location>HDFspezial.slib</location>
+            <name>HDF5</name>
+            <location>/home/eden/eclipse/eve/evePlugins/lib/libhdf5plugin.so</location>
+            <parameter name="extent" datatype="int" default="0"></parameter>
+            <parameter name="format" datatype="string" default="HDF5"></parameter>
         </plugin>
     </plugins>
     <detectors>
@@ -25,17 +27,17 @@
                 <unitstring>Ampere</unitstring>
             </unit>
             <channel>
-                <name>RingStrom BESSY</name>
+                <name>RingStrom BESSY 1</name>
                 <id>ringCurrent1</id>
                 <read>
                     <access method="GETCB" transport="ca" type="double">ringCurrent1</access>
                 </read>
             </channel>
             <channel>
-                <name>RingStrom MLS</name>
+                <name>RingStrom BESSY 2</name>
                 <id>ringCurrent2</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">ringCurrent1</access>
+                    <access method="GETCB" transport="ca" type="double">ringCurrent2</access>
                 </read>
             </channel>
         </detector>
@@ -281,7 +283,7 @@
                 <tweakreverse>
                     <access method="GETCB" transport="ca" type="int">OMSMp:rackioc0100001.TWR</access>
                     <value type="int">1</value>
-                </tweakreverse>
+                </tweakreverse>                
                 <option>
                     <name>Velocity</name>
                     <id>OMSMp:rackioc0100001.VELO</id>
@@ -366,7 +368,7 @@
                     <access method="GETCB" transport="ca" type="int">OMSMp:rackioc0100003.MSTA</access>
                 </status>
                 <deadband>
-                    <access method="GETCB" transport="ca" type="double">OMSMp:rackioc0100003.RDBD</access>
+                    <access method="GETPUTCB" transport="ca" type="double">OMSMp:rackioc0100003.RDBD</access>
                 </deadband>
                 <offset>
                     <access method="GETPUTCB" transport="ca" type="double">OMSMp:rackioc0100003.OFF</access>
@@ -375,11 +377,11 @@
                     <access method="GETPUTCB" transport="ca" type="double">OMSMp:rackioc0100003.TWV</access>
                 </tweakvalue>
                 <tweakforward>
-                    <access method="GETCB" transport="ca" type="int">OMSMp:rackioc0100003.TWF</access>
+                    <access method="PUT" transport="ca" type="int">OMSMp:rackioc0100003.TWF</access>
                     <value type="int">1</value>
                 </tweakforward>
                 <tweakreverse>
-                    <access method="GETCB" transport="ca" type="int">OMSMp:rackioc0100003.TWR</access>
+                    <access method="PUT" transport="ca" type="int">OMSMp:rackioc0100003.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
@@ -387,6 +389,63 @@
                     <id>OMSMp:rackioc0100003.VELO</id>
                     <value>
                         <access method="GETPUTCB" type="double" transport="ca">OMSMp:rackioc0100003.VELO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft High Limit</name>
+                    <id>OMSMp:rackioc0100003.HLM</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMp:rackioc0100003.HLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft Low Limit</name>
+                    <id>OMSMp:rackioc0100003.LLM</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMp:rackioc0100003.LLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Offset</name>
+                    <id>OMSMp:rackioc0100003.OFF</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMp:rackioc0100003.OFF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Dial Value</name>
+                    <id>OMSMp:rackioc0100003.DVAL</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMp:rackioc0100003.DVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Position</name>
+                    <id>OMSMp:rackioc0100003.RBV</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">OMSMp:rackioc0100003.RBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Unit</name>
+                    <id>OMSMp:rackioc0100003.EGU</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">OMSMp:rackioc0100003.EGU</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Position Mode</name>
+                    <id>OMSMp:rackioc0100003.SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">OMSMp:rackioc0100003.SET</access>
+                        <value type="string">Use,Set</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

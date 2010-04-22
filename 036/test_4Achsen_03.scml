@@ -8,18 +8,20 @@
         <confirmsave>false</confirmsave>
         <autonumber>true</autonumber>
         <savescandescription>false</savescandescription>
-        <saveplugin name="HDFspezial">
-            <parameter name="location">HDFspezial.slib</parameter>
+        <saveplugin name="HDF5">
+            <parameter name="location">/home/eden/eclipse/eve/evePlugins/lib/libhdf5plugin.so</parameter>
+            <parameter name="extent">23</parameter>
+            <parameter name="format">HDF5</parameter>
         </saveplugin>
         <scanmodules>
             <scanmodule id="1">
                 <type>classic</type>
                 <name>New Scan Modul</name>
-                <xpos>97</xpos>
+                <xpos>96</xpos>
                 <ypos>59</ypos>
                 <parent>0</parent>
                 <triggerconfirm>false</triggerconfirm>
-                <saveaxispositions>never</saveaxispositions>
+                <saveaxispositions>before</saveaxispositions>
                 <smaxis>
                     <axisid>OMSMp:rackioc0100001</axisid>
                     <stepfunction>Add</stepfunction>
@@ -75,6 +77,13 @@
                         <color>blue</color>
                         <markstyle>star</markstyle>
                     </yaxis>
+                    <yaxis>
+                        <id>ringCurrent1</id>
+                        <mode>linear</mode>
+                        <linestyle>dashed</linestyle>
+                        <color>green</color>
+                        <markstyle>point</markstyle>
+                    </yaxis>
                 </plot>
             </scanmodule>
         </scanmodules>
@@ -89,8 +98,10 @@
             <location>/path/to/plugin2</location>
         </plugin>
         <plugin type="save">
-            <name>HDFspezial</name>
-            <location>HDFspezial.slib</location>
+            <name>HDF5</name>
+            <location>/home/eden/eclipse/eve/evePlugins/lib/libhdf5plugin.so</location>
+            <parameter name="extent" datatype="int" default="0" mandatory="false"></parameter>
+            <parameter name="format" datatype="string" default="HDF5" mandatory="false"></parameter>
         </plugin>
     </plugins>
     <detectors>
@@ -102,17 +113,17 @@
                 <unitstring>Ampere</unitstring>
             </unit>
             <channel>
-                <name>RingStrom BESSY</name>
+                <name>RingStrom BESSY 1</name>
                 <id>ringCurrent1</id>
                 <read>
                     <access method="GETCB" type="double" transport="ca">ringCurrent1</access>
                 </read>
             </channel>
             <channel>
-                <name>RingStrom MLS</name>
+                <name>RingStrom BESSY 2</name>
                 <id>ringCurrent2</id>
                 <read>
-                    <access method="GETCB" type="double" transport="ca">ringCurrent1</access>
+                    <access method="GETCB" type="double" transport="ca">ringCurrent2</access>
                 </read>
             </channel>
         </detector>
