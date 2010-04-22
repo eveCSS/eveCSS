@@ -11,10 +11,14 @@ import org.csstudio.platform.simpledal.ProcessVariableConnectionServiceFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -41,7 +45,7 @@ import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
  * @author Stephan Rehfeld <stephan.rehfeld@ptb.de>
  *
  */
-public class DetectorChannelComposite extends Composite implements IProcessVariableValueListener, IMeasurementDataListener, SelectionListener {
+public class DetectorChannelComposite extends Composite implements SelectionListener {
 
 	/**
 	 * The detector channel where this composite is connected to.
@@ -50,6 +54,7 @@ public class DetectorChannelComposite extends Composite implements IProcessVaria
 	private final DetectorChannel detectorChannel;
 	
 	private Button closeButton;
+	private Font newFont;
 	
 	/**
 	 * The label, which shows the name of the detector channel.
@@ -61,33 +66,21 @@ public class DetectorChannelComposite extends Composite implements IProcessVaria
 	 * The label, which shows the current value of the detector channel.
 	 * 
 	 */
-	private Label currentValueLabel;
+	private Control valueLabel;
 	
-	private Label currentEngineValueLabel;
+	private EngineDataLabel currentEngineValueLabel;
 	
 	/**
 	 * The label, which shows the unit of the detector channel.
 	 * 
 	 */
-	private Label unitLabel;
-	
-	/**
-	 * The label that shows the method of the detector channel.
-	 * 
-	 */
-	private Label methodLabel;
-	
-	/**
-	 * The label that shows the current connection state the the pv of the detector channel.
-	 * 
-	 */
-	private Label currentStateLabel;
+	private Control unitLabel;
 	
 	/**
 	 * The button, that sends a trigger signal to the detector.
 	 * 
 	 */
-	private Button triggerButton;
+	private PvButtonComposite triggerButton;
 	
 	/**
 	 * This constructor creates a new DetectorChannelComposite connected to a given Detector Channel.
@@ -113,241 +106,79 @@ public class DetectorChannelComposite extends Composite implements IProcessVaria
 	private void initialize() {
 
 		//this.setBackground( new Color( this.getBackground().getDevice(), 255, 0, 0 ) );
+		newFont = Activator.getDefault().getFont("VIEWERFONT");
 		
 		IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
 		ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
 
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 8;
+		gridLayout.numColumns = 6;
 		gridLayout.marginHeight = 0;
 		
 		this.setLayout( gridLayout );
-		
-		GridData gridData = new GridData();
+				
+		ImageData imageData = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ).getImageData();
+		Image deleteIcon = new Image(this.getForeground().getDevice(), imageData.scaledTo(12, 12));
 		
 		this.closeButton = new Button( this, SWT.NONE );
-		this.closeButton.setImage( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ).createImage() );
+		this.closeButton.setImage(deleteIcon);
 		this.closeButton.addSelectionListener( this );
 		
+		// channel name
 		this.detectorChannelNameLabel = new Label( this, SWT.NONE );
-		this.detectorChannelNameLabel.setText( this.detectorChannel.getFullIdentifyer() );
-		gridData.widthHint = 200;
+		this.detectorChannelNameLabel.setText( this.detectorChannel.getName() );
+		GridData gridData = new GridData();
+		gridData.widthHint = 140;
 		this.detectorChannelNameLabel.setLayoutData( gridData );
+		this.detectorChannelNameLabel.setFont(newFont);
 		
-		this.currentValueLabel = new Label( this, SWT.NONE );
-		this.currentValueLabel.setText( "?" );
+		// channel value
+		if ((detectorChannel.getRead() != null) && ( detectorChannel.getRead().getAccess().getTransport() == TransportTypes.CA )) {
+			this.valueLabel = new PvLabelComposite( this, SWT.NONE, detectorChannel.getRead().getAccess().getVariableID() );
+		}			
+		else {
+			this.valueLabel = new Label( this, SWT.NONE );
+			((Label) this.valueLabel).setText("unknown");
+		}
 		gridData = new GridData();
-		gridData.widthHint = 80;
-		this.currentValueLabel.setLayoutData( gridData );
+		gridData.widthHint = 100;
+		this.valueLabel.setLayoutData( gridData );
+		this.valueLabel.setFont(newFont);
 		
-		this.currentEngineValueLabel = new Label( this, SWT.NONE );
-		this.currentEngineValueLabel.setText( "(?)" );
+		this.currentEngineValueLabel = new EngineDataLabel( this, SWT.NONE, detectorChannel.getID());
+		this.currentEngineValueLabel.setText( "-" );
 		gridData = new GridData();
-		gridData.widthHint = 80;
+		gridData.widthHint = 100;
 		this.currentEngineValueLabel.setLayoutData( gridData );
+		this.currentEngineValueLabel.setFont(newFont);
 		
-		
-		this.unitLabel = new Label( this, SWT.NONE );
-		if( this.detectorChannel.getUnit() != null ) {
-			if( this.detectorChannel.getUnit().getValue() != null ) {
-				this.unitLabel.setText( this.detectorChannel.getUnit().getValue() );
-			} else {
-				String prefix = null;
-				if( this.detectorChannel.getUnit().getAccess().getTransport() == TransportTypes.CA ) {
-					prefix = "dal-epics://";
-				} else if( this.detectorChannel.getUnit().getAccess().getTransport() == TransportTypes.LOCAL ) {
-					prefix = "local://";
-				}
-				IProcessVariableAddress pv = pvFactory.createProcessVariableAdress( prefix + this.detectorChannel.getUnit().getAccess().getVariableID() );
-				try {
-					final String unit = service.readValueSynchronously( pv, Helper.dataTypesToValueType( this.detectorChannel.getUnit().getAccess().getType() ) ).toString();
-					this.unitLabel.setText( unit );
-				} catch( final ConnectionException e ) {
-					this.unitLabel.setText( "?" );
-				}
-				
-			}
+		// unit Label
+		if ((detectorChannel.getUnit() != null) && (detectorChannel.getUnit().getAccess() != null) &&( detectorChannel.getUnit().getAccess().getTransport() == TransportTypes.CA )) {
+			unitLabel = new PvLabelComposite( this, SWT.NONE, this.detectorChannel.getUnit().getAccess().getVariableID() );
+			((PvLabelComposite) this.unitLabel).setText("unit");
+		}			
+		else {
+			this.unitLabel = new Label( this, SWT.NONE );
+			if ((detectorChannel.getUnit() != null) && (detectorChannel.getUnit().getValue() != null))
+				((Label) this.unitLabel).setText(this.detectorChannel.getUnit().getValue());
+			else
+				((Label) this.unitLabel).setText("unit");
 		}
 		gridData = new GridData();
 		gridData.widthHint = 30;
 		this.unitLabel.setLayoutData( gridData );
+		this.unitLabel.setFont(newFont);
 		
-		this.methodLabel = new Label( this, SWT.NONE );
-		this.methodLabel.setText( "?" );
-		gridData = new GridData();
-		gridData.widthHint = 40;
-		this.methodLabel.setLayoutData( gridData );
-		
-		
-		this.currentStateLabel = new Label( this, SWT.NONE );
-		this.currentStateLabel.setText( "Disconnected" );
-		gridData = new GridData();
-		gridData.widthHint = 150;
-		this.currentStateLabel.setLayoutData( gridData );
-		
-		this.triggerButton = new Button( this, SWT.PUSH );
-		this.triggerButton.setText( "Trigger" );
-		this.triggerButton.addSelectionListener( new SelectionListener() {
-
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-				
-				
-			}
-
-			public void widgetSelected( final SelectionEvent e ) {
-				Function trigger = detectorChannel.getTrigger()!=null?detectorChannel.getTrigger():detectorChannel.getDetector().getTrigger();
-				if( trigger != null ) {
-					IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-					ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
-					
-					String prefix = null;
-					if( trigger.getAccess().getTransport() == TransportTypes.CA ) {
-						prefix = "dal-epics://";
-					} else if( trigger.getAccess().getTransport() == TransportTypes.LOCAL ) {
-						prefix = "local://";
-					}
-					
-					IProcessVariableAddress pv = pvFactory.createProcessVariableAdress( prefix + trigger.getAccess().getVariableID() );
-					Object o;
-					switch( trigger.getValue().getType() ) {
-					
-						case INT:
-							o = Integer.parseInt( trigger.getValue().getValues() );
-							break;
-						
-						case DOUBLE: 
-							o = Double.parseDouble( trigger.getValue().getValues() );
-							break;
-					
-						default:
-							o = trigger.getValue().getValues();
-				
-					}
-					try {
-						service.writeValueSynchronously( pv, o, Helper.dataTypesToValueType( trigger.getType() ) );
-					} catch( final ConnectionException e1 ) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-				
-			}
-			
-		});
-		
-		String prefix = null;
-		if( this.detectorChannel.getRead().getAccess().getTransport() == TransportTypes.CA ) {
-			prefix = "dal-epics://";
-		} else if( this.detectorChannel.getRead().getAccess().getTransport() == TransportTypes.LOCAL ) {
-			prefix = "local://";
+		// trigger button if needed
+		Function trigger = detectorChannel.getTrigger()!=null?detectorChannel.getTrigger():detectorChannel.getDetector().getTrigger();
+		if( trigger != null ) {
+			this.triggerButton = new PvButtonComposite( this, SWT.PUSH, trigger.getAccess().getVariableID(), trigger.getValue() );
+			this.triggerButton.setText( "Trigger" );
+			this.triggerButton.setFont(newFont);
 		}
-		
-		IProcessVariableAddress pv = pvFactory.createProcessVariableAdress( prefix + this.detectorChannel.getRead().getAccess().getVariableID() );
-		
-		/*try {
-			this.currentValueLabel.setText( service.readValueSynchronously( pv, Helper.dataTypesToValueType( this.detectorChannel.getRead().getType() ) ).toString() );
-		} catch (ConnectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
-		service.register( this, pv,  Helper.dataTypesToValueType( this.detectorChannel.getRead().getType() ) );
-		//service.readValueAsynchronously( pv, Helper.dataTypesToValueType( this.detectorChannel.getRead().getType() ), this );
-		
-		
-	}
-
-	/**
-	 * This methods disposes the detector channels widget and disconnects the composite from the simpleDAL service.
-	 * 
-	 */
-	public void dispose() {
-		IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-		service.unregister( this );
-		super.dispose();
-	}
-	
-	/**
-	 * This methods gets called by simpleDAL when receognized a change of the connection state to the process variable.
-	 * 
-	 * On call, the label of the connection state gets changed.
-	 * 
-	 * @param connectionState The new connection state.
-	 */
-	public void connectionStateChanged( final ConnectionState connectionState ) {
-		this.currentStateLabel.getDisplay().syncExec( new Runnable() {
-
-			public void run() {
-				
-				String newText = "";
-				switch( connectionState ) {
-				
-					case CONNECTED:
-						newText = "connected";
-						break;
-						
-					case CONNECTION_FAILED:
-						newText = "connection failed";
-						break;
-						
-					case CONNECTION_LOST:
-						newText = "connection lost";
-						break;
-						
-					case INITIAL:
-						newText = "initial";
-						break;
-						
-					case UNKNOWN:
-						newText = "unknown";
-						
-				}
-				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, detectorChannel.getFullIdentifyer() + " changed connection state to " + newText + "." ) );
-				currentStateLabel.setText( newText );
-				
-			}
-			
-		});
-		
-	}
-
-	/**
-	 * This method gets called when an error occured on the simpleDAL Connection. 
-	 *
-	 */
-	public void errorOccured( final String error ) {
-		Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.ERROR, error ) );
-	}
-
-	/**
-	 * This method gets called when the value of the detector has changed.  
-	 *
-	 * @param value The new value
-	 * @param timestamp The timestamp of the value.
-	 */
-	public void valueChanged( final Object value, final Timestamp timestamp) {
-		this.currentValueLabel.getDisplay().syncExec( new Runnable() {
-
-			public void run() {
-				currentValueLabel.setText( value.toString() );
-			}
-			
-		});
-		
-	}
-	
-	public void measurementDataTransmitted( final MeasurementData measurementData ) {
-		if( this.detectorChannel.getName().equals( measurementData.getName() ) ) {
-			this.currentEngineValueLabel.getDisplay().syncExec( new Runnable() {
-
-				public void run() {
-					currentEngineValueLabel.setText( "(" + measurementData.getValues().get( 0 ).toString() + ")" );
-					
-				}
-				
-			});
+		else {
+			new Label( this, SWT.NONE );
 		}
-		
 	}
 
 	public void widgetDefaultSelected(SelectionEvent e) {

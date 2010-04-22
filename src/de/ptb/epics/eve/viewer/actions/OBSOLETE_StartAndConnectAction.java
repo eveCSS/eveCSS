@@ -14,12 +14,12 @@ import org.eclipse.jface.dialogs.MessageDialog;
  * delegated to it.
  * @see IWorkbenchWindowActionDelegate
  */
-public class StartAndConnectAction implements IWorkbenchWindowActionDelegate {
+public class OBSOLETE_StartAndConnectAction implements IWorkbenchWindowActionDelegate {
 	private IWorkbenchWindow window;
 	/**
 	 * The constructor.
 	 */
-	public StartAndConnectAction() {
+	public OBSOLETE_StartAndConnectAction() {
 	}
 
 	/**

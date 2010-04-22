@@ -1,18 +1,13 @@
 package de.ptb.epics.eve.viewer;
 
-import org.csstudio.platform.model.pvs.IProcessVariableAddress;
-import org.csstudio.platform.model.pvs.ProcessVariableAdressFactory;
-import org.csstudio.platform.simpledal.ConnectionException;
-import org.csstudio.platform.simpledal.IProcessVariableConnectionService;
-import org.csstudio.platform.simpledal.ProcessVariableConnectionServiceFactory;
+import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
-import de.ptb.epics.eve.data.TransportTypes;
-import de.ptb.epics.eve.data.measuringstation.Option;
-
-public class DeviceOptionsLabelProvider implements ITableLabelProvider {
+public class DeviceOptionsLabelProvider implements ITableLabelProvider, ITableColorProvider {
 
 	public Image getColumnImage( final Object element, final int columnIndex) {
 		return null;
@@ -44,6 +39,24 @@ public class DeviceOptionsLabelProvider implements ITableLabelProvider {
 	public void removeListener( final ILabelProviderListener listener ) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public Color getBackground(Object element, int columnIndex) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getForeground(Object element, int columnIndex) {
+		if( columnIndex == 0 ) {
+			return null;
+		}
+		final OptionConnector optionConnector = (OptionConnector)element;
+		if( optionConnector.isConnected())
+			return Activator.getDefault().getColor("COLOR_PV_OK");
+		else
+			return Activator.getDefault().getColor("COLOR_PV_ALARM");
 	}
 
 }

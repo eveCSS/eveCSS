@@ -41,6 +41,7 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 			return;
 		}
 		List< Chain > chains = null;
+		
 		switch( chainStatusCommand.getChainStatus() ) {
 			case IDLE:
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
@@ -82,39 +83,39 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 								this.pausedScanModules.remove( scanModules.get( j ) );
 								this.waitingScanModules.remove( scanModules.get( j ) );
 							}
-							final PlotWindow[] plotWindows = scanModules.get( j ).getPlotWindows();
-							for( int k = 0; k < plotWindows.length; ++k ) {
-								System.out.println( "Verarbeite Plot Fenster: " + plotWindows[i].getId() );
-								final PlotWindow plotWindow = plotWindows[k];
-								Activator.getDefault().getWorkbench().getDisplay().syncExec( new Runnable() {
-
-									public void run() {
-										
-										IViewReference[] ref = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
-										PlotView view = null;
-										for( int l = 0; l < ref.length; ++l ) {
-											if( ref[l].getId().equals( PlotView.ID ) ) {
-												view = (PlotView)ref[l].getPart( false );
-												if( view.getId() == -1 ) {
-													view.setId( plotWindow.getId() );
-													view.setPlotWindow( plotWindow );
-													break;
-												} else if( view.getId() == plotWindow.getId() ) {
-													view.setPlotWindow( plotWindow );
-													break;
-												}
-												view = null;
-											}
-											if( view == null ) {
-												// Neuen View erzeugen
-											}
-										}
-										
-									}
-									
-								});
-								
-							}
+//							final PlotWindow[] plotWindows = scanModules.get( j ).getPlotWindows();
+//							for( int k = 0; k < plotWindows.length; ++k ) {
+//								System.out.println( "Verarbeite Plot Fenster: " + plotWindows[i].getId() );
+//								final PlotWindow plotWindow = plotWindows[k];
+//								Activator.getDefault().getWorkbench().getDisplay().syncExec( new Runnable() {
+//
+//									public void run() {
+//										
+//										IViewReference[] ref = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
+//										PlotView view = null;
+//										for( int l = 0; l < ref.length; ++l ) {
+//											if( ref[l].getId().equals( PlotView.ID ) ) {
+//												view = (PlotView)ref[l].getPart( false );
+//												if( view.getId() == -1 ) {
+//													view.setId( plotWindow.getId() );
+//													view.setPlotWindow( plotWindow );
+//													break;
+//												} else if( view.getId() == plotWindow.getId() ) {
+//													view.setPlotWindow( plotWindow );
+//													break;
+//												}
+//												view = null;
+//											}
+//											if( view == null ) {
+//												// Neuen View erzeugen
+//											}
+//										}
+//										
+//									}
+//									
+//								});
+//								
+//							}
 						}
 					}
 				}

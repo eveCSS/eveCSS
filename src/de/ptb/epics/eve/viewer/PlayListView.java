@@ -176,7 +176,7 @@ public final class PlayListView extends ViewPart implements IConnectionStateList
 		}
 		
 		
-		this.tableViewer.getTable().getDisplay().syncExec( new Runnable() {
+		if (!this.tableViewer.getTable().isDisposed()) this.tableViewer.getTable().getDisplay().syncExec( new Runnable() {
 
 			public void run() {
 				final TableItem[] selected = tableViewer.getTable().getSelection();

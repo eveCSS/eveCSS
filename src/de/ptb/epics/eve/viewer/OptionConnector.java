@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.csstudio.platform.model.pvs.IProcessVariableAddress;
-import org.csstudio.platform.model.pvs.ProcessVariableAdressFactory;
-import org.csstudio.platform.simpledal.ConnectionException;
-import org.csstudio.platform.simpledal.ConnectionState;
-import org.csstudio.platform.simpledal.IProcessVariableConnectionService;
-import org.csstudio.platform.simpledal.IProcessVariableValueListener;
-import org.csstudio.platform.simpledal.ProcessVariableConnectionServiceFactory;
-import org.epics.css.dal.Timestamp;
+import org.csstudio.platform.internal.data.EnumeratedMetaData;
+import org.csstudio.platform.internal.data.EnumeratedValue;
+import org.csstudio.platform.model.IProcessVariable;
+import org.csstudio.platform.data.IEnumeratedMetaData;
+import org.csstudio.platform.data.IMetaData;
+import org.csstudio.platform.data.IValue;
+import org.csstudio.platform.data.ValueUtil;
+import org.csstudio.utility.pv.PV;
+import org.csstudio.utility.pv.PVFactory;
+import org.csstudio.utility.pv.PVListener;
 
 import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.measuringstation.Option;
@@ -19,57 +21,44 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateList
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
-public class OptionConnector implements IModelUpdateProvider, IProcessVariableValueListener {
+public class OptionConnector implements IModelUpdateProvider, PVListener {
 
 	private final Option option;
 	private String value;
-	private IProcessVariableAddress pv;
-	private ConnectionState connectionState;
+	private PV pv;
+	private boolean isConnected = false;
 	
 	private final List< IModelUpdateListener > modelUpdateListener;
+	private boolean readOnly = false;
+	private String[] discreteValues = null;
+	private boolean isDiscrete;
+	private boolean isEnum = false;
 	
 	public OptionConnector( final Option option ) {
 		if( option == null ) {
-			throw new IllegalArgumentException( "The parameter 'option' must not be null!" );
+			throw new IllegalArgumentException( "Option Connector: 'option' must not be null!" );
 		}
 		this.modelUpdateListener = new ArrayList< IModelUpdateListener >();
 		this.option = option;
-		
-		this.value = "?";
-		
-		final OptionConnector own = this;
-		
-		final Runnable runnable = new Runnable() {
 
-			public void run() {
-				final IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-				final ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
+		if ((option.getValue() == null) || (option.getValue() == null)) return;
 
-				String prefix = null;
-				if( option.getValue().getAccess().getTransport() == TransportTypes.CA ) {
-					prefix = "dal-epics://";
-				} else if( option.getValue().getAccess().getTransport() == TransportTypes.LOCAL ) {
-					prefix = "local://";
-				}
-				
-				pv = pvFactory.createProcessVariableAdress( prefix + option.getValue().getAccess().getVariableID() );
-				
-				/*try {
-					value = service.readValueSynchronously( pv, Helper.dataTypesToValueType( option.getValue().getType() ) ).toString();
-				} catch (ConnectionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
-				
-				service.register( own, pv,  Helper.dataTypesToValueType( option.getValue().getType() ) );
-				//service.readValueAsynchronously( pv, Helper.dataTypesToValueType( option.getValue().getType() ), own );
-				
-			}
-			
-		};
-		
-		final Thread thread = new Thread( runnable );
-		thread.run();
+		isDiscrete = option.isDiscrete();
+		readOnly = option.getValue().isReadOnly();
+		if (isDiscrete) discreteValues = option.getValue().getDiscreteValues().toArray(new String[0]);
+		if( option.getValue().getAccess().getTransport() == TransportTypes.CA ) {
+			option.getValue().isReadOnly();
+			String pvname = "ca://" + option.getValue().getAccess().getVariableID();
+			try {
+				pv = PVFactory.createPV(pvname);
+				pv.addListener(this);
+				pv.start();
+				this.value = pv.getStateInfo();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}				
+		}		
 	}
 	
 	public Option getOption() {
@@ -81,37 +70,36 @@ public class OptionConnector implements IModelUpdateProvider, IProcessVariableVa
 	}
 	
 	public void detach() {
-		final IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-		//service.unregister( this );
+        if (pv != null)
+        {
+        	Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Disposing text for " + pv.getName() ) );
+            pv.removeListener(this);
+            pv.stop();
+            pv = null;
+        }
 	}
 	
 	public void setValue( final String value ) {
-		final IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-		try {
-			Object o = null;
-			switch( this.option.getValue().getType() ) {
-			
-				case INT:
-					o = Integer.parseInt( value );
-					break;
-					
-				case DOUBLE: 
-					o = Double.parseDouble( value );
-					break;
-				
-				default:
-					o = value;
-			
-			}
-			service.writeValueSynchronously( pv, o, Helper.dataTypesToValueType( this.option.getValue().getType() ) );
-		} catch( final ConnectionException e1 ) {
-			
-			e1.printStackTrace();
-		}
-	}
-	
-	public ConnectionState getConnectionState() {
-		return this.connectionState;
+
+		if ((pv == null) || !pv.isConnected() || readOnly)  return;
+ 
+        try
+        {	
+        	String newValue = value;
+        	if (isEnum){
+        		int number = Integer.parseInt(value);
+        		if ((number >= 0) && (number < discreteValues.length)){
+        			newValue = discreteValues[number];
+        		}
+        	}
+         	System.out.println("Now set "+pv.getName()+" to "+newValue);
+        	pv.setValue(newValue);
+        }
+        catch (Throwable ex)
+        {
+        	System.err.println("Unable to set "+pv.getName()+" to "+value );
+            ex.printStackTrace();
+        }
 	}
 	
 	public boolean addModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
@@ -121,23 +109,52 @@ public class OptionConnector implements IModelUpdateProvider, IProcessVariableVa
 	public boolean removeModelUpdateListener( final IModelUpdateListener modelUpdateListener ) { 
 		return this.modelUpdateListener.remove( modelUpdateListener );
 	}
-
-	public void connectionStateChanged( final ConnectionState connectionState ) {
-		this.connectionState = connectionState;
-	}
 	
 	public void errorOccured( final String error ) {
 		
 	}
 
-	public void valueChanged( final Object value, final Timestamp timestamp ) {
-		this.value = value.toString();
+	public boolean isConnected() {
+		return this.isConnected;
+	}
+
+	@Override
+	public void pvDisconnected(PV pv) {
+		// TODO Auto-generated method stub
+		isConnected = false;
+		value = pv.getStateInfo();
 		final Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
 		while( it.hasNext() ) {
 			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		}		
+	}
+
+	@Override
+	public void pvValueUpdate(PV pv) {
+		// TODO Auto-generated method stub
+		if(pv.isConnected()) isConnected = true;
+		if(!pv.isWriteAllowed()) readOnly = true;
+		this.value = ValueUtil.getString(pv.getValue());
+        final IMetaData meta = pv.getValue().getMetaData();
+        if (meta instanceof IEnumeratedMetaData) {
+        	this.discreteValues = ((IEnumeratedMetaData)meta).getStates();
+        	isEnum  = true;
+        }
+		final Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
+		while( it.hasNext() ) {
+			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
+		}		
+	}
+
+	public boolean isDiscrete(){
+		return isDiscrete;
 	}
 	
+	public boolean isReadOnly(){
+		return readOnly;
+	}
 	
-
+	public String[] getDiscreteValues(){
+		return discreteValues;
+	}
 }

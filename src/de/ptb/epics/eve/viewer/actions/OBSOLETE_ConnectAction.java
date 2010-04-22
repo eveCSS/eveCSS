@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.viewer.actions;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -11,6 +12,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.eclipse.jface.dialogs.InputDialog;
 
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.viewer.Activator;
@@ -26,13 +28,15 @@ import de.ptb.epics.eve.viewer.ViewerMessage;
  * delegated to it.
  * @see IWorkbenchWindowActionDelegate
  */
-public class DisconnectAction implements IWorkbenchWindowActionDelegate, IConnectionStateListener  {
+public class OBSOLETE_ConnectAction implements IWorkbenchWindowActionDelegate, IConnectionStateListener {
+	
 	private IWorkbenchWindow window;
+	
 	/**
 	 * The constructor.
 	 */
-	public DisconnectAction() {
-		Activator.getDefault().getEcp1Client().addConnectionStateListener( this );
+	public OBSOLETE_ConnectAction() {
+//		Activator.getDefault().getEcp1Client().addConnectionStateListener( this );
 	}
 
 	/**
@@ -42,14 +46,25 @@ public class DisconnectAction implements IWorkbenchWindowActionDelegate, IConnec
 	 * @see IWorkbenchWindowActionDelegate#run
 	 */
 	public void run( final IAction action ) {
-		try {
-			Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Closing connection." ) );
-			Activator.getDefault().getEcp1Client().close();
-			action.setEnabled( false );
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		InputDialog inputDialog = new InputDialog( window.getShell(), "Connect", "Please enter the address of the EVE-engine!", "", null );
+//		if( InputDialog.OK == inputDialog.open() ) {
+//			String input = inputDialog.getValue();
+//			Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Trying to connect to: " + input + "." ) );
+//			int port = 31107;
+//			int index  = input.lastIndexOf( ":" );
+//			if( index != -1 ) {
+//				port = Integer.parseInt( input.substring( index + 1) );
+//				input = input.substring( 0, index );
+//			}
+//			try {
+//				Activator.getDefault().getEcp1Client().connect( new InetSocketAddress( input, port ), "" );
+//				action.setEnabled( false );
+//				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Connection established to: " + input + "." ) );
+//			} catch( final IOException e ) {
+//				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.ERROR, "Cannot establish connection! Reasion: " + e.getMessage() + "." ) );
+//				e.printStackTrace();
+//			}
+//		}
 		
 	}
 
@@ -60,13 +75,12 @@ public class DisconnectAction implements IWorkbenchWindowActionDelegate, IConnec
 	 * the delegate has been created.
 	 * @see IWorkbenchWindowActionDelegate#selectionChanged
 	 */
-	public void selectionChanged( final IAction action, final ISelection selection) {
-		
-		if( Activator.getDefault().getEcp1Client().isRunning() ) {
-			action.setEnabled( true );
-		} else {
-			action.setEnabled( false );
-		}
+	public void selectionChanged( final IAction action, final ISelection selection ) {
+//		if( Activator.getDefault().getEcp1Client().isRunning() ) {
+//			action.setEnabled( false );
+//		} else {
+//			action.setEnabled( true );
+//		}
 	}
 
 	/**
@@ -82,7 +96,7 @@ public class DisconnectAction implements IWorkbenchWindowActionDelegate, IConnec
 	 * be able to provide parent shell for the message dialog.
 	 * @see IWorkbenchWindowActionDelegate#init
 	 */
-	public void init(IWorkbenchWindow window) {
+	public void init( final IWorkbenchWindow window ) {
 		this.window = window;
 	}
 
@@ -110,7 +124,6 @@ public class DisconnectAction implements IWorkbenchWindowActionDelegate, IConnec
 				}
 			}
 		}
-		
 	}
 
 	public void stackDisconnected() {
@@ -139,4 +152,6 @@ public class DisconnectAction implements IWorkbenchWindowActionDelegate, IConnec
 		}
 		
 	}
+	
 }
+

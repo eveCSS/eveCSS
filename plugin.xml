@@ -51,6 +51,7 @@
             id="DeviceOptionsView"
             name="%view.name.4"/>
       <view
+            allowMultiple="true"
             class="de.ptb.epics.eve.viewer.PlotView"
             icon="icons/css.gif"
             id="PlotView"
@@ -137,41 +138,51 @@
                toolbarPath="engineControlGroup"
                tooltip="%action.tooltip.3"/>
       </actionSet>
-      <actionSet
-            id="de.ptb.epics.eve.viewer.engineConnectionActionSet"
-            label="%actionSet.label.1"
-            visible="false">
-         <menu
-               id="engineConnectionMenu"
-               label="%menu.label.1">
-            <separator name="engineConnectionGroup"/>
-         </menu>
-         
-         <action
-               class="de.ptb.epics.eve.viewer.actions.StartAndConnectAction"
-               icon="icons/sample.gif"
-               id="de.ptb.epics.eve.viewer.actions.StartAndConnectAction"
-               label="%action.label.5"
-               menubarPath="engineConnectionMenu/engineConnectionGroup"
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            description="Connect to Engine"
+            id="de.ptb.epics.eve.viewer.connectCommand"
+            name="connectCommand">
+      </command>
+      <command
+            description="Disconnect from Engine"
+            id="de.ptb.epics.eve.viewer.disconnectCommand"
+            name="disconnect">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="de.ptb.epics.eve.viewer.actions.connectCommandHandler"
+            commandId="de.ptb.epics.eve.viewer.connectCommand">
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.viewer.actions.disConnectCommandHandler"
+            commandId="de.ptb.epics.eve.viewer.disconnectCommand">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:GraphView">
+         <command
+               commandId="de.ptb.epics.eve.viewer.connectCommand"
+               icon="icons/connect.gif"
+               label="keins"
                style="push"
-               tooltip="%action.tooltip.5"/>
-         <action
-               class="de.ptb.epics.eve.viewer.actions.DisconnectAction"
-               icon="icons/sample.gif"
-               id="de.ptb.epics.eve.viewer.actions.DisconnectAction"
-               label="%action.label.6"
-               menubarPath="engineConnectionMenu/engineConnectionGroup"
+               tooltip="Connect to Engine">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.disconnectCommand"
+               helpContextId="Disconnect  Engine"
+               icon="icons/disconnect.gif"
+               label="keins"
                style="push"
-               tooltip="%action.tooltip.6"/>
-         <action
-               class="de.ptb.epics.eve.viewer.actions.ConnectAction"
-               icon="icons/sample.gif"
-               id="de.ptb.epics.eve.viewer.actions.ConnectAction"
-               label="%action.label.7"
-               menubarPath="engineConnectionMenu/engineConnectionGroup"
-               style="push"
-               tooltip="%action.tooltip.7"/>
-      </actionSet>
+               tooltip="Disconnect  Engine">
+         </command>
+      </menuContribution>
    </extension>
 
 </plugin>

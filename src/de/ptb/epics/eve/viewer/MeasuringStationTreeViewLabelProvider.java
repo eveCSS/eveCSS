@@ -6,6 +6,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.swt.graphics.Image;
 
+import de.ptb.epics.eve.data.measuringstation.AbstractClassedDevice;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.Device;
@@ -35,8 +36,15 @@ public class MeasuringStationTreeViewLabelProvider implements ILabelProvider {
 				return "Devices";
 			}
 		} else if( element instanceof AbstractDevice ) {
+			String label = new String();
+			if (element instanceof AbstractClassedDevice){
+				final AbstractClassedDevice classDevice = (AbstractClassedDevice)element;
+				label = classDevice.getClassName();
+			}
 			final AbstractDevice device = (AbstractDevice)element;
-			return device.getName();
+			if (label.length() == 0) label = device.getName();
+			if (label.length() == 0) label = device.getID();
+			return label;
 		}
 		return null;
 	}

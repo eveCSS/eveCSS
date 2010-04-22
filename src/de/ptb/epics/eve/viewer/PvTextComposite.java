@@ -3,14 +3,6 @@
  */
 package de.ptb.epics.eve.viewer;
 
-import org.csstudio.platform.model.pvs.IProcessVariableAddress;
-import org.csstudio.platform.model.pvs.ProcessVariableAdressFactory;
-import org.csstudio.platform.simpledal.ConnectionException;
-import org.csstudio.platform.simpledal.ConnectionState;
-import org.csstudio.platform.simpledal.IProcessVariableConnectionService;
-import org.csstudio.platform.simpledal.IProcessVariableValueListener;
-import org.csstudio.platform.simpledal.ProcessVariableConnectionServiceFactory;
-import org.csstudio.platform.simpledal.ValueType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -21,7 +13,10 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.epics.css.dal.Timestamp;
+import org.csstudio.platform.data.ValueUtil;
+import org.csstudio.utility.pv.PV;
+import org.csstudio.utility.pv.PVFactory;
+import org.csstudio.utility.pv.PVListener;
 
 /**
  * 
@@ -31,9 +26,9 @@ import org.epics.css.dal.Timestamp;
  * @author eden
  * 
  */
-public class PvTextComposite extends Composite implements IProcessVariableValueListener, SelectionListener {
+public class PvTextComposite extends Composite implements PVListener, SelectionListener {
 
-	private IProcessVariableAddress pv;
+	private PV pv;
 	private String pvname;
 	private Text textWidget;
 	/**
@@ -48,10 +43,14 @@ public class PvTextComposite extends Composite implements IProcessVariableValueL
 		this.setLayout(new FillLayout());
 		textWidget.setToolTipText(pvname);
 		textWidget.setText("unknown");
-		IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-		ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance();
-		pv = pvFactory.createProcessVariableAdress("dal-epics://" + pvname);
-		service.register( this, pv, ValueType.STRING );
+        try {
+			pv = PVFactory.createPV(pvname);
+	        pv.addListener(this);
+	        pv.start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// add a listener for the TextInput
 		final String writepvname = pvname;
@@ -59,23 +58,27 @@ public class PvTextComposite extends Composite implements IProcessVariableValueL
 		
 			
 			public void focusLost(FocusEvent e) {
-				IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-				ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance();
-				String prefix = "dal-epics://";
-				IProcessVariableAddress pv = pvFactory.createProcessVariableAdress("dal-epics://" + writepvname);
 
-				try {
-					service.writeValueSynchronously( pv, textWidget.getText(), ValueType.STRING );
-				} catch( final ConnectionException e1 ) {
-					e1.printStackTrace();
-				}
+		        try
+		        {
+		            if ((pv == null) || !pv.isConnected())
+		            {
+		                return;
+		            }
+		            pv.setValue(textWidget.getText());
+		        }
+		        catch (Throwable ex)
+		        {
+		            //Plugin.getLogger().error(Messages.S_AdjustFailed, ex);
+		            //updateStatus(Messages.S_AdjustFailed + ex.getMessage());
+		            ex.printStackTrace();
+		        }
 			}
 		
 			public void focusGained(FocusEvent e) {
-				textWidget.setForeground(Activator.getDefault().getColor("COLOR_PV_INITIAL"));
-			
+				textWidget.setForeground(Activator.getDefault().getColor("COLOR_PV_INITIAL"));		
 			}
-		});	
+		});
 	}
 
 	/*
@@ -96,56 +99,9 @@ public class PvTextComposite extends Composite implements IProcessVariableValueL
 
 	}
 
-	public void connectionStateChanged( final ConnectionState connectionState ) {
-		if (!isDisposed()) getDisplay().syncExec( new Runnable() {
-
-			public void run() {
-				
-				String newText = "";
-				Color newColor=Activator.getDefault().getColor("COLOR_PV_INITIAL");
-				switch( connectionState ) {
-					case CONNECTED:
-						newText = "connected";
-						newColor = Activator.getDefault().getColor("COLOR_PV_OK");
-						break;
-					case CONNECTION_FAILED:
-						newText = "connection failed";
-						newColor = Activator.getDefault().getColor("COLOR_PV_ALARM");
-						break;
-					case CONNECTION_LOST:
-						newText = "connection lost";
-						newColor = Activator.getDefault().getColor("COLOR_PV_ALARM");
-						break;
-					case INITIAL:
-						newText = "initial";
-						newColor = Activator.getDefault().getColor("COLOR_PV_INITIAL");
-						break;
-					case UNKNOWN:
-						newText = "unknown";
-						newColor = Activator.getDefault().getColor("COLOR_PV_UNKNOWN");
-				}
-				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, pv.getFullName() + " changed connection state to " + newText + "." ) );
-				if (!textWidget.isDisposed()) textWidget.setForeground(newColor);
-			}
-		});
-	}
 
 	public void errorOccured( final String error ) {
 		System.err.println( "error  in " + pvname );
-	}
-
-	public void valueChanged( final Object value, final Timestamp timestamp ) {
-		
-		if (!isDisposed()) getDisplay().syncExec( new Runnable() {
-
-			public void run() {
-				
-				if (!textWidget.isDisposed()){
-					textWidget.setForeground(Activator.getDefault().getColor("COLOR_PV_OK"));
-					textWidget.setText( value.toString() );
-				}
-			}
-		});
 	}
 
 	public void setText(String text){
@@ -157,8 +113,53 @@ public class PvTextComposite extends Composite implements IProcessVariableValueL
 	}
 
 	public void dispose() {
-		IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-		service.unregister( this );
+        if (pv != null)
+        {
+            //Plugin.getLogger().debug("disposeChannel " + pv.getName()); //$NON-NLS-1$
+        	Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Disposing text for " + pv.getName() ) );
+            pv.removeListener(this);
+            pv.stop();
+            pv = null;
+        }
 		super.dispose();
+	}
+
+	@Override
+	public void pvDisconnected(PV disconnectedPV) {
+
+		final PV pv = disconnectedPV;
+		this.getDisplay().syncExec( new Runnable() {
+
+			public void run() {
+				Color newColor = Activator.getDefault().getColor("COLOR_PV_ALARM");
+				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, pv.getName() + " connection lost" ) );
+				textWidget.setForeground(newColor);
+			}
+		});
+		
+		
+	}
+
+	@Override
+	public void pvValueUpdate(PV updatedPV) {
+		final PV pv = updatedPV;
+		if (!isDisposed()) getDisplay().asyncExec( new Runnable() {
+
+			public void run() {
+				
+				if (!textWidget.isDisposed()){
+					textWidget.setForeground(Activator.getDefault().getColor("COLOR_PV_OK"));
+					try
+					{
+						textWidget.setText( ValueUtil.getString(pv.getValue()));
+					}
+					catch (Exception e)
+					{
+						//Plugin.getLogger().error("pvValueUpdate error", e); //$NON-NLS-1$
+						//updateStatus(e.getMessage());
+					}
+				}
+			}
+		});
 	}
 }

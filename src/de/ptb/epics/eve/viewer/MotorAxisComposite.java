@@ -51,7 +51,7 @@ import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
  * @author Stephan Rehfeld
  *
  */
-public class MotorAxisComposite extends Composite implements IMeasurementDataListener, SelectionListener {
+public class MotorAxisComposite extends Composite implements SelectionListener {
 
 	private MotorAxis motorAxis;
 	
@@ -60,7 +60,7 @@ public class MotorAxisComposite extends Composite implements IMeasurementDataLis
 	
 	private Label motorAxisNameLabel;
 	private Control valueLabel;
-	private Label engineValueLabel;
+	private EngineDataLabel engineValueLabel;
 	private Text targetValueText;
 	private Combo targetValueCombo;
 	
@@ -74,9 +74,9 @@ public class MotorAxisComposite extends Composite implements IMeasurementDataLis
 	private GridLayout gridLayout;
 	private Font newFont;
 	
-	private Button stepLeftButton;
+	private PvButtonComposite stepLeftButton;
 	private Control tweakText;
-	private Button stepRightButton;
+	private PvButtonComposite stepRightButton;
 	
 	private Boolean expanded;
 	
@@ -157,7 +157,7 @@ public class MotorAxisComposite extends Composite implements IMeasurementDataLis
 		
 		// TODO we want to see this label only if an engine is connected
 		// position from engine
-		this.engineValueLabel = new Label( this, SWT.NONE );
+		this.engineValueLabel = new EngineDataLabel( this, SWT.NONE, motorAxis.getID());
 		gridData = new GridData();
 		gridData.widthHint = 80;
 		this.engineValueLabel.setLayoutData( gridData );
@@ -251,57 +251,21 @@ public class MotorAxisComposite extends Composite implements IMeasurementDataLis
 		gridData.heightHint = 20;
 		gridData.horizontalSpan = 4;
 		this.emptyLabel1.setLayoutData( gridData );
-		
-		
-		this.stepLeftButton = new Button( this, SWT.PUSH );
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.RIGHT;
-		gridData.heightHint = 20;
-		this.stepLeftButton.setLayoutData( gridData );
-		this.stepLeftButton.setText( "<" );
-		this.stepLeftButton.setFont(newFont);
-	
-		if( this.motorAxis.getTweakReverse() == null ) {
-			this.stepLeftButton.setEnabled( false );
+
+		if( this.motorAxis.getTweakReverse() != null ) {
+			this.stepLeftButton = new PvButtonComposite( this, SWT.PUSH, motorAxis.getTweakReverse().getAccess().getVariableID(), motorAxis.getTweakReverse().getValue() );
+			this.stepLeftButton.setText( "<" );
+			this.stepLeftButton.setFont(newFont);
+			gridData = new GridData();
+			gridData.horizontalAlignment = SWT.RIGHT;
+			gridData.heightHint = 20;
+			this.stepLeftButton.setLayoutData( gridData );
 		}
 		else {
-			this.stepLeftButton.addSelectionListener( new SelectionListener() {
+			// dummy placeholder
+			new Label( this, SWT.NONE );
+		}
 
-				public void widgetDefaultSelected( final SelectionEvent e ) {
-								
-				}
-
-				public void widgetSelected( final SelectionEvent e ) {
-
-					if( motorAxis.getTweakReverse().getAccess().getTransport() == TransportTypes.CA ) {
-						String prefix = "dal-epics://";
-				
-						IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-						ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
-						IProcessVariableAddress tweakLeftPv = pvFactory.createProcessVariableAdress( prefix + motorAxis.getTweakReverse().getAccess().getVariableID() );
-						try {
-							Object o = null;
-							switch( motorAxis.getTweakReverse().getType() ) {	
-								case INT:
-									o = Integer.parseInt( motorAxis.getTweakReverse().getValue().getValues() );
-									break;
-							
-								case DOUBLE: 
-									o = Double.parseDouble( motorAxis.getTweakReverse().getValue().getValues() );
-									break;
-						
-								default:
-									o = motorAxis.getTweakReverse().getValue().getValues();
-					
-							}
-							service.writeValueSynchronously( tweakLeftPv, o, Helper.dataTypesToValueType( motorAxis.getTweakReverse().getType() ) );
-						} catch( final ConnectionException e1 ) {
-							e1.printStackTrace();
-						}
-					}
-				}
-			});
-		} 		
 		
 		if ((motorAxis.getTweakValue() != null) && ( motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.CA )){
 			this.tweakText = new PvTextComposite( this, SWT.NONE, motorAxis.getTweakValue().getAccess().getVariableID() );
@@ -317,58 +281,21 @@ public class MotorAxisComposite extends Composite implements IMeasurementDataLis
 		//gridData.grabExcessHorizontalSpace = true;
 		this.tweakText.setLayoutData( gridData );
 
-		this.stepRightButton = new Button( this, SWT.PUSH );
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.LEFT;
-		gridData.heightHint = 20;
-		this.stepRightButton.setLayoutData( gridData );
-		this.stepRightButton.setText( ">" );
-		this.stepRightButton.setFont(newFont);
-		if( this.motorAxis.getTweakForward() == null ) {
-			this.stepRightButton.setEnabled( false );
+		if( this.motorAxis.getTweakForward() != null ) {
+			this.stepRightButton = new PvButtonComposite( this, SWT.PUSH, motorAxis.getTweakForward().getAccess().getVariableID(), motorAxis.getTweakForward().getValue() );
+			this.stepRightButton.setText( ">" );
+			this.stepRightButton.setFont(newFont);
+			gridData = new GridData();
+			gridData.horizontalAlignment = SWT.LEFT;
+			gridData.heightHint = 20;
+			this.stepRightButton.setLayoutData( gridData );
 		}
 		else {
-			
-			this.stepRightButton.addSelectionListener( new SelectionListener() {
-
-				public void widgetDefaultSelected( final SelectionEvent e ) {
-					
-				}
-
-				public void widgetSelected( final SelectionEvent e ) {
-					
-					if( motorAxis.getTweakForward().getAccess().getTransport() == TransportTypes.CA ) {
-
-						String prefix = "dal-epics://";
-						IProcessVariableConnectionService service = ProcessVariableConnectionServiceFactory.getDefault().getProcessVariableConnectionService();
-						ProcessVariableAdressFactory pvFactory = ProcessVariableAdressFactory.getInstance(); 
-						IProcessVariableAddress tweakRightPv = pvFactory.createProcessVariableAdress( prefix + motorAxis.getTweakForward().getAccess().getVariableID() );
-						try {
-							Object o = null;
-							switch( motorAxis.getTweakForward().getType() ) {
-					
-								case INT:
-									o = Integer.parseInt( motorAxis.getTweakForward().getValue().getValues() );
-									break;
-							
-								case DOUBLE: 
-									o = Double.parseDouble( motorAxis.getTweakForward().getValue().getValues() );
-									break;
-						
-								default:
-									o = motorAxis.getTweakForward().getValue().getValues();
-					
-							}
-							service.writeValueSynchronously( tweakRightPv, o, Helper.dataTypesToValueType( motorAxis.getTweakForward().getType() ) );
-						} catch( final ConnectionException e1 ) {
-							e1.printStackTrace();
-						}
-					}
-				}
-			});
+			// dummy placeholder
+			new Label( this, SWT.NONE );
 		}
+
 		this.emptyLabel2 = new Label( this, SWT.NONE );
-		gridData = new GridData();
 		gridData = new GridData();
 		gridData.heightHint = 20;
 		gridData.horizontalSpan = 2;
@@ -384,26 +311,13 @@ public class MotorAxisComposite extends Composite implements IMeasurementDataLis
 	}
 	
 	public void dispose() {
-		super.dispose();
 		if (expanded) unexpandComposite();
 		valueLabel.dispose();
 		unitLabel.dispose();
 		offsetText.dispose();
 		this.getParent().layout();
 		this.getParent().redraw();
-	}
-
-	public void measurementDataTransmitted( final MeasurementData measurementData ) {
-		if( this.motorAxis.getName().equals( measurementData.getName() ) ) {
-			this.engineValueLabel.getDisplay().syncExec( new Runnable() {
-
-				public void run() {
-					engineValueLabel.setText( "(" + measurementData.getValues().get( 0 ).toString() + ")" );
-					
-				}
-				
-			});
-		}
+		super.dispose();
 	}
 
 	public void widgetDefaultSelected(SelectionEvent e) {
@@ -413,9 +327,6 @@ public class MotorAxisComposite extends Composite implements IMeasurementDataLis
 
 	public void widgetSelected(SelectionEvent e) {
 		this.dispose();
-		this.getParent().layout();
-		this.getParent().redraw();
-		
 	}
 
 	public MotorAxis getMotorAxis() {

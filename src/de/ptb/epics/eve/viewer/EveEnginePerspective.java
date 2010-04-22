@@ -21,6 +21,7 @@
  */
 package de.ptb.epics.eve.viewer;
 
+import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
@@ -43,12 +44,15 @@ public final class EveEnginePerspective implements IPerspectiveFactory {
 		layout.addView( "PlayListView", IPageLayout.LEFT, 0.5f, "MeasuringStationView" );
 		layout.addView( "GraphView", IPageLayout.BOTTOM, 0.75f, "PlayListView" );
 		layout.addView( "DeviceInspectorView", IPageLayout.RIGHT, 0.50f, IPageLayout.ID_EDITOR_AREA );
-		layout.addView( "PlotView", IPageLayout.TOP, 0.50f, "DeviceInspectorView" );
+		//layout.addView( "PlotView", IPageLayout.TOP, 0.50f, "DeviceInspectorView" );
+        IFolderLayout folder = layout.createFolder("PlotViewFolder", IPageLayout.TOP, 0.50f, "DeviceInspectorView");
+        folder.addPlaceholder(PlotView.ID+":*");
+        //folder.addView(PlotView.ID);
 		layout.addView( "DeviceOptionsView", IPageLayout.RIGHT, 0.80f, "DeviceInspectorView" );
 		
 		
 		layout.addActionSet( "de.ptb.epics.eve.viewer.engineControlActionSet" );
-		layout.addActionSet( "de.ptb.epics.eve.viewer.engineConnectionActionSet" );
+		//layout.addActionSet( "de.ptb.epics.eve.viewer.engineConnectionActionSet" );
 		//layout.addActionSet( "de.ptb.epics.eve.viewer.actionSet" );
 	}
 

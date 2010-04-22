@@ -149,7 +149,6 @@ public class DeviceInspectorViewer extends ViewPart implements DisposeListener {
 			private void addMotorAxisEntry( final AbstractDevice device){
 				MotorAxisComposite motorAxisComposite = new MotorAxisComposite( motorAxesComposite, SWT.NONE, (MotorAxis)device );
 				motorAxisComposite.addDisposeListener( own );
-				Activator.getDefault().getEcp1Client().addMeasurementDataListener( motorAxisComposite );
 				
 				GridData gridData = new GridData();
 				gridData.horizontalAlignment = SWT.FILL;
@@ -168,7 +167,6 @@ public class DeviceInspectorViewer extends ViewPart implements DisposeListener {
 			private void addDetectorChannelEntry( final AbstractDevice device){
 				DetectorChannelComposite detectorChannelComposite = new DetectorChannelComposite( detectorChannelsComposite, SWT.NONE, (DetectorChannel)device );
 				detectorChannelComposite.addDisposeListener( own );
-				Activator.getDefault().getEcp1Client().addMeasurementDataListener( detectorChannelComposite );
 				GridData gridData = new GridData();
 				gridData.horizontalAlignment = SWT.FILL;
 				gridData.grabExcessHorizontalSpace = true;
@@ -251,12 +249,9 @@ public class DeviceInspectorViewer extends ViewPart implements DisposeListener {
 		gridLayout.marginHeight = 0;
 		this.devicesComposite.setLayout( gridLayout );
 		
-				
-		
-		
 		
 		this.item0 = new ExpandItem ( this.bar, SWT.NONE, 0);
-		item0.setText("Motor Axis");
+		item0.setText("Motor Axes");
 		item0.setHeight( this.motorAxesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item0.setControl( this.motorAxesComposite );
 		
@@ -291,13 +286,13 @@ public class DeviceInspectorViewer extends ViewPart implements DisposeListener {
 			final DeviceComposite deviceComposite = (DeviceComposite)e.widget;
 			this.devices.remove( deviceComposite.getDevice() );
 		}
-		this.motorAxesComposite.layout();
-		this.detectorChannelsComposite.layout();
-		this.devicesComposite.layout();
+		if (!motorAxesComposite.isDisposed()) motorAxesComposite.layout();
+		if (!detectorChannelsComposite.isDisposed()) detectorChannelsComposite.layout();
+		if (!devicesComposite.isDisposed()) devicesComposite.layout();
 		
-		item0.setHeight( this.motorAxesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		item1.setHeight( this.detectorChannelsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		item2.setHeight( this.devicesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		if (!item0.isDisposed() && !motorAxesComposite.isDisposed()) item0.setHeight( motorAxesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y +1 );
+		if (!item1.isDisposed() && !detectorChannelsComposite.isDisposed()) item1.setHeight( detectorChannelsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y +1);
+		if (!item2.isDisposed() && !devicesComposite.isDisposed()) item2.setHeight( devicesComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y +1);
 	}
 
 }

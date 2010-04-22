@@ -23,6 +23,8 @@ package de.ptb.epics.eve.viewer;
 
 import java.util.List;
 
+import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -32,6 +34,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 
 /**
  * A simple view implementation, which only displays a label.
@@ -39,7 +42,7 @@ import de.ptb.epics.eve.data.scandescription.ScanModul;
  * @author Sven Wende
  *
  */
-public final class GraphView extends ViewPart implements IUpdateListener {
+public final class GraphView extends ViewPart implements IUpdateListener, IConnectionStateListener {
 
 	private Text statusText;
 	
@@ -53,6 +56,7 @@ public final class GraphView extends ViewPart implements IUpdateListener {
 		this.statusText.setEditable( false );
 		Activator.getDefault().getChainStatusAnalyzer().addUpdateLisner( this );
 		this.rebuildText();
+		Activator.getDefault().getEcp1Client().addConnectionStateListener( this );
 	}
 
 	/**
@@ -140,6 +144,34 @@ public final class GraphView extends ViewPart implements IUpdateListener {
 			
 			
 		});
+	}
+
+	@Override
+	public void stackConnected() {
+		// TODO unsure if this is the correct way to do it
+		ToolBarManager toolBarManager = (ToolBarManager) getViewSite().getActionBars().getToolBarManager();
+		int index = toolBarManager.indexOf("de.ptb.epics.eve.viewer.connectCommand");
+		if (index >= 0) toolBarManager.getControl().getItem(index).setEnabled(false);
+		index = toolBarManager.indexOf("de.ptb.epics.eve.viewer.disconnectCommand");
+		if (index >= 0) toolBarManager.getControl().getItem(index).setEnabled(true);
+	}
+
+	@Override
+	public void stackDisconnected() {
+		// TODO unsure if this is the correct way to do it
+		if (!this.statusText.isDisposed()) this.statusText.getDisplay().syncExec( new Runnable() {
+
+			public void run() {
+				if (!statusText.isDisposed()) {
+					ToolBarManager toolBarManager = (ToolBarManager) getViewSite().getActionBars().getToolBarManager();
+					int index = toolBarManager.indexOf("de.ptb.epics.eve.viewer.connectCommand");
+					if (index >= 0) toolBarManager.getControl().getItem(index).setEnabled(true);
+					index = toolBarManager.indexOf("de.ptb.epics.eve.viewer.disconnectCommand");
+					if (index >= 0) toolBarManager.getControl().getItem(index).setEnabled(false);
+				}
+			}
+		});
+		
 	}
 
 }

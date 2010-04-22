@@ -4,6 +4,7 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -47,13 +48,14 @@ public class DeviceOptionsViewer extends ViewPart {
 	    
 	    this.tableViewer.setContentProvider( new DeviceOptionsContentProvider() );
 	    this.tableViewer.setLabelProvider( new DeviceOptionsLabelProvider() );
-
+	    //tableViewer.new ColorAndFontCollectorWithProviders(new OptionColorProvider());
+	    //tableViewer.getColorAndFontCollector();
 	    final CellEditor[] editors = new CellEditor[2];
 	    
 	    editors[0] = null;
 	    editors[1] = new TextCellEditor( this.tableViewer.getTable() );
 	    
-	    this.tableViewer.setCellModifier( new DeviceOptionsModifyer( this.tableViewer ) );
+	    this.tableViewer.setCellModifier( new DeviceOptionsModifier( this.tableViewer ) );
 	    this.tableViewer.setCellEditors( editors );
 	    
 	    final String[] props = { "option", "value" };

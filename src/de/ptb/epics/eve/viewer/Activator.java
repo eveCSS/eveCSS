@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.NotEnabledException;
+import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.FontRegistry;
@@ -15,6 +19,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
@@ -35,7 +40,7 @@ public class Activator extends AbstractUIPlugin {
 	private static Activator plugin;
 	private final MessagesContainer messagesContainer;
 	private final XMLFileDispatcher xmlFileDispatcher;
-	private final MeasurementDataDispatcher measurementDataDispatcher;
+	//private final MeasurementDataDispatcher measurementDataDispatcher;
 	private final EngineErrorReader engineErrorReader;
 	private final ChainStatusAnalyzer chainStatusAnalyzer;
 	private MeasuringStation measuringStation;
@@ -56,9 +61,9 @@ public class Activator extends AbstractUIPlugin {
 		this.xmlFileDispatcher = new XMLFileDispatcher();
 		this.engineErrorReader = new EngineErrorReader();
 		this.chainStatusAnalyzer = new ChainStatusAnalyzer();
-		this.measurementDataDispatcher = new MeasurementDataDispatcher();
+		// this.measurementDataDispatcher = new MeasurementDataDispatcher();
 		this.ecp1Client.getPlayListController().addNewXMLFileListener( this.xmlFileDispatcher );
-		this.ecp1Client.addMeasurementDataListener( measurementDataDispatcher );
+		// this.ecp1Client.addMeasurementDataListener( measurementDataDispatcher );
 		this.ecp1Client.addErrorListener( this.engineErrorReader );
 		this.ecp1Client.addChainStatusListener( this.chainStatusAnalyzer );
 		this.colorreg = new ColorRegistry();
@@ -89,6 +94,7 @@ public class Activator extends AbstractUIPlugin {
 		ImageRegistry imagereg = getImageRegistry();
 		imagereg.put("GREENPLUS12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenPlus12.12.gif").createImage());
 		imagereg.put("GREENMINUS12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenMinus12.12.gif").createImage());
+		imagereg.put("GREENGO12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenGo12.12.gif").createImage());
 		
 		final String measuringStationDescription = de.ptb.epics.eve.preferences.Activator.getDefault().getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION );
 		
@@ -184,27 +190,16 @@ public class Activator extends AbstractUIPlugin {
 	public void addScanDescription( final File file ) {
 		
 		if( !this.ecp1Client.isRunning() ) {
-			
-			InputDialog inputDialog = new InputDialog( this.getWorkbench().getActiveWorkbenchWindow().getShell(), "Connect", "Please enter the address of the EVE-engine!", "", null );
-			
-			if( InputDialog.OK == inputDialog.open() ) {
-				String input = inputDialog.getValue();
-				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Trying to connect to: " + input + "." ) );
-				int port = 31107;
-				int index  = input.lastIndexOf( ":" );
-				if( index != -1 ) {
-					port = Integer.parseInt( input.substring( index + 1) );
-					input = input.substring( 0, index );
-				}
-				try {
-					Activator.getDefault().getEcp1Client().connect( new InetSocketAddress( input, port ), "" );
-					Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Connection established to: " + input + "." ) );
-				} catch( final IOException e ) {
-					Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.ERROR, "Cannot establish connection! Reasion: " + e.getMessage() + "." ) );
-					e.printStackTrace();
-				}
+			// start ecp1Client
+			IHandlerService handlerService = (IHandlerService) PlatformUI.getWorkbench().getService(IHandlerService.class);
+			try {
+				handlerService.executeCommand("de.ptb.epics.eve.viewer.connectCommand", null);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
+
 		if( this.ecp1Client.isRunning() ) {
 			try {
 				this.ecp1Client.getPlayListController().addLocalFile( file );
@@ -212,7 +207,5 @@ public class Activator extends AbstractUIPlugin {
 				e.printStackTrace();
 			}
 		}
-		
 	}
-	
 }

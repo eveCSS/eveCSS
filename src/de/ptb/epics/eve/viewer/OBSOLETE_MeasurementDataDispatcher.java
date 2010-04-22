@@ -9,9 +9,9 @@ import org.eclipse.ui.PlatformUI;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 
-public class MeasurementDataDispatcher implements IMeasurementDataListener {
+public class OBSOLETE_MeasurementDataDispatcher implements IMeasurementDataListener {
 	
-	public MeasurementDataDispatcher() {
+	public OBSOLETE_MeasurementDataDispatcher() {
 		
 	}
 	
@@ -31,7 +31,7 @@ public class MeasurementDataDispatcher implements IMeasurementDataListener {
 				for( int i = 0; i < ref.length; ++i ) {
 					if( ref[i].getId().equals( PlotView.ID ) ) {
 						PlotView view = (PlotView)ref[i].getPart( false );
-						view.measurementData( measurementData );
+						// view.measurementData( measurementData );
 					}
 				}
 
