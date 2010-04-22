@@ -83,7 +83,8 @@ public class PlotViewDispatcher implements IEngineStatusListener, IChainStatusLi
 				PlotView plotView = (PlotView)iViewRef.getPart( true );
 				if (plotView == null) System.err.println("PlotView is null");
 				try {
-					plotViewId = Integer.parseInt(plotView.getViewSite().getSecondaryId());
+					if ((plotView.getViewSite()!= null) && (plotView.getViewSite().getSecondaryId() != null))
+						plotViewId = Integer.parseInt(plotView.getViewSite().getSecondaryId());
 				} catch (Exception e) {
 					// TODO: handle exception
 					e.printStackTrace();
