@@ -41,11 +41,19 @@ public class DeviceOptionsContentProvider implements IStructuredContentProvider,
 		
 		this.optionConnectors = new ArrayList< OptionConnector >();
 		
-		final Iterator< Option > it = this.device.optionIterator();
-		while( it.hasNext() ) {
-			final OptionConnector optionConnector = new OptionConnector( it.next() );
-			optionConnector.addModelUpdateListener( this );
-			this.optionConnectors.add( optionConnector );
+		try {
+			if(this.device.optionIterator() != null){
+				final Iterator< Option > it = this.device.optionIterator();
+				while( it.hasNext() ) {
+					final OptionConnector optionConnector = new OptionConnector( it.next() );
+					optionConnector.addModelUpdateListener( this );
+					this.optionConnectors.add( optionConnector );
+				}
+			}
+			else
+				System.err.println("DeviceOptionContent: illegal AbstractDevice option");			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
