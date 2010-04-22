@@ -6,6 +6,6 @@ package de.ptb.epics.eve.preferences;
 public class PreferenceConstants {
 
 	public static final String P_DEFAULT_MEASURING_STATION_DESCRIPTION = "pathPreference";
+	public static final String P_DEFAULT_ENGINE_ADDRESS = "engineAddressPort";
 
-	
 }

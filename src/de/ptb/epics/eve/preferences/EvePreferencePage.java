@@ -14,6 +14,7 @@ public class EvePreferencePage extends FieldEditorPreferencePage implements IWor
 	
 	public void createFieldEditors() {
 		addField( new FileFieldEditor( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION, "device definition file:", this.getFieldEditorParent() ) );
+		addField( new StringFieldEditor( PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS, "Engine (name:port):", this.getFieldEditorParent() ) );
 	}
 
 	public void init( final IWorkbench workbench ) {
