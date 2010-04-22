@@ -4,7 +4,7 @@
 <product name="CSS (EPICS)" uid="de.ptb.epics.product" id="de.ptb.epics.product.product" application="de.ptb.epics.application" version="1.0.23" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
-      <image path="/org.csstudio.basic.epics.product/icons/about.gif"/>
+      <image path="/de.ptb.epics.product/icons/about.gif"/>
       <text>
          Control System Studio (CSS) is a combined
 effort of several parties, including
@@ -21,9 +21,9 @@ See http://ics-web.sns.ornl.gov/css
 
    <configIni use="default">
       <linux>/de.ptb.epics.product/configs/config.ini</linux>
-      <macosx>/org.csstudio.basic.epics.product/configs/config.ini</macosx>
-      <solaris>/org.csstudio.basic.epics.product/configs/config.ini</solaris>
-      <win32>/org.csstudio.basic.epics.product/configs/config.ini</win32>
+      <macosx>/de.ptb.epics.product/configs/config.ini</macosx>
+      <solaris>/de.ptb.epics.product/configs/config.ini</solaris>
+      <win32>/de.ptb.epics.product/configs/config.ini</win32>
    </configIni>
 
    <launcherArgs>
@@ -50,10 +50,11 @@ See http://ics-web.sns.ornl.gov/css
       </win>
    </launcher>
 
-   <intro introId="org.csstudio.basic.epics.product.intro"/>
+   <intro introId="de.ptb.epics.product.intro"/>
 
    <vm>
    </vm>
+
 
    <plugins>
       <plugin id="com.ibm.icu"/>

@@ -41,7 +41,7 @@
          </property>
          <property
                name="aboutImage"
-               value="/org.csstudio.basic.epics.product/icons/about.gif">
+               value="icons/about.gif">
          </property>
          <property
                name="aboutText"
@@ -58,19 +58,19 @@
       <intro
             class="org.eclipse.ui.intro.config.CustomizableIntroPart"
             icon="icons/css16.gif"
-            id="org.csstudio.basic.epics.product.intro">
+            id="de.ptb.epics.product.intro">
       </intro>
       <introProductBinding
-            introId="org.csstudio.basic.epics.product.intro"
-            productId="org.csstudio.basic.epics.product.product">
+            introId="de.ptb.epics.product.intro"
+            productId="de.ptb.epics.product.product">
       </introProductBinding>
    </extension>
    <extension
          point="org.eclipse.ui.intro.config">
       <config
             content="/intro/intro.xml"
-            id="org.csstudio.basic.epics.product.introConfigId"
-            introId="org.csstudio.basic.epics.product.intro">
+            id="de.ptb.epics.product.introConfigId"
+            introId="de.ptb.epics.product.intro">
          <presentation home-page-id="root">
             <implementation kind="html"/>
          </presentation>
