@@ -29,6 +29,7 @@ public class DeviceOptionsContentProvider implements IStructuredContentProvider,
 	}
 
 	public void inputChanged( final Viewer viewer, final Object oldInput, final Object newInput ) {
+		if (newInput == null) return;
 		this.device = (AbstractDevice)newInput;
 		this.currentViewer = viewer;
 		
@@ -42,16 +43,12 @@ public class DeviceOptionsContentProvider implements IStructuredContentProvider,
 		this.optionConnectors = new ArrayList< OptionConnector >();
 		
 		try {
-			if(this.device.optionIterator() != null){
-				final Iterator< Option > it = this.device.optionIterator();
-				while( it.hasNext() ) {
-					final OptionConnector optionConnector = new OptionConnector( it.next() );
-					optionConnector.addModelUpdateListener( this );
-					this.optionConnectors.add( optionConnector );
-				}
+			final Iterator< Option > it = this.device.optionIterator();
+			while( it.hasNext() ) {
+				final OptionConnector optionConnector = new OptionConnector( it.next() );
+				optionConnector.addModelUpdateListener( this );
+				this.optionConnectors.add( optionConnector );
 			}
-			else
-				System.err.println("DeviceOptionContent: illegal AbstractDevice option");			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
