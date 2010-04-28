@@ -1,7 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <version>0.3.6</version>
+    <version>0.3.7</version>
+    <chain id="1">
+        <comment>kein Kommentar</comment>
+        <savefilename>/home/eden/eclipse/eve/evTestClient/tmp/testdaten</savefilename>
+        <confirmsave>false</confirmsave>
+        <autonumber>true</autonumber>
+        <savescandescription>false</savescandescription>
+        <saveplugin name="HDF5">
+            <parameter name="location">/home/eden/eclipse/eve/evePlugins/lib/libhdf5plugin.so</parameter>
+            <parameter name="extent">23</parameter>
+            <parameter name="format">HDF5</parameter>
+        </saveplugin>
+        <scanmodules>
+            <scanmodule id="1">
+                <type>classic</type>
+                <name>First</name>
+                <xpos>104</xpos>
+                <ypos>59</ypos>
+                <parent>0</parent>
+                <appended>2</appended>
+                <triggerconfirm>true</triggerconfirm>
+                <saveaxispositions>before</saveaxispositions>
+                <smaxis>
+                    <axisid>OMSMp:rackioc0100001</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">10.1</start>
+                    <stop type="double">20.1</stop>
+                    <stepwidth type="double">1</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smaxis>
+                    <axisid>OMSMp:rackioc0100002</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">20.0</start>
+                    <stop type="double">30.0</stop>
+                    <stepwidth type="double">1.0</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent1</channelid>
+                    <maxattempts>0</maxattempts>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>ringCurrent2</channelid>
+                    <maxattempts>0</maxattempts>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <plot id="1">
+                    <xaxis>
+                        <id>OMSMp:rackioc0100001</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent1</id>
+                        <mode>linear</mode>
+                        <linestyle>solid</linestyle>
+                        <color>blue</color>
+                        <markstyle>star</markstyle>
+                    </yaxis>
+                </plot>
+                <plot id="2">
+                    <xaxis>
+                        <id>OMSMp:rackioc0100002</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent2</id>
+                        <mode>linear</mode>
+                        <linestyle>solid</linestyle>
+                        <color>blue</color>
+                        <markstyle>star</markstyle>
+                    </yaxis>
+                    <yaxis>
+                        <id>ringCurrent1</id>
+                        <mode>linear</mode>
+                        <linestyle>dashed</linestyle>
+                        <color>green</color>
+                        <markstyle>point</markstyle>
+                    </yaxis>
+                </plot>
+            </scanmodule>
+            <scanmodule id="2">
+                <type>classic</type>
+                <name>Second</name>
+                <xpos>225</xpos>
+                <ypos>59</ypos>
+                <parent>1</parent>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>OMSMp:rackioc0100001</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">21.5</start>
+                    <stop type="double">24.5</stop>
+                    <stepwidth type="double">1</stepwidth>
+                    <ismainaxis>true</ismainaxis>
+                </smaxis>
+                <smaxis>
+                    <axisid>OMSMp:rackioc0100002</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">30.0</start>
+                    <stop type="double">33.0</stop>
+                    <stepwidth type="double">1.0</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent2</channelid>
+                    <maxattempts>0</maxattempts>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>ringCurrent1</channelid>
+                    <maxattempts>0</maxattempts>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+            </scanmodule>
+        </scanmodules>
+    </chain>
     <plugins>
         <plugin type="position">
             <name>plugin1</name>
@@ -14,14 +138,8 @@
         <plugin type="save">
             <name>HDF5</name>
             <location>/home/eden/eclipse/eve/evePlugins/lib/libhdf5plugin.so</location>
-            <parameter name="extent" datatype="int" default="0"></parameter>
-            <parameter name="format" datatype="string" default="HDF5"></parameter>
-        </plugin>
-        <plugin type="save">
-            <name>ASCII</name>
-            <location></location>
-            <parameter name="format" datatype="string" default="ASCII"></parameter>
-            <parameter name="suffix" datatype="string" default="txt"></parameter>
+            <parameter name="extent" datatype="int" default="0" mandatory="false"/>
+            <parameter name="format" datatype="string" default="HDF5" mandatory="false"/>
         </plugin>
     </plugins>
     <detectors>
@@ -36,14 +154,14 @@
                 <name>RingStrom BESSY 1</name>
                 <id>ringCurrent1</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">ringCurrent1</access>
+                    <access method="GETCB" type="double" transport="ca">ringCurrent1</access>
                 </read>
             </channel>
             <channel>
                 <name>RingStrom BESSY 2</name>
                 <id>ringCurrent2</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">ringCurrent2</access>
+                    <access method="GETCB" type="double" transport="ca">ringCurrent2</access>
                 </read>
             </channel>
         </detector>
@@ -52,25 +170,25 @@
             <name>Keithley 617</name>
             <id>K0617:22225</id>
             <unit>
-                <access method="GETCB" transport="ca" type="string">K0617:22225.EGU</access>
+                <access method="GETCB" type="string" transport="ca">K0617:22225.EGU</access>
             </unit>
             <trigger>
-                <access method="PUTCB" transport="ca" type="int">K0617:22225.TRIG</access>
+                <access method="PUTCB" type="int" transport="ca">K0617:22225.TRIG</access>
                 <value type="int">1</value>
             </trigger>
             <channel>
                 <name>Kanal 1</name>
                 <id>K0617:22225.1</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">K0617:22225.VAL</access>
+                    <access method="GETCB" type="double" transport="ca">K0617:22225.VAL</access>
                 </read>
             </channel>
             <option>
                 <name>ZeroCheck</name>
                 <id>K6559:22225zeroChk</id>
                 <value>
-                    <access method="GETPUTCB" transport="ca" type="OnOff">K6559:22225zeroChk</access>
-                    <value type="OnOff">1,0</value>
+                    <access method="GETPUTCB" type="OnOff" transport="ca">K6559:22225zeroChk</access>
+                    <value type="OnOff">1, 0</value>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -78,8 +196,8 @@
                 <name>Function</name>
                 <id>K6559:22225function</id>
                 <value>
-                    <access method="GETPUTCB" transport="ca" type="string">K6559:22225function</access>
-                    <value type="string">Voltage,Current,Resistance</value>
+                    <access method="GETPUTCB" type="string" transport="ca">K6559:22225function</access>
+                    <value type="string">Voltage, Current, Resistance</value>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -89,25 +207,25 @@
             <name></name>
             <id>23707</id>
             <unit>
-                <access method="GETCB" transport="ca" type="double">P5000:2370700.EGU</access>
+                <access method="GETCB" type="double" transport="ca">P5000:2370700.EGU</access>
             </unit>
             <trigger>
-                <access method="PUTCB" transport="ca" type="double">P5000:2370700.TRIG</access>
+                <access method="PUTCB" type="double" transport="ca">P5000:2370700.TRIG</access>
                 <value type="int">1</value>
             </trigger>
             <channel>
                 <name>Kanal 1</name>
                 <id>P5000:2370700.1</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">P5000:2370700.VAL</access>
+                    <access method="GETCB" type="double" transport="ca">P5000:2370700.VAL</access>
                 </read>
             </channel>
             <option>
                 <name>Function</name>
                 <id>P5000:23707function</id>
                 <value>
-                    <access method="GETPUTCB" transport="ca" type="string">P5000:23707function</access>
-                    <value type="string">DCVolts, ACVolts, DCAmps, ACAmps, Ohms</value>
+                    <access method="GETPUTCB" type="string" transport="ca">P5000:23707function</access>
+                    <value type="string">DCVolts,  ACVolts,  DCAmps,  ACAmps,  Ohms</value>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -115,8 +233,8 @@
                 <name>Range</name>
                 <id>P5000:23707range</id>
                 <value>
-                    <access method="GETPUTCB" transport="ca" type="string">P5000:23707range</access>
-                    <value type="string">"Auto On","0.2 -> V kO","2 -> V mA kO","20 -> V kO","200 -> V kO","2 -> A MO","12 -> MO","Auto Off"</value>
+                    <access method="GETPUTCB" type="string" transport="ca">P5000:23707range</access>
+                    <value type="string">"Auto On", "0.2 -&gt; V kO", "2 -&gt; V mA kO", "20 -&gt; V kO", "200 -&gt; V kO", "2 -&gt; A MO", "12 -&gt; MO", "Auto Off"</value>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -131,13 +249,13 @@
                 <name>Wecker 1</name>
                 <id>Timer01.01</id>
                 <goto>
-                    <access method="PUTCB" transport="local" type="datetime">Timer</access>
+                    <access method="PUTCB" type="datetime" transport="local">Timer</access>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="local" type="datetime">Timer</access>
+                    <access method="GETCB" type="datetime" transport="local">Timer</access>
                 </position>
                 <stop>
-                    <access method="PUT" transport="local" type="int">Timer</access>
+                    <access method="PUT" type="int" transport="local">Timer</access>
                     <value type="OnOff">0</value>
                 </stop>
             </axis>
@@ -150,13 +268,13 @@
                 <name>Wecker 2</name>
                 <id>Timer02.01</id>
                 <goto>
-                    <access method="PUTCB" transport="local" type="datetime">Timer</access>
+                    <access method="PUTCB" type="datetime" transport="local">Timer</access>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="local" type="datetime">Timer</access>
+                    <access method="GETCB" type="datetime" transport="local">Timer</access>
                 </position>
                 <stop>
-                    <access method="PUT" transport="local" type="int">Timer</access>
+                    <access method="PUT" type="int" transport="local">Timer</access>
                     <value type="OnOff">0</value>
                 </stop>
             </axis>
@@ -169,13 +287,13 @@
                 <name>C01</name>
                 <id>Counter01.01</id>
                 <goto>
-                    <access method="PUTCB" transport="local" type="int">Counter</access>
+                    <access method="PUTCB" type="int" transport="local">Counter</access>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="local" type="int">Counter</access>
+                    <access method="GETCB" type="int" transport="local">Counter</access>
                 </position>
                 <stop>
-                    <access method="PUT" transport="local" type="int">Counter</access>
+                    <access method="PUT" type="int" transport="local">Counter</access>
                     <value type="OnOff">0</value>
                 </stop>
             </axis>
@@ -188,13 +306,13 @@
                 <name>C02</name>
                 <id>Counter02.01</id>
                 <goto>
-                    <access method="PUTCB" transport="local" type="int">Counter</access>
+                    <access method="PUTCB" type="int" transport="local">Counter</access>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="local" type="int">Counter</access>
+                    <access method="GETCB" type="int" transport="local">Counter</access>
                 </position>
                 <stop>
-                    <access method="PUT" transport="local" type="int">Counter</access>
+                    <access method="PUT" type="int" transport="local">Counter</access>
                     <value type="OnOff">0</value>
                 </stop>
             </axis>
@@ -204,40 +322,41 @@
             <name>MAXp</name>
             <id>rackioc0100</id>
             <unit>
-                <access method="GETCB" transport="ca" type="string">OMSMp:rackioc0100000.EGU</access>
+                <access method="GETCB" type="string" transport="ca">OMSMp:rackioc0100000.EGU</access>
             </unit>
             <axis>
                 <name>X-Position</name>
                 <id>OMSMp:rackioc0100000</id>
                 <goto>
-                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">OMSMp:rackioc0100000</access>
-                    <value type="double">10.0,12.0,13.1</value>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="100.0">OMSMp:rackioc0100000</access>
+                    <value type="double">10.0, 12.0, 13.1</value>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="ca" type="double">OMSMp:rackioc0100000.RBV</access>
+                    <access method="GETCB" type="double" transport="ca">OMSMp:rackioc0100000.RBV</access>
                 </position>
                 <stop>
-                    <access method="PUT" transport="ca" type="int">OMSMp:rackioc0100000.STOP</access>
+                    <access method="PUT" type="int" transport="ca">OMSMp:rackioc0100000.STOP</access>
                     <value type="int">1</value>
                 </stop>
                 <status>
-                    <access method="GETCB" transport="ca" type="int">OMSMp:rackioc0100000.MSTA</access>
+                    <access method="GETCB" type="int" transport="ca">OMSMp:rackioc0100000.MSTA</access>
                 </status>
                 <deadband>
-                    <access method="GETCB" transport="ca" type="double">OMSMp:rackioc0100000.RDBD</access>
+                    <access method="GETCB" type="double" transport="ca">OMSMp:rackioc0100000.RDBD</access>
                 </deadband>
                 <offset>
-                    <access method="GETPUTCB" transport="ca" type="double">OMSMp:rackioc0100000.OFF</access>
+                    <access method="GETPUTCB" type="double" transport="ca">OMSMp:rackioc0100000.OFF</access>
                 </offset>
                 <tweakvalue>
-                    <access method="GETPUTCB" transport="ca" type="double">OMSMp:rackioc0100000.TWV</access>
+                    <access method="GETPUTCB" type="double" transport="ca">OMSMp:rackioc0100000.TWV</access>
                 </tweakvalue>
                 <tweakforward>
-                    <access method="GETCB" transport="ca" type="int">OMSMp:rackioc0100000.TWF</access>
+                    <access method="GETCB" type="int" transport="ca">OMSMp:rackioc0100000.TWF</access>
                     <value type="int">1</value>
                 </tweakforward>
                 <tweakreverse>
-                    <access method="GETCB" transport="ca" type="int">OMSMp:rackioc0100000.TWR</access>
+                    <access method="GETCB" type="int" transport="ca">OMSMp:rackioc0100000.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
@@ -261,35 +380,36 @@
                 <name>Y-Position</name>
                 <id>OMSMp:rackioc0100001</id>
                 <goto>
-                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">OMSMp:rackioc0100001</access>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="100.0">OMSMp:rackioc0100001</access>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="ca" type="double">OMSMp:rackioc0100001.RBV</access>
+                    <access method="GETCB" type="double" transport="ca">OMSMp:rackioc0100001.RBV</access>
                 </position>
                 <stop>
-                    <access method="PUT" transport="ca" type="int">OMSMp:rackioc0100001.STOP</access>
+                    <access method="PUT" type="int" transport="ca">OMSMp:rackioc0100001.STOP</access>
                     <value type="int">1</value>
                 </stop>
                 <status>
-                    <access method="GETCB" transport="ca" type="int">OMSMp:rackioc0100001.MSTA</access>
+                    <access method="GETCB" type="int" transport="ca">OMSMp:rackioc0100001.MSTA</access>
                 </status>
                 <deadband>
-                    <access method="GETCB" transport="ca" type="double">OMSMp:rackioc0100001.RDBD</access>
+                    <access method="GETCB" type="double" transport="ca">OMSMp:rackioc0100001.RDBD</access>
                 </deadband>
                 <offset>
-                    <access method="GETPUTCB" transport="ca" type="double">OMSMp:rackioc0100001.OFF</access>
+                    <access method="GETPUTCB" type="double" transport="ca">OMSMp:rackioc0100001.OFF</access>
                 </offset>
                 <tweakvalue>
-                    <access method="GETPUTCB" transport="ca" type="double">OMSMp:rackioc0100001.TWV</access>
+                    <access method="GETPUTCB" type="double" transport="ca">OMSMp:rackioc0100001.TWV</access>
                 </tweakvalue>
                 <tweakforward>
-                    <access method="GETCB" transport="ca" type="int">OMSMp:rackioc0100001.TWF</access>
+                    <access method="GETCB" type="int" transport="ca">OMSMp:rackioc0100001.TWF</access>
                     <value type="int">1</value>
                 </tweakforward>
                 <tweakreverse>
-                    <access method="GETCB" transport="ca" type="int">OMSMp:rackioc0100001.TWR</access>
+                    <access method="GETCB" type="int" transport="ca">OMSMp:rackioc0100001.TWR</access>
                     <value type="int">1</value>
-                </tweakreverse>                
+                </tweakreverse>
                 <option>
                     <name>Velocity</name>
                     <id>OMSMp:rackioc0100001.VELO</id>
@@ -311,33 +431,34 @@
                 <name>Z-Achse</name>
                 <id>OMSMp:rackioc0100002</id>
                 <goto>
-                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">OMSMp:rackioc0100002</access>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="100.0">OMSMp:rackioc0100002</access>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="ca" type="double">OMSMp:rackioc0100002.RBV</access>
+                    <access method="GETCB" type="double" transport="ca">OMSMp:rackioc0100002.RBV</access>
                 </position>
                 <stop>
-                    <access method="PUT" transport="ca" type="int">OMSMp:rackioc0100002.STOP</access>
+                    <access method="PUT" type="int" transport="ca">OMSMp:rackioc0100002.STOP</access>
                     <value type="int">1</value>
                 </stop>
                 <status>
-                    <access method="GETCB" transport="ca" type="int">OMSMp:rackioc0100002.MSTA</access>
+                    <access method="GETCB" type="int" transport="ca">OMSMp:rackioc0100002.MSTA</access>
                 </status>
                 <deadband>
-                    <access method="GETCB" transport="ca" type="double">OMSMp:rackioc0100002.RDBD</access>
+                    <access method="GETCB" type="double" transport="ca">OMSMp:rackioc0100002.RDBD</access>
                 </deadband>
                 <offset>
-                    <access method="GETPUTCB" transport="ca" type="double">OMSMp:rackioc0100002.OFF</access>
+                    <access method="GETPUTCB" type="double" transport="ca">OMSMp:rackioc0100002.OFF</access>
                 </offset>
                 <tweakvalue>
-                    <access method="GETPUTCB" transport="ca" type="double">OMSMp:rackioc0100002.TWV</access>
+                    <access method="GETPUTCB" type="double" transport="ca">OMSMp:rackioc0100002.TWV</access>
                 </tweakvalue>
                 <tweakforward>
-                    <access method="GETCB" transport="ca" type="int">OMSMp:rackioc0100002.TWF</access>
+                    <access method="GETCB" type="int" transport="ca">OMSMp:rackioc0100002.TWF</access>
                     <value type="int">1</value>
                 </tweakforward>
                 <tweakreverse>
-                    <access method="GETCB" transport="ca" type="int">OMSMp:rackioc0100002.TWR</access>
+                    <access method="GETCB" type="int" transport="ca">OMSMp:rackioc0100002.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
@@ -361,33 +482,34 @@
                 <name>€-Achse</name>
                 <id>OMSMp:rackioc0100003</id>
                 <goto>
-                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">OMSMp:rackioc0100003</access>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="100.0">OMSMp:rackioc0100003</access>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="ca" type="double">OMSMp:rackioc0100003.RBV</access>
+                    <access method="GETCB" type="double" transport="ca">OMSMp:rackioc0100003.RBV</access>
                 </position>
                 <stop>
-                    <access method="PUT" transport="ca" type="int">OMSMp:rackioc0100003.STOP</access>
+                    <access method="PUT" type="int" transport="ca">OMSMp:rackioc0100003.STOP</access>
                     <value type="int">1</value>
                 </stop>
                 <status>
-                    <access method="GETCB" transport="ca" type="int">OMSMp:rackioc0100003.MSTA</access>
+                    <access method="GETCB" type="int" transport="ca">OMSMp:rackioc0100003.MSTA</access>
                 </status>
                 <deadband>
-                    <access method="GETPUTCB" transport="ca" type="double">OMSMp:rackioc0100003.RDBD</access>
+                    <access method="GETPUTCB" type="double" transport="ca">OMSMp:rackioc0100003.RDBD</access>
                 </deadband>
                 <offset>
-                    <access method="GETPUTCB" transport="ca" type="double">OMSMp:rackioc0100003.OFF</access>
+                    <access method="GETPUTCB" type="double" transport="ca">OMSMp:rackioc0100003.OFF</access>
                 </offset>
                 <tweakvalue>
-                    <access method="GETPUTCB" transport="ca" type="double">OMSMp:rackioc0100003.TWV</access>
+                    <access method="GETPUTCB" type="double" transport="ca">OMSMp:rackioc0100003.TWV</access>
                 </tweakvalue>
                 <tweakforward>
-                    <access method="PUT" transport="ca" type="int">OMSMp:rackioc0100003.TWF</access>
+                    <access method="PUT" type="int" transport="ca">OMSMp:rackioc0100003.TWF</access>
                     <value type="int">1</value>
                 </tweakforward>
                 <tweakreverse>
-                    <access method="PUT" transport="ca" type="int">OMSMp:rackioc0100003.TWR</access>
+                    <access method="PUT" type="int" transport="ca">OMSMp:rackioc0100003.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
@@ -451,7 +573,7 @@
                     <id>OMSMp:rackioc0100003.SET</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">OMSMp:rackioc0100003.SET</access>
-                        <value type="string">Use,Set</value>
+                        <value type="string">Use, Set</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -464,7 +586,6 @@
                     <displaygroup>summary</displaygroup>
                 </option>
             </axis>
-            
         </motor>
     </motors>
     <devices>
@@ -473,11 +594,11 @@
             <name>Load Motor</name>
             <id>PPSMC:23715001.SET</id>
             <value>
-                <access type="string" method="GETPUTCB" transport="ca">PPSMC:23715001.SET</access>
+                <access method="GETPUTCB" type="string" transport="ca">PPSMC:23715001.SET</access>
                 <value type="string"></value>
             </value>
             <unit>
-                <access type="string" method="GETCB" transport="ca">PPSMC:23715001.EGU</access>
+                <access method="GETCB" type="string" transport="ca">PPSMC:23715001.EGU</access>
             </unit>
         </device>
         <device>
@@ -485,7 +606,7 @@
             <name>Motor-RBV</name>
             <id>Event-PPSMC:23715001</id>
             <value>
-                <access method="GETCB" transport="ca" type="double">PPSMC:23715001.RBV</access>
+                <access method="GETCB" type="double" transport="ca">PPSMC:23715001.RBV</access>
                 <value type="double"></value>
             </value>
         </device>
@@ -494,7 +615,7 @@
             <name>Dummy-Topup</name>
             <id>TOPUP:228</id>
             <value>
-                <access monitor="true" method="GETCB" transport="ca" type="double">PPSMC:23715001.RBV</access>
+                <access method="GETCB" type="double" transport="ca" monitor="true">PPSMC:23715001.RBV</access>
                 <value type="double"></value>
             </value>
         </device>
