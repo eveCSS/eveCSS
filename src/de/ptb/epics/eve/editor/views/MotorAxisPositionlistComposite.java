@@ -17,8 +17,10 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
-public class MotorAxisPositionlistComposite extends Composite  {
+public class MotorAxisPositionlistComposite extends Composite implements IModelUpdateListener {
 	
 	private Label positionlistLabel;
 	private Text positionlistInput;
@@ -36,18 +38,18 @@ public class MotorAxisPositionlistComposite extends Composite  {
 	private void initialize() {
 		
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 3;
+		gridLayout.numColumns = 2;
 		this.setLayout( gridLayout );
-
-		
 		
 		this.positionlistLabel = new Label( this, SWT.NONE );
 		this.positionlistLabel.setText( "Positionlist:" );
 		GridData gridData = new GridData();
-		gridData.horizontalSpan = 2;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.positionlistLabel.setLayoutData( gridData );
+		
+		this.positionlistErrorLabel = new Label( this, SWT.NONE );
+		this.positionlistErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ));
 		
 		this.positionlistInput = new Text( this, SWT.BORDER | SWT.V_SCROLL );
 		gridData = new GridData();
@@ -74,8 +76,6 @@ public class MotorAxisPositionlistComposite extends Composite  {
 			
 		});
 		
-		this.positionlistLabel = new Label( this, SWT.NONE );
-		
 		this.amountLabel = new Label( this, SWT.NONE );
 		this.amountLabel.setText( "Amount of positions:" );
 		gridData = new GridData();
@@ -86,7 +86,6 @@ public class MotorAxisPositionlistComposite extends Composite  {
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 2;
 		this.amountText.setLayoutData( gridData );
 		this.amountText.setEnabled( false );
 		
@@ -95,26 +94,57 @@ public class MotorAxisPositionlistComposite extends Composite  {
 	}
 	
 	public void setAxis( final Axis axis ) {
+		
+		if( this.axis != null ) {
+			this.axis.removeModelUpdateListener( this );
+		}
 		this.axis = axis;
 		if( this.axis != null ) {
 			if( this.axis.getPositionlist() != null ) { 
 				this.positionlistInput.setText( axis.getPositionlist() ); 
 			}
 			final Iterator< IModelError > it = this.axis.getModelErrors().iterator();
+			this.positionlistErrorLabel.setImage( null );
 			while( it.hasNext() ) {
 				final IModelError modelError = it.next();
 				if( modelError instanceof AxisError ) {
 					final AxisError axisError = (AxisError)modelError;
-					if( axisError.getErrorType() == AxisErrorTypes.FILENAME_NOT_SET ) {
+					if( axisError.getErrorType() == AxisErrorTypes.POSITIONLIST_NOT_SET ) {
 						this.positionlistErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
 						break;
 					}
 				}
 			}
 			this.positionlistLabel.setEnabled( true );
+			this.axis.addModelUpdateListener( this );
+			
 		} else {
 			this.positionlistInput.setText( "" );
 			this.positionlistLabel.setEnabled( false );
 		}
+	}
+
+	@Override
+	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
+		this.positionlistErrorLabel.setImage( null );
+		final Iterator< IModelError > it = this.axis.getModelErrors().iterator();
+		while( it.hasNext() ) {
+			final IModelError modelError = it.next();
+			if( modelError instanceof AxisError ) {
+				final AxisError axisError = (AxisError)modelError;
+				if( axisError.getErrorType() == AxisErrorTypes.POSITIONLIST_NOT_SET ) {
+					this.positionlistErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+					break;
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void dispose() {
+		if( this.axis != null ) {
+			this.axis.removeModelUpdateListener( this );
+		}
+		super.dispose();
 	}
 }

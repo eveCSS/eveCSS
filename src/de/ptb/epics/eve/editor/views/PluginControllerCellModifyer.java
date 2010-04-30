@@ -127,14 +127,15 @@ public class PluginControllerCellModifyer implements ICellModifier {
 
 	public void modify( final Object element, final String property, final Object value ) {
 		if( property.equals( "value" ) ) {
-					
 			Map.Entry<String, String> entry = ((Map.Entry< String, String >)((Item)element).getData());
+			final PluginController pluginController = (PluginController)this.tableViewer.getInput();
 			if( value instanceof String ) {
-				entry.setValue( (String)value );
+				pluginController.set( entry.getKey(), (String)value );
 			} else if( value instanceof Integer ) {
-				entry.setValue( ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).getItems()[(Integer)value] );
+				pluginController.set( entry.getKey(), ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).getItems()[(Integer)value] );
 			}
-			this.tableViewer.refresh();
+			
+			//this.tableViewer.refresh();
 		}
 	}
 

@@ -49,12 +49,17 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.errors.AxisError;
+import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.data.scandescription.errors.PositioningError;
+import de.ptb.epics.eve.data.scandescription.errors.PrePostscanError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.Helper;
 
-public class ScanModulView extends ViewPart {
+public class ScanModulView extends ViewPart implements IModelUpdateListener {
 
 	public static final String ID = "de.ptb.epics.eve.editor.views.ScanModulView"; // TODO
 																							// Needs
@@ -166,6 +171,18 @@ public class ScanModulView extends ViewPart {
 	private ExpandItem item2;
 	private ExpandItem item3;
 
+	private CTabItem motorAxisTab;
+	private CTabItem detectorChannelTab;
+	private CTabItem prescanTab;
+	private CTabItem postscanTab;
+	private CTabItem positioningTab;
+	
+	private CTabItem pauseEventsTabItem;
+	private CTabItem redoEventsTabItem;
+	private CTabItem breakEventsTabItem;
+	private CTabItem triggerEventsTabItem;
+	
+	
 	@Override
 	public void createPartControl(final Composite parent) {
 		// TODO Auto-generated method stub
@@ -242,7 +259,7 @@ public class ScanModulView extends ViewPart {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
 		this.settleTimeErrorLabel.setLayoutData(gridData);
-		this.settleTimeErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
+		//this.settleTimeErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
 
 		this.settleTimeUnitLabel = new Label(this.generalComposite, SWT.NONE);
 		this.settleTimeUnitLabel.setText("ms");
@@ -433,22 +450,23 @@ public class ScanModulView extends ViewPart {
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
 		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
 		triggerEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
-		CTabItem tabItem = new CTabItem(eventsTabFolder, SWT.NONE);
-		tabItem.setText(" Pause ");
-		tabItem.setToolTipText("Configure event to pause and resume this scan module");
-		tabItem.setControl(pauseEventComposite);
-		CTabItem tabItem1 = new CTabItem(eventsTabFolder, SWT.NONE);
-		tabItem1.setText(" Redo ");
-		tabItem1.setToolTipText("Repeat the last acquisition, if redo event occurs");
-		tabItem1.setControl(redoEventComposite);
-		CTabItem tabItem2 = new CTabItem(eventsTabFolder, SWT.NONE);
-		tabItem2.setText(" Break ");
-		tabItem2.setToolTipText("Finish the current scan module and continue with next");
-		tabItem2.setControl(breakEventComposite);
-		CTabItem tabItem3 = new CTabItem(eventsTabFolder, SWT.NONE);
-		tabItem3.setText(" Trigger ");
-		tabItem3.setToolTipText("Wait for trigger event before moving to next position");
-		tabItem3.setControl(triggerEventComposite);
+		
+		this.pauseEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
+		this.pauseEventsTabItem.setText(" Pause ");
+		this.pauseEventsTabItem.setToolTipText("Configure event to pause and resume this scan module");
+		this.pauseEventsTabItem.setControl(pauseEventComposite);
+		this.redoEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
+		this.redoEventsTabItem.setText(" Redo ");
+		this.redoEventsTabItem.setToolTipText("Repeat the last acquisition, if redo event occurs");
+		this.redoEventsTabItem.setControl(redoEventComposite);
+		this.breakEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
+		this.breakEventsTabItem.setText(" Break ");
+		this.breakEventsTabItem.setToolTipText("Finish the current scan module and continue with next");
+		this.breakEventsTabItem.setControl(breakEventComposite);
+		this.triggerEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
+		this.triggerEventsTabItem.setText(" Trigger ");
+		this.triggerEventsTabItem.setToolTipText("Wait for trigger event before moving to next position");
+		this.triggerEventsTabItem.setControl(triggerEventComposite);
 	}
 
 	/**
@@ -475,26 +493,27 @@ public class ScanModulView extends ViewPart {
 		createPrescanComposite();
 		createPostscanComposite();
 		createPositioningComposite();
-		CTabItem tabItem4 = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
-		tabItem4.setText(" Motor Axes ");
-		tabItem4.setToolTipText("Select motor axes to be used in this scan module");
-		tabItem4.setControl(this.motorAxisComposite);
-		CTabItem tabItem5 = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
-		tabItem5.setText(" Detector Channels ");
-		tabItem5.setToolTipText("Select detector channels to be used in this scan module");
-		tabItem5.setControl(this.detectorChannelComposite);
-		CTabItem tabItem6 = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
-		tabItem6.setText(" Prescan ");
-		tabItem6.setToolTipText("Action to do before scan module is started");
-		tabItem6.setControl(this.prescanComposite);
-		CTabItem tabItem7 = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
-		tabItem7.setText(" Postscan ");
-		tabItem7.setToolTipText("Action to do if scan module is done");
-		tabItem7.setControl(this.postscanComposite);
-		CTabItem tabItem8 = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
-		tabItem8.setText(" Positioning ");
-		tabItem8.setToolTipText("Move motor to calculated position after scan module is done");
-		tabItem8.setControl(this.positioningComposite);
+		
+		this.motorAxisTab = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
+		this.motorAxisTab.setText(" Motor Axes ");
+		this.motorAxisTab.setToolTipText("Select motor axes to be used in this scan module");
+		this.motorAxisTab.setControl(this.motorAxisComposite);
+		this.detectorChannelTab = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
+		this.detectorChannelTab.setText(" Detector Channels ");
+		this.detectorChannelTab.setToolTipText("Select detector channels to be used in this scan module");
+		this.detectorChannelTab.setControl(this.detectorChannelComposite);
+		this.prescanTab = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
+		this.prescanTab.setText(" Prescan ");
+		this.prescanTab.setToolTipText("Action to do before scan module is started");
+		this.prescanTab.setControl(this.prescanComposite);
+		this.postscanTab = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
+		this.postscanTab.setText(" Postscan ");
+		this.postscanTab.setToolTipText("Action to do if scan module is done");
+		this.postscanTab.setControl(this.postscanComposite);
+		this.positioningTab = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
+		this.positioningTab.setText(" Positioning ");
+		this.positioningTab.setToolTipText("Move motor to calculated position after scan module is done");
+		this.positioningTab.setControl(this.positioningComposite);
 
 	}
 
@@ -699,8 +718,14 @@ public class ScanModulView extends ViewPart {
 	}
 
 	public void setCurrentScanModul(ScanModul currentScanModul) {
+		if( this.currentScanModul != null ) {
+			this.currentScanModul.removeModelUpdateListener( this );
+		}
 		this.currentScanModul = currentScanModul;
 
+		if( this.currentScanModul != null ) {
+			this.currentScanModul.addModelUpdateListener( this );
+		}
 		this.fillFields();
 	}
 
@@ -799,6 +824,21 @@ public class ScanModulView extends ViewPart {
 				this.settleTimeText.setText((this.currentScanModul
 						.getSettletime() != Double.NEGATIVE_INFINITY) ? ""
 						+ this.currentScanModul.getSettletime() : "");
+				if( this.triggerDelayText.getText().equals( "" ) ) {
+					triggerDelayErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+					triggerDelayErrorLabel.setToolTipText( "The trigger delay must not be empty!" );
+				} else {
+					triggerDelayErrorLabel.setImage( null );
+					triggerDelayErrorLabel.setToolTipText( null );
+				}
+				if( this.settleTimeText.getText().equals( "" ) ) {
+					settleTimeErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+					settleTimeErrorLabel.setToolTipText( "The settletime must not be empty!" );
+				} else {
+					settleTimeErrorLabel.setImage( null );
+					settleTimeErrorLabel.setToolTipText( null );
+				}
+				
 				this.confirmTriggerCheckBox.setSelection(this.currentScanModul
 						.isTriggerconfirm());
 				this.triggerEventComposite
@@ -835,7 +875,68 @@ public class ScanModulView extends ViewPart {
 				Event testEvent = new Event(currentScanModul.getChain().getId(), currentScanModul.getId(), Event.ScheduleIncident.END);
 				this.appendScheduleEventCheckBox.setSelection(this.currentScanModul.getChain()
 							.getScanDescription().getEventById(testEvent.getID()) != null);
-
+				
+				this.motorAxisTab.setImage( null );
+				this.detectorChannelTab.setImage( null );
+				this.prescanTab.setImage( null );
+				this.postscanTab.setImage( null );
+				this.positioningTab.setImage( null );
+				
+				boolean motorAxisErrors = false;
+				boolean detectorChannelErrors = false;
+				boolean prescanErrors = false;
+				boolean postscanErrors = false;
+				boolean positioningErrors = false;
+				
+				final Iterator< IModelError > it = this.currentScanModul.getModelErrors().iterator();
+				while( it.hasNext() ) {
+					final IModelError modelError = it.next();
+					if( modelError instanceof AxisError ) {
+						motorAxisErrors = true;
+					} else if( modelError instanceof ChannelError ) {
+						detectorChannelErrors = true;
+					} else if( modelError instanceof PrePostscanError ) {
+						prescanErrors = true;
+						postscanErrors = true;
+					} else if( modelError instanceof PositioningError ) {
+						positioningErrors = true;
+					} 
+				}
+				if( motorAxisErrors ) {
+					this.motorAxisTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+				}
+				if( detectorChannelErrors ) {
+					this.detectorChannelTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+				}
+				if( prescanErrors ) {
+					this.prescanTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+				}
+				if( postscanErrors ) {
+					this.postscanTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+				}
+				if( positioningErrors ) {
+					this.positioningTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+				}
+				if( this.currentScanModul.getPauseControlEventManager().getModelErrors().size() > 0 ) {
+					this.pauseEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+				} else {
+					this.pauseEventsTabItem.setImage( null );
+				}
+				if( this.currentScanModul.getRedoControlEventManager().getModelErrors().size() > 0 ) {
+					this.redoEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+				} else {
+					this.redoEventsTabItem.setImage( null );
+				}
+				if( this.currentScanModul.getBreakControlEventManager().getModelErrors().size() > 0 ) {
+					this.breakEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+				} else {
+					this.breakEventsTabItem.setImage( null );
+				}
+				if( this.currentScanModul.getTriggerControlEventManager().getModelErrors().size() > 0 ) {
+					this.triggerEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+				} else {
+					this.triggerEventsTabItem.setImage( null );
+				}
 			} else {
 				this.triggerDelayText.setText("");
 				this.settleTimeText.setText("");
@@ -850,6 +951,8 @@ public class ScanModulView extends ViewPart {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		
+		
 		this.filling = false;
 	}
 
@@ -892,62 +995,41 @@ public class ScanModulView extends ViewPart {
 					if (e.widget == triggerDelayText) {
 
 						if (triggerDelayText.getText().equals("")) {
-System.out.println("triggerDelayText ist leer");
-
-/*							Color oldColor = triggerDelayText.getBackground();
-							triggerDelayText.setBackground(new Color(oldColor
-									.getDevice(), 255, 11, 11));
-							oldColor.dispose();
-	*/						currentScanModul
-									.setTriggerdelay(Double.NaN);
+						currentScanModul
+									.setTriggerdelay(Double.NEGATIVE_INFINITY);
+						triggerDelayErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+						triggerDelayErrorLabel.setToolTipText( "The trigger delay must not be empty!" );
+						
 						} else {
 							try {
 								currentScanModul
 										.setTriggerdelay(Double
 												.parseDouble(triggerDelayText
 														.getText()));
-								Color oldColor = triggerDelayText
-										.getBackground();
-								triggerDelayText.setBackground(new Color(
-										oldColor.getDevice(), 255, 255, 255));
-								oldColor.dispose();
-								System.out.println("triggerDelayText ist OK");
+								triggerDelayErrorLabel.setImage( null );
+								triggerDelayErrorLabel.setToolTipText( null );
 							} catch (Exception ex) {
-								Color oldColor = triggerDelayText
-										.getBackground();
-								triggerDelayText.setBackground(new Color(
-										oldColor.getDevice(), 255, 0, 0));
-								oldColor.dispose();
-								currentScanModul
-										.setTriggerdelay(Double.NEGATIVE_INFINITY);
-								System.out.println("triggerDelayText beinhaltet Zeichen");
+								triggerDelayErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+								triggerDelayErrorLabel.setToolTipText( "The trigger delay must be an floating point value!" );
 							}
 						}
 
 					} else if (e.widget == settleTimeText) {
 
 						if (settleTimeText.getText().equals("")) {
-							Color oldColor = settleTimeText.getBackground();
-							settleTimeText.setBackground(new Color(oldColor
-									.getDevice(), 255, 255, 255));
-							oldColor.dispose();
-							currentScanModul
-									.setSettletime(Double.NEGATIVE_INFINITY);
+							
+							currentScanModul.setSettletime(Double.NEGATIVE_INFINITY);
+							settleTimeErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+							settleTimeErrorLabel.setToolTipText( "The settletime must not be empty!" );
 						} else {
 							try {
-								currentScanModul.setSettletime(Double
-										.parseDouble(settleTimeText.getText()));
-								Color oldColor = settleTimeText.getBackground();
-								settleTimeText.setBackground(new Color(oldColor
-										.getDevice(), 255, 255, 255));
-								oldColor.dispose();
+								currentScanModul.setSettletime(Double.parseDouble(settleTimeText.getText()));
+								settleTimeErrorLabel.setImage( null );
+								settleTimeErrorLabel.setToolTipText( null );
 							} catch (Exception ex) {
-								Color oldColor = settleTimeText.getBackground();
-								settleTimeText.setBackground(new Color(oldColor
-										.getDevice(), 255, 0, 0));
-								oldColor.dispose();
-								currentScanModul
-										.setSettletime(Double.NEGATIVE_INFINITY);
+								currentScanModul.setSettletime(Double.NEGATIVE_INFINITY);
+								settleTimeErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+								settleTimeErrorLabel.setToolTipText( "The settletime must be an floating point value!" );
 							}
 						}
 					} else if (e.widget == saveMotorpositionsCombo) {
@@ -1280,6 +1362,9 @@ System.out.println("triggerDelayText ist leer");
 					axis[i].getMotorAxis().getFullIdentifyer(),
 					axis[i].getStepfunctionString() });
 			item.setData(axis[i]);
+			if( axis[i].getModelErrors().size() > 0 ) {
+				item.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+			}
 			// Table Eintrag wird aus der Combo-Box entfernt
 			motorAxisCombo.remove(axis[i].getMotorAxis().getFullIdentifyer());
 		}
@@ -1301,6 +1386,9 @@ System.out.println("triggerDelayText ist leer");
 					channels[i].getDetectorChannel().getFullIdentifyer(),
 					"" + channels[i].getAverageCount() });
 			item.setData(channels[i]);
+			if( channels[i].getModelErrors().size() > 0 ) {
+				item.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+			}
 			// Table Eintrag wird aus der Combo-Box entfernt
 			detectorChannelCombo.remove(channels[i].getDetectorChannel().getFullIdentifyer());
 		}
@@ -1326,5 +1414,79 @@ System.out.println("triggerDelayText ist leer");
 			this.plotWindowRemoveMenuItem.setEnabled(true);
 			this.plotWindowChangeIDMenuItem.setEnabled(true);
 		}
+	}
+
+	@Override
+	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
+		
+		this.filling = true;
+		
+		this.motorAxisTab.setImage( null );
+		this.detectorChannelTab.setImage( null );
+		this.prescanTab.setImage( null );
+		this.postscanTab.setImage( null );
+		this.positioningTab.setImage( null );
+		
+		boolean motorAxisErrors = false;
+		boolean detectorChannelErrors = false;
+		boolean prescanErrors = false;
+		boolean postscanErrors = false;
+		boolean positioningErrors = false;
+		
+		final Iterator< IModelError > it = this.currentScanModul.getModelErrors().iterator();
+		while( it.hasNext() ) {
+			final IModelError modelError = it.next();
+			if( modelError instanceof AxisError ) {
+				motorAxisErrors = true;
+			} else if( modelError instanceof ChannelError ) {
+				detectorChannelErrors = true;
+			} else if( modelError instanceof PrePostscanError ) {
+				prescanErrors = true;
+				postscanErrors = true;
+			} else if( modelError instanceof PositioningError ) {
+				positioningErrors = true;
+			} 
+		}
+		if( motorAxisErrors ) {
+			this.motorAxisTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+		}
+		if( detectorChannelErrors ) {
+			this.detectorChannelTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+		}
+		if( prescanErrors ) {
+			this.prescanTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+		}
+		if( postscanErrors ) {
+			this.postscanTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+		}
+		if( positioningErrors ) {
+			this.positioningTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+		}
+		this.updateMotorAxisTable();
+		this.updateDetectorChannelsTable();
+		
+		if( this.currentScanModul.getPauseControlEventManager().getModelErrors().size() > 0 ) {
+			this.pauseEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+		} else {
+			this.pauseEventsTabItem.setImage( null );
+		}
+		if( this.currentScanModul.getRedoControlEventManager().getModelErrors().size() > 0 ) {
+			this.redoEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+		} else {
+			this.redoEventsTabItem.setImage( null );
+		}
+		if( this.currentScanModul.getBreakControlEventManager().getModelErrors().size() > 0 ) {
+			this.breakEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+		} else {
+			this.breakEventsTabItem.setImage( null );
+		}
+		if( this.currentScanModul.getTriggerControlEventManager().getModelErrors().size() > 0 ) {
+			this.triggerEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+		} else {
+			this.triggerEventsTabItem.setImage( null );
+		}
+		
+		this.filling = false;
+		
 	}
 } // @jve:decl-index=0:visual-constraint="10,10,342,376"

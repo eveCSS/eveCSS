@@ -37,9 +37,11 @@ import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 
-public class DetectorChannelView extends ViewPart {
+public class DetectorChannelView extends ViewPart implements IModelUpdateListener {
 
 	public static final String ID = "de.ptb.epics.eve.editor.views.DetectorChannelView"; // TODO Needs to be whatever is mentioned in plugin.xml
 
@@ -69,6 +71,8 @@ public class DetectorChannelView extends ViewPart {
 	private EventComposite redoEventComposite = null;
 	private Composite eventComposite = null;
 
+	private CTabItem redoEventTabItem;
+	
 	private Button detectorReadyEventCheckBox;
 
 	private Channel currentChannel;
@@ -138,11 +142,16 @@ public class DetectorChannelView extends ViewPart {
 				if( currentChannel != null ) {
 					if( maxDeviationText.getText().equals( "" ) ) {
 						currentChannel.setMaxDeviation( Double.NEGATIVE_INFINITY );
+						maxDeviationErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+						maxDeviationErrorLabel.setToolTipText( "The max deviation must not be empty." );
 					} else {
 						try {
 							currentChannel.setMaxDeviation( Double.parseDouble( maxDeviationText.getText() ) );
+							maxDeviationErrorLabel.setImage( null );
+							maxDeviationErrorLabel.setToolTipText( null );
 						} catch( final NumberFormatException ex ) {
-					
+							maxDeviationErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+							maxDeviationErrorLabel.setToolTipText( "The max deviation must be a floating point number." );
 						}
 					}
 				}
@@ -154,7 +163,7 @@ public class DetectorChannelView extends ViewPart {
 //		gridData.horizontalAlignment = GridData.FILL;
 //		this.maxDeviationErrorLabel.setData( gridData );
 		this.maxDeviationErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
-		this.maxDeviationErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
+		//this.maxDeviationErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
 		// TODO: maxDeviation darf nur ein Zahlenwert sein
 		
 		this.minimumLabel = new Label( this.top, SWT.NONE );
@@ -329,9 +338,10 @@ public class DetectorChannelView extends ViewPart {
 		});
 		
 		redoEventComposite = new EventComposite( eventsTabFolder, SWT.NONE);
-		CTabItem tabItem1 = new CTabItem(eventsTabFolder, SWT.FLAT);
-		tabItem1.setText( "Redo" );
-		tabItem1.setControl(redoEventComposite);
+		 
+		this.redoEventTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
+		this.redoEventTabItem.setText( "Redo" );
+		this.redoEventTabItem.setControl(redoEventComposite);
 		
 		this.averageText.setEnabled( false );
 		this.maxDeviationText.setEnabled( false );
@@ -350,14 +360,14 @@ public class DetectorChannelView extends ViewPart {
 	}
 
 	public void setChannel( final Channel channel ) {
+		if( this.currentChannel != null ) {
+			this.currentChannel.removeModelUpdateListener( this );
+		}
 		this.currentChannel = channel;
 		if( this.currentChannel != null ) {
 			this.averageText.setText( "" + this.currentChannel.getAverageCount() );
-			if( this.currentChannel.getMaxDeviation() != Double.NEGATIVE_INFINITY ) {
-				this.maxDeviationText.setText( "" + this.currentChannel.getMaxDeviation() );
-			} else {
-				this.maxDeviationText.setText( "" );
-			}
+			
+			
 			if( this.currentChannel.getMinumum() != Double.NEGATIVE_INFINITY ) {
 				this.minimumText.setText( "" + this.currentChannel.getMinumum() );
 			} else {
@@ -395,7 +405,14 @@ public class DetectorChannelView extends ViewPart {
 					} else if( channelError.getErrorType() == ChannelErrorTypes.MINIMUM_NOT_POSSIBLE ) {
 						this.minimumErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
 					}
-				}			}
+				}
+			}
+			if( this.currentChannel.getRedoControlEventManager().getModelErrors().size() > 0 ) {
+				this.redoEventTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+			} else {
+				this.redoEventTabItem.setImage( null );
+			}
+			this.currentChannel.addModelUpdateListener( this );
 		} else {
 			this.averageText.setText( "" );
 			this.maxDeviationText.setText( "" );
@@ -416,6 +433,16 @@ public class DetectorChannelView extends ViewPart {
 			this.maxDeviationErrorLabel.setImage( null );
 			this.minimumErrorLabel.setImage( null );
 		}
+	}
+
+	@Override
+	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
+		if( this.currentChannel.getRedoControlEventManager().getModelErrors().size() > 0 ) {
+			this.redoEventTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+		} else {
+			this.redoEventTabItem.setImage( null );
+		}
+		
 	}
 
 }

@@ -414,7 +414,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		this.saveScanDescriptionCheckBox.setEnabled( enabled );
 		this.commentInput.setEnabled( enabled );
 		if( enabled ) {
-			if( this.currentChain.getSavePluginController().getPlugin() != null ) {
+			if( this.currentChain.getSavePluginController().getPlugin() != null && this.currentChain.getSavePluginController().getPlugin().getParameters().size() > 0 ) {
 				this.savePluginOptionsButton.setEnabled( true );
 			} else {
 				this.savePluginOptionsButton.setEnabled( false );
@@ -448,6 +448,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			}
 			
 			this.commentInput.setText( this.currentChain.getComment() );
+			this.commentInput.setSelection( this.currentChain.getComment().length() );
 			
 			if( this.pauseEventComposite.getControlEventManager() != this.currentChain.getPauseControlEventManager() ) {
 				this.pauseEventComposite.setControlEventManager( this.currentChain.getPauseControlEventManager() );
@@ -575,7 +576,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 							savePluginComboErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );	
 							savePluginComboErrorLabel.setToolTipText( "The Plug-In cannot be found" );
 						}
-						savePluginOptionsButton.setEnabled( currentChain.getSavePluginController().getPlugin() != null );
+						savePluginOptionsButton.setEnabled( currentChain.getSavePluginController().getPlugin() != null && currentChain.getSavePluginController().getPlugin().getParameters().size() > 0 );
 					} else if( e.widget == commentInput ) {
 						currentChain.setComment( commentInput.getText() );
 					} 

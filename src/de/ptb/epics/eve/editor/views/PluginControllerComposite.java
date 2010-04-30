@@ -28,6 +28,7 @@ public class PluginControllerComposite extends Composite implements IModelUpdate
 	private TableViewer tableViewer;
 	private PluginController pluginController;
 	private ScanModul scanModul;
+	private PluginControllerLabelProvider pluginControllerLabelProvider;
 	
 	public PluginControllerComposite( final Composite parent, final int style) {
 		super( parent, style );
@@ -68,7 +69,8 @@ public class PluginControllerComposite extends Composite implements IModelUpdate
 	    this.tableViewer.getTable().setLinesVisible( true );
 	    
 	    this.tableViewer.setContentProvider( new PluginControllerInputWrapper() );
-	    this.tableViewer.setLabelProvider( new PluginControllerLabelProvider() );
+	    this.pluginControllerLabelProvider = new PluginControllerLabelProvider(); 
+	    this.tableViewer.setLabelProvider( this.pluginControllerLabelProvider );
 	    
 	    final CellEditor[] editors = new CellEditor[2];
 	    
@@ -85,6 +87,7 @@ public class PluginControllerComposite extends Composite implements IModelUpdate
 	
 	public void setPluginController( final PluginController pluginController ) {
 		this.pluginController = pluginController;
+		this.pluginControllerLabelProvider.setPluginController( pluginController );
 		this.tableViewer.setInput( pluginController );
 	}
 	

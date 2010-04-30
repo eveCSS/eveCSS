@@ -29,8 +29,10 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
-public class MotorAxisFileComposite extends Composite {
+public class MotorAxisFileComposite extends Composite implements IModelUpdateListener {
 
 	private Label filenameLabel = null;
 	private Text filenameText = null;
@@ -93,6 +95,9 @@ public class MotorAxisFileComposite extends Composite {
 	}
 
 	public void setAxis( final Axis axis ) {
+		if( this.axis != null ) {
+			this.axis.removeModelUpdateListener( this );
+		}
 		this.axis = axis;
 		if( this.axis != null ) {
 			this.filenameText.setText( this.axis.getPositionfile()==null?"":this.axis.getPositionfile() );
@@ -113,6 +118,7 @@ public class MotorAxisFileComposite extends Composite {
 			
 			this.filenameText.setEnabled( true );
 			this.searchButton.setEnabled( true );
+			this.axis.addModelUpdateListener( this );
 		} else {
 			this.filenameText.setText( "" );
 			this.filenameErrorLabel.setImage( null );
@@ -120,4 +126,32 @@ public class MotorAxisFileComposite extends Composite {
 			this.searchButton.setEnabled( false );
 		}
 	}
+
+	@Override
+	public void dispose() {
+		if( this.axis != null ) {
+			this.axis.removeModelUpdateListener( this );
+		}
+		super.dispose();
+	}
+
+	@Override
+	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
+		this.filenameErrorLabel.setImage( null );
+		
+		final Iterator< IModelError > it = this.axis.getModelErrors().iterator();
+		while( it.hasNext() ) {
+			final IModelError modelError = it.next();
+			if( modelError instanceof AxisError ) {
+				final AxisError axisError = (AxisError)modelError;
+				if( axisError.getErrorType() == AxisErrorTypes.FILENAME_NOT_SET ) {
+					this.filenameErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+					break;
+				}
+			}
+		}
+		
+	}
+	
+	
 }

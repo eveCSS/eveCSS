@@ -104,7 +104,7 @@ public class PositioningCellModifyer implements ICellModifier {
 			if( newPlugin != positioning.getPluginController().getPlugin() ) {
 				positioning.getPluginController().setPlugin( newPlugin );
 			}
-		} else if( property.equals( "channel" ) ) {
+		} else if( property.equals( "channel" ) && (Integer)value != -1 ) {
 			final String[] channelsArray = ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[2]).getItems();
 			positioning.setDetectorChannel( (DetectorChannel)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( channelsArray[ (Integer)value] ) );
 		} else if( property.equals( "normalize" ) ) {

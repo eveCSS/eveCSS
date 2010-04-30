@@ -6,9 +6,9 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
+
 import java.util.Iterator;
 
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -54,7 +54,7 @@ public class ErrorView extends ViewPart implements IModelUpdateListener {
 		tableColumn.setText("Level");
 		TableColumn tableColumn1 = new TableColumn(errorTable, SWT.NONE);
 		tableColumn1.setWidth(60);
-		tableColumn1.setText("Location");
+		tableColumn1.setText("Type");
 		TableColumn tableColumn2 = new TableColumn(errorTable, SWT.NONE);
 		tableColumn2.setWidth(60);
 		tableColumn2.setText("Description");
@@ -92,8 +92,8 @@ public class ErrorView extends ViewPart implements IModelUpdateListener {
 				TableItem tableItem = new TableItem( this.errorTable, 0 );
 				tableItem.setData( modelError );
 				tableItem.setText( 0, "" );
-				tableItem.setText( 1, modelError.toString() );
-				tableItem.setText( 2, "" );
+				tableItem.setText( 1, modelError.getErrorName() );
+				tableItem.setText( 2, modelError.getErrorMessage() );
 			}
 		}
 	}
@@ -109,8 +109,8 @@ public class ErrorView extends ViewPart implements IModelUpdateListener {
 				TableItem tableItem = new TableItem( this.errorTable, 0 );
 				tableItem.setData( modelError );
 				tableItem.setText( 0, "" );
-				tableItem.setText( 1, modelError.toString() );
-				tableItem.setText( 2, "" );
+				tableItem.setText( 1, modelError.getErrorName() );
+				tableItem.setText( 2, modelError.getErrorMessage() );
 			}
 		}
 		

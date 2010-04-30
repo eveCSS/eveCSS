@@ -74,6 +74,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	
 	private SelectionListener selectionListener;
 	
+	private ScanModul currentScanModul = null;
+	
 	private boolean dirty;
 	
 	@Override
@@ -191,8 +193,10 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					((ScanModulEditPart)selectedEditPart).setFocus( true );
 					ScanModul scanModul = (ScanModul)selectedEditPart.getModel();
 					view.setCurrentScanModul( scanModul );
+					currentScanModul = scanModul;
 				} else {
 					view.setCurrentScanModul( null );
+					currentScanModul = null;
 				}
 			}
 
@@ -265,6 +269,16 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		
 		this.viewer.getControl().setMenu(menu);
 		
+		IViewReference[] ref = getSite().getPage().getViewReferences();
+		ErrorView view = null;
+		for( int i = 0; i < ref.length; ++i ) {
+			if( ref[i].getId().equals( ErrorView.ID ) ) {
+				view = (ErrorView)ref[i].getPart( false );
+				if( view != null ) {
+					view.setScanDescription( this.scanDescription );
+				}
+			}
+		}
 	}
 	
 	@Override
@@ -278,6 +292,17 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					view.setScanDescription( this.scanDescription );
 				}
 			}
+		}
+		
+		ScanModulView scanModulView = null;
+		
+		for( int i = 0; i < ref.length; ++i ) {
+			if( ref[i].getId().equals( ScanModulView.ID ) ) {
+				scanModulView = (ScanModulView)ref[i].getPart( false );
+			}
+		}
+		if( scanModulView != null ) {
+			scanModulView.setCurrentScanModul( currentScanModul );
 		}
 		
 	}
