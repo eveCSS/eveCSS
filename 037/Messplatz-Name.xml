@@ -26,6 +26,8 @@
         <plugin type="save">
             <name>HDFspezial</name>
             <location>HDFspezial.slib</location>
+            <parameter name="format" datatype="string" mandatory="true">classic,tables</parameter>
+			<parameter name="buffersize" datatype="int" mandatory="true"></parameter>
         </plugin>
         <plugin type="save">
             <name>HDF4</name>
