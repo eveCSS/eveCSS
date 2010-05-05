@@ -111,7 +111,7 @@ public class XYPlot extends Figure {
 	}
 	
 	public void setData(String name, Double xValue, Double yValue){
-		if (name == null) return;
+		if ((name == null) || (xValue == null) ||  (yValue == null)) return;
 		
 		if (traceMap.containsKey(name)){
 			Trace trace = traceMap.get(name);
