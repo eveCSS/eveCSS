@@ -55,16 +55,10 @@ See http://ics-web.sns.ornl.gov/css
    <vm>
    </vm>
 
-
    <plugins>
       <plugin id="com.ibm.icu"/>
       <plugin id="de.ptb.epics.eve.data"/>
-      <plugin id="de.ptb.epics.eve.data.measuringstation"/>
-      <plugin id="de.ptb.epics.eve.data.measuringstation.processors"/>
-      <plugin id="de.ptb.epics.eve.data.scandescription"/>
-      <plugin id="de.ptb.epics.eve.data.scandescription.processors"/>
-      <plugin id="de.ptb.epics.eve.ecp1.client"/>
-      <plugin id="de.ptb.epics.eve.ecp1.intern"/>
+      <plugin id="de.ptb.epics.eve.ecp1"/>
       <plugin id="de.ptb.epics.eve.editor"/>
       <plugin id="de.ptb.epics.eve.preferences"/>
       <plugin id="de.ptb.epics.eve.viewer"/>
