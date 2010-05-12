@@ -19,7 +19,7 @@ import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.Postscan;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
-import de.ptb.epics.eve.data.scandescription.errors.PrePostscanError;
+import de.ptb.epics.eve.data.scandescription.errors.PostscanError;
 
 public class PostscanLabelProvider implements ITableLabelProvider {
 
@@ -75,8 +75,8 @@ public class PostscanLabelProvider implements ITableLabelProvider {
 			final Iterator< IModelError > it = pos.getModelErrors().iterator();
 			while( it.hasNext() ) {
 				final IModelError modelError = it.next();
-				if( modelError instanceof PrePostscanError ) {
-					//final PrePostscanError prePostscanError = (PrePostscanError)modelError;
+				if( modelError instanceof PostscanError ) {
+					//final PostscanError PostscanError = (PostscanError)modelError;
 					return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
 				}
 			}

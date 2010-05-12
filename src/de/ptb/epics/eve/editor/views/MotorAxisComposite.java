@@ -10,7 +10,6 @@ package de.ptb.epics.eve.editor.views;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
@@ -25,23 +24,26 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 
-import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
-import de.ptb.epics.eve.data.scandescription.Postscan;
+import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 
-public class PostscanComposite extends Composite implements IModelUpdateListener {
+public class MotorAxisComposite extends Composite implements IModelUpdateListener {
 
 	private TableViewer tableViewer;
-	private Combo postscanCombo;
+	private Combo motorAxisCombo;
 	private Button addButton;
 	private ScanModul scanModul;
 	
-	public PostscanComposite( final Composite parent, final int style) {
+	public MotorAxisComposite( final Composite parent, final int style) {
 		super( parent, style );
 		initialize();
 	}
@@ -67,44 +69,74 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 		this.tableViewer.getControl().setLayoutData( gridData );
 		
 		TableColumn column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 0 );
-	    column.setText( "Device" );
-	    column.setWidth( 300 );
+	    column.setText( "Motor Axis" );
+	    column.setWidth( 250 );
 
 	    column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 1 );
-	    column.setText( "Value" );
-	    column.setWidth( 100 );
-
-	    column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 2 );
-	    column.setText( "Reset Original" );
+	    column.setText( "Stepfunction" );
 	    column.setWidth( 80 );
 
 	    this.tableViewer.getTable().setHeaderVisible( true );
 	    this.tableViewer.getTable().setLinesVisible( true );
 	    
-	    // hier wird eine Liste der vorhandenen Postscans des Scan Moduls erstellt
-	    this.tableViewer.setContentProvider( new PostscanInputWrapper() );
-	    this.tableViewer.setLabelProvider( new PostscanLabelProvider() );
+	    // hier wird eine Liste der vorhandenen DetectorChannels des Scan Moduls erstellt
+	    this.tableViewer.setContentProvider( new MotorAxisInputWrapper() );
+	    this.tableViewer.setLabelProvider( new MotorAxisLabelProvider() );
 	    
-	    final CellEditor[] editors = new CellEditor[3];
+	    final CellEditor[] editors = new CellEditor[2];
 	    
 	    editors[0] = new TextCellEditor( this.tableViewer.getTable() );
 	    editors[1] = new TextCellEditor( this.tableViewer.getTable() );
-	    editors[2] = new CheckboxCellEditor( );
 	    
-	    this.tableViewer.setCellModifier( new PostscanCellModifyer( this.tableViewer ) );
 	    this.tableViewer.setCellEditors( editors );
 	    
-	    final String[] props = { "device", "value", "reset"};
+	    final String[] props = { "device", "value"};
 	    
 	    this.tableViewer.setColumnProperties( props );
+
+		this.tableViewer.getTable().addSelectionListener( new SelectionListener() {
+	    	
+			public void widgetDefaultSelected( final SelectionEvent e ) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void widgetSelected( final SelectionEvent e ) {
+				IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
+				
+				MotorAxisView motorAxisView = null;
+				for (int i = 0; i < ref.length; ++i) {
+					if (ref[i].getId().equals(MotorAxisView.ID)) {
+						motorAxisView = (MotorAxisView) ref[i].getPart(false);
+					}
+				}
+				if( motorAxisView != null ) {
+					final String axisName = tableViewer.getTable().getSelection()[0].getText( 0 );
+					Axis[] axis = scanModul.getAxis();
+					for( int i = 0; i < axis.length; ++i ) {
+						if( axis[i].getMotorAxis().getFullIdentifyer().equals( axisName ) ) {
+							double stepamount = -1.0;
+							
+							for( int j = 0; j < axis.length; ++j ) {
+								if( axis[j].isMainAxis() ) {
+									stepamount = axis[j].getStepCount();
+									break;
+								}
+							}
+							motorAxisView.setAxis( axis[i], stepamount, scanModul );
+						}
+					}
+				}
+			}
+		});
 	    
-	    this.postscanCombo = new Combo(this, SWT.READ_ONLY);
+	    this.motorAxisCombo = new Combo(this, SWT.READ_ONLY);
 		
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
 		gridData.grabExcessHorizontalSpace = true;
-		this.postscanCombo.setLayoutData( gridData );
+		this.motorAxisCombo.setLayoutData( gridData );
 		
 		this.addButton = new Button( this, SWT.NONE );
 		this.addButton.setText( "Add" );
@@ -120,52 +152,54 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-				
-				if( !postscanCombo.getText().equals( "" ) ) {
 
-					AbstractPrePostscanDevice device = (AbstractPrePostscanDevice) Activator
-							.getDefault().getMeasuringStation()
-							.getAbstractDeviceByFullIdentifyer(
-										postscanCombo.getText());
+				if( !motorAxisCombo.getText().equals( "" ) ) {
 
-					Postscan postscan = new Postscan ();
-					postscan.setAbstractPrePostscanDevice(device);
+					MotorAxis motorAxis = (MotorAxis) Activator
+					.getDefault().getMeasuringStation()
+					.getAbstractDeviceByFullIdentifyer(
+							motorAxisCombo.getText());
 					
-					scanModul.add(postscan);
+					Axis axis = new Axis( scanModul );
+					axis.setMotorAxis(motorAxis);
+					scanModul.add(axis);
+
 					// Table Eintrag wird aus der Combo-Box entfernt
-					postscanCombo.remove(postscanCombo.getText());
+					motorAxisCombo.remove(motorAxisCombo.getText());
 					tableViewer.refresh();
 				}
 			}
 		});
-		
-		   Action deleteAction = new Action(){
+	
+		Action deleteAction = new Action(){
 		    	public void run() {
-		    		
-		    		scanModul.remove( (Postscan)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
-		    		// ComboBos muß aktualisiert werden
-		    		// alle Postscans werden in die ComboBox eingetragen und die
-		    		// gesetzten postscans wieder ausgetragen
-		    		postscanCombo.setItems( Activator.getDefault().getMeasuringStation().getPrePostScanDevicesFullIdentifyer().toArray( new String[0] ) );
-					Postscan[] postscans = scanModul.getPostscans();
-					for (int i = 0; i < postscans.length; ++i) {
-						// Postscan Eintrag wird aus der Combo-Box entfernt
-						postscanCombo.remove(postscans[i].getAbstractPrePostscanDevice().getFullIdentifyer());
+	    		
+					// MotorAxis wird aus scanModul ausgetragen
+		    		scanModul.remove( (Axis)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
+
+		    		// ComboBox muß aktualisiert werden
+		    		// alle MotorAxis' werden in die ComboBox eingetragen und die
+		    		// gesetzten MotorAxis' wieder ausgetragen
+		    		motorAxisCombo.setItems( Activator.getDefault().getMeasuringStation().getAxisFullIdentifyer().toArray( new String[0] ) );
+					Axis[] axis = scanModul.getAxis();
+					for (int i = 0; i < axis.length; ++i) {
+						// Axis Eintrag wird aus der Combo-Box entfernt
+						motorAxisCombo.remove(axis[i].getMotorAxis().getFullIdentifyer());
 					}
+		    		
 		    		tableViewer.refresh();
 		    	}
 		    };
 		    
 		    deleteAction.setEnabled( true );
-		    deleteAction.setText( "Delete Postscan" );
-		    deleteAction.setToolTipText( "Deletes Postscan" );
+		    deleteAction.setText( "Delete Axis" );
+		    deleteAction.setToolTipText( "Deletes Axis" );
 		    deleteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ) );
 		    
 		    MenuManager manager = new MenuManager();
 		    Menu menu = manager.createContextMenu( this.tableViewer.getControl() );
 		    this.tableViewer.getControl().setMenu( menu );
 		    manager.add( deleteAction );
-		
 	}
 	
 	public ScanModul getScanModul() {
@@ -179,11 +213,11 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 		if( scanModul != null ) {
 			scanModul.addModelUpdateListener( this );
 
-			this.postscanCombo.setItems( Activator.getDefault().getMeasuringStation().getPrePostScanDevicesFullIdentifyer().toArray( new String[0] ) );
-			Postscan[] postscans = scanModul.getPostscans();
-			for (int i = 0; i < postscans.length; ++i) {
-				// Postscan Eintrag wird aus der Combo-Box entfernt
-				this.postscanCombo.remove(postscans[i].getAbstractPrePostscanDevice().getFullIdentifyer());
+			this.motorAxisCombo.setItems( Activator.getDefault().getMeasuringStation().getAxisFullIdentifyer().toArray( new String[0] ) );
+			Axis[] axis = scanModul.getAxis();
+			for (int i = 0; i < axis.length; ++i) {
+				// Motor Axis Eintrag wird aus der Combo-Box entfernt
+				this.motorAxisCombo.remove(axis[i].getAbstractDevice().getFullIdentifyer());
 			}
 		}
 		this.scanModul = scanModul;

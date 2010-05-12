@@ -157,7 +157,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
 		this.filenameErrorLabel.setLayoutData( gridData );
-		this.filenameErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+		this.filenameErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
 		
 		// File Browse Button
 		GridData gridData11 = new GridData();

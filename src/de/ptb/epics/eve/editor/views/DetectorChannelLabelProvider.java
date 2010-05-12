@@ -15,20 +15,19 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
-import de.ptb.epics.eve.data.scandescription.Prescan;
+import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
-import de.ptb.epics.eve.data.scandescription.errors.PrescanError;
+import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 
-public class PrescanLabelProvider implements ITableLabelProvider {
+public class DetectorChannelLabelProvider implements ITableLabelProvider {
 
-	public Image getColumnImage( final Object prescan, final int colIndex ) {
-		final Prescan pos = (Prescan)prescan;
+	public Image getColumnImage( final Object channel, final int colIndex ) {
+		final Channel pos = (Channel)channel;
 		if( colIndex == 1 ) {
 			final Iterator< IModelError > it = pos.getModelErrors().iterator();
 			while( it.hasNext() ) {
 				final IModelError modelError = it.next();
-				if( modelError instanceof PrescanError ) {
-					//final PrePostscanError prePostscanError = (PrePostscanError)modelError;
+				if( modelError instanceof ChannelError ) {
 					return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
 				}
 			}
@@ -36,13 +35,14 @@ public class PrescanLabelProvider implements ITableLabelProvider {
 		return null;
 	}
 
-	public String getColumnText( final Object prescan, final int colIndex ) {
-		final Prescan pos = (Prescan)prescan;
+	public String getColumnText( final Object channel, final int colIndex ) {
+		final Channel pos = (Channel)channel;
 		switch( colIndex ) {
 			case 0:
-				return (pos.getAbstractPrePostscanDevice()!=null)?pos.getAbstractPrePostscanDevice().getFullIdentifyer():"";
+				return (pos.getAbstractDevice()!=null)?pos.getAbstractDevice().getFullIdentifyer():"";
 			case 1:
-				return (pos.getValue()!=null)?pos.getValue():"";
+				int av = pos.getAverageCount();
+				return "" + av;
 		}
 		return "";
 	}

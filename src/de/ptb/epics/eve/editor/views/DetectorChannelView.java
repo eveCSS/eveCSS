@@ -89,7 +89,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
 		GridData gridData;
-		
+
 		this.top = new Composite( parent, SWT.NONE );
 		this.top.setLayout( gridLayout );
 		
@@ -108,14 +108,27 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 
 			public void modifyText( final ModifyEvent e ) {
 				if( currentChannel != null ) {
-					try {
-						currentChannel.setAverageCount( Integer.parseInt( averageText.getText() ) );
-					} catch( final NumberFormatException ex ) {
-					
+					if( averageText.getText().equals( "" ) ) {
+						// average soll immer gefüllt sein, obwohl es im xsd-File
+						// bisher kein Pflichtfeld ist (Hartmut 6.5.10)
+						averageErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+						averageErrorLabel.setToolTipText( "The average must not be empty." );
+					} else {
+						try {
+							currentChannel.setAverageCount( Integer.parseInt( averageText.getText() ) );
+							averageErrorLabel.setImage( null );
+							averageErrorLabel.setToolTipText( null );
+						} catch( final NumberFormatException ex ) {
+							averageErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+							averageErrorLabel.setToolTipText( "The average must be a integer number." );
+						}
+						catch( final IllegalArgumentException ex ) {
+							averageErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+							averageErrorLabel.setToolTipText( ex.getMessage() );
+						}
 					}
 				}
 			}
-			
 		});
 
 		this.averageErrorLabel = new Label( this.top, SWT.NONE );
@@ -123,7 +136,6 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 //		gridData.horizontalAlignment = GridData.FILL;
 //		this.averageErrorLabel.setLayoutData( gridData );
 		this.averageErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
-		this.averageErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
 		
 		this.maxDeviationLabel = new Label( this.top, SWT.NONE );
 		this.maxDeviationLabel.setText( "Max. Deviation (%):" );
@@ -142,8 +154,8 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 				if( currentChannel != null ) {
 					if( maxDeviationText.getText().equals( "" ) ) {
 						currentChannel.setMaxDeviation( Double.NEGATIVE_INFINITY );
-						maxDeviationErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
-						maxDeviationErrorLabel.setToolTipText( "The max deviation must not be empty." );
+						maxDeviationErrorLabel.setImage( null );
+						maxDeviationErrorLabel.setToolTipText( null );
 					} else {
 						try {
 							currentChannel.setMaxDeviation( Double.parseDouble( maxDeviationText.getText() ) );
@@ -159,12 +171,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		});
 		
 		this.maxDeviationErrorLabel = new Label( this.top, SWT.NONE );
-//		gridData = new GridData();
-//		gridData.horizontalAlignment = GridData.FILL;
-//		this.maxDeviationErrorLabel.setData( gridData );
 		this.maxDeviationErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
-		//this.maxDeviationErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
-		// TODO: maxDeviation darf nur ein Zahlenwert sein
 		
 		this.minimumLabel = new Label( this.top, SWT.NONE );
 		this.minimumLabel.setText( "Minumum:" );
@@ -183,25 +190,24 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 				if( currentChannel != null ) {
 					if( minimumText.getText().equals( "" ) ) {
 						currentChannel.setMinumum( Double.NEGATIVE_INFINITY );
+						minimumErrorLabel.setImage( null );
+						minimumErrorLabel.setToolTipText( null );
 					} else {
 						try {
 							currentChannel.setMinumum( Double.parseDouble( minimumText.getText() ) );
+							minimumErrorLabel.setImage( null );
+							minimumErrorLabel.setToolTipText( null );
 						} catch( final NumberFormatException ex ) {
-					
+							minimumErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+							minimumErrorLabel.setToolTipText( "The minimum must be a floating point number." );
 						}
 					}
 				}
 			}
-			
 		});
 		
 		this.minimumErrorLabel = new Label( this.top, SWT.NONE );
-//		gridData = new GridData();
-//		gridData.horizontalAlignment = GridData.FILL;
-//		this.minimumErrorLabel.setData( gridData );
 		this.minimumErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
-		this.minimumErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
-		// TODO: minimum darf nur ein Zahlenwert sein
 		
 		this.maxAttemptsLabel = new Label( this.top, SWT.NONE );
 		this.maxAttemptsLabel.setText( "Max. Attempts:" );
@@ -218,23 +224,26 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 
 			public void modifyText( final ModifyEvent e ) {
 				if( currentChannel != null ) {
-					try {
-						currentChannel.setMaxAttempts( Integer.parseInt( maxAttemptsText.getText() ) );
-					} catch( final NumberFormatException ex ) {
-					
+					if( maxAttemptsText.getText().equals( "" ) ) {
+						currentChannel.setMaxAttempts( Integer.MIN_VALUE );
+						maxAttemptsErrorLabel.setImage( null );
+						maxAttemptsErrorLabel.setToolTipText( null );
+					} else {
+						try {
+							currentChannel.setMaxAttempts( Integer.parseInt( maxAttemptsText.getText() ) );
+							maxAttemptsErrorLabel.setImage( null );
+							maxAttemptsErrorLabel.setToolTipText( null );
+						} catch( final NumberFormatException ex ) {
+							maxAttemptsErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+							maxAttemptsErrorLabel.setToolTipText( "The max attempts must be a non negativ integer number." );
+						}
 					}
 				}
-				
 			}
-			
 		});
 		
 		this.maxAttemptsErrorLabel = new Label( this.top, SWT.NONE );
-//		gridData = new GridData();
-//		gridData.horizontalAlignment = GridData.FILL;
-//		this.maxAttemptsErrorLabel.setData( gridData );
 		this.maxAttemptsErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
-		this.maxAttemptsErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
 		
 		this.confirmTriggerManualCheckBox = new Button( this.top, SWT.CHECK );
 		this.confirmTriggerManualCheckBox.setText( "Confirm Trigger manual" );
@@ -367,13 +376,24 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		if( this.currentChannel != null ) {
 			this.averageText.setText( "" + this.currentChannel.getAverageCount() );
 			
+			if( this.currentChannel.getMaxDeviation() != Double.NEGATIVE_INFINITY ) {
+				this.maxDeviationText.setText( "" + this.currentChannel.getMaxDeviation() );
+			} else {
+				this.maxDeviationText.setText( "" );
+			}
 			
 			if( this.currentChannel.getMinumum() != Double.NEGATIVE_INFINITY ) {
 				this.minimumText.setText( "" + this.currentChannel.getMinumum() );
 			} else {
 				this.minimumText.setText( "" );
 			}
-			this.maxAttemptsText.setText( "" + this.currentChannel.getMaxAttempts() );
+
+			if( this.currentChannel.getMaxAttempts() != Integer.MIN_VALUE ) {
+				this.maxAttemptsText.setText( "" + this.currentChannel.getMaxAttempts() );
+			} else {
+				this.maxAttemptsText.setText( "" );
+			}
+			
 			this.confirmTriggerManualCheckBox.setSelection( this.currentChannel.isConfirmTrigger() );
 			this.detectorReadyEventCheckBox.setSelection( this.currentChannel.getDetectorReadyEvent() != null );
 			this.setPartName( channel.getAbstractDevice().getFullIdentifyer() );
@@ -388,10 +408,8 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			
 			this.redoEventComposite.setControlEventManager( this.currentChannel.getRedoControlEventManager() );
 			
-			// TODO: Warum funktioniert hier die Fehlerbehandlung noch nicht
-			// richtig? Wenn in MaxDeviation ein negativer Wert steht, sollte
-			// das als Fehler ausgewertet werden. (Hartmut 21.4.10)
-			
+			// TODO von Hartmut: da maxDeviation und minimum liefern keine 
+			// ChannelErrors liefern, muß hier auch keien Abfrage erfolgen!
 			this.maxDeviationErrorLabel.setImage( null );
 			this.minimumErrorLabel.setImage( null );
 		
@@ -430,8 +448,10 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			this.detectorReadyEventCheckBox.setEnabled( false );
 			this.setPartName( "Detector Channel View" );
 			
+			this.averageErrorLabel.setImage( null );
 			this.maxDeviationErrorLabel.setImage( null );
 			this.minimumErrorLabel.setImage( null );
+			this.maxAttemptsErrorLabel.setImage(null);
 		}
 	}
 

@@ -57,8 +57,7 @@ public class MotorAxisPluginComposite extends Composite implements IModelUpdateL
 		
 		this.pluginLabel.setText( "Plug-In:" );
 		
-		
-		this.pluginCombo = new Combo( this, SWT.NONE );
+		this.pluginCombo = new Combo( this, SWT.READ_ONLY );
 		
 		PlugIn[] plugins = Activator.getDefault().getMeasuringStation().getPlugins().toArray( new PlugIn[0] );
 		List<String> pluginNames = new ArrayList<String>();

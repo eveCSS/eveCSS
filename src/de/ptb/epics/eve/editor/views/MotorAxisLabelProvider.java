@@ -15,20 +15,19 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
-import de.ptb.epics.eve.data.scandescription.Prescan;
+import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
-import de.ptb.epics.eve.data.scandescription.errors.PrescanError;
 
-public class PrescanLabelProvider implements ITableLabelProvider {
+public class MotorAxisLabelProvider implements ITableLabelProvider {
 
-	public Image getColumnImage( final Object prescan, final int colIndex ) {
-		final Prescan pos = (Prescan)prescan;
+	public Image getColumnImage( final Object axis, final int colIndex ) {
+		final Axis pos = (Axis)axis;
 		if( colIndex == 1 ) {
 			final Iterator< IModelError > it = pos.getModelErrors().iterator();
 			while( it.hasNext() ) {
 				final IModelError modelError = it.next();
-				if( modelError instanceof PrescanError ) {
-					//final PrePostscanError prePostscanError = (PrePostscanError)modelError;
+				if( modelError instanceof AxisError ) {
 					return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
 				}
 			}
@@ -36,13 +35,13 @@ public class PrescanLabelProvider implements ITableLabelProvider {
 		return null;
 	}
 
-	public String getColumnText( final Object prescan, final int colIndex ) {
-		final Prescan pos = (Prescan)prescan;
+	public String getColumnText( final Object axis, final int colIndex ) {
+		final Axis pos = (Axis)axis;
 		switch( colIndex ) {
 			case 0:
-				return (pos.getAbstractPrePostscanDevice()!=null)?pos.getAbstractPrePostscanDevice().getFullIdentifyer():"";
+				return (pos.getAbstractDevice()!=null)?pos.getAbstractDevice().getFullIdentifyer():"";
 			case 1:
-				return (pos.getValue()!=null)?pos.getValue():"";
+				return pos.getStepfunctionString();
 		}
 		return "";
 	}

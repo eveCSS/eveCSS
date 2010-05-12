@@ -14,7 +14,7 @@ import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
-public class PostscanInputWrapper implements IModelUpdateListener,
+public class DetectorChannelInputWrapper implements IModelUpdateListener,
 		IStructuredContentProvider {
 
 	private Viewer currentViewer;
@@ -22,10 +22,11 @@ public class PostscanInputWrapper implements IModelUpdateListener,
 	
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
 		this.currentViewer.refresh();
+
 	}
 
 	public Object[] getElements( final Object inputElement ) {
-		return ((ScanModul)inputElement).getPostscans();
+		return ((ScanModul)inputElement).getChannels();
 	}
 
 	public void dispose() {

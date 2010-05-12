@@ -39,25 +39,20 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
 
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
-import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Event;
-import de.ptb.epics.eve.data.measuringstation.MotorAxis;
-import de.ptb.epics.eve.data.scandescription.Axis;
-import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.PositioningError;
-import de.ptb.epics.eve.data.scandescription.errors.PrePostscanError;
+import de.ptb.epics.eve.data.scandescription.errors.PostscanError;
+import de.ptb.epics.eve.data.scandescription.errors.PrescanError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.Helper;
 
 public class ScanModulView extends ViewPart implements IModelUpdateListener {
 
@@ -108,12 +103,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 
 	private Combo saveMotorpositionsCombo = null;
 
-	private Combo motorAxisCombo = null;
-	private String motorStrings[] = null;
-	
-	private Combo detectorChannelCombo = null;
-	private String detectorStrings[] = null;
-
 	private Table plotWindowsTable = null;
 
 	private Button addPlotWindowButton = null;
@@ -140,23 +129,11 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 
 	private Composite positioningComposite = null;
 
-	private Table motorAxisTable = null;
-
-	private Button addMotorAxisButton = null;
-
-	private Table detectorChannelsTable = null;
-
-	private Button addDetectorChannelButton = null;
-
 	private Button appendScheduleEventCheckBox = null;
 
 	private ModifyListener modifyListener; // @jve:decl-index=0:
 
 	private SelectionListener selectionListener; // @jve:decl-index=0:
-
-	private MenuItem motorAxisRemoveMenuItem;
-
-	private MenuItem detectorChannelRemoveMenuItem;
 
 	private MenuItem plotWindowRemoveMenuItem;
 
@@ -390,30 +367,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	}
 
 	/**
-	 * This method initializes motorAxisCombo
-	 * 
-	 */
-	private void createMotorAxisCombo() {
-		motorAxisCombo = new Combo(motorAxisComposite, SWT.READ_ONLY);
-		// hier wird nur eine sortierte Liste erstellt mit allen Motorachsen
-		this.motorStrings = (Activator.getDefault().getMeasuringStation()
-		.getAxisFullIdentifyer().toArray(new String[0]));
-		
-	}
-
-	/**
-	 * This method initializes detectorChannelCombo
-	 * 
-	 */
-	private void createDetectorChannelCombo() {
-		detectorChannelCombo = new Combo(detectorChannelComposite, SWT.READ_ONLY);
-		// hier wird nur eine sortierte Liste erstellt mit allen Detektorkanälen
-		this.detectorStrings = (Activator.getDefault()
-				.getMeasuringStation().getChannelsFullIdentifyer().toArray(new String[0]));
-	
-	}
-
-	/**
 	 * This method initializes eventsTabFolder
 	 * 
 	 */
@@ -517,90 +470,14 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 
 	}
 
+
 	/**
 	 * This method initializes motorAxisComposite
 	 * 
 	 */
 	private void createMotorAxisComposite() {
-		GridData gridData6 = new GridData();
-		gridData6.horizontalSpan = 2;
-		gridData6.verticalAlignment = GridData.FILL;
-		gridData6.grabExcessHorizontalSpace = true;
-		gridData6.grabExcessVerticalSpace = true;
-		gridData6.horizontalAlignment = GridData.FILL;
-		GridLayout gridLayout1 = new GridLayout();
-		gridLayout1.numColumns = 2;
-		motorAxisComposite = new Composite(behaviorTabFolder, SWT.NONE);
-		motorAxisTable = new Table(motorAxisComposite, SWT.FULL_SELECTION);
-		motorAxisTable.setHeaderVisible(true);
-		motorAxisTable.setLayoutData(gridData6);
-		motorAxisTable.setLinesVisible(true);
-		motorAxisTable.addSelectionListener( new SelectionListener() {
-
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			public void widgetSelected( final SelectionEvent e ) {
-				IViewReference[] ref = getSite().getPage().getViewReferences();
-				MotorAxisView motorAxisView = null;
-				for (int i = 0; i < ref.length; ++i) {
-					if (ref[i].getId().equals(MotorAxisView.ID)) {
-						motorAxisView = (MotorAxisView) ref[i].getPart(false);
-					}
-				}
-				if( motorAxisView != null ) {
-					final String axisName = motorAxisTable.getSelection()[0].getText( 0 );
-					Axis[] axis = currentScanModul.getAxis();
-					for( int i = 0; i < axis.length; ++i ) {
-						if( axis[i].getMotorAxis().getFullIdentifyer().equals( axisName ) ) {
-							double stepamount = -1.0;
-							
-							for( int j = 0; j < axis.length; ++j ) {
-								if( axis[j].isMainAxis() ) {
-									stepamount = axis[j].getStepCount();
-									break;
-								}
-							}
-							motorAxisView.setAxis( axis[i], stepamount, currentScanModul );
-						}
-					}
-					
-				}
-			}
-			
-		});
-
-		Menu menu = new Menu(motorAxisTable);
-		motorAxisRemoveMenuItem = new MenuItem(menu, SWT.MENU);
-		motorAxisRemoveMenuItem.setText("Remove");
-		motorAxisRemoveMenuItem.setEnabled(false);
-		motorAxisTable.setMenu(menu);
-
-		createMotorAxisCombo();
-		motorAxisComposite.setLayout(gridLayout1);
-
-		gridData6 = new GridData();
-		gridData6.horizontalAlignment = GridData.FILL;
-		gridData6.verticalAlignment = GridData.CENTER;
-		gridData6.grabExcessHorizontalSpace = true;
-		motorAxisCombo.setLayoutData( gridData6 );
-
-		addMotorAxisButton = new Button(motorAxisComposite, SWT.NONE);
-		addMotorAxisButton.setText("Add");
-
-		gridData6 = new GridData();
-		gridData6.horizontalAlignment = GridData.END;
-		gridData6.verticalAlignment = GridData.CENTER;
-		addMotorAxisButton.setLayoutData( gridData6 );
-		
-		TableColumn tableColumn2 = new TableColumn(motorAxisTable, SWT.NONE);
-		tableColumn2.setWidth(250);
-		tableColumn2.setText("Motor Axis");
-		TableColumn tableColumn3 = new TableColumn(motorAxisTable, SWT.NONE);
-		tableColumn3.setWidth(80);
-		tableColumn3.setText("Stepfunction");
+		motorAxisComposite = new MotorAxisComposite(behaviorTabFolder,
+				SWT.NONE);
 	}
 
 	/**
@@ -608,82 +485,8 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	 * 
 	 */
 	private void createDetectorChannelComposite() {
-		GridData gridData7 = new GridData();
-		gridData7.horizontalSpan = 2;
-		gridData7.verticalAlignment = GridData.FILL;
-		gridData7.grabExcessHorizontalSpace = true;
-		gridData7.grabExcessVerticalSpace = true;
-		gridData7.horizontalAlignment = GridData.FILL;
-		GridLayout gridLayout6 = new GridLayout();
-		gridLayout6.numColumns = 2;
-		detectorChannelComposite = new Composite(behaviorTabFolder, SWT.NONE);
-		detectorChannelsTable = new Table(detectorChannelComposite,
-				SWT.FULL_SELECTION);
-		detectorChannelsTable.setHeaderVisible(true);
-		detectorChannelsTable.setLayoutData(gridData7);
-		detectorChannelsTable.setLinesVisible(true);
-		TableColumn tableColumn4 = new TableColumn(detectorChannelsTable,
+		detectorChannelComposite = new DetectorChannelComposite(behaviorTabFolder,
 				SWT.NONE);
-		tableColumn4.setWidth(250);
-		tableColumn4.setText("Detector Channel");
-		TableColumn tableColumn5 = new TableColumn(detectorChannelsTable,
-				SWT.NONE);
-		tableColumn5.setWidth(80);
-		tableColumn5.setText("Average");
-
-		Menu menu = new Menu(detectorChannelsTable);
-		detectorChannelRemoveMenuItem = new MenuItem(menu, SWT.MENU);
-		detectorChannelRemoveMenuItem.setText("Remove");
-		detectorChannelRemoveMenuItem.setEnabled(false);
-		detectorChannelsTable.setMenu(menu);
-		detectorChannelsTable.addSelectionListener( new SelectionListener() {
-
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			public void widgetSelected( final SelectionEvent e ) {
-				IViewReference[] ref = getSite().getPage().getViewReferences();
-				DetectorChannelView detectorChannelView = null;
-				for (int i = 0; i < ref.length; ++i) {
-					if (ref[i].getId().equals(DetectorChannelView.ID)) {
-						detectorChannelView = (DetectorChannelView) ref[i]
-								.getPart(false);
-					}
-				}
-				if( detectorChannelView != null ) {
-					final String channelName = detectorChannelsTable.getSelection()[0].getText( 0 );
-					Channel[] channels = currentScanModul.getChannels();
-					for( int i = 0; i < channels.length; ++i ) {
-						if( channels[i].getDetectorChannel().getFullIdentifyer().equals( channelName ) ) {
-							detectorChannelView.setChannel( channels[i] );
-						}
-					}
-					
-				}
-			}
-			
-		});
-
-		createDetectorChannelCombo();
-		detectorChannelComposite.setLayout(gridLayout6);
-
-		gridData7 = new GridData();
-		gridData7.horizontalAlignment = GridData.FILL;
-		gridData7.verticalAlignment = GridData.CENTER;
-		gridData7.grabExcessHorizontalSpace = true;
-		detectorChannelCombo.setLayoutData( gridData7 );
-		
-		addDetectorChannelButton = new Button(detectorChannelComposite,
-				SWT.NONE);
-		addDetectorChannelButton.setText("Add");
-
-		gridData7 = new GridData();
-		gridData7.horizontalAlignment = GridData.END;
-		gridData7.verticalAlignment = GridData.CENTER;
-		addDetectorChannelButton.setLayoutData( gridData7 );
-	
 	}
 
 	/**
@@ -735,13 +538,10 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		this.confirmTriggerCheckBox.setEnabled(enabled);
 		this.behaviorTabFolder.setEnabled(enabled);
 		this.motorAxisComposite.setEnabled(enabled);
-		this.motorAxisTable.setEnabled(enabled);
-		this.motorAxisCombo.setEnabled(enabled);
-		this.addMotorAxisButton.setEnabled(enabled);
+		// TODO wird dieses Composite hier überhaupt enabled?
+		// Für Prescan, Postscan und Positioning findet das
+		// hier ja auch nicht statt. (Hartmut 6.5.10)
 		this.detectorChannelComposite.setEnabled(enabled);
-		this.detectorChannelsTable.setEnabled(enabled);
-		this.detectorChannelCombo.setEnabled(enabled);
-		this.addDetectorChannelButton.setEnabled(enabled);
 		this.plotWindowsTable.setEnabled(enabled);
 		this.addPlotWindowButton.setEnabled(enabled);
 		this.eventsTabFolder.setEnabled(enabled);
@@ -854,15 +654,15 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 						.setControlEventManager(this.currentScanModul
 								.getPauseControlEventManager());
 
-				this.updateMotorAxisTable();
-				this.updateDetectorChannelsTable();
 				this.updatePlotWindowsTable();
 
-				this.saveMotorpositionsCombo.setText(SaveAxisPositionsTypes
-						.typeToString(this.currentScanModul
-								.getSaveAxisPositions()));
+				((MotorAxisComposite) this.motorAxisComposite)
+				.setScanModul(this.currentScanModul);
 
-				((PrescanComposite) this.prescanComposite)
+				((DetectorChannelComposite) this.detectorChannelComposite)
+				.setScanModul(this.currentScanModul);
+
+ 				((PrescanComposite) this.prescanComposite)
 				.setScanModul(this.currentScanModul);
 
 				((PostscanComposite) this.postscanComposite)
@@ -895,8 +695,9 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 						motorAxisErrors = true;
 					} else if( modelError instanceof ChannelError ) {
 						detectorChannelErrors = true;
-					} else if( modelError instanceof PrePostscanError ) {
+					} else if( modelError instanceof PrescanError ) {
 						prescanErrors = true;
+					} else if( modelError instanceof PostscanError ) {
 						postscanErrors = true;
 					} else if( modelError instanceof PositioningError ) {
 						positioningErrors = true;
@@ -945,13 +746,10 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 				// this.breakEventComposite.setEvent( null );
 				// this.redoEventComposite.setEvent( null );
 				// this.pauseEventComposite.setEvent( null );
-				this.motorAxisTable.removeAll();
-				this.detectorChannelsTable.removeAll();
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		
 		
 		this.filling = false;
 	}
@@ -964,15 +762,8 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 //TODO Neuer Listener, funktioniert aber noch nicht so wie er soll, das Save-Zeichen
 		// für das XML-File wird nicht erzeugt (Hartmut 16.4.10)
 		this.saveMotorpositionsCombo.addModifyListener(this.modifyListener);
-		this.addMotorAxisButton.addSelectionListener(this.selectionListener);
-		this.addDetectorChannelButton
-				.addSelectionListener(this.selectionListener);
 		this.addPlotWindowButton.addSelectionListener(this.selectionListener);
 
-		this.motorAxisRemoveMenuItem
-				.addSelectionListener(this.selectionListener);
-		this.detectorChannelRemoveMenuItem
-				.addSelectionListener(this.selectionListener);
 		this.plotWindowRemoveMenuItem
 				.addSelectionListener(this.selectionListener);
 		this.plotWindowChangeIDMenuItem
@@ -1057,54 +848,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 							currentScanModul
 									.setTriggerconfirm(confirmTriggerCheckBox
 											.getSelection());
-						} else if (e.widget == addMotorAxisButton) {
-							if (!motorAxisCombo.getText().equals("")) {
-								final TableItem[] tableItems = motorAxisTable
-										.getItems();
-								for (int i = 0; i < tableItems.length; ++i) {
-									if (tableItems[i].getText(0).equals(
-											motorAxisCombo.getText())) {
-										motorAxisTable.setSelection(i);
-										return;
-									}
-								}
-								MotorAxis motorAxis = (MotorAxis) Activator
-										.getDefault().getMeasuringStation()
-										.getAbstractDeviceByFullIdentifyer(
-												motorAxisCombo.getText());
-								if (motorAxis != null) {
-									Axis axis = new Axis( currentScanModul );
-									axis.setMotorAxis(motorAxis);
-									currentScanModul.add(axis);
-									fillFields();
-								}
-							}
-
-						} else if (e.widget == addDetectorChannelButton) {
-							if (!detectorChannelCombo.getText().equals("")) {
-								final TableItem[] tableItems = detectorChannelsTable
-										.getItems();
-								for (int i = 0; i < tableItems.length; ++i) {
-									if (tableItems[i].getText(0).equals(
-											detectorChannelCombo.getText())) {
-										detectorChannelsTable.setSelection(i);
-										return;
-									}
-								}
-								DetectorChannel detectorChannel = (DetectorChannel) Activator
-										.getDefault().getMeasuringStation()
-										.getAbstractDeviceByFullIdentifyer(
-												detectorChannelCombo.getText());
-								// System.err.println( detectorChannel );
-								if (detectorChannel != null) {
-									Channel channel = new Channel( currentScanModul );
-									channel.setDetectorChannel(detectorChannel);
-									currentScanModul.add(channel);
-									fillFields();
-								}
-							}
 						} else if (e.widget == addPlotWindowButton) {
-
 							int newID = 1;
 							PlotWindow[] plotWindows = currentScanModul
 									.getPlotWindows();
@@ -1126,42 +870,8 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 							plotWindow.setId(newID);
 							currentScanModul.add(plotWindow);
 							fillFields();
-						} else if (e.widget == motorAxisRemoveMenuItem) {
-							TableItem[] selectedItems = motorAxisTable
-									.getSelection();
-							int[] selectedIndexes = motorAxisTable
-									.getSelectionIndices();
-							for (int i = 0; i < selectedItems.length; ++i) {
-								currentScanModul.remove((Axis) selectedItems[i]
-										.getData());
-							}
-							motorAxisTable.remove(selectedIndexes);
-							fillFields();
-						} else if (e.widget == detectorChannelRemoveMenuItem) {
-							TableItem[] selectedItems = detectorChannelsTable
-									.getSelection();
-							int[] selectedIndexes = detectorChannelsTable
-									.getSelectionIndices();
-							for (int i = 0; i < selectedItems.length; ++i) {
-								currentScanModul
-										.remove((Channel) selectedItems[i]
-												.getData());
-
-							}
-							detectorChannelsTable.remove(selectedIndexes);
-							IViewReference[] ref = getSite().getPage().getViewReferences();
-							DetectorChannelView detectorChannelView = null;
-							for (int i = 0; i < ref.length; ++i) {
-								if (ref[i].getId().equals(DetectorChannelView.ID)) {
-									detectorChannelView = (DetectorChannelView) ref[i]
-											.getPart(false);
-								}
-							}
-							if( detectorChannelView != null ) {
-										detectorChannelView.setChannel( null );
-							}
-							fillFields();
 						} else if (e.widget == plotWindowRemoveMenuItem) {
+							System.out.println("Ein plotWindow soll entfernt werden: " + plotWindowsTable.getSelectionCount());
 							TableItem[] selectedItems = plotWindowsTable
 									.getSelection();
 							int[] selectedIndexes = plotWindowsTable
@@ -1174,7 +884,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 							plotWindowsTable.remove(selectedIndexes);
 							fillFields();
 						} else if (e.widget == appendScheduleEventCheckBox) {
-
 							Event scheduleEvent = new Event(currentScanModul.getChain().getId(), currentScanModul.getId(), Event.ScheduleIncident.END);
 
 							if (appendScheduleEventCheckBox.getSelection()) {
@@ -1269,7 +978,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 								} 
 							}
 						} else if (e.widget == plotWindowChangeIDMenuItem) {
-
 							Shell shell = getSite().getShell();
 							TableItem[] selectedItems = plotWindowsTable
 									.getSelection();
@@ -1286,9 +994,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 								}
 
 							}
-
 							fillFields();
-
 						}
 					}
 				} catch (Exception ex) {
@@ -1349,56 +1055,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		};
 	}
 
-	protected void updateMotorAxisTable() {
-		// TODO es sollen Listen verwendet werden, die aufgrund verschiedener Parameter eingeschränkt werden können
-		// Alle Einträge der ComboBox werden gesetzt
-		motorAxisCombo.setItems(motorStrings);
-		this.motorAxisTable.removeAll();
-		Axis[] axis = this.currentScanModul.getAxis();
-		for (int i = 0; i < axis.length; ++i) {
-
-			TableItem item = new TableItem(this.motorAxisTable, SWT.NONE);
-			item.setText(new String[] {
-					axis[i].getMotorAxis().getFullIdentifyer(),
-					axis[i].getStepfunctionString() });
-			item.setData(axis[i]);
-			if( axis[i].getModelErrors().size() > 0 ) {
-				item.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
-			}
-			// Table Eintrag wird aus der Combo-Box entfernt
-			motorAxisCombo.remove(axis[i].getMotorAxis().getFullIdentifyer());
-		}
-		if (this.motorAxisTable.getItems().length == 0) {
-			this.motorAxisRemoveMenuItem.setEnabled(false);
-		} else {
-			this.motorAxisRemoveMenuItem.setEnabled(true);
-		}
-	}
-
-	protected void updateDetectorChannelsTable() {
-		// Alle Einträge der ComboBox werden gesetzt
-		detectorChannelCombo.setItems(detectorStrings);
-		this.detectorChannelsTable.removeAll();
-		Channel[] channels = this.currentScanModul.getChannels();
-		for (int i = 0; i < channels.length; ++i) {
-			TableItem item = new TableItem(this.detectorChannelsTable, SWT.NONE);
-			item.setText(new String[] {
-					channels[i].getDetectorChannel().getFullIdentifyer(),
-					"" + channels[i].getAverageCount() });
-			item.setData(channels[i]);
-			if( channels[i].getModelErrors().size() > 0 ) {
-				item.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
-			}
-			// Table Eintrag wird aus der Combo-Box entfernt
-			detectorChannelCombo.remove(channels[i].getDetectorChannel().getFullIdentifyer());
-		}
-		if (this.detectorChannelsTable.getItems().length == 0) {
-			this.detectorChannelRemoveMenuItem.setEnabled(false);
-		} else {
-			this.detectorChannelRemoveMenuItem.setEnabled(true);
-		}
-	}
-
 	protected void updatePlotWindowsTable() {
 		this.plotWindowsTable.removeAll();
 		PlotWindow[] plotWindows = this.currentScanModul.getPlotWindows();
@@ -1440,8 +1096,9 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 				motorAxisErrors = true;
 			} else if( modelError instanceof ChannelError ) {
 				detectorChannelErrors = true;
-			} else if( modelError instanceof PrePostscanError ) {
+			} else if( modelError instanceof PrescanError ) {
 				prescanErrors = true;
+			} else if( modelError instanceof PostscanError ) {
 				postscanErrors = true;
 			} else if( modelError instanceof PositioningError ) {
 				positioningErrors = true;
@@ -1462,8 +1119,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		if( positioningErrors ) {
 			this.positioningTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
 		}
-		this.updateMotorAxisTable();
-		this.updateDetectorChannelsTable();
 		
 		if( this.currentScanModul.getPauseControlEventManager().getModelErrors().size() > 0 ) {
 			this.pauseEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );

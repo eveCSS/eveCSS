@@ -10,7 +10,6 @@ package de.ptb.epics.eve.editor.views;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
@@ -25,23 +24,24 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 
-import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
-import de.ptb.epics.eve.data.scandescription.Postscan;
+import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 
-public class PostscanComposite extends Composite implements IModelUpdateListener {
+public class DetectorChannelComposite extends Composite implements IModelUpdateListener {
 
 	private TableViewer tableViewer;
-	private Combo postscanCombo;
+	private Combo detectorChannelCombo;
 	private Button addButton;
 	private ScanModul scanModul;
 	
-	public PostscanComposite( final Composite parent, final int style) {
+	public DetectorChannelComposite( final Composite parent, final int style) {
 		super( parent, style );
 		initialize();
 	}
@@ -67,44 +67,67 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 		this.tableViewer.getControl().setLayoutData( gridData );
 		
 		TableColumn column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 0 );
-	    column.setText( "Device" );
-	    column.setWidth( 300 );
+	    column.setText( "Detector Channel" );
+	    column.setWidth( 250 );
 
 	    column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 1 );
-	    column.setText( "Value" );
-	    column.setWidth( 100 );
-
-	    column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 2 );
-	    column.setText( "Reset Original" );
+	    column.setText( "Average" );
 	    column.setWidth( 80 );
 
 	    this.tableViewer.getTable().setHeaderVisible( true );
 	    this.tableViewer.getTable().setLinesVisible( true );
 	    
-	    // hier wird eine Liste der vorhandenen Postscans des Scan Moduls erstellt
-	    this.tableViewer.setContentProvider( new PostscanInputWrapper() );
-	    this.tableViewer.setLabelProvider( new PostscanLabelProvider() );
+	    // hier wird eine Liste der vorhandenen DetectorChannels des Scan Moduls erstellt
+	    this.tableViewer.setContentProvider( new DetectorChannelInputWrapper() );
+	    this.tableViewer.setLabelProvider( new DetectorChannelLabelProvider() );
 	    
-	    final CellEditor[] editors = new CellEditor[3];
+	    final CellEditor[] editors = new CellEditor[2];
 	    
 	    editors[0] = new TextCellEditor( this.tableViewer.getTable() );
 	    editors[1] = new TextCellEditor( this.tableViewer.getTable() );
-	    editors[2] = new CheckboxCellEditor( );
 	    
-	    this.tableViewer.setCellModifier( new PostscanCellModifyer( this.tableViewer ) );
 	    this.tableViewer.setCellEditors( editors );
 	    
-	    final String[] props = { "device", "value", "reset"};
+	    final String[] props = { "device", "value"};
 	    
 	    this.tableViewer.setColumnProperties( props );
+
+		this.tableViewer.getTable().addSelectionListener( new SelectionListener() {
+	    	
+			public void widgetDefaultSelected( final SelectionEvent e ) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void widgetSelected( final SelectionEvent e ) {
+				IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
+				
+				DetectorChannelView detectorChannelView = null;
+				for (int i = 0; i < ref.length; ++i) {
+					if (ref[i].getId().equals(DetectorChannelView.ID)) {
+						detectorChannelView = (DetectorChannelView) ref[i]
+								.getPart(false);
+					}
+				}
+				if( detectorChannelView != null ) {
+					final String channelName = tableViewer.getTable().getSelection()[0].getText( 0 );
+					Channel[] channels = scanModul.getChannels();
+					for( int i = 0; i < channels.length; ++i ) {
+						if( channels[i].getDetectorChannel().getFullIdentifyer().equals( channelName ) ) {
+							detectorChannelView.setChannel( channels[i] );
+						}
+					}
+				}
+			}
+		});
 	    
-	    this.postscanCombo = new Combo(this, SWT.READ_ONLY);
+	    this.detectorChannelCombo = new Combo(this, SWT.READ_ONLY);
 		
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
 		gridData.grabExcessHorizontalSpace = true;
-		this.postscanCombo.setLayoutData( gridData );
+		this.detectorChannelCombo.setLayoutData( gridData );
 		
 		this.addButton = new Button( this, SWT.NONE );
 		this.addButton.setText( "Add" );
@@ -120,52 +143,54 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-				
-				if( !postscanCombo.getText().equals( "" ) ) {
 
-					AbstractPrePostscanDevice device = (AbstractPrePostscanDevice) Activator
-							.getDefault().getMeasuringStation()
-							.getAbstractDeviceByFullIdentifyer(
-										postscanCombo.getText());
+				if( !detectorChannelCombo.getText().equals( "" ) ) {
 
-					Postscan postscan = new Postscan ();
-					postscan.setAbstractPrePostscanDevice(device);
-					
-					scanModul.add(postscan);
+					DetectorChannel detectorChannel = (DetectorChannel) Activator
+					.getDefault().getMeasuringStation()
+					.getAbstractDeviceByFullIdentifyer(
+							detectorChannelCombo.getText());
+
+					Channel channel = new Channel( scanModul );
+					channel.setDetectorChannel(detectorChannel);
+					scanModul.add(channel);
+
 					// Table Eintrag wird aus der Combo-Box entfernt
-					postscanCombo.remove(postscanCombo.getText());
+					detectorChannelCombo.remove(detectorChannelCombo.getText());
 					tableViewer.refresh();
 				}
 			}
 		});
-		
-		   Action deleteAction = new Action(){
+	
+		Action deleteAction = new Action(){
 		    	public void run() {
-		    		
-		    		scanModul.remove( (Postscan)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
-		    		// ComboBos muß aktualisiert werden
-		    		// alle Postscans werden in die ComboBox eingetragen und die
-		    		// gesetzten postscans wieder ausgetragen
-		    		postscanCombo.setItems( Activator.getDefault().getMeasuringStation().getPrePostScanDevicesFullIdentifyer().toArray( new String[0] ) );
-					Postscan[] postscans = scanModul.getPostscans();
-					for (int i = 0; i < postscans.length; ++i) {
-						// Postscan Eintrag wird aus der Combo-Box entfernt
-						postscanCombo.remove(postscans[i].getAbstractPrePostscanDevice().getFullIdentifyer());
+	    		
+					// DetectorChannel wird aus scanModul ausgetragen
+		    		scanModul.remove( (Channel)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
+
+		    		// ComboBox muß aktualisiert werden
+		    		// alle DetectorChannels werden in die ComboBox eingetragen und die
+		    		// gesetzten DetectorChannels wieder ausgetragen
+		    		detectorChannelCombo.setItems( Activator.getDefault().getMeasuringStation().getChannelsFullIdentifyer().toArray( new String[0] ) );
+					Channel[] channels = scanModul.getChannels();
+					for (int i = 0; i < channels.length; ++i) {
+						// Channel Eintrag wird aus der Combo-Box entfernt
+						detectorChannelCombo.remove(channels[i].getDetectorChannel().getFullIdentifyer());
 					}
+		    		
 		    		tableViewer.refresh();
 		    	}
 		    };
 		    
 		    deleteAction.setEnabled( true );
-		    deleteAction.setText( "Delete Postscan" );
-		    deleteAction.setToolTipText( "Deletes Postscan" );
+		    deleteAction.setText( "Delete Channel" );
+		    deleteAction.setToolTipText( "Deletes Channel" );
 		    deleteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ) );
 		    
 		    MenuManager manager = new MenuManager();
 		    Menu menu = manager.createContextMenu( this.tableViewer.getControl() );
 		    this.tableViewer.getControl().setMenu( menu );
 		    manager.add( deleteAction );
-		
 	}
 	
 	public ScanModul getScanModul() {
@@ -179,11 +204,11 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 		if( scanModul != null ) {
 			scanModul.addModelUpdateListener( this );
 
-			this.postscanCombo.setItems( Activator.getDefault().getMeasuringStation().getPrePostScanDevicesFullIdentifyer().toArray( new String[0] ) );
-			Postscan[] postscans = scanModul.getPostscans();
-			for (int i = 0; i < postscans.length; ++i) {
-				// Postscan Eintrag wird aus der Combo-Box entfernt
-				this.postscanCombo.remove(postscans[i].getAbstractPrePostscanDevice().getFullIdentifyer());
+			this.detectorChannelCombo.setItems( Activator.getDefault().getMeasuringStation().getChannelsFullIdentifyer().toArray( new String[0] ) );
+			Channel[] channels = scanModul.getChannels();
+			for (int i = 0; i < channels.length; ++i) {
+				// Detector Channel Eintrag wird aus der Combo-Box entfernt
+				this.detectorChannelCombo.remove(channels[i].getAbstractDevice().getFullIdentifyer());
 			}
 		}
 		this.scanModul = scanModul;
