@@ -1,11 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Client
-Bundle-SymbolicName: de.ptb.epics.eve.ecp1.client
+Bundle-SymbolicName: de.ptb.epics.eve.ecp1;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Localization: plugin
-Require-Bundle: de.ptb.epics.eve.ecp1.intern
 Export-Package: de.ptb.epics.eve.ecp1.client,
  de.ptb.epics.eve.ecp1.client.interfaces,
  de.ptb.epics.eve.ecp1.client.model,
- de.ptb.epics.eve.ecp1.client.test
+ de.ptb.epics.eve.ecp1.client.test,
+ de.ptb.epics.eve.ecp1.intern,
+ de.ptb.epics.eve.ecp1.intern.exceptions

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>de.ptb.epics.eve.ecp1.client</name>
+	<name>de.ptb.epics.eve.ecp1</name>
 	<comment></comment>
 	<projects>
 		<project>de.ptb.epics.ecp1.intern</project>
