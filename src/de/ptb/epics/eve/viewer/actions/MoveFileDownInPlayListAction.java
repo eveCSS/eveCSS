@@ -28,7 +28,7 @@ public class MoveFileDownInPlayListAction extends Action implements IWorkbenchAc
 		TableItem[] selectedItems = tableViewer.getTable().getSelection();
 		for( int i = 0; i < selectedItems.length; ++i ) {
 			final PlayListEntry entry = (PlayListEntry)selectedItems[i].getData();
-			Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Moving down entry: id = " + entry.getId() + " name = " + entry.getName() + " author " + entry.getAuthor() + "." ) );
+			Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageTypes.INFO, "Moving down entry: id = " + entry.getId() + " name = " + entry.getName() + " author " + entry.getAuthor() + "." ) );
 			Activator.getDefault().getEcp1Client().getPlayListController().movePlayListEntry( entry, -1 );
 		}
 	} 

@@ -5,11 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 
 public class MessagesTableContentProvider implements IStructuredContentProvider, IMessagesContainerUpdateListener {
 
-	private Viewer viewer;
+	private TableViewer viewer;
 	
 	private boolean showEngineMessages = true;
 	private boolean showApplicationMessages = true;
@@ -27,43 +28,43 @@ public class MessagesTableContentProvider implements IStructuredContentProvider,
 		final Iterator< ViewerMessage > it = messagesContainer.getList().iterator();
 		while( it.hasNext() ) {
 			final ViewerMessage currentViewerMessage = it.next();
-			if( currentViewerMessage.getMessageSource() == MessageSource.APPLICATION && !showApplicationMessages ) {
-				continue;
-			}
-			if( currentViewerMessage.getMessageSource() == MessageSource.ENGINE && !showEngineMessages ) {
-				continue;
-			}
-			if( currentViewerMessage.getMessageType() == MessageTypes.DEBUG && showDebugMessages ) {
-				returnList.add( currentViewerMessage );
-				continue;
-			}
-			if( currentViewerMessage.getMessageType() == MessageTypes.INFO && showInfoMessages ) {
-				returnList.add( currentViewerMessage );
-				continue;
-			}
-			if( currentViewerMessage.getMessageType() == MessageTypes.MINOR && showMinorMessages ) {
-				returnList.add( currentViewerMessage );
-				continue;
-			}
-			if( currentViewerMessage.getMessageType() == MessageTypes.ERROR && showErrorMessages ) {
-				returnList.add( currentViewerMessage );
-				continue;
-			}
-			if( currentViewerMessage.getMessageType() == MessageTypes.FATAL && showFatalMessages ) {
-				returnList.add( currentViewerMessage );
-				continue;
-			}
+			if (checkFilter(currentViewerMessage)) returnList.add( currentViewerMessage );
 		}
 		
 		return returnList.toArray();
 	}
 
+	private boolean checkFilter(ViewerMessage message){
+		if ((message.getMessageSource() == MessageSource.VIEWER) && !showApplicationMessages ) {
+			return false;
+		}
+		if ((message.getMessageSource() != MessageSource.VIEWER) && !showEngineMessages ) {
+			return false;
+		}
+		if ((message.getMessageType() == MessageTypes.DEBUG) && showDebugMessages ) {
+			return true;
+		}
+		if ((message.getMessageType() == MessageTypes.INFO) && showInfoMessages ) {
+			return true;
+		}
+		if ((message.getMessageType() == MessageTypes.MINOR) && showMinorMessages ) {
+			return true;
+		}
+		if ((message.getMessageType() == MessageTypes.ERROR) && showErrorMessages ) {
+			return true;
+		}
+		if ((message.getMessageType() == MessageTypes.FATAL) && showFatalMessages ) {
+			return true;
+		}
+		return false;
+	}
+	
 	public void dispose() {
 
 	}
 
 	public void inputChanged( final Viewer viewer, final Object oldInput, final Object newInput) {
-		this.viewer = viewer;
+		this.viewer = (TableViewer)viewer;
 		if( oldInput != null ) {
 			((MessagesContainer)oldInput).removeMessagesContainerUpdateListener( this );
 		}
@@ -73,16 +74,36 @@ public class MessagesTableContentProvider implements IStructuredContentProvider,
 	}
 
 	public void update() {
-		this.viewer.getControl().getDisplay().syncExec( new Runnable() {
-
-			public void run() {
-				viewer.refresh();
-			}
+		if (!viewer.getControl().isDisposed()){
 			
-		});
-		
+			// TODO this is a severe performance killer
+			// do not switch to syncExec and do not do viewer.refresh()
+			// use a tableviewer with  viewer.update() or viewer.add() instead!
+			
+			this.viewer.getControl().getDisplay().asyncExec( new Runnable() {
+	
+				public void run() {
+					if (!viewer.getControl().isDisposed()) viewer.refresh();
+				}
+				
+			});
+		}
 	}
+	
+	@Override
+	public void addElement(final ViewerMessage viewerMessage) {
 
+		if (!checkFilter(viewerMessage)) return;
+		
+		if (!viewer.getControl().isDisposed()){
+			this.viewer.getControl().getDisplay().asyncExec( new Runnable() {
+				public void run() {
+					if (!viewer.getControl().isDisposed()) viewer.add(viewerMessage);
+				}
+			});
+		}
+	}
+	
 	public boolean isShowApplicationMessages() {
 		return this.showApplicationMessages;
 	}
@@ -138,7 +159,6 @@ public class MessagesTableContentProvider implements IStructuredContentProvider,
 	public void setShowMinorMessages( final boolean showMinorMessages ) {
 		this.showMinorMessages = showMinorMessages;
 	}
-	
 	
 
 }

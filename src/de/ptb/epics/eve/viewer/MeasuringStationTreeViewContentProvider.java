@@ -26,31 +26,49 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 	private List<Motor> motors;
 	
 	private List<Detector> detectors;
-	
+
 	public Object[] getChildren( final Object parentElement ) {
 		if( parentElement instanceof MeasuringStation ) {
-			final MeasuringStation measuringStation = (MeasuringStation)parentElement;
-			List returnList = new ArrayList();
-			if( measuringStation.getMotors().size() > 0 ) {
-				this.motors = measuringStation.getMotors();
-				returnList.add( this.motors );
-			}
-			
-			if( measuringStation.getDetectors().size() > 0 ) {
-				this.detectors = measuringStation.getDetectors();
-				returnList.add( this.detectors );
-			}
-			
-			if( measuringStation.getDevices().size() > 0 ) {
-				this.devices = measuringStation.getDevices();
-				returnList.add( this.devices );
-			}
-			
-			return returnList.toArray();
-			
-		} else if( parentElement instanceof List ) {
-			return ((List)parentElement).toArray();
-		} else if( parentElement instanceof Motor ) {
+//			final MeasuringStation measuringStation = (MeasuringStation)parentElement;
+//			List<Object> returnList = new ArrayList<Object>();
+//			
+//			if (measuringStation.getClassNameList().size() > 0){
+//				returnList.addAll( measuringStation.getClassNameList() );
+//			}
+//			if( measuringStation.getMotors().size() > 0List<Object>/				this.motors = measuringStation.getMotors();
+//				for (Motor motor : measuringStation.getMotors()) {
+//					if (motor.getClassName().length() > 0) this.motors.remove(motor);
+//				}
+//				returnList.add( this.motors );
+//			}
+//			
+//			if( measuringStation.getDetectors().size() > 0 ) {
+//				this.detectors = measuringStation.getDetectors();
+//				for (Detector detector : measuringStation.getDetectors()) {
+//					if (detector.getClassName().length() > 0) this.detectors.remove(detector);
+//				}
+//				returnList.add( this.detectors );
+//			}
+//			
+//			if( measuringStation.getDevices().size() > 0 ) {
+//				this.devices = measuringStation.getDevices();
+//				for (Device device : measuringStation.getDevices()) {
+//					if (device.getClassName().length() > 0) this.devices.remove(device);
+//				}
+//				returnList.add( this.devices );
+//			}
+//			return returnList.toArray();
+		}
+		else if( parentElement instanceof String ) {
+			return measuringStation.getDeviceList((String) parentElement).toArray();
+		}
+		else if( parentElement instanceof List<?> ) {
+			Object object = ((List<?>)parentElement).get(0);
+			if (object instanceof Motor) return motors.toArray();
+			else if (object instanceof Detector) return detectors.toArray();
+			else if (object instanceof Device) return devices.toArray();
+		}
+		else if( parentElement instanceof Motor ) {
 			List returnList = new ArrayList();
 			final Motor motor = (Motor)parentElement;
 			if( motor.getAxis().size() > 0 ) {
@@ -59,7 +77,8 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 				returnList.addAll( motor.getOptions() );
 			}
 			return returnList.toArray();
-		} else if( parentElement instanceof Detector ) {
+		}
+		else if( parentElement instanceof Detector ) {
 			List returnList = new ArrayList();
 			final Detector detector = (Detector)parentElement;
 			if( detector.getChannels().size() > 0 ) {
@@ -68,8 +87,9 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 				returnList.addAll( detector.getOptions() );
 			}
 			return returnList.toArray();
-		} else if( parentElement instanceof Device ) {
-			List returnList = new ArrayList();
+		}
+		else if( parentElement instanceof Device ) {
+			List<Object> returnList = new ArrayList<Object>();
 			final Device device = (Device)parentElement;
 			if( device.getOptions().size() > 0 ) {
 				returnList.addAll( device.getOptions() );
@@ -80,24 +100,25 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 	}
 
 	public Object getParent( final Object element ) {
-		if( element instanceof List ) {
-			return this.measuringStation;
-		} else if( element instanceof Motor ) {
-			return this.motors;
-		} else if( element instanceof Detector ) {
-			return this.detectors;
-		} else if( element instanceof Device ) {
-			return this.devices;
-		} else if( element instanceof MotorAxis ) {
-			final MotorAxis motorAxis = (MotorAxis)element;
-			return motorAxis.getParent();
-		} else if( element instanceof DetectorChannel ) {
-			final DetectorChannel detectorChannel = (DetectorChannel)element;
-			return detectorChannel.getParent();
-		} else if( element instanceof Option ) {
-			final Option option = (Option)element;
-			return option.getParent();
-		}
+
+//		if( element instanceof List ) {
+//			return this.measuringStation;
+//		} else if( element instanceof Motor ) {
+//			return this.motors;
+//		} else if( element instanceof Detector ) {
+//			return this.detectors;
+//		} else if( element instanceof Device ) {
+//			return this.devices;
+//		} else if( element instanceof MotorAxis ) {
+//			final MotorAxis motorAxis = (MotorAxis)element;
+//			return motorAxis.getParent();
+//		} else if( element instanceof DetectorChannel ) {
+//			final DetectorChannel detectorChannel = (DetectorChannel)element;
+//			return detectorChannel.getParent();
+//		} else if( element instanceof Option ) {
+//			final Option option = (Option)element;
+//			return option.getParent();
+//		}
 		return null;
 	}
 
@@ -106,7 +127,10 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 			final MeasuringStation measuringStation = (MeasuringStation)element;
 			return measuringStation.getMotors().size() > 0 || measuringStation.getDetectors().size() > 0 || measuringStation.getDevices().size() > 0 || measuringStation.getEvents().size() > 0; 
 		} else if( element instanceof List ) {
-			return true;
+			if (((List)element).size() > 0)
+				return true;
+			else
+				return false;
 		} else if( element instanceof Motor ) {
 			final Motor motor = (Motor)element;
 			return motor.getAxis().size() > 0 || motor.getOptions().size() > 0;
@@ -114,14 +138,17 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 			final Detector detector = (Detector)element;
 			return detector.getChannels().size() > 0 || detector.getOptions().size() > 0;
 		} else if( element instanceof Device ) {
-			final Device device = (Device)element;
-			return device.getOptions().size() > 0;
+			return false;
 		} else if( element instanceof MotorAxis ) {
-			final MotorAxis motorAxis = (MotorAxis)element;
-			return motorAxis.getOptions().size() > 0;
+			return false;
 		} else if( element instanceof DetectorChannel ) {
-			final DetectorChannel detectorChannel = (DetectorChannel)element;
-			return detectorChannel.getOptions().size() > 0;
+			return false;
+		}
+		else if( element instanceof String ) {
+			if (measuringStation.getDeviceList((String)element).size() > 0)
+				return true;
+			else
+				return false;
 		}
 		return false;
 	}
@@ -129,56 +156,52 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 	public Object[] getElements( final Object inputElement ) {
 		if( inputElement instanceof MeasuringStation ) {
 			final MeasuringStation measuringStation = (MeasuringStation)inputElement;
-			List returnList = new ArrayList();
+			List<Object> returnList = new ArrayList<Object>();
+			if (measuringStation.getClassNameList().size() > 0){
+				returnList.addAll( measuringStation.getClassNameList() );
+			}
 			if( measuringStation.getMotors().size() > 0 ) {
-				this.motors = measuringStation.getMotors();
-				returnList.add( this.motors );
+				this.motors = new ArrayList<Motor>(measuringStation.getMotors());
+				for (Motor motor : measuringStation.getMotors()) {
+					if (motor.getClassName().length() > 0) this.motors.remove(motor);
+				}
+				if (!motors.isEmpty()) returnList.add( motors );
 			}
 			
 			if( measuringStation.getDetectors().size() > 0 ) {
-				this.detectors = measuringStation.getDetectors();
-				returnList.add( this.detectors );
+				this.detectors = new ArrayList<Detector>(measuringStation.getDetectors());
+				for (Detector detector : measuringStation.getDetectors()) {
+					if (detector.getClassName().length() > 0) this.detectors.remove(detector);
+				}
+				if (!detectors.isEmpty()) returnList.add( this.detectors );
 			}
 			
 			if( measuringStation.getDevices().size() > 0 ) {
-				this.devices = measuringStation.getDevices();
-				returnList.add( this.devices );
+				this.devices = new ArrayList<Device>(measuringStation.getDevices());
+				for (Device device : measuringStation.getDevices()) {
+					if (device.getClassName().length() > 0) this.devices.remove(device);
+				}
+				if (!devices.isEmpty()) returnList.add( this.devices );
 			}
-			
-			return returnList.toArray();
-			
-		} else if( inputElement instanceof List ) {
-			return ((List)inputElement).toArray();
-		} else if( inputElement instanceof Motor ) {
-			List returnList = new ArrayList();
-			final Motor motor = (Motor)inputElement;
-			if( motor.getAxis().size() > 0 ) {
-				returnList.addAll( motor.getAxis() );
-			} else if( motor.getOptions().size() > 0 ) {
-				returnList.addAll( motor.getOptions() );
-			}
-			return returnList.toArray();
-		} else if( inputElement instanceof Detector ) {
-			List returnList = new ArrayList();
-			final Detector detector = (Detector)inputElement;
-			if( detector.getChannels().size() > 0 ) {
-				returnList.addAll( detector.getChannels() );
-			} else if( detector.getOptions().size() > 0 ) {
-				returnList.addAll( detector.getOptions() );
-			}
-			return returnList.toArray();
-		} else if( inputElement instanceof Device ) {
-			List returnList = new ArrayList();
-			final Device device = (Device)inputElement;
-			if( device.getOptions().size() > 0 ) {
-				returnList.addAll( device.getOptions() );
-			}
-			return returnList.toArray();
-		} else if( inputElement instanceof MotorAxis ) {
-			return ((MotorAxis)inputElement).getOptions().toArray();
-		} else if( inputElement instanceof DetectorChannel ) {
-			return ((DetectorChannel)inputElement).getOptions().toArray();
-		}
+			return returnList.toArray();	
+		} 
+//		else if( inputElement instanceof List ) {
+//			return ((List)inputElement).toArray();
+//		} else if( inputElement instanceof Motor ) {
+//			List returnList = new ArrayList();
+//			final Motor motor = (Motor)inputElement;
+//			if( motor.getAxis().size() > 0 ) {
+//				returnList.addAll( motor.getAxis() );
+//			} 
+//			return returnList.toArray();
+//		} else if( inputElement instanceof Detector ) {
+//			List returnList = new ArrayList();
+//			final Detector detector = (Detector)inputElement;
+//			if( detector.getChannels().size() > 0 ) {
+//				returnList.addAll( detector.getChannels() );
+//			} 
+//			return returnList.toArray();
+//		}
 		return null;
 	}
 

@@ -26,23 +26,25 @@ public class MeasuringStationTreeViewLabelProvider implements ILabelProvider {
 	public String getText( final Object element ) {
 		if( element instanceof MeasuringStation ) {
 			return "Measuring Station";
-		} else if( element instanceof List ) {
-			Object obj = ((List)element).get( 0 );
+		}
+		else if( element instanceof List<?> ) {
+			Object obj = ((List<Object>)element).get( 0 );
 			if( obj instanceof Motor ) {
 				return "Motors";
-			} else if( obj instanceof Detector ) {
+			}
+			else if( obj instanceof Detector ) {
 				return "Detectors";
-			} else if( obj instanceof Device ) {
+			}
+			else if( obj instanceof Device ) {
 				return "Devices";
 			}
-		} else if( element instanceof AbstractDevice ) {
-			String label = new String();
-			if (element instanceof AbstractClassedDevice){
-				final AbstractClassedDevice classDevice = (AbstractClassedDevice)element;
-				label = classDevice.getClassName();
-			}
+		}
+		else if (element instanceof String){
+				return (String)element;
+		}
+		else if( element instanceof AbstractDevice ) {
 			final AbstractDevice device = (AbstractDevice)element;
-			if (label.length() == 0) label = device.getName();
+			String label = device.getName();
 			if (label.length() == 0) label = device.getID();
 			return label;
 		}

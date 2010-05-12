@@ -72,7 +72,7 @@ public class OptionConnector implements IModelUpdateProvider, PVListener {
 	public void detach() {
         if (pv != null)
         {
-        	Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Disposing text for " + pv.getName() ) );
+        	Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.VIEWER, MessageTypes.INFO, "Disposing text for " + pv.getName() ) );
             pv.removeListener(this);
             pv.stop();
             pv = null;

@@ -34,4 +34,20 @@ public enum MessageTypes {
 		throw new UnsupportedOperationException( "Unsupported value: " + errorSeverity );
 	}
 	
+	public String toString(){
+		switch (this) {
+			case DEBUG:
+				return "D";
+			case INFO:
+				return "I";
+			case MINOR:
+				return "M";
+			case ERROR:
+				return "E";
+			case FATAL:
+				return "F";
+			default:
+				return "U";
+		}
+	}	
 }

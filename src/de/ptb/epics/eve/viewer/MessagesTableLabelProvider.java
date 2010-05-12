@@ -15,7 +15,8 @@ public class MessagesTableLabelProvider implements ITableLabelProvider {
 	public String getColumnText( final Object element, final int columnIndex ) {
 		ViewerMessage message = (ViewerMessage)element;
 		if( columnIndex == 0 ) {
-			return message.getMessageDateTime().get( Calendar.YEAR ) + "-" + message.getMessageDateTime().get( Calendar.MONTH ) + "-" + message.getMessageDateTime().get( Calendar.DAY_OF_MONTH ) + " " + message.getMessageDateTime().get( Calendar.HOUR ) + ":" + message.getMessageDateTime().get( Calendar.MINUTE ) + ":" + message.getMessageDateTime().get( Calendar.SECOND );
+			return message.getMessageDateTime().get( Calendar.HOUR_OF_DAY ) + ":" + message.getMessageDateTime().get( Calendar.MINUTE ) + ":" + message.getMessageDateTime().get( Calendar.SECOND ) + "." + message.getMessageDateTime().get( Calendar.MILLISECOND);
+//			return message.getMessageDateTime().get( Calendar.YEAR ) + "-" + message.getMessageDateTime().get( Calendar.MONTH ) + "-" + message.getMessageDateTime().get( Calendar.DAY_OF_MONTH ) + " " + message.getMessageDateTime().get( Calendar.HOUR ) + ":" + message.getMessageDateTime().get( Calendar.MINUTE ) + ":" + message.getMessageDateTime().get( Calendar.SECOND );
 		} else if( columnIndex == 1 ) {
 			return message.getMessageSource().toString();
 		} else if( columnIndex == 2 ) {

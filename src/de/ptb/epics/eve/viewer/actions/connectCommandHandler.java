@@ -47,12 +47,12 @@ public class connectCommandHandler extends AbstractHandler {
 			}
 			
 			if( (port > 0) && (EngineString.length() > 1) ) {
-				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Trying to connect to: " + EngineString + "." ) );
+				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageTypes.INFO, "Trying to connect to: " + EngineString + "." ) );
 				try {
 					Activator.getDefault().getEcp1Client().connect( new InetSocketAddress( EngineString, port ), "" );
-					Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Connection established to: " + EngineString + "." ) );
+					Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageTypes.INFO, "Connection established to: " + EngineString + "." ) );
 				} catch( final IOException e ) {
-					Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.ERROR, "Cannot establish connection! Reasion: " + e.getMessage() + "." ) );
+					Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageTypes.ERROR, "Cannot establish connection! Reasion: " + e.getMessage() + "." ) );
 					e.printStackTrace();
 				}
 			}

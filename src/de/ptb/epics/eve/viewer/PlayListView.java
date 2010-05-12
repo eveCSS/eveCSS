@@ -168,11 +168,11 @@ public final class PlayListView extends ViewPart implements IConnectionStateList
 
 	public void playListHasChanged( final IPlayListController playListController ) {
 		
-		Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Got new play list with " + playListController.getEntries().size() + " entries." ) );
+		Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.VIEWER, MessageTypes.INFO, "Got new play list with " + playListController.getEntries().size() + " entries." ) );
 		final Iterator< PlayListEntry > it = playListController.getEntries().iterator();
 		while( it.hasNext() ) {
 			final PlayListEntry entry = it.next();
-			Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.DEBUG, "PlayListEntry: id = " + entry.getId() + " name = " + entry.getName() + " author " + entry.getAuthor() + "." ) );
+			Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.VIEWER, MessageTypes.DEBUG, "PlayListEntry: id = " + entry.getId() + " name = " + entry.getName() + " author " + entry.getAuthor() + "." ) );
 		}
 		
 		

@@ -32,7 +32,7 @@ public class AddFileToPlayListAction extends Action implements IWorkbenchAction 
 		for( int i = 0; i < names.length; ++i ) {
 			try {
 				Activator.getDefault().getEcp1Client().getPlayListController().addLocalFile( fileDialog.getFilterPath() + File.separator + names[i] );
-				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "Adding file with the name: " + names[i] + "." ) );
+				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.UNKNOWN, MessageTypes.INFO, "Adding file with the name: " + names[i] + "." ) );
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

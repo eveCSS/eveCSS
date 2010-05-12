@@ -19,6 +19,13 @@ public class ViewerMessage {
 			this.message = message;
 		}
 		
+		public ViewerMessage( final MessageTypes messageType, final String message ) {
+			this.messageDateTime = new GregorianCalendar();
+			this.messageSource = MessageSource.VIEWER;
+			this.messageType = messageType;
+			this.message = message;
+		}
+
 		public ViewerMessage( final Calendar messageDateTime, final MessageSource messageSource, final MessageTypes messageType, final String message ) {
 			this.messageDateTime = messageDateTime;
 			this.messageSource = messageSource;
@@ -30,9 +37,9 @@ public class ViewerMessage {
 			
 			this.messageDateTime = new GregorianCalendar( 1990, 0, 1, 0, 0 );
 			this.messageDateTime.add( Calendar.SECOND, error.getGerenalTimeStamp() );
-			this.messageSource = MessageSource.ENGINE;
+			this.messageSource = MessageSource.convertFromErrorFacility( error.getErrorFacility() );
 			this.messageType = MessageTypes.convertFromErrorSeverity( error.getErrorSeverity() );
-			this.message = "Facility: " + error.getErrorFacility() + " Type: " + error.getErrorType() + " Message " + error.getText();
+			this.message = error.getText();
 			
 		}
 

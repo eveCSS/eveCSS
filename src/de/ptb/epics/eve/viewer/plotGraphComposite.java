@@ -202,7 +202,9 @@ public class plotGraphComposite extends Composite implements IMeasurementDataLis
 		boolean detector1HaveData = false;
 		boolean detector2HaveData = false;
 		
-		System.out.println("new plot data " + measurementData.getName() + " / " + this.detector1Id);
+//		System.err.println("DEBUG PlotGraphComposite: new plot data " + measurementData.getName() + " / " + this.detector1Id);
+//		// TODO DEBUG
+//		if (true) return;
 		
 		if ((this.detector1Id != null) && this.detector1Id.equals(measurementData.getName()) && (measurementData.getDataModifier() == DataModifier.UNMODIFIED)) {
 			DataType dt = measurementData.getDataType();

@@ -87,8 +87,13 @@ public class Activator extends AbstractUIPlugin {
 		fontreg.put("VIEWERFONT", fontData);
 		
 		colorreg.put("COLOR_PV_INITIAL", new RGB(0, 0, 0));
+		colorreg.put("COLOR_PV_CONNECTED", new RGB(0, 0, 0));
+		colorreg.put("COLOR_PV_DISCONNECTED", new RGB(130, 130, 130));
 		colorreg.put("COLOR_PV_ALARM", new RGB(255, 0, 0));
 		colorreg.put("COLOR_PV_OK", new RGB(0, 180, 0));
+		colorreg.put("COLOR_PV_MINOR", new RGB(255, 255, 50));
+		colorreg.put("COLOR_PV_MAJOR", new RGB(255, 0, 0));
+		colorreg.put("COLOR_PV_INVALID", new RGB(180, 180, 180));
 		colorreg.put("COLOR_PV_UNKNOWN", new RGB(130, 130, 130));
 		
 		ImageRegistry imagereg = getImageRegistry();

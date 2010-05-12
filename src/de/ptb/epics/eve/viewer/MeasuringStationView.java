@@ -27,7 +27,7 @@ import de.ptb.epics.eve.viewer.actions.LoadMeasuringStationAction;
 /**
  * A simple view implementation, which only displays a label.
  * 
- * @author Sven Wende
+ * @author PTB
  *
  */
 public final class MeasuringStationView extends ViewPart {
@@ -88,7 +88,12 @@ public final class MeasuringStationView extends ViewPart {
 			public void dragSetData( final DragSourceEvent event ) {
 				TreeItem[] items = treeViewer.getTree().getSelection();
 				if( TextTransfer.getInstance().isSupportedType( event.dataType ) ) {
-					event.data = ((AbstractDevice)items[0].getData()).getFullIdentifyer();
+					if (items[0].getData() instanceof AbstractDevice)
+						event.data = ((AbstractDevice)items[0].getData()).getFullIdentifyer();
+					else if (items[0].getData() instanceof String) {
+						System.err.println("MeasuringStationView String item");
+						event.data = (String)items[0].getData();		
+					}
 				}
 			}
 			
@@ -116,10 +121,10 @@ public final class MeasuringStationView extends ViewPart {
 						DeviceOptionsViewer view = null;
 						for( int i = 0; i < ref.length; ++i ) {
 							if( ref[i].getId().equals( "DeviceOptionsView" ) ) {
-								view = (DeviceOptionsViewer)ref[i].getPart( false );
+								view = (DeviceOptionsViewer)ref[i].getPart( true );
 							}
 						}
-						view.setDevice( (AbstractDevice)items[0].getData() );
+						if (view != null) view.setDevice( (AbstractDevice)items[0].getData() );
 					}
 				}
 				

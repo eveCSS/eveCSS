@@ -41,7 +41,7 @@ public class disConnectCommandHandler extends AbstractHandler {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.APPLICATION, MessageTypes.INFO, "disconnected engine" ) );
+			Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageTypes.INFO, "disconnected engine" ) );
 		}
 		
 		return null;

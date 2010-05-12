@@ -19,7 +19,7 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 		this.messages.add( 0, viewerMessage );
 		final Iterator< IMessagesContainerUpdateListener > it = this.listener.iterator();
 		while( it.hasNext() ) {
-			it.next().update();
+			it.next().addElement(viewerMessage);
 		}
 	}
 	

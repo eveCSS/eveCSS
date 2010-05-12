@@ -5,6 +5,7 @@ import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.TableItem;
 
 public class DeviceOptionsModifier implements ICellModifier {
@@ -24,7 +25,7 @@ public class DeviceOptionsModifier implements ICellModifier {
 				final String[] items = optionConnector.getDiscreteValues();
 				if( !(cellEditors[1] instanceof ComboBoxCellEditor) ) {
 					cellEditors[1].dispose();
-					cellEditors[1] = new ComboBoxCellEditor( this.tableViewer.getTable(), items );
+					cellEditors[1] = new ComboBoxCellEditor( this.tableViewer.getTable(), items, SWT.READ_ONLY );
 				} else {
 					((ComboBoxCellEditor)cellEditors[1]).setItems(items);
 				}
