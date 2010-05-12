@@ -1,7 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Data
-Bundle-SymbolicName: de.ptb.epics.eve.data
+Bundle-SymbolicName: de.ptb.epics.eve.data;singleton:=true
 Bundle-Version: 1.0.0
-Export-Package: de.ptb.epics.eve.data
+Export-Package: de.ptb.epics.eve.data,
+ de.ptb.epics.eve.data.measuringstation,
+ de.ptb.epics.eve.data.measuringstation.exceptions,
+ de.ptb.epics.eve.data.measuringstation.processors,
+ de.ptb.epics.eve.data.scandescription,
+ de.ptb.epics.eve.data.scandescription.errors,
+ de.ptb.epics.eve.data.scandescription.processors,
+ de.ptb.epics.eve.data.scandescription.updatenotification
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.apache.xml.serialize
