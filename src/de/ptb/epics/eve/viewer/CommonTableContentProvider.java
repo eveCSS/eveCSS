@@ -63,12 +63,8 @@ public class CommonTableContentProvider implements IStructuredContentProvider {
 	}
 	
 	private void setSize(){
-		Point point = viewer.getTable().computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
 		if (!expandItem.isDisposed() && !expandItem.getControl().isDisposed()){ 
-			expandItem.setHeight( point.y + 10 );
-			//expandItem.getParent().layout(true);
-			//expandItem.getParent().redraw();
-			System.err.println("ContentProvider: set height to " + point.y);
+			expandItem.setHeight( 33 + 25 * elements.size());
 		}
 
 	}

@@ -138,7 +138,7 @@ public class PlotView extends ViewPart {
 		if ((detector2Id != null) && (detector2Id.length() > 0)) detector2 = detector2Id;
 				
 		plotGraphComposite.refresh(plotWindow, chid, smid, motorId, motorName, detector1, detector1Name, detector2, detector2Name);
-		plotDetectorComposite.refresh(chid, smid, motorId, motorPv, detector1, detector2);
+		plotDetectorComposite.refresh(chid, smid, motorId, motorName, motorPv, detector1, detector1Name, detector2, detector2Name);
 		
 	}
 }

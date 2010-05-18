@@ -40,7 +40,7 @@ public class plotGraphComposite extends Composite implements IMeasurementDataLis
 	private Combo normalizeComboBox;
 	private Label normalizeLabel;
 	private Double xValue;
-	private PlotWindow plotWindow;
+	//private PlotWindow plotWindow;
 	private int chid;
 	private int smid;
 	private boolean isActive;
@@ -72,8 +72,8 @@ public class plotGraphComposite extends Composite implements IMeasurementDataLis
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.FILL;
-		gridData.minimumHeight = 300;
-		gridData.minimumWidth = 500;
+		gridData.minimumHeight = 400;
+		gridData.minimumWidth = 600;
 		canvas = new Canvas(this, SWT.NONE);
         canvas.setLayoutData(gridData);
 	    //use LightweightSystem to create the bridge between SWT and draw2D
@@ -97,7 +97,6 @@ public class plotGraphComposite extends Composite implements IMeasurementDataLis
 			xyPlot.removeAllTraces();
 		}
 
-		this.plotWindow = plotWindow;
 		this.chid = chid;
 		this.smid = smid;
 		this.detector1Id = detector1Id;
@@ -112,22 +111,22 @@ public class plotGraphComposite extends Composite implements IMeasurementDataLis
 				xyPlot.addTrace(detector1Name);
 			}
 
-	        if (this.detector1Label == null) {
-				this.detector1Label = new Label( this, SWT.NONE );
-				this.detector1Label.setFont(newFont);
-			}
-			this.detector1Label.setText( detector1Name );
-			
-			if (this.detector1EngineLabel == null) {
-				this.detector1EngineLabel = new EngineDataLabel( this, SWT.NONE, detector1Id );
-				this.detector1EngineLabel.setFont(newFont);
-				gridData = new GridData();
-				gridData.horizontalAlignment = SWT.FILL;
-				this.detector1EngineLabel.setLayoutData( gridData );
-			}
-			else {
-				this.detector1EngineLabel.setDataId(detector1Id);
-			}
+//	        if (this.detector1Label == null) {
+//				this.detector1Label = new Label( this, SWT.NONE );
+//				this.detector1Label.setFont(newFont);
+//			}
+//			this.detector1Label.setText( detector1Name );
+//			
+//			if (this.detector1EngineLabel == null) {
+//				this.detector1EngineLabel = new EngineDataLabel( this, SWT.NONE, detector1Id );
+//				this.detector1EngineLabel.setFont(newFont);
+//				gridData = new GridData();
+//				gridData.horizontalAlignment = SWT.FILL;
+//				this.detector1EngineLabel.setLayoutData( gridData );
+//			}
+//			else {
+//				this.detector1EngineLabel.setDataId(detector1Id);
+//			}
 		}
 		else {
 			xyPlot.removeTrace(detector1Name);
@@ -141,22 +140,22 @@ public class plotGraphComposite extends Composite implements IMeasurementDataLis
 				xyPlot.addTrace(detector2Name);
 			}
 
-	        if (this.detector2Label == null) {
-				this.detector2Label = new Label( this, SWT.NONE );
-				this.detector2Label.setFont(newFont);
-			}
-	        this.detector2Label.setText( detector2Name );
-	        
-			if (this.detector2EngineLabel == null) {
-				this.detector2EngineLabel = new EngineDataLabel( this, SWT.NONE, detector2Id );
-				this.detector2EngineLabel.setFont(newFont);
-				gridData = new GridData();
-				gridData.horizontalAlignment = SWT.FILL;
-				this.detector2EngineLabel.setLayoutData( gridData );
-			}
-			else {
-				this.detector2EngineLabel.setDataId(detector2Id);
-			}
+//	        if (this.detector2Label == null) {
+//				this.detector2Label = new Label( this, SWT.NONE );
+//				this.detector2Label.setFont(newFont);
+//			}
+//	        this.detector2Label.setText( detector2Name );
+//	        
+//			if (this.detector2EngineLabel == null) {
+//				this.detector2EngineLabel = new EngineDataLabel( this, SWT.NONE, detector2Id );
+//				this.detector2EngineLabel.setFont(newFont);
+//				gridData = new GridData();
+//				gridData.horizontalAlignment = SWT.FILL;
+//				this.detector2EngineLabel.setLayoutData( gridData );
+//			}
+//			else {
+//				this.detector2EngineLabel.setDataId(detector2Id);
+//			}
 		}
 		else {
 			xyPlot.removeTrace(detector2Name);
@@ -188,8 +187,8 @@ public class plotGraphComposite extends Composite implements IMeasurementDataLis
 		canvas.redraw();
 		this.layout();
 		this.redraw();
-		this.getParent().layout();
-		this.getParent().redraw();
+		//this.getParent().layout();
+		//this.getParent().redraw();
 	}
 
 	@Override

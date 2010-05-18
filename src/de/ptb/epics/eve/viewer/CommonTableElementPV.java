@@ -28,6 +28,7 @@ public class CommonTableElementPV implements PVListener {
 	private boolean isConnected = false;
 	
 	private boolean isReadOnly = false;
+	private boolean extraReadOnly = false;
 	private String[] discreteValues = null;
 	private boolean isEnum = false;
 	private String pvname;
@@ -83,7 +84,7 @@ public class CommonTableElementPV implements PVListener {
 		return (isEnum || hasDiscreteValues);
 	}
 	public boolean isReadOnly(){
-		return isReadOnly;
+		return isReadOnly | extraReadOnly;
 	}
 	
 	public String[] getDiscreteValues(){
@@ -123,6 +124,10 @@ public class CommonTableElementPV implements PVListener {
         	System.err.println("Unable to set "+pv.getName()+" to "+value );
             ex.printStackTrace();
 		}	
+	}
+
+	public void setReadOnly(boolean readOnly) {
+		extraReadOnly = readOnly;
 	}
 
 }

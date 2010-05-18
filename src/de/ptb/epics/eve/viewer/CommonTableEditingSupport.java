@@ -27,8 +27,14 @@ public class CommonTableEditingSupport extends EditingSupport {
 		if (column.equals("remove")) {
 			((CommonTableContentProvider)viewer.getInput()).removeElement(element);
 		}
-		if (column.equals("trigger")) {
+		else if (column.equals("trigger")) {
 			((CommonTableElement) element).trigger();
+		}
+		else if (column.equals("tweakforward")) {
+			((CommonTableElement) element).tweak(true);
+		}
+		else if (column.equals("tweakreverse")) {
+			((CommonTableElement) element).tweak(false);
 		}
 		else {
 			if (!((CommonTableElement) element).isReadonly(column))return true;
