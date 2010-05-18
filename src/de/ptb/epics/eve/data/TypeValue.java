@@ -260,8 +260,11 @@ public class TypeValue {
 
 		if (isDiscrete || hasRange)
 			return elements.get(0);
-		else
-			return DataTypes.getDefaultValue(type);
-
+		else {
+			if (elements.size() > 0)
+				return elements.get(0);
+			else
+				return DataTypes.getDefaultValue(type);
+		}
 	}
 }
