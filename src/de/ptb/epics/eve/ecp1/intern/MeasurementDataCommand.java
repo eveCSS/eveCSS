@@ -27,8 +27,14 @@ public class MeasurementDataCommand implements IECP1Command {
 	private int nanoseconds;
 	private String name;
 	private List< ? > values;
+	private int chid;
+	private int smid;
+	private int positionCounter;
 	
-	public MeasurementDataCommand( final DataType dataType, final DataModifier dataModifier, final EpicsSeverity epicsSeverity, final EpicsStatus epicsStatus, final AcquisitionStatus acquisitionStatus, final int gerenalTimeStamp, final int nanoseconds, final String name ) {
+	public MeasurementDataCommand( int chid, int smid, int positionCounter, final DataType dataType, final DataModifier dataModifier, final EpicsSeverity epicsSeverity, final EpicsStatus epicsStatus, final AcquisitionStatus acquisitionStatus, final int gerenalTimeStamp, final int nanoseconds, final String name ) {
+		this.chid = chid;
+		this.smid = smid;
+		this.positionCounter = positionCounter;
 		this.dataType = dataType;
 		this.dataModifier = dataModifier;
 		this.epicsSeverity = epicsSeverity;
@@ -53,7 +59,6 @@ public class MeasurementDataCommand implements IECP1Command {
 		}
 	}
 
-
 	public MeasurementDataCommand( final byte[] byteArray ) throws IOException, AbstractRestoreECP1CommandException {
 		if( byteArray == null ) {
 			throw new IllegalArgumentException( "The parameter 'byteArray' must not be null!" );
@@ -77,6 +82,9 @@ public class MeasurementDataCommand implements IECP1Command {
 		}
 		
 		final int length = dataInputStream.readInt();
+		chid = dataInputStream.readInt();
+		smid = dataInputStream.readInt();
+		positionCounter = dataInputStream.readInt();		
 		dataInputStream.readChar();
 		dataInputStream.readByte();
 		this.dataType = DataType.byteTotDataType( dataInputStream.readByte() );
@@ -167,41 +175,46 @@ public class MeasurementDataCommand implements IECP1Command {
 		dataOutputStream.writeChar( IECP1Command.VERSION );;
 		dataOutputStream.writeChar( MeasurementDataCommand.COMMAND_TYPE_ID );
 		
-		int lenght = 28;
+		int length = 28;
+		length += 12;			 // smid, chid, positionCounter
 		
 		final byte[] nameBuffer = this.name.getBytes( IECP1Command.STRING_ENCODING );
 		
-		lenght += nameBuffer.length;
+		length += nameBuffer.length;
 		
 		byte[][] strings = new byte[ this.values.size() ][];
 		switch( this.dataType ) {
 			case INT8:
-				lenght += this.values.size();
+				length += this.values.size();
 				break;
 			case INT16:
-				lenght += this.values.size() * 2;
+				length += this.values.size() * 2;
 				break;
 				
 			case INT32:
 			case FLOAT:
-				lenght += this.values.size() * 4;
+				length += this.values.size() * 4;
 				break;
 			
 			case DOUBLE:
-				lenght += this.values.size() * 8;
+				length += this.values.size() * 8;
 				break;
 				
 			case STRING:
-				lenght += this.values.size();
+				length += this.values.size();
 				for( int i = 0; i < this.values.size(); ++i ) {
 					strings[ i ] = ((List< String >)this.values).get( i ).getBytes( IECP1Command.STRING_ENCODING );
-					lenght += strings[ i ].length;
+					length += strings[ i ].length;
 				}
 				break;
 					
 		}
 		
-		dataOutputStream.writeInt( lenght );
+		dataOutputStream.writeInt( length );
+		dataOutputStream.writeInt( chid );
+		dataOutputStream.writeInt( smid );
+		dataOutputStream.writeInt( positionCounter );
+
 		dataOutputStream.writeChar( 0 );
 		dataOutputStream.writeByte( 0 );
 		dataOutputStream.writeByte( DataType.dataTypeToByte( this.dataType ) );
@@ -258,7 +271,7 @@ public class MeasurementDataCommand implements IECP1Command {
 			break;
 			
 		case STRING:
-			lenght += this.values.size();
+			length += this.values.size();
 			for( int i = 0; i < strings.length; ++i ) {
 				 if( strings[i].length != 0 ) {
 					 dataOutputStream.writeInt( strings[i].length );
@@ -382,6 +395,26 @@ public class MeasurementDataCommand implements IECP1Command {
 		this.name = name;
 	}
 
+	public int getChainId() {
+		return this.chid;
+	}
+	public void setChainId( final int chid ) {
+		this.chid = chid;
+	}
+
+	public int getScanModuleId() {
+		return this.smid;
+	}
+	public void setScanModuleId( final int smid ) {
+		this.smid = smid;
+	}
+
+	public int getPositionCounter() {
+		return this.positionCounter;
+	}
+	public void setPositionCounter( final int positionCounter ) {
+		this.positionCounter = positionCounter;
+	}
 
 
 	public int getNanoseconds() {

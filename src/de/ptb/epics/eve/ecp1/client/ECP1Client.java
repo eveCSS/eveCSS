@@ -142,7 +142,7 @@ public class ECP1Client {
 				} else {
 					System.err.println( "Error: " + className + " and " + this.commands.get( id ).getDeclaringClass().getName() + "does have the same id = " + Integer.toHexString(id) + "!" );
 				}
-				System.out.println( "The ID for " + className + " is " + Integer.toHexString(id) + "!" );
+				//System.out.println( "The ID for " + className + " is " + Integer.toHexString(id) + "!" );
 			} catch( final ClassNotFoundException exception ) {
 				System.err.println( "Error: Can't find Class " + className + "!" );
 			} catch( final SecurityException exception ) {

@@ -22,8 +22,14 @@ public final class MeasurementData {
 	private int nanoseconds;
 	private String name;
 	private List< ? > values;
+	private int chid;
+	private int smid;
+	private int positionCounter;
 	
 	public MeasurementData( final MeasurementDataCommand measurementDataCommand ) {
+		this.chid = measurementDataCommand.getChainId();
+		this.smid = measurementDataCommand.getScanModuleId();
+		this.positionCounter = measurementDataCommand.getPositionCounter();
 		this.dataType = measurementDataCommand.getDataType();
 		this.dataModifier = measurementDataCommand.getDataModifier();
 		this.epicsSeverity = measurementDataCommand.getEpicsSeverity();
@@ -125,6 +131,18 @@ public final class MeasurementData {
 
 	public final String getName() {
 		return this.name;
+	}
+
+	public int getChainId() {
+		return this.chid;
+	}
+
+	public int getScanModuleId() {
+		return this.smid;
+	}
+
+	public int getPositionCounter() {
+		return this.positionCounter;
 	}
 
 	public final int getNanoseconds() {
