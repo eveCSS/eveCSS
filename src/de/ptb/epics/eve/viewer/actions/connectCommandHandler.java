@@ -49,7 +49,8 @@ public class connectCommandHandler extends AbstractHandler {
 			if( (port > 0) && (EngineString.length() > 1) ) {
 				Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageTypes.INFO, "Trying to connect to: " + EngineString + "." ) );
 				try {
-					Activator.getDefault().getEcp1Client().connect( new InetSocketAddress( EngineString, port ), "" );
+					java.net.InetAddress localMachine = java.net.InetAddress.getLocalHost();
+					Activator.getDefault().getEcp1Client().connect( new InetSocketAddress( EngineString, port ), System.getProperty("user.name")+"@"+localMachine.getHostName() );
 					Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageTypes.INFO, "Connection established to: " + EngineString + "." ) );
 				} catch( final IOException e ) {
 					Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageTypes.ERROR, "Cannot establish connection! Reasion: " + e.getMessage() + "." ) );
