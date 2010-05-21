@@ -218,7 +218,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		this.triggerDelayErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
 
 		this.triggerDelayUnitLabel = new Label(this.generalComposite, SWT.NONE);
-		this.triggerDelayUnitLabel.setText("ms");
+		this.triggerDelayUnitLabel.setText("s");
 
 		// Settle Time
 		this.settleTimeLabel = new Label(this.generalComposite, SWT.NONE);
@@ -239,7 +239,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		//this.settleTimeErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
 
 		this.settleTimeUnitLabel = new Label(this.generalComposite, SWT.NONE);
-		this.settleTimeUnitLabel.setText("ms");
+		this.settleTimeUnitLabel.setText("s");
 
 		// Trigger Confirm 
 		gridData = new GridData();
