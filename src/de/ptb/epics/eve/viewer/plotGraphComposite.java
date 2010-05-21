@@ -14,7 +14,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
-import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 import de.ptb.epics.eve.ecp1.intern.ChainStatus;
@@ -28,22 +27,24 @@ import de.ptb.epics.eve.ecp1.intern.DataType;
  */
 
 
-public class plotGraphComposite extends Composite implements IMeasurementDataListener, IChainStatusListener {
+public class plotGraphComposite extends Composite implements IMeasurementDataListener {
 
 	private String detector1Id;
 	private String detector2Id;
 	private String motorId;
-	private Label detector1Label;
-	private EngineDataLabel detector1EngineLabel;
-	private Label detector2Label;
-	private EngineDataLabel detector2EngineLabel;
+	private int detector1PosCount;
+	private int detector2PosCount;
+	private int motorPosCount;
+//	private Label detector1Label;
+//	private EngineDataLabel detector1EngineLabel;
+//	private Label detector2Label;
+//	private EngineDataLabel detector2EngineLabel;
 	private Combo normalizeComboBox;
 	private Label normalizeLabel;
 	private Double xValue;
 	//private PlotWindow plotWindow;
 	private int chid;
 	private int smid;
-	private boolean isActive;
 	private Double y2value;
 	private Double y1value;
 	private Canvas canvas;
@@ -59,7 +60,6 @@ public class plotGraphComposite extends Composite implements IMeasurementDataLis
 		super(parent, style);
 
 		Activator.getDefault().getEcp1Client().addMeasurementDataListener( this );
-		Activator.getDefault().getEcp1Client().addChainStatusListener(this);
 		
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
@@ -131,8 +131,8 @@ public class plotGraphComposite extends Composite implements IMeasurementDataLis
 		else {
 			xyPlot.removeTrace(detector1Name);
 			this.detector1Name = null;
-			if (detector1Label != null) { detector1Label.dispose(); detector1Label = null; }
-			if (detector1EngineLabel != null) { detector1EngineLabel.dispose(); detector1EngineLabel = null; }
+//			if (detector1Label != null) { detector1Label.dispose(); detector1Label = null; }
+//			if (detector1EngineLabel != null) { detector1EngineLabel.dispose(); detector1EngineLabel = null; }
 		}
 		if (this.detector2Id != null){
 			this.detector2Name = detector2Name;
@@ -160,8 +160,8 @@ public class plotGraphComposite extends Composite implements IMeasurementDataLis
 		else {
 			xyPlot.removeTrace(detector2Name);
 			this.detector2Name = null;
-			if (detector2Label != null) { detector2Label.dispose(); detector2Label = null; }
-			if (detector2EngineLabel != null) { detector2EngineLabel.dispose(); detector2EngineLabel = null; }
+//			if (detector2Label != null) { detector2Label.dispose(); detector2Label = null; }
+//			if (detector2EngineLabel != null) { detector2EngineLabel.dispose(); detector2EngineLabel = null; }
 		}
 		if ((this.detector1Id != null) && (this.detector2Id != null)){
 
@@ -195,75 +195,56 @@ public class plotGraphComposite extends Composite implements IMeasurementDataLis
 	public void measurementDataTransmitted(MeasurementData measurementData) {
 
 		if (measurementData == null) return;
-		boolean redraw = false;
-		
-		if (!isActive) return;
-		boolean detector1HaveData = false;
-		boolean detector2HaveData = false;
-		
-//		System.err.println("DEBUG PlotGraphComposite: new plot data " + measurementData.getName() + " / " + this.detector1Id);
-//		// TODO DEBUG
-//		if (true) return;
-		
-		if ((this.detector1Id != null) && this.detector1Id.equals(measurementData.getName()) && (measurementData.getDataModifier() == DataModifier.UNMODIFIED)) {
-			DataType dt = measurementData.getDataType();
-			if ((dt == DataType.DOUBLE) || (dt == DataType.FLOAT) || (dt == DataType.INT32) || 
-					(dt == DataType.INT16) || (dt == DataType.INT8)){
-				y1value = (Double) measurementData.getValues().get(0);
-				redraw = true;
-				detector1HaveData = true;
-			}
-		}
-		else if ((this.detector2Id != null) && this.detector2Id.equals(measurementData.getName()) && (measurementData.getDataModifier() == DataModifier.UNMODIFIED)) {
-			DataType dt = measurementData.getDataType();
-			if ((dt == DataType.DOUBLE) || (dt == DataType.FLOAT) || (dt == DataType.INT32) || 
-					(dt == DataType.INT16) || (dt == DataType.INT8)){
-				y2value = (Double) measurementData.getValues().get(0);
-				redraw = true;
-				detector2HaveData = true;
-			}
-		}
-		else if (this.motorId.equals(measurementData.getName()) && (measurementData.getDataModifier() == DataModifier.UNMODIFIED)) {
-			DataType dt = measurementData.getDataType();
-			if ((dt == DataType.DOUBLE) || (dt == DataType.FLOAT) || (dt == DataType.INT32) || 
-					(dt == DataType.INT16) || (dt == DataType.INT8)){
-				xValue = (Double) measurementData.getValues().get(0);
-			}
-		}
-		else
-			return;
-		
-		final boolean det1HaveData = detector1HaveData;
-		final boolean det2HaveData = detector2HaveData;
-		if (redraw && !this.isDisposed()) this.getDisplay().syncExec( new Runnable() {
 
-			public void run() {
-				System.out.println("redrawing plot ");
-				if (!isDisposed()) {
-					if (det1HaveData){
-						xyPlot.setData(detector1Name, xValue,y1value);
-					}
-					if (det2HaveData){
-						xyPlot.setData(detector2Name, xValue,y2value);
-					}
+		boolean detector1HasData = false;
+		boolean detector2HasData = false;
+		boolean motorHasData = false;
+				
+		if ((measurementData.getChainId() == chid) && (measurementData.getScanModuleId() == smid)){
+			if ((this.detector1Id != null) && this.detector1Id.equals(measurementData.getName()) && (measurementData.getDataModifier() == DataModifier.UNMODIFIED)) {
+				detector1PosCount = measurementData.getPositionCounter();
+				DataType dt = measurementData.getDataType();
+				if ((dt == DataType.DOUBLE) || (dt == DataType.FLOAT) || (dt == DataType.INT32) || 
+						(dt == DataType.INT16) || (dt == DataType.INT8)){
+					y1value = (Double) measurementData.getValues().get(0);
+					detector1HasData = true;
 				}
 			}
-		});
-	}
-
-	@Override
-	public void chainStatusChanged(ChainStatusCommand chainStatusCommand) {
-
-		int chid = chainStatusCommand.getChainId();
-		int smid = chainStatusCommand.getScanModulId();
-		if ((this.chid == chid) && (this.smid == smid) && (chainStatusCommand.getChainStatus() == ChainStatus.EXECUTING_SM)){
-			isActive = true;
-			System.out.println("Executing chid: " + chid + "; smid: " + smid);
+			else if ((this.detector2Id != null) && this.detector2Id.equals(measurementData.getName()) && (measurementData.getDataModifier() == DataModifier.UNMODIFIED)) {
+				detector2PosCount = measurementData.getPositionCounter();
+				DataType dt = measurementData.getDataType();
+				if ((dt == DataType.DOUBLE) || (dt == DataType.FLOAT) || (dt == DataType.INT32) || 
+						(dt == DataType.INT16) || (dt == DataType.INT8)){
+					y2value = (Double) measurementData.getValues().get(0);
+					detector2HasData = true;
+				}
+			}
+			else if (this.motorId.equals(measurementData.getName()) && (measurementData.getDataModifier() == DataModifier.UNMODIFIED)) {
+				motorPosCount = measurementData.getPositionCounter();
+				DataType dt = measurementData.getDataType();
+				if ((dt == DataType.DOUBLE) || (dt == DataType.FLOAT) || (dt == DataType.INT32) || 
+						(dt == DataType.INT16) || (dt == DataType.INT8)){
+					xValue = (Double) measurementData.getValues().get(0);
+					motorHasData = true;
+				}
+			}
+		
+			final boolean plotDetector1 = (detector1HasData || motorHasData)  && (detector1PosCount == motorPosCount);
+			final boolean plotDetector2 = (detector2HasData || motorHasData)  && (detector2PosCount == motorPosCount);
+			if ((plotDetector1 || plotDetector2) && !this.isDisposed()) this.getDisplay().syncExec( new Runnable() {
+	
+				public void run() {
+					System.out.println("redrawing plot ");
+					if (!isDisposed()) {
+						if (plotDetector1){
+							xyPlot.setData(detector1Name, xValue,y1value);
+						}
+						if (plotDetector2){
+							xyPlot.setData(detector2Name, xValue,y2value);
+						}
+					}
+				}
+			});
 		}
-		else {
-			isActive = false;
-		}
-		if (detector1EngineLabel != null) detector1EngineLabel.setActive(isActive);
-		if (detector1EngineLabel != null) detector1EngineLabel.setActive(isActive);
 	}
 }

@@ -7,14 +7,11 @@ import org.eclipse.jface.viewers.TableViewer;
 
 import com.cosylab.util.PrintfFormat;
 
-import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
-import de.ptb.epics.eve.ecp1.intern.ChainStatus;
-import de.ptb.epics.eve.ecp1.intern.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.intern.DataType;
 
-public class MathTableElement implements IMeasurementDataListener, IChainStatusListener {
+public class MathTableElement implements IMeasurementDataListener {
 
 	private String value;
 	private MathFunction mathFunction;
@@ -22,7 +19,6 @@ public class MathTableElement implements IMeasurementDataListener, IChainStatusL
 	private String detectorId;
 	private int chid;
 	private int smid;
-	boolean isActive = false;
 	private TableViewer viewer;
 	private String position;
 	private String motorId;
@@ -37,24 +33,24 @@ public class MathTableElement implements IMeasurementDataListener, IChainStatusL
 		this.motorPv = motorPv;
 		this.motorId = motorId;
 		this.detectorId = detectorId;
-		Activator.getDefault().getEcp1Client().addChainStatusListener(this);
 		Activator.getDefault().getEcp1Client().addMeasurementDataListener( this );
 	}
 
 	@Override
 	public void measurementDataTransmitted(MeasurementData measurementData) {
 		// TODO Auto-generated method stub
-		if ((!isActive) || (measurementData == null) || (detectorId == null)) return;
-
-		if (detectorId.equals(measurementData.getName()) && (measurementData.getDataModifier() == mathFunction.toDataModifier())){
-			value = convert(measurementData);
-			doUpdate();
-		}
-		else if (motorId.equals(measurementData.getName()) && (measurementData.getDataModifier() == mathFunction.toDataModifier())){
-			position = convert(measurementData);
-			doUpdate();
-		}
-			
+		if ((measurementData == null) || (detectorId == null)) return;
+		
+		if ((measurementData.getChainId() == chid) && (measurementData.getScanModuleId() == smid)){
+			if (detectorId.equals(measurementData.getName()) && (measurementData.getDataModifier() == mathFunction.toDataModifier())){
+				value = convert(measurementData);
+				doUpdate();
+			}
+			else if (motorId.equals(measurementData.getName()) && (measurementData.getDataModifier() == mathFunction.toDataModifier())){
+				position = convert(measurementData);
+				doUpdate();
+			}
+		}	
 	}
 	
 	private String convert(MeasurementData mData){
@@ -81,19 +77,6 @@ public class MathTableElement implements IMeasurementDataListener, IChainStatusL
 		}
 	}
 	
-	@Override
-	public void chainStatusChanged(ChainStatusCommand chainStatusCommand) {
-
-		int chid = chainStatusCommand.getChainId();
-		int smid = chainStatusCommand.getScanModulId();
-		if ((this.chid == chid) && (this.smid == smid) && (chainStatusCommand.getChainStatus() == ChainStatus.EXECUTING_SM)){
-			isActive = true;
-		}
-		else {
-			isActive = false;
-		}
-	}
-
 	public void gotoPos() {
 		// TODO
 		if (motorPv == null) return;

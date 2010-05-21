@@ -37,6 +37,7 @@ public class ViewerMessage {
 			
 			this.messageDateTime = new GregorianCalendar( 1990, 0, 1, 0, 0 );
 			this.messageDateTime.add( Calendar.SECOND, error.getGerenalTimeStamp() );
+			this.messageDateTime.add(Calendar.MILLISECOND, error.getNanoseconds() / 1000000);
 			this.messageSource = MessageSource.convertFromErrorFacility( error.getErrorFacility() );
 			this.messageType = MessageTypes.convertFromErrorSeverity( error.getErrorSeverity() );
 			this.message = error.getText();
