@@ -82,6 +82,9 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 								this.executingScanModules.add( scanModules.get( j ) );
 								this.pausedScanModules.remove( scanModules.get( j ) );
 								this.waitingScanModules.remove( scanModules.get( j ) );
+								
+								this.idleChains.remove( scanModules.get( j ).getChain() );
+								this.runningChains.add( scanModules.get( j ).getChain() );
 							}
 //							final PlotWindow[] plotWindows = scanModules.get( j ).getPlotWindows();
 //							for( int k = 0; k < plotWindows.length; ++k ) {
@@ -133,6 +136,8 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 								this.pausedScanModules.add( scanModules.get( j ) );
 								this.waitingScanModules.remove( scanModules.get( j ) );
 								
+								this.idleChains.add( scanModules.get( j ).getChain() );
+								this.runningChains.remove( scanModules.get( j ).getChain() );
 							}
 						}
 					}
@@ -150,6 +155,9 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 								this.executingScanModules.remove( scanModules.get( j ) );
 								this.pausedScanModules.remove( scanModules.get( j ) );
 								this.waitingScanModules.add( scanModules.get( j ) );
+								
+								this.idleChains.add( scanModules.get( j ).getChain() );
+								this.runningChains.remove( scanModules.get( j ).getChain() );
 							}
 						}
 					}
@@ -167,6 +175,9 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 								this.executingScanModules.remove( scanModules.get( j ) );
 								this.pausedScanModules.remove( scanModules.get( j ) );
 								this.waitingScanModules.remove( scanModules.get( j ) );
+								
+								this.idleChains.add( scanModules.get( j ).getChain() );
+								this.runningChains.remove( scanModules.get( j ).getChain() );
 							}
 						}
 					}
@@ -222,6 +233,16 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 	
 	public List< ScanModul > getWaitingScanModules() {
 		return new ArrayList< ScanModul >( this.waitingScanModules );
+	}
+
+	public void reset() {
+		this.executingScanModules.clear();
+		this.idleChains.clear();
+		this.initializingScanModules.clear();
+		this.pausedScanModules.clear();
+		this.runningChains.clear();
+		this.waitingScanModules.clear();
+		
 	}
 	
 

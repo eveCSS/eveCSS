@@ -21,6 +21,7 @@
  */
 package de.ptb.epics.eve.viewer;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.action.IContributionItem;
@@ -75,65 +76,51 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 	private void rebuildText() {
 		final StringBuffer stringBuffer = new StringBuffer();
 		
-		final List< Chain > idleChains = Activator.getDefault().getChainStatusAnalyzer().getIdleChains();
-		if( idleChains.size() > 0 ) {
-			stringBuffer.append( "Idle Chains: " );
-			for( int i = 0; i < idleChains.size(); ++i ) {
-				stringBuffer.append( idleChains.get( i ).getId() );
-				stringBuffer.append( ", " );
+		if( Activator.getDefault().getCurrentScanDescription() != null ) {
+			final Iterator< Chain > it = Activator.getDefault().getCurrentScanDescription().getChains().iterator();
+			while( it.hasNext() ) {
+				final Chain currentChain = it.next();
+				if( Activator.getDefault().getChainStatusAnalyzer().getRunningChains().contains( currentChain ) ) {
+					stringBuffer.append( "Chain " + currentChain.getId() + " is running" );
+				} else {
+					stringBuffer.append( "Chain " + currentChain.getId() + " is idle" );
+				}
+				final List< ScanModul > scanModules = currentChain.getScanModuls();
+			
+				final List< ScanModul > initialized = Activator.getDefault().getChainStatusAnalyzer().getInitializingScanModules();
+				for( final ScanModul scanModule : initialized ) {
+					if( scanModules.contains( scanModule ) ) {
+						stringBuffer.append( " with Scan Module " + scanModule.getId() + " initialized.\n" );
+						break;
+					}
+				}
+			
+				final List< ScanModul > running = Activator.getDefault().getChainStatusAnalyzer().getExecutingScanModules();
+				for( final ScanModul scanModule : running ) {
+					if( scanModules.contains( scanModule ) ) {
+						stringBuffer.append( " with Scan Module " + scanModule.getId() + " running.\n" );
+						break;
+					}
+				}
+			
+				final List< ScanModul > paused = Activator.getDefault().getChainStatusAnalyzer().getPausedScanModules();
+				for( final ScanModul scanModule : paused ) {
+					if( scanModules.contains( scanModule ) ) {
+						stringBuffer.append( " with paused Scan Module " + scanModule.getId() + ".\n" );
+						break;
+					}
+				}
+			
+				final List< ScanModul > waiting = Activator.getDefault().getChainStatusAnalyzer().getWaitingScanModules();
+				for( final ScanModul scanModule : waiting ) {
+					if( scanModules.contains( scanModule ) ) {
+						stringBuffer.append( " with Scan Module " + scanModule.getId() + " waiting for trigger.\n" );
+						break;
+					}
+				}
 			}
-			stringBuffer.append( '\n' );
 		}
 		
-		final List< Chain > runningChains = Activator.getDefault().getChainStatusAnalyzer().getRunningChains();
-		if( runningChains.size() > 0 ) {
-			stringBuffer.append( "Running Chains: " );
-			for( int i = 0; i < runningChains.size(); ++i ) {
-				stringBuffer.append( runningChains.get( i ).getId() );
-				stringBuffer.append( ", " );
-			}
-			stringBuffer.append( '\n' );
-		}
-		
-		final List< ScanModul > initializingScanModules = Activator.getDefault().getChainStatusAnalyzer().getInitializingScanModules();
-		if( initializingScanModules.size() > 0 ) {
-			stringBuffer.append( "Initializing Scan Modules: " );
-			for( int i = 0; i < initializingScanModules.size(); ++i ) {
-				stringBuffer.append( initializingScanModules.get( i ).getId() );
-				stringBuffer.append( ", " );
-			}
-			stringBuffer.append( '\n' );
-		}
-		
-		final List< ScanModul > executingScanModules = Activator.getDefault().getChainStatusAnalyzer().getExecutingScanModules();
-		if( executingScanModules.size() > 0 ) {
-			stringBuffer.append( "Executing Scan Modules: " );
-			for( int i = 0; i < executingScanModules.size(); ++i ) {
-				stringBuffer.append( executingScanModules.get( i ).getId() );
-				stringBuffer.append( ", " );
-			}
-			stringBuffer.append( '\n' );
-		}
-		
-		final List< ScanModul > pausedScanModules = Activator.getDefault().getChainStatusAnalyzer().getPausedScanModules();
-		if( pausedScanModules.size() > 0 ) {
-			stringBuffer.append( "Paused Scan Modules: " );
-			for( int i = 0; i < pausedScanModules.size(); ++i ) {
-				stringBuffer.append( pausedScanModules.get( i ).getId() );
-				stringBuffer.append( ", " );
-			}
-			stringBuffer.append( '\n' );
-		}
-		
-		final List< ScanModul > waitingScanModules = Activator.getDefault().getChainStatusAnalyzer().getWaitingScanModules();
-		if( waitingScanModules.size() > 0 ) {
-			stringBuffer.append( "Waiting Scan Modules: " );
-			for( int i = 0; i < waitingScanModules.size(); ++i ) {
-				stringBuffer.append( waitingScanModules.get( i ).getId() );
-				stringBuffer.append( ", " );
-			}
-			stringBuffer.append( '\n' );
-		}
 		
 		this.statusText.getDisplay().syncExec( new Runnable() {
 
