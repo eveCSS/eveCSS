@@ -17,7 +17,8 @@ public enum ErrorFacility {
 	SCANMOD,
 	STORAGE,
 	EVENT,
-	LTIMER;
+	LTIMER,
+	MATH;
 	
 	public static byte errorFacilityToByte( final ErrorFacility errorFacility ) {
 		switch( errorFacility ) {
@@ -53,6 +54,8 @@ public enum ErrorFacility {
 				return 0x16;
 			case LTIMER:
 				return 0x17;
+			case MATH:
+				return 0x18;
 		}
 		return Byte.MAX_VALUE;
 	}
@@ -91,6 +94,8 @@ public enum ErrorFacility {
 				return ErrorFacility.EVENT;
 			case 0x17:
 				return ErrorFacility.LTIMER;
+			case 0x18:
+				return ErrorFacility.MATH;
 		}
 		return null;
 	}
