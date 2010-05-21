@@ -19,7 +19,8 @@ public enum MessageSource {
 	SCANMOD,
 	STORAGE,
 	EVENT,
-	LTIMER;
+	LTIMER,
+	MATH;
 
 	public static MessageSource convertFromErrorFacility(ErrorFacility errorFacility) {
 		
@@ -55,6 +56,8 @@ public enum MessageSource {
 			return MessageSource.EVENT;	
 		case LTIMER:
 			return MessageSource.LTIMER;	
+		case MATH:
+			return MessageSource.MATH;	
 		}
 		return UNKNOWN;
 	}
