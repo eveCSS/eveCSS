@@ -25,6 +25,174 @@
         </plugin>
     </plugins>
     <detectors>
+            <detector>
+            <class>Keithley 6517</class>
+            <name>Laubis (SX700)</name>
+            <id>K6517:23329</id>
+            <unit>
+                <access method="GETCB" transport="ca" type="string">K6517:23329.EGU</access>
+            </unit>
+            <trigger>
+                <access method="PUTCB" transport="ca" type="int">K6517:23329.TRIG</access>
+                <value type="int">1</value>
+            </trigger>
+            <channel>
+                <name>Kanal 1</name>
+                <id>K6517:2332900</id>
+                <read>
+                    <access method="GETCB" transport="ca" type="double">K6517:2332900</access>
+                </read>
+           	    <option>
+                	<name>Monitor Deadband</name>
+                	<id>K6517:2332900MDEL</id>
+                	<value>
+                	    <access method="GETPUT" transport="ca" type="double">K6517:2332900.MDEL</access>
+                	</value>
+            	</option>
+            	<option>
+                	<name>Raw Offset</name>
+                	<id>K6517:2332900ROFF</id>
+                	<value>
+                	    <access method="GETPUT" transport="ca" type="double">K6517:2332900.ROFF</access>
+                	</value>
+            	</option>
+            	<option>
+                	<name>Offset</name>
+                	<id>K6517:2332900AOFF</id>
+                	<value>
+                	    <access method="GETPUT" transport="ca" type="double">K6517:2332900.AOFF</access>
+                	</value>
+            	</option>
+            </channel>
+            <option>
+                <name>Function</name>
+                <id>K6517:23329function</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">K6517:23329function</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>triggerMode</name>
+                <id>K6517:23329triggerMode</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">K6517:23329triggerMode</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>triggerDelay</name>
+                <id>K6517:23329triggerDelay</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">K6517:23329triggerDelay</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Range Current</name>
+                <id>K6517:23329rangeCurr</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">K6517:23329rangeCurr</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Integration Time Current</name>
+                <id>K6517:23329intTimeCurr</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">K6517:23329intTimeCurr</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Range Voltage</name>
+                <id>K6517:23329rangeVolt</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">K6517:23329rangeVolt</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Integration Time Voltage</name>
+                <id>K6517:23329intTimeVolt</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">K6517:23329intTimeVolt</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Range Resistance</name>
+                <id>K6517:23329rangeOhms</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">K6517:23329rangeOhms</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Integration Time Resistance</name>
+                <id>K6517:23329intTimeOhms</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">K6517:23329intTimeOhms</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Range Charge</name>
+                <id>K6517:23329rangeChar</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">K6517:23329rangeChar</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Integration Time Charge</name>
+                <id>K6517:23329intTimeChar</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">K6517:23329intTimeChar</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Zero Check</name>
+                <id>K6517:23329zeroChk</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">K6517:23329zeroChk</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Zero Correct</name>
+                <id>K6517:23329zeroCor</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">K6517:23329zeroCor</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Zero Suppress</name>
+                <id>K6517:23329blSupp</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">K6517:23329blSupp</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Voltage Source Mode</name>
+                <id>K6517:23329vsMode</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">K6517:23329vsMode</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Voltage Source Value</name>
+                <id>K6517:23329vsVal</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">K6517:23329vsVal</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+        </detector>
         <detector>
             <class>ringCurrent</class>
             <name></name>
@@ -198,10 +366,707 @@
                     <value type="OnOff">0</value>
                 </stop>
             </axis>
+        </motor>      
+        <motor>
+            <class></class>
+            <name>MAXnet Controller 1</name>
+            <id>rackioc0100</id>
+            <axis>
+                <name>MaxNet 1</name>
+                <id>OMSMn:ioMn0100000</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">OMSMn:ioMn0100000</access>
+                </goto>
+                <position>
+                    <access method="GETCB" transport="ca" type="double">OMSMn:ioMn0100000.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">OMSMn:ioMn0100000.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <status>
+                    <access method="GETCB" transport="ca" type="int">OMSMn:ioMn0100000.MSTA</access>
+                </status>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">OMSMn:ioMn0100000.EGU</access>
+                </unit>
+                <deadband>
+                    <access method="GETPUTCB" transport="ca" type="double">OMSMn:ioMn0100000.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" transport="ca" type="double">OMSMn:ioMn0100000.OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" transport="ca" type="double">OMSMn:ioMn0100000.TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="PUT" transport="ca" type="int">OMSMn:ioMn0100000.TWF</access>
+                    <value type="int">1</value>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="PUT" transport="ca" type="int">OMSMn:ioMn0100000.TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>
+                <option>
+                    <name>Position Readback</name>
+                    <id>OMSMn:ioMn0100000.RBV</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">OMSMn:ioMn0100000.RBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Velocity</name>
+                    <id>OMSMn:ioMn0100000.VELO</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100000.VELO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft High Limit</name>
+                    <id>OMSMn:ioMn0100000.HLM</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100000.HLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft Low Limit</name>
+                    <id>OMSMn:ioMn0100000.LLM</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100000.LLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Offset</name>
+                    <id>OMSMn:ioMn0100000.OFF</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100000.OFF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Dial Value</name>
+                    <id>OMSMn:ioMn0100000.DVAL</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100000.DVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Acceleration</name>
+                    <id>OMSMn:ioMn0100000.ACCL</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100000.ACCL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor Resolution</name>
+                    <id>OMSMn:ioMn0100000.MRES</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100000.MRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Resolution</name>
+                    <id>OMSMn:ioMn0100000.ERES</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100000.ERES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Encoder</name>
+                    <id>OMSMn:ioMn0100000.UEIP</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">OMSMn:ioMn0100000.UEIP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Resolution</name>
+                    <id>OMSMn:ioMn0100000.RRES</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100000.RRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Readback</name>
+                    <id>OMSMn:ioMn0100000.URIP</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">OMSMn:ioMn0100000.URIP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Base Velocity</name>
+                    <id>OMSMn:ioMn0100000.VBAS</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100000.VBAS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Deadband</name>
+                    <id>OMSMn:ioMn0100000.RDBD</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100000.RDBD</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>OMSMn:ioMn0100000.MSTA</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">OMSMn:ioMn0100000.MSTA</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Count</name>
+                    <id>OMSMn:ioMn0100000.RCNT</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">OMSMn:ioMn0100000.RCNT</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>OMSMn:ioMn0100000.SEVR</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">OMSMn:ioMn0100000.SEVR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>
+            <axis>
+                <name>MaxNet 2</name>
+                <id>OMSMn:ioMn0100001</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">OMSMn:ioMn0100001</access>
+                </goto>
+                <position>
+                    <access method="GETCB" transport="ca" type="double">OMSMn:ioMn0100001.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">OMSMn:ioMn0100001.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <status>
+                    <access method="GETCB" transport="ca" type="int">OMSMn:ioMn0100001.MSTA</access>
+                </status>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">OMSMn:ioMn0100001.EGU</access>
+                </unit>
+                <deadband>
+                    <access method="GETPUTCB" transport="ca" type="double">OMSMn:ioMn0100001.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" transport="ca" type="double">OMSMn:ioMn0100001.OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" transport="ca" type="double">OMSMn:ioMn0100001.TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="PUT" transport="ca" type="int">OMSMn:ioMn0100001.TWF</access>
+                    <value type="int">1</value>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="PUT" transport="ca" type="int">OMSMn:ioMn0100001.TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>
+                <option>
+                    <name>Position Readback</name>
+                    <id>OMSMn:ioMn0100001.RBV</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">OMSMn:ioMn0100001.RBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Velocity</name>
+                    <id>OMSMn:ioMn0100001.VELO</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100001.VELO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft High Limit</name>
+                    <id>OMSMn:ioMn0100001.HLM</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100001.HLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft Low Limit</name>
+                    <id>OMSMn:ioMn0100001.LLM</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100001.LLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Offset</name>
+                    <id>OMSMn:ioMn0100001.OFF</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100001.OFF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Dial Value</name>
+                    <id>OMSMn:ioMn0100001.DVAL</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100001.DVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Acceleration</name>
+                    <id>OMSMn:ioMn0100001.ACCL</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100001.ACCL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor Resolution</name>
+                    <id>OMSMn:ioMn0100001.MRES</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100001.MRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Resolution</name>
+                    <id>OMSMn:ioMn0100001.ERES</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100001.ERES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Encoder</name>
+                    <id>OMSMn:ioMn0100001.UEIP</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">OMSMn:ioMn0100001.UEIP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Resolution</name>
+                    <id>OMSMn:ioMn0100001.RRES</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100001.RRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Readback</name>
+                    <id>OMSMn:ioMn0100001.URIP</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">OMSMn:ioMn0100001.URIP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Base Velocity</name>
+                    <id>OMSMn:ioMn0100001.VBAS</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100001.VBAS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Deadband</name>
+                    <id>OMSMn:ioMn0100001.RDBD</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100001.RDBD</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>OMSMn:ioMn0100001.MSTA</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">OMSMn:ioMn0100001.MSTA</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Count</name>
+                    <id>OMSMn:ioMn0100001.RCNT</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">OMSMn:ioMn0100001.RCNT</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>OMSMn:ioMn0100001.SEVR</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">OMSMn:ioMn0100001.SEVR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>
+            <axis>
+                <name>MaxNet 3</name>
+                <id>OMSMn:ioMn0100002</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">OMSMn:ioMn0100002</access>
+                </goto>
+                <position>
+                    <access method="GETCB" transport="ca" type="double">OMSMn:ioMn0100002.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">OMSMn:ioMn0100002.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <status>
+                    <access method="GETCB" transport="ca" type="int">OMSMn:ioMn0100002.MSTA</access>
+                </status>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">OMSMn:ioMn0100002.EGU</access>
+                </unit>
+                <deadband>
+                    <access method="GETPUTCB" transport="ca" type="double">OMSMn:ioMn0100002.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" transport="ca" type="double">OMSMn:ioMn0100002.OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" transport="ca" type="double">OMSMn:ioMn0100002.TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="PUT" transport="ca" type="int">OMSMn:ioMn0100002.TWF</access>
+                    <value type="int">1</value>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="PUT" transport="ca" type="int">OMSMn:ioMn0100002.TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>
+                <option>
+                    <name>Position Readback</name>
+                    <id>OMSMn:ioMn0100002.RBV</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">OMSMn:ioMn0100002.RBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Velocity</name>
+                    <id>OMSMn:ioMn0100002.VELO</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100002.VELO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft High Limit</name>
+                    <id>OMSMn:ioMn0100002.HLM</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100002.HLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft Low Limit</name>
+                    <id>OMSMn:ioMn0100002.LLM</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100002.LLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Offset</name>
+                    <id>OMSMn:ioMn0100002.OFF</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100002.OFF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Dial Value</name>
+                    <id>OMSMn:ioMn0100002.DVAL</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100002.DVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Acceleration</name>
+                    <id>OMSMn:ioMn0100002.ACCL</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100002.ACCL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor Resolution</name>
+                    <id>OMSMn:ioMn0100002.MRES</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100002.MRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Resolution</name>
+                    <id>OMSMn:ioMn0100002.ERES</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100002.ERES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Encoder</name>
+                    <id>OMSMn:ioMn0100002.UEIP</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">OMSMn:ioMn0100002.UEIP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Resolution</name>
+                    <id>OMSMn:ioMn0100002.RRES</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100002.RRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Readback</name>
+                    <id>OMSMn:ioMn0100002.URIP</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">OMSMn:ioMn0100002.URIP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Base Velocity</name>
+                    <id>OMSMn:ioMn0100002.VBAS</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100002.VBAS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Deadband</name>
+                    <id>OMSMn:ioMn0100002.RDBD</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100002.RDBD</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>OMSMn:ioMn0100002.MSTA</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">OMSMn:ioMn0100002.MSTA</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Count</name>
+                    <id>OMSMn:ioMn0100002.RCNT</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">OMSMn:ioMn0100002.RCNT</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>OMSMn:ioMn0100002.SEVR</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">OMSMn:ioMn0100002.SEVR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>
+            <axis>
+                <name>MaxNet 4</name>
+                <id>OMSMn:ioMn0100003</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">OMSMn:ioMn0100003</access>
+                </goto>
+                <position>
+                    <access method="GETCB" transport="ca" type="double">OMSMn:ioMn0100003.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">OMSMn:ioMn0100003.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <status>
+                    <access method="GETCB" transport="ca" type="int">OMSMn:ioMn0100003.MSTA</access>
+                </status>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">OMSMn:ioMn0100003.EGU</access>
+                </unit>
+                <deadband>
+                    <access method="GETPUTCB" transport="ca" type="double">OMSMn:ioMn0100003.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" transport="ca" type="double">OMSMn:ioMn0100003.OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" transport="ca" type="double">OMSMn:ioMn0100003.TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="PUT" transport="ca" type="int">OMSMn:ioMn0100003.TWF</access>
+                    <value type="int">1</value>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="PUT" transport="ca" type="int">OMSMn:ioMn0100003.TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>
+                <option>
+                    <name>Position Readback</name>
+                    <id>OMSMn:ioMn0100003.RBV</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">OMSMn:ioMn0100003.RBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Velocity</name>
+                    <id>OMSMn:ioMn0100003.VELO</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100003.VELO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft High Limit</name>
+                    <id>OMSMn:ioMn0100003.HLM</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100003.HLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft Low Limit</name>
+                    <id>OMSMn:ioMn0100003.LLM</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100003.LLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Offset</name>
+                    <id>OMSMn:ioMn0100003.OFF</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100003.OFF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Dial Value</name>
+                    <id>OMSMn:ioMn0100003.DVAL</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100003.DVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Acceleration</name>
+                    <id>OMSMn:ioMn0100003.ACCL</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100003.ACCL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor Resolution</name>
+                    <id>OMSMn:ioMn0100003.MRES</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100003.MRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Resolution</name>
+                    <id>OMSMn:ioMn0100003.ERES</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100003.ERES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Encoder</name>
+                    <id>OMSMn:ioMn0100003.UEIP</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">OMSMn:ioMn0100003.UEIP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Resolution</name>
+                    <id>OMSMn:ioMn0100003.RRES</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100003.RRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Readback</name>
+                    <id>OMSMn:ioMn0100003.URIP</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">OMSMn:ioMn0100003.URIP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Base Velocity</name>
+                    <id>OMSMn:ioMn0100003.VBAS</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100003.VBAS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Deadband</name>
+                    <id>OMSMn:ioMn0100003.RDBD</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">OMSMn:ioMn0100003.RDBD</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>OMSMn:ioMn0100003.MSTA</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">OMSMn:ioMn0100003.MSTA</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Count</name>
+                    <id>OMSMn:ioMn0100003.RCNT</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">OMSMn:ioMn0100003.RCNT</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>OMSMn:ioMn0100003.SEVR</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">OMSMn:ioMn0100003.SEVR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>
         </motor>
         <motor>
-            <class>MAXp class</class>
-            <name>MAXp name</name>
+            <class>MAXp</class>
+            <name>MAXp Controller 1</name>
             <id>rackioc0100</id>
             <unit>
                 <access method="GETCB" transport="ca" type="string">OMSMp:rackioc0100000.EGU</access>
@@ -464,18 +1329,6 @@
     </motors>
     <devices>
         <device>
-            <class>SMC200</class>
-            <name>Load Motor</name>
-            <id>PPSMC:23715001.SET</id>
-            <value>
-                <access type="string" method="GETPUTCB" transport="ca">PPSMC:gw23700000.SET</access>
-                <value type="string"></value>
-            </value>
-            <unit>
-                <access type="string" method="GETCB" transport="ca">PPSMC:gw23700000.EGU</access>
-            </unit>
-        </device>
-        <device>
             <class></class>
             <name>Motor-RBV</name>
             <id>Event-PPSMC:23715001</id>
@@ -485,12 +1338,51 @@
             </value>
         </device>
         <device>
-            <class></class>
-            <name>Dummy-Topup</name>
-            <id>TOPUP:228</id>
+        	<class>Pressure</class>
+            <name>Segment 3</name>
+            <id>TP256:212/101</id>
             <value>
-                <access monitor="true" method="GETCB" transport="ca" type="double">PPSMC:gw23700000.OFF</access>
-                <value type="double"></value>
+                <access method="GETCB" transport="ca" type="double">TP256:212/101</access>
+            </value>
+        </device>
+        <device>
+        	<class>Pressure</class>
+            <name>Segment 4</name>
+            <id>TP256:212/102</id>
+            <value>
+                <access method="GETCB" transport="ca" type="double">TP256:212/102</access>
+            </value>
+        </device>
+        <device>
+        	<class>Pressure</class>
+            <name>Segment 5</name>
+            <id>TP256:212/103</id>
+            <value>
+                <access method="GETCB" transport="ca" type="double">TP256:212/103</access>
+            </value>
+        </device>
+        <device>
+        	<class>Pressure</class>
+            <name>Segment 6</name>
+            <id>TP256:212/104</id>
+            <value>
+                <access method="GETCB" transport="ca" type="double">TP256:212/104</access>
+            </value>
+        </device>
+        <device>
+        	<class>Pressure</class>
+            <name>Segment 7</name>
+            <id>TP256:212/105</id>
+            <value>
+                <access method="GETCB" transport="ca" type="double">TP256:212/105</access>
+            </value>
+        </device>
+        <device>
+        	<class>Pressure</class>
+            <name>Segment 8</name>
+            <id>TP256:212/106</id>
+            <value>
+                <access method="GETCB" transport="ca" type="double">TP256:212/106</access>
             </value>
         </device>
     </devices>
