@@ -62,6 +62,7 @@ public class DeviceInspectorViewer extends ViewPart {
 		final Image leftArrowIcon = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_BACK ).createImage();
 		final Image rightArrowIcon = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_FORWARD ).createImage();
 		final Image playIcon = Activator.getDefault().getImageRegistry().get("PLAY16");
+		final Image stopIcon = Activator.getDefault().getImageRegistry().get("STOP16");
 
 		this.devices = new ArrayList< AbstractDevice >();
 		
@@ -298,6 +299,31 @@ public class DeviceInspectorViewer extends ViewPart {
 		});
 		tableColumnLayout.setColumnData(gotoColumn.getColumn(), new ColumnPixelData(100));
 
+		TableViewerColumn stopColumn = new TableViewerColumn(axisTableViewer, SWT.NONE);
+		stopColumn.setEditingSupport(new CommonTableEditingSupport(axisTableViewer, "stop"));
+		stopColumn.setLabelProvider(new ColumnLabelProvider() {
+			public Image getImage(Object element) {
+				return stopIcon;
+			}
+			public String getText(Object element) {
+				return null;
+			}
+		});
+		tableColumnLayout.setColumnData(stopColumn.getColumn(), new ColumnPixelData(22));
+
+		TableViewerColumn statusColumn = new TableViewerColumn(axisTableViewer, SWT.NONE);
+		statusColumn.getColumn().setText("Status");
+		statusColumn.setEditingSupport(new CommonTableEditingSupport(axisTableViewer, "status"));
+		statusColumn.setLabelProvider(new ColumnLabelProvider() {
+			public String getText(Object element) {
+				return ((CommonTableElement) element).getValue("status");
+			}
+			public Color getForeground(Object element) {
+				return ((CommonTableElement) element).getSeverityColor("status");
+			}
+		});
+		tableColumnLayout.setColumnData(statusColumn.getColumn(), new ColumnPixelData(70));
+
 		TableViewerColumn setColumn = new TableViewerColumn(axisTableViewer, SWT.NONE);
 		setColumn.getColumn().setText("Set/Use");
 		setColumn.setEditingSupport(new CommonTableEditingSupport(axisTableViewer, "set"));
@@ -309,7 +335,7 @@ public class DeviceInspectorViewer extends ViewPart {
 				return ((CommonTableElement) element).getSeverityColor("set");
 			}
 		});
-		tableColumnLayout.setColumnData(setColumn.getColumn(), new ColumnPixelData(100));
+		tableColumnLayout.setColumnData(setColumn.getColumn(), new ColumnPixelData(60));
 
 		TableViewerColumn tweakRColumn = new TableViewerColumn(axisTableViewer, SWT.NONE);
 		tweakRColumn.setEditingSupport(new CommonTableEditingSupport(axisTableViewer, "tweakreverse"));
@@ -325,7 +351,7 @@ public class DeviceInspectorViewer extends ViewPart {
 
 		TableViewerColumn tweakValueColumn = new TableViewerColumn(axisTableViewer, SWT.NONE);
 		tweakValueColumn.getColumn().setText("Tweak");
-		tweakValueColumn.setEditingSupport(new CommonTableEditingSupport(axisTableViewer, "tweak"));
+		tweakValueColumn.setEditingSupport(new CommonTableEditingSupport(axisTableViewer, "tweakvalue"));
 		tweakValueColumn.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				return ((CommonTableElement) element).getValue("tweakvalue");

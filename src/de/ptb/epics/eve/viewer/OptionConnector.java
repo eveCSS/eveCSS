@@ -31,8 +31,7 @@ public class OptionConnector implements IModelUpdateProvider, PVListener {
 	private final List< IModelUpdateListener > modelUpdateListener;
 	private boolean readOnly = false;
 	private String[] discreteValues = null;
-	private boolean isDiscrete;
-	private boolean isEnum = false;
+	private boolean isDiscrete = false;
 	
 	public OptionConnector( final Option option ) {
 		if( option == null ) {
@@ -86,7 +85,7 @@ public class OptionConnector implements IModelUpdateProvider, PVListener {
         try
         {	
         	String newValue = value;
-        	if (isEnum){
+        	if (isDiscrete){
         		int number = Integer.parseInt(value);
         		if ((number >= 0) && (number < discreteValues.length)){
         			newValue = discreteValues[number];
@@ -138,7 +137,7 @@ public class OptionConnector implements IModelUpdateProvider, PVListener {
         final IMetaData meta = pv.getValue().getMetaData();
         if (meta instanceof IEnumeratedMetaData) {
         	this.discreteValues = ((IEnumeratedMetaData)meta).getStates();
-        	isEnum  = true;
+        	isDiscrete  = true;
         }
 		final Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
 		while( it.hasNext() ) {

@@ -35,6 +35,8 @@ public class CommonTableElement {
 	private CommonTableElementPV gotoPv = null;
 	private CommonTableElementPV unitPv = null;
 	private CommonTableElementPV setPv = null;
+	private CommonTableElementPV statusPv = null;
+	private CommonTableElementPV stopPv = null;
 	private CommonTableElementPV triggerPv = null;
 	private CommonTableElementPV tweakvaluePv = null;
 	private CommonTableElementPV tweakforwardPv = null;
@@ -81,6 +83,14 @@ public class CommonTableElement {
 				}
 				else
 					unit = motorAxis.getUnit().getValue();
+			}
+			if ((motorAxis.getStatus().getAccess() != null) &&
+					(motorAxis.getStatus().getAccess().getTransport() == TransportTypes.CA)){
+				statusPv = new CommonTableElementPV(motorAxis.getStatus().getAccess().getVariableID(), this);
+			}
+			if ((motorAxis.getStop().getAccess() != null) &&
+					(motorAxis.getStop().getAccess().getTransport() == TransportTypes.CA)){
+				stopPv = new CommonTableElementPV(motorAxis.getStop().getAccess().getVariableID(), this);
 			}
 			if ((motorAxis.getTweakForward().getAccess() != null) &&
 					(motorAxis.getTweakForward().getAccess().getTransport() == TransportTypes.CA)){
@@ -192,6 +202,10 @@ public class CommonTableElement {
 			return valuePv.isConnected();
 		if ((property.equals("goto")) && (gotoPv != null))
 			return gotoPv.isConnected();
+		if ((property.equals("tweakvalue")) && (tweakvaluePv != null))
+			return tweakvaluePv.isConnected();
+		if ((property.equals("set")) && (setPv != null))
+			return setPv.isConnected();
 			
 		return false;
 	}
@@ -224,6 +238,13 @@ public class CommonTableElement {
 		}
 		else if (property.equals("tweakvalue")){
 			if (tweakvaluePv != null) status = tweakvaluePv.getStatus();
+		}
+		else if ((property.equals("status")) && (statusPv != null)) {
+			String statusVal = getValue("status");
+			if (statusVal.equals("Limit"))
+				return Activator.getDefault().getColor("COLOR_PV_MAJOR");
+			else
+				return Activator.getDefault().getColor("COLOR_PV_OK");
 		}
 
 		if(status.equals("OK"))
@@ -296,6 +317,17 @@ public class CommonTableElement {
 			return name;
 		else if (property.equals("value") && (valuePv != null))
 			return valuePv.getValue();
+		else if (property.equals("status") && (statusPv != null)){
+			String valueString = statusPv.getValue();
+			try {
+				int status = Integer.parseInt(valueString);
+				if (((status & 4) > 0) || ((status & 8192) > 0)) return "Limit";
+				else if ((status & 1024) > 0) return "Moving";
+				else return "Idle";
+			} catch (Exception e) {
+				return valueString;
+			}
+		}
 		else if (property.equals("unit")){
 			if (unitPv != null)
 				return unitPv.getValue();
@@ -336,6 +368,14 @@ public class CommonTableElement {
 			DetectorChannel channel = (DetectorChannel)device;
 			if (channel.getTrigger().getValue() != null)
 				triggerPv.setValue(channel.getTrigger().getValue().getDefaultValue());
+		}
+	}
+
+	public void stop() {
+		if (stopPv != null && stopPv.isConnected()){
+			MotorAxis axis = (MotorAxis)device;
+			if (axis.getStop().getValue() != null)
+				stopPv.setValue(axis.getStop().getValue().getDefaultValue());
 		}
 	}
 

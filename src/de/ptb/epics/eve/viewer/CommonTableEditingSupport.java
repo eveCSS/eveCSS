@@ -30,6 +30,9 @@ public class CommonTableEditingSupport extends EditingSupport {
 		else if (column.equals("trigger")) {
 			((CommonTableElement) element).trigger();
 		}
+		else if (column.equals("stop")) {
+			((CommonTableElement) element).stop();
+		}
 		else if (column.equals("tweakforward")) {
 			((CommonTableElement) element).tweak(true);
 		}
@@ -37,7 +40,8 @@ public class CommonTableEditingSupport extends EditingSupport {
 			((CommonTableElement) element).tweak(false);
 		}
 		else {
-			if (!((CommonTableElement) element).isReadonly(column))return true;
+			CommonTableElement ctb = (CommonTableElement) element;
+			if (!ctb.isReadonly(column) && ctb.isConnected(column))return true;
 		}
 		return false;
 	}

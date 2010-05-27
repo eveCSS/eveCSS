@@ -101,6 +101,7 @@ public class Activator extends AbstractUIPlugin {
 		imagereg.put("GREENMINUS12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenMinus12.12.gif").createImage());
 		imagereg.put("GREENGO12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenGo12.12.gif").createImage());
 		imagereg.put("PLAY16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/play.gif").createImage());
+		imagereg.put("STOP16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/stop.gif").createImage());
 		
 		final String measuringStationDescription = de.ptb.epics.eve.preferences.Activator.getDefault().getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION );
 		
