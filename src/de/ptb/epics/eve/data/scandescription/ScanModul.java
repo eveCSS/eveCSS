@@ -384,32 +384,53 @@ public class ScanModul implements IModelUpdateListener, IModelUpdateProvider, IM
 	 * @param channel The channel behavior that should be removed.
 	 */
 	public void remove( final Channel channel ) {
-		//TODO wenn der Channel in einem Positioning verwendet wird, muß reagiert werden
 		Positioning[] positionings = getPositionings();
-		System.out.println("Channel wird entfernt: " + channel.getDetectorChannel().getFullIdentifyer());
 		
 		for( int i = 0; i < positionings.length; ++i ) {
 			// Wenn positioning Channel oder Normalize = remove Channel, 
 			// channel entfernen und Fehlermeldung ausgeben.
-			// TODO Feld rot markieren und in Fehlerliste eintragen.
-			System.out.println("   Positioning: " + positionings[i].getMotorAxis().getFullIdentifyer());
-
 			if (channel.getDetectorChannel().equals(positionings[i].getDetectorChannel())) {
-				System.out.println("         DetectorChannel gibt es nicht mehr");
-				// TODO: Fehlermeldung ausgeben, dass DetectorChannel entfernt wurde und neu gesetzt werden muß
-				// entfernen erst ausführen, wenn sichergestellt ist, das eine neue Eingabe erzeugt wird.
-				// positionings[i].setDetectorChannel(null);
+				// DetectorChannel gibt es nicht mehr.
+				positionings[i].setDetectorChannel(null);
 			}
 			if (channel.getDetectorChannel().equals(positionings[i].getNormalization())) {
 				System.out.println("         Normalization gibt es nicht mehr");
-				// TODO: Fehlermeldung ausgeben, dass Normalize Channel entfernt wurde
+				// TODO: Warnmeldung ausgeben, dass Normalize Channel entfernt wurde
 				positionings[i].setNormalization(null);
 			}
 		}
 
+		// Wenn die Achse in einem Plot verwendet wird, muß die Achse entfernt werden
+		for ( Iterator< PlotWindow > it = this.plotWindows.iterator(); it.hasNext(); ) {
+			PlotWindow aktPlotWindow = it.next();
+
+			YAxis wegAxis1 = null;
+			YAxis wegAxis2 = null;
+			for( Iterator< YAxis > ityAxis = aktPlotWindow.getYAxisIterator(); ityAxis.hasNext();) {
+				YAxis yAxis = ityAxis.next();
+				if (yAxis.getNormalizeChannel() != null) {
+					if (yAxis.getNormalizeChannel().equals(channel.getDetectorChannel())) {
+						yAxis.setNormalizeChannel(null);
+					}
+				}
+				if (yAxis.getDetectorChannel() != null) {
+					if (yAxis.getDetectorChannel().equals(channel.getDetectorChannel())) {
+						yAxis.setDetectorChannel(null);
+						if (wegAxis1 == null)
+							wegAxis1 = yAxis;
+						else
+							wegAxis2 = yAxis;
+					}
+				}
+			}
+			if (wegAxis1 != null)
+				aktPlotWindow.removeYAxis(wegAxis1);
+			if (wegAxis2 != null)
+				aktPlotWindow.removeYAxis(wegAxis2);
+		}
+
 		// falls es DetektorReadyEvents zu dem Channel gibt, werden diese entfernt
 		if (channel.getDetectorReadyEvent() != null) {
-			System.out.println("DetektorReadyEvent zum Channel " + channel.getDetectorChannel().getFullIdentifyer() + " vorhanden");
 			channel.getParentScanModul().getChain().getScanDescription().removeEventById( channel.getDetectorReadyEvent().getID() );
 			channel.setDetectorReadyEvent(null);
 		};
@@ -437,7 +458,18 @@ public class ScanModul implements IModelUpdateListener, IModelUpdateProvider, IM
 				remove(positionings[i]);
 			}
 		}
-		
+
+		// Wenn die Achse in einem Plot verwendet wird, muß die Achse entfernt werden
+		for ( Iterator< PlotWindow > it = this.plotWindows.iterator(); it.hasNext(); ) {
+			PlotWindow aktPlotWindow = it.next();
+			if (aktPlotWindow.getXAxis() != null) {
+				// nur wenn die aktuelle Anzeige der X-Achse nicht leer ist,
+				// wird ein neuer Wert gesetzt
+				if (aktPlotWindow.getXAxis().equals(axis.getMotorAxis())) {
+					aktPlotWindow.setXAxis(null);
+				}
+			}
+		}
 		this.axis.remove( axis );
 		axis.removeModelUpdateListener( this );
 		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
@@ -1091,10 +1123,16 @@ public class ScanModul implements IModelUpdateListener, IModelUpdateProvider, IM
 			errorList.addAll( postscanIterator.next().getModelErrors() );
 		}
 		
-		final Iterator< Positioning > poitioningIterator = this.positionings.iterator();
-		while( poitioningIterator.hasNext() ) {
-			errorList.addAll( poitioningIterator.next().getModelErrors() );
+		final Iterator< Positioning > positioningIterator = this.positionings.iterator();
+		while( positioningIterator.hasNext() ) {
+			errorList.addAll( positioningIterator.next().getModelErrors() );
 		}
+
+		final Iterator< PlotWindow > plotWindowIterator = this.plotWindows.iterator();
+		while( plotWindowIterator.hasNext() ) {
+			errorList.addAll( plotWindowIterator.next().getModelErrors() );
+		}
+
 		return errorList;
 	}
 	

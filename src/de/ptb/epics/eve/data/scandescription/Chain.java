@@ -268,9 +268,11 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * 
 	 * @return The ControlEvent for the breakevent.
 	 */
+/***
 	public List<ControlEvent> getBreakEvents() {
 		return new ArrayList<ControlEvent>( this.breakEvents );
 	}
+***/
 	
 	/**
 	 * Gives back if the saveing of the results have to be confirmed manually.

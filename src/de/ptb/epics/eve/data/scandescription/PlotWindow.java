@@ -8,11 +8,15 @@
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.data.scandescription.errors.PlotWindowError;
+import de.ptb.epics.eve.data.scandescription.errors.PlotWindowErrorTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -81,7 +85,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider {
 	 */
 	public void setId( final int id ) {
 		if( id < 1 ) {
-			throw new IllegalArgumentException( "The parameter 'id' must be larger than 0" );
+			throw new IllegalArgumentException( "The parameter 'id' must be larger than 0." );
 		}
 		this.id = id;
 		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
@@ -259,6 +263,18 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider {
 	 */
 	public boolean removeModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
 		return this.updateListener.remove( modelUpdateListener );
+	}
+
+	public List< IModelError> getModelErrors() {
+		final List< IModelError > modelErrors = new ArrayList< IModelError >();
+		if( this.xAxis == null ) {
+			modelErrors.add( new PlotWindowError( this, PlotWindowErrorTypes.NO_X_AXIS_SET ) );
+		}
+		if( this.getYAxisAmount() == 0 ) {
+			modelErrors.add( new PlotWindowError( this, PlotWindowErrorTypes.NO_Y_AXIS_SET ) );
+		}
+		
+		return modelErrors;
 	}
 	
 }

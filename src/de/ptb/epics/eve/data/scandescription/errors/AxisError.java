@@ -31,7 +31,7 @@ public class AxisError implements IModelError {
 			throw new IllegalArgumentException( "The parameter 'axis' must not be null!" );
 		}
 		if( errorType == null ) {
-			throw new IllegalArgumentException( "The parameter 'axis' must not be null!" );
+			throw new IllegalArgumentException( "The parameter 'errorType' must not be null!" );
 		}
 		this.axis = axis;
 		this.errorType = errorType;
