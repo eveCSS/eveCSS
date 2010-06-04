@@ -41,7 +41,6 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * The parent scan module of this channel.
 	 */
 	private ScanModul parentScanModul;
-
 	
 	/**
 	 * The max deviation of this channel.
@@ -72,7 +71,6 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * The detector ready event.
 	 */
 	private Event detectorReadyEvent;
-
 
 	/**
 	 * A list of the ControlEvents, that holds the configuration for the redo events.
@@ -155,7 +153,6 @@ public class Channel extends AbstractMainPhaseBehavior {
 	public Iterator< ControlEvent > getRedoEventsIterator() {
 		return this.redoEvents.iterator();
 	}
-
 	
 	/**
 	 * Gives back how often the detector should be read to make an average
@@ -343,7 +340,6 @@ public class Channel extends AbstractMainPhaseBehavior {
 	public ControlEventManager getRedoControlEventManager() {
 		return redoControlEventManager;
 	}
-	
 	
 	/**
 	 * Sets the detector channel that will be controlled by this behavior.
