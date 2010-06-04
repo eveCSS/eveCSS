@@ -21,6 +21,8 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -37,6 +39,12 @@ import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.YAxis;
+import de.ptb.epics.eve.data.scandescription.errors.AxisError;
+import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.data.scandescription.errors.PlotWindowError;
+import de.ptb.epics.eve.data.scandescription.errors.PlotWindowErrorTypes;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.editor.Activator;
 
@@ -56,29 +64,21 @@ public class PlotWindowView extends ViewPart {
 	private Composite yAxis2Composite = null;
 	
 	private Label plotWindowIDLabel = null;
-	
 	private Spinner plotWindowIDSpinner = null;
-	
 	private Label plotWindowIDErrorLabel = null;
 	
 	private Label motorAxisLabel = null;
-	
 	private Combo motorAxisComboBox = null;
-	
 	private Label motorAxisErrorLabel = null;
 	
 	private Button preInitWindowCheckBox = null;
 	
 	private Label scaleTypeLabel = null;
-	
 	private Combo scaleTypeComboBox = null;
-	
 	private Label scaleTypeErrorLabel = null;
 	
 	private Label yAxis1DetectorChannelLabel = null;
-	
 	private Combo yAxis1DetectorChannelComboBox = null;
-	
 	private Label yAxis1DetectorChannelErrorLabel = null;
 	
 	private Label yAxis1NormalizeChannelLabel = null;
@@ -86,33 +86,23 @@ public class PlotWindowView extends ViewPart {
 	private Label yAxis1NormalizeChannelErrorLabel = null;
 
 	private Label yAxis1ColorLabel = null;
-	
 	private Combo yAxis1ColorComboBox = null;
-	
 	private Label yAxis1ColorErrorLabel = null;
 	
 	private Label yAxis1LinestyleLabel = null;
-	
 	private Combo yAxis1LinestyleComboBox = null;
-	
 	private Label yAxis1LinestyleErrorLabel = null;
 	
 	private Label yAxis1MarkstyleLabel = null;
-	
 	private Combo yAxis1MarkstyleComboBox = null;
-	
 	private Label yAxis1MarkstyleErrorLabel = null;
 	
 	private Label yAxis1ScaletypeLabel = null;
-	
 	private Combo yAxis1ScaletypeComboBox = null;
-	
 	private Label yAxis1ScaletypeErrorLabel = null;
 	
 	private Label yAxis2DetectorChannelLabel = null;
-	
 	private Combo yAxis2DetectorChannelComboBox = null;
-	
 	private Label yAxis2DetectorChannelErrorLabel = null;
 	
 	private Label yAxis2NormalizeChannelLabel = null;
@@ -120,27 +110,19 @@ public class PlotWindowView extends ViewPart {
 	private Label yAxis2NormalizeChannelErrorLabel = null;
 
 	private Label yAxis2ColorLabel = null;
-	
 	private Combo yAxis2ColorComboBox = null;
-	
 	private Label yAxis2ColorErrorLabel = null;
 	
 	private Label yAxis2LinestyleLabel = null;
-	
 	private Combo yAxis2LinestyleComboBox = null;
-	
 	private Label yAxis2LinestyleErrorLabel = null;
 	
 	private Label yAxis2MarkstyleLabel = null;
-	
 	private Combo yAxis2MarkstyleComboBox = null;
-	
 	private Label yAxis2MarkstyleErrorLabel = null;
 	
 	private Label yAxis2ScaletypeLabel = null;
-	
 	private Combo yAxis2ScaletypeComboBox = null;
-	
 	private Label yAxis2ScaletypeErrorLabel = null;
 	
 	private ExpandItem item0;
@@ -192,22 +174,47 @@ public class PlotWindowView extends ViewPart {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.plotWindowIDSpinner.setLayoutData( gridData );
+		this.plotWindowIDSpinner.setMinimum(1);
 		this.plotWindowIDSpinner.addModifyListener( new ModifyListener() {
 
 			public void modifyText(ModifyEvent e) {
 				if( plotWindow != null ) {
-					plotWindow.setId( plotWindowIDSpinner.getSelection() );
+					// Die ID wird nur gesetzt, wenn der Wert bisher noch nicht vorkommt
+					int newId = plotWindowIDSpinner.getSelection();
+
+					PlotWindow[] plotWindows = scanModul.getPlotWindows();
+					boolean setId = true;
+					for (int j = 0; j < plotWindows.length; ++j) {
+						if (newId == plotWindows[j].getId()) {
+							setId = false;
+							if (plotWindow.equals(plotWindows[j])) {
+								// ID ist gleich kommt aber aus dem eigenen PlotWindow
+								// => keine Fehlermeldung
+								plotWindowIDErrorLabel.setImage( null );
+								plotWindowIDErrorLabel.setToolTipText( null );
+							} else {
+								plotWindowIDErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+								plotWindowIDErrorLabel.setToolTipText("Id not changed, value existing" );
+							}
+						}
+					}
+					if (setId) {
+						try {
+							plotWindow.setId( plotWindowIDSpinner.getSelection() );
+							plotWindowIDErrorLabel.setImage( null );
+							plotWindowIDErrorLabel.setToolTipText( null );
+						}
+						catch( final IllegalArgumentException ex ) {
+							plotWindowIDErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+							plotWindowIDErrorLabel.setToolTipText( ex.getMessage() );
+						}
+					}
 				}
-				
 			}
-			
 		});
 		
 		this.plotWindowIDErrorLabel = new Label( this.xAxisComposite, SWT.NONE );
 		this.plotWindowIDErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
-		this.plotWindowIDErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
-		// TODO: Die Plot ID innerhalb eines Scan-Moduls muß eindeutig sein. In dem ID-Feld
-		// darf keine vorhandene ID-Nummer eingetragen werden.
 		
 		this.motorAxisLabel = new Label( this.xAxisComposite, SWT.NONE );
 		this.motorAxisLabel.setText( "Motor Axis:" );
@@ -217,29 +224,24 @@ public class PlotWindowView extends ViewPart {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.motorAxisComboBox.setLayoutData( gridData );
-		this.motorAxisComboBox.addSelectionListener( new SelectionListener() {
-
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			public void widgetSelected( final SelectionEvent e ) {
+		this.motorAxisComboBox.addModifyListener( new ModifyListener() {
+			public void modifyText( final ModifyEvent e ) {
 				if( motorAxisComboBox.getText().equals( "" )) {
-					// keine erlaubte Auswahl
-					// TODO Wie wird hier eine Fehlerbehandlung durchgeführt? Was muß dabei alles registriert werden?
-					throw new IllegalArgumentException( "The parameter 'Motor Axis' must not be null!" );
+					if (plotWindow != null) 
+					   plotWindow.setXAxis( null );
+					motorAxisErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK) );
+					motorAxisErrorLabel.setToolTipText( "The xAxis must not be empty." );
 				}
 				else {
 					plotWindow.setXAxis( (MotorAxis)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( motorAxisComboBox.getText() ) );
+					motorAxisErrorLabel.setImage( null );
+					motorAxisErrorLabel.setToolTipText( null );
 				}
 			}
 		});
-		
+
 		this.motorAxisErrorLabel = new Label( this.xAxisComposite, SWT.NONE );
 		this.motorAxisErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK) );
-		this.motorAxisErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
-		// TODO: Es darf keinen Plot ohne Motor Axis geben
 		
 		this.preInitWindowCheckBox = new Button( this.xAxisComposite, SWT.CHECK );
 		gridData = new GridData();
@@ -249,7 +251,6 @@ public class PlotWindowView extends ViewPart {
 		this.preInitWindowCheckBox.setLayoutData( gridData );
 		this.preInitWindowCheckBox.setText( "Preinit Window" );
 		this.preInitWindowCheckBox.addSelectionListener( new SelectionListener() {
-
 			public void widgetDefaultSelected( final SelectionEvent e ) {
 				
 			}
@@ -257,7 +258,6 @@ public class PlotWindowView extends ViewPart {
 			public void widgetSelected( final SelectionEvent e ) {
 				plotWindow.setInit( preInitWindowCheckBox.getSelection() );
 			}
-			
 		});
 		
 		this.scaleTypeLabel = new Label( this.xAxisComposite, SWT.NONE );
@@ -270,16 +270,12 @@ public class PlotWindowView extends ViewPart {
 		this.scaleTypeComboBox.setLayoutData( gridData );
 		this.scaleTypeComboBox.setItems( PlotModes.valuesAsString() );
 		this.scaleTypeComboBox.addSelectionListener( new SelectionListener() {
-
 			public void widgetDefaultSelected( final SelectionEvent e ) {
-				
 			}
 
 			public void widgetSelected( final SelectionEvent e ) {
 				plotWindow.setMode( PlotModes.stringToMode( scaleTypeComboBox.getText()  ) );
-				
 			}
-			
 		});
 
 		this.scaleTypeErrorLabel = new Label( this.xAxisComposite, SWT.NONE );
@@ -296,7 +292,6 @@ public class PlotWindowView extends ViewPart {
 		gridData.horizontalAlignment = GridData.FILL;
 		this.yAxis1DetectorChannelComboBox.setLayoutData( gridData );
 		this.yAxis1DetectorChannelComboBox.addModifyListener( new ModifyListener() {
-
 			public void modifyText( final ModifyEvent e ) {
 				if( yAxis1DetectorChannelComboBox.getText().equals( "" ) || 
 					yAxis1DetectorChannelComboBox.getText().equals( "none" ) ) {
@@ -315,6 +310,13 @@ public class PlotWindowView extends ViewPart {
 					yAxis1LinestyleComboBox.setText( "" );
 					yAxis1MarkstyleComboBox.setText( "" );
 					yAxis1ScaletypeComboBox.setText( "" );
+
+					if (yAxis[1] == null) {
+						yAxis1DetectorChannelErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK) );
+						yAxis1DetectorChannelErrorLabel.setToolTipText( "One of the yAxis have to be set." );
+						yAxis2DetectorChannelErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK) );
+						yAxis2DetectorChannelErrorLabel.setToolTipText( "One of the yAxis have to be set." );
+					}
 				} else {
 					if( yAxis[0] == null ) {
 						yAxis[0] = new YAxis();
@@ -336,9 +338,13 @@ public class PlotWindowView extends ViewPart {
 					yAxis1ScaletypeComboBox.setText( PlotModes.modeToString( yAxis[0].getMode() ) );
 					
 					yAxis[0].setDetectorChannel( (DetectorChannel)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( yAxis1DetectorChannelComboBox.getText() ) );
+
+					yAxis1DetectorChannelErrorLabel.setImage( null );
+					yAxis1DetectorChannelErrorLabel.setToolTipText( null );
+					yAxis2DetectorChannelErrorLabel.setImage( null );
+					yAxis2DetectorChannelErrorLabel.setToolTipText( null );
 				}
 			}
-			
 		});
 
 		this.yAxis1DetectorChannelErrorLabel = new Label( this.yAxis1Composite, SWT.NONE );
@@ -355,7 +361,6 @@ public class PlotWindowView extends ViewPart {
 		gridData.horizontalAlignment = GridData.FILL;
 		this.yAxis1NormalizeChannelComboBox.setLayoutData( gridData );
 		this.yAxis1NormalizeChannelComboBox.addModifyListener( new ModifyListener() {
-
 			public void modifyText( final ModifyEvent e ) {
 				if( yAxis1NormalizeChannelComboBox.getText().equals( "" ) ) {
 				} else if( yAxis1NormalizeChannelComboBox.getText().equals( "none" ) ) {
@@ -365,7 +370,6 @@ public class PlotWindowView extends ViewPart {
 					yAxis[0].setNormalizeChannel( (DetectorChannel)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( yAxis1NormalizeChannelComboBox.getText() ) );
 				}
 			}
-			
 		});
 		
 		this.yAxis1NormalizeChannelErrorLabel = new Label( this.yAxis1Composite, SWT.NONE );
@@ -380,9 +384,7 @@ public class PlotWindowView extends ViewPart {
 		this.yAxis1ColorComboBox.setLayoutData( gridData );
 		this.yAxis1ColorComboBox.setItems( Activator.getDefault().getMeasuringStation().getSelections().getColors() );
 		this.yAxis1ColorComboBox.addSelectionListener( new SelectionListener() {
-
 			public void widgetDefaultSelected( final SelectionEvent e ) {
-				
 			}
 
 			public void widgetSelected( final SelectionEvent e ) {
@@ -390,7 +392,6 @@ public class PlotWindowView extends ViewPart {
 					yAxis[ 0 ].setColor( yAxis1ColorComboBox.getText() );
 				}
 			}
-			
 		});
 		
 		this.yAxis1ColorErrorLabel = new Label( this.yAxis1Composite, SWT.NONE );
@@ -405,7 +406,6 @@ public class PlotWindowView extends ViewPart {
 		this.yAxis1LinestyleComboBox.setLayoutData( gridData );
 		this.yAxis1LinestyleComboBox.setItems( Activator.getDefault().getMeasuringStation().getSelections().getLinestyles() );
 		this.yAxis1LinestyleComboBox.addSelectionListener( new SelectionListener() {
-
 			public void widgetDefaultSelected( final SelectionEvent e ) {
 				
 			}
@@ -414,9 +414,7 @@ public class PlotWindowView extends ViewPart {
 				if( yAxis[ 0 ] != null ) {
 					yAxis[ 0 ].setLinestyle( yAxis1LinestyleComboBox.getText() );
 				}
-				
 			}
-			
 		});
 		
 		this.yAxis1LinestyleErrorLabel = new Label( this.yAxis1Composite, SWT.NONE );
@@ -431,19 +429,14 @@ public class PlotWindowView extends ViewPart {
 		this.yAxis1MarkstyleComboBox.setLayoutData( gridData );
 		this.yAxis1MarkstyleComboBox.setItems( Activator.getDefault().getMeasuringStation().getSelections().getMarkstyles() );
 		this.yAxis1MarkstyleComboBox.addSelectionListener( new SelectionListener() {
-
 			public void widgetDefaultSelected( final SelectionEvent e ) {
-				
-				
 			}
 
 			public void widgetSelected( final SelectionEvent e ) {
 				if( yAxis[ 0 ] != null ) {
 					yAxis[ 0 ].setMarkstyle( yAxis1MarkstyleComboBox.getText() );
 				}
-				
 			}
-			
 		});
 		
 		this.yAxis1MarkstyleErrorLabel = new Label( this.yAxis1Composite, SWT.NONE );
@@ -458,9 +451,7 @@ public class PlotWindowView extends ViewPart {
 		this.yAxis1ScaletypeComboBox.setLayoutData( gridData );
 		this.yAxis1ScaletypeComboBox.setItems( PlotModes.valuesAsString() );
 		this.yAxis1ScaletypeComboBox.addSelectionListener( new SelectionListener() {
-
 			public void widgetDefaultSelected( final SelectionEvent e ) {
-				
 				
 			}
 
@@ -468,7 +459,6 @@ public class PlotWindowView extends ViewPart {
 				if( yAxis[ 0 ] != null ) {
 					yAxis[ 0 ].setMode( PlotModes.stringToMode( yAxis1ScaletypeComboBox.getText() ) );
 				}
-				
 			}
 			
 		});
@@ -488,7 +478,6 @@ public class PlotWindowView extends ViewPart {
 		gridData.horizontalAlignment = GridData.FILL;
 		this.yAxis2DetectorChannelComboBox.setLayoutData( gridData );
 		this.yAxis2DetectorChannelComboBox.addModifyListener( new ModifyListener() {
-
 			public void modifyText( final ModifyEvent e ) {
 				if( yAxis2DetectorChannelComboBox.getText().equals( "" ) ||
 					yAxis2DetectorChannelComboBox.getText().equals( "none" ) ) {
@@ -507,6 +496,13 @@ public class PlotWindowView extends ViewPart {
 					yAxis2LinestyleComboBox.setText( "" );
 					yAxis2MarkstyleComboBox.setText( "" );
 					yAxis2ScaletypeComboBox.setText( "" );
+
+					if (yAxis[0] == null) {
+						yAxis1DetectorChannelErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK) );
+						yAxis1DetectorChannelErrorLabel.setToolTipText( "One of the yAxis have to be set." );
+						yAxis2DetectorChannelErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK) );
+						yAxis2DetectorChannelErrorLabel.setToolTipText( "One of the yAxis have to be set." );
+					}
 				} else {
 					if( yAxis[1] == null ) {
 						yAxis[1] = new YAxis();
@@ -537,6 +533,11 @@ public class PlotWindowView extends ViewPart {
 					yAxis2ScaletypeComboBox.setText( PlotModes.modeToString( yAxis[1].getMode() ) );
 					
 					yAxis[1].setDetectorChannel( (DetectorChannel)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( yAxis2DetectorChannelComboBox.getText() ) );
+
+					yAxis1DetectorChannelErrorLabel.setImage( null );
+					yAxis1DetectorChannelErrorLabel.setToolTipText( null );
+					yAxis2DetectorChannelErrorLabel.setImage( null );
+					yAxis2DetectorChannelErrorLabel.setToolTipText( null );
 				}
 			}
 		});
@@ -555,7 +556,6 @@ public class PlotWindowView extends ViewPart {
 		gridData.horizontalAlignment = GridData.FILL;
 		this.yAxis2NormalizeChannelComboBox.setLayoutData( gridData );
 		this.yAxis2NormalizeChannelComboBox.addModifyListener( new ModifyListener() {
-
 			public void modifyText( final ModifyEvent e ) {
 				if( yAxis2NormalizeChannelComboBox.getText().equals( "" ) ) {
 				} else if( yAxis2NormalizeChannelComboBox.getText().equals( "none" ) ) {
@@ -565,9 +565,7 @@ public class PlotWindowView extends ViewPart {
 					yAxis[1].setNormalizeChannel( (DetectorChannel)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( yAxis2NormalizeChannelComboBox.getText() ) );
 				}
 			}
-			
 		});
-
 		
 		this.yAxis2NormalizeChannelErrorLabel = new Label( this.yAxis2Composite, SWT.NONE );
 		
@@ -725,20 +723,82 @@ public class PlotWindowView extends ViewPart {
 
 	}
 
+	public Combo getMotorAxisComboBox() {
+		return this.motorAxisComboBox;
+	}
+
+	public Combo getyAxis1DetectorChannelComboBox() {
+		return this.yAxis1DetectorChannelComboBox;
+	}
+
+	public Combo getyAxis2DetectorChannelComboBox() {
+		return this.yAxis2DetectorChannelComboBox;
+	}
+
+	public Combo getyAxis1NormalizeChannelComboBox() {
+		return this.yAxis1NormalizeChannelComboBox;
+	}
+
+	public Combo getyAxis2NormalizeChannelComboBox() {
+		return this.yAxis2NormalizeChannelComboBox;
+	}
+	
+	public PlotWindow getPlotWindow() {
+		return this.plotWindow;
+	}
+	
 	public void setPlotWindow( final PlotWindow plotWindow ) {
+
 		if( this.plotWindow != null && plotWindow != null ) {
-			this.plotWindow.clearYAxis();
-			if( this.yAxis[ 0 ] != null ) {
-				this.plotWindow.addYAxis( this.yAxis[ 0 ] );
-				this.yAxis[ 0 ] = null;
+			if( this.plotWindow.equals(plotWindow)) {
+				// vorhandenes Fenster wird aktualisiert
+				switch ( this.plotWindow.getYAxisAmount()) {
+				case 0:
+					// es bleiben keine Achsen mehr übrig.
+					this.plotWindow.clearYAxis();
+					this.yAxis[0] = null;
+					this.yAxis[1] = null;
+					break;
+				case 1:
+					// es bleibt nur eine Achse übrig
+					for( Iterator< YAxis > ityAxis = plotWindow.getYAxisIterator(); ityAxis.hasNext();) {
+						YAxis yAxis = ityAxis.next();
+						if( (this.yAxis[0] != null ) && yAxis.equals(this.yAxis[0])) {
+							// wenn vorhanden wird yAxis[1] entfernt, yAxis[0] bleibt bestehen
+							if (this.yAxis[1] != null) {
+								this.plotWindow.removeYAxis(this.yAxis[1]);
+								this.yAxis[1] = null;
+							}
+						}
+						else if( (this.yAxis[1] != null ) && yAxis.equals(this.yAxis[1])) {
+							// wenn vorhanden wird yAxis[0] entfernt, yAxis[1] bleibt bestehen
+							if (this.yAxis[0] != null) {
+								// es werden beide yAchsen gelöscht, und yAxis[1]
+								// dann wieder hinzugefügt
+								this.plotWindow.clearYAxis();
+								this.plotWindow.addYAxis( this.yAxis[ 1 ] );
+								this.yAxis[1] = null;
+							}
+						}
+					}
+					break;
+				}
 			}
-			if( this.yAxis[ 1 ] != null ) {
-				this.plotWindow.addYAxis( this.yAxis[ 1 ] );
-				this.yAxis[ 1 ] = null;
+			else {
+				// neues PlotWindow wird angezeigt
+				this.plotWindow.clearYAxis();
+				if( this.yAxis[ 0 ] != null ) {
+					this.plotWindow.addYAxis( this.yAxis[ 0 ] );
+					this.yAxis[ 0 ] = null;
+				}
+				if( this.yAxis[ 1 ] != null ) {
+					this.plotWindow.addYAxis( this.yAxis[ 1 ] );
+					this.yAxis[ 1 ] = null;
+				}
 			}
-			
 		}
 		this.plotWindow = plotWindow;
+		
 		if( this.plotWindow != null ) {
 			int i = 0;
 			for( Iterator< YAxis > it = this.plotWindow.getYAxisIterator(); it.hasNext(); ++i ) {
@@ -746,14 +806,17 @@ public class PlotWindowView extends ViewPart {
 			}
 			
 			this.plotWindowIDSpinner.setSelection( this.plotWindow.getId() );
+			this.plotWindowIDErrorLabel.setImage(null);
 			this.motorAxisComboBox.setText( this.plotWindow.getXAxis()!=null?plotWindow.getXAxis().getFullIdentifyer():"" );
+
 			this.preInitWindowCheckBox.setSelection( this.plotWindow.isInit() );
 			this.scaleTypeComboBox.setText( PlotModes.modeToString( this.plotWindow.getMode() ) );
+
 			if( this.yAxis[ 0 ] != null ) {
 				this.yAxis1DetectorChannelComboBox.setText( yAxis[ 0 ].getDetectorChannel().getFullIdentifyer() );
 				if (yAxis[0].getNormalizeChannel() != null)
 					this.yAxis1NormalizeChannelComboBox.setText( yAxis[ 0 ].getNormalizeChannel().getFullIdentifyer() );
-				else
+				else 
 					this.yAxis1NormalizeChannelComboBox.setText("none");
 			} else {
 				this.yAxis1DetectorChannelComboBox.setText( "none" );
@@ -770,21 +833,13 @@ public class PlotWindowView extends ViewPart {
 			}
 			this.setEnabledForAll( true );
 		} else {
-			//TODO Frage an Stephan: warum wird hier kein removeYAxis() oder clearYAxis() aufgerufen werden?
+			//TODO Frage: warum wird hier kein removeYAxis() oder clearYAxis() aufgerufen werden?
 			this.yAxis[ 0 ] = null;
 			this.yAxis[ 1 ] = null;
 			this.plotWindowIDSpinner.setSelection( 0 );
 			
 			this.preInitWindowCheckBox.setSelection( false );
 			this.scaleTypeComboBox.setText( "" );
-
-			/* Durch den Aufruf von setScanModul werden die Inhalte der 3 ComboBoxen 
-			 * neu gesetzt und brauchen hier nicht
-			 * eingestellt zu werden.
-			 */
-//			this.motorAxisComboBox.setText( "" );
-//			this.yAxis1DetectorChannelComboBox.setText( "none" );
-//			this.yAxis2DetectorChannelComboBox.setText( "none" );
 
 			this.setEnabledForAll( false );
 		}
@@ -821,4 +876,23 @@ public class PlotWindowView extends ViewPart {
 		this.scanModul = scanModul;
 	}
 
+	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
+		System.out.println("updateEvent von PlotWindowView aufgerufen");
+		
+		/*********
+		final Iterator< IModelError > it = this.axis.getModelErrors().iterator();
+		while( it.hasNext() ) {
+			final IModelError modelError = it.next();
+			if( modelError instanceof AxisError ) {
+				final AxisError axisError = (AxisError)modelError;
+				if( axisError.getErrorType() == AxisErrorTypes.FILENAME_NOT_SET ) {
+					this.filenameErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+					break;
+				}
+			}
+		}
+		**********/
+	}
+
+	
 }

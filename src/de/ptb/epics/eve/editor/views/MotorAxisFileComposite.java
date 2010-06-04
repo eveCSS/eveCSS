@@ -138,6 +138,7 @@ public class MotorAxisFileComposite extends Composite implements IModelUpdateLis
 	@Override
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
 		this.filenameErrorLabel.setImage( null );
+		System.out.println("updateEvent von MotorAxisFileComposite aufgerufen");
 		
 		final Iterator< IModelError > it = this.axis.getModelErrors().iterator();
 		while( it.hasNext() ) {

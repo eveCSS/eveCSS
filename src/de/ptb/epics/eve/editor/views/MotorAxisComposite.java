@@ -7,6 +7,8 @@
  *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
 
+import java.util.Iterator;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.CellEditor;
@@ -23,6 +25,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
@@ -31,7 +34,10 @@ import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.data.scandescription.errors.PlotWindowError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
@@ -148,13 +154,10 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-
 				if( !motorAxisCombo.getText().equals( "" ) ) {
-
 					MotorAxis motorAxis = (MotorAxis) Activator
 					.getDefault().getMeasuringStation()
 					.getAbstractDeviceByFullIdentifyer(
@@ -164,6 +167,21 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 					axis.setMotorAxis(motorAxis);
 					scanModul.add(axis);
 
+		    		// PlotWindowView wird aktualisiert
+		    		IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
+					PlotWindowView plotWindowView = null;
+					for (int i = 0; i < ref.length; ++i) {
+						if (ref[i].getId().equals(PlotWindowView.ID)) {
+							plotWindowView = (PlotWindowView) ref[i]
+									.getPart(false);
+						}
+					}
+					if( plotWindowView != null ) {
+						Combo motorAxisComboBox = plotWindowView.getMotorAxisComboBox();
+						// Axis Eintrag wird in der Combo-Box hinzugefügt
+						motorAxisComboBox.add(motorAxisCombo.getText());
+					}
+					
 					// Table Eintrag wird aus der Combo-Box entfernt
 					motorAxisCombo.remove(motorAxisCombo.getText());
 					tableViewer.refresh();
@@ -174,20 +192,40 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 		Action deleteAction = new Action(){
 		    	public void run() {
 	    		
+					Axis removeAxis = (Axis)((IStructuredSelection)tableViewer.getSelection()).getFirstElement();
+					
 					// MotorAxis wird aus scanModul ausgetragen
-		    		scanModul.remove( (Axis)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
+					scanModul.remove( removeAxis );
 
 		    		// ComboBox muß aktualisiert werden
 		    		// alle MotorAxis' werden in die ComboBox eingetragen und die
 		    		// gesetzten MotorAxis' wieder ausgetragen
-		    		motorAxisCombo.setItems( Activator.getDefault().getMeasuringStation().getAxisFullIdentifyer().toArray( new String[0] ) );
+					motorAxisCombo.setItems( Activator.getDefault().getMeasuringStation().getAxisFullIdentifyer().toArray( new String[0] ) );
 					Axis[] axis = scanModul.getAxis();
 					for (int i = 0; i < axis.length; ++i) {
 						// Axis Eintrag wird aus der Combo-Box entfernt
 						motorAxisCombo.remove(axis[i].getMotorAxis().getFullIdentifyer());
 					}
-		    		
 		    		tableViewer.refresh();
+
+		    		// PlotWindowView wird aktualisiert
+		    		IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
+					PlotWindowView plotWindowView = null;
+					for (int i = 0; i < ref.length; ++i) {
+						if (ref[i].getId().equals(PlotWindowView.ID)) {
+							plotWindowView = (PlotWindowView) ref[i]
+									.getPart(false);
+						}
+					}
+					if( plotWindowView != null ) {
+						PlotWindow aktPlotWindow = plotWindowView.getPlotWindow();
+						// PlotWindowView wird neu gesetzt.
+						plotWindowView.setPlotWindow(aktPlotWindow);
+						
+						Combo motorAxisComboBox = plotWindowView.getMotorAxisComboBox();
+						// Axis Eintrag wird aus der Combo-Box entfernt
+						motorAxisComboBox.remove(removeAxis.getMotorAxis().getFullIdentifyer());
+					}
 		    	}
 		    };
 		    
