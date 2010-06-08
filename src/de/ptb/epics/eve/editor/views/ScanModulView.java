@@ -39,6 +39,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
@@ -47,6 +48,7 @@ import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.data.scandescription.errors.PlotWindowError;
 import de.ptb.epics.eve.data.scandescription.errors.PositioningError;
 import de.ptb.epics.eve.data.scandescription.errors.PostscanError;
 import de.ptb.epics.eve.data.scandescription.errors.PrescanError;
@@ -69,6 +71,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 																							// @jve:decl-index=0:
 
 	private boolean filling;
+	private boolean plotErrors;
 
 	private ScanModul currentScanModul; // @jve:decl-index=0:
 
@@ -301,12 +304,9 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		plotWindowChangeIDMenuItem.setEnabled(false);
 
 		plotWindowsTable.setMenu(menu);
-
 		plotWindowsTable.addSelectionListener( new SelectionListener() {
-
 			public void widgetDefaultSelected( final SelectionEvent e ) {
 				// TODO Auto-generated method stub
-				
 			}
 
 			public void widgetSelected( final SelectionEvent e ) {
@@ -323,7 +323,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 					plotWindowView.setPlotWindow( plotWindow );
 				}
 			}
-			
 		});
 		
 		addPlotWindowButton = new Button(this.plottingComposite, SWT.NONE);
@@ -335,6 +334,8 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		TableColumn tableColumn1 = new TableColumn(plotWindowsTable, SWT.NONE);
 		tableColumn1.setWidth(260);
 		tableColumn1.setText("Plot Window");
+		tableColumn1.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
+
 		
 		this.item2 = new ExpandItem(this.bar, SWT.NONE, 0);
 		item2.setText("Plot");
@@ -687,6 +688,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 				boolean prescanErrors = false;
 				boolean postscanErrors = false;
 				boolean positioningErrors = false;
+				boolean plotWindowErrors = false;
 				
 				final Iterator< IModelError > it = this.currentScanModul.getModelErrors().iterator();
 				while( it.hasNext() ) {
@@ -701,6 +703,8 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 						postscanErrors = true;
 					} else if( modelError instanceof PositioningError ) {
 						positioningErrors = true;
+					} else if( modelError instanceof PlotWindowError ) {
+						plotWindowErrors = true;
 					} 
 				}
 				if( motorAxisErrors ) {
@@ -717,6 +721,10 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 				}
 				if( positioningErrors ) {
 					this.positioningTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+				}
+				if( plotWindowErrors ) {
+					// TODO: Hier wird noch nichts gemacht
+					System.out.println("Achtung: Im ScanModul sind Plot Errors vorhanden");
 				}
 				if( this.currentScanModul.getPauseControlEventManager().getModelErrors().size() > 0 ) {
 					this.pauseEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
@@ -871,7 +879,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 							currentScanModul.add(plotWindow);
 							fillFields();
 						} else if (e.widget == plotWindowRemoveMenuItem) {
-							System.out.println("Ein plotWindow soll entfernt werden: " + plotWindowsTable.getSelectionCount());
 							TableItem[] selectedItems = plotWindowsTable
 									.getSelection();
 							int[] selectedIndexes = plotWindowsTable
@@ -988,11 +995,21 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 										"Change ID for Plot Window",
 										"Please enter the new ID", "" + plotWindow.getId(), null);
 								if (InputDialog.OK == dialog.open()) {
-									
-									plotWindow.setId( Integer.parseInt( dialog.getValue() ) );
+									// Id wird nur gesetzt, wenn es sie noch nicht gibt
+									int newId = Integer.parseInt( dialog.getValue());
 
+									PlotWindow[] plotWindows = currentScanModul.getPlotWindows();
+									boolean setId = true;
+									for (int j = 0; j < plotWindows.length; ++j) {
+										if (newId == plotWindows[j].getId()) {
+											// Id wird nicht gesetzt, da schon vorhanden
+											setId = false;
+										}
+									}
+									if (setId) {
+										plotWindow.setId( newId );
+									}
 								}
-
 							}
 							fillFields();
 						}
@@ -1062,6 +1079,15 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 			TableItem item = new TableItem(this.plotWindowsTable, SWT.NONE);
 			item.setText(new String[] { "" + plotWindows[i].getId() });
 			item.setData(plotWindows[i]);
+			
+			final Iterator< IModelError > it = plotWindows[i].getModelErrors().iterator();
+			while( it.hasNext() ) {
+				final IModelError modelError = it.next();
+				if( modelError instanceof PlotWindowError ) {
+					item.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+				} 
+			}
+			
 		}
 		if (this.plotWindowsTable.getItems().length == 0) {
 			this.plotWindowRemoveMenuItem.setEnabled(false);
@@ -1072,11 +1098,34 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		}
 	}
 
+	protected void updatePlotWindowsTableError() {
+
+		PlotWindow[] plotWindows = this.currentScanModul.getPlotWindows();
+
+		TableItem[] tableItems = this.plotWindowsTable.getItems();
+
+		int plotlength = plotWindows.length;
+		int tablelength = tableItems.length;
+		
+		for (int i = 0; i < Math.min(plotlength, tablelength); ++i) {
+
+			tableItems[i].setImage((Image)null);
+
+			final Iterator< IModelError > it = plotWindows[i].getModelErrors().iterator();
+			while( it.hasNext() ) {
+				final IModelError modelError = it.next();
+				if( modelError instanceof PlotWindowError ) {
+					tableItems[i].setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+				} 
+			}
+		}
+	}
+	
 	@Override
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
 		
 		this.filling = true;
-		
+
 		this.motorAxisTab.setImage( null );
 		this.detectorChannelTab.setImage( null );
 		this.prescanTab.setImage( null );
@@ -1088,6 +1137,8 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		boolean prescanErrors = false;
 		boolean postscanErrors = false;
 		boolean positioningErrors = false;
+
+		boolean plotWindowErrors = false;
 		
 		final Iterator< IModelError > it = this.currentScanModul.getModelErrors().iterator();
 		while( it.hasNext() ) {
@@ -1102,6 +1153,8 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 				postscanErrors = true;
 			} else if( modelError instanceof PositioningError ) {
 				positioningErrors = true;
+			} else if( modelError instanceof PlotWindowError ) {
+				plotWindowErrors = true;
 			} 
 		}
 		if( motorAxisErrors ) {
@@ -1119,7 +1172,18 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		if( positioningErrors ) {
 			this.positioningTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
 		}
-		
+		if( plotWindowErrors ) {
+			this.plotErrors = true;
+			this.updatePlotWindowsTableError();
+		}
+		else {
+			if (this.plotErrors) {
+				// es gibt noch einen plotError der zurückgesetzt werden muß
+				this.updatePlotWindowsTableError();
+			}
+			this.plotErrors = false;
+		}
+
 		if( this.currentScanModul.getPauseControlEventManager().getModelErrors().size() > 0 ) {
 			this.pauseEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
 		} else {
