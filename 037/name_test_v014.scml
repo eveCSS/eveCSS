@@ -5,7 +5,7 @@
     <chain id="1">
         <comment>1 Timer axis, start/stop/step, add</comment>
         <savefilename>Dateiname.txt</savefilename>
-        <confirmsave>false</confirmsave>
+        <confirmsave>true</confirmsave>
         <autonumber>false</autonumber>
         <savescandescription>true</savescandescription>
         <saveplugin name="HDFspezial">
@@ -26,14 +26,23 @@
             <limit type="string" comparison="eq">56</limit>
             <continue_if_false>false</continue_if_false>
         </pauseevent>
+        <pauseevent type="detector">
+            <id>D-1-1-P5000:2370700.1</id>
+        </pauseevent>
         <redoevent type="monitor">
             <id>TOPUP:234</id>
             <limit type="string" comparison="ne">10</limit>
+        </redoevent>
+        <redoevent type="detector">
+            <id>D-1-1-P5000:2370700.1</id>
         </redoevent>
         <redoevent type="schedule">
             <incident>End</incident>
             <chainid>0</chainid>
             <smid>0</smid>
+        </redoevent>
+        <redoevent type="detector">
+            <id>D-1-1-K0617:22225.1</id>
         </redoevent>
         <breakevent type="monitor">
             <id>TOPUP:234</id>
@@ -41,6 +50,12 @@
         </breakevent>
         <stopevent type="detector">
             <id>D-1-2-K0617:22225.1</id>
+        </stopevent>
+        <stopevent type="detector">
+            <id>D-1-1-K0617:22225.1</id>
+        </stopevent>
+        <stopevent type="detector">
+            <id>D-1-1-P5000:2370700.1</id>
         </stopevent>
         <scanmodules>
             <scanmodule id="1">
@@ -50,10 +65,22 @@
                 <ypos>120</ypos>
                 <parent>0</parent>
                 <appended>2</appended>
-                <settletime>4.5</settletime>
+                <settletime>4.2</settletime>
                 <triggerdelay>2.3</triggerdelay>
                 <triggerconfirm>false</triggerconfirm>
                 <saveaxispositions>both</saveaxispositions>
+                <triggerevent type="detector">
+                    <id>D-1-1-ringCurrent1</id>
+                </triggerevent>
+                <pauseevent type="detector">
+                    <id>D-1-1-ringCurrent1</id>
+                </pauseevent>
+                <pauseevent type="detector">
+                    <id>D-1-1-P5000:2370700.1</id>
+                </pauseevent>
+                <redoevent type="detector">
+                    <id>D-1-1-ringCurrent1</id>
+                </redoevent>
                 <redoevent type="detector">
                     <id>D-1-2-K0617:22225.1</id>
                 </redoevent>
@@ -66,6 +93,9 @@
                     <id>TOPUP:228</id>
                     <limit type="string" comparison="eq">17.4</limit>
                 </redoevent>
+                <breakevent type="detector">
+                    <id>D-1-1-K0617:23326.1</id>
+                </breakevent>
                 <prescan>
                     <id>TOPUP:228</id>
                     <value type="double">65</value>
@@ -92,15 +122,6 @@
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smaxis>
-                    <axisid>PPSMC:23715001</axisid>
-                    <stepfunction>Add</stepfunction>
-                    <positionmode>absolute</positionmode>
-                    <start type="double">-43.0</start>
-                    <stop type="double">25.4</stop>
-                    <stepwidth type="double">35.2</stepwidth>
-                    <ismainaxis>false</ismainaxis>
-                </smaxis>
-                <smaxis>
                     <axisid>PPSMC:23715002</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
@@ -111,10 +132,12 @@
                 </smaxis>
                 <smchannel>
                     <channelid>ringCurrent1</channelid>
-                    <maxdeviation>2.0</maxdeviation>
-                    <minimum>3.0</minimum>
-                    <maxattempts>4</maxattempts>
+                    <averagecount>3</averagecount>
+                    <maxdeviation>20.0</maxdeviation>
+                    <minimum>1.0E-8</minimum>
+                    <maxattempts>0</maxattempts>
                     <confirmtrigger>true</confirmtrigger>
+                    <sendreadyevent>true</sendreadyevent>
                     <redoevent type="monitor">
                         <id>TOPUP:234</id>
                         <limit type="string" comparison="eq">12</limit>
@@ -125,39 +148,28 @@
                 </smchannel>
                 <smchannel>
                     <channelid>P5000:2370700.1</channelid>
-                    <averagecount>5</averagecount>
-                    <maxdeviation>6.0</maxdeviation>
-                    <minimum>7.0</minimum>
-                    <maxattempts>8</maxattempts>
-                    <confirmtrigger>false</confirmtrigger>
+                    <averagecount>3</averagecount>
+                    <maxdeviation>0.001</maxdeviation>
+                    <minimum>1.0E-8</minimum>
+                    <maxattempts>5</maxattempts>
+                    <confirmtrigger>true</confirmtrigger>
                     <sendreadyevent>true</sendreadyevent>
-                    <redoevent type="detector">
-                        <id>D-1-1-K0617:23326.1</id>
+                    <redoevent type="monitor">
+                        <id>TOPUP:228</id>
+                        <limit type="string" comparison="eq">185</limit>
                     </redoevent>
                 </smchannel>
                 <smchannel>
                     <channelid>K0617:22225.1</channelid>
-                    <averagecount>9</averagecount>
-                    <maxdeviation>10.0</maxdeviation>
-                    <minimum>11.0</minimum>
-                    <maxattempts>12</maxattempts>
-                    <confirmtrigger>true</confirmtrigger>
+                    <maxattempts>0</maxattempts>
+                    <confirmtrigger>false</confirmtrigger>
                     <sendreadyevent>true</sendreadyevent>
-                    <redoevent type="detector">
-                        <id>D-1-1-ringCurrent1</id>
-                    </redoevent>
                 </smchannel>
                 <smchannel>
                     <channelid>K0617:23326.1</channelid>
-                    <averagecount>13</averagecount>
-                    <maxdeviation>14.0</maxdeviation>
-                    <minimum>15.0</minimum>
-                    <maxattempts>16</maxattempts>
+                    <maxattempts>0</maxattempts>
                     <confirmtrigger>false</confirmtrigger>
                     <sendreadyevent>true</sendreadyevent>
-                    <redoevent type="detector">
-                        <id>D-1-1-K0617:23326.1</id>
-                    </redoevent>
                 </smchannel>
                 <postscan>
                     <id>TOPUP:228</id>
@@ -165,7 +177,7 @@
                 </postscan>
                 <postscan>
                     <id>K0617:23326function</id>
-                    <reset_originalvalue>true</reset_originalvalue>
+                    <value type="string">Coulombs</value>
                 </postscan>
                 <postscan>
                     <id>P5000:23707range</id>
@@ -175,14 +187,6 @@
                     <id>Event-PPSMC:23715001</id>
                     <value type="double">2</value>
                 </postscan>
-                <positioning>
-                    <axis_id>PPSMC:23715001</axis_id>
-                    <channel_id>P5000:2370700.1</channel_id>
-                    <plugin name="GOTO-Center">
-                        <parameter name="location">/path/to/plugin3</parameter>
-                        <parameter name="direction">positive</parameter>
-                    </plugin>
-                </positioning>
                 <positioning>
                     <axis_id>PPSMC:23715002</axis_id>
                     <channel_id>P5000:2370700.1</channel_id>
@@ -196,26 +200,18 @@
                         <id>PPSMC:23715000</id>
                         <mode>linear</mode>
                     </xaxis>
-                    <init>true</init>
+                    <init>false</init>
                     <yaxis>
                         <id>ringCurrent1</id>
                         <mode>linear</mode>
                         <normalize_id>P5000:2370700.1</normalize_id>
-                        <linestyle>dotted</linestyle>
-                        <color>green</color>
-                        <markstyle>point</markstyle>
+                        <linestyle>solid</linestyle>
+                        <color>blue</color>
+                        <markstyle>star</markstyle>
                     </yaxis>
-                </plot>
-                <plot id="2">
-                    <xaxis>
-                        <id>PPSMC:23715002</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>false</init>
                     <yaxis>
-                        <id>K0617:22225.1</id>
+                        <id>K0617:23326.1</id>
                         <mode>linear</mode>
-                        <normalize_id>K0617:23326.1</normalize_id>
                         <linestyle>dashed</linestyle>
                         <color>green</color>
                         <markstyle>point</markstyle>
