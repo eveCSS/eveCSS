@@ -18,6 +18,7 @@ public class DeviceOptionsViewer extends ViewPart {
 
 	private AbstractDevice device;
 	private TableViewer tableViewer;
+	private boolean fixed = false;
 	
 	@Override
 	public void createPartControl( final Composite parent ) {
@@ -77,5 +78,14 @@ public class DeviceOptionsViewer extends ViewPart {
 	public void setDevice( final AbstractDevice device ) {
 		this.device = device;
 		this.tableViewer.setInput( device );
+	}
+
+	public boolean isFixed() {
+		return this.fixed;
+	}
+
+	public void setFixed( final boolean fixed ) {
+		this.fixed = fixed;
+		
 	}
 }

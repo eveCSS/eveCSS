@@ -1,5 +1,9 @@
 package de.ptb.epics.eve.viewer;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
@@ -13,9 +17,13 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -120,7 +128,7 @@ public final class MeasuringStationView extends ViewPart {
 						IViewReference[] ref = getSite().getPage().getViewReferences();
 						DeviceOptionsViewer view = null;
 						for( int i = 0; i < ref.length; ++i ) {
-							if( ref[i].getId().equals( "DeviceOptionsView" ) ) {
+							if( ref[i].getId().equals( "DeviceOptionsView" ) &&  !((DeviceOptionsViewer)ref[i].getPart(true)).isFixed() ) {
 								view = (DeviceOptionsViewer)ref[i].getPart( true );
 							}
 						}
@@ -132,6 +140,44 @@ public final class MeasuringStationView extends ViewPart {
 			
 		});
 		setMeasuringStation(measuringStation);
+		final IWorkbenchPage page = getSite().getPage();
+		final MenuManager menuManager = new MenuManager( "#PopupMenu" );
+		menuManager.setRemoveAllWhenShown( true );
+		menuManager.addMenuListener( new IMenuListener() {
+
+			@Override
+			public void menuAboutToShow( final IMenuManager manager ) {
+				final TreeItem[] selectedItems = treeViewer.getTree().getSelection();
+				if( selectedItems != null && selectedItems.length > 0 ) {
+					final Action openAction = new Action() {
+						public void run() {
+							super.run();
+							for( final TreeItem item : selectedItems ) {
+								if( item.getData() instanceof AbstractDevice ) {
+									try {
+										
+										final IViewPart view = page.showView( "DeviceOptionsView", ((AbstractDevice)item.getData()).getName(), IWorkbenchPage.VIEW_CREATE );
+										((DeviceOptionsViewer)view).setDevice( (AbstractDevice)item.getData() );
+										((DeviceOptionsViewer)view).setFixed( true );
+									} catch (PartInitException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+								
+							}
+						}
+					};
+					openAction.setText( "Open in seperate options window" );
+					manager.add( openAction );
+				}
+				
+			}
+			
+		});
+		final Menu contextMenu = menuManager.createContextMenu( this.treeViewer.getTree() );
+		this.treeViewer.getTree().setMenu( contextMenu );
+		
 	}
 
 	public void setMeasuringStation( final MeasuringStation measuringStation ) {

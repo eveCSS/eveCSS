@@ -46,6 +46,7 @@
             id="DeviceInspectorView"
             name="%view.name.3"/>
       <view
+            allowMultiple="true"
             class="de.ptb.epics.eve.viewer.DeviceOptionsViewer"
             icon="icons/css.gif"
             id="DeviceOptionsView"
