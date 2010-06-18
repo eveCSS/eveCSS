@@ -26,6 +26,11 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 	private List<Motor> motors;
 	
 	private List<Detector> detectors;
+	
+	
+	private List<MotorAxis> motorAxis;
+	
+	private List<DetectorChannel> detectorChannels;
 
 	public Object[] getChildren( final Object parentElement ) {
 		if( parentElement instanceof MeasuringStation ) {
@@ -71,9 +76,13 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 		else if( parentElement instanceof Motor ) {
 			List returnList = new ArrayList();
 			final Motor motor = (Motor)parentElement;
-			if( motor.getAxis().size() > 0 ) {
-				returnList.addAll( motor.getAxis() );
-			} else if( motor.getOptions().size() > 0 ) {
+			final List< MotorAxis > axis = motor.getAxis();
+			for( final MotorAxis a : axis ) {
+				if( a.getClassName().equals( "" ) ) {
+					returnList.add( a );
+				}
+			}
+			if( motor.getOptions().size() > 0 ) {
 				returnList.addAll( motor.getOptions() );
 			}
 			return returnList.toArray();
@@ -81,9 +90,13 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 		else if( parentElement instanceof Detector ) {
 			List returnList = new ArrayList();
 			final Detector detector = (Detector)parentElement;
-			if( detector.getChannels().size() > 0 ) {
-				returnList.addAll( detector.getChannels() );
-			} else if( detector.getOptions().size() > 0 ) {
+			final List< DetectorChannel > channels = detector.getChannels();
+			for( final DetectorChannel c : channels ) {
+				if( c.getClassName().equals( "" ) ) {
+					returnList.add( c );
+				}
+			}
+			if( detector.getOptions().size() > 0 ) {
 				returnList.addAll( detector.getOptions() );
 			}
 			return returnList.toArray();
@@ -127,10 +140,7 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 			final MeasuringStation measuringStation = (MeasuringStation)element;
 			return measuringStation.getMotors().size() > 0 || measuringStation.getDetectors().size() > 0 || measuringStation.getDevices().size() > 0 || measuringStation.getEvents().size() > 0; 
 		} else if( element instanceof List ) {
-			if (((List)element).size() > 0)
-				return true;
-			else
-				return false;
+			return (((List)element).size() > 0);
 		} else if( element instanceof Motor ) {
 			final Motor motor = (Motor)element;
 			return motor.getAxis().size() > 0 || motor.getOptions().size() > 0;
