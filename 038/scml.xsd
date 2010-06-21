@@ -90,7 +90,7 @@
 
   <simpleType name ="identifier" >
     <restriction base="string">
-      <pattern value="[a-zA-Z0-9_:.;-]+"/>
+      <pattern value="[a-zA-Z0-9_:/.;-]+"/>
     </restriction>
   </simpleType>
 
