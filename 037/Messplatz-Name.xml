@@ -141,10 +141,11 @@
                 <displaygroup>summary</displaygroup>
             </option>
         </detector>
+<!--
 		<detector>
 			<class>Keithley617</class>
 			<name>Keithley_5</name>
-			<id>K0617:23326</id><!-- needed, unique arbitrary string (PV is a good choice) -->
+			<id>K0617:23326</id>
 			<unit>
 				<access method="GETCB" transport="ca" type="string">K0617:23326.EGU</access>
 			</unit>
@@ -154,7 +155,7 @@
 			</trigger>
 			<channel>
 				<name> </name>
-				<id>K0617:23326.1</id><!-- needed, unique arbitrary string (PV is a good choice) -->
+				<id>K0617:23326.1</id>
 				<read>
 					<access method="GETCB" transport="ca" type="double">K0617:23326.VAL</access>
 				</read>
@@ -196,6 +197,7 @@
 				<displaygroup>detail</displaygroup>
 			</option>
 		</detector>
+-->
     </detectors>
     <motors>
         <motor>

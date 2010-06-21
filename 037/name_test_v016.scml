@@ -166,9 +166,16 @@
                 </smchannel>
                 <smchannel>
                     <channelid>K0617:23326.1</channelid>
-                    <maxattempts>0</maxattempts>
-                    <confirmtrigger>false</confirmtrigger>
+                    <averagecount>7</averagecount>
+                    <maxdeviation>5.0</maxdeviation>
+                    <minimum>2.0</minimum>
+                    <maxattempts>8</maxattempts>
+                    <confirmtrigger>true</confirmtrigger>
                     <sendreadyevent>true</sendreadyevent>
+                    <redoevent type="monitor">
+                        <id>TOPUP:234</id>
+                        <limit type="string" comparison="eq">43</limit>
+                    </redoevent>
                 </smchannel>
                 <postscan>
                     <id>TOPUP:228</id>
