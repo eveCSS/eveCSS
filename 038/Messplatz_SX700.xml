@@ -1215,13 +1215,13 @@
         <!-- Name, Class, PV -->
         <!-- basic detector (must include a channel) -->
         <detector>
-            <class></class>
+            <class>Vorspiegel</class>
             <name>PreMirror-tilt_SCU</name>
             <id>esdAi:21200001basic</id>
         		<!-- Name, Class, PV -->
         		<!-- channel, to be included by motors -->
             <channel>
-                <class></class>
+                <class>Vorspiegel</class>
                 <name></name>
                 <id>esdAi:21200001chan1</id>
                 <read>
@@ -1235,13 +1235,13 @@
         <!-- Name, Class, PV -->
         <!-- basic detector (must include a channel) -->
         <detector>
-            <class></class>
+            <class>Vorspiegel</class>
             <name>PreMirror-Kipp_SCU</name>
             <id>esdAi:21200002basic</id>
         		<!-- Name, Class, PV -->
         		<!-- channel, to be included by motors -->
             <channel>
-                <class></class>
+                <class>Vorspiegel</class>
                 <name></name>
                 <id>esdAi:21200002chan1</id>
                 <read>
@@ -1255,13 +1255,13 @@
         <!-- Name, Class, PV -->
         <!-- basic detector (must include a channel) -->
         <detector>
-            <class></class>
+            <class>Vorspiegel</class>
             <name>PreMirror-tilt</name>
             <id>esdAi:21200009basic</id>
         		<!-- Name, Class, PV -->
         		<!-- channel, to be included by motors -->
             <channel>
-                <class></class>
+                <class>Vorspiegel</class>
                 <name></name>
                 <id>esdAi:21200009chan1</id>
                 <read>
@@ -1275,13 +1275,13 @@
         <!-- Name, Class, PV -->
         <!-- basic detector (must include a channel) -->
         <detector>
-            <class></class>
+            <class>Vorspiegel</class>
             <name>PreMirror-hor</name>
             <id>esdAi:21200010basic</id>
         		<!-- Name, Class, PV -->
         		<!-- channel, to be included by motors -->
             <channel>
-                <class></class>
+                <class>Vorspiegel</class>
                 <name></name>
                 <id>esdAi:21200010chan1</id>
                 <read>
@@ -1295,13 +1295,13 @@
         <!-- Name, Class, PV -->
         <!-- basic detector (must include a channel) -->
         <detector>
-            <class></class>
+            <class>Vorspiegel</class>
             <name>PreMirror-vert-R</name>
             <id>esdAi:21200011basic</id>
         		<!-- Name, Class, PV -->
         		<!-- channel, to be included by motors -->
             <channel>
-                <class></class>
+                <class>Vorspiegel</class>
                 <name></name>
                 <id>esdAi:21200011chan1</id>
                 <read>
@@ -1315,13 +1315,13 @@
         <!-- Name, Class, PV -->
         <!-- basic detector (must include a channel) -->
         <detector>
-            <class></class>
+            <class>Vorspiegel</class>
             <name>PreMirror-vert-L</name>
             <id>esdAi:21200012basic</id>
         		<!-- Name, Class, PV -->
         		<!-- channel, to be included by motors -->
             <channel>
-                <class></class>
+                <class>Vorspiegel</class>
                 <name></name>
                 <id>esdAi:21200012chan1</id>
                 <read>
@@ -1335,13 +1335,13 @@
         <!-- Name, Class, PV -->
         <!-- basic detector (must include a channel) -->
         <detector>
-            <class></class>
+            <class>Vorspiegel</class>
             <name>PreMirror-theta</name>
             <id>esdAi:21200013basic</id>
         		<!-- Name, Class, PV -->
         		<!-- channel, to be included by motors -->
             <channel>
-                <class></class>
+                <class>Vorspiegel</class>
                 <name></name>
                 <id>esdAi:21200013chan1</id>
                 <read>
@@ -1355,13 +1355,13 @@
         <!-- Name, Class, PV -->
         <!-- basic detector (must include a channel) -->
         <detector>
-            <class></class>
+            <class>Druck</class>
             <name>Seg_3</name>
             <id>TP256:212/101basic</id>
         		<!-- Name, Class, PV -->
         		<!-- channel, to be included by motors -->
             <channel>
-                <class></class>
+                <class>Druck</class>
                 <name></name>
                 <id>TP256:212/101chan1</id>
                 <read>
@@ -1375,13 +1375,13 @@
         <!-- Name, Class, PV -->
         <!-- basic detector (must include a channel) -->
         <detector>
-            <class></class>
+            <class>Druck</class>
             <name>Seg_4</name>
             <id>TP256:212/102basic</id>
         		<!-- Name, Class, PV -->
         		<!-- channel, to be included by motors -->
             <channel>
-                <class></class>
+                <class>Druck</class>
                 <name></name>
                 <id>TP256:212/102chan1</id>
                 <read>
@@ -1395,13 +1395,13 @@
         <!-- Name, Class, PV -->
         <!-- basic detector (must include a channel) -->
         <detector>
-            <class></class>
+            <class>Druck</class>
             <name>Seg_5</name>
             <id>TP256:212/103basic</id>
         		<!-- Name, Class, PV -->
         		<!-- channel, to be included by motors -->
             <channel>
-                <class></class>
+                <class>Druck</class>
                 <name></name>
                 <id>TP256:212/103chan1</id>
                 <read>
@@ -1415,13 +1415,13 @@
         <!-- Name, Class, PV -->
         <!-- basic detector (must include a channel) -->
         <detector>
-            <class></class>
+            <class>Druck</class>
             <name>Seg_6</name>
             <id>TP256:212/104basic</id>
         		<!-- Name, Class, PV -->
         		<!-- channel, to be included by motors -->
             <channel>
-                <class></class>
+                <class>Druck</class>
                 <name></name>
                 <id>TP256:212/104chan1</id>
                 <read>
@@ -1435,13 +1435,13 @@
         <!-- Name, Class, PV -->
         <!-- basic detector (must include a channel) -->
         <detector>
-            <class></class>
+            <class>Druck</class>
             <name>Seg_7</name>
             <id>TP256:212/105basic</id>
         		<!-- Name, Class, PV -->
         		<!-- channel, to be included by motors -->
             <channel>
-                <class></class>
+                <class>Druck</class>
                 <name></name>
                 <id>TP256:212/105chan1</id>
                 <read>
@@ -1455,13 +1455,13 @@
         <!-- Name, Class, PV -->
         <!-- basic detector (must include a channel) -->
         <detector>
-            <class></class>
+            <class>Druck</class>
             <name>Seg_8</name>
             <id>TP256:212/106basic</id>
         		<!-- Name, Class, PV -->
         		<!-- channel, to be included by motors -->
             <channel>
-                <class></class>
+                <class>Druck</class>
                 <name></name>
                 <id>TP256:212/106chan1</id>
                 <read>
@@ -1472,119 +1472,19 @@
                 </unit>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel) -->
-        <detector>
-            <class></class>
-            <name></name>
-            <id>basic</id>
-        		<!-- Name, Class, PV -->
-        		<!-- channel, to be included by motors -->
-            <channel>
-                <class></class>
-                <name></name>
-                <id>chan1</id>
-                <read>
-                    <access method="GETCB" transport="ca" type="double">.VAL</access>
-                </read>
-                <unit>
-                    <access method="GETPUT" transport="ca" type="string">.EGU</access>
-                </unit>
-            </channel>
-        </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel) -->
-        <detector>
-            <class></class>
-            <name></name>
-            <id>basic</id>
-        		<!-- Name, Class, PV -->
-        		<!-- channel, to be included by motors -->
-            <channel>
-                <class></class>
-                <name></name>
-                <id>chan1</id>
-                <read>
-                    <access method="GETCB" transport="ca" type="double">.VAL</access>
-                </read>
-                <unit>
-                    <access method="GETPUT" transport="ca" type="string">.EGU</access>
-                </unit>
-            </channel>
-        </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel) -->
-        <detector>
-            <class></class>
-            <name></name>
-            <id>basic</id>
-        		<!-- Name, Class, PV -->
-        		<!-- channel, to be included by motors -->
-            <channel>
-                <class></class>
-                <name></name>
-                <id>chan1</id>
-                <read>
-                    <access method="GETCB" transport="ca" type="double">.VAL</access>
-                </read>
-                <unit>
-                    <access method="GETPUT" transport="ca" type="string">.EGU</access>
-                </unit>
-            </channel>
-        </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel) -->
-        <detector>
-            <class></class>
-            <name></name>
-            <id>basic</id>
-        		<!-- Name, Class, PV -->
-        		<!-- channel, to be included by motors -->
-            <channel>
-                <class></class>
-                <name></name>
-                <id>chan1</id>
-                <read>
-                    <access method="GETCB" transport="ca" type="double">.VAL</access>
-                </read>
-                <unit>
-                    <access method="GETPUT" transport="ca" type="string">.EGU</access>
-                </unit>
-            </channel>
-        </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel) -->
-        <detector>
-            <class></class>
-            <name></name>
-            <id>basic</id>
-        		<!-- Name, Class, PV -->
-        		<!-- channel, to be included by motors -->
-            <channel>
-                <class></class>
-                <name></name>
-                <id>chan1</id>
-                <read>
-                    <access method="GETCB" transport="ca" type="double">.VAL</access>
-                </read>
-                <unit>
-                    <access method="GETPUT" transport="ca" type="string">.EGU</access>
-                </unit>
-            </channel>
-        </detector>
     </detectors>
     <!-- motor section -->
     <motors>
         <!-- Name, Class, Id -->
         <!-- basic motor, must include axes -->
 		<motor>
-            <class></class>
+            <class>Bigref</class>
             <name>BIG_REF</name>
             <id>OMS58:21601</id>
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>Theta</name>
                 <id>OMS58:21601000AT</id>
                 <goto>
@@ -1760,7 +1660,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>Sample-Y</name>
                 <id>OMS58:21601001AY</id>
                 <goto>
@@ -1936,7 +1836,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>Sample-Z</name>
                 <id>OMS58:21601003AZ</id>
                 <goto>
@@ -2112,7 +2012,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>Gegengewicht</name>
                 <id>OMS58:21601002AG</id>
                 <goto>
@@ -2478,7 +2378,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>Phi</name>
                 <id>OMS58:21602000</id>
                 <goto>
@@ -2654,7 +2554,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>2Theta</name>
                 <id>OMS58:21602001</id>
                 <goto>
@@ -2837,7 +2737,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>Blende-Y</name>
                 <id>OMS58:21603000</id>
                 <goto>
@@ -3013,7 +2913,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>1m_Tisch</name>
                 <id>OMS58:21603001</id>
                 <goto>
@@ -3189,7 +3089,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>Optional_2</name>
                 <id>OMS58:21603002</id>
                 <goto>
@@ -3365,7 +3265,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>Det -R</name>
                 <id>OMS58:21603003</id>
                 <goto>
@@ -3548,7 +3448,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>KB-oben</name>
                 <id>OMS58:21604000</id>
                 <goto>
@@ -3724,7 +3624,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>KB-unten</name>
                 <id>OMS58:21604001</id>
                 <goto>
@@ -3900,7 +3800,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>KB-rechts</name>
                 <id>OMS58:21604002</id>
                 <goto>
@@ -4076,7 +3976,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>KB-links</name>
                 <id>OMS58:21604003</id>
                 <goto>
@@ -4259,7 +4159,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>Det -X</name>
                 <id>OMS58:21606000</id>
                 <goto>
@@ -4435,7 +4335,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>Sample-X</name>
                 <id>OMS58:21606001</id>
                 <goto>
@@ -4611,7 +4511,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>Sample-Tilt</name>
                 <id>OMS58:21606002</id>
                 <goto>
@@ -4787,7 +4687,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Bigref</class>
                 <name>Det -Rot</name>
                 <id>OMS58:21606003</id>
                 <goto>
@@ -4970,7 +4870,7 @@
             <!-- Name, Class, PV -->
             <!-- SX700 angle axis -->
             <axis>
-                <class></class>
+                <class>SX700</class>
                 <name>GratingAngle</name>
                 <id>Energ:21200001SXcos.A</id>
                 <goto>
@@ -4993,7 +4893,7 @@
             <!-- Name, Class, PV -->
             <!-- SX700 angle axis -->
             <axis>
-                <class></class>
+                <class>SX700</class>
                 <name>MirrorAngle</name>
                 <id>Energ:21200000SXcos.A</id>
                 <goto>
@@ -5734,7 +5634,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Vorspiegel</class>
                 <name>Pre-Mirror-vert-L</name>
                 <id>OMS58:21203000</id>
                 <goto>
@@ -5910,7 +5810,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Vorspiegel</class>
                 <name>Pre-Mirror-vert-R</name>
                 <id>OMS58:21203001</id>
                 <goto>
@@ -6086,7 +5986,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Vorspiegel</class>
                 <name>Pre-Mirror-hor</name>
                 <id>OMS58:21203002</id>
                 <goto>
@@ -6262,7 +6162,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Vorspiegel</class>
                 <name>Pre-Mirror-theta</name>
                 <id>OMS58:21203003</id>
                 <goto>
@@ -6445,7 +6345,7 @@
         		<!-- Name,  PV -->
         		<!-- axis, to be included by motors -->
             <axis>
-                <class></class>
+                <class>Vorspiegel</class>
                 <name>Pre-Mirror-tilt</name>
                 <id>OMS58:21204000</id>
                 <goto>
@@ -10177,7 +10077,7 @@
         <!-- Name, Class, PV -->
         <!-- basic motor (here a voltage source) with just one axis -->
         <motor>
-            <class></class>
+            <class>Spannungsquellen</class>
             <name>Bias_1</name>
             <id>K0617:23328vsValbasic</id>
             <axis>
@@ -10303,7 +10203,7 @@
         <!-- Name, Class, PV -->
         <!-- basic motor (here a voltage source) with just one axis -->
         <motor>
-            <class></class>
+            <class>Spannungsquellen</class>
             <name>Bias_2</name>
             <id>K0617:23327vsValbasic</id>
             <axis>
@@ -10429,7 +10329,7 @@
         <!-- Name, Class, PV -->
         <!-- basic motor (here a voltage source) with just one axis -->
         <motor>
-            <class></class>
+            <class>Spannungsquellen</class>
             <name>Bias_3</name>
             <id>K0617:23329vsValbasic</id>
             <axis>
@@ -10555,7 +10455,7 @@
         <!-- Name, Class, PV -->
         <!-- basic motor (here a voltage source) with just one axis -->
         <motor>
-            <class></class>
+            <class>Spannungsquellen</class>
             <name>Bias_4</name>
             <id>K0617:23325vsValbasic</id>
             <axis>
@@ -10681,7 +10581,7 @@
         <!-- Name, Class, PV -->
         <!-- basic motor (here a voltage source) with just one axis -->
         <motor>
-            <class></class>
+            <class>Spannungsquellen</class>
             <name>Bias_5</name>
             <id>K0617:23326vsValbasic</id>
             <axis>
@@ -10807,7 +10707,7 @@
         <!-- Name, Class, PV -->
         <!-- basic motor (here a voltage source) with just one axis -->
         <motor>
-            <class></class>
+            <class>Spannungsquellen</class>
             <name>OUT1</name>
             <id>esdAo:21200001basic</id>
             <axis>
@@ -10933,7 +10833,7 @@
         <!-- Name, Class, PV -->
         <!-- basic motor (here a voltage source) with just one axis -->
         <motor>
-            <class></class>
+            <class>Spannungsquellen</class>
             <name>OUT2</name>
             <id>esdAo:21200002basic</id>
             <axis>
@@ -11059,7 +10959,7 @@
         <!-- Name, Class, PV -->
         <!-- basic motor (here a voltage source) with just one axis -->
         <motor>
-            <class></class>
+            <class>Spannungsquellen</class>
             <name>OUT3</name>
             <id>esdAo:21200003basic</id>
             <axis>
@@ -11185,7 +11085,7 @@
         <!-- Name, Class, PV -->
         <!-- basic motor (here a voltage source) with just one axis -->
         <motor>
-            <class></class>
+            <class>Spannungsquellen</class>
             <name>OUT4</name>
             <id>esdAo:21200004basic</id>
             <axis>
