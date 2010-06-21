@@ -131,6 +131,16 @@ public enum MeasuringStationLoaderStates {
 	DETECTOR_CHANNEL_LOADING,
 	
 	/**
+	 * The begin tag of the detector channel class name has been read.
+	 */
+	DETECTOR_CHANNEL_CLASSNAME_NEXT,
+	
+	/**
+	 * The begin tag of the detector channel class name has been read.
+	 */
+	DETECTOR_CHANNEL_CLASSNAME_READ,
+	
+	/**
 	 * The begin tag of the detector channel name has been read.
 	 */
 	DETECTOR_CHANNEL_NAME_NEXT,
@@ -229,6 +239,16 @@ public enum MeasuringStationLoaderStates {
 	 * The begin of a motor axis has been read.
 	 */
 	MOTOR_AXIS_LOADING,
+	
+	/**
+	 * The begin tag of the motor axis class name has been read.
+	 */
+	MOTOR_AXIS_CLASSNAME_NEXT,
+	
+	/**
+	 * The begin tag of the motor axis class name has been read.
+	 */
+	MOTOR_AXIS_CLASSNAME_READ,
 	
 	/**
 	 * The begin tag of the motor axis name has been read.

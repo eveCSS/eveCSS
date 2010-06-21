@@ -24,6 +24,12 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
 public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	
 	/**
+	 * The attribute that is holding the class-name of the device.
+	 */
+	private String className;
+	
+		
+	/**
 	 * The trigger of this device.
 	 */
 	private Function trigger;
@@ -37,6 +43,7 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	public AbstractMainPhaseDevice() {
 		super();
 		this.trigger = null;
+		this.className = "";
 	}
 	
 	/**
@@ -60,7 +67,7 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	 * @param parent The parent of this device.
 	 * @param trigger
 	 */
-	public AbstractMainPhaseDevice( final String name, final String id, final Unit unit, final List<Option> options, final AbstractClassedDevice parent, final Function trigger ) {
+	public AbstractMainPhaseDevice( final String name, final String id, final Unit unit, final List<Option> options, final AbstractMainPhaseDevice parent, final Function trigger ) {
 		super( name, id, unit, options, parent );
 		this.trigger = trigger;
 	}
@@ -91,12 +98,30 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	 */
 	@Override
 	protected void setParent( final AbstractDevice parent ) throws ParentNotAllowedException {
-		if( parent != null ) {
-			if( !( parent instanceof AbstractClassedDevice ) ) {
-				throw new ParentNotAllowedException( "Your class is directly or indirectly inhereting from AbstractMainPhaseDevice. The parent of an AbstractMainPhaseDevice can only be a AbstractClassedDevice. Please fix your implementation to check this constraint!" );
-			}
-		}
+		
 		super.setParent( parent );
 	}
+	
+	/**
+	 * Give back the class of the device.
+	 * 
+	 * @return A String that is containing the name of the class of the device. It will never be null.
+	 */
+	public String getClassName() {
+		return this.className;
+	}
+
+	/**
+	 * Sets the className of the device.
+	 * 
+	 * @param className A String object contains the className. Must not be null!
+	 */
+	public void setClassName( final String className ) {
+		if( className == null ) {
+			throw new IllegalArgumentException( "The parameter 'className' must not be null!" );
+		}
+		this.className = className;
+	}
+
 	
 }

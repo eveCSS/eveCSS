@@ -224,7 +224,9 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				break;
 				
 			case DETECTOR_CHANNEL_LOADING:
-				if( qName.equals( "name" ) ) {
+				if( qName.equals( "class" ) ) {
+					this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_CLASSNAME_NEXT;
+				} else if( qName.equals( "name" ) ) {
 					this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_NAME_NEXT;
 				} else if( qName.equals( "id" ) ) {
 					this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_ID_NEXT;
@@ -281,7 +283,9 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				break;
 				
 			case MOTOR_AXIS_LOADING:
-				if( qName.equals( "name" ) ) {
+				if( qName.equals( "class" ) ) {
+					this.state = MeasuringStationLoaderStates.MOTOR_AXIS_CLASSNAME_NEXT;
+				} else if( qName.equals( "name" ) ) {
 					this.state = MeasuringStationLoaderStates.MOTOR_AXIS_NAME_NEXT;
 				} else if( qName.equals( "id" ) ) {
 					this.state = MeasuringStationLoaderStates.MOTOR_AXIS_ID_NEXT;
@@ -530,10 +534,16 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			this.state = MeasuringStationLoaderStates.DETECTOR_NAME_READ;
 			break;	
 			
+		case DETECTOR_CHANNEL_CLASSNAME_NEXT:
+			this.currentDetectorChannel.setClassName( textBuffer.toString() );
+			this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_CLASSNAME_READ;
+			break;
+			
 		case DETECTOR_CHANNEL_ID_NEXT:
 			this.currentDetectorChannel.setId( textBuffer.toString() );
 			this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_ID_READ;
 			break;
+			
 		case DETECTOR_CHANNEL_NAME_NEXT:
 			this.currentDetectorChannel.setName( textBuffer.toString() );
 			this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;
@@ -547,10 +557,17 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			this.currentMotor.setId( textBuffer.toString() );
 			this.state = MeasuringStationLoaderStates.MOTOR_ID_READ;
 			break;
+			
 		case MOTOR_CLASSNAME_NEXT:
 			this.currentMotor.setClassName( textBuffer.toString() );
 			this.state = MeasuringStationLoaderStates.MOTOR_CLASSNAME_READ;
 			break;
+			
+		case MOTOR_AXIS_CLASSNAME_NEXT:
+		case MOTOR_AXIS_CLASSNAME_READ:
+			this.currentMotorAxis.setId( textBuffer.toString() );
+			this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
+			break;	
 			
 		case MOTOR_AXIS_NAME_NEXT:
 			this.currentMotorAxis.setName( textBuffer.toString() );
@@ -767,6 +784,14 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 					this.state =  MeasuringStationLoaderStates.DETECTOR_LOADING;
 				}
 				break;
+			
+			case DETECTOR_CHANNEL_CLASSNAME_NEXT:
+			case DETECTOR_CHANNEL_CLASSNAME_READ:
+				if( qName.equals( "class" ) ) {
+					this.state =  MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;
+				}
+				break;
+				
 			case DETECTOR_CHANNEL_ID_READ:
 				if( qName.equals( "id" ) ) {
 					this.state =  MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;

@@ -20,7 +20,7 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.4
  */
-public class Detector extends AbstractClassedDevice {
+public class Detector extends AbstractMainPhaseDevice {
 
 	/**
 	 * A private List to hold the detector channels of this detector.
