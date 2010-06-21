@@ -108,7 +108,7 @@ public class ScanDescriptionLoader {
 
 	
 	/**
-	 * This method loads the scan description out of the current fille.
+	 * This method loads the scan description out of the current file.
 	 * 
 	 * @throws ParserConfigurationException Gets thrown if the parser has been configured in a wrong way.
 	 * @throws SAXException Thrown by the SAX Parser.

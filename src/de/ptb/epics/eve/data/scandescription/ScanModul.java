@@ -394,8 +394,6 @@ public class ScanModul implements IModelUpdateListener, IModelUpdateProvider, IM
 				positionings[i].setDetectorChannel(null);
 			}
 			if (channel.getDetectorChannel().equals(positionings[i].getNormalization())) {
-				System.out.println("         Normalization gibt es nicht mehr");
-				// TODO: Warnmeldung ausgeben, dass Normalize Channel entfernt wurde
 				positionings[i].setNormalization(null);
 			}
 		}

@@ -124,6 +124,16 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @return Returns the id of the control event.
 	 */
+	public String getDeviceId () {
+		String device = eventId;
+		return device;
+	}
+
+	/**
+	 * This method return the id of the device from the control event.
+	 * 
+	 * @return Returns the id of the device.
+	 */
 	public String getId () {
 		return eventId;
 	}
