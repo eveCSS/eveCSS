@@ -136,6 +136,17 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		this.setPartName( input.getName() );
 		final FileStoreEditorInput fileStoreEditorInput = (FileStoreEditorInput)input;
 		final File scanDescriptionFile = new File( fileStoreEditorInput.getURI() );
+		if (scanDescriptionFile.isFile() == true) {
+			if (scanDescriptionFile.length() == 0) {
+				// File ist vorhanden aber leer, es wird nicht eingelesen
+				return;
+			}
+		}
+		else {
+			// File ist nicht vorhanden, es wird nicht eingelesen
+			return;
+		}
+		
 		final ScanDescriptionLoader scanDescriptionLoader = new ScanDescriptionLoader( Activator.getDefault().getMeasuringStation(), Activator.getDefault().getSchemaFile() );
 		try {
 			scanDescriptionLoader.load( scanDescriptionFile );
