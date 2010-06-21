@@ -2,6 +2,23 @@
 <tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <version>0.3.8</version>
+    <!-- plugin section -->
+    <plugins>
+        <!-- (dummy) plugin to save data in ascii format -->
+        <plugin type="save">
+            <name>ASCII</name>
+            <location></location>
+            <parameter name="format" datatype="string" default="ASCII"></parameter>
+            <parameter name="suffix" datatype="string" default="txt"></parameter>
+        </plugin>
+        <!-- plugin to save data in hdf5 format -->
+        <plugin type="save">
+            <name>HDF5</name>
+            <location>/home/eden/eclipse/eve/evePlugins/lib</location>
+            <parameter name="extent" datatype="int" default="0"></parameter>
+            <parameter name="format" datatype="string" default="HDF5"></parameter>
+        </plugin>
+    </plugins>
     <!-- detector section -->
     <detectors>
         <!-- Name, Class, PV -->
