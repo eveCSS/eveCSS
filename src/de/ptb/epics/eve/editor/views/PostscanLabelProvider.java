@@ -93,7 +93,10 @@ public class PostscanLabelProvider implements ITableLabelProvider {
 			case 1:
 				return (pos.getValue()!=null)?pos.getValue():"";
 			case 2:
-				break;
+				if (pos.isReset())
+					return "yes";
+				else
+					return "no";
 		}
 		return "";
 	}

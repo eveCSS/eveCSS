@@ -11,6 +11,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
+import org.eclipse.jface.viewers.ComboBoxCellEditor;
+import org.eclipse.jface.viewers.ICellEditorListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
@@ -76,7 +78,11 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 
 	    column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 2 );
 	    column.setText( "Reset Original" );
-	    column.setWidth( 80 );
+	    column.setWidth( 100 );
+
+	    column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 3 );
+	    column.setText( " " );
+	    column.setWidth( 10 );
 
 	    this.tableViewer.getTable().setHeaderVisible( true );
 	    this.tableViewer.getTable().setLinesVisible( true );
@@ -87,9 +93,11 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 	    
 	    final CellEditor[] editors = new CellEditor[3];
 	    
+	    final String[] yesNo = {"yes","no"};
+
 	    editors[0] = new TextCellEditor( this.tableViewer.getTable() );
 	    editors[1] = new TextCellEditor( this.tableViewer.getTable() );
-	    editors[2] = new CheckboxCellEditor( );
+	    editors[2] = new ComboBoxCellEditor( this.tableViewer.getTable(), yesNo, SWT.READ_ONLY);
 	    
 	    this.tableViewer.setCellModifier( new PostscanCellModifyer( this.tableViewer ) );
 	    this.tableViewer.setCellEditors( editors );

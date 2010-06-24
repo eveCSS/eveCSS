@@ -54,12 +54,6 @@ public class PostscanCellModifyer implements ICellModifier {
 			return property.equals( "value" );
 		}
 		else if (property.equals("reset")) {
-			final Postscan postscan = (Postscan)element;
-			if (postscan.isReset()){
-				postscan.setReset(false);
-			}
-			else
-				postscan.setReset(true);
 			return property.equals( "reset" );
 		}
 		return false;
@@ -84,6 +78,13 @@ public class PostscanCellModifyer implements ICellModifier {
 				return ((Postscan)element).getValue();
 		    }
 		}
+		if( property.equals( "reset" ) ) {
+			// Feld ist ein ComboBoxCellEditor
+		    if (postscan.isReset())
+		    	return 0;	// reset = yes
+		    else
+		    	return 1;	// reset = no
+		}
 		return -1;
 	}
 
@@ -100,10 +101,12 @@ public class PostscanCellModifyer implements ICellModifier {
 			    postscan.setValue(value.toString());
 		    }
 		}
-		// es wird kein modify Callback erzeugt von der CheckBox
 		if( property.equals( "reset" ) ) {
-			System.out.println("modify von reset (checkBox aufgerufen)");
-			postscan.setReset((Boolean)value);
+	    	final String[] operators = ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[2]).getItems();
+	    	if (operators[(Integer)value].equals("yes"))
+	    		postscan.setReset(true);
+	    	else
+	    		postscan.setReset(false);
 		}
 		this.tableViewer.refresh();
 	}
