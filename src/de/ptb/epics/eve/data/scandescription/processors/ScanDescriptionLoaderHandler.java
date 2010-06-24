@@ -736,9 +736,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_AXISID_NEXT:
-			this.currentAxis.setMotorAxis(this.measuringStation.getMotorAxisById(textBuffer.toString()));
+			if (this.measuringStation.getMotorAxisById(textBuffer.toString()) != null) {
+				// MotorAxis ist am Messplatz vorhanden
+				this.currentAxis.setMotorAxis(this.measuringStation.getMotorAxisById(textBuffer.toString()));
+			}
 			if( this.currentAxis.getMotorAxis() == null ) {
-				
+//TODO Frage an Stephan: Diese Abfragen sind alle für eine andere Fehlerbehandlung vorgesehen gewesen und
+				// können jetzt weg. (Hartmut 21.6.10)	
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_AXISID_READ;
 			break;
@@ -885,13 +889,16 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 			
 		case CHAIN_SCANMODULE_POSITIONING_AXIS_ID_NEXT:
-			this.currentPositioning.setMotorAxis( this.measuringStation.getMotorAxisById(textBuffer.toString() ) );
-			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_AXIS_ID_READ;
+			if (this.measuringStation.getMotorAxisById(textBuffer.toString()) != null) {
+				// MotorAxis ist am Messplatz vorhanden
+				this.currentPositioning.setMotorAxis( this.measuringStation.getMotorAxisById(textBuffer.toString() ) );
+			}
+ 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_AXIS_ID_READ;
 			break;
 			
 		case CHAIN_SCANMODULE_POSITIONING_CHANNEL_ID_NEXT:
 			if (this.measuringStation.getDetectorChannelById(textBuffer.toString()) != null) {
-				// Detector ist am Messplatz vorhanden
+				// DetectorChannel ist am Messplatz vorhanden
 				this.currentPositioning.setDetectorChannel( this.measuringStation.getDetectorChannelById(textBuffer.toString() ) );
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_CHANNEL_ID_READ;
@@ -899,7 +906,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			
 		case CHAIN_SCANMODULE_POSITIONING_NORMALIZE_ID_NEXT:
 			if (this.measuringStation.getDetectorChannelById(textBuffer.toString()) != null) {
-				// Detector ist am Messplatz vorhanden
+				// DetectorChannel ist am Messplatz vorhanden
 				this.currentPositioning.setNormalization( this.measuringStation.getDetectorChannelById(textBuffer.toString() ) );
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_NORMALIZE_ID_READ;
@@ -975,7 +982,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case YAXIS_ID_NEXT:
 			if (this.measuringStation.getDetectorChannelById(textBuffer.toString()) != null) {
-				// Detector ist am Messplatz vorhanden
+				// DetectorChannel ist am Messplatz vorhanden
 				this.currentYAxis.setDetectorChannel( this.measuringStation.getDetectorChannelById(textBuffer.toString() ) );
 			}
 
@@ -997,7 +1004,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case YAXIS_NORMALIZE_ID_NEXT:
 			if (this.measuringStation.getDetectorChannelById(textBuffer.toString()) != null) {
-				// Detector ist am Messplatz vorhanden
+				// DetectorChannel ist am Messplatz vorhanden
 				this.currentYAxis.setNormalizeChannel(this.measuringStation.getDetectorChannelById(textBuffer.toString()));
 			}
 
@@ -1475,9 +1482,21 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
+/********************
+		case CHAIN_SCANMODULE_DETECTOR_LOADING:
+			if (qName.equals("smchannel")) {
+				if (this.currentChannel.getAbstractDevice() != null) {
+					this.currentScanModul.add( this.currentChannel );
+				}
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+			}
+			break;
+******************/
+			
 		case CHAIN_SCANMODULE_SMMOTOR_LOADING:
 			if (qName.equals("smaxis")) {
-				this.currentScanModul.add( this.currentAxis );
+				if (this.currentAxis.getAbstractDevice() != null) {
+					this.currentScanModul.add( this.currentAxis );
 				TypeValue tv = null;
 				
 				if( this.currentAxis.getMotorAxis() != null ) {
@@ -1541,6 +1560,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						}
 					}
 				}
+				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
@@ -1564,7 +1584,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				}
 				
 				if (this.measuringStation.getDetectorChannelById(subString) != null) {
-					// RedoEvent wird nur hinzugefügt, wenn Channel auch vorhanden
+					// RedoEvent wird nur hinzugefügt, wenn DetectorChannel auch vorhanden
 					this.currentChannel.addRedoEvent( this.currentControlEvent );
 				}
 
@@ -1572,7 +1592,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 
 				if (this.measuringStation.getDetectorChannelById(subString) != null) {
-					// RedoEvent wird nur hinzugefügt, wenn Channel auch vorhanden
+					// RedoEvent wird nur hinzugefügt, wenn DetectorChannel auch vorhanden
 					controlEventList.add(this.currentControlEvent);
 				}
 			}
@@ -1580,7 +1600,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			
 		case CHAIN_SCANMODULE_POSITIONING_LOADING:
 			if (qName.equals("positioning")) {
-				this.currentScanModul.add( this.currentPositioning );
+				// nur wenn Achse des CurrentPositioning OK, wird es geladen!!
+				if (this.currentPositioning.getAbstractDevice() != null) {
+					this.currentScanModul.add( this.currentPositioning );
+				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
