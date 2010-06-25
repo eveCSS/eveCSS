@@ -10,6 +10,8 @@ package de.ptb.epics.eve.editor.views;
 import java.util.Iterator;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -30,7 +32,9 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 
+import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
@@ -189,6 +193,100 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 			}
 		});
 	
+		
+		final MenuManager menuManager = new MenuManager( "#PopupMenu" );
+		menuManager.setRemoveAllWhenShown( true );
+		menuManager.addMenuListener( new IMenuListener() {
+
+			@Override
+			public void menuAboutToShow( final IMenuManager manager ) {
+				
+				for( final String className : Activator.getDefault().getMeasuringStation().getClassNameList() ) {
+					System.out.println( "Currently processed class name is: " + className );
+					final MenuManager currentClassMenu = new MenuManager( className );
+					for( final AbstractDevice device : Activator.getDefault().getMeasuringStation().getDeviceList( className ) ) {
+						if( device instanceof Motor ) {
+							final Motor motor = (Motor)device;
+							final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName() );
+							currentClassMenu.add( currentMotorMenu );
+							for( final MotorAxis axis : motor.getAxis() ) {
+								final Action setAxisAction = new Action() {
+									final MotorAxis ma = axis;
+									public void run() {
+										super.run();
+										for( final Axis a : scanModul.getAxis() ) {
+											if( a.getAbstractDevice() == ma ) {
+												return;
+											}
+										}
+										Axis a = new Axis( scanModul );
+										a.setMotorAxis( ma );
+										scanModul.add( a );
+									}
+								};
+								setAxisAction.setText( "".equals( axis.getName())?axis.getID():axis.getName() );
+								currentMotorMenu.add( setAxisAction );
+							}
+						} else if( device instanceof MotorAxis ) {
+							final Action setAxisAction = new Action() {
+								final MotorAxis ma = (MotorAxis)device;
+								public void run() {
+									super.run();
+									for( final Axis a : scanModul.getAxis() ) {
+										if( a.getAbstractDevice() == ma ) {
+											return;
+										}
+									}
+									Axis a = new Axis( scanModul );
+									a.setMotorAxis( ma );
+									scanModul.add( a );
+								}
+							};
+							currentClassMenu.add( setAxisAction );
+							setAxisAction.setText( "".equals( device.getName())?device.getID():device.getName() );
+						}
+						manager.add( currentClassMenu );
+					}
+				}
+				
+				for( final Motor motor : Activator.getDefault().getMeasuringStation().getMotors() ) {
+					if( "".equals( motor.getClassName() ) || motor.getClassName() == null ) {
+						final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName() );
+						for( final MotorAxis axis : motor.getAxis() ) {
+							if( "".equals( axis.getClassName()  ) || axis.getClassName() == null ) {
+								final Action setAxisAction = new Action() {
+									final MotorAxis ma = axis;
+									public void run() {
+										
+										for( final Axis a : scanModul.getAxis() ) {
+											if( a.getAbstractDevice() == ma ) {
+												return;
+											}
+										}
+										
+										super.run();
+										Axis a = new Axis( scanModul );
+										a.setMotorAxis( ma );
+										scanModul.add( a );
+									}
+								};
+								setAxisAction.setText( "".equals( axis.getName())?axis.getID():axis.getName() );
+								currentMotorMenu.add( setAxisAction );
+							}
+						}
+						manager.add( currentMotorMenu );
+					}
+				}
+				
+			}
+
+			
+		});
+		final Menu contextMenu = menuManager.createContextMenu( this.motorAxisCombo );
+		this.motorAxisCombo.setMenu( contextMenu );
+		
+		
+		
 		Action deleteAction = new Action(){
 		    	public void run() {
 	    		

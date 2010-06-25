@@ -8,6 +8,8 @@
 package de.ptb.epics.eve.editor.views;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
@@ -29,8 +31,16 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
+import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
+import de.ptb.epics.eve.data.measuringstation.Detector;
+import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.measuringstation.Device;
+import de.ptb.epics.eve.data.measuringstation.Motor;
+import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.scandescription.Postscan;
+import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -113,6 +123,296 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 		gridData.verticalAlignment = GridData.CENTER;
 		gridData.grabExcessHorizontalSpace = true;
 		this.postscanCombo.setLayoutData( gridData );
+		
+		final MenuManager menuManager = new MenuManager( "#PopupMenu" );
+		menuManager.setRemoveAllWhenShown( true );
+		menuManager.addMenuListener( new IMenuListener() {
+
+			@Override
+			public void menuAboutToShow( final IMenuManager manager ) {
+				
+				for( final String className : Activator.getDefault().getMeasuringStation().getClassNameList() ) {
+					System.out.println( "Currently processed class name is: " + className );
+					final MenuManager currentClassMenu = new MenuManager( className );
+					
+					for( final AbstractDevice device : Activator.getDefault().getMeasuringStation().getDeviceList( className ) ) {
+						if( device instanceof Motor ) {
+							final Motor motor = (Motor)device;
+							final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName() );
+							for( final MotorAxis motorAxis : motor.getAxis() ) {
+								final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
+								for( final Option option : motorAxis.getOptions() ) {
+									final Action setOptionAction = new Action() {
+										final Option o = option;
+										public void run() {
+											super.run();
+											for( final Postscan p : scanModul.getPostscans() ) {
+												if( p.getAbstractDevice() == o ) {
+													return;
+												}
+											}
+											final Postscan p = new Postscan();
+											p.setAbstractPrePostscanDevice( o );
+											scanModul.add( p );
+										}
+									};
+									currentMotorAxisMenu.add( setOptionAction );
+									setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
+								}
+								currentMotorMenu.add( currentMotorAxisMenu );
+							}
+							for( final Option option : motor.getOptions() ) {
+								final Action setOptionAction = new Action() {
+									final Option o = option;
+									public void run() {
+										super.run();
+										for( final Postscan p : scanModul.getPostscans() ) {
+											if( p.getAbstractDevice() == o ) {
+												return;
+											}
+										}
+										final Postscan p = new Postscan();
+										p.setAbstractPrePostscanDevice( o );
+										scanModul.add( p );
+									}
+								};
+								currentMotorMenu.add( setOptionAction );
+								setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
+							}
+							currentClassMenu.add( currentMotorMenu );
+						} else if( device instanceof MotorAxis ) {
+							final MotorAxis motorAxis = (MotorAxis)device;
+							final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
+							for( final Option option : motorAxis.getOptions() ) {
+								final Action setOptionAction = new Action() {
+									final Option o = option;
+									public void run() {
+										super.run();
+										for( final Postscan p : scanModul.getPostscans() ) {
+											if( p.getAbstractDevice() == o ) {
+												return;
+											}
+										}
+										final Postscan p = new Postscan();
+										p.setAbstractPrePostscanDevice( o );
+										scanModul.add( p );
+									}
+								};
+								currentMotorAxisMenu.add( setOptionAction );
+								setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
+							}
+							currentClassMenu.add( currentMotorAxisMenu );
+						} else if( device instanceof Detector ) {
+							final Detector detector = (Detector)device;
+							final MenuManager currentDetectorMenu = new MenuManager( "".equals( detector.getName())?detector.getID():detector.getName() );
+							for( final DetectorChannel detectorChannel : detector.getChannels() ) {
+								final MenuManager currentDetectorChannelMenu = new MenuManager( "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName() );
+								for( final Option option : detectorChannel.getOptions() ) {
+									final Action setOptionAction = new Action() {
+										final Option o = option;
+										public void run() {
+											super.run();
+											for( final Postscan p : scanModul.getPostscans() ) {
+												if( p.getAbstractDevice() == o ) {
+													return;
+												}
+											}
+											final Postscan p = new Postscan();
+											p.setAbstractPrePostscanDevice( o );
+											scanModul.add( p );
+										}
+									};
+									currentDetectorChannelMenu.add( setOptionAction );
+									setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
+								}
+								currentDetectorMenu.add( currentDetectorChannelMenu );
+							}
+							for( final Option option : detector.getOptions() ) {
+								final Action setOptionAction = new Action() {
+									final Option o = option;
+									public void run() {
+										super.run();
+										for( final Postscan p : scanModul.getPostscans() ) {
+											if( p.getAbstractDevice() == o ) {
+												return;
+											}
+										}
+										final Postscan p = new Postscan();
+										p.setAbstractPrePostscanDevice( o );
+										scanModul.add( p );
+									}
+								};
+								currentDetectorMenu.add( setOptionAction );
+								setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
+							}
+							currentClassMenu.add( currentDetectorMenu );
+						} else if( device instanceof DetectorChannel ) {
+							final DetectorChannel detectorChannel = (DetectorChannel)device;
+							final MenuManager currentDetectorChannelMenu = new MenuManager( "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName() );
+							for( final Option option : detectorChannel.getOptions() ) {
+								final Action setOptionAction = new Action() {
+									final Option o = option;
+									public void run() {
+										super.run();
+										for( final Postscan p : scanModul.getPostscans() ) {
+											if( p.getAbstractDevice() == o ) {
+												return;
+											}
+										}
+										final Postscan p = new Postscan();
+										p.setAbstractPrePostscanDevice( o );
+										scanModul.add( p );
+									}
+								};
+								currentDetectorChannelMenu.add( setOptionAction );
+								setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
+							}
+							currentClassMenu.add( currentDetectorChannelMenu );
+						} else if( device instanceof Device ) {
+							final Action setDeviceAction = new Action() {
+								final Device dv = (Device)device;
+								public void run() {
+									super.run();
+									for( final Postscan p : scanModul.getPostscans() ) {
+										if( p.getAbstractDevice() == dv ) {
+											return;
+										}
+									}
+									final Postscan p = new Postscan();
+									p.setAbstractPrePostscanDevice( dv );
+									scanModul.add( p );
+								}
+							};
+							currentClassMenu.add( setDeviceAction );
+							setDeviceAction.setText( "".equals( device.getName())?device.getID():device.getName() );
+						}
+					}
+					manager.add( currentClassMenu );
+
+				}
+				for( final Motor motor : Activator.getDefault().getMeasuringStation().getMotors() ) {
+					if( "".equals( motor.getClassName() ) || motor.getClassName() == null ) {
+						final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName() );
+						for( final MotorAxis motorAxis : motor.getAxis() ) {
+							if( "".equals( motorAxis.getClassName() ) || motorAxis.getClassName() == null ) {
+								final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
+								for( final Option option : motorAxis.getOptions() ) {
+									final Action setOptionAction = new Action() {
+										final Option o = option;
+										public void run() {
+											super.run();
+											for( final Postscan p : scanModul.getPostscans() ) {
+												if( p.getAbstractDevice() == o ) {
+													return;
+												}
+											}
+											final Postscan p = new Postscan();
+											p.setAbstractPrePostscanDevice( o );
+											scanModul.add( p );
+										}
+									};
+									currentMotorAxisMenu.add( setOptionAction );
+									setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
+								}
+								currentMotorMenu.add( currentMotorAxisMenu );
+							}
+						}
+						for( final Option option : motor.getOptions() ) {
+							final Action setOptionAction = new Action() {
+								final Option o = option;
+								public void run() {
+									super.run();
+									for( final Postscan p : scanModul.getPostscans() ) {
+										if( p.getAbstractDevice() == o ) {
+											return;
+										}
+									}
+									final Postscan p = new Postscan();
+									p.setAbstractPrePostscanDevice( o );
+									scanModul.add( p );
+								}
+							};
+							currentMotorMenu.add( setOptionAction );
+							setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
+						}
+					manager.add( currentMotorMenu );
+					}
+				}
+				for( final Detector detector : Activator.getDefault().getMeasuringStation().getDetectors() ) {
+					if( "".equals( detector.getClassName() ) || detector.getClassName() == null ) {
+						final MenuManager currentDetectorMenu = new MenuManager( "".equals( detector.getName())?detector.getID():detector.getName() );
+						for( final DetectorChannel detectorChannel : detector.getChannels() ) {
+							if( "".equals( detectorChannel.getClassName() ) || detectorChannel.getClassName() == null ) {
+								final MenuManager currentDetectorChannelMenu = new MenuManager( "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName() );
+								for( final Option option : detectorChannel.getOptions() ) {
+									final Action setOptionAction = new Action() {
+										final Option o = option;
+										public void run() {
+											super.run();
+											for( final Postscan p : scanModul.getPostscans() ) {
+												if( p.getAbstractDevice() == o ) {
+													return;
+												}
+											}
+											final Postscan p = new Postscan();
+											p.setAbstractPrePostscanDevice( o );
+											scanModul.add( p );
+										}
+									};
+									currentDetectorChannelMenu.add( setOptionAction );
+									setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
+								}
+								currentDetectorMenu.add( currentDetectorChannelMenu );
+							}
+							
+						}
+						for( final Option option : detector.getOptions() ) {
+							final Action setOptionAction = new Action() {
+								final Option o = option;
+								public void run() {
+									super.run();
+									for( final Postscan p : scanModul.getPostscans() ) {
+										if( p.getAbstractDevice() == o ) {
+											return;
+										}
+									}
+									final Postscan p = new Postscan();
+									p.setAbstractPrePostscanDevice( o );
+									scanModul.add( p );
+								}
+							};
+							currentDetectorMenu.add( setOptionAction );
+							setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
+						}
+						manager.add( currentDetectorMenu );
+					}
+				}
+				for( final Device device : Activator.getDefault().getMeasuringStation().getDevices() ) {
+					if( "".equals( device.getClassName() ) || device.getClassName() == null ) {
+						final Action setDeviceAction = new Action() {
+							final Device dv = (Device)device;
+							public void run() {
+								super.run();
+								for( final Postscan p : scanModul.getPostscans() ) {
+									if( p.getAbstractDevice() == dv ) {
+										return;
+									}
+								}
+								final Postscan p = new Postscan();
+								p.setAbstractPrePostscanDevice( dv );
+								scanModul.add( p );
+							}
+						};
+						manager.add( setDeviceAction );
+						setDeviceAction.setText( "".equals( device.getName())?device.getID():device.getName() );
+					}
+				}
+			}
+		} );
+		
+		final Menu contextMenu = menuManager.createContextMenu( this.postscanCombo );
+		this.postscanCombo.setMenu( contextMenu );
+		
 		
 		this.addButton = new Button( this, SWT.NONE );
 		this.addButton.setText( "Add" );

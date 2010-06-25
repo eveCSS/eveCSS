@@ -8,6 +8,8 @@
 package de.ptb.epics.eve.editor.views;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -27,6 +29,8 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 
+import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
+import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
@@ -129,6 +133,115 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 		gridData.verticalAlignment = GridData.CENTER;
 		gridData.grabExcessHorizontalSpace = true;
 		this.detectorChannelCombo.setLayoutData( gridData );
+		
+		final MenuManager menuManager = new MenuManager( "#PopupMenu" );
+		
+		menuManager.setRemoveAllWhenShown( true );
+		menuManager.addMenuListener( new IMenuListener() {
+
+			@Override
+			public void menuAboutToShow( final IMenuManager manager ) {
+				
+				for( final String className : Activator.getDefault().getMeasuringStation().getClassNameList() ) {
+					System.out.println( "Currently processed class name is: " + className );
+					boolean containsAtLeastOne = false;
+					final MenuManager currentClassMenu = new MenuManager( className );
+					for( final AbstractDevice device : Activator.getDefault().getMeasuringStation().getDeviceList( className ) ) {
+						if( device instanceof Detector ) {
+							containsAtLeastOne = true;
+							final Detector detector = (Detector)device;
+							final MenuManager currentDetectorMenu = new MenuManager( "".equals( detector.getName())?detector.getID():detector.getName() );
+							currentClassMenu.add( currentDetectorMenu );
+							for( final DetectorChannel channel : detector.getChannels() ) {
+								final Action setChannelAction = new Action() {
+									final DetectorChannel dc = channel;
+									public void run() {
+										super.run();
+										for( final Channel c : scanModul.getChannels() ) {
+											if( c.getAbstractDevice() == dc ) {
+												return;
+											}
+										}
+										Channel c = new Channel( scanModul );
+										c.setDetectorChannel( dc );
+										scanModul.add( c );
+									}
+								};
+								setChannelAction.setText( "".equals( channel.getName())?channel.getID():channel.getName() );
+								containsAtLeastOne = true;
+								currentDetectorMenu.add( setChannelAction );
+							}
+						} else if( device instanceof DetectorChannel ) {
+							containsAtLeastOne = true;	
+							final Action setChannelAction = new Action() {
+								final DetectorChannel dc = (DetectorChannel)device;
+								public void run() {
+									super.run();
+									for( final Channel c : scanModul.getChannels() ) {
+										if( c.getAbstractDevice() == dc ) {
+											return;
+										}
+									}
+									Channel c = new Channel( scanModul );
+									c.setDetectorChannel( dc );
+									scanModul.add( c );
+								}
+							};
+							currentClassMenu.add( setChannelAction );
+							setChannelAction.setText( "".equals( device.getName())?device.getID():device.getName() );
+							containsAtLeastOne = true;
+							
+						}
+						if( containsAtLeastOne ) {
+							manager.add( currentClassMenu );
+						} else {
+							//currentClassMenu.dispose();
+						}
+					}
+				}
+				
+				for( final Detector detector : Activator.getDefault().getMeasuringStation().getDetectors() ) {
+					if( "".equals( detector.getClassName() ) || detector.getClassName() == null ) {
+						boolean containsAtLeastOne = false;
+						final MenuManager currentDetectorMenu = new MenuManager( "".equals( detector.getName())?detector.getID():detector.getName() );
+						for( final DetectorChannel channel : detector.getChannels() ) {
+							if( "".equals( channel.getClassName()  ) || channel.getClassName() == null ) {
+								final Action setChannelAction = new Action() {
+									final DetectorChannel dc = channel;
+									public void run() {
+										
+										for( final Channel c : scanModul.getChannels()) {
+											if( c.getAbstractDevice() == dc ) {
+												return;
+											}
+										}
+										
+										super.run();
+										Channel c = new Channel( scanModul );
+										c.setDetectorChannel( dc );
+										scanModul.add( c );
+									}
+								};
+								setChannelAction.setText( "".equals( channel.getName())?channel.getID():channel.getName() );
+								containsAtLeastOne = true;
+								currentDetectorMenu.add( setChannelAction );
+							}
+						}
+						if( containsAtLeastOne ) {
+							manager.add( currentDetectorMenu );
+						} else {
+							manager.dispose();
+						}
+					}
+				}
+				
+			}
+
+			
+		});
+		
+		final Menu contextMenu = menuManager.createContextMenu( this.detectorChannelCombo );
+		this.detectorChannelCombo.setMenu( contextMenu );
 		
 		this.addButton = new Button( this, SWT.NONE );
 		this.addButton.setText( "Add" );
