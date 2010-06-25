@@ -375,6 +375,10 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 			this.atts.clear();
 			this.contentHandler.startElement("", "axis", "axis", this.atts );
 			this.atts.clear();
+			this.contentHandler.startElement("", "class", "class", this.atts );
+			if (axis.getClassName() != null) this.contentHandler.characters( axis.getClassName().toCharArray(), 0, axis.getClassName().length() );
+			this.contentHandler.endElement( "", "class", "class" );
+
 			this.contentHandler.startElement("", "name", "name", this.atts );
 			if (axis.getName() != null) this.contentHandler.characters( axis.getName().toCharArray(), 0, axis.getName().length() );
 			this.contentHandler.endElement( "", "name", "name" );
@@ -537,6 +541,11 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 			this.atts.clear();
 			this.contentHandler.startElement("", "channel", "channel", this.atts );
 			this.atts.clear();
+			
+			this.contentHandler.startElement("", "class", "class", this.atts );
+			if (channel.getClassName() != null) this.contentHandler.characters( channel.getClassName().toCharArray(), 0, channel.getClassName().length() );
+			this.contentHandler.endElement( "", "class", "class" );
+			
 			this.contentHandler.startElement("", "name", "name", this.atts );
 			if (channel.getName() != null) this.contentHandler.characters( channel.getName().toCharArray(), 0, channel.getName().length() );
 			this.contentHandler.endElement( "", "name", "name" );

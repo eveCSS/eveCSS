@@ -651,6 +651,21 @@ public class MeasuringStation {
 	 * @param absdevice
 	 */
 	private void classMapAdd(String className, AbstractDevice absdevice) {
+		
+		if( absdevice instanceof Motor ) {
+			final List< MotorAxis> axis = ((Motor)absdevice).getAxis();
+			for( final MotorAxis a : axis ) {
+				this.classMapAdd( a.getClassName(), a );
+				System.out.println( "Axis Class Name " + a.getClassName() + "--" );
+			}
+		} else if( absdevice instanceof Detector ) {
+			final List< DetectorChannel > channels = ((Detector)absdevice).getChannels();
+			for( final DetectorChannel c : channels ) {
+				this.classMapAdd( c.getClassName(), c );
+				System.out.println( "Channel Axis Class Name " + c.getClassName() + "--"  );
+			}
+		} 
+		
 		if ((className == null) || className.length() < 1) 
 			return;
 		
@@ -663,18 +678,6 @@ public class MeasuringStation {
 		}
 		adlist.add(absdevice);
 		classMap.put(className, adlist);
-		
-		if( absdevice instanceof Motor ) {
-			final List< MotorAxis> axis = ((Motor)absdevice).getAxis();
-			for( final MotorAxis a : axis ) {
-				this.classMapAdd( a.getClassName(), a );
-			}
-		} else if( absdevice instanceof Detector ) {
-			final List< DetectorChannel > channels = ((Detector)absdevice).getChannels();
-			for( final DetectorChannel c : channels ) {
-				this.classMapAdd( c.getClassName(), c );
-			}
-		} 
 	}
 	
 	/**

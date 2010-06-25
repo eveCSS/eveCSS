@@ -565,7 +565,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			
 		case MOTOR_AXIS_CLASSNAME_NEXT:
 		case MOTOR_AXIS_CLASSNAME_READ:
-			this.currentMotorAxis.setId( textBuffer.toString() );
+			this.currentMotorAxis.setClassName( textBuffer.toString() );
 			this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
 			break;	
 			
