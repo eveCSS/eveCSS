@@ -19,6 +19,10 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -44,7 +48,7 @@ import de.ptb.epics.eve.editor.Activator;
 public class PositioningComposite extends Composite implements IModelUpdateListener {
 
 	private TableViewer tableViewer;
-	private Combo motorAxisCombo;
+	private Combo positioningCombo;
 	private Button addButton;
 	private ScanModul scanModul;
 	
@@ -129,14 +133,50 @@ public class PositioningComposite extends Composite implements IModelUpdateListe
 	    
 	    this.tableViewer.setColumnProperties( props );
 	    
-	    this.motorAxisCombo = new Combo(this, SWT.READ_ONLY);
+	    this.positioningCombo = new Combo(this, SWT.READ_ONLY);
 		
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
 		gridData.grabExcessHorizontalSpace = true;
-		this.motorAxisCombo.setLayoutData( gridData );
-		
+		this.positioningCombo.setLayoutData( gridData );
+		// Leerer Platzhalter-Eintrag, damit das Auswahlmenu angewählt werden kann.
+		// Dann werden durch focusGained die richtigen Auswahlwerte gesetzt.
+		this.positioningCombo.add("", 0);
+		this.positioningCombo.addFocusListener( new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+
+				// Die Auswahl der Achsen wird aktualisiert
+				// Es werden nur die Achsen erlaubt die auch in diesem ScanModul verwendet werden.
+				Axis[] cur_axis = scanModul.getAxis();
+				String[] cur_feld = new String[cur_axis.length];
+				
+				for (int i=0; i<cur_axis.length; ++i) {
+					cur_feld[i] = cur_axis[i].getMotorAxis().getFullIdentifyer();
+				}
+				positioningCombo.setItems(cur_feld);
+			
+				// die Achsen für die es schon Positionings gibt, werden wieder entfernt
+				Positioning[] positionings = scanModul.getPositionings();
+				for( int i = 0; i < positionings.length; ++i ) {
+					positioningCombo.remove(positionings[i].getMotorAxis().getFullIdentifyer());
+				}
+
+				if (positioningCombo.getItemCount() == 0) {
+					// Kein Eintrag mehr vorhanden, leeren Platzhalter anlegen
+					positioningCombo.add("");
+				}
+
+			}
+
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+			}
+
+		}) ;
+
 		this.addButton = new Button( this, SWT.NONE );
 		this.addButton.setText( "Add" );
 		gridData = new GridData();
@@ -152,8 +192,8 @@ public class PositioningComposite extends Composite implements IModelUpdateListe
 
 			public void widgetSelected(SelectionEvent e) {
 				
-				if( !motorAxisCombo.getText().equals( "" ) ) {
-					final MotorAxis motorAxis = (MotorAxis)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( motorAxisCombo.getText() );
+				if( !positioningCombo.getText().equals( "" ) ) {
+					final MotorAxis motorAxis = (MotorAxis)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( positioningCombo.getText() );
 					
 					if( scanModul != null ) {
 						Positioning[] positionings = scanModul.getPositionings();
@@ -166,8 +206,11 @@ public class PositioningComposite extends Composite implements IModelUpdateListe
 						scanModul.add( positioning );
 
 						// Table Eintrag wird aus der Combo-Box entfernt
-						motorAxisCombo.remove(motorAxisCombo.getText());
-						System.out.println("MotorAxisCombo: " + motorAxisCombo.getText() + " wird entfernt");
+						positioningCombo.remove(positioningCombo.getText());
+						if (positioningCombo.getItemCount() == 0) {
+							// Kein Eintrag mehr vorhanden, Dummy Eintrag anlegen
+							positioningCombo.add("");
+						}
 					}
 					tableViewer.refresh();
 				}
@@ -182,7 +225,7 @@ public class PositioningComposite extends Composite implements IModelUpdateListe
 		    		Positioning weg = (Positioning)((IStructuredSelection)tableViewer.getSelection()).getFirstElement();
 		    		scanModul.remove( weg );
 		    		// Eintrag wird in die ComboBox wieder hinzugefügt
-		    		motorAxisCombo.add(weg.getAbstractDevice().getFullIdentifyer());
+		    		positioningCombo.add(weg.getAbstractDevice().getFullIdentifyer());
 		    		// TODO das add in die Liste ist erstmal nicht alphabetisch sortiert
 		    		// Lösung: Liste der vorhandenen Einträge durchsuchen und dabei 
 		    		// entscheiden an welcher Stelle der Eintrag hinzugefügt werden muß.
@@ -213,21 +256,6 @@ public class PositioningComposite extends Composite implements IModelUpdateListe
 		}
 		if( scanModul != null ) {
 			scanModul.addModelUpdateListener( this );
-
-			// Es werden nur die Achsen erlaubt die auch in diesem ScanModul verwendet werden.
-			Axis[] cur_axis = scanModul.getAxis();
-			String[] cur_feld = new String[cur_axis.length];
-			
-			for (int i=0; i<cur_axis.length; ++i) {
-				cur_feld[i] = cur_axis[i].getMotorAxis().getFullIdentifyer();
-			}
-			this.motorAxisCombo.setItems(cur_feld);
-		
-			// die Achsen für die es schon Positionings gibt, werden wieder entfernt
-			Positioning[] positionings = scanModul.getPositionings();
-			for( int i = 0; i < positionings.length; ++i ) {
-				this.motorAxisCombo.remove(positionings[i].getMotorAxis().getFullIdentifyer());
-			}
 		}
 		this.scanModul = scanModul;
 		this.tableViewer.setInput( scanModul );

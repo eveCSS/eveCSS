@@ -39,6 +39,7 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
+import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.PlotWindowError;
@@ -185,6 +186,10 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 						// Axis Eintrag wird in der Combo-Box hinzugefügt
 						motorAxisComboBox.add(motorAxisCombo.getText());
 					}
+
+					// Axis Eintrag muß auch im Positioning entfernt werden!
+					Positioning[] positionings = scanModul.getPositionings();
+
 					
 					// Table Eintrag wird aus der Combo-Box entfernt
 					motorAxisCombo.remove(motorAxisCombo.getText());

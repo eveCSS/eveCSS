@@ -35,8 +35,14 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.DragDetectEvent;
+import org.eclipse.swt.events.DragDetectListener;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -469,6 +475,49 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		this.positioningTab.setToolTipText("Move motor to calculated position after scan module is done");
 		this.positioningTab.setControl(this.positioningComposite);
 
+		
+		this.positioningComposite.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("MouseEvent 1von PositioningComposite");
+				
+			}
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("MouseEvent 2von PositioningComposite");
+				
+			}
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("MouseEvent 3von PositioningComposite");
+				
+			}
+		});
+
+		this.positioningComposite.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("FocusEvent von PositioningComposite");
+				
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("FocusLostEvent von PositioningComposite");
+				
+			}
+			
+		});
+	
 	}
 
 
