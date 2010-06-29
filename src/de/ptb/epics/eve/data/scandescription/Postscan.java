@@ -50,8 +50,6 @@ public class Postscan extends AbstractPostscanBehavior {
 		}
 		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
 		while( it.hasNext() ) {
-			// TODO: wie kann hier verhindert werden, dass die Fehlermeldung
-			// kommt, nachdem man die checkBox aktiviert hat? (Hartmut 12.5.10)
 			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
 		}
 	}
