@@ -77,9 +77,11 @@ public enum DataTypes {
 		
 		switch( type ) {
 		
-		case ONOFF:		return ( value.toUpperCase().equals( "ON" ) || value.toUpperCase().equals( "OFF" ) );
+//		case ONOFF:		return ( value.toUpperCase().equals( "ON" ) || value.toUpperCase().equals( "OFF" ) );
+		case ONOFF:		return true;
 		
-		case OPENCLOSE:	return ( value.toUpperCase().equals( "OPEN" ) || value.toUpperCase().equals( "CLOSE" ) );
+//		case OPENCLOSE:	return ( value.toUpperCase().equals( "OPEN" ) || value.toUpperCase().equals( "CLOSE" ) );
+		case OPENCLOSE:	return true;
 		
 		case INT:		try {
 							Integer.parseInt( value );
@@ -128,9 +130,14 @@ public enum DataTypes {
 		}
 
 		String returnString = null;
-
 		
 		if (type == DataTypes.STRING){
+			returnString = value;
+		}
+		else if (type == DataTypes.ONOFF){
+			returnString = value;
+		}
+		else if (type == DataTypes.OPENCLOSE){
 			returnString = value;
 		}
 		else if (type == DataTypes.INT){
