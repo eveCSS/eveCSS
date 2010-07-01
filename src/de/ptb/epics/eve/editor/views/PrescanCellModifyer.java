@@ -14,6 +14,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.TableItem;
 
+import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Prescan;
 
 public class PrescanCellModifyer implements ICellModifier {
@@ -36,11 +37,31 @@ public class PrescanCellModifyer implements ICellModifier {
 			    if (this.tableViewer.getCellEditors()[1] instanceof TextCellEditor) {
 					// aus dem TextCellEditor eine ComobBox machen
 					this.tableViewer.getCellEditors()[1].dispose();
-					this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor( this.tableViewer.getTable(), prescan.getAbstractPrePostscanDevice().getValue().getDiscreteValues().toArray(new String[0]), SWT.READ_ONLY);
-				}
+
+			    	// Wenn der PrescanDatatype on/off oder open/close ist, dieses zur Auswahl stellen und nicht die
+			    	// vorhandenen Zahlen.
+			    	if (prescan.getAbstractPrePostscanDevice().getValue().getType().equals(DataTypes.ONOFF)) {
+			    		this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor( this.tableViewer.getTable(), new String[] { "On", "Off"}, SWT.READ_ONLY);
+			    	}
+			    	else if (prescan.getAbstractPrePostscanDevice().getValue().getType().equals(DataTypes.OPENCLOSE)) {
+			    		this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor( this.tableViewer.getTable(), new String[] { "Open", "Close"}, SWT.READ_ONLY);
+			    	}
+			    	else
+			    		this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor( this.tableViewer.getTable(), prescan.getAbstractPrePostscanDevice().getValue().getDiscreteValues().toArray(new String[0]), SWT.READ_ONLY);
+			    }
 			    else if( this.tableViewer.getCellEditors()[1] instanceof ComboBoxCellEditor) {
 			    	// nur die möglichen Werte hinzufügen, ComboBox ist schon vorhanden
-			    	((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).setItems(prescan.getAbstractPrePostscanDevice().getValue().getDiscreteValues().toArray(new String[0]));
+
+			    	// Wenn der PrescanDatatype on/off oder open/close ist, dieses zur Auswahl stellen und nicht die
+			    	// vorhandenen Zahlen.
+			    	if (prescan.getAbstractPrePostscanDevice().getValue().getType().equals(DataTypes.ONOFF)) {
+			    		((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).setItems(new String[] { "On", "Off" });
+			    	}
+			    	else if (prescan.getAbstractPrePostscanDevice().getValue().getType().equals(DataTypes.OPENCLOSE)) {
+			    		((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).setItems(new String[] { "Open", "Close" });
+			    	}
+			    	else
+			    		((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).setItems(prescan.getAbstractPrePostscanDevice().getValue().getDiscreteValues().toArray(new String[0]));
 			    }
 			}
 			else {
@@ -82,8 +103,22 @@ public class PrescanCellModifyer implements ICellModifier {
 		if( property.equals( "value" ) ) {
 		    if (this.tableViewer.getCellEditors()[1] instanceof ComboBoxCellEditor) {
 		    	// Feld ist ein ComboBoxCellEditor
-		    	final String[] operators = ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).getItems();
-		    	prescan.setValue(operators[(Integer)value]);
+
+		    	// Wenn Datentyp OnOff oder OpenClose ist, wird nicht OnOff oder OpenClose gesetzt sondern der 
+		    	// echte Wert des PrePostscanDevice
+		    	if (prescan.getAbstractPrePostscanDevice().getValue().getType().equals(DataTypes.ONOFF)) {
+			    	final String[] auswahl = (prescan.getAbstractPrePostscanDevice().getValue().getDiscreteValues().toArray(new String[0]));
+			    	prescan.setValue(auswahl[(Integer)value]);
+		    	}
+		    	else if (prescan.getAbstractPrePostscanDevice().getValue().getType().equals(DataTypes.OPENCLOSE)) {
+			    	final String[] auswahl = (prescan.getAbstractPrePostscanDevice().getValue().getDiscreteValues().toArray(new String[0]));
+			    	prescan.setValue(auswahl[(Integer)value]);
+		    	}
+		    	else {
+			    	final String[] operators = ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).getItems();
+			    	prescan.setValue(operators[(Integer)value]);
+		    	}
+		    	
 		    }
 		    else {
 		    	// Feld ist ein TextCellEditor

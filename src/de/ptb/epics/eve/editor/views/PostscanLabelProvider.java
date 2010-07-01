@@ -17,6 +17,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
+import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Postscan;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.PostscanError;
@@ -76,7 +77,6 @@ public class PostscanLabelProvider implements ITableLabelProvider {
 			while( it.hasNext() ) {
 				final IModelError modelError = it.next();
 				if( modelError instanceof PostscanError ) {
-					//final PostscanError PostscanError = (PostscanError)modelError;
 					return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
 				}
 			}
@@ -91,7 +91,32 @@ public class PostscanLabelProvider implements ITableLabelProvider {
 			case 0:
 				return (pos.getAbstractPrePostscanDevice()!=null)?pos.getAbstractPrePostscanDevice().getFullIdentifyer():"";
 			case 1:
-				return (pos.getValue()!=null)?pos.getValue():"";
+				if (pos.getAbstractPrePostscanDevice().getValue().getType().equals(DataTypes.ONOFF)) {
+					// Datentyp ONOFF vorhanden, als Value wird On oder Off gesetzt
+					String[] werte = pos.getAbstractPrePostscanDevice().getValue().getDiscreteValues().toArray(new String[0]);
+					if (werte[0].equals(pos.getValue()))
+						// Erster Eintrag ist gesetzt, On anzeigen
+						return "On";
+					else if (werte[1].equals(pos.getValue()))
+						// Zweiter Eintrag ist gesetzt, Off anzeigen
+						return "Off";
+					else
+						return "";
+				}
+				else if (pos.getAbstractPrePostscanDevice().getValue().getType().equals(DataTypes.OPENCLOSE)) {
+					// Datentyp OPENCLOSE vorhanden, als Value wird Open oder Close gesetzt
+					String[] werte = pos.getAbstractPrePostscanDevice().getValue().getDiscreteValues().toArray(new String[0]);
+					if (werte[0].equals(pos.getValue()))
+						// Erster Eintrag ist gesetzt, Open anzeigen
+						return "Open";
+					else if (werte[1].equals(pos.getValue()))
+						// Zweiter Eintrag ist gesetzt, Close anzeigen
+						return "Close";
+					else
+						return "";
+				}
+				else
+					return (pos.getValue()!=null)?pos.getValue():"";
 			case 2:
 				if (pos.isReset())
 					return "yes";
