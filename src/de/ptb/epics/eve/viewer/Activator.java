@@ -51,6 +51,8 @@ public class Activator extends AbstractUIPlugin {
 	
 	private ECP1Client ecp1Client;
 	
+	private RequestProcessor requestProcessor;
+	
 	/**
 	 * The constructor
 	 */
@@ -68,6 +70,8 @@ public class Activator extends AbstractUIPlugin {
 		this.ecp1Client.addChainStatusListener( this.chainStatusAnalyzer );
 		this.colorreg = new ColorRegistry();
 		this.fontreg = new FontRegistry();
+		this.requestProcessor = new RequestProcessor();
+		this.ecp1Client.addRequestListener( this.requestProcessor );
 	}
 
 	/*
