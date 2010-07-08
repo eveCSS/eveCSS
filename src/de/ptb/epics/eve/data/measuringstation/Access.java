@@ -264,6 +264,11 @@ public class Access {
 		return DataTypes.getDefaultValue(this.type);
 	}
 
+	/**
+	 * This method returns if the Access is read only.
+	 * 
+	 * @return Returns 'true' if the method is read only.
+	 */
 	public boolean isReadOnly() {
 		switch (method) {
 		case GETPUT:
