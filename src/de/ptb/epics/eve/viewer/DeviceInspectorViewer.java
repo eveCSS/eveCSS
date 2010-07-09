@@ -35,6 +35,8 @@ import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.Device;
+import de.ptb.epics.eve.viewer.actions.ClearMessagesAction;
+import de.ptb.epics.eve.viewer.actions.NewDeviceInspectorAction;
 
 /**
  * This class represents the DeviceInspector view that provides interaction with motor axes
@@ -54,7 +56,9 @@ public class DeviceInspectorViewer extends ViewPart {
 	private CommonTableContentProvider deviceContentProvider;
 	private CommonTableContentProvider axisContentProvider;
 	private CommonTableContentProvider channelContentProvider;
-		
+	
+	private NewDeviceInspectorAction newDeviceInspectorAction;
+	
 	@Override
 	public void createPartControl( Composite parent ) {
 		
@@ -102,6 +106,7 @@ public class DeviceInspectorViewer extends ViewPart {
 			}
 
 			public void drop( final DropTargetEvent event ) {
+				System.out.println( event.getSource() );
 				if( textTransfer.isSupportedType( event.currentDataType ) ) {
 					IViewReference[] ref = getSite().getPage().getViewReferences();
 					MeasuringStationView view = null;
@@ -564,6 +569,14 @@ public class DeviceInspectorViewer extends ViewPart {
 //		target = new DropTarget( tableComposite, DND.DROP_COPY );
 //		target.setTransfer( types );
 //		target.addDropListener( dropListener );
+		
+		
+		this.newDeviceInspectorAction = new NewDeviceInspectorAction( this );
+		
+		this.newDeviceInspectorAction.setText( "New Device Inspector" );
+		this.newDeviceInspectorAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_OBJ_FOLDER ) );
+		this.getViewSite().getActionBars().getToolBarManager().add( this.newDeviceInspectorAction );
+
 	}
 
 	@Override

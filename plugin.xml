@@ -43,6 +43,7 @@
             id="MessagesView">
       </view>
       <view
+            allowMultiple="true"
             class="de.ptb.epics.eve.viewer.DeviceInspectorViewer"
             icon="icons/css.gif"
             id="DeviceInspectorView"
