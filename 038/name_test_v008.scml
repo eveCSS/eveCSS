@@ -15,8 +15,8 @@
             <scanmodule id="1">
                 <type>classic</type>
                 <name>New Scan Modul</name>
-                <xpos>153</xpos>
-                <ypos>91</ypos>
+                <xpos>103</xpos>
+                <ypos>49</ypos>
                 <parent>0</parent>
                 <triggerconfirm>false</triggerconfirm>
                 <saveaxispositions>never</saveaxispositions>
@@ -26,23 +26,44 @@
                 </prescan>
                 <prescan>
                     <id>K0617:23326zeroChk</id>
-                    <value type="OnOff">0</value>
+                    <value type="OnOff">1</value>
                 </prescan>
                 <prescan>
-                    <id>PPSMC:23715000.VELO</id>
-                    <value type="double">43</value>
+                    <id>K0617:23326zeroCor</id>
+                    <value type="OpenClose">Aus</value>
                 </prescan>
                 <smaxis>
-                    <axisid>PPSMC:23715002</axisid>
+                    <axisid>PPSMC:23715001</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="double">-10.0</start>
-                    <stop type="double">-10.0</stop>
-                    <stepwidth type="double">-10.0</stepwidth>
+                    <start type="double">0.0</start>
+                    <stop type="double">0.0</stop>
+                    <stepwidth type="double">0.0</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smaxis>
+                    <axisid>PPSMC:23715000</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">10.0</start>
+                    <stop type="double">10.0</stop>
+                    <stepwidth type="double">10.0</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smchannel>
+                    <channelid>ringCurrent1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>P5000:2370700.1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
                     <channelid>K0617:23326.1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>K0617:22225.2</channelid>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
                 <smchannel>
@@ -53,18 +74,69 @@
                     <id>K0617:23326function</id>
                     <value type="string">Amps</value>
                 </postscan>
-                <plot id="1">
+                <postscan>
+                    <id>K0617:23326zeroChk</id>
+                    <reset_originalvalue>true</reset_originalvalue>
+                </postscan>
+                <postscan>
+                    <id>K0617:23326zeroCor</id>
+                    <reset_originalvalue>true</reset_originalvalue>
+                </postscan>
+                <plot id="2">
                     <xaxis>
-                        <id>PPSMC:23715002</id>
+                        <id>PPSMC:23715001</id>
                         <mode>linear</mode>
                     </xaxis>
-                    <init>false</init>
+                    <init>true</init>
                     <yaxis>
                         <id>K0617:23326.1</id>
+                        <mode>linear</mode>
+                        <linestyle>dashed</linestyle>
+                        <color>green</color>
+                        <markstyle>point</markstyle>
+                    </yaxis>
+                    <yaxis>
+                        <id>P5000:2370700.1</id>
                         <mode>linear</mode>
                         <linestyle>solid</linestyle>
                         <color>blue</color>
                         <markstyle>star</markstyle>
+                    </yaxis>
+                </plot>
+                <plot id="1">
+                    <xaxis>
+                        <id>PPSMC:23715000</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>P5000:2370700.1</id>
+                        <mode>log</mode>
+                        <normalize_id>ringCurrent1</normalize_id>
+                        <linestyle>dashed</linestyle>
+                        <color>green</color>
+                        <markstyle>point</markstyle>
+                    </yaxis>
+                </plot>
+                <plot id="3">
+                    <xaxis>
+                        <id>PPSMC:23715000</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>P5000:2370700.1</id>
+                        <mode>linear</mode>
+                        <linestyle>solid</linestyle>
+                        <color>blue</color>
+                        <markstyle>star</markstyle>
+                    </yaxis>
+                    <yaxis>
+                        <id>ringCurrent1</id>
+                        <mode>linear</mode>
+                        <linestyle>dashed</linestyle>
+                        <color>green</color>
+                        <markstyle>point</markstyle>
                     </yaxis>
                 </plot>
             </scanmodule>
@@ -265,8 +337,8 @@
                 <name>ZeroCor</name>
                 <id>K0617:23326zeroCor</id>
                 <value>
-                    <access method="GETPUTCB" type="OnOff" transport="ca">K0617:23326zeroCor</access>
-                    <value type="OnOff">1, 0</value>
+                    <access method="GETPUTCB" type="OpenClose" transport="ca">K0617:23326zeroCor</access>
+                    <value type="OpenClose">Ein, Aus</value>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -349,7 +421,7 @@
                 </position>
                 <stop>
                     <access method="PUT" type="int" transport="local">Counter</access>
-                    <value type="OnOff">0</value>
+                    <value type="OnOff">4, 7</value>
                 </stop>
             </axis>
         </motor>

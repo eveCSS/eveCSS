@@ -196,8 +196,8 @@
 				<name>ZeroCor</name>
 				<id>K0617:23326zeroCor</id>
 				<value>
-					<access method="GETPUTCB" transport="ca" type="OnOff">K0617:23326zeroCor</access>
-					<value type="OnOff">1,0</value>
+					<access method="GETPUTCB" transport="ca" type="OpenClose">K0617:23326zeroCor</access>
+					<value type="OpenClose">Ein,Aus</value>
 				</value>
 				<displaygroup>detail</displaygroup>
 			</option>
@@ -281,7 +281,7 @@
                 </position>
                 <stop>
                     <access method="PUT" transport="local" type="int">Counter</access>
-                    <value type="OnOff">0</value>
+                    <value type="OnOff">4,7</value>
                 </stop>
             </axis>
         </motor>

@@ -15,8 +15,8 @@
             <scanmodule id="1">
                 <type>classic</type>
                 <name>New Scan Modul</name>
-                <xpos>153</xpos>
-                <ypos>91</ypos>
+                <xpos>459</xpos>
+                <ypos>49</ypos>
                 <parent>0</parent>
                 <triggerconfirm>false</triggerconfirm>
                 <saveaxispositions>never</saveaxispositions>
@@ -26,11 +26,7 @@
                 </prescan>
                 <prescan>
                     <id>K0617:23326zeroChk</id>
-                    <value type="OnOff">0</value>
-                </prescan>
-                <prescan>
-                    <id>PPSMC:23715000.VELO</id>
-                    <value type="double">43</value>
+                    <value type="OnOff">1</value>
                 </prescan>
                 <smaxis>
                     <axisid>PPSMC:23715002</axisid>
@@ -349,7 +345,7 @@
                 </position>
                 <stop>
                     <access method="PUT" type="int" transport="local">Counter</access>
-                    <value type="OnOff">0</value>
+                    <value type="OnOff">4, 7</value>
                 </stop>
             </axis>
         </motor>
