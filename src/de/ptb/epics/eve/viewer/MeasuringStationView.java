@@ -4,6 +4,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
@@ -77,6 +79,24 @@ public final class MeasuringStationView extends ViewPart {
 		this.treeViewer.setContentProvider( new MeasuringStationTreeViewContentProvider() );
 		this.treeViewer.setLabelProvider( new MeasuringStationTreeViewLabelProvider() );
 		this.treeViewer.getTree().setEnabled( false );
+		
+		this.treeViewer.addDoubleClickListener( new IDoubleClickListener() {
+
+			@Override
+			public void doubleClick( final DoubleClickEvent event ) {
+				
+				IViewReference[] ref = getSite().getPage().getViewReferences();
+				for( final IViewReference r : ref ) {
+					final IViewPart view = r.getView( false );
+					if( r.getId().equals( "DeviceInspectorView" ) && getSite().getPage().isPartVisible( view ) ) {
+						if( treeViewer.getTree().getSelection()[0].getData() instanceof AbstractDevice ) {
+							((DeviceInspectorViewer)view).addAbstractDevice( (AbstractDevice)treeViewer.getTree().getSelection()[0].getData() );
+						}
+					}
+				}
+			}
+			
+		});
 		
 		this.source = new DragSource( this.treeViewer.getTree(), DND.DROP_COPY | DND.DROP_MOVE );
 		Transfer[] types = new Transfer[] { TextTransfer.getInstance() };

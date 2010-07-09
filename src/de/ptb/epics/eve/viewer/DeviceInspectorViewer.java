@@ -62,6 +62,8 @@ public class DeviceInspectorViewer extends ViewPart {
 	@Override
 	public void createPartControl( Composite parent ) {
 		
+		
+		
 		final Image deleteIcon = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ).createImage();
 		final Image leftArrowIcon = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_BACK ).createImage();
 		final Image rightArrowIcon = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_FORWARD ).createImage();
@@ -131,38 +133,7 @@ public class DeviceInspectorViewer extends ViewPart {
 							}
 							else {
 								AbstractDevice device = measuringStation.getAbstractDeviceByFullIdentifyer( (String)event.data );
-								if( device != null ) {
-									if( device instanceof MotorAxis ) {
-										if( !devices.contains( device ) ) {
-											addMotorAxisEntry( device );
-										}
-									} else if( device instanceof DetectorChannel ){
-										if( !devices.contains( device ) ) {
-											addDetectorChannelEntry( device );
-										}
-									} else if( device instanceof Device ){
-										if( !devices.contains( device ) ) {
-											addDeviceEntry( device);
-										}
-									
-									} else if( device instanceof Motor ){
-										final Motor motor = (Motor)device;
-										if( motor.getAxis().size() > 0 ) {
-											List<MotorAxis> axisList = motor.getAxis();
-											for (MotorAxis axis : axisList) {
-												if (!devices.contains(axis)) addMotorAxisEntry(axis);
-											}
-										}
-									} else if( device instanceof Detector ){
-										final Detector detector = (Detector)device;
-										if( detector.getChannels().size() > 0 ) {
-											List<DetectorChannel> channelList = detector.getChannels();
-											for (DetectorChannel channel : channelList) {
-												if (!devices.contains(channel)) addDetectorChannelEntry( channel );
-											}
-										}
-									}
-								}
+								addAbstractDevice( device );
 							}
 							break;
 						}
@@ -172,23 +143,7 @@ public class DeviceInspectorViewer extends ViewPart {
 				
 			}
 
-			private void addMotorAxisEntry( final AbstractDevice device){
-				CommonTableElement cte = new CommonTableElement(device, axisTableViewer);
-				axisContentProvider.addElement(cte);
-				cte.init();
-			}
 			
-			private void addDetectorChannelEntry( final AbstractDevice device){
-				CommonTableElement cte = new CommonTableElement(device, channelTableViewer);
-				channelContentProvider.addElement(cte);
-				cte.init();
-			}
-
-			private void addDeviceEntry( final AbstractDevice device){
-				CommonTableElement cte = new CommonTableElement(device, deviceTableViewer);
-				deviceContentProvider.addElement(cte);
-				cte.init();
-			}
 			
 			public void dropAccept( final DropTargetEvent event ) {
 				
@@ -583,5 +538,58 @@ public class DeviceInspectorViewer extends ViewPart {
 	public void setFocus() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void addAbstractDevice( final AbstractDevice device ) {
+		if( device != null ) {
+			if( device instanceof MotorAxis ) {
+				if( !devices.contains( device ) ) {
+					addMotorAxisEntry( device );
+				}
+			} else if( device instanceof DetectorChannel ){
+				if( !devices.contains( device ) ) {
+					addDetectorChannelEntry( device );
+				}
+			} else if( device instanceof Device ){
+				if( !devices.contains( device ) ) {
+					addDeviceEntry( device);
+				}
+			
+			} else if( device instanceof Motor ){
+				final Motor motor = (Motor)device;
+				if( motor.getAxis().size() > 0 ) {
+					List<MotorAxis> axisList = motor.getAxis();
+					for (MotorAxis axis : axisList) {
+						if (!devices.contains(axis)) addMotorAxisEntry(axis);
+					}
+				}
+			} else if( device instanceof Detector ){
+				final Detector detector = (Detector)device;
+				if( detector.getChannels().size() > 0 ) {
+					List<DetectorChannel> channelList = detector.getChannels();
+					for (DetectorChannel channel : channelList) {
+						if (!devices.contains(channel)) addDetectorChannelEntry( channel );
+					}
+				}
+			}
+		}
+	}
+	
+	private void addMotorAxisEntry( final AbstractDevice device){
+		CommonTableElement cte = new CommonTableElement(device, axisTableViewer);
+		axisContentProvider.addElement(cte);
+		cte.init();
+	}
+	
+	private void addDetectorChannelEntry( final AbstractDevice device){
+		CommonTableElement cte = new CommonTableElement(device, channelTableViewer);
+		channelContentProvider.addElement(cte);
+		cte.init();
+	}
+
+	private void addDeviceEntry( final AbstractDevice device){
+		CommonTableElement cte = new CommonTableElement(device, deviceTableViewer);
+		deviceContentProvider.addElement(cte);
+		cte.init();
 	}
 }
