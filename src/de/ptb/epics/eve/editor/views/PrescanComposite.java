@@ -118,7 +118,6 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 			public void menuAboutToShow( final IMenuManager manager ) {
 				
 				for( final String className : Activator.getDefault().getMeasuringStation().getClassNameList() ) {
-					System.out.println( "Currently processed class name is: " + className );
 					final MenuManager currentClassMenu = new MenuManager( className );
 					
 					for( final AbstractDevice device : Activator.getDefault().getMeasuringStation().getDeviceList( className ) ) {
@@ -140,6 +139,9 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 											final Prescan p = new Prescan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
+											// Table Eintrag wird aus der Combo-Box entfernt
+											prescanCombo.remove(o.getFullIdentifyer());
+											tableViewer.refresh();
 										}
 									};
 									currentMotorAxisMenu.add( setOptionAction );
@@ -160,6 +162,9 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 										final Prescan p = new Prescan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
+										// Table Eintrag wird aus der Combo-Box entfernt
+										prescanCombo.remove(o.getFullIdentifyer());
+										tableViewer.refresh();
 									}
 								};
 								currentMotorMenu.add( setOptionAction );
@@ -182,6 +187,9 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 										final Prescan p = new Prescan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
+										// Table Eintrag wird aus der Combo-Box entfernt
+										prescanCombo.remove(o.getFullIdentifyer());
+										tableViewer.refresh();
 									}
 								};
 								currentMotorAxisMenu.add( setOptionAction );
@@ -206,6 +214,9 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 											final Prescan p = new Prescan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
+											// Table Eintrag wird aus der Combo-Box entfernt
+											prescanCombo.remove(o.getFullIdentifyer());
+											tableViewer.refresh();
 										}
 									};
 									currentDetectorChannelMenu.add( setOptionAction );
@@ -226,6 +237,9 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 										final Prescan p = new Prescan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
+										// Table Eintrag wird aus der Combo-Box entfernt
+										prescanCombo.remove(o.getFullIdentifyer());
+										tableViewer.refresh();
 									}
 								};
 								currentDetectorMenu.add( setOptionAction );
@@ -248,6 +262,9 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 										final Prescan p = new Prescan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
+										// Table Eintrag wird aus der Combo-Box entfernt
+										prescanCombo.remove(o.getFullIdentifyer());
+										tableViewer.refresh();
 									}
 								};
 								currentDetectorChannelMenu.add( setOptionAction );
@@ -267,6 +284,9 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 									final Prescan p = new Prescan();
 									p.setAbstractPrePostscanDevice( dv );
 									scanModul.add( p );
+									// Table Eintrag wird aus der Combo-Box entfernt
+									prescanCombo.remove(dv.getFullIdentifyer());
+									tableViewer.refresh();
 								}
 							};
 							currentClassMenu.add( setDeviceAction );
@@ -295,6 +315,9 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 											final Prescan p = new Prescan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
+											// Table Eintrag wird aus der Combo-Box entfernt
+											prescanCombo.remove(o.getFullIdentifyer());
+											tableViewer.refresh();
 										}
 									};
 									currentMotorAxisMenu.add( setOptionAction );
@@ -316,6 +339,9 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 									final Prescan p = new Prescan();
 									p.setAbstractPrePostscanDevice( o );
 									scanModul.add( p );
+									// Table Eintrag wird aus der Combo-Box entfernt
+									prescanCombo.remove(o.getFullIdentifyer());
+									tableViewer.refresh();
 								}
 							};
 							currentMotorMenu.add( setOptionAction );
@@ -343,6 +369,9 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 											final Prescan p = new Prescan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
+											// Table Eintrag wird aus der Combo-Box entfernt
+											prescanCombo.remove(o.getFullIdentifyer());
+											tableViewer.refresh();
 										}
 									};
 									currentDetectorChannelMenu.add( setOptionAction );
@@ -365,6 +394,9 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 									final Prescan p = new Prescan();
 									p.setAbstractPrePostscanDevice( o );
 									scanModul.add( p );
+									// Table Eintrag wird aus der Combo-Box entfernt
+									prescanCombo.remove(o.getFullIdentifyer());
+									tableViewer.refresh();
 								}
 							};
 							currentDetectorMenu.add( setOptionAction );
@@ -387,6 +419,9 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 								final Prescan p = new Prescan();
 								p.setAbstractPrePostscanDevice( dv );
 								scanModul.add( p );
+								// Table Eintrag wird aus der Combo-Box entfernt
+								prescanCombo.remove(dv.getFullIdentifyer());
+								tableViewer.refresh();
 							}
 						};
 						manager.add( setDeviceAction );

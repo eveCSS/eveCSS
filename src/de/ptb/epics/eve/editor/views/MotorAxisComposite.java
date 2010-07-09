@@ -187,7 +187,6 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 			public void menuAboutToShow( final IMenuManager manager ) {
 				
 				for( final String className : Activator.getDefault().getMeasuringStation().getClassNameList() ) {
-					System.out.println( "Currently processed class name is: " + className );
 					final MenuManager currentClassMenu = new MenuManager( className );
 					for( final AbstractDevice device : Activator.getDefault().getMeasuringStation().getDeviceList( className ) ) {
 						if( device instanceof Motor ) {
@@ -207,6 +206,9 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 										Axis a = new Axis( scanModul );
 										a.setMotorAxis( ma );
 										scanModul.add( a );
+										// Table Eintrag wird aus der Combo-Box entfernt
+										motorAxisCombo.remove(ma.getFullIdentifyer());
+										tableViewer.refresh();
 									}
 								};
 								setAxisAction.setText( "".equals( axis.getName())?axis.getID():axis.getName() );
@@ -225,6 +227,9 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 									Axis a = new Axis( scanModul );
 									a.setMotorAxis( ma );
 									scanModul.add( a );
+									// Table Eintrag wird aus der Combo-Box entfernt
+									motorAxisCombo.remove(ma.getFullIdentifyer());
+									tableViewer.refresh();
 								}
 							};
 							setAxisAction.setText( "".equals( device.getName())?device.getID():device.getName() );
@@ -253,6 +258,9 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 										Axis a = new Axis( scanModul );
 										a.setMotorAxis( ma );
 										scanModul.add( a );
+										// Table Eintrag wird aus der Combo-Box entfernt
+										motorAxisCombo.remove(ma.getFullIdentifyer());
+										tableViewer.refresh();
 									}
 								};
 								setAxisAction.setText( "".equals( axis.getName())?axis.getID():axis.getName() );

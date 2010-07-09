@@ -132,7 +132,6 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 			public void menuAboutToShow( final IMenuManager manager ) {
 				
 				for( final String className : Activator.getDefault().getMeasuringStation().getClassNameList() ) {
-					System.out.println( "Currently processed class name is: " + className );
 					final MenuManager currentClassMenu = new MenuManager( className );
 					
 					for( final AbstractDevice device : Activator.getDefault().getMeasuringStation().getDeviceList( className ) ) {
@@ -154,6 +153,9 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 											final Postscan p = new Postscan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
+											// Table Eintrag wird aus der Combo-Box entfernt
+											postscanCombo.remove(o.getFullIdentifyer());
+											tableViewer.refresh();
 										}
 									};
 									currentMotorAxisMenu.add( setOptionAction );
@@ -174,6 +176,9 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 										final Postscan p = new Postscan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
+										// Table Eintrag wird aus der Combo-Box entfernt
+										postscanCombo.remove(o.getFullIdentifyer());
+										tableViewer.refresh();
 									}
 								};
 								currentMotorMenu.add( setOptionAction );
@@ -196,6 +201,9 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 										final Postscan p = new Postscan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
+										// Table Eintrag wird aus der Combo-Box entfernt
+										postscanCombo.remove(o.getFullIdentifyer());
+										tableViewer.refresh();
 									}
 								};
 								currentMotorAxisMenu.add( setOptionAction );
@@ -220,6 +228,9 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 											final Postscan p = new Postscan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
+											// Table Eintrag wird aus der Combo-Box entfernt
+											postscanCombo.remove(o.getFullIdentifyer());
+											tableViewer.refresh();
 										}
 									};
 									currentDetectorChannelMenu.add( setOptionAction );
@@ -240,6 +251,9 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 										final Postscan p = new Postscan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
+										// Table Eintrag wird aus der Combo-Box entfernt
+										postscanCombo.remove(o.getFullIdentifyer());
+										tableViewer.refresh();
 									}
 								};
 								currentDetectorMenu.add( setOptionAction );
@@ -262,6 +276,9 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 										final Postscan p = new Postscan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
+										// Table Eintrag wird aus der Combo-Box entfernt
+										postscanCombo.remove(o.getFullIdentifyer());
+										tableViewer.refresh();
 									}
 								};
 								currentDetectorChannelMenu.add( setOptionAction );
@@ -281,6 +298,9 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 									final Postscan p = new Postscan();
 									p.setAbstractPrePostscanDevice( dv );
 									scanModul.add( p );
+									// Table Eintrag wird aus der Combo-Box entfernt
+									postscanCombo.remove(dv.getFullIdentifyer());
+									tableViewer.refresh();
 								}
 							};
 							currentClassMenu.add( setDeviceAction );
@@ -309,6 +329,9 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 											final Postscan p = new Postscan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
+											// Table Eintrag wird aus der Combo-Box entfernt
+											postscanCombo.remove(o.getFullIdentifyer());
+											tableViewer.refresh();
 										}
 									};
 									currentMotorAxisMenu.add( setOptionAction );
@@ -330,6 +353,9 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 									final Postscan p = new Postscan();
 									p.setAbstractPrePostscanDevice( o );
 									scanModul.add( p );
+									// Table Eintrag wird aus der Combo-Box entfernt
+									postscanCombo.remove(o.getFullIdentifyer());
+									tableViewer.refresh();
 								}
 							};
 							currentMotorMenu.add( setOptionAction );
@@ -357,6 +383,9 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 											final Postscan p = new Postscan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
+											// Table Eintrag wird aus der Combo-Box entfernt
+											postscanCombo.remove(o.getFullIdentifyer());
+											tableViewer.refresh();
 										}
 									};
 									currentDetectorChannelMenu.add( setOptionAction );
@@ -379,6 +408,9 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 									final Postscan p = new Postscan();
 									p.setAbstractPrePostscanDevice( o );
 									scanModul.add( p );
+									// Table Eintrag wird aus der Combo-Box entfernt
+									postscanCombo.remove(o.getFullIdentifyer());
+									tableViewer.refresh();
 								}
 							};
 							currentDetectorMenu.add( setOptionAction );
@@ -401,6 +433,9 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 								final Postscan p = new Postscan();
 								p.setAbstractPrePostscanDevice( dv );
 								scanModul.add( p );
+								// Table Eintrag wird aus der Combo-Box entfernt
+								postscanCombo.remove(dv.getFullIdentifyer());
+								tableViewer.refresh();
 							}
 						};
 						manager.add( setDeviceAction );

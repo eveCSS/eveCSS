@@ -143,7 +143,6 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 			public void menuAboutToShow( final IMenuManager manager ) {
 				
 				for( final String className : Activator.getDefault().getMeasuringStation().getClassNameList() ) {
-					System.out.println( "Currently processed class name is: " + className );
 					boolean containsAtLeastOne = false;
 					final MenuManager currentClassMenu = new MenuManager( className );
 					for( final AbstractDevice device : Activator.getDefault().getMeasuringStation().getDeviceList( className ) ) {
@@ -165,6 +164,9 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 										Channel c = new Channel( scanModul );
 										c.setDetectorChannel( dc );
 										scanModul.add( c );
+										// Table Eintrag wird aus der Combo-Box entfernt
+										detectorChannelCombo.remove(dc.getFullIdentifyer());
+										tableViewer.refresh();
 									}
 								};
 								setChannelAction.setText( "".equals( channel.getName())?channel.getID():channel.getName() );
@@ -185,6 +187,9 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 									Channel c = new Channel( scanModul );
 									c.setDetectorChannel( dc );
 									scanModul.add( c );
+									// Table Eintrag wird aus der Combo-Box entfernt
+									detectorChannelCombo.remove(dc.getFullIdentifyer());
+									tableViewer.refresh();
 								}
 							};
 							currentClassMenu.add( setChannelAction );
@@ -220,6 +225,9 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 										Channel c = new Channel( scanModul );
 										c.setDetectorChannel( dc );
 										scanModul.add( c );
+										// Table Eintrag wird aus der Combo-Box entfernt
+										detectorChannelCombo.remove(dc.getFullIdentifyer());
+										tableViewer.refresh();
 									}
 								};
 								setChannelAction.setText( "".equals( channel.getName())?channel.getID():channel.getName() );

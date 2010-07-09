@@ -475,49 +475,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		this.positioningTab.setToolTipText("Move motor to calculated position after scan module is done");
 		this.positioningTab.setControl(this.positioningComposite);
 
-		
-		this.positioningComposite.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println("MouseEvent 1von PositioningComposite");
-				
-			}
-
-			@Override
-			public void mouseDown(MouseEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println("MouseEvent 2von PositioningComposite");
-				
-			}
-
-			@Override
-			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println("MouseEvent 3von PositioningComposite");
-				
-			}
-		});
-
-		this.positioningComposite.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println("FocusEvent von PositioningComposite");
-				
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println("FocusLostEvent von PositioningComposite");
-				
-			}
-			
-		});
-	
 	}
 
 
@@ -571,7 +528,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	}
 
 	public void setCurrentScanModul(ScanModul currentScanModul) {
-		System.out.println("setCurrentScanModul in ScanModuleView aufgerufen");
 		if( this.currentScanModul != null ) {
 			this.currentScanModul.removeModelUpdateListener( this );
 		}
