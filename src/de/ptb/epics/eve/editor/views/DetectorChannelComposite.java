@@ -266,28 +266,6 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 					channel.setDetectorChannel(detectorChannel);
 					scanModul.add(channel);
 
-		    		// PlotWindowView wird aktualisiert
-		    		IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
-					PlotWindowView plotWindowView = null;
-					for (int i = 0; i < ref.length; ++i) {
-						if (ref[i].getId().equals(PlotWindowView.ID)) {
-							plotWindowView = (PlotWindowView) ref[i]
-									.getPart(false);
-						}
-					}
-
-					if( plotWindowView != null ) {
-						// Channel Eintrag in den Combo-Boxen hinzugefügt
-						Combo yAxis1ChanComboBox = plotWindowView.getyAxis1DetectorChannelComboBox();
-						yAxis1ChanComboBox.add(detectorChannelCombo.getText());
-						Combo yAxis1NormComboBox = plotWindowView.getyAxis1NormalizeChannelComboBox();
-						yAxis1NormComboBox.add(detectorChannelCombo.getText());
-						Combo yAxis2ChanComboBox = plotWindowView.getyAxis2DetectorChannelComboBox();
-						yAxis2ChanComboBox.add(detectorChannelCombo.getText());
-						Combo yAxis2NormComboBox = plotWindowView.getyAxis2NormalizeChannelComboBox();
-						yAxis2NormComboBox.add(detectorChannelCombo.getText());
-					}
-					
 					// Table Eintrag wird aus der Combo-Box entfernt
 					detectorChannelCombo.remove(detectorChannelCombo.getText());
 					tableViewer.refresh();
@@ -298,8 +276,6 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 		Action deleteAction = new Action(){
 		    	public void run() {
 	    		
-					Channel removeChannel = (Channel)((IStructuredSelection)tableViewer.getSelection()).getFirstElement();
-
 					// DetectorChannel wird aus scanModul ausgetragen
 		    		scanModul.remove( (Channel)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
 
@@ -327,16 +303,6 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 						PlotWindow aktPlotWindow = plotWindowView.getPlotWindow();
 						// PlotWindowView wird neu gesetzt.
 						plotWindowView.setPlotWindow(aktPlotWindow);
-						
-						// Channel Eintrag wird aus den Combo-Boxen entfernt
-						Combo yAxis1ChanComboBox = plotWindowView.getyAxis1DetectorChannelComboBox();
-						yAxis1ChanComboBox.remove(removeChannel.getDetectorChannel().getFullIdentifyer());
-						Combo yAxis1NormComboBox = plotWindowView.getyAxis1NormalizeChannelComboBox();
-						yAxis1NormComboBox.remove(removeChannel.getDetectorChannel().getFullIdentifyer());
-						Combo yAxis2ChanComboBox = plotWindowView.getyAxis2DetectorChannelComboBox();
-						yAxis2ChanComboBox.remove(removeChannel.getDetectorChannel().getFullIdentifyer());
-						Combo yAxis2NormComboBox = plotWindowView.getyAxis2NormalizeChannelComboBox();
-						yAxis2NormComboBox.remove(removeChannel.getDetectorChannel().getFullIdentifyer());
 					}
 		    	}
 		    };

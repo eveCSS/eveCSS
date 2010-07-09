@@ -571,6 +571,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	}
 
 	public void setCurrentScanModul(ScanModul currentScanModul) {
+		System.out.println("setCurrentScanModul in ScanModuleView aufgerufen");
 		if( this.currentScanModul != null ) {
 			this.currentScanModul.removeModelUpdateListener( this );
 		}
@@ -1186,7 +1187,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		boolean prescanErrors = false;
 		boolean postscanErrors = false;
 		boolean positioningErrors = false;
-
 		boolean plotWindowErrors = false;
 		
 		final Iterator< IModelError > it = this.currentScanModul.getModelErrors().iterator();

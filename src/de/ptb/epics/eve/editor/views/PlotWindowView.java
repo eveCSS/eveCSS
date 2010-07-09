@@ -31,7 +31,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 
-
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.Axis;
@@ -39,17 +38,10 @@ import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.YAxis;
-import de.ptb.epics.eve.data.scandescription.errors.AxisError;
-import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
-import de.ptb.epics.eve.data.scandescription.errors.IModelError;
-import de.ptb.epics.eve.data.scandescription.errors.PlotWindowError;
-import de.ptb.epics.eve.data.scandescription.errors.PlotWindowErrorTypes;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.editor.Activator;
 
-
-public class PlotWindowView extends ViewPart {
+public class PlotWindowView extends ViewPart  {
 
 	public static final String ID = "de.ptb.epics.eve.editor.views.PlotWindowView";
 
@@ -224,6 +216,29 @@ public class PlotWindowView extends ViewPart {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.motorAxisComboBox.setLayoutData( gridData );
+		this.motorAxisComboBox.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
+
+				// Die Auswahl der Achsen wird gesetzt
+				// Es werden nur die Achsen erlaubt die auch in diesem ScanModul verwendet werden.
+				Axis[] cur_axis = scanModul.getAxis();
+				String[] cur_feld = new String[cur_axis.length];
+				String aktText = motorAxisComboBox.getText();
+				for (int i=0; i<cur_axis.length; ++i) {
+					cur_feld[i] = cur_axis[i].getMotorAxis().getFullIdentifyer();
+				}
+				motorAxisComboBox.setItems(cur_feld);
+				if (motorAxisComboBox.getItemCount() == 0) {
+					// Kein Eintrag mehr vorhanden, leeren Platzhalter anlegen
+					motorAxisComboBox.add("");
+				}
+				motorAxisComboBox.setText(aktText);
+			}
+
+			public void focusLost(FocusEvent e) {
+			}
+		});
+		
 		this.motorAxisComboBox.addModifyListener( new ModifyListener() {
 			public void modifyText( final ModifyEvent e ) {
 				if( motorAxisComboBox.getText().equals( "" )) {
@@ -242,7 +257,7 @@ public class PlotWindowView extends ViewPart {
 
 		this.motorAxisErrorLabel = new Label( this.xAxisComposite, SWT.NONE );
 		this.motorAxisErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK) );
-		
+
 		this.preInitWindowCheckBox = new Button( this.xAxisComposite, SWT.CHECK );
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
@@ -291,8 +306,36 @@ public class PlotWindowView extends ViewPart {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.yAxis1DetectorChannelComboBox.setLayoutData( gridData );
-		this.yAxis1DetectorChannelComboBox.addModifyListener( new ModifyListener() {
-			public void modifyText( final ModifyEvent e ) {
+
+		this.yAxis1DetectorChannelComboBox.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
+				// Die Auswahl der Channels wird gesetzt
+				// Es werden nur die Channels erlaubt die auch in diesem ScanModul verwendet werden.
+				Channel[] cur_channel = scanModul.getChannels();
+				String[] cur_feld = new String[cur_channel.length];
+				String aktText = yAxis1DetectorChannelComboBox.getText();
+				for (int i=0; i<cur_channel.length; ++i) {
+					cur_feld[i] = cur_channel[i].getDetectorChannel().getFullIdentifyer();
+				}
+				yAxis1DetectorChannelComboBox.setItems(cur_feld);
+				yAxis1DetectorChannelComboBox.add("none", 0);	
+				yAxis1DetectorChannelComboBox.setText(aktText);
+			}
+			
+			public void focusLost(FocusEvent e) {
+			}
+		});
+
+		this.yAxis1DetectorChannelComboBox.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
 				if( yAxis1DetectorChannelComboBox.getText().equals( "" ) || 
 					yAxis1DetectorChannelComboBox.getText().equals( "none" ) ) {
 					if( yAxis[0] != null ) {
@@ -331,12 +374,12 @@ public class PlotWindowView extends ViewPart {
 					yAxis1LinestyleComboBox.setEnabled( true );
 					yAxis1MarkstyleComboBox.setEnabled( true );
 					yAxis1ScaletypeComboBox.setEnabled( true );
-					
+						
 					yAxis1ColorComboBox.setText( yAxis[0].getColor() );
 					yAxis1LinestyleComboBox.setText( yAxis[0].getLinestyle() );
 					yAxis1MarkstyleComboBox.setText( yAxis[0].getMarkstyle() );
 					yAxis1ScaletypeComboBox.setText( PlotModes.modeToString( yAxis[0].getMode() ) );
-					
+						
 					yAxis[0].setDetectorChannel( (DetectorChannel)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( yAxis1DetectorChannelComboBox.getText() ) );
 
 					yAxis1DetectorChannelErrorLabel.setImage( null );
@@ -346,7 +389,7 @@ public class PlotWindowView extends ViewPart {
 				}
 			}
 		});
-
+		
 		this.yAxis1DetectorChannelErrorLabel = new Label( this.yAxis1Composite, SWT.NONE );
 		this.yAxis1DetectorChannelErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK) );
 		this.yAxis1DetectorChannelErrorLabel.setToolTipText( "Fehlerbehandlung fehlt" );
@@ -360,6 +403,25 @@ public class PlotWindowView extends ViewPart {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.yAxis1NormalizeChannelComboBox.setLayoutData( gridData );
+		this.yAxis1NormalizeChannelComboBox.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
+				// Die Auswahl der Channels wird gesetzt
+				// Es werden nur die Channels erlaubt die auch in diesem ScanModul verwendet werden.
+				Channel[] cur_channel = scanModul.getChannels();
+				String[] cur_feld = new String[cur_channel.length];
+				String aktText = yAxis1NormalizeChannelComboBox.getText();
+				for (int i=0; i<cur_channel.length; ++i) {
+					cur_feld[i] = cur_channel[i].getDetectorChannel().getFullIdentifyer();
+				}
+				yAxis1NormalizeChannelComboBox.setItems(cur_feld);
+				yAxis1NormalizeChannelComboBox.add("none", 0);	
+				yAxis1NormalizeChannelComboBox.setText(aktText);	
+			}
+			
+			public void focusLost(FocusEvent e) {
+			}
+		});
+
 		this.yAxis1NormalizeChannelComboBox.addModifyListener( new ModifyListener() {
 			public void modifyText( final ModifyEvent e ) {
 				if( yAxis1NormalizeChannelComboBox.getText().equals( "" ) ) {
@@ -465,7 +527,6 @@ public class PlotWindowView extends ViewPart {
 		
 		this.yAxis1ScaletypeErrorLabel = new Label( this.yAxis1Composite, SWT.NONE );
 		
-		
 		this.yAxis2Composite = new Composite( this.bar, SWT.NONE );
 		this.yAxis2Composite.setLayout( gridLayout );
 		
@@ -477,8 +538,39 @@ public class PlotWindowView extends ViewPart {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.yAxis2DetectorChannelComboBox.setLayoutData( gridData );
-		this.yAxis2DetectorChannelComboBox.addModifyListener( new ModifyListener() {
-			public void modifyText( final ModifyEvent e ) {
+		this.yAxis2DetectorChannelComboBox.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
+				// Die Auswahl der Channels wird gesetzt
+				// Es werden nur die Channels erlaubt die auch in diesem ScanModul verwendet werden.
+				Channel[] cur_channel = scanModul.getChannels();
+				String[] cur_feld = new String[cur_channel.length];
+				String aktText = yAxis2DetectorChannelComboBox.getText();
+				for (int i=0; i<cur_channel.length; ++i) {
+					cur_feld[i] = cur_channel[i].getDetectorChannel().getFullIdentifyer();
+				}
+				yAxis2DetectorChannelComboBox.setItems(cur_feld);
+				yAxis2DetectorChannelComboBox.add("none", 0);	
+				yAxis2DetectorChannelComboBox.setText(aktText);	
+			}
+			
+			public void focusLost(FocusEvent e) {
+			}
+		});
+
+		
+		this.yAxis2DetectorChannelComboBox.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+
+				
 				if( yAxis2DetectorChannelComboBox.getText().equals( "" ) ||
 					yAxis2DetectorChannelComboBox.getText().equals( "none" ) ) {
 					if( yAxis[1] != null ) {
@@ -526,14 +618,13 @@ public class PlotWindowView extends ViewPart {
 					yAxis2LinestyleComboBox.setEnabled( true );
 					yAxis2MarkstyleComboBox.setEnabled( true );
 					yAxis2ScaletypeComboBox.setEnabled( true );
-					
+						
 					yAxis2ColorComboBox.setText( yAxis[1].getColor() );
 					yAxis2LinestyleComboBox.setText( yAxis[1].getLinestyle() );
 					yAxis2MarkstyleComboBox.setText( yAxis[1].getMarkstyle() );
 					yAxis2ScaletypeComboBox.setText( PlotModes.modeToString( yAxis[1].getMode() ) );
-					
+						
 					yAxis[1].setDetectorChannel( (DetectorChannel)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( yAxis2DetectorChannelComboBox.getText() ) );
-
 					yAxis1DetectorChannelErrorLabel.setImage( null );
 					yAxis1DetectorChannelErrorLabel.setToolTipText( null );
 					yAxis2DetectorChannelErrorLabel.setImage( null );
@@ -555,6 +646,25 @@ public class PlotWindowView extends ViewPart {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.yAxis2NormalizeChannelComboBox.setLayoutData( gridData );
+		this.yAxis2NormalizeChannelComboBox.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
+				// Die Auswahl der Channels wird gesetzt
+				// Es werden nur die Channels erlaubt die auch in diesem ScanModul verwendet werden.
+				Channel[] cur_channel = scanModul.getChannels();
+				String[] cur_feld = new String[cur_channel.length];
+				String aktText = yAxis2NormalizeChannelComboBox.getText();
+				for (int i=0; i<cur_channel.length; ++i) {
+					cur_feld[i] = cur_channel[i].getDetectorChannel().getFullIdentifyer();
+				}
+				yAxis2NormalizeChannelComboBox.setItems(cur_feld);
+				yAxis2NormalizeChannelComboBox.add("none", 0);	
+				yAxis2NormalizeChannelComboBox.setText(aktText);	
+			}
+			
+			public void focusLost(FocusEvent e) {
+			}
+		});
+
 		this.yAxis2NormalizeChannelComboBox.addModifyListener( new ModifyListener() {
 			public void modifyText( final ModifyEvent e ) {
 				if( yAxis2NormalizeChannelComboBox.getText().equals( "" ) ) {
@@ -613,11 +723,8 @@ public class PlotWindowView extends ViewPart {
 				if( yAxis[ 1 ] != null ) {
 					yAxis[ 1 ].setLinestyle( yAxis2LinestyleComboBox.getText() );
 				}
-				
 			}
-			
 		});
-		
 		
 		this.yAxis2LinestyleErrorLabel = new Label( this.yAxis2Composite, SWT.NONE );
 		
@@ -634,18 +741,14 @@ public class PlotWindowView extends ViewPart {
 
 			public void widgetDefaultSelected( final SelectionEvent e ) {
 				
-				
 			}
 
 			public void widgetSelected( final SelectionEvent e ) {
 				if( yAxis[ 1 ] != null ) {
 					yAxis[ 1 ].setMarkstyle( yAxis2MarkstyleComboBox.getText() );
 				}
-				
 			}
-			
 		});
-		
 		
 		this.yAxis2MarkstyleErrorLabel = new Label( this.yAxis2Composite, SWT.NONE );
 		
@@ -662,16 +765,13 @@ public class PlotWindowView extends ViewPart {
 
 			public void widgetDefaultSelected( final SelectionEvent e ) {
 				
-				
 			}
 
 			public void widgetSelected( final SelectionEvent e ) {
 				if( yAxis[ 1 ] != null ) {
 					yAxis[ 1 ].setMode( PlotModes.stringToMode( yAxis2ScaletypeComboBox.getText() ) );
 				}
-				
 			}
-			
 		});
 		
 		this.yAxis2ScaletypeErrorLabel = new Label( this.yAxis2Composite, SWT.NONE );
@@ -680,7 +780,6 @@ public class PlotWindowView extends ViewPart {
 		item0.setText("General");
 		item0.setHeight( this.xAxisComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item0.setControl( this.xAxisComposite );
-		
 		
 		this.item1 = new ExpandItem ( this.bar, SWT.NONE, 0);
 		item1.setText("Y-Axis 1");
@@ -691,7 +790,6 @@ public class PlotWindowView extends ViewPart {
 		item2.setText("Y-Axis 2");
 		item2.setHeight( this.yAxis2Composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item2.setControl( this.yAxis2Composite );
-		
 		
 		this.setEnabledForAll(false);
 	}
@@ -798,13 +896,13 @@ public class PlotWindowView extends ViewPart {
 			}
 		}
 		this.plotWindow = plotWindow;
-		
+
 		if( this.plotWindow != null ) {
 			int i = 0;
 			for( Iterator< YAxis > it = this.plotWindow.getYAxisIterator(); it.hasNext(); ++i ) {
 				this.yAxis[ i ] = it.next();
 			}
-			
+
 			this.plotWindowIDSpinner.setSelection( this.plotWindow.getId() );
 			this.plotWindowIDErrorLabel.setImage(null);
 			this.motorAxisComboBox.setText( this.plotWindow.getXAxis()!=null?plotWindow.getXAxis().getFullIdentifyer():"" );
@@ -812,25 +910,77 @@ public class PlotWindowView extends ViewPart {
 			this.preInitWindowCheckBox.setSelection( this.plotWindow.isInit() );
 			this.scaleTypeComboBox.setText( PlotModes.modeToString( this.plotWindow.getMode() ) );
 
+			// Fehlermeldungen werden erstmal zurückgesetzt!!!
+			yAxis1DetectorChannelErrorLabel.setImage( null );
+			yAxis1DetectorChannelErrorLabel.setToolTipText( null );
+			yAxis2DetectorChannelErrorLabel.setImage( null );
+			yAxis2DetectorChannelErrorLabel.setToolTipText( null );
+
 			if( this.yAxis[ 0 ] != null ) {
 				this.yAxis1DetectorChannelComboBox.setText( yAxis[ 0 ].getDetectorChannel().getFullIdentifyer() );
+
+				yAxis1NormalizeChannelComboBox.setEnabled( true );
+				yAxis1ColorComboBox.setEnabled( true );
+				yAxis1LinestyleComboBox.setEnabled( true );
+				yAxis1MarkstyleComboBox.setEnabled( true );
+				yAxis1ScaletypeComboBox.setEnabled( true );
+					
+				yAxis1ColorComboBox.setText( yAxis[0].getColor() );
+				yAxis1LinestyleComboBox.setText( yAxis[0].getLinestyle() );
+				yAxis1MarkstyleComboBox.setText( yAxis[0].getMarkstyle() );
+				yAxis1ScaletypeComboBox.setText( PlotModes.modeToString( yAxis[0].getMode() ) );
+
 				if (yAxis[0].getNormalizeChannel() != null)
 					this.yAxis1NormalizeChannelComboBox.setText( yAxis[ 0 ].getNormalizeChannel().getFullIdentifyer() );
 				else 
 					this.yAxis1NormalizeChannelComboBox.setText("none");
 			} else {
 				this.yAxis1DetectorChannelComboBox.setText( "none" );
+				// Wenn yAxis[0] = 0, muß nachgesehen werden, ob die weiteren
+				// Einstellungen noch zurückgesetzt werden müssen!
+				yAxis1NormalizeChannelComboBox.setEnabled( false );
+				yAxis1ColorComboBox.setEnabled( false );
+				yAxis1LinestyleComboBox.setEnabled( false );
+				yAxis1MarkstyleComboBox.setEnabled( false );
+				yAxis1ScaletypeComboBox.setEnabled( false );
 			}
-						
+			
 			if( this.yAxis[ 1 ] != null ) {
 				this.yAxis2DetectorChannelComboBox.setText( yAxis[ 1 ].getDetectorChannel().getFullIdentifyer() );
+
+				yAxis2NormalizeChannelComboBox.setEnabled( true );
+				yAxis2ColorComboBox.setEnabled( true );
+				yAxis2LinestyleComboBox.setEnabled( true );
+				yAxis2MarkstyleComboBox.setEnabled( true );
+				yAxis2ScaletypeComboBox.setEnabled( true );
+					
+				yAxis2ColorComboBox.setText( yAxis[1].getColor() );
+				yAxis2LinestyleComboBox.setText( yAxis[1].getLinestyle() );
+				yAxis2MarkstyleComboBox.setText( yAxis[1].getMarkstyle() );
+				yAxis2ScaletypeComboBox.setText( PlotModes.modeToString( yAxis[1].getMode() ) );
+
 				if (yAxis[1].getNormalizeChannel() != null)
 					this.yAxis2NormalizeChannelComboBox.setText( yAxis[ 1 ].getNormalizeChannel().getFullIdentifyer() );
 				else
 					this.yAxis2NormalizeChannelComboBox.setText("none");
 			}  else {
 				this.yAxis2DetectorChannelComboBox.setText( "none" );
+				// Wenn yAxis[1] = 0, muß nachgesehen werden, ob die weiteren
+				// Einstellungen noch zurückgesetzt werden müssen!
+				yAxis2NormalizeChannelComboBox.setEnabled( false );
+				yAxis2ColorComboBox.setEnabled( false );
+				yAxis2LinestyleComboBox.setEnabled( false );
+				yAxis2MarkstyleComboBox.setEnabled( false );
+				yAxis2ScaletypeComboBox.setEnabled( false );
 			}
+
+			if ((yAxis[0] == null) && (yAxis[1] == null)) {
+				yAxis1DetectorChannelErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK) );
+				yAxis1DetectorChannelErrorLabel.setToolTipText( "One of the yAxis have to be set." );
+				yAxis2DetectorChannelErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK) );
+				yAxis2DetectorChannelErrorLabel.setToolTipText( "One of the yAxis have to be set." );
+			}
+			
 			this.setEnabledForAll( true );
 		} else {
 			//TODO Frage: warum wird hier kein removeYAxis() oder clearYAxis() aufgerufen werden?
@@ -846,7 +996,7 @@ public class PlotWindowView extends ViewPart {
 	}
 
 	public void setScanModul(ScanModul scanModul) {
-		// TODO Auto-generated method stub
+
 		if( scanModul != null ) {
 			// Es werden nur die Achsen erlaubt die in diesem ScanModul verwendet werden.
 			Axis[] cur_axis = scanModul.getAxis();
@@ -876,23 +1026,4 @@ public class PlotWindowView extends ViewPart {
 		this.scanModul = scanModul;
 	}
 
-	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-		System.out.println("updateEvent von PlotWindowView aufgerufen");
-		
-		/*********
-		final Iterator< IModelError > it = this.axis.getModelErrors().iterator();
-		while( it.hasNext() ) {
-			final IModelError modelError = it.next();
-			if( modelError instanceof AxisError ) {
-				final AxisError axisError = (AxisError)modelError;
-				if( axisError.getErrorType() == AxisErrorTypes.FILENAME_NOT_SET ) {
-					this.filenameErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
-					break;
-				}
-			}
-		}
-		**********/
-	}
-
-	
 }

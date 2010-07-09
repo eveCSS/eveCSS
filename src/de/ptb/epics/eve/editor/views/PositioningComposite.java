@@ -148,7 +148,7 @@ public class PositioningComposite extends Composite implements IModelUpdateListe
 			@Override
 			public void focusGained(FocusEvent e) {
 
-				// Die Auswahl der Achsen wird aktualisiert
+				// Die Auswahl der Achsen wird gesetzt
 				// Es werden nur die Achsen erlaubt die auch in diesem ScanModul verwendet werden.
 				Axis[] cur_axis = scanModul.getAxis();
 				String[] cur_feld = new String[cur_axis.length];

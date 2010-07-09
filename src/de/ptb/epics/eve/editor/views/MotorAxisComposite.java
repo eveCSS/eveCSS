@@ -172,32 +172,12 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 					axis.setMotorAxis(motorAxis);
 					scanModul.add(axis);
 
-		    		// PlotWindowView wird aktualisiert
-		    		IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
-					PlotWindowView plotWindowView = null;
-					for (int i = 0; i < ref.length; ++i) {
-						if (ref[i].getId().equals(PlotWindowView.ID)) {
-							plotWindowView = (PlotWindowView) ref[i]
-									.getPart(false);
-						}
-					}
-					if( plotWindowView != null ) {
-						Combo motorAxisComboBox = plotWindowView.getMotorAxisComboBox();
-						// Axis Eintrag wird in der Combo-Box hinzugefügt
-						motorAxisComboBox.add(motorAxisCombo.getText());
-					}
-
-					// Axis Eintrag muß auch im Positioning entfernt werden!
-					Positioning[] positionings = scanModul.getPositionings();
-
-					
 					// Table Eintrag wird aus der Combo-Box entfernt
 					motorAxisCombo.remove(motorAxisCombo.getText());
 					tableViewer.refresh();
 				}
 			}
 		});
-	
 		
 		final MenuManager menuManager = new MenuManager( "#PopupMenu" );
 		menuManager.setRemoveAllWhenShown( true );
@@ -247,8 +227,8 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 									scanModul.add( a );
 								}
 							};
-							currentClassMenu.add( setAxisAction );
 							setAxisAction.setText( "".equals( device.getName())?device.getID():device.getName() );
+							currentClassMenu.add( setAxisAction );
 						}
 						manager.add( currentClassMenu );
 					}
@@ -282,15 +262,10 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 						manager.add( currentMotorMenu );
 					}
 				}
-				
 			}
-
-			
 		});
 		final Menu contextMenu = menuManager.createContextMenu( this.motorAxisCombo );
 		this.motorAxisCombo.setMenu( contextMenu );
-		
-		
 		
 		Action deleteAction = new Action(){
 		    	public void run() {
@@ -324,10 +299,11 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 						PlotWindow aktPlotWindow = plotWindowView.getPlotWindow();
 						// PlotWindowView wird neu gesetzt.
 						plotWindowView.setPlotWindow(aktPlotWindow);
-						
-						Combo motorAxisComboBox = plotWindowView.getMotorAxisComboBox();
-						// Axis Eintrag wird aus der Combo-Box entfernt
-						motorAxisComboBox.remove(removeAxis.getMotorAxis().getFullIdentifyer());
+						// TODO: Wie kann man erreichen, daß das PlotWindow automatisch
+						// aktualisiert wird, sobald sich die Auswahl der Achsen oder
+						// Channels ändert? Kann man da irgendwo einen Listener setzen?
+						// Gleiche Fragestellung gilt auch für DetectorChannel und
+						// NormalizeChannel.
 					}
 		    	}
 		    };
@@ -348,6 +324,7 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 	}
 	
 	public void setScanModul( final ScanModul scanModul ) {
+		
 		if( this.scanModul != null ) {
 			this.scanModul.removeModelUpdateListener( this );
 		}
