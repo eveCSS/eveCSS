@@ -656,13 +656,11 @@ public class MeasuringStation {
 			final List< MotorAxis> axis = ((Motor)absdevice).getAxis();
 			for( final MotorAxis a : axis ) {
 				this.classMapAdd( a.getClassName(), a );
-				System.out.println( "Axis Class Name " + a.getClassName() + "--" );
 			}
 		} else if( absdevice instanceof Detector ) {
 			final List< DetectorChannel > channels = ((Detector)absdevice).getChannels();
 			for( final DetectorChannel c : channels ) {
 				this.classMapAdd( c.getClassName(), c );
-				System.out.println( "Channel Axis Class Name " + c.getClassName() + "--"  );
 			}
 		} 
 		

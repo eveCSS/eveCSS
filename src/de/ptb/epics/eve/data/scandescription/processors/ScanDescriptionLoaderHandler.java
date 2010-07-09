@@ -700,9 +700,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} catch( IllegalArgumentException e ) {
 				
 			}
-			if( this.currentPrescan.getAbstractDevice() == null ) {
-				
-			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PRESCAN_ID_READ;
 			break;
 
@@ -716,9 +713,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentPostscan.setAbstractPrePostscanDevice(this.measuringStation.getPrePostscanDeviceById(textBuffer.toString()));
 			} catch( IllegalArgumentException e ) {
 				
-			}
-			if( this.currentPostscan.getAbstractDevice() == null ) {
-			
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSTSCAN_ID_READ;
 			break;
@@ -739,10 +733,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (this.measuringStation.getMotorAxisById(textBuffer.toString()) != null) {
 				// MotorAxis ist am Messplatz vorhanden
 				this.currentAxis.setMotorAxis(this.measuringStation.getMotorAxisById(textBuffer.toString()));
-			}
-			if( this.currentAxis.getMotorAxis() == null ) {
-//TODO Frage an Stephan: Diese Abfragen sind alle für eine andere Fehlerbehandlung vorgesehen gewesen und
-				// können jetzt weg. (Hartmut 21.6.10)	
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_AXISID_READ;
 			break;
@@ -856,17 +846,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			
 		case CHAIN_SCANMODULE_PLOT_AXIS_ID_NEXT:
 			this.currentPlotWindow.setXAxis( this.measuringStation.getMotorAxisById( textBuffer.toString() ) );
-			if( this.currentPlotWindow.getXAxis() == null ) {
-				
-			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_AXIS_ID_READ;
 			break;
 
 		case CHAIN_SCANMODULE_PLOT_AXIS_MODE_NEXT:
 			PlotModes plotMode = PlotModes.stringToMode( textBuffer.toString() );
-			if( plotMode == null ) {
-				
-			}
 			this.currentPlotWindow.setMode( plotMode );
 			
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_AXIS_MODE_READ;
@@ -986,18 +970,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentYAxis.setDetectorChannel( this.measuringStation.getDetectorChannelById(textBuffer.toString() ) );
 			}
 
-			if( this.currentYAxis.getDetectorChannel() == null ) {
-				//TODO: Frage an Stephan, hier sollte wahrscheinlich eine Fehlerabfrage hin
-				// das passiert jetzt auf andere Weise, Abfrage ist überflüssig.
-			}
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_ID_READ;
 			break;
 
 		case YAXIS_MODE_NEXT:
 			PlotModes plotMode = PlotModes.stringToMode( textBuffer.toString() );
-			if( plotMode == null ) {
-				
-			}
 			this.currentYAxis.setMode( plotMode );
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_MODE_READ;
 			break;
@@ -1006,10 +983,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (this.measuringStation.getDetectorChannelById(textBuffer.toString()) != null) {
 				// DetectorChannel ist am Messplatz vorhanden
 				this.currentYAxis.setNormalizeChannel(this.measuringStation.getDetectorChannelById(textBuffer.toString()));
-			}
-
-			if( this.currentYAxis.getNormalizeChannel() == null ) {
-				
 			}
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_NORMALIZE_ID_READ;
 			break;
@@ -1482,17 +1455,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
-/********************
-		case CHAIN_SCANMODULE_DETECTOR_LOADING:
-			if (qName.equals("smchannel")) {
-				if (this.currentChannel.getAbstractDevice() != null) {
-					this.currentScanModul.add( this.currentChannel );
-				}
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
-			}
-			break;
-******************/
-			
 		case CHAIN_SCANMODULE_SMMOTOR_LOADING:
 			if (qName.equals("smaxis")) {
 				if (this.currentAxis.getAbstractDevice() != null) {
