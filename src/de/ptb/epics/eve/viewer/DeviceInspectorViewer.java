@@ -3,7 +3,11 @@ package de.ptb.epics.eve.viewer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.TableViewer;
@@ -15,11 +19,13 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.HelpListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.ui.ISharedImages;
@@ -37,6 +43,9 @@ import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.viewer.actions.ClearMessagesAction;
 import de.ptb.epics.eve.viewer.actions.NewDeviceInspectorAction;
+import de.ptb.epics.eve.viewer.actions.RenameDeviceInspector;
+
+import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 /**
  * This class represents the DeviceInspector view that provides interaction with motor axes
@@ -58,6 +67,7 @@ public class DeviceInspectorViewer extends ViewPart {
 	private CommonTableContentProvider channelContentProvider;
 	
 	private NewDeviceInspectorAction newDeviceInspectorAction;
+	private RenameDeviceInspector renameDeviceInspectorAction;
 	
 	@Override
 	public void createPartControl( Composite parent ) {
@@ -529,9 +539,13 @@ public class DeviceInspectorViewer extends ViewPart {
 		this.newDeviceInspectorAction = new NewDeviceInspectorAction( this );
 		
 		this.newDeviceInspectorAction.setText( "New Device Inspector" );
-		this.newDeviceInspectorAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_OBJ_FOLDER ) );
+		this.newDeviceInspectorAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_NEW_WIZARD ) );
 		this.getViewSite().getActionBars().getToolBarManager().add( this.newDeviceInspectorAction );
-
+		
+		this.renameDeviceInspectorAction = new RenameDeviceInspector( this );
+		this.renameDeviceInspectorAction.setText( "Rename Device Inspector" );
+		this.renameDeviceInspectorAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_OBJS_INFO_TSK ) );
+		this.getViewSite().getActionBars().getToolBarManager().add( this.renameDeviceInspectorAction );
 	}
 
 	@Override
@@ -591,5 +605,9 @@ public class DeviceInspectorViewer extends ViewPart {
 		CommonTableElement cte = new CommonTableElement(device, deviceTableViewer);
 		deviceContentProvider.addElement(cte);
 		cte.init();
+	}
+	
+	public void setName( final String name ) {
+		this.setPartName( name );
 	}
 }

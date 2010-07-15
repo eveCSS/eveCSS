@@ -78,6 +78,7 @@ public class DeviceOptionsViewer extends ViewPart {
 	public void setDevice( final AbstractDevice device ) {
 		this.device = device;
 		this.tableViewer.setInput( device );
+		this.setPartName( device.getFullIdentifyer() );
 	}
 
 	public boolean isFixed() {

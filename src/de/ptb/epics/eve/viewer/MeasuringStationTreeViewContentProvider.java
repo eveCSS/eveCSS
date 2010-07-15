@@ -82,9 +82,9 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 					returnList.add( a );
 				}
 			}
-			if( motor.getOptions().size() > 0 ) {
+			/*if( motor.getOptions().size() > 0 ) {
 				returnList.addAll( motor.getOptions() );
-			}
+			}*/
 			return returnList.toArray();
 		}
 		else if( parentElement instanceof Detector ) {
@@ -96,19 +96,19 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 					returnList.add( c );
 				}
 			}
-			if( detector.getOptions().size() > 0 ) {
+			/*if( detector.getOptions().size() > 0 ) {
 				returnList.addAll( detector.getOptions() );
-			}
+			}*/
 			return returnList.toArray();
 		}
-		else if( parentElement instanceof Device ) {
+		/*else if( parentElement instanceof Device ) {
 			List<Object> returnList = new ArrayList<Object>();
 			final Device device = (Device)parentElement;
 			if( device.getOptions().size() > 0 ) {
 				returnList.addAll( device.getOptions() );
 			}
 			return returnList.toArray();
-		} 
+		} */
 		return null;
 	}
 

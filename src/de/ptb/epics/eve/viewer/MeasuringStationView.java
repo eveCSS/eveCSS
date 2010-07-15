@@ -31,6 +31,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.actions.LoadMeasuringStationAction;
 
@@ -190,6 +191,30 @@ public final class MeasuringStationView extends ViewPart {
 					};
 					openAction.setText( "Open in seperate options window" );
 					manager.add( openAction );
+					
+					final MenuManager deviceInspectors = new MenuManager( "Open in Device Inspector" );
+					
+					IViewReference[] ref = getSite().getPage().getViewReferences();
+					for( final IViewReference r : ref ) {
+						if( r.getId().equals( "DeviceInspectorView" ) ) {
+							final Action action = new Action() {
+								
+								public void run() {
+									super.run();
+									for( final TreeItem item : selectedItems ) {
+										if( item.getData() instanceof AbstractDevice ) {
+											((DeviceInspectorViewer)r.getPart( true )).addAbstractDevice( (AbstractDevice)item.getData() );
+										}
+										
+									}
+								}
+							};
+							action.setText( r.getPartName() );
+							deviceInspectors.add( action );
+						}
+					}
+					
+					manager.add( deviceInspectors );
 				}
 				
 			}
