@@ -4,21 +4,28 @@
     <version>0.3.7</version>
     <chain id="1">
         <comment>abcd</comment>
-        <savefilename>testfile-Version38</savefilename>
+        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/039/qnim-test1</savefilename>
         <confirmsave>false</confirmsave>
         <autonumber>false</autonumber>
         <savescandescription>false</savescandescription>
+        <saveplugin name="HDF5">
+            <parameter name="location">/home/eden/eclipse/eve/evePlugins/lib</parameter>
+            <parameter name="extent">0</parameter>
+            <parameter name="format">HDF5</parameter>
+        </saveplugin>
         <scanmodules>
             <scanmodule id="1">
                 <type>classic</type>
-                <name>New Scan Modul</name>
-                <xpos>102</xpos>
-                <ypos>49</ypos>
+                <name>qnim-test</name>
+                <xpos>121</xpos>
+                <ypos>62</ypos>
                 <parent>0</parent>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
                 <triggerconfirm>false</triggerconfirm>
                 <saveaxispositions>never</saveaxispositions>
                 <smaxis>
-                    <axisid>OMS58:21401000</axisid>
+                    <axisid>OMS58:21400000</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
                     <start type="double">0.0</start>
@@ -26,19 +33,41 @@
                     <stepwidth type="double">0.0</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
-                <smaxis>
-                    <axisid>OMS58:21401003</axisid>
-                    <stepfunction>Add</stepfunction>
-                    <positionmode>absolute</positionmode>
-                    <start type="double">0.0</start>
-                    <stop type="double">0.0</stop>
-                    <stepwidth type="double">0.0</stepwidth>
-                    <ismainaxis>false</ismainaxis>
-                </smaxis>
+                <smchannel>
+                    <channelid>K0617:23626chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>K0196:23628chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>K2000:23624chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>O0974:2360904</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
                 <postscan>
                     <id>OMS58:20901000.VBAS</id>
                     <value type="double">45</value>
                 </postscan>
+                <plot id="1">
+                    <xaxis>
+                        <id>OMS58:21400000</id>
+                        <mode>log</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>K0196:23628chan1</id>
+                        <mode>linear</mode>
+                        <normalize_id>K0196:23628chan1</normalize_id>
+                        <linestyle>solid</linestyle>
+                        <color>blue</color>
+                        <markstyle>star</markstyle>
+                    </yaxis>
+                </plot>
             </scanmodule>
         </scanmodules>
     </chain>
@@ -52,8 +81,8 @@
         <plugin type="save">
             <name>HDF5</name>
             <location>/home/eden/eclipse/eve/evePlugins/lib</location>
-            <parameter name="extent" datatype="int" default="0" mandatory="false"></parameter>
-            <parameter name="format" datatype="string" default="HDF5" mandatory="false"></parameter>
+            <parameter name="extent" datatype="int" default="0" mandatory="false"/>
+            <parameter name="format" datatype="string" default="HDF5" mandatory="false"/>
         </plugin>
     </plugins>
     <detectors>
@@ -7907,7 +7936,7 @@
             <axis>
                 <class></class>
                 <name>QNIM_Apertur_Bl</name>
-                <id>OMS58:21400001</id>
+                <id>DiscPosOMS58:21400001</id>
                 <goto>
                     <access method="GETPUTCB" type="double"
                         transport="ca" timeout="100.0">OMS58:21400001</access>
@@ -8198,7 +8227,7 @@
             <axis>
                 <class></class>
                 <name>QNIM_Laser_Bl</name>
-                <id>OMS58:21400002</id>
+                <id>DiscPosOMS58:21400002</id>
                 <goto>
                     <access method="GETPUTCB" type="double"
                         transport="ca" timeout="100.0">OMS58:21400002</access>
@@ -8489,7 +8518,7 @@
             <axis>
                 <class></class>
                 <name>QNIM_Laser_Sp</name>
-                <id>OMS58:21400003</id>
+                <id>DiscPosOMS58:21400003</id>
                 <goto>
                     <access method="GETPUTCB" type="double"
                         transport="ca" timeout="100.0">OMS58:21400003</access>
@@ -8785,7 +8814,7 @@
             <axis>
                 <class></class>
                 <name>QNIM_ESP</name>
-                <id>OMS58:21401000</id>
+                <id>DiscPosOMS58:21401000</id>
                 <goto>
                     <access method="GETPUTCB" type="double"
                         transport="ca" timeout="100.0">OMS58:21401000</access>
@@ -9076,7 +9105,7 @@
             <axis>
                 <class></class>
                 <name>QNIM_ASP</name>
-                <id>OMS58:21401001</id>
+                <id>DiscPosOMS58:21401001</id>
                 <goto>
                     <access method="GETPUTCB" type="double"
                         transport="ca" timeout="100.0">OMS58:21401001</access>
@@ -9367,7 +9396,7 @@
             <axis>
                 <class></class>
                 <name>QNIM_Filter</name>
-                <id>OMS58:21401002</id>
+                <id>DiscPosOMS58:21401002</id>
                 <goto>
                     <access method="GETPUTCB" type="double"
                         transport="ca" timeout="100.0">OMS58:21401002</access>
@@ -9658,7 +9687,7 @@
             <axis>
                 <class></class>
                 <name>QNIM_Position</name>
-                <id>OMS58:21401003</id>
+                <id>DiscPosOMS58:21401003</id>
                 <goto>
                     <access method="GETPUTCB" type="double"
                         transport="ca" timeout="100.0">OMS58:21401003</access>
@@ -9955,6 +9984,14 @@
             <id>BSR11B007L:Opened</id>
             <value>
                 <access method="GETCB" type="string" transport="ca">BSR11B007L:Opened</access>
+            </value>
+        </device>
+        <device>
+            <class></class>
+            <name>DWL-SHUTTER</name>
+            <id>EKout:2090000</id>
+            <value>
+                <access method="GETPUT" type="string" transport="ca">EKout:2090000</access>
             </value>
         </device>
     </devices>
