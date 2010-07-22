@@ -28,8 +28,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -80,7 +83,7 @@ public class DeviceInspectorViewer extends ViewPart {
 		final Image playIcon = Activator.getDefault().getImageRegistry().get("PLAY16");
 		final Image stopIcon = Activator.getDefault().getImageRegistry().get("STOP16");
 
-		this.devices = new ArrayList< AbstractDevice >();
+		
 		
 		parent.setLayout( new GridLayout() );
 		GridData gridData;
@@ -546,6 +549,17 @@ public class DeviceInspectorViewer extends ViewPart {
 		this.renameDeviceInspectorAction.setText( "Rename Device Inspector" );
 		this.renameDeviceInspectorAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_OBJS_INFO_TSK ) );
 		this.getViewSite().getActionBars().getToolBarManager().add( this.renameDeviceInspectorAction );
+		
+		if( this.devices != null ) {
+			final List< AbstractDevice > devs = this.devices;
+			this.devices = new ArrayList< AbstractDevice >();
+			for( final AbstractDevice d : devs ) {
+				this.addAbstractDevice( d );
+			}
+		} else {
+			this.devices = new ArrayList< AbstractDevice >();
+		}
+		
 	}
 
 	@Override
@@ -593,21 +607,63 @@ public class DeviceInspectorViewer extends ViewPart {
 		CommonTableElement cte = new CommonTableElement(device, axisTableViewer);
 		axisContentProvider.addElement(cte);
 		cte.init();
+		this.devices.add( device );
 	}
 	
 	private void addDetectorChannelEntry( final AbstractDevice device){
 		CommonTableElement cte = new CommonTableElement(device, channelTableViewer);
 		channelContentProvider.addElement(cte);
 		cte.init();
+		this.devices.add( device );
 	}
 
 	private void addDeviceEntry( final AbstractDevice device){
 		CommonTableElement cte = new CommonTableElement(device, deviceTableViewer);
 		deviceContentProvider.addElement(cte);
 		cte.init();
+		this.devices.add( device );
 	}
 	
 	public void setName( final String name ) {
 		this.setPartName( name );
+	}
+	
+	public void saveState( final IMemento memento ) {
+	      memento.putString( "name", this.getPartName() );
+	      final StringBuffer devicesString = new StringBuffer();
+	      for( final AbstractDevice d : this.devices ) {
+	    	  devicesString.append( d.getFullIdentifyer() );
+	    	  devicesString.append( ',' );
+	      }
+	      final String xyz = devicesString.toString();
+	      memento.putString( "devices", devicesString.toString() );
+	      
+	}
+	
+	public void init( final IViewSite site, final IMemento memento ) throws PartInitException {
+		super.init( site, memento );
+		if( memento != null ) {
+			final String name = memento.getString( "name" );
+			if( name != null ) {
+				this.setName( name );
+			}
+			final String devicesString = memento.getString( "devices" );
+			if( devicesString != null ) {
+				if( this.devices == null ) {
+					this.devices = new ArrayList< AbstractDevice >();
+				};
+				final String[] ds = devicesString.split( "," );
+				for( final String d : ds ) {
+					if( d != null && !d.equals( "" ) ) {
+						final AbstractDevice device = Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( d );
+						if( device != null ) {
+							this.devices.add( device );
+						}
+					}
+				}
+			}
+			
+		}
+		
 	}
 }

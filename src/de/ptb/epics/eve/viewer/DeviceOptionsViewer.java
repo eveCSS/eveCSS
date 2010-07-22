@@ -10,6 +10,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
@@ -22,9 +25,6 @@ public class DeviceOptionsViewer extends ViewPart {
 	
 	@Override
 	public void createPartControl( final Composite parent ) {
-		
-		
-	    
 		
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
@@ -62,6 +62,10 @@ public class DeviceOptionsViewer extends ViewPart {
 	    final String[] props = { "option", "value" };
 	    
 	    this.tableViewer.setColumnProperties( props );
+	 
+	    if( this.device != null ) {
+	    	this.setDevice( device );
+	    }
 	    
 	}
 
@@ -89,4 +93,30 @@ public class DeviceOptionsViewer extends ViewPart {
 		this.fixed = fixed;
 		
 	}
+	
+	public void saveState( final IMemento memento ) {
+	      memento.putString( "device", this.device.getFullIdentifyer() );
+	      memento.putBoolean( "fixed", this.fixed );
+	}
+	
+	public void init( final IViewSite site, final IMemento memento ) throws PartInitException {
+		super.init( site, memento );
+		if( memento != null ) {
+			final String identifier = memento.getString( "device" );
+			if( identifier != null && !identifier.equals( ""  ) ) {
+				final AbstractDevice device = Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( identifier );
+				if( device != null ) {
+					this.device = Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( identifier );
+					try {
+						this.fixed = memento.getBoolean( "fixed" );
+					} catch( final Exception e ) {
+						
+					}
+				}
+				
+			}
+		}
+		
+	}
+
 }
