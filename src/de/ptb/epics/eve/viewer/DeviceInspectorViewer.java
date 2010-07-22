@@ -635,7 +635,7 @@ public class DeviceInspectorViewer extends ViewPart {
 	    	  devicesString.append( d.getFullIdentifyer() );
 	    	  devicesString.append( ',' );
 	      }
-	      final String xyz = devicesString.toString();
+	      
 	      memento.putString( "devices", devicesString.toString() );
 	      
 	}

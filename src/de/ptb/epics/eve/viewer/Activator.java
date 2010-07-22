@@ -17,6 +17,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
@@ -70,7 +71,7 @@ public class Activator extends AbstractUIPlugin {
 		this.ecp1Client.addChainStatusListener( this.chainStatusAnalyzer );
 		this.colorreg = new ColorRegistry();
 		this.fontreg = new FontRegistry();
-		this.requestProcessor = new RequestProcessor();
+		this.requestProcessor = new RequestProcessor( Display.getCurrent() );
 		this.ecp1Client.addRequestListener( this.requestProcessor );
 	}
 
