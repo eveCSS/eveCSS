@@ -50,6 +50,9 @@ public class CommonTableElement {
 		this.device = abstractdevice;
 		this.viewer = viewer;
 		name = abstractdevice.getName();
+		if( name == null || "".equals( this.name ) ) {
+			this.name = abstractdevice.getID();
+		}
 		unit = "";
 		cellEditorHash = new HashMap<String, CellEditor>();
 
@@ -84,23 +87,23 @@ public class CommonTableElement {
 				else
 					unit = motorAxis.getUnit().getValue();
 			}
-			if ((motorAxis.getStatus().getAccess() != null) &&
+			if ((motorAxis.getStatus() != null && motorAxis.getStatus().getAccess() != null) &&
 					(motorAxis.getStatus().getAccess().getTransport() == TransportTypes.CA)){
 				statusPv = new CommonTableElementPV(motorAxis.getStatus().getAccess().getVariableID(), this);
 			}
-			if ((motorAxis.getStop().getAccess() != null) &&
+			if ((motorAxis.getStop() != null && motorAxis.getStop().getAccess() != null) &&
 					(motorAxis.getStop().getAccess().getTransport() == TransportTypes.CA)){
 				stopPv = new CommonTableElementPV(motorAxis.getStop().getAccess().getVariableID(), this);
 			}
-			if ((motorAxis.getTweakForward().getAccess() != null) &&
+			if ((motorAxis.getTweakForward() != null && motorAxis.getTweakForward().getAccess() != null) &&
 					(motorAxis.getTweakForward().getAccess().getTransport() == TransportTypes.CA)){
 				tweakforwardPv = new CommonTableElementPV(motorAxis.getTweakForward().getAccess().getVariableID(), this);
 			}
-			if ((motorAxis.getTweakReverse().getAccess() != null) &&
+			if (( motorAxis.getTweakReverse() != null && motorAxis.getTweakReverse().getAccess() != null) &&
 					(motorAxis.getTweakReverse().getAccess().getTransport() == TransportTypes.CA)){
 				tweakreversePv = new CommonTableElementPV(motorAxis.getTweakReverse().getAccess().getVariableID(), this);
 			}
-			if ((motorAxis.getTweakValue().getAccess() != null) &&
+			if (( motorAxis.getTweakValue() != null && motorAxis.getTweakValue().getAccess() != null) &&
 					(motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.CA)){
 				tweakvaluePv = new CommonTableElementPV(motorAxis.getTweakValue().getAccess().getVariableID(), this);
 				tweakvaluePv.setReadOnly(motorAxis.getTweakValue().getAccess().isReadOnly());
