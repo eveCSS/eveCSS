@@ -37,7 +37,7 @@
                 <value type="int">1</value>
             </trigger>
             <channel>
-                <class></class>
+                <class>Stephan</class>
                 <name>Kanal 1</name>
                 <id>K6517:2332900</id>
                 <read>
@@ -555,7 +555,7 @@
                 </option>
             </axis>
             <axis>
-                <class></class>
+                <class>Stephan</class>
                 <name>MaxNet 2</name>
                 <id>OMSMn:ioMn0100001</id>
                 <goto>
