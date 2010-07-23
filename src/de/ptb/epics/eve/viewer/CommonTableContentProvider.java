@@ -11,16 +11,20 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.ExpandItem;
 
+import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
+
 public class CommonTableContentProvider implements IStructuredContentProvider {
 
 	private List<CommonTableElement> elements;
 	private TableViewer viewer;
 	private ExpandItem expandItem;
+	private final List< AbstractDevice > devices;
 
-	public CommonTableContentProvider (TableViewer viewer, ExpandItem item){
+	public CommonTableContentProvider (TableViewer viewer, ExpandItem item, final List< AbstractDevice > devices ) {
 		this.viewer = viewer;
 		this.expandItem = item;
 		elements = new ArrayList<CommonTableElement>();
+		this.devices = devices;
 	}
 	
 	public boolean addElement(CommonTableElement element){
@@ -58,6 +62,7 @@ public class CommonTableContentProvider implements IStructuredContentProvider {
 		if (elements.contains(element)){
 			elements.remove(element);
 			viewer.remove(element);
+			this.devices.remove( ((CommonTableElement)element).getAbstractDevice() );
 		}
 		setSize();
 	}

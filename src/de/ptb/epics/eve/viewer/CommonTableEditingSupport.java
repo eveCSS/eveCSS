@@ -26,6 +26,7 @@ public class CommonTableEditingSupport extends EditingSupport {
 		System.err.println("CommonTableEditingSupport: canEdit");
 		if (column.equals("remove")) {
 			((CommonTableContentProvider)viewer.getInput()).removeElement(element);
+			
 		}
 		else if (column.equals("trigger")) {
 			((CommonTableElement) element).trigger();

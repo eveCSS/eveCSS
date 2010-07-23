@@ -75,7 +75,9 @@ public class DeviceInspectorViewer extends ViewPart {
 	@Override
 	public void createPartControl( Composite parent ) {
 		
-		
+		if( this.devices == null ) {
+			this.devices = new ArrayList< AbstractDevice >();
+		}
 		
 		final Image deleteIcon = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ).createImage();
 		final Image leftArrowIcon = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_BACK ).createImage();
@@ -199,7 +201,7 @@ public class DeviceInspectorViewer extends ViewPart {
 		axisTableViewer.getTable().setHeaderVisible(true);
 		axisTableViewer.getTable().setLinesVisible(true);
 
-		axisContentProvider = new CommonTableContentProvider(axisTableViewer, eitem);
+		axisContentProvider = new CommonTableContentProvider(axisTableViewer, eitem, this.devices );
 		axisTableViewer.setContentProvider(axisContentProvider);
 
 		TableViewerColumn delColumn = new TableViewerColumn(axisTableViewer, SWT.NONE);
@@ -374,7 +376,7 @@ public class DeviceInspectorViewer extends ViewPart {
 		channelTableViewer.getTable().setLinesVisible(true);
 		//channelTableViewer.getControl().setSize(400, 400);
 
-		channelContentProvider = new CommonTableContentProvider(channelTableViewer, eitem);
+		channelContentProvider = new CommonTableContentProvider(channelTableViewer, eitem, this.devices );
 		channelTableViewer.setContentProvider(channelContentProvider);
 
 		delColumn = new TableViewerColumn(channelTableViewer, SWT.NONE);
@@ -476,7 +478,7 @@ public class DeviceInspectorViewer extends ViewPart {
 		deviceTableViewer.getTable().setLinesVisible(true);
 		//deviceTableViewer.getControl().setSize(400, 400);
 
-		deviceContentProvider = new CommonTableContentProvider(deviceTableViewer, eitem);
+		deviceContentProvider = new CommonTableContentProvider(deviceTableViewer, eitem, this.devices );
 		deviceTableViewer.setContentProvider(deviceContentProvider);
 
 		delColumn = new TableViewerColumn(deviceTableViewer, SWT.NONE);
@@ -552,14 +554,10 @@ public class DeviceInspectorViewer extends ViewPart {
 		this.renameDeviceInspectorAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_OBJS_INFO_TSK ) );
 		this.getViewSite().getActionBars().getToolBarManager().add( this.renameDeviceInspectorAction );
 		
-		if( this.devices != null ) {
-			final List< AbstractDevice > devs = this.devices;
-			this.devices = new ArrayList< AbstractDevice >();
-			for( final AbstractDevice d : devs ) {
-				this.addAbstractDevice( d );
-			}
-		} else {
-			this.devices = new ArrayList< AbstractDevice >();
+		final List< AbstractDevice > devs = new ArrayList< AbstractDevice >( this.devices );
+		this.devices.clear();
+		for( final AbstractDevice d : devs ) {
+			this.addAbstractDevice( d );
 		}
 		
 	}
