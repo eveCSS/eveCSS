@@ -95,7 +95,9 @@ public class DeviceOptionsViewer extends ViewPart {
 	}
 	
 	public void saveState( final IMemento memento ) {
-	      memento.putString( "device", this.device.getFullIdentifyer() );
+		  if( this.device != null ) {
+			  memento.putString( "device", this.device.getFullIdentifyer() );
+		  }
 	      memento.putBoolean( "fixed", this.fixed );
 	}
 	

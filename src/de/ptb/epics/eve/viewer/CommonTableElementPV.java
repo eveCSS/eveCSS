@@ -4,7 +4,9 @@
 package de.ptb.epics.eve.viewer;
 
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
+import java.util.Locale;
 
 import org.csstudio.platform.data.IEnumeratedMetaData;
 import org.csstudio.platform.data.IMetaData;
@@ -71,6 +73,9 @@ public class CommonTableElementPV implements PVListener {
 		if(!pv.isWriteAllowed()) isReadOnly = true;
 		pvstatus  = pv.getValue().getSeverity().toString();
 		this.value = ValueUtil.getString(pv.getValue());
+		if( !Double.isNaN( ValueUtil.getDouble( pv.getValue() ) ) ) {
+			this.value = String.format( Locale.US, "%g", ValueUtil.getDouble( pv.getValue() ) );
+		}
         final IMetaData meta = pv.getValue().getMetaData();
         // enum values override discreteValues
         if (meta instanceof IEnumeratedMetaData) {

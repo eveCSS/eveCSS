@@ -118,10 +118,10 @@ public final class MeasuringStationView extends ViewPart {
 				TreeItem[] items = treeViewer.getTree().getSelection();
 				if( TextTransfer.getInstance().isSupportedType( event.dataType ) ) {
 					if (items[0].getData() instanceof AbstractDevice)
-						event.data = ((AbstractDevice)items[0].getData()).getFullIdentifyer();
+						event.data = getViewSite().getId() + "," + ((AbstractDevice)items[0].getData()).getFullIdentifyer();
 					else if (items[0].getData() instanceof String) {
 						System.err.println("MeasuringStationView String item");
-						event.data = (String)items[0].getData();		
+						event.data = getViewSite().getId() + "," + (String)items[0].getData();		
 					}
 				}
 			}
@@ -134,6 +134,7 @@ public final class MeasuringStationView extends ViewPart {
 
 			
 		});
+		
 		
 		this.treeViewer.getTree().addSelectionListener( new SelectionListener() {
 

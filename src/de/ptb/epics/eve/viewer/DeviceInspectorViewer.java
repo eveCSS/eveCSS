@@ -125,32 +125,34 @@ public class DeviceInspectorViewer extends ViewPart {
 				if( textTransfer.isSupportedType( event.currentDataType ) ) {
 					IViewReference[] ref = getSite().getPage().getViewReferences();
 					MeasuringStationView view = null;
-					for( int i = 0; i < ref.length; ++i ) {
-						if( ref[i].getId().equals( MeasuringStationView.ID ) ) {
-							view = (MeasuringStationView)ref[i].getPart( false );
-							final MeasuringStation measuringStation = view.getMeasuringStation();
-							if (measuringStation.getClassNameList().contains((String)event.data)) {
-								for (AbstractDevice absdevice : measuringStation.getDeviceList((String)event.data)) {
-									if (absdevice instanceof MotorAxis ) addMotorAxisEntry((MotorAxis) absdevice );
-									else if (absdevice instanceof DetectorChannel )
-										addDetectorChannelEntry((DetectorChannel) absdevice );
-									else if (absdevice instanceof Device ) 
-										addDeviceEntry((Device) absdevice );
-									else if( absdevice instanceof Motor )
-										for (MotorAxis axis : ((Motor)absdevice).getAxis()) 
-											addMotorAxisEntry(axis);
-									else if( absdevice instanceof Detector )
-										for (DetectorChannel channel : ((Detector)absdevice).getChannels()) 
-											addDetectorChannelEntry( channel );
+					final String[] comp = ((String)event.data).split( "," );
+					if( comp.length == 2 ) {
+						for( int i = 0; i < ref.length; ++i ) {
+							if( ref[i].getId().equals( comp[0] ) ) {
+								view = (MeasuringStationView)ref[i].getPart( false );
+								final MeasuringStation measuringStation = view.getMeasuringStation();
+								if (measuringStation.getClassNameList().contains( comp[1] ) ) {
+									for (AbstractDevice absdevice : measuringStation.getDeviceList(comp[1])) {
+										if (absdevice instanceof MotorAxis ) addMotorAxisEntry((MotorAxis) absdevice );
+										else if (absdevice instanceof DetectorChannel )
+											addDetectorChannelEntry((DetectorChannel) absdevice );
+										else if (absdevice instanceof Device ) 
+											addDeviceEntry((Device) absdevice );
+										else if( absdevice instanceof Motor )
+											for (MotorAxis axis : ((Motor)absdevice).getAxis()) 
+												addMotorAxisEntry(axis);
+										else if( absdevice instanceof Detector )
+											for (DetectorChannel channel : ((Detector)absdevice).getChannels()) 
+												addDetectorChannelEntry( channel );
+									}
+								} else {
+									AbstractDevice device = measuringStation.getAbstractDeviceByFullIdentifyer( comp[1] );
+									addAbstractDevice( device );
 								}
+								break;
 							}
-							else {
-								AbstractDevice device = measuringStation.getAbstractDeviceByFullIdentifyer( (String)event.data );
-								addAbstractDevice( device );
-							}
-							break;
-						}
 							
+						}
 					}
 				}
 				

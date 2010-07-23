@@ -3,6 +3,7 @@ package de.ptb.epics.eve.viewer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.csstudio.platform.internal.data.EnumeratedMetaData;
 import org.csstudio.platform.internal.data.EnumeratedValue;
@@ -134,6 +135,9 @@ public class OptionConnector implements IModelUpdateProvider, PVListener {
 		if(pv.isConnected()) isConnected = true;
 		if(!pv.isWriteAllowed()) readOnly = true;
 		this.value = ValueUtil.getString(pv.getValue());
+		if( !Double.isNaN( ValueUtil.getDouble( pv.getValue() ) ) ) {
+			this.value = String.format( Locale.US, "%g", ValueUtil.getDouble( pv.getValue() ) );
+		}
         final IMetaData meta = pv.getValue().getMetaData();
         if (meta instanceof IEnumeratedMetaData) {
         	this.discreteValues = ((IEnumeratedMetaData)meta).getStates();
