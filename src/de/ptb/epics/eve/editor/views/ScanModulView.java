@@ -528,6 +528,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	}
 
 	public void setCurrentScanModul(ScanModul currentScanModul) {
+		System.out.println( "Setting current Scanmodule" );
 		if( this.currentScanModul != null ) {
 			this.currentScanModul.removeModelUpdateListener( this );
 		}
