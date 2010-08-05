@@ -20,14 +20,18 @@ import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.HelpListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewReference;
@@ -85,8 +89,6 @@ public class DeviceInspectorViewer extends ViewPart {
 		final Image playIcon = Activator.getDefault().getImageRegistry().get("PLAY16");
 		final Image stopIcon = Activator.getDefault().getImageRegistry().get("STOP16");
 
-		
-		
 		parent.setLayout( new GridLayout() );
 		GridData gridData;
 
@@ -560,6 +562,121 @@ public class DeviceInspectorViewer extends ViewPart {
 			this.addAbstractDevice( d );
 		}
 		
+		this.axisTableViewer.getTable().addMouseMoveListener( new MouseMoveListener() {
+
+			@Override
+			public void mouseMove( final MouseEvent e ) {
+				
+				final TableItem item = axisTableViewer.getTable().getItem( new Point( e.x, e.y ) );
+				if( item != null ) {
+					final MotorAxis axis = (MotorAxis)((CommonTableElement)item.getData()).getAbstractDevice();
+					final int[] columns = axisTableViewer.getTable().getColumnOrder();
+					int pix = 0;
+					int colId = 0;
+					for( int i = 0; i < columns.length; ++i ) {
+						if( (pix + axisTableViewer.getTable().getColumns()[ columns[i] ].getWidth()) > e.x ) {
+							colId = columns[i];
+							break;
+						}
+						pix += axisTableViewer.getTable().getColumns()[ columns[i] ].getWidth();
+					}
+					
+					final String colName = axisTableViewer.getTable().getColumns()[ colId ].getText();
+					if( colName.equals( "Name" ) ) {
+						axisTableViewer.getTable().setToolTipText( axis.getID() );
+					} else if( colName.equals( "Position" ) && axis.getPosition() != null && axis.getPosition().getAccess() != null ) {
+						axisTableViewer.getTable().setToolTipText( axis.getPosition().getAccess().getVariableID() );
+					} else if( colName.equals( "Unit" ) && axis.getUnit() != null && axis.getUnit().getAccess() != null ) {
+						axisTableViewer.getTable().setToolTipText( axis.getUnit().getAccess().getVariableID() );
+					} else if( colName.equals( "Go to" ) && axis.getGoto() != null && axis.getGoto().getAccess() != null ) {
+						axisTableViewer.getTable().setToolTipText( axis.getGoto().getAccess().getVariableID() );
+					} else if( colName.equals( "Status" ) && axis.getStatus() != null && axis.getStatus().getAccess() != null ) {
+						axisTableViewer.getTable().setToolTipText( axis.getStatus().getAccess().getVariableID() );
+					} else if( colName.equals( "Tweak" ) && axis.getTweakValue() != null && axis.getTweakValue().getAccess() != null ) {
+						axisTableViewer.getTable().setToolTipText( axis.getTweakValue().getAccess().getVariableID() );
+					} else {
+						axisTableViewer.getTable().setToolTipText( "" );
+					}
+					
+				}
+				
+			}
+			
+		});
+		
+		this.channelTableViewer.getTable().addMouseMoveListener( new MouseMoveListener() {
+
+			@Override
+			public void mouseMove( final MouseEvent e ) {
+				
+				final TableItem item = channelTableViewer.getTable().getItem( new Point( e.x, e.y ) );
+				if( item != null ) {
+					final DetectorChannel channel = (DetectorChannel)((CommonTableElement)item.getData()).getAbstractDevice();
+					final int[] columns = channelTableViewer.getTable().getColumnOrder();
+					int pix = 0;
+					int colId = 0;
+					for( int i = 0; i < columns.length; ++i ) {
+						if( (pix + channelTableViewer.getTable().getColumns()[ columns[i] ].getWidth()) > e.x ) {
+							colId = columns[i];
+							break;
+						}
+						pix += channelTableViewer.getTable().getColumns()[ columns[i] ].getWidth();
+					}
+					
+					final String colName = channelTableViewer.getTable().getColumns()[ colId ].getText();
+					if( colName.equals( "Name" ) ) {
+						channelTableViewer.getTable().setToolTipText( channel.getID() );
+					} else if( colName.equals( "Value" ) && channel.getRead() != null && channel.getRead().getAccess() != null ) {
+						channelTableViewer.getTable().setToolTipText( channel.getRead().getAccess().getVariableID() );
+					} else if( colName.equals( "Unit" ) && channel.getUnit() != null && channel.getUnit().getAccess() != null ) {
+						channelTableViewer.getTable().setToolTipText( channel.getUnit().getAccess().getVariableID() );
+					} else if( colName.equals( "Trig" ) && channel.getTrigger() != null && channel.getTrigger().getAccess() != null ) {
+						channelTableViewer.getTable().setToolTipText( channel.getTrigger().getAccess().getVariableID() );
+					} else {
+						channelTableViewer.getTable().setToolTipText( "" );
+					}
+					
+				}
+				
+			}
+			
+		});
+		
+		this.deviceTableViewer.getTable().addMouseMoveListener( new MouseMoveListener() {
+
+			@Override
+			public void mouseMove( final MouseEvent e ) {
+				
+				final TableItem item = deviceTableViewer.getTable().getItem( new Point( e.x, e.y ) );
+				if( item != null ) {
+					final Device device = (Device)((CommonTableElement)item.getData()).getAbstractDevice();
+					final int[] columns = deviceTableViewer.getTable().getColumnOrder();
+					int pix = 0;
+					int colId = 0;
+					for( int i = 0; i < columns.length; ++i ) {
+						if( (pix + deviceTableViewer.getTable().getColumns()[ columns[i] ].getWidth()) > e.x ) {
+							colId = columns[i];
+							break;
+						}
+						pix += deviceTableViewer.getTable().getColumns()[ columns[i] ].getWidth();
+					}
+					
+					final String colName = deviceTableViewer.getTable().getColumns()[ colId ].getText();
+					if( colName.equals( "Name" ) ) {
+						deviceTableViewer.getTable().setToolTipText( device.getID() );
+					} else if( colName.equals( "Value" ) && device.getValue() != null && device.getValue().getAccess() != null ) {
+						deviceTableViewer.getTable().setToolTipText( device.getValue().getAccess().getVariableID() );
+					} else if( colName.equals( "Unit" ) && device.getUnit() != null && device.getUnit().getAccess() != null ) {
+						deviceTableViewer.getTable().setToolTipText( device.getUnit().getAccess().getVariableID() );
+					} else {
+						channelTableViewer.getTable().setToolTipText( "" );
+					}
+					
+				}
+				
+			}
+			
+		});
 	}
 
 	@Override
