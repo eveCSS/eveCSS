@@ -76,6 +76,11 @@ public class DeviceInspectorViewer extends ViewPart {
 	private NewDeviceInspectorAction newDeviceInspectorAction;
 	private RenameDeviceInspector renameDeviceInspectorAction;
 	
+	private boolean axisExpanded = true;
+	private boolean channelExpanded = true;
+	private boolean deviceExpanded = true;
+	
+	
 	@Override
 	public void createPartControl( Composite parent ) {
 		
@@ -192,6 +197,7 @@ public class DeviceInspectorViewer extends ViewPart {
 		eitem.setText("Axes");
 		eitem.setHeight( 300);
 		eitem.setControl( tableComposite );
+		eitem.setExpanded( axisExpanded );
 
 //		gridData = new GridData();
 //		gridData.grabExcessHorizontalSpace = true;
@@ -363,9 +369,10 @@ public class DeviceInspectorViewer extends ViewPart {
 		channelTableViewer = new TableViewer(tableComposite, SWT.BORDER | SWT.FULL_SELECTION);
 
 		eitem = new ExpandItem ( this.bar, SWT.NONE, 0);
-		eitem.setText("Detector Channels");
+		eitem.setText("Channels");
 		eitem.setHeight( 200);
 		eitem.setControl( tableComposite );
+		eitem.setExpanded( channelExpanded );
 
 //		gridData = new GridData();
 //		gridData.grabExcessHorizontalSpace = true;
@@ -468,7 +475,8 @@ public class DeviceInspectorViewer extends ViewPart {
 		eitem.setText("Devices");
 		eitem.setHeight( 200);
 		eitem.setControl( tableComposite );
-
+		eitem.setExpanded( deviceExpanded );
+		
 //		gridData = new GridData();
 //		gridData.grabExcessHorizontalSpace = true;
 //		gridData.grabExcessVerticalSpace = true;
@@ -755,6 +763,10 @@ public class DeviceInspectorViewer extends ViewPart {
 	      
 	      memento.putString( "devices", devicesString.toString() );
 	      
+	      for( final ExpandItem e : this.bar.getItems() ) {
+	    	  memento.putBoolean( e.getText(), e.getExpanded() );
+	      }
+	      
 	}
 	
 	public void init( final IViewSite site, final IMemento memento ) throws PartInitException {
@@ -778,6 +790,13 @@ public class DeviceInspectorViewer extends ViewPart {
 						}
 					}
 				}
+			}
+			try {
+				this.axisExpanded = memento.getBoolean( "Axes" );
+				this.channelExpanded = memento.getBoolean( "Channels" );
+				this.deviceExpanded = memento.getBoolean( "Devices" );
+			} catch( final Exception e ) {
+				
 			}
 			
 		}
