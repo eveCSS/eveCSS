@@ -73,8 +73,11 @@ public class CommonTableElementPV implements PVListener {
 		if(!pv.isWriteAllowed()) isReadOnly = true;
 		pvstatus  = pv.getValue().getSeverity().toString();
 		this.value = ValueUtil.getString(pv.getValue());
-		if( !Double.isNaN( ValueUtil.getDouble( pv.getValue() ) ) ) {
+		try {
+			Double.parseDouble( this.value );
 			this.value = String.format( Locale.US, "%g", ValueUtil.getDouble( pv.getValue() ) );
+		} catch( final Exception e ) {
+			
 		}
         final IMetaData meta = pv.getValue().getMetaData();
         // enum values override discreteValues
