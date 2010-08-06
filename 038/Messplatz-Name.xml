@@ -64,44 +64,44 @@
         <detector>
             <class>Keithley617</class>
             <name></name>
-            <id>K0617:22225</id>
+            <id>K0617:27225</id>
             <unit>
-                <access method="GETCB" transport="ca" type="string">K0617:22225.EGU</access>
+                <access method="GETCB" transport="ca" type="string">K0617:27225.EGU</access>
             </unit>
             <trigger>
-                <access method="PUTCB" transport="ca" type="int">K0617:22225.TRIG</access>
+                <access method="PUTCB" transport="ca" type="int">K0617:27225.TRIG</access>
                 <value type="int">1</value>
             </trigger>
             <channel>
                 <class></class>
                 <name>Kanal 1</name>
-                <id>K0617:22225.1</id>
+                <id>K0617:27225.1</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">K0617:22225.VAL</access>
+                    <access method="GETCB" transport="ca" type="double">K0617:27225.VAL</access>
                 </read>
             </channel>
              <channel>
                 <class></class>
                 <name></name>
-                <id>K0617:22225.2</id>
+                <id>K0617:27225.2</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">K0617:22225.VAL</access>
+                    <access method="GETCB" transport="ca" type="double">K0617:27225.VAL</access>
                 </read>
             </channel>
             <option>
                 <name>ZeroCheck</name>
-                <id>K6559:22225zeroChk</id>
+                <id>K6559:27225zeroChk</id>
                 <value>
-                    <access method="GETPUTCB" transport="ca" type="OnOff">K6559:22225zeroChk</access>
+                    <access method="GETPUTCB" transport="ca" type="OnOff">K6559:27225zeroChk</access>
                     <value type="OnOff">1,0</value>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
             <option>
                 <name>Function</name>
-                <id>K6559:22225function</id>
+                <id>K6559:27225function</id>
                 <value>
-                    <access method="GETPUTCB" transport="ca" type="string">K6559:22225function</access>
+                    <access method="GETPUTCB" transport="ca" type="string">K6559:27225function</access>
                     <value type="string">Voltage,Current,Resistance</value>
                 </value>
                 <displaygroup>summary</displaygroup>
@@ -149,54 +149,54 @@
 		<detector>
 			<class>Keithley617</class>
 			<name>Keithley_5</name>
-			<id>K0617:23326</id>
+			<id>K0617:28326</id>
 			<unit>
-				<access method="GETCB" transport="ca" type="string">K0617:23326.EGU</access>
+				<access method="GETCB" transport="ca" type="string">K0617:28326.EGU</access>
 			</unit>
 			<trigger>
-				<access method="PUTCB" transport="ca" type="int">K0617:23326.PROC</access>
+				<access method="PUTCB" transport="ca" type="int">K0617:28326.PROC</access>
 				<value type="int">1</value>
 			</trigger>
 			<channel>
                 <class></class>
 				<name> </name>
-				<id>K0617:23326.1</id>
+				<id>K0617:28326.1</id>
 				<read>
-					<access method="GETCB" transport="ca" type="double">K0617:23326.VAL</access>
+					<access method="GETCB" transport="ca" type="double">K0617:28326.VAL</access>
 				</read>
 			</channel>
 			<option>
 				<name>Function</name>
-				<id>K0617:23326function</id>
+				<id>K0617:28326function</id>
 				<value>
-					<access method="GETPUTCB" transport="ca" type="string">K0617:23326function</access>
+					<access method="GETPUTCB" transport="ca" type="string">K0617:28326function</access>
 					<value type="string">Volts,Amps,Ohms,Coulombs,Ext Feedback,V/I Ohms</value>
 				</value>
 				<displaygroup>summary</displaygroup>
 			</option>
 			<option>
 				<name>Range</name>
-				<id>K0617:23326range</id>
+				<id>K0617:28326range</id>
 				<value>
-					<access method="GETPUTCB" transport="ca" type="string">K0617:23326range</access>
+					<access method="GETPUTCB" transport="ca" type="string">K0617:28326range</access>
 					<value type="string">Auto,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,CancelAuto</value>
 				</value>
 				<displaygroup>summary</displaygroup>
 			</option>
 			<option>
 				<name>ZeroCheck</name>
-				<id>K0617:23326zeroChk</id>
+				<id>K0617:28326zeroChk</id>
 				<value>
-					<access method="GETPUTCB" transport="ca" type="OnOff">K0617:23326zeroChk</access>
+					<access method="GETPUTCB" transport="ca" type="OnOff">K0617:28326zeroChk</access>
 					<value type="OnOff">1,0</value>
 				</value>
 				<displaygroup>detail</displaygroup>
 			</option>
 			<option>
 				<name>ZeroCor</name>
-				<id>K0617:23326zeroCor</id>
+				<id>K0617:28326zeroCor</id>
 				<value>
-					<access method="GETPUTCB" transport="ca" type="OpenClose">K0617:23326zeroCor</access>
+					<access method="GETPUTCB" transport="ca" type="OpenClose">K0617:28326zeroCor</access>
 					<value type="OpenClose">Ein,Aus</value>
 				</value>
 				<displaygroup>detail</displaygroup>
@@ -398,47 +398,47 @@
 		<motor>
 			<class>ServoMotor</class>
 			<name>SX700-</name>
-			<id>OMS58:212000servo</id>
+			<id>OMS58:262000servo</id>
 			<axis>
                 <class></class>
 				<name>Mirror</name>
-				<id>OMS58:21200000servo</id>
+				<id>OMS58:26200000servo</id>
 				<goto>
-					<access transport="ca" method="PUTCB" type="double">OMS58:21200000</access>
+					<access transport="ca" method="PUTCB" type="double">OMS58:26200000</access>
 				</goto>
 				<position>
-					<access transport="ca" method="GETCB" type="double">OMS58:21200000.RBV</access>
+					<access transport="ca" method="GETCB" type="double">OMS58:26200000.RBV</access>
 				</position>
 				<stop>
-					<access transport="ca" method="PUT" type="int">OMS58:21200000.STOP</access>
+					<access transport="ca" method="PUT" type="int">OMS58:26200000.STOP</access>
 					<value type="int">1</value>
 				</stop>
 				<status>
-					<access transport="ca" method="GETCB" type="int">OMS58:21200000.STAT</access>
+					<access transport="ca" method="GETCB" type="int">OMS58:26200000.STAT</access>
 				</status>
 				<unit>
-					<access transport="ca" method="GETCB" type="string">OMS58:21200000.EGU</access>
+					<access transport="ca" method="GETCB" type="string">OMS58:26200000.EGU</access>
 				</unit>
 			</axis>
 			<axis>
                 <class></class>
 				<name>Grating</name>
-				<id>OMS58:21200001servo</id>
+				<id>OMS58:26200001servo</id>
 				<goto>
-					<access transport="ca" method="PUTCB" type="double">OMS58:21200001</access>
+					<access transport="ca" method="PUTCB" type="double">OMS58:26200001</access>
 				</goto>
 				<position>
-					<access transport="ca" method="GETCB" type="double">OMS58:21200001.RBV</access>
+					<access transport="ca" method="GETCB" type="double">OMS58:26200001.RBV</access>
 				</position>
 				<stop>
-					<access transport="ca" method="PUT" type="int">OMS58:21200001.STOP</access>
+					<access transport="ca" method="PUT" type="int">OMS58:26200001.STOP</access>
 					<value type="int">1</value>
 				</stop>
 				<status>
-					<access transport="ca" method="GETCB" type="int">OMS58:21200001.MSTA</access>
+					<access transport="ca" method="GETCB" type="int">OMS58:26200001.MSTA</access>
 				</status>
 				<unit>
-					<access transport="ca" method="GETCB" type="string">OMS58:21200001.EGU</access>
+					<access transport="ca" method="GETCB" type="string">OMS58:26200001.EGU</access>
 				</unit>
 			</axis>
 		</motor>
