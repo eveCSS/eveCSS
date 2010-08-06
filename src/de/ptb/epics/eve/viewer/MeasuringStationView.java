@@ -232,6 +232,7 @@ public final class MeasuringStationView extends ViewPart {
 		this.measuringStation = measuringStation;
 		this.treeViewer.setInput( this.measuringStation );
 		this.treeViewer.getTree().setEnabled( this.measuringStation != null );
+		this.treeViewer.expandAll();
 	}
 	
 	public MeasuringStation getMeasuringStation() {

@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuCreator;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -22,6 +25,8 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.HelpListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -31,11 +36,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
@@ -685,6 +694,199 @@ public class DeviceInspectorViewer extends ViewPart {
 			}
 			
 		});
+		
+		final IWorkbenchPage page = getSite().getPage();
+		MenuManager menuManager = new MenuManager( "#PopupMenu" );
+		menuManager.setRemoveAllWhenShown( true );
+		menuManager.addMenuListener( new IMenuListener() {
+
+			public void menuAboutToShow( final IMenuManager manager ) {
+				final TableItem[] selectedItems = axisTableViewer.getTable().getSelection();
+				if( selectedItems != null && selectedItems.length > 0 ) {
+					final Action openAction = new Action() {
+						public void run() {
+							super.run();
+							for( final TableItem item : selectedItems ) {
+								if( item.getData() instanceof CommonTableElement ) {
+									try {
+										final IViewPart view = page.showView( "DeviceOptionsView", ((CommonTableElement)item.getData()).getAbstractDevice().getName(), IWorkbenchPage.VIEW_CREATE );
+										((DeviceOptionsViewer)view).setDevice( ((CommonTableElement)item.getData()).getAbstractDevice() );
+										((DeviceOptionsViewer)view).setFixed( true );
+									} catch (PartInitException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+								
+							}
+						}
+					};
+					openAction.setText( "Open in seperate options window" );
+					manager.add( openAction );
+				}
+				
+			}
+			
+		});
+		
+		Menu contextMenu = menuManager.createContextMenu( this.axisTableViewer.getTable() );
+		this.axisTableViewer.getTable().setMenu( contextMenu );
+		
+		this.axisTableViewer.getTable().addSelectionListener( new SelectionListener() {
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				TableItem[] items = axisTableViewer.getTable().getSelection();
+				if( items.length > 0 ) {
+					if( items[0].getData() instanceof CommonTableElement ) {
+						IViewReference[] ref = getSite().getPage().getViewReferences();
+						DeviceOptionsViewer view = null;
+						for( int i = 0; i < ref.length; ++i ) {
+							if( ref[i].getId().equals( "DeviceOptionsView" ) &&  !((DeviceOptionsViewer)ref[i].getPart(true)).isFixed() ) {
+								view = (DeviceOptionsViewer)ref[i].getPart( true );
+							}
+						}
+						if (view != null) view.setDevice( ((CommonTableElement)items[0].getData()).getAbstractDevice() );
+					}
+				}
+				
+			}
+			
+		});
+		
+		//-----------------------------------------------
+		
+		menuManager = new MenuManager( "#PopupMenu" );
+		menuManager.setRemoveAllWhenShown( true );
+		menuManager.addMenuListener( new IMenuListener() {
+
+			public void menuAboutToShow( final IMenuManager manager ) {
+				final TableItem[] selectedItems = channelTableViewer.getTable().getSelection();
+				if( selectedItems != null && selectedItems.length > 0 ) {
+					final Action openAction = new Action() {
+						public void run() {
+							super.run();
+							for( final TableItem item : selectedItems ) {
+								if( item.getData() instanceof CommonTableElement ) {
+									try {
+										final IViewPart view = page.showView( "DeviceOptionsView", ((CommonTableElement)item.getData()).getAbstractDevice().getName(), IWorkbenchPage.VIEW_CREATE );
+										((DeviceOptionsViewer)view).setDevice( ((CommonTableElement)item.getData()).getAbstractDevice() );
+										((DeviceOptionsViewer)view).setFixed( true );
+									} catch (PartInitException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+								
+							}
+						}
+					};
+					openAction.setText( "Open in seperate options window" );
+					manager.add( openAction );
+				}
+				
+			}
+			
+		});
+		
+		contextMenu = menuManager.createContextMenu( this.channelTableViewer.getTable() );
+		this.channelTableViewer.getTable().setMenu( contextMenu );
+		
+		this.channelTableViewer.getTable().addSelectionListener( new SelectionListener() {
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				TableItem[] items = channelTableViewer.getTable().getSelection();
+				if( items.length > 0 ) {
+					if( items[0].getData() instanceof CommonTableElement ) {
+						IViewReference[] ref = getSite().getPage().getViewReferences();
+						DeviceOptionsViewer view = null;
+						for( int i = 0; i < ref.length; ++i ) {
+							if( ref[i].getId().equals( "DeviceOptionsView" ) &&  !((DeviceOptionsViewer)ref[i].getPart(true)).isFixed() ) {
+								view = (DeviceOptionsViewer)ref[i].getPart( true );
+							}
+						}
+						if (view != null) view.setDevice( ((CommonTableElement)items[0].getData()).getAbstractDevice() );
+					}
+				}
+				
+			}
+			
+		});
+		
+		//----------------------------------
+		
+		menuManager = new MenuManager( "#PopupMenu" );
+		menuManager.setRemoveAllWhenShown( true );
+		menuManager.addMenuListener( new IMenuListener() {
+
+			public void menuAboutToShow( final IMenuManager manager ) {
+				final TableItem[] selectedItems = deviceTableViewer.getTable().getSelection();
+				if( selectedItems != null && selectedItems.length > 0 ) {
+					final Action openAction = new Action() {
+						public void run() {
+							super.run();
+							for( final TableItem item : selectedItems ) {
+								if( item.getData() instanceof CommonTableElement ) {
+									try {
+										final IViewPart view = page.showView( "DeviceOptionsView", ((CommonTableElement)item.getData()).getAbstractDevice().getName(), IWorkbenchPage.VIEW_CREATE );
+										((DeviceOptionsViewer)view).setDevice( ((CommonTableElement)item.getData()).getAbstractDevice() );
+										((DeviceOptionsViewer)view).setFixed( true );
+									} catch (PartInitException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+								
+							}
+						}
+					};
+					openAction.setText( "Open in seperate options window" );
+					manager.add( openAction );
+				}
+				
+			}
+			
+		});
+		
+		contextMenu = menuManager.createContextMenu( this.deviceTableViewer.getTable() );
+		this.deviceTableViewer.getTable().setMenu( contextMenu );
+		
+		this.deviceTableViewer.getTable().addSelectionListener( new SelectionListener() {
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				TableItem[] items = deviceTableViewer.getTable().getSelection();
+				if( items.length > 0 ) {
+					if( items[0].getData() instanceof CommonTableElement ) {
+						IViewReference[] ref = getSite().getPage().getViewReferences();
+						DeviceOptionsViewer view = null;
+						for( int i = 0; i < ref.length; ++i ) {
+							if( ref[i].getId().equals( "DeviceOptionsView" ) &&  !((DeviceOptionsViewer)ref[i].getPart(true)).isFixed() ) {
+								view = (DeviceOptionsViewer)ref[i].getPart( true );
+							}
+						}
+						if (view != null) view.setDevice( ((CommonTableElement)items[0].getData()).getAbstractDevice() );
+					}
+				}
+				
+			}
+			
+		});
+		
+		//----------------------------------
 	}
 
 	@Override
