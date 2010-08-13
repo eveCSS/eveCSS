@@ -113,29 +113,12 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 			}
 
 			public void widgetSelected( final SelectionEvent e ) {
-				IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
-				
-				MotorAxisView motorAxisView = null;
-				for (int i = 0; i < ref.length; ++i) {
-					if (ref[i].getId().equals(MotorAxisView.ID)) {
-						motorAxisView = (MotorAxisView) ref[i].getPart(false);
-					}
-				}
-				if( motorAxisView != null ) {
-					final String axisName = tableViewer.getTable().getSelection()[0].getText( 0 );
-					Axis[] axis = scanModul.getAxis();
-					for( int i = 0; i < axis.length; ++i ) {
-						if( axis[i].getMotorAxis().getFullIdentifyer().equals( axisName ) ) {
-							double stepamount = -1.0;
-							
-							for( int j = 0; j < axis.length; ++j ) {
-								if( axis[j].isMainAxis() ) {
-									stepamount = axis[j].getStepCount();
-									break;
-								}
-							}
-							motorAxisView.setAxis( axis[i], stepamount, scanModul );
-						}
+
+				final String axisName = tableViewer.getTable().getSelection()[0].getText( 0 );
+				Axis[] axis = scanModul.getAxis();
+				for( int i = 0; i < axis.length; ++i ) {
+					if( axis[i].getMotorAxis().getFullIdentifyer().equals( axisName ) ) {
+						setMotorAxisView(axis[i]);
 					}
 				}
 			}
@@ -163,15 +146,13 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 
 			public void widgetSelected(SelectionEvent e) {
 				if( !motorAxisCombo.getText().equals( "" ) ) {
-					MotorAxis motorAxis = (MotorAxis) Activator
-					.getDefault().getMeasuringStation()
-					.getAbstractDeviceByFullIdentifyer(
-							motorAxisCombo.getText());
+					MotorAxis motorAxis = (MotorAxis) Activator.getDefault().getMeasuringStation()
+						.getAbstractDeviceByFullIdentifyer(motorAxisCombo.getText());
 					
 					Axis axis = new Axis( scanModul );
 					axis.setMotorAxis(motorAxis);
 					scanModul.add(axis);
-
+					setMotorAxisView(axis);
 					// Table Eintrag wird aus der Combo-Box entfernt
 					motorAxisCombo.remove(motorAxisCombo.getText());
 					tableViewer.refresh();
@@ -206,6 +187,7 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 										Axis a = new Axis( scanModul );
 										a.setMotorAxis( ma );
 										scanModul.add( a );
+										setMotorAxisView(a);
 										// Table Eintrag wird aus der Combo-Box entfernt
 										motorAxisCombo.remove(ma.getFullIdentifyer());
 										tableViewer.refresh();
@@ -227,6 +209,7 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 									Axis a = new Axis( scanModul );
 									a.setMotorAxis( ma );
 									scanModul.add( a );
+									setMotorAxisView(a);
 									// Table Eintrag wird aus der Combo-Box entfernt
 									motorAxisCombo.remove(ma.getFullIdentifyer());
 									tableViewer.refresh();
@@ -258,6 +241,7 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 										Axis a = new Axis( scanModul );
 										a.setMotorAxis( ma );
 										scanModul.add( a );
+										setMotorAxisView(a);
 										// Table Eintrag wird aus der Combo-Box entfernt
 										motorAxisCombo.remove(ma.getFullIdentifyer());
 										tableViewer.refresh();
@@ -325,6 +309,28 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 		    Menu menu = manager.createContextMenu( this.tableViewer.getControl() );
 		    this.tableViewer.getControl().setMenu( menu );
 		    manager.add( deleteAction );
+	}
+
+	public void setMotorAxisView( Axis ansicht) {
+		// MotorAxisView wird automatisch auf neue Achse gesetzt
+		IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
+		MotorAxisView motorAxisView = null;
+		for (int i = 0; i < ref.length; ++i) {
+			if (ref[i].getId().equals(MotorAxisView.ID)) {
+				motorAxisView = (MotorAxisView) ref[i].getPart(false);
+			}
+		}
+		if( motorAxisView != null ) {
+			Axis[] axis = scanModul.getAxis();
+			double stepamount = -1.0;
+			for( int j = 0; j < axis.length; ++j ) {
+				if( axis[j].isMainAxis() ) {
+					stepamount = axis[j].getStepCount();
+					break;
+				}
+			}
+			motorAxisView.setAxis( ansicht, stepamount, scanModul );
+		}
 	}
 	
 	public ScanModul getScanModul() {

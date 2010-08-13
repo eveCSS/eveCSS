@@ -50,6 +50,7 @@ public class Activator extends AbstractUIPlugin {
 		
 		if( !measuringStationDescription.equals( "" ) ) {
 			final File measuringStationDescriptionFile = new File( measuringStationDescription );
+			if( this.schemaFile.exists()) {
 			if( measuringStationDescriptionFile.exists() ) {
 				try {
 					final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader( this.schemaFile );
@@ -60,6 +61,9 @@ public class Activator extends AbstractUIPlugin {
 				}
 			} else {
 				this.measuringStation = null;
+			}
+			} else {
+				this.schemaFile = null;
 			}
 		}
 	}

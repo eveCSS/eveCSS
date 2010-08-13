@@ -330,7 +330,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 			this.startCombo.setText( this.axis.getStart()!=null?this.axis.getStart():"" );
 			this.stopCombo.setText( this.axis.getStop()!=null?this.axis.getStop():"" );
 			this.stepwidthText.setText( this.axis.getStepwidth()!=null?this.axis.getStepwidth():"" );
-			
+
 			if( stepamount != -1.0 && !axis.isMainAxis() ) {
 				this.stepamountText.setText( "" + stepamount );
 			} else {

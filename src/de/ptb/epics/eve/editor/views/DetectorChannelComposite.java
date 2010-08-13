@@ -32,6 +32,7 @@ import org.eclipse.ui.PlatformUI;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
@@ -105,22 +106,12 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 			}
 
 			public void widgetSelected( final SelectionEvent e ) {
-				IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
-				
-				DetectorChannelView detectorChannelView = null;
-				for (int i = 0; i < ref.length; ++i) {
-					if (ref[i].getId().equals(DetectorChannelView.ID)) {
-						detectorChannelView = (DetectorChannelView) ref[i]
-								.getPart(false);
-					}
-				}
-				if( detectorChannelView != null ) {
-					final String channelName = tableViewer.getTable().getSelection()[0].getText( 0 );
-					Channel[] channels = scanModul.getChannels();
-					for( int i = 0; i < channels.length; ++i ) {
-						if( channels[i].getDetectorChannel().getFullIdentifyer().equals( channelName ) ) {
-							detectorChannelView.setChannel( channels[i] );
-						}
+
+				final String channelName = tableViewer.getTable().getSelection()[0].getText( 0 );
+				Channel[] channels = scanModul.getChannels();
+				for( int i = 0; i < channels.length; ++i ) {
+					if( channels[i].getDetectorChannel().getFullIdentifyer().equals( channelName ) ) {
+						setDetectorChannelView(channels[i]);
 					}
 				}
 			}
@@ -164,6 +155,7 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 										Channel c = new Channel( scanModul );
 										c.setDetectorChannel( dc );
 										scanModul.add( c );
+										setDetectorChannelView(c);
 										// Table Eintrag wird aus der Combo-Box entfernt
 										detectorChannelCombo.remove(dc.getFullIdentifyer());
 										tableViewer.refresh();
@@ -187,6 +179,7 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 									Channel c = new Channel( scanModul );
 									c.setDetectorChannel( dc );
 									scanModul.add( c );
+									setDetectorChannelView(c);
 									// Table Eintrag wird aus der Combo-Box entfernt
 									detectorChannelCombo.remove(dc.getFullIdentifyer());
 									tableViewer.refresh();
@@ -225,6 +218,7 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 										Channel c = new Channel( scanModul );
 										c.setDetectorChannel( dc );
 										scanModul.add( c );
+										setDetectorChannelView(c);
 										// Table Eintrag wird aus der Combo-Box entfernt
 										detectorChannelCombo.remove(dc.getFullIdentifyer());
 										tableViewer.refresh();
@@ -265,15 +259,13 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 
 			public void widgetSelected(SelectionEvent e) {
 				if( !detectorChannelCombo.getText().equals( "" ) ) {
-					DetectorChannel detectorChannel = (DetectorChannel) Activator
-					.getDefault().getMeasuringStation()
-					.getAbstractDeviceByFullIdentifyer(
-							detectorChannelCombo.getText());
+					DetectorChannel detectorChannel = (DetectorChannel) Activator.getDefault().getMeasuringStation()
+						.getAbstractDeviceByFullIdentifyer(detectorChannelCombo.getText());
 
 					Channel channel = new Channel( scanModul );
 					channel.setDetectorChannel(detectorChannel);
 					scanModul.add(channel);
-
+					setDetectorChannelView(channel);
 					// Table Eintrag wird aus der Combo-Box entfernt
 					detectorChannelCombo.remove(detectorChannelCombo.getText());
 					tableViewer.refresh();
@@ -324,6 +316,20 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 		    Menu menu = manager.createContextMenu( this.tableViewer.getControl() );
 		    this.tableViewer.getControl().setMenu( menu );
 		    manager.add( deleteAction );
+	}
+
+	public void setDetectorChannelView( Channel ansicht) {
+		// DetectorChannelView wird automatisch auf neuen Channel gesetzt
+		IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
+		DetectorChannelView detectorChannelView = null;
+		for (int i = 0; i < ref.length; ++i) {
+			if (ref[i].getId().equals(DetectorChannelView.ID)) {
+				detectorChannelView = (DetectorChannelView) ref[i].getPart(false);
+			}
+		}
+		if( detectorChannelView != null ) {
+			detectorChannelView.setChannel( ansicht );
+		}
 	}
 	
 	public ScanModul getScanModul() {

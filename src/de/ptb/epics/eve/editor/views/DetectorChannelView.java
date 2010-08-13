@@ -132,9 +132,6 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		});
 
 		this.averageErrorLabel = new Label( this.top, SWT.NONE );
-//		gridData = new GridData();
-//		gridData.horizontalAlignment = GridData.FILL;
-//		this.averageErrorLabel.setLayoutData( gridData );
 		this.averageErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
 		
 		this.maxDeviationLabel = new Label( this.top, SWT.NONE );
@@ -175,6 +172,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		
 		this.minimumLabel = new Label( this.top, SWT.NONE );
 		this.minimumLabel.setText( "Minumum:" );
+		this.minimumLabel.setToolTipText("for values < minimum no deviation check");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.minimumLabel.setLayoutData( gridData );
@@ -211,6 +209,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		
 		this.maxAttemptsLabel = new Label( this.top, SWT.NONE );
 		this.maxAttemptsLabel.setText( "Max. Attempts:" );
+		this.maxAttemptsLabel.setToolTipText("Maximum attemps to calculate deviation:" );
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.maxAttemptsLabel.setLayoutData( gridData );
@@ -247,6 +246,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		
 		this.confirmTriggerManualCheckBox = new Button( this.top, SWT.CHECK );
 		this.confirmTriggerManualCheckBox.setText( "Confirm Trigger manual" );
+		this.confirmTriggerManualCheckBox.setToolTipText("Mark to ask before this channel");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;
@@ -298,6 +298,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 
 		this.detectorReadyEventCheckBox = new Button( this.eventComposite, SWT.CHECK );
 		this.detectorReadyEventCheckBox.setText( "Send Detector Ready Event" );
+		this.detectorReadyEventCheckBox.setToolTipText( "Mark to send detector ready event if channel is ready" );
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.detectorReadyEventCheckBox.setLayoutData( gridData );
@@ -350,6 +351,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		 
 		this.redoEventTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
 		this.redoEventTabItem.setText( "Redo" );
+		this.redoEventTabItem.setToolTipText("Repeat the current reading of the channel, if redo event occurs");
 		this.redoEventTabItem.setControl(redoEventComposite);
 		
 		this.averageText.setEnabled( false );

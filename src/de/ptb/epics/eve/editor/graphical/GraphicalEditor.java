@@ -38,6 +38,7 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.EditorPart;
 import org.xml.sax.SAXException;
 
+import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Connector;
@@ -355,6 +356,11 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 						newScanModul.setName( "New Scan Modul" );
 						newScanModul.setX( scanModul.getX() + 130 );
 						newScanModul.setY( scanModul.getY() );
+						// Voreinstellungen für das neue Scan Modul
+						newScanModul.setTriggerdelay(0);
+						newScanModul.setSettletime(0);
+						newScanModul.setSaveAxisPositions(SaveAxisPositionsTypes.NEVER);
+						
 						Connector connector = new Connector();
 						connector.setParentScanModul( scanModul );
 						connector.setChildScanModul( newScanModul );
@@ -385,6 +391,11 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 						} while( true );
 						ScanModul newScanModul = new ScanModul( newId );
 						newScanModul.setName( "New Scan Modul" );
+						// Voreinstellungen für das neue Scan Modul
+						newScanModul.setTriggerdelay(0);
+						newScanModul.setSettletime(0);
+						newScanModul.setSaveAxisPositions(SaveAxisPositionsTypes.NEVER);
+						
 						Connector connector = new Connector();
 						connector.setParentEvent( startEvent );
 						connector.setChildScanModul( newScanModul );
@@ -441,6 +452,11 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					newScanModul.setName( "New Scan Modul" );
 					newScanModul.setX( scanModul.getX() + 130 );
 					newScanModul.setY( scanModul.getY() + 100 );
+					// Voreinstellungen für das neue Scan Modul
+					newScanModul.setTriggerdelay(0);
+					newScanModul.setSettletime(0);
+					newScanModul.setSaveAxisPositions(SaveAxisPositionsTypes.NEVER);
+					
 					Connector connector = new Connector();
 					connector.setParentScanModul( scanModul );
 					connector.setChildScanModul( newScanModul );

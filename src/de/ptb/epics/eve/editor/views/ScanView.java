@@ -7,6 +7,7 @@
  *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -122,7 +123,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			errorLabel.setText( "No Measuring Station has been loaded. Please check Preferences!" );
 			return;
 		}
-		
+
 		this.top = new Composite(parent, SWT.NONE);
 		//this.top.setLayout( new FillLayout() );
 		this.top.setLayout( new GridLayout() );
@@ -176,12 +177,37 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			}
 
 			public void mouseDown( final MouseEvent e ) {
-				Shell shell = getSite().getShell();
-				String name = new FileDialog( shell, SWT.OPEN ).open();
+
+				int lastSeperatorIndex;
+				final String filePath;
 				
-				if( name != null ) {
-				      filenameInput.setText( name );
+				if (currentChain.getSaveFilename() != null) {
+					// als filePath wird das vorhandene Verzeichnis gesetzt
+					lastSeperatorIndex = currentChain.getSaveFilename().lastIndexOf( File.separatorChar );
+					filePath = currentChain.getSaveFilename().substring( 0, lastSeperatorIndex + 1 );
 				}
+				else {
+					// als filePath wird das Messplatzverzeichnis gesetzt
+					lastSeperatorIndex = Activator.getDefault().getMeasuringStation().getLoadedFileName().lastIndexOf( File.separatorChar );
+					filePath = Activator.getDefault().getMeasuringStation().getLoadedFileName().substring( 0, lastSeperatorIndex + 1 ) + "daten/";
+				}
+				
+				Shell shell = getSite().getShell();
+
+				FileDialog fileWindow = new FileDialog( shell, SWT.OPEN );
+				fileWindow.setFilterPath(filePath);
+				String name = fileWindow.open();
+
+				if( name != null ) {
+					// eventuel vorhandener Datentyp wird weggenommen
+					final int firstPoint = name.indexOf(".");
+
+					if (firstPoint > 0)
+						filenameInput.setText( name.substring(0, firstPoint) );
+					else
+						filenameInput.setText( name );
+				}
+
 				
 			}
 
@@ -231,6 +257,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		// Save Scan Description Box / Labels
 		this.saveScanDescriptionCheckBox = new Button( this.savingComposite, SWT.CHECK );
 		this.saveScanDescriptionCheckBox.setText( "Save Scan-Description" );
+		this.saveScanDescriptionCheckBox.setToolTipText( "Mark to save scan description into datafile" );
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		this.saveScanDescriptionCheckBox.setLayoutData( gridData );
@@ -241,6 +268,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		// Confirm Save Box / Labels
 		this.manualSaveCheckBox = new Button( this.savingComposite, SWT.CHECK );
 		this.manualSaveCheckBox.setText( "Confirm Save" );
+		this.manualSaveCheckBox.setToolTipText( "Mark to ask before save datafile" );
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		this.manualSaveCheckBox.setLayoutData( gridData );
@@ -392,15 +420,19 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		this.pauseTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
 		this.pauseTabItem.setText( "Pause" );
 		this.pauseTabItem.setControl(pauseEventComposite);
+		this.pauseTabItem.setToolTipText("Event to pause an resume this scan");
 		this.redoTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
 		this.redoTabItem.setText( "Redo" );
 		this.redoTabItem.setControl(redoEventComposite);
+		this.redoTabItem.setToolTipText("Repeat the current scan point, if redo event occurs");
 		this.breakTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
 		this.breakTabItem.setText( "Break" );
 		this.breakTabItem.setControl(breakEventComposite);
+		this.breakTabItem.setToolTipText("Finish the current scan module and continue with next");
 		this.stopTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
 		this.stopTabItem.setText( "Stop" );
 		this.stopTabItem.setControl(stopEventComposite);
+		this.stopTabItem.setToolTipText("Stop this scan");
 		
 	}
 

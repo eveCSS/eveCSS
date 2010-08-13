@@ -212,6 +212,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		// Trigger Delay
 		this.triggerDelayLabel = new Label(this.generalComposite, SWT.NONE);
 		this.triggerDelayLabel.setText("Trigger delay:");
+		this.triggerDelayLabel.setToolTipText("Delay time after positioning");
 		this.triggerDelayText = new Text(this.generalComposite, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -232,6 +233,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		// Settle Time
 		this.settleTimeLabel = new Label(this.generalComposite, SWT.NONE);
 		this.settleTimeLabel.setText("Settletime:");
+		this.settleTimeLabel.setToolTipText("Delay time after first positioning in the scan module");
 
 		this.settleTimeText = new Text(this.generalComposite, SWT.BORDER);
 		gridData = new GridData();
@@ -256,6 +258,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 
 		this.confirmTriggerCheckBox = new Button(this.generalComposite, SWT.CHECK);
 		this.confirmTriggerCheckBox.setText("Confirm Trigger");
+		this.confirmTriggerCheckBox.setToolTipText("Mark to ask before trigger");
 		this.confirmTriggerCheckBox.setLayoutData(gridData);
 
 		// Save Motor Positions
@@ -265,14 +268,12 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		gridData.horizontalSpan = 1;
 		this.saveMotorpositionsLabel.setLayoutData(gridData);
 
-		this.saveMotorpositionsCombo = new Combo(this.generalComposite, SWT.READ_ONLY);
+		this.saveMotorpositionsCombo = new Combo(this.generalComposite, SWT.NONE);
 		this.saveMotorpositionsCombo.setItems(new String[] { "never", "before",
 				"after", "both" });
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		this.saveMotorpositionsCombo.setLayoutData(gridData);
-// TODO: Die Änderungen von MotorPositionsCombo werden nicht erkannt (Zum Abspeichern)
-// bei createListener oder appendListener nachsehen was da fehlt! (Hartmut 16.4.10)
 		
 		this.item0 = new ExpandItem(this.bar, SWT.NONE, 0);
 		item0.setText("General");
@@ -421,7 +422,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		this.redoEventsTabItem.setControl(redoEventComposite);
 		this.breakEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
 		this.breakEventsTabItem.setText(" Break ");
-		this.breakEventsTabItem.setToolTipText("Finish the current scan module and continue with next");
+		this.breakEventsTabItem.setToolTipText("Finish this scan module and continue with next");
 		this.breakEventsTabItem.setControl(breakEventComposite);
 		this.triggerEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
 		this.triggerEventsTabItem.setText(" Trigger ");
@@ -528,7 +529,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	}
 
 	public void setCurrentScanModul(ScanModul currentScanModul) {
-		System.out.println( "Setting current Scanmodule" );
 		if( this.currentScanModul != null ) {
 			this.currentScanModul.removeModelUpdateListener( this );
 		}
@@ -647,8 +647,10 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 					settleTimeErrorLabel.setToolTipText( null );
 				}
 				
-				this.confirmTriggerCheckBox.setSelection(this.currentScanModul
-						.isTriggerconfirm());
+				this.confirmTriggerCheckBox.setSelection(this.currentScanModul.isTriggerconfirm());
+
+				this.saveMotorpositionsCombo.setText(this.currentScanModul.getSaveAxisPositions().name());
+				
 				this.triggerEventComposite
 						.setControlEventManager(this.currentScanModul
 								.getTriggerControlEventManager());
@@ -774,8 +776,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		this.settleTimeText.addModifyListener(this.modifyListener);
 		this.confirmTriggerCheckBox
 				.addSelectionListener(this.selectionListener);
-//TODO Neuer Listener, funktioniert aber noch nicht so wie er soll, das Save-Zeichen
-		// für das XML-File wird nicht erzeugt (Hartmut 16.4.10)
 		this.saveMotorpositionsCombo.addModifyListener(this.modifyListener);
 		this.addPlotWindowButton.addSelectionListener(this.selectionListener);
 
@@ -839,15 +839,10 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 							}
 						}
 					} else if (e.widget == saveMotorpositionsCombo) {
-						currentScanModul
-								.setSaveAxisPositions(SaveAxisPositionsTypes
-										.stringToType(saveMotorpositionsCombo
-												.getText()));
+						currentScanModul.setSaveAxisPositions(SaveAxisPositionsTypes.stringToType(saveMotorpositionsCombo.getText()));
 					}
-
 				}
 			}
-
 		};
 
 		this.selectionListener = new SelectionListener() {
