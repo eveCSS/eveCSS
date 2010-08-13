@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <version>0.3.8</version>
+    <version>0.3.9</version>
     <plugins>
         <plugin type="position">
             <name>plugin1</name>
@@ -62,8 +62,8 @@
             </channel>
         </detector>
         <detector>
-            <class>Keithley617</class>
-            <name></name>
+            <class></class>
+            <name>Keithley617_test</name>
             <id>K0617:27225</id>
             <unit>
                 <access method="GETCB" transport="ca" type="string">K0617:27225.EGU</access>
@@ -74,16 +74,8 @@
             </trigger>
             <channel>
                 <class></class>
-                <name>Kanal 1</name>
+                <name>Keithley617_test</name>
                 <id>K0617:27225.1</id>
-                <read>
-                    <access method="GETCB" transport="ca" type="double">K0617:27225.VAL</access>
-                </read>
-            </channel>
-             <channel>
-                <class></class>
-                <name></name>
-                <id>K0617:27225.2</id>
                 <read>
                     <access method="GETCB" transport="ca" type="double">K0617:27225.VAL</access>
                 </read>
@@ -331,7 +323,7 @@
 				<goto>
 					<access method="PUTCB" type="string" transport="ca">PPSMC:23715001</access>
 					<!-- falls nur diskrete Positionen erlaubt sind -->
-					<value type="string">10.0,12.0,13.1,14.7,16.8,20.5,23.7,25.1,28.9</value>
+					<value type="string">Hallo,Raus bzw. APM,Ap28,Ap10,Ap5</value>
 				</goto>
 				<position>
 					<access method="GETCB" type="double" transport="ca">PPSMC:23715001.RBV</access>

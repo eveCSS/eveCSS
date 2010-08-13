@@ -5754,7 +5754,7 @@
                 <name>QNIM_Apertur_Bl</name>
                 <id>DiscPosOMS58:21400001</id>
                 <goto>
-                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">OMS58:21400001</access>
+                    <access method="GETPUTCB" transport="ca" type="string" timeout="100.0">OMS58:21400001</access>
                     <value type="string" >Raus bzw. APM,Ap28,Ap10,Ap5</value>
                 </goto>
                 <position>
@@ -6047,8 +6047,8 @@
                 <name>QNIM_Laser_Bl</name>
                 <id>DiscPosOMS58:21400002</id>
                 <goto>
-                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">OMS58:21400002</access>
-                    <value type="string" >1,5.8,6.3,10.4,8.12</value>
+                    <access method="GETPUTCB" transport="ca" type="string" timeout="100.0">OMS58:21400002</access>
+                    <value type="string" >Raus,Laser-Bl</value>
                 </goto>
                 <position>
                     <access method="GETCB" transport="ca" type="double">OMS58:21400002.RBV</access>
@@ -6340,8 +6340,8 @@
                 <name>QNIM_Laser_Sp</name>
                 <id>DiscPosOMS58:21400003</id>
                 <goto>
-                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">OMS58:21400003</access>
-                    <value type="string" >1</value>
+                    <access method="GETPUTCB" transport="ca" type="string" timeout="100.0">OMS58:21400003</access>
+                    <value type="string" >Raus,Laser-Sp</value>
                 </goto>
                 <position>
                     <access method="GETCB" transport="ca" type="double">OMS58:21400003.RBV</access>
@@ -6640,8 +6640,8 @@
                 <name>QNIM_ESP</name>
                 <id>DiscPosOMS58:21401000</id>
                 <goto>
-                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">OMS58:21401000</access>
-                    <value type="string" >1</value>
+                    <access method="GETPUTCB" transport="ca" type="string" timeout="100.0">OMS58:21401000</access>
+                    <value type="string" >ESP O 166 µ,ESP O 251 µ,ESP O 278 µ,ESP O 1500 µ,ESP O 2000 µ,ESP &gt; O 50 µ</value>
                 </goto>
                 <position>
                     <access method="GETCB" transport="ca" type="double">OMS58:21401000.RBV</access>
@@ -6933,8 +6933,8 @@
                 <name>QNIM_ASP</name>
                 <id>DiscPosOMS58:21401001</id>
                 <goto>
-                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">OMS58:21401001</access>
-                    <value type="string" >1</value>
+                    <access method="GETPUTCB" transport="ca" type="string" timeout="100.0">OMS58:21401001</access>
+                    <value type="string" >ASP 96 µ,ASP 264 µ,ASP 498 µ,ASP 971 µ,ASP 1459 µ,ASP 1931 µ,</value>
                 </goto>
                 <position>
                     <access method="GETCB" transport="ca" type="double">OMS58:21401001.RBV</access>
@@ -7226,8 +7226,8 @@
                 <name>QNIM_Filter</name>
                 <id>DiscPosOMS58:21401002</id>
                 <goto>
-                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">OMS58:21401002</access>
-                    <value type="string" >1</value>
+                    <access method="GETPUTCB" transport="ca" type="string" timeout="100.0">OMS58:21401002</access>
+                    <value type="string" >Raus,UG5,GG395,BG12,GG495</value>
                 </goto>
                 <position>
                     <access method="GETCB" transport="ca" type="double">OMS58:21401002.RBV</access>
@@ -7519,8 +7519,8 @@
                 <name>QNIM_Position</name>
                 <id>DiscPosOMS58:21401003</id>
                 <goto>
-                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">OMS58:21401003</access>
-                    <value type="string" >1</value>
+                    <access method="GETPUTCB" transport="ca" type="string" timeout="100.0">OMS58:21401003</access>
+                    <value type="string" >BESSY,D2-Lampe</value>
                 </goto>
                 <position>
                     <access method="GETCB" transport="ca" type="double">OMS58:21401003.RBV</access>
