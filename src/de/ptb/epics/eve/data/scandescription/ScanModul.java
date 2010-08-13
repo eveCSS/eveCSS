@@ -1091,6 +1091,10 @@ public class ScanModul implements IModelUpdateListener, IModelUpdateProvider, IM
 	 */
 	public void setSaveAxisPositions( final SaveAxisPositionsTypes saveAxisPositions ) {
 		this.saveAxisPositions = saveAxisPositions;
+		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
+		while( updateIterator.hasNext() ) {
+			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
+		}
 	}
 
 	@Override

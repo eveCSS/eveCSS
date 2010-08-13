@@ -733,6 +733,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (this.measuringStation.getMotorAxisById(textBuffer.toString()) != null) {
 				// MotorAxis ist am Messplatz vorhanden
 				this.currentAxis.setMotorAxis(this.measuringStation.getMotorAxisById(textBuffer.toString()));
+			} else {
+				System.out.println("Motorachse nicht am Messplatz vorhanden: " + textBuffer.toString());
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_AXISID_READ;
 			break;
@@ -778,10 +780,15 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_CHANNELID_NEXT:
-			this.currentChannel.setDetectorChannel(this.measuringStation.getDetectorChannelById(textBuffer.toString()));
+			if (this.measuringStation.getDetectorChannelById(textBuffer.toString()) != null) {
+				this.currentChannel.setDetectorChannel(this.measuringStation.getDetectorChannelById(textBuffer.toString()));
+				
+			} else {
+				System.out.println("Detectorchannel nicht am Messplatz vorhanden: " + textBuffer.toString());
+			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_CHANNELID_READ;
 			break;
-
+			
 		case CHAIN_SCANMODULE_DETECTOR_AVERAGECOUNT_NEXT:
 			int averageCount = 1;
 			try {

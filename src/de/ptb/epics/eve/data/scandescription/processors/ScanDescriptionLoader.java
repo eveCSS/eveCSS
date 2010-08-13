@@ -57,11 +57,11 @@ public class ScanDescriptionLoader {
 	private final File schemaFile;
 	
 	public ScanDescriptionLoader( final MeasuringStation measuringStation, final File schemaFile ) {
-		if( measuringStation == null ) {
-			throw new IllegalArgumentException( "The parameter 'measuringStation' must not be null!" );
-		}
 		if( schemaFile == null ) {
 			throw new IllegalArgumentException( "The parameter 'schemaFile' must not be null!" );
+		}
+		if( measuringStation == null ) {
+			throw new IllegalArgumentException( "The parameter 'measuringStation' must not be null!" );
 		}
 		this.measuringStation = measuringStation;
 		this.schemaFile = schemaFile;

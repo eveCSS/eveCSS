@@ -269,7 +269,7 @@ public class Axis extends AbstractMainPhaseBehavior {
 		String formattedText = this.getDefaultValue();
 		this.setStart(formattedText);
 		this.setStop(formattedText);
-		this.setStepwidth(formattedText);
+		this.setStepwidth("0");
 		
 		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
 		while( it.hasNext() ) {
