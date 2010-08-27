@@ -181,7 +181,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 				int lastSeperatorIndex;
 				final String filePath;
 				
-				if (currentChain.getSaveFilename() != null) {
+				if ((currentChain.getSaveFilename() != null) && (currentChain.getSaveFilename() != "")) {
 					// als filePath wird das vorhandene Verzeichnis gesetzt
 					lastSeperatorIndex = currentChain.getSaveFilename().lastIndexOf( File.separatorChar );
 					filePath = currentChain.getSaveFilename().substring( 0, lastSeperatorIndex + 1 );
@@ -194,7 +194,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 				
 				Shell shell = getSite().getShell();
 
-				FileDialog fileWindow = new FileDialog( shell, SWT.OPEN );
+				FileDialog fileWindow = new FileDialog( shell, SWT.SAVE );
 				fileWindow.setFilterPath(filePath);
 				String name = fileWindow.open();
 

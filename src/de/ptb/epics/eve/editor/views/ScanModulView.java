@@ -879,7 +879,20 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 							PlotWindow plotWindow = new PlotWindow();
 							plotWindow.setId(newID);
 							currentScanModul.add(plotWindow);
+
 							fillFields();
+							// Das neue Plot-Window wird auch gleich angezeigt
+							IViewReference[] ref = getSite().getPage().getViewReferences();
+							PlotWindowView plotWindowView = null;
+							for (int i = 0; i < ref.length; ++i) {
+								if (ref[i].getId().equals(PlotWindowView.ID)) {
+									plotWindowView = (PlotWindowView) ref[i]
+											.getPart(false);
+								}
+							}
+							if( plotWindowView != null ) {
+								plotWindowView.setPlotWindow( plotWindow );
+							}
 						} else if (e.widget == plotWindowRemoveMenuItem) {
 							TableItem[] selectedItems = plotWindowsTable
 									.getSelection();

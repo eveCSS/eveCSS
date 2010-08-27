@@ -84,7 +84,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		final FileStoreEditorInput fileStoreEditorInput = (FileStoreEditorInput)this.getEditorInput();
 		final File scanDescriptionFile = new File( fileStoreEditorInput.getURI() );
 		
-		
 		try {
 			final FileOutputStream os = new FileOutputStream( scanDescriptionFile );	
 			final MeasuringStation measuringStation = Activator.getDefault().getMeasuringStation();
@@ -102,11 +101,46 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 
 	@Override
 	public void doSaveAs() {
+
+		// als filePath wird das Messplatzverzeichnis gesetzt
+		int lastSeperatorIndex;
+		final String filePath;
+//		int lastSeperatorIndex = Activator.getDefault().getMeasuringStation().getLoadedFileName().lastIndexOf( File.separatorChar );
+//		final String filePath = Activator.getDefault().getMeasuringStation().getLoadedFileName().substring( 0, lastSeperatorIndex + 1 ) + "scan/";
+
+		final FileStoreEditorInput fileStoreEditorInput2 = (FileStoreEditorInput)this.getEditorInput();
+		System.out.println("File automatisch: " + fileStoreEditorInput2.getURI().getRawPath());
+		
+		if (fileStoreEditorInput2.getURI().getRawPath()!= null) {
+			// als filePath wird das Verzeichnis des aktuellen Scans gesetzt
+			lastSeperatorIndex = fileStoreEditorInput2.getURI().getRawPath().lastIndexOf( "/" );
+			filePath = fileStoreEditorInput2.getURI().getRawPath().substring( 0, lastSeperatorIndex + 1 );
+		}
+		else {
+			// als filePath wird das Messplatzverzeichnis gesetzt
+			lastSeperatorIndex = Activator.getDefault().getMeasuringStation().getLoadedFileName().lastIndexOf( File.separatorChar );
+			filePath = Activator.getDefault().getMeasuringStation().getLoadedFileName().substring( 0, lastSeperatorIndex + 1 ) + "scan/";
+		}
+		
 		
 		final FileDialog dialog = new FileDialog( this.getEditorSite().getShell(), SWT.SAVE );
+		dialog.setFilterPath(filePath);
 		final String fileName = dialog.open();
+
+		String fileNameLang = fileName;
 		
-		final File scanDescriptionFile = new File( fileName );
+		if( fileName != null ) {
+			// eventuel vorhandener Datentyp wird weggenommen
+			final int firstPoint = fileName.indexOf(".");
+
+			if (firstPoint > 0)
+				fileNameLang = fileName.substring(0, firstPoint) + ".scml";
+			else
+				fileNameLang = fileName + ".scml";
+		}
+
+		
+		final File scanDescriptionFile = new File( fileNameLang );
 		
 		try {
 			final FileOutputStream os = new FileOutputStream( scanDescriptionFile );	
@@ -114,7 +148,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = new ScanDescriptionSaverToXMLusingXerces( os, measuringStation, this.scanDescription );
 			scanDescriptionSaver.save();
 			
-			final IFileStore fileStore = EFS.getLocalFileSystem().getStore( new Path( fileName ) );
+			final IFileStore fileStore = EFS.getLocalFileSystem().getStore( new Path( fileNameLang ) );
 			final FileStoreEditorInput fileStoreEditorInput = new FileStoreEditorInput( fileStore );
 			this.setInput( fileStoreEditorInput );
 			

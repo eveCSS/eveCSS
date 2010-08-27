@@ -7,6 +7,7 @@
  *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
 
+import java.io.File;
 import java.util.Iterator;
 
 import org.eclipse.swt.layout.GridData;
@@ -31,6 +32,7 @@ import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.editor.Activator;
 
 public class MotorAxisFileComposite extends Composite implements IModelUpdateListener {
 
@@ -71,7 +73,13 @@ public class MotorAxisFileComposite extends Composite implements IModelUpdateLis
 			public void widgetSelected( final SelectionEvent e ) {
 				if( e.widget == searchButton ) {
 					Shell shell = getShell();
-					String name = new FileDialog(shell, SWT.OPEN).open();
+
+					int lastSeperatorIndex = Activator.getDefault().getMeasuringStation().getLoadedFileName().lastIndexOf( File.separatorChar );
+					final String filePath = Activator.getDefault().getMeasuringStation().getLoadedFileName().substring( 0, lastSeperatorIndex + 1 ) + "scan/";
+
+					FileDialog fileWindow = new FileDialog(shell, SWT.SAVE);
+					fileWindow.setFilterPath(filePath);
+					String name = fileWindow.open();
 					
 					if( name == null )
 					      return;
