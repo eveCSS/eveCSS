@@ -12,7 +12,7 @@ import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 
@@ -42,7 +42,7 @@ public class MeasuringStationTreeViewLabelProvider implements ILabelProvider {
 	}
 
 	public String getText( final Object element ) {
-		if( element instanceof MeasuringStation ) {
+		if( element instanceof IMeasuringStation ) {
 			return "Measuring Station";
 		}
 		else if( element instanceof List<?> ) {

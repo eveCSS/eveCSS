@@ -49,11 +49,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Detector;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.Device;
@@ -148,7 +148,7 @@ public class DeviceInspectorViewer extends ViewPart {
 						for( int i = 0; i < ref.length; ++i ) {
 							if( ref[i].getId().equals( comp[0] ) ) {
 								view = (MeasuringStationView)ref[i].getPart( false );
-								final MeasuringStation measuringStation = view.getMeasuringStation();
+								final IMeasuringStation measuringStation = view.getMeasuringStation();
 								if (measuringStation.getClassNameList().contains( comp[1] ) ) {
 									for (AbstractDevice absdevice : measuringStation.getDeviceList(comp[1])) {
 										if (absdevice instanceof MotorAxis ) addMotorAxisEntry((MotorAxis) absdevice );

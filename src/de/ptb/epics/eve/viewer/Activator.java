@@ -23,7 +23,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.ecp1.client.ECP1Client;
@@ -44,7 +45,7 @@ public class Activator extends AbstractUIPlugin {
 	//private final MeasurementDataDispatcher measurementDataDispatcher;
 	private final EngineErrorReader engineErrorReader;
 	private final ChainStatusAnalyzer chainStatusAnalyzer;
-	private MeasuringStation measuringStation;
+	private IMeasuringStation measuringStation;
 	private ColorRegistry colorreg;
 	private FontRegistry fontreg;
 	
@@ -153,7 +154,7 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	public MeasuringStation getMeasuringStation() {
+	public IMeasuringStation getMeasuringStation() {
 		return this.measuringStation;
 	}
 

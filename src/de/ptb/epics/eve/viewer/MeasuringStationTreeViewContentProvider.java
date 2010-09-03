@@ -10,7 +10,7 @@ import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Event;
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
@@ -19,7 +19,7 @@ import de.ptb.epics.eve.data.measuringstation.Selections;
 
 public class MeasuringStationTreeViewContentProvider implements ITreeContentProvider {
 
-	private MeasuringStation measuringStation;
+	private IMeasuringStation measuringStation;
 	
 	private List<Device> devices;
 	
@@ -33,7 +33,7 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 	private List<DetectorChannel> detectorChannels;
 
 	public Object[] getChildren( final Object parentElement ) {
-		if( parentElement instanceof MeasuringStation ) {
+		if( parentElement instanceof IMeasuringStation ) {
 //			final MeasuringStation measuringStation = (MeasuringStation)parentElement;
 //			List<Object> returnList = new ArrayList<Object>();
 //			
@@ -136,8 +136,8 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 	}
 
 	public boolean hasChildren( final Object element ) {
-		if( element instanceof MeasuringStation ) {
-			final MeasuringStation measuringStation = (MeasuringStation)element;
+		if( element instanceof IMeasuringStation ) {
+			final IMeasuringStation measuringStation = (IMeasuringStation)element;
 			return measuringStation.getMotors().size() > 0 || measuringStation.getDetectors().size() > 0 || measuringStation.getDevices().size() > 0 || measuringStation.getEvents().size() > 0; 
 		} else if( element instanceof List ) {
 			return (((List)element).size() > 0);
@@ -164,8 +164,8 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 	}
 
 	public Object[] getElements( final Object inputElement ) {
-		if( inputElement instanceof MeasuringStation ) {
-			final MeasuringStation measuringStation = (MeasuringStation)inputElement;
+		if( inputElement instanceof IMeasuringStation ) {
+			final IMeasuringStation measuringStation = (IMeasuringStation)inputElement;
 			List<Object> returnList = new ArrayList<Object>();
 			if (measuringStation.getClassNameList().size() > 0){
 				returnList.addAll( measuringStation.getClassNameList() );
@@ -221,7 +221,7 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 	}
 
 	public void inputChanged( final Viewer viewer, final Object oldInput, final Object newInput ) {
-		this.measuringStation = (MeasuringStation)newInput;
+		this.measuringStation = (IMeasuringStation)newInput;
 
 	}
 

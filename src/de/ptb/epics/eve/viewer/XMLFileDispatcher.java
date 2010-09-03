@@ -11,7 +11,7 @@ import org.eclipse.ui.PlatformUI;
 import org.xml.sax.SAXException;
 
 
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
@@ -35,7 +35,7 @@ public class XMLFileDispatcher implements INewXMLFileListener {
 			final File schemaFile = new File( schemaFileLocation );
 			
 			final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader( schemaFile );
-			final MeasuringStation measuringStation = measuringStationLoader.loadFromByteArray( xmlData );
+			final IMeasuringStation measuringStation = measuringStationLoader.loadFromByteArray( xmlData );
 			Activator.getDefault().getWorkbench().getDisplay().syncExec( new Runnable() {
 
 				public void run() {

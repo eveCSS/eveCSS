@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.xml.sax.SAXException;
 
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.MeasuringStationView;
@@ -48,7 +48,7 @@ public class LoadMeasuringStationAction extends Action implements IWorkbenchActi
 		final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader( schemaFile );
 		try {
 			measuringStationLoader.load( file );
-			final MeasuringStation measuringStation = measuringStationLoader.getMeasuringStation();
+			final IMeasuringStation measuringStation = measuringStationLoader.getMeasuringStation();
 			this.measuringStationView.setMeasuringStation( measuringStation );
 		} catch( final ParserConfigurationException e ) {
 			// TODO Auto-generated catch block

@@ -30,7 +30,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.actions.LoadMeasuringStationAction;
@@ -45,7 +45,7 @@ public final class MeasuringStationView extends ViewPart {
 
 	public static final String ID = "MeasuringStationView"; // TODO Needs to be whatever is mentioned in plugin.xml
 
-	private MeasuringStation measuringStation;
+	private IMeasuringStation measuringStation;
 	
 	private TreeViewer treeViewer;
 	
@@ -226,7 +226,7 @@ public final class MeasuringStationView extends ViewPart {
 		
 	}
 
-	public void setMeasuringStation( final MeasuringStation measuringStation ) {
+	public void setMeasuringStation( final IMeasuringStation measuringStation ) {
 		Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.VIEWER, MessageTypes.INFO, "Got new measuring station description." ) );
 		Activator.getDefault().getChainStatusAnalyzer().reset();
 		this.measuringStation = measuringStation;
@@ -235,7 +235,7 @@ public final class MeasuringStationView extends ViewPart {
 		this.treeViewer.expandAll();
 	}
 	
-	public MeasuringStation getMeasuringStation() {
+	public IMeasuringStation getMeasuringStation() {
 		return this.measuringStation;
 	}
 
