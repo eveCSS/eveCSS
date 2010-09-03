@@ -99,4 +99,44 @@ public abstract class AbstractTypeValueAccessContainer {
 		this.dataType = dataType;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((access == null) ? 0 : access.hashCode());
+		result = prime * result
+				+ ((dataType == null) ? 0 : dataType.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals( final Object obj ) {
+		if( this == obj ) {
+			return true;
+		}
+		if( obj == null ) {
+			return false;
+		}
+		if( getClass() != obj.getClass() ) {
+			return false;
+		}
+		final AbstractTypeValueAccessContainer other = (AbstractTypeValueAccessContainer)obj;
+		if( access == null ) {
+			if( other.access != null ) {
+				return false;
+			}
+		} else if( !access.equals( other.access ) ) {
+			return false;
+		}
+		if( dataType == null ) {
+			if( other.dataType != null ) {
+				return false;
+			}
+		} else if( !dataType.equals( other.dataType ) ) {
+			return false;
+		}
+		return true;
+	}
+
+	
 }

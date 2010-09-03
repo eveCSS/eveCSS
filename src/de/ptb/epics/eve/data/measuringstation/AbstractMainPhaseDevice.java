@@ -123,5 +123,43 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 		this.className = className;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((className == null) ? 0 : className.hashCode());
+		result = prime * result + ((trigger == null) ? 0 : trigger.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals( final Object obj ) {
+		if( this == obj ) {
+			return true;
+		}
+		if( !super.equals( obj ) ) {
+			return false;
+		}
+		if( getClass() != obj.getClass() ) {
+			return false;
+		}
+		final AbstractMainPhaseDevice other = (AbstractMainPhaseDevice)obj;
+		if( className == null ) {
+			if( other.className != null ) {
+				return false;
+			}
+		} else if( !className.equals( other.className ) ) {
+			return false;
+		}
+		if( trigger == null ) {
+			if( other.trigger != null ) {
+				return false;
+			}
+		} else if ( !trigger.equals( other.trigger ) ) {
+			return false;
+		}
+		return true;
+	}
+
 	
 }

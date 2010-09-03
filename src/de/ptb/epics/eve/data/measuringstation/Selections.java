@@ -7,6 +7,8 @@
  *******************************************************************************/
 package de.ptb.epics.eve.data.measuringstation;
 
+import java.util.Arrays;
+
 
 /**
  * This class is holding all selections of the measuring station. The selections
@@ -132,5 +134,48 @@ public class Selections {
 	public void setStepfunctions( final String[] stepfunctions) {
 		this.stepfunctions = stepfunctions;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(colors);
+		result = prime * result + Arrays.hashCode(linestyles);
+		result = prime * result + Arrays.hashCode(markstyles);
+		result = prime * result + Arrays.hashCode(smtypes);
+		result = prime * result + Arrays.hashCode(stepfunctions);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Selections other = (Selections) obj;
+		if (!Arrays.equals(colors, other.colors)) {
+			return false;
+		}
+		if (!Arrays.equals(linestyles, other.linestyles)) {
+			return false;
+		}
+		if (!Arrays.equals(markstyles, other.markstyles)) {
+			return false;
+		}
+		if (!Arrays.equals(smtypes, other.smtypes)) {
+			return false;
+		}
+		if (!Arrays.equals(stepfunctions, other.stepfunctions)) {
+			return false;
+		}
+		return true;
+	}
+	
 	
 }

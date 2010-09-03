@@ -135,4 +135,53 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 		return this.value!=null?this.value.isDiscrete():false;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((className == null) ? 0 : className.hashCode());
+		result = prime * result
+				+ ((displaygroup == null) ? 0 : displaygroup.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals( final Object obj ) {
+		if( this == obj ) {
+			return true;
+		}
+		if( !super.equals( obj ) ) {
+			return false;
+		}
+		if( getClass() != obj.getClass() ) {
+			return false;
+		}
+		final AbstractPrePostscanDevice other = (AbstractPrePostscanDevice)obj;
+		if( className == null ) {
+			if( other.className != null ) {
+				return false;
+			}
+		} else if( !className.equals( other.className ) ) {
+			return false;
+		}
+		if( displaygroup == null ) {
+			if( other.displaygroup != null ) {
+				return false;
+			}
+		} else if( !displaygroup.equals( other.displaygroup ) ) {
+			return false;
+		}
+		if( value == null ) {
+			if( other.value != null ) {
+				return false;
+			}
+		} else if( !value.equals( other.value ) ) {
+			return false;
+		}
+		return true;
+	}
+
+	
 }

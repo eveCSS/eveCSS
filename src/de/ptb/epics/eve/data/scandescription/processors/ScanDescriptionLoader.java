@@ -25,7 +25,7 @@ import javax.xml.validation.SchemaFactory;
 
 import org.xml.sax.SAXException;
 
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 
 /**
@@ -44,7 +44,7 @@ public class ScanDescriptionLoader {
 	/**
 	 * The measuring station that contains the devices in the scan description.
 	 */
-	private final MeasuringStation measuringStation;
+	private final IMeasuringStation measuringStation;
 	
 	/**
 	 * The loaded scan description.
@@ -56,7 +56,7 @@ public class ScanDescriptionLoader {
 	 */
 	private final File schemaFile;
 	
-	public ScanDescriptionLoader( final MeasuringStation measuringStation, final File schemaFile ) {
+	public ScanDescriptionLoader( final IMeasuringStation measuringStation, final File schemaFile ) {
 		if( schemaFile == null ) {
 			throw new IllegalArgumentException( "The parameter 'schemaFile' must not be null!" );
 		}
@@ -154,7 +154,7 @@ public class ScanDescriptionLoader {
 	 * 
 	 * @return The currently used measuring station.
 	 */
-	public MeasuringStation getMeasuringStation() {
+	public IMeasuringStation getMeasuringStation() {
 		return measuringStation;
 	}
 

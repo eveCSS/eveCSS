@@ -15,7 +15,7 @@ import java.util.Map;
 
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
@@ -71,14 +71,14 @@ public class ScanDescription implements IModelUpdateProvider, IModelUpdateListen
 	/**
 	 * The measuring station that is used by this scan description.
 	 */
-	private final MeasuringStation measuringStation;
+	private final IMeasuringStation measuringStation;
 	
 	/**
 	 * This constrcutor constructs a new scan description and adds the S0 start event
 	 * to it's own events list.
 	 *
 	 */
-	public ScanDescription( final MeasuringStation measuringStation ) {
+	public ScanDescription( final IMeasuringStation measuringStation ) {
 		super();
 		this.chains = new ArrayList<Chain>();
 		//this.events = new ArrayList<Event>();
@@ -285,7 +285,7 @@ public class ScanDescription implements IModelUpdateProvider, IModelUpdateListen
 	 * 
 	 * @return The used measuring station. Never returns 'null'.
 	 */
-	public MeasuringStation getMeasuringStation() {
+	public IMeasuringStation getMeasuringStation() {
 		return this.measuringStation;
 	}
 	

@@ -280,4 +280,77 @@ public class Access {
 			return true;
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + count;
+		result = prime * result + ((method == null) ? 0 : method.hashCode());
+		result = prime * result + (monitor ? 1231 : 1237);
+		long temp;
+		temp = Double.doubleToLongBits(timeout);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result
+				+ ((transport == null) ? 0 : transport.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result
+				+ ((variableID == null) ? 0 : variableID.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals( final Object obj ) {
+		if( this == obj ) {
+			return true;
+		}
+		if( obj == null ) {
+			return false;
+		}
+		if( getClass() != obj.getClass() ) {
+			return false;
+		}
+		final Access other = (Access)obj;
+		if( count != other.count ) {
+			return false;
+		}
+		if( method == null ) {
+			if( other.method != null ) {
+				return false;
+			}
+		} else if( !method.equals( other.method ) ) {
+			return false;
+		}
+		if( monitor != other.monitor ) {
+			return false;
+		}
+		if( Double.doubleToLongBits( timeout ) != Double
+				.doubleToLongBits(other.timeout ) ) {
+			return false;
+		}
+		if( transport == null ) {
+			if( other.transport != null ) {
+				return false;
+			}
+		} else if( !transport.equals(other.transport ) ) {
+			return false;
+		}
+		if( type == null ) {
+			if( other.type != null ) {
+				return false;
+			}
+		} else if( !type.equals( other.type ) ) {
+			return false;
+		}
+		if( variableID == null ) {
+			if( other.variableID != null ) {
+				return false;
+			}
+		} else if( !variableID.equals( other.variableID ) ) {
+			return false;
+		}
+		return true;
+	}
+	
+	
 }

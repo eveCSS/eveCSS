@@ -1,11 +1,4 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
-package de.ptb.epics.eve.data.measuringstation;
+package de.ptb.epics.eve.data.measuringstation.filter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,40 +7,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
+import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
+import de.ptb.epics.eve.data.measuringstation.Detector;
+import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.measuringstation.Device;
+import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.measuringstation.Motor;
+import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.data.measuringstation.Option;
+import de.ptb.epics.eve.data.measuringstation.PlugIn;
+import de.ptb.epics.eve.data.measuringstation.Selections;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
-/**
- * This class is managing all purposes, that have to do with the measuring station
- * description. A MeasuringStation-Objekt is hold all instances of PlugIns, Devices,
- * DetectorChannels and so on and provides methods for fast finding the element. It
- * could be seen as the root of a tree, wich descripes the measuring station.
- * 
- * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.2
- */
-public class MeasuringStation implements IMeasuringStation {
+public class ExcludeFilter extends MeasuringStationFilter {
 
-	/**
-	 * The file version of the measuring station description.
-	 */
-	private String version;
-	
-	/**
-	 * The filename where this measuring station is loaded from. 
-	 */
-	private String loadedFileName;
-	
-	/**
-	 * The name of the schema file that was used for the loading of this measuring station description.
-	 * 
-	 */
-	private String schemaFileName;
-	
-	// TODO
-	// we have a List and a Map for events, plugins, channels, axes
-	// they are not necessarily equal, (maps are unique) 
-	// remove lists and use only maps
-	
 	/**
 	 * A List, that is holding all events.
 	 */
@@ -104,14 +79,13 @@ public class MeasuringStation implements IMeasuringStation {
 	private final Map< String, AbstractPrePostscanDevice > prePostscanDeviceMap;
 
 	private Map<String, List<AbstractDevice>> classMap;
-
-	/**
-	 * This constructor constructs a new MeasuringStation object, that contains
-	 * no subelements like devices or motor axis. It provides a own Selections
-	 * object.
-	 *
-	 */
-	public MeasuringStation() {
+	
+	private final List< IModelUpdateListener > modelUpdateListener;
+	
+	
+	private final List< AbstractDevice > excludeList;
+	
+	public ExcludeFilter() {
 		this.events = new ArrayList<Event>();
 		this.plugins = new ArrayList<PlugIn>();
 		this.devices = new ArrayList<Device>();
@@ -124,7 +98,8 @@ public class MeasuringStation implements IMeasuringStation {
 		this.prePostscanDeviceMap = new HashMap< String, AbstractPrePostscanDevice >();
 		this.classMap = new HashMap<String, List<AbstractDevice>>();
 		this.eventsMap = new HashMap< String, Event >();
-		
+		this.modelUpdateListener = new ArrayList< IModelUpdateListener >();
+		this.excludeList = new ArrayList< AbstractDevice >();
 	}
 	
 	/* (non-Javadoc)
@@ -173,159 +148,21 @@ public class MeasuringStation implements IMeasuringStation {
 	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getVersion()
 	 */
 	public String getVersion() {
-		return this.version;
+		return this.getSource()!=null?this.getSource().getVersion():"";
 	}
 
 	/* (non-Javadoc)
 	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getLoadedFileName()
 	 */
 	public String getLoadedFileName(){
-		return loadedFileName;
+		return this.getSource()!=null?this.getSource().getLoadedFileName():"";
 	}
 	
-	/**
-	 * 
-	 * @param filename set the file name (after successfully loading the file)
-	 */
-	public void setLoadedFileName(String filename){
-		loadedFileName = filename;
-	}
-
 	/* (non-Javadoc)
 	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getSchemaFileName()
 	 */
 	public String getSchemaFileName(){
-		return schemaFileName;
-	}
-	
-	/**
-	 * 
-	 * @param filename set the used schema file name
-	 */
-	public void setSchemaFileName(String filename){
-		schemaFileName = filename;
-	}
-
-	/**
-	 * Adds a Detector to this measuring station. This method is just wrapping the
-	 * add method of the List, that is holding the detectors.
-	 * 
-	 * @see java.util.Collection
-	 * @param detector A detector object.
-	 * @return
-	 */
-	public boolean add( final Detector detector ) {
-		classMapAdd(detector.getClassName(), detector);
-		return detectors.add( detector );
-	}
-
-	/**
-	 * Adds a Device to this measuring station. This method is just wrapping the
-	 * add method of the List, that is holding the devices.
-	 * 
-	 * @see java.util.Collection
-	 * @param device a Device object. Must not be null.
-	 * @return
-	 */
-	public boolean add( final Device device ) {
-		if( device == null ) {
-			throw new IllegalArgumentException( "The parameter 'device' must not be null!" );
-		}
-		classMapAdd(device.getClassName(), device);
-		this.prePostscanDeviceMap.put( device.getID(), device );
-		return devices.add( device );
-	}
-
-	/**
-	 * Adds a Event to this measuring station. This method is wrapping the
-	 * add method of the List, that is holding the events.
-	 * 
-	 * @see java.util.Collection
-	 * @param event A Event object. Must not be null.
-	 * @return
-	 */
-	public boolean add( final Event event) {
-		if( event == null ) {
-			throw new IllegalArgumentException( "The parameter 'event' must not be null!" );
-		}
-		this.eventsMap.put( event.getID(), event );
-		return events.add( event );
-	}
-
-	/**
-	 * Adds a Motor to this measuring station. This method is just wrapping the
-	 * add method of the List, that is holding the motors.
-	 * 
-	 * @see java.util.Collection
-	 * @param motor
-	 * @return
-	 */
-	public boolean add( final Motor motor ) {
-		classMapAdd(motor.getClassName(), motor);
-		return motors.add( motor );
-	}
-	
-	/**
-	 * Adds a PlugIn to this measuring station. This method is just wrapping the
-	 * add method of the List, that is holding the plug-ins.
-	 * @param plugIn A PlugIn object. Must not be null.
-	 * @return
-	 */
-	public boolean add( final PlugIn plugIn ) {
-		if( plugIn == null ) {
-			throw new IllegalArgumentException( "The parameter 'plugIn' must not be null!" );
-		}
-		this.pluginsMap.put( plugIn.getName(), plugIn );
-		return plugins.add( plugIn );
-	}
-	
-	/**
-	 * Use this method to register a Option at this measuring station. The registration
-	 * is necessary that a option can be found by it's id very fast.
-	 * 
-	 * @param option A Option object, must not be null.
-	 */
-	public void registerOption( final Option option ) {
-		if( option == null ) {
-			throw new IllegalArgumentException( "The parameter 'option' must not be null!" );
-		}
-		this.prePostscanDeviceMap.put( option.getID(), option );
-	}
-	
-	/**
-	 * Use this method to register a Option at this measuring station. The registration
-	 * is necessary that a motor axis can be found very fast.
-	 * 
-	 * @param motorAxis A MotorAxis object. Must not be null.
-	 */
-	public void registerMotorAxis( final MotorAxis motorAxis ) {
-		if( motorAxis == null ) {
-			throw new IllegalArgumentException( "The parameter 'motorAxis' must not be null!" );
-		}
-		this.motorAxisMap.put( motorAxis.getID(), motorAxis );
-	}
-	
-	/**
-	 * Use this method to register a detector channel at his measuring station. The registration
-	 * is necessary that a detector channel can be founs very fast.
-	 * 
-	 * @param detectorChannel A DetectorChannel object. Must not be null!
-	 */
-	public void registerDetectorChannel( final DetectorChannel detectorChannel ) {
-		if( detectorChannel == null ) {
-			throw new IllegalArgumentException( "The parameter 'detectorChannel' must not be null!" );
-		}
-		this.detectorChannelsMap.put( detectorChannel.getID(), detectorChannel );
-	}
-
-	/**
-	 * Sets the version of this measuring station description. The versioning is used to
-	 * find out which reader and writer should be used for this description.
-	 * 
-	 * @param version A String object.
-	 */
-	public void setVersion(String version) {
-		this.version = version; 
+		return this.getSource()!=null?this.getSource().getSchemaFileName():"";
 	}
 	
 	/* (non-Javadoc)
@@ -376,9 +213,15 @@ public class MeasuringStation implements IMeasuringStation {
 		Iterator<MotorAxis> axisIterator = null;
 		while( motorIterator.hasNext() ) {
 			currentMotor = motorIterator.next();
+			if( this.excludeList.contains( currentMotor ) ) {
+				continue;
+			}
 			axisIterator = currentMotor.axisIterator();
 			while( axisIterator.hasNext() ) {
 				currentAxis = axisIterator.next();
+				if( this.excludeList.contains( currentAxis ) ) {
+					continue;
+				}
 				int i = 0;
 				for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();){
 					final String test = iterator.next();
@@ -403,9 +246,15 @@ public class MeasuringStation implements IMeasuringStation {
 		
 		while( detectorIterator.hasNext() ) {
 			Detector currentDetector = detectorIterator.next();
+			if( this.excludeList.contains( currentDetector ) ) {
+				continue;
+			}
 			Iterator<DetectorChannel> channelIterator = currentDetector.channelIterator();
 			while( channelIterator.hasNext() ) {
 				DetectorChannel currentChannel = channelIterator.next();
+				if( this.excludeList.contains( currentChannel ) ) {
+					continue;
+				}
 				int i = 0;
 				for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();){
 					final String test = iterator.next();
@@ -429,6 +278,9 @@ public class MeasuringStation implements IMeasuringStation {
 		Iterator<Device> deviceIterator = this.devices.iterator();
 		while( deviceIterator.hasNext() ) {
 			Device currentDevice = deviceIterator.next();
+			if( this.excludeList.contains( currentDevice ) ) {
+				continue;
+			}
 			int i = 0;
 			for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();){
 				final String test = iterator.next();
@@ -444,10 +296,15 @@ public class MeasuringStation implements IMeasuringStation {
 		Iterator<Motor> motorIterator = this.motors.iterator();
 		while( motorIterator.hasNext() ) {
 			Motor currentMotor = motorIterator.next();
-			
+			if( this.excludeList.contains( currentMotor ) ) {
+				continue;
+			}
 			Iterator<Option> optionIterator = currentMotor.optionIterator();
 			while( optionIterator.hasNext() ) {
 				Option currentOption = optionIterator.next();
+				if( this.excludeList.contains( currentOption ) ) {
+					continue;
+				}
 				int i = 0;
 				for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();){
 					final String test = iterator.next();
@@ -463,10 +320,15 @@ public class MeasuringStation implements IMeasuringStation {
 			Iterator<MotorAxis> axisIterator = currentMotor.axisIterator();
 			while( axisIterator.hasNext() ) {
 				MotorAxis currentAxis = axisIterator.next();
-				
+				if( this.excludeList.contains( currentAxis ) ) {
+					continue;
+				}
 				Iterator<Option> optionIterator2 = currentAxis.getOptions().iterator();
 				while( optionIterator2.hasNext() ) {
 					Option currentOption = optionIterator2.next();
+					if( this.excludeList.contains( currentOption ) ) {
+						continue;
+					}
 					int i = 0;
 					for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();){
 						final String test = iterator.next();
@@ -484,10 +346,15 @@ public class MeasuringStation implements IMeasuringStation {
 		Iterator<Detector> detectorIterator = this.detectors.iterator();
 		while( detectorIterator.hasNext() ) {
 			Detector currentDetector = detectorIterator.next();
-			
+			if( this.excludeList.contains( currentDetector ) ) {
+				continue;
+			}
 			Iterator<Option> optionIterator = currentDetector.getOptions().iterator();
 			while( optionIterator.hasNext() ) {
 				Option currentOption = optionIterator.next();
+				if( this.excludeList.contains( currentOption ) ) {
+					continue;
+				}
 				int i = 0;
 				for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();){
 					final String test = iterator.next();
@@ -503,10 +370,15 @@ public class MeasuringStation implements IMeasuringStation {
 			Iterator<DetectorChannel> channelsIterator = currentDetector.channelIterator();
 			while( channelsIterator.hasNext() ) {
 				DetectorChannel currentChannel = channelsIterator.next();
-				
+				if( this.excludeList.contains( currentChannel ) ) {
+					continue;
+				}
 				Iterator<Option> optionIterator2 = currentChannel.getOptions().iterator();
 				while( optionIterator2.hasNext() ) {
 					Option currentOption = optionIterator2.next();
+					if( this.excludeList.contains( currentOption ) ) {
+						continue;
+					}
 					int i = 0;
 					for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();){
 						final String test = iterator.next();
@@ -604,40 +476,7 @@ public class MeasuringStation implements IMeasuringStation {
 		return null;
 		
 	}
-	
-	/**
-	 * add an abstract device with class name to the class hash
-	 * @param className
-	 * @param absdevice
-	 */
-	private void classMapAdd(String className, AbstractDevice absdevice) {
-		
-		if( absdevice instanceof Motor ) {
-			final List< MotorAxis> axis = ((Motor)absdevice).getAxis();
-			for( final MotorAxis a : axis ) {
-				this.classMapAdd( a.getClassName(), a );
-			}
-		} else if( absdevice instanceof Detector ) {
-			final List< DetectorChannel > channels = ((Detector)absdevice).getChannels();
-			for( final DetectorChannel c : channels ) {
-				this.classMapAdd( c.getClassName(), c );
-			}
-		} 
-		
-		if ((className == null) || className.length() < 1) 
-			return;
-		
-		List<AbstractDevice> adlist;
-		if (classMap.containsKey(className)){
-			adlist = classMap.get(className);
-		}
-		else {
-			adlist = new ArrayList<AbstractDevice>();
-		}
-		adlist.add(absdevice);
-		classMap.put(className, adlist);
-	}
-	
+
 	/* (non-Javadoc)
 	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getClassNameList()
 	 */
@@ -655,13 +494,130 @@ public class MeasuringStation implements IMeasuringStation {
 			return null;
 	}
 
-	
+	@Override
 	public boolean addModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return false;
+		return this.modelUpdateListener.add( modelUpdateListener );
 	}
 
-	
+	@Override
 	public boolean removeModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return false;
+		return this.modelUpdateListener.remove( modelUpdateListener );
 	}
+	
+	/**
+	 * Calling this method will exclude a device and start and notify an update.
+	 * 
+	 * @param abstractDevice The device to exclude
+	 */
+	public void exclude( final AbstractDevice abstractDevice ) {
+		this.excludeList.add( abstractDevice );
+		this.updateEvent( new ModelUpdateEvent( this, null ) );
+	}
+	
+	/**
+	 * Calling this method will unexclude a device and start and notify an update.
+	 * 
+	 * @param abstractDevice The device to unexclude
+	 */
+	public void unexclude( final AbstractDevice abstractDevice ) {
+		this.excludeList.remove( abstractDevice );
+		this.updateEvent( new ModelUpdateEvent( this, null ) );
+	}
+	
+	@Override
+	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
+		this.events.clear();
+		this.plugins.clear();
+		this.devices.clear();
+		this.motors.clear();
+		this.detectors.clear();
+		this.selections.setColors( new String[0] );
+		this.selections.setLinestyles( new String[0] );
+		this.selections.setMarkstyles( new String[0] );
+		this.selections.setSmtypes( new String[0] );
+		this.selections.setStepfunctions( new String[0] );
+		this.pluginsMap.clear();
+		this.motorAxisMap.clear();
+		this.detectorChannelsMap.clear();
+		this.prePostscanDeviceMap.clear();
+		this.classMap.clear();
+		this.eventsMap.clear();
+
+		if( this.getSource() != null ) {
+			this.events.addAll( this.getSource().getEvents() );
+			
+			this.plugins.addAll( this.getSource().getPlugins() );
+			
+			this.devices.addAll( this.getSource().getDevices() );
+			this.devices.removeAll( this.excludeList );
+			
+			this.motors.addAll( this.getSource().getMotors() );
+			this.motors.removeAll( this.excludeList );
+			
+			this.detectors.addAll( this.getSource().getDetectors());
+			this.detectors.removeAll(this.excludeList );
+			
+			this.selections.setColors( this.getSource().getSelections().getColors() );
+			this.selections.setLinestyles( this.getSource().getSelections().getLinestyles() );
+			this.selections.setMarkstyles( this.getSource().getSelections().getMarkstyles() );
+			this.selections.setSmtypes( this.getSource().getSelections().getSmtypes() );
+			this.selections.setStepfunctions( this.getSource().getSelections().getStepfunctions() );
+			
+			for( final PlugIn plugIn : this.plugins ) {
+				this.pluginsMap.put( plugIn.getName(), plugIn );
+			}
+			
+			for( final Motor motor : this.motors ) {
+				for( final Option option : motor.getOptions() ) {
+					this.prePostscanDeviceMap.put( option.getID(), option );
+				}
+				for( final MotorAxis motorAxis : motor.getAxis() ) {
+					if( !this.excludeList.contains( motorAxis ) ) {
+						this.motorAxisMap.put( motorAxis.getID(), motorAxis );
+						for( final Option option : motorAxis.getOptions() ) {
+							this.prePostscanDeviceMap.put( option.getID(), option );
+						}
+					}
+				}
+			}
+			
+			for( final Detector detector : this.detectors ) {
+				for( final Option option : detector.getOptions() ) {
+					this.prePostscanDeviceMap.put( option.getID(), option );
+				}
+				for( final DetectorChannel detectorChannel : detector.getChannels() ) {
+					if( !this.excludeList.contains( detectorChannel ) ) {
+						this.detectorChannelsMap.put( detectorChannel.getID(), detectorChannel );
+						for( final Option option : detectorChannel.getOptions() ) {
+							this.prePostscanDeviceMap.put( option.getID(), option );
+						}
+					}
+				}
+			}
+			
+			for( final Device device : this.devices ) {
+				this.prePostscanDeviceMap.put( device.getID(), device );
+			}
+			
+			
+			for( final String key : this.getSource().getClassNameList() ) {
+				final ArrayList<AbstractDevice> devices = new ArrayList< AbstractDevice >( this.getSource().getDeviceList( key ) );
+				devices.removeAll( this.excludeList );
+				if( devices.size() > 0 ) {
+					this.classMap.put( key, devices );
+				}
+			}
+			
+			for( final Event event : this.events ) {
+				this.eventsMap.put(  event.getID(), event );
+			}
+			
+		}
+		
+		for( final IModelUpdateListener modelUpdateListener : this.modelUpdateListener ) {
+			modelUpdateListener.updateEvent( new ModelUpdateEvent( this, null ) );
+		}
+		
+	}
+	
 }

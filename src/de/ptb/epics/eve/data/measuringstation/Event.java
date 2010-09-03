@@ -377,5 +377,86 @@ public class Event {
 	public ScheduleIncident getScheduleIncident() {
 		return incident;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + chainId;
+		result = prime * result
+				+ ((detectorId == null) ? 0 : detectorId.hashCode());
+		result = prime * result
+				+ ((incident == null) ? 0 : incident.hashCode());
+		result = prime * result + ((monitor == null) ? 0 : monitor.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((pname == null) ? 0 : pname.hashCode());
+		result = prime * result + scanModuleId;
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Event other = (Event) obj;
+		if (chainId != other.chainId) {
+			return false;
+		}
+		if (detectorId == null) {
+			if (other.detectorId != null) {
+				return false;
+			}
+		} else if (!detectorId.equals(other.detectorId)) {
+			return false;
+		}
+		if (incident == null) {
+			if (other.incident != null) {
+				return false;
+			}
+		} else if (!incident.equals(other.incident)) {
+			return false;
+		}
+		if (monitor == null) {
+			if (other.monitor != null) {
+				return false;
+			}
+		} else if (!monitor.equals(other.monitor)) {
+			return false;
+		}
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		if (pname == null) {
+			if (other.pname != null) {
+				return false;
+			}
+		} else if (!pname.equals(other.pname)) {
+			return false;
+		}
+		if (scanModuleId != other.scanModuleId) {
+			return false;
+		}
+		if (type == null) {
+			if (other.type != null) {
+				return false;
+			}
+		} else if (!type.equals(other.type)) {
+			return false;
+		}
+		return true;
+	}
+	
 	
 }

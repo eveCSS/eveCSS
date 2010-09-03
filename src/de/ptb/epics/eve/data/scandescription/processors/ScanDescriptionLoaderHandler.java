@@ -28,8 +28,8 @@ import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.MonitorEvent;
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Axis;
@@ -61,7 +61,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	/**
 	 * The measuring station that contains the devices.
 	 */
-	private final MeasuringStation measuringStation;
+	private final IMeasuringStation measuringStation;
 	
 	/**
 	 * The loaded scan description.
@@ -179,7 +179,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	 * 
 	 * @param measuringStation The measuring station description that contains the devices.
 	 */
-	public ScanDescriptionLoaderHandler( final MeasuringStation measuringStation ) {
+	public ScanDescriptionLoaderHandler( final IMeasuringStation measuringStation ) {
 		if( measuringStation == null ) {
 			throw new IllegalArgumentException( "The parameter 'measuringStation' must not be null!" );
 		}

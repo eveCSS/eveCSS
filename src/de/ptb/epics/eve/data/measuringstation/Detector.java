@@ -95,6 +95,37 @@ public class Detector extends AbstractMainPhaseDevice {
 		}
 		return result;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((channels == null) ? 0 : channels.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Detector other = (Detector) obj;
+		if (channels == null) {
+			if (other.channels != null) {
+				return false;
+			}
+		} else if (!channels.equals(other.channels)) {
+			return false;
+		}
+		return true;
+	}
 		
 	
 }

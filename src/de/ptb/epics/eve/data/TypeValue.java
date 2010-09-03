@@ -267,4 +267,52 @@ public class TypeValue {
 				return DataTypes.getDefaultValue(type);
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((elements == null) ? 0 : elements.hashCode());
+		result = prime * result + (hasRange ? 1231 : 1237);
+		result = prime * result + (isDiscrete ? 1231 : 1237);
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals( final Object obj ) {
+		if( this == obj ) {
+			return true;
+		}
+		if( obj == null ) {
+			return false;
+		}
+		if( getClass() != obj.getClass() ) {
+			return false;
+		}
+		final TypeValue other = (TypeValue) obj;
+		if( elements == null ) {
+			if( other.elements != null ) {
+				return false;
+			}
+		} else if( !elements.equals( other.elements ) ) {
+			return false;
+		}
+		if( hasRange != other.hasRange ) {
+			return false;
+		}
+		if( isDiscrete != other.isDiscrete ) {
+			return false;
+		}
+		if( type == null ) {
+			if( other.type != null ) {
+				return false;
+			}
+		} else if( !type.equals(other.type ) ) {
+			return false;
+		}
+		return true;
+	}
+	
+	
 }

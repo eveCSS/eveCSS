@@ -34,6 +34,7 @@ import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.Function;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
@@ -69,7 +70,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	/**
 	 * The measuring station of the scan description.
 	 */
-	private MeasuringStation measuringStation;
+	private IMeasuringStation measuringStation;
 	
 	/**
 	 * The scan description.
@@ -98,7 +99,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	 * @param measuringStation The measuring station description.
 	 * @param scanDescription The scan description.
 	 */
-	public ScanDescriptionSaverToXMLusingXerces( final OutputStream destination, final MeasuringStation measuringStation, final ScanDescription scanDescription ) {
+	public ScanDescriptionSaverToXMLusingXerces( final OutputStream destination, final IMeasuringStation measuringStation, final ScanDescription scanDescription ) {
 		if( measuringStation == null ) {
 			throw new IllegalArgumentException( "The parameter 'measuringStation' must not be null!" );
 		}
@@ -110,7 +111,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	/**
 	 * @see de.trustedcode.scanmoduleditor.data.processors.IScanDescriptionSaver#getMeasuringStationDescription()
 	 */
-	public MeasuringStation getMeasuringStationDescription() {
+	public IMeasuringStation getMeasuringStationDescription() {
 		return this.measuringStation;
 	}
 
@@ -124,7 +125,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	/**
 	 * @see de.trustedcode.scanmoduleditor.data.processors.IScanDescriptionSaver#setMeasuringStationDescription(MeasuringStation)
 	 */
-	public void setMeasuringStationDescription( final MeasuringStation measuringStation ) {
+	public void setMeasuringStationDescription( final IMeasuringStation measuringStation ) {
 		if( measuringStation == null ) {
 			throw new IllegalArgumentException( "The parameter 'measuringStation' must not be null!" );
 		}

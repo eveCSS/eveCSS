@@ -19,6 +19,8 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.xml.sax.SAXException;
+
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 
 /**
@@ -68,7 +70,7 @@ public class MeasuringStationLoader {
 	 * @throws SAXException Gets thrown by SAX.
 	 * @throws IOException Gets thrown if something went wrong with the input stream.
 	 */
-	public MeasuringStation loadFromByteArray( final byte[] byteArray ) throws ParserConfigurationException, SAXException, IOException {
+	public IMeasuringStation loadFromByteArray( final byte[] byteArray ) throws ParserConfigurationException, SAXException, IOException {
 		final SchemaFactory sFactory = SchemaFactory.newInstance( XMLConstants.W3C_XML_SCHEMA_NS_URI  );
 		final Schema schema = sFactory.newSchema( this.schemaFile );
 
@@ -151,7 +153,7 @@ public class MeasuringStationLoader {
 	 * 
 	 * @return The loaded measuring station.
 	 */
-	public MeasuringStation getMeasuringStation() {
+	public IMeasuringStation getMeasuringStation() {
 		return measuringStation;
 	}
 	

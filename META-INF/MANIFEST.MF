@@ -6,6 +6,7 @@ Bundle-Version: 1.0.0
 Export-Package: de.ptb.epics.eve.data,
  de.ptb.epics.eve.data.measuringstation,
  de.ptb.epics.eve.data.measuringstation.exceptions,
+ de.ptb.epics.eve.data.measuringstation.filter,
  de.ptb.epics.eve.data.measuringstation.processors,
  de.ptb.epics.eve.data.scandescription,
  de.ptb.epics.eve.data.scandescription.errors,

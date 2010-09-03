@@ -97,6 +97,37 @@ public class Motor extends AbstractMainPhaseDevice {
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((axis == null) ? 0 : axis.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Motor other = (Motor) obj;
+		if (axis == null) {
+			if (other.axis != null) {
+				return false;
+			}
+		} else if (!axis.equals(other.axis)) {
+			return false;
+		}
+		return true;
 	}	
-		
+	
+	
 }

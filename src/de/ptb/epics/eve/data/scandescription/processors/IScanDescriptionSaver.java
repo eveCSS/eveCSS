@@ -9,7 +9,7 @@ package de.ptb.epics.eve.data.scandescription.processors;
 
 import java.util.List;
 
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 
 /**
@@ -28,14 +28,14 @@ public interface IScanDescriptionSaver {
 	 * 
 	 * @param measuringStation The measuring station. The implementation must not accept null here.
 	 */
-	public void setMeasuringStationDescription( final MeasuringStation measuringStation );
+	public void setMeasuringStationDescription( final IMeasuringStation measuringStation );
 	
 	/**
 	 * Gives back the measuring station, for that the scan description is for.
 	 * 
 	 * @return The measuring station. The implementation must not return null!
 	 */
-	public MeasuringStation getMeasuringStationDescription();
+	public IMeasuringStation getMeasuringStationDescription();
 	
 	/**
 	 * Sets the scan description that should be saved.
