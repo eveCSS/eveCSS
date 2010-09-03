@@ -7,8 +7,6 @@
  *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
 
-import java.util.Iterator;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -27,22 +25,17 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
-import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.Axis;
-import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
-import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
-import de.ptb.epics.eve.data.scandescription.errors.IModelError;
-import de.ptb.epics.eve.data.scandescription.errors.PlotWindowError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
@@ -53,14 +46,21 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 	private Combo motorAxisCombo;
 	private Button addButton;
 	private ScanModul scanModul;
+	private MenuManager menuManager;
+	private final IMeasuringStation measuringStation;
 	
-	public MotorAxisComposite( final Composite parent, final int style) {
+	public MotorAxisComposite( final Composite parent, final int style, final IMeasuringStation measuringStation ) {
 		super( parent, style );
+		this.measuringStation = measuringStation;
+		this.measuringStation.addModelUpdateListener( this );
 		initialize();
 	}
 	
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-		
+		motorAxisCombo.setItems( measuringStation.getAxisFullIdentifyer().toArray( new String[0] ) );
+		//menuManager.update();
+		//final Menu contextMenu = menuManager.createContextMenu( this.motorAxisCombo );
+		//this.motorAxisCombo.setMenu( contextMenu );
 	}
 
 	private void initialize() {
@@ -146,30 +146,28 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 
 			public void widgetSelected(SelectionEvent e) {
 				if( !motorAxisCombo.getText().equals( "" ) ) {
-					MotorAxis motorAxis = (MotorAxis) Activator.getDefault().getMeasuringStation()
+					MotorAxis motorAxis = (MotorAxis) measuringStation
 						.getAbstractDeviceByFullIdentifyer(motorAxisCombo.getText());
 					
 					Axis axis = new Axis( scanModul );
 					axis.setMotorAxis(motorAxis);
 					scanModul.add(axis);
 					setMotorAxisView(axis);
-					// Table Eintrag wird aus der Combo-Box entfernt
-					motorAxisCombo.remove(motorAxisCombo.getText());
 					tableViewer.refresh();
 				}
 			}
 		});
 		
-		final MenuManager menuManager = new MenuManager( "#PopupMenu" );
+		menuManager = new MenuManager( "#PopupMenu" );
 		menuManager.setRemoveAllWhenShown( true );
 		menuManager.addMenuListener( new IMenuListener() {
 
 			@Override
 			public void menuAboutToShow( final IMenuManager manager ) {
 				
-				for( final String className : Activator.getDefault().getMeasuringStation().getClassNameList() ) {
+				for( final String className :measuringStation.getClassNameList() ) {
 					final MenuManager currentClassMenu = new MenuManager( className );
-					for( final AbstractDevice device : Activator.getDefault().getMeasuringStation().getDeviceList( className ) ) {
+					for( final AbstractDevice device : measuringStation.getDeviceList( className ) ) {
 						if( device instanceof Motor ) {
 							final Motor motor = (Motor)device;
 							final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName() );
@@ -188,8 +186,6 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 										a.setMotorAxis( ma );
 										scanModul.add( a );
 										setMotorAxisView(a);
-										// Table Eintrag wird aus der Combo-Box entfernt
-										motorAxisCombo.remove(ma.getFullIdentifyer());
 										tableViewer.refresh();
 									}
 								};
@@ -210,8 +206,7 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 									a.setMotorAxis( ma );
 									scanModul.add( a );
 									setMotorAxisView(a);
-									// Table Eintrag wird aus der Combo-Box entfernt
-									motorAxisCombo.remove(ma.getFullIdentifyer());
+									
 									tableViewer.refresh();
 								}
 							};
@@ -222,7 +217,7 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 					}
 				}
 				
-				for( final Motor motor : Activator.getDefault().getMeasuringStation().getMotors() ) {
+				for( final Motor motor : measuringStation.getMotors() ) {
 					if( "".equals( motor.getClassName() ) || motor.getClassName() == null ) {
 						final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName() );
 						for( final MotorAxis axis : motor.getAxis() ) {
@@ -256,6 +251,7 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 				}
 			}
 		});
+		
 		final Menu contextMenu = menuManager.createContextMenu( this.motorAxisCombo );
 		this.motorAxisCombo.setMenu( contextMenu );
 		
@@ -267,15 +263,6 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 					// MotorAxis wird aus scanModul ausgetragen
 					scanModul.remove( removeAxis );
 
-		    		// ComboBox muß aktualisiert werden
-		    		// alle MotorAxis' werden in die ComboBox eingetragen und die
-		    		// gesetzten MotorAxis' wieder ausgetragen
-					motorAxisCombo.setItems( Activator.getDefault().getMeasuringStation().getAxisFullIdentifyer().toArray( new String[0] ) );
-					Axis[] axis = scanModul.getAxis();
-					for (int i = 0; i < axis.length; ++i) {
-						// Axis Eintrag wird aus der Combo-Box entfernt
-						motorAxisCombo.remove(axis[i].getMotorAxis().getFullIdentifyer());
-					}
 		    		tableViewer.refresh();
 
 		    		// PlotWindowView wird aktualisiert
@@ -344,13 +331,6 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 		}
 		if( scanModul != null ) {
 			scanModul.addModelUpdateListener( this );
-
-			this.motorAxisCombo.setItems( Activator.getDefault().getMeasuringStation().getAxisFullIdentifyer().toArray( new String[0] ) );
-			Axis[] axis = scanModul.getAxis();
-			for (int i = 0; i < axis.length; ++i) {
-				// Motor Axis Eintrag wird aus der Combo-Box entfernt
-				this.motorAxisCombo.remove(axis[i].getAbstractDevice().getFullIdentifyer());
-			}
 		}
 		this.scanModul = scanModul;
 		this.tableViewer.setInput( scanModul );

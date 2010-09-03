@@ -39,7 +39,7 @@ import org.eclipse.ui.part.EditorPart;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
@@ -86,7 +86,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		
 		try {
 			final FileOutputStream os = new FileOutputStream( scanDescriptionFile );	
-			final MeasuringStation measuringStation = Activator.getDefault().getMeasuringStation();
+			final IMeasuringStation measuringStation = Activator.getDefault().getMeasuringStation();
 			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = new ScanDescriptionSaverToXMLusingXerces( os, measuringStation, this.scanDescription );
 			scanDescriptionSaver.save();
 			
@@ -144,7 +144,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		
 		try {
 			final FileOutputStream os = new FileOutputStream( scanDescriptionFile );	
-			final MeasuringStation measuringStation = Activator.getDefault().getMeasuringStation();
+			final IMeasuringStation measuringStation = Activator.getDefault().getMeasuringStation();
 			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = new ScanDescriptionSaverToXMLusingXerces( os, measuringStation, this.scanDescription );
 			scanDescriptionSaver.save();
 			

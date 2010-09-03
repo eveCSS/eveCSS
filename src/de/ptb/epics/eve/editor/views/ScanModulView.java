@@ -49,6 +49,7 @@ import org.eclipse.swt.graphics.Image;
 
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilter;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
@@ -168,12 +169,27 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	private CTabItem breakEventsTabItem;
 	private CTabItem triggerEventsTabItem;
 	
+	private ExcludeDevicesOfScanModuleFilter measuringStation;
+	private ExcludeDevicesOfScanModuleFilter measuringStationPrescan;
+	private ExcludeDevicesOfScanModuleFilter measuringStationPostscan;
 	
 	@Override
 	public void createPartControl(final Composite parent) {
 		// TODO Auto-generated method stub
 		
 		parent.setLayout(new FillLayout());
+		
+		this.measuringStation = new ExcludeDevicesOfScanModuleFilter( true, true, false, false, false );
+		this.measuringStation.setSource( Activator.getDefault().getMeasuringStation() );
+		this.measuringStation.addModelUpdateListener( this );
+		
+		this.measuringStationPrescan = new ExcludeDevicesOfScanModuleFilter( false, false, true, false, false );
+		this.measuringStationPrescan.setSource( Activator.getDefault().getMeasuringStation() );
+		this.measuringStationPrescan.addModelUpdateListener( this );
+		
+		this.measuringStationPostscan = new ExcludeDevicesOfScanModuleFilter( false, false, false, true, false );
+		this.measuringStationPostscan.setSource( Activator.getDefault().getMeasuringStation() );
+		this.measuringStationPostscan.addModelUpdateListener( this );
 		
 		if( Activator.getDefault().getMeasuringStation() == null ) {
 			final Label errorLabel = new Label( parent, SWT.NONE );
@@ -485,7 +501,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	 */
 	private void createMotorAxisComposite() {
 		motorAxisComposite = new MotorAxisComposite(behaviorTabFolder,
-				SWT.NONE);
+				SWT.NONE, this.measuringStation );
 	}
 
 	/**
@@ -494,7 +510,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	 */
 	private void createDetectorChannelComposite() {
 		detectorChannelComposite = new DetectorChannelComposite(behaviorTabFolder,
-				SWT.NONE);
+				SWT.NONE, this.measuringStation );
 	}
 
 	/**
@@ -503,7 +519,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	 */
 	private void createPrescanComposite() {
 		prescanComposite = new PrescanComposite(behaviorTabFolder,
-				SWT.NONE);
+				SWT.NONE, this.measuringStationPrescan );
 	}
 
 	/**
@@ -512,7 +528,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	 */
 	private void createPostscanComposite() {
 		postscanComposite = new PostscanComposite(behaviorTabFolder,
-				SWT.NONE);
+				SWT.NONE, this.measuringStationPostscan );
 	}
 	
 	/**
@@ -537,6 +553,9 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		if( this.currentScanModul != null ) {
 			this.currentScanModul.addModelUpdateListener( this );
 		}
+		this.measuringStation.setScanModule( this.currentScanModul );
+		this.measuringStationPrescan.setScanModule( this.currentScanModul );
+		this.measuringStationPostscan.setScanModule( this.currentScanModul );
 		this.fillFields();
 	}
 
@@ -1141,6 +1160,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		
 		this.filling = true;
 
+		if( this.currentScanModul != null ) {
 		this.motorAxisTab.setImage( null );
 		this.detectorChannelTab.setImage( null );
 		this.prescanTab.setImage( null );
@@ -1218,7 +1238,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		} else {
 			this.triggerEventsTabItem.setImage( null );
 		}
-		
+		}
 		this.filling = false;
 		
 	}

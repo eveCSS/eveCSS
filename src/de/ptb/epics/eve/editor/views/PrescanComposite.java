@@ -33,6 +33,7 @@ import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
@@ -49,13 +50,20 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 	private Combo prescanCombo;
 	private Button addButton;
 	private ScanModul scanModul;
+	private IMeasuringStation measuringStation;
 	
-	public PrescanComposite( final Composite parent, final int style) {
+	public PrescanComposite( final Composite parent, final int style, final IMeasuringStation measuringStation ) {
 		super( parent, style );
+		this.measuringStation = measuringStation;
+		this.measuringStation.addModelUpdateListener( this );
 		initialize();
 	}
 	
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
+		// All Options and Devices are typically a long list on a real measuring station (about 1000 entries)
+		// If you call setItems with such a big list, this functions needs an extremly long time.
+		//this.prescanCombo.setItems( this.measuringStation.getPrePostScanDevicesFullIdentifyer().toArray( new String[0] ) );
+		this.measuringStation.getPrePostScanDevicesFullIdentifyer().toArray( new String[0] );
 		
 	}
 
@@ -103,7 +111,8 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 	    this.tableViewer.setColumnProperties( props );
 	    
 	    this.prescanCombo = new Combo(this, SWT.READ_ONLY);
-		
+		this.prescanCombo.add( "" );
+	    
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
@@ -139,8 +148,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 											final Prescan p = new Prescan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
-											// Table Eintrag wird aus der Combo-Box entfernt
-											prescanCombo.remove(o.getFullIdentifyer());
+											
 											tableViewer.refresh();
 										}
 									};
@@ -162,8 +170,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 										final Prescan p = new Prescan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
-										// Table Eintrag wird aus der Combo-Box entfernt
-										prescanCombo.remove(o.getFullIdentifyer());
+										
 										tableViewer.refresh();
 									}
 								};
@@ -187,8 +194,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 										final Prescan p = new Prescan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
-										// Table Eintrag wird aus der Combo-Box entfernt
-										prescanCombo.remove(o.getFullIdentifyer());
+										
 										tableViewer.refresh();
 									}
 								};
@@ -214,8 +220,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 											final Prescan p = new Prescan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
-											// Table Eintrag wird aus der Combo-Box entfernt
-											prescanCombo.remove(o.getFullIdentifyer());
+											
 											tableViewer.refresh();
 										}
 									};
@@ -237,8 +242,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 										final Prescan p = new Prescan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
-										// Table Eintrag wird aus der Combo-Box entfernt
-										prescanCombo.remove(o.getFullIdentifyer());
+										
 										tableViewer.refresh();
 									}
 								};
@@ -262,8 +266,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 										final Prescan p = new Prescan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
-										// Table Eintrag wird aus der Combo-Box entfernt
-										prescanCombo.remove(o.getFullIdentifyer());
+										
 										tableViewer.refresh();
 									}
 								};
@@ -284,8 +287,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 									final Prescan p = new Prescan();
 									p.setAbstractPrePostscanDevice( dv );
 									scanModul.add( p );
-									// Table Eintrag wird aus der Combo-Box entfernt
-									prescanCombo.remove(dv.getFullIdentifyer());
+									
 									tableViewer.refresh();
 								}
 							};
@@ -315,8 +317,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 											final Prescan p = new Prescan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
-											// Table Eintrag wird aus der Combo-Box entfernt
-											prescanCombo.remove(o.getFullIdentifyer());
+											
 											tableViewer.refresh();
 										}
 									};
@@ -339,8 +340,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 									final Prescan p = new Prescan();
 									p.setAbstractPrePostscanDevice( o );
 									scanModul.add( p );
-									// Table Eintrag wird aus der Combo-Box entfernt
-									prescanCombo.remove(o.getFullIdentifyer());
+									
 									tableViewer.refresh();
 								}
 							};
@@ -369,8 +369,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 											final Prescan p = new Prescan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
-											// Table Eintrag wird aus der Combo-Box entfernt
-											prescanCombo.remove(o.getFullIdentifyer());
+											
 											tableViewer.refresh();
 										}
 									};
@@ -394,8 +393,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 									final Prescan p = new Prescan();
 									p.setAbstractPrePostscanDevice( o );
 									scanModul.add( p );
-									// Table Eintrag wird aus der Combo-Box entfernt
-									prescanCombo.remove(o.getFullIdentifyer());
+									
 									tableViewer.refresh();
 								}
 							};
@@ -419,8 +417,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 								final Prescan p = new Prescan();
 								p.setAbstractPrePostscanDevice( dv );
 								scanModul.add( p );
-								// Table Eintrag wird aus der Combo-Box entfernt
-								prescanCombo.remove(dv.getFullIdentifyer());
+								
 								tableViewer.refresh();
 							}
 						};
@@ -462,8 +459,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 					prescan.setAbstractPrePostscanDevice(device);
 					scanModul.add(prescan);
 
-					// Table Eintrag wird aus der Combo-Box entfernt
-					prescanCombo.remove(prescanCombo.getText());
+					
 					tableViewer.refresh();
 				}
 			}
@@ -474,16 +470,6 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 	    		
 					// Prescan wird aus scanModul ausgetragen
 		    		scanModul.remove( (Prescan)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
-
-		    		// ComboBos muß aktualisiert werden
-		    		// alle Prescans werden in die ComboBox eingetragen und die
-		    		// gesetzten prescans wieder ausgetragen
-		    		prescanCombo.setItems( Activator.getDefault().getMeasuringStation().getPrePostScanDevicesFullIdentifyer().toArray( new String[0] ) );
-					Prescan[] prescans = scanModul.getPrescans();
-					for (int i = 0; i < prescans.length; ++i) {
-						// Prescan Eintrag wird aus der Combo-Box entfernt
-						prescanCombo.remove(prescans[i].getAbstractPrePostscanDevice().getFullIdentifyer());
-					}
 		    		
 		    		tableViewer.refresh();
 		    	}
@@ -511,13 +497,6 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 		}
 		if( scanModul != null ) {
 			scanModul.addModelUpdateListener( this );
-
-			this.prescanCombo.setItems( Activator.getDefault().getMeasuringStation().getPrePostScanDevicesFullIdentifyer().toArray( new String[0] ) );
-			Prescan[] prescans = scanModul.getPrescans();
-			for (int i = 0; i < prescans.length; ++i) {
-				// Prescan Eintrag wird aus der Combo-Box entfernt
-				this.prescanCombo.remove(prescans[i].getAbstractPrePostscanDevice().getFullIdentifyer());
-			}
 		}
 		this.scanModul = scanModul;
 		this.tableViewer.setInput( scanModul );

@@ -36,6 +36,7 @@ import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
@@ -52,13 +53,20 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 	private Combo postscanCombo;
 	private Button addButton;
 	private ScanModul scanModul;
+	private final IMeasuringStation measuringStation;
 	
-	public PostscanComposite( final Composite parent, final int style) {
+	public PostscanComposite( final Composite parent, final int style, final IMeasuringStation measuringStation ) {
 		super( parent, style );
 		initialize();
+		this.measuringStation = measuringStation;
+		this.measuringStation.addModelUpdateListener( this );
 	}
 	
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
+		// All Options and Devices are typically a long list on a real measuring station (about 1000 entries)
+		// If you call setItems with such a big list, this functions needs an extremly long time.
+		//this.postscanCombo.setItems( this.measuringStation.getPrePostScanDevicesFullIdentifyer().toArray( new String[0] ) );
+		this.measuringStation.getPrePostScanDevicesFullIdentifyer().toArray( new String[0] );
 		
 	}
 
@@ -117,7 +125,8 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 	    this.tableViewer.setColumnProperties( props );
 	    
 	    this.postscanCombo = new Combo(this, SWT.READ_ONLY);
-		
+	    this.postscanCombo.add( "" );
+	    
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
@@ -153,8 +162,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 											final Postscan p = new Postscan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
-											// Table Eintrag wird aus der Combo-Box entfernt
-											postscanCombo.remove(o.getFullIdentifyer());
+											
 											tableViewer.refresh();
 										}
 									};
@@ -176,8 +184,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 										final Postscan p = new Postscan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
-										// Table Eintrag wird aus der Combo-Box entfernt
-										postscanCombo.remove(o.getFullIdentifyer());
+										
 										tableViewer.refresh();
 									}
 								};
@@ -201,8 +208,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 										final Postscan p = new Postscan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
-										// Table Eintrag wird aus der Combo-Box entfernt
-										postscanCombo.remove(o.getFullIdentifyer());
+										
 										tableViewer.refresh();
 									}
 								};
@@ -228,8 +234,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 											final Postscan p = new Postscan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
-											// Table Eintrag wird aus der Combo-Box entfernt
-											postscanCombo.remove(o.getFullIdentifyer());
+											
 											tableViewer.refresh();
 										}
 									};
@@ -251,8 +256,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 										final Postscan p = new Postscan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
-										// Table Eintrag wird aus der Combo-Box entfernt
-										postscanCombo.remove(o.getFullIdentifyer());
+										
 										tableViewer.refresh();
 									}
 								};
@@ -276,8 +280,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 										final Postscan p = new Postscan();
 										p.setAbstractPrePostscanDevice( o );
 										scanModul.add( p );
-										// Table Eintrag wird aus der Combo-Box entfernt
-										postscanCombo.remove(o.getFullIdentifyer());
+										
 										tableViewer.refresh();
 									}
 								};
@@ -298,8 +301,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 									final Postscan p = new Postscan();
 									p.setAbstractPrePostscanDevice( dv );
 									scanModul.add( p );
-									// Table Eintrag wird aus der Combo-Box entfernt
-									postscanCombo.remove(dv.getFullIdentifyer());
+									
 									tableViewer.refresh();
 								}
 							};
@@ -329,8 +331,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 											final Postscan p = new Postscan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
-											// Table Eintrag wird aus der Combo-Box entfernt
-											postscanCombo.remove(o.getFullIdentifyer());
+											
 											tableViewer.refresh();
 										}
 									};
@@ -353,8 +354,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 									final Postscan p = new Postscan();
 									p.setAbstractPrePostscanDevice( o );
 									scanModul.add( p );
-									// Table Eintrag wird aus der Combo-Box entfernt
-									postscanCombo.remove(o.getFullIdentifyer());
+									
 									tableViewer.refresh();
 								}
 							};
@@ -383,8 +383,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 											final Postscan p = new Postscan();
 											p.setAbstractPrePostscanDevice( o );
 											scanModul.add( p );
-											// Table Eintrag wird aus der Combo-Box entfernt
-											postscanCombo.remove(o.getFullIdentifyer());
+											
 											tableViewer.refresh();
 										}
 									};
@@ -408,8 +407,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 									final Postscan p = new Postscan();
 									p.setAbstractPrePostscanDevice( o );
 									scanModul.add( p );
-									// Table Eintrag wird aus der Combo-Box entfernt
-									postscanCombo.remove(o.getFullIdentifyer());
+									
 									tableViewer.refresh();
 								}
 							};
@@ -433,8 +431,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 								final Postscan p = new Postscan();
 								p.setAbstractPrePostscanDevice( dv );
 								scanModul.add( p );
-								// Table Eintrag wird aus der Combo-Box entfernt
-								postscanCombo.remove(dv.getFullIdentifyer());
+								
 								tableViewer.refresh();
 							}
 						};
@@ -475,8 +472,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 					postscan.setAbstractPrePostscanDevice(device);
 					
 					scanModul.add(postscan);
-					// Table Eintrag wird aus der Combo-Box entfernt
-					postscanCombo.remove(postscanCombo.getText());
+					
 					tableViewer.refresh();
 				}
 			}
@@ -486,15 +482,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 		    	public void run() {
 		    		
 		    		scanModul.remove( (Postscan)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
-		    		// ComboBos muß aktualisiert werden
-		    		// alle Postscans werden in die ComboBox eingetragen und die
-		    		// gesetzten postscans wieder ausgetragen
-		    		postscanCombo.setItems( Activator.getDefault().getMeasuringStation().getPrePostScanDevicesFullIdentifyer().toArray( new String[0] ) );
-					Postscan[] postscans = scanModul.getPostscans();
-					for (int i = 0; i < postscans.length; ++i) {
-						// Postscan Eintrag wird aus der Combo-Box entfernt
-						postscanCombo.remove(postscans[i].getAbstractPrePostscanDevice().getFullIdentifyer());
-					}
+		    		
 		    		tableViewer.refresh();
 		    	}
 		    };
@@ -521,13 +509,6 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 		}
 		if( scanModul != null ) {
 			scanModul.addModelUpdateListener( this );
-
-			this.postscanCombo.setItems( Activator.getDefault().getMeasuringStation().getPrePostScanDevicesFullIdentifyer().toArray( new String[0] ) );
-			Postscan[] postscans = scanModul.getPostscans();
-			for (int i = 0; i < postscans.length; ++i) {
-				// Postscan Eintrag wird aus der Combo-Box entfernt
-				this.postscanCombo.remove(postscans[i].getAbstractPrePostscanDevice().getFullIdentifyer());
-			}
 		}
 		this.scanModul = scanModul;
 		this.tableViewer.setInput( scanModul );

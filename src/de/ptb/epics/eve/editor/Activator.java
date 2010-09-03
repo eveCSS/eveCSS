@@ -5,9 +5,10 @@ import java.io.File;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
+import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -20,8 +21,10 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 	
-	private MeasuringStation measuringStation;
+	private IMeasuringStation measuringStation;
 	
+	private ExcludeFilter excludeFilter;
+		
 	private File schemaFile;
 	
 	/**
@@ -66,6 +69,8 @@ public class Activator extends AbstractUIPlugin {
 				this.schemaFile = null;
 			}
 		}
+		this.excludeFilter = new ExcludeFilter();
+		this.excludeFilter.setSource( this.measuringStation );
 	}
 
 	/*
@@ -86,8 +91,8 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 	
-	public MeasuringStation getMeasuringStation() {
-		return this.measuringStation;
+	public IMeasuringStation getMeasuringStation() {
+		return this.excludeFilter;
 	}
 
 	public File getSchemaFile() {

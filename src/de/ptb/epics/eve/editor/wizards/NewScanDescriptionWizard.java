@@ -22,7 +22,7 @@ import org.eclipse.core.filesystem.provider.FileStore;
 
 import org.eclipse.debug.core.sourcelookup.containers.LocalFileStorage;
 
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
@@ -115,7 +115,7 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 			}
 		}
 		
-		final MeasuringStation measuringStation =  Activator.getDefault().getMeasuringStation();
+		final IMeasuringStation measuringStation =  Activator.getDefault().getMeasuringStation();
 		final ScanDescription scanDescription = new ScanDescription( measuringStation );
 		final Chain chain = new Chain( 1 );
 		final StartEvent startEvent = new StartEvent( scanDescription.getEventById( "S0" ) , chain );

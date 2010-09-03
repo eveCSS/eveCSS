@@ -32,6 +32,7 @@ import org.eclipse.ui.PlatformUI;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
@@ -46,14 +47,19 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 	private Combo detectorChannelCombo;
 	private Button addButton;
 	private ScanModul scanModul;
+	private MenuManager menuManager;
+	private final IMeasuringStation measuringStation;
 	
-	public DetectorChannelComposite( final Composite parent, final int style) {
+	
+	public DetectorChannelComposite( final Composite parent, final int style, final IMeasuringStation measuringStation ) {
 		super( parent, style );
+		this.measuringStation = measuringStation;
+		this.measuringStation.addModelUpdateListener( this );
 		initialize();
 	}
 	
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-		
+		detectorChannelCombo.setItems( measuringStation.getChannelsFullIdentifyer().toArray( new String[0] ) );
 	}
 
 	private void initialize() {
@@ -125,7 +131,7 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 		gridData.grabExcessHorizontalSpace = true;
 		this.detectorChannelCombo.setLayoutData( gridData );
 		
-		final MenuManager menuManager = new MenuManager( "#PopupMenu" );
+		menuManager = new MenuManager( "#PopupMenu" );
 		
 		menuManager.setRemoveAllWhenShown( true );
 		menuManager.addMenuListener( new IMenuListener() {
@@ -156,8 +162,7 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 										c.setDetectorChannel( dc );
 										scanModul.add( c );
 										setDetectorChannelView(c);
-										// Table Eintrag wird aus der Combo-Box entfernt
-										detectorChannelCombo.remove(dc.getFullIdentifyer());
+										
 										tableViewer.refresh();
 									}
 								};
@@ -180,8 +185,7 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 									c.setDetectorChannel( dc );
 									scanModul.add( c );
 									setDetectorChannelView(c);
-									// Table Eintrag wird aus der Combo-Box entfernt
-									detectorChannelCombo.remove(dc.getFullIdentifyer());
+									
 									tableViewer.refresh();
 								}
 							};
@@ -219,8 +223,7 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 										c.setDetectorChannel( dc );
 										scanModul.add( c );
 										setDetectorChannelView(c);
-										// Table Eintrag wird aus der Combo-Box entfernt
-										detectorChannelCombo.remove(dc.getFullIdentifyer());
+										
 										tableViewer.refresh();
 									}
 								};
@@ -266,8 +269,6 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 					channel.setDetectorChannel(detectorChannel);
 					scanModul.add(channel);
 					setDetectorChannelView(channel);
-					// Table Eintrag wird aus der Combo-Box entfernt
-					detectorChannelCombo.remove(detectorChannelCombo.getText());
 					tableViewer.refresh();
 				}
 			}
@@ -279,15 +280,6 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 					// DetectorChannel wird aus scanModul ausgetragen
 		    		scanModul.remove( (Channel)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
 
-		    		// ComboBox muß aktualisiert werden
-		    		// alle DetectorChannels werden in die ComboBox eingetragen und die
-		    		// gesetzten DetectorChannels wieder ausgetragen
-		    		detectorChannelCombo.setItems( Activator.getDefault().getMeasuringStation().getChannelsFullIdentifyer().toArray( new String[0] ) );
-					Channel[] channels = scanModul.getChannels();
-					for (int i = 0; i < channels.length; ++i) {
-						// Channel Eintrag wird aus der Combo-Box entfernt
-						detectorChannelCombo.remove(channels[i].getDetectorChannel().getFullIdentifyer());
-					}
 		    		tableViewer.refresh();
 
 		    		// PlotWindowView wird aktualisiert
@@ -342,13 +334,6 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 		}
 		if( scanModul != null ) {
 			scanModul.addModelUpdateListener( this );
-
-			this.detectorChannelCombo.setItems( Activator.getDefault().getMeasuringStation().getChannelsFullIdentifyer().toArray( new String[0] ) );
-			Channel[] channels = scanModul.getChannels();
-			for (int i = 0; i < channels.length; ++i) {
-				// Detector Channel Eintrag wird aus der Combo-Box entfernt
-				this.detectorChannelCombo.remove(channels[i].getAbstractDevice().getFullIdentifyer());
-			}
 		}
 		this.scanModul = scanModul;
 		this.tableViewer.setInput( scanModul );
