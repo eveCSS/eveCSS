@@ -20,13 +20,21 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
@@ -34,6 +42,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.dialogs.ListDialog;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.EditorPart;
 import org.xml.sax.SAXException;
@@ -46,10 +55,13 @@ import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
+import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoaderHandler;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionSaverToXMLusingXerces;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.dialogs.LostDevicesDialog;
+import de.ptb.epics.eve.editor.dialogs.PluginControllerDialog;
 import de.ptb.epics.eve.editor.graphical.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.EventEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModulEditPart;
@@ -102,26 +114,11 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	@Override
 	public void doSaveAs() {
 
-		// als filePath wird das Messplatzverzeichnis gesetzt
-		int lastSeperatorIndex;
-		final String filePath;
-//		int lastSeperatorIndex = Activator.getDefault().getMeasuringStation().getLoadedFileName().lastIndexOf( File.separatorChar );
-//		final String filePath = Activator.getDefault().getMeasuringStation().getLoadedFileName().substring( 0, lastSeperatorIndex + 1 ) + "scan/";
-
+		// als filePath wird das Verzeichnis des aktuellen Scans gesetzt
 		final FileStoreEditorInput fileStoreEditorInput2 = (FileStoreEditorInput)this.getEditorInput();
-		System.out.println("File automatisch: " + fileStoreEditorInput2.getURI().getRawPath());
 		
-		if (fileStoreEditorInput2.getURI().getRawPath()!= null) {
-			// als filePath wird das Verzeichnis des aktuellen Scans gesetzt
-			lastSeperatorIndex = fileStoreEditorInput2.getURI().getRawPath().lastIndexOf( "/" );
-			filePath = fileStoreEditorInput2.getURI().getRawPath().substring( 0, lastSeperatorIndex + 1 );
-		}
-		else {
-			// als filePath wird das Messplatzverzeichnis gesetzt
-			lastSeperatorIndex = Activator.getDefault().getMeasuringStation().getLoadedFileName().lastIndexOf( File.separatorChar );
-			filePath = Activator.getDefault().getMeasuringStation().getLoadedFileName().substring( 0, lastSeperatorIndex + 1 ) + "scan/";
-		}
-		
+		int lastSeperatorIndex = fileStoreEditorInput2.getURI().getRawPath().lastIndexOf( "/" );
+		final String filePath = fileStoreEditorInput2.getURI().getRawPath().substring( 0, lastSeperatorIndex + 1 );
 		
 		final FileDialog dialog = new FileDialog( this.getEditorSite().getShell(), SWT.SAVE );
 		dialog.setFilterPath(filePath);
@@ -131,14 +128,14 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		
 		if( fileName != null ) {
 			// eventuel vorhandener Datentyp wird weggenommen
-			final int firstPoint = fileName.indexOf(".");
-
-			if (firstPoint > 0)
-				fileNameLang = fileName.substring(0, firstPoint) + ".scml";
+			final int lastPoint = fileName.lastIndexOf( "." );
+			final int lastSep = fileName.lastIndexOf("/");
+			
+			if ((lastPoint > 0) && (lastPoint > lastSep))
+				fileNameLang = fileName.substring(0, lastPoint) + ".scml";
 			else
 				fileNameLang = fileName + ".scml";
 		}
-
 		
 		final File scanDescriptionFile = new File( fileNameLang );
 		
@@ -183,9 +180,18 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		}
 		
 		final ScanDescriptionLoader scanDescriptionLoader = new ScanDescriptionLoader( Activator.getDefault().getMeasuringStation(), Activator.getDefault().getSchemaFile() );
+		this.dirty = false;
 		try {
 			scanDescriptionLoader.load( scanDescriptionFile );
 			this.scanDescription = scanDescriptionLoader.getScanDescription();
+
+			if (scanDescriptionLoader.getLostDevices() != null) {
+				Shell shell = getSite().getShell();
+				LostDevicesDialog dialog = new LostDevicesDialog( shell, scanDescriptionLoader );
+				dialog.open();
+				this.dirty = true;
+			}
+			
 			this.scanDescription.addModelUpdateListener( this );
 		} catch( final ParserConfigurationException e ) {
 			// TODO Auto-generated catch block
@@ -197,7 +203,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.dirty = false;
 		this.firePropertyChange( PROP_DIRTY );
 	}
 

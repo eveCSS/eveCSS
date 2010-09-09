@@ -74,9 +74,19 @@ public class MotorAxisFileComposite extends Composite implements IModelUpdateLis
 				if( e.widget == searchButton ) {
 					Shell shell = getShell();
 
-					int lastSeperatorIndex = Activator.getDefault().getMeasuringStation().getLoadedFileName().lastIndexOf( File.separatorChar );
-					final String filePath = Activator.getDefault().getMeasuringStation().getLoadedFileName().substring( 0, lastSeperatorIndex + 1 ) + "scan/";
-
+					int lastSeperatorIndex;
+					final String filePath;
+					
+					if ((axis.getPositionfile() == null) || (axis.getPositionfile().equals(""))) {
+						lastSeperatorIndex = Activator.getDefault().getMeasuringStation().getLoadedFileName().lastIndexOf( File.separatorChar );
+						filePath = Activator.getDefault().getMeasuringStation().getLoadedFileName().substring( 0, lastSeperatorIndex);
+					}
+					else {
+						// als filePath wird das vorhandene Verzeichnis gesetzt
+						lastSeperatorIndex = axis.getPositionfile().lastIndexOf( File.separatorChar );
+						filePath = axis.getPositionfile().substring( 0, lastSeperatorIndex + 1 );
+					}
+					
 					FileDialog fileWindow = new FileDialog(shell, SWT.SAVE);
 					fileWindow.setFilterPath(filePath);
 					String name = fileWindow.open();

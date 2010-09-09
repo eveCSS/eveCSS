@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.wizards;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -21,6 +23,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.eclipse.ui.dialogs.FileSelectionDialog;
+
+import de.ptb.epics.eve.editor.Activator;
 
 /**
  * The "New" wizard page allows setting the container for the new file as well
@@ -99,7 +103,13 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 		//ContainerSelectionDialog dialog = new ContainerSelectionDialog(
 		//		getShell(), ResourcesPlugin.getWorkspace().getRoot(), false,
 		//		"Select new file container");
+
+		// als filePath wird das Messplatzverzeichnis gesetzt
+		int lastSeperatorIndex = Activator.getDefault().getMeasuringStation().getLoadedFileName().lastIndexOf( File.separatorChar );
+		final String filePath = Activator.getDefault().getMeasuringStation().getLoadedFileName().substring( 0, lastSeperatorIndex + 1 ) + "scan/";
+
 		final FileDialog dialog = new FileDialog( getShell(), SWT.SAVE );
+		dialog.setFilterPath(filePath);
 		final String fileName = dialog.open();
 		
 		if( fileName != null ) {

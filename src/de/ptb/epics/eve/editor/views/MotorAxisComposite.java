@@ -90,7 +90,7 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 	    this.tableViewer.getTable().setHeaderVisible( true );
 	    this.tableViewer.getTable().setLinesVisible( true );
 	    
-	    // hier wird eine Liste der vorhandenen DetectorChannels des Scan Moduls erstellt
+	    // hier wird eine Liste der vorhandenen MotorAchsen des Scan Moduls erstellt
 	    this.tableViewer.setContentProvider( new MotorAxisInputWrapper() );
 	    this.tableViewer.setLabelProvider( new MotorAxisLabelProvider() );
 	    

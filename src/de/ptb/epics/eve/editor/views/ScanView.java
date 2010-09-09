@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jface.viewers.ComboBoxCellEditor;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
@@ -39,9 +41,15 @@ import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
+import de.ptb.epics.eve.data.PluginDataType;
 import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
+import de.ptb.epics.eve.data.measuringstation.PluginParameter;
+import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
+import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.PluginController;
+import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.errors.ChainError;
 import de.ptb.epics.eve.data.scandescription.errors.ChainErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -199,16 +207,35 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 				String name = fileWindow.open();
 
 				if( name != null ) {
-					// eventuel vorhandener Datentyp wird weggenommen
-					final int firstPoint = name.indexOf(".");
 
-					if (firstPoint > 0)
-						filenameInput.setText( name.substring(0, firstPoint) );
+					// Wenn im Plugin der Parameter suffix vorhanden ist, wird diese Endung für das Datenfile verwendet
+					final Iterator< PluginParameter > it = currentChain.getSavePluginController().getPlugin().getParameters().iterator();
+
+					PluginParameter pluginParameter = null;
+					while( it.hasNext() ) {
+						pluginParameter = it.next();
+						if( pluginParameter.getName().equals( "suffix" ) ) {
+							break;
+						}
+						pluginParameter = null;
+					}
+
+					if( pluginParameter != null ) {
+						// Suffix ist vorhanden, Dateiendung wird ersetzt
+						String suffix = currentChain.getSavePluginController().get("suffix").toString();
+						
+						// eventuel vorhandener Datentyp wird weggenommen
+						final int lastPoint = name.lastIndexOf(".");
+						final int lastSep = name.lastIndexOf("/");
+
+						if ((lastPoint > 0) && (lastPoint > lastSep))
+							filenameInput.setText( name.substring(0, lastPoint) + "." + suffix);
+						else
+							filenameInput.setText( name + "." + suffix);
+					}
 					else
 						filenameInput.setText( name );
 				}
-
-				
 			}
 
 			public void mouseUp(MouseEvent e) {
