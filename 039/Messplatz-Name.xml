@@ -23,15 +23,25 @@
             <name>plugin2</name>
             <location>/path/to/plugin2</location>
         </plugin>
+        <!-- (dummy) plugin to save data in ascii format -->
+        <plugin type="save">
+            <name>ASCII</name>
+            <location></location>
+            <parameter name="format" datatype="string" default="ASCII"></parameter>
+            <parameter name="suffix" datatype="string" default="txt"></parameter>
+        </plugin>
+        <!-- plugin to save data in hdf5 format -->
+        <plugin type="save">
+            <name>HDF5</name>
+            <location>/messung/eve/lib/linux-x86/libhdf5plugin.so</location>
+            <parameter name="format" datatype="string" default="HDF5"></parameter>
+            <parameter name="suffix" datatype="string" default="hd5"></parameter>
+        </plugin>
         <plugin type="save">
             <name>HDFspezial</name>
             <location>HDFspezial.slib</location>
             <parameter name="format" datatype="string" mandatory="true">classic,tables</parameter>
 			<parameter name="buffersize" datatype="int" mandatory="true"></parameter>
-        </plugin>
-        <plugin type="save">
-            <name>HDF4</name>
-            <location>HDF4</location>
         </plugin>
 		<plugin type="postscanpositioning">
 			<name>GOTO-Peak</name>
@@ -46,58 +56,44 @@
     </plugins>
     <detectors>
         <detector>
-            <class>ringCurrent</class>
-            <name>BESSY</name>
-            <id>ringCurrent</id>
-            <unit>
-                <unitstring>Ampere</unitstring>
-            </unit>
+            <class>Ringstrom</class>
+            <name>Ring_1</name>
+            <id>ringCurrent1basic</id>
+            <!-- Name, Class, PV -->
+            <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <name>RingStrom</name>
-                <id>ringCurrent1</id>
+<!--                <name></name>-->
+                <name>Ring_1</name>
+                <id>ringCurrent1chan1</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">ringCurrent1</access>
+                    <access method="GETPUTCB" transport="ca" type="double">ringCurrent1.VAL</access>
                 </read>
+                <unit>
+                    <access method="GETPUT" transport="ca" type="string">ringCurrent1.EGU</access>
+                </unit>
             </channel>
         </detector>
+        <!-- Name, Class, PV -->
+        <!-- basic detector (must include a channel) -->
         <detector>
-            <class></class>
-            <name>Keithley617_test</name>
-            <id>K0617:27225</id>
-            <unit>
-                <access method="GETCB" transport="ca" type="string">K0617:27225.EGU</access>
-            </unit>
-            <trigger>
-                <access method="PUTCB" transport="ca" type="int">K0617:27225.TRIG</access>
-                <value type="int">1</value>
-            </trigger>
+            <class>Ringstrom</class>
+            <name>Ring_2</name>
+            <id>ringCurrent2basic</id>
+            <!-- Name, Class, PV -->
+            <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <name>Keithley617_test</name>
-                <id>K0617:27225.1</id>
+<!--                <name></name>-->
+                <name>Ring_2</name>
+                <id>ringCurrent2chan1</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">K0617:27225.VAL</access>
+                    <access method="GETPUTCB" transport="ca" type="double">ringCurrent2.VAL</access>
                 </read>
+                <unit>
+                    <access method="GETPUT" transport="ca" type="string">ringCurrent2.EGU</access>
+                </unit>
             </channel>
-            <option>
-                <name>ZeroCheck</name>
-                <id>K6559:27225zeroChk</id>
-                <value>
-                    <access method="GETPUTCB" transport="ca" type="OnOff">K6559:27225zeroChk</access>
-                    <value type="OnOff">1,0</value>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Function</name>
-                <id>K6559:27225function</id>
-                <value>
-                    <access method="GETPUTCB" transport="ca" type="string">K6559:27225function</access>
-                    <value type="string">Voltage,Current,Resistance</value>
-                </value>
-                <displaygroup>summary</displaygroup>
-            </option>
         </detector>
         <detector>
             <class>Prema5000</class>
@@ -137,64 +133,6 @@
                 <displaygroup>summary</displaygroup>
             </option>
         </detector>
-<!-- -->
-		<detector>
-			<class>Keithley617</class>
-			<name>Keithley_5</name>
-			<id>K0617:28326</id>
-			<unit>
-				<access method="GETCB" transport="ca" type="string">K0617:28326.EGU</access>
-			</unit>
-			<trigger>
-				<access method="PUTCB" transport="ca" type="int">K0617:28326.PROC</access>
-				<value type="int">1</value>
-			</trigger>
-			<channel>
-                <class></class>
-				<name> </name>
-				<id>K0617:28326.1</id>
-				<read>
-					<access method="GETCB" transport="ca" type="double">K0617:28326.VAL</access>
-				</read>
-			</channel>
-			<option>
-				<name>Function</name>
-				<id>K0617:28326function</id>
-				<value>
-					<access method="GETPUTCB" transport="ca" type="string">K0617:28326function</access>
-					<value type="string">Volts,Amps,Ohms,Coulombs,Ext Feedback,V/I Ohms</value>
-				</value>
-				<displaygroup>summary</displaygroup>
-			</option>
-			<option>
-				<name>Range</name>
-				<id>K0617:28326range</id>
-				<value>
-					<access method="GETPUTCB" transport="ca" type="string">K0617:28326range</access>
-					<value type="string">Auto,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,CancelAuto</value>
-				</value>
-				<displaygroup>summary</displaygroup>
-			</option>
-			<option>
-				<name>ZeroCheck</name>
-				<id>K0617:28326zeroChk</id>
-				<value>
-					<access method="GETPUTCB" transport="ca" type="OnOff">K0617:28326zeroChk</access>
-					<value type="OnOff">1,0</value>
-				</value>
-				<displaygroup>detail</displaygroup>
-			</option>
-			<option>
-				<name>ZeroCor</name>
-				<id>K0617:28326zeroCor</id>
-				<value>
-					<access method="GETPUTCB" transport="ca" type="OpenClose">K0617:28326zeroCor</access>
-					<value type="OpenClose">Ein,Aus</value>
-				</value>
-				<displaygroup>detail</displaygroup>
-			</option>
-		</detector>
-<!--   -->
     </detectors>
     <motors>
         <motor>
@@ -321,9 +259,8 @@
 				<name>Y-Position</name>
 				<id>PPSMC:23715001</id>
 				<goto>
-					<access method="PUTCB" type="string" transport="ca">PPSMC:23715001</access>
+					<access method="PUTCB" type="double" transport="ca">PPSMC:23715001</access>
 					<!-- falls nur diskrete Positionen erlaubt sind -->
-					<value type="string">Hallo,Raus bzw. APM,Ap28,Ap10,Ap5</value>
 				</goto>
 				<position>
 					<access method="GETCB" type="double" transport="ca">PPSMC:23715001.RBV</access>
@@ -348,38 +285,6 @@
 					<displaygroup>summary</displaygroup>
 				</option>
 			</axis>
-			<axis>
-                <class></class>
-				<name>Z-Position</name>
-				<id>PPSMC:23715002</id>
-				<goto>
-					<access method="PUTCB" type="double" transport="ca">PPSMC:23715002</access>
-					<!-- falls nur diskrete Positionen erlaubt sind -->
- 					<value type="double">-10.0to20.0</value>
-				</goto>
-				<position>
-					<access method="GETCB" type="double" transport="ca">PPSMC:23715002.RBV</access>
-				</position>
-				<stop>
-					<access transport="ca" method="PUT" type="int">PPSMC:23715002.STOP</access>
-					<value type="int">1</value>
-				</stop>
-				<status>
-					<access method="GETCB" type="int" transport="ca">PPSMC:23715002.MSTA</access>
-				</status>
-				<trigger>
-					<access method="PUTCB" transport="ca" type="int">PPSMC:23715002.TRIG</access>
-					<value type="int">1</value>
-				</trigger><!--local trigger-->
-				<option>
-					<name>Velocity</name>
-					<id>PPSMC:23715002.VELO</id>
-					<value>
-						<access method="GETPUTCB" type="double"	count="1" transport="ca">PPSMC:23715002.VELO</access>
-					</value>
-					<displaygroup>summary</displaygroup>
-				</option>
-			</axis>
 			<option>
 				<name>Lock Local</name>
 				<id>PPSMC:23715dislocal</id>
@@ -389,76 +294,8 @@
 				</value>
 			</option>
 		</motor>
-		<motor>
-			<class>ServoMotor</class>
-			<name>SX700-</name>
-			<id>OMS58:262000servo</id>
-			<axis>
-                <class></class>
-				<name>Mirror</name>
-				<id>OMS58:26200000servo</id>
-				<goto>
-					<access transport="ca" method="PUTCB" type="double">OMS58:26200000</access>
-				</goto>
-				<position>
-					<access transport="ca" method="GETCB" type="double">OMS58:26200000.RBV</access>
-				</position>
-				<stop>
-					<access transport="ca" method="PUT" type="int">OMS58:26200000.STOP</access>
-					<value type="int">1</value>
-				</stop>
-				<status>
-					<access transport="ca" method="GETCB" type="int">OMS58:26200000.STAT</access>
-				</status>
-				<unit>
-					<access transport="ca" method="GETCB" type="string">OMS58:26200000.EGU</access>
-				</unit>
-			</axis>
-			<axis>
-                <class></class>
-				<name>Grating</name>
-				<id>OMS58:26200001servo</id>
-				<goto>
-					<access transport="ca" method="PUTCB" type="double">OMS58:26200001</access>
-				</goto>
-				<position>
-					<access transport="ca" method="GETCB" type="double">OMS58:26200001.RBV</access>
-				</position>
-				<stop>
-					<access transport="ca" method="PUT" type="int">OMS58:26200001.STOP</access>
-					<value type="int">1</value>
-				</stop>
-				<status>
-					<access transport="ca" method="GETCB" type="int">OMS58:26200001.MSTA</access>
-				</status>
-				<unit>
-					<access transport="ca" method="GETCB" type="string">OMS58:26200001.EGU</access>
-				</unit>
-			</axis>
-		</motor>
      </motors>
     <devices>
-        <device>
-            <class>SMC200</class>
-            <name>Load Motor</name>
-            <id>PPSMC:23715001.SET</id>
-            <value>
-                <access type="string" method="GETPUTCB" transport="ca">PPSMC:23715001.SET</access>
-                <value type="string"></value>
-            </value>
-            <unit>
-                <access type="string" method="GETCB" transport="ca">PPSMC:23715001.EGU</access>
-            </unit>
-        </device>
-        <device>
-            <class></class>
-            <name>Motor-RBV</name>
-            <id>Event-PPSMC:23715001</id>
-            <value>
-                <access method="GETCB" transport="ca" type="double">PPSMC:23715001.RBV</access>
-                <value type="double"></value>
-            </value>
-        </device>
         <device>
             <class></class>
             <name>"Dummy-Topup[]"</name>

@@ -3,9 +3,15 @@
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <version>0.3.7</version>
     <chain id="1">
+        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/039/qnim_test_5</savefilename>
         <confirmsave>false</confirmsave>
         <autonumber>false</autonumber>
         <savescandescription>false</savescandescription>
+        <saveplugin name="HDF5">
+            <parameter name="location">/home/eden/eclipse/eve/evePlugins/lib</parameter>
+            <parameter name="format">HDF5</parameter>
+            <parameter name="suffix">hd5</parameter>
+        </saveplugin>
         <scanmodules>
             <scanmodule id="1">
                 <type>classic</type>
@@ -68,8 +74,8 @@
         <plugin type="save">
             <name>HDF5</name>
             <location>/home/eden/eclipse/eve/evePlugins/lib</location>
-            <parameter name="extent" datatype="int" default="0" mandatory="false"></parameter>
             <parameter name="format" datatype="string" default="HDF5" mandatory="false"></parameter>
+            <parameter name="suffix" datatype="string" default="hd5" mandatory="false"/>
         </plugin>
         <plugin type="position">
             <name>ReferenceAdd</name>

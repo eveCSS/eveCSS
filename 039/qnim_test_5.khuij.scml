@@ -3,6 +3,7 @@
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <version>0.3.7</version>
     <chain id="1">
+        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/039/qnim_test_5</savefilename>
         <confirmsave>false</confirmsave>
         <autonumber>false</autonumber>
         <savescandescription>false</savescandescription>

@@ -31,7 +31,8 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <name></name>
+<!--                <name></name>-->
+                <name>Ring_1</name>
                 <id>ringCurrent1chan1</id>
                 <read>
                     <access method="GETPUTCB" transport="ca" type="double">ringCurrent1.VAL</access>
@@ -51,7 +52,8 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <name></name>
+<!--                <name></name>-->
+                <name>Ring_2</name>
                 <id>ringCurrent2chan1</id>
                 <read>
                     <access method="GETPUTCB" transport="ca" type="double">ringCurrent2.VAL</access>
@@ -71,7 +73,8 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <name></name>
+<!--                <name></name>-->
+                <name>Ring_5</name>
                 <id>ringCurrent5chan1</id>
                 <read>
                     <access method="GETPUTCB" transport="ca" type="double">ringCurrent5.VAL</access>
@@ -91,7 +94,8 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <name></name>
+<!--                <name></name>-->
+                <name>Bessy_Ringstrom</name>
                 <id>MDIZ3T5G:currentchan1</id>
                 <read>
                     <access method="GETPUTCB" transport="ca" type="double">MDIZ3T5G:current.VAL</access>
@@ -111,7 +115,8 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <name></name>
+<!--                <name></name>-->
+                <name>Bessy_Lebensdauer</name>
                 <id>MDIZ3T5G:lt10chan1</id>
                 <read>
                     <access method="GETPUTCB" transport="ca" type="double">MDIZ3T5G:lt10.VAL</access>
@@ -131,7 +136,8 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <name></name>
+<!--                <name></name>-->
+                <name>Lebensdauer_1</name>
                 <id>ringLifeTime1chan1</id>
                 <read>
                     <access method="GETPUTCB" transport="ca" type="double">ringLifeTime1.VAL</access>
@@ -151,7 +157,8 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <name></name>
+<!--                <name></name>-->
+                <name>Lebensdauer_2</name>
                 <id>ringLifeTime2chan1</id>
                 <read>
                     <access method="GETPUTCB" transport="ca" type="double">ringLifeTime2.VAL</access>
@@ -171,7 +178,8 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <name></name>
+<!--                <name></name>-->
+                <name>Lebensdauer_5</name>
                 <id>ringLifeTime5chan1</id>
                 <read>
                     <access method="GETPUTCB" transport="ca" type="double">ringLifeTime5.VAL</access>
@@ -184,7 +192,7 @@
         <!-- Name, Class, PV -->
         <!-- Keithley 617 with a single channel -->
         <detector>
-            <class>nick</class>
+            <class></class>
             <name>Keithley_Det</name>
             <id>K0617:23626</id>
             <unit>
@@ -196,7 +204,8 @@
             </trigger>
             <channel>
                 <class></class>
-                <name></name>
+<!--                <name></name> -->
+                <name>Keithley_Det</name>
                 <id>K0617:23626chan1</id>
                 <read>
                     <access method="GETPUTCB" transport="ca" type="double">K0617:23626.VAL</access>
@@ -376,7 +385,7 @@
         <!-- Name, Class, PV -->
         <!-- Keithley 196 with a single channel -->
         <detector>
-            <class>nick</class>
+            <class></class>
             <name>Keithley_U</name>
             <id>K0196:23628</id>
             <unit>
@@ -388,7 +397,8 @@
             </trigger>
             <channel>
                 <class></class>
-                <name></name>
+<!--                <name></name>-->
+                <name>Keithley_U</name>
                 <id>K0196:23628chan1</id>
                 <read>
                     <access method="GETPUTCB" transport="ca" type="double">K0196:23628.VAL</access>
@@ -549,7 +559,7 @@
         <!-- Name, Class, PV -->
         <!-- Keithley 2000 with a single channel -->
         <detector>
-            <class>nick</class>
+            <class></class>
             <name>Keithley_I</name>
             <id>K2000:23624</id>
             <unit>
@@ -561,7 +571,8 @@
             </trigger>
             <channel>
                 <class></class>
-                <name></name>
+<!--                <name></name>-->
+                <name>Keithley_I</name>
                 <id>K2000:23624chan1</id>
                 <read>
                     <access method="GETPUTCB" transport="ca" type="double">K2000:23624.VAL</access>
@@ -1186,7 +1197,7 @@
         <!-- Name, Class, PV -->
         <!-- ortec 0974 (must include ortecChannel) -->
         <detector>
-            <class>nick</class>
+            <class></class>
             <name>Ortec1</name>
             <id>O0974:23609</id>
             <unit>
