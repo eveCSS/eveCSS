@@ -88,7 +88,6 @@ public class Axis extends AbstractMainPhaseBehavior {
 			throw new IllegalArgumentException( "The parameter 'scanModul' must not be null!" );
 		}
 		this.scanModul = scanModul;
-
 	}
 	
 	public ScanModul getScanModul() {

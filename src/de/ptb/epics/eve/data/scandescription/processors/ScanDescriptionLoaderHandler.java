@@ -173,6 +173,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	 */
 	private StringBuffer textBuffer;
 
+	private List<String> lostDevicesList;
 	
 	/**
 	 * This constructor creates a new SAX handler to load a scan description.
@@ -201,7 +202,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		
 		this.idToScanModulMap = new HashMap< Integer, ScanModul >();
 		this.scanModulChainMap = new HashMap< ScanModul, Chain >();
-		
+
+		this.lostDevicesList = new ArrayList<String>();
+
 	}
 
 	/*
@@ -564,9 +567,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			
 		case PLUGIN_CONTROLLER_LOADING:
 			if (qName.equals("parameter")) {
-				// location is no parameter of the plugin
-				if (atts.getValue("name").equals("location"))
-					break;
 				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_PARAMETER_NEXT;
 				this.currentParameterName = atts.getValue( "name" );
 			}
@@ -734,7 +734,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				// MotorAxis ist am Messplatz vorhanden
 				this.currentAxis.setMotorAxis(this.measuringStation.getMotorAxisById(textBuffer.toString()));
 			} else {
-				System.out.println("Motorachse nicht am Messplatz vorhanden: " + textBuffer.toString());
+				this.lostDevicesList.add("PV " + textBuffer.toString() + " not found in XML-File " + this.measuringStation.getLoadedFileName());	
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_AXISID_READ;
 			break;
@@ -782,9 +782,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_DETECTOR_CHANNELID_NEXT:
 			if (this.measuringStation.getDetectorChannelById(textBuffer.toString()) != null) {
 				this.currentChannel.setDetectorChannel(this.measuringStation.getDetectorChannelById(textBuffer.toString()));
-				
 			} else {
-				System.out.println("Detectorchannel nicht am Messplatz vorhanden: " + textBuffer.toString());
+				this.lostDevicesList.add("PV " + textBuffer.toString() + " not found in XML-File " + this.measuringStation.getLoadedFileName());	
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_CHANNELID_READ;
 			break;
@@ -1052,7 +1051,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			
 		case PLUGIN_CONTROLLER_PARAMETER_NEXT:
 			if (this.currentParameterName.equals("location")) {
-				this.currentPluginController.set( this.currentParameterName, textBuffer.toString() );
+				// location is no parameter of the plugin
+				if (textBuffer.toString().equals(this.currentPluginController.getPlugin().getLocation())) {
+				}
+				else {
+					// Hinweise ausgeben, daß Location überschrieben wurde!
+					this.lostDevicesList.add("Plugin " + this.currentPluginController.getPlugin().getName() + " : Location " + textBuffer.toString() + " replaced by " + this.currentPluginController.getPlugin().getLocation());
+				}
 				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_PARAMETER_READ;
 				break;
 			}
@@ -2090,6 +2095,18 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		return this.scanDescription;
 	}
 	
-	
+	/**
+	 * This method returns the PVs which not found in the
+	 * messplatz.xml file.
+	 * 
+	 * @return The loaded scan description.
+	 */
+	public List<String> getLostDevices() {
+		if ( this.lostDevicesList != null )
+			return this.lostDevicesList;
+		else
+			return null;
+	}
 
+	
 }

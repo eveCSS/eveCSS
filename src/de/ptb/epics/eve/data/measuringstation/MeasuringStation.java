@@ -665,3 +665,4 @@ public class MeasuringStation implements IMeasuringStation {
 		return false;
 	}
 }
+

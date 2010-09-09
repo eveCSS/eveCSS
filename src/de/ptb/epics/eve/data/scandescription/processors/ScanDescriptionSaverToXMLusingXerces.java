@@ -1145,7 +1145,6 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 			this.atts.addAttribute( "","name", "name", "CDATA", "location" );
 			this.contentHandler.startElement( "", "parameter", "parameter", this.atts );
 			this.contentHandler.characters( pluginController.getPlugin().getLocation().toCharArray(), 0, pluginController.getPlugin().getLocation().length() );
-//			this.contentHandler.endElement( "", "location", "location" );
 			this.contentHandler.endElement( "", tagName, tagName );
 
 			Iterator< PluginParameter > it = pluginController.getPlugin().getParameters().iterator();

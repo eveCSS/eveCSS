@@ -50,7 +50,12 @@ public class ScanDescriptionLoader {
 	 * The loaded scan description.
 	 */
 	private ScanDescription scanDescription;
-	
+
+	/**
+	 * A List of PVs that was not found in the messplatz.xml File.
+	 */
+	private List<String> lostDevicesList;
+
 	/**
 	 * The schema file that is used to load the measuring station description.
 	 */
@@ -130,6 +135,8 @@ public class ScanDescriptionLoader {
 		saxParser.parse( this.fileToLoad, handler );
 		
 		this.scanDescription = handler.getScanDescription();
+		this.lostDevicesList = handler.getLostDevices();
+		
 	}
 
 	/**
@@ -167,4 +174,12 @@ public class ScanDescriptionLoader {
 		return scanDescription;
 	}
 	
+	public List<String> getLostDevices() {
+
+		if ( (this.lostDevicesList != null) && (!this.lostDevicesList.isEmpty()))
+			return this.lostDevicesList;
+		else
+			return null;
+	}
+
 }
