@@ -44,8 +44,6 @@ import de.ptb.epics.eve.editor.Activator;
 public class DetectorChannelComposite extends Composite implements IModelUpdateListener {
 
 	private TableViewer tableViewer;
-	private Combo detectorChannelCombo;
-	private Button addButton;
 	private ScanModul scanModul;
 	private MenuManager menuManager;
 	private final IMeasuringStation measuringStation;
@@ -59,7 +57,6 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 	}
 	
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-		detectorChannelCombo.setItems( measuringStation.getChannelsFullIdentifyer().toArray( new String[0] ) );
 	}
 
 	private void initialize() {
@@ -123,14 +120,7 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 			}
 		});
 	    
-	    this.detectorChannelCombo = new Combo(this, SWT.READ_ONLY);
-		
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		gridData.grabExcessHorizontalSpace = true;
-		this.detectorChannelCombo.setLayoutData( gridData );
-		
+	    
 		menuManager = new MenuManager( "#PopupMenu" );
 		
 		menuManager.setRemoveAllWhenShown( true );
@@ -240,74 +230,47 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 					}
 				}
 				
+				Action deleteAction = new Action(){
+			    	public void run() {
+		    		
+						// DetectorChannel wird aus scanModul ausgetragen
+			    		scanModul.remove( (Channel)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
+
+			    		tableViewer.refresh();
+
+			    		// PlotWindowView wird aktualisiert
+			    		IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
+						PlotWindowView plotWindowView = null;
+						for (int i = 0; i < ref.length; ++i) {
+							if (ref[i].getId().equals(PlotWindowView.ID)) {
+								plotWindowView = (PlotWindowView) ref[i]
+										.getPart(false);
+							}
+						}
+						if( plotWindowView != null ) {
+							PlotWindow aktPlotWindow = plotWindowView.getPlotWindow();
+							// PlotWindowView wird neu gesetzt.
+							plotWindowView.setPlotWindow(aktPlotWindow);
+						}
+			    	}
+			    };
+			    
+			    deleteAction.setEnabled( true );
+			    deleteAction.setText( "Delete Channel" );
+			    deleteAction.setToolTipText( "Deletes Channel" );
+			    deleteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ) );
+			    
+			    manager.add( deleteAction );
+				
 			}
 
 			
 		});
 		
-		final Menu contextMenu = menuManager.createContextMenu( this.detectorChannelCombo );
-		this.detectorChannelCombo.setMenu( contextMenu );
-		
-		this.addButton = new Button( this, SWT.NONE );
-		this.addButton.setText( "Add" );
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.END;
-		gridData.verticalAlignment = GridData.CENTER;
-		this.addButton.setLayoutData( gridData );
-		this.addButton.addSelectionListener( new SelectionListener() {
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-			}
-
-			public void widgetSelected(SelectionEvent e) {
-				if( !detectorChannelCombo.getText().equals( "" ) ) {
-					DetectorChannel detectorChannel = (DetectorChannel) Activator.getDefault().getMeasuringStation()
-						.getAbstractDeviceByFullIdentifyer(detectorChannelCombo.getText());
-
-					Channel channel = new Channel( scanModul );
-					channel.setDetectorChannel(detectorChannel);
-					scanModul.add(channel);
-					setDetectorChannelView(channel);
-					tableViewer.refresh();
-				}
-			}
-		});
-	
-		Action deleteAction = new Action(){
-		    	public void run() {
-	    		
-					// DetectorChannel wird aus scanModul ausgetragen
-		    		scanModul.remove( (Channel)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
-
-		    		tableViewer.refresh();
-
-		    		// PlotWindowView wird aktualisiert
-		    		IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
-					PlotWindowView plotWindowView = null;
-					for (int i = 0; i < ref.length; ++i) {
-						if (ref[i].getId().equals(PlotWindowView.ID)) {
-							plotWindowView = (PlotWindowView) ref[i]
-									.getPart(false);
-						}
-					}
-					if( plotWindowView != null ) {
-						PlotWindow aktPlotWindow = plotWindowView.getPlotWindow();
-						// PlotWindowView wird neu gesetzt.
-						plotWindowView.setPlotWindow(aktPlotWindow);
-					}
-		    	}
-		    };
-		    
-		    deleteAction.setEnabled( true );
-		    deleteAction.setText( "Delete Channel" );
-		    deleteAction.setToolTipText( "Deletes Channel" );
-		    deleteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ) );
-		    
-		    MenuManager manager = new MenuManager();
-		    Menu menu = manager.createContextMenu( this.tableViewer.getControl() );
-		    this.tableViewer.getControl().setMenu( menu );
-		    manager.add( deleteAction );
+			
+				    
+		final Menu contextMenu = menuManager.createContextMenu( this.tableViewer.getTable() );
+		this.tableViewer.getControl().setMenu( contextMenu );
 	}
 
 	public void setDetectorChannelView( Channel ansicht) {

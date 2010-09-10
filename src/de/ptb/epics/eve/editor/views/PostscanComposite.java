@@ -50,8 +50,6 @@ import de.ptb.epics.eve.editor.Activator;
 public class PostscanComposite extends Composite implements IModelUpdateListener {
 
 	private TableViewer tableViewer;
-	private Combo postscanCombo;
-	private Button addButton;
 	private ScanModul scanModul;
 	private final IMeasuringStation measuringStation;
 	
@@ -63,11 +61,6 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 	}
 	
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-		// All Options and Devices are typically a long list on a real measuring station (about 1000 entries)
-		// If you call setItems with such a big list, this functions needs an extremly long time.
-		//this.postscanCombo.setItems( this.measuringStation.getPrePostScanDevicesFullIdentifyer().toArray( new String[0] ) );
-		this.measuringStation.getPrePostScanDevicesFullIdentifyer().toArray( new String[0] );
-		
 	}
 
 	private void initialize() {
@@ -124,16 +117,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 	    
 	    this.tableViewer.setColumnProperties( props );
 	    
-	    this.postscanCombo = new Combo(this, SWT.READ_ONLY);
-	    this.postscanCombo.add( "" );
-	    
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		gridData.grabExcessHorizontalSpace = true;
-		this.postscanCombo.setLayoutData( gridData );
-		
-		final MenuManager menuManager = new MenuManager( "#PopupMenu" );
+	    final MenuManager menuManager = new MenuManager( "#PopupMenu" );
 		menuManager.setRemoveAllWhenShown( true );
 		menuManager.addMenuListener( new IMenuListener() {
 
@@ -439,63 +423,33 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 						setDeviceAction.setText( "".equals( device.getName())?device.getID():device.getName() );
 					}
 				}
+				
+				Action deleteAction = new Action(){
+			    	public void run() {
+			    		
+			    		scanModul.remove( (Postscan)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
+			    		
+			    		tableViewer.refresh();
+			    	}
+			    };
+			    
+			    deleteAction.setEnabled( true );
+			    deleteAction.setText( "Delete Postscan" );
+			    deleteAction.setToolTipText( "Deletes Postscan" );
+			    deleteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ) );
+			   
+			    manager.add( deleteAction );
 			}
+			
+			
 		} );
 		
-		final Menu contextMenu = menuManager.createContextMenu( this.postscanCombo );
-		this.postscanCombo.setMenu( contextMenu );
+		final Menu contextMenu = menuManager.createContextMenu( this.tableViewer.getControl() );
+		this.tableViewer.getControl().setMenu( contextMenu );
 		
 		
-		this.addButton = new Button( this, SWT.NONE );
-		this.addButton.setText( "Add" );
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.END;
-		gridData.verticalAlignment = GridData.CENTER;
-		this.addButton.setLayoutData( gridData );
-		this.addButton.addSelectionListener( new SelectionListener() {
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
 				
-			}
-
-			public void widgetSelected(SelectionEvent e) {
-				
-				if( !postscanCombo.getText().equals( "" ) ) {
-
-					AbstractPrePostscanDevice device = (AbstractPrePostscanDevice) Activator
-							.getDefault().getMeasuringStation()
-							.getAbstractDeviceByFullIdentifyer(
-										postscanCombo.getText());
-
-					Postscan postscan = new Postscan ();
-					postscan.setAbstractPrePostscanDevice(device);
-					
-					scanModul.add(postscan);
-					
-					tableViewer.refresh();
-				}
-			}
-		});
-		
-		   Action deleteAction = new Action(){
-		    	public void run() {
-		    		
-		    		scanModul.remove( (Postscan)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
-		    		
-		    		tableViewer.refresh();
-		    	}
-		    };
 		    
-		    deleteAction.setEnabled( true );
-		    deleteAction.setText( "Delete Postscan" );
-		    deleteAction.setToolTipText( "Deletes Postscan" );
-		    deleteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ) );
-		    
-		    MenuManager manager = new MenuManager();
-		    Menu menu = manager.createContextMenu( this.tableViewer.getControl() );
-		    this.tableViewer.getControl().setMenu( menu );
-		    manager.add( deleteAction );
 		
 	}
 	

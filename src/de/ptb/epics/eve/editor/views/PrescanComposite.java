@@ -47,8 +47,6 @@ import de.ptb.epics.eve.editor.Activator;
 public class PrescanComposite extends Composite implements IModelUpdateListener {
 
 	private TableViewer tableViewer;
-	private Combo prescanCombo;
-	private Button addButton;
 	private ScanModul scanModul;
 	private IMeasuringStation measuringStation;
 	
@@ -60,11 +58,6 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 	}
 	
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-		// All Options and Devices are typically a long list on a real measuring station (about 1000 entries)
-		// If you call setItems with such a big list, this functions needs an extremly long time.
-		//this.prescanCombo.setItems( this.measuringStation.getPrePostScanDevicesFullIdentifyer().toArray( new String[0] ) );
-		this.measuringStation.getPrePostScanDevicesFullIdentifyer().toArray( new String[0] );
-		
 	}
 
 	private void initialize() {
@@ -110,14 +103,6 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 	    
 	    this.tableViewer.setColumnProperties( props );
 	    
-	    this.prescanCombo = new Combo(this, SWT.READ_ONLY);
-		this.prescanCombo.add( "" );
-	    
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		gridData.grabExcessHorizontalSpace = true;
-		this.prescanCombo.setLayoutData( gridData );
 		
 		final MenuManager menuManager = new MenuManager( "#PopupMenu" );
 		menuManager.setRemoveAllWhenShown( true );
@@ -425,65 +410,28 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 						setDeviceAction.setText( "".equals( device.getName())?device.getID():device.getName() );
 					}
 				}
+				Action deleteAction = new Action(){
+			    	public void run() {
+		    		
+						// Prescan wird aus scanModul ausgetragen
+			    		scanModul.remove( (Prescan)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
+			    		
+			    		tableViewer.refresh();
+			    	}
+			    };
+			    
+			    deleteAction.setEnabled( true );
+			    deleteAction.setText( "Delete Prescan" );
+			    deleteAction.setToolTipText( "Deletes Prescan" );
+			    deleteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ) );
+
+			    manager.add( deleteAction );
 			}
 		} );
 		
-		final Menu contextMenu = menuManager.createContextMenu( this.prescanCombo );
-		this.prescanCombo.setMenu( contextMenu );
-		
-		
-		
-		this.addButton = new Button( this, SWT.NONE );
-		this.addButton.setText( "Add" );
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.END;
-		gridData.verticalAlignment = GridData.CENTER;
-		this.addButton.setLayoutData( gridData );
-		this.addButton.addSelectionListener( new SelectionListener() {
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			public void widgetSelected(SelectionEvent e) {
-
-				if( !prescanCombo.getText().equals( "" ) ) {
-
-					AbstractPrePostscanDevice device = (AbstractPrePostscanDevice) Activator
-							.getDefault().getMeasuringStation()
-							.getAbstractDeviceByFullIdentifyer(
-										prescanCombo.getText());
-
-					Prescan prescan = new Prescan ();
-					prescan.setAbstractPrePostscanDevice(device);
-					scanModul.add(prescan);
-
-					
-					tableViewer.refresh();
-				}
-			}
-		});
+		final Menu contextMenu = menuManager.createContextMenu( this.tableViewer.getControl() );
+		this.tableViewer.getControl().setMenu( contextMenu );
 	
-		   Action deleteAction = new Action(){
-		    	public void run() {
-	    		
-					// Prescan wird aus scanModul ausgetragen
-		    		scanModul.remove( (Prescan)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
-		    		
-		    		tableViewer.refresh();
-		    	}
-		    };
-		    
-		    deleteAction.setEnabled( true );
-		    deleteAction.setText( "Delete Prescan" );
-		    deleteAction.setToolTipText( "Deletes Prescan" );
-		    deleteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ) );
-		    
-		    MenuManager manager = new MenuManager();
-		    Menu menu = manager.createContextMenu( this.tableViewer.getControl() );
-		    this.tableViewer.getControl().setMenu( menu );
-		    manager.add( deleteAction );
 		
 	}
 	

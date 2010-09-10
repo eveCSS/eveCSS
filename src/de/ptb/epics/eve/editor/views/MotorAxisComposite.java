@@ -43,8 +43,6 @@ import de.ptb.epics.eve.editor.Activator;
 public class MotorAxisComposite extends Composite implements IModelUpdateListener {
 
 	private TableViewer tableViewer;
-	private Combo motorAxisCombo;
-	private Button addButton;
 	private ScanModul scanModul;
 	private MenuManager menuManager;
 	private final IMeasuringStation measuringStation;
@@ -57,10 +55,6 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 	}
 	
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-		motorAxisCombo.setItems( measuringStation.getAxisFullIdentifyer().toArray( new String[0] ) );
-		//menuManager.update();
-		//final Menu contextMenu = menuManager.createContextMenu( this.motorAxisCombo );
-		//this.motorAxisCombo.setMenu( contextMenu );
 	}
 
 	private void initialize() {
@@ -124,40 +118,13 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 			}
 		});
 	    
-	    this.motorAxisCombo = new Combo(this, SWT.READ_ONLY);
-		
+	   
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
 		gridData.grabExcessHorizontalSpace = true;
-		this.motorAxisCombo.setLayoutData( gridData );
 		
-		this.addButton = new Button( this, SWT.NONE );
-		this.addButton.setText( "Add" );
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.END;
-		gridData.verticalAlignment = GridData.CENTER;
-		this.addButton.setLayoutData( gridData );
-		this.addButton.addSelectionListener( new SelectionListener() {
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-			}
-
-			public void widgetSelected(SelectionEvent e) {
-				if( !motorAxisCombo.getText().equals( "" ) ) {
-					MotorAxis motorAxis = (MotorAxis) measuringStation
-						.getAbstractDeviceByFullIdentifyer(motorAxisCombo.getText());
-					
-					Axis axis = new Axis( scanModul );
-					axis.setMotorAxis(motorAxis);
-					scanModul.add(axis);
-					setMotorAxisView(axis);
-					tableViewer.refresh();
-				}
-			}
-		});
-		
+				
 		menuManager = new MenuManager( "#PopupMenu" );
 		menuManager.setRemoveAllWhenShown( true );
 		menuManager.addMenuListener( new IMenuListener() {
@@ -237,8 +204,6 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 										a.setMotorAxis( ma );
 										scanModul.add( a );
 										setMotorAxisView(a);
-										// Table Eintrag wird aus der Combo-Box entfernt
-										motorAxisCombo.remove(ma.getFullIdentifyer());
 										tableViewer.refresh();
 									}
 								};
@@ -249,53 +214,50 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 						manager.add( currentMotorMenu );
 					}
 				}
+				
+				Action deleteAction = new Action(){
+					public void run() {
+			    		
+						Axis removeAxis = (Axis)((IStructuredSelection)tableViewer.getSelection()).getFirstElement();
+							
+						// MotorAxis wird aus scanModul ausgetragen
+						scanModul.remove( removeAxis );
+
+				    	tableViewer.refresh();
+
+				    	// PlotWindowView wird aktualisiert
+				    	IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
+						PlotWindowView plotWindowView = null;
+						for (int i = 0; i < ref.length; ++i) {
+							if (ref[i].getId().equals(PlotWindowView.ID)) {
+								plotWindowView = (PlotWindowView) ref[i]
+										.getPart(false);
+							}
+						}
+						if( plotWindowView != null ) {
+							PlotWindow aktPlotWindow = plotWindowView.getPlotWindow();
+							// PlotWindowView wird neu gesetzt.
+							plotWindowView.setPlotWindow(aktPlotWindow);
+							// TODO: Wie kann man erreichen, daß das PlotWindow automatisch
+							// aktualisiert wird, sobald sich die Auswahl der Achsen oder
+							// Channels ändert? Kann man da irgendwo einen Listener setzen?
+							// Gleiche Fragestellung gilt auch für DetectorChannel und
+							// NormalizeChannel.
+						}
+				    }
+				 };
+				    
+				 deleteAction.setEnabled( true );
+				 deleteAction.setText( "Delete Axis" );
+				 deleteAction.setToolTipText( "Deletes Axis" );
+				 deleteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ) );
+				 manager.add( deleteAction );   
 			}
 		});
 		
-		final Menu contextMenu = menuManager.createContextMenu( this.motorAxisCombo );
-		this.motorAxisCombo.setMenu( contextMenu );
-		
-		Action deleteAction = new Action(){
-		    	public void run() {
-	    		
-					Axis removeAxis = (Axis)((IStructuredSelection)tableViewer.getSelection()).getFirstElement();
-					
-					// MotorAxis wird aus scanModul ausgetragen
-					scanModul.remove( removeAxis );
-
-		    		tableViewer.refresh();
-
-		    		// PlotWindowView wird aktualisiert
-		    		IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
-					PlotWindowView plotWindowView = null;
-					for (int i = 0; i < ref.length; ++i) {
-						if (ref[i].getId().equals(PlotWindowView.ID)) {
-							plotWindowView = (PlotWindowView) ref[i]
-									.getPart(false);
-						}
-					}
-					if( plotWindowView != null ) {
-						PlotWindow aktPlotWindow = plotWindowView.getPlotWindow();
-						// PlotWindowView wird neu gesetzt.
-						plotWindowView.setPlotWindow(aktPlotWindow);
-						// TODO: Wie kann man erreichen, daß das PlotWindow automatisch
-						// aktualisiert wird, sobald sich die Auswahl der Achsen oder
-						// Channels ändert? Kann man da irgendwo einen Listener setzen?
-						// Gleiche Fragestellung gilt auch für DetectorChannel und
-						// NormalizeChannel.
-					}
-		    	}
-		    };
-		    
-		    deleteAction.setEnabled( true );
-		    deleteAction.setText( "Delete Axis" );
-		    deleteAction.setToolTipText( "Deletes Axis" );
-		    deleteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ) );
-		    
-		    MenuManager manager = new MenuManager();
-		    Menu menu = manager.createContextMenu( this.tableViewer.getControl() );
-		    this.tableViewer.getControl().setMenu( menu );
-		    manager.add( deleteAction );
+		final Menu contextMenu = menuManager.createContextMenu( this.tableViewer.getTable() );
+		this.tableViewer.getControl().setMenu( contextMenu );
+			
 	}
 
 	public void setMotorAxisView( Axis ansicht) {

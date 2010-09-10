@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
@@ -33,12 +35,18 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.PluginTypes;
+import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
+import de.ptb.epics.eve.data.measuringstation.Detector;
+import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
@@ -48,9 +56,8 @@ import de.ptb.epics.eve.editor.Activator;
 public class PositioningComposite extends Composite implements IModelUpdateListener {
 
 	private TableViewer tableViewer;
-	private Combo positioningCombo;
-	private Button addButton;
 	private ScanModul scanModul;
+	private MenuManager menuManager;
 	
 	public PositioningComposite( final Composite parent, final int style) {
 		super( parent, style );
@@ -133,116 +140,68 @@ public class PositioningComposite extends Composite implements IModelUpdateListe
 	    
 	    this.tableViewer.setColumnProperties( props );
 	    
-	    this.positioningCombo = new Combo(this, SWT.READ_ONLY);
+	    menuManager = new MenuManager( "#PopupMenu" );
 		
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		gridData.grabExcessHorizontalSpace = true;
-		this.positioningCombo.setLayoutData( gridData );
-		// Leerer Platzhalter-Eintrag, damit das Auswahlmenu angewählt werden kann.
-		// Dann werden durch focusGained die richtigen Auswahlwerte gesetzt.
-		this.positioningCombo.add("", 0);
-		this.positioningCombo.addFocusListener( new FocusListener() {
+		menuManager.setRemoveAllWhenShown( true );
+		menuManager.addMenuListener( new IMenuListener() {
 
 			@Override
-			public void focusGained(FocusEvent e) {
-
-				// Die Auswahl der Achsen wird gesetzt
-				// Es werden nur die Achsen erlaubt die auch in diesem ScanModul verwendet werden.
-				Axis[] cur_axis = scanModul.getAxis();
-				String[] cur_feld = new String[cur_axis.length];
+			public void menuAboutToShow( final IMenuManager manager ) {
 				
-				for (int i=0; i<cur_axis.length; ++i) {
-					cur_feld[i] = cur_axis[i].getMotorAxis().getFullIdentifyer();
-				}
-				positioningCombo.setItems(cur_feld);
-			
-				// die Achsen für die es schon Positionings gibt, werden wieder entfernt
-				Positioning[] positionings = scanModul.getPositionings();
-				for( int i = 0; i < positionings.length; ++i ) {
-					positioningCombo.remove(positionings[i].getMotorAxis().getFullIdentifyer());
-				}
-
-				if (positioningCombo.getItemCount() == 0) {
-					// Kein Eintrag mehr vorhanden, leeren Platzhalter anlegen
-					positioningCombo.add("");
-				}
-
-			}
-
-			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-			}
-
-		}) ;
-
-		this.addButton = new Button( this, SWT.NONE );
-		this.addButton.setText( "Add" );
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.END;
-		gridData.verticalAlignment = GridData.CENTER;
-		this.addButton.setLayoutData( gridData );
-		this.addButton.addSelectionListener( new SelectionListener() {
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
 				
-			}
-
-			public void widgetSelected(SelectionEvent e) {
 				
-				if( !positioningCombo.getText().equals( "" ) ) {
-					final MotorAxis motorAxis = (MotorAxis)Activator.getDefault().getMeasuringStation().getAbstractDeviceByFullIdentifyer( positioningCombo.getText() );
-					
-					if( scanModul != null ) {
-						Positioning[] positionings = scanModul.getPositionings();
-						for( int i = 0; i < positionings.length; ++i ) {
-							if( positionings[i].getMotorAxis() == motorAxis ) {
-								return;
+				for( final Axis axis : scanModul.getAxis() ) {
+					final Action addPositioningAction = new Action() {
+						
+						final MotorAxis ax = axis.getMotorAxis();
+						
+						public void run() {
+							for( final Positioning p : scanModul.getPositionings() ) {
+								if( p.getMotorAxis() == ax ) {
+									return;
+								}
+								
+								
+								
 							}
+							super.run();
+							final Positioning p = new Positioning();
+							p.setMotorAxis( ax );
+							scanModul.add( p );
+							tableViewer.refresh();
 						}
-						Positioning positioning = new Positioning( motorAxis );
-						scanModul.add( positioning );
-
-						// Table Eintrag wird aus der Combo-Box entfernt
-						positioningCombo.remove(positioningCombo.getText());
-						if (positioningCombo.getItemCount() == 0) {
-							// Kein Eintrag mehr vorhanden, Dummy Eintrag anlegen
-							positioningCombo.add("");
-						}
-					}
-					tableViewer.refresh();
+						
+					};
+					addPositioningAction.setText( "".equals( axis.getMotorAxis().getName())?axis.getMotorAxis().getID():axis.getMotorAxis().getName() );
+					manager.add(addPositioningAction);
 				}
 				
+				
+				
+				Action deleteAction = new Action(){
+			    	public void run() {
+			    		
+			    		Positioning weg = (Positioning)((IStructuredSelection)tableViewer.getSelection()).getFirstElement();
+			    		scanModul.remove( weg );
+			    		tableViewer.refresh();
+			    	}
+			    };
+			    
+			    deleteAction.setEnabled( true );
+			    deleteAction.setText( "Delete Positioning" );
+			    deleteAction.setToolTipText( "Deletes Positioning" );
+			    deleteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ) );
+			    
+			    manager.add( deleteAction );
 			}
+
 			
 		});
 		
-		   Action deleteAction = new Action(){
-		    	public void run() {
-		    		
-		    		Positioning weg = (Positioning)((IStructuredSelection)tableViewer.getSelection()).getFirstElement();
-		    		scanModul.remove( weg );
-		    		// Eintrag wird in die ComboBox wieder hinzugefügt
-		    		positioningCombo.add(weg.getAbstractDevice().getFullIdentifyer());
-		    		// TODO das add in die Liste ist erstmal nicht alphabetisch sortiert
-		    		// Lösung: Liste der vorhandenen Einträge durchsuchen und dabei 
-		    		// entscheiden an welcher Stelle der Eintrag hinzugefügt werden muß.
-
-		    		tableViewer.refresh();
-		    	}
-		    };
-		    
-		    deleteAction.setEnabled( true );
-		    deleteAction.setText( "Delete Positioning" );
-		    deleteAction.setToolTipText( "Deletes Positioning" );
-		    deleteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ) );
-		    
-		    MenuManager manager = new MenuManager();
-		    Menu menu = manager.createContextMenu( this.tableViewer.getControl() );
-		    this.tableViewer.getControl().setMenu( menu );
-		    manager.add( deleteAction );
+			
+				    
+		final Menu contextMenu = menuManager.createContextMenu( this.tableViewer.getTable() );
+		this.tableViewer.getControl().setMenu( contextMenu );
 		
 	}
 	
