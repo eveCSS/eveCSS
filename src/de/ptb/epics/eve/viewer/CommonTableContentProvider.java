@@ -69,7 +69,7 @@ public class CommonTableContentProvider implements IStructuredContentProvider {
 	
 	private void setSize(){
 		if (!expandItem.isDisposed() && !expandItem.getControl().isDisposed()){ 
-			expandItem.setHeight( 33 + 25 * elements.size());
+			expandItem.setHeight( 48 + 25 * elements.size());
 		}
 
 	}

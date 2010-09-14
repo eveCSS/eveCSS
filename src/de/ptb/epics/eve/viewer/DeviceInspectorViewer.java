@@ -294,6 +294,7 @@ public class DeviceInspectorViewer extends ViewPart {
 		tableColumnLayout.setColumnData(gotoColumn.getColumn(), new ColumnPixelData(100));
 
 		TableViewerColumn stopColumn = new TableViewerColumn(axisTableViewer, SWT.NONE);
+		stopColumn.getColumn().setText("Stop");
 		stopColumn.setEditingSupport(new CommonTableEditingSupport(axisTableViewer, "stop"));
 		stopColumn.setLabelProvider(new ColumnLabelProvider() {
 			public Image getImage(Object element) {
@@ -303,7 +304,7 @@ public class DeviceInspectorViewer extends ViewPart {
 				return null;
 			}
 		});
-		tableColumnLayout.setColumnData(stopColumn.getColumn(), new ColumnPixelData(22));
+		tableColumnLayout.setColumnData(stopColumn.getColumn(), new ColumnPixelData(40));
 
 		TableViewerColumn statusColumn = new TableViewerColumn(axisTableViewer, SWT.NONE);
 		statusColumn.getColumn().setText("Status");
