@@ -16,7 +16,7 @@
             <scanmodule id="1">
                 <type>classic</type>
                 <name>New Scan Modul</name>
-                <xpos>203</xpos>
+                <xpos>205</xpos>
                 <ypos>104</ypos>
                 <parent>0</parent>
                 <appended>2</appended>
@@ -24,6 +24,33 @@
                 <triggerdelay>0.3</triggerdelay>
                 <triggerconfirm>false</triggerconfirm>
                 <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>Timer01.01</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="datetime">00:00:10</start>
+                    <stop type="datetime">00:00:50</stop>
+                    <stepwidth type="datetime">5</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <plot id="1">
+                    <xaxis>
+                        <id>Timer01.01</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent1chan1</id>
+                        <mode>linear</mode>
+                        <linestyle>solid</linestyle>
+                        <color>blue</color>
+                        <markstyle>star</markstyle>
+                    </yaxis>
+                </plot>
             </scanmodule>
             <scanmodule id="2">
                 <type>classic</type>
@@ -39,9 +66,17 @@
         </scanmodules>
     </chain>
     <plugins>
-        <plugin type="position">
-            <name>plugin1</name>
-            <location>/path/to/plugin1</location>
+        <plugin type="save">
+            <name>ASCII</name>
+            <location></location>
+            <parameter name="format" datatype="string" default="ASCII" mandatory="false"></parameter>
+            <parameter name="suffix" datatype="string" default="txt" mandatory="false"></parameter>
+        </plugin>
+        <plugin type="save">
+            <name>HDF5</name>
+            <location>/messung/eve/lib/linux-x86/libhdf5plugin.so</location>
+            <parameter name="format" datatype="string" default="HDF5" mandatory="false"/>
+            <parameter name="suffix" datatype="string" default="hd5" mandatory="false"/>
         </plugin>
         <plugin type="position">
             <name>ReferenceAdd</name>
@@ -54,28 +89,6 @@
             <location>/path/to/referenceadd</location>
             <parameter name="factor" datatype="double" default="0.0" mandatory="true"></parameter>
             <parameter name="referenceaxis" datatype="axisid" default="" mandatory="true"></parameter>
-        </plugin>
-        <plugin type="position">
-            <name>plugin2</name>
-            <location>/path/to/plugin2</location>
-        </plugin>
-        <plugin type="save">
-            <name>ASCII</name>
-            <location></location>
-            <parameter name="format" datatype="string" default="ASCII" mandatory="false"></parameter>
-            <parameter name="suffix" datatype="string" default="txt" mandatory="false"></parameter>
-        </plugin>
-        <plugin type="save">
-            <name>HDF5</name>
-            <location>/messung/eve/lib/linux-x86/libhdf5plugin.so</location>
-            <parameter name="format" datatype="string" default="HDF5" mandatory="false"></parameter>
-            <parameter name="suffix" datatype="string" default="hd5" mandatory="false"></parameter>
-        </plugin>
-        <plugin type="save">
-            <name>HDFspezial</name>
-            <location>HDFspezial.slib</location>
-            <parameter name="format" datatype="string" default="classic" mandatory="true">classic,tables</parameter>
-            <parameter name="buffersize" datatype="int" default="0" mandatory="true"></parameter>
         </plugin>
         <plugin type="postscanpositioning">
             <name>GOTO-Peak</name>
@@ -124,39 +137,309 @@
             </channel>
         </detector>
         <detector>
-            <class>Prema5000</class>
-            <name>Prema</name>
-            <id>23707</id>
+            <class>Ringstrom</class>
+            <name>Ring_5</name>
+            <id>ringCurrent5basic</id>
+            <channel>
+                <class></class>
+                <name>Ring_5</name>
+                <id>ringCurrent5chan1</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">ringCurrent5.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">ringCurrent5.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom</class>
+            <name>Bessy_Ringstrom</name>
+            <id>MDIZ3T5G:currentbasic</id>
+            <channel>
+                <class></class>
+                <name>Bessy_Ringstrom</name>
+                <id>MDIZ3T5G:currentchan1</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">MDIZ3T5G:current.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">MDIZ3T5G:current.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom</class>
+            <name>Bessy_Lebensdauer</name>
+            <id>MDIZ3T5G:lt10basic</id>
+            <channel>
+                <class></class>
+                <name>Bessy_Lebensdauer</name>
+                <id>MDIZ3T5G:lt10chan1</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">MDIZ3T5G:lt10.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">MDIZ3T5G:lt10.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom</class>
+            <name>Lebensdauer_1</name>
+            <id>ringLifeTime1basic</id>
+            <channel>
+                <class></class>
+                <name>Lebensdauer_1</name>
+                <id>ringLifeTime1chan1</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">ringLifeTime1.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">ringLifeTime1.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom</class>
+            <name>Lebensdauer_2</name>
+            <id>ringLifeTime2basic</id>
+            <channel>
+                <class></class>
+                <name>Lebensdauer_2</name>
+                <id>ringLifeTime2chan1</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">ringLifeTime2.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">ringLifeTime2.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom</class>
+            <name>Lebensdauer_5</name>
+            <id>ringLifeTime5basic</id>
+            <channel>
+                <class></class>
+                <name>Lebensdauer_5</name>
+                <id>ringLifeTime5chan1</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">ringLifeTime5.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">ringLifeTime5.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>BessyGaps</class>
+            <name>UE56_2shift</name>
+            <id>UE56ID3R:SBasePmGapbasic</id>
+            <channel>
+                <class></class>
+                <name>UE56_2shift</name>
+                <id>UE56ID3R:SBasePmGapchan1</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">UE56ID3R:SBasePmGap.A</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">UE56ID3R:SBasePmGap.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>BessyGaps</class>
+            <name>UE56_2gap</name>
+            <id>UE56ID3R:BasePmGapbasic</id>
+            <channel>
+                <class></class>
+                <name>UE56_2gap</name>
+                <id>UE56ID3R:BasePmGapchan1</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">UE56ID3R:BasePmGap.A</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">UE56ID3R:BasePmGap.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>BessyGaps</class>
+            <name>U41_gap</name>
+            <id>U41IT6R:BasePmGapbasic</id>
+            <channel>
+                <class></class>
+                <name>U41_gap</name>
+                <id>U41IT6R:BasePmGapchan1</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">U41IT6R:BasePmGap.A</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">U41IT6R:BasePmGap.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>BessyGaps</class>
+            <name>UE56_1shift</name>
+            <id>UE56ID6R:SBasePmGapbasic</id>
+            <channel>
+                <class></class>
+                <name>UE56_1shift</name>
+                <id>UE56ID6R:SBasePmGapchan1</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">UE56ID6R:SBasePmGap.A</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">UE56ID6R:SBasePmGap.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>BessyGaps</class>
+            <name>UE56_1gap</name>
+            <id>UE56ID6R:BasePmGapbasic</id>
+            <channel>
+                <class></class>
+                <name>UE56_1gap</name>
+                <id>UE56ID6R:BasePmGapchan1</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">UE56ID6R:BasePmGap.A</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">UE56ID6R:BasePmGap.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>BessyGaps</class>
+            <name>U125_gap</name>
+            <id>U125ID7R:BasePmGapbasic</id>
+            <channel>
+                <class></class>
+                <name>U125_gap</name>
+                <id>U125ID7R:BasePmGapchan1</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">U125ID7R:BasePmGap.A</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">U125ID7R:BasePmGap.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>BessyGaps</class>
+            <name>U49_2gap</name>
+            <id>U49ID8R:BasePmGapbasic</id>
+            <channel>
+                <class></class>
+                <name>U49_2gap</name>
+                <id>U49ID8R:BasePmGapchan1</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">U49ID8R:BasePmGap.A</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">U49ID8R:BasePmGap.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class></class>
+            <name>Prema5000</name>
+            <id>P5000:gw23707</id>
             <unit>
-                <access method="GETCB" type="double" transport="ca">P5000:2370700.EGU</access>
+                <access method="GETPUT" type="string" transport="ca">P5000:gw23707.EGU</access>
             </unit>
             <trigger>
-                <access method="PUTCB" type="double" transport="ca">P5000:2370700.TRIG</access>
+                <access method="PUTCB" type="int" transport="ca">P5000:gw23707.PROC</access>
                 <value type="int">1</value>
             </trigger>
             <channel>
                 <class></class>
-                <name></name>
-                <id>P5000:2370700.1</id>
+                <name>Channel00</name>
+                <id>P5000:gw2370700</id>
                 <read>
-                    <access method="GETCB" type="double" transport="ca">P5000:2370700.VAL</access>
+                    <access method="GETPUTCB" type="double" transport="ca">P5000:gw2370700.VAL</access>
                 </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw2370700.EGU</access>
+                </unit>
+            </channel>
+            <channel>
+                <class></class>
+                <name>Channel01</name>
+                <id>P5000:gw2370701</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">P5000:gw2370701.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw2370701.EGU</access>
+                </unit>
+            </channel>
+            <channel>
+                <class></class>
+                <name>Channel02</name>
+                <id>P5000:gw2370702</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">P5000:gw2370702.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw2370702.EGU</access>
+                </unit>
+            </channel>
+            <channel>
+                <class></class>
+                <name>Channel03</name>
+                <id>P5000:gw2370703</id>
+                <read>
+                    <access method="GETPUTCB" type="double" transport="ca">P5000:gw2370703.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw2370703.EGU</access>
+                </unit>
             </channel>
             <option>
                 <name>Function</name>
-                <id>P5000:23707function</id>
+                <id>P5000:gw23707function</id>
                 <value>
-                    <access method="GETPUTCB" type="string" transport="ca">P5000:23707function</access>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw23707function</access>
                     <value type="string">DCVolts, ACVolts, DCAmps, ACAmps, Ohms</value>
+                </value>
+                <displaygroup>summaryl</displaygroup>
+            </option>
+            <option>
+                <name>range</name>
+                <id>P5000:gw23707range</id>
+                <value>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw23707range</access>
+                    <value type="string">Auto On, 0.2 -&gt; V kO, 2 -&gt; V mA kO, 20 -&gt; V kO, 200 -&gt; V kO, 2 -&gt; A MO, 12 -&gt; MO, Auto Off</value>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
             <option>
-                <name>Range</name>
-                <id>P5000:23707range</id>
+                <name>Integration Time</name>
+                <id>P5000:gw23707intTime</id>
                 <value>
-                    <access method="GETPUTCB" type="string" transport="ca">P5000:23707range</access>
-                    <value type="string">Auto On, 0.2 -&gt;V kO, 2 -&gt;V mA kO, 20 -&gt;V kO, 200 -&gt;V kO, 2 -&gt;A MO, 12 -&gt;MO, Auto Off</value>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw23707intTime</access>
+                    <value type="string">0.1 s, 1.0 s, 10. s</value>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Channel Preselect</name>
+                <id>P5000:gw23707channel</id>
+                <value>
+                    <access method="GETPUT" type="int" transport="ca">P5000:gw23707channel</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Initialize (SDC)</name>
+                <id>P5000:gw23707sdc</id>
+                <value>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw23707sdc</access>
+                    <value type="string">Init only, SDC+Init</value>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -184,162 +467,1174 @@
             </axis>
         </motor>
         <motor>
-            <class>Timer</class>
-            <name></name>
-            <id>Timer02</id>
-            <axis>
-                <class></class>
-                <name>Wecker 2</name>
-                <id>Timer02.01</id>
-                <goto>
-                    <access method="PUTCB" type="datetime" transport="local">Timer</access>
-                </goto>
-                <position>
-                    <access method="GETCB" type="datetime" transport="local">Timer</access>
-                </position>
-                <stop>
-                    <access method="PUT" type="int" transport="local">Timer</access>
-                    <value type="OnOff">0</value>
-                </stop>
-            </axis>
-        </motor>
-        <motor>
-            <class>KlasseC1</class>
-            <name>C1</name>
-            <id>Counter01</id>
-            <axis>
-                <class></class>
-                <name></name>
-                <id>Counter01.01</id>
-                <goto>
-                    <access method="PUTCB" type="int" transport="local">Counter</access>
-                </goto>
-                <position>
-                    <access method="GETCB" type="int" transport="local">Counter</access>
-                </position>
-                <stop>
-                    <access method="PUT" type="int" transport="local">Counter</access>
-                    <value type="OnOff">0</value>
-                </stop>
-            </axis>
-        </motor>
-        <motor>
             <class></class>
             <name></name>
-            <id>Counter02</id>
+            <id>PPSMC:gw237</id>
             <axis>
                 <class></class>
-                <name></name>
-                <id>Counter02.01</id>
+                <name>PP_Motor1</name>
+                <id>PPSMC:gw23715000</id>
                 <goto>
-                    <access method="PUTCB" type="int" transport="local">Counter</access>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="100.0">PPSMC:gw23715000</access>
                 </goto>
                 <position>
-                    <access method="GETCB" type="int" transport="local">Counter</access>
+                    <access method="GETCB" type="double" transport="ca">PPSMC:gw23715000.RBV</access>
                 </position>
                 <stop>
-                    <access method="PUT" type="int" transport="local">Counter</access>
-                    <value type="OnOff">4, 7</value>
-                </stop>
-            </axis>
-        </motor>
-        <motor>
-            <class>PPSMC</class>
-            <name>Kreuztisch</name>
-            <id>PPSMC:23715</id>
-            <unit>
-                <access method="GETCB" type="string" transport="ca">PPSMC:23715000.EGU</access>
-            </unit>
-            <axis>
-                <class></class>
-                <name>X_Position</name>
-                <id>PPSMC:23715000</id>
-                <goto>
-                    <access method="PUTCB" type="double" transport="ca">PPSMC:23715000</access>
-                    <value type="double">10.0, 12.0, 13.1, 14.7, 16.8, 20.5, 23.7, 25.1, 28.9</value>
-                </goto>
-                <position>
-                    <access method="GETCB" type="double" transport="ca">PPSMC:23715000.RBV</access>
-                </position>
-                <stop>
-                    <access method="PUT" type="int" transport="ca">PPSMC:23715000.STOP</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715000.STOP</access>
                     <value type="int">1</value>
                 </stop>
-                <status>
-                    <access method="GETCB" type="int" transport="ca">PPSMC:23715000.MSTA</access>
-                </status>
-                <trigger>
-                    <access method="PUTCB" type="int" transport="ca">PPSMC:23715000.TRIG</access>
+                <unit>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715000.EGU</access>
+                </unit>
+                <deadband>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715000.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715000.OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715000.TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715000.TWF</access>
                     <value type="int">1</value>
-                </trigger>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715000.TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>
+                <option>
+                    <name>Position Readback</name>
+                    <id>PPSMC:gw23715000.RBV</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715000.RBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
                 <option>
                     <name>Velocity</name>
-                    <id>PPSMC:23715000.VELO</id>
+                    <id>PPSMC:gw23715000.VELO</id>
                     <value>
-                        <access method="GETPUTCB" type="double"
-                            count="1" transport="ca">PPSMC:23715000.VELO</access>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.VELO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft High Limit</name>
+                    <id>PPSMC:gw23715000.HLM</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.HLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft Low Limit</name>
+                    <id>PPSMC:gw23715000.LLM</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.LLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Offset</name>
+                    <id>PPSMC:gw23715000.OFF</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715000.OFF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Dial Value</name>
+                    <id>PPSMC:gw23715000.DVAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.DVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Acceleration</name>
+                    <id>PPSMC:gw23715000.ACCL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.ACCL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor Resolution</name>
+                    <id>PPSMC:gw23715000.MRES</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.MRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Resolution</name>
+                    <id>PPSMC:gw23715000.ERES</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.ERES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Encoder</name>
+                    <id>PPSMC:gw23715000.UEIP</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000.UEIP</access>
+                        <value type="string">No, Yes</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Resolution</name>
+                    <id>PPSMC:gw23715000.RRES</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.RRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Readback</name>
+                    <id>PPSMC:gw23715000.URIP</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000.URIP</access>
+                        <value type="string">No, Yes</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Base Velocity</name>
+                    <id>PPSMC:gw23715000.VBAS</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.VBAS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Deadband</name>
+                    <id>PPSMC:gw23715000.RDBD</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.RDBD</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>PPSMC:gw23715000.MSTA</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715000.MSTA</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Count</name>
+                    <id>PPSMC:gw23715000.RCNT</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715000.RCNT</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>PPSMC:gw23715000.SEVR</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">PPSMC:gw23715000.SEVR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Goto Steps</name>
+                    <id>PPSMC:gw23715000.RVAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.RVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Steps</name>
+                    <id>PPSMC:gw23715000.RRBV</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715000.RRBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor Steps</name>
+                    <id>PPSMC:gw23715000.RMP</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715000.RMP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Steps</name>
+                    <id>PPSMC:gw23715000.REP</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715000.REP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Position Mode</name>
+                    <id>PPSMC:gw23715000.SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715000.SET</access>
+                        <value type="string">Use, Set</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Move Fraction</name>
+                    <id>PPSMC:gw23715000.FRAC</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.FRAC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Link</name>
+                    <id>PPSMC:gw23715000.RDBL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.RDBL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Delay</name>
+                    <id>PPSMC:gw23715000.DLY</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.DLY</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Backlash Distance</name>
+                    <id>PPSMC:gw23715000.BDST</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.BDST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Backlash Velocity</name>
+                    <id>PPSMC:gw23715000.BVEL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.BVEL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Backlash Acceleration</name>
+                    <id>PPSMC:gw23715000.BACC</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.BACC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Home Run foreward</name>
+                    <id>PPSMC:gw23715000.HOMF</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.HOMF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Home Run backward</name>
+                    <id>PPSMC:gw23715000.HOMR</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.HOMR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Home Run Velocity</name>
+                    <id>PPSMC:gw23715000.HVEL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.HVEL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
             </axis>
             <axis>
                 <class></class>
-                <name>Y-Position</name>
-                <id>PPSMC:23715001</id>
+                <name>PP_Motor2</name>
+                <id>PPSMC:gw23715001</id>
                 <goto>
-                    <access method="PUTCB" type="double" transport="ca">PPSMC:23715001</access>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="100.0">PPSMC:gw23715001</access>
                 </goto>
                 <position>
-                    <access method="GETCB" type="double" transport="ca">PPSMC:23715001.RBV</access>
+                    <access method="GETCB" type="double" transport="ca">PPSMC:gw23715001.RBV</access>
                 </position>
                 <stop>
-                    <access method="PUT" type="int" transport="ca">PPSMC:23715001.STOP</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715001.STOP</access>
                     <value type="int">1</value>
                 </stop>
-                <status>
-                    <access method="GETCB" type="int" transport="ca">PPSMC:23715001.MSTA</access>
-                </status>
-                <trigger>
-                    <access method="PUTCB" type="int" transport="ca">PPSMC:23715001.TRIG</access>
+                <unit>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715001.EGU</access>
+                </unit>
+                <deadband>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715001.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715001.OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715001.TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715001.TWF</access>
                     <value type="int">1</value>
-                </trigger>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715001.TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>
+                <option>
+                    <name>Position Readback</name>
+                    <id>PPSMC:gw23715001.RBV</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715001.RBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
                 <option>
                     <name>Velocity</name>
-                    <id>PPSMC:23715001.VELO</id>
+                    <id>PPSMC:gw23715001.VELO</id>
                     <value>
-                        <access method="GETPUTCB" type="double"
-                            count="1" transport="ca">PPSMC:23715001.VELO</access>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.VELO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft High Limit</name>
+                    <id>PPSMC:gw23715001.HLM</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.HLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft Low Limit</name>
+                    <id>PPSMC:gw23715001.LLM</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.LLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Offset</name>
+                    <id>PPSMC:gw23715001.OFF</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715001.OFF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Dial Value</name>
+                    <id>PPSMC:gw23715001.DVAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.DVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Acceleration</name>
+                    <id>PPSMC:gw23715001.ACCL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.ACCL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor Resolution</name>
+                    <id>PPSMC:gw23715001.MRES</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.MRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Resolution</name>
+                    <id>PPSMC:gw23715001.ERES</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.ERES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Encoder</name>
+                    <id>PPSMC:gw23715001.UEIP</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001.UEIP</access>
+                        <value type="string">No, Yes</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Resolution</name>
+                    <id>PPSMC:gw23715001.RRES</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.RRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Readback</name>
+                    <id>PPSMC:gw23715001.URIP</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001.URIP</access>
+                        <value type="string">No, Yes</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Base Velocity</name>
+                    <id>PPSMC:gw23715001.VBAS</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.VBAS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Deadband</name>
+                    <id>PPSMC:gw23715001.RDBD</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.RDBD</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>PPSMC:gw23715001.MSTA</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715001.MSTA</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Count</name>
+                    <id>PPSMC:gw23715001.RCNT</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715001.RCNT</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>PPSMC:gw23715001.SEVR</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">PPSMC:gw23715001.SEVR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Goto Steps</name>
+                    <id>PPSMC:gw23715001.RVAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.RVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Steps</name>
+                    <id>PPSMC:gw23715001.RRBV</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715001.RRBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor Steps</name>
+                    <id>PPSMC:gw23715001.RMP</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715001.RMP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Steps</name>
+                    <id>PPSMC:gw23715001.REP</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715001.REP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Position Mode</name>
+                    <id>PPSMC:gw23715001.SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715001.SET</access>
+                        <value type="string">Use, Set</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Move Fraction</name>
+                    <id>PPSMC:gw23715001.FRAC</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.FRAC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Link</name>
+                    <id>PPSMC:gw23715001.RDBL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.RDBL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Delay</name>
+                    <id>PPSMC:gw23715001.DLY</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.DLY</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Backlash Distance</name>
+                    <id>PPSMC:gw23715001.BDST</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.BDST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Backlash Velocity</name>
+                    <id>PPSMC:gw23715001.BVEL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.BVEL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Backlash Acceleration</name>
+                    <id>PPSMC:gw23715001.BACC</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.BACC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Home Run foreward</name>
+                    <id>PPSMC:gw23715001.HOMF</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.HOMF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Home Run backward</name>
+                    <id>PPSMC:gw23715001.HOMR</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.HOMR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Home Run Velocity</name>
+                    <id>PPSMC:gw23715001.HVEL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.HVEL</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
             </axis>
-            <option>
-                <name>Lock Local</name>
-                <id>PPSMC:23715dislocal</id>
-                <value>
-                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:23715dislocal</access>
-                    <value type="string">Enable, Disable</value>
-                </value>
-            </option>
+            <axis>
+                <class></class>
+                <name>PP_Motor3</name>
+                <id>PPSMC:gw23715002</id>
+                <goto>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="100.0">PPSMC:gw23715002</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="double" transport="ca">PPSMC:gw23715002.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715002.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <unit>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715002.EGU</access>
+                </unit>
+                <deadband>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715002.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715002.OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715002.TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715002.TWF</access>
+                    <value type="int">1</value>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715002.TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>
+                <option>
+                    <name>Position Readback</name>
+                    <id>PPSMC:gw23715002.RBV</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715002.RBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Velocity</name>
+                    <id>PPSMC:gw23715002.VELO</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.VELO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft High Limit</name>
+                    <id>PPSMC:gw23715002.HLM</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.HLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft Low Limit</name>
+                    <id>PPSMC:gw23715002.LLM</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.LLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Offset</name>
+                    <id>PPSMC:gw23715002.OFF</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715002.OFF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Dial Value</name>
+                    <id>PPSMC:gw23715002.DVAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.DVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Acceleration</name>
+                    <id>PPSMC:gw23715002.ACCL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.ACCL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor Resolution</name>
+                    <id>PPSMC:gw23715002.MRES</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.MRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Resolution</name>
+                    <id>PPSMC:gw23715002.ERES</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.ERES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Encoder</name>
+                    <id>PPSMC:gw23715002.UEIP</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715002.UEIP</access>
+                        <value type="string">No, Yes</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Resolution</name>
+                    <id>PPSMC:gw23715002.RRES</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.RRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Readback</name>
+                    <id>PPSMC:gw23715002.URIP</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715002.URIP</access>
+                        <value type="string">No, Yes</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Base Velocity</name>
+                    <id>PPSMC:gw23715002.VBAS</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.VBAS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Deadband</name>
+                    <id>PPSMC:gw23715002.RDBD</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.RDBD</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>PPSMC:gw23715002.MSTA</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715002.MSTA</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Count</name>
+                    <id>PPSMC:gw23715002.RCNT</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715002.RCNT</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>PPSMC:gw23715002.SEVR</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">PPSMC:gw23715002.SEVR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Goto Steps</name>
+                    <id>PPSMC:gw23715002.RVAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.RVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Steps</name>
+                    <id>PPSMC:gw23715002.RRBV</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715002.RRBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor Steps</name>
+                    <id>PPSMC:gw23715002.RMP</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715002.RMP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Steps</name>
+                    <id>PPSMC:gw23715002.REP</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715002.REP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Position Mode</name>
+                    <id>PPSMC:gw23715002.SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715002.SET</access>
+                        <value type="string">Use, Set</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Move Fraction</name>
+                    <id>PPSMC:gw23715002.FRAC</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.FRAC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Link</name>
+                    <id>PPSMC:gw23715002.RDBL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.RDBL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Delay</name>
+                    <id>PPSMC:gw23715002.DLY</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.DLY</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Backlash Distance</name>
+                    <id>PPSMC:gw23715002.BDST</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.BDST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Backlash Velocity</name>
+                    <id>PPSMC:gw23715002.BVEL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.BVEL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Backlash Acceleration</name>
+                    <id>PPSMC:gw23715002.BACC</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.BACC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Home Run foreward</name>
+                    <id>PPSMC:gw23715002.HOMF</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.HOMF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Home Run backward</name>
+                    <id>PPSMC:gw23715002.HOMR</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.HOMR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Home Run Velocity</name>
+                    <id>PPSMC:gw23715002.HVEL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.HVEL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>
+            <axis>
+                <class></class>
+                <name>PP_Motor4</name>
+                <id>PPSMC:gw23715003</id>
+                <goto>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="100.0">PPSMC:gw23715003</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="double" transport="ca">PPSMC:gw23715003.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715003.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <unit>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715003.EGU</access>
+                </unit>
+                <deadband>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715003.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715003.OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715003.TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715003.TWF</access>
+                    <value type="int">1</value>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715003.TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>
+                <option>
+                    <name>Position Readback</name>
+                    <id>PPSMC:gw23715003.RBV</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715003.RBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Velocity</name>
+                    <id>PPSMC:gw23715003.VELO</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.VELO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft High Limit</name>
+                    <id>PPSMC:gw23715003.HLM</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.HLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft Low Limit</name>
+                    <id>PPSMC:gw23715003.LLM</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.LLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Offset</name>
+                    <id>PPSMC:gw23715003.OFF</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715003.OFF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Dial Value</name>
+                    <id>PPSMC:gw23715003.DVAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.DVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Acceleration</name>
+                    <id>PPSMC:gw23715003.ACCL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.ACCL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor Resolution</name>
+                    <id>PPSMC:gw23715003.MRES</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.MRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Resolution</name>
+                    <id>PPSMC:gw23715003.ERES</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.ERES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Encoder</name>
+                    <id>PPSMC:gw23715003.UEIP</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715003.UEIP</access>
+                        <value type="string">No, Yes</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Resolution</name>
+                    <id>PPSMC:gw23715003.RRES</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.RRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Readback</name>
+                    <id>PPSMC:gw23715003.URIP</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715003.URIP</access>
+                        <value type="string">No, Yes</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Base Velocity</name>
+                    <id>PPSMC:gw23715003.VBAS</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.VBAS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Deadband</name>
+                    <id>PPSMC:gw23715003.RDBD</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.RDBD</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>PPSMC:gw23715003.MSTA</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715003.MSTA</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Count</name>
+                    <id>PPSMC:gw23715003.RCNT</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715003.RCNT</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>PPSMC:gw23715003.SEVR</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">PPSMC:gw23715003.SEVR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Goto Steps</name>
+                    <id>PPSMC:gw23715003.RVAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.RVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Steps</name>
+                    <id>PPSMC:gw23715003.RRBV</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715003.RRBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor Steps</name>
+                    <id>PPSMC:gw23715003.RMP</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715003.RMP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Steps</name>
+                    <id>PPSMC:gw23715003.REP</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715003.REP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Position Mode</name>
+                    <id>PPSMC:gw23715003.SET</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715003.SET</access>
+                        <value type="string">Use, Set</value>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Move Fraction</name>
+                    <id>PPSMC:gw23715003.FRAC</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.FRAC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Link</name>
+                    <id>PPSMC:gw23715003.RDBL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.RDBL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Delay</name>
+                    <id>PPSMC:gw23715003.DLY</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.DLY</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Backlash Distance</name>
+                    <id>PPSMC:gw23715003.BDST</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.BDST</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Backlash Velocity</name>
+                    <id>PPSMC:gw23715003.BVEL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.BVEL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Backlash Acceleration</name>
+                    <id>PPSMC:gw23715003.BACC</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.BACC</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Home Run foreward</name>
+                    <id>PPSMC:gw23715003.HOMF</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.HOMF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Home Run backward</name>
+                    <id>PPSMC:gw23715003.HOMR</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.HOMR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Home Run Velocity</name>
+                    <id>PPSMC:gw23715003.HVEL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.HVEL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>
         </motor>
     </motors>
     <devices>
         <device>
             <class></class>
-            <name>"Dummy-Topup[]"</name>
-            <id>TOPUP:228</id>
+            <name>BEAM_SHUTTER</name>
+            <id>BSR01U007L:Opened</id>
             <value>
-                <access method="GETCB" type="double" transport="ca" monitor="true">PPSMC:23715001.RBV</access>
-                <value type="double"></value>
+                <access method="GETCB" type="string" transport="ca">BSR01U007L:Opened</access>
             </value>
         </device>
         <device>
             <class></class>
-            <name>Dummy-Nr.2</name>
-            <id>TOPUP:234</id>
+            <name>UNDULATOR</name>
+            <id>U49ID4R:BaseCmdHmLock</id>
             <value>
-                <access method="GETCB" type="double" transport="ca" monitor="true">PPSMC:23715001.RBV</access>
-                <value type="double"></value>
+                <access method="GETCB" type="string" transport="ca">U49ID4R:BaseCmdHmLock</access>
             </value>
         </device>
     </devices>
