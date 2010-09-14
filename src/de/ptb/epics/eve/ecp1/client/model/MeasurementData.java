@@ -99,6 +99,16 @@ public final class MeasurementData {
 					}
 				}
 				break;
+
+			case DATETIME:
+			{
+				this.values = new ArrayList< String >();
+				final Iterator< String > it = (Iterator<String>) measurementDataCommand.iterator();
+				while( it.hasNext() ) {
+					((List< String >)this.values).add( it.next() );
+				}
+			}
+			break;
 		}
 		
 	}

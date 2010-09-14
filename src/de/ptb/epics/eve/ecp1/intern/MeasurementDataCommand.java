@@ -119,6 +119,8 @@ public class MeasurementDataCommand implements IECP1Command {
 			this.values = new ArrayList< Double >();
 		case STRING:
 			this.values = new ArrayList< String >();
+		case DATETIME:
+			this.values = new ArrayList< String >();
 		}
 		switch( this.dataType ) {
 			case INT8:
@@ -152,6 +154,20 @@ public class MeasurementDataCommand implements IECP1Command {
 				break;
 				
 			case STRING:
+				for( int i = 0; i < dataCount; ++i ) {
+					final int stringLength = dataInputStream.readInt();
+					if( stringLength != 0xffffffff ) {
+						final byte[] stringBuffer = new byte[ stringLength ];
+						dataInputStream.readFully( stringBuffer );
+						this.add( new String( stringBuffer, IECP1Command.STRING_ENCODING ) );
+					} else {
+						this.add( "" );
+					}
+					
+				}
+				break;
+
+			case DATETIME:
 				for( int i = 0; i < dataCount; ++i ) {
 					final int stringLength = dataInputStream.readInt();
 					if( stringLength != 0xffffffff ) {
@@ -447,6 +463,9 @@ public class MeasurementDataCommand implements IECP1Command {
 				((List< Double >)this.values).add( (Double)value );
 				break;
 			case STRING:
+				((List< String >)this.values).add( (String)value );
+				break;
+			case DATETIME:
 				((List< String >)this.values).add( (String)value );
 				break;
 			}

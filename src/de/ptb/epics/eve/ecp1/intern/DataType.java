@@ -6,7 +6,8 @@ public enum DataType {
 	INT16,
 	DOUBLE,
 	FLOAT,
-	STRING;
+	STRING,
+	DATETIME;
 	
 	public static byte dataTypeToByte( final DataType dataType ) {
 		switch( dataType ) {
@@ -27,6 +28,9 @@ public enum DataType {
 				
 			case STRING :
 				return 0x09;
+
+			case DATETIME :
+				return 0x0A;
 		}
 		return Byte.MAX_VALUE;
 	}
@@ -50,7 +54,10 @@ public enum DataType {
 				
 			case 0x09:
 				return DataType.STRING;
-		}
+
+			case 0x0A:
+				return DataType.DATETIME;
+}
 		
 		return null;
 	}
