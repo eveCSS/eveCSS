@@ -82,7 +82,7 @@ public final class MeasuringStationView extends ViewPart {
 		this.treeViewer.setContentProvider( new MeasuringStationTreeViewContentProvider() );
 		this.treeViewer.setLabelProvider( new MeasuringStationTreeViewLabelProvider() );
 		this.treeViewer.getTree().setEnabled( false );
-		this.treeViewer.getTree().addMouseListener( new MouseListener() {
+		/*this.treeViewer.getTree().addMouseListener( new MouseListener() {
 
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -110,7 +110,7 @@ public final class MeasuringStationView extends ViewPart {
 				
 			}
 			
-		});
+		});*/
 		
 		this.treeViewer.addDoubleClickListener( new IDoubleClickListener() {
 
