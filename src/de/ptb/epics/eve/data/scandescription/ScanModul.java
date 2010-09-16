@@ -186,7 +186,7 @@ public class ScanModul implements IModelUpdateListener, IModelUpdateProvider, IM
 		this.axis = new ArrayList<Axis>();
 		this.plotWindows = new ArrayList<PlotWindow>();
 		this.settletime = Double.NEGATIVE_INFINITY;
-		this.triggerdelay = Double.NEGATIVE_INFINITY;
+		this.triggerdelay = 0.0;
 		this.triggerEvents = new ArrayList< ControlEvent >();
 		this.redoEvents = new ArrayList< ControlEvent >();
 		this.breakEvents = new ArrayList< ControlEvent >();
