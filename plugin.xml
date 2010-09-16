@@ -70,8 +70,12 @@
             class="de.ptb.epics.eve.editor.wizards.NewScanDescriptionWizard"
             icon="icons/sample.gif"
             id="de.ptb.epics.eve.editor.wizards.NewScanDescriptionWizard"
-            name="%wizard.name">
+            name="%wizard.name"
+            project="true">
       </wizard>
+      <primaryWizard
+            id="de.ptb.epics.eve.editor.wizards.NewScanDescriptionWizard">
+      </primaryWizard>
    </extension>
    <extension
          point="org.eclipse.ui.actionSets">
@@ -105,6 +109,17 @@
                tooltip="%action.tooltip.0">
          </action>
       </actionSet>
+   </extension>
+   <extension
+         id="de.ptb.epics.eve.editor.PerspectiveExtension"
+         name="PerspectiveExtension"
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="*">
+         <newWizardShortcut
+               id="de.ptb.epics.eve.editor.wizards.NewScanDescriptionWizard">
+         </newWizardShortcut>
+      </perspectiveExtension>
    </extension>
 
 </plugin>

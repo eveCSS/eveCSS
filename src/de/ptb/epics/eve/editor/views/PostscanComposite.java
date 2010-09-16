@@ -11,6 +11,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
@@ -121,6 +122,12 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 		menuManager.setRemoveAllWhenShown( true );
 		menuManager.addMenuListener( new IMenuListener() {
 
+			final ImageDescriptor motorImage = ImageDescriptor.createFromImage( de.ptb.epics.eve.viewer.Activator.getDefault().getImageRegistry().get("MOTOR") );
+			final ImageDescriptor axisImage = ImageDescriptor.createFromImage( de.ptb.epics.eve.viewer.Activator.getDefault().getImageRegistry().get("AXIS") );
+			final ImageDescriptor detectorImage = ImageDescriptor.createFromImage( de.ptb.epics.eve.viewer.Activator.getDefault().getImageRegistry().get("DETECTOR") );
+			final ImageDescriptor channelImage = ImageDescriptor.createFromImage( de.ptb.epics.eve.viewer.Activator.getDefault().getImageRegistry().get("CHANNEL") );
+			
+			
 			@Override
 			public void menuAboutToShow( final IMenuManager manager ) {
 				
@@ -130,9 +137,9 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 					for( final AbstractDevice device : Activator.getDefault().getMeasuringStation().getDeviceList( className ) ) {
 						if( device instanceof Motor ) {
 							final Motor motor = (Motor)device;
-							final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName() );
+							final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName(), motorImage, "".equals( motor.getName())?motor.getID():motor.getName() );
 							for( final MotorAxis motorAxis : motor.getAxis() ) {
-								final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
+								final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName(),axisImage, "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
 								for( final Option option : motorAxis.getOptions() ) {
 									final Action setOptionAction = new Action() {
 										final Option o = option;
@@ -178,7 +185,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 							currentClassMenu.add( currentMotorMenu );
 						} else if( device instanceof MotorAxis ) {
 							final MotorAxis motorAxis = (MotorAxis)device;
-							final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
+							final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName(), axisImage, "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
 							for( final Option option : motorAxis.getOptions() ) {
 								final Action setOptionAction = new Action() {
 									final Option o = option;
@@ -202,9 +209,9 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 							currentClassMenu.add( currentMotorAxisMenu );
 						} else if( device instanceof Detector ) {
 							final Detector detector = (Detector)device;
-							final MenuManager currentDetectorMenu = new MenuManager( "".equals( detector.getName())?detector.getID():detector.getName() );
+							final MenuManager currentDetectorMenu = new MenuManager( "".equals( detector.getName())?detector.getID():detector.getName(), detectorImage, "".equals( detector.getName())?detector.getID():detector.getName() );
 							for( final DetectorChannel detectorChannel : detector.getChannels() ) {
-								final MenuManager currentDetectorChannelMenu = new MenuManager( "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName() );
+								final MenuManager currentDetectorChannelMenu = new MenuManager( "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName(), channelImage, "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName() );
 								for( final Option option : detectorChannel.getOptions() ) {
 									final Action setOptionAction = new Action() {
 										final Option o = option;
@@ -250,7 +257,7 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 							currentClassMenu.add( currentDetectorMenu );
 						} else if( device instanceof DetectorChannel ) {
 							final DetectorChannel detectorChannel = (DetectorChannel)device;
-							final MenuManager currentDetectorChannelMenu = new MenuManager( "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName() );
+							final MenuManager currentDetectorChannelMenu = new MenuManager( "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName(), channelImage, "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName() );
 							for( final Option option : detectorChannel.getOptions() ) {
 								final Action setOptionAction = new Action() {
 									final Option o = option;
@@ -298,10 +305,10 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 				}
 				for( final Motor motor : Activator.getDefault().getMeasuringStation().getMotors() ) {
 					if( "".equals( motor.getClassName() ) || motor.getClassName() == null ) {
-						final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName() );
+						final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName(), motorImage, "".equals( motor.getName())?motor.getID():motor.getName() );
 						for( final MotorAxis motorAxis : motor.getAxis() ) {
 							if( "".equals( motorAxis.getClassName() ) || motorAxis.getClassName() == null ) {
-								final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
+								final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName(), axisImage, "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
 								for( final Option option : motorAxis.getOptions() ) {
 									final Action setOptionAction = new Action() {
 										final Option o = option;
@@ -350,10 +357,10 @@ public class PostscanComposite extends Composite implements IModelUpdateListener
 				}
 				for( final Detector detector : Activator.getDefault().getMeasuringStation().getDetectors() ) {
 					if( "".equals( detector.getClassName() ) || detector.getClassName() == null ) {
-						final MenuManager currentDetectorMenu = new MenuManager( "".equals( detector.getName())?detector.getID():detector.getName() );
+						final MenuManager currentDetectorMenu = new MenuManager( "".equals( detector.getName())?detector.getID():detector.getName(), detectorImage, "".equals( detector.getName())?detector.getID():detector.getName() );
 						for( final DetectorChannel detectorChannel : detector.getChannels() ) {
 							if( "".equals( detectorChannel.getClassName() ) || detectorChannel.getClassName() == null ) {
-								final MenuManager currentDetectorChannelMenu = new MenuManager( "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName() );
+								final MenuManager currentDetectorChannelMenu = new MenuManager( "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName(), channelImage, "".equals( detector.getName())?detector.getID():detector.getName() );
 								for( final Option option : detectorChannel.getOptions() ) {
 									final Action setOptionAction = new Action() {
 										final Option o = option;

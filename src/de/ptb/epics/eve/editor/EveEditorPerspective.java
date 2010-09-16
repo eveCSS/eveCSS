@@ -54,6 +54,8 @@ public class EveEditorPerspective implements IPerspectiveFactory  {
 		
 		layout.addActionSet( "de.ptb.epics.eve.editor.handOverActionSet" );
 		
+		
+
 	}
 
 }
