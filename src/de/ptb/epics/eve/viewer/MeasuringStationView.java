@@ -14,6 +14,8 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
@@ -80,12 +82,10 @@ public final class MeasuringStationView extends ViewPart {
 		this.treeViewer.setContentProvider( new MeasuringStationTreeViewContentProvider() );
 		this.treeViewer.setLabelProvider( new MeasuringStationTreeViewLabelProvider() );
 		this.treeViewer.getTree().setEnabled( false );
-		
-		this.treeViewer.addDoubleClickListener( new IDoubleClickListener() {
+		this.treeViewer.getTree().addMouseListener( new MouseListener() {
 
 			@Override
-			public void doubleClick( final DoubleClickEvent event ) {
-				
+			public void mouseDoubleClick(MouseEvent e) {
 				IViewReference[] ref = getSite().getPage().getViewReferences();
 				for( final IViewReference r : ref ) {
 					final IViewPart view = r.getView( false );
@@ -95,6 +95,37 @@ public final class MeasuringStationView extends ViewPart {
 						}
 					}
 				}
+				
+			}
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
+		this.treeViewer.addDoubleClickListener( new IDoubleClickListener() {
+
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				IViewReference[] ref = getSite().getPage().getViewReferences();
+				for( final IViewReference r : ref ) {
+					final IViewPart view = r.getView( false );
+					if( r.getId().equals( "DeviceInspectorView" ) && getSite().getPage().isPartVisible( view ) ) {
+						if( treeViewer.getTree().getSelection()[0].getData() instanceof AbstractDevice ) {
+							((DeviceInspectorViewer)view).addAbstractDevice( (AbstractDevice)treeViewer.getTree().getSelection()[0].getData() );
+						}
+					}
+				}
+				
 			}
 			
 		});
