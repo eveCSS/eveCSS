@@ -306,7 +306,6 @@ public abstract class AbstractDevice {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((options == null) ? 0 : options.hashCode());
-		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
 		result = prime * result + ((unit == null) ? 0 : unit.hashCode());
 		return result;
 	}
@@ -341,11 +340,6 @@ public abstract class AbstractDevice {
 			if(other.options != null)
 				return false;
 		} else if (!options.equals(other.options))
-			return false;
-		if (parent == null) {
-			if (other.parent != null)
-				return false;
-		} else if (!parent.equals(other.parent))
 			return false;
 		if (unit == null) {
 			if (other.unit != null)
