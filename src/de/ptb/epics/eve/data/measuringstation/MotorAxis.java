@@ -461,5 +461,31 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 		return true;
 	}
 	
+	@Override
+	public Object clone() {
+		final MotorAxis motorAxis = new MotorAxis();
+		
+		motorAxis.position = (Function)(this.position!=null?this.position.clone():null);
+		motorAxis.gotoAdvisor = (Function)(this.gotoAdvisor!=null?this.gotoAdvisor.clone():null);
+		motorAxis.stop = (Function)(this.stop!=null?this.stop.clone():null);
+		motorAxis.deadband = (Function)(this.deadband!=null?this.deadband.clone():null);
+		motorAxis.offset = (Function)(this.offset!=null?this.offset.clone():null);
+		motorAxis.tweakValue = (Function)(this.tweakValue!=null?this.tweakValue.clone():null);
+		motorAxis.tweakForward = (Function)(this.tweakForward!=null?this.tweakForward.clone():null);
+		motorAxis.tweakReverse = (Function)(this.tweakReverse!=null?this.tweakReverse.clone():null);
+		motorAxis.position = (Function)(this.position!=null?this.position.clone():null);
+		
+		motorAxis.setClassName( this.getClassName() );
+		motorAxis.setTrigger( (Function)(this.getTrigger()!=null?this.getTrigger().clone():null));
+		motorAxis.setName( this.getName() );
+		motorAxis.setId( this.getID() );
+		motorAxis.setUnit( (Unit)(this.getUnit()!=null?this.getUnit().clone():null) );
+		
+		for( final Option option : this.getOptions() ) {
+			this.add( (Option)option.clone() );
+		}
+		
+		return motorAxis;
+	}
 	
 }

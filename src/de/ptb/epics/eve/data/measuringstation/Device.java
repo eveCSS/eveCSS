@@ -30,4 +30,18 @@ public class Device extends AbstractPrePostscanDevice {
 	protected void setParent( final AbstractDevice parent ) throws ParentNotAllowedException {
 	}
 	
+	@Override
+	public Object clone() {
+		final Device device = new Device();
+		
+		device.setClassName( this.getClassName() );
+		device.setDisplaygroup( this.getDisplaygroup() );
+		device.setValue( (Function)(this.getValue()!=null?this.getValue().clone():null) );
+		
+		device.setName( this.getName() );
+		device.setId( this.getID() );
+		device.setUnit( (Unit)(this.getUnit()!=null?this.getUnit().clone():null) );
+		
+		return device;
+	}
 }

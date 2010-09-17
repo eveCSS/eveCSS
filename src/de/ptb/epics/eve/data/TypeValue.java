@@ -314,5 +314,12 @@ public class TypeValue {
 		return true;
 	}
 	
-	
+	@Override
+	public Object clone() {
+		final TypeValue typeValue = new TypeValue( this.type );
+		typeValue.elements = new ArrayList<String>( this.elements );
+		typeValue.hasRange = this.hasRange;
+		typeValue.isDiscrete = this.isDiscrete;
+		return typeValue;
+	}
 }

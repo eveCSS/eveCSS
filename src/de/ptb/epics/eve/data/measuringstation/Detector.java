@@ -127,5 +127,21 @@ public class Detector extends AbstractMainPhaseDevice {
 		return true;
 	}
 		
-	
+	@Override
+	public Object clone() {
+		final Detector detector = new Detector();
+		for( final DetectorChannel channel : this.channels ) {
+			detector.add( (DetectorChannel)channel.clone() );
+		}
+		detector.setClassName( this.getClassName() );
+		detector.setTrigger( (Function)(this.getTrigger()!=null?this.getTrigger().clone():null));
+		detector.setName( this.getName() );
+		detector.setId( this.getID() );
+		detector.setUnit( (Unit)(this.getUnit()!=null?this.getUnit().clone():null) );
+		
+		for( final Option option : this.getOptions() ) {
+			this.add( (Option)option.clone() );
+		}
+		return detector;
+	}
 }

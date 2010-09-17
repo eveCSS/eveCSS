@@ -152,5 +152,8 @@ public class Unit {
 		return true;
 	}
 
-	
+	@Override
+	public Object clone() {
+		return this.access!=null?new Unit( (Access)this.access.clone() ):new Unit( this.value ); 
+	}
 }

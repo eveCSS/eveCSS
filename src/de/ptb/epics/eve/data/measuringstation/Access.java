@@ -352,5 +352,9 @@ public class Access {
 		return true;
 	}
 	
+	@Override
+	public Object clone() {
+		return new Access( this.variableID, this.type, this.count, this.method, this.transport, this.timeout );
+	}
 	
 }

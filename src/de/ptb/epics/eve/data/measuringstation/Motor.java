@@ -127,7 +127,25 @@ public class Motor extends AbstractMainPhaseDevice {
 			return false;
 		}
 		return true;
-	}	
+	}
 	
+	@Override
+	public Object clone() {
+		
+		final Motor motor = new Motor();
+		for( final MotorAxis axis : this.axis ) {
+			motor.add( (MotorAxis)axis.clone() );
+		}
+		motor.setClassName( this.getClassName() );
+		motor.setTrigger( (Function)(this.getTrigger()!=null?this.getTrigger().clone():null));
+		motor.setName( this.getName() );
+		motor.setId( this.getID() );
+		motor.setUnit( (Unit)(this.getUnit()!=null?this.getUnit().clone():null) );
+		
+		for( final Option option : this.getOptions() ) {
+			this.add( (Option)option.clone() );
+		}
+		return motor;
+	}
 	
 }

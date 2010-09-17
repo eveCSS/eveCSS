@@ -16,5 +16,18 @@ package de.ptb.epics.eve.data.measuringstation;
  */
 public class Option extends AbstractPrePostscanDevice {
 
-	
+	@Override
+	public Object clone() {
+		final Option option = new Option();
+		
+		option.setClassName( this.getClassName() );
+		option.setDisplaygroup( this.getDisplaygroup() );
+		option.setValue( (Function)(this.getValue()!=null?this.getValue().clone():null) );
+		
+		option.setName( this.getName() );
+		option.setId( this.getID() );
+		option.setUnit( (Unit)(this.getUnit()!=null?this.getUnit().clone():null) );
+		
+		return option;
+	}
 }
