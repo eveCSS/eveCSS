@@ -100,8 +100,7 @@ public class Detector extends AbstractMainPhaseDevice {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((channels == null) ? 0 : channels.hashCode());
+		
 		return result;
 	}
 
@@ -117,13 +116,7 @@ public class Detector extends AbstractMainPhaseDevice {
 			return false;
 		}
 		Detector other = (Detector) obj;
-		if (channels == null) {
-			if (other.channels != null) {
-				return false;
-			}
-		} else if (!channels.equals(other.channels)) {
-			return false;
-		}
+		
 		return true;
 	}
 		

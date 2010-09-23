@@ -211,6 +211,6 @@ public class Function {
 	
 	@Override
 	public Object clone() {
-		return new Function( (Access)this.access.clone(), (TypeValue)this.value.clone() );
+		return new Function( (Access)(this.access!=null?this.access.clone():null), (TypeValue)(this.value!=null?this.value.clone():null) );
 	}
 }

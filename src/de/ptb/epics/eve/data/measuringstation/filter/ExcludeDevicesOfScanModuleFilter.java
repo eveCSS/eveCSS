@@ -552,11 +552,34 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 			this.devices.addAll( this.getSource().getDevices() );
 			this.devices.removeAll( this.excludeList );
 			
-			this.motors.addAll( this.getSource().getMotors() );
-			this.motors.removeAll( this.excludeList );
+			for( final Motor motor : this.getSource().getMotors() ) {
+				if( !this.excludeList.contains( motor ) ) {
+					final Motor m = (Motor)motor.clone();
+					for( final AbstractDevice d : this.excludeList ) {
+						if( d instanceof MotorAxis ) {
+							
+							m.remove( (MotorAxis)d );
+						}
+					}
+					this.motors.add( m );
+				}
+				
+			}
 			
-			this.detectors.addAll( this.getSource().getDetectors());
-			this.detectors.removeAll(this.excludeList );
+			for( final Detector detector : this.getSource().getDetectors() ) {
+				if( !this.excludeList.contains( detector ) ) {
+					final Detector m = (Detector)detector.clone();
+					for( final AbstractDevice d : this.excludeList ) {
+						if( d instanceof DetectorChannel ) {
+							
+							if( m.remove( (DetectorChannel)d ) ) {
+								System.out.println( "removed" );
+							}
+						}
+					}
+					this.detectors.add( m );
+				}
+			}
 			
 			this.selections.setColors( this.getSource().getSelections().getColors() );
 			this.selections.setLinestyles( this.getSource().getSelections().getLinestyles() );
@@ -600,14 +623,8 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 				this.prePostscanDeviceMap.put( device.getID(), device );
 			}
 			
+			buildClassMap();
 			
-			for( final String key : this.getSource().getClassNameList() ) {
-				final ArrayList<AbstractDevice> devices = new ArrayList< AbstractDevice >( this.getSource().getDeviceList( key ) );
-				devices.removeAll( this.excludeList );
-				if( devices.size() > 0 ) {
-					this.classMap.put( key, devices );
-				}
-			}
 			
 			for( final Event event : this.events ) {
 				this.eventsMap.put(  event.getID(), event );
@@ -619,5 +636,63 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 			modelUpdateListener.updateEvent( new ModelUpdateEvent( this, null ) );
 		}
 		
+	}
+	
+	private void buildClassMap() {
+		this.classMap.clear();
+		
+		for( final Motor motor : this.motors ) {
+			if( motor.getClassName() != null && !motor.getClassName().equals( "" ) ) {
+				List< AbstractDevice > devices = null;
+				if( this.classMap.containsKey( motor.getClassName() ) ) {
+					devices = this.classMap.get( motor.getClassName() );
+				} else {
+					devices = new ArrayList< AbstractDevice >();
+					this.classMap.put( motor.getClassName(), devices );
+				}
+				devices.add( motor );
+				
+				for( final MotorAxis motorAxis : motor.getAxis() ) {
+					if( motorAxis.getClassName() != null && !motorAxis.getClassName().equals( "" ) ) {
+						devices = null;
+						if( this.classMap.containsKey( motorAxis.getClassName() ) ) {
+							devices = this.classMap.get( motorAxis.getClassName() );
+						} else {
+							devices = new ArrayList< AbstractDevice >();
+							this.classMap.put( motorAxis.getClassName(), devices );
+						}
+						devices.add( motorAxis );
+					}
+					
+				}
+			}
+		}
+		
+		for( final Detector detector : this.detectors ) {
+			if( detector.getClassName() != null && !detector.getClassName().equals( "" ) ) {
+				List< AbstractDevice > devices = null;
+				if( this.classMap.containsKey( detector.getClassName() ) ) {
+					devices = this.classMap.get( detector.getClassName() );
+				} else {
+					devices = new ArrayList< AbstractDevice >();
+					this.classMap.put( detector.getClassName(), devices );
+				}
+				devices.add( detector );
+				
+				for( final DetectorChannel detectorChannel : detector.getChannels() ) {
+					if( detectorChannel.getClassName() != null && !detectorChannel.getClassName().equals( "" ) ) {
+						devices = null;
+						if( this.classMap.containsKey( detectorChannel.getClassName() ) ) {
+							devices = this.classMap.get( detectorChannel.getClassName() );
+						} else {
+							devices = new ArrayList< AbstractDevice >();
+							this.classMap.put( detectorChannel.getClassName(), devices );
+						}
+						devices.add( detectorChannel );
+					}
+					
+				}
+			}
+		}
 	}
 }

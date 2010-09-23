@@ -128,7 +128,6 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((className == null) ? 0 : className.hashCode());
-		result = prime * result + ((trigger == null) ? 0 : trigger.hashCode());
 		return result;
 	}
 
@@ -149,13 +148,6 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 				return false;
 			}
 		} else if( !className.equals( other.className ) ) {
-			return false;
-		}
-		if( trigger == null ) {
-			if( other.trigger != null ) {
-				return false;
-			}
-		} else if ( !trigger.equals( other.trigger ) ) {
 			return false;
 		}
 		return true;

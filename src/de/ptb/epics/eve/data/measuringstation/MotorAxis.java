@@ -365,21 +365,7 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((deadband == null) ? 0 : deadband.hashCode());
-		result = prime * result
-				+ ((gotoAdvisor == null) ? 0 : gotoAdvisor.hashCode());
-		result = prime * result + ((offset == null) ? 0 : offset.hashCode());
-		result = prime * result
-				+ ((position == null) ? 0 : position.hashCode());
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		result = prime * result + ((stop == null) ? 0 : stop.hashCode());
-		result = prime * result
-				+ ((tweakForward == null) ? 0 : tweakForward.hashCode());
-		result = prime * result
-				+ ((tweakReverse == null) ? 0 : tweakReverse.hashCode());
-		result = prime * result
-				+ ((tweakValue == null) ? 0 : tweakValue.hashCode());
+		
 		return result;
 	}
 
@@ -395,69 +381,7 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 			return false;
 		}
 		MotorAxis other = (MotorAxis) obj;
-		if (deadband == null) {
-			if (other.deadband != null) {
-				return false;
-			}
-		} else if (!deadband.equals(other.deadband)) {
-			return false;
-		}
-		if (gotoAdvisor == null) {
-			if (other.gotoAdvisor != null) {
-				return false;
-			}
-		} else if (!gotoAdvisor.equals(other.gotoAdvisor)) {
-			return false;
-		}
-		if (offset == null) {
-			if (other.offset != null) {
-				return false;
-			}
-		} else if (!offset.equals(other.offset)) {
-			return false;
-		}
-		if (position == null) {
-			if (other.position != null) {
-				return false;
-			}
-		} else if (!position.equals(other.position)) {
-			return false;
-		}
-		if (status == null) {
-			if (other.status != null) {
-				return false;
-			}
-		} else if (!status.equals(other.status)) {
-			return false;
-		}
-		if (stop == null) {
-			if (other.stop != null) {
-				return false;
-			}
-		} else if (!stop.equals(other.stop)) {
-			return false;
-		}
-		if (tweakForward == null) {
-			if (other.tweakForward != null) {
-				return false;
-			}
-		} else if (!tweakForward.equals(other.tweakForward)) {
-			return false;
-		}
-		if (tweakReverse == null) {
-			if (other.tweakReverse != null) {
-				return false;
-			}
-		} else if (!tweakReverse.equals(other.tweakReverse)) {
-			return false;
-		}
-		if (tweakValue == null) {
-			if (other.tweakValue != null) {
-				return false;
-			}
-		} else if (!tweakValue.equals(other.tweakValue)) {
-			return false;
-		}
+		
 		return true;
 	}
 	
