@@ -44,7 +44,6 @@ import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
-import de.ptb.epics.eve.editor.Activator;
 
 public class PrescanComposite extends Composite implements IModelUpdateListener {
 
@@ -118,10 +117,10 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 			@Override
 			public void menuAboutToShow( final IMenuManager manager ) {
 				
-				for( final String className : Activator.getDefault().getMeasuringStation().getClassNameList() ) {
+				for( final String className : measuringStation.getClassNameList() ) {
 					final MenuManager currentClassMenu = new MenuManager( className );
 					
-					for( final AbstractDevice device : Activator.getDefault().getMeasuringStation().getDeviceList( className ) ) {
+					for( final AbstractDevice device : measuringStation.getDeviceList( className ) ) {
 						if( device instanceof Motor ) {
 							final Motor motor = (Motor)device;
 							final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName(), motorImage, "".equals( motor.getName())?motor.getID():motor.getName() );
@@ -290,7 +289,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 					manager.add( currentClassMenu );
 
 				}
-				for( final Motor motor : Activator.getDefault().getMeasuringStation().getMotors() ) {
+				for( final Motor motor : measuringStation.getMotors() ) {
 					if( "".equals( motor.getClassName() ) || motor.getClassName() == null ) {
 						final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName(), motorImage, "".equals( motor.getName())?motor.getID():motor.getName() );
 						for( final MotorAxis motorAxis : motor.getAxis() ) {
@@ -342,7 +341,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 					manager.add( currentMotorMenu );
 					}
 				}
-				for( final Detector detector : Activator.getDefault().getMeasuringStation().getDetectors() ) {
+				for( final Detector detector : measuringStation.getDetectors() ) {
 					if( "".equals( detector.getClassName() ) || detector.getClassName() == null ) {
 						final MenuManager currentDetectorMenu = new MenuManager( "".equals( detector.getName())?detector.getID():detector.getName(), detectorImage, "".equals( detector.getName())?detector.getID():detector.getName() );
 						for( final DetectorChannel detectorChannel : detector.getChannels() ) {
@@ -395,7 +394,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 						manager.add( currentDetectorMenu );
 					}
 				}
-				for( final Device device : Activator.getDefault().getMeasuringStation().getDevices() ) {
+				for( final Device device : measuringStation.getDevices() ) {
 					if( "".equals( device.getClassName() ) || device.getClassName() == null ) {
 						final Action setDeviceAction = new Action() {
 							final Device dv = (Device)device;

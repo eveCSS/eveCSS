@@ -129,10 +129,10 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 			@Override
 			public void menuAboutToShow( final IMenuManager manager ) {
 				
-				for( final String className : Activator.getDefault().getMeasuringStation().getClassNameList() ) {
+				for( final String className : measuringStation.getClassNameList() ) {
 					boolean containsAtLeastOne = false;
 					final MenuManager currentClassMenu = new MenuManager( className );
-					for( final AbstractDevice device : Activator.getDefault().getMeasuringStation().getDeviceList( className ) ) {
+					for( final AbstractDevice device : measuringStation.getDeviceList( className ) ) {
 						if( device instanceof Detector ) {
 							containsAtLeastOne = true;
 							final Detector detector = (Detector)device;
@@ -192,7 +192,7 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 					}
 				}
 				
-				for( final Detector detector : Activator.getDefault().getMeasuringStation().getDetectors() ) {
+				for( final Detector detector : measuringStation.getDetectors() ) {
 					if( "".equals( detector.getClassName() ) || detector.getClassName() == null ) {
 						boolean containsAtLeastOne = false;
 						final MenuManager currentDetectorMenu = new MenuManager( "".equals( detector.getName())?detector.getID():detector.getName() );
