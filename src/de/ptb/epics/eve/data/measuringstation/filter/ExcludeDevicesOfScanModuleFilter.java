@@ -27,6 +27,8 @@ import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
+
+
 public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 	/**
 	 * A List, that is holding all events.
