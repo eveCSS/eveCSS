@@ -35,14 +35,8 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.events.DragDetectEvent;
-import org.eclipse.swt.events.DragDetectListener;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -67,16 +61,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 
 	public static final String ID = "de.ptb.epics.eve.editor.views.ScanModulView"; // TODO
 																							// Needs
-																							// to
-																							// be
-																							// whatever
-																							// is
-																							// mentioned
-																							// in
-																							// plugin.xml
-																							// //
-																							// @jve:decl-index=0:
-
 	private boolean filling;
 	private boolean plotErrors;
 
@@ -173,6 +157,8 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	private ExcludeDevicesOfScanModuleFilter measuringStationPrescan;
 	private ExcludeDevicesOfScanModuleFilter measuringStationPostscan;
 	
+	private int itemhigh = 0;
+	
 	@Override
 	public void createPartControl(final Composite parent) {
 		// TODO Auto-generated method stub
@@ -207,7 +193,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		}
 
 		
-
 		this.top = new Composite(parent, SWT.NONE);
 		this.top.setLayout(new GridLayout());
 
@@ -301,9 +286,10 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 
 		this.item1 = new ExpandItem(this.bar, SWT.NONE, 0);
 		item1.setText("Actions");
-		item1.setHeight(this.actionsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+//		item1.setHeight(this.actionsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item1.setControl(this.actionsComposite);
-
+		System.out.println("Höhe item1: " + item1.getHeight());
+		
 		// Plot Section
 		gridLayout = new GridLayout();
 		this.plottingComposite = new Composite(this.bar, SWT.NONE);
@@ -455,6 +441,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		GridLayout gridLayout = new GridLayout();
 
 		this.actionsComposite = new Composite(this.bar, SWT.NONE);
+//		this.actionsComposite = new Composite(this.bar, SWT.RESIZE | SWT.BORDER);
 		this.actionsComposite.setLayout(gridLayout);
 
 		GridData gridData = new GridData();
@@ -1063,7 +1050,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 
 			public void controlResized(final ControlEvent e) {
 				this.function();
-
+//ACHTUNG: WAS PASSIERT HIER?
 			}
 			// Caution: do not use getHeaderHeight() here
 			// height values vary without changing the layout
@@ -1093,7 +1080,9 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 				if (amount > 0) {
 					height /= amount;
 					if (item1.getExpanded()) {
-						item1.setHeight(height < 200 ? 200 : height);
+						int setz = height + itemhigh;
+						item1.setHeight(setz < 200 ? 200 : setz);
+//						item1.setHeight(height < 200 ? 200 : height);
 					}
 					if (item2.getExpanded()) {
 						item2.setHeight(height < 150 ? 150 : height);

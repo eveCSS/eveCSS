@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
-import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
@@ -41,15 +39,10 @@ import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import de.ptb.epics.eve.data.PluginDataType;
 import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.measuringstation.PluginParameter;
-import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
-import de.ptb.epics.eve.data.scandescription.Channel;
-import de.ptb.epics.eve.data.scandescription.PluginController;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.errors.ChainError;
 import de.ptb.epics.eve.data.scandescription.errors.ChainErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -120,7 +113,6 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 	private CTabItem breakTabItem;
 	private CTabItem stopTabItem;
 	
-		
 	@Override
 	public void createPartControl( final Composite parent ) {
 	    
@@ -133,7 +125,6 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		}
 
 		this.top = new Composite(parent, SWT.NONE);
-		//this.top.setLayout( new FillLayout() );
 		this.top.setLayout( new GridLayout() );
 		
 		this.bar = new ExpandBar( this.top, SWT.V_SCROLL);
@@ -149,7 +140,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		gridLayout.numColumns = 4;
 		this.savingComposite = new Composite( this.bar, SWT.NONE );
 		this.savingComposite.setLayout( gridLayout );
-		
+
 		// Filename Label / Button
 		this.filenameLabel = new Label( this.savingComposite, SWT.NONE );
 		this.filenameLabel.setText( "Filename:" );
@@ -311,9 +302,12 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		Label filler1 = new Label( this.savingComposite, SWT.NONE );
 		
 		// first expand item (Save Options)
-		this.item0 = new ExpandItem ( this.bar, SWT.NONE, 0);
+//		this.item0 = new ExpandItem ( this.bar, SWT.NONE, 0);
+		this.item0 = new ExpandItem ( this.bar, SWT.V_SCROLL, 0);
 		item0.setText("Save Options");
-		item0.setHeight( this.savingComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+//		item0.setHeight( this.savingComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		item0.setHeight(this.savingComposite.computeSize(SWT.DEFAULT, 100).y);
+		
 		item0.setControl( this.savingComposite );
 		
 		// Comment Section
@@ -668,7 +662,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			}
 			
 		};
-	}
+	};
 
 	@Override
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {

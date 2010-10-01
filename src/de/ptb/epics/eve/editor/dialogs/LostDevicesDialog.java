@@ -35,7 +35,7 @@ public class LostDevicesDialog extends TitleAreaDialog {
 	protected Control createDialogArea( final Composite parent) {
         Composite area = (Composite) super.createDialogArea( parent );
 
-		this.top = new Composite(parent, SWT.NONE);
+		this.top = new Composite(parent, SWT.RESIZE | SWT.BORDER);
         this.setTitle( "There are Problems in the loaded scml File");
 
         final GridLayout gridLayout = new GridLayout();
