@@ -163,6 +163,7 @@ public class ECP1Client {
 
 	public void close() throws IOException {
 		if( this.running ) {
+			System.out.println("Hier wird eigentlich die Engine gestoppt");
 			this.inHandler.quit();
 			this.outHandler.quit();
 			this.running = false;
