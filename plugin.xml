@@ -93,6 +93,16 @@
             <separator name="engineControlGroup"/>
          </menu>
          <action
+               class="de.ptb.epics.eve.viewer.actions.AutoPlayAction"
+               icon="icons/playAll.gif"
+               id="de.ptb.epics.eve.viewer.actions.AutoPlayAction"
+               label="%action.label.9"
+               menubarPath="engineControlMenu/engineControlGroup"
+               style="toggle"
+               toolbarPath="engineControlGroup"
+               tooltip="%action.tooltip.9">
+         </action>
+         <action
                class="de.ptb.epics.eve.viewer.actions.TriggerAction"
                icon="icons/trigger.gif"
                id="de.ptb.epics.eve.viewer.actions.TriggerAction"
@@ -121,8 +131,6 @@
                toolbarPath="engineControlGroup"
                tooltip="%action.tooltip.8">
          </action>
-         
-        
          <action
                class="de.ptb.epics.eve.viewer.actions.SkipAction"
                icon="icons/skip.gif"

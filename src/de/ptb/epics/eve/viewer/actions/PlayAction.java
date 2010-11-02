@@ -32,6 +32,8 @@ public class PlayAction implements IWorkbenchWindowActionDelegate {
 	 */
 	public void run(IAction action) {
 		Activator.getDefault().getEcp1Client().getPlayController().start();
+
+		
 	}
 
 	/**
