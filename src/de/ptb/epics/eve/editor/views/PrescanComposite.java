@@ -104,7 +104,6 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 	    
 	    this.tableViewer.setColumnProperties( props );
 	    
-		
 		final MenuManager menuManager = new MenuManager( "#PopupMenu" );
 		menuManager.setRemoveAllWhenShown( true );
 		menuManager.addMenuListener( new IMenuListener() {
@@ -117,13 +116,21 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 			@Override
 			public void menuAboutToShow( final IMenuManager manager ) {
 				
+			    System.out.println("\nPrescanComposite");
+			    
 				for( final String className : measuringStation.getClassNameList() ) {
+
+					System.out.println("neuen MenuManager für die Class " + className);
 					final MenuManager currentClassMenu = new MenuManager( className );
 					
 					for( final AbstractDevice device : measuringStation.getDeviceList( className ) ) {
 						if( device instanceof Motor ) {
 							final Motor motor = (Motor)device;
+							System.out.println("   Motor der Class: " + motor.getName());
 							final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName(), motorImage, "".equals( motor.getName())?motor.getID():motor.getName() );
+// NEU:
+							currentClassMenu.add( currentMotorMenu );
+
 							for( final MotorAxis motorAxis : motor.getAxis() ) {
 								final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName(), axisImage, "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
 								for( final Option option : motorAxis.getOptions() ) {
@@ -168,7 +175,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 								currentMotorMenu.add( setOptionAction );
 								setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
 							}
-							currentClassMenu.add( currentMotorMenu );
+//							currentClassMenu.add( currentMotorMenu );
 						} else if( device instanceof MotorAxis ) {
 							final MotorAxis motorAxis = (MotorAxis)device;
 							final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName(), axisImage, "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
@@ -291,11 +298,16 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 				}
 				for( final Motor motor : measuringStation.getMotors() ) {
 					if( "".equals( motor.getClassName() ) || motor.getClassName() == null ) {
+
+						System.out.println("neuen MenuManager für den Motor " + motor.getID() + motor.getName());
 						final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName(), motorImage, "".equals( motor.getName())?motor.getID():motor.getName() );
 						for( final MotorAxis motorAxis : motor.getAxis() ) {
 							if( "".equals( motorAxis.getClassName() ) || motorAxis.getClassName() == null ) {
+								System.out.println("   Axis des Motors: " + motorAxis.getName());
 								final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName(), axisImage, "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
+								System.out.println("      Optionen der Axis: " + motorAxis.getOptions().size());
 								for( final Option option : motorAxis.getOptions() ) {
+									System.out.println("      Option der Axis: " + option.getName());
 									final Action setOptionAction = new Action() {
 										final Option o = option;
 										public void run() {
@@ -343,11 +355,16 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 				}
 				for( final Detector detector : measuringStation.getDetectors() ) {
 					if( "".equals( detector.getClassName() ) || detector.getClassName() == null ) {
+
+						System.out.println("neuen MenuManager für den Detektor " + detector.getID() + detector.getName());
 						final MenuManager currentDetectorMenu = new MenuManager( "".equals( detector.getName())?detector.getID():detector.getName(), detectorImage, "".equals( detector.getName())?detector.getID():detector.getName() );
 						for( final DetectorChannel detectorChannel : detector.getChannels() ) {
 							if( "".equals( detectorChannel.getClassName() ) || detectorChannel.getClassName() == null ) {
+								System.out.println("   Channel des Detektors: " + detectorChannel.getName());
 								final MenuManager currentDetectorChannelMenu = new MenuManager( "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName(), channelImage, "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName() );
+								System.out.println("      Optionen des Channels: " + detectorChannel.getOptions().size());
 								for( final Option option : detectorChannel.getOptions() ) {
+									System.out.println("      Option des Channels: " + option.getName());
 									final Action setOptionAction = new Action() {
 										final Option o = option;
 										public void run() {

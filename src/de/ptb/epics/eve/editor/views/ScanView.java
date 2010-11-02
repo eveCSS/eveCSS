@@ -302,12 +302,9 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		Label filler1 = new Label( this.savingComposite, SWT.NONE );
 		
 		// first expand item (Save Options)
-//		this.item0 = new ExpandItem ( this.bar, SWT.NONE, 0);
-		this.item0 = new ExpandItem ( this.bar, SWT.V_SCROLL, 0);
+		this.item0 = new ExpandItem ( this.bar, SWT.NONE, 0);
 		item0.setText("Save Options");
-//		item0.setHeight( this.savingComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		item0.setHeight(this.savingComposite.computeSize(SWT.DEFAULT, 100).y);
-		
+		item0.setHeight( this.savingComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item0.setControl( this.savingComposite );
 		
 		// Comment Section

@@ -165,14 +165,17 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		
 		parent.setLayout(new FillLayout());
 		
+System.out.println("\n1. Aufruf von ExcludeDevicesOfScanModuleFilter");
 		this.measuringStation = new ExcludeDevicesOfScanModuleFilter( true, true, false, false, false );
 		this.measuringStation.setSource( Activator.getDefault().getMeasuringStation() );
 		this.measuringStation.addModelUpdateListener( this );
-		
+
+System.out.println("\n2. Aufruf von ExcludeDevicesOfScanModuleFilter");
 		this.measuringStationPrescan = new ExcludeDevicesOfScanModuleFilter( false, false, true, false, false );
 		this.measuringStationPrescan.setSource( Activator.getDefault().getMeasuringStation() );
 		this.measuringStationPrescan.addModelUpdateListener( this );
-		
+
+System.out.println("\n3. Aufruf von ExcludeDevicesOfScanModuleFilter");
 		this.measuringStationPostscan = new ExcludeDevicesOfScanModuleFilter( false, false, false, true, false );
 		this.measuringStationPostscan.setSource( Activator.getDefault().getMeasuringStation() );
 		this.measuringStationPostscan.addModelUpdateListener( this );

@@ -131,14 +131,17 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 				
 				for( final String className : measuringStation.getClassNameList() ) {
 					boolean containsAtLeastOne = false;
+					System.out.println("neuen MenuManager für die Class " + className);
 					final MenuManager currentClassMenu = new MenuManager( className );
 					for( final AbstractDevice device : measuringStation.getDeviceList( className ) ) {
 						if( device instanceof Detector ) {
 							containsAtLeastOne = true;
 							final Detector detector = (Detector)device;
+							System.out.println("   Detektor der Class: " + detector.getName());
 							final MenuManager currentDetectorMenu = new MenuManager( "".equals( detector.getName())?detector.getID():detector.getName() );
 							currentClassMenu.add( currentDetectorMenu );
 							for( final DetectorChannel channel : detector.getChannels() ) {
+								System.out.println("      Channel des Detektors: " + channel.toString());
 								final Action setChannelAction = new Action() {
 									final DetectorChannel dc = channel;
 									public void run() {
@@ -158,6 +161,7 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 								};
 								setChannelAction.setText( "".equals( channel.getName())?channel.getID():channel.getName() );
 								containsAtLeastOne = true;
+								System.out.println("      setChannelAction des Detektors: " + setChannelAction.getText());
 								currentDetectorMenu.add( setChannelAction );
 							}
 						} else if( device instanceof DetectorChannel ) {
@@ -195,9 +199,11 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 				for( final Detector detector : measuringStation.getDetectors() ) {
 					if( "".equals( detector.getClassName() ) || detector.getClassName() == null ) {
 						boolean containsAtLeastOne = false;
+						System.out.println("neuen MenuManager für den Detektor " + detector.getID() + detector.getName());
 						final MenuManager currentDetectorMenu = new MenuManager( "".equals( detector.getName())?detector.getID():detector.getName() );
 						for( final DetectorChannel channel : detector.getChannels() ) {
 							if( "".equals( channel.getClassName()  ) || channel.getClassName() == null ) {
+								System.out.println("      Channel des Detektors: " + channel.toString());
 								final Action setChannelAction = new Action() {
 									final DetectorChannel dc = channel;
 									public void run() {
@@ -219,6 +225,7 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 								};
 								setChannelAction.setText( "".equals( channel.getName())?channel.getID():channel.getName() );
 								containsAtLeastOne = true;
+//								System.out.println("      setAxisAction des Motors: " + setAxisAction.getText());
 								currentDetectorMenu.add( setChannelAction );
 							}
 						}
