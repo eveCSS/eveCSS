@@ -406,7 +406,8 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 		motorAxis.setUnit( (Unit)(this.getUnit()!=null?this.getUnit().clone():null) );
 		
 		for( final Option option : this.getOptions() ) {
-			this.add( (Option)option.clone() );
+//			this.add( (Option)option.clone() );
+			motorAxis.add( (Option)option.clone() );
 		}
 		
 		return motorAxis;

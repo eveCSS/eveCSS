@@ -64,7 +64,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	private final Map< String, MotorAxis> motorAxisMap;
 	
 	/**
-	 * A Map. that makes all detector channels avaiable by their ids.
+	 * A Map. that makes all detector channels available by their ids.
 	 */
 	private final Map< String, DetectorChannel> detectorChannelsMap;
 	
@@ -526,6 +526,8 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	
 	@Override
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
+
+		System.out.println("\nupdateEvent von ExcludeFilter.java aufgerufen\n");
 		this.events.clear();
 		this.plugins.clear();
 		this.devices.clear();
@@ -575,8 +577,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				}
 			}
 			
-			
-			
 			this.selections.setColors( this.getSource().getSelections().getColors() );
 			this.selections.setLinestyles( this.getSource().getSelections().getLinestyles() );
 			this.selections.setMarkstyles( this.getSource().getSelections().getMarkstyles() );
@@ -589,13 +589,18 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			
 			for( final Motor motor : this.motors ) {
 				for( final Option option : motor.getOptions() ) {
-					this.prePostscanDeviceMap.put( option.getID(), option );
+					if( !this.excludeList.contains( option ) ) {
+						this.prePostscanDeviceMap.put( option.getID(), option );
+					}
 				}
+
 				for( final MotorAxis motorAxis : motor.getAxis() ) {
 					if( !this.excludeList.contains( motorAxis ) ) {
 						this.motorAxisMap.put( motorAxis.getID(), motorAxis );
 						for( final Option option : motorAxis.getOptions() ) {
-							this.prePostscanDeviceMap.put( option.getID(), option );
+							if( !this.excludeList.contains( option ) ) {
+								this.prePostscanDeviceMap.put( option.getID(), option );
+							}
 						}
 					}
 				}
@@ -603,13 +608,17 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			
 			for( final Detector detector : this.detectors ) {
 				for( final Option option : detector.getOptions() ) {
-					this.prePostscanDeviceMap.put( option.getID(), option );
+					if ( !this.excludeList.contains(option)) {
+						this.prePostscanDeviceMap.put( option.getID(), option );
+					}
 				}
 				for( final DetectorChannel detectorChannel : detector.getChannels() ) {
 					if( !this.excludeList.contains( detectorChannel ) ) {
 						this.detectorChannelsMap.put( detectorChannel.getID(), detectorChannel );
 						for( final Option option : detectorChannel.getOptions() ) {
-							this.prePostscanDeviceMap.put( option.getID(), option );
+							if ( !this.excludeList.contains(option)) {
+								this.prePostscanDeviceMap.put( option.getID(), option );
+							}
 						}
 					}
 				}
@@ -624,13 +633,11 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			for( final Event event : this.events ) {
 				this.eventsMap.put(  event.getID(), event );
 			}
-			
 		}
 		
 		for( final IModelUpdateListener modelUpdateListener : this.modelUpdateListener ) {
 			modelUpdateListener.updateEvent( new ModelUpdateEvent( this, null ) );
 		}
-		
 	}
 	
 	
@@ -659,7 +666,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 						}
 						devices.add( motorAxis );
 					}
-					
 				}
 			}
 		}
@@ -686,7 +692,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 						}
 						devices.add( detectorChannel );
 					}
-					
 				}
 			}
 		}

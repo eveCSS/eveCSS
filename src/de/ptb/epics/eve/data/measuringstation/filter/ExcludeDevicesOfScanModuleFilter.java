@@ -555,17 +555,15 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 			this.devices.removeAll( this.excludeList );
 			
 			for( final Motor motor : this.getSource().getMotors() ) {
-				if( !this.excludeList.contains( motor ) ) {
-					final Motor m = (Motor)motor.clone();
-					for( final AbstractDevice d : this.excludeList ) {
-						if( d instanceof MotorAxis ) {
-							
-							m.remove( (MotorAxis)d );
+				if( !this.excludeList.contains( motor ) ) {  // wenn exclude List kein Motor enthält weitermachen
+					final Motor m = (Motor)motor.clone();	 
+					for( final AbstractDevice d : this.excludeList ) {  // Schleife über alle Einträge der excludeList
+						if( d instanceof MotorAxis ) {				// ist Eintrag vom Typ MotorAxis
+							m.remove( (MotorAxis)d );				// Wenn ja, Axis vom Motor entfernen
 						}
 					}
 					this.motors.add( m );
 				}
-				
 			}
 			
 			for( final Detector detector : this.getSource().getDetectors() ) {
@@ -594,28 +592,83 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 			}
 			
 			for( final Motor motor : this.motors ) {
+				
+				// Frage: Welche Optionen bietet der motor bisher an?
+//				System.out.println("Alte Optionen des Motors: " + motor.getName());
+//				for ( final Option alteOptionen : motor.getOptions()) {
+//					System.out.println(" Option: " + alteOptionen.getName());
+//					motor.remove(alteOptionen);
+//				}
+
+
 				for( final Option option : motor.getOptions() ) {
-					this.prePostscanDeviceMap.put( option.getID(), option );
+					if( !this.excludeList.contains( option ) ) {
+						this.prePostscanDeviceMap.put( option.getID(), option );
+					}
+					else {
+//						System.out.println("      Motor Option " + option.getName() + " steht in der exludeList");
+						motor.remove(option);
+					}
 				}
+
+				// Frage: Welche Optionen bietet der Motor jetzt an?
+//				System.out.println("Neue Optionen des Motors: " + motor.getName());
+//				for ( final Option neueOptionen : motor.getOptions()) {
+//					System.out.println(" Option: " + neueOptionen.getName());
+//				}
+
 				for( final MotorAxis motorAxis : motor.getAxis() ) {
+
+					// Frage: Welche Optionen bietet die motorAxis bisher an?
+//					System.out.println("Alte Optionen der MotorAchse: " + motorAxis.getName());
+//					for ( final Option alteOptionen : motorAxis.getOptions()) {
+//						System.out.println(" Option: " + alteOptionen.getName());
+//						motorAxis.remove(alteOptionen);
+//					}
+
 					if( !this.excludeList.contains( motorAxis ) ) {
 						this.motorAxisMap.put( motorAxis.getID(), motorAxis );
 						for( final Option option : motorAxis.getOptions() ) {
-							this.prePostscanDeviceMap.put( option.getID(), option );
+							if( !this.excludeList.contains( option ) ) {
+//								System.out.println("ExcDevOfScanModFil: prePostscanDeviceMap.put für MotorAxis " + motorAxis.getName() + " Option "+ option.getName());
+								this.prePostscanDeviceMap.put( option.getID(), option );
+							}
+							else {
+//								System.out.println("      MotorAxis Option " + option.getName() + " steht in der exludeList");
+								motorAxis.remove(option);
+							}
 						}
 					}
+					// Frage: Welche Optionen bietet die motorAxis jetzt an?
+//					System.out.println("Neue Optionen der MotorAchse: " + motorAxis.getName());
+//					for ( final Option alteOptionen : motorAxis.getOptions()) {
+//						System.out.println(" Option: " + alteOptionen.getName());
+//					}
 				}
 			}
 			
+			System.out.println("   ");
 			for( final Detector detector : this.detectors ) {
 				for( final Option option : detector.getOptions() ) {
-					this.prePostscanDeviceMap.put( option.getID(), option );
+					if ( !this.excludeList.contains(option)) {
+						this.prePostscanDeviceMap.put( option.getID(), option );
+					}
+					else {
+//						System.out.println("      Detector Option " + option.getName() + " steht in der exludeList");
+						detector.remove(option);
+					}
 				}
 				for( final DetectorChannel detectorChannel : detector.getChannels() ) {
 					if( !this.excludeList.contains( detectorChannel ) ) {
 						this.detectorChannelsMap.put( detectorChannel.getID(), detectorChannel );
 						for( final Option option : detectorChannel.getOptions() ) {
-							this.prePostscanDeviceMap.put( option.getID(), option );
+							if ( !this.excludeList.contains(option)) {
+								this.prePostscanDeviceMap.put( option.getID(), option );
+							}
+							else {
+								System.out.println("      DetectorChannel Option " + option.getName() + " steht in der exludeList");
+								detectorChannel.remove(option);
+							}
 						}
 					}
 				}
@@ -665,7 +718,6 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 						}
 						devices.add( motorAxis );
 					}
-					
 				}
 			}
 		}
@@ -692,7 +744,6 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 						}
 						devices.add( detectorChannel );
 					}
-					
 				}
 			}
 		}

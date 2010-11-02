@@ -307,7 +307,7 @@ public class MeasuringStation implements IMeasuringStation {
 	
 	/**
 	 * Use this method to register a detector channel at his measuring station. The registration
-	 * is necessary that a detector channel can be founs very fast.
+	 * is necessary that a detector channel can be founds very fast.
 	 * 
 	 * @param detectorChannel A DetectorChannel object. Must not be null!
 	 */
@@ -316,6 +316,7 @@ public class MeasuringStation implements IMeasuringStation {
 			throw new IllegalArgumentException( "The parameter 'detectorChannel' must not be null!" );
 		}
 		this.detectorChannelsMap.put( detectorChannel.getID(), detectorChannel );
+		System.out.println("MeasuringStation.java: detectorChannelsMap.put für " + detectorChannel.getName());
 	}
 
 	/**
