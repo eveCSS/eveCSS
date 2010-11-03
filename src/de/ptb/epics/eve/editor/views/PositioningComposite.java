@@ -42,6 +42,8 @@ import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Axis;
@@ -148,11 +150,21 @@ public class PositioningComposite extends Composite implements IModelUpdateListe
 			@Override
 			public void menuAboutToShow( final IMenuManager manager ) {
 				
-				
+				// Liste der aktuellen Positionings erstellen
+				List <MotorAxis> posList = new ArrayList<MotorAxis>();
+				Positioning[] positionings = scanModul.getPositionings();
+				for( int i = 0; i < positionings.length; ++i ) {
+					posList.add(positionings[i].getMotorAxis());
+				}
 				
 				for( final Axis axis : scanModul.getAxis() ) {
+					// die Achsen für die es Positioning gibt, werden entfernt
+					if (posList.contains(axis.getMotorAxis())) {
+						continue;
+					}
+					
 					final Action addPositioningAction = new Action() {
-						
+
 						final MotorAxis ax = axis.getMotorAxis();
 						
 						public void run() {
@@ -160,9 +172,6 @@ public class PositioningComposite extends Composite implements IModelUpdateListe
 								if( p.getMotorAxis() == ax ) {
 									return;
 								}
-								
-								
-								
 							}
 							super.run();
 							final Positioning p = new Positioning();
@@ -170,13 +179,11 @@ public class PositioningComposite extends Composite implements IModelUpdateListe
 							scanModul.add( p );
 							tableViewer.refresh();
 						}
-						
 					};
+
 					addPositioningAction.setText( "".equals( axis.getMotorAxis().getName())?axis.getMotorAxis().getID():axis.getMotorAxis().getName() );
 					manager.add(addPositioningAction);
 				}
-				
-				
 				
 				Action deleteAction = new Action(){
 			    	public void run() {
@@ -194,10 +201,7 @@ public class PositioningComposite extends Composite implements IModelUpdateListe
 			    
 			    manager.add( deleteAction );
 			}
-
-			
 		});
-		
 			
 				    
 		final Menu contextMenu = menuManager.createContextMenu( this.tableViewer.getTable() );

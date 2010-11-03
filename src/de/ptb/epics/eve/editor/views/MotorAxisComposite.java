@@ -131,25 +131,14 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 			@Override
 			public void menuAboutToShow( final IMenuManager manager ) {
 				
-			    System.out.println("\nMotorAxisComposite");
-
-			    System.out.println("Wie kann hier auf die maps zugegriffen werden?");
-			    System.out.println("Liste aller möglichen PrePostScans");
-			    measuringStation.getPrePostScanDevicesFullIdentifyer();
-
-			    measuringStation.getPrePostScanDevicesFullIdentifyer();
-			    
 			    for( final String className :measuringStation.getClassNameList() ) {
-					System.out.println("neuen MenuManager für die Class " + className);
 					final MenuManager currentClassMenu = new MenuManager( className );
 					for( final AbstractDevice device : measuringStation.getDeviceList( className ) ) {
 						if( device instanceof Motor ) {
 							final Motor motor = (Motor)device;
-							System.out.println("   Motor der Class: " + motor.getName());
 							final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName() );
 							currentClassMenu.add( currentMotorMenu );
 							for( final MotorAxis axis : motor.getAxis() ) {
-								System.out.println("      Axis des Motors: " + axis.getName());
 								final Action setAxisAction = new Action() {
 									final MotorAxis ma = axis;
 									public void run() {
@@ -167,7 +156,6 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 									}
 								};
 								setAxisAction.setText( "".equals( axis.getName())?axis.getID():axis.getName() );
-								System.out.println("         add zum MotorMenu: " + setAxisAction.getText());
 								currentMotorMenu.add( setAxisAction );
 							}
 						} else if( device instanceof MotorAxis ) {
@@ -184,29 +172,21 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 									a.setMotorAxis( ma );
 									scanModul.add( a );
 									setMotorAxisView(a);
-									
 									tableViewer.refresh();
 								}
 							};
 							setAxisAction.setText( "".equals( device.getName())?device.getID():device.getName() );
-							System.out.println("         add zum ClassMenu: " + setAxisAction.getText());
 							currentClassMenu.add( setAxisAction );
 						}
 						manager.add( currentClassMenu );
 					}
 				}
 				
-// Hinweis für Hartmut: measuringStation muß schon eine Kopie sein, durch die der Exlude Befehl gelaufen
-// ist, denn die Anzahl der Achsen variiert je nachdem wieviele Achsen schon ausgewählt wurden.			    
-			    
 			    for( final Motor motor : measuringStation.getMotors() ) {
 					if( "".equals( motor.getClassName() ) || motor.getClassName() == null ) {
-						System.out.println("neuen MenuManager für den Motor " + motor.getID() + motor.getName());
 						final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName() );
-						System.out.println("   Anzahl der Achsen: " + motor.getAxis().size());
 						for( final MotorAxis axis : motor.getAxis() ) {
 							if( "".equals( axis.getClassName()  ) || axis.getClassName() == null ) {
-								System.out.println("      Axis des Motors: " + axis.getName());
 								final Action setAxisAction = new Action() {
 									final MotorAxis ma = axis;
 									public void run() {
@@ -226,7 +206,6 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 									}
 								};
 								setAxisAction.setText( "".equals( axis.getName())?axis.getID():axis.getName() );
-								System.out.println("         add zum MotorMenu: " + setAxisAction.getText());
 								currentMotorMenu.add( setAxisAction );
 							}
 						}
@@ -241,7 +220,6 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 							
 						// MotorAxis wird aus scanModul ausgetragen
 						scanModul.remove( removeAxis );
-
 				    	tableViewer.refresh();
 
 				    	// PlotWindowView wird aktualisiert

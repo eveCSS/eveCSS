@@ -165,21 +165,18 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		
 		parent.setLayout(new FillLayout());
 		
-System.out.println("\n1. Aufruf von ExcludeDevicesOfScanModuleFilter");
 		this.measuringStation = new ExcludeDevicesOfScanModuleFilter( true, true, false, false, false );
 		this.measuringStation.setSource( Activator.getDefault().getMeasuringStation() );
 		this.measuringStation.addModelUpdateListener( this );
 
-System.out.println("\n2. Aufruf von ExcludeDevicesOfScanModuleFilter");
 		this.measuringStationPrescan = new ExcludeDevicesOfScanModuleFilter( false, false, true, false, false );
 		this.measuringStationPrescan.setSource( Activator.getDefault().getMeasuringStation() );
 		this.measuringStationPrescan.addModelUpdateListener( this );
 
-System.out.println("\n3. Aufruf von ExcludeDevicesOfScanModuleFilter");
 		this.measuringStationPostscan = new ExcludeDevicesOfScanModuleFilter( false, false, false, true, false );
 		this.measuringStationPostscan.setSource( Activator.getDefault().getMeasuringStation() );
 		this.measuringStationPostscan.addModelUpdateListener( this );
-		
+
 		if( Activator.getDefault().getMeasuringStation() == null ) {
 			final Label errorLabel = new Label( parent, SWT.NONE );
 			errorLabel.setText( "No Measuring Station has been loaded. Please check Preferences!" );
@@ -546,6 +543,7 @@ System.out.println("\n3. Aufruf von ExcludeDevicesOfScanModuleFilter");
 		this.measuringStation.setScanModule( this.currentScanModul );
 		this.measuringStationPrescan.setScanModule( this.currentScanModul );
 		this.measuringStationPostscan.setScanModule( this.currentScanModul );
+//		this.measuringStationPositioning.setScanModule( this.currentScanModul );
 		this.fillFields();
 	}
 
