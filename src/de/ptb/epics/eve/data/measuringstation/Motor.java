@@ -134,7 +134,7 @@ public class Motor extends AbstractMainPhaseDevice {
 		motor.setUnit( (Unit)(this.getUnit()!=null?this.getUnit().clone():null) );
 		
 		for( final Option option : this.getOptions() ) {
-//			this.add( (Option)option.clone() );
+//	TODO, wegnehmen: 	this.add( (Option)option.clone() );
 			motor.add( (Option)option.clone() );
 		}
 		return motor;

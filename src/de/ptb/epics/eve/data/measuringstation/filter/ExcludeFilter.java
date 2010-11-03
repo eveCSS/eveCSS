@@ -527,7 +527,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	@Override
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
 
-		System.out.println("\nupdateEvent von ExcludeFilter.java aufgerufen\n");
 		this.events.clear();
 		this.plugins.clear();
 		this.devices.clear();

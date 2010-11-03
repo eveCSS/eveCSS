@@ -571,10 +571,7 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 					final Detector m = (Detector)detector.clone();
 					for( final AbstractDevice d : this.excludeList ) {
 						if( d instanceof DetectorChannel ) {
-							
-							if( m.remove( (DetectorChannel)d ) ) {
-								System.out.println( "removed" );
-							}
+							m.remove( (DetectorChannel)d );
 						}
 					}
 					this.detectors.add( m );
@@ -593,68 +590,37 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 			
 			for( final Motor motor : this.motors ) {
 				
-				// Frage: Welche Optionen bietet der motor bisher an?
-//				System.out.println("Alte Optionen des Motors: " + motor.getName());
-//				for ( final Option alteOptionen : motor.getOptions()) {
-//					System.out.println(" Option: " + alteOptionen.getName());
-//					motor.remove(alteOptionen);
-//				}
-
-
 				for( final Option option : motor.getOptions() ) {
 					if( !this.excludeList.contains( option ) ) {
 						this.prePostscanDeviceMap.put( option.getID(), option );
 					}
 					else {
-//						System.out.println("      Motor Option " + option.getName() + " steht in der exludeList");
 						motor.remove(option);
 					}
 				}
 
-				// Frage: Welche Optionen bietet der Motor jetzt an?
-//				System.out.println("Neue Optionen des Motors: " + motor.getName());
-//				for ( final Option neueOptionen : motor.getOptions()) {
-//					System.out.println(" Option: " + neueOptionen.getName());
-//				}
-
 				for( final MotorAxis motorAxis : motor.getAxis() ) {
-
-					// Frage: Welche Optionen bietet die motorAxis bisher an?
-//					System.out.println("Alte Optionen der MotorAchse: " + motorAxis.getName());
-//					for ( final Option alteOptionen : motorAxis.getOptions()) {
-//						System.out.println(" Option: " + alteOptionen.getName());
-//						motorAxis.remove(alteOptionen);
-//					}
 
 					if( !this.excludeList.contains( motorAxis ) ) {
 						this.motorAxisMap.put( motorAxis.getID(), motorAxis );
 						for( final Option option : motorAxis.getOptions() ) {
 							if( !this.excludeList.contains( option ) ) {
-//								System.out.println("ExcDevOfScanModFil: prePostscanDeviceMap.put für MotorAxis " + motorAxis.getName() + " Option "+ option.getName());
 								this.prePostscanDeviceMap.put( option.getID(), option );
 							}
 							else {
-//								System.out.println("      MotorAxis Option " + option.getName() + " steht in der exludeList");
 								motorAxis.remove(option);
 							}
 						}
 					}
-					// Frage: Welche Optionen bietet die motorAxis jetzt an?
-//					System.out.println("Neue Optionen der MotorAchse: " + motorAxis.getName());
-//					for ( final Option alteOptionen : motorAxis.getOptions()) {
-//						System.out.println(" Option: " + alteOptionen.getName());
-//					}
 				}
 			}
 			
-			System.out.println("   ");
 			for( final Detector detector : this.detectors ) {
 				for( final Option option : detector.getOptions() ) {
 					if ( !this.excludeList.contains(option)) {
 						this.prePostscanDeviceMap.put( option.getID(), option );
 					}
 					else {
-//						System.out.println("      Detector Option " + option.getName() + " steht in der exludeList");
 						detector.remove(option);
 					}
 				}
@@ -666,7 +632,6 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 								this.prePostscanDeviceMap.put( option.getID(), option );
 							}
 							else {
-								System.out.println("      DetectorChannel Option " + option.getName() + " steht in der exludeList");
 								detectorChannel.remove(option);
 							}
 						}

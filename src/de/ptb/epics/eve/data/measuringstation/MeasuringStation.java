@@ -316,7 +316,6 @@ public class MeasuringStation implements IMeasuringStation {
 			throw new IllegalArgumentException( "The parameter 'detectorChannel' must not be null!" );
 		}
 		this.detectorChannelsMap.put( detectorChannel.getID(), detectorChannel );
-		System.out.println("MeasuringStation.java: detectorChannelsMap.put für " + detectorChannel.getName());
 	}
 
 	/**
