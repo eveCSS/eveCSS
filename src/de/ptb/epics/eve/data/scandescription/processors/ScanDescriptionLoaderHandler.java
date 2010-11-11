@@ -174,7 +174,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	private StringBuffer textBuffer;
 
 	private List<String> lostDevicesList;
-	
+
+	private boolean	trim = true;
+
 	/**
 	 * This constructor creates a new SAX handler to load a scan description.
 	 * 
@@ -587,14 +589,30 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	@Override
 	public void characters( final char[] ch, final int start, final int length ) {
 
-		String s = new String(ch, start, length).trim();
-		  if (textBuffer == null) {
-		    textBuffer = new StringBuffer(s);
-		  } else {
-		    textBuffer.append(s);
-		  } 
-
+		String s;
 		
+		if ((start > 0) && (trim) ) {
+			s = new String(ch, start, length).trim();
+		}
+		else {
+			// Wenn das characters beginnend von Vorne, also start = 0, gelesen werden,
+			// werden die vor und hinter dem String liegenden nicht mit trim entfernt.
+			// Gleiches gilt auch für den ersten String der dann noch angehangen wird
+			// also wenn trim = 0 ist und start größer als 0
+			s = new String(ch, start, length);
+			if (start > 0) {
+				trim = true;
+			}
+			else {
+				trim = false;
+			}
+		}
+		
+		if (textBuffer == null) {
+		    textBuffer = new StringBuffer(s);
+		} else {
+			  textBuffer.append(s);
+		} 
 	}
 
 	/*
@@ -651,8 +669,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_APPENDED_NEXT:
-			this.currentRelationReminder.setAppended(Integer
-					.parseInt(textBuffer.toString()));
+			this.currentRelationReminder.setAppended(Integer.parseInt(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_APPENDED_READ;
 			break;
 
@@ -684,8 +701,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_TRIGGERCONFIRM_NEXT:
-			this.currentScanModul.setTriggerconfirm(Boolean
-					.parseBoolean(textBuffer.toString()));
+			this.currentScanModul.setTriggerconfirm(Boolean.parseBoolean(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRM_READ;
 			break;
 
@@ -917,8 +933,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case EVENT_INCIDENT_NEXT:
-			this.currentControlEvent.getEvent().setScheduleIncident(
-					textBuffer.toString());
+			this.currentControlEvent.getEvent().setScheduleIncident(textBuffer.toString());
 			this.subState = ScanDescriptionLoaderSubStates.EVENT_INCIDENT_READ;
 			break;
 			
@@ -938,13 +953,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case PAUSEEVENT_LIMIT_NEXT:
-			((PauseEvent)this.currentControlEvent).getLimit().setValue( textBuffer.toString() );
+			((PauseEvent)this.currentControlEvent).getLimit().setValue(textBuffer.toString() );
 			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_LIMIT_READ;
 			break;
 
 		case PAUSEEVENT_INCIDENT_NEXT:
-			this.currentControlEvent.getEvent().setScheduleIncident(
-					textBuffer.toString());
+			this.currentControlEvent.getEvent().setScheduleIncident(textBuffer.toString());
 			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_INCIDENT_READ;
 			break;
 			
@@ -959,14 +973,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 			
 		case PAUSEMONITOREVENT_CONTINUE_NEXT:
-			((PauseEvent)this.currentControlEvent).setContinueIfFalse(Boolean
-					.parseBoolean(textBuffer.toString()));
+			((PauseEvent)this.currentControlEvent).setContinueIfFalse(Boolean.parseBoolean(textBuffer.toString()));
 			this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_CONTINUE_READ;
 			break;
 
 		case PAUSESCHEDULEEVENT_CONTINUE_NEXT:
-			((PauseEvent)this.currentControlEvent).setContinueIfFalse(Boolean
-					.parseBoolean(textBuffer.toString()));
+			((PauseEvent)this.currentControlEvent).setContinueIfFalse(Boolean.parseBoolean(textBuffer.toString()));
 			this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_CONTINUE_READ;
 			break;
 

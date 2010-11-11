@@ -32,7 +32,7 @@ public abstract class AbstractPrescanBehavior extends AbstractPrePostscanBehavio
 	@Override
 	public List< IModelError> getModelErrors() {
 		final List< IModelError > modelErrors = new ArrayList< IModelError >();
-		
+
 		if( !this.isValuePossible( this.getValue() ) ) {
 			modelErrors.add( new PrescanError( this, PrescanErrorTypes.VALUE_NOT_POSSIBLE ) );
 		}

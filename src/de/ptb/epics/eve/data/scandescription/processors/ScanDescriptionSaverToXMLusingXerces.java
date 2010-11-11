@@ -91,6 +91,9 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	 * The XML attributes.
 	 */
 	private AttributesImpl atts;
+
+	// TODO: andere Funktionen verwenden, die nicht mit deprecated markiert sind!
+	private XMLSerializer serializer;
 	
 	/**
 	 * This constructor create a new saver.
@@ -153,10 +156,18 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 		OutputFormat outputFormat = new OutputFormat( "XML", "UTF-8", true );
 		outputFormat.setIndent( 1 );
 		outputFormat.setIndenting( true );
+
+		// Die Versuche mit dem Setzen von Elemente welche dann nicht in z.B. &gt;
+		// umgewandelt werden, hatten keinen Erfolg. Warum auch immer.
+		// String[] noEscape = {"value", "prescan"};
+		// outputFormat.setNonEscapingElements(noEscape);
+		// Auch die Versuche mit	serializer.startNonEscaping(); sind fehlgeschlagen
+		// Hartmut Scherr, 10.11.10
 		
-		XMLSerializer serializer = new XMLSerializer( this.destination, outputFormat );
+		serializer = new XMLSerializer( this.destination, outputFormat );
+
 		this.contentHandler = null;
-		
+
 		try {
 			this.contentHandler = serializer.asContentHandler();
 		} catch (IOException e) {
@@ -165,10 +176,9 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 			successfull = false;
 		}
 		
-		
 		try {
 			this.contentHandler.startDocument();
-			
+
 			this.atts.clear();
 			this.atts.addAttribute( "xmlns","tns", "xmlns:tns", "CDATA","http://www.ptb.de/epics/SCML" );
 			this.atts.addAttribute( "xmlns","xsi", "xmlns:xsi", "CDATA", "http://www.w3.org/2001/XMLSchema-instance" );
@@ -1527,17 +1537,15 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 			
 			this.atts.clear();
 			this.atts.addAttribute( "","type", "type", "CDATA", DataTypes.typeToString( ((prescan.getAbstractPrePostscanDevice().getValue().getValue() != null)?prescan.getAbstractPrePostscanDevice().getValue().getValue().getType():prescan.getAbstractPrePostscanDevice().getValue().getAccess().getType() ) ) );
-			this.contentHandler.startElement( "", "value", "value", this.atts );
-			
+			this.contentHandler.startElement( "value", "value", "value", this.atts );
 			this.contentHandler.characters( prescan.getValue().toCharArray(), 0, prescan.getValue().length() );
-			this.contentHandler.endElement(  "", "value", "value" );
+			this.contentHandler.endElement(  "value", "value", "value" );
 			
 			this.contentHandler.endElement(  "", "prescan", "prescan" );
 		} catch (SAXException e) {
 			System.out.println("writePrescan: " + e.getMessage());
 			e.printStackTrace();
 		}
-		
 		
 		return successfull;
 		
