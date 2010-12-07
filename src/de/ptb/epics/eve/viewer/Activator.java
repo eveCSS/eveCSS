@@ -107,7 +107,13 @@ public class Activator extends AbstractUIPlugin {
 		imagereg.put("GREENMINUS12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenMinus12.12.gif").createImage());
 		imagereg.put("GREENGO12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenGo12.12.gif").createImage());
 		imagereg.put("PLAY16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/play.gif").createImage());
+		imagereg.put("PAUSE16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/pause.gif").createImage());
 		imagereg.put("STOP16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/stop.gif").createImage());
+		imagereg.put("SKIP16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/skip.gif").createImage());
+		imagereg.put("HALT16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/halt.gif").createImage());
+		imagereg.put("KILL16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/kill.gif").createImage());
+		imagereg.put("TRIGGER16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/trigger.gif").createImage());
+		imagereg.put("PLAYALL16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/playAll2.gif").createImage());
 		
 		imagereg.put("MOTOR", imageDescriptorFromPlugin(PLUGIN_ID, "icons/motor.gif").createImage());
 		imagereg.put("AXIS", imageDescriptorFromPlugin(PLUGIN_ID, "icons/axis.gif").createImage());

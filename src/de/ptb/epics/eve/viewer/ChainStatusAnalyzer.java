@@ -17,44 +17,59 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 
 	private final List< Chain > idleChains;
 	private final List< Chain > runningChains;
+	private final List< Chain > exitedChains;
 	private final List< ScanModul > initializingScanModules;
 	private final List< ScanModul > executingScanModules;
 	private final List< ScanModul > pausedScanModules;
 	private final List< ScanModul > waitingScanModules;
-	
+	private final List< ScanModul > exitedScanModules;
+
 	private final List< IUpdateListener > updateListener;
 	
 	public ChainStatusAnalyzer() {
+		this.updateListener = new ArrayList< IUpdateListener >();
+
 		this.idleChains = new ArrayList< Chain >();
 		this.runningChains = new ArrayList< Chain >();
+		this.exitedChains = new ArrayList< Chain >();
 		
 		this.initializingScanModules = new ArrayList< ScanModul >();
 		this.executingScanModules = new ArrayList< ScanModul >();
 		this.pausedScanModules = new ArrayList< ScanModul >();
 		this.waitingScanModules = new ArrayList< ScanModul >();
+		this.exitedScanModules = new ArrayList< ScanModul >();
 		
-		this.updateListener = new ArrayList< IUpdateListener >();
+//		this.updateListener = new ArrayList< IUpdateListener >();
 	}
 	
 	public void chainStatusChanged( final ChainStatusCommand chainStatusCommand ) {
+
+		System.out.println("\nChainStatusAnalyzer, Chain Stauts Changed");
 		if( Activator.getDefault().getCurrentScanDescription() == null ) {
+			System.out.println("   Abbruch, keine ScanDescription vorhanden");
 			return;
 		}
 		List< Chain > chains = null;
+
+		System.out.println("   Status: " + chainStatusCommand.getChainStatus());
 		
 		switch( chainStatusCommand.getChainStatus() ) {
 			case IDLE:
+				System.out.println("   case IDLE");
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
 						this.idleChains.add( chains.get( i ) );
 						this.runningChains.remove( chains.get( i ) );
+						this.exitedChains.remove( chains.get( i ) );
+						System.out.println("      chain " + chains.get(i).getId() + " zur idle Liste hinzugefügt");
 						break;
 					}
 				}
 				break;
 				
 			case STARTING_SM:
+				System.out.println("   case STARTING_SM");
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
@@ -65,6 +80,8 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 								this.executingScanModules.remove( scanModules.get( j ) );
 								this.pausedScanModules.remove( scanModules.get( j ) );
 								this.waitingScanModules.remove( scanModules.get( j ) );
+								this.exitedScanModules.remove( scanModules.get( j ) );
+								System.out.println("      scanModule " + scanModules.get(j).getId() + " zur initialize Liste hinzugefügt");
 							}
 						}
 					}
@@ -72,6 +89,7 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 				break;
 				
 			case EXECUTING_SM:
+				System.out.println("   case EXECUTING_SM");
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
@@ -82,9 +100,18 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 								this.executingScanModules.add( scanModules.get( j ) );
 								this.pausedScanModules.remove( scanModules.get( j ) );
 								this.waitingScanModules.remove( scanModules.get( j ) );
+								this.exitedScanModules.remove( scanModules.get( j ) );
+								System.out.println("      scanModule " + scanModules.get(j).getId() + " zur executing Liste hinzugefügt");
 								
 								this.idleChains.remove( scanModules.get( j ).getChain() );
-								this.runningChains.add( scanModules.get( j ).getChain() );
+								if (!this.runningChains.contains(scanModules.get( j ).getChain())) {
+//									System.out.println("   chain i noch nicht in der Liste vorhanden");
+
+									this.runningChains.add( scanModules.get( j ).getChain() );
+									System.out.println("      chain " + scanModules.get(j).getChain().getId() + " zur running Liste hinzugefügt");
+								};
+//								this.runningChains.add( scanModules.get( j ).getChain() );
+//								System.out.println("      chain " + i + " zur running Liste hinzugefügt");
 							}
 //							final PlotWindow[] plotWindows = scanModules.get( j ).getPlotWindows();
 //							for( int k = 0; k < plotWindows.length; ++k ) {
@@ -125,6 +152,7 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 				break;
 				
 			case SM_PAUSED:
+				System.out.println("   case SM_PAUSED");
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
@@ -135,9 +163,12 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 								this.executingScanModules.remove( scanModules.get( j ) );
 								this.pausedScanModules.add( scanModules.get( j ) );
 								this.waitingScanModules.remove( scanModules.get( j ) );
+								this.exitedScanModules.remove( scanModules.get( j ) );
+								System.out.println("      scanModule " + scanModules.get(j).getId() + " zur paused Liste hinzugefügt");
 								
 								this.idleChains.add( scanModules.get( j ).getChain() );
 								this.runningChains.remove( scanModules.get( j ).getChain() );
+								System.out.println("      chain " + scanModules.get(j).getChain().getId() + " zur idle Liste hinzugefügt");
 							}
 						}
 					}
@@ -145,6 +176,7 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 				break;
 				
 			case WAITING_FOR_MANUAL_TRIGGER:
+				System.out.println("   case WAITING_FOR_MANUAL_TRIGGER");
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
@@ -155,9 +187,12 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 								this.executingScanModules.remove( scanModules.get( j ) );
 								this.pausedScanModules.remove( scanModules.get( j ) );
 								this.waitingScanModules.add( scanModules.get( j ) );
+								this.exitedScanModules.add( scanModules.get( j ) );
+								System.out.println("      scanModule " + scanModules.get(j).getId() + " zur trigger Liste hinzugefügt");
 								
 								this.idleChains.add( scanModules.get( j ).getChain() );
 								this.runningChains.remove( scanModules.get( j ).getChain() );
+								System.out.println("      chain " + scanModules.get(j).getChain().getId() + " zur idle Liste hinzugefügt");
 							}
 						}
 					}
@@ -165,6 +200,7 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 				break;
 				
 			case EXITING_SM:
+				System.out.println("   case EXITING_SM");
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
@@ -175,9 +211,12 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 								this.executingScanModules.remove( scanModules.get( j ) );
 								this.pausedScanModules.remove( scanModules.get( j ) );
 								this.waitingScanModules.remove( scanModules.get( j ) );
+								this.exitedScanModules.add( scanModules.get( j ) );
+								System.out.println("      scanModule " + scanModules.get(j).getId() + " zur exit Liste hinzugefügt");
 								
-								this.idleChains.add( scanModules.get( j ).getChain() );
-								this.runningChains.remove( scanModules.get( j ).getChain() );
+								// Dadurch das ein SM beendet ist, ist nicht auch die chain beendet
+								// this.idleChains.add( scanModules.get( j ).getChain() );
+								// this.runningChains.remove( scanModules.get( j ).getChain() );
 							}
 						}
 					}
@@ -185,11 +224,25 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 				break;
 				
 			case EXITING_CHAIN:
+				System.out.println("   case EXITING_CHAIN");
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
 						this.idleChains.remove( chains.get( i ) );
 						this.runningChains.remove( chains.get( i ) );
+						this.exitedChains.add( chains.get( i ) );
+						System.out.println("      chain " + chains.get(i).getId() + " zur exit Liste hinzugefügt");
+					}
+				}
+				break;
+
+			case STORAGE_DONE:
+				System.out.println("   case STORAGE_DONE");
+				chains = Activator.getDefault().getCurrentScanDescription().getChains();
+				for( int i = 0; i < chains.size(); ++i ) {
+					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
+						System.out.println("      Filename der Chain:");
+						System.out.println("      Name: " + chains.get(i).getSaveFilename());
 					}
 				}
 				break;
@@ -218,6 +271,10 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 	public List< Chain > getRunningChains() {
 		return new ArrayList< Chain >( this.runningChains );
 	}
+
+	public List< Chain > getExitedChains() {
+		return new ArrayList< Chain >( this.exitedChains );
+	}
 	
 	public List< ScanModul > getInitializingScanModules() {
 		return new ArrayList< ScanModul >( this.initializingScanModules );
@@ -235,15 +292,31 @@ public class ChainStatusAnalyzer implements IChainStatusListener {
 		return new ArrayList< ScanModul >( this.waitingScanModules );
 	}
 
+	public List< ScanModul > getExitingScanModules() {
+		return new ArrayList< ScanModul >( this.exitedScanModules );
+	}
+
 	public void reset() {
-		this.executingScanModules.clear();
 		this.idleChains.clear();
+		this.runningChains.clear();
+		this.exitedChains.clear();
+
+		this.executingScanModules.clear();
 		this.initializingScanModules.clear();
 		this.pausedScanModules.clear();
-		this.runningChains.clear();
 		this.waitingScanModules.clear();
+		this.exitedScanModules.clear();
+
+		System.out.println("\n RRR EEE SSS EEE TTT der ChainStatusListen");
+		// Hier muß auch die Tabelle im GraphikView Bereich geleert werden
+//		clearStatusTable(); Wie macht man das?
+
+		final Iterator< IUpdateListener > it = this.updateListener.iterator();
+		while( it.hasNext() ) {
+			it.next().clearStatusTable();
+		}
+
 		
 	}
-	
 
 }

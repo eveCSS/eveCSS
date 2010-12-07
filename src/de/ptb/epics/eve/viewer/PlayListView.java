@@ -78,9 +78,7 @@ public final class PlayListView extends ViewPart implements IConnectionStateList
 		this.moveUpAction.setText( "Move forward" );
 		this.moveUpAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_FORWARD ) );
 		this.getViewSite().getActionBars().getToolBarManager().add( this.moveUpAction );
-		
-		
-		
+
 		this.tableViewer = new TableViewer( parent, SWT.MULTI );
 		
 		TableColumn column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 0 );
