@@ -54,6 +54,8 @@ public class Activator extends AbstractUIPlugin {
 	private ECP1Client ecp1Client;
 	
 	private RequestProcessor requestProcessor;
+
+	private final GraphView graphView;
 	
 	/**
 	 * The constructor
@@ -69,11 +71,15 @@ public class Activator extends AbstractUIPlugin {
 		this.ecp1Client.getPlayListController().addNewXMLFileListener( this.xmlFileDispatcher );
 		// this.ecp1Client.addMeasurementDataListener( measurementDataDispatcher );
 		this.ecp1Client.addErrorListener( this.engineErrorReader );
+		this.ecp1Client.addEngineStatusListener( this.chainStatusAnalyzer );
 		this.ecp1Client.addChainStatusListener( this.chainStatusAnalyzer );
 		this.colorreg = new ColorRegistry();
 		this.fontreg = new FontRegistry();
 		this.requestProcessor = new RequestProcessor( Display.getCurrent() );
 		this.ecp1Client.addRequestListener( this.requestProcessor );
+
+		this.graphView = new GraphView();
+		this.ecp1Client.addEngineStatusListener( this.graphView );
 	}
 
 	/*

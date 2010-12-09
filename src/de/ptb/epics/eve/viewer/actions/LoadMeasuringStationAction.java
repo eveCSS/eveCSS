@@ -17,6 +17,7 @@ import org.xml.sax.SAXException;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
+import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.MeasuringStationView;
 
 public class LoadMeasuringStationAction extends Action implements IWorkbenchAction {

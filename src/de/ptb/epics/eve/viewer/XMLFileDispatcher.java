@@ -33,7 +33,6 @@ public class XMLFileDispatcher implements INewXMLFileListener {
 			final int lastSeperatorIndex = measuringStationDescription.lastIndexOf( File.separatorChar );
 			final String schemaFileLocation = measuringStationDescription.substring( 0, lastSeperatorIndex + 1 ) + "scml.xsd";
 			final File schemaFile = new File( schemaFileLocation );
-			
 			final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader( schemaFile );
 			final IMeasuringStation measuringStation = measuringStationLoader.loadFromByteArray( xmlData );
 			Activator.getDefault().getWorkbench().getDisplay().syncExec( new Runnable() {
@@ -53,6 +52,7 @@ public class XMLFileDispatcher implements INewXMLFileListener {
 			final ScanDescriptionLoader scanDescriptionLoader = new ScanDescriptionLoader( measuringStation, schemaFile );
 			scanDescriptionLoader.loadFromByteArray( xmlData );
 			final ScanDescription scanDescription = scanDescriptionLoader.getScanDescription();
+
 			Activator.getDefault().setCurrentScanDescription( scanDescription );
 			
 			Activator.getDefault().getWorkbench().getDisplay().syncExec( new Runnable() {

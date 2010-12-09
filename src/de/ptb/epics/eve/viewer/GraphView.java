@@ -56,6 +56,9 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
+import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
+import de.ptb.epics.eve.ecp1.client.model.PlayListEntry;
+import de.ptb.epics.eve.ecp1.intern.EngineStatus;
 import de.ptb.epics.eve.viewer.actions.AddFileToPlayListAction;
 
 /**
@@ -64,7 +67,7 @@ import de.ptb.epics.eve.viewer.actions.AddFileToPlayListAction;
  * @author Sven Wende
  *
  */
-public final class GraphView extends ViewPart implements IUpdateListener, IConnectionStateListener {
+public final class GraphView extends ViewPart implements IUpdateListener, IConnectionStateListener, IEngineStatusListener {
 
 	private Composite top = null;
 
@@ -78,11 +81,15 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 	private Button autoPlayOnButton;
 	private Button autoPlayOffButton;
 
+	private Label loadedScmlLabel;
+	private Text loadedScmlText;
+
+	private Label chainFilenameLabel;
+	private Text filenameText;
+
 	private Label chainStatusLabel;
 	private Text statusText;
 	
-	private Label chainFilenameLabel;
-	private Text filenameText;
 
 	private Table statusTable;
 	
@@ -222,6 +229,21 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		});
 
 
+		this.loadedScmlLabel = new Label( this.top, SWT.NONE );
+		this.loadedScmlLabel.setText("loaded scml File:");
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 3;
+		this.loadedScmlLabel.setLayoutData( gridData );
+
+		this.loadedScmlText = new Text( this.top, SWT.BORDER );
+		this.loadedScmlText.setEditable( false );
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 6;
+		this.loadedScmlText.setLayoutData( gridData );
+
 		this.chainFilenameLabel = new Label( this.top, SWT.NONE );
 		this.chainFilenameLabel.setText("Filename:");
 		gridData = new GridData();
@@ -296,7 +318,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 	}
 
 	public void clearStatusTable() {
-		System.out.println("Hier wird die Tabelle mit den Statusanzeigen gelöscht.");
+//		System.out.println("Hier wird die Tabelle mit den Statusanzeigen gelöscht.");
 		this.statusTable.getDisplay().syncExec( new Runnable() {
 			public void run() {
 				statusTable.removeAll();
@@ -304,7 +326,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		});
 	}
 	
-	private void fillStatusTable(final int chainId, final int scanModuleId, final String statString) {
+	public void fillStatusTable(final int chainId, final int scanModuleId, final String statString) {
 		// Wenn die scanModuleId -1 ist, wird eine Zeile geändert in der nur die chainId eingetragen ist
 		
 		this.statusTable.getDisplay().syncExec( new Runnable() {
@@ -352,16 +374,6 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 	private void rebuildText() {
 		final StringBuffer stringBuffer = new StringBuffer();
 
-		System.out.println("Text von Chain-Status wird aktualisiert");
-		this.statusTable.getDisplay().syncExec( new Runnable() {
-
-			public void run() {
-//				statusTable.removeAll(); wenn auskommentiert, werden alle Meldungen untereinander geschrieben
-
-			}
-		});
-
-		
 		if( Activator.getDefault().getCurrentScanDescription() != null ) {
 			final Iterator< Chain > it = Activator.getDefault().getCurrentScanDescription().getChains().iterator();
 			while( it.hasNext() ) {
@@ -440,7 +452,6 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 
 			public void run() {
 				statusText.setText( stringBuffer.toString() );
-//				statusTable.clearAll();
 			}
 		});
 
@@ -474,4 +485,38 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		
 	}
 
+	public void setLoadedScmlFile(final String filename) {
+		// der Name des geladenen scml-Files wird angezeigt
+		this.loadedScmlText.getDisplay().syncExec( new Runnable() {
+			public void run() {
+				loadedScmlText.setText(filename);
+			}
+		});
+	}
+
+/*********
+	this.statusText.getDisplay().syncExec( new Runnable() {
+
+		public void run() {
+			statusText.setText( stringBuffer.toString() );
+		}
+	});
+*********/
+	
+	@Override
+	public void engineStatusChanged(EngineStatus engineStatus) {
+		// TODO Auto-generated method stub
+		System.out.println("GraphView: engineStatusChanged");
+		System.out.println("   Status: " + engineStatus);
+		
+		switch(engineStatus) {
+			case EXECUTING:
+/*				this.playButton.getDisplay().syncExec( new Runnable() {
+					public void run() {
+						playButton.setEnabled(false);
+					}
+				});
+*/				break;
+		}
+	}
 }

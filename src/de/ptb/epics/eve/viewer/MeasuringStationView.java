@@ -259,7 +259,7 @@ public final class MeasuringStationView extends ViewPart {
 
 	public void setMeasuringStation( final IMeasuringStation measuringStation ) {
 		Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.VIEWER, MessageTypes.INFO, "Got new measuring station description." ) );
-		Activator.getDefault().getChainStatusAnalyzer().reset();
+//		Activator.getDefault().getChainStatusAnalyzer().reset();
 		this.measuringStation = measuringStation;
 		this.treeViewer.setInput( this.measuringStation );
 		this.treeViewer.getTree().setEnabled( this.measuringStation != null );
