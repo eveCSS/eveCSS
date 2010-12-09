@@ -49,8 +49,8 @@ public class HandOverAction implements IWorkbenchWindowActionDelegate {
 			page.setPerspective( perspectiveDescriptor );
 		
 			final File file = new File( editorInput.getURI() );
+				System.out.println("ScanDescription wird geladen: " + file.toString());
 			Activator.getDefault().addScanDescription( file );
-			
 			
 		}
 		
