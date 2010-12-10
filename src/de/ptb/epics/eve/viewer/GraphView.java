@@ -41,6 +41,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
@@ -90,7 +91,6 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 	private Label chainStatusLabel;
 	private Text statusText;
 	
-
 	private Table statusTable;
 	
 	/**
@@ -447,9 +447,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 			}
 		}
 		
-		
 		this.statusText.getDisplay().syncExec( new Runnable() {
-
 			public void run() {
 				statusText.setText( stringBuffer.toString() );
 			}
@@ -494,29 +492,78 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		});
 	}
 
-/*********
-	this.statusText.getDisplay().syncExec( new Runnable() {
-
-		public void run() {
-			statusText.setText( stringBuffer.toString() );
-		}
-	});
-*********/
-	
 	@Override
 	public void engineStatusChanged(EngineStatus engineStatus) {
 		// TODO Auto-generated method stub
+		System.out.println("Warum und wann kommt dieser Aufruf?");
+		
+	}
+
+	@Override
+	public void fillEngineStatus(EngineStatus engineStatus) {
+		// TODO Auto-generated method stub
 		System.out.println("GraphView: engineStatusChanged");
 		System.out.println("   Status: " + engineStatus);
-		
+
 		switch(engineStatus) {
-			case EXECUTING:
-/*				this.playButton.getDisplay().syncExec( new Runnable() {
+			case IDLE_NO_XML_LOADED:
+				this.playButton.getDisplay().syncExec( new Runnable() {
 					public void run() {
 						playButton.setEnabled(false);
+						pauseButton.setEnabled(false);
+						stopButton.setEnabled(false);
+						skipButton.setEnabled(false);
+						haltButton.setEnabled(false);
+						killButton.setEnabled(false);
+						triggerButton.setEnabled(false);
 					}
 				});
-*/				break;
+				break;
+			case IDLE_XML_LOADED:
+				this.playButton.getDisplay().syncExec( new Runnable() {
+					public void run() {
+						playButton.setEnabled(true);
+						pauseButton.setEnabled(false);
+					}
+				});
+				break;
+			case EXECUTING:
+				this.playButton.getDisplay().syncExec( new Runnable() {
+					public void run() {
+						playButton.setEnabled(false);
+						pauseButton.setEnabled(true);
+						stopButton.setEnabled(true);
+						skipButton.setEnabled(true);
+						haltButton.setEnabled(true);
+						killButton.setEnabled(true);
+					}
+				});
+				break;
+			case PAUSED:
+				this.playButton.getDisplay().syncExec( new Runnable() {
+					public void run() {
+						playButton.setEnabled(true);
+						pauseButton.setEnabled(false);
+					}
+				});
+				break;
+			case STOPPED:
+				this.playButton.getDisplay().syncExec( new Runnable() {
+					public void run() {
+						playButton.setEnabled(true);
+						pauseButton.setEnabled(false);
+					}
+				});
+				break;
+			case HALTED:
+				this.playButton.getDisplay().syncExec( new Runnable() {
+					public void run() {
+						playButton.setEnabled(true);
+						pauseButton.setEnabled(false);
+					}
+				});
+				break;
 		}
 	}
+
 }

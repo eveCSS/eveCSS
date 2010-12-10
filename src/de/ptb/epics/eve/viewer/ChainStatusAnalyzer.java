@@ -49,7 +49,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 	public void engineStatusChanged(EngineStatus engineStatus) {
 		System.out.println("\nChainStatusAnalyzer, Engine Status Changed");
 		System.out.println("      EngineStatus: " + engineStatus.toString());
-		
+
 		if (engineStatus == EngineStatus.LOADING_XML) {
 			// Es wird gerade ein neues XML-File geladen, ChainStatusListe löschen
 			this.resetChainList();
@@ -61,6 +61,12 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 			final Iterator< IUpdateListener > it2 = this.updateListener.iterator();
 			while( it2.hasNext() ) {
 				it2.next().setLoadedScmlFile(firstEntry.getName());
+			}
+		}
+		else {
+			final Iterator< IUpdateListener > it0 = this.updateListener.iterator();
+			while( it0.hasNext() ) {
+				it0.next().fillEngineStatus(engineStatus);
 			}
 		}
 	}

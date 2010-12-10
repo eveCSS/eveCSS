@@ -55,7 +55,7 @@ public class Activator extends AbstractUIPlugin {
 	
 	private RequestProcessor requestProcessor;
 
-	private final GraphView graphView;
+//	private final GraphView graphView;
 	
 	/**
 	 * The constructor
@@ -78,8 +78,8 @@ public class Activator extends AbstractUIPlugin {
 		this.requestProcessor = new RequestProcessor( Display.getCurrent() );
 		this.ecp1Client.addRequestListener( this.requestProcessor );
 
-		this.graphView = new GraphView();
-		this.ecp1Client.addEngineStatusListener( this.graphView );
+//		this.graphView = new GraphView();
+//		this.ecp1Client.addEngineStatusListener( this.graphView );
 	}
 
 	/*
