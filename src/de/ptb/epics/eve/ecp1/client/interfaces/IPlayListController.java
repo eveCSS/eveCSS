@@ -21,7 +21,6 @@ public interface IPlayListController {
 	public List< PlayListEntry > getEntries();
 	
 	public void addNewXMLFileListener( final INewXMLFileListener newXMLFileListener );
-	
 	public void removeNewXMLFileListener( final INewXMLFileListener newXMLFileListener );
-	
+
 }

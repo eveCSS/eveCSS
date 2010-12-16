@@ -118,10 +118,10 @@ public class PlayListController implements IPlayListController {
 			this.autoplay = autoplay;
 			final Iterator< IPlayListListener > it = this.playListListener.iterator();
 			while( it.hasNext() ) {
-				it.next().playListHasChanged( this );
+				//	it.next().playListHasChanged( this );
+				it.next().autoPlayHasChanged( this );
 			}
 		}
-		
 	}
 
 	protected void reportCurrentXMLCommand( final CurrentXMLCommand currentXMLCommand ) {
