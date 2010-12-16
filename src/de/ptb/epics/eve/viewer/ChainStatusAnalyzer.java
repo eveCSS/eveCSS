@@ -47,8 +47,6 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 	
 	@Override
 	public void engineStatusChanged(EngineStatus engineStatus) {
-		System.out.println("\nChainStatusAnalyzer, Engine Status Changed");
-		System.out.println("      EngineStatus: " + engineStatus.toString());
 
 		if (engineStatus == EngineStatus.LOADING_XML) {
 			// Es wird gerade ein neues XML-File geladen, ChainStatusListe löschen
@@ -56,7 +54,6 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 
 			final Iterator< PlayListEntry > it = Activator.getDefault().getEcp1Client().getPlayListController().getEntries().iterator();
 			final PlayListEntry firstEntry = it.next();
-//			System.out.println("  erstes File: " + firstEntry.getName());
 
 			final Iterator< IUpdateListener > it2 = this.updateListener.iterator();
 			while( it2.hasNext() ) {
@@ -64,6 +61,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 			}
 		}
 		else {
+			// bei allen anderen Engine Status Meldungen wird gesetzt, was gemacht werden darf.
 			final Iterator< IUpdateListener > it0 = this.updateListener.iterator();
 			while( it0.hasNext() ) {
 				it0.next().fillEngineStatus(engineStatus);
@@ -71,19 +69,26 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 		}
 	}
 
+	public void setAutoPlayStatus(boolean autoPlayStatus) {
+
+		final Iterator< IUpdateListener > it = this.updateListener.iterator();
+		while( it.hasNext() ) {
+			it.next().setAutoPlayStatus(autoPlayStatus);
+		}
+	
+	}
+	
 	public void chainStatusChanged( final ChainStatusCommand chainStatusCommand ) {
 
-		System.out.println("\nChainStatusAnalyzer, Chain Stauts Changed");
-		System.out.println("   Status: " + chainStatusCommand.getChainStatus());
 		if( Activator.getDefault().getCurrentScanDescription() == null ) {
-			System.out.println("      ChainId: " + chainStatusCommand.getChainId());
-			System.out.println("      ScanModuleId: " + chainStatusCommand.getScanModulId());
+			// Nach Umstellung der Meldungen darf die ScanDescription nicht mehr null sein 13.12.10 Hartmut
+			// dann kann auch fillStatusTable aus ...epics/eve/viewer/IUpdateListener.java ausgetragen werden
 			
 			switch( chainStatusCommand.getChainStatus() ) {
 				case STARTING_SM:
 					final Iterator< IUpdateListener > it = this.updateListener.iterator();
 					while( it.hasNext() ) {
-						it.next().fillStatusTable(chainStatusCommand.getChainId(), chainStatusCommand.getScanModulId(), "initialized");
+						it.next().fillStatusTable(chainStatusCommand.getChainId(), chainStatusCommand.getScanModulId(), "initialized", chainStatusCommand.getRemainingTime());
 					}
 					break;
 			}
@@ -92,11 +97,8 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 		}
 		List< Chain > chains = null;
 		
-		String meldung = null;
-		
 		switch( chainStatusCommand.getChainStatus() ) {
 			case IDLE:
-//				System.out.println("   case IDLE");
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
@@ -109,15 +111,6 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				break;
 				
 			case STARTING_SM:
-				meldung = "initialized";
-
-				final Iterator< IUpdateListener > it = this.updateListener.iterator();
-				while( it.hasNext() ) {
-					it.next().fillStatusTable(chainStatusCommand.getChainId(), chainStatusCommand.getScanModulId(), "initialized");
-				}
-
-/******************				
-				System.out.println("   case STARTING_SM");
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
@@ -129,17 +122,13 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 								this.pausedScanModules.remove( scanModules.get( j ) );
 								this.waitingScanModules.remove( scanModules.get( j ) );
 								this.exitedScanModules.remove( scanModules.get( j ) );
-								System.out.println("      scanModule " + scanModules.get(j).getId() + " zur initialize Liste hinzugefügt");
 							}
 						}
 					}
 				}
-*****************/
 				break;
 				
 			case EXECUTING_SM:
-
-//				System.out.println("   case EXECUTING_SM");
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
@@ -199,7 +188,6 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				break;
 				
 			case SM_PAUSED:
-//				System.out.println("   case SM_PAUSED");
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
@@ -221,7 +209,6 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				break;
 				
 			case WAITING_FOR_MANUAL_TRIGGER:
-//				System.out.println("   case WAITING_FOR_MANUAL_TRIGGER");
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
@@ -243,7 +230,6 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				break;
 				
 			case EXITING_SM:
-//				System.out.println("   case EXITING_SM");
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
@@ -266,7 +252,6 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				break;
 				
 			case EXITING_CHAIN:
-//				System.out.println("   case EXITING_CHAIN");
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
@@ -278,20 +263,13 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				break;
 
 			case STORAGE_DONE:
-//				System.out.println("   case STORAGE_DONE");
-				chains = Activator.getDefault().getCurrentScanDescription().getChains();
-				for( int i = 0; i < chains.size(); ++i ) {
-					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
-						System.out.println("      Filename der Chain:");
-						System.out.println("      Name: " + chains.get(i).getSaveFilename());
-					}
-				}
+				// hier passiert bisher nichts (Hartmut 16.12.10)
 				break;
 				
 		}
 		final Iterator< IUpdateListener > it = this.updateListener.iterator();
 		while( it.hasNext() ) {
-			it.next().updateOccured();
+			it.next().updateOccured(chainStatusCommand.getRemainingTime());
 		}
 
 	}

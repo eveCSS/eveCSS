@@ -164,6 +164,18 @@ public final class PlayListView extends ViewPart implements IConnectionStateList
 		});
 	}
 
+	public void autoPlayHasChanged( final IPlayListController playListController ) {
+		
+		// TODO: die Methode autoPlayHasChanged wird aufgerufen, wenn
+		// sich der auroPlay Wert geändert hat.
+		// Bisher wurde bei reportAutoplay playListHasChanged aufgerufen. Was dort gemacht wird,
+		// rufe ich hier erstmal nicht auf, da sich meiner Meinung nach an der playList ja nichts
+		// geändert hat. Überprüfen, ob das so stimmt. (16.12.10)
+		Activator.getDefault().getChainStatusAnalyzer().setAutoPlayStatus(playListController.isAutoplay());
+	}
+
+
+	
 	public void playListHasChanged( final IPlayListController playListController ) {
 		
 		Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.VIEWER, MessageTypes.INFO, "Got new play list with " + playListController.getEntries().size() + " entries." ) );
@@ -172,8 +184,7 @@ public final class PlayListView extends ViewPart implements IConnectionStateList
 			final PlayListEntry entry = it.next();
 			Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.VIEWER, MessageTypes.DEBUG, "PlayListEntry: id = " + entry.getId() + " name = " + entry.getName() + " author " + entry.getAuthor() + "." ) );
 		}
-		
-		
+
 		if (!this.tableViewer.getTable().isDisposed()) this.tableViewer.getTable().getDisplay().syncExec( new Runnable() {
 
 			public void run() {
@@ -182,7 +193,6 @@ public final class PlayListView extends ViewPart implements IConnectionStateList
 				for( int i = 0; i < selected.length; ++i ) {
 					ids.add( ((PlayListEntry)selected[i].getData()).getId() );
 				}
-				
 				
 				tableViewer.setInput( playListController.getEntries() );
 				

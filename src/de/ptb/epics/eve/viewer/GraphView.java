@@ -68,7 +68,7 @@ import de.ptb.epics.eve.viewer.actions.AddFileToPlayListAction;
  * @author Sven Wende
  *
  */
-public final class GraphView extends ViewPart implements IUpdateListener, IConnectionStateListener, IEngineStatusListener {
+public final class GraphView extends ViewPart implements IUpdateListener, IConnectionStateListener {
 
 	private Composite top = null;
 
@@ -88,9 +88,6 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 	private Label chainFilenameLabel;
 	private Text filenameText;
 
-	private Label chainStatusLabel;
-	private Text statusText;
-	
 	private Table statusTable;
 	
 	/**
@@ -228,12 +225,11 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 			}
 		});
 
-
 		this.loadedScmlLabel = new Label( this.top, SWT.NONE );
 		this.loadedScmlLabel.setText("loaded scml File:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 3;
+		gridData.horizontalSpan = 4;
 		this.loadedScmlLabel.setLayoutData( gridData );
 
 		this.loadedScmlText = new Text( this.top, SWT.BORDER );
@@ -241,7 +237,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 6;
+		gridData.horizontalSpan = 5;
 		this.loadedScmlText.setLayoutData( gridData );
 
 		this.chainFilenameLabel = new Label( this.top, SWT.NONE );
@@ -259,23 +255,6 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		gridData.horizontalSpan = 6;
 		this.filenameText.setLayoutData( gridData );
 
-
-		this.chainStatusLabel = new Label( this.top, SWT.NONE );
-		this.chainStatusLabel.setText("Chain status:");
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 3;
-		this.chainStatusLabel.setLayoutData( gridData );
-
-		this.statusText = new Text( this.top, SWT.BORDER );
-		this.statusText.setEditable( false );
-		gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 6;
-		this.statusText.setLayoutData( gridData );
-
-		
 		// Tabelle für die Statuswerte erzeugen
 		
 		gridData = new GridData();
@@ -296,11 +275,14 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		tableColumn1.setWidth(100);
 		tableColumn1.setText("Scan Module");
 		TableColumn tableColumn2 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn2.setWidth(60);
+		tableColumn2.setWidth(80);
 		tableColumn2.setText("Status");
+		TableColumn tableColumn3 = new TableColumn(this.statusTable, SWT.NONE);
+		tableColumn3.setWidth(100);
+		tableColumn3.setText("remaining Time");
 
 		Activator.getDefault().getChainStatusAnalyzer().addUpdateLisner( this );
-		this.rebuildText();
+		this.rebuildText(0);
 		Activator.getDefault().getEcp1Client().addConnectionStateListener( this );
 	}
 
@@ -312,13 +294,13 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 
 	}
 
-	public void updateOccured() {
-		this.rebuildText();
+	public void updateOccured(int remainTime) {
+		this.rebuildText(remainTime);
 		
 	}
 
 	public void clearStatusTable() {
-//		System.out.println("Hier wird die Tabelle mit den Statusanzeigen gelöscht.");
+		// die Tabelle mit den Statusanzeigen wird geleert
 		this.statusTable.getDisplay().syncExec( new Runnable() {
 			public void run() {
 				statusTable.removeAll();
@@ -326,7 +308,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		});
 	}
 	
-	public void fillStatusTable(final int chainId, final int scanModuleId, final String statString) {
+	public void fillStatusTable(final int chainId, final int scanModuleId, final String statString, final int remainTime) {
 		// Wenn die scanModuleId -1 ist, wird eine Zeile geändert in der nur die chainId eingetragen ist
 		
 		this.statusTable.getDisplay().syncExec( new Runnable() {
@@ -352,6 +334,9 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 						// neuen Wert für die Zeile eintragen
 						neu = false;
 						rows[i].setText(2, statString);
+						if (cell1 == -1) {
+							rows[i].setText(3, ""+remainTime);
+						}
 					}
 				};
 				
@@ -361,6 +346,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 					tableItem.setText( 0, " "+chainId);
 					if (scanModuleId == -1) {
 						tableItem.setText( 1, " ");
+						tableItem.setText( 3, ""+remainTime);
 					}
 					else {
 						tableItem.setText( 1, " "+scanModuleId);
@@ -371,26 +357,31 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		});
 	}
 	
-	private void rebuildText() {
-		final StringBuffer stringBuffer = new StringBuffer();
+	private void rebuildText(int remainTime) {
 
 		if( Activator.getDefault().getCurrentScanDescription() != null ) {
 			final Iterator< Chain > it = Activator.getDefault().getCurrentScanDescription().getChains().iterator();
+
 			while( it.hasNext() ) {
 				final Chain currentChain = it.next();
-				if( Activator.getDefault().getChainStatusAnalyzer().getRunningChains().contains( currentChain ) ) {
-					stringBuffer.append( "Chain " + currentChain.getId() + " running" );
 
-					fillStatusTable(currentChain.getId(), -1, "running");
+				if (currentChain.getSaveFilename()!= null) {
+					this.filenameText.getDisplay().syncExec( new Runnable() {
+						public void run() {
+							filenameText.setText(currentChain.getSaveFilename());
+						}
+					});
+				}
+				
+				
+				if( Activator.getDefault().getChainStatusAnalyzer().getRunningChains().contains( currentChain ) ) {
+					fillStatusTable(currentChain.getId(), -1, "running", remainTime);
 
 				} else if( Activator.getDefault().getChainStatusAnalyzer().getExitedChains().contains( currentChain ) ) {
-					stringBuffer.append( "Chain " + currentChain.getId() + " exited" );
-
-					fillStatusTable(currentChain.getId(), -1, "exited");
+					fillStatusTable(currentChain.getId(), -1, "exited", remainTime);
 
 				} else {
-					stringBuffer.append( "Chain " + currentChain.getId() + " idle" );
-					fillStatusTable(currentChain.getId(), -1, "idle");
+					fillStatusTable(currentChain.getId(), -1, "idle", remainTime);
 
 				}
 				final List< ScanModul > scanModules = currentChain.getScanModuls();
@@ -398,20 +389,14 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 				final List< ScanModul > running = Activator.getDefault().getChainStatusAnalyzer().getExecutingScanModules();
 				for( final ScanModul scanModule : running ) {
 					if( scanModules.contains( scanModule ) ) {
-						stringBuffer.append( ", Scan Module " + scanModule.getId() + " running" );
-
-						fillStatusTable(currentChain.getId(), scanModule.getId(), "running");
-						
+						fillStatusTable(currentChain.getId(), scanModule.getId(), "running", remainTime);
 					}
 				}
 				
 				final List< ScanModul > exited = Activator.getDefault().getChainStatusAnalyzer().getExitingScanModules();
 				for( final ScanModul scanModule : exited ) {
 					if( scanModules.contains( scanModule ) ) {
-						stringBuffer.append( ", Scan Module " + scanModule.getId() + " exited" );
-
-						fillStatusTable(currentChain.getId(), scanModule.getId(), "exited");
-
+						fillStatusTable(currentChain.getId(), scanModule.getId(), "exited", remainTime);
 					}
 				}
 			
@@ -419,10 +404,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 				final List< ScanModul > initialized = Activator.getDefault().getChainStatusAnalyzer().getInitializingScanModules();
 				for( final ScanModul scanModule : initialized ) {
 					if( scanModules.contains( scanModule ) ) {
-						stringBuffer.append( ", Scan Module " + scanModule.getId() + " initialized" );
-
-						fillStatusTable(currentChain.getId(), scanModule.getId(), "initialized");
-
+						fillStatusTable(currentChain.getId(), scanModule.getId(), "initialized", remainTime);
 					}
 				}
 			
@@ -430,29 +412,19 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 				final List< ScanModul > paused = Activator.getDefault().getChainStatusAnalyzer().getPausedScanModules();
 				for( final ScanModul scanModule : paused ) {
 					if( scanModules.contains( scanModule ) ) {
-						stringBuffer.append( ", Scan Module " + scanModule.getId() + " paused" );
-						fillStatusTable(currentChain.getId(), scanModule.getId(), "paused");
-
+						fillStatusTable(currentChain.getId(), scanModule.getId(), "paused", remainTime);
 					}
 				}
 
 				final List< ScanModul > waiting = Activator.getDefault().getChainStatusAnalyzer().getWaitingScanModules();
 				for( final ScanModul scanModule : waiting ) {
 					if( scanModules.contains( scanModule ) ) {
-						stringBuffer.append( ", Scan Module " + scanModule.getId() + " waiting for trigger" );
-						fillStatusTable(currentChain.getId(), scanModule.getId(), "waiting for trigger");
-
+						fillStatusTable(currentChain.getId(), scanModule.getId(), "waiting for trigger", remainTime);
 					}
 				}
 			}
 		}
 		
-		this.statusText.getDisplay().syncExec( new Runnable() {
-			public void run() {
-				statusText.setText( stringBuffer.toString() );
-			}
-		});
-
 	}
 
 	@Override
@@ -468,10 +440,10 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 	@Override
 	public void stackDisconnected() {
 		// TODO unsure if this is the correct way to do it
-		if (!this.statusText.isDisposed()) this.statusText.getDisplay().syncExec( new Runnable() {
+		if (!this.loadedScmlText.isDisposed()) this.loadedScmlText.getDisplay().syncExec( new Runnable() {
 
 			public void run() {
-				if (!statusText.isDisposed()) {
+				if (!loadedScmlText.isDisposed()) {
 					ToolBarManager toolBarManager = (ToolBarManager) getViewSite().getActionBars().getToolBarManager();
 					int index = toolBarManager.indexOf("de.ptb.epics.eve.viewer.connectCommand");
 					if (index >= 0) toolBarManager.getControl().getItem(index).setEnabled(true);
@@ -493,17 +465,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 	}
 
 	@Override
-	public void engineStatusChanged(EngineStatus engineStatus) {
-		// TODO Auto-generated method stub
-		System.out.println("Warum und wann kommt dieser Aufruf?");
-		
-	}
-
-	@Override
 	public void fillEngineStatus(EngineStatus engineStatus) {
-		// TODO Auto-generated method stub
-		System.out.println("GraphView: engineStatusChanged");
-		System.out.println("   Status: " + engineStatus);
 
 		switch(engineStatus) {
 			case IDLE_NO_XML_LOADED:
@@ -564,6 +526,22 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 				});
 				break;
 		}
+	}
+
+	@Override
+	public void setAutoPlayStatus(final boolean autoPlayStatus) {
+		this.autoPlayOnButton.getDisplay().syncExec( new Runnable() {
+			public void run() {
+				if (autoPlayStatus == true) {
+					autoPlayOnButton.setEnabled(false);
+					autoPlayOffButton.setEnabled(true);
+				} else {
+					autoPlayOnButton.setEnabled(true);
+					autoPlayOffButton.setEnabled(false);
+				}
+			}
+		});
+		
 	}
 
 }

@@ -78,8 +78,6 @@ public class Activator extends AbstractUIPlugin {
 		this.requestProcessor = new RequestProcessor( Display.getCurrent() );
 		this.ecp1Client.addRequestListener( this.requestProcessor );
 
-//		this.graphView = new GraphView();
-//		this.ecp1Client.addEngineStatusListener( this.graphView );
 	}
 
 	/*
