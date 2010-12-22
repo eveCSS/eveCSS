@@ -81,7 +81,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 	public void chainStatusChanged( final ChainStatusCommand chainStatusCommand ) {
 
 		if( Activator.getDefault().getCurrentScanDescription() == null ) {
-			// Nach Umstellung der Meldungen darf die ScanDescription nicht mehr null sein 13.12.10 Hartmut
+			// TODO: Nach Umstellung der Meldungen darf die ScanDescription nicht mehr null sein 13.12.10 Hartmut
 			// dann kann auch fillStatusTable aus ...epics/eve/viewer/IUpdateListener.java ausgetragen werden
 			
 			switch( chainStatusCommand.getChainStatus() ) {
