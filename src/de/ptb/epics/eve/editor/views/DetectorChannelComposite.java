@@ -180,13 +180,10 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 							currentClassMenu.add( setChannelAction );
 							setChannelAction.setText( "".equals( device.getName())?device.getID():device.getName() );
 							containsAtLeastOne = true;
-							
 						}
 						if( containsAtLeastOne ) {
 							manager.add( currentClassMenu );
-						} else {
-							//currentClassMenu.dispose();
-						}
+						} 
 					}
 				}
 				
@@ -221,9 +218,7 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 						}
 						if( containsAtLeastOne ) {
 							manager.add( currentDetectorMenu );
-						} else {
-							manager.dispose();
-						}
+						} 
 					}
 				}
 				
@@ -258,7 +253,6 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 			    deleteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ) );
 			    
 			    manager.add( deleteAction );
-				
 			}
 			
 		});

@@ -141,6 +141,42 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		this.savingComposite = new Composite( this.bar, SWT.NONE );
 		this.savingComposite.setLayout( gridLayout );
 
+		// Save Plugin Box / Labels
+		this.savePluginLabel = new Label( this.savingComposite, SWT.NONE );
+		this.savePluginLabel.setText( "File format:" );
+		this.savePlugingCombo = new Combo( this.savingComposite, SWT.READ_ONLY );
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.CENTER;
+		this.savePlugingCombo.setLayoutData( gridData );
+		
+		List<String> pluginNames = new ArrayList<String>();
+		PlugIn[] plugins = Activator.getDefault().getMeasuringStation().getPlugins().toArray( new PlugIn[0] );
+		
+		for( int i = 0; i < plugins.length; ++i ) {
+			if( plugins[i].getType() == PluginTypes.SAVE ) {
+				pluginNames.add( plugins[i].getName() );
+			}
+		}
+		this.savePlugingCombo.setItems( pluginNames.toArray( new String[0] ) );
+		
+		// Save Plugin Error Label
+		this.savePluginComboErrorLabel = new Label(this.savingComposite, SWT.NONE);
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.CENTER;
+		gridData.horizontalSpan = 1;
+		this.savePluginComboErrorLabel.setLayoutData( gridData );
+		
+		// Save Plugin Option Box
+		this.savePluginOptionsButton = new Button( this.savingComposite, SWT.NONE );
+		this.savePluginOptionsButton.setText( "Options" );
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.CENTER;
+		gridData.horizontalSpan = 1;
+		this.savePluginOptionsButton.setLayoutData( gridData );
+
 		// Filename Label / Button
 		this.filenameLabel = new Label( this.savingComposite, SWT.NONE );
 		this.filenameLabel.setText( "Filename:" );
@@ -235,42 +271,6 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			}
 			
 		});
-
-		// Save Plugin Box / Labels
-		this.savePluginLabel = new Label( this.savingComposite, SWT.NONE );
-		this.savePluginLabel.setText( "File format:" );
-		this.savePlugingCombo = new Combo( this.savingComposite, SWT.READ_ONLY );
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		this.savePlugingCombo.setLayoutData( gridData );
-		
-		List<String> pluginNames = new ArrayList<String>();
-		PlugIn[] plugins = Activator.getDefault().getMeasuringStation().getPlugins().toArray( new PlugIn[0] );
-		
-		for( int i = 0; i < plugins.length; ++i ) {
-			if( plugins[i].getType() == PluginTypes.SAVE ) {
-				pluginNames.add( plugins[i].getName() );
-			}
-		}
-		this.savePlugingCombo.setItems( pluginNames.toArray( new String[0] ) );
-		
-		// Save Plugin Error Label
-		this.savePluginComboErrorLabel = new Label(this.savingComposite, SWT.NONE);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		gridData.horizontalSpan = 1;
-		this.savePluginComboErrorLabel.setLayoutData( gridData );
-		
-		// Save Plugin Option Box
-		this.savePluginOptionsButton = new Button( this.savingComposite, SWT.NONE );
-		this.savePluginOptionsButton.setText( "Options" );
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		gridData.horizontalSpan = 1;
-		this.savePluginOptionsButton.setLayoutData( gridData );
 
 		// Save Scan Description Box / Labels
 		this.saveScanDescriptionCheckBox = new Button( this.savingComposite, SWT.CHECK );
