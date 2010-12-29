@@ -57,13 +57,12 @@
     <detectors>
         <detector>
             <class>Ringstrom</class>
-            <name>Ring_1</name>
+            <name>Ring_1_Det</name>
             <id>ringCurrent1basic</id>
             <!-- Name, Class, PV -->
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>Ring_1</name>
                 <id>ringCurrent1chan1</id>
                 <read>
@@ -78,13 +77,12 @@
         <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
-            <name>Ring_2</name>
+            <name>Ring_2_Det</name>
             <id>ringCurrent2basic</id>
             <!-- Name, Class, PV -->
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>Ring_2</name>
                 <id>ringCurrent2chan1</id>
                 <read>
