@@ -263,6 +263,7 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 
 	public void setDetectorChannelView( Channel ansicht) {
 		// DetectorChannelView wird automatisch auf neuen Channel gesetzt
+
 		IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
 		DetectorChannelView detectorChannelView = null;
 		for (int i = 0; i < ref.length; ++i) {

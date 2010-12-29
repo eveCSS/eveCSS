@@ -259,6 +259,7 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 
 	public void setMotorAxisView( Axis ansicht) {
 		// MotorAxisView wird automatisch auf neue Achse gesetzt
+
 		IViewReference[] ref = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
 		MotorAxisView motorAxisView = null;
 		for (int i = 0; i < ref.length; ++i) {

@@ -309,7 +309,6 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			}
 
 			public void widgetSelected( final SelectionEvent e ) {
-				
 				// we create an event and add it to the list if selected 
 				// or remove the event with same id from the list if deselected
 				Event detReadyEvent = new Event(currentChannel.getAbstractDevice().getID(), currentChannel.getAbstractDevice().getParent().getName(), currentChannel.getAbstractDevice().getName(), currentChannel.getParentScanModul().getChain().getId(), currentChannel.getParentScanModul().getId());
@@ -375,7 +374,9 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			this.currentChannel.removeModelUpdateListener( this );
 		}
 		this.currentChannel = channel;
+
 		if( this.currentChannel != null ) {
+
 			this.averageText.setText( "" + this.currentChannel.getAverageCount() );
 			
 			if( this.currentChannel.getMaxDeviation() != Double.NEGATIVE_INFINITY ) {
@@ -410,7 +411,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			
 			this.redoEventComposite.setControlEventManager( this.currentChannel.getRedoControlEventManager() );
 			
-			// TODO von Hartmut: da maxDeviation und minimum liefern keine 
+			// TODO von Hartmut: da maxDeviation und minimum keine 
 			// ChannelErrors liefern, muß hier auch keien Abfrage erfolgen!
 			this.maxDeviationErrorLabel.setImage( null );
 			this.minimumErrorLabel.setImage( null );

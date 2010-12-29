@@ -286,9 +286,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 
 		this.item1 = new ExpandItem(this.bar, SWT.NONE, 0);
 		item1.setText("Actions");
-//		item1.setHeight(this.actionsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item1.setControl(this.actionsComposite);
-		System.out.println("Höhe item1: " + item1.getHeight());
 		
 		// Plot Section
 		gridLayout = new GridLayout();
@@ -441,7 +439,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		GridLayout gridLayout = new GridLayout();
 
 		this.actionsComposite = new Composite(this.bar, SWT.NONE);
-//		this.actionsComposite = new Composite(this.bar, SWT.RESIZE | SWT.BORDER);
 		this.actionsComposite.setLayout(gridLayout);
 
 		GridData gridData = new GridData();
@@ -543,7 +540,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		this.measuringStation.setScanModule( this.currentScanModul );
 		this.measuringStationPrescan.setScanModule( this.currentScanModul );
 		this.measuringStationPostscan.setScanModule( this.currentScanModul );
-//		this.measuringStationPositioning.setScanModule( this.currentScanModul );
+		// this.measuringStationPositioning.setScanModule( this.currentScanModul );
 		this.fillFields();
 	}
 
@@ -1051,7 +1048,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 
 			public void controlResized(final ControlEvent e) {
 				this.function();
-//ACHTUNG: WAS PASSIERT HIER?
 			}
 			// Caution: do not use getHeaderHeight() here
 			// height values vary without changing the layout
