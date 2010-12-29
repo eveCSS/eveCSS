@@ -78,6 +78,7 @@ public abstract class AbstractDevice {
 	 * @param parent The parent of this device.
 	 */
 	public AbstractDevice( final String name, final String id, final Unit unit, final List<Option> options, final AbstractDevice parent ) {
+
 		if( name == null ) {
 			throw new IllegalArgumentException( "The parameter 'name' must not be null!");
 		}
@@ -296,6 +297,7 @@ public abstract class AbstractDevice {
 	 * @param parent
 	 */
 	protected void setParent( final AbstractDevice parent ) throws ParentNotAllowedException {
+		if ( parent != null)
 		this.parent = parent;
 	}
 
