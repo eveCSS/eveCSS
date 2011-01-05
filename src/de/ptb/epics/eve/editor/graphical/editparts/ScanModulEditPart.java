@@ -85,39 +85,71 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 		return new ChopboxAnchor( this.getFigure() );
 	}
 
+	private void removeAppendScanModul(ScanModul appendModul) {
+		// append Scan Modul wird entfernt
+		if (appendModul.getAppended().getChildScanModul().getAppended() != null) {
+			removeAppendScanModul(appendModul.getAppended().getChildScanModul());
+		}
+		if (appendModul.getAppended().getChildScanModul().getNested() != null) {
+			removeNestedScanModul(appendModul.getAppended().getChildScanModul());
+		}
+		appendModul.getAppended().getChildScanModul().setParent( null );
+		appendModul.getChain().remove(appendModul.getAppended().getChildScanModul());
+		appendModul.getAppended().setChildScanModul( null );
+		this.getViewer().getEditPartRegistry().remove( appendModul.getAppended() );
+		appendModul.setAppended( null );
+	}
+
+	private void removeNestedScanModul(ScanModul nestedModul) {
+		// nested Scan Modul wird entfernt
+		if (nestedModul.getNested().getChildScanModul().getNested() != null) {
+			removeNestedScanModul(nestedModul.getNested().getChildScanModul());
+		}
+		if (nestedModul.getNested().getChildScanModul().getAppended() != null) {
+			removeAppendScanModul(nestedModul.getNested().getChildScanModul());
+		}
+		nestedModul.getNested().getChildScanModul().setParent( null );
+		nestedModul.getChain().remove(nestedModul.getNested().getChildScanModul());
+		nestedModul.getNested().setChildScanModul( null );
+		this.getViewer().getEditPartRegistry().remove( nestedModul.getNested() );
+		nestedModul.setNested( null );
+	}
+	
 	public void removeYourSelf() {
 		final ScanModul scanModul = (ScanModul)this.getModel();
 		if( scanModul.getAppended() != null ) {
-			scanModul.getAppended().getChildScanModul().setParent( null );
-			scanModul.getAppended().setChildScanModul( null );
-			this.getViewer().getEditPartRegistry().remove( scanModul.getAppended() );
-			scanModul.setAppended( null );
+			// append Scan Modul vorhanden, muß auch entfernt werden
+			removeAppendScanModul(scanModul);
 		}
 		if( scanModul.getNested() != null ) {
-			scanModul.getNested().getChildScanModul().setParent( null );
-			scanModul.getNested().setChildScanModul( null );
-			getViewer().getEditPartRegistry().remove( scanModul.getNested() );
-			scanModul.setNested( null );
+			// nested Scan Modul vorhandn, muß auch entfernt werden
+			removeNestedScanModul(scanModul);
 		}
 		if( scanModul.getParent() != null ) {
 			if( scanModul.getParent().getParentScanModul() != null ) {
-				if( scanModul.getParent().getParentScanModul().getAppended().getChildScanModul() == scanModul ) {
-					scanModul.getParent().getParentScanModul().setAppended( null );
-				} else {
-					scanModul.getParent().getParentScanModul().setNested( null );
-				}
+				if( scanModul.getParent().getParentScanModul().getAppended() != null ) {
+					if( scanModul.getParent().getParentScanModul().getAppended().getChildScanModul() == scanModul ) {
+						scanModul.getParent().getParentScanModul().setAppended( null );
+					}
+				} 
+				if( scanModul.getParent().getParentScanModul().getNested() != null ) {
+					if( scanModul.getParent().getParentScanModul().getNested().getChildScanModul() == scanModul ) {
+						scanModul.getParent().getParentScanModul().setNested( null );
+					}
+				} 
 			} else if( scanModul.getParent().getParentEvent() != null ) {
 				if( scanModul.getParent().getParentEvent().getConnector() != null) {
 					scanModul.getParent().getParentEvent().setConnector( null );
 				}
 				scanModul.getParent().setParentEvent( null );
 			}
+			// Hier wird im Connector das parentScanModul auf 0 gesetzt.
 			scanModul.getParent().setParentScanModul( null );
 			getViewer().getEditPartRegistry().remove( scanModul.getParent() );
+			// Connector wird gelöscht
 			scanModul.setParent( null );
 		}
-		this.getParent().refresh();
-		this.getFigure().getParent().remove( this.getFigure() );
+
 		List connections = this.getSourceConnections();
 		Iterator it = connections.iterator();
 		while( it.hasNext() ) {
@@ -132,12 +164,18 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 			connectionEditPart.setSource( null );
 			connectionEditPart.setTarget( null );
 		}
+
 		//this.getViewer().getEditPartRegistry().remove( "" );
+
+		scanModul.getChain().remove(scanModul);
+
+		this.getParent().refresh();
+		this.getFigure().getParent().remove( this.getFigure() );
 		
 		this.deactivate();
 		this.removeNotify();
-		this.setParent( null );
 		this.unregister();
+		this.setParent( null );
 		
 	}
 	public void refresh() {

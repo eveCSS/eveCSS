@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -240,6 +241,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					((ScanModulEditPart)selectedEditPart).setFocus( false );
 				}
 				selectedEditPart = part;
+
 				if( selectedEditPart instanceof ScanModulEditPart ) {
 					((ScanModulEditPart)selectedEditPart).setFocus( true );
 					ScanModul scanModul = (ScanModul)selectedEditPart.getModel();
@@ -405,9 +407,11 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 						connector.setChildScanModul( newScanModul );
 						scanModul.setAppended( connector );
 						newScanModul.setParent( connector );
+
 						scanModul.getChain().add( newScanModul );
 						scanModulEditPart.refresh();
 						scanModulEditPart.getParent().refresh();
+					
 					} else if( leftClickEditPart instanceof EventEditPart ) {
 						EventEditPart eventEditPart = (EventEditPart)leftClickEditPart;
 						StartEvent startEvent = (StartEvent)leftClickEditPart.getModel();
@@ -506,8 +510,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					scanModulEditPart.getParent().refresh();
 					
 				} else if( e.widget == deleteScanModulMenuItem ) {
-					
 					ScanModulEditPart scanModulEditPart = (ScanModulEditPart)leftClickEditPart;
+
 					scanModulEditPart.removeYourSelf();
 					Iterator< Chain > it = scanDescription.getChains().iterator();
 					while( it.hasNext() ) {
