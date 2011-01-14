@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <version>0.3.9</version>
+    <version>0.3.7</version>
     <chain id="1">
         <comment>keithley_spannung</comment>
         <savefilename>/messung/qnim/daten/MP_NEU/DATEN/mpneu_11_nov_10.hd5</savefilename>
@@ -44,10 +44,12 @@
                 <smchannel>
                     <channelid>K2000:23624chan1</channelid>
                     <confirmtrigger>false</confirmtrigger>
+                    <sendreadyevent>true</sendreadyevent>
                 </smchannel>
                 <smchannel>
                     <channelid>K0196:23628chan1</channelid>
                     <confirmtrigger>false</confirmtrigger>
+                    <sendreadyevent>true</sendreadyevent>
                 </smchannel>
                 <plot id="1">
                     <xaxis>
@@ -70,14 +72,14 @@
         <plugin type="save">
             <name>ASCII</name>
             <location></location>
-            <parameter name="format" datatype="string" default="ASCII" mandatory="false"/>
-            <parameter name="suffix" datatype="string" default="txt" mandatory="false"/>
+            <parameter name="format" datatype="string" default="ASCII" mandatory="false"></parameter>
+            <parameter name="suffix" datatype="string" default="txt" mandatory="false"></parameter>
         </plugin>
         <plugin type="save">
             <name>HDF5</name>
             <location>/messung/eve/lib/linux-x86/libhdf5plugin.so</location>
             <parameter name="format" datatype="string" default="HDF5" mandatory="false"/>
-            <parameter name="suffix" datatype="string" default="hd5" mandatory="false"/>
+            <parameter name="suffix" datatype="string" default="h5" mandatory="false"/>
         </plugin>
         <plugin type="position">
             <name>ReferenceAdd</name>
@@ -295,6 +297,19 @@
                 <unit>
                     <access method="GETPUT" type="string" transport="ca">ringLifeTime4.EGU</access>
                 </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Timer</class>
+            <name></name>
+            <id>Timer1</id>
+            <channel>
+                <class></class>
+                <name>Timer</name>
+                <id>Timer1-det</id>
+                <read>
+                    <access method="GETCB" type="datetime" transport="local">Timer</access>
+                </read>
             </channel>
         </detector>
         <detector>
@@ -1743,6 +1758,26 @@
             </axis>
         </motor>
         <motor>
+            <class>Timer</class>
+            <name></name>
+            <id>Timer1</id>
+            <axis>
+                <class></class>
+                <name>Time</name>
+                <id>Timer1-mot</id>
+                <goto>
+                    <access method="PUTCB" type="datetime" transport="local">Timer</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="datetime" transport="local">Timer</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="local">Timer</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
+        <motor>
             <class></class>
             <name></name>
             <id>OMS58:20900</id>
@@ -1781,6 +1816,15 @@
                     <access method="PUT" type="int" transport="ca">OMS58:20900000.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
+                <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:20900000</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:20900000</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
                 <option>
                     <name>Position Readback</name>
                     <id>OMS58:20900000.RBV</id>
@@ -2068,6 +2112,15 @@
                     <access method="PUT" type="int" transport="ca">OMS58:20900001.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
+                <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:20900001</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:20900001</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
                 <option>
                     <name>Position Readback</name>
                     <id>OMS58:20900001.RBV</id>
@@ -2361,6 +2414,15 @@
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:20901000</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:20901000</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
                     <name>Position Readback</name>
                     <id>OMS58:20901000.RBV</id>
                     <value>
@@ -2647,6 +2709,15 @@
                     <access method="PUT" type="int" transport="ca">OMS58:20901001.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
+                <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:20901001</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:20901001</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
                 <option>
                     <name>Position Readback</name>
                     <id>OMS58:20901001.RBV</id>
@@ -2935,6 +3006,15 @@
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:20901002</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:20901002</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
                     <name>Position Readback</name>
                     <id>OMS58:20901002.RBV</id>
                     <value>
@@ -3221,6 +3301,15 @@
                     <access method="PUT" type="int" transport="ca">OMS58:20901003.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
+                <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:20901003</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:20901003</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
                 <option>
                     <name>Position Readback</name>
                     <id>OMS58:20901003.RBV</id>
@@ -3514,6 +3603,15 @@
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:21400000</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:21400000</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
                     <name>Position Readback</name>
                     <id>OMS58:21400000.RBV</id>
                     <value>
@@ -3800,6 +3898,15 @@
                     <access method="PUT" type="int" transport="ca">OMS58:21400001.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
+                <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:21400001</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:21400001</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
                 <option>
                     <name>Position Readback</name>
                     <id>OMS58:21400001.RBV</id>
@@ -4088,6 +4195,15 @@
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:21400002</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:21400002</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
                     <name>Position Readback</name>
                     <id>OMS58:21400002.RBV</id>
                     <value>
@@ -4374,6 +4490,15 @@
                     <access method="PUT" type="int" transport="ca">OMS58:21400003.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
+                <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:21400003</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:21400003</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
                 <option>
                     <name>Position Readback</name>
                     <id>OMS58:21400003.RBV</id>
@@ -4667,6 +4792,15 @@
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:21401000</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:21401000</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
                     <name>Position Readback</name>
                     <id>OMS58:21401000.RBV</id>
                     <value>
@@ -4953,6 +5087,15 @@
                     <access method="PUT" type="int" transport="ca">OMS58:21401001.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
+                <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:21401001</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:21401001</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
                 <option>
                     <name>Position Readback</name>
                     <id>OMS58:21401001.RBV</id>
@@ -5241,6 +5384,15 @@
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:21401002</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:21401002</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
                     <name>Position Readback</name>
                     <id>OMS58:21401002.RBV</id>
                     <value>
@@ -5527,6 +5679,15 @@
                     <access method="PUT" type="int" transport="ca">OMS58:21401003.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
+                <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:21401003</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:21401003</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
                 <option>
                     <name>Position Readback</name>
                     <id>OMS58:21401003.RBV</id>
@@ -5815,6 +5976,15 @@
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:21401004</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:21401004</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
                     <name>Position Readback</name>
                     <id>OMS58:21401004.RBV</id>
                     <value>
@@ -6101,6 +6271,15 @@
                     <access method="PUT" type="int" transport="ca">OMS58:21401005.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
+                <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:21401005</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:21401005</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
                 <option>
                     <name>Position Readback</name>
                     <id>OMS58:21401005.RBV</id>
@@ -6389,6 +6568,15 @@
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:21401006</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:21401006</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
                     <name>Position Readback</name>
                     <id>OMS58:21401006.RBV</id>
                     <value>
@@ -6675,6 +6863,15 @@
                     <access method="PUT" type="int" transport="ca">OMS58:21401007.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
+                <option>
+                    <name>Goto Position</name>
+                    <id>OMS58:21401007</id>
+                    <value>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">OMS58:21401007</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
                 <option>
                     <name>Position Readback</name>
                     <id>OMS58:21401007.RBV</id>
