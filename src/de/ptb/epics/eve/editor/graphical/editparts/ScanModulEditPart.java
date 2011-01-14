@@ -9,7 +9,9 @@ import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
@@ -62,6 +64,7 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor( final ConnectionEditPart connection ) {
+		System.out.println("getSourceConnectionAnchor 1 aufgerufen");
 		final ScanModul scanModul = (ScanModul)this.getModel();
 		if( connection.getModel() == scanModul.getAppended() ) {
 			return ((ScanModuleFigure)this.figure).getAppendedAnchor();
@@ -72,16 +75,19 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor( final Request request ) {
+		System.out.println("getSourceConnectionAnchor 2 aufgerufen");
 		return new ChopboxAnchor( this.getFigure() );
 	}
 
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor( final ConnectionEditPart connection ) {
+		System.out.println("getTargetConnectionAnchor 1 aufgerufen");
 		return ((ScanModuleFigure)this.figure).getTargetAnchor();
 	}
 
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor( final Request request ) {
+		System.out.println("getTargetConnectionAnchor 2 aufgerufen");
 		return new ChopboxAnchor( this.getFigure() );
 	}
 
@@ -166,12 +172,16 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 		}
 
 		//this.getViewer().getEditPartRegistry().remove( "" );
-
+		
 		scanModul.getChain().remove(scanModul);
 
 		this.getParent().refresh();
+
+		// TODO: this.getFigure..., this.removeNotify und this.unregister
+		// auskokmmentiert am 11.1.11. Funktionen scheinen nicht
+		// gebraucht zu werden. Wofür sollten sie sein?
+
 		this.getFigure().getParent().remove( this.getFigure() );
-		
 		this.deactivate();
 		this.removeNotify();
 		this.unregister();
@@ -180,6 +190,7 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 	}
 	public void refresh() {
 		final ScanModul scanModul = (ScanModul)this.getModel();
+
 		((ScanModuleFigure)this.figure).setText( scanModul.getName() );
 		if( (scanModul.getX() != this.figure.getBounds().x) || scanModul.getY() != this.figure.getBounds().y ) {
 		    scanModul.setX( this.figure.getBounds().x );
@@ -188,7 +199,7 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 		super.refresh();
 	}
 
-
+	
 	@Override
 	public void focusGained(FocusEvent arg0) {
 		// TODO Auto-generated method stub
