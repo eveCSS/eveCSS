@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionAnchor;
+import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.IFigure;
@@ -15,9 +16,14 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.part.EditorPart;
 
 import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.graphical.editparts.figures.ScanModuleFigure;
+import de.ptb.epics.eve.editor.graphical.GraphicalEditor;
+import de.ptb.epics.eve.editor.views.ScanModulView;
 
 public class ScanModulEditPart extends AbstractGraphicalEditPart implements NodeEditPart, FocusListener {
 
@@ -64,7 +70,6 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor( final ConnectionEditPart connection ) {
-		System.out.println("getSourceConnectionAnchor 1 aufgerufen");
 		final ScanModul scanModul = (ScanModul)this.getModel();
 		if( connection.getModel() == scanModul.getAppended() ) {
 			return ((ScanModuleFigure)this.figure).getAppendedAnchor();
@@ -75,19 +80,16 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor( final Request request ) {
-		System.out.println("getSourceConnectionAnchor 2 aufgerufen");
 		return new ChopboxAnchor( this.getFigure() );
 	}
 
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor( final ConnectionEditPart connection ) {
-		System.out.println("getTargetConnectionAnchor 1 aufgerufen");
 		return ((ScanModuleFigure)this.figure).getTargetAnchor();
 	}
 
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor( final Request request ) {
-		System.out.println("getTargetConnectionAnchor 2 aufgerufen");
 		return new ChopboxAnchor( this.getFigure() );
 	}
 
@@ -181,10 +183,10 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 		// auskokmmentiert am 11.1.11. Funktionen scheinen nicht
 		// gebraucht zu werden. Wofür sollten sie sein?
 
-		this.getFigure().getParent().remove( this.getFigure() );
+//		this.getFigure().getParent().remove( this.getFigure() );
 		this.deactivate();
-		this.removeNotify();
-		this.unregister();
+//		this.removeNotify();
+//		this.unregister();
 		this.setParent( null );
 		
 	}
@@ -192,6 +194,16 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 		final ScanModul scanModul = (ScanModul)this.getModel();
 
 		((ScanModuleFigure)this.figure).setText( scanModul.getName() );
+
+		ScanModul parentModul = scanModul.getParent().getParentScanModul();
+		if (parentModul == null) {
+			// Wenn ScanModul kein parentModul hat, ist es das oberste ScanModul.
+			// Das soll als erstes angezeigt werden, wenn der Scan zum ersten
+			// Mal auf der Oberflöche angezeigt wird.
+			GraphicalEditor firstEditor = new GraphicalEditor();
+			firstEditor.noticeFirstScanModul(scanModul);
+		}
+
 		if( (scanModul.getX() != this.figure.getBounds().x) || scanModul.getY() != this.figure.getBounds().y ) {
 		    scanModul.setX( this.figure.getBounds().x );
 			scanModul.setY( this.figure.getBounds().y );
@@ -203,18 +215,18 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 	@Override
 	public void focusGained(FocusEvent arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 
 
 	@Override
 	public void focusLost(FocusEvent arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public void setFocus( final boolean focus ) {
+		if (this.figure != null ){
+			((ScanModuleFigure)this.figure).setActive( focus );	
+		}
 		super.setFocus( true );
-		((ScanModuleFigure)this.figure).setActive( focus );	
 	}
 }

@@ -39,7 +39,7 @@ public class ScanModuleFigure extends Figure {
 		this.setOpaque( true );
 		this.setSize( 70, 30 );
 		this.setLocation( new Point(  x, y  ) );
-		
+
 		this.text = text;
 		this.setToolTip( new Label( "Left click to edit me." ) );
 		
@@ -56,23 +56,17 @@ public class ScanModuleFigure extends Figure {
 			}
 
 			public void mouseReleased( final MouseEvent me ) {
+				// Falls das ScanModul zuweit nach oben oder links geschoben wurde,
+				// werden die Werte korrigiert.
+				
 				if (me.x - xOffset < 0)
 					me.x = xOffset + 10;
 				if (me.y - yOffset < 0)
 					me.y = yOffset + 10;
 				setLocation( new Point(  me.x - xOffset, me.y - yOffset) );
-System.out.println("MouseReleased, ist das ein erlaubter Bereich?");
-System.out.println("   me.x : " + me.x);
-System.out.println("   xOffset: " + xOffset);
-System.out.println("   me.y : " + me.y);
-System.out.println("   yOffset: " + yOffset);
 
 				Rectangle newLocation = getBounds();
-System.out.println("   NewLocation:");
-System.out.println("      x: " + newLocation.x);
-System.out.println("      y: " + newLocation.y);
-System.out.println("      width: " + newLocation.width);
-System.out.println("      height: " + newLocation.height);
+
 				targetAnchor.setLocation( new Point( newLocation.x, newLocation.y + (newLocation.height/2) ) );
 				appendedAnchor.setLocation( new Point( newLocation.x + newLocation.width, newLocation.y + (newLocation.height/2) ) );
 				nestedAnchor.setLocation( new Point( newLocation.x + (newLocation.width/2), newLocation.y + newLocation.height ) );
