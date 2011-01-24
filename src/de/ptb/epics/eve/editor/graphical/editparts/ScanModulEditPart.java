@@ -200,8 +200,7 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 			// Wenn ScanModul kein parentModul hat, ist es das oberste ScanModul.
 			// Das soll als erstes angezeigt werden, wenn der Scan zum ersten
 			// Mal auf der Oberflöche angezeigt wird.
-			GraphicalEditor firstEditor = new GraphicalEditor();
-			firstEditor.noticeFirstScanModul(scanModul);
+			GraphicalEditor.setInitScanModul(scanModul);
 		}
 
 		if( (scanModul.getX() != this.figure.getBounds().x) || scanModul.getY() != this.figure.getBounds().y ) {

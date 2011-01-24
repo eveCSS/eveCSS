@@ -253,48 +253,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		this.viewer.getControl().addMouseListener( new MouseListener() {
 
 			public void mouseDoubleClick(MouseEvent e) {
-				
-				IViewReference[] ref = getSite().getPage().getViewReferences();
-				ScanModulView view = null;
-				for( int i = 0; i < ref.length; ++i ) {
-					if( ref[i].getId().equals( ScanModulView.ID ) ) {
-						view = (ScanModulView)ref[i].getPart( false );
-					}
-				}
-				
-				EditPart part = viewer.findObjectAt( new Point( e.x, e.y ) );
-
-				// nur wenn ein Scan Modul selektiert ist, wird die Ansicht geändert
-				if( part instanceof ScanModulEditPart ) {
-					// Wenn schon ein SM angezeigt wird, wird der Focus weggenommen
-					if( selectedEditPart instanceof ScanModulEditPart ) {
-						((ScanModulEditPart)selectedEditPart).setFocus( false );
-					}
-					
-					selectedEditPart = part;
-					((ScanModulEditPart)selectedEditPart).setFocus( true );
-					ScanModul scanModul = (ScanModul)selectedEditPart.getModel();
-					view.setCurrentScanModul( scanModul );
-					currentScanModul = scanModul;
-
-				}
-				else if( part instanceof ScanDescriptionEditPart ) {
-					// Wenn schon ein SM angezeigt wird, wird der Focus weggenommen
-					if( selectedEditPart instanceof ScanModulEditPart ) {
-						((ScanModulEditPart)selectedEditPart).setFocus( false );
-					}
-
-					// als EditPart wird der zuletzt mit der rechten Maustaste angeklickte 
-					// Part gesetzt
-					selectedEditPart = rightClickEditPart;
-					((ScanModulEditPart)selectedEditPart).setFocus( true );
-					ScanModul scanModul = (ScanModul)selectedEditPart.getModel();
-					view.setCurrentScanModul( scanModul );
-					currentScanModul = scanModul;
-
-				}
-				else
-					return;
 			}
 
 			public void mouseDown(MouseEvent e) {
@@ -337,11 +295,47 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			}
 
 			public void mouseUp(MouseEvent e) {
-				mouseDoubleClick(e);
-					
+
+				// Ansicht des ScanModuls wird aktualisiert
+				IViewReference[] ref = getSite().getPage().getViewReferences();
+				ScanModulView view = null;
+				for( int i = 0; i < ref.length; ++i ) {
+					if( ref[i].getId().equals( ScanModulView.ID ) ) {
+						view = (ScanModulView)ref[i].getPart( false );
+					}
 				}
+				
+				EditPart part = viewer.findObjectAt( new Point( e.x, e.y ) );
+
+				// nur wenn ein Scan Modul selektiert ist, wird die Ansicht geändert
+				if( part instanceof ScanModulEditPart ) {
+					// Wenn schon ein SM angezeigt wird, wird der Focus weggenommen
+					if( selectedEditPart instanceof ScanModulEditPart ) {
+						((ScanModulEditPart)selectedEditPart).setFocus( false );
+					}
+					selectedEditPart = part;
+					((ScanModulEditPart)selectedEditPart).setFocus( true );
+					ScanModul scanModul = (ScanModul)selectedEditPart.getModel();
+					view.setCurrentScanModul( scanModul );
+					currentScanModul = scanModul;
+				}
+				else if( part instanceof ScanDescriptionEditPart ) {
+					// Wenn schon ein SM angezeigt wird, wird der Focus weggenommen
+					if( selectedEditPart instanceof ScanModulEditPart ) {
+						((ScanModulEditPart)selectedEditPart).setFocus( false );
+					}
+					// als EditPart wird der zuletzt mit der rechten Maustaste angeklickte 
+					// Part gesetzt
+					selectedEditPart = rightClickEditPart;
+					((ScanModulEditPart)selectedEditPart).setFocus( true );
+					ScanModul scanModul = (ScanModul)selectedEditPart.getModel();
+					view.setCurrentScanModul( scanModul );
+					currentScanModul = scanModul;
+				}
+				else
+					return;
+			}
 		});
-		
 		this.configureGraphicalViewer();
 
 	}
@@ -380,11 +374,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 
 	}
 
-	public void noticeFirstScanModul(ScanModul initScanModul) {
-		// erstes ScanModul das gezeigt werden soll wird vermerkt
-		this.initScanModul = initScanModul;
-	}
-	
 	@Override
 	public void setFocus() {
 		IViewReference[] ref = getSite().getPage().getViewReferences();
@@ -413,15 +402,9 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			// Momentane Lösung: controlResized(ControlEvent e) wird aufgerufen sobald sich die Größe des
 			// ... ändert. Dadurch kann dann das erste ScanModul gesetzt werden! (Hartmut 21.1.11)
 
-			if ((currentScanModul == null) && (this.initScanModul != null)) {
-
-				// Jetzt kommt alles das, was im mouseDoubleClick passiert!
+			if ((currentScanModul == null) && (GraphicalEditor.getInitScanModul() != null)) {
 
 				// gerade erzeugte bzw. gewünschte ScanModul wird selektiert
-				// TODO: da diese Zeilen auch noch woanders vorkommen, sollte man sie besser auslagern
-				// Dabei ist allerdings zu prüfen, ob sie wirklich identisch sind mit der Stelle wo
-				// ein neues ScanModul angelegt wird. (Hartmut 21.1.11)
-				
 				IViewReference[] ref2 = getSite().getPage().getViewReferences();
 				ScanModulView view2 = null;
 				for( int i = 0; i < ref2.length; ++i ) {
@@ -430,8 +413,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					}
 				}
 
-				int x = this.initScanModul.getX();
-				int y = this.initScanModul.getY();
+				int x = GraphicalEditor.getInitScanModul().getX();
+				int y = GraphicalEditor.getInitScanModul().getY();
 				
 				EditPart part = viewer.findObjectAt( new Point( x, y ) );
 				if( selectedEditPart instanceof ScanModulEditPart ) {
@@ -441,19 +424,16 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				
 				if( selectedEditPart instanceof ScanModulEditPart ) {
 					((ScanModulEditPart)selectedEditPart).setFocus( true );
-					view2.setCurrentScanModul( this.initScanModul );
-					currentScanModul = this.initScanModul;
+					view2.setCurrentScanModul( GraphicalEditor.getInitScanModul() );
+					currentScanModul = GraphicalEditor.getInitScanModul();
 				} else {
 					view2.setCurrentScanModul( null );
 					currentScanModul = null;
 				}
-			
 			}
 
-			// Originalzeile, muß so bleiben
 			scanModulView.setCurrentScanModul( currentScanModul );
 		}
-		
 	}
 	
 	private void createSelectionListener() {
@@ -565,8 +545,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 							
 						}
 						// Per Maus soll das erste Scan-Modul aktiviert werden!
-
-						// Jetzt kommt alles das, was im mouseDoubleClick passiert!
 
 						// gerade erzeugte ScanModul wird selektiert
 						IViewReference[] ref = getSite().getPage().getViewReferences();
@@ -698,6 +676,14 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		this.dirty = true;
 		this.firePropertyChange( PROP_DIRTY );
 		
+	}
+
+	public static void setInitScanModul(ScanModul initScanModul) {
+		GraphicalEditor.initScanModul = initScanModul;
+	}
+
+	public static ScanModul getInitScanModul() {
+		return initScanModul;
 	}
 
 }
