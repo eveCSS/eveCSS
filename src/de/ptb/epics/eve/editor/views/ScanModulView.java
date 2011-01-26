@@ -406,6 +406,25 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 				wahlComposite.setEventChoice();
 			}
 		});
+
+
+		this.eventsComposite.addControlListener(new ControlListener() {
+
+			@Override
+			public void controlMoved(ControlEvent e) {
+				// Hier kann direkt der Focus gesetzt werden auf das 
+				// eventsComposite, da der Focus automatisch auf das erste
+				// Children gesetzt wird, und das ist auch das was den
+				// Focus bekommen soll.
+				eventsComposite.setFocus();
+			}
+
+			@Override
+			public void controlResized(ControlEvent e) {
+			}
+			
+		});
+
 		
 		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
@@ -449,6 +468,20 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		this.behaviorTabFolder = new CTabFolder(this.actionsComposite, SWT.FLAT);
 		this.behaviorTabFolder.setLayoutData(gridData);
 
+		
+		this.actionsComposite.addControlListener(new ControlListener() {
+
+			@Override
+			public void controlMoved(ControlEvent e) {
+				actionsComposite.setFocus();
+			}
+
+			@Override
+			public void controlResized(ControlEvent e) {
+			}
+			
+		});
+		
 		createMotorAxisComposite();
 		createDetectorChannelComposite();
 		createPrescanComposite();

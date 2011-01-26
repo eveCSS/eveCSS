@@ -25,6 +25,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
@@ -345,6 +346,26 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 				wahlComposite.setEventChoice();
 			}
 		});
+
+		this.eventComposite.addControlListener(new ControlListener() {
+
+			@Override
+			public void controlMoved(ControlEvent e) {
+				// Erst werden die Children ausgelesen um nachzusehen, welches
+				// Child ein CTabFolder ist, dieses bekommt dann den Focus!
+				Control[] childArray = eventComposite.getChildren();
+				for( int i = 0; i < childArray.length; ++i ) {
+					if (childArray[i].toString().equals("CTabFolder {}")) {
+						childArray[i].setFocus();
+					}
+				}
+			}
+
+			@Override
+			public void controlResized(ControlEvent e) {
+			}
+			
+		});
 		
 		redoEventComposite = new EventComposite( eventsTabFolder, SWT.NONE);
 		 
@@ -360,7 +381,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		this.confirmTriggerManualCheckBox.setEnabled( false );
 		this.detectorReadyEventCheckBox.setEnabled( false );
 		this.eventsTabFolder.setEnabled(false);
-		
+	
 	}
 
 	@Override

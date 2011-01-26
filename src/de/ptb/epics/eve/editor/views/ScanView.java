@@ -66,7 +66,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 	
 	private Composite commentComposite = null;
 	
-	private Composite pluginComposite = null;
+	private Composite eventsComposite = null;
 	
 	private ExpandBar bar = null;
 
@@ -84,7 +84,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 
 	private Label savePluginLabel = null;
 
-	private Combo savePlugingCombo = null;
+	private Combo savePluginCombo = null;
 	
 	private Label savePluginComboErrorLabel = null;
 	
@@ -144,11 +144,11 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		// Save Plugin Box / Labels
 		this.savePluginLabel = new Label( this.savingComposite, SWT.NONE );
 		this.savePluginLabel.setText( "File format:" );
-		this.savePlugingCombo = new Combo( this.savingComposite, SWT.READ_ONLY );
+		this.savePluginCombo = new Combo( this.savingComposite, SWT.READ_ONLY );
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
-		this.savePlugingCombo.setLayoutData( gridData );
+		this.savePluginCombo.setLayoutData( gridData );
 		
 		List<String> pluginNames = new ArrayList<String>();
 		PlugIn[] plugins = Activator.getDefault().getMeasuringStation().getPlugins().toArray( new PlugIn[0] );
@@ -158,7 +158,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 				pluginNames.add( plugins[i].getName() );
 			}
 		}
-		this.savePlugingCombo.setItems( pluginNames.toArray( new String[0] ) );
+		this.savePluginCombo.setItems( pluginNames.toArray( new String[0] ) );
 		
 		// Save Plugin Error Label
 		this.savePluginComboErrorLabel = new Label(this.savingComposite, SWT.NONE);
@@ -335,8 +335,8 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		// third expand item (Events)
 		this.item2 = new ExpandItem ( this.bar, SWT.NONE, 0);
 		this.item2.setText("Events");
-		this.item2.setHeight( this.pluginComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		this.item2.setControl( this.pluginComposite );
+		this.item2.setHeight( this.eventsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		this.item2.setControl( this.eventsComposite );
 		
 		this.bar.addControlListener( new ControlListener() {
 
@@ -364,7 +364,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			
 		});
 		
-		this.pluginComposite.addControlListener( new ControlListener() {
+		this.eventsComposite.addControlListener( new ControlListener() {
 
 			public void controlMoved( final ControlEvent e ) {
 				int height = bar.getSize().y - item0.getHeaderHeight() - (item0.getExpanded()?item0.getHeight():0) - item1.getHeaderHeight() - (item1.getExpanded()?item1.getHeight():0) - item2.getHeaderHeight() - 20;
@@ -398,18 +398,18 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 	private void createEventsTabFolder() {
 		
 		GridLayout gridLayout = new GridLayout();
-		this.pluginComposite = new Composite( this.bar, SWT.NONE );
-		this.pluginComposite.setLayout( gridLayout );
-		//this.pluginComposite.setLayout( new FillLayout() );
+		this.eventsComposite = new Composite( this.bar, SWT.NONE );
+		this.eventsComposite.setLayout( gridLayout );
+		//this.eventsComposite.setLayout( new FillLayout() );
 
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalAlignment = GridData.FILL;
-		this.pluginComposite.setLayoutData( gridData );
+		this.eventsComposite.setLayoutData( gridData );
 		
-		eventsTabFolder = new CTabFolder(this.pluginComposite, SWT.FLAT );
+		eventsTabFolder = new CTabFolder(this.eventsComposite, SWT.FLAT );
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
@@ -429,6 +429,19 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 				EventComposite wahlComposite = (EventComposite)wahlItem.getControl();
 				wahlComposite.setEventChoice();
 			}
+		});
+
+		this.eventsComposite.addControlListener(new ControlListener() {
+
+			@Override
+			public void controlMoved(ControlEvent e) {
+				eventsComposite.setFocus();
+			}
+
+			@Override
+			public void controlResized(ControlEvent e) {
+			}
+			
 		});
 		
 		pauseEventComposite = new EventComposite( eventsTabFolder, SWT.NONE );
@@ -459,7 +472,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		this.searchButton.setEnabled(enabled);
 		this.manualSaveCheckBox.setEnabled(enabled);
 		this.autoNumberCheckBox.setEnabled(enabled);
-		this.savePlugingCombo.setEnabled(enabled);
+		this.savePluginCombo.setEnabled(enabled);
 		this.eventsTabFolder.setEnabled(enabled);
 		this.saveScanDescriptionCheckBox.setEnabled( enabled );
 		this.commentInput.setEnabled( enabled );
@@ -486,7 +499,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			
 			this.saveScanDescriptionCheckBox.setSelection( this.currentChain.isSaveScanDescription() );
 			
-			this.savePlugingCombo.setText( (this.currentChain.getSavePluginController().getPlugin() !=null)?this.currentChain.getSavePluginController().getPlugin().getName():"" );		
+			this.savePluginCombo.setText( (this.currentChain.getSavePluginController().getPlugin() !=null)?this.currentChain.getSavePluginController().getPlugin().getName():"" );		
 			
 			if( this.currentChain.getSavePluginController().getModelErrors().size() > 0 ) {
 				this.savePluginComboErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
@@ -562,7 +575,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			this.manualSaveCheckBox.setSelection( false );
 			this.autoNumberCheckBox.setSelection( false );
 			this.saveScanDescriptionCheckBox.setSelection( false );
-			this.savePlugingCombo.setText( "" );
+			this.savePluginCombo.setText( "" );
 			this.pauseEventComposite.setControlEventManager( null );
 			this.redoEventComposite.setControlEventManager( null );
 			this.breakEventComposite.setControlEventManager( null );
@@ -599,7 +612,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 	
 	private void appendListener() {
 		this.filenameInput.addModifyListener( this.modifyListener );
-		this.savePlugingCombo.addModifyListener( this.modifyListener );
+		this.savePluginCombo.addModifyListener( this.modifyListener );
 		this.manualSaveCheckBox.addSelectionListener( this.selectionListener );
 		this.autoNumberCheckBox.addSelectionListener( this.selectionListener );
 		this.saveScanDescriptionCheckBox.addSelectionListener( this.selectionListener );
@@ -614,11 +627,11 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 				if( !filling ) {
 					if( e.widget == filenameInput ) {
 						currentChain.setSaveFilename( filenameInput.getText() );
-					} else if( e.widget == savePlugingCombo ) {
+					} else if( e.widget == savePluginCombo ) {
 						// TODO: hier kann eigentlich kein Fehler mehr auftauchen, da das Plugin
 						// jetzt nur noch ausgewählt und nicht mehr verändert werden kann (Hartmut 20.4.10)
-						if( savePlugingCombo.getText().equals("") || Helper.contains( savePlugingCombo.getItems(), savePlugingCombo.getText() ) ) {
-							currentChain.getSavePluginController().setPlugin( Activator.getDefault().getMeasuringStation().getPluginByName( savePlugingCombo.getText() ) );
+						if( savePluginCombo.getText().equals("") || Helper.contains( savePluginCombo.getItems(), savePluginCombo.getText() ) ) {
+							currentChain.getSavePluginController().setPlugin( Activator.getDefault().getMeasuringStation().getPluginByName( savePluginCombo.getText() ) );
 							savePluginComboErrorLabel.setImage( null );	
 							savePluginComboErrorLabel.setToolTipText( "" );
 						} else {
