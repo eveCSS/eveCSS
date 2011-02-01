@@ -8,32 +8,40 @@
 package de.ptb.epics.eve.data;
 
 /**
- * 
  * This enum defines the possible plotmodes of a line in a plot window.
- * 
- * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.3
- * 
- * @see de.ptb.epics.eve.data.measuringstation.PlugIn
- *
+ * @author   Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
+ * @version   1.3
+ * @see  de.ptb.epics.eve.data.measuringstation.PlugIn
  */
 public enum PluginTypes {
 
 	/**
 	 * Says, that the Plugin is a position plugin, that could be used to calculate the position of motor axis.
+	 *
+	 * @uml.property  name="pOSITION"
+	 * @uml.associationEnd  
 	 */
 	POSITION,
 	/**
 	 * Says, that the Plugin is a save plugin, that could be used in the definition of a Scan-Chain.
+	 *
+	 * @uml.property  name="sAVE"
+	 * @uml.associationEnd  
 	 */
 	SAVE,
 	/**
 	 * Says, that the Plugin is a display plugin, that is doing some precalculations for a plotWindow. 
+	 *
+	 * @uml.property  name="dISPLAY"
+	 * @uml.associationEnd  
 	 */
 	DISPLAY,
 	
 	/**
 	 * Says, that the Plugin is a postscanpositions plugin, that moves an axis to a position after
+	 *
+	 * @uml.property  name="pOSTSCANPOSITIONING"
+	 * @uml.associationEnd  
 	 */
 	POSTSCANPOSITIONING;
 	

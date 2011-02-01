@@ -8,46 +8,60 @@
 package de.ptb.epics.eve.data;
 
 /**
- * 
  * This enum defines the possible methods of a access description.
- * 
- * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.3
- * 
- * @see de.ptb.epics.eve.data.measuringstation.Access
- *
+ * @author   Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
+ * @version   1.3
+ * @see  de.ptb.epics.eve.data.measuringstation.Access
  */
 public enum MethodTypes {
 	
 	/**
 	 * Indicates that a value is be putted in this access.
+	 *
+	 * @uml.property  name="pUT"
+	 * @uml.associationEnd  
 	 */
 	PUT,
 	
 	/**
 	 * Indicates that a value is be putted in this access and
 	 * that a callback will occure after the value hat been putted.
+	 *
+	 * @uml.property  name="pUTCB"
+	 * @uml.associationEnd  
 	 */
 	PUTCB,
 	
 	/**
 	 * Indicates that a value is be read in this access.
+	 *
+	 * @uml.property  name="gET"
+	 * @uml.associationEnd  
 	 */
 	GET,
 	
 	/**
 	 * Indicates that a value is be read in this access and
 	 * that a callback will occure after the value hat been read.
+	 *
+	 * @uml.property  name="gETCB"
+	 * @uml.associationEnd  
 	 */
 	GETCB,
 	
 	/**
 	 * Read and write access, no callback
+	 *
+	 * @uml.property  name="gETPUT"
+	 * @uml.associationEnd  
 	 */
 	GETPUT,
 	
 	/**
 	 * Read and write access, with callback
+	 *
+	 * @uml.property  name="gETPUTCB"
+	 * @uml.associationEnd  
 	 */
 	GETPUTCB;
 	

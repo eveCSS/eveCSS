@@ -8,31 +8,40 @@
 package de.ptb.epics.eve.data;
 
 /**
- * This enum hold possible values that describes at which point all motor axis of
- * a measuring station should be saved to the outputfile.
- * 
- * @author srehfeld
- *
+ * This enum hold possible values that describes at which point all motor axis of a measuring station should be saved to the outputfile.
+ * @author   srehfeld
  */
 public enum SaveAxisPositionsTypes {
 
 	/**
 	 * Never save all axis positions.
+	 *
+	 * @uml.property  name="nEVER"
+	 * @uml.associationEnd  
 	 */
 	NEVER,
 	
 	/**
 	 * Save all axis positions before the start of a Scan Module.
+	 *
+	 * @uml.property  name="bEFORE"
+	 * @uml.associationEnd  
 	 */
 	BEFORE,
 	
 	/**
 	 * Save all axis positions after the end of a Scan Module.
+	 *
+	 * @uml.property  name="aFTER"
+	 * @uml.associationEnd  
 	 */
 	AFTER,
 	
 	/**
 	 * Save all axis positoins before and after the end of a Scan Module.
+	 *
+	 * @uml.property  name="bOTH"
+	 * @uml.associationEnd  
 	 */
 	BOTH;
 	

@@ -8,25 +8,27 @@
 package de.ptb.epics.eve.data;
 
 /**
- * 
  * This enum defines the possible plotmodes of a line in a plot window.
- * 
- * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.3
- * 
+ * @author   Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
+ * @version   1.3
  * @see de.ptb.epics.eve.data.scandescription.PlotWindow
- * @see de.ptb.epics.eve.data.scandescription.YAxis
- *
+ * @see  de.ptb.epics.eve.data.scandescription.YAxis
  */
 public enum PlotModes {
 
 	/**
 	 * Says, that the line will be plotted linear.
+	 *
+	 * @uml.property  name="lINEAR"
+	 * @uml.associationEnd  
 	 */
 	LINEAR,
 	
 	/**
 	 * Says, that the line will be plotted logarithmic.
+	 *
+	 * @uml.property  name="lOG"
+	 * @uml.associationEnd  
 	 */
 	LOG;
 	

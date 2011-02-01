@@ -8,31 +8,36 @@
 package de.ptb.epics.eve.data;
 
 /**
- * 
- * This enum defines the event types which are existing in the Application.
- * This could be a monitor or a shedule event.
- * 
- * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.3
- * @see de.ptb.epics.eve.data.measuringstation.Event
- *
+ * This enum defines the event types which are existing in the Application. This could be a monitor or a shedule event.
+ * @author   Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
+ * @version   1.3
+ * @see  de.ptb.epics.eve.data.measuringstation.Event
  */
 public enum EventTypes {
 
 	/**
 	 * Used for moitor events, this are events wich are defined in the scan
 	 * description and represents a state at the measuring station.
+	 *
+	 * @uml.property  name="mONITOR"
+	 * @uml.associationEnd  
 	 */
 	MONITOR,
 	
 	/**
 	 * Used for schedule events, this are events which are defined in a
 	 * relation to a Scan Modul an occures when the Scan Modul has finished.
+	 *
+	 * @uml.property  name="sCHEDULE"
+	 * @uml.associationEnd  
 	 */
 	SCHEDULE,
 	
 	/**
 	 * Used for detector ready event, which may be sent if a detector is ready with taking data.
+	 * 
+	 * @uml.property  name="dETECTOR"
+	 * @uml.associationEnd  
 	 */
 	DETECTOR;
 	

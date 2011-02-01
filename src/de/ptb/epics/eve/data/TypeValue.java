@@ -11,23 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
- * The class TypeValue is a very fundamental class in the datatype system of the Scan Modul Editor.
- * Very often a device has more limitations in it's possible values than just the primitive datatypes.
- * In this case you have a discrete amount of values like green, red and blue. So the TypeValue class
- * gets intialized with the DataTypes.STRING and value "green red blue".
- * Integer or Double values may have a range defined, 
- * 
- * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.4
- * 
- * @see de.ptb.epics.eve.data.measuringstation.ProcessVariable
- *
+ * The class TypeValue is a very fundamental class in the datatype system of the Scan Modul Editor. Very often a device has more limitations in it's possible values than just the primitive datatypes. In this case you have a discrete amount of values like green, red and blue. So the TypeValue class gets intialized with the DataTypes.STRING and value "green red blue". Integer or Double values may have a range defined, 
+ * @author  Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
+ * @version  1.4
+ * @see  de.ptb.epics.eve.data.measuringstation.ProcessVariable
  */
 public class TypeValue {
 
 	/**
 	 * The basic primitive datatype on which this definition based.
+	 * @uml.property  name="type"
+	 * @uml.associationEnd  
 	 */
 	private final DataTypes type;
 	
@@ -50,6 +44,7 @@ public class TypeValue {
 	
 	/**
 	 * value must be one of a set of discrete values
+	 * @uml.property  name="isDiscrete"
 	 */
 	boolean isDiscrete;
 
@@ -76,8 +71,8 @@ public class TypeValue {
 	
 	/**
 	 * Returns the datatype of this TypeValue object.
-	 * 
-	 * @return The datatype.
+	 * @return  The datatype.
+	 * @uml.property  name="type"
 	 */
 	public DataTypes getType() {
 		return this.type;
@@ -161,8 +156,8 @@ public class TypeValue {
 
 	/**
 	 * This method gives back if this TypeValue is discrete.
-	 * 
-	 * @return 'true' if this TypeValue is discrete, 'false' if not.
+	 * @return  'true' if this TypeValue is discrete, 'false' if not.
+	 * @uml.property  name="isDiscrete"
 	 */
 	public boolean isDiscrete() {
 		return isDiscrete;

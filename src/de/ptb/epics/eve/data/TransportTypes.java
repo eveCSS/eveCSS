@@ -10,19 +10,23 @@ package de.ptb.epics.eve.data;
 
 /**
  * This enum represents differen Tranfport layer systems for accessing a variable.
- * 
- * @author Stephan Rehfeld  <stephan.rehfeld( -at -) ptb.de>
- *
+ * @author   Stephan Rehfeld  <stephan.rehfeld( -at -) ptb.de>
  */
 public enum TransportTypes {
 	
 	/**
 	 * Channel Access
+	 *
+	 * @uml.property  name="cA"
+	 * @uml.associationEnd  
 	 */
 	CA,
 	
 	/**
 	 * A local variable
+	 *
+	 * @uml.property  name="lOCAL"
+	 * @uml.associationEnd  
 	 */
 	LOCAL;
 	
@@ -45,6 +49,7 @@ public enum TransportTypes {
 		}
 		return null;
 	}
+	
 	/**
 	 * This static method converts a value of the TransportTypes enum to a String like it's used in the measuring
 	 * station description. 

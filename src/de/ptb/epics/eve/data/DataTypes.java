@@ -1,10 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
+/*
+ * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data;
 
 import java.util.Locale;
@@ -13,36 +13,49 @@ import java.util.regex.Pattern;
 
 
 /**
+ * defines some special data types, used inside of an EPICS environment.
+ * It also provides some static methods which determine whether a value is
+ * allowed for a given data type. 
  * 
- * This enum defines some special data types which are used inside of an EPICS environment.
- * It also provides some static methods which finds out if a value can exist at on this data type.
- * This definitions are methods are used by several classes of the Scan Modul Editor project.
- * 
- * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.4
- *
+ * @author   Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
+ * @version   1.4
  */
 public enum DataTypes {
 
 	// TODO correct Datatypes onoff and openclose
 	/**
-	 * On/Off is used to display On or Off for data of type integer.
+	 * used to display On or Off for data of type integer.
+	 * 
+	 * @uml.property  name="oNOFF"
+	 * @uml.associationEnd  
 	 */
 	ONOFF,
 	/**
-	 * Open/Close is used to display Open or Close for data of type integer.
+	 *  used to display Open or Close for data of type integer.
+	 *
+	 * @uml.property  name="oPENCLOSE"
+	 * @uml.associationEnd  
 	 */
 	OPENCLOSE,
 	/**
 	 * Normal integer datatype.
+	 *
+	 * @uml.property  name="iNT"
+	 * @uml.associationEnd  
 	 */
 	INT, 
 	/**
 	 * Normal double datatype.
+	 *
+	 * @uml.property  name="dOUBLE"
+	 * @uml.associationEnd  
 	 */
 	DOUBLE,
 	/**
 	 * Normal String datatype.
+	 *
+	 * @uml.property  name="sTRING"
+	 * @uml.associationEnd  
 	 */
 	STRING,
 	
@@ -50,20 +63,24 @@ public enum DataTypes {
 	 * DateTime may be an absolute datetime spec: yyyy-mm-dd hh:mm:ss.sss
 	 * or an absolute time without date hh:mm:ss.sss which assumes today as date
 	 * or an relative time hh:mm:ss.sss or an relative time ss.sss
-	 * Examples: 2009-10-01 17:09:20.000 (abs) valid absolute datetime
-	 *           2009-10-01 17:09:20.000 (rel) invalid relative datetime
-	 *                      17:09:20.000 (abs) valid absolute datetime assuming date today
-	 *                      17:09:20.000 (rel) valid relative time (duration of 1580 secs)
-	 *                      1580.0 		 (rel) valid relative time (duration of 1580 secs)
+	 * Examples: 
+	 * 	2009-10-01 17:09:20.000 (abs) valid absolute datetime
+	 *  2009-10-01 17:09:20.000 (rel) invalid relative datetime
+	 *             17:09:20.000 (abs) valid absolute datetime assuming date today
+	 *             17:09:20.000 (rel) valid relative time (duration of 1580 secs)
+	 *                 1580.0 	(rel) valid relative time (duration of 1580 secs)
+	 * 
+	 * @uml.property  name="dATETIME"
+	 * @uml.associationEnd  
 	 */
 	DATETIME;
 	
 	/**
-	 * This method is used to find out if a value can exist unter this data type.
+	 * determines whether a value can exist for a given data type.
 	 * 
-	 * @param type The data type on which base the value should be checked i.e. DataTypes.OPENCLOSE or DataTypes.ONOFF.
-	 * @param value The value that should be checked.
-	 * @return The method returns true if the value is ok, false if it's not.
+	 * @param type data type the value will be checked with
+	 * @param value the value to be checked.
+	 * @return true if the value is valid, false otherwise.
 	 */
 	public static boolean isValuePossible( final DataTypes type, final String value ) {
 		
@@ -105,11 +122,8 @@ public enum DataTypes {
 							return true;
 						else
 							return isValuePossible(DOUBLE, value);
-		
 		}
-		
-		return false;
-		
+		return false;	
 	}
 
 	/**

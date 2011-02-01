@@ -8,51 +8,72 @@
 package de.ptb.epics.eve.data;
 
 /**
- * This enum represents the datatypes for plugin variables. The datatypes are siminlar to the
- * datatypes that are defindes in the enum DataTypes. Additionally this enum has the types AXISID,
- * CHANNELID and DEVIDEID that indicates, that the plugin parameter is a channel, axis or device.
- * 
- * @author Stephan Rehfeld
+ * This enum represents the datatypes for plugin variables. The datatypes are siminlar to the datatypes that are defindes in the enum DataTypes. Additionally this enum has the types AXISID, CHANNELID and DEVIDEID that indicates, that the plugin parameter is a channel, axis or device.
+ * @author   Stephan Rehfeld
  */
 public enum PluginDataType {
 	
 	/**
 	 * On/Off datatype is used at some Devices to switch them on or off.
+	 *
+	 * @uml.property  name="oNOFF"
+	 * @uml.associationEnd  
 	 */
 	ONOFF,
 	
 	/**
 	 * Open/Close datatype is used to open or close a device i.e. a beamshutter.
+	 *
+	 * @uml.property  name="oPENCLOSE"
+	 * @uml.associationEnd  
 	 */
 	OPENCLOSE,
 	
 	/**
 	 * Normal integer datatype.
+	 *
+	 * @uml.property  name="iNT"
+	 * @uml.associationEnd  
 	 */
 	INT, 
 	
 	/**
 	 * Normal double datatype.
+	 *
+	 * @uml.property  name="dOUBLE"
+	 * @uml.associationEnd  
 	 */
 	DOUBLE,
 	
 	/**
 	 * Normal String datatype.
+	 *
+	 * @uml.property  name="sTRING"
+	 * @uml.associationEnd  
 	 */
 	STRING,
 	
 	/**
 	 * A String that must represents an identifier of an axis.
+	 *
+	 * @uml.property  name="aXISID"
+	 * @uml.associationEnd  
 	 */
 	AXISID,
 	
 	/**
 	 * A String that must respresents an identifier of an channel.
+	 *
+	 * @uml.property  name="cHANNELID"
+	 * @uml.associationEnd  
 	 */
 	CHANNELID,
 	
 	/**
 	 * A String that must respresents an identifier of an device.
+	 *
+	 * @uml.property  name="dEVICEID"
+	 * @uml.associationEnd  
 	 */
 	DEVICEID;
 	
