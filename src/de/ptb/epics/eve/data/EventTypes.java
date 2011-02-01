@@ -1,14 +1,15 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
+/*
+ * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data;
 
 /**
- * This enum defines the event types which are existing in the Application. This could be a monitor or a shedule event.
+ * the event types existing in the Application. 
+ * 
  * @author   Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version   1.3
  * @see  de.ptb.epics.eve.data.measuringstation.Event
@@ -16,7 +17,7 @@ package de.ptb.epics.eve.data;
 public enum EventTypes {
 
 	/**
-	 * Used for moitor events, this are events wich are defined in the scan
+	 * Used for monitor events, this are events which are defined in the scan
 	 * description and represents a state at the measuring station.
 	 *
 	 * @uml.property  name="mONITOR"
@@ -26,7 +27,7 @@ public enum EventTypes {
 	
 	/**
 	 * Used for schedule events, this are events which are defined in a
-	 * relation to a Scan Modul an occures when the Scan Modul has finished.
+	 * relation to a Scan Module and occur when the Scan Module has finished.
 	 *
 	 * @uml.property  name="sCHEDULE"
 	 * @uml.associationEnd  
@@ -85,6 +86,5 @@ public enum EventTypes {
 				return "detector";
 		}
 		return null;
-	}
-	
+	}	
 }
