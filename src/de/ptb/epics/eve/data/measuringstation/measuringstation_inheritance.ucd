@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="measuringstation_inheritance" size="2420,1595" id="de.ptb.epics.eve.data.measuringstation" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D313030302064652E7074622E65706963732E6576652E646174612F6D6D696368616C73">
+  <children xsi:type="editmodel:ClassEditModel" name="Function" location="1379,990" size="217,409" id="de.ptb.epics.eve.data.measuringstation/Function" runTimeClassModel="getDiscreteValues(),setValue(Lde.ptb.epics.eve.data.TypeValue;),getAccess(),getType(),isValuePossible(Ljava.lang.String;),access,Function(),isDiscrete(),getValue(),Function(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;),formatValueDefault(Ljava.lang.String;),setAccess(Lde.ptb.epics.eve.data.measuringstation.Access;),clone(),value,equals(Ljava.lang.Object;),hashCode(),Function(Lde.ptb.epics.eve.data.measuringstation.Access;),isReadOnly(),getDefaultValue(),formatValue(Ljava.lang.String;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="103,36">
+      <children xsi:type="editmodel:AttributeEditModel" name="access" id="de.ptb.epics.eve.data.measuringstation/Function#access"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="value" id="de.ptb.epics.eve.data.measuringstation/Function#value"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="194,324">
+      <children xsi:type="editmodel:MethodEditModel" name="Function" id="de.ptb.epics.eve.data.measuringstation/Function#Function(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Function" id="de.ptb.epics.eve.data.measuringstation/Function#Function(Lde.ptb.epics.eve.data.measuringstation.Access;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Function" id="de.ptb.epics.eve.data.measuringstation/Function#Function()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="de.ptb.epics.eve.data.measuringstation/Function#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/Function#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="formatValue" id="de.ptb.epics.eve.data.measuringstation/Function#formatValue(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="formatValueDefault" id="de.ptb.epics.eve.data.measuringstation/Function#formatValueDefault(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAccess" id="de.ptb.epics.eve.data.measuringstation/Function#getAccess()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDefaultValue" id="de.ptb.epics.eve.data.measuringstation/Function#getDefaultValue()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDiscreteValues" id="de.ptb.epics.eve.data.measuringstation/Function#getDiscreteValues()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getType" id="de.ptb.epics.eve.data.measuringstation/Function#getType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getValue" id="de.ptb.epics.eve.data.measuringstation/Function#getValue()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/Function#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isDiscrete" id="de.ptb.epics.eve.data.measuringstation/Function#isDiscrete()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isReadOnly" id="de.ptb.epics.eve.data.measuringstation/Function#isReadOnly()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isValuePossible" id="de.ptb.epics.eve.data.measuringstation/Function#isValuePossible(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setAccess" id="de.ptb.epics.eve.data.measuringstation/Function#setAccess(Lde.ptb.epics.eve.data.measuringstation.Access;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setValue" id="de.ptb.epics.eve.data.measuringstation/Function#setValue(Lde.ptb.epics.eve.data.TypeValue;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="Access" location="50,49" size="445,607" id="de.ptb.epics.eve.data.measuringstation/Access" runTimeClassModel="count,getType(),getCount(),type,getTransport(),getMonitor(),formatValueDefault(Ljava.lang.String;),transport,equals(Ljava.lang.Object;),getMethod(),getDefaultValue(),Access(Lde.ptb.epics.eve.data.MethodTypes;),variableID,setTimeout(D),monitor,isValuePossible(Ljava.lang.String;),setVariableID(Ljava.lang.String;),getVariableID(),setMonitor(Z),setCount(I),Access(Ljava.lang.String;Lde.ptb.epics.eve.data.DataTypes;ILde.ptb.epics.eve.data.MethodTypes;Lde.ptb.epics.eve.data.TransportTypes;D),clone(),setTransport(Lde.ptb.epics.eve.data.TransportTypes;),hashCode(),setType(Lde.ptb.epics.eve.data.DataTypes;),method,setMethod(Lde.ptb.epics.eve.data.MethodTypes;),isReadOnly(),formatValue(Ljava.lang.String;),getTimeout(),timeout">
+    <children xsi:type="editmodel:CompartmentEditModel" size="137,126">
+      <children xsi:type="editmodel:AttributeEditModel" name="count" id="de.ptb.epics.eve.data.measuringstation/Access#count"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="method" id="de.ptb.epics.eve.data.measuringstation/Access#method"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="monitor" id="de.ptb.epics.eve.data.measuringstation/Access#monitor"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="timeout" id="de.ptb.epics.eve.data.measuringstation/Access#timeout"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="transport" id="de.ptb.epics.eve.data.measuringstation/Access#transport"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="type" id="de.ptb.epics.eve.data.measuringstation/Access#type"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="variableID" id="de.ptb.epics.eve.data.measuringstation/Access#variableID"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="422,432">
+      <children xsi:type="editmodel:MethodEditModel" name="Access" id="de.ptb.epics.eve.data.measuringstation/Access#Access(Ljava.lang.String;Lde.ptb.epics.eve.data.DataTypes;ILde.ptb.epics.eve.data.MethodTypes;Lde.ptb.epics.eve.data.TransportTypes;D)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Access" id="de.ptb.epics.eve.data.measuringstation/Access#Access(Lde.ptb.epics.eve.data.MethodTypes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="de.ptb.epics.eve.data.measuringstation/Access#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/Access#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="formatValue" id="de.ptb.epics.eve.data.measuringstation/Access#formatValue(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="formatValueDefault" id="de.ptb.epics.eve.data.measuringstation/Access#formatValueDefault(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getCount" id="de.ptb.epics.eve.data.measuringstation/Access#getCount()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDefaultValue" id="de.ptb.epics.eve.data.measuringstation/Access#getDefaultValue()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMethod" id="de.ptb.epics.eve.data.measuringstation/Access#getMethod()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMonitor" id="de.ptb.epics.eve.data.measuringstation/Access#getMonitor()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTimeout" id="de.ptb.epics.eve.data.measuringstation/Access#getTimeout()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTransport" id="de.ptb.epics.eve.data.measuringstation/Access#getTransport()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getType" id="de.ptb.epics.eve.data.measuringstation/Access#getType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getVariableID" id="de.ptb.epics.eve.data.measuringstation/Access#getVariableID()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/Access#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isReadOnly" id="de.ptb.epics.eve.data.measuringstation/Access#isReadOnly()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isValuePossible" id="de.ptb.epics.eve.data.measuringstation/Access#isValuePossible(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setCount" id="de.ptb.epics.eve.data.measuringstation/Access#setCount(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMethod" id="de.ptb.epics.eve.data.measuringstation/Access#setMethod(Lde.ptb.epics.eve.data.MethodTypes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMonitor" id="de.ptb.epics.eve.data.measuringstation/Access#setMonitor(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setTimeout" id="de.ptb.epics.eve.data.measuringstation/Access#setTimeout(D)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setTransport" id="de.ptb.epics.eve.data.measuringstation/Access#setTransport(Lde.ptb.epics.eve.data.TransportTypes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setType" id="de.ptb.epics.eve.data.measuringstation/Access#setType(Lde.ptb.epics.eve.data.DataTypes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setVariableID" id="de.ptb.epics.eve.data.measuringstation/Access#setVariableID(Ljava.lang.String;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="Unit" location="1354,109" size="171,301" id="de.ptb.epics.eve.data.measuringstation/Unit" runTimeClassModel="setValue(Ljava.lang.String;),isAccess(),getAccess(),Unit(),access,Unit(Ljava.lang.String;),isValue(),getValue(),setAccess(Lde.ptb.epics.eve.data.measuringstation.Access;),clone(),value,hashCode(),equals(Ljava.lang.Object;),Unit(Lde.ptb.epics.eve.data.measuringstation.Access;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="90,36">
+      <children xsi:type="editmodel:AttributeEditModel" name="access" id="de.ptb.epics.eve.data.measuringstation/Unit#access"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="value" id="de.ptb.epics.eve.data.measuringstation/Unit#value"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="148,216">
+      <children xsi:type="editmodel:MethodEditModel" name="Unit" id="de.ptb.epics.eve.data.measuringstation/Unit#Unit(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Unit" id="de.ptb.epics.eve.data.measuringstation/Unit#Unit()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Unit" id="de.ptb.epics.eve.data.measuringstation/Unit#Unit(Lde.ptb.epics.eve.data.measuringstation.Access;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="de.ptb.epics.eve.data.measuringstation/Unit#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/Unit#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAccess" id="de.ptb.epics.eve.data.measuringstation/Unit#getAccess()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getValue" id="de.ptb.epics.eve.data.measuringstation/Unit#getValue()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/Unit#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isAccess" id="de.ptb.epics.eve.data.measuringstation/Unit#isAccess()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isValue" id="de.ptb.epics.eve.data.measuringstation/Unit#isValue()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setAccess" id="de.ptb.epics.eve.data.measuringstation/Unit#setAccess(Lde.ptb.epics.eve.data.measuringstation.Access;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setValue" id="de.ptb.epics.eve.data.measuringstation/Unit#setValue(Ljava.lang.String;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="Selections" location="1168,990" size="175,355" id="de.ptb.epics.eve.data.measuringstation/Selections" runTimeClassModel="smtypes,stepfunctions,setStepfunctions([Ljava.lang.String;),setMarkstyles([Ljava.lang.String;),getColors(),colors,linestyles,getStepfunctions(),setLinestyles([Ljava.lang.String;),getSmtypes(),getMarkstyles(),setSmtypes([Ljava.lang.String;),hashCode(),equals(Ljava.lang.Object;),setColors([Ljava.lang.String;),markstyles,getLinestyles()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="146,90">
+      <children xsi:type="editmodel:AttributeEditModel" name="colors" id="de.ptb.epics.eve.data.measuringstation/Selections#colors"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="linestyles" id="de.ptb.epics.eve.data.measuringstation/Selections#linestyles"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="markstyles" id="de.ptb.epics.eve.data.measuringstation/Selections#markstyles"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="smtypes" id="de.ptb.epics.eve.data.measuringstation/Selections#smtypes"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="stepfunctions" id="de.ptb.epics.eve.data.measuringstation/Selections#stepfunctions"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="152,216">
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/Selections#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getColors" id="de.ptb.epics.eve.data.measuringstation/Selections#getColors()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLinestyles" id="de.ptb.epics.eve.data.measuringstation/Selections#getLinestyles()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMarkstyles" id="de.ptb.epics.eve.data.measuringstation/Selections#getMarkstyles()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSmtypes" id="de.ptb.epics.eve.data.measuringstation/Selections#getSmtypes()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStepfunctions" id="de.ptb.epics.eve.data.measuringstation/Selections#getStepfunctions()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/Selections#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setColors" id="de.ptb.epics.eve.data.measuringstation/Selections#setColors([Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setLinestyles" id="de.ptb.epics.eve.data.measuringstation/Selections#setLinestyles([Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMarkstyles" id="de.ptb.epics.eve.data.measuringstation/Selections#setMarkstyles([Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setSmtypes" id="de.ptb.epics.eve.data.measuringstation/Selections#setSmtypes([Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStepfunctions" id="de.ptb.epics.eve.data.measuringstation/Selections#setStepfunctions([Ljava.lang.String;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="PlugIn" location="480,1130" size="263,409" id="de.ptb.epics.eve.data.measuringstation/PlugIn" runTimeClassModel="getParameters(),remove(Lde.ptb.epics.eve.data.measuringstation.PluginParameter;),location,setName(Ljava.lang.String;),getType(),getLocation(),type,getName(),parameterIterator(),setLocation(Ljava.lang.String;),clear(),name,hashCode(),equals(Ljava.lang.Object;),PlugIn(Ljava.lang.String;Ljava.lang.String;Lde.ptb.epics.eve.data.PluginTypes;),parameters,add(Lde.ptb.epics.eve.data.measuringstation.PluginParameter;),parameters(),setType(Lde.ptb.epics.eve.data.PluginTypes;),PlugIn(Lde.ptb.epics.eve.data.PluginTypes;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="185,72">
+      <children xsi:type="editmodel:AttributeEditModel" name="location" id="de.ptb.epics.eve.data.measuringstation/PlugIn#location"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="de.ptb.epics.eve.data.measuringstation/PlugIn#name"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="parameters" id="de.ptb.epics.eve.data.measuringstation/PlugIn#parameters"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="type" id="de.ptb.epics.eve.data.measuringstation/PlugIn#type"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="240,288">
+      <children xsi:type="editmodel:MethodEditModel" name="PlugIn" id="de.ptb.epics.eve.data.measuringstation/PlugIn#PlugIn(Lde.ptb.epics.eve.data.PluginTypes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="PlugIn" id="de.ptb.epics.eve.data.measuringstation/PlugIn#PlugIn(Ljava.lang.String;Ljava.lang.String;Lde.ptb.epics.eve.data.PluginTypes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="de.ptb.epics.eve.data.measuringstation/PlugIn#add(Lde.ptb.epics.eve.data.measuringstation.PluginParameter;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clear" id="de.ptb.epics.eve.data.measuringstation/PlugIn#clear()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/PlugIn#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLocation" id="de.ptb.epics.eve.data.measuringstation/PlugIn#getLocation()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getName" id="de.ptb.epics.eve.data.measuringstation/PlugIn#getName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getParameters" id="de.ptb.epics.eve.data.measuringstation/PlugIn#getParameters()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getType" id="de.ptb.epics.eve.data.measuringstation/PlugIn#getType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/PlugIn#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="parameterIterator" id="de.ptb.epics.eve.data.measuringstation/PlugIn#parameterIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="parameters" id="de.ptb.epics.eve.data.measuringstation/PlugIn#parameters()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="de.ptb.epics.eve.data.measuringstation/PlugIn#remove(Lde.ptb.epics.eve.data.measuringstation.PluginParameter;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setLocation" id="de.ptb.epics.eve.data.measuringstation/PlugIn#setLocation(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setName" id="de.ptb.epics.eve.data.measuringstation/PlugIn#setName(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setType" id="de.ptb.epics.eve.data.measuringstation/PlugIn#setType(Lde.ptb.epics.eve.data.PluginTypes;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="Event" location="2054,48" size="285,653" id="de.ptb.epics.eve.data.measuringstation/Event" runTimeClassModel="Event(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;Ljava.lang.String;Ljava.lang.String;),getType(),type,setScanModuleId(I),Event(Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;II),getName(),Event(),chainId,getMonitor(),de.ptb.epics.eve.data.measuringstation.Event.ScheduleIncident,getNameID(),name,equals(Ljava.lang.Object;),setChainId(I),setScheduleIncident(Ljava.lang.String;),Event(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;),monitor,setName(Ljava.lang.String;),getScheduleIncident(),getID(),getScanModuleId(),setId(Ljava.lang.String;),Event(Lde.ptb.epics.eve.data.EventTypes;),scanModuleId,setAccess(Lde.ptb.epics.eve.data.measuringstation.Access;),Event(IILde.ptb.epics.eve.data.measuringstation.Event.ScheduleIncident;),getChainId(),hashCode(),setType(Lde.ptb.epics.eve.data.EventTypes;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="124,90">
+      <children xsi:type="editmodel:AttributeEditModel" name="chainId" id="de.ptb.epics.eve.data.measuringstation/Event#chainId"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="monitor" id="de.ptb.epics.eve.data.measuringstation/Event#monitor"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="de.ptb.epics.eve.data.measuringstation/Event#name"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="scanModuleId" id="de.ptb.epics.eve.data.measuringstation/Event#scanModuleId"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="type" id="de.ptb.epics.eve.data.measuringstation/Event#type"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="262,414">
+      <children xsi:type="editmodel:MethodEditModel" name="Event" id="de.ptb.epics.eve.data.measuringstation/Event#Event(Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;II)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Event" id="de.ptb.epics.eve.data.measuringstation/Event#Event(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;Ljava.lang.String;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Event" id="de.ptb.epics.eve.data.measuringstation/Event#Event(Lde.ptb.epics.eve.data.EventTypes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Event" id="de.ptb.epics.eve.data.measuringstation/Event#Event(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Event" id="de.ptb.epics.eve.data.measuringstation/Event#Event()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Event" id="de.ptb.epics.eve.data.measuringstation/Event#Event(IILde.ptb.epics.eve.data.measuringstation.Event.ScheduleIncident;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/Event#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getChainId" id="de.ptb.epics.eve.data.measuringstation/Event#getChainId()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getID" id="de.ptb.epics.eve.data.measuringstation/Event#getID()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMonitor" id="de.ptb.epics.eve.data.measuringstation/Event#getMonitor()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getName" id="de.ptb.epics.eve.data.measuringstation/Event#getName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getNameID" id="de.ptb.epics.eve.data.measuringstation/Event#getNameID()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getScanModuleId" id="de.ptb.epics.eve.data.measuringstation/Event#getScanModuleId()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getScheduleIncident" id="de.ptb.epics.eve.data.measuringstation/Event#getScheduleIncident()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getType" id="de.ptb.epics.eve.data.measuringstation/Event#getType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/Event#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setAccess" id="de.ptb.epics.eve.data.measuringstation/Event#setAccess(Lde.ptb.epics.eve.data.measuringstation.Access;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setChainId" id="de.ptb.epics.eve.data.measuringstation/Event#setChainId(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setId" id="de.ptb.epics.eve.data.measuringstation/Event#setId(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setName" id="de.ptb.epics.eve.data.measuringstation/Event#setName(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setScanModuleId" id="de.ptb.epics.eve.data.measuringstation/Event#setScanModuleId(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setScheduleIncident" id="de.ptb.epics.eve.data.measuringstation/Event#setScheduleIncident(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setType" id="de.ptb.epics.eve.data.measuringstation/Event#setType(Lde.ptb.epics.eve.data.EventTypes;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="153,90">
+      <children xsi:type="editmodel:EnumerationEditModel" name="ScheduleIncident" size="153,88" id="de.ptb.epics.eve.data.measuringstation/Event$ScheduleIncident" runTimeClassModel="START%,END%">
+        <children xsi:type="editmodel:CompartmentEditModel" size="54,36">
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="END" id="de.ptb.epics.eve.data.measuringstation/Event$ScheduleIncident#END%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="START" id="de.ptb.epics.eve.data.measuringstation/Event$ScheduleIncident#START%"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" enumerationClassMode="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+    </children>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="PluginParameter" location="49,1124" size="369,427" id="de.ptb.epics.eve.data.measuringstation/PluginParameter" runTimeClassModel="setMandatory(Z),getDiscreteValues(),getType(),setName(Ljava.lang.String;),setType(Lde.ptb.epics.eve.data.PluginDataType;),mandatory,isValuePossible(Ljava.lang.String;),setDefaultValue(Ljava.lang.String;),getValues(),isMandatory(),type,isDiscrete(),getName(),values,setValues(Ljava.lang.String;),name,PluginParameter(Ljava.lang.String;Lde.ptb.epics.eve.data.PluginDataType;Ljava.lang.String;Z),hashCode(),equals(Ljava.lang.Object;),defaultValue,getDefaultValue()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="122,90">
+      <children xsi:type="editmodel:AttributeEditModel" name="defaultValue" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#defaultValue"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="mandatory" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#mandatory"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#name"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="type" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#type"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="values" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#values"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="346,288">
+      <children xsi:type="editmodel:MethodEditModel" name="PluginParameter" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#PluginParameter(Ljava.lang.String;Lde.ptb.epics.eve.data.PluginDataType;Ljava.lang.String;Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDefaultValue" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#getDefaultValue()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDiscreteValues" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#getDiscreteValues()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getName" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#getName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getType" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#getType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getValues" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#getValues()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isDiscrete" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#isDiscrete()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isMandatory" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#isMandatory()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isValuePossible" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#isValuePossible(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setDefaultValue" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#setDefaultValue(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMandatory" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#setMandatory(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setName" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#setName(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setType" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#setType(Lde.ptb.epics.eve.data.PluginDataType;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setValues" id="de.ptb.epics.eve.data.measuringstation/PluginParameter#setValues(Ljava.lang.String;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="DetectorChannel" location="50,878" size="185,211" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel" runTimeClassModel="DetectorChannel(),DetectorChannel(Lde.ptb.epics.eve.data.measuringstation.Function;),clone(),getRead(),hashCode(),equals(Ljava.lang.Object;),getDetector(),read,setRead(Lde.ptb.epics.eve.data.measuringstation.Function;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="88,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="read" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#read"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="162,144">
+      <children xsi:type="editmodel:MethodEditModel" name="DetectorChannel" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#DetectorChannel(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="DetectorChannel" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#DetectorChannel()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDetector" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#getDetector()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getRead" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#getRead()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setRead" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#setRead(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice&lt;-de.ptb.epics.eve.data.measuringstation/DetectorChannel" source="//@children.7" target="//@children.14/@sourceConnections.0" targetEnd="//@children.7/@sourceConnections.0/@children.1" sourceEnd="//@children.7/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="92,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="Option" location="1409,884" size="116,67" id="de.ptb.epics.eve.data.measuringstation/Option" runTimeClassModel="clone()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="93,18">
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="de.ptb.epics.eve.data.measuringstation/Option#clone()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice&lt;-de.ptb.epics.eve.data.measuringstation/Option" source="//@children.8" target="//@children.15/@sourceConnections.0" targetEnd="//@children.8/@sourceConnections.0/@children.1" sourceEnd="//@children.8/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="58,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="Detector" location="494,878" size="254,211" id="de.ptb.epics.eve.data.measuringstation/Detector" runTimeClassModel="channelIterator(),clone(),getChannels(),Detector(),equals(Ljava.lang.Object;),hashCode(),channels,remove(Lde.ptb.epics.eve.data.measuringstation.DetectorChannel;),add(Lde.ptb.epics.eve.data.measuringstation.DetectorChannel;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="176,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="channels" id="de.ptb.epics.eve.data.measuringstation/Detector#channels"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="231,144">
+      <children xsi:type="editmodel:MethodEditModel" name="Detector" id="de.ptb.epics.eve.data.measuringstation/Detector#Detector()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="de.ptb.epics.eve.data.measuringstation/Detector#add(Lde.ptb.epics.eve.data.measuringstation.DetectorChannel;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="channelIterator" id="de.ptb.epics.eve.data.measuringstation/Detector#channelIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="de.ptb.epics.eve.data.measuringstation/Detector#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/Detector#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getChannels" id="de.ptb.epics.eve.data.measuringstation/Detector#getChannels()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/Detector#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="de.ptb.epics.eve.data.measuringstation/Detector#remove(Lde.ptb.epics.eve.data.measuringstation.DetectorChannel;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice&lt;-de.ptb.epics.eve.data.measuringstation/Detector" source="//@children.9" target="//@children.14/@sourceConnections.0" targetEnd="//@children.9/@sourceConnections.0/@children.1" sourceEnd="//@children.9/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="127,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="MotorAxis" location="778,878" size="331,697" id="de.ptb.epics.eve.data.measuringstation/MotorAxis" runTimeClassModel="position,stop,MotorAxis(),setStatus(Lde.ptb.epics.eve.data.measuringstation.Function;),getGoto(),tweakValue,getType(),setOffset(Lde.ptb.epics.eve.data.measuringstation.Function;),getTweakValue(),getTweakReverse(),deadband,getStop(),setTweakValue(Lde.ptb.epics.eve.data.measuringstation.Function;),formatValueDefault(Ljava.lang.String;),MotorAxis(Lde.ptb.epics.eve.data.measuringstation.Function;Lde.ptb.epics.eve.data.measuringstation.Function;Lde.ptb.epics.eve.data.measuringstation.Function;Lde.ptb.epics.eve.data.measuringstation.Function;),setTweakForward(Lde.ptb.epics.eve.data.measuringstation.Function;),getPosition(),equals(Ljava.lang.Object;),offset,getDefaultValue(),setStop(Lde.ptb.epics.eve.data.measuringstation.Function;),status,getOffset(),tweakReverse,isValuePossible(Ljava.lang.String;),tweakForward,setPosition(Lde.ptb.epics.eve.data.measuringstation.Function;),setDeadband(Lde.ptb.epics.eve.data.measuringstation.Function;),setTweakReverse(Lde.ptb.epics.eve.data.measuringstation.Function;),clone(),getTweakForward(),getStatus(),hashCode(),setGoto(Lde.ptb.epics.eve.data.measuringstation.Function;),getDeadband(),formatValue(Ljava.lang.String;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="130,144">
+      <children xsi:type="editmodel:AttributeEditModel" name="deadband" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#deadband"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="offset" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#offset"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="position" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#position"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="status" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#status"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="stop" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#stop"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="tweakForward" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#tweakForward"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="tweakReverse" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#tweakReverse"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="tweakValue" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#tweakValue"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="308,504">
+      <children xsi:type="editmodel:MethodEditModel" name="MotorAxis" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#MotorAxis(Lde.ptb.epics.eve.data.measuringstation.Function;Lde.ptb.epics.eve.data.measuringstation.Function;Lde.ptb.epics.eve.data.measuringstation.Function;Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="MotorAxis" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#MotorAxis()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="formatValue" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#formatValue(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="formatValueDefault" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#formatValueDefault(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDeadband" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getDeadband()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDefaultValue" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getDefaultValue()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getGoto" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getGoto()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getOffset" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getOffset()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPosition" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getPosition()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStatus" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getStatus()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStop" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getStop()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTweakForward" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getTweakForward()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTweakReverse" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getTweakReverse()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTweakValue" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getTweakValue()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getType" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isValuePossible" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#isValuePossible(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setDeadband" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setDeadband(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setGoto" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setGoto(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setOffset" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setOffset(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setPosition" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setPosition(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStatus" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setStatus(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStop" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setStop(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setTweakForward" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setTweakForward(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setTweakReverse" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setTweakReverse(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setTweakValue" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setTweakValue(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice&lt;-de.ptb.epics.eve.data.measuringstation/MotorAxis" source="//@children.10" target="//@children.14/@sourceConnections.0" targetEnd="//@children.10/@sourceConnections.0/@children.1" sourceEnd="//@children.10/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="165,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.15/@sourceConnections.0" name="AbstractPrePostscanDevice" location="1199,509" size="326,319" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice" runTimeClassModel="getClassName(),getDisplaygroup(),setDisplaygroup(Ljava.lang.String;),displaygroup,isValuePossible(Ljava.lang.String;),setClassName(Ljava.lang.String;),isDiscrete(),getValue(),AbstractPrePostscanDevice(Ljava.lang.String;Ljava.lang.String;Lde.ptb.epics.eve.data.measuringstation.Function;),setValue(Lde.ptb.epics.eve.data.measuringstation.Function;),value,AbstractPrePostscanDevice(),equals(Ljava.lang.Object;),hashCode(),className">
+    <children xsi:type="editmodel:CompartmentEditModel" size="113,54">
+      <children xsi:type="editmodel:AttributeEditModel" name="className" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice#className"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="displaygroup" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice#displaygroup"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="value" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice#value"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="303,216">
+      <children xsi:type="editmodel:MethodEditModel" name="AbstractPrePostscanDevice" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice#AbstractPrePostscanDevice()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="AbstractPrePostscanDevice" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice#AbstractPrePostscanDevice(Ljava.lang.String;Ljava.lang.String;Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getClassName" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice#getClassName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDisplaygroup" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice#getDisplaygroup()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getValue" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice#getValue()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isDiscrete" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice#isDiscrete()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isValuePossible" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice#isValuePossible(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setClassName" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice#setClassName(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setDisplaygroup" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice#setDisplaygroup(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setValue" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice#setValue(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.12/@sourceConnections.0" autoLocated="true" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice&lt;-de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice" source="//@children.11" target="//@children.13" targetEnd="//@children.11/@sourceConnections.0/@children.1" sourceEnd="//@children.11/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="163,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="206,409" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.14/@sourceConnections.0" name="AbstractMainPhaseDevice" location="585,509" size="578,247" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice" runTimeClassModel="getClassName(),trigger,setTrigger(Lde.ptb.epics.eve.data.measuringstation.Function;),getTrigger(),hashCode(),equals(Ljava.lang.Object;),setClassName(Ljava.lang.String;),className,AbstractMainPhaseDevice(Ljava.lang.String;Ljava.lang.String;Lde.ptb.epics.eve.data.measuringstation.Unit;Ljava.util.List;Lde.ptb.epics.eve.data.measuringstation.AbstractMainPhaseDevice;Lde.ptb.epics.eve.data.measuringstation.Function;),AbstractMainPhaseDevice(),AbstractMainPhaseDevice(Lde.ptb.epics.eve.data.measuringstation.Function;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="104,36">
+      <children xsi:type="editmodel:AttributeEditModel" name="className" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice#className"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="trigger" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice#trigger"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="555,162">
+      <children xsi:type="editmodel:MethodEditModel" name="AbstractMainPhaseDevice" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice#AbstractMainPhaseDevice(Ljava.lang.String;Ljava.lang.String;Lde.ptb.epics.eve.data.measuringstation.Unit;Ljava.util.List;Lde.ptb.epics.eve.data.measuringstation.AbstractMainPhaseDevice;Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="AbstractMainPhaseDevice" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice#AbstractMainPhaseDevice(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="AbstractMainPhaseDevice" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice#AbstractMainPhaseDevice()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getClassName" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice#getClassName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTrigger" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice#getTrigger()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setClassName" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice#setClassName(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setTrigger" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice#setTrigger(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice&lt;-de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice" source="//@children.12" target="//@children.11/@sourceConnections.0" targetEnd="//@children.12/@sourceConnections.0/@children.1" sourceEnd="//@children.12/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="289,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.11/@sourceConnections.0" name="AbstractDevice" location="823,50" size="412,409" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice" runTimeClassModel="add(Lde.ptb.epics.eve.data.measuringstation.Option;),setName(Ljava.lang.String;),optionIterator(),getID(),parent,setUnit(Lde.ptb.epics.eve.data.measuringstation.Unit;),remove(Lde.ptb.epics.eve.data.measuringstation.Option;),setId(Ljava.lang.String;),getName(),id,unit,name,getParent(),hashCode(),equals(Ljava.lang.Object;),getOptions(),getUnit(),AbstractDevice(Ljava.lang.String;Ljava.lang.String;Lde.ptb.epics.eve.data.measuringstation.Unit;Ljava.util.List;Lde.ptb.epics.eve.data.measuringstation.AbstractDevice;),options,getFullIdentifyer()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="126,90">
+      <children xsi:type="editmodel:AttributeEditModel" name="id" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#id"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#name"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="options" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#options"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="parent" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#parent"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="unit" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#unit"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="389,270">
+      <children xsi:type="editmodel:MethodEditModel" name="AbstractDevice" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#AbstractDevice(Ljava.lang.String;Ljava.lang.String;Lde.ptb.epics.eve.data.measuringstation.Unit;Ljava.util.List;Lde.ptb.epics.eve.data.measuringstation.AbstractDevice;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#add(Lde.ptb.epics.eve.data.measuringstation.Option;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getFullIdentifyer" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#getFullIdentifyer()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getID" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#getID()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getName" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#getName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getOptions" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#getOptions()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getParent" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#getParent()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getUnit" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#getUnit()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="optionIterator" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#optionIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#remove(Lde.ptb.epics.eve.data.measuringstation.Option;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setId" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#setId(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setName" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#setName(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setUnit" id="de.ptb.epics.eve.data.measuringstation/AbstractDevice#setUnit(Lde.ptb.epics.eve.data.measuringstation.Unit;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="Motor" location="265,878" size="199,211" id="de.ptb.epics.eve.data.measuringstation/Motor" runTimeClassModel="getAxis(),axis,axisIterator(),Motor(),clone(),hashCode(),equals(Ljava.lang.Object;),remove(Lde.ptb.epics.eve.data.measuringstation.MotorAxis;),add(Lde.ptb.epics.eve.data.measuringstation.MotorAxis;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="117,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="axis" id="de.ptb.epics.eve.data.measuringstation/Motor#axis"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="176,144">
+      <children xsi:type="editmodel:MethodEditModel" name="Motor" id="de.ptb.epics.eve.data.measuringstation/Motor#Motor()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="de.ptb.epics.eve.data.measuringstation/Motor#add(Lde.ptb.epics.eve.data.measuringstation.MotorAxis;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="axisIterator" id="de.ptb.epics.eve.data.measuringstation/Motor#axisIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="de.ptb.epics.eve.data.measuringstation/Motor#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/Motor#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAxis" id="de.ptb.epics.eve.data.measuringstation/Motor#getAxis()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/Motor#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="de.ptb.epics.eve.data.measuringstation/Motor#remove(Lde.ptb.epics.eve.data.measuringstation.MotorAxis;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.9/@sourceConnections.0 //@children.7/@sourceConnections.0 //@children.10/@sourceConnections.0" autoLocated="true" id="de.ptb.epics.eve.data.measuringstation/AbstractMainPhaseDevice&lt;-de.ptb.epics.eve.data.measuringstation/Motor" source="//@children.14" target="//@children.12" targetEnd="//@children.14/@sourceConnections.0/@children.1" sourceEnd="//@children.14/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="99,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="289,247" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="Device" location="1199,878" size="116,67" id="de.ptb.epics.eve.data.measuringstation/Device" runTimeClassModel="clone()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="93,18">
+      <children xsi:type="editmodel:MethodEditModel" name="clone" location="1193,893" id="de.ptb.epics.eve.data.measuringstation/Device#clone()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.8/@sourceConnections.0" autoLocated="true" id="de.ptb.epics.eve.data.measuringstation/AbstractPrePostscanDevice&lt;-de.ptb.epics.eve.data.measuringstation/Device" source="//@children.15" target="//@children.11" targetEnd="//@children.15/@sourceConnections.0/@children.1" sourceEnd="//@children.15/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="58,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="163,319" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.17/@sourceConnections.0" name="AbstractTypeValueAccessContainer" location="2029,735" size="335,229" id="de.ptb.epics.eve.data.measuringstation/AbstractTypeValueAccessContainer" runTimeClassModel="dataType,setDataType(Lde.ptb.epics.eve.data.TypeValue;),getAccess(),setAccess(Lde.ptb.epics.eve.data.measuringstation.Access;),equals(Ljava.lang.Object;),hashCode(),AbstractTypeValueAccessContainer(Lde.ptb.epics.eve.data.measuringstation.Access;),AbstractTypeValueAccessContainer(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;),access,getDataType()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="122,36">
+      <children xsi:type="editmodel:AttributeEditModel" name="access" id="de.ptb.epics.eve.data.measuringstation/AbstractTypeValueAccessContainer#access"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="dataType" id="de.ptb.epics.eve.data.measuringstation/AbstractTypeValueAccessContainer#dataType"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="312,144">
+      <children xsi:type="editmodel:MethodEditModel" name="AbstractTypeValueAccessContainer" id="de.ptb.epics.eve.data.measuringstation/AbstractTypeValueAccessContainer#AbstractTypeValueAccessContainer(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="AbstractTypeValueAccessContainer" id="de.ptb.epics.eve.data.measuringstation/AbstractTypeValueAccessContainer#AbstractTypeValueAccessContainer(Lde.ptb.epics.eve.data.measuringstation.Access;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/AbstractTypeValueAccessContainer#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAccess" id="de.ptb.epics.eve.data.measuringstation/AbstractTypeValueAccessContainer#getAccess()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDataType" id="de.ptb.epics.eve.data.measuringstation/AbstractTypeValueAccessContainer#getDataType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/AbstractTypeValueAccessContainer#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setAccess" id="de.ptb.epics.eve.data.measuringstation/AbstractTypeValueAccessContainer#setAccess(Lde.ptb.epics.eve.data.measuringstation.Access;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setDataType" id="de.ptb.epics.eve.data.measuringstation/AbstractTypeValueAccessContainer#setDataType(Lde.ptb.epics.eve.data.TypeValue;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.18/@sourceConnections.0" name="AbstractNothingNullTypeValueAccessContainer" location="2009,1020" size="391,85" id="de.ptb.epics.eve.data.measuringstation/AbstractNothingNullTypeValueAccessContainer" runTimeClassModel="AbstractNothingNullTypeValueAccessContainer(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;),setDataType(Lde.ptb.epics.eve.data.TypeValue;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="368,36">
+      <children xsi:type="editmodel:MethodEditModel" name="AbstractNothingNullTypeValueAccessContainer" id="de.ptb.epics.eve.data.measuringstation/AbstractNothingNullTypeValueAccessContainer#AbstractNothingNullTypeValueAccessContainer(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setDataType" id="de.ptb.epics.eve.data.measuringstation/AbstractNothingNullTypeValueAccessContainer#setDataType(Lde.ptb.epics.eve.data.TypeValue;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.data.measuringstation/AbstractTypeValueAccessContainer&lt;-de.ptb.epics.eve.data.measuringstation/AbstractNothingNullTypeValueAccessContainer" source="//@children.17" target="//@children.16" targetEnd="//@children.17/@sourceConnections.0/@children.1" sourceEnd="//@children.17/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="187,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="167,229"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="MonitorEvent" location="2036,1167" size="321,283" id="de.ptb.epics.eve.data.measuringstation/MonitorEvent" runTimeClassModel="MonitorEvent(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;),MonitorEvent(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;Ljava.lang.String;Ljava.lang.String;),setName(Ljava.lang.String;),getID(),MonitorEvent(Ljava.lang.String;Ljava.lang.String;),setId(Ljava.lang.String;),id,getName(),MonitorEvent(),setAccess(Lde.ptb.epics.eve.data.measuringstation.Access;),name,hashCode(),equals(Ljava.lang.Object;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="80,36">
+      <children xsi:type="editmodel:AttributeEditModel" name="id" id="de.ptb.epics.eve.data.measuringstation/MonitorEvent#id"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="de.ptb.epics.eve.data.measuringstation/MonitorEvent#name"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="298,198">
+      <children xsi:type="editmodel:MethodEditModel" name="MonitorEvent" id="de.ptb.epics.eve.data.measuringstation/MonitorEvent#MonitorEvent(Ljava.lang.String;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="MonitorEvent" id="de.ptb.epics.eve.data.measuringstation/MonitorEvent#MonitorEvent(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;Ljava.lang.String;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="MonitorEvent" id="de.ptb.epics.eve.data.measuringstation/MonitorEvent#MonitorEvent()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="MonitorEvent" id="de.ptb.epics.eve.data.measuringstation/MonitorEvent#MonitorEvent(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/MonitorEvent#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getID" id="de.ptb.epics.eve.data.measuringstation/MonitorEvent#getID()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getName" id="de.ptb.epics.eve.data.measuringstation/MonitorEvent#getName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/MonitorEvent#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setAccess" id="de.ptb.epics.eve.data.measuringstation/MonitorEvent#setAccess(Lde.ptb.epics.eve.data.measuringstation.Access;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setId" id="de.ptb.epics.eve.data.measuringstation/MonitorEvent#setId(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setName" id="de.ptb.epics.eve.data.measuringstation/MonitorEvent#setName(Ljava.lang.String;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.data.measuringstation/AbstractNothingNullTypeValueAccessContainer&lt;-de.ptb.epics.eve.data.measuringstation/MonitorEvent" source="//@children.18" target="//@children.17" targetEnd="//@children.18/@sourceConnections.0/@children.1" sourceEnd="//@children.18/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="160,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="187,85"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="MeasuringStation" location="1634,555" size="353,823" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation" runTimeClassModel="getAxisFullIdentifyer(),getPluginByName(Ljava.lang.String;),getDetectorChannelById(Ljava.lang.String;),add(Lde.ptb.epics.eve.data.measuringstation.Detector;),getPrePostScanDevicesFullIdentifyer(),plugins,events,setLoadedFileName(Ljava.lang.String;),getSchemaFileName(),getEventById(Ljava.lang.String;),version,getChannelsFullIdentifyer(),setSchemaFileName(Ljava.lang.String;),getDetectors(),selections,add(Lde.ptb.epics.eve.data.measuringstation.Motor;),getVersion(),registerMotorAxis(Lde.ptb.epics.eve.data.measuringstation.MotorAxis;),getEvents(),setVersion(Ljava.lang.String;),getMotors(),addModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;),getAbstractDeviceByFullIdentifyer(Ljava.lang.String;),registerDetectorChannel(Lde.ptb.epics.eve.data.measuringstation.DetectorChannel;),add(Lde.ptb.epics.eve.data.measuringstation.Device;),schemaFileName,registerOption(Lde.ptb.epics.eve.data.measuringstation.Option;),getSelections(),getDeviceList(Ljava.lang.String;),loadedFileName,add(Lde.ptb.epics.eve.data.measuringstation.Event;),detectors,getDevices(),getClassNameList(),motors,add(Lde.ptb.epics.eve.data.measuringstation.PlugIn;),getMotorAxisById(Ljava.lang.String;),getPlugins(),devices,getPrePostscanDeviceById(Ljava.lang.String;),getLoadedFileName(),MeasuringStation(),removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="154,162">
+      <children xsi:type="editmodel:AttributeEditModel" name="detectors" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#detectors"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="devices" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#devices"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="events" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#events"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="loadedFileName" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#loadedFileName"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="motors" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#motors"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="plugins" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#plugins"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="schemaFileName" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#schemaFileName"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="selections" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#selections"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="version" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#version"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="330,612">
+      <children xsi:type="editmodel:MethodEditModel" name="MeasuringStation" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#MeasuringStation()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#add(Lde.ptb.epics.eve.data.measuringstation.Motor;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#add(Lde.ptb.epics.eve.data.measuringstation.PlugIn;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#add(Lde.ptb.epics.eve.data.measuringstation.Detector;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#add(Lde.ptb.epics.eve.data.measuringstation.Device;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#add(Lde.ptb.epics.eve.data.measuringstation.Event;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addModelUpdateListener" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#addModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAbstractDeviceByFullIdentifyer" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getAbstractDeviceByFullIdentifyer(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAxisFullIdentifyer" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getAxisFullIdentifyer()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getChannelsFullIdentifyer" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getChannelsFullIdentifyer()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getClassNameList" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getClassNameList()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDetectorChannelById" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getDetectorChannelById(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDetectors" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getDetectors()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDeviceList" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getDeviceList(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDevices" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getDevices()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getEventById" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getEventById(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getEvents" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getEvents()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLoadedFileName" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getLoadedFileName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMotorAxisById" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getMotorAxisById(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMotors" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getMotors()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPluginByName" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getPluginByName(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPlugins" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getPlugins()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPrePostScanDevicesFullIdentifyer" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getPrePostScanDevicesFullIdentifyer()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPrePostscanDeviceById" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getPrePostscanDeviceById(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSchemaFileName" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getSchemaFileName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSelections" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getSelections()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getVersion" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#getVersion()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="registerDetectorChannel" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#registerDetectorChannel(Lde.ptb.epics.eve.data.measuringstation.DetectorChannel;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="registerMotorAxis" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#registerMotorAxis(Lde.ptb.epics.eve.data.measuringstation.MotorAxis;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="registerOption" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#registerOption(Lde.ptb.epics.eve.data.measuringstation.Option;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeModelUpdateListener" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setLoadedFileName" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#setLoadedFileName(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setSchemaFileName" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#setSchemaFileName(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setVersion" id="de.ptb.epics.eve.data.measuringstation/MeasuringStation#setVersion(Ljava.lang.String;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation&lt;-de.ptb.epics.eve.data.measuringstation/MeasuringStation" source="//@children.19" target="//@children.20" targetEnd="//@children.19/@sourceConnections.0/@children.1" sourceEnd="//@children.19/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="176,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="176,422"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.19/@sourceConnections.0" name="IMeasuringStation" location="1634,49" size="353,422" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation" runTimeClassModel="getAxisFullIdentifyer(),getPluginByName(Ljava.lang.String;),getDetectorChannelById(Ljava.lang.String;),getAbstractDeviceByFullIdentifyer(Ljava.lang.String;),getPrePostScanDevicesFullIdentifyer(),getSchemaFileName(),getSelections(),getDeviceList(Ljava.lang.String;),getEventById(Ljava.lang.String;),getDevices(),getClassNameList(),getChannelsFullIdentifyer(),getDetectors(),getVersion(),getMotorAxisById(Ljava.lang.String;),getMotors(),getEvents(),getPlugins(),getPrePostscanDeviceById(Ljava.lang.String;),getLoadedFileName()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="330,360">
+      <children xsi:type="editmodel:MethodEditModel" name="getAbstractDeviceByFullIdentifyer" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getAbstractDeviceByFullIdentifyer(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAxisFullIdentifyer" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getAxisFullIdentifyer()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getChannelsFullIdentifyer" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getChannelsFullIdentifyer()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getClassNameList" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getClassNameList()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDetectorChannelById" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getDetectorChannelById(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDetectors" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getDetectors()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDeviceList" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getDeviceList(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDevices" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getDevices()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getEventById" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getEventById(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getEvents" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getEvents()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLoadedFileName" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getLoadedFileName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMotorAxisById" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getMotorAxisById(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMotors" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getMotors()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPluginByName" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getPluginByName(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPlugins" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getPlugins()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPrePostScanDevicesFullIdentifyer" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getPrePostScanDevicesFullIdentifyer()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPrePostscanDeviceById" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getPrePostscanDeviceById(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSchemaFileName" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getSchemaFileName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSelections" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getSelections()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getVersion" id="de.ptb.epics.eve.data.measuringstation/IMeasuringStation#getVersion()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" interactive="false" level="-1" showScope="InPackage" properties="wireOptions=1;Product=eUML2"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>
