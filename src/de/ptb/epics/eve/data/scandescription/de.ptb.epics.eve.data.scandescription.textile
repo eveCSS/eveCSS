@@ -1,0 +1,3 @@
+h1. de.ptb.epics.eve.data.scandescription
+
+This package contains the model of a Scan Description. 
