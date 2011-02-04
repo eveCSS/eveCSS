@@ -1,10 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
+/*
+ * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.ArrayList;
@@ -14,12 +14,11 @@ import java.util.List;
 import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedException;
 
 /**
- * This abstract class is the base of all of the different devices inside of the
- * Scan Modul Editor model, that is describing the measuring station. That includes
- * motors, detectors, motor axis, detector channels and options.  
- * Please don't mix up the term of the AbstractDevices and a Device, which is actually
- * more behaving like an option. A Device in the term of the Scan Modul Editor data
- * Model is a specilatzation of an Abstract Device.
+ * This abstract class is the base of all devices in the Scan Module Editor
+ * model, that is describing the measuring station (e.g. motors, detectors). 
+ * Don't mix up the terms AbstractDevice and Device, A Device in the term of
+ * the Scan Module Editor Data Model is a specialization of an Abstract 
+ * Device and behaves like an option.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.5
@@ -33,7 +32,7 @@ public abstract class AbstractDevice {
 	private String name;
 	
 	/**
-	 * The id of the device. It only contains the own id, not the id of the parent.
+	 * The id of the device.
 	 */
 	private String id;
 	
@@ -53,37 +52,48 @@ public abstract class AbstractDevice {
 	private final List<Option> options;
 	
 	/**
-	 * This constructor is used by inheriting classes to construct a blank AbstractDevice
-	 * with an empty name, empty id, null unit and empty list of options.
-	 *
+	 * 
+	 */
+	private String fullIdentifier = null;
+		
+	/**
+	 * This constructor is used by inheriting classes to construct a blank 
+	 * AbstractDevice with an empty name, empty id, null unit and empty list
+	 * of options.
 	 */
 	protected AbstractDevice() {
 		this( "", "", null, null, null );
 	}
 	
-	
-	private String fullIdentifier = null;
-	
 	/**
-	 * This constructor is used by inheriting classes to construct a new Abstract Device with
-	 * given name, id, unit and options. The list of options of the AbstractDevice will be a copy
-	 * of the given list. Note, that the list will be copied, not the elements inside! The parent
-	 * will not be setted directly, it is using the setParent Method. If you overriding this method,
-	 * you can control wich types are allowed an which not.
+	 * This constructor is used by inheriting classes to construct a new
+	 * Abstract Device with given name, id, unit and options. The list of
+	 * options of the AbstractDevice will be a copy of the given list. Note,
+	 * that the list will be copied, not the elements inside! The parent will
+	 * not be set directly, it is using the setParent Method. If you override
+	 * this method,you can control which types are allowed an which not.
 	 * 
-	 * @param name The name of the device. Must not be null! Use a empty String if you want no name for the device.
-	 * @param id The id of the device. Must not be null! Use a empty String if you want no id for the device.
-	 * @param unit The unit of the device. May be null.
-	 * @param options A list of options of the Device. If it's null, a new empty list will be created.
+	 * @param name The name of the device.
+	 * @param id The id of the device.
+	 * @param unit The unit of the device.
+	 * @param options A list of options of the Device.
+	 * 		   (use 'null' for no options)
 	 * @param parent The parent of this device.
+	 * @exception IllegalArgumentException if name == 'null'
+	 * @exception IllegalArgumentException if id == 'null'
+	 * @exception IllegalArgumentException if parent has an illegal type
 	 */
-	public AbstractDevice( final String name, final String id, final Unit unit, final List<Option> options, final AbstractDevice parent ) {
+	public AbstractDevice( final String name, final String id, 
+							final Unit unit, final List<Option> options, 
+							final AbstractDevice parent ) {
 
 		if( name == null ) {
-			throw new IllegalArgumentException( "The parameter 'name' must not be null!");
+			throw new IllegalArgumentException(
+					"The parameter 'name' must not be null!");
 		}
 		if( id == null ) {
-			throw new IllegalArgumentException( "The parameter 'id' must not be null!");
+			throw new IllegalArgumentException(
+					"The parameter 'id' must not be null!");
 		}
 		this.name = name;
 		this.id = id;
@@ -96,26 +106,33 @@ public abstract class AbstractDevice {
 		try {
 			this.setParent( parent );
 		} catch( ParentNotAllowedException e ) {
-			throw new IllegalArgumentException( "The parameter 'parent' had an illegal Type.", e );
+			throw new IllegalArgumentException(
+					"The parameter 'parent' had an illegal Type.", e );
 			
 		}
 	}
 	
 	/**
-	 * This method is very fundamental for the model of the hierarchy of all devices inside of the
-	 * measuring station description. Every device is cleary addressable by it's full identifier, that
-	 * is setted together by it's own name, and the name of it's parent device. If the device has no name,
-	 * the id is used to build the full identifier. So:<br />
+	 * This method is very fundamental for the model of the hierarchy of all
+	 * devices inside of the measuring station description. Every device is 
+	 * addressable by it's full identifier consisting of it's own name, and the
+	 * name of it's parent device. If the device has no name, the id is used to
+	 * build the full identifier. So The full identifier of a(n) ...<br />
 	 * <br />
-	 * The full identifier of a motor will be: Motor-Name  ( Motor-Id ).<br />
-	 * The full identifier of a motor-axis will be: Motor-Name Axis-Name  ( Axis-Id ).<br />
-	 * The full identifier of a detector will be: Detector-Name  ( Detector-Id ).<br />
-	 * The full identifier of a detector-channel will be: Detector-Name Channel-Name  ( Channel-Id ).<br />
-	 * The full identifier of a option of an motor will be: Motor-Name Option-Name  ( Option-Id ).<br />
-	 * The full identifier of a option of an motor-axis will be: Motor-Name Axis-Name Option-Name  ( Option-Id ).<br />
-	 * The full identifier of a option of an detector will be: Detector-Name Option-Name  ( Option-Id ).<br />
-	 * The full identifier of a option of an detector-channel will be: Detector-Name Channel-Name Option-Name  ( Option-Id ).<br />
-	 * The full identifier of a device will be: Device-Name  ( Device-Id ).<br />
+	 * ... motor will be: Motor-Name (Motor-Id).<br />
+	 * ... motor-axis will be: Motor-Name Axis-Name (Axis-Id).<br />
+	 * ... detector will be: Detector-Name (Detector-Id).<br />
+	 * ... detector-channel will be: Detector-Name Channel-Name (Channel-Id).
+	 * <br />
+	 * ... option of an motor will be: Motor-Name Option-Name (Option-Id).
+	 * <br />
+	 * ... option of an motor-axis will be: Motor-Name Axis-Name Option-Name 
+	 * (Option-Id).<br />
+	 * ... option of an detector will be: Detector-Name Option-Name (Option-Id).
+	 * <br />
+	 * ... option of an detector-channel will be: Detector-Name Channel-Name
+	 * Option-Name (Option-Id).<br />
+	 * ... device will be: Device-Name (Device-Id).<br />
 	 * <br />
 	 * 
 	 * @return A String object that contains the full identifier of the device.
@@ -161,25 +178,25 @@ public abstract class AbstractDevice {
 	}
 	
 	/**
-	 * Gives back the name of the device.
+	 * Returns the name of the device.
 	 * 
-	 * @return A String object that contains the name of the device. Never returns null.
+	 * @return A String object that contains the name of the device.
 	 */
 	public String getName() {
 		return this.name;
 	}
 	
 	/**
-	 * Gives back the id of the device.
+	 * Returns the id of the device.
 	 * 
-	 * @return  A String object that contains the id of the device. Never returns null.
+	 * @return  A String object that contains the id of the device.
 	 */
 	public String getID() {
 		return this.id;
 	}
 	
 	/**
-	 * Gives back the unit of the device.
+	 * Returns the unit of the device.
 	 * 
 	 * @see de.ptb.epics.eve.data.measuringstation.Unit
 	 * @return A Unit object or null if it's not set.
@@ -189,27 +206,27 @@ public abstract class AbstractDevice {
 	}
 	
 	/**
-	 * Gives back the parent of this device.
+	 * Returns the parent of this device.
 	 * 
-	 * @return The parent of the device. May be null if the device has no parent.
+	 * @return The parent of the device. (null if none)
 	 */
 	public AbstractDevice getParent() {
 		return this.parent;
 	}
 	
 	/**
-	 * Gives back a copy of the internal list, that is holding the options.
+	 * Returns a copy of the internal options list.
 	 * 
-	 * @return A list of Option objects. Never returns null.
+	 * @return A list of Option objects.
 	 */
 	public List<Option> getOptions() {
 		return new ArrayList<Option>( this.options );
 	}
 
 	/**
-	 * Gives back a iterator over the internal list of options.
+	 * Returns an iterator over the internal list of options.
 	 * 
-	 * @return A Iterator<Option> object over the internal list of options.
+	 * @return An Iterator<Option> object over the internal options list.
 	 */
 	public Iterator<Option> optionIterator() {
 		return this.options.iterator();
@@ -218,52 +235,69 @@ public abstract class AbstractDevice {
 	/**
 	 * Sets the ID of the Device.
 	 * 
-	 * @param id An String object, that contains the id of the device. Must not be null.
+	 * @param id A String object, that contains the id of the device.
+	 * @exception IllegalArgumentException if id == 'null'
 	 */
 	public void setId( final String id ) {
 		if( id == null ) {
-			throw new IllegalArgumentException( "The parameter 'id' must not be null!");
+			throw new IllegalArgumentException(
+					"The parameter 'id' must not be null!");
 		}
 		this.id = id;
 	}
 	
 	/**
-	 * Adds an Option to the device. Actually this method is setting the device as parent for the
-	 * Option (for builidng the full identifyer) and adding it to an internal list.
+	 * Adds an Option to the device.
 	 * 
-	 * @param option The Option that should be added. Must not be null.
-	 * @return Returns 'true' if the Option has been added and 'false' if not. 
+	 * @param option The Option that should be added.
+	 * @return (Option added) ? TRUE : FALSE 
+	 * @exception IllegalArgumentException if option == 'null'
+	 * @exception IllegalArgumentException if option not possible for device
 	 */
-	public boolean add( final Option option ) {
-		if( option == null ) {
-			throw new IllegalArgumentException("The parameters 'option' must not be null!");
+	public boolean add(final Option option) {
+		if(option == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'option' must not be null!");
 		}
+		// set the device as parent for the Option 
+		// (for building the full identifier) and 
+		// add it to an internal list.
 		try {
-			option.setParent( this );
-		} catch( ParentNotAllowedException e ) {
-			throw new IllegalArgumentException( "Your option does not accept this kind of device as parent. Please check you implementation!", e );
+			option.setParent(this);
+		} catch(ParentNotAllowedException e) {
+			throw new IllegalArgumentException("Your option does not accept " +
+					"this kind of device as parent. " +
+					"Please check you implementation!", e );
 		}
-		return options.add( option );
+		return options.add(option);
 	}
 
 	/**
-	 * Removes an Option from the device. Actually this method is setting the parent of the Option
-	 * to null and remove it from an internal list. The parent will not be setted to null if the Option
-	 } else {* were never a part of this device.
+	 * Removes an Option from the device. 
 	 * 
-	 * @param option The that should be remove. Must not be null.
-	 * @return Returns 'true' if the Option has been removed and 'false' if not.
+	 * @param option The that should be remove.
+	 * @return (Option removed) ? TRUE : FALSE
+	 * @exception IllegalArgumentException if option == 'null'
+	 * @exception IllegalArgumentException 
 	 */
-	public boolean remove( final Option option ) {
-		if( option == null ) {
-			throw new IllegalArgumentException("The parameters 'option' must not be null!");
+	public boolean remove(final Option option) {
+		if(option == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'option' must not be null!");
 		}
-		final boolean result = options.remove( option );
-		if( result ) {
+		// sets the parent of the Option to 'null' and
+		// removes it from the internal list
+		// parent will not be set to null if the option were
+		// never part of the device.
+		final boolean result = options.remove(option);
+		if(result) {
 			try {
-				option.setParent( null );
+				option.setParent(null);
 			} catch (ParentNotAllowedException e) {
-				throw new IllegalArgumentException( "Your option has not accepted to set the parent to null. Please check you implementation!", e );
+				throw new IllegalArgumentException("Your option has not " +
+						"accepted to set the parent to null. " +
+						"Please check your implementation!", e );
+				// TODO describe/explain Exception in JavaDoc
 			}
 		}
 		return result; 
@@ -272,33 +306,38 @@ public abstract class AbstractDevice {
 	/**
 	 * Sets the name of the device.
 	 * 
-	 * @param name A String object, that contains the name of the device. Must not be null.
+	 * @param name A String that contains the name of the device.
+	 * @exception IllegalArgumentException if name == 'null'
 	 */
-	public void setName( final String name ) {
-		if( name == null ) {
-			throw new IllegalArgumentException("The parameters 'name' must not be null!");
+	public void setName(final String name) {
+		if(name == null) {
+			throw new IllegalArgumentException(
+					"The parameters 'name' must not be null!");
 		}
 		this.name = name;
 	}
 
 	/**
-	 * Sets the unit of the devive.
+	 * Sets the unit of the device.
 	 * 
 	 * @param unit A Unit object.
 	 */
-	public void setUnit( final Unit unit ) {
+	public void setUnit(final Unit unit) {
 		this.unit = unit;
 	}
 
 	/**
-	 * Sets the parent of this device. Override this method to control which types are allowed.
-	 * After checking call the method of the super class.
+	 * Sets the parent of this device. Override this method to control
+	 * which types are allowed. After checking call the method of the 
+	 * super class.
 	 * 
 	 * @param parent
+	 * @exception ParentNotAllowedException
 	 */
-	protected void setParent( final AbstractDevice parent ) throws ParentNotAllowedException {
+	protected void setParent(final AbstractDevice parent) 
+								throws ParentNotAllowedException {
 		if ( parent != null)
-		this.parent = parent;
+			this.parent = parent;
 	}
 
 	@Override
@@ -311,17 +350,20 @@ public abstract class AbstractDevice {
 	}
 
 	@Override
-	public boolean equals( final Object obj ) {
-		if( this == obj ) {
+	public boolean equals(final Object obj) {
+		// TODO explain why and how
+		
+		if(this == obj)
 			return true;
-		}
-		if( obj == null ) {
+		
+		if(obj == null) 
 			return false;
-		}
-		if( getClass() != obj.getClass() ) {
+		
+		if(getClass() != obj.getClass())
 			return false;
-		}
+		
 		final AbstractDevice other = (AbstractDevice)obj;
+		
 		if( id == null ) {
 			if( other.id != null ) {
 				return false;
@@ -336,8 +378,7 @@ public abstract class AbstractDevice {
 		} else if( !name.equals( other.name ) ) {
 			return false;
 		}
+		
 		return true;
 	}
-	
-	
 }

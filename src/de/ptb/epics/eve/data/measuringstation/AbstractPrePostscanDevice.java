@@ -1,15 +1,15 @@
-/*******************************************************************************
+/*
  * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data.measuringstation;
 
 /**
- * This abstract class is the base of all devices, that can be used in a prescan and postscan
- * phase of a Scan Modul like Devices an Options.
+ * This abstract class is the base of all devices, that can be used in a 
+ * pre and post scan phase of a Scan Module (e.g. Devices and Options).
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.4
@@ -18,13 +18,13 @@ package de.ptb.epics.eve.data.measuringstation;
 public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	
 	/**
-	 * The className of this device. In oppsite of the AbstractClassedDevices, the className of a
-	 * AbstractPrePostscanDevice can be null.
+	 * The className of this device. In opposite of the AbstractClassedDevices,
+	 * the className of a AbstractPrePostscanDevice can be null.
 	 */
 	private String className;
 	
 	/**
-	 * The displaygroup of the AbstractPrePostscanDevice.
+	 * The display group of the AbstractPrePostscanDevice.
 	 */
 	private String displaygroup;
 	
@@ -34,8 +34,8 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	private Function value;
 	
 	/**
-	 * This constructor is used by inhereting classes to generate an empty AbstractPrePostscanDevice.
-	 * This construtor will call constructor without any parameters of AbstractDevice().
+	 * Used by inheriting classes to generate an empty
+	 * AbstractPrePostscanDevice.
 	 *
 	 */
 	public AbstractPrePostscanDevice() {
@@ -43,18 +43,19 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 		this.className = null;
 		this.displaygroup = null;
 		this.value = null;
-		
 	}
 	
 	/**
-	 * This constructor is used by inhereting classes to generate a AbstractPrePostscanDevice with
-	 * specific attributes.
+	 * Used by inheriting classes to generate a AbstractPrePostscanDevice
+	 * with specific attributes.
 	 * 
 	 * @param className A String object containing the className or null.
 	 * @param displaygroup A String object containg the displaygroup or null.
 	 * @param value A Function-object.
 	 */
-	public AbstractPrePostscanDevice( final String className, final String displaygroup,  final Function value ) {
+	public AbstractPrePostscanDevice(final String className, 
+									  final String displaygroup,  
+									  final Function value ) {
 		super();
 		this.className = className;
 		this.displaygroup = displaygroup;
@@ -70,34 +71,34 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	}
 	
 	/**
-	 * Gives back the displaygroup of this AbstractPrePostscanDevice.
-	 * @return A String object, containig the displaygroup, or null.
+	 * Returns the display group of this AbstractPrePostscanDevice.
+	 * @return A String object, containing the display group, or null.
 	 */
 	public String getDisplaygroup() {
 		return this.displaygroup;
 	}
 	
-
 	/**
 	 * Sets the className of this AbstractPrePostscanDevice.
 	 * 
 	 * @param className A String object, containing the name, or null.
 	 */
-	public void setClassName( final String className ) {
+	public void setClassName(final String className) {
 		this.className = className;
 	}
 
 	/**
-	 * Sets the displaygroup of this AbstractPrePostscanDevice.
+	 * Sets the display group of this AbstractPrePostscanDevice.
 	 * 
-	 * @param displaygroup A String object that contains the displaygroup. Or null.
+	 * @param displaygroup A String object that contains the display group.
 	 */
-	public void setDisplaygroup( final String displaygroup ) {
+	public void setDisplaygroup(final String displaygroup) {
 		this.displaygroup = displaygroup;
 	}
 
 	/**
-	 * This method gives back the Function object of this AbstractPrePoststandDevice.
+	 * This method gives back the Function object of this 
+	 * AbstractPrePoststandDevice.
 	 *
 	 * @return The Function-object of this AbstractPrePoststandDevice.
 	 */		
@@ -111,25 +112,29 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	 * 
 	 * @param value The new Function object.
 	 */
-	public void setValue( final Function value ) {
+	public void setValue(final Function value) {
 		this.value = value;
 	}
 
 	/**
-	 * Checks if a value is fitting to the constraints of this AbstractPrePostscanDevice.
+	 * Checks if a value is fitting to the constraints of this
+	 * AbstractPrePostscanDevice.
 	 * 
-	 * @param value The value that should be checked as String object. Must not be null.
+	 * @param value The value that should be checked as String object. 
+	 * 			Must not be null.
 	 * @return Returns 'true' if the value is okay and 'false' if not.
 	 */
-	public boolean isValuePossible( final String value ) {
+	public boolean isValuePossible(final String value) {
 		return this.value!=null?this.value.isValuePossible( value ):true;
 
 	}
 	
 	/**
-	 * Gives back is the AbstractPrePostscanDevice only can have discrete values. 
+	 * Checks if the AbstractPrePostscanDevice can only have discrete 
+	 * values.
 	 *
-	 * @return Returns 'true' is the AbstractPrePostscanDevice only can have discrete values.
+	 * @return Returns 'true' is the AbstractPrePostscanDevice only can have 
+	 * 			discrete values.
 	 */
 	public boolean isDiscrete() {
 		return this.value!=null?this.value.isDiscrete():false;
@@ -181,7 +186,5 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 			return false;
 		}
 		return true;
-	}
-
-	
+	}	
 }

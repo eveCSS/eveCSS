@@ -1,10 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
+/*
+ * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.List;
@@ -12,10 +12,11 @@ import java.util.List;
 import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedException;
 
 /**
- * This abstract class is the base of all devices that can be used during the main phase of
- * a Scan Modul like motor axis and detector channels. Typically somthing is done with a main
- * phase device during the main phase, like writing values into it for moving a motor axis
- * or reading values from like it's done from a detector channel.
+ * This abstract class is the base of all devices that can be used during the
+ * main phase of a Scan Module like motor axis and detector channels. Typically
+ * something is done with a main phase device during the main phase, like
+ * writing values into it for moving a motor axis or reading values from like 
+ * it's done from a detector channel.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.3
@@ -35,10 +36,8 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	private Function trigger;
 	
 	/**
-	 * This constructors should be called by the inherting class to construct a new AbstractMainPhaseDevice.
-	 * This constrcutor is calling the standard constructor of AbstractDevice. The trigger will be set to
-	 * null by using this constructor.
-	 *
+	 * Should be called by the inheriting class to construct a new
+	 * AbstractMainPhaseDevice. The trigger will be set to null.
 	 */
 	public AbstractMainPhaseDevice() {
 		super();
@@ -47,34 +46,42 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	}
 	
 	/**
-	 * This constructors should be called by the inherting class to construct a new AbstractMainPhaseDevice
-	 * with a given trigger object. This constrcutor is calling the standard constructor of AbstractDevice.
+	 * Should be called by the inheriting class to construct a new
+	 * AbstractMainPhaseDevice with a given trigger object.
 	 *  
 	 * @param trigger A Trigger object or null.
 	 */
-	public AbstractMainPhaseDevice( final Function trigger ) {
+	public AbstractMainPhaseDevice(final Function trigger) {
 		super();
 		this.trigger = trigger;
 	}
 	
 	/**
-	 * This constructors constructs a new, very specific device with all attributes.
+	 * This constructor constructs a new, very specific device with all
+	 * attributes.
 	 * 
-	 * @param name The name of the device. Must not be null! Use a empty String if you want no name for the device.
-	 * @param id The id of the device. Must not be null! Use a empty String if you want no id for the device.
-	 * @param unit The unit of the device. May be null.
-	 * @param options A list of options of the Device. If it's null, a new empty list will be created.
+	 * @param name The name of the device.
+	 * @param id The id of the device.
+	 * @param unit The unit of the device.
+	 * @param options A list of options of the Device.
+	 * 			(use 'null' for no options)
 	 * @param parent The parent of this device.
 	 * @param trigger
+	 * @exception IllegalArgumentException if name == 'null'
+	 * @exception IllegalArgumentException if id == 'null'
+	 * @exception IllegalArgumentException if parent has an illegal type
 	 */
-	public AbstractMainPhaseDevice( final String name, final String id, final Unit unit, final List<Option> options, final AbstractMainPhaseDevice parent, final Function trigger ) {
-		super( name, id, unit, options, parent );
+	public AbstractMainPhaseDevice(final String name, final String id,
+									final Unit unit, final List<Option> options,
+									final AbstractMainPhaseDevice parent, 
+									final Function trigger ) {
+		super(name, id, unit, options, parent);
 		this.trigger = trigger;
 	}
 	
 	
 	/**
-	 * Gives back the trigger of the device.
+	 * Returns the trigger of the device.
 	 * @return 
 	 */
 	public Function getTrigger() {
@@ -85,27 +92,29 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	 * Sets the Trigger of the device.
 	 * @param trigger A Trigger object.
 	 */
-	public void setTrigger( final Function trigger ) {
+	public void setTrigger(final Function trigger) {
 		this.trigger = trigger;
 	}
 	
 	/**
-	 * This method is overriding the setParent Method of the super class. This method contains some
-	 * checks if this class can really be the parent of this device. It will throw a ParentNotAllowedException
-	 * if there was passes a wrong device type.
-	 * 
-	 * @param parent The parent that should be settet. 
+	 * Checks if this class can really be the parent of this device. 
+	 * .
+	 * @param parent The parent that should be set.
+	 * @exception ParentNotAllowedException 
 	 */
 	@Override
-	protected void setParent( final AbstractDevice parent ) throws ParentNotAllowedException {
-		
+	protected void setParent(final AbstractDevice parent) 
+								throws ParentNotAllowedException {
+		// TODO describe/explain exception thrown
+		// It will throw a ParentNotAllowedException
+		// if there was passes a wrong device type
 		super.setParent( parent );
 	}
 	
 	/**
-	 * Give back the class of the device.
+	 * Returns the class of the device.
 	 * 
-	 * @return A String that is containing the name of the class of the device. It will never be null.
+	 * @return A String containing the name of the class of the device.
 	 */
 	public String getClassName() {
 		return this.className;
@@ -114,11 +123,13 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	/**
 	 * Sets the className of the device.
 	 * 
-	 * @param className A String object contains the className. Must not be null!
+	 * @param className A String object contains the className.
+	 * @exception IllegalArgumentException if className == 'null'
 	 */
-	public void setClassName( final String className ) {
-		if( className == null ) {
-			throw new IllegalArgumentException( "The parameter 'className' must not be null!" );
+	public void setClassName(final String className) {
+		if(className == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'className' must not be null!");
 		}
 		this.className = className;
 	}
@@ -132,7 +143,7 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	}
 
 	@Override
-	public boolean equals( final Object obj ) {
+	public boolean equals(final Object obj) {
 		if( this == obj ) {
 			return true;
 		}
@@ -152,6 +163,4 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 		}
 		return true;
 	}
-
-	
 }
