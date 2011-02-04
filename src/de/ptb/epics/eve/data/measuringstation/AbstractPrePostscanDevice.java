@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
+ * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
@@ -18,8 +18,8 @@ package de.ptb.epics.eve.data.measuringstation;
 public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	
 	/**
-	 * The className of this device. In opposite of the AbstractClassedDevices,
-	 * the className of a AbstractPrePostscanDevice can be null.
+	 * The className of this device. In opposite of the AbstractDevice,
+	 * the className of an AbstractPrePostscanDevice can be null.
 	 */
 	private String className;
 	
@@ -50,7 +50,7 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	 * with specific attributes.
 	 * 
 	 * @param className A String object containing the className or null.
-	 * @param displaygroup A String object containg the displaygroup or null.
+	 * @param displaygroup A String object containing the display group or null.
 	 * @param value A Function-object.
 	 */
 	public AbstractPrePostscanDevice(final String className, 
@@ -97,7 +97,7 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	}
 
 	/**
-	 * This method gives back the Function object of this 
+	 * Returns the Function object of this 
 	 * AbstractPrePoststandDevice.
 	 *
 	 * @return The Function-object of this AbstractPrePoststandDevice.
@@ -106,9 +106,8 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 		return this.value;
 	}
 
-	
 	/**
-	 * This methods sets the Function-object of this AbstractPrePostscanDevice.
+	 * Sets the Function-object of this AbstractPrePostscanDevice.
 	 * 
 	 * @param value The new Function object.
 	 */
@@ -126,7 +125,6 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	 */
 	public boolean isValuePossible(final String value) {
 		return this.value!=null?this.value.isValuePossible( value ):true;
-
 	}
 	
 	/**
@@ -140,6 +138,10 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 		return this.value!=null?this.value.isDiscrete():false;
 	}
 
+	/**
+	 * 
+	 * @return a fancy value yet unexplained
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -152,6 +154,10 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 		return result;
 	}
 
+	/**
+	 * 
+	 * @return (objects equal) ? TRUE : FALSE
+	 */
 	@Override
 	public boolean equals( final Object obj ) {
 		if( this == obj ) {

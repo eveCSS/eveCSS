@@ -1,10 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
+/*
+ * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ import java.util.List;
 import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedException;
 
 /**
- * This class represents a Motor. The main purpose of this class is the management
- * of the motor axis.
+ * This class represents a Motor. The main purpose of this class is the 
+ * management of the motor axis.
  * 
  * @see de.ptb.epics.eve.data.measuringstation.MotorAxis
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
@@ -28,7 +28,6 @@ public class Motor extends AbstractMainPhaseDevice {
 	 */
 	private List<MotorAxis> axis;
 	
-	
 	/**
 	 * This constructor constructs a and empty Motor.
 	 *
@@ -38,41 +37,48 @@ public class Motor extends AbstractMainPhaseDevice {
 	}
 	
 	/**
-	 * Gives back a copy of the internal List, that is holding the MotorAxis objects.
+	 * Returns a copy of the internal List, that is holding the MotorAxis
+	 * objects.
 	 * 
-	 * @return A List, that with the MotorAxis object of the Motor. Never returns null.
+	 * @return A List of MotorAxis objects of the Motor.
 	 */
 	public List<MotorAxis> getAxis() {	
-		return new ArrayList<MotorAxis>( this.axis );
+		return new ArrayList<MotorAxis>(this.axis);
 	}
 	
 	/**
-	 * Gives back a Iterator over the internal list of MotorAxis objects.
+	 * Returns an Iterator over the internal list of MotorAxis objects.
 	 * 
-	 * @return A Iterator object. Never returns null.
+	 * @return An Iterator object.
 	 */
 	public Iterator<MotorAxis> axisIterator() {
 		return this.axis.iterator();
 	}
 
 	/**
-	 * Adds a MotorAxis to this Motor and sets the Motor as the Parent of the MotorAxis.
+	 * Adds a MotorAxis to this Motor and sets the Motor as the Parent of the
+	 * MotorAxis.
 	 * 
-	 * @param axis The MotorAxis object, that should be added. Must not be null.
-	 * @return Gives back 'true' if the axis has been added.
+	 * @param axis The MotorAxis object, that should be added.
+	 * @return TRUE if the axis has been added.
+	 * @exception IllegalArgumentException if axis == 'null'
+	 * @exception IllegalArgumentException if axis not allowed for this motor
 	 */
-	public boolean add( final MotorAxis axis ) {
-		if( axis == null ) {
-			throw new IllegalArgumentException( "The parameter 'axis' must not be null!" );
+	public boolean add(final MotorAxis axis) {
+		if(axis == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'axis' must not be null!");
 		}
 		
-		final boolean result = this.axis.add( axis );
-		if( result ) {
+		final boolean result = this.axis.add(axis);
+		if(result) {
 			try {
 				axis.setParent( this );
 			} catch( final ParentNotAllowedException e ) {
 				this.axis.remove( axis );
-				throw new IllegalArgumentException( "The axis you have passend didn't accepted the Motor as parent. Please check you implementation!", e);				
+				throw new IllegalArgumentException("The axis you have passend " +
+						"didn't accept the Motor as parent. " +
+						"Please check your implementation!", e);				
 			}
 		}
 		return result;
@@ -81,24 +87,28 @@ public class Motor extends AbstractMainPhaseDevice {
 	/**
 	 * Removes a MotorAxis from this Motor.
 	 * 
-	 * @param axis A MotorAxis object. Must not be null!
-	 * @return Gives back 'true' if the MotorAxis has been removed.
+	 * @param axis A MotorAxis object.
+	 * @return TRUE if the MotorAxis has been removed.
+	 * @exception IllegalArgumentException if axis == 'null'
 	 */
-	public boolean remove( final MotorAxis axis ) {
-		if( axis == null ) {
-			throw new IllegalArgumentException( "The parameter 'axis' must not be null!" );
+	public boolean remove(final MotorAxis axis) {
+		if(axis == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'axis' must not be null!");
 		}
-		final boolean result = this.axis.remove( axis );
-		if( result ) {
+		final boolean result = this.axis.remove(axis);
+		if(result) {
 			try {
-				axis.setParent( null );
-			} catch( final ParentNotAllowedException e ) {
-				
-			}
+				axis.setParent(null);
+			} catch(final ParentNotAllowedException e) { }
 		}
 		return result;
 	}
 
+	/**
+	 * 
+	 * @return 
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -106,6 +116,11 @@ public class Motor extends AbstractMainPhaseDevice {
 		return result;
 	}
 
+	/**
+	 * Checks if argument and calling object are equal.
+	 * 
+	 * @return (objects equal) ? TRUE : FALSE
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -120,24 +135,30 @@ public class Motor extends AbstractMainPhaseDevice {
 		return true;
 	}
 	
+	/**
+	 * Clones the current Motor.
+	 * 
+	 * @return a clone of the calling Motor
+	 */
 	@Override
 	public Object clone() {
 		
 		final Motor motor = new Motor();
-		for( final MotorAxis axis : this.axis ) {
-			motor.add( (MotorAxis)axis.clone() );
+		for(final MotorAxis axis : this.axis) {
+			motor.add((MotorAxis)axis.clone());
 		}
-		motor.setClassName( this.getClassName() );
-		motor.setTrigger( (Function)(this.getTrigger()!=null?this.getTrigger().clone():null));
-		motor.setName( this.getName() );
-		motor.setId( this.getID() );
-		motor.setUnit( (Unit)(this.getUnit()!=null?this.getUnit().clone():null) );
+		motor.setClassName(this.getClassName());
+		motor.setTrigger((Function)
+				(this.getTrigger()!=null?this.getTrigger().clone():null));
+		motor.setName(this.getName());
+		motor.setId(this.getID());
+		motor.setUnit((Unit)
+				(this.getUnit()!=null?this.getUnit().clone():null));
 		
-		for( final Option option : this.getOptions() ) {
+		for(final Option option : this.getOptions()) {
 //	TODO, wegnehmen: 	this.add( (Option)option.clone() );
-			motor.add( (Option)option.clone() );
+			motor.add((Option)option.clone());
 		}
 		return motor;
 	}
-	
 }

@@ -134,6 +134,10 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 		this.className = className;
 	}
 
+	/**
+	 * 
+	 * @return a fancy number yet has to be explained
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -142,6 +146,11 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 		return result;
 	}
 
+	/**
+	 * Checks if argument and calling object are equal.
+	 * 
+	 * @return (objects equal) ? TRUE : FALSE
+	 */
 	@Override
 	public boolean equals(final Object obj) {
 		if( this == obj ) {

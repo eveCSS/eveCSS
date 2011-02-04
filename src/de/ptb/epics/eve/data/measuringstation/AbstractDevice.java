@@ -107,8 +107,7 @@ public abstract class AbstractDevice {
 			this.setParent( parent );
 		} catch( ParentNotAllowedException e ) {
 			throw new IllegalArgumentException(
-					"The parameter 'parent' had an illegal Type.", e );
-			
+					"The parameter 'parent' had an illegal Type.", e );	
 		}
 	}
 	
@@ -340,6 +339,10 @@ public abstract class AbstractDevice {
 			this.parent = parent;
 	}
 
+	/**
+	 * 
+	 * @return a fancy number yet has to be explained
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -349,6 +352,11 @@ public abstract class AbstractDevice {
 		return result;
 	}
 
+	/**
+	 * Checks if argument and calling object are equal.
+	 * 
+	 * @return (objects equal) ? TRUE : FALSE
+	 */
 	@Override
 	public boolean equals(final Object obj) {
 		// TODO explain why and how
@@ -377,8 +385,7 @@ public abstract class AbstractDevice {
 			}
 		} else if( !name.equals( other.name ) ) {
 			return false;
-		}
-		
+		}	
 		return true;
 	}
 }
