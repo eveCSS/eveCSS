@@ -1,3 +1,6 @@
 h1. de.ptb.epics.eve.data.scandescription
 
-This package contains the model of a Scan Description. 
+This package contains the model of a scan description. A scan description is an XML-file which describes how involved devices behave during a scan.
+It is represented by @ScanDescription@. Within a scan description multiple scans are possible. A scan is defined as a @Chain@. Chains can be added to a scan description.
+Each scan (chain) is composed of scan modules (@ScanModul@). A scan module could be attached to another or being nested.
+Scans begin with a @StartEvent@. 
