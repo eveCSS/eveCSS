@@ -2,5 +2,9 @@ h1. de.ptb.epics.eve.data.scandescription
 
 This package contains the model of a scan description. A scan description is an XML-file which describes how involved devices behave during a scan.
 It is represented by @ScanDescription@. Within a scan description multiple scans are possible. A scan is defined as a @Chain@. Chains can be added to a scan description.
-Each scan (chain) is composed of scan modules (@ScanModul@). A scan module could be attached to another or being nested.
+Each scan (chain) is composed of scan modules (@ScanModul@). A scan module could be attached to another or being nested. Scan modules are partitioned into three stages, a PreScan Phase, a Main Phase and a PostScan Phase: 
+# *Prescan-Phase* (Prior to a scan): values and options for Devices will be set (e.g. open beam shutter).
+# *Main-Phase*: actually measures something by controlling devices (e.g. moving motor axis) and reading detector channels.
+# *Postscan-Phase* (after measuring): options and devices are eventually set again, or reset (e.g. close beam shutter).
 Scans begin with a @StartEvent@. 
+  

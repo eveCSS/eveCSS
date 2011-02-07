@@ -1,26 +1,7 @@
 h1. de.ptb.epics.eve.data.measuringstation
 
-This package contains the Data Model of a Measuring Station. Generally a 
-Measuring Station is a list of 
-* Motors
-* Motor Axis
-* Detectors
-* Detector Channels
-* Devices
-* Options
-* PlugIns
-* Events
-* Selections
-which are available. The Measuring Station itself is represented by the
-correspondent class (implementing the interface @IMeasuringStation@).
+This package contains the data model of a measuring station. Generally a measuring station is an alignment of devices to run experiments. The measuring station itself is represented by @MeasuringStation@ (implementing the interface @IMeasuringStation@). Beginning with an abstract formulation of a device (@AbstractDevice@) there are two distinct devices available which inherit from it. The model distinguishes between an @AbstractMainPhaseDevice@  and an  @AbstractPrePostscanDevice@. 
+@Motor@ and  @MotorAxis@ as well as @Detector@ and  @DetectorChannel@ are Subclasses of  @AbstractMainPaseDevice@. Furthermore @AbstractPrePostScanDevice@ distinguishes between @Device@ and @Option@.
 
-Beginning with a general abstract Formulation of a Device (@AbstractDevice@) there 
-are two distinct Devices available which inherit from it. 
-The model distinguishes between an @AbstractMainPhaseDevice@  and an  @AbstractPrePostscanDevice@. 
-@Motor@, @MotorAxis@, @Detector@ and @DetectorChannel@ are Subclasses of  @AbstractMainPaseDevce@. 
-The @AbstractPrePostScanDevice@ distinguishes between @Device@ and @Option@.
-The idea behind it is as follows:
-One Measuring Cycle is partitioned into three stages, a PreScan Phase, a Main Phase and a PostScan Phase.
-# Prior to a scan (PreScan Phase) values and options for Devices will be set.
-# The Main Phase actually measures something by moving axis and reading detector channels.
-# After measuring (PostScan Phase) options and devices are eventually set again (or reset).  
+Motors are devices where you can read from or write to (e.g. a 'real' motor or a radiator).They contain at least one axis. To learn more about the behavior of a motor ...
+
