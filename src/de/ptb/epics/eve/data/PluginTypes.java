@@ -1,10 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
+/*
+ * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data;
 
 /**
@@ -16,21 +16,24 @@ package de.ptb.epics.eve.data;
 public enum PluginTypes {
 
 	/**
-	 * Says, that the Plugin is a position plugin, that could be used to calculate the position of motor axis.
+	 * Says, that the plug in is a position plug in, that could be used to 
+	 * calculate the position of motor axis.
 	 *
 	 * @uml.property  name="pOSITION"
 	 * @uml.associationEnd  
 	 */
 	POSITION,
 	/**
-	 * Says, that the Plugin is a save plugin, that could be used in the definition of a Scan-Chain.
+	 * Says, that the plug in is a save plug in, that could be used in the 
+	 * definition of a Scan-Chain.
 	 *
 	 * @uml.property  name="sAVE"
 	 * @uml.associationEnd  
 	 */
 	SAVE,
 	/**
-	 * Says, that the Plugin is a display plugin, that is doing some precalculations for a plotWindow. 
+	 * Says, that the plug in is a display plug in, that is doing some 
+	 * pre-calculations for a plotWindow. 
 	 *
 	 * @uml.property  name="dISPLAY"
 	 * @uml.associationEnd  
@@ -38,7 +41,8 @@ public enum PluginTypes {
 	DISPLAY,
 	
 	/**
-	 * Says, that the Plugin is a postscanpositions plugin, that moves an axis to a position after
+	 * Says, that the plug in is a postscanpositions plug in, that moves an axis
+	 * to a position after
 	 *
 	 * @uml.property  name="pOSTSCANPOSITIONING"
 	 * @uml.associationEnd  
@@ -46,19 +50,21 @@ public enum PluginTypes {
 	POSTSCANPOSITIONING;
 	
 	/**
-	 * This static Method is translating a name for plugin type like it's used in the
-	 * measuring station description or the scan description into the correpondenting PluginType.
+	 * This static Method is translating a name for plug in type into its
+	 * corresponding PluginType.
 	 * Possible values are: position, save and display
 	
-	 * @param type The type, that should be translated. Must not be null!
-	 * @return The correspondenting string. Null if the Type was invalid.
+	 * @param type the type, that should be translated.
+	 * @return (type valid) ? corresponding string : 'null'
+	 * @exception IllegalArgumentException if type == 'null'
 	 */
-	public static String typeToString( final PluginTypes type ) {
-		if( type == null ) {
-			throw new IllegalArgumentException( "The parameter 'type' must not be null" );
+	public static String typeToString(final PluginTypes type) {
+		if(type == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'type' must not be null");
 		}
 		
-		switch( type ) {
+		switch(type) {
 			case POSITION:
 				return "position";
 			case SAVE:
@@ -68,8 +74,6 @@ public enum PluginTypes {
 			case POSTSCANPOSITIONING:
 				return "postscanpositioning";
 		}
-		return null;
-		
-	}
-	
+		return null;	
+	}	
 }

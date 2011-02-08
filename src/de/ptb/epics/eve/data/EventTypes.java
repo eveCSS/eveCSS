@@ -35,7 +35,8 @@ public enum EventTypes {
 	SCHEDULE,
 	
 	/**
-	 * Used for detector ready event, which may be sent if a detector is ready with taking data.
+	 * Used for detector ready event, which may be sent if a detector is ready 
+	 * to take data.
 	 * 
 	 * @uml.property  name="dETECTOR"
 	 * @uml.associationEnd  
@@ -43,16 +44,17 @@ public enum EventTypes {
 	DETECTOR;
 	
 	/**
-	 * This static method translates a String of a MethodType, like it's used
-	 * in the scan and mesauring station description into the correpondenting
-	 * Enum value. Possible values are: monitor and shedule.
+	 * translates a String of a MethodType, into its corresponding
+	 * enum value.
 	 * 
-	 * @param name The String that should be translated. Must not be null!
-	 * @return The correspondenting EventType.
+	 * @param name one of {"monitor", "schedule", "detector"}
+	 * @return the corresponding EventType
+	 * @exception IllegalArgumentException if name == 'null'
 	 */
-	public static EventTypes stringToType( final String name ) {
-		if( name == null ) {
-			throw new IllegalArgumentException( "The parameter 'name' must not be null!" );
+	public static EventTypes stringToType(final String name) {
+		if(name == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'name' must not be null!");
 		}
 		
 		if( name.equals( "monitor" ) ) {
@@ -66,18 +68,19 @@ public enum EventTypes {
 	}
 	
 	/**
-	 * This static method translates a EventType into a String, like it's used in the measuring
-	 * station description or the scan description. 
+	 * translates an EventType into a String, 
 	 * 
-	 * @param type The type, that should be translated. Must not be null!
-	 * @return The correpondentin string. Null if the Type was invalid.
+	 * @param type the type, that should be translated.
+	 * @return the corresponding string.
+	 * @exception IllegalArgumentException if type == 'null' 
 	 */
-	public static String typeToString( final EventTypes type ) {
-		if( type == null ) {
-			throw new IllegalArgumentException( "The parameter 'type' must not be null!" );
+	public static String typeToString(final EventTypes type) {
+		if(type == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'type' must not be null!");
 		}
 		
-		switch( type ) {
+		switch(type) {
 			case MONITOR:
 				return "monitor";
 			case SCHEDULE:

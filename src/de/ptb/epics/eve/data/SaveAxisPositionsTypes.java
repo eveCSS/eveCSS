@@ -1,14 +1,15 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
+/*
+ * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data;
 
 /**
- * This enum hold possible values that describes at which point all motor axis of a measuring station should be saved to the outputfile.
+ * This enum holds possible values that describe at which point all motor axis
+ * of a measuring station should be saved to the output file.
  * @author   srehfeld
  */
 public enum SaveAxisPositionsTypes {
@@ -38,7 +39,7 @@ public enum SaveAxisPositionsTypes {
 	AFTER,
 	
 	/**
-	 * Save all axis positoins before and after the end of a Scan Module.
+	 * Save all axis positions before and after the end of a Scan Module.
 	 *
 	 * @uml.property  name="bOTH"
 	 * @uml.associationEnd  
@@ -46,13 +47,15 @@ public enum SaveAxisPositionsTypes {
 	BOTH;
 	
 	/**
-	 * This static method convert a value of the enum to a string like it's used in the scan description.
+	 * converts a value of the enum to a string.
 	 * 
-	 * @param saveAxisPositionsTypes The value that should be converted to a string.
+	 * @param saveAxisPositionsTypes the value that should be converted
 	 * @return The string value of the passes enum value.
+	 * @exception UnsupportedOperationException 
 	 */
-	public static String typeToString( final SaveAxisPositionsTypes saveAxisPositionsTypes ) {
-		switch( saveAxisPositionsTypes ) {
+	public static String typeToString(
+					final SaveAxisPositionsTypes saveAxisPositionsTypes) {
+		switch(saveAxisPositionsTypes) {
 			case NEVER:
 				return "never";
 			case BEFORE:
@@ -62,19 +65,25 @@ public enum SaveAxisPositionsTypes {
 			case BOTH:
 				return "both";
 		}
-		throw new UnsupportedOperationException( "The value " + saveAxisPositionsTypes + " was passed, but no translation to a String was found. Please check your implementation of this method!" );
+		throw new UnsupportedOperationException(
+				"The value " + saveAxisPositionsTypes + 
+				" was passed, but no translation to a String was found. " +
+				"Please check your implementation of this method!");
 	}
 	
 	/**
 	 * 
-	 * This methods converts a string like it's used in the scan description to a value of the SaveAxisPositionsTypes enum.
+	 * converts a string to a value of the SaveAxisPositionsTypes enum.
 	 * 
-	 * @param saveAxisPositionsTypes The String that should be converted. Possible values are never, before, after and both. Must not be null.
-	 * @return Gives back the correponding type of the given string or gives back null if the string is unknown.
+	 * @param saveAxisPositionsTypes one of {"never", "before", "after", "both"}
+	 * @return the corresponding type of the given string
+	 * @exception IllegalArgumentException if saveAxisPositionsTypes == 'null'
 	 */
-	public static SaveAxisPositionsTypes stringToType( final String saveAxisPositionsTypes ) {
-		if( saveAxisPositionsTypes == null ) {
-			throw new IllegalArgumentException( "The parameter 'saveAxisPositionsTypes' must not be null!");
+	public static SaveAxisPositionsTypes stringToType(
+							final String saveAxisPositionsTypes) {
+		if(saveAxisPositionsTypes == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'saveAxisPositionsTypes' must not be null!");
 		}
 		if( saveAxisPositionsTypes.equals( "never" ) ) {
 			return SaveAxisPositionsTypes.NEVER;
@@ -87,5 +96,4 @@ public enum SaveAxisPositionsTypes {
 		}   
 		return null;
 	}
-	
 }

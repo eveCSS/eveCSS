@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data;
 
 
@@ -31,17 +31,17 @@ public enum TransportTypes {
 	LOCAL;
 	
 	/**
-	 * This static method converts a string like it's used in the measuring station description to a value in the
-	 * TransportType Enum.
+	 * converts a string into a value of type TransportType (enum).
 	 * 
-	 * @param name The string that should be converted. Must not be null.
+	 * @param name the string that should be converted.
 	 * @return The corrosponding TransportTypes value.
+	 * @exception IllegalArgumentException if name == 'null'
 	 */
-	public static TransportTypes stringToType( final String name ) {
-		if( name == null ) {
-			throw new IllegalArgumentException( "The parameter 'name' must not be null!" );
+	public static TransportTypes stringToType(final String name) {
+		if(name == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'name' must not be null!");
 		}
-		
 		if( name.equals( "ca" ) ) {
 			return TransportTypes.CA;
 		} else if( name.equals( "local" ) ) {
@@ -51,17 +51,16 @@ public enum TransportTypes {
 	}
 	
 	/**
-	 * This static method converts a value of the TransportTypes enum to a String like it's used in the measuring
-	 * station description. 
+	 * converts a value of type TransportTypes (enum) into a String
 	 *
-	 * @param type The value that should be converted.
-	 * @return The corresponding value as a String.
+	 * @param type the value that should be converted.
+	 * @return the corresponding value as a String.
 	 */
-	public static String typeToString( final TransportTypes type ) {
-		if( type == null ) {
-			throw new IllegalArgumentException( "The parameter 'type' must not be null" );
-		}
-		
+	public static String typeToString(final TransportTypes type) {
+		if(type == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'type' must not be null");
+		}	
 		switch( type ) {
 			case CA:
 				return "ca";

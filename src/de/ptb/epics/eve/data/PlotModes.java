@@ -1,10 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
+/*
+ * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data;
 
 /**
@@ -33,39 +33,40 @@ public enum PlotModes {
 	LOG;
 	
 	/**
-	 * This static Method is translating a name for the plot type like it's used in the
-	 * measuring station description or the scan description into the correpondenting PlotMode.
-	 * Possible values are: PUT, PUTCB, GET, GETCB, GETPUTCB and monitor
+	 * translates a name for the plot type into its corresponding PlotMode.
 	 * 
-	 * @param name The String that should be translated. Must not be null!
-	 * @returnThe correspondenting PlotMode.
+	 * @param name one of {"linear", "log"}
+	 * @return the corresponding PlotMode.
+	 * @exception IllegalArgumentException if name == 'null'
 	 */
-	public static PlotModes stringToMode( final String name ) {
-		if( name == null ) {
-			throw new IllegalArgumentException( "The parameter 'name' must not be null!" );
+	public static PlotModes stringToMode(final String name) {
+		if(name == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'name' must not be null!");
 		}
 		
-		if( name.equals( "linear" ) ) {
+		if( name.equals("linear")) {
 			return PlotModes.LINEAR;
-		} else if( name.equals( "log" ) ) {
+		} else if(name.equals("log")) {
 			return PlotModes.LOG;
 		}
 		return null;
 	}
 	
 	/**
-	 * This static method translates a PlotMode into a String, like it's used in the measuring
-	 * station description or the scan description.
+	 * translates a PlotMode into a String.
 	 *  
-	 * @param mode  The mode, that should be translated. Must not be null!
-	 * @return The correpondentin string. Null if the mode was invalid.
+	 * @param mode  the mode, that should be translated.
+	 * @return (mode valid) ? the corresponding string : 'null'
+	 * @exception IllegalArgumentException if mode == 'null'
 	 */
-	public static String modeToString( final PlotModes mode ) {
-		if( mode == null ) {
-			throw new IllegalArgumentException( "The parameter 'name' must not be null!" );
+	public static String modeToString(final PlotModes mode) {
+		if(mode == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'name' must not be null!");
 		}
 		
-		switch( mode ) {
+		switch(mode) {
 		 case LINEAR:
 			 return "linear";
 		 case LOG:
@@ -75,7 +76,7 @@ public enum PlotModes {
 	}
 	
 	/**
-	 * This static method gives back an Array of all elements of the enum as String.
+	 * Returns an Array containing the elements of the enum as Strings
 	 * 
 	 * @see de.trustedcode.scanmoduleditor.views.PlotWindowComposite
 	 * @return A array of all values.

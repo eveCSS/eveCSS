@@ -1,20 +1,23 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
+/*
+ * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data;
 
 /**
- * This enum represents the datatypes for plugin variables. The datatypes are siminlar to the datatypes that are defindes in the enum DataTypes. Additionally this enum has the types AXISID, CHANNELID and DEVIDEID that indicates, that the plugin parameter is a channel, axis or device.
- * @author   Stephan Rehfeld
+ * This enum represents the data types for plug in variables. They are similar 
+ * to the data types that are defined in the enum DataTypes. 
+ * Additionally this enum has the types AXISID, CHANNELID and DEVIDEID that 
+ * indicate, that the plug in parameter is a channel, axis or device.
+ * @author Stephan Rehfeld
  */
 public enum PluginDataType {
 	
 	/**
-	 * On/Off datatype is used at some Devices to switch them on or off.
+	 * On/Off data type is used at some Devices to switch them on or off.
 	 *
 	 * @uml.property  name="oNOFF"
 	 * @uml.associationEnd  
@@ -22,7 +25,8 @@ public enum PluginDataType {
 	ONOFF,
 	
 	/**
-	 * Open/Close datatype is used to open or close a device i.e. a beamshutter.
+	 * Open/Close data type is used to open or close a device 
+	 * e.g. a beam shutter.
 	 *
 	 * @uml.property  name="oPENCLOSE"
 	 * @uml.associationEnd  
@@ -30,7 +34,7 @@ public enum PluginDataType {
 	OPENCLOSE,
 	
 	/**
-	 * Normal integer datatype.
+	 * Normal integer data type.
 	 *
 	 * @uml.property  name="iNT"
 	 * @uml.associationEnd  
@@ -38,7 +42,7 @@ public enum PluginDataType {
 	INT, 
 	
 	/**
-	 * Normal double datatype.
+	 * Normal double data type.
 	 *
 	 * @uml.property  name="dOUBLE"
 	 * @uml.associationEnd  
@@ -46,7 +50,7 @@ public enum PluginDataType {
 	DOUBLE,
 	
 	/**
-	 * Normal String datatype.
+	 * Normal String data type.
 	 *
 	 * @uml.property  name="sTRING"
 	 * @uml.associationEnd  
@@ -54,7 +58,7 @@ public enum PluginDataType {
 	STRING,
 	
 	/**
-	 * A String that must represents an identifier of an axis.
+	 * A String that represents an identifier of an axis.
 	 *
 	 * @uml.property  name="aXISID"
 	 * @uml.associationEnd  
@@ -62,7 +66,7 @@ public enum PluginDataType {
 	AXISID,
 	
 	/**
-	 * A String that must respresents an identifier of an channel.
+	 * A String that represents an identifier of an channel.
 	 *
 	 * @uml.property  name="cHANNELID"
 	 * @uml.associationEnd  
@@ -70,7 +74,7 @@ public enum PluginDataType {
 	CHANNELID,
 	
 	/**
-	 * A String that must respresents an identifier of an device.
+	 * A String that represents an identifier of an device.
 	 *
 	 * @uml.property  name="dEVICEID"
 	 * @uml.associationEnd  
@@ -78,66 +82,72 @@ public enum PluginDataType {
 	DEVICEID;
 	
 	/**
-	 * This method is used to find out if a value can exist unter this data type.
+	 * This method checks whether a value is possible for a given data type.
 	 * 
-	 * @param type The type on which base the value should be checked i.e. PluginDataType.OPENCLOSE or PluginDataType.ONOFF.
-	 * @param value The value that should be checked.
-	 * @return The method returns true if the value is ok, false if it's not.
+	 * @param type the type  the value should be checked with
+	 * @param value the value that should be checked
+	 * @return (value possible) ? TRUE : FALSE
+	 * @exception IllegalArgumentException if type == 'null'
+	 * @exception IllegalArgumentException if value  == 'null'
 	 */
-	public static boolean isValuePossible( final PluginDataType type, final String value ) {
+	public static boolean isValuePossible(final PluginDataType type, 
+											final String value) {
 		
-		if( type == null ) {
-			throw new IllegalArgumentException( "The parameter 'type' must not be null!" );
+		if(type == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'type' must not be null!");
 		}
-		if( value == null ) {
-			throw new IllegalArgumentException( "The parameter 'value' must not be null!" );
-		}
+		if(value == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'value' must not be null!");
+		}	
 		
+		switch(type) {
 		
-		switch( type ) {
+		case ONOFF:		return (value.toUpperCase().equals("ON") || 
+								 value.toUpperCase().equals("OFF"));
 		
-		case ONOFF:		return ( value.toUpperCase().equals( "ON" ) || value.toUpperCase().equals( "OFF" ) );
-		
-		case OPENCLOSE:	return ( value.toUpperCase().equals( "OPEN" ) || value.toUpperCase().equals( "CLOSE" ) );
+		case OPENCLOSE:	return (value.toUpperCase().equals("OPEN") || 
+								 value.toUpperCase().equals("CLOSE"));
 		
 		case INT:		try {
-							Integer.parseInt( value );
-						} catch( final NumberFormatException e ) {
+							Integer.parseInt(value);
+						} catch(final NumberFormatException e) {
 							return false;
 						}
 						return true;
 						
 		case DOUBLE:	try {
-							Double.parseDouble( value );
-						} catch( final NumberFormatException e ) {
+							Double.parseDouble(value);
+						} catch(final NumberFormatException e) {
 							return false;
 						}
 						return true; 
-						
+			
+		// TODO clean programming of the following lines ?
+		// TODO Does it really do what we want ?
 		case STRING:
 		case AXISID:
 		case CHANNELID:
 		case DEVICEID:
-				return true;
-			
-		
-		}
-		
+				return true;		
+		}		
 		return false;
-		
 	}
 	
 	/**
-	 * This static Method is translating a name for the plugindata type like it's used in the
-	 * measuring station description or the scan description into the correpondenting PluginDataType.
-	 * Possible values are: OpenClose, OnOff, int, double, string, axisid, channelid and deviceid.
+	 * translates a name of a plug in data type into its corresponding 
+	 * PluginDataType.
 	 * 
-	 * @param name The String that should be tranlated. Must not be null.
-	 * @return The correspondenting PluginDataType.
+	 * @param name one of {"OnOff", "OpenClose", "int", "double", "string", 
+	 * 						"axisid", "channelid", "deviceid"}
+	 * @return The corresponding PluginDataType.
+	 * @exception IllegalArgumentException if name == 'null'
 	 */
-	public static PluginDataType stringToType( final String name ) {
-		if( name == null ) {
-			throw new IllegalArgumentException( "The parameter 'name' must not be null!" );
+	public static PluginDataType stringToType(final String name) {
+		if(name == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'name' must not be null!");
 		}
 		
 		if( name.equals( "OnOff" ) ) {
@@ -157,12 +167,11 @@ public enum PluginDataType {
 		} else if( name.equals( "deviceid" ) ) {
 			return PluginDataType.DEVICEID;
 		} 
-		return null;
-		
+		return null;	
 	}
 
 	/**
-	 * Return a well-formatted string with a valid default value.
+	 * Returns a well-formatted string with a valid default value.
 	 * 
 	 * @param type data type for which a default value is returned
 	 * @return a default value
@@ -184,16 +193,17 @@ public enum PluginDataType {
 	}
 	
 	/**
-	 * This static method translates a PluginDataType into a String, like it's used in the measuring
-	 * station description or the scan description. 
+	 * translates a PluginDataType into a String. 
 	 * 
-	 * @param type The type, that should be translated. Must not be null!
-	 * @return The correpondentin string. Null if the Type was invalid.
+	 * @param type the type, that should be translated.
+	 * @return The corresponding string. Null if the Type was invalid.
+	 * @exception IllegalArgumentException if type == 'null'
 	 */
-	public static String typeToString( final PluginDataType type ) {
+	public static String typeToString(final PluginDataType type) {
 		
-		if( type == null ) {
-			throw new IllegalArgumentException( "The parameter 'type' must not be null!" );
+		if(type == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'type' must not be null!");
 		}
 		switch( type ) {
 			case ONOFF:
@@ -211,57 +221,63 @@ public enum PluginDataType {
 			case CHANNELID:
 				return "channelid";
 			case DEVICEID:
-				return "deviceid";
-					
+				return "deviceid";					
 		}
-		
 		return null;
-		
 	}
 	
 	/**
-	 * This static method give back an array of the possible comparison types of the given plugin data type.
+	 * Returns an array of possible comparison types of the given plug in 
+	 * data type.
 	 * 
 	 * @see de.ptb.epics.eve.data.ComparisonTypes
-	 * @param type The plugin data type of which you want to have the possible comparison types.
-	 * @return An array, which contains the possible comparisonTypes. Null, if the type was invalid.
+	 * @param type The plug in data type of interest
+	 * @return (type valid) ? array containing possible comparisonTypes : 'null'
+	 * @exception IllegalArgumentException if type == 'null'
 	 */
-	public static ComparisonTypes[] getPossibleComparisonTypes( final PluginDataType type ) {
-		if( type == null ) {
-			throw new IllegalArgumentException( "The parameter 'type' must not be null!" );
+	public static ComparisonTypes[] getPossibleComparisonTypes(
+										final PluginDataType type) {
+		if(type == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'type' must not be null!");
 		}
-		switch( type ) {
+		switch(type) {
 			case ONOFF:
 			case OPENCLOSE:
 			case STRING:
 			case AXISID:
 			case CHANNELID:
 			case DEVICEID:
-				return new ComparisonTypes[]{ ComparisonTypes.EQ, ComparisonTypes.NE };
+				return new ComparisonTypes[]
+				                   {ComparisonTypes.EQ, ComparisonTypes.NE};
 			case INT:
 			case DOUBLE:
-				return new ComparisonTypes[]{ ComparisonTypes.EQ, ComparisonTypes.NE, ComparisonTypes.GT, ComparisonTypes.LT };
+				return new ComparisonTypes[]
+				                   {ComparisonTypes.EQ, ComparisonTypes.NE, 
+									ComparisonTypes.GT, ComparisonTypes.LT};
 		}
 		return null;
 	}
 	
 	/**
-	 * This static method gives back if a comparision type is possible for a Datatype.
+	 * Checks if a comparison type is possible for a given plug in data type.
+	 * E.g. EQ and NE are working for a string but GT and LT are not.
 	 * 
-	 * I.e. EQ and NE are working for a string but GT and LT makes no sense in that way.
-	 * 
-	 * @param dataType The Datatype
-	 * @param comparisonType The comparison type that should be checked.
-	 * @return Gives back 'true' if the comparision type if possible for the given datantype and 'false' if not.
+	 * @param dataType the plug in data type
+	 * @param comparisonType the comparison type that should be checked.
+	 * @return (type possible) ? TRUE : FALSE
 	 */
-	public static boolean isComparisonTypePossible( final PluginDataType dataType, final ComparisonTypes comparisonType ) {
-		ComparisonTypes[] comparisonTypes = PluginDataType.getPossibleComparisonTypes( dataType );
-		for( int i = 0; i < comparisonTypes.length; ++i ) {
-			if( comparisonTypes[i] == comparisonType ) {
+	public static boolean isComparisonTypePossible(
+								final PluginDataType dataType, 
+								final ComparisonTypes comparisonType ) {
+		ComparisonTypes[] comparisonTypes = 
+				PluginDataType.getPossibleComparisonTypes( dataType );
+		
+		for(int i=0; i<comparisonTypes.length; ++i) {
+			if(comparisonTypes[i] == comparisonType) {
 				return true;
 			}
 		}
 		return false;
-	}
-	
+	}	
 }

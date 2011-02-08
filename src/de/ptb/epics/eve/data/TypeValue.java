@@ -1,17 +1,22 @@
-/*******************************************************************************
+/*
  * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The class TypeValue is a very fundamental class in the datatype system of the Scan Modul Editor. Very often a device has more limitations in it's possible values than just the primitive datatypes. In this case you have a discrete amount of values like green, red and blue. So the TypeValue class gets intialized with the DataTypes.STRING and value "green red blue". Integer or Double values may have a range defined, 
+ * The class TypeValue is a very fundamental class in the datatype system of the
+ * Scan Modul Editor. Very often a device has more limitations in it's possible 
+ * values than just the primitive data types. In this case you have a discrete 
+ * amount of values like green, red and blue. So the TypeValue class gets 
+ * initialized with the DataTypes.STRING and value "green red blue". Integer or 
+ * Double values may have a range defined, 
  * @author  Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version  1.4
  * @see  de.ptb.epics.eve.data.measuringstation.ProcessVariable
@@ -19,7 +24,7 @@ import java.util.List;
 public class TypeValue {
 
 	/**
-	 * The basic primitive datatype on which this definition based.
+	 * The basic primitive data type on which this definition based.
 	 * @uml.property  name="type"
 	 * @uml.associationEnd  
 	 */
@@ -27,14 +32,13 @@ public class TypeValue {
 	
 	
 	/**
-	 * This constructor is used if a TypeValue object should be initialized that has no further limitations than the base type.
+	 * used if a TypeValue object should be initialized that has no further 
+	 * limitations than the base type.
 	 * 
-	 * @param type The basic primitive datatype on which this definition based.
+	 * @param type The basic primitive data type on which this definition based.
 	 */
-	public TypeValue( final DataTypes type ) {
-		
+	public TypeValue( final DataTypes type ) {	
 		this( type, null );
-		
 	}
 	
 	/**
@@ -54,24 +58,26 @@ public class TypeValue {
 	List<String> elements;
 
 	/**
-	 * This constructor is used if a TypeValue object should be initialized that has a limitation of the possible values.
+	 * This constructor is used if a TypeValue object should be initialized that
+	 * has a limitation of the possible values.
 	 * 
-	 * @param type The basic primitive datatype on which this definition based.
-	 * @param value The possible values seperated by a whitespace
+	 * @param type The basic primitive data type on which this definition based.
+	 * @param value The possible values separated by a whitespace
+	 * @exception IllegalArgumentException if type == 'null'
 	 */
-	public TypeValue( final DataTypes type, final String values ) {
-		if( type == null ) {
-			throw new IllegalArgumentException( "The parameter 'type' must not be null!" );
+	public TypeValue(final DataTypes type, final String values) {
+		if(type == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'type' must not be null!");
 		}
 		elements = new ArrayList<String>();
 		this.type = type;
-		setValues(values);
-		
+		setValues(values);	
 	}
 	
 	/**
-	 * Returns the datatype of this TypeValue object.
-	 * @return  The datatype.
+	 * Returns the data type of this TypeValue object.
+	 * @return  The data type.
 	 * @uml.property  name="type"
 	 */
 	public DataTypes getType() {
@@ -97,7 +103,6 @@ public class TypeValue {
 			return elements.get(0);
 		}
 		
-
 		int count = 0;
 		for (String string : elements){
 			if (count > 0) returnString.append(token);
@@ -155,8 +160,8 @@ public class TypeValue {
 	}
 
 	/**
-	 * This method gives back if this TypeValue is discrete.
-	 * @return  'true' if this TypeValue is discrete, 'false' if not.
+	 * Checks if this TypeValue is discrete.
+	 * @return (TypeValue discrete) ? TRUE : FALSE
 	 * @uml.property  name="isDiscrete"
 	 */
 	public boolean isDiscrete() {
@@ -164,9 +169,11 @@ public class TypeValue {
 	}
 	
 	/**
-	 * If this TypeValue is discrete, this method gives back List of String that contains all possible values.
+	 * If this TypeValue is discrete, this method gives back a List that 
+	 * contains all possible values as Strings.
 	 * 
-	 * @return A List that contains all possible discrete values. If this TypeValue is not discrete null will be returned.
+	 * @return A List that contains all possible discrete values. 
+	 * 			If this TypeValue is not discrete null will be returned.
 	 */
 	public List<String> getDiscreteValues() {
 
@@ -174,14 +181,13 @@ public class TypeValue {
 			return new ArrayList<String>(elements);
 		else
 			return null;
-
 	}
 	
 	/**
-	 * Finds out if a value is possible under the constraints of this TypeValue object.
+	 * Checks if a value is possible under the constraints of this TypeValue.
 	 * 
-	 * @param value The value that should be checked
-	 * @return Returns true if the value fits the constrains, false if not.
+	 * @param value the value that should be checked
+	 * @return true if the value fits the constrains, false if not.
 	 */
 	public boolean isValuePossible( final String value ) {
 		if (formatValue(value) == null )
@@ -192,7 +198,7 @@ public class TypeValue {
 
 	/**
 	 * Return a string formatted to the corresponding DataTypes.
-	 * If the string can be converted, return a well-formatted string, else return null.
+	 * If the string can be converted, return a well-formatted string, else null.
 	 * 
 	 * @param value string to be formatted
 	 * @return a formatted string or null
@@ -227,8 +233,8 @@ public class TypeValue {
 	}
 
 	/**
-	 * Return a string formatted to the corresponding DataTypes or a valid default value.
-	 * If the string can be converted, return a well-formatted string else a valid default value.
+	 * Return a string formatted to the corresponding DataTypes or a valid 
+	 * default value (if the string can be converted).
 	 * 
 	 * @param value string to be formatted
 	 * @return a formatted string or null
@@ -247,7 +253,8 @@ public class TypeValue {
 
 	/**
 	 * Return a well-formatted string with a valid default value, which 
-	 * is the low limit (range) or the first element (set) or the default for this data type
+	 * is the low limit (range) or the first element (set) or the default for 
+	 * this data type
 	 * 
 	 * @return a default value
 	 */
@@ -263,6 +270,11 @@ public class TypeValue {
 		}
 	}
 
+	/**
+	 * fancy math
+	 * 
+	 * @return a hash value
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -274,6 +286,12 @@ public class TypeValue {
 		return result;
 	}
 
+	/**
+	 * checks whether the argument and calling object are equal.
+	 * 
+	 * @param the object to be checked
+	 * @return (objects equal) ? TRUE : FALSE
+	 */
 	@Override
 	public boolean equals( final Object obj ) {
 		if( this == obj ) {
@@ -309,6 +327,11 @@ public class TypeValue {
 		return true;
 	}
 	
+	/**
+	 * clones the calling object.
+	 * 
+	 * @return a copy of the calling object
+	 */
 	@Override
 	public Object clone() {
 		final TypeValue typeValue = new TypeValue( this.type );

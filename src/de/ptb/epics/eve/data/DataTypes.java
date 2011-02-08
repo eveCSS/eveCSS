@@ -60,7 +60,7 @@ public enum DataTypes {
 	STRING,
 	
 	/**
-	 * DateTime may be an absolute datetime spec: yyyy-mm-dd hh:mm:ss.sss
+	 * DateTime may be an absolute date/time spec: yyyy-mm-dd hh:mm:ss.sss
 	 * or an absolute time without date hh:mm:ss.sss which assumes today as date
 	 * or an relative time hh:mm:ss.sss or an relative time ss.sss
 	 * Examples: 
@@ -76,24 +76,29 @@ public enum DataTypes {
 	DATETIME;
 	
 	/**
-	 * determines whether a value can exist for a given data type.
+	 * determines whether a value is allowed for a given data type.
 	 * 
 	 * @param type data type the value will be checked with
 	 * @param value the value to be checked.
-	 * @return true if the value is valid, false otherwise.
+	 * @return (value valid) ? TRUE : FALSE
+	 * @exception IllegalArgumentException if type == 'null'
+	 * @exception IllegalArgumentException if value == 'null'
 	 */
-	public static boolean isValuePossible( final DataTypes type, final String value ) {
-		
-		if( type == null ) {
-			throw new IllegalArgumentException( "The parameter 'type' must not be null!" );
+	public static boolean isValuePossible(final DataTypes type, 
+											final String value) {
+		if(type == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'type' must not be null!");
 		}
-		if( value == null ) {
-			throw new IllegalArgumentException( "The parameter 'value' must not be null!" );
+		if(value == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'value' must not be null!");
 		}
 		
+		switch(type) {
 		
-		switch( type ) {
-		
+		// TODO : ONOFF and OPENCLOSE always true ?
+		// TODO : Delete Comments ?
 //		case ONOFF:		return ( value.toUpperCase().equals( "ON" ) || value.toUpperCase().equals( "OFF" ) );
 		case ONOFF:		return true;
 		
@@ -101,22 +106,23 @@ public enum DataTypes {
 		case OPENCLOSE:	return true;
 		
 		case INT:		try {
-							Integer.parseInt( value );
-						} catch( final NumberFormatException e ) {
+							Integer.parseInt(value);
+						} catch(final NumberFormatException e) {
 							return false;
 						}
 						return true;
 						
 		case DOUBLE:	try {
-							Double.parseDouble( value );
-						} catch( final NumberFormatException e ) {
+							Double.parseDouble(value);
+						} catch(final NumberFormatException e) {
 							return false;
 						}
 						return true;
 						
 		case STRING:	return true;
 		case DATETIME:	
-						if (value.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$"))
+						if (value.matches(
+					"\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$"))
 							return true;
 						else if (value.matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$"))
 							return true;
@@ -126,43 +132,48 @@ public enum DataTypes {
 		return false;	
 	}
 
+	// TODO describe following function in more detail !
 	/**
-	 * Return a string formatted to the corresponding DataTypes.
-	 * If the string can be converted, return a well-formatted string, else return null.
+	 * Returns a string formatted to the corresponding DataTypes.
 	 * 
+	 * @param type ?????
 	 * @param value string to be formatted
-	 * @return a formatted string or null
+	 * @return a formatted string or null (if string cannot be converted)
+	 * @exception IllegalArgumentException if value == 'null'
 	 */
-	public static String formatValue(final DataTypes type, final String value){
+	public static String formatValue(final DataTypes type, 
+									  final String value) {
 		
-		if( value == null ) {
-			throw new IllegalArgumentException( "The parameter value must not be null" );
+		if(value == null) {
+			throw new IllegalArgumentException(
+					"The parameter value must not be null");
 		}
 		
-		if( !DataTypes.isValuePossible( type, value ) ) {
+		if(!DataTypes.isValuePossible(type, value)) {
 			return null;
 		}
 
 		String returnString = null;
 		
-		if (type == DataTypes.STRING){
+		// TODO: first 3 if statements can be converted to one with ||
+		if (type == DataTypes.STRING) {
 			returnString = value;
 		}
-		else if (type == DataTypes.ONOFF){
+		else if (type == DataTypes.ONOFF) {
 			returnString = value;
 		}
-		else if (type == DataTypes.OPENCLOSE){
+		else if (type == DataTypes.OPENCLOSE) {
 			returnString = value;
 		}
-		else if (type == DataTypes.INT){
+		else if (type == DataTypes.INT) {
 			Integer intval = Integer.parseInt(value.trim());
 			returnString = intval.toString();
 		}
-		else if (type == DataTypes.DOUBLE){
+		else if (type == DataTypes.DOUBLE) {
 			Double intval = Double.parseDouble(value.trim());
 			returnString = intval.toString();
 		}
-		else  if (type == DataTypes.DATETIME) {
+		else if (type == DataTypes.DATETIME) {
 			if (value.contains("-")){
 				// date included
 				if (value.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$"))
@@ -230,10 +241,11 @@ public enum DataTypes {
 	 * @param type data type of value
 	 * @return a formatted string or null
 	 */
-	public static String formatValueDefault(final DataTypes type, final String value){
+	public static String formatValueDefault(final DataTypes type, 
+											 final String value) {
 		
 		String returnString = formatValue(type, value);
-		if (returnString != null ) 
+		if (returnString != null) 
 			return returnString;
 		else
 			return getDefaultValue(type);
@@ -245,9 +257,9 @@ public enum DataTypes {
 	 * @param type data type for which a default value is returned
 	 * @return a default value
 	 */
-	public static String getDefaultValue(final DataTypes type){
+	public static String getDefaultValue(final DataTypes type) {
 		
-		switch( type ) {
+		switch(type) {
 		
 		case ONOFF:		return "OFF";
 		case OPENCLOSE:	return "CLOSE";		
@@ -260,16 +272,16 @@ public enum DataTypes {
 	}
 
 	/**
-	 * This static Method is translating a name for the data type like it's used in the
-	 * measuring station description or the scan description into the correpondenting DataType.
-	 * Possible values are: OpenClose, OnOff, int, double and string.
+	 * translates a name (string) of a data type into its DataType.
 	 * 
-	 * @param name The String that should be tranlated. Must not be null.
-	 * @return The correspondenting DataType.
+	 * @param name one out of {"OpenClose", "Off", "int", "double", "string"}
+	 * @return The corresponding DataType.
+	 * @exception IllegalArgumentException if name == 'null'
 	 */
-	public static DataTypes stringToType( final String name ) {
-		if( name == null ) {
-			throw new IllegalArgumentException( "The parameter 'name' must not be null!" );
+	public static DataTypes stringToType(final String name) {
+		if(name == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'name' must not be null!");
 		}
 		
 		if( name.equals( "OnOff" ) ) {
@@ -286,22 +298,22 @@ public enum DataTypes {
 			return DataTypes.DATETIME;
 		} 
 		return null;
-		
 	}
 	
 	/**
-	 * This static method translates a DataType into a String, like it's used in the measuring
-	 * station description or the scan description. 
+	 * translates a DataType into a String. 
 	 * 
-	 * @param type The type, that should be translated. Must not be null!
-	 * @return The correpondentin string. Null if the Type was invalid.
+	 * @param type the type, that should be translated.
+	 * @return The translated string
+	 * @exception IllegalArgumentException if type == 'null'
 	 */
-	public static String typeToString( final DataTypes type ) {
+	public static String typeToString(final DataTypes type) {
 		
-		if( type == null ) {
-			throw new IllegalArgumentException( "The parameter 'type' must not be null!" );
+		if(type == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'type' must not be null!");
 		}
-		switch( type ) {
+		switch(type) {
 			case ONOFF:
 				return "OnOff";
 			case OPENCLOSE:
@@ -315,52 +327,56 @@ public enum DataTypes {
 			case DATETIME:
 				return "datetime";
 		}
-		
 		return null;
-		
 	}
 	
 	/**
-	 * This static method give back an array of the possible comparison types of the given data type.
+	 * Returns an array of comparison types possible for a given data type.
 	 * 
 	 * @see de.ptb.epics.eve.data.ComparisonTypes
-	 * @param type The data type of which you want to have the possible comparison types.
-	 * @return An array, which contains the possible comparisonTypes. Null, if the type was invalid.
+	 * @param type the data type of which you want the possible comparison types.
+	 * @return an array containing the possible comparisonTypes.
+	 * @exception IllegalArgumentException if type == 'null'
 	 */
-	public static ComparisonTypes[] getPossibleComparisonTypes( final DataTypes type ) {
-		if( type == null ) {
-			throw new IllegalArgumentException( "The parameter 'type' must not be null!" );
+	public static ComparisonTypes[] getPossibleComparisonTypes(
+												final DataTypes type) {
+		if(type == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'type' must not be null!");
 		}
-		switch( type ) {
+		switch(type) {
 			case ONOFF:
 			case OPENCLOSE:
 			case STRING:
-				return new ComparisonTypes[]{ ComparisonTypes.EQ, ComparisonTypes.NE };
+				return new ComparisonTypes[]
+				               {ComparisonTypes.EQ, ComparisonTypes.NE};
 			case DATETIME:
 			case INT:
 			case DOUBLE:
-				return new ComparisonTypes[]{ ComparisonTypes.EQ, ComparisonTypes.NE, ComparisonTypes.GT, ComparisonTypes.LT };
+				return new ComparisonTypes[]
+				               {ComparisonTypes.EQ, ComparisonTypes.NE, 
+							 	ComparisonTypes.GT, ComparisonTypes.LT};
 		}
 		return null;
 	}
 	
 	/**
-	 * This static method gives back if a comparison type is possible for a Datatype.
+	 * checks if a comparison type is possible for a given data type.
+	 * E.g. EQ and NE are working for a string but GT and LT are not.
 	 * 
-	 * I.e. EQ and NE are working for a string but GT and LT makes no sense in that way.
-	 * 
-	 * @param dataType The Datatype
-	 * @param comparisonType The comparison type that should be checked.
-	 * @return Gives back 'true' if the comparison type if possible for the given datatype and 'false' if not.
+	 * @param dataType data type to be checked
+	 * @param comparisonType comparison type that should be checked.
+	 * @return (comparison type possible for date type) ? TRUE : FALSE
 	 */
-	public static boolean isComparisonTypePossible( final DataTypes dataType, final ComparisonTypes comparisonType ) {
-		ComparisonTypes[] comparisonTypes = DataTypes.getPossibleComparisonTypes( dataType );
-		for( int i = 0; i < comparisonTypes.length; ++i ) {
-			if( comparisonTypes[i] == comparisonType ) {
+	public static boolean isComparisonTypePossible( final DataTypes dataType,
+									final ComparisonTypes comparisonType ) {
+		ComparisonTypes[] comparisonTypes = 
+			DataTypes.getPossibleComparisonTypes(dataType);
+		for(int i = 0; i < comparisonTypes.length; ++i) {
+			if(comparisonTypes[i] == comparisonType) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
 }

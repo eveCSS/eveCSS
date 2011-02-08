@@ -29,7 +29,7 @@ public enum ComparisonTypes {
 	 */
 	EQ, 
 	/**
-	 * Not Equals
+	 * Not Equal
 	 *
 	 * @uml.property  name="nE"
 	 * @uml.associationEnd  
