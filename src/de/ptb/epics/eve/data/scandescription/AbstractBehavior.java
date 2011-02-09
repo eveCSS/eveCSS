@@ -1,10 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
+/*
+ * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.ArrayList;
@@ -18,12 +18,13 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProv
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
 /**
- * This class the basics of all behavior descriptions inside of a Scan Modul.
+ * This class the basics of all behavior descriptions inside of a scan module.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.2
  */
-public abstract class AbstractBehavior implements IModelUpdateListener, IModelUpdateProvider, IModelErrorProvider {
+public abstract class AbstractBehavior implements IModelUpdateListener, 
+		IModelUpdateProvider, IModelErrorProvider {
 
 	/**
 	 * This list contains all listener for update of this model object.
@@ -51,31 +52,41 @@ public abstract class AbstractBehavior implements IModelUpdateListener, IModelUp
 		return abstractDevice;
 	}
 
-	/*
-	 * (non-Javadoc)
+	// TODO Comment
+	/**
+	 *
+	 * @param modelUpdateEvent
 	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener#updateEvent(de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent)
 	 */
-	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-		final Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, modelUpdateEvent ) );
+	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
+		final Iterator<IModelUpdateListener> it = 
+				this.modelUpdateListener.iterator();
+		while(it.hasNext()) {
+			it.next().updateEvent(new ModelUpdateEvent(this,modelUpdateEvent));
 		}	
 	}
 	
-	/*
-	 * (non-Javadoc)
+	// TODO Comment
+	/**
+	 * 
+	 * @param modelUpdateListener
+	 * @return TRUE or FALSE 
 	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider#addModelUpdateListener(de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener)
 	 */
-	public boolean addModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return this.modelUpdateListener.add( modelUpdateListener );
+	public boolean addModelUpdateListener(
+				final IModelUpdateListener modelUpdateListener) {
+		return this.modelUpdateListener.add(modelUpdateListener);
 	}
 
-	/*
-	 * (non-Javadoc)
+	// TODO Comment
+	/**
+	 * 
+	 * @param modelUpdateListener
+	 * @return TRUE or FALSE 
 	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider#removeModelUpdateListener(de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener)
 	 */
-	public boolean removeModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return this.modelUpdateListener.remove( modelUpdateListener );
-	}
-	
+	public boolean removeModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.modelUpdateListener.remove(modelUpdateListener);
+	}	
 }
