@@ -11,12 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The class TypeValue is a very fundamental class in the datatype system of the
- * Scan Modul Editor. Very often a device has more limitations in it's possible 
- * values than just the primitive data types. In this case you have a discrete 
- * amount of values like green, red and blue. So the TypeValue class gets 
- * initialized with the DataTypes.STRING and value "green red blue". Integer or 
- * Double values may have a range defined, 
+ * Very often a device has more limitations in it's valid values than just the 
+ * primitive data types. In this case you have a discrete amount of values like 
+ * green, red and blue. So the TypeValue class gets initialized with the 
+ * DataTypes.STRING and value "green red blue". Integer or Double values may 
+ * have a range defined, 
  * @author  Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version  1.4
  * @see  de.ptb.epics.eve.data.measuringstation.ProcessVariable
@@ -32,7 +31,7 @@ public class TypeValue {
 	
 	
 	/**
-	 * used if a TypeValue object should be initialized that has no further 
+	 * Used if a TypeValue object should be initialized that has no further 
 	 * limitations than the base type.
 	 * 
 	 * @param type The basic primitive data type on which this definition based.
@@ -58,12 +57,12 @@ public class TypeValue {
 	List<String> elements;
 
 	/**
-	 * This constructor is used if a TypeValue object should be initialized that
+	 * Used if a TypeValue object should be initialized that
 	 * has a limitation of the possible values.
 	 * 
-	 * @param type The basic primitive data type on which this definition based.
-	 * @param value The possible values separated by a whitespace
-	 * @exception IllegalArgumentException if type == 'null'
+	 * @param type the basic primitive data type on which this definition based
+	 * @param value the possible values separated by a whitespace
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public TypeValue(final DataTypes type, final String values) {
 		if(type == null) {
@@ -85,7 +84,7 @@ public class TypeValue {
 	}
 	
 	/**
-	 * Build a string with the discrete values or range specification.
+	 * Builds a string with the discrete values or range specification.
 	 * 
 	 * @return the discrete values or range specification.
 	 */
@@ -118,18 +117,23 @@ public class TypeValue {
 	 * - a range of int or doubles in the following format <startval>to<endval> 
 	 * - an arbitrary string without a comma
 	 * 
-	 * @param values A String of the possible values
+	 * @param values A <code>String</code> containing the possible values as:<ul>
+	 * 			<li>a <code>String</code> with comma-separated values, or
+	 * 			<li>a range of integers or doubles, format: 
+	 * 				<code>&lt;startval&gt;to&lt;endval&gt;</code>, or
+	 * 			<li> an arbitrary string without a comma
+	 * 			</ul>
 	 */
-	public void setValues( final String values ) {
+	public void setValues(final String values) {
 
 		hasRange = false;
 		isDiscrete = false;
-		if( values == null ) return;
+		if(values == null) return;
 		
 		if (((type == DataTypes.INT)||(type == DataTypes.DOUBLE)) && values.contains("to")) {
 			// we have a range
 			String[] splits = values.split( "to" );
-			if ( splits.length == 2){
+			if (splits.length == 2){
 				hasRange=true;
 				try {
 					if (type == DataTypes.INT){
@@ -140,7 +144,7 @@ public class TypeValue {
 						elements.add(Double.toString(Double.parseDouble(splits[0].trim())));
 						elements.add(Double.toString(Double.parseDouble(splits[1].trim())));
 					}
-				} catch( final NumberFormatException e ) {
+				} catch(final NumberFormatException e) {
 					hasRange=false;
 				}
 			}
@@ -160,8 +164,10 @@ public class TypeValue {
 	}
 
 	/**
-	 * Checks if this TypeValue is discrete.
-	 * @return (TypeValue discrete) ? TRUE : FALSE
+	 * Checks if current <code>TypeValue</code> is discrete.
+	 * 
+	 * @return <code>true</code> if type value is discrete, 
+	 * 			<code>false</code> otherwise
 	 * @uml.property  name="isDiscrete"
 	 */
 	public boolean isDiscrete() {
@@ -169,41 +175,44 @@ public class TypeValue {
 	}
 	
 	/**
-	 * If this TypeValue is discrete, this method gives back a List that 
-	 * contains all possible values as Strings.
+	 * If current <code>TypeValue</code> is discrete, returns a 
+	 * <code>List</code> containing all valid values as <code>String</code>s.
 	 * 
-	 * @return A List that contains all possible discrete values. 
-	 * 			If this TypeValue is not discrete null will be returned.
+	 * @return if current <code>TypeValue</code> is discrete: a 
+	 * 			<code>List</code> that contains all valid discrete values,
+	 * 			<code>null</code> otherwise 
 	 */
 	public List<String> getDiscreteValues() {
 
-		if( isDiscrete )
+		if(isDiscrete)
 			return new ArrayList<String>(elements);
 		else
 			return null;
 	}
 	
 	/**
-	 * Checks if a value is possible under the constraints of this TypeValue.
+	 * Checks if a value is valid under the constraints of this TypeValue.
 	 * 
 	 * @param value the value that should be checked
-	 * @return true if the value fits the constrains, false if not.
+	 * @return <code>true</code> if the value fits the constrains, 
+	 * 			<code>false</code> otherwise.
 	 */
-	public boolean isValuePossible( final String value ) {
-		if (formatValue(value) == null )
+	public boolean isValuePossible(final String value) {
+		if (formatValue(value) == null)
 			return false;
 		else
 			return true;
 	}
 
+	// TODO Describe what happens here exactly
 	/**
-	 * Return a string formatted to the corresponding DataTypes.
+	 * Returns a string formatted to the corresponding DataTypes.
 	 * If the string can be converted, return a well-formatted string, else null.
 	 * 
-	 * @param value string to be formatted
+	 * @param value the <code>String</code> that should be formatted
 	 * @return a formatted string or null
 	 */
-	public String formatValue(String value){
+	public String formatValue(String value) {
 		
 		String returnString = DataTypes.formatValue(type, value);
 
@@ -232,6 +241,7 @@ public class TypeValue {
 		return returnString;
 	}
 
+	// TODO Describe what happens here exactly
 	/**
 	 * Return a string formatted to the corresponding DataTypes or a valid 
 	 * default value (if the string can be converted).
@@ -242,7 +252,7 @@ public class TypeValue {
 	public String formatValueDefault(String value){
 		
 		String returnString = formatValue(value);
-		if (returnString == null ){
+		if (returnString == null){
 			if (isDiscrete || hasRange)
 				returnString = elements.get(0);
 			else
@@ -251,8 +261,9 @@ public class TypeValue {
 		return returnString;
 	}
 
+	// TODO Describe what happens here exactly
 	/**
-	 * Return a well-formatted string with a valid default value, which 
+	 * Returns a well-formatted string with a valid default value, which 
 	 * is the low limit (range) or the first element (set) or the default for 
 	 * this data type
 	 * 
@@ -287,10 +298,11 @@ public class TypeValue {
 	}
 
 	/**
-	 * checks whether the argument and calling object are equal.
+	 * Checks whether the argument and calling object are equal.
 	 * 
 	 * @param the object to be checked
-	 * @return (objects equal) ? TRUE : FALSE
+	 * @return <code>true</code> if objects are equal, 
+	 * 			<code>false</code> otherwise
 	 */
 	@Override
 	public boolean equals( final Object obj ) {
@@ -328,14 +340,14 @@ public class TypeValue {
 	}
 	
 	/**
-	 * clones the calling object.
+	 * Clones the calling object.
 	 * 
 	 * @return a copy of the calling object
 	 */
 	@Override
 	public Object clone() {
-		final TypeValue typeValue = new TypeValue( this.type );
-		typeValue.elements = new ArrayList<String>( this.elements );
+		final TypeValue typeValue = new TypeValue(this.type);
+		typeValue.elements = new ArrayList<String>(this.elements);
 		typeValue.hasRange = this.hasRange;
 		typeValue.isDiscrete = this.isDiscrete;
 		return typeValue;

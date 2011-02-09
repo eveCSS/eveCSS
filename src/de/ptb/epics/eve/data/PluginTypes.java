@@ -8,7 +8,7 @@
 package de.ptb.epics.eve.data;
 
 /**
- * This enum defines the possible plotmodes of a line in a plot window.
+ * Defines the available plot modes of a line in a plot window.
  * @author   Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version   1.3
  * @see  de.ptb.epics.eve.data.measuringstation.PlugIn
@@ -16,7 +16,7 @@ package de.ptb.epics.eve.data;
 public enum PluginTypes {
 
 	/**
-	 * Says, that the plug in is a position plug in, that could be used to 
+	 * A position plug in, that could be used to 
 	 * calculate the position of motor axis.
 	 *
 	 * @uml.property  name="pOSITION"
@@ -24,15 +24,15 @@ public enum PluginTypes {
 	 */
 	POSITION,
 	/**
-	 * Says, that the plug in is a save plug in, that could be used in the 
-	 * definition of a Scan-Chain.
+	 * A save plug in, that could be used in the 
+	 * definition of a scan chain.
 	 *
 	 * @uml.property  name="sAVE"
 	 * @uml.associationEnd  
 	 */
 	SAVE,
 	/**
-	 * Says, that the plug in is a display plug in, that is doing some 
+	 * A display plug in, that is doing some 
 	 * pre-calculations for a plotWindow. 
 	 *
 	 * @uml.property  name="dISPLAY"
@@ -41,7 +41,7 @@ public enum PluginTypes {
 	DISPLAY,
 	
 	/**
-	 * Says, that the plug in is a postscanpositions plug in, that moves an axis
+	 * A post scan positions plug in, that moves an axis
 	 * to a position after
 	 *
 	 * @uml.property  name="pOSTSCANPOSITIONING"
@@ -50,13 +50,12 @@ public enum PluginTypes {
 	POSTSCANPOSITIONING;
 	
 	/**
-	 * This static Method is translating a name for plug in type into its
-	 * corresponding PluginType.
-	 * Possible values are: position, save and display
-	
-	 * @param type the type, that should be translated.
-	 * @return (type valid) ? corresponding string : 'null'
-	 * @exception IllegalArgumentException if type == 'null'
+	 * Converts a plug in type (<code>PluginTypes</code>) into its
+	 * corresponding <code>String</code>.
+	 *
+	 * @param type the type, that should be converted
+	 * @return the corresponding <code>String</code>
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public static String typeToString(final PluginTypes type) {
 		if(type == null) {

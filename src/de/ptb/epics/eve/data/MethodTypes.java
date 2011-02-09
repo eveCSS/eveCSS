@@ -67,11 +67,14 @@ public enum MethodTypes {
 	
 	
 	/**
-	 * translates a name for the method type into its corresponding MethodType.
+	 * Converts a <code>String</code> into its corresponding method type 
+	 * (<code>MethodTypes</code>).
 	 * 
-	 * @param name one of {"PUT", "PUTCB", "GET", "GETCB", "GETPUTCB", "GETPUT"}
-	 * @return The corresponding EventType.
-	 * @exception IllegalArgumentException if name == 'null'
+	 * @param name the <code>String</code> that should be converted.<br>
+	 * 				<b>Precondition:</b> name is element of {"PUT", "PUTCB", 
+	 * 									"GET", "GETCB", "GETPUTCB", "GETPUT"}
+	 * @return the corresponding method type
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public static MethodTypes stringToType(final String name) {
 		if(name == null) {
@@ -96,11 +99,12 @@ public enum MethodTypes {
 	}
 	
 	/**
-	 * translates a MethodType into a String,  
+	 * Converts a method type (<code>MethodTypes</code>) into its corresponding 
+	 * <code>String</code>,  
 	 * 
-	 * @param type the type, that should be translated
-	 * @return (type valid) ? the corresponding string : 'null'
-	 * @exception IllegalArgumentException if type == 'null'
+	 * @param type the type, that should be converted
+	 * @return the corresponding <code>String</code>
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public static String typeToString(final MethodTypes type) {
 		if(type == null) {

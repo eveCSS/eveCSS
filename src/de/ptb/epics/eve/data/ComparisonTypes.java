@@ -12,8 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * represents the available comparison types
- * (equals, not equals, greater than, less than). 
+ * Contains all available comparison types 
  *
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.3
@@ -51,88 +50,105 @@ public enum ComparisonTypes {
 	LT;
 
 	/**
-	 * translates a ComparisonType, written in small letters, into it's 
-	 * corresponding enum field. 
+	 * Converts a <code>String</code> into its corresponding 
+	 * <code>ComparisonType</code>.
 	 *
-	 * @param name ComparisonType in small letters. Must not be null.
-	 * @return corresponding ComparisonType or null if name is not valid 
+	 * @param name the <code>String</code> that should be translated<br>
+	 * 				<b>Precondition:</b> name is element of {"eq","ne","gt","lt"}
+	 * @return corresponding <code>ComparisonType</code>
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public static ComparisonTypes stringToType( final String name ) {
-		if( name == null ) {
+	public static ComparisonTypes stringToType(final String name) {
+		if(name == null) {
 			throw new IllegalArgumentException( 
-					"The parameter 'name' must not be null!" );
+					"The parameter 'name' must not be null!");
 		}
-		if( name.equals( "eq" ) ) {
+		if(name.equals("eq")) {
 			return ComparisonTypes.EQ;
-		} else if( name.equals( "ne" ) ) {
+		} else if(name.equals("ne")) {
 			return ComparisonTypes.NE;
-		} else if( name.equals( "gt" ) ) {
+		} else if(name.equals("gt")) {
 			return ComparisonTypes.GT;
-		} else if( name.equals( "lt" ) ) {
+		} else if(name.equals("lt")) {
 			return ComparisonTypes.LT;
 		} 
 		return null;		
 	}
 	
 	/**
-	 * translates a ComparisonType into it's corresponding string,written in 
-	 * small letters. 
+	 * Converts a <code>ComparisonType</code> into its corresponding 
+	 * <code>String</code>. 
 	 * 
-	 * @param type ComparisonType to be converted to a string. Must not be null.
-	 * @return corresponding string, null if type was invalid.
+	 * @param type <code>ComparisonType</code> to be converted to a 
+	 * 				<code>String</code><br>
+	 * @return corresponding <code>String</code>
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public static String typeToString( final ComparisonTypes type ) {
-		if( type == null ) {
+	public static String typeToString(final ComparisonTypes type) {	
+		if(type == null) {
 			throw new IllegalArgumentException( 
-					"The parameter 'type' must not be null!" );
+					"The parameter 'type' must not be null!");
 		}
 		
-		switch( type ) {
+		switch(type) {
 			case EQ: return "eq";
 			case NE: return "ne";
 			case GT: return "gt";
 			case LT: return "lt";
 		}
+		
 		return null;
 	}
 	
 	/**
-	 * translates an array of ComparsionTypes into an array of corresponding
-	 * Strings.
+	 * Converts an array of <code>ComparsionType</code>s into an array of 
+	 * corresponding <code>String</code>s.
 	 * 
-	 * @param type array of ComparisonTypes to be translated. Must not be null.
-	 * @return array of strings (same order as given Comparison-Type Array).
+	 * @param type array of <code>ComparisonType</code>s to be translated<br>
+	 * 		   <b>Precondition:</b> contains no <code>null</code> elements
+	 * @return array of <code>String</code>s (same order as given 
+	 * 			<code>ComparisonType</code> Array).
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public static String[] typeToString( final ComparisonTypes[] type ) {
-		if( type == null ) {
+	public static String[] typeToString(final ComparisonTypes[] type) {
+		if(type == null) {
 			throw new IllegalArgumentException( 
-					"The parameter 'type' must not be null!" );
+					"The parameter 'type' must not be null!");
+		}	
+		
+		final String[] names = new String[type.length];
+	
+		for(int i=0; i<type.length; ++i) {
+			names[i] = ComparisonTypes.typeToString(type[i]);
 		}
-		final String[] names = new String[ type.length ];
-		for( int i = 0; i < type.length; ++i ) {
-			names[i] = ComparisonTypes.typeToString( type[i] );
-		}
+		
 		return names;
 	}
 	
 	/**
-	 * translates a List of ComparsionTypes into a List of corresponding
-	 * Strings.
-	 * Notice, that they must not any null element in the list.
+	 * Converts a <code>List</code> of <code>ComparisonType</code>s into a 
+	 * <code>List</code> of corresponding <code>String</code>s.
 	 * 
-	 * @param type A List of ComparisonTypes to be translated. Must not be null.
-	 * @return A List in the same order as the given Comparison-Type List.
+	 * @param type the <code>List</code> of <code>ComparisonTypes</code> 
+	 * 		   to be translated<br>
+	 * 		   <b>Precondition:</b> contains no <code>null</code> elements
+	 * @return A <code>List</code> (same order)
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public static List<String> typeToString(final List<ComparisonTypes> type) {
-		if( type == null ) {
+	public static List<String> typeToString(final List<ComparisonTypes> type) 
+	{		
+		if(type == null) {
 			throw new IllegalArgumentException( 
-					"The parameter 'type' must not be null!" );
+					"The parameter 'type' must not be null!");
 		}
-		final List<String> names = new ArrayList<String>( type.size() );
+		
+		final List<String> names = new ArrayList<String>(type.size());
 		final Iterator<ComparisonTypes> it = type.iterator();
-		while( it.hasNext() ) {
-			names.add( ComparisonTypes.typeToString( it.next() ) );
+		
+		while(it.hasNext()) {
+			names.add(ComparisonTypes.typeToString(it.next()));
 		}
+		
 		return names;
 	}	
 }

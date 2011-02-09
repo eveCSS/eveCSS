@@ -13,9 +13,9 @@ import java.util.regex.Pattern;
 
 
 /**
- * defines some special data types, used inside of an EPICS environment.
+ * Defines some special data types, used inside of an EPICS environment.
  * It also provides some static methods which determine whether a value is
- * allowed for a given data type. 
+ * allowed as a given data type. 
  * 
  * @author   Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version   1.4
@@ -24,35 +24,35 @@ public enum DataTypes {
 
 	// TODO correct Datatypes onoff and openclose
 	/**
-	 * used to display On or Off for data of type integer.
+	 * Used to display On or Off for data of type integer.
 	 * 
 	 * @uml.property  name="oNOFF"
 	 * @uml.associationEnd  
 	 */
 	ONOFF,
 	/**
-	 *  used to display Open or Close for data of type integer.
+	 *  Used to display Open or Close for data of type integer.
 	 *
 	 * @uml.property  name="oPENCLOSE"
 	 * @uml.associationEnd  
 	 */
 	OPENCLOSE,
 	/**
-	 * Normal integer datatype.
+	 * Normal integer data type.
 	 *
 	 * @uml.property  name="iNT"
 	 * @uml.associationEnd  
 	 */
 	INT, 
 	/**
-	 * Normal double datatype.
+	 * Normal double data type.
 	 *
 	 * @uml.property  name="dOUBLE"
 	 * @uml.associationEnd  
 	 */
 	DOUBLE,
 	/**
-	 * Normal String datatype.
+	 * Normal String data type.
 	 *
 	 * @uml.property  name="sTRING"
 	 * @uml.associationEnd  
@@ -76,13 +76,14 @@ public enum DataTypes {
 	DATETIME;
 	
 	/**
-	 * determines whether a value is allowed for a given data type.
+	 * Determines whether a value is allowed for a given data type.
 	 * 
-	 * @param type data type the value will be checked with
-	 * @param value the value to be checked.
-	 * @return (value valid) ? TRUE : FALSE
-	 * @exception IllegalArgumentException if type == 'null'
-	 * @exception IllegalArgumentException if value == 'null'
+	 * @param type the data type the value will be checked with
+	 * @param value the value to be checked
+	 * @return <code>true</code> if the value is valid, 
+	 * 			<code>false</code> otherwise
+	 * @throws IllegalArgumentException if at least one argument is 
+	 * 									 <code>null</code>
 	 */
 	public static boolean isValuePossible(final DataTypes type, 
 											final String value) {
@@ -137,9 +138,9 @@ public enum DataTypes {
 	 * Returns a string formatted to the corresponding DataTypes.
 	 * 
 	 * @param type ?????
-	 * @param value string to be formatted
-	 * @return a formatted string or null (if string cannot be converted)
-	 * @exception IllegalArgumentException if value == 'null'
+	 * @param value the <code>String</code> that should be formatted
+	 * @return a formatted <code>String</code> or <code>null</code>
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public static String formatValue(final DataTypes type, 
 									  final String value) {
@@ -234,12 +235,14 @@ public enum DataTypes {
 		return returnString;
 	}
 
+	// TODO describe following function in more detail !
 	/**
-	 * Convenience function returns a formatted string or default value
+	 * Convenience function returns a formatted <code>String</code> or default 
+	 * value.
 	 * 
-	 * @param value string to be formatted
-	 * @param type data type of value
-	 * @return a formatted string or null
+	 * @param value the <code>String</code> that should be formatted
+	 * @param type the data type of value
+	 * @return a formatted <code>String</code> or <code>null</code>
 	 */
 	public static String formatValueDefault(final DataTypes type, 
 											 final String value) {
@@ -252,9 +255,9 @@ public enum DataTypes {
 	}
 
 	/**
-	 * Return a well-formatted string with a valid default value.
+	 * Returns a well-formatted <code>String</code> with a valid default value.
 	 * 
-	 * @param type data type for which a default value is returned
+	 * @param type the data type of which a default value is returned
 	 * @return a default value
 	 */
 	public static String getDefaultValue(final DataTypes type) {
@@ -272,11 +275,14 @@ public enum DataTypes {
 	}
 
 	/**
-	 * translates a name (string) of a data type into its DataType.
+	 * Converts a name (<code>String</code>) of a data type into its 
+	 * corresponding type (<code>DataTypes</codes>).
 	 * 
-	 * @param name one out of {"OpenClose", "Off", "int", "double", "string"}
-	 * @return The corresponding DataType.
-	 * @exception IllegalArgumentException if name == 'null'
+	 * @param name the <code>String</code> that should be converted<br>
+	 * 			<b>Precondition:</b> name is element of {"OpenClose", "Off", 
+	 * 								 "int", "double", "string"}
+	 * @return the corresponding data type
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public static DataTypes stringToType(final String name) {
 		if(name == null) {
@@ -284,28 +290,28 @@ public enum DataTypes {
 					"The parameter 'name' must not be null!");
 		}
 		
-		if( name.equals( "OnOff" ) ) {
+		if(name.equals("OnOff")) {
 			return DataTypes.ONOFF;
-		} else if( name.equals( "OpenClose" ) ) {
+		} else if(name.equals("OpenClose")) {
 			return DataTypes.OPENCLOSE;
-		} else if( name.equals( "int" ) ) {
+		} else if(name.equals("int")) {
 			return DataTypes.INT;
-		} else if( name.equals( "double" ) ) {
+		} else if(name.equals("double")) {
 			return DataTypes.DOUBLE;
-		} else if( name.equals( "string" ) ) {
+		} else if(name.equals("string")) {
 			return DataTypes.STRING;
-		} else if( name.equals( "datetime" ) ) {
+		} else if(name.equals("datetime")) {
 			return DataTypes.DATETIME;
 		} 
 		return null;
 	}
 	
 	/**
-	 * translates a DataType into a String. 
+	 * Converts a type (<code>DataTypes</code>) into a <code>String<code>. 
 	 * 
-	 * @param type the type, that should be translated.
-	 * @return The translated string
-	 * @exception IllegalArgumentException if type == 'null'
+	 * @param type the type, that should be converted.
+	 * @return the corresponding <code>String</code>
+	 * @exception IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public static String typeToString(final DataTypes type) {
 		
@@ -331,11 +337,13 @@ public enum DataTypes {
 	}
 	
 	/**
-	 * Returns an array of comparison types possible for a given data type.
+	 * Returns an array of <code>ComparisonTypes</code> that are allowed for a 
+	 * given data type.
 	 * 
 	 * @see de.ptb.epics.eve.data.ComparisonTypes
-	 * @param type the data type of which you want the possible comparison types.
-	 * @return an array containing the possible comparisonTypes.
+	 * @param type the data type of which you want to get the allowed 
+	 * <code>ComparisonTypes</code>.
+	 * @return an array containing the allowed <code>comparisonTypes</code>.
 	 * @exception IllegalArgumentException if type == 'null'
 	 */
 	public static ComparisonTypes[] getPossibleComparisonTypes(
@@ -361,12 +369,13 @@ public enum DataTypes {
 	}
 	
 	/**
-	 * checks if a comparison type is possible for a given data type.
+	 * Checks if a comparison type is allowed for a given data type.
 	 * E.g. EQ and NE are working for a string but GT and LT are not.
 	 * 
-	 * @param dataType data type to be checked
-	 * @param comparisonType comparison type that should be checked.
-	 * @return (comparison type possible for date type) ? TRUE : FALSE
+	 * @param dataType the data type to be checked
+	 * @param comparisonType the comparison type that should be checked.
+	 * @return <code>true</code> if the type is allowed, 
+	 * 			<code>false</code> otherwise
 	 */
 	public static boolean isComparisonTypePossible( final DataTypes dataType,
 									final ComparisonTypes comparisonType ) {

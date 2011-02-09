@@ -31,11 +31,12 @@ public enum TransportTypes {
 	LOCAL;
 	
 	/**
-	 * converts a string into a value of type TransportType (enum).
+	 * Converts a <code>String</code> into its corresponding transport type 
+	 * (<code>TransportTypes</code>).
 	 * 
-	 * @param name the string that should be converted.
-	 * @return The corrosponding TransportTypes value.
-	 * @exception IllegalArgumentException if name == 'null'
+	 * @param name the <code>String</code> that should be converted
+	 * @return The corresponding transport type
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public static TransportTypes stringToType(final String name) {
 		if(name == null) {
@@ -51,10 +52,11 @@ public enum TransportTypes {
 	}
 	
 	/**
-	 * converts a value of type TransportTypes (enum) into a String
+	 * Converts a transport type (<code>TransportTypes</code>) into its 
+	 * corresponding <code>String</code>. 
 	 *
-	 * @param type the value that should be converted.
-	 * @return the corresponding value as a String.
+	 * @param type the transport type that should be converted.
+	 * @return the corresponding <code>String</code>.
 	 */
 	public static String typeToString(final TransportTypes type) {
 		if(type == null) {

@@ -17,7 +17,7 @@ package de.ptb.epics.eve.data;
 public enum PlotModes {
 
 	/**
-	 * Says, that the line will be plotted linear.
+	 * Defines that the line will be plotted linear.
 	 *
 	 * @uml.property  name="lINEAR"
 	 * @uml.associationEnd  
@@ -25,7 +25,7 @@ public enum PlotModes {
 	LINEAR,
 	
 	/**
-	 * Says, that the line will be plotted logarithmic.
+	 * Defines that the line will be plotted logarithmically.
 	 *
 	 * @uml.property  name="lOG"
 	 * @uml.associationEnd  
@@ -33,11 +33,13 @@ public enum PlotModes {
 	LOG;
 	
 	/**
-	 * translates a name for the plot type into its corresponding PlotMode.
+	 * Converts a <code>String</code> into its corresponding plot mode 
+	 * (<code>PlotModes</code>).
 	 * 
-	 * @param name one of {"linear", "log"}
-	 * @return the corresponding PlotMode.
-	 * @exception IllegalArgumentException if name == 'null'
+	 * @param name the <code>String</code> that should be converted<br>
+	 * 			<b>Precondition:</b> name is element of {"linear", "log"}
+	 * @return the corresponding plot mode
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public static PlotModes stringToMode(final String name) {
 		if(name == null) {
@@ -54,11 +56,12 @@ public enum PlotModes {
 	}
 	
 	/**
-	 * translates a PlotMode into a String.
+	 * Converts a plot mode (<code>PlotModes</code>) into its corresponding 
+	 * <code>String</code>.
 	 *  
-	 * @param mode  the mode, that should be translated.
-	 * @return (mode valid) ? the corresponding string : 'null'
-	 * @exception IllegalArgumentException if mode == 'null'
+	 * @param mode  the mode, that should be translated
+	 * @return the corresponding <code>String</code>
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public static String modeToString(final PlotModes mode) {
 		if(mode == null) {
@@ -76,10 +79,9 @@ public enum PlotModes {
 	}
 	
 	/**
-	 * Returns an Array containing the elements of the enum as Strings
+	 * Returns an array containing all plot modes as <code>String</code>s
 	 * 
-	 * @see de.trustedcode.scanmoduleditor.views.PlotWindowComposite
-	 * @return A array of all values.
+	 * @return an array of <code>String</code>s containing the plot modes
 	 */
 	public static String[] valuesAsString() {
 		final PlotModes[] plotModes = PlotModes.values();
@@ -89,5 +91,4 @@ public enum PlotModes {
 		}
 		return values;
 	}
-	
 }
