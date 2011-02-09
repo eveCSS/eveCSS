@@ -1,8 +1,8 @@
-/*******************************************************************************
+/*
  * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
  * All rights reserved.
  * 
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data.measuringstation.processors;
 
 import org.xml.sax.Attributes;
@@ -40,7 +40,7 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 public class MeasuringStationLoaderHandler extends DefaultHandler {
 
 	/**
-	 * The measuring station object that is constructet by this handler.
+	 * The measuring station object that is constructed by this handler.
 	 * 
 	 */
 	private MeasuringStation measuringStation;
@@ -58,13 +58,13 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 	private MeasuringStationLoaderSubStates subState;
 	
 	/**
-	 * The current plugin that is loaded by the handler.
+	 * The current plug in that is loaded by the handler.
 	 * 
 	 */
 	private PlugIn currentPlugin;
 	
 	/**
-	 * The current plugin parameter that is loaded by the handler.
+	 * The current plug in parameter that is loaded by the handler.
 	 * 
 	 */
 	private PluginParameter currentPluginParameter;
@@ -134,8 +134,19 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		this.subState = MeasuringStationLoaderSubStates.NONE;
 	} 
 	
+	// TODO Comment
+	/**
+	 * 
+	 * @param namespaceURI
+	 * @param localName
+	 * @param qName
+	 * @param atts
+	 */
 	@Override 
-	public void startElement( final String namespaceURI, final String localName, final String qName, final Attributes atts ) throws SAXException {
+	public void startElement(final String namespaceURI, 
+							  final String localName, 
+							  final String qName, 
+							  final Attributes atts) throws SAXException {
 		
 		/*System.err.println( qName + " open: " + this.state + " / " + this.subState);
 		System.err.println( qName );
@@ -143,7 +154,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		System.err.println( this.subState );
 		System.err.println( "----------------------\n" );*/
 		
-		switch( this.state ) {
+		switch(this.state) {
 		
 			case ROOT:
 				if( qName.equals( "version" ) ) {
@@ -482,6 +493,12 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		
 	}
 	
+	/**
+	 * 
+	 * @param ch
+	 * @param start
+	 * @param length
+	 */
 	@Override 
 	public void characters( final char[] ch, final int start, final int length ) {
 
@@ -493,8 +510,17 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		} 
 	}
 	
+	// TODO Comment
+	/**
+	 * 
+	 * @param uri
+	 * @param localName
+	 * @param qName
+	 */
 	@Override 
-	public void endElement( final String uri, final String localName, final String qName ) throws SAXException {
+	public void endElement(final String uri, 
+							final String localName, 
+							final String qName) throws SAXException {
 
 //		if ((textBuffer != null) && (textBuffer.length() > 0)) System.err.println( textBuffer + ": " + this.state + " / " + this.subState);
 
@@ -675,8 +701,8 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		
 	textBuffer = null;
 
-	/*******************************************************************/
-	/*******************************************************************/
+	/* ******************************************************************/
+	/* ******************************************************************/
 	
 //	System.err.println( qName + " close: " + this.state + " / " + this.subState + "\n");
 		
@@ -1142,6 +1168,10 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		}
 	}
 	
+	// TODO Comment
+	/**
+	 * 
+	 */
 	@Override 
 	public void endDocument() throws SAXException { 
 		

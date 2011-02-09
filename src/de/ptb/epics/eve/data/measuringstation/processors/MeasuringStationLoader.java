@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data.measuringstation.processors;
 
 import java.io.ByteArrayInputStream;
@@ -51,11 +51,13 @@ public class MeasuringStationLoader {
 	/**
 	 * The constructor.
 	 * 
-	 * @param schemaFile The schema file that should be used to load the measuring station.
+	 * @param schemaFile The schema file that should be loaded
+	 * @exception IllegalArgumentException if schemaFile == 'null'
 	 */
-	public MeasuringStationLoader( final File schemaFile ) {
-		if( schemaFile == null ) {
-			throw new IllegalArgumentException( "The parameter 'schemaFile' must not be null!" );
+	public MeasuringStationLoader(final File schemaFile) {
+		if(schemaFile == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'schemaFile' must not be null!");
 		}
 		this.schemaFile = schemaFile;
 	}
@@ -73,7 +75,6 @@ public class MeasuringStationLoader {
 	public IMeasuringStation loadFromByteArray( final byte[] byteArray ) throws ParserConfigurationException, SAXException, IOException {
 		final SchemaFactory sFactory = SchemaFactory.newInstance( XMLConstants.W3C_XML_SCHEMA_NS_URI  );
 		final Schema schema = sFactory.newSchema( this.schemaFile );
-
 		
 		final SAXParserFactory factory = SAXParserFactory.newInstance();
 		factory.setSchema( schema );
@@ -126,8 +127,7 @@ public class MeasuringStationLoader {
 		
 		this.measuringStation = handler.getMeasuringStation();
 		this.measuringStation.setLoadedFileName(fileToLoad.getAbsolutePath());
-		this.measuringStation.setSchemaFileName(schemaFile.getAbsolutePath());
-		
+		this.measuringStation.setSchemaFileName(schemaFile.getAbsolutePath());	
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class MeasuringStationLoader {
 	}
 
 	/**
-	 * This method sets the filename that is loaded by this object.
+	 * sets the filename that is loaded by this object.
 	 * 
 	 * @param fileToLoad The filename that is loaded by this object.
 	 */
@@ -149,14 +149,11 @@ public class MeasuringStationLoader {
 	}
 
 	/**
-	 * Gives back the loaded measuring station.
+	 * Returns the loaded measuring station.
 	 * 
 	 * @return The loaded measuring station.
 	 */
 	public IMeasuringStation getMeasuringStation() {
 		return measuringStation;
-	}
-	
-	
-	
+	}	
 }

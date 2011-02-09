@@ -1,14 +1,15 @@
-/*******************************************************************************
+/*
  * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data.measuringstation.processors;
 
 /**
- * This enum describes the possible states of the SAX handler to load a measuring station description.
+ * This enum describes the possible states of the SAX handler to load a 
+ * measuring station description.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (- at -) ptb.de>
  *
@@ -26,47 +27,51 @@ public enum MeasuringStationLoaderStates {
 	VERSION_NEXT,
 	
 	/**
-	 * The version string has been read and the handler is waiting for the close version tag.
+	 * The version string has been read and the handler is waiting for the 
+	 * close version tag.
 	 */
 	VERSION_READ,
 	
 	/**
-	 * The begin tag of the plugins section has been read.
+	 * The begin tag of the plug ins section has been read.
 	 */
 	PLUGINS_LOADING,
 
 	/**
-	 * The begin of a plugin has been read.
+	 * The begin of a plug in has been read.
 	 */
 	PLUGIN_LOADING,
 	
 	/**
-	 * The begin tag of the plugin name has been read.
+	 * The begin tag of the plug in name has been read.
 	 */
 	PLUGIN_NAME_NEXT,
 	
 	/**
-	 * The name of the plugin has been read and the handler is waiting for the close tag.
+	 * The name of the plug in has been read and the handler is waiting for the 
+	 * close tag.
 	 */
 	PLUGIN_NAME_READ,
 	
 	/**
-	 * The begin tag of the plugin location has been read.
+	 * The begin tag of the plug in location has been read.
 	 */
 	PLUGIN_LOCATION_NEXT,
 	
 	/**
-	 * The location of the plugin has been read and the handler is waiting for the close tag.
+	 * The location of the plug in has been read and the handler is waiting for 
+	 * the close tag.
 	 */
 	PLUGIN_LOCATION_READ,
 	
 	/**
-	 * The begin tag of a plugin parameter has been read.
+	 * The begin tag of a plug in parameter has been read.
 	 */
 	PLUGIN_PARAMETER_NEXT,
 	
 	/**
-	 * A parameter of the plugin has been read and the handler is waiting for the close tag.
+	 * A parameter of the plugin has been read and the handler is waiting for 
+	 * the close tag.
 	 */
 	PLUGIN_PARAMETER_READ,
 	
@@ -81,12 +86,13 @@ public enum MeasuringStationLoaderStates {
 	DETECTOR_LOADING,
 	
 	/**
-	 * The begin tag of the detector classname has been read.
+	 * The begin tag of the detector class name has been read.
 	 */
 	DETECTOR_CLASSNAME_NEXT,
 	
 	/**
-	 * The classname of the detector has been read and the handler is waiting for the close tag.
+	 * The class name of the detector has been read and the handler is waiting 
+	 * for the close tag.
 	 */
 	DETECTOR_CLASSNAME_READ,
 	
@@ -96,7 +102,8 @@ public enum MeasuringStationLoaderStates {
 	DETECTOR_ID_NEXT,
 	
 	/**
-	 * The id of the detector has been read and the handler is waiting for the close tag.
+	 * The id of the detector has been read and the handler is waiting for 
+	 * the close tag.
 	 */
 	DETECTOR_ID_READ,
 	
@@ -106,7 +113,8 @@ public enum MeasuringStationLoaderStates {
 	DETECTOR_NAME_NEXT,
 	
 	/**
-	 * The name of the detector has been read and the handler is waiting for the close tag.
+	 * The name of the detector has been read and the handler is waiting for 
+	 * the close tag.
 	 */
 	DETECTOR_NAME_READ,
 	
@@ -126,7 +134,7 @@ public enum MeasuringStationLoaderStates {
 	DETECTOR_TRIGGER_LOADING,
 	
 	/**
-	 * A channel of a detector chanel is loading.
+	 * A channel of a detector channel is loading.
 	 */
 	DETECTOR_CHANNEL_LOADING,
 	
@@ -146,7 +154,8 @@ public enum MeasuringStationLoaderStates {
 	DETECTOR_CHANNEL_NAME_NEXT,
 	
 	/**
-	 * The name of the detector channel has been read and the handler is waiting for the close tag.
+	 * The name of the detector channel has been read and the handler is 
+	 * waiting for the close tag.
 	 */
 	DETECTOR_CHANNEL_NAME_READ,
 	
@@ -156,27 +165,32 @@ public enum MeasuringStationLoaderStates {
 	DETECTOR_CHANNEL_ID_NEXT,
 	
 	/**
-	 * The name of the detector channel has been read and the handler is waiting for the close tag.
+	 * The name of the detector channel has been read and the handler is 
+	 * waiting for the close tag.
 	 */
 	DETECTOR_CHANNEL_ID_READ,
 	
 	/**
-	 * The read function of a detector is loading. Processing is done in sub states.
+	 * The read function of a detector is loading. Processing is done in 
+	 * sub states.
 	 */
 	DETECTOR_CHANNEL_READ_LOADING,
 	
 	/**
-	 * The option of a detector channel is loading. Processing is done in sub states.
+	 * The option of a detector channel is loading. Processing is done in 
+	 * sub states.
 	 */
 	DETECTOR_CHANNEL_OPTION,
 	
 	/**
-	 * The unit of a detector channel is loading. Processing is done in sub states.
+	 * The unit of a detector channel is loading. Processing is done in sub 
+	 * states.
 	 */
 	DETECTOR_CHANNEL_UNIT,
 	
 	/**
-	 * The trigger of a detector channel is loading. Processing is done in sub states.
+	 * The trigger of a detector channel is loading. Processing is done in sub 
+	 * states.
 	 */
 	DETECTOR_CHANNEL_TRIGGER_LOADING,
 	
@@ -191,12 +205,13 @@ public enum MeasuringStationLoaderStates {
 	MOTOR_LOADING,
 
 	/**
-	 * The begin tag of the motor classname has been read.
+	 * The begin tag of the motor class name has been read.
 	 */
 	MOTOR_CLASSNAME_NEXT,
 	
 	/**
-	 * The classname of the motor has been read and the handler is waiting for the close tag.
+	 * The class name of the motor has been read and the handler is waiting for 
+	 * the close tag.
 	 */
 	MOTOR_CLASSNAME_READ,
 	
@@ -206,7 +221,8 @@ public enum MeasuringStationLoaderStates {
 	MOTOR_ID_NEXT,
 	
 	/**
-	 * The id of the motor has been read and the handler is waiting for the close tag.
+	 * The id of the motor has been read and the handler is waiting for the 
+	 * close tag.
 	 */
 	MOTOR_ID_READ,
 	
@@ -216,7 +232,8 @@ public enum MeasuringStationLoaderStates {
 	MOTOR_NAME_NEXT,
 	
 	/**
-	 * The name of the motor has been read and the handler is waiting for the close tag.
+	 * The name of the motor has been read and the handler is waiting for the 
+	 * close tag.
 	 */
 	MOTOR_NAME_READ,
 	
@@ -256,7 +273,8 @@ public enum MeasuringStationLoaderStates {
 	MOTOR_AXIS_NAME_NEXT,
 	
 	/**
-	 * The name of the motor axis has been read and the handler is waiting for the close tag.
+	 * The name of the motor axis has been read and the handler is waiting for 
+	 * the close tag.
 	 */
 	MOTOR_AXIS_NAME_READ,
 	
@@ -266,7 +284,8 @@ public enum MeasuringStationLoaderStates {
 	MOTOR_AXIS_ID_NEXT,
 	
 	/**
-	 * The id of the motor axis has been read and the handler is waiting for the close tag.
+	 * The id of the motor axis has been read and the handler is waiting for 
+	 * the close tag.
 	 */
 	MOTOR_AXIS_ID_READ,
 	
@@ -276,7 +295,8 @@ public enum MeasuringStationLoaderStates {
 	MOTOR_AXIS_STATUS_LOADING,
 	
 	/**
-	 * The position of a motor axis is loading. Processing is done in sub states.
+	 * The position of a motor axis is loading. Processing is done in sub 
+	 * states.
 	 */
 	MOTOR_AXIS_POSITION_LOADING,
 	
@@ -306,7 +326,8 @@ public enum MeasuringStationLoaderStates {
 	MOTOR_AXIS_STOP_LOADING,
 	
 	/**
-	 * The deadband of a motor axis is loading. Processing is done in sub states.
+	 * The dead band of a motor axis is loading. Processing is done in sub 
+	 * states.
 	 */
 	MOTOR_AXIS_DEADBAND_LOADING,
 	
@@ -316,17 +337,20 @@ public enum MeasuringStationLoaderStates {
 	MOTOR_AXIS_OFFSET_LOADING,
 	
 	/**
-	 * The tweak value of a motor axis is loading. Processing is done in sub states.
+	 * The tweak value of a motor axis is loading. Processing is done in sub 
+	 * states.
 	 */
 	MOTOR_AXIS_TWEAKVALUE_LOADING,
 	
 	/**
-	 * The tweak forward of a motor axis is loading. Processing is done in sub states.
+	 * The tweak forward of a motor axis is loading. Processing is done in sub 
+	 * states.
 	 */
 	MOTOR_AXIS_TWEAKFORWARD_LOADING,
 	
 	/**
-	 * The tweak reverser of a motor axis is loading. Processing is done in sub states.
+	 * The tweak reverser of a motor axis is loading. Processing is done in sub 
+	 * states.
 	 */
 	MOTOR_AXIS_TWEAKREVERSE_LOADING,
 	
@@ -341,12 +365,13 @@ public enum MeasuringStationLoaderStates {
 	DEVICE_LOADING,
 	
 	/**
-	 * The begin tag of the device classname has been read.
+	 * The begin tag of the device class name has been read.
 	 */
 	DEVICE_CLASSNAME_NEXT,
 	
 	/**
-	 * The classname of the device has been read and the handler is waiting for the close tag.
+	 * The class name of the device has been read and the handler is waiting for 
+	 * the close tag.
 	 */
 	DEVICE_CLASSNAME_READ,
 	
@@ -356,7 +381,8 @@ public enum MeasuringStationLoaderStates {
 	DEVICE_NAME_NEXT,
 	
 	/**
-	 * The name of the device has been read and the handler is waiting for the close tag.
+	 * The name of the device has been read and the handler is waiting for the 
+	 * close tag.
 	 */
 	DEVICE_NAME_READ,
 	
@@ -366,7 +392,8 @@ public enum MeasuringStationLoaderStates {
 	DEVICE_ID_NEXT,
 	
 	/**
-	 * The id of the device has been read and the handler is waiting for the close tag.
+	 * The id of the device has been read and the handler is waiting for the 
+	 * close tag.
 	 */
 	DEVICE_ID_READ,
 	
@@ -376,7 +403,8 @@ public enum MeasuringStationLoaderStates {
 	DEVICE_DISPLAYGROUP_NEXT,
 	
 	/**
-	 * The display group of the device has been read and the handler is waiting for the close tag.
+	 * The display group of the device has been read and the handler is waiting 
+	 * for the close tag.
 	 */
 	DEVICE_DISPLAYGROUP_READ,
 	
@@ -411,7 +439,8 @@ public enum MeasuringStationLoaderStates {
 	EVENT_ID_NEXT,
 	
 	/**
-	 * The id of the event has been read and the handler is waiting for the close tag.
+	 * The id of the event has been read and the handler is waiting for the 
+	 * close tag.
 	 */
 	EVENT_ID_READ,
 	
@@ -421,7 +450,8 @@ public enum MeasuringStationLoaderStates {
 	EVENT_NAME_NEXT,
 	
 	/**
-	 * The name of the event has been read and the handler is waiting for the close tag.
+	 * The name of the event has been read and the handler is waiting for the 
+	 * close tag.
 	 */
 	EVENT_NAME_READ,
 	
@@ -436,22 +466,24 @@ public enum MeasuringStationLoaderStates {
 	SELECTIONS_LOADING,
 	
 	/**
-	 * The begin tag of the stepfunctions has been read.
+	 * The begin tag of the step functions has been read.
 	 */
 	SELECTIONS_STEPFUNCTION_NEXT,
 	
 	/**
-	 * The stepfunctions has been read and the handler is waiting for the close tag.
+	 * The step functions has been read and the handler is waiting for the 
+	 * close tag.
 	 */
 	SELECTIONS_STEPFUNCTION_READ,
 	
 	/**
-	 * The begin tag of the linestyles has been read.
+	 * The begin tag of the line styles has been read.
 	 */
 	SELECTIONS_LINESTYLE_NEXT,
 	
 	/**
-	 * The linestyles has been read and the handler is waiting for the close tag.
+	 * The line styles has been read and the handler is waiting for the close 
+	 * tag.
 	 */
 	SELECTIONS_LINESTYLE_READ,
 	
@@ -466,23 +498,23 @@ public enum MeasuringStationLoaderStates {
 	SELECTIONS_COLOR_READ,
 	
 	/**
-	 * The begin tag of the markstyles has been read.
+	 * The begin tag of the mark styles has been read.
 	 */
 	SELECTIONS_MARKSTYLE_NEXT,
 	
 	/**
-	 * The markstyles has been read and the handler is waiting for the close tag.
+	 * The mark styles has been read and the handler is waiting for the close 
+	 * tag.
 	 */
 	SELECTIONS_MARKSTYLE_READ,
 	
 	/**
-	 * The begin tag of the smtypes has been read.
+	 * The begin tag of the sm types has been read.
 	 */
 	SELECTIONS_SMTYPE_NEXT,
 	
 	/**
-	 * The smtypes has been read and the handler is waiting for the close tag.
+	 * The sm types has been read and the handler is waiting for the close tag.
 	 */
 	SELECTIONS_SMTYPE_READ,
-	
 }
