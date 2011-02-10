@@ -50,7 +50,7 @@ public class ScanDescription implements IModelUpdateProvider, IModelUpdateListen
 	/**
 	 * our output schema version
 	 */
-	public static final String outputVersion = "0.3.7";
+	public static final String outputVersion = "0.3.9";
 	
 	/**
 	 * A List that is holding all chains of the scan description.
