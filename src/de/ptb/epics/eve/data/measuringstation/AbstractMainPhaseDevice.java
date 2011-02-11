@@ -12,15 +12,11 @@ import java.util.List;
 import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedException;
 
 /**
- * This abstract class is the base of all devices that can be used during the
- * main phase of a Scan Module like motor axis and detector channels. Typically
- * something is done with a main phase device during the main phase, like
- * writing values into it for moving a motor axis or reading values from like 
- * it's done from a detector channel.
+ * The base of all devices that can be used during the main phase of a scan 
+ * module like motor axis and detector channels.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.3
- * 
  */
 public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	
@@ -29,9 +25,8 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	 */
 	private String className;
 	
-		
 	/**
-	 * The trigger of this device.
+	 * The trigger of the device.
 	 */
 	private Function trigger;
 	
@@ -57,24 +52,22 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	}
 	
 	/**
-	 * This constructor constructs a new, very specific device with all
-	 * attributes.
+	 * Constructs a new, very specific device with all attributes.
 	 * 
 	 * @param name The name of the device.
 	 * @param id The id of the device.
-	 * @param unit The unit of the device.
-	 * @param options A list of options of the Device.
+	 * @param unit The code>Unit</code> of the device.
+	 * @param options A <code>List</code> of <code>Option</code>s of the device.
 	 * 			(use 'null' for no options)
 	 * @param parent The parent of this device.
-	 * @param trigger
-	 * @exception IllegalArgumentException if name == 'null'
-	 * @exception IllegalArgumentException if id == 'null'
-	 * @exception IllegalArgumentException if parent has an illegal type
+	 * @param trigger 
+	 * @throws IllegalArgumentException if name or id are <code>null</code>
+	 * @throws IllegalArgumentException if parent has an illegal type
 	 */
 	public AbstractMainPhaseDevice(final String name, final String id,
 									final Unit unit, final List<Option> options,
 									final AbstractMainPhaseDevice parent, 
-									final Function trigger ) {
+									final Function trigger) {
 		super(name, id, unit, options, parent);
 		this.trigger = trigger;
 	}
@@ -82,7 +75,8 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	
 	/**
 	 * Returns the trigger of the device.
-	 * @return 
+	 * 
+	 * @return the Trigger of the device
 	 */
 	public Function getTrigger() {
 		return this.trigger;
@@ -90,6 +84,7 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 
 	/**
 	 * Sets the Trigger of the device.
+	 * 
 	 * @param trigger A Trigger object.
 	 */
 	public void setTrigger(final Function trigger) {
@@ -100,12 +95,12 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	 * Checks if this class can really be the parent of this device. 
 	 * .
 	 * @param parent The parent that should be set.
-	 * @exception ParentNotAllowedException 
+	 * @throws ParentNotAllowedException 
 	 */
 	@Override
 	protected void setParent(final AbstractDevice parent) 
 								throws ParentNotAllowedException {
-		// TODO describe/explain exception thrown
+		// TODO describe/explain exception thrown super doesn't throw anything!
 		// It will throw a ParentNotAllowedException
 		// if there was passes a wrong device type
 		super.setParent( parent );
@@ -124,7 +119,7 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	 * Sets the className of the device.
 	 * 
 	 * @param className A String object contains the className.
-	 * @exception IllegalArgumentException if className == 'null'
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public void setClassName(final String className) {
 		if(className == null) {
@@ -135,6 +130,7 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	}
 
 	/**
+	 * Mystical Math
 	 * 
 	 * @return a fancy number yet has to be explained
 	 */
@@ -147,9 +143,10 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	}
 
 	/**
-	 * Checks if argument and calling object are equal.
+	 * Checks whether the argument and the calling object are equal.
 	 * 
-	 * @return (objects equal) ? TRUE : FALSE
+	 * @param obj the <code>Object</code> to be checked
+	 * @return <code>true</code> if equal, <code>false</code> otherwise
 	 */
 	@Override
 	public boolean equals(final Object obj) {

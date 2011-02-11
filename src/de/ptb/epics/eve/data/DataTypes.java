@@ -344,7 +344,7 @@ public enum DataTypes {
 	 * @param type the data type of which you want to get the allowed 
 	 * <code>ComparisonTypes</code>.
 	 * @return an array containing the allowed <code>comparisonTypes</code>.
-	 * @exception IllegalArgumentException if type == 'null'
+	 * @exception IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public static ComparisonTypes[] getPossibleComparisonTypes(
 												final DataTypes type) {

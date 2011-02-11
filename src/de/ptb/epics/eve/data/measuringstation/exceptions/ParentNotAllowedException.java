@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
+ * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
@@ -16,14 +16,13 @@ package de.ptb.epics.eve.data.measuringstation.exceptions;
  */
 public class ParentNotAllowedException extends Exception {
 	
-	/** The id for serialization.
-	 * 
+	/** 
+	 * The id for serialization.
 	 */
 	private static final long serialVersionUID = -2616220233669984321L;
 	
 	/**
 	 * The constructor for a new ParentNotAllowedException.
-	 * 
 	 * 
 	 * @param message  The message that describes the problem.
 	 */

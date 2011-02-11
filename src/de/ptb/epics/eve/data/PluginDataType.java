@@ -237,7 +237,7 @@ public enum PluginDataType {
 	 * @see de.ptb.epics.eve.data.ComparisonTypes
 	 * @param type the <code>PluginDataType</code> of interest
 	 * @return an array containing the valid <code>ComparisonTypes</code>
-	 * @throws IllegalArgumentException if type == 'null'
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public static ComparisonTypes[] getPossibleComparisonTypes(
 										final PluginDataType type) {
