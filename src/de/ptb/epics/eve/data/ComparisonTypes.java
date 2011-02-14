@@ -147,8 +147,7 @@ public enum ComparisonTypes {
 		
 		while(it.hasNext()) {
 			names.add(ComparisonTypes.typeToString(it.next()));
-		}
-		
+		}		
 		return names;
 	}	
 }

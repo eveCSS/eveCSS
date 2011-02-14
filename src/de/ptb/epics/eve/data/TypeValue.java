@@ -24,6 +24,7 @@ public class TypeValue {
 
 	/**
 	 * The basic primitive data type on which this definition based.
+	 * 
 	 * @uml.property  name="type"
 	 * @uml.associationEnd  
 	 */
@@ -47,6 +48,7 @@ public class TypeValue {
 	
 	/**
 	 * value must be one of a set of discrete values
+	 * 
 	 * @uml.property  name="isDiscrete"
 	 */
 	boolean isDiscrete;
@@ -76,6 +78,7 @@ public class TypeValue {
 	
 	/**
 	 * Returns the data type of this TypeValue object.
+	 * 
 	 * @return  The data type.
 	 * @uml.property  name="type"
 	 */
