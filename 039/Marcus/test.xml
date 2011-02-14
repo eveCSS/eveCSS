@@ -227,10 +227,12 @@
                 <name>UE56_2shift</name>
                 <id>UE56ID3R:SBasePmGapchan1</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">UE56ID3R:SBasePmGap.A</access>
+                    <access method="GETPUTCB" transport="ca" type="double">UE56ID3R:SBasePmGap.A</access>
+<!--                    <access method="GETCB" transport="ca" type="double">UE56ID3R:SBasePmGap.A</access>-->
                 </read>
                 <unit>
-                    <access method="GETCB" transport="ca" type="string">UE56ID3R:SBasePmGap.EGU</access>
+                    <access method="GETPUT" transport="ca" type="string">UE56ID3R:SBasePmGap.EGU</access>
+<!--                    <access method="GETCB" transport="ca" type="string">UE56ID3R:SBasePmGap.EGU</access>-->
                 </unit>
             </channel>
         </detector>
@@ -246,10 +248,12 @@
                 <name>UE56_2gap</name>
                 <id>UE56ID3R:BasePmGapchan1</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">UE56ID3R:BasePmGap.A</access>
+                    <access method="GETPUTCB" transport="ca" type="double">UE56ID3R:BasePmGap.A</access>
+<!--                    <access method="GETCB" transport="ca" type="double">UE56ID3R:BasePmGap.A</access>-->
                 </read>
                 <unit>
-                    <access method="GETCB" transport="ca" type="string">UE56ID3R:BasePmGap.EGU</access>
+                    <access method="GETPUT" transport="ca" type="string">UE56ID3R:BasePmGap.EGU</access>
+<!--                    <access method="GETCB" transport="ca" type="string">UE56ID3R:BasePmGap.EGU</access>-->
                 </unit>
             </channel>
         </detector>
@@ -265,10 +269,12 @@
                 <name>U41_gap</name>
                 <id>U41IT6R:BasePmGapchan1</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">U41IT6R:BasePmGap.A</access>
+                    <access method="GETPUTCB" transport="ca" type="double">U41IT6R:BasePmGap.A</access>
+<!--                    <access method="GETCB" transport="ca" type="double">U41IT6R:BasePmGap.A</access>-->
                 </read>
                 <unit>
-                    <access method="GETCB" transport="ca" type="string">U41IT6R:BasePmGap.EGU</access>
+                    <access method="GETPUT" transport="ca" type="string">U41IT6R:BasePmGap.EGU</access>
+<!--                    <access method="GETCB" transport="ca" type="string">U41IT6R:BasePmGap.EGU</access>-->
                 </unit>
             </channel>
         </detector>
@@ -284,10 +290,12 @@
                 <name>UE56_1shift</name>
                 <id>UE56ID6R:SBasePmGapchan1</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">UE56ID6R:SBasePmGap.A</access>
+                    <access method="GETPUTCB" transport="ca" type="double">UE56ID6R:SBasePmGap.A</access>
+<!--                    <access method="GETCB" transport="ca" type="double">UE56ID6R:SBasePmGap.A</access>-->
                 </read>
                 <unit>
-                    <access method="GETCB" transport="ca" type="string">UE56ID6R:SBasePmGap.EGU</access>
+                    <access method="GETPUT" transport="ca" type="string">UE56ID6R:SBasePmGap.EGU</access>
+<!--                    <access method="GETCB" transport="ca" type="string">UE56ID6R:SBasePmGap.EGU</access>-->
                 </unit>
             </channel>
         </detector>
@@ -303,10 +311,12 @@
                 <name>UE56_1gap</name>
                 <id>UE56ID6R:BasePmGapchan1</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">UE56ID6R:BasePmGap.A</access>
+                    <access method="GETPUTCB" transport="ca" type="double">UE56ID6R:BasePmGap.A</access>
+<!--                    <access method="GETCB" transport="ca" type="double">UE56ID6R:BasePmGap.A</access>-->
                 </read>
                 <unit>
-                    <access method="GETCB" transport="ca" type="string">UE56ID6R:BasePmGap.EGU</access>
+                    <access method="GETPUT" transport="ca" type="string">UE56ID6R:BasePmGap.EGU</access>
+<!--                    <access method="GETCB" transport="ca" type="string">UE56ID6R:BasePmGap.EGU</access>-->
                 </unit>
             </channel>
         </detector>
@@ -322,10 +332,12 @@
                 <name>U125_gap</name>
                 <id>U125ID7R:BasePmGapchan1</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">U125ID7R:BasePmGap.A</access>
+                    <access method="GETPUTCB" transport="ca" type="double">U125ID7R:BasePmGap.A</access>
+<!--                    <access method="GETCB" transport="ca" type="double">U125ID7R:BasePmGap.A</access>-->
                 </read>
                 <unit>
-                    <access method="GETCB" transport="ca" type="string">U125ID7R:BasePmGap.EGU</access>
+                    <access method="GETPUT" transport="ca" type="string">U125ID7R:BasePmGap.EGU</access>
+<!--                    <access method="GETCB" transport="ca" type="string">U125ID7R:BasePmGap.EGU</access>-->
                 </unit>
             </channel>
         </detector>
@@ -341,10 +353,12 @@
                 <name>U49_2gap</name>
                 <id>U49ID8R:BasePmGapchan1</id>
                 <read>
-                    <access method="GETCB" transport="ca" type="double">U49ID8R:BasePmGap.A</access>
+                    <access method="GETPUTCB" transport="ca" type="double">U49ID8R:BasePmGap.A</access>
+<!--                    <access method="GETCB" transport="ca" type="double">U49ID8R:BasePmGap.A</access>-->
                 </read>
                 <unit>
-                    <access method="GETCB" transport="ca" type="string">U49ID8R:BasePmGap.EGU</access>
+                    <access method="GETPUT" transport="ca" type="string">U49ID8R:BasePmGap.EGU</access>
+<!--                    <access method="GETCB" transport="ca" type="string">U49ID8R:BasePmGap.EGU</access>-->
                 </unit>
             </channel>
         </detector>
@@ -2548,7 +2562,7 @@
             <!-- axis, to be included by motors -->
             <axis>
                 <class></class>
-                <name>Filter_1</name>
+                <name>Filter_2</name>
                 <id>DiscPosPPSMC:gw23715001</id>
                 <goto>
                     <access method="GETPUTCB" transport="ca" type="string" timeout="100.0">PPSMC:gw23715001_Mnu</access>
