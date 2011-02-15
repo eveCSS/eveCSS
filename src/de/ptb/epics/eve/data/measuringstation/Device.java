@@ -23,16 +23,18 @@ public class Device extends AbstractPrePostscanDevice {
 	 * nothing.
 	 * 
 	 * @param parent Pass whatever you want. It will not be used at all!
+	 * @throws ParentNotAllowedException ?
 	 */
 	@Override
 	protected void setParent(final AbstractDevice parent) 
 							throws ParentNotAllowedException {
+		// TODO empty but throws declaration ?
 	}
 	
 	/**
-	 * Returns a copy of the calling Device object
+	 * Clones the calling device.
 	 * 
-	 *@return a clone of the current Device
+	 *@return a clone of the current <code>Device</code>
 	 */
 	@Override
 	public Object clone() {

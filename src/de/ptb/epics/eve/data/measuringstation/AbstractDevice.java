@@ -14,8 +14,8 @@ import java.util.List;
 import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedException;
 
 /**
- * This is the base of all devices in the Scan Module Editor model. It describes
- * the measuring station (e.g. motors, detectors). 
+ * <code>AbstractDevice</code> is the base of all devices in the data model. 
+ * It describes the measuring station (e.g. motors, detectors). 
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.5
@@ -39,7 +39,7 @@ public abstract class AbstractDevice {
 	private Unit unit;
 	
 	/**
-	 * The parent of this device.
+	 * The parent of the device.
 	 */
 	private AbstractDevice parent;
 	
@@ -55,40 +55,34 @@ public abstract class AbstractDevice {
 	private String fullIdentifier = null;
 		
 	/**
-	 * This constructor is used by inheriting classes to construct a blank 
-	 * <code>AbstractDevice</code> with an empty name, empty id, null unit and 
-	 * empty list of options.
+	 * Constructs a blank <code>AbstractDevice</code>.
 	 */
 	protected AbstractDevice() {
 		this( "", "", null, null, null);
 	}
 	
 	/**
-	 * This constructor is used by inheriting classes to construct a new
-	 * <code>AbstractDevice</code> with given name, id, unit and options. 
-	 * The <code>List</code> of <code>Option</code>s will be a copy of the 
-	 * given list. The parent will not be set directly, it is using the 
-	 * setParent Method. If you override
-	 * this method,you can control which types are allowed an which not.
+	 * Constructs an <code>AbstractDevice</code> with given name, id, unit and 
+	 * options.
 	 * 
-	 * @param name The name of the device.
-	 * @param id The id of the device.
-	 * @param unit The unit of the device.
-	 * @param options A list of options of the Device.
+	 * @param name the name of the device
+	 * @param id the id of the device
+	 * @param unit the unit of the device
+	 * @param options a <code>List</code> of <code>Option</code>s of the device
 	 * 		   (use 'null' for no options)
-	 * @param parent The parent of this device.
-	 * @throws IllegalArgumentException if name or id are <code>null</code>
+	 * @param parent the parent of the device
+	 * @throws IllegalArgumentException if name or id is <code>null</code>
 	 * @throws IllegalArgumentException if parent has an illegal type
 	 */
 	public AbstractDevice(final String name, final String id, 
 						   final Unit unit, final List<Option> options, 
 						   final AbstractDevice parent) {
 
-		if( name == null ) {
+		if(name == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'name' must not be null!");
 		}
-		if( id == null ) {
+		if(id == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'id' must not be null!");
 		}
@@ -109,29 +103,29 @@ public abstract class AbstractDevice {
 	}
 	
 	/**
-	 * This method is very fundamental for the model of the hierarchy of all
-	 * devices inside of the measuring station description. Every device is 
-	 * addressable by it's full identifier consisting of it's own name, and the
-	 * name of it's parent device. If the device has no name, the id is used to
-	 * build the full identifier. So The full identifier of a(n) ...<br>
+	 * Returns the full identifier of a device as follows:
+	 * Every device is addressable by it's full identifier consisting of its 
+	 * own name, and the name of its parent device. If the device has no name, 
+	 * the id is used to build the full identifier. So the full identifier of 
+	 * a(n) ...<br>
 	 * <br>
 	 * ... motor will be: Motor-Name (Motor-Id).<br>
-	 * ... motor-axis will be: Motor-Name Axis-Name (Axis-Id).<br>
+	 * ... motor axis will be: Motor-Name Axis-Name (Axis-Id).<br>
 	 * ... detector will be: Detector-Name (Detector-Id).<br>
-	 * ... detector-channel will be: Detector-Name Channel-Name (Channel-Id).
+	 * ... detector channel will be: Detector-Name Channel-Name (Channel-Id).
 	 * <br>
-	 * ... option of an motor will be: Motor-Name Option-Name (Option-Id).
+	 * ... option of a motor will be: Motor-Name Option-Name (Option-Id).
 	 * <br>
-	 * ... option of an motor-axis will be: Motor-Name Axis-Name Option-Name 
+	 * ... option of a motor axis will be: Motor-Name Axis-Name Option-Name 
 	 * (Option-Id).<br>
 	 * ... option of an detector will be: Detector-Name Option-Name (Option-Id).
 	 * <br>
-	 * ... option of an detector-channel will be: Detector-Name Channel-Name
+	 * ... option of an detector channel will be: Detector-Name Channel-Name
 	 * Option-Name (Option-Id).<br>
-	 * ... device will be: Device-Name (Device-Id).<br>
-	 * <br>
+	 * ... device will be: Device-Name (Device-Id).
 	 * 
-	 * @return A String object that contains the full identifier of the device.
+	 * @return A <code>String</code> that contains the full identifier of the 
+	 * 			device
 	 */
 	public String getFullIdentifyer() {
 		
@@ -194,15 +188,15 @@ public abstract class AbstractDevice {
 	/**
 	 * Returns the unit of the device.
 	 * 
-	 * @see de.ptb.epics.eve.data.measuringstation.Unit
 	 * @return A Unit object or null if it's not set.
+	 * @see de.ptb.epics.eve.data.measuringstation.Unit
 	 */
 	public Unit getUnit() {
 		return this.unit;
 	}
 	
 	/**
-	 * Returns the parent of this device.
+	 * Returns the parent of the device.
 	 * 
 	 * @return The parent of the device. (null if none)
 	 */
@@ -233,7 +227,7 @@ public abstract class AbstractDevice {
 	 * Sets the ID of the Device.
 	 * 
 	 * @param id A <code>String</code>, that contains the id of the device.
-	 * @exception IllegalArgumentException if the argument is <code>null</code>
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public void setId(final String id) {
 		if(id == null) {
@@ -346,6 +340,7 @@ public abstract class AbstractDevice {
 	 */
 	@Override
 	public int hashCode() {
+		// TODO Explain !
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -356,8 +351,9 @@ public abstract class AbstractDevice {
 	/**
 	 * Checks if argument and calling object are equal.
 	 * 
+	 * @param obj the <code>Object</code> that should be checked
 	 * @return <code>true</code> if objects are equal,
-	 * 			<code>false</code> otherwise.
+	 * 			<code>false</code> otherwise
 	 */
 	@Override
 	public boolean equals(final Object obj) {
@@ -374,18 +370,18 @@ public abstract class AbstractDevice {
 		
 		final AbstractDevice other = (AbstractDevice)obj;
 		
-		if( id == null ) {
-			if( other.id != null ) {
+		if(id == null) {
+			if(other.id != null) {
 				return false;
 			}
-		} else if( !id.equals( other.id ) ) {
+		} else if(!id.equals(other.id)) {
 			return false;
 		}
-		if( name == null ) {
-			if( other.name != null ) {
+		if(name == null) {
+			if(other.name != null) {
 				return false;
 			}
-		} else if( !name.equals( other.name ) ) {
+		} else if(!name.equals(other.name)) {
 			return false;
 		}	
 		return true;

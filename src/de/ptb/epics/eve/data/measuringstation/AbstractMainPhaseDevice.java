@@ -31,8 +31,8 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	private Function trigger;
 	
 	/**
-	 * Should be called by the inheriting class to construct a new
-	 * AbstractMainPhaseDevice. The trigger will be set to null.
+	 * Should be called to construct an empty 
+	 * <code>AbstractMainPhaseDevice</code> The trigger will be set to null.
 	 */
 	public AbstractMainPhaseDevice() {
 		super();
@@ -41,10 +41,10 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	}
 	
 	/**
-	 * Should be called by the inheriting class to construct a new
-	 * AbstractMainPhaseDevice with a given trigger object.
+	 * Should be called to construct an <code>AbstractMainPhaseDevice</code> 
+	 * with a given <code>trigger</code>.
 	 *  
-	 * @param trigger A Trigger object or null.
+	 * @param trigger a <code>Trigger</code>
 	 */
 	public AbstractMainPhaseDevice(final Function trigger) {
 		super();
@@ -54,13 +54,13 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	/**
 	 * Constructs a new, very specific device with all attributes.
 	 * 
-	 * @param name The name of the device.
-	 * @param id The id of the device.
-	 * @param unit The code>Unit</code> of the device.
-	 * @param options A <code>List</code> of <code>Option</code>s of the device.
+	 * @param name the name of the device
+	 * @param id the id of the device
+	 * @param unit the code>Unit</code> of the device
+	 * @param options a <code>List</code> of <code>Option</code>s of the device
 	 * 			(use 'null' for no options)
-	 * @param parent The parent of this device.
-	 * @param trigger 
+	 * @param parent the parent of this device
+	 * @param trigger a <code>Trigger</code>
 	 * @throws IllegalArgumentException if name or id are <code>null</code>
 	 * @throws IllegalArgumentException if parent has an illegal type
 	 */
@@ -74,25 +74,25 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	
 	
 	/**
-	 * Returns the trigger of the device.
+	 * Returns the <code>Trigger</code> of the device.
 	 * 
-	 * @return the Trigger of the device
+	 * @return the <code>Trigger</code> of the device
 	 */
 	public Function getTrigger() {
 		return this.trigger;
 	}
 
 	/**
-	 * Sets the Trigger of the device.
+	 * Sets the <code>Trigger</code> of the device.
 	 * 
-	 * @param trigger A Trigger object.
+	 * @param trigger the <code>Trigger</code> of the device
 	 */
 	public void setTrigger(final Function trigger) {
 		this.trigger = trigger;
 	}
 	
 	/**
-	 * Checks if this class can really be the parent of this device. 
+	 * Checks if this class can be the parent of the device. 
 	 * .
 	 * @param parent The parent that should be set.
 	 * @throws ParentNotAllowedException 
@@ -107,18 +107,19 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	}
 	
 	/**
-	 * Returns the class of the device.
+	 * Returns the class name of the device.
 	 * 
-	 * @return A String containing the name of the class of the device.
+	 * @return a <code>String</code> containing the name of the class of 
+	 * 			the device
 	 */
 	public String getClassName() {
 		return this.className;
 	}
 
 	/**
-	 * Sets the className of the device.
+	 * Sets the class name of the device.
 	 * 
-	 * @param className A String object contains the className.
+	 * @param className a <code>String</code> that contains the class name
 	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public void setClassName(final String className) {
@@ -136,6 +137,7 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	 */
 	@Override
 	public int hashCode() {
+		// TODO Explain !
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((className == null) ? 0 : className.hashCode());
@@ -145,26 +147,26 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	/**
 	 * Checks whether the argument and the calling object are equal.
 	 * 
-	 * @param obj the <code>Object</code> to be checked
+	 * @param obj the <code>Object</code> that should be checked
 	 * @return <code>true</code> if equal, <code>false</code> otherwise
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		if( this == obj ) {
+		if(this == obj) {
 			return true;
 		}
-		if( !super.equals( obj ) ) {
+		if(!super.equals(obj)) {
 			return false;
 		}
-		if( getClass() != obj.getClass() ) {
+		if(getClass() != obj.getClass()) {
 			return false;
 		}
 		final AbstractMainPhaseDevice other = (AbstractMainPhaseDevice)obj;
-		if( className == null ) {
-			if( other.className != null ) {
+		if(className == null) {
+			if(other.className != null) {
 				return false;
 			}
-		} else if( !className.equals( other.className ) ) {
+		} else if(!className.equals( other.className)) {
 			return false;
 		}
 		return true;

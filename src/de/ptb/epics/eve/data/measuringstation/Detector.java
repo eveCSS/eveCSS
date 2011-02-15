@@ -42,7 +42,7 @@ public class Detector extends AbstractMainPhaseDevice {
 	 * @return An ArrayList<DetectorChannel> object
 	 */
 	public List<DetectorChannel> getChannels() {
-		return new ArrayList<DetectorChannel>( channels );
+		return new ArrayList<DetectorChannel>(channels);
 	}
 	
 	/**
@@ -57,9 +57,10 @@ public class Detector extends AbstractMainPhaseDevice {
 	/**
 	 * Adds a detector channel to this detector.
 	 * 
-	 * @param detectorChannel A DetectorChannel object.
-	 * @return (Channel added) ? TRUE : FALSE
-	 * @exception IllegalArgumentException if detectorChannel == 'null'
+	 * @param detectorChannel A DetectorChannel object
+	 * @return <code>true</code> if the channel was added,
+	 * 			<code>false</code> otherwise
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public boolean add(final DetectorChannel detectorChannel) {
 		if(detectorChannel == null) {
@@ -78,9 +79,10 @@ public class Detector extends AbstractMainPhaseDevice {
 	/**
 	 * Removes a detector channel from this detector.
 	 * 
-	 * @param detectorChannel A DetectorChannel object.
-	 * @return (Channel removed) ? TRUE : FALSE
-	 * @exception IllegalArgumentException if detectorChannel == 'null'
+	 * @param detectorChannel a <code>DetectorChannel</code>
+	 * @return <code>true</code> if the channel was removed,
+	 * 			<code>false</code> otherwise
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public boolean remove(final DetectorChannel detectorChannel) {
 		if(detectorChannel == null) {
@@ -101,20 +103,18 @@ public class Detector extends AbstractMainPhaseDevice {
 
 	/**
 	 * 
-	 * @return 
+	 * @return a hash
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		
-		return result;
+		return super.hashCode();
 	}
 
 	/**
-	 * Checks if argument and calling object are equal.
+	 * Checks whether the argument and calling object are equal.
 	 * 
-	 * @return (objects equal) ? TRUE : FALSE
+	 * @return <code>true</code> if objects are equal,
+	 * 			<code>false</code> otherwise
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -127,7 +127,6 @@ public class Detector extends AbstractMainPhaseDevice {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		Detector other = (Detector) obj;
 		
 		return true;
 	}
@@ -135,7 +134,7 @@ public class Detector extends AbstractMainPhaseDevice {
 	/**
 	 * Clones the current Detector.
 	 * 
-	 * @return a clone of the calling Detector
+	 * @return a clone of the calling <code>Detector</code>
 	 */
 	@Override
 	public Object clone() {

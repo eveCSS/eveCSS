@@ -10,97 +10,101 @@ package de.ptb.epics.eve.data.measuringstation;
 import de.ptb.epics.eve.data.TypeValue;
 
 /**
- * The AbstractTypeValueAccessContainer is the base class of all classes that contains a
- * TypeValue and a Access. This are currently Event, Goto and Trigger. All of the
- * classes have in common, that they are need a access. So the basic not null
- * checkings for the access is implemented in this class
+ * The <code>AbstractTypeValueAccessContainer</code> is the base class of all 
+ * classes that contain a <code>TypeValue</code> and an <code>Access</code>. 
+ * The basic 'not null' validations for <code>Access</code> are implemented in 
+ * this class.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.3
  * 
- * @see de.trustedcode.scanmoduleditor.data.TypeValue
  * @see de.ptb.epics.eve.data.measuringstation.Access
- * 
  * @see de.ptb.epics.eve.data.measuringstation.Event
- * @see de.ptb.epics.eve.data.measuringstation.Goto
- * @see de.ptb.epics.eve.data.measuringstation.Trigger
- * 
  */
 public abstract class AbstractTypeValueAccessContainer {
 
 	/**
-	 * The TypeValue object of this AbstractTypeValueAccessContainer 
+	 * The TypeValue object of the <code>AbstractTypeValueAccessContainer</code> 
 	 */
 	private TypeValue dataType;
 	
 	/**
-	 * The Access object of this AbstractTypevalueAccessContainer  
+	 * The Access object of the <code>AbstractTypevalueAccessContainer</code>  
 	 */
 	private Access access;
 	
 	/**
-	 * Inhereting classes should call this constructor to construct a new empty AbstractTypeValueAccessContainer.
+	 * Constructs an empty <code>AbstractTypeValueAccessContainer</code>.
 	 */
-	public AbstractTypeValueAccessContainer( final Access access ) {
-		this( access, null );
+	public AbstractTypeValueAccessContainer(final Access access) {
+		this(access, null);
 	}
 	
 	/**
-	 * Inhereting classes should call this constructor the constrcut a new AbstractTypeValueAccessContainer
-	 * with specific values. 
+	 * Constructs an <code>AbstractTypeValueAccessContainer</code> with 
+	 * specific values. 
 	 * 
-	 * @param pv A Access object. Must not be null.
-	 * @param dataType A TypeValue object or null.
+	 * @param pv an <code>Access</code>
+	 * @param dataType a <code>TypeValue</code>
+	 * @throws IllegalArgumentException if access is <code>null</code>
 	 */
-	public AbstractTypeValueAccessContainer( final Access access, final TypeValue dataType ) {
-		if( access == null ) {
-			throw new IllegalArgumentException( "The parameter 'access' must not be null" );
+	public AbstractTypeValueAccessContainer(final Access access, 
+											final TypeValue dataType) {
+		if(access == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'access' must not be null");
 		}
 		this.access = access;
 		this.dataType = dataType;
 	}
 	
 	/**
-	 * Gives back the TypeValue object of this Container.
+	 * Returns the <code>TypeValue</code> of this container.
 	 * 
-	 * @return A TypeValue object or null.
+	 * @return the <code>TypeValue</code>
 	 */
 	public TypeValue getDataType() {
 		return this.dataType;
 	}
 	
 	/**
-	 * Gives back the Access object of this Container.
+	 * Returns the <code>Access</code> of this container.
 	 * 
-	 * @return A Access object.
+	 * @return the <code>Access</code>
 	 */
 	public Access getAccess() {
 		return this.access;
 	}
 	
 	/**
-	 * Sets the Access of this AbstractTypeValueAccessContainer.
+	 * Sets the <code>Access</code>.
 	 * 
-	 * @param access A Access object. Must not be null.
+	 * @param access the <code>Access</code> to be set
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public void setAccess( final Access access ) {
-		if( access == null ) {
-			throw new IllegalArgumentException( "The parameter 'access' must not be null" );
+	public void setAccess(final Access access) {
+		if(access == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'access' must not be null");
 		}
 		this.access = access;
 	}
 	
 	/**
-	 * Sets the TypeValue of this AbstractTypeValuePVContainer.
+	 * Sets the <code>TypeValue</code>.
 	 * 
-	 * @param dataType A TypeValu object or null.
+	 * @param dataType the <code>TypeValue</code> to be set
 	 */
-	public void setDataType( final TypeValue dataType ) {
+	public void setDataType(final TypeValue dataType) {
 		this.dataType = dataType;
 	}
 
+	/**
+	 * some fancy math
+	 */
 	@Override
 	public int hashCode() {
+		// TODO Explain !
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((access == null) ? 0 : access.hashCode());
@@ -109,34 +113,40 @@ public abstract class AbstractTypeValueAccessContainer {
 		return result;
 	}
 
+	/**
+	 * Checks whether the argument and calling <code>Object</code> are equal.
+	 * 
+	 * @param obj the object to be checked
+	 * @return <code>true</code> if objects are equal,
+	 * 			<code>false</code> otherwise
+	 */
 	@Override
-	public boolean equals( final Object obj ) {
-		if( this == obj ) {
+	public boolean equals(final Object obj) {
+		if(this == obj) {
 			return true;
 		}
-		if( obj == null ) {
+		if(obj == null) {
 			return false;
 		}
-		if( getClass() != obj.getClass() ) {
+		if(getClass() != obj.getClass()) {
 			return false;
 		}
-		final AbstractTypeValueAccessContainer other = (AbstractTypeValueAccessContainer)obj;
-		if( access == null ) {
-			if( other.access != null ) {
+		final AbstractTypeValueAccessContainer other = 
+					(AbstractTypeValueAccessContainer)obj;
+		if(access == null) {
+			if(other.access != null) {
 				return false;
 			}
-		} else if( !access.equals( other.access ) ) {
+		} else if(!access.equals( other.access)) {
 			return false;
 		}
-		if( dataType == null ) {
-			if( other.dataType != null ) {
+		if(dataType == null) {
+			if(other.dataType != null) {
 				return false;
 			}
-		} else if( !dataType.equals( other.dataType ) ) {
+		} else if(!dataType.equals( other.dataType)) {
 			return false;
 		}
 		return true;
-	}
-
-	
+	}	
 }

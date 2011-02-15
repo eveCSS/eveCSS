@@ -1,14 +1,15 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
+/*
+ * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data.measuringstation;
 
 /**
- * This class represents a Unit that is defined inside of a measuring station description.
+ * This class represents a unit that is defined inside of a measuring station 
+ * description.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.2
@@ -21,99 +22,118 @@ public class Unit {
 	private String value;
 	
 	/**
-	 * This attribute is holding the access which describes where the value can be received from.
+	 * This attribute is holding the access which describes where the value can 
+	 * be received from.
 	 */
 	private Access access;
 
 	/**
-	 * This constructor construct a new Unit, with a empty String as value.
+	 * Constructs an <code>Unit</code>, with an empty <code>String</code> as 
+	 * value.
 	 *
 	 */
 	public Unit() {
-		this( "" );
+		this("");
 	}
 	
 	/**
-	 * This constructor constructs a new Unit with the given String as value.
+	 * Constructs an <code>Unit</code> with the given <code>String</code> as 
+	 * value.
 	 * 
 	 * @param value The value of the Unit. Must not be null!
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public Unit( final String value ) {
-		if( value == null ) {
-			throw new IllegalArgumentException( "The parameter 'value' must not be null!" );
+	public Unit(final String value) {
+		if(value == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'value' must not be null!");
 		}
 		this.value = value;
 	}
 	
 	/**
-	 * This constructor constructs a new Unit with the given Access.
+	 * Constructs an <code>Unit</code> with the given <code>Access</code>.
 	 * 
-	 * @param access The access from where the value can be received from. Must not be null!
+	 * @param access the <code>Access</code> where the value is received from
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public Unit( final Access access ) {
-		if( access == null ) {
-			throw new IllegalArgumentException( "The parameter 'access' must not be null!" );
+	public Unit(final Access access) {
+		if(access == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'access' must not be null!");
 		}
 		this.access = access;
 	}
 	
 	/**
-	 * Gives back if this unit is specified by an Access.
+	 * Checks whether the <code>Unit</code> is specified by an 
+	 * <code>Access</code>.
 	 * 
-	 * @return Returns 'true' if the unit is specified by an Access.
+	 * @return <code>true</code> if the unit is specified by an 
+	 * 			<code>Access</code>, <code>false</code> otherwise
 	 */
 	public boolean isAccess() {
 		return this.access != null;
 	}
 	
 	/**
-	 * Gevies back if the unit is specified by a String.
+	 * Checks whether the <code>Unit</code> is specified by a 
+	 * <code>String</code>.
 	 * 
-	 * @return Returns 'true' if the unit is specified by a String.
+	 * @return <code>true</code> if the unit is specified by a 
+	 * 			<code>String</code>, <code>false</code> otherwise
 	 */
 	public boolean isValue() {
 		return this.value != null;
 	}
 	
 	/**
-	 * Gives back the value of the Unit.
+	 * Returns the value of the <code>Unit</code>.
 	 * 
-	 * @return Returns a String object that contains the unit or null if the unit is specified by a ProcessVariable.
+	 * @return a <code>String</code> containing the value of the 
+	 * 			<code>Unit</code> or <code>null</code> if the unit is specified 
+	 * 			by a process variable (PV)
 	 */
 	public String getValue() {
 		return this.value;
 	}
 	
 	/**
-	 * Gives back the Access for this unit.
+	 * Returns the <code>Access</code> of the <code>Unit</code>.
 	 * 
-	 * @return Returns a Access object or null if the unit is specified by a String.
+	 * @return an <code>Access</code> or <code>null</code> if the unit is 
+	 * 			specified by a <code>String</code>
 	 */
 	public Access getAccess() {
 		return this.access;
 	}
 	
 	/**
-	 * Sets a Access as the source of this unit. If a value was setted before, the object will forget
-	 * the value.
+	 * Sets an <code>Access</code> as the source of this unit. If a value was 
+	 * set before, the object will 'forget' the value.
 	 * 
-	 * @param pv A Access object. Must not be null!
+	 * @param pv an <code>Access</code>. Must not be null!
 	 */
-	public void setAccess( final Access access ) {
+	public void setAccess(final Access access) {
 		this.access = access;
 		this.value = null;
 	}
 
 	/**
-	 * Sets a String a the Unit. If a ProcessVariable was setted before, the object will forget the Access.
+	 * Sets a <code>String</code> as the Unit. If a process variable was set 
+	 * before, the object will 'forget' the Access.
 	 * 
-	 * @param value A String object, contating the unit. Must not be null!
+	 * @param value a <code>String</code> containing the value of the unit. 
+	 * 		   Must not be null!
 	 */
-	public void setValue( final String value ) {
+	public void setValue(final String value) {
 		this.value = value;
 		this.access = null;
 	}
 
+	/**
+	 * @return a hash
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -123,6 +143,13 @@ public class Unit {
 		return result;
 	}
 
+	/**
+	 * Checks whether the argument and calling object are equal.
+	 * 
+	 * @param obj the <code>Object</code> that should be checked
+	 * @return <code>true</code> if objects are equal,
+	 * 			<code>false</code> otherwise
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -152,8 +179,16 @@ public class Unit {
 		return true;
 	}
 
+	/**
+	 * Clones the calling object.
+	 * 
+	 * @return a copy of the calling <code>Object</code>
+	 */
 	@Override
 	public Object clone() {
-		return this.access!=null?new Unit( (Access)this.access.clone() ):new Unit( this.value ); 
+		// TODO Explain !!!
+		return this.access!=null 
+				? new Unit((Access)this.access.clone()) 
+				: new Unit(this.value); 
 	}
 }

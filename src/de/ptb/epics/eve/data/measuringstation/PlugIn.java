@@ -1,10 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
+/*
+ * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ **/
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.ArrayList;
@@ -27,91 +27,96 @@ public class PlugIn {
 	private String name;
 	
 	/**
-	 * The location of the plugin.
+	 * The location of the plug in.
 	 */
 	private String location;
 	
 	/**
-	 * The type of the plugin.
+	 * The type of the plug in.
 	 */
 	private PluginTypes type;
 	
 	/**
-	 * This List contains all parameters of the plugin.
+	 * This List contains all parameters of the plug in.
 	 */
-	private List< PluginParameter > parameters;
+	private List<PluginParameter> parameters;
 	
 	/**
-	 * This constructor construct a new PlugIn with a given type.
+	 * Constructs a <code>PlugIn</code> with a given type.
 	 * 
-	 * @param type The type of the plugin. Must not be null.
+	 * @param type the type of the plug in. Must not be null.
 	 */
-	public PlugIn( final PluginTypes type ) {
-		this( "", "", type );
+	public PlugIn(final PluginTypes type) {
+		this("", "", type);
 	}
 	
 	/**
-	 * This constructor constructs a new PlugIn with the given values.
+	 * Constructs a <code>PlugIn</code> with the given values.
 	 * 
-	 * @param name The name of the plugin. Must not be null!
-	 * @param location The location of the plugin in the file system. Must not be null!
-	 * @param type The type of the plugin. Must not be null.
-	 * @param parameters A List, that is holding the parameters of the plugin. Pass 'null' if you don't want to add parameters while contruction.
+	 * @param name the name of the plug in.
+	 * @param location the location of the plug in in the file system.
+	 * @param type the type of the plug in. Must not be null.
+	 * @param parameters a <code>List</code> holding the parameters of the 
+	 * 		   plug in. Pass <code>null</code> if you don't want parameters.
+	 * @throws IllegalArgumentException if name or location is 
+	 * 			<code>null</code>
 	 */
-	public PlugIn( final String name, final String location, final PluginTypes type ) {
-		if( name == null ) {
-			throw new IllegalArgumentException( "The parameter 'name' must not be null!" );
+	public PlugIn(final String name, final String location, 
+					final PluginTypes type) {
+		if(name == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'name' must not be null!");
 		}
-		if( location == null ) {
-			throw new IllegalArgumentException( "The parameter 'location' must not be null!" );
+		if(location == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'location' must not be null!");
 		}
 		
 		this.name = name;
 		this.location = location;
 		this.type = type;
 		
-		this.parameters = new ArrayList< PluginParameter >();
-		
+		this.parameters = new ArrayList<PluginParameter>();
 	}
 	
 	/**
-	 * Gives back the name of the PlugIn.
+	 * Returns the name of the <code>PlugIn</code>.
 	 * 
-	 * @return A String object, containing the name of the plugin. Never returns null!
+	 * @return a <code>String</code> containing the name of the plug in.
 	 */
 	public String getName() {
 		return this.name;
 	}
 	
 	/**
-	 * Gives back the location of the PlugIn.
+	 * Returns the location of the <code>PlugIn</code>.
 	 * 
-	 * @return A String object, containing the location of the plugin. Never returns null!
+	 * @return a <code>String</code> containing the location of the plug in.
 	 */
 	public String getLocation() {
 		return this.location;
 	}
 	
 	/**
-	 * Gives back the type of the Plugin.
+	 * Returns the type of the <code>PlugIn</code>.
 	 * 
-	 * @return The type of the PlugIn. never returns null!
+	 * @return the type of the plug in.
 	 */
 	public PluginTypes getType() {
 		return this.type;
 	}
 	
 	/**
-	 * Gives back a copy of the internal list, that is holding all parameters.
+	 * Returns a copy of the internal list, that is holding all parameters.
 	 * 
-	 * @return A List object, that is holding the parameters. Never returns null!
+	 * @return A <code>List</code> holding the parameters.
 	 */
-	public List< PluginParameter > getParameters() {
-		return new ArrayList< PluginParameter >( this.parameters );
+	public List<PluginParameter> getParameters() {
+		return new ArrayList<PluginParameter>(this.parameters);
 	}
 	
 	/**
-	 * Gives back the amount of parameters.
+	 * Returns the amount of parameters.
 	 * 
 	 * @return The amount of parameters.
 	 */
@@ -120,67 +125,74 @@ public class PlugIn {
 	}
 	
 	/**
-	 * Gives back a Iterator over the internal List of parameters.
+	 * Returns an <code>Iterator</code> over the internal list of parameters.
 	 * 
-	 * @return A Iterator object over the internal List of parameters. Never returns null.
+	 * @return an <code>Iterator</code> over the internal List of parameters.
 	 */
-	public Iterator< PluginParameter > parameterIterator() {
+	public Iterator<PluginParameter> parameterIterator() {
 		return this.parameters.iterator();
 	}
 	
 	/**
-	 * Sets the location of the plugin.
+	 * Sets the location of the plug in.
 	 * 
-	 * @param location A String object, containg the location. Must not be null!
+	 * @param location a <code>String</code> containing the location.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public void setLocation( final String location ) {
-		if( location == null ) {
-			throw new IllegalArgumentException( "The parameter 'location' must not be null!" );
+	public void setLocation(final String location) {
+		if(location == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'location' must not be null!");
 		}
 		this.location = location;
 	}
 
 	/**
-	 * Sets the name of the plugin.
+	 * Sets the name of the plug in.
 	 * 
-	 * @param name A String object, containing the name of the location. Must not be null!
+	 * @param name a <code>String</code> containing the name of the location.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public void setName( final String name ) {
-		if( name == null ) {
-			throw new IllegalArgumentException( "The parameter 'name' must not be null!" );
+	public void setName(final String name) {
+		if(name == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'name' must not be null!");
 		}
 		this.name = name;
 	}
 
 	/**
-	 * Sets the Type of the PlugIn.
+	 * Sets the Type of the <code>PlugIn</code>.
 	 * 
-	 * @see de.trustedcode.scanmoduleditor.data.EventTypes
-	 * @param type One of the values of EventTypes. Must not be null.
+	 * @param type one of the values of <code>EventTypes</code>.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public void setType( final PluginTypes type ) {
-		if( type == null ) {
-			throw new IllegalArgumentException( "The parameters 'type must not be null!" );
+	public void setType(final PluginTypes type) {
+		if(type == null) {
+			throw new IllegalArgumentException(
+					"The parameters 'type must not be null!");
 		}
 		this.type = type;
 	}
 
 	/**
-	 * Adds a parameter to the plugin.
+	 * Adds a parameter to the plug in.
 	 * 
-	 * @param parameter A object containing the parameter. Must not be null!
-	 * @return Gives back 'true' if the parameter has been added.
+	 * @param parameter an object containing the parameter.
+	 * @return <code>true</code> if the parameter has been added, 
+	 * 			<code>false</code> otherwise
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public boolean add( final PluginParameter parameter ) {
-		if( parameter == null ) {
-			throw new IllegalArgumentException( "The parameter 'parameter' must not be null!" );
+	public boolean add(final PluginParameter parameter) {
+		if(parameter == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'parameter' must not be null!");
 		}
-		return parameters.add( parameter );
+		return parameters.add(parameter);
 	}
 
 	/**
-	 * This method removes all parameters from the PlugIn.
-	 *
+	 * This method removes all parameters from the <code>PlugIn</code>.
 	 */
 	public void clear() {
 		parameters.clear();
@@ -189,18 +201,25 @@ public class PlugIn {
 	/**
 	 * Removes a parameter from the plug in.
 	 * 
-	 * @param parameter The parameter that should be removed. The parameter must not be null.
-	 * @return Gives back 'true' if the parameter has been remove.
+	 * @param parameter the parameter that should be removed.
+	 * @return <code>true</code> if the parameter has been removed, 
+	 * 			<code>false</code> otherwise
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public boolean remove( final PluginParameter parameter ) {
-		if( parameter == null ) {
-			throw new IllegalArgumentException( "The parameter 'parameter' must not be null!" );
+	public boolean remove(final PluginParameter parameter) {
+		if(parameter == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'parameter' must not be null!");
 		}
-		return parameters.remove( parameter );
+		return parameters.remove(parameter);
 	}
 
+	/**
+	 * @return a hash
+	 */
 	@Override
 	public int hashCode() {
+		// TODO Explain !!!
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
@@ -212,6 +231,13 @@ public class PlugIn {
 		return result;
 	}
 
+	/**
+	 * Checks whether the argument and calling object are equal.
+	 * 
+	 * @param obj the <code>Object</code> that should be checked.
+	 * @return <code>true</code> if objects are equal, 
+	 * 			<code>false</code> otherwise
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -253,7 +279,5 @@ public class PlugIn {
 			return false;
 		}
 		return true;
-	}
-	
-	
+	}	
 }

@@ -1,10 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
+/*
+ * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data.measuringstation;
 
 import de.ptb.epics.eve.data.EventTypes;
@@ -12,8 +12,9 @@ import de.ptb.epics.eve.data.TypeValue;
 import de.ptb.epics.eve.data.measuringstation.Access;
 
 /**
- * This class represents a Event that is defined inside of a measuring station description.
- * It also provides a mechanism to get connected with a scan modul and represents a start event.
+ * This class represents an <code>Event</code> that is defined inside of a 
+ * measuring station description. It also provides a mechanism to get connected 
+ * with a scan module and represents a start event.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.3
@@ -23,7 +24,8 @@ public class Event {
 
 	public enum ScheduleIncident {START, END};
 	/**
-	 * The name of the Event. Currently this is generated for SCHEDULE and DETECTOR
+	 * The name of the Event. Currently this is generated for 
+	 * SCHEDULE and DETECTOR
 	 */
 	private String pname;		// parentname
 	private String name;		
@@ -55,8 +57,9 @@ public class Event {
 	private MonitorEvent monitor;
 
 	/**
-	 * This constructor construct a new Event object with a string datatype, a empty
-	 * monitor process variable and empty name. By default the Event is of type schedule. 
+	 * Constructs an <code>Event</code> with a <code>String</code> data type, 
+	 * an empty monitor process variable and empty name. By default the Event 
+	 * is of type schedule. 
 	 *
 	 */
 	public Event() {
@@ -68,10 +71,11 @@ public class Event {
 	}
 	
 	/**
+	 * Constructs an <code>Event</code>.
 	 * 
-	 * @param eventtype (schedule/monitor)
+	 * @param type (schedule/monitor)
 	 */
-	public Event( final EventTypes type ) {
+	public Event(final EventTypes type) {
 		this.type = type;
 		if (this.type == EventTypes.MONITOR) {
 			monitor = new MonitorEvent();
@@ -94,7 +98,8 @@ public class Event {
 	 * @param chainid
 	 * @param smid
 	 */
-	public Event(String detectorid, String parentname, String detectorname, int chainid, int smid) {
+	public Event(String detectorid, String parentname, String detectorname, 
+				  int chainid, int smid) {
 		this.type = EventTypes.DETECTOR;
 		pname = parentname;
 		name = detectorname;
@@ -119,36 +124,45 @@ public class Event {
 		this.incident = incident;
 	}
 	/**
-	 * This constructor constructs a new Event of type Monitor with a given value (dataType) and a
-	 * given access. 
+	 * Constructs an <code>Event</code> of type Monitor with a given value 
+	 * (dataType) and a given access. 
 	 * 
-	 * @param dataType This paremeter is specifiying the data type of this event. Must not be null.
-	 * @param access This paramter is specifying the access of the event. Must not be null and the the method type of the access must be Monitor.
+	 * @param access specifies the access of the event. Must not be null and 
+	 * 				  the the method type of the access must be 
+	 * 				  <code>Monitor</code>
+	 * @param dataType specifies the data type of this event. Must not be null.
 	 */
-	public Event( final Access access, final TypeValue dataType ) {
+	public Event(final Access access, final TypeValue dataType) {
 		this.type = EventTypes.MONITOR;
 		monitor = new MonitorEvent( access, dataType, "", "");
 	}
 	
 	/**
-	 * This constructor constructs a new Event of type Monitor with given data type (value), process variable,
+	 * This constructor constructs an <code>Event</code> of type 
+	 * <code>Monitor</code> with given data type (value), process variable,
 	 * name, id.
 	 * 
-	 * @param dataType This paremeter is specifiying the data type of this event. Must not be null.
-	 * @param access This paramter is specifying the access of the event. Must not be null and the the method type of the access must be Monitor.
-	 * @param name A String objects containing the name of the event. Must not be null.
-	 * @param id A String objects containing the id of the event. Must not be null.
-	 * @param type The type of the Event. Must not be null!
+	 * @param dataType specifies the data type of this event. Must not be null.
+	 * @param access specifies the <code>Access</code> of the event. Must not 
+	 * 				  be null and the the method type of the <code>Access</code> 
+	 * 				  must be <code>Monitor</code>
+	 * @param name a <code>String</code> containing the name of the 
+	 * 				<code>Event</code>.	Must not be null.
+	 * @param id a <code>String</code> containing the id of the 
+	 * 		   <code>Event</code>. Must not be null.
+	 * @param type the type of the <code>Event</code>. Must not be null!
 	 */
-	public Event( final Access access, final TypeValue dataType, final String name, final String id) {
+	public Event(final Access access, final TypeValue dataType, 
+				  final String name, final String id) {
 		this.type = EventTypes.MONITOR;
 		monitor = new MonitorEvent(access, dataType, name, id);
 	}
 	
 	/**
-	 * Give back the name of the event.
+	 * Returns the name of the <code>Event</code>.
 	 * 
-	 * @return A String object containing the name of the event. Never returns null.
+	 * @return a <code>String</code> containing the name of the 
+	 * 			<code>event</code>. Never returns null.
 	 */
 	public String getName() {
 		if (this.type == EventTypes.MONITOR)
@@ -162,11 +176,14 @@ public class Event {
 	}
 
 	/**
-	 * Give back the Full id of the event. If event is a schedule event, it is generated from 
-	 * chainId, scanModuleId and incident S-<chainId>-<scanModuleId>-[S,E]
+	 * Returns the full id of the <code>Event</code>. If <code>Event</code> is a 
+	 * schedule event, it is generated from chainId, scanModuleId and incident 
+	 * S-<chainId>-<scanModuleId>-[S,E]
 	 * If event is a detector event, it is generated from 
-	 * chainId, scanModuleId and detector_id D-<chainId>-<scanModuleId>-<detectorid>
-	 * @return
+	 * chainId, scanModuleId and detector_id 
+	 * D-<chainId>-<scanModuleId>-<detectorid>
+	 * 
+	 * @return the full identifier of the <code>Event</code>
 	 */
 	public String getNameID() {
 		String returnString = null;
@@ -186,10 +203,11 @@ public class Event {
 				incidentTag = "E";
 			else
 				incidentTag = "S";
-			return "Start ( S-" + String.valueOf(chainId) + "-" + String.valueOf(scanModuleId) + "-" + incidentTag + " )";
+			return "Start ( S-" + String.valueOf(chainId) + "-" + 
+					String.valueOf(scanModuleId) + "-" + incidentTag + " )";
 		}
 		else if (this.type == EventTypes.DETECTOR) {
-			if (pname != null ) {
+			if (pname != null) {
 				if (!pname.equals("")) {
 					returnString = pname;
 				}
@@ -209,17 +227,20 @@ public class Event {
 			}
 			else
 				returnString = "( D-";
-			returnString += String.valueOf(chainId) + "-" + String.valueOf(scanModuleId) + "-" + detectorId + " )";
+			returnString += String.valueOf(chainId) + "-" + 
+						String.valueOf(scanModuleId) + "-" + detectorId + " )";
 		}
 		return returnString;
 	}
 	
 	/**
-	 * Give back the id of the event. If event is a schedule event, it is generated from 
-	 * chainId, scanModuleId and incident S-<chainId>-<scanModuleId>-[S,E]
-	 * If event is a detector event, it is generated from 
-	 * chainId, scanModuleId and detector_id D-<chainId>-<scanModuleId>-<detectorid>
-	 * @return
+	 * Returns the id of the <code>Event</code>. If <code>Event</code> is a 
+	 * schedule event, it is generated from chainId, scanModuleId and incident 
+	 * S-<chainId>-<scanModuleId>-[S,E]
+	 * If <code>Event</code> is a detector event, it is generated from chainId, 
+	 * scanModuleId and detector_id D-<chainId>-<scanModuleId>-<detectorid>
+	 * 
+	 * @return id
 	 */
 	public String getID() {
 		String returnString = null;
@@ -233,18 +254,20 @@ public class Event {
 				incidentTag = "E";
 			else
 				incidentTag = "S";
-			return "S-" + String.valueOf(chainId) + "-" + String.valueOf(scanModuleId) + "-" + incidentTag;
+			return "S-" + String.valueOf(chainId) + "-" + 
+					String.valueOf(scanModuleId) + "-" + incidentTag;
 		}
 		else if (this.type == EventTypes.DETECTOR) {
-				return "D-" + String.valueOf(chainId) + "-" + String.valueOf(scanModuleId) + "-" + detectorId;
+				return "D-" + String.valueOf(chainId) + "-" + 
+						String.valueOf(scanModuleId) + "-" + detectorId;
 		}
 		return returnString;
 	}
 	
 	/**
-	 * Gives back the event type of the event.
+	 * Returns the type of the <code>Event</code>.
 	 * 
-	 * @return The event type.
+	 * @return the event type
 	 */
 	public EventTypes getType() {
 		return this.type;
@@ -252,15 +275,17 @@ public class Event {
 	
 	
 	/**
-	 * Sets the id of this event. The id is a unique identifier of this event inside
-	 * a measuring station. Do not set the id of Schedule Events. It is generated from 
-	 * chainId, scanModuleId and Incident
+	 * Sets the id of this event. The id is a unique identifier of this event 
+	 * inside a measuring station. Do not set the id of Schedule Events. It is 
+	 * generated from chainId, scanModuleId and Incident
 	 * 
-	 * @param id A String object containing the name of the event. Must not be null!
+	 * @param id A String object containing the name of the event.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public void setId( final String id) {
-		if( id == null ) {
-			throw new IllegalArgumentException( "The parameter 'id' must not be null!" );
+	public void setId(final String id) {
+		if(id == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'id' must not be null!");
 		}
 		if (this.type == EventTypes.MONITOR) monitor.setId(id);
 	}
@@ -268,11 +293,13 @@ public class Event {
 	/**
 	 * Sets the name of this event.
 	 * 
-	 * @param name A String object containing the id of the event. Must not be null!
+	 * @param name A String object containing the id of the event.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public void setName( final String name) {
-		if( name == null ) {
-			throw new IllegalArgumentException( "The parameter 'name' must not be null!" );
+	public void setName(final String name) {
+		if(name == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'name' must not be null!");
 		}
 		if (this.type == EventTypes.MONITOR)
 			monitor.setName(name);
@@ -283,11 +310,13 @@ public class Event {
 	/**
 	 * Sets the type of the event.
 	 * 
-	 * @param type A value of the Enum EventTypes. Must not be null.
+	 * @param type a value of the Enum EventTypes. Must not be null.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public void setType( final EventTypes type) {
-		if( type == null ) {
-			throw new IllegalArgumentException( "The parameter 'type' must not be null!" );
+	public void setType(final EventTypes type) {
+		if(type == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'type' must not be null!");
 		}
 		this.type = type;
 		if (this.type == EventTypes.MONITOR){
@@ -301,25 +330,28 @@ public class Event {
 		}
 	}
 	
-
-
 	/**
 	 * Sets the Access of this Event.
 	 * 
 	 * @param access A Access object. Must not be null.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
+	 * @throws IllegalArgumentException ?
 	 */
-	public void setAccess( final Access access ) {
-		if( ( access == null ) || this.type != EventTypes.MONITOR) {
-			throw new IllegalArgumentException( "unable to set Null Access or type is schedule" );
+	public void setAccess(final Access access) {
+		// TODO Explain second clause of if in throws declaration
+		if((access == null) || this.type != EventTypes.MONITOR) {
+			throw new IllegalArgumentException(
+					"unable to set Null Access or type is schedule");
 		}
 		if (monitor != null)
-			monitor.setAccess( access );
+			monitor.setAccess(access);
 	}
 
 	/**
-	 * This method gives back the monitor event of this event.
+	 * Returns the monitor event of this event.
 	 * 
-	 * @return The monitor event of this event or null if the event isn't a monitor event.
+	 * @return the monitor event of this event or null if the event isn't 
+	 * 			a monitor event.
 	 */
 	public MonitorEvent getMonitor() {
 		if (this.type == EventTypes.MONITOR)
@@ -331,34 +363,34 @@ public class Event {
 	/**
 	 * Sets the chain id.
 	 * 
-	 * @param id The new chain id.
+	 * @param id the new chain id.
 	 */
-	public void setChainId( final int id ) {
+	public void setChainId(final int id) {
 		this.chainId = id;
 	}
 	
 	/**
-	 * Gives back the chain id.
+	 * Returns the chain id.
 	 * 
-	 * @return The chain id.
+	 * @return the chain id.
 	 */
 	public int getChainId() {
 		return this.chainId; 
 	}
 
 	/**
-	 * Sets the scan modul id.
+	 * Sets the scan module id.
 	 * 
-	 * @param id The new scan modul id.
+	 * @param id the new scan module id
 	 */
-	public void setScanModuleId( final int id ) {
+	public void setScanModuleId(final int id) {
 		this.scanModuleId = id;
 	}
 	
 	/**
-	 * Gives back the scan modul id.
+	 * Returns the scan module id.
 	 * 
-	 * @return The scan modul id.
+	 * @return The scan module id.
 	 */
 	public int getScanModuleId() {
 		return this.scanModuleId;
@@ -378,6 +410,9 @@ public class Event {
 		return incident;
 	}
 
+	/**
+	 * @return a hash
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -395,6 +430,13 @@ public class Event {
 		return result;
 	}
 
+	/**
+	 * Checks whether the argument and calling object are equal.
+	 * 
+	 * @param obj the <code>Object</code> that should be checked
+	 * @return <code>true</code> if objects are equal,
+	 * 			<code>false</code> otherwise
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -456,7 +498,5 @@ public class Event {
 			return false;
 		}
 		return true;
-	}
-	
-	
+	}	
 }

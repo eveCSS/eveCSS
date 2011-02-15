@@ -34,9 +34,7 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	private Function value;
 	
 	/**
-	 * Used by inheriting classes to generate an empty
-	 * <code>AbstractPrePostscanDevice</code>.
-	 *
+	 * Constructs an empty <code>AbstractPrePostscanDevice</code>.
 	 */
 	public AbstractPrePostscanDevice() {
 		super();
@@ -46,8 +44,8 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	}
 	
 	/**
-	 * Used by inheriting classes to generate an 
-	 * <code>AbstractPrePostscanDevice</code> with specific attributes.
+	 * Constructs an <code>AbstractPrePostscanDevice</code> with specific 
+	 * attributes.
 	 * 
 	 * @param className a <code>String</code> containing the class name
 	 * @param displaygroup a <code>String</code> containing the display group
@@ -83,7 +81,7 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	/**
 	 * Sets the className.
 	 * 
-	 * @param className A <code>String</code> containing the name
+	 * @param className a <code>String</code> containing the name
 	 */
 	public void setClassName(final String className) {
 		this.className = className;
@@ -99,9 +97,9 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	}
 
 	/**
-	 * Returns the <code>Function</code.
+	 * Returns the <code>Function</code>.
 	 *
-	 * @return The <code>Function</code>
+	 * @return the <code>Function</code>
 	 */		
 	public Function getValue() {
 		return this.value;
@@ -117,7 +115,7 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	}
 
 	/**
-	 * Checks if a value is fitting to the constraints of this
+	 * Checks whether a value is valid for this 
 	 * <code>AbstractPrePostscanDevice</code>.
 	 * 
 	 * @param value the value that should be checked 
@@ -127,12 +125,12 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	 */
 	public boolean isValuePossible(final String value) {
 		// TODO EXPLAIN !!!
-		return this.value!=null?this.value.isValuePossible( value ):true;
+		return this.value!=null ? this.value.isValuePossible(value) : true;
 	}
 	
 	/**
-	 * Checks if the AbstractPrePostscanDevice can only have discrete 
-	 * values.
+	 * Checks whether the <code>AbstractPrePostscanDevice</code> must have 
+	 * discrete values.
 	 *
 	 * @return <code>true</code> if only discrete values are valid,
 	 * 			<code>false</code> otherwise 
@@ -160,42 +158,43 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	}
 
 	/**
-	 * Checks if the argument and calling object are equal.
+	 * Checks whether the argument and calling object are equal.
 	 * 
+	 * @param obj the <code>Object</code> that should be checked
 	 * @return <code>true</code> if objects equal,
 	 * 			<code>false</code> otherwise
 	 */
 	@Override
-	public boolean equals( final Object obj ) {
-		if( this == obj ) {
+	public boolean equals(final Object obj) {
+		if(this == obj) {
 			return true;
 		}
-		if( !super.equals( obj ) ) {
+		if(!super.equals(obj)) {
 			return false;
 		}
-		if( getClass() != obj.getClass() ) {
+		if(getClass() != obj.getClass()) {
 			return false;
 		}
 		final AbstractPrePostscanDevice other = (AbstractPrePostscanDevice)obj;
-		if( className == null ) {
-			if( other.className != null ) {
+		if(className == null) {
+			if(other.className != null) {
 				return false;
 			}
-		} else if( !className.equals( other.className ) ) {
+		} else if(!className.equals(other.className)) {
 			return false;
 		}
-		if( displaygroup == null ) {
-			if( other.displaygroup != null ) {
+		if(displaygroup == null) {
+			if(other.displaygroup != null) {
 				return false;
 			}
-		} else if( !displaygroup.equals( other.displaygroup ) ) {
+		} else if(!displaygroup.equals( other.displaygroup)) {
 			return false;
 		}
-		if( value == null ) {
-			if( other.value != null ) {
+		if(value == null) {
+			if(other.value != null) {
 				return false;
 			}
-		} else if( !value.equals( other.value ) ) {
+		} else if(!value.equals( other.value)) {
 			return false;
 		}
 		return true;

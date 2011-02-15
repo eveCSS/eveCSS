@@ -71,25 +71,26 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	}
 	
 	/** 
-	 * @param position The position function of the motor axis.
-	 * @param status The status function of the motor axis.
+	 * Constructs a <code>MotorAxis</code>
+	 * 
+	 * @param position The position <code>Function</code> of the motor axis.
+	 * @param status The status <code>Function</code> of the motor axis.
 	 * @param gotoAdvisor The goto of the motor axis.
 	 * @param stop the stop trigger of the motor axis.
-	 * @exception IllegalArgumentException if position == 'null'
-	 * @exception IllegalArgumentException if gotoAdvisor == 'null'
-	 * @exception IllegalArgumentException if stop == 'null'
+	 * @throws IllegalArgumentException if position, gotoAdvisor or stop is 
+	 * 			<code>null</code>
 	 */
 	public MotorAxis(final Function position, final Function status, 
 					  final Function gotoAdvisor, final Function stop) {
-		if( position == null ) {
+		if(position == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'position' must not be null!");
 		}
-		if( gotoAdvisor == null ) {
+		if(gotoAdvisor == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'gotoAdvisor' must not be null!");
 		}
-		if( stop == null ) {
+		if(stop == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'stop' must not be null!");
 		}
@@ -101,46 +102,49 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	}
 	
 	/**
-	 * Returns the position function of the motor axis.
+	 * Returns the position <code>Function</code> of the motor axis.
 	 * 
-	 * @return A Function object.
+	 * @return the position <code>Function</code>
 	 */
 	public Function getPosition() {
 		return this.position;
 	}
 	
 	/**
-	 * Returns the status function of the motor axis.
+	 * Returns the status <code>Function</code> of the motor axis.
 	 * 
-	 * @return A Function object or null if it's not set.
+	 * @return the status <code>Function</code> or <code>null</code> if it's 
+	 * 			not set.
 	 */
 	public Function getStatus() {
 		return this.status;
 	}
 	
 	/**
-	 * Returns the goto function of the motor axis.
+	 * Returns the goto <code>Function</code> of the motor axis.
 	 * 
-	 * @return A Function object or null if it's not set.
+	 * @return the goto <code>Function</code> or <code>null</code> if it's not 
+	 * 			set.
 	 */
 	public Function getGoto() {
 		return this.gotoAdvisor;
 	}
 	
 	/**
-	 * Returns the stop function of the motor axis.
+	 * Returns the stop <code>Function</code> of the motor axis.
 	 * 
-	 * @return A Function object or null if it's not set.
+	 * @return the stop <code>Function</code> or <code>null</code> if it's not 
+	 * 			set.
 	 */
 	public Function getStop() {
 		return this.stop;
 	}
 
 	/**
-	 * Sets the goto function of the motor axis.
+	 * Sets the goto <code>Function</code> of the motor axis.
 	 * 
-	 * @param gotoAdvisor The new goto function for the motor axis.
-	 * @exception IllegalArgumentException if gotoAdvisor == 'null'
+	 * @param gotoAdvisor the goto <code>Function</code> that should be set.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public void setGoto(final Function gotoAdvisor) {
 		if(gotoAdvisor == null) {
@@ -151,10 +155,10 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * This method sets the position function of the motor axis.
+	 * This method sets the position <code>Function</code> of the motor axis.
 	 * 
-	 * @param position The new position function for the motor axis.
-	 * @exception IllegalArgumentException if position == 'null'
+	 * @param position the position <code>Function</code> that should be set.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public void setPosition(final Function position) {
 		if(position == null) {
@@ -165,19 +169,19 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * Sets the status function of the motor axis.
+	 * Sets the status <code>Function</code> of the motor axis.
 	 * 
-	 * @param status The new status function for the motor axis.
+	 * @param status the status <code>Function</code> that should be set.
 	 */
 	public void setStatus(final Function status) {
 		this.status = status;
 	}
 
 	/**
-	 * Sets the stop function of the motor axis.
+	 * Sets the stop <code>Function</code> of the motor axis.
 	 * 
-	 * @param stop The new stop function for the motor axis.
-	 * @exception IllegalArgumentException if stop == 'null'
+	 * @param stop the stop <code>Function</code> that should be set.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public void setStop(final Function stop) {
 		if(stop == null) {
@@ -188,10 +192,10 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * Checks if this class can really be the parent of this device. 
+	 * Sets the parent device.
 	 * 
-	 * @param parent The parent that should be set. 
-	 * @exception ParentNotAllowedException if parent Device incompatible.
+	 * @param parent The parent that should be set
+	 * @throws ParentNotAllowedException if parent Device incompatible
 	 */
 	@Override
 	protected void setParent(final AbstractDevice parent) 
@@ -203,7 +207,7 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 						"AbstractMainPhaseDevice. The parent of an " +
 						"AbstractMainPhaseDevice can only be an " +
 						"AbstractDevice. Please fix your " +
-						"implementation to check this constraint!" );
+						"implementation to check this constraint!");
 			}
 		}
 		super.setParent(parent);
@@ -212,9 +216,10 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	/**
 	 * Checks if a value is possible for this MotorAxis object.
 	 * 
-	 * @param value The value that should be checked.
-	 * @return (value valid) ? TRUE : FALSE
-	 * @exception IllegalArgumentException if value == 'null'
+	 * @param value the value that should be checked.
+	 * @return <code>true</code> if the value is valid, 
+	 * 			<code>false</code> otherwise
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public boolean isValuePossible(final String value) {
 		if(value == null) {
@@ -230,11 +235,11 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * Return a well-formatted string with a valid value for the data type.
-	 * If value can not be converted, return a default value
+	 * Returns a <code>String</code> with a valid value for the data type.
+	 * If the value can not be converted, return a default value.
 	 * 
-	 * @param value The value that will be formatted.
-	 * @return a well-formatted string with a valid value
+	 * @param value the value that should be formatted
+	 * @return a <code>String</code> with a valid value
 	 */
 	public String formatValueDefault(final String value) {
 		if(this.gotoAdvisor != null) {
@@ -245,11 +250,12 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * Return a well-formatted string with a valid value for the data type.
-	 * If value can not be converted, return null
+	 * Returns a <code>String</code> with a valid value for the data type.
+	 * If the value cannot be converted, return null.
 	 * 
-	 * @param value The value that will be formatted.
-	 * @return a well-formatted string or null
+	 * @param value the value that will be formatted.
+	 * @return a <code>String</code> with a valid value or <code>null</code> if
+	 * 			the value isn't convertible
 	 */
 	public String formatValue(final String value) {
 		if(this.gotoAdvisor != null) {
@@ -260,10 +266,10 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * Return a well-formatted string with a valid value for the data type.
-	 * If value can not be converted, return a default value
+	 * Returns a <code>String</code> with a valid value for the data type.
+	 * If the value can not be converted, return a default value.
 	 * 
-	 * @return a well-formatted string with a valid default value
+	 * @return a <code>String</code> with a valid default value
 	 */
 	public String getDefaultValue() {
 		if(this.gotoAdvisor != null) {
@@ -274,8 +280,8 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	}
 	
 	/**
-	 * return the data type of the goto access or the position access, if
-	 * we don't have a goto access
+	 * Returns the data type of the goto <code>Access</code> or the position 
+	 * <code>Access</code>, if there isn't a goto <code>Access</code>.
 	 * 
 	 * @return the data type of this axis
 	 */
@@ -288,9 +294,9 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * Sets the Function for the offset.
+	 * Sets the <code>Function</code> for the offset.
 	 * 
-	 * @param offset The Function for the offset.
+	 * @param offset the <code>Function</code> for the offset
 	 */
 	public void setOffset(final Function offset) {
 		this.offset = offset;
@@ -379,20 +385,19 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 
 	/**
 	 * 
-	 * @return
+	 * @return some fancy hash
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		
-		return result;
+		return super.hashCode();
 	}
 
 	/**
-	 * Checks if argument and calling object are the same.
+	 * Checks if the argument and calling object are equal.
 	 * 
-	 * @return (objects equal) ? TRUE : FALSE
+	 * @param obj the <code>Object</code> that should be checked
+	 * @return <code>true</code> if objects are equal, 
+	 * 			<code>false</code> otherwise
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -405,8 +410,7 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		MotorAxis other = (MotorAxis) obj;
-		
+
 		return true;
 	}
 	

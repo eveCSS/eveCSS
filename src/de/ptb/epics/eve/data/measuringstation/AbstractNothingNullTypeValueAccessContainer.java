@@ -10,15 +10,13 @@ package de.ptb.epics.eve.data.measuringstation;
 import de.ptb.epics.eve.data.TypeValue;
 
 /**
- * An extension of the <code>AbstractTypeValueAccessContainer</code>. It 
- * implements the 'not null' validations for the data type, that must not be 
- * null at an Event and a Trigger.
+ * An extension of <code>AbstractTypeValueAccessContainer</code>. It implements 
+ * the 'not null' validations for the data type, that must not be null at an 
+ * Event and a Trigger.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.1 
  * @see de.ptb.epics.eve.data.measuringstation.Event
- * @see de.ptb.epics.eve.data.measuringstation.Trigger
- * 
  */
 public abstract class AbstractNothingNullTypeValueAccessContainer extends
 		AbstractTypeValueAccessContainer {
@@ -35,7 +33,8 @@ public abstract class AbstractNothingNullTypeValueAccessContainer extends
 	public AbstractNothingNullTypeValueAccessContainer(final Access access, 
 												final TypeValue dataType) {
 		// TODO are the following 2 operations in the wrong order ?
-		// They should be vice versa ?!?
+		// They should be vice versa ?!? checking == null after passing it as
+		// argument is not necessary ? But super must be the first operation ???
 		super(access, dataType);
 		if(dataType == null) {
 			throw new IllegalArgumentException(

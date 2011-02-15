@@ -24,17 +24,17 @@ public class DetectorChannel extends AbstractMainPhaseDevice {
 	private Function read;
 	
 	/**
-	 * 
+	 * Constructs an empty <code>DetectorChannel</code>.
 	 */
 	public DetectorChannel() {
 		this.read = new Function();
 	}
 	
 	/**
-	 * Constructs a new DetectorChannel with a given Function object.
+	 * Constructs an <code>DetectorChannel</code> with a given Function object.
 	 * 
-	 * @param read A Function.
-	 * @exception IllegalArgumentException if read == 'null'
+	 * @param read a <code>Function</code>
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public DetectorChannel(final Function read) {
 		if(read == null) {
@@ -45,19 +45,19 @@ public class DetectorChannel extends AbstractMainPhaseDevice {
 	}
 	
 	/**
-	 * Gives back the function of this detector channel
+	 * Returns the <code>Function</code>.
 	 * 
-	 * @return A Function object.
+	 * @return the <code>Function</code>
 	 */
 	public Function getRead() {
 		return this.read;
 	}
 
 	/**
-	 * Sets the function of this detector channel
+	 * Sets the function of the detector channel.
 	 * 
 	 * @param read A Function object.
-	 * @exception IllegalArgumentException read == 'null'
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public void setRead(final Function read) {
 		if(read == null) {
@@ -68,9 +68,9 @@ public class DetectorChannel extends AbstractMainPhaseDevice {
 	}
 	
 	/**
-	 * This method gives back the parent as detector.
+	 * Returns the parent as detector.
 	 * 
-	 * @return A Detector or null.
+	 * @return a Detector or null.
 	 */
 	public Detector getDetector() {
 		return (Detector)this.getParent();
@@ -81,7 +81,7 @@ public class DetectorChannel extends AbstractMainPhaseDevice {
 	 * 
 	 * @param parent The parent that should be set. In this case only a 
 	 * 		   Detector will fit.
-	 * @exception ParentNotAllowedException if parent not a Detector
+	 * @throws ParentNotAllowedException if parent not a Detector
 	 */
 	@Override
 	protected void setParent(final AbstractDevice parent) 
@@ -101,19 +101,19 @@ public class DetectorChannel extends AbstractMainPhaseDevice {
 
 	/**
 	 * 
-	 * @return 
+	 * @return a hash
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		return result;
+		return super.hashCode();
 	}
 
 	/**
-	 * Checks if argument and calling object are equal
+	 * Checks whether argument and calling object are equal.
 	 * 
-	 * @return (objects equal) ? TRUE : FALSE
+	 * @param obj the <code>Object</code> that should be checked
+	 * @return <code>true</code> if objects are equal,
+	 * 			<code>false</code> otherwise
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -126,15 +126,14 @@ public class DetectorChannel extends AbstractMainPhaseDevice {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		DetectorChannel other = (DetectorChannel) obj;
-		
+
 		return true;
 	}
 	
 	/**
-	 * Clones the current Detector Channel
+	 * Clones the current detector channel.
 	 * 
-	 * @return a clone of the calling Detector Channel 
+	 * @return a clone of the calling <code>DetectorChannel</code> 
 	 */
 	@Override
 	public Object clone() {

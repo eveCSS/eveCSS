@@ -198,6 +198,7 @@ public class Access {
 	}
 	
 	/**
+	 * Returns the monitor
 	 * 
 	 * @return monitor flag
 	 */
@@ -205,9 +206,10 @@ public class Access {
 		return this.monitor;
 	}
 	/**
-	 * Sets or unset the monitor flag.
+	 * Sets or set back the monitor flag.
 	 * 
-	 * @param hasMonitor set/unset
+	 * @param hasMonitor <code>true</code> to set, 
+	 * 					  <code>false</code> to set back
 	 */
 	public void setMonitor(boolean hasMonitor) {
 		this.monitor = hasMonitor;
@@ -325,53 +327,53 @@ public class Access {
 	 * 			<code>false</code> otherwise
 	 */
 	@Override
-	public boolean equals( final Object obj ) {
-		if( this == obj ) {
+	public boolean equals(final Object obj) {
+		if(this == obj) {
 			return true;
 		}
-		if( obj == null ) {
+		if(obj == null) {
 			return false;
 		}
-		if( getClass() != obj.getClass() ) {
+		if(getClass() != obj.getClass()) {
 			return false;
 		}
 		final Access other = (Access)obj;
-		if( count != other.count ) {
+		if(count != other.count) {
 			return false;
 		}
-		if( method == null ) {
-			if( other.method != null ) {
+		if(method == null) {
+			if(other.method != null) {
 				return false;
 			}
-		} else if( !method.equals( other.method ) ) {
+		} else if(!method.equals(other.method)) {
 			return false;
 		}
-		if( monitor != other.monitor ) {
+		if(monitor != other.monitor) {
 			return false;
 		}
-		if( Double.doubleToLongBits( timeout ) != Double
-				.doubleToLongBits(other.timeout ) ) {
+		if(Double.doubleToLongBits(timeout) != Double
+				.doubleToLongBits(other.timeout)) {
 			return false;
 		}
-		if( transport == null ) {
-			if( other.transport != null ) {
+		if(transport == null) {
+			if(other.transport != null) {
 				return false;
 			}
-		} else if( !transport.equals(other.transport ) ) {
+		} else if(!transport.equals(other.transport)) {
 			return false;
 		}
-		if( type == null ) {
-			if( other.type != null ) {
+		if(type == null) {
+			if(other.type != null) {
 				return false;
 			}
-		} else if( !type.equals( other.type ) ) {
+		} else if(!type.equals(other.type)) {
 			return false;
 		}
-		if( variableID == null ) {
-			if( other.variableID != null ) {
+		if(variableID == null) {
+			if(other.variableID != null) {
 				return false;
 			}
-		} else if( !variableID.equals( other.variableID ) ) {
+		} else if(!variableID.equals( other.variableID)) {
 			return false;
 		}
 		return true;

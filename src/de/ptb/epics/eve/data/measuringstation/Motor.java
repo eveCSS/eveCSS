@@ -61,8 +61,8 @@ public class Motor extends AbstractMainPhaseDevice {
 	 * 
 	 * @param axis The MotorAxis object, that should be added.
 	 * @return TRUE if the axis has been added.
-	 * @exception IllegalArgumentException if axis == 'null'
-	 * @exception IllegalArgumentException if axis not allowed for this motor
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
+	 * @throws IllegalArgumentException if axis not allowed for this motor
 	 */
 	public boolean add(final MotorAxis axis) {
 		if(axis == null) {
@@ -88,8 +88,8 @@ public class Motor extends AbstractMainPhaseDevice {
 	 * Removes a MotorAxis from this Motor.
 	 * 
 	 * @param axis A MotorAxis object.
-	 * @return TRUE if the MotorAxis has been removed.
-	 * @exception IllegalArgumentException if axis == 'null'
+	 * @return <code>true</code> if the MotorAxis has been removed.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public boolean remove(final MotorAxis axis) {
 		if(axis == null) {
@@ -107,19 +107,18 @@ public class Motor extends AbstractMainPhaseDevice {
 
 	/**
 	 * 
-	 * @return 
+	 * @return a hash 
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		return result;
+		return super.hashCode();
 	}
 
 	/**
 	 * Checks if argument and calling object are equal.
 	 * 
-	 * @return (objects equal) ? TRUE : FALSE
+	 * @return <code>true</code> if objects are equal, 
+	 * 			</code>false</code> otherwise
 	 */
 	@Override
 	public boolean equals(Object obj) {

@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
+ * All rights reserved.
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ */
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.List;
@@ -7,7 +14,8 @@ import de.ptb.epics.eve.data.MethodTypes;
 import de.ptb.epics.eve.data.TypeValue;
 
 /**
- * A Function is a complex description that can extend the description of a Access with discrepte values or range values.
+ * A Function is a complex description that can extend the description of an 
+ * <code>Access</code> with discrete values or range values.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at- )ptb.de>
  *
@@ -29,148 +37,181 @@ public class Function {
 	 *
 	 */
 	public Function() {
-		this( new Access( MethodTypes.GET ) );
+		this(new Access(MethodTypes.GET));
 	}
 	
 	/**
-	 * This constructor constructs a new Function with the given Access.
+	 * Constructs a <code>Function</code> with the given <code>Access</code>.
 	 * 
-	 * @param access The Access for the Function. Must not be null.
+	 * @param access the <code>Access</code> for the Function
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public Function( final Access access ) {
-		if( access == null ) {
-			throw new IllegalArgumentException( "The parameter 'access' must not be null!" );
+	public Function(final Access access) {
+		if(access == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'access' must not be null!");
 		}
 		this.access = access;
 	}
 
 	/**
-	 * This constructor construct a new Function with a given Access und TypeValue desciption.
+	 * Constructs a <code>Function</code> with a given <code>Access</code> and 
+	 * <code>TypeValue</code> description.
 	 * 
-	 * @param access The Access. Must not be null.
-	 * @param value The TypeValue object that should be used.
+	 * @param access the <code>Access</code>
+	 * @param value the <code>TypeValue</code> that should be used
+	 * @throws IllegalArgumentException if access is <code>null</code>
 	 */
-	public Function( final Access access, final TypeValue value ) {
-		if( access == null ) {
-			throw new IllegalArgumentException( "The parameter 'access' must not be null!" );
+	public Function(final Access access, final TypeValue value) {
+		if(access == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'access' must not be null!");
 		}
 		this.access = access;
 		this.value = value;
 	}
 
 	/**
-	 * This method gives back the Access of the Function.
+	 * Returns the <code>Access</code> of the <code>Function</code>.
 	 * 
-	 * @return Gives back the Access of the Function. Never gives back null.
+	 * @return the <code>Access</code> of the Function.
 	 */
 	public Access getAccess() {
 		return this.access;
 	}
 
 	/**
-	 * This methods sets an other Access for the Function.
+	 * Sets an <code>Access</code> for the <code>Function</code>.
 	 * 
-	 * @param access The new Access for the Function. Must not be null.
+	 * @param access the <code>Access</code> that should be set.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public void setAccess( final Access access ) {
-		if( access == null ) {
-			throw new IllegalArgumentException( "The parameter 'access' must not be null!" );
+	public void setAccess(final Access access) {
+		if(access == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'access' must not be null!");
 		}
 		this.access = access;
 	}
 
 	/**
-	 * This Method gives back the TypeValue description for this Function.
+	 * Returns the <code>TypeValue</code> description for this 
+	 * <code>Function</code>.
 	 * 
-	 * @return The TypeValue description for this Access.
+	 * @return the <code>TypeValue</code> description for the 
+	 * 			<code>Access</code>
 	 */
 	public TypeValue getValue() {
 		return value;
 	}
 
 	/**
-	 * This method sets the TypeValue desciption for this Function.
+	 * Sets the <code>TypeValue</code> description for this 
+	 * <code>Function</code>.
 	 * 
-	 * @param value The TypeValue descipriotn for this Function.
+	 * @param value the <code>TypeValue</code> description for this 
+	 * 		   <code>Function</code>.
 	 */
-	public void setValue( final TypeValue value ) {
+	public void setValue(final TypeValue value) {
 		this.value = value;
 	}
 	
 	/**
-	 * This method gives back is the values for this Function are discrete.
+	 * Checks whether the values for this <code>Function</code> are discrete.
 	 * 
-	 * @return Gives back true if this Function can only have discrete values.
+	 * @return <code>true</code> if the values are discrete,
+	 * 			<code>false</code> otherwise
 	 */
 	public boolean isDiscrete() {
-		return this.value!=null?this.value.isDiscrete():false;
+		return this.value!=null ? this.value.isDiscrete() : false;
 	}
 	
 	/**
-	 * This method gives back if this Function can have the given value.
+	 * Checks whether the given value is valid for the <code>Function</code>.
 	 * 
-	 * @param value The value that should be checked.
-	 * @return Gives back 'true' if this Function can have the given value and 'false' if not.
+	 * @param value the value that should be checked
+	 * @return <code>true</code> if the value is valid,
+	 * 			<code>false</code> otherwise
 	 */
-	public boolean isValuePossible( final String value ) {
-		return this.value!=null?this.value.isValuePossible( value ):this.access.isValuePossible( value );
+	public boolean isValuePossible(final String value) {
+		return this.value!=null 
+				? this.value.isValuePossible(value) 
+				: this.access.isValuePossible(value);
 	}
 
 	/**
-	 * Return a well-formatted string with a valid value for the datatype.
-	 * If value can not be converted, return a default value
+	 * Returns a <code>String</code> with a valid value for the data type.
+	 * If the value cannot be converted, return a default value
 	 * 
-	 * @param value The value that will be formatted.
-	 * @return a well-formatted string with a valid value
+	 * @param value the value that will be formatted
+	 * @return a <code>String</code> with a valid value
 	 */
-	public String formatValueDefault( final String value ) {
-		return this.value!=null ? this.value.formatValueDefault( value ):this.access.formatValueDefault( value );
+	public String formatValueDefault(final String value) {
+		return this.value!=null 
+				? this.value.formatValueDefault(value) 
+				: this.access.formatValueDefault(value);
 	}
 
 	/**
-	 * Return a well-formatted string with a valid value for the datatype.
-	 * If value can not be converted, return null
+	 * Returns a <code>String</code> with a valid value for the data type.
+	 * If the value cannot be converted, return null
 	 * 
-	 * @param value The value that will be formatted.
-	 * @return a well-formatted string or null
+	 * @param value the value that will be formatted
+	 * @return a <code>String</code> or null
 	 */
-	public String formatValue( final String value ) {
-		return this.value!=null ? this.value.formatValue( value ):this.access.formatValue( value );
+	public String formatValue(final String value) {
+		return this.value!=null 
+				? this.value.formatValue(value) 
+				: this.access.formatValue(value);
 	}
 
 	/**
-	 * Return a well-formatted default value for the datatype.
+	 * Returns a default value for the data type.
 	 * 
-	 * @return a well-formatted string with a default value
+	 * @return a <code>String</code> with a default value
 	 */
 	public String getDefaultValue() {
-		return this.value!=null ? this.value.getDefaultValue():this.access.getDefaultValue();
+		return this.value!=null 
+				? this.value.getDefaultValue() 
+				: this.access.getDefaultValue();
 	}
 
 	/**
 	 * 
-	 * @return the type of the value object or the access object if there is no value
+	 * @return the type of the value object or the access object if there is 
+	 * 			no value
 	 */
 	public DataTypes getType(){
 		return this.value!=null ? this.value.getType():this.access.getType();
 	}
 
 	/**
-	 * If this Function is discrete, this method gives back List of String that contains all possible values.
+	 * Returns a list with all possible values (if the <code>Function</code> is
+	 * discrete)
 	 * 
-	 * @return A List that contains all possible discrete values. If this Function is not discrete null will be returned.
+	 * @return a <code>List</code> containing all possible discrete values. 
+	 * 			If this Function is not discrete null will be returned.
 	 */
-	public List <String > getDiscreteValues() {
+	public List <String> getDiscreteValues() {
 		return this.value.getDiscreteValues();
 	}
 	
+	/**
+	 * 
+	 * @return <code>true</code> , 
+	 * 			<code>false</code> otherwise
+	 */
 	public boolean isReadOnly() {
+		// TODO comment JavaDoc
 		if (access != null)
 			return access.isReadOnly();
 		else
 			return false;
 	}
 
+	/**
+	 * @return a hash
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -180,6 +221,13 @@ public class Function {
 		return result;
 	}
 
+	/**
+	 * Checks whether the argument and calling object are equal.
+	 * 
+	 * @param obj the <code>Object</code> that should be checked
+	 * @return <code>true</code> if objects are equal,
+	 * 			<code>false</code> otherwise
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -209,8 +257,16 @@ public class Function {
 		return true;
 	}
 	
+	/**
+	 * Clones the calling object.
+	 * 
+	 * @return a copy of the calling object
+	 */
 	@Override
 	public Object clone() {
-		return new Function( (Access)(this.access!=null?this.access.clone():null), (TypeValue)(this.value!=null?this.value.clone():null) );
+		// TODO EXPLAIN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return new Function((Access)
+				(this.access!=null ? this.access.clone() : null), 
+				(TypeValue)(this.value!=null ? this.value.clone() : null));
 	}
 }
