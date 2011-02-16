@@ -1,10 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
+/*
+ * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.ArrayList;
@@ -17,10 +17,11 @@ import java.util.Set;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 
 /**
- * This class is managing all purposes, that have to do with the measuring station
- * description. A MeasuringStation-Objekt is hold all instances of PlugIns, Devices,
- * DetectorChannels and so on and provides methods for fast finding the element. It
- * could be seen as the root of a tree, wich descripes the measuring station.
+ * This class is managing all purposes, that have to do with the measuring 
+ * station description. A <code>MeasuringStation</code> is holding all 
+ * instances of PlugIns, Devices, DetectorChannels and so on and provides 
+ * methods for finding the element. It could be seen as the root of a tree, 
+ * which describes the measuring station.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.2
@@ -38,7 +39,8 @@ public class MeasuringStation implements IMeasuringStation {
 	private String loadedFileName;
 	
 	/**
-	 * The name of the schema file that was used for the loading of this measuring station description.
+	 * The name of the schema file that was used for the loading of the 
+	 * measuring station description.
 	 * 
 	 */
 	private String schemaFileName;
@@ -49,67 +51,69 @@ public class MeasuringStation implements IMeasuringStation {
 	// remove lists and use only maps
 	
 	/**
-	 * A List, that is holding all events.
+	 * A <code>List</code>, that is holding all events.
 	 */
 	private List<Event> events;
 	
 	/**
-	 * A List, that is holding all plugins.
+	 * A <code>List</code>, that is holding all plug ins.
 	 */
 	private final List<PlugIn> plugins;
 	
 	/**
-	 * A Selection object, that descripes all selections, that are available at the measuring station.
+	 * A Selection object, that describes all selections, that are available at 
+	 * the measuring station.
 	 */
 	private final Selections selections;
 	
 	/**
-	 * A List, that is holding all devices.
+	 * A <code>List</code>, that is holding all devices.
 	 */
 	private final List<Device> devices;
 	
 	/**
-	 * A List, that is holding all motors.
+	 * A <code>List</code>, that is holding all motors.
 	 */
 	private final List<Motor> motors;
 	
 	/**
-	 * A List, that is holding all detectors.
+	 * A <code>List</code>, that is holding all detectors.
 	 */
 	private final List<Detector> detectors;
 	
 	/**
-	 * A Map, that makes all PlugIns available by their names.
+	 * A <code>Map</code>, that makes all PlugIns available by their names.
 	 */
-	private final Map< String, PlugIn> pluginsMap;
+	private final Map<String, PlugIn> pluginsMap;
 	
 	/**
-	 * A Map, that makes all motor axis available by their ids.
+	 * A <code>Map</code>, that makes all motor axis available by their id.
 	 */
-	private final Map< String, MotorAxis> motorAxisMap;
+	private final Map<String, MotorAxis> motorAxisMap;
 	
 	/**
-	 * A Map. that makes all detector channels avaiable by their ids.
+	 * A <code>Map</code>. that makes all detector channels available by their 
+	 * id.
 	 */
-	private final Map< String, DetectorChannel> detectorChannelsMap;
+	private final Map<String, DetectorChannel> detectorChannelsMap;
 	
 	/**
-	 * A Map, that makes all events available by their ids.
+	 * A <code>Map</code>, that makes all events available by their id.
 	 */
-	private final Map< String, Event > eventsMap;
+	private final Map<String, Event> eventsMap;
 	
 	/**
-	 * A Map, that makes all AbstractPrePostscanDevices available by their ids.
+	 * A <code>Map</code>, that makes all 
+	 * <code>AbstractPrePostscanDevice</code>s available by their id.
 	 */
-	private final Map< String, AbstractPrePostscanDevice > prePostscanDeviceMap;
+	private final Map<String, AbstractPrePostscanDevice> prePostscanDeviceMap;
 
 	private Map<String, List<AbstractDevice>> classMap;
 
 	/**
-	 * This constructor constructs a new MeasuringStation object, that contains
-	 * no subelements like devices or motor axis. It provides a own Selections
-	 * object.
-	 *
+	 * Constructs a <code>MeasuringStation</code> that contains
+	 * no sub elements like devices or motor axis. It provides an own 
+	 * <code>Selections</code> object.
 	 */
 	public MeasuringStation() {
 		this.events = new ArrayList<Event>();
@@ -118,253 +122,312 @@ public class MeasuringStation implements IMeasuringStation {
 		this.motors = new ArrayList<Motor>();
 		this.detectors = new ArrayList<Detector>();
 		this.selections = new Selections();
-		this.pluginsMap = new HashMap< String, PlugIn>();
-		this.motorAxisMap = new HashMap< String, MotorAxis >();
-		this.detectorChannelsMap = new HashMap< String, DetectorChannel >();
-		this.prePostscanDeviceMap = new HashMap< String, AbstractPrePostscanDevice >();
+		this.pluginsMap = new HashMap<String, PlugIn>();
+		this.motorAxisMap = new HashMap<String, MotorAxis>();
+		this.detectorChannelsMap = new HashMap<String, DetectorChannel>();
+		this.prePostscanDeviceMap = 
+					new HashMap<String, AbstractPrePostscanDevice>();
 		this.classMap = new HashMap<String, List<AbstractDevice>>();
-		this.eventsMap = new HashMap< String, Event >();
+		this.eventsMap = new HashMap<String, Event>();
 		
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getDetectors()
+	/**
+	 * Getter for detectors.
+	 * 
+	 * @return a <code>List&lt;Detector&gt;</code> containing the detectors of 
+	 * 			the <code>MeasuringStation</code>
 	 */
 	public List<Detector> getDetectors() {
-		return new ArrayList<Detector>( this.detectors );
+		return new ArrayList<Detector>(this.detectors);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getDevices()
+	/**
+	 * Getter for devices.
+	 * 
+	 * @return a <code>List&lt;Device&gt;</code> containing the devices of the 
+	 * 			<code>MeasuringStation</code>
 	 */
 	public List<Device> getDevices() {
-		return new ArrayList<Device>( this.devices );
+		return new ArrayList<Device>(this.devices);
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getEvents()
+	/**
+	 * Getter for events.
+	 * 
+	 * @return <code>List&lt;Event&gt;</code> containing the events of the 
+	 * 			<code>MeasuringStation</code>
 	 */
 	public List<Event> getEvents() {
-		return new ArrayList<Event>( this.events );
+		return new ArrayList<Event>(this.events);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getMotors()
+	/**
+	 * Getter for motors.
+	 * 
+	 * @return a <code>List&lt;Motor&gt;</code> containing the motors of the 
+	 * 			<code>MeasuringStation</code>
 	 */
 	public List<Motor> getMotors() {
-		return new ArrayList<Motor>( this.motors );
+		return new ArrayList<Motor>(this.motors);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getPlugins()
+	/**
+	 * Getter for plugins.
+	 * 
+	 * @return a <code>List&lt;PlugIn&gt;</code> containing the plug ins of the 
+	 * 			<code>MeasuringStation</code>
 	 */
 	public List<PlugIn> getPlugins() {
-		return new ArrayList<PlugIn>( this.plugins );
+		return new ArrayList<PlugIn>(this.plugins);
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getSelections()
+	/**
+	 * Getter for selections.
+	 * 
+	 * @return the <code>Selections</code> of the <code>MeasuringStation</code>
 	 */
 	public Selections getSelections() {
 		return this.selections;
 	}
 
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getVersion()
+	/**
+	 * Getter for version.
+	 * 
+	 * @return the version of the <code>MeasuringStation</code>
 	 */
 	public String getVersion() {
 		return this.version;
 	}
 
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getLoadedFileName()
+	/**
+	 * Getter for loadedFileName.
+	 *
+	 * @return the file name at load time of the <code>MeasuringStation</code>
 	 */
 	public String getLoadedFileName(){
 		return loadedFileName;
 	}
 	
 	/**
+	 * Setter for loadedFileName.
 	 * 
-	 * @param filename set the file name (after successfully loading the file)
+	 * @param filename the file name that should be set (after successfully 
+	 * 		   loading the file)
 	 */
 	public void setLoadedFileName(String filename){
 		loadedFileName = filename;
 	}
 
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getSchemaFileName()
+	/**
+	 * Getter for schemaFileName.
+	 * 
+	 * @return the file name of the schema of the <code>MeasuringStation</code>
 	 */
 	public String getSchemaFileName(){
 		return schemaFileName;
 	}
 	
 	/**
+	 * Setter for schemaFileName.
 	 * 
-	 * @param filename set the used schema file name
+	 * @param filename the schema file name that should be used
 	 */
 	public void setSchemaFileName(String filename){
 		schemaFileName = filename;
 	}
 
 	/**
-	 * Adds a Detector to this measuring station. This method is just wrapping the
-	 * add method of the List, that is holding the detectors.
+	 * Adds a <code>Detector</code> to the measuring station.
 	 * 
-	 * @see java.util.Collection
-	 * @param detector A detector object.
-	 * @return
+	 * @param detector the <code>Detector</code> that should be added.
+	 * @return <code>true</code> if the detector was added, 
+	 * 			<code>false</code> otherwise.
 	 */
-	public boolean add( final Detector detector ) {
+	public boolean add(final Detector detector) {
 		classMapAdd(detector.getClassName(), detector);
-		return detectors.add( detector );
+		return detectors.add(detector);
 	}
 
 	/**
-	 * Adds a Device to this measuring station. This method is just wrapping the
-	 * add method of the List, that is holding the devices.
+	 * Adds a <code>Device</code> to the measuring station. 
 	 * 
-	 * @see java.util.Collection
-	 * @param device a Device object. Must not be null.
-	 * @return
+	 * @param the <code>Device</code> that should be added.
+	 * @return <code>true</code> if the device was added, 
+	 * 			<code>false</code> otherwise
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public boolean add( final Device device ) {
-		if( device == null ) {
-			throw new IllegalArgumentException( "The parameter 'device' must not be null!" );
+	public boolean add(final Device device) {
+		if(device == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'device' must not be null!");
 		}
 		classMapAdd(device.getClassName(), device);
-		this.prePostscanDeviceMap.put( device.getID(), device );
-		return devices.add( device );
+		this.prePostscanDeviceMap.put(device.getID(), device);
+		return devices.add(device);
 	}
 
 	/**
-	 * Adds a Event to this measuring station. This method is wrapping the
-	 * add method of the List, that is holding the events.
+	 * Adds an <code>Event</code> to the measuring station. 
 	 * 
-	 * @see java.util.Collection
-	 * @param event A Event object. Must not be null.
-	 * @return
+	 * @param event the <code>Event</code> that should be added.
+	 * @return <code>true</code> if the event was added, 
+	 * 			<code>false</code> otherwise.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>.
 	 */
-	public boolean add( final Event event) {
-		if( event == null ) {
-			throw new IllegalArgumentException( "The parameter 'event' must not be null!" );
+	public boolean add(final Event event) {
+		if(event == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'event' must not be null!");
 		}
-		this.eventsMap.put( event.getID(), event );
-		return events.add( event );
+		this.eventsMap.put(event.getID(), event);
+		return events.add(event);
 	}
 
 	/**
-	 * Adds a Motor to this measuring station. This method is just wrapping the
-	 * add method of the List, that is holding the motors.
+	 * Adds a <code>Motor</code> to the measuring station. 
 	 * 
-	 * @see java.util.Collection
-	 * @param motor
-	 * @return
+	 * @param motor the <code>Motor</code> that should be added.
+	 * @return <code>true</code> if the motor was added, 
+	 * 			<code>false</code> otherwise.
 	 */
-	public boolean add( final Motor motor ) {
+	public boolean add(final Motor motor) {
 		classMapAdd(motor.getClassName(), motor);
-		return motors.add( motor );
+		return motors.add(motor);
 	}
 	
 	/**
-	 * Adds a PlugIn to this measuring station. This method is just wrapping the
-	 * add method of the List, that is holding the plug-ins.
-	 * @param plugIn A PlugIn object. Must not be null.
-	 * @return
-	 */
-	public boolean add( final PlugIn plugIn ) {
-		if( plugIn == null ) {
-			throw new IllegalArgumentException( "The parameter 'plugIn' must not be null!" );
-		}
-		this.pluginsMap.put( plugIn.getName(), plugIn );
-		return plugins.add( plugIn );
-	}
-	
-	/**
-	 * Use this method to register a Option at this measuring station. The registration
-	 * is necessary that a option can be found by it's id very fast.
+	 * Adds a <code>PlugIn</code> to the measuring station. 
 	 * 
-	 * @param option A Option object, must not be null.
+	 * @param plugIn the <code>PlugIn</code> that should be added.
+	 * @return <code>true</code> if the plug in was added, 
+	 * 			<code>false</code> otherwise.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>.
 	 */
-	public void registerOption( final Option option ) {
-		if( option == null ) {
-			throw new IllegalArgumentException( "The parameter 'option' must not be null!" );
+	public boolean add(final PlugIn plugIn) {
+		if(plugIn == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'plugIn' must not be null!");
 		}
-		this.prePostscanDeviceMap.put( option.getID(), option );
+		this.pluginsMap.put(plugIn.getName(), plugIn);
+		return plugins.add(plugIn);
 	}
 	
 	/**
-	 * Use this method to register a Option at this measuring station. The registration
-	 * is necessary that a motor axis can be found very fast.
+	 * Registers an <code>Option</code> at the measuring station. The 
+	 * registration is necessary to assure that an option can be found quickly 
+	 * by its id.
 	 * 
-	 * @param motorAxis A MotorAxis object. Must not be null.
+	 * @param option the <code>Option</code> that should be registered.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public void registerMotorAxis( final MotorAxis motorAxis ) {
-		if( motorAxis == null ) {
-			throw new IllegalArgumentException( "The parameter 'motorAxis' must not be null!" );
+	public void registerOption(final Option option) {
+		if(option == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'option' must not be null!");
 		}
-		this.motorAxisMap.put( motorAxis.getID(), motorAxis );
+		this.prePostscanDeviceMap.put(option.getID(), option);
 	}
 	
 	/**
-	 * Use this method to register a detector channel at his measuring station. The registration
-	 * is necessary that a detector channel can be founds very fast.
+	 * Register a <code>MotorAxis</code> at the measuring station. The 
+	 * registration is necessary to assure that a motor axis can be found 
+	 * quickly.
 	 * 
-	 * @param detectorChannel A DetectorChannel object. Must not be null!
+	 * @param motorAxis the <code>MotorAxis</code> that should be registered.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>.
 	 */
-	public void registerDetectorChannel( final DetectorChannel detectorChannel ) {
-		if( detectorChannel == null ) {
-			throw new IllegalArgumentException( "The parameter 'detectorChannel' must not be null!" );
+	public void registerMotorAxis(final MotorAxis motorAxis) {
+		if(motorAxis == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'motorAxis' must not be null!");
 		}
-		this.detectorChannelsMap.put( detectorChannel.getID(), detectorChannel );
+		this.motorAxisMap.put(motorAxis.getID(), motorAxis);
+	}
+	
+	/**
+	 * Registers a <code>DetectorChannel</code> at the measuring station. The 
+	 * registration is necessary to assure that a detector channel can be found 
+	 * quickly.
+	 * 
+	 * @param detectorChannel the <code>DetectorChannel</code> that should be 
+	 * 		   registered.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>.
+	 */
+	public void registerDetectorChannel(final DetectorChannel detectorChannel) {
+		if(detectorChannel == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'detectorChannel' must not be null!");
+		}
+		this.detectorChannelsMap.put(detectorChannel.getID(), detectorChannel);
 	}
 
 	/**
-	 * Sets the version of this measuring station description. The versioning is used to
-	 * find out which reader and writer should be used for this description.
+	 * Setter for version.
 	 * 
-	 * @param version A String object.
+	 * @param version the version that should be set. (defines which reader and 
+	 * 		   writer are used for the description)
 	 */
 	public void setVersion(String version) {
 		this.version = version; 
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getPluginByName(java.lang.String)
+	/**
+	 * Returns the <code>PlugIn</code> with the given name.
+	 * 
+	 * @param name the name of the <code>PlugIn</code> that should be returned.
+	 * @return the <code>PlugIn</code> with the given name.
 	 */
-	public PlugIn getPluginByName( final String name ) {
-		return this.pluginsMap.get( name );
+	public PlugIn getPluginByName(final String name) {
+		return this.pluginsMap.get(name);
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getPrePostscanDeviceById(java.lang.String)
+	/**
+	 * Returns the <code>AbstractPrePostscanDevice</code> with the given id.
+	 * 
+	 * @param id the id of the <code>AbstractPrePostscanDevice</code> that 
+	 * 		   should be returned.
+	 * @return the <AbstractPrePostscanDevice</code> with the given id.
 	 */
-	public AbstractPrePostscanDevice getPrePostscanDeviceById( final String id ) {
-		return this.prePostscanDeviceMap.get( id );
+	public AbstractPrePostscanDevice getPrePostscanDeviceById(final String id) {
+		return this.prePostscanDeviceMap.get(id);
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getMotorAxisById(java.lang.String)
+	/**
+	 * Returns the <code>MotorAxis</code> with the given id.
+	 * 
+	 * @param id the id of the <code>MotorAxis</code> that should be returned.
+	 * @return the <code>MotorAxis</code> with the given id.
 	 */
-	public MotorAxis getMotorAxisById( final String id ) {
-		return this.motorAxisMap.get( id );
+	public MotorAxis getMotorAxisById(final String id) {
+		return this.motorAxisMap.get(id);
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getDetectorChannelById(java.lang.String)
+	/**
+	 * Returns the <code>DetectorChannel</code> with the given id.
+	 * 
+	 * @param id the id of the <code>DetectorChannel</code> that should be 
+	 * 			returned.
+	 * @return the <code>DetectorChannel</code> with the given id.
 	 */
-	public DetectorChannel getDetectorChannelById( final String id ) {
-		return this.detectorChannelsMap.get( id );
+	public DetectorChannel getDetectorChannelById(final String id) {
+		return this.detectorChannelsMap.get(id);
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getEventById(java.lang.String)
+	/**
+	 * Returns the <code>Event</code> with the given id.
+	 * 
+	 * @param id the id of the <code>Event</code> that should be returned.
+	 * @return the <code>Event</code> with the given id.
 	 */
-	public Event getEventById( final String id ) {
-		return this.eventsMap.get( id );
+	public Event getEventById(final String id) {
+		return this.eventsMap.get(id);
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getAxisFullIdentifyer()
+	/**
+	 * Returns the identifiers of all enclosed motor axis'.
+	 * 
+	 * @return a <code>List</code> containing the identifiers of the motor axis'.
 	 */
 	public List<String> getAxisFullIdentifyer() {
 		
@@ -394,17 +457,21 @@ public class MeasuringStation implements IMeasuringStation {
 		return identifier;
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getChannelsFullIdentifyer()
+	/**
+	 * Returns the identifiers of all enclosed detector channels.
+	 * 
+	 * @return a <code>List</code> containing the identifiers of the detector  
+	 * 			channels.
 	 */
 	public List<String> getChannelsFullIdentifyer() {
 		List<String> identifier = new ArrayList<String>();
 		Iterator<Detector> detectorIterator = this.detectors.iterator();
 		
-		while( detectorIterator.hasNext() ) {
+		while(detectorIterator.hasNext()) {
 			Detector currentDetector = detectorIterator.next();
-			Iterator<DetectorChannel> channelIterator = currentDetector.channelIterator();
-			while( channelIterator.hasNext() ) {
+			Iterator<DetectorChannel> channelIterator = 
+								currentDetector.channelIterator();
+			while(channelIterator.hasNext()) {
 				DetectorChannel currentChannel = channelIterator.next();
 				int i = 0;
 				for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();){
@@ -421,8 +488,11 @@ public class MeasuringStation implements IMeasuringStation {
 		return identifier;
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getPrePostScanDevicesFullIdentifyer()
+	/**
+	 * Returns the identifiers of all enclosed pre post scan devices.
+	 * 
+	 * @return a <code>List</code> containing the identifiers of the pre post 
+	 * 			scan devices.
 	 */
 	public List<String> getPrePostScanDevicesFullIdentifyer() {
 		List<String> identifier = new ArrayList<String>();
@@ -523,14 +593,23 @@ public class MeasuringStation implements IMeasuringStation {
 		return identifier;
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getAbstractDeviceByFullIdentifyer(java.lang.String)
+	/**
+	 * Returns the <code>AbstractDevice</code> with the given identifier.
+	 * 
+	 * @param identifier the identifier of the <code>AbstractDevice</code> that 
+	 * 		   should be returned.
+	 * @return the <code>AbstractDevice</code> with the given identifier.
+	 * @throws IllegalArgumentException if the argument is <code>null</code> or 
+	 * 			an empty <code>String</code>.
 	 */
-	public AbstractDevice getAbstractDeviceByFullIdentifyer( final String identifier ) {
-		if( identifier == null ) {
-			throw new IllegalArgumentException( "The parameter 'identifier' must not be null!" );
-		} else if( identifier.equals( "" ) ) {
-			throw new IllegalArgumentException( "The parameter 'identifier' must not be a empty string!" );
+	public AbstractDevice getAbstractDeviceByFullIdentifyer(
+											final String identifier) {
+		if(identifier == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'identifier' must not be null!");
+		} else if(identifier.equals("")) {
+			throw new IllegalArgumentException(
+					"The parameter 'identifier' must not be a empty string!");
 		}
 		
 		Iterator<Motor> motorIterator = this.motors.iterator();
@@ -602,16 +681,16 @@ public class MeasuringStation implements IMeasuringStation {
 		}
 		
 		return null;
-		
 	}
 	
 	/**
 	 * add an abstract device with class name to the class hash
+	 * 
 	 * @param className
 	 * @param absdevice
 	 */
 	private void classMapAdd(String className, AbstractDevice absdevice) {
-		
+		// TODO Explain !!!		
 		if( absdevice instanceof Motor ) {
 			final List< MotorAxis> axis = ((Motor)absdevice).getAxis();
 			for( final MotorAxis a : axis ) {
@@ -638,31 +717,46 @@ public class MeasuringStation implements IMeasuringStation {
 		classMap.put(className, adlist);
 	}
 	
-	/* (non-Javadoc)
+	/**
+	 * 
+	 *  
 	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getClassNameList()
 	 */
 	public Set<String> getClassNameList(){
+		// TODO Explain !
 		return classMap.keySet();
 	}
 
-	/* (non-Javadoc)
+	/**
+	 *
+	 *  
 	 * @see de.ptb.epics.eve.data.measuringstation.IMeasuringStation#getDeviceList(java.lang.String)
 	 */
 	public List<AbstractDevice> getDeviceList(String classname){
+		// TODO Explain !
 		if (classMap.containsKey(classname))
 			return classMap.get(classname);
 		else
 			return null;
 	}
 
-	
-	public boolean addModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
+	/**
+	 * 
+	 * @return <code>false</code>
+	 */
+	public boolean addModelUpdateListener(
+			// TODO Explain !
+				final IModelUpdateListener modelUpdateListener) {
 		return false;
 	}
 
-	
-	public boolean removeModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
+	/**
+	 * 
+	 * @return <code>false</code>
+	 */
+	public boolean removeModelUpdateListener(
+			// TODO Explain !
+				final IModelUpdateListener modelUpdateListener) {
 		return false;
 	}
 }
-

@@ -4,9 +4,8 @@ import de.ptb.epics.eve.data.scandescription.Positioning;
 
 /**
  * This class represents an error that occurred in a positioning.
- * 
- * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
- *
+ * @author   Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
+ * @uml.dependency   supplier="de.ptb.epics.eve.data.scandescription.errors.IModelError"
  */
 public class PositioningError implements IModelError {
 

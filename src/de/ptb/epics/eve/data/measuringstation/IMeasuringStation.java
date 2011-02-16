@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
+ * All rights reserved.
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ */
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.List;
@@ -8,51 +15,53 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProv
 public interface IMeasuringStation extends IModelUpdateProvider {
 
 	/**
-	 * Gives back a copy of the internal list, that is holding all detector channels.
+	 * Returns a copy of the internal list, that is holding all detector 
+	 * channels.
 	 * 
-	 * @return A List<Detector> object. Never returns null!
+	 * @return a <code>List&lt;Detector&gt;</code>
 	 */
 	public abstract List<Detector> getDetectors();
 
 	/**
-	 * Gives back a copy of the internal list, that is holding all devices.
+	 * Returns a copy of the internal list, that is holding all devices.
 	 * 
-	 * @return A List<Device> object. Never returns null!
+	 * @return a <code>List&lt;Device&gt;</code>
 	 */
 	public abstract List<Device> getDevices();
 
 	/**
-	 * Gives back a copy of the internal list, that is holding all events.
+	 * Returns a copy of the internal list, that is holding all events.
 	 * 
-	 * @return A List<Event> object. Never returns null!
+	 * @return A <code>List&lt;Event&gt;</code> object.
 	 */
 	public abstract List<Event> getEvents();
 
 	/**
-	 * Gives back a copy of the internal list, that is holding all motors.
+	 * Returns a copy of the internal list, that is holding all motors.
 	 * 
-	 * @return A List<Motor> object. Never returns null!
+	 * @return A <code>List&lt;Motor&gt;</code>
 	 */
 	public abstract List<Motor> getMotors();
 
 	/**
-	 * Gives back a copy of the internal list, that is holding all plugins.
+	 * Returns a copy of the internal list, that is holding all plug ins.
 	 * 
-	 * @return A List<PlugIn> object. Never returns null!
+	 * @return A <code>List&lt;PlugIn&gt;</code>
 	 */
 	public abstract List<PlugIn> getPlugins();
 
 	/**
-	 * Gives back the Selections object of this measuring station.
+	 * Returns the <code>Selections</code> of the measuring station.
 	 * 
-	 * @return A Selections object. Never giving back null.
+	 * @return A Selections object.
 	 */
 	public abstract Selections getSelections();
 
 	/**
-	 * Gives back the version of the measuring station description.
+	 * Returns the version of the measuring station description.
 	 * 
-	 * @return A string object containing the version of the measuring station description or null.
+	 * @return A <code>String</code> containing the version of the measuring 
+	 * 			station description or null.
 	 */
 	public abstract String getVersion();
 
@@ -64,12 +73,12 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 
 	/**
 	 * 
-	 * @return the currently used schema File
+	 * @return the currently used schema file
 	 */
 	public abstract String getSchemaFileName();
 
 	/**
-	 * Gives back the PlugIn object for the correpondenting name.
+	 * Returns the PlugIn object for the corresponding name.
 	 * 
 	 * @param name The name of the PlugIn.
 	 * @return A PlugIn or null if the PlugIn was not found.
@@ -77,67 +86,74 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	public abstract PlugIn getPluginByName(final String name);
 
 	/**
-	 * Gives back the AbstractPrePostscanDevice object for the correpondenting id.
+	 * Returns the <code>AbstractPrePostscanDevice</code> of the corresponding 
+	 * id.
 	 * 
-	 * @param id A String object, containing the id of the device.
-	 * @return A AbstractPrePostscanDevice or null if the AbstractPrePostscanDevice was not found.
+	 * @param id a <code>String</code> containing the id of the device.
+	 * @return an <code>AbstractPrePostscanDevice</code> or null if the 
+	 * 			<code>AbstractPrePostscanDevice</code> was not found.
 	 */
 	public abstract AbstractPrePostscanDevice getPrePostscanDeviceById(
 			final String id);
 
 	/**
-	 * Gives back the MotorAxis object for the correspondenting id.
+	 * Returns the <code>MotorAxis</code> of the corresponding id.
 	 * 
-	 * @param id A String object, containing the id of the motor axis.
-	 * @return A MotorAxis object or null if motor axis was not found.
+	 * @param id a <code>String</code> containing the id of the motor axis.
+	 * @return a <code>MotorAxis</code> or null if motor axis was not found.
 	 */
 	public abstract MotorAxis getMotorAxisById(final String id);
 
 	/**
-	 * Gives back the DetectorChannel object for the correspondenting id.
+	 * Returns the <code>DetectorChannel</code> for the corresponding id.
 	 * 
-	 * @param id A String object, containing the id of the detector channel.
-	 * @return A DetectorChannel object or null if detector channel was not found.
+	 * @param id a <code>String</code> containing the id of the detector 
+	 * 		   channel.
+	 * @return a <code>DetectorChannel</code> or null if detector channel was 
+	 * 			not found.
 	 */
 	public abstract DetectorChannel getDetectorChannelById(final String id);
 
 	/**
-	 * Gives back the Event object for the correspondenting id.
+	 * Returns the <code>Event</code> of the corresponding id.
 	 * 
-	 * @param id A String object, containing the id of the event.
-	 * @return A Event object or null if event was not found.
+	 * @param id a <code>String</code> containing the id of the event.
+	 * @return an <code>Event</code> or null if event was not found.
 	 */
 	public abstract Event getEventById(final String id);
 
 	/**
-	 * Creates an give back a list of all full identifiers of the axis inside
+	 * Returns a <code>List</code> of all full identifiers of the axis inside
 	 * of this measuring station.
 	 * 
-	 * @return A List that contains the full identifiers of the axis. Never returns null.
+	 * @return A <code>List</code> that contains the full identifiers of the 
+	 * 			axis.
 	 */
 	public abstract List<String> getAxisFullIdentifyer();
 
 	/**
-	 * Creates an give back a list of all full identifiers of the detector channels inside
-	 * of this measuring station.
+	 * Returns a <code>List</code> of all full identifiers of the detector 
+	 * channels inside of this measuring station.
 	 * 
-	 * @return A List that contains the full identifiers of the detector channels. Never returns null.
+	 * @return a <code>List</code> that contains the full identifiers of the 
+	 * 			detector channels.
 	 */
 	public abstract List<String> getChannelsFullIdentifyer();
 
 	/**
-	 * Creates an give back a list of all full identifiers of the pre- postscan devices inside
-	 * of this measuring station.
+	 * Returns a list of all full identifiers of the pre and post scan devices 
+	 * inside of the measuring station.
 	
-	 * @return A List that contains the full identifiers of the pre- and postscan devices. Never returns null.
+	 * @return a <code>List</code> that contains the full identifiers of the 
+	 * 			pre and post scan devices.
 	 */
 	public abstract List<String> getPrePostScanDevicesFullIdentifyer();
 
 	/**
-	 * Give back the correpondenting device to a full identifier.
+	 * Returns the corresponding device to a full identifier.
 	 * 
-	 * @param identifier A String object containing the identifier. Must not be null or a empty string.
-	 * @return A Device or null if the device was not found.
+	 * @param identifier a <code>String</code> containing the identifier.
+	 * @return a device or null if the device was not found.
 	 */
 	public abstract AbstractDevice getAbstractDeviceByFullIdentifyer(
 			final String identifier);
@@ -151,7 +167,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	/**
 	 * 
 	 * @param classname 
-	 * @return the list of abstract devices with classname or null 
+	 * @return the list of abstract devices with class name or null 
 	 */
 	public abstract List<AbstractDevice> getDeviceList(String classname);
 
