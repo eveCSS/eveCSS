@@ -1,98 +1,99 @@
+/* 
+ * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
+ * All rights reserved.
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ */
 package de.ptb.epics.eve.viewer;
-
-import java.util.Iterator;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.TransportTypes;
-import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
-import de.ptb.epics.eve.data.scandescription.ScanDescription;
-import de.ptb.epics.eve.data.scandescription.YAxis;
-import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
-import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
-import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
-import de.ptb.epics.eve.ecp1.intern.ChainStatus;
-import de.ptb.epics.eve.ecp1.intern.ChainStatusCommand;
-import de.ptb.epics.eve.ecp1.intern.EngineStatus;
 
+/**
+ * <code>Plot View</code> contains an xy plot and tables with statistics 
+ * for two detector channels.  
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
 public class PlotView extends ViewPart {
 
 	protected static final String ID = "PlotView";
 
 	private int id = -1;
 	
-	private DetectorChannel detectorChannel1 = null;
-	private DetectorChannel detectorChannel2 = null;
-	
-	private Label motorPositionLabel;
-	private Label currentMotorPositionLabel;
-	private Label detector1Label;
-	private Label detector1CurrentValueLabel;
-	private Label detector2Label;
-	private Label detector2CurrentValueLabel;
-	
-	private Label normalizeLabel;
-	private Combo normalizeComboBox;
-	
-	
-	private PlotWindow plotWindow;
 	private plotGraphComposite plotGraphComposite;
 	private PlotDetectorComposite plotDetectorComposite;
-
-	private String detector2Id;
-
-	private String detector1Id;
-
-	private String motorId;
-
-	private String motorPv;
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void createPartControl( final Composite parent ) {
+	public void createPartControl(final Composite parent) {
 		
+		// we use a grid layout with two columns
 		final GridLayout gridLayout = new GridLayout();
-		
 		gridLayout.numColumns = 2;
-
-		parent.setLayout( gridLayout );
-		plotGraphComposite = new plotGraphComposite(parent, SWT.NONE );
-		plotDetectorComposite = new PlotDetectorComposite(parent, SWT.NONE );
+		parent.setLayout(gridLayout);
+		
+		// in the left column we put a our plotGraphComposite (the xy plot)
+		plotGraphComposite = new plotGraphComposite(parent, SWT.NONE);
+		// in the right column we put the statistics tables
+		plotDetectorComposite = new PlotDetectorComposite(parent, SWT.NONE);
+		
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
-		//gridData.verticalAlignment = SWT.FILL;
-		this.plotDetectorComposite.setLayoutData( gridData );
+		gridData.verticalAlignment = SWT.FILL;
+		this.plotDetectorComposite.setLayoutData(gridData);
 		
-		this.setContentDescription(this.getTitle()+" "+this.getViewSite().getSecondaryId());
-		this.setPartName("Plot "+this.getViewSite().getSecondaryId());
+		// finally a description and name are added
+		this.setContentDescription(this.getTitle() + " " + 
+								    this.getViewSite().getSecondaryId());
+		this.setPartName("Plot " + this.getViewSite().getSecondaryId());
 	}
 
-	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void setFocus() {
-		// TODO Auto-generated method stub
-
-	}
+	public void setFocus() { }
 	
+	/**
+	 * Getter for id.
+	 * 
+	 * @return the id of the plot view
+	 */
 	public int getId() {
 		return this.id;
 	}
 
-	public void setId( final int id ) {
+	/**
+	 * Setter for id.
+	 * 
+	 * @param id the id that should be set for the plot view
+	 */
+	public void setId(final int id) {
 		this.id = id;
 	}
 
+	/**
+	 * Links the plot window with a <code>plotWindow</code> in the data model.
+	 * 
+	 * @param plotWindow the <code>plotWindow</code> of the scan description 
+	 * 		   representing the plot
+	 * @param chid the id of the chain
+	 * @param smid the id of the scan module
+	 */
 	public void setPlotWindow(PlotWindow plotWindow, int chid, int smid) {
 
 		String detector1Id = null;
@@ -101,44 +102,66 @@ public class PlotView extends ViewPart {
 		String detector2Name = null;
 		String motorPv = null;
 		
+		// get the number of y axis variables from the data model
 		int yAxisCount = plotWindow.getYAxisAmount();
+		
+		// check if there is at least 1 variable registered
 		if (yAxisCount > 0) {
-			detector1Id = plotWindow.getYAxes().get(0).getDetectorChannel().getID();
-			detector1Name = plotWindow.getYAxes().get(0).getDetectorChannel().getName();
+			// there is, so get the id and name
+			detector1Id = plotWindow.getYAxes().get(0).
+									 getDetectorChannel().getID();
+			detector1Name = plotWindow.getYAxes().get(0).
+									   getDetectorChannel().getName();
+			// if detector has no name, set it to the value of the id
 			if ((detector1Name == null)) detector1Name = detector1Id;
 		}
+		// check if there are at least 2 variables registered
 		if (yAxisCount > 1) {
-			detector2Id = plotWindow.getYAxes().get(1).getDetectorChannel().getID();
-			detector2Name = plotWindow.getYAxes().get(1).getDetectorChannel().getName();
-			if ((detector2Name == null) || detector2Name.length() == 0) detector1Name = detector2Id;
+			// there are, so get the id and name of the second
+			detector2Id = plotWindow.getYAxes().get(1).
+									 getDetectorChannel().getID();
+			detector2Name = plotWindow.getYAxes().get(1).
+									   getDetectorChannel().getName();
+			// if detector has no name, set it to the value of the id
+			if ((detector2Name == null) || detector2Name.length() == 0) 
+				detector1Name = detector2Id;
 		}
+		// get the motor axis, its id and its name from the data model
 		MotorAxis motorAxis = plotWindow.getXAxis();
 		String motorId = motorAxis.getID();
 		String motorName = motorAxis.getName();
 		
+		// check for valid motor id
 		if ((motorId == null) || (motorId.length() < 1)) {
-			// TODO create proper error message
 			System.err.println("invalid motorId: " + motorId);
 			return;
 		}
 		
-		if ((motorName == null) || (motorName.length() == 0)) motorName = motorId;
-		if ((motorAxis.getGoto().getAccess() != null) && (motorAxis.getGoto().getAccess().getTransport() == TransportTypes.CA))
+		// if motor has no name, set it to the value of the id
+		if ((motorName == null) || (motorName.length() == 0)) 
+			motorName = motorId;
+		
+		// TODO some unclear stuff here... :
+		
+		// ???
+		if ((motorAxis.getGoto().getAccess() != null) && 
+			(motorAxis.getGoto().getAccess().getTransport()==TransportTypes.CA))
 				motorPv = motorAxis.getGoto().getAccess().getVariableID();
 		
-		this.detector1Id = detector1Id;
-		this.detector2Id = detector2Id;
-		this.motorId = motorId;
-		this.motorPv = motorPv;
-		
+		// define two strings for the detectors used as arguments in refreshes
 		String detector1 = null;
 		String detector2 = null;
 		
-		if ((detector1Id != null) && (detector1Id.length() > 0)) detector1 = detector1Id;
-		if ((detector2Id != null) && (detector2Id.length() > 0)) detector2 = detector2Id;
-				
-		plotGraphComposite.refresh(plotWindow, chid, smid, motorId, motorName, detector1, detector1Name, detector2, detector2Name);
-		plotDetectorComposite.refresh(chid, smid, motorId, motorName, motorPv, detector1, detector1Name, detector2, detector2Name);
-		
+		// ...
+		if ((detector1Id != null) && (detector1Id.length() > 0)) 
+			detector1 = detector1Id;
+		if ((detector2Id != null) && (detector2Id.length() > 0)) 
+			detector2 = detector2Id;
+			
+		// refresh the two composites contained in this view (plot and tables)
+		plotGraphComposite.refresh(plotWindow, chid, smid, motorId, motorName, 
+						detector1, detector1Name, detector2, detector2Name);
+		plotDetectorComposite.refresh(chid, smid, motorId, motorName, motorPv, 
+						detector1, detector1Name, detector2, detector2Name);		
 	}
 }

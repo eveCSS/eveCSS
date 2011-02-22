@@ -1,14 +1,12 @@
-/**
+/* 
+ * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
+ * All rights reserved.
  * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
  */
 package de.ptb.epics.eve.viewer;
 
-import org.csstudio.platform.model.pvs.IProcessVariableAddress;
-import org.csstudio.platform.model.pvs.ProcessVariableAdressFactory;
-import org.csstudio.platform.simpledal.ConnectionException;
-import org.csstudio.platform.simpledal.IProcessVariableConnectionService;
-import org.csstudio.platform.simpledal.ProcessVariableConnectionServiceFactory;
-import org.csstudio.platform.simpledal.ValueType;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -17,47 +15,45 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.ExpandItem;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.TableColumn;
-
-import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
-import de.ptb.epics.eve.ecp1.intern.ChainStatus;
-import de.ptb.epics.eve.ecp1.intern.ChainStatusCommand;
-import de.ptb.epics.eve.ecp1.intern.DataModifier;
+import org.eclipse.ui.PlatformUI;
 
 /**
- * @author eden
- *
+ * <code>PlotDetectorComposite</code> is a composite containing two tables 
+ * with statistics of two detector channels.
+ * 
+ * @author Jens Eden
+ * @author Marcus Michalsky
  */
 public class PlotDetectorComposite extends Composite {
 
-
-	private int chid;
-	private int smid;
+	// the table for the first detector
 	private TableViewer tableViewerDet1;
+	// the table for the second detector
 	private TableViewer tableViewerDet2;
+	// the icon used in the goto column to set a motor axis to a specific value
 	private Image gotoIcon;
-	private Label detectorLabel1;
-	private Label detectorLabel2;
 
+	/**
+	 * Constructs a <code>PlotDetectorComposite</code>.
+	 * 
+	 * @param parent the parent it should belong to
+	 * @param style the style
+	 */
 	public PlotDetectorComposite(Composite parent, int style) {
 		super(parent, style);
-		// TODO Auto-generated constructor stub
 
+		// grab the goto icon
 		gotoIcon = Activator.getDefault().getImageRegistry().get("GREENGO12");
+		
+		// we use a one column grid layout:
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
-		setLayout( gridLayout );
+		setLayout(gridLayout);
+		
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
@@ -65,13 +61,15 @@ public class PlotDetectorComposite extends Composite {
 		gridData.verticalAlignment = GridData.FILL;
 		setLayoutData( gridData );
 		
-		detectorLabel1 = new Label(this, SWT.None);
+		// detectorLabel1 = new Label(this, SWT.None);
 		tableViewerDet1 = makeTable();
-		detectorLabel2 = new Label(this, SWT.None);
+		// detectorLabel2 = new Label(this, SWT.None);
 		tableViewerDet2 = makeTable();
-
 	}
 	
+	/*
+	 * called by the constructor to construct the table
+	 */
 	private TableViewer makeTable(){
 		
 		Composite tableComposite = new Composite(this, SWT.FULL_SELECTION);
@@ -80,13 +78,15 @@ public class PlotDetectorComposite extends Composite {
 
 		TableViewer tableViewer = new TableViewer(tableComposite, SWT.BORDER | SWT.FULL_SELECTION);
 
-		tableViewer.getTable().setHeaderVisible(false);
+		tableViewer.getTable().setHeaderVisible(true); // false
 		tableViewer.getTable().setLinesVisible(true);
 
 		MathTableContentProvider contentProvider = new MathTableContentProvider(tableViewer);
 		tableViewer.setContentProvider(contentProvider);
 
+		// the first column is a vertical header column
 		TableViewerColumn nameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		nameColumn.getColumn().setText("");
 		nameColumn.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				return ((MathTableElement) element).getName();
@@ -94,25 +94,32 @@ public class PlotDetectorComposite extends Composite {
 		});
 		tableColumnLayout.setColumnData(nameColumn.getColumn(), new ColumnPixelData(75));
 
+		// the second column contains the statistics for the detector channel
 		TableViewerColumn valueColumn = new TableViewerColumn(tableViewer, SWT.NONE);
-		//valueColumn.getColumn().setText("Value");
+		valueColumn.getColumn().setText("Channel");
 		valueColumn.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				return ((MathTableElement) element).getValue();
 			}
 		});
-		tableColumnLayout.setColumnData(valueColumn.getColumn(), new ColumnPixelData(75));
+		tableColumnLayout.setColumnData(valueColumn.getColumn(), new ColumnPixelData(85));
 
+		// the third column contains the positions of the motor axis where the
+		// corresponding statistical value was detected
 		TableViewerColumn motorColumn = new TableViewerColumn(tableViewer, SWT.NONE);
-		//motorColumn.getColumn().setText("Value");
+		motorColumn.getColumn().setText("Axis");
 		motorColumn.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				return ((MathTableElement) element).getPosition();
 			}
 		});
-		tableColumnLayout.setColumnData(motorColumn.getColumn(), new ColumnPixelData(75));
+		tableColumnLayout.setColumnData(motorColumn.getColumn(), new ColumnPixelData(85));
 
+		// the fourth column contains the goto icons
+		// if you click on this icon the motor moves to the position indicated
+		// in the third column (same row)
 		TableViewerColumn gotoColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		gotoColumn.getColumn().setText("GoTo");
 		gotoColumn.setEditingSupport(new EditingSupport(tableViewer) {
 			
 			@Override
@@ -146,50 +153,115 @@ public class PlotDetectorComposite extends Composite {
 		tableColumnLayout.setColumnData(gotoColumn.getColumn(), new ColumnPixelData(22));
 
 		tableViewer.setInput(contentProvider);
+		
+		// initially the table is not visible
 		tableViewer.getTable().setVisible(false);
+		
+		// the table viewer is ready for use now
 		return tableViewer;
 	}
 	
-	public void refresh(int chid, int smid, String motorId, String motorName, String motorPv, String detector1Id, String detector1Name, String detector2Id, String detector2Name) {
+	/**
+	 * 
+	 * 
+	 * @param chid
+	 * @param smid
+	 * @param motorId
+	 * @param motorName
+	 * @param motorPv
+	 * @param detector1Id
+	 * @param detector1Name
+	 * @param detector2Id
+	 * @param detector2Name
+	 */
+	public void refresh(int chid, int smid, String motorId, String motorName, 
+						 String motorPv, String detector1Id, 
+						 String detector1Name, String detector2Id, 
+						 String detector2Name) {
 		
-		if (detector1Id != null){
-			createContent(chid, smid, tableViewerDet1, motorPv, motorId, detector1Id);
+		if (detector1Id != null)
+		{
+			createContent(chid, smid, tableViewerDet1, motorPv, motorId, 
+						  detector1Id);
+			
+			tableViewerDet1.getTable().getColumn(1).setText(detector1Name);
+			tableViewerDet1.getTable().getColumn(2).setText(motorName);
+			tableViewerDet1.refresh();
 			tableViewerDet1.getTable().setVisible(true);
-			detectorLabel1.setText(detector1Name);
 		}
 		
-		if (detector2Id != null){
-			createContent(chid, smid, tableViewerDet2, motorPv, motorId, detector2Id);
+		if (detector2Id != null)
+		{
+			createContent(chid, smid, tableViewerDet2, motorPv, motorId, 
+						  detector2Id);
+			
+			tableViewerDet2.getTable().getColumn(1).setText(detector2Name);
+			tableViewerDet2.getTable().getColumn(2).setText(motorName);
+			tableViewerDet2.refresh();
 			tableViewerDet2.getTable().setVisible(true);
-			detectorLabel2.setText(detector2Name);
 		}
+		else
+		{
+			// detector2Id is null => hide second table
+			tableViewerDet2.getTable().setVisible(false);
+		}
+
+		// TODO next statement should be somewhere else.
+		// just added to get rid of the editor area temporarily
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().
+					setEditorAreaVisible(false);
 		
 		this.layout();
 		this.redraw();
 		this.getParent().layout();
 		this.getParent().redraw();
-
 	}
 	
-	private void createContent(int chid, int smid, TableViewer tableViewer, String motorPv, String motorId, String detectorId){
+	/*
+	 * called by the refresh method...
+	 * creates the content of the two statistics tables
+	 */
+	private void createContent(int chid, int smid, TableViewer tableViewer, 
+						String motorPv, String motorId, String detectorId) {
 
-		MathTableContentProvider contentProvider = (MathTableContentProvider)tableViewer.getContentProvider();
+		// create a content provider for the table...
+		MathTableContentProvider contentProvider = 
+				(MathTableContentProvider) tableViewer.getContentProvider();
+		// ...and clear it
 		contentProvider.clear();
-		MathTableElement element = new MathTableElement(chid, smid, tableViewer, MathFunction.UNMODIFIED, motorPv, motorId, detectorId);
+		
+		// create the elements of interest and add them to the content provider
+		
+		MathTableElement element = new MathTableElement(chid, smid, tableViewer, 
+				MathFunction.UNMODIFIED, motorPv, motorId, detectorId);
 		contentProvider.addElement(element);
-		element = new MathTableElement(chid, smid, tableViewer, MathFunction.MINIMUM, motorPv, motorId, detectorId);
+		
+		element = new MathTableElement(chid, smid, tableViewer, 
+				MathFunction.MINIMUM, motorPv, motorId, detectorId);
 		contentProvider.addElement(element);
-		element = new MathTableElement(chid, smid, tableViewer, MathFunction.MAXIMUM, motorPv, motorId, detectorId);
+		
+		element = new MathTableElement(chid, smid, tableViewer, 
+				MathFunction.MAXIMUM, motorPv, motorId, detectorId);
 		contentProvider.addElement(element);
-		element = new MathTableElement(chid, smid, tableViewer, MathFunction.CENTER, motorPv, motorId, detectorId);
+		
+		element = new MathTableElement(chid, smid, tableViewer, 
+				MathFunction.CENTER, motorPv, motorId, detectorId);
 		contentProvider.addElement(element);
-		element = new MathTableElement(chid, smid, tableViewer, MathFunction.EDGE, motorPv, motorId, detectorId);
+		
+		element = new MathTableElement(chid, smid, tableViewer, 
+				MathFunction.EDGE, motorPv, motorId, detectorId);
 		contentProvider.addElement(element);
-		element = new MathTableElement(chid, smid, tableViewer, MathFunction.AVERAGE, motorPv, motorId, detectorId);
+		
+		element = new MathTableElement(chid, smid, tableViewer, 
+				MathFunction.AVERAGE, motorPv, motorId, detectorId);
 		contentProvider.addElement(element);
-		element = new MathTableElement(chid, smid, tableViewer, MathFunction.DEVIATION, motorPv, motorId, detectorId);
+		
+		element = new MathTableElement(chid, smid, tableViewer, 
+				MathFunction.DEVIATION, motorPv, motorId, detectorId);
 		contentProvider.addElement(element);
-		element = new MathTableElement(chid, smid, tableViewer, MathFunction.FWHM, motorPv, motorId, detectorId);
+		
+		element = new MathTableElement(chid, smid, tableViewer, 
+				MathFunction.FWHM, motorPv, motorId, detectorId);
 		contentProvider.addElement(element);	
 	}
 }

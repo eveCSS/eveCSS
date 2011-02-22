@@ -1,4 +1,4 @@
-/**
+/*
  * 
  */
 package de.ptb.epics.eve.viewer;
@@ -25,8 +25,6 @@ import de.ptb.epics.eve.ecp1.intern.DataType;
  * @author eden
  *
  */
-
-
 public class plotGraphComposite extends Composite implements IMeasurementDataListener {
 
 	private String detector1Id;
