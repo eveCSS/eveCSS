@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="de.ptb.epics.eve.viewer.actions_inheritance" size="977,2547" id="de.ptb.epics.eve.viewer.actions" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D313030302064652E7074622E65706963732E6576652E7669657765722F6D6D696368616C73">
+  <children xsi:type="editmodel:ClassEditModel" name="connectCommandHandler" location="628,489" size="214,85" id="de.ptb.epics.eve.viewer.actions/connectCommandHandler">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="191,36">
+      <children xsi:type="editmodel:MethodEditModel" name="connectCommandHandler" id="de.ptb.epics.eve.viewer.actions/connectCommandHandler#connectCommandHandler()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="execute" id="de.ptb.epics.eve.viewer.actions/connectCommandHandler#execute(Lorg.eclipse.core.commands.ExecutionEvent;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="SaveMessagesToFileAction" location="975,50" size="254,103" id="de.ptb.epics.eve.viewer.actions/SaveMessagesToFileAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="231,54">
+      <children xsi:type="editmodel:MethodEditModel" name="SaveMessagesToFileAction" id="de.ptb.epics.eve.viewer.actions/SaveMessagesToFileAction#SaveMessagesToFileAction(Lorg.eclipse.jface.viewers.TableViewer;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/SaveMessagesToFileAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/SaveMessagesToFileAction#run()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="KillAction" location="840,330" size="250,139" id="de.ptb.epics.eve.viewer.actions/KillAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="227,90">
+      <children xsi:type="editmodel:MethodEditModel" name="KillAction" id="de.ptb.epics.eve.viewer.actions/KillAction#KillAction()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/KillAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="init" id="de.ptb.epics.eve.viewer.actions/KillAction#init(Lorg.eclipse.ui.IWorkbenchWindow;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/KillAction#run(Lorg.eclipse.jface.action.IAction;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="selectionChanged" id="de.ptb.epics.eve.viewer.actions/KillAction#selectionChanged(Lorg.eclipse.jface.action.IAction;Lorg.eclipse.jface.viewers.ISelection;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="AddFileToPlayListAction" location="78,480" size="197,103" id="de.ptb.epics.eve.viewer.actions/AddFileToPlayListAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="146,54">
+      <children xsi:type="editmodel:MethodEditModel" name="AddFileToPlayListAction" id="de.ptb.epics.eve.viewer.actions/AddFileToPlayListAction#AddFileToPlayListAction()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/AddFileToPlayListAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/AddFileToPlayListAction#run()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="AutoPlayAction" location="315,330" size="250,121" id="de.ptb.epics.eve.viewer.actions/AutoPlayAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="227,72">
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/AutoPlayAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="init" id="de.ptb.epics.eve.viewer.actions/AutoPlayAction#init(Lorg.eclipse.ui.IWorkbenchWindow;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/AutoPlayAction#run(Lorg.eclipse.jface.action.IAction;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="selectionChanged" id="de.ptb.epics.eve.viewer.actions/AutoPlayAction#selectionChanged(Lorg.eclipse.jface.action.IAction;Lorg.eclipse.jface.viewers.ISelection;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="PauseAction" location="315,180" size="250,139" id="de.ptb.epics.eve.viewer.actions/PauseAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="227,90">
+      <children xsi:type="editmodel:MethodEditModel" name="PauseAction" id="de.ptb.epics.eve.viewer.actions/PauseAction#PauseAction()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/PauseAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="init" id="de.ptb.epics.eve.viewer.actions/PauseAction#init(Lorg.eclipse.ui.IWorkbenchWindow;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/PauseAction#run(Lorg.eclipse.jface.action.IAction;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="selectionChanged" id="de.ptb.epics.eve.viewer.actions/PauseAction#selectionChanged(Lorg.eclipse.jface.action.IAction;Lorg.eclipse.jface.viewers.ISelection;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="RenameDeviceInspector" location="675,50" size="287,103" id="de.ptb.epics.eve.viewer.actions/RenameDeviceInspector">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="264,54">
+      <children xsi:type="editmodel:MethodEditModel" name="RenameDeviceInspector" id="de.ptb.epics.eve.viewer.actions/RenameDeviceInspector#RenameDeviceInspector(Lde.ptb.epics.eve.viewer.DeviceInspectorViewer;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/RenameDeviceInspector#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/RenameDeviceInspector#run()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="MoveFileDownInPlayListAction" location="312,600" size="270,103" id="de.ptb.epics.eve.viewer.actions/MoveFileDownInPlayListAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="247,54">
+      <children xsi:type="editmodel:MethodEditModel" name="MoveFileDownInPlayListAction" id="de.ptb.epics.eve.viewer.actions/MoveFileDownInPlayListAction#MoveFileDownInPlayListAction(Lde.ptb.epics.eve.viewer.PlayListView;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/MoveFileDownInPlayListAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/MoveFileDownInPlayListAction#run()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="RemoveFileFromPlayListAction" location="311,480" size="272,103" id="de.ptb.epics.eve.viewer.actions/RemoveFileFromPlayListAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="249,54">
+      <children xsi:type="editmodel:MethodEditModel" name="RemoveFileFromPlayListAction" id="de.ptb.epics.eve.viewer.actions/RemoveFileFromPlayListAction#RemoveFileFromPlayListAction(Lde.ptb.epics.eve.viewer.PlayListView;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/RemoveFileFromPlayListAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/RemoveFileFromPlayListAction#run()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ChangeMessagesTypeFilterAction" location="888,600" size="284,103" id="de.ptb.epics.eve.viewer.actions/ChangeMessagesTypeFilterAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="261,54">
+      <children xsi:type="editmodel:MethodEditModel" name="ChangeMessagesTypeFilterAction" id="de.ptb.epics.eve.viewer.actions/ChangeMessagesTypeFilterAction#ChangeMessagesTypeFilterAction(Lorg.eclipse.jface.viewers.TableViewer;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/ChangeMessagesTypeFilterAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/ChangeMessagesTypeFilterAction#run()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="TriggerAction" location="578,330" size="250,139" id="de.ptb.epics.eve.viewer.actions/TriggerAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="227,90">
+      <children xsi:type="editmodel:MethodEditModel" name="TriggerAction" id="de.ptb.epics.eve.viewer.actions/TriggerAction#TriggerAction()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/TriggerAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="init" id="de.ptb.epics.eve.viewer.actions/TriggerAction#init(Lorg.eclipse.ui.IWorkbenchWindow;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/TriggerAction#run(Lorg.eclipse.jface.action.IAction;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="selectionChanged" id="de.ptb.epics.eve.viewer.actions/TriggerAction#selectionChanged(Lorg.eclipse.jface.action.IAction;Lorg.eclipse.jface.viewers.ISelection;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ClearMessagesAction" location="1095,180" size="177,103" id="de.ptb.epics.eve.viewer.actions/ClearMessagesAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="129,54">
+      <children xsi:type="editmodel:MethodEditModel" name="ClearMessagesAction" id="de.ptb.epics.eve.viewer.actions/ClearMessagesAction#ClearMessagesAction()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/ClearMessagesAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/ClearMessagesAction#run()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="NewDeviceInspectorAction" location="369,50" size="298,103" id="de.ptb.epics.eve.viewer.actions/NewDeviceInspectorAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="275,54">
+      <children xsi:type="editmodel:MethodEditModel" name="NewDeviceInspectorAction" id="de.ptb.epics.eve.viewer.actions/NewDeviceInspectorAction#NewDeviceInspectorAction(Lde.ptb.epics.eve.viewer.DeviceInspectorViewer;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/NewDeviceInspectorAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/NewDeviceInspectorAction#run()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="MoveFileUpInPlayListAction" location="48,600" size="257,103" id="de.ptb.epics.eve.viewer.actions/MoveFileUpInPlayListAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="234,54">
+      <children xsi:type="editmodel:MethodEditModel" name="MoveFileUpInPlayListAction" id="de.ptb.epics.eve.viewer.actions/MoveFileUpInPlayListAction#MoveFileUpInPlayListAction(Lde.ptb.epics.eve.viewer.PlayListView;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/MoveFileUpInPlayListAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/MoveFileUpInPlayListAction#run()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="disConnectCommandHandler" location="851,489" size="227,85" id="de.ptb.epics.eve.viewer.actions/disConnectCommandHandler">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="191,36">
+      <children xsi:type="editmodel:MethodEditModel" name="disConnectCommandHandler" id="de.ptb.epics.eve.viewer.actions/disConnectCommandHandler#disConnectCommandHandler()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="execute" id="de.ptb.epics.eve.viewer.actions/disConnectCommandHandler#execute(Lorg.eclipse.core.commands.ExecutionEvent;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="SkipAction" location="840,180" size="250,139" id="de.ptb.epics.eve.viewer.actions/SkipAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="227,90">
+      <children xsi:type="editmodel:MethodEditModel" name="SkipAction" id="de.ptb.epics.eve.viewer.actions/SkipAction#SkipAction()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/SkipAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="init" id="de.ptb.epics.eve.viewer.actions/SkipAction#init(Lorg.eclipse.ui.IWorkbenchWindow;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/SkipAction#run(Lorg.eclipse.jface.action.IAction;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="selectionChanged" id="de.ptb.epics.eve.viewer.actions/SkipAction#selectionChanged(Lorg.eclipse.jface.action.IAction;Lorg.eclipse.jface.viewers.ISelection;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="PlayAction" location="52,180" size="250,139" id="de.ptb.epics.eve.viewer.actions/PlayAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="227,90">
+      <children xsi:type="editmodel:MethodEditModel" name="PlayAction" id="de.ptb.epics.eve.viewer.actions/PlayAction#PlayAction()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/PlayAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="init" id="de.ptb.epics.eve.viewer.actions/PlayAction#init(Lorg.eclipse.ui.IWorkbenchWindow;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/PlayAction#run(Lorg.eclipse.jface.action.IAction;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="selectionChanged" id="de.ptb.epics.eve.viewer.actions/PlayAction#selectionChanged(Lorg.eclipse.jface.action.IAction;Lorg.eclipse.jface.viewers.ISelection;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ChangeMessagesSourceFilterAction" location="588,600" size="294,103" id="de.ptb.epics.eve.viewer.actions/ChangeMessagesSourceFilterAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="271,54">
+      <children xsi:type="editmodel:MethodEditModel" name="ChangeMessagesSourceFilterAction" id="de.ptb.epics.eve.viewer.actions/ChangeMessagesSourceFilterAction#ChangeMessagesSourceFilterAction(Lorg.eclipse.jface.viewers.TableViewer;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/ChangeMessagesSourceFilterAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/ChangeMessagesSourceFilterAction#run()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="HaltAction" location="52,330" size="250,121" id="de.ptb.epics.eve.viewer.actions/HaltAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="227,72">
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/HaltAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="init" id="de.ptb.epics.eve.viewer.actions/HaltAction#init(Lorg.eclipse.ui.IWorkbenchWindow;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/HaltAction#run(Lorg.eclipse.jface.action.IAction;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="selectionChanged" id="de.ptb.epics.eve.viewer.actions/HaltAction#selectionChanged(Lorg.eclipse.jface.action.IAction;Lorg.eclipse.jface.viewers.ISelection;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="StopAction" location="578,180" size="250,139" id="de.ptb.epics.eve.viewer.actions/StopAction">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="227,90">
+      <children xsi:type="editmodel:MethodEditModel" name="StopAction" id="de.ptb.epics.eve.viewer.actions/StopAction#StopAction()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/StopAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="init" id="de.ptb.epics.eve.viewer.actions/StopAction#init(Lorg.eclipse.ui.IWorkbenchWindow;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/StopAction#run(Lorg.eclipse.jface.action.IAction;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="selectionChanged" id="de.ptb.epics.eve.viewer.actions/StopAction#selectionChanged(Lorg.eclipse.jface.action.IAction;Lorg.eclipse.jface.viewers.ISelection;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="LoadMeasuringStationAction" location="50,50" size="307,121" id="de.ptb.epics.eve.viewer.actions/LoadMeasuringStationAction">
+    <children xsi:type="editmodel:CompartmentEditModel" size="237,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="measuringStationView" id="de.ptb.epics.eve.viewer.actions/LoadMeasuringStationAction#measuringStationView"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="284,54">
+      <children xsi:type="editmodel:MethodEditModel" name="LoadMeasuringStationAction" id="de.ptb.epics.eve.viewer.actions/LoadMeasuringStationAction#LoadMeasuringStationAction(Lde.ptb.epics.eve.viewer.MeasuringStationView;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.actions/LoadMeasuringStationAction#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="de.ptb.epics.eve.viewer.actions/LoadMeasuringStationAction#run()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" interactive="false" level="-1" showScope="InPackage" properties="wireOptions=1;Product=eUML2"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>
