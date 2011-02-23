@@ -1,14 +1,13 @@
-/*******************************************************************************
+/*
  * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,7 +21,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProv
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
 /**
- * This class decribes a plot window.
+ * This class describes a plot window.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.2
