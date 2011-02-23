@@ -56,7 +56,7 @@
             name="%view.name.4"/>
       <view
             allowMultiple="true"
-            class="de.ptb.epics.eve.viewer.PlotView"
+            class="de.ptb.epics.eve.viewer.views.PlotView"
             icon="icons/css.gif"
             id="PlotView"
             name="%view.name.5"/>

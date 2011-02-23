@@ -25,6 +25,8 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
+import de.ptb.epics.eve.viewer.views.PlotView;
+
 /**
  * A sample perspective implementation, which initially contains of 3 views.
  * 

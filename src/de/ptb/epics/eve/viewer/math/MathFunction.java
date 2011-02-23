@@ -5,13 +5,13 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  */
-package de.ptb.epics.eve.viewer;
+package de.ptb.epics.eve.viewer.math;
 
 import de.ptb.epics.eve.ecp1.intern.DataModifier;
 
 /**
  * Defines all available mathematical functions.
- * Used to represent different statistical measures.
+ * Used to represent several statistical measures.
  * 
  * @author ?
  * @author Marcus Michalsky
@@ -24,47 +24,47 @@ public enum MathFunction {
 	UNMODIFIED, 
 	
 	/** 
-	 *  
+	 * the mathematical minimum
 	 */
 	MINIMUM, 
 	
 	/** 
-	 *  
+	 * the mathematical maximum
 	 */
 	MAXIMUM, 
 	
 	/** 
-	 *  
+	 * the middle point of the range of measures 
 	 */
 	CENTER, 
 	
 	/** 
-	 *  
+	 * ...
 	 */
 	EDGE, 
 	
 	/** 
-	 *  
+	 * the arithmetic average
 	 */
 	AVERAGE, 
 	
 	/** 
-	 *  
+	 * the standard deviation
 	 */
 	DEVIATION, 
 	
 	/** 
-	 *  
+	 * full width, half ???  
 	 */
 	FWHM, 
 	
 	/** 
-	 *  
+	 * the sum
 	 */
 	SUM, 
 	
 	/** 
-	 *  
+	 * ??? 
 	 */
 	UNKNOWN;
 	
@@ -91,8 +91,9 @@ public enum MathFunction {
 	}
 	
 	/**
+	 * Converts the enum type to its corresponding <code>DataModifier</code>.
 	 * 
-	 * @return
+	 * @return the corresponding <code>DataModifier</code>
 	 */
 	public DataModifier toDataModifier() {
 		switch (this) {

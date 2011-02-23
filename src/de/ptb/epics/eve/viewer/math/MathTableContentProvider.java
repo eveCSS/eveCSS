@@ -5,7 +5,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  */
-package de.ptb.epics.eve.viewer;
+package de.ptb.epics.eve.viewer.math;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,15 +27,16 @@ public class MathTableContentProvider implements IStructuredContentProvider {
 	/**
 	 * Constructs a <code>MathTableContentProvider</code>.
 	 * 
-	 * @param tableViewer
+	 * @param tableViewer the table viewer which should be provided with 
+	 * 		   contents.
 	 */
 	public MathTableContentProvider(TableViewer tableViewer) {
 		elements = new ArrayList<MathTableElement>();
 		this.tableViewer = tableViewer;
 	}
 
-	/**
-	 * {@inheritDoc}
+	/** 
+	 * {@inheritDoc} 
 	 */
 	@Override
 	public Object[] getElements(Object inputElement) {

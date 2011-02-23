@@ -16,6 +16,7 @@ import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.intern.ChainStatus;
 import de.ptb.epics.eve.ecp1.intern.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.intern.EngineStatus;
+import de.ptb.epics.eve.viewer.views.PlotView;
 
 public class PlotViewDispatcher implements IEngineStatusListener, IChainStatusListener, IConnectionStateListener {
 

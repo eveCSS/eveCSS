@@ -5,7 +5,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  */
-package de.ptb.epics.eve.viewer;
+package de.ptb.epics.eve.viewer.math;
 
 import java.util.Locale;
 
@@ -16,6 +16,7 @@ import com.cosylab.util.PrintfFormat;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 import de.ptb.epics.eve.ecp1.intern.DataType;
+import de.ptb.epics.eve.viewer.Activator;
 
 /**
  * 
@@ -35,16 +36,20 @@ public class MathTableElement implements IMeasurementDataListener {
 	private String motorId;
 
 	/**
+	 * Constructs a <code>MathTableElement</code>.
 	 * 
-	 * @param chid
-	 * @param smid
-	 * @param viewer
-	 * @param mathFunction
-	 * @param motorPv
-	 * @param motorId
-	 * @param detectorId
+	 * @param chid the id of the channel
+	 * @param smid the id of the scan module
+	 * @param viewer the table viewer that should be used
+	 * @param mathFunction the desired mathematical function
+	 * @param motorPv the process variable of the motor
+	 * @param motorId the id of the motor
+	 * @param detectorId the id of the detector
 	 */
-	public MathTableElement(int chid, int smid, TableViewer viewer, MathFunction mathFunction, String motorPv, String motorId, String detectorId) {
+	public MathTableElement(int chid, int smid, TableViewer viewer, 
+							 MathFunction mathFunction, String motorPv, 
+							 String motorId, String detectorId) {
+		// set an initial value
 		value = " - ";
 		position = " - ";
 		this.viewer = viewer;
@@ -54,7 +59,7 @@ public class MathTableElement implements IMeasurementDataListener {
 		this.motorPv = motorPv;
 		this.motorId = motorId;
 		this.detectorId = detectorId;
-		Activator.getDefault().getEcp1Client().addMeasurementDataListener( this );
+		Activator.getDefault().getEcp1Client().addMeasurementDataListener(this);
 	}
 
 	/**
@@ -62,14 +67,22 @@ public class MathTableElement implements IMeasurementDataListener {
 	 */
 	@Override
 	public void measurementDataTransmitted(MeasurementData measurementData) {
+		
 		if ((measurementData == null) || (detectorId == null)) return;
 		
-		if ((measurementData.getChainId() == chid) && (measurementData.getScanModuleId() == smid)){
-			if (detectorId.equals(measurementData.getName()) && (measurementData.getDataModifier() == mathFunction.toDataModifier())){
+		// are we still in the same chain and scan module ?
+		if (measurementData.getChainId() == chid && 
+			measurementData.getScanModuleId() == smid)
+		{
+			if(detectorId.equals(measurementData.getName()) && 
+			 measurementData.getDataModifier() == mathFunction.toDataModifier())
+			{
 				value = convert(measurementData);
 				doUpdate();
 			}
-			else if (motorId.equals(measurementData.getName()) && (measurementData.getDataModifier() == mathFunction.toDataModifier())){
+			else if(motorId.equals(measurementData.getName()) && 
+			 measurementData.getDataModifier() == mathFunction.toDataModifier())
+			{
 				position = convert(measurementData);
 				doUpdate();
 			}
@@ -77,21 +90,26 @@ public class MathTableElement implements IMeasurementDataListener {
 	}
 	
 	/*
-	 * 
+	 * called by measurementDataTransmitted to convert the data
 	 */
-	private String convert(MeasurementData mData){
-		if ((mData.getDataType() == DataType.DOUBLE) || (mData.getDataType() == DataType.FLOAT)) {
+	private String convert(MeasurementData mData) {
+		if (mData.getDataType() == DataType.DOUBLE || 
+			mData.getDataType() == DataType.FLOAT) 
+		{
 			Double data = (Double) mData.getValues().get(0);
-			return new PrintfFormat(Locale.ENGLISH, "%12.4g").sprintf(data).trim();
+			return 
+				new PrintfFormat(Locale.ENGLISH, "%12.4g").sprintf(data).trim();
 		}
 		else
-			return mData.getValues().get( 0 ).toString();		
+			return mData.getValues().get(0).toString();		
 	}
+	
 	/*
-	 * 
+	 * called by measurementDataTransmitted to update the table contents
 	 */
 	private void doUpdate() {
-		if (!viewer.getControl().isDisposed()){
+		if (!viewer.getControl().isDisposed())
+		{
 			final MathTableElement thisMathTableElement = this;
 			viewer.getControl().getDisplay().asyncExec(new Runnable() {
 				
@@ -109,7 +127,6 @@ public class MathTableElement implements IMeasurementDataListener {
 	 * 
 	 */
 	public void gotoPos() {
-		// TODO
 		if (motorPv == null) return;
 		return;
 	}

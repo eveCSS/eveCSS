@@ -5,7 +5,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  */
-package de.ptb.epics.eve.viewer;
+package de.ptb.epics.eve.viewer.views;
 
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.CellEditor;
@@ -20,6 +20,11 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
+
+import de.ptb.epics.eve.viewer.Activator;
+import de.ptb.epics.eve.viewer.math.MathFunction;
+import de.ptb.epics.eve.viewer.math.MathTableContentProvider;
+import de.ptb.epics.eve.viewer.math.MathTableElement;
 
 /**
  * <code>PlotDetectorComposite</code> is a composite containing two tables 
@@ -72,53 +77,64 @@ public class PlotDetectorComposite extends Composite {
 	 */
 	private TableViewer makeTable(){
 		
+		// create the table widget
 		Composite tableComposite = new Composite(this, SWT.FULL_SELECTION);
 		TableColumnLayout tableColumnLayout = new TableColumnLayout();
 		tableComposite.setLayout(tableColumnLayout);
 
-		TableViewer tableViewer = new TableViewer(tableComposite, SWT.BORDER | SWT.FULL_SELECTION);
+		TableViewer tableViewer = new TableViewer(tableComposite, SWT.BORDER | 
+												   SWT.FULL_SELECTION);
 
-		tableViewer.getTable().setHeaderVisible(true); // false
+		tableViewer.getTable().setHeaderVisible(true);
 		tableViewer.getTable().setLinesVisible(true);
 
-		MathTableContentProvider contentProvider = new MathTableContentProvider(tableViewer);
+		// provide content for the table
+		MathTableContentProvider contentProvider = 
+					new MathTableContentProvider(tableViewer);
 		tableViewer.setContentProvider(contentProvider);
 
 		// the first column is a vertical header column
-		TableViewerColumn nameColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableViewerColumn nameColumn = new TableViewerColumn(tableViewer, 
+															  SWT.NONE);
 		nameColumn.getColumn().setText("");
 		nameColumn.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				return ((MathTableElement) element).getName();
 			}
 		});
-		tableColumnLayout.setColumnData(nameColumn.getColumn(), new ColumnPixelData(75));
+		tableColumnLayout.setColumnData(nameColumn.getColumn(), 
+										new ColumnPixelData(75));
 
 		// the second column contains the statistics for the detector channel
-		TableViewerColumn valueColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableViewerColumn valueColumn = 
+				new TableViewerColumn(tableViewer, SWT.NONE);
 		valueColumn.getColumn().setText("Channel");
 		valueColumn.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				return ((MathTableElement) element).getValue();
 			}
 		});
-		tableColumnLayout.setColumnData(valueColumn.getColumn(), new ColumnPixelData(85));
+		tableColumnLayout.setColumnData(valueColumn.getColumn(), 
+										new ColumnPixelData(100));
 
 		// the third column contains the positions of the motor axis where the
 		// corresponding statistical value was detected
-		TableViewerColumn motorColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableViewerColumn motorColumn = 
+				new TableViewerColumn(tableViewer, SWT.NONE);
 		motorColumn.getColumn().setText("Axis");
 		motorColumn.setLabelProvider(new ColumnLabelProvider() {
 			public String getText(Object element) {
 				return ((MathTableElement) element).getPosition();
 			}
 		});
-		tableColumnLayout.setColumnData(motorColumn.getColumn(), new ColumnPixelData(85));
+		tableColumnLayout.setColumnData(motorColumn.getColumn(), 
+										new ColumnPixelData(100));
 
 		// the fourth column contains the goto icons
 		// if you click on this icon the motor moves to the position indicated
 		// in the third column (same row)
-		TableViewerColumn gotoColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableViewerColumn gotoColumn = 
+				new TableViewerColumn(tableViewer, SWT.NONE);
 		gotoColumn.getColumn().setText("GoTo");
 		gotoColumn.setEditingSupport(new EditingSupport(tableViewer) {
 			
@@ -150,7 +166,8 @@ public class PlotDetectorComposite extends Composite {
 				return null;
 			}
 		});
-		tableColumnLayout.setColumnData(gotoColumn.getColumn(), new ColumnPixelData(22));
+		tableColumnLayout.setColumnData(gotoColumn.getColumn(), 
+										new ColumnPixelData(22));
 
 		tableViewer.setInput(contentProvider);
 		

@@ -5,7 +5,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  */
-package de.ptb.epics.eve.viewer;
+package de.ptb.epics.eve.viewer.views;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -26,11 +26,13 @@ import de.ptb.epics.eve.data.scandescription.PlotWindow;
  */
 public class PlotView extends ViewPart {
 
-	protected static final String ID = "PlotView";
+	public static final String ID = "PlotView";
 
 	private int id = -1;
 	
-	private plotGraphComposite plotGraphComposite;
+	// the composite for the xy-plot
+	private PlotGraphComposite plotGraphComposite;
+	// the composite for the statistics tables
 	private PlotDetectorComposite plotDetectorComposite;
 	
 	/**
@@ -45,10 +47,11 @@ public class PlotView extends ViewPart {
 		parent.setLayout(gridLayout);
 		
 		// in the left column we put a our plotGraphComposite (the xy plot)
-		plotGraphComposite = new plotGraphComposite(parent, SWT.NONE);
+		plotGraphComposite = new PlotGraphComposite(parent, SWT.NONE);
 		// in the right column we put the statistics tables
 		plotDetectorComposite = new PlotDetectorComposite(parent, SWT.NONE);
 		
+		// some alignments for the plotDetectorComposite
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
@@ -141,24 +144,22 @@ public class PlotView extends ViewPart {
 		if ((motorName == null) || (motorName.length() == 0)) 
 			motorName = motorId;
 		
-		// TODO some unclear stuff here... :
-		
-		// ???
+		// if there is an Access for the motor axis and the transport type 
+		// is Channel Access -> get the Process Variable
 		if ((motorAxis.getGoto().getAccess() != null) && 
 			(motorAxis.getGoto().getAccess().getTransport()==TransportTypes.CA))
 				motorPv = motorAxis.getGoto().getAccess().getVariableID();
 		
-		// define two strings for the detectors used as arguments in refreshes
 		String detector1 = null;
 		String detector2 = null;
 		
-		// ...
 		if ((detector1Id != null) && (detector1Id.length() > 0)) 
 			detector1 = detector1Id;
 		if ((detector2Id != null) && (detector2Id.length() > 0)) 
 			detector2 = detector2Id;
 			
 		// refresh the two composites contained in this view (plot and tables)
+		// meaning update them with new values
 		plotGraphComposite.refresh(plotWindow, chid, smid, motorId, motorName, 
 						detector1, detector1Name, detector2, detector2Name);
 		plotDetectorComposite.refresh(chid, smid, motorId, motorName, motorPv, 

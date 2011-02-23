@@ -52,7 +52,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.26/@sourceConnections.1 //@children.32/@sourceConnections.2 //@children.21/@sourceConnections.2 //@children.33/@sourceConnections.4 //@children.11/@sourceConnections.4 //@children.43/@sourceConnections.4" name="MessageSource" location="570,2685" size="142,376" id="de.ptb.epics.eve.viewer/MessageSource" runTimeClassModel="MHUB%,MFILTER%,SC_CHAIN%,CA_TRANS%,SMDEVICE%,CPARSER%,SCANMOD%,XMLPARSE%,NETWORK%,UNKNOWN%,VIEWER%,EVENT%,PLAYLIST%,STORAGE%,MATH%,MANAGER%,POSCALC%,LTIMER%">
+  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.26/@sourceConnections.1 //@children.32/@sourceConnections.2 //@children.21/@sourceConnections.2 //@children.33/@sourceConnections.4 //@children.11/@sourceConnections.4 //@children.43/@sourceConnections.4" name="MessageSource" location="570,2685" size="142,376" id="de.ptb.epics.eve.viewer/MessageSource" runTimeClassModel="MHUB%,MFILTER%,SC_CHAIN%,CA_TRANS%,SMDEVICE%,CPARSER%,SCANMOD%,XMLPARSE%,NETWORK%,UNKNOWN%,VIEWER%,EVENT%,PLAYLIST%,STORAGE%,MANAGER%,MATH%,POSCALC%,LTIMER%">
     <children xsi:type="editmodel:CompartmentEditModel" size="76,324">
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="UNKNOWN" id="de.ptb.epics.eve.viewer/MessageSource#UNKNOWN%"/>
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="SC_CHAIN" id="de.ptb.epics.eve.viewer/MessageSource#SC_CHAIN%"/>
@@ -84,7 +84,7 @@
       <children xsi:type="editmodel:AssociationEndEditModel" location="101,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="133,29"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/CommonTableEditingSupport-Standard::Call->de.ptb.epics.eve.viewer/CommonTableElement*de.ptb.epics.eve.viewer/CommonTableEditingSupport-Soyatec::Import->de.ptb.epics.eve.viewer/CommonTableElement" source="//@children.8" target="//@children.37" targetEnd="//@children.8/@sourceConnections.1/@children.2" label="//@children.8/@sourceConnections.1/@children.0" sourceEnd="//@children.8/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/CommonTableEditingSupport->Standard::Call" source="//@children.8" target="//@children.37" targetEnd="//@children.8/@sourceConnections.1/@children.2" label="//@children.8/@sourceConnections.1/@children.0" sourceEnd="//@children.8/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="67,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="103,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="103,0"/>
@@ -100,12 +100,12 @@
       <children xsi:type="editmodel:AssociationEndEditModel" location="152,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="0,131"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/PlotDetectorComposite-Standard::Call->de.ptb.epics.eve.viewer/MathTableContentProvider*de.ptb.epics.eve.viewer/PlotDetectorComposite-Standard::Instantiate->de.ptb.epics.eve.viewer/MathTableContentProvider*de.ptb.epics.eve.viewer/PlotDetectorComposite-Soyatec::Import->de.ptb.epics.eve.viewer/MathTableContentProvider" source="//@children.9" target="//@children.5" targetEnd="//@children.9/@sourceConnections.1/@children.2" label="//@children.9/@sourceConnections.1/@children.0" sourceEnd="//@children.9/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/PlotDetectorComposite->Standard::Call" source="//@children.9" target="//@children.5" targetEnd="//@children.9/@sourceConnections.1/@children.2" label="//@children.9/@sourceConnections.1/@children.0" sourceEnd="//@children.9/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate, Call»" size="122,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="108,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="78,29"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/PlotDetectorComposite-Standard::Instantiate->de.ptb.epics.eve.viewer/MathTableElement*de.ptb.epics.eve.viewer/PlotDetectorComposite-Soyatec::Import->de.ptb.epics.eve.viewer/MathTableElement" source="//@children.9" target="//@children.10" targetEnd="//@children.9/@sourceConnections.2/@children.2" label="//@children.9/@sourceConnections.2/@children.0" sourceEnd="//@children.9/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/PlotDetectorComposite->Standard::Instantiate" source="//@children.9" target="//@children.10" targetEnd="//@children.9/@sourceConnections.2/@children.2" label="//@children.9/@sourceConnections.2/@children.0" sourceEnd="//@children.9/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate»" size="97,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="187,20" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="0,9"/>
@@ -121,7 +121,7 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/MathTableElement-Standard::Call->de.ptb.epics.eve.viewer/MathFunction*de.ptb.epics.eve.viewer/MathTableElement-Soyatec::Access->de.ptb.epics.eve.viewer/MathFunction*de.ptb.epics.eve.viewer/MathTableElement-Soyatec::Import->de.ptb.epics.eve.viewer/MathFunction" source="//@children.10" target="//@children.40" targetEnd="//@children.10/@sourceConnections.0/@children.2" label="//@children.10/@sourceConnections.0/@children.0" sourceEnd="//@children.10/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/MathTableElement->Standard::Call" source="//@children.10" target="//@children.40" targetEnd="//@children.10/@sourceConnections.0/@children.2" label="//@children.10/@sourceConnections.0/@children.0" sourceEnd="//@children.10/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call, Access»" size="106,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="99,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="0,164"/>
@@ -209,7 +209,7 @@
       <children xsi:type="editmodel:AssociationEndEditModel" location="93,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="26,0"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/XMLFileDispatcher-Standard::Instantiate->de.ptb.epics.eve.viewer/PlotViewDispatcher*de.ptb.epics.eve.viewer/XMLFileDispatcher-Soyatec::Import->de.ptb.epics.eve.viewer/PlotViewDispatcher" source="//@children.13" target="//@children.17" targetEnd="//@children.13/@sourceConnections.1/@children.2" label="//@children.13/@sourceConnections.1/@children.0" sourceEnd="//@children.13/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/XMLFileDispatcher->Standard::Instantiate" source="//@children.13" target="//@children.17" targetEnd="//@children.13/@sourceConnections.1/@children.2" label="//@children.13/@sourceConnections.1/@children.0" sourceEnd="//@children.13/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate»" size="97,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="0,2" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="166,27"/>
@@ -231,7 +231,7 @@
       <children xsi:type="editmodel:AssociationEndEditModel" location="77,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="78,0"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/PlotDetectorComposite_bck-Standard::Call->de.ptb.epics.eve.viewer/EngineDataLabel*de.ptb.epics.eve.viewer/PlotDetectorComposite_bck-Standard::Instantiate->de.ptb.epics.eve.viewer/EngineDataLabel*de.ptb.epics.eve.viewer/PlotDetectorComposite_bck-Soyatec::Import->de.ptb.epics.eve.viewer/EngineDataLabel" source="//@children.15" target="//@children.19" targetEnd="//@children.15/@sourceConnections.1/@children.2" label="//@children.15/@sourceConnections.1/@children.0" sourceEnd="//@children.15/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/PlotDetectorComposite_bck->Standard::Call" source="//@children.15" target="//@children.19" targetEnd="//@children.15/@sourceConnections.1/@children.2" label="//@children.15/@sourceConnections.1/@children.0" sourceEnd="//@children.15/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate, Call»" size="122,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="98,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="86,29"/>
@@ -268,7 +268,7 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/PlotViewDispatcher-Standard::Call->de.ptb.epics.eve.viewer/PlotView*de.ptb.epics.eve.viewer/PlotViewDispatcher-Soyatec::Import->de.ptb.epics.eve.viewer/PlotView" source="//@children.17" target="//@children.23" targetEnd="//@children.17/@sourceConnections.0/@children.2" label="//@children.17/@sourceConnections.0/@children.0" sourceEnd="//@children.17/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/PlotViewDispatcher->Standard::Call" source="//@children.17" target="//@children.23" targetEnd="//@children.17/@sourceConnections.0/@children.2" label="//@children.17/@sourceConnections.0/@children.0" sourceEnd="//@children.17/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="0,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="70,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="63,29"/>
@@ -284,7 +284,7 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/DeviceOptionsLabelProvider-Standard::Call->de.ptb.epics.eve.viewer/OptionConnector*de.ptb.epics.eve.viewer/DeviceOptionsLabelProvider-Soyatec::Import->de.ptb.epics.eve.viewer/OptionConnector" source="//@children.18" target="//@children.21" targetEnd="//@children.18/@sourceConnections.0/@children.2" label="//@children.18/@sourceConnections.0/@children.0" sourceEnd="//@children.18/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/DeviceOptionsLabelProvider->Standard::Call" source="//@children.18" target="//@children.21" targetEnd="//@children.18/@sourceConnections.0/@children.2" label="//@children.18/@sourceConnections.0/@children.0" sourceEnd="//@children.18/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="67,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="87,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="96,0"/>
@@ -358,7 +358,7 @@
       <children xsi:type="editmodel:AssociationEndEditModel" location="38,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="112,0"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/MessagesContainer-Standard::Call->de.ptb.epics.eve.viewer/IMessagesContainerUpdateListener*de.ptb.epics.eve.viewer/MessagesContainer-Soyatec::Import->de.ptb.epics.eve.viewer/IMessagesContainerUpdateListener" source="//@children.22" target="//@children.6" targetEnd="//@children.22/@sourceConnections.1/@children.2" label="//@children.22/@sourceConnections.1/@children.0" sourceEnd="//@children.22/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/MessagesContainer->Standard::Call" source="//@children.22" target="//@children.6" targetEnd="//@children.22/@sourceConnections.1/@children.2" label="//@children.22/@sourceConnections.1/@children.0" sourceEnd="//@children.22/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="67,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="66,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="156,42"/>
@@ -374,19 +374,19 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/PlotView-Standard::Call->de.ptb.epics.eve.viewer/PlotDetectorComposite*de.ptb.epics.eve.viewer/PlotView-Standard::Instantiate->de.ptb.epics.eve.viewer/PlotDetectorComposite*de.ptb.epics.eve.viewer/PlotView-Soyatec::Import->de.ptb.epics.eve.viewer/PlotDetectorComposite" source="//@children.23" target="//@children.9" targetEnd="//@children.23/@sourceConnections.0/@children.2" label="//@children.23/@sourceConnections.0/@children.0" sourceEnd="//@children.23/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/PlotView->Standard::Call" source="//@children.23" target="//@children.9" targetEnd="//@children.23/@sourceConnections.0/@children.2" label="//@children.23/@sourceConnections.0/@children.0" sourceEnd="//@children.23/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate, Call»" size="0,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="99,16" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="0,13"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/PlotView-Standard::Call->de.ptb.epics.eve.viewer/plotGraphComposite*de.ptb.epics.eve.viewer/PlotView-Standard::Instantiate->de.ptb.epics.eve.viewer/plotGraphComposite*de.ptb.epics.eve.viewer/PlotView-Soyatec::Import->de.ptb.epics.eve.viewer/plotGraphComposite" source="//@children.23" target="//@children.35" targetEnd="//@children.23/@sourceConnections.1/@children.2" label="//@children.23/@sourceConnections.1/@children.0" sourceEnd="//@children.23/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/PlotView->Standard::Call" source="//@children.23" target="//@children.35" targetEnd="//@children.23/@sourceConnections.1/@children.2" label="//@children.23/@sourceConnections.1/@children.0" sourceEnd="//@children.23/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate, Call»" size="0,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="42,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="92,0"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.26/@sourceConnections.0 //@children.32/@sourceConnections.1 //@children.21/@sourceConnections.3 //@children.33/@sourceConnections.5 //@children.11/@sourceConnections.5 //@children.43/@sourceConnections.2" name="MessageTypes" location="1031,2878" size="134,142" id="de.ptb.epics.eve.viewer/MessageTypes" runTimeClassModel="ERROR%,DEBUG%,FATAL%,MINOR%,INFO%">
+  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.26/@sourceConnections.0 //@children.32/@sourceConnections.1 //@children.21/@sourceConnections.3 //@children.33/@sourceConnections.5 //@children.11/@sourceConnections.5 //@children.43/@sourceConnections.2" name="MessageTypes" location="1031,2878" size="134,142" id="de.ptb.epics.eve.viewer/MessageTypes" runTimeClassModel="DEBUG%,ERROR%,FATAL%,MINOR%,INFO%">
     <children xsi:type="editmodel:CompartmentEditModel" size="55,90">
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="DEBUG" id="de.ptb.epics.eve.viewer/MessageTypes#DEBUG%"/>
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="INFO" id="de.ptb.epics.eve.viewer/MessageTypes#INFO%"/>
@@ -400,12 +400,12 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/DeviceInspectorViewer-Standard::Call->de.ptb.epics.eve.viewer/CommonTableContentProvider*de.ptb.epics.eve.viewer/DeviceInspectorViewer-Standard::Instantiate->de.ptb.epics.eve.viewer/CommonTableContentProvider*de.ptb.epics.eve.viewer/DeviceInspectorViewer-Soyatec::Import->de.ptb.epics.eve.viewer/CommonTableContentProvider" source="//@children.25" target="//@children.44" targetEnd="//@children.25/@sourceConnections.0/@children.2" label="//@children.25/@sourceConnections.0/@children.0" sourceEnd="//@children.25/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/DeviceInspectorViewer->Standard::Call" source="//@children.25" target="//@children.44" targetEnd="//@children.25/@sourceConnections.0/@children.2" label="//@children.25/@sourceConnections.0/@children.0" sourceEnd="//@children.25/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate, Call»" size="122,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="111,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="101,29"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/DeviceInspectorViewer-Standard::Call->de.ptb.epics.eve.viewer/CommonTableElement*de.ptb.epics.eve.viewer/DeviceInspectorViewer-Standard::Instantiate->de.ptb.epics.eve.viewer/CommonTableElement*de.ptb.epics.eve.viewer/DeviceInspectorViewer-Soyatec::Import->de.ptb.epics.eve.viewer/CommonTableElement" source="//@children.25" target="//@children.37" targetEnd="//@children.25/@sourceConnections.1/@children.2" label="//@children.25/@sourceConnections.1/@children.0" sourceEnd="//@children.25/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/DeviceInspectorViewer->Standard::Call" source="//@children.25" target="//@children.37" targetEnd="//@children.25/@sourceConnections.1/@children.2" label="//@children.25/@sourceConnections.1/@children.0" sourceEnd="//@children.25/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate, Call»" size="122,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="107,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="81,0"/>
@@ -426,12 +426,12 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/ViewerMessage-Standard::Call->de.ptb.epics.eve.viewer/MessageTypes*de.ptb.epics.eve.viewer/ViewerMessage-Soyatec::Import->de.ptb.epics.eve.viewer/MessageTypes" source="//@children.26" target="//@children.24" targetEnd="//@children.26/@sourceConnections.0/@children.2" label="//@children.26/@sourceConnections.0/@children.0" sourceEnd="//@children.26/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/ViewerMessage->Standard::Call" source="//@children.26" target="//@children.24" targetEnd="//@children.26/@sourceConnections.0/@children.2" label="//@children.26/@sourceConnections.0/@children.0" sourceEnd="//@children.26/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="67,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="76,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="41,0"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/ViewerMessage-Standard::Call->de.ptb.epics.eve.viewer/MessageSource*de.ptb.epics.eve.viewer/ViewerMessage-Soyatec::Access->de.ptb.epics.eve.viewer/MessageSource*de.ptb.epics.eve.viewer/ViewerMessage-Soyatec::Import->de.ptb.epics.eve.viewer/MessageSource" source="//@children.26" target="//@children.7" targetEnd="//@children.26/@sourceConnections.1/@children.2" label="//@children.26/@sourceConnections.1/@children.0" sourceEnd="//@children.26/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/ViewerMessage->Standard::Call" source="//@children.26" target="//@children.7" targetEnd="//@children.26/@sourceConnections.1/@children.2" label="//@children.26/@sourceConnections.1/@children.0" sourceEnd="//@children.26/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call, Access»" size="106,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="57,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="142,114"/>
@@ -442,7 +442,7 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/DeviceOptionsModifier-Standard::Call->de.ptb.epics.eve.viewer/OptionConnector*de.ptb.epics.eve.viewer/DeviceOptionsModifier-Soyatec::Import->de.ptb.epics.eve.viewer/OptionConnector" source="//@children.27" target="//@children.21" targetEnd="//@children.27/@sourceConnections.0/@children.2" label="//@children.27/@sourceConnections.0/@children.0" sourceEnd="//@children.27/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/DeviceOptionsModifier->Standard::Call" source="//@children.27" target="//@children.21" targetEnd="//@children.27/@sourceConnections.0/@children.2" label="//@children.27/@sourceConnections.0/@children.0" sourceEnd="//@children.27/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="67,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="12,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="149,27"/>
@@ -480,27 +480,27 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/Activator-Standard::Instantiate->de.ptb.epics.eve.viewer/MessagesContainer*de.ptb.epics.eve.viewer/Activator-Soyatec::Import->de.ptb.epics.eve.viewer/MessagesContainer" source="//@children.30" target="//@children.22" targetEnd="//@children.30/@sourceConnections.0/@children.2" label="//@children.30/@sourceConnections.0/@children.0" sourceEnd="//@children.30/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/Activator->Standard::Instantiate" source="//@children.30" target="//@children.22" targetEnd="//@children.30/@sourceConnections.0/@children.2" label="//@children.30/@sourceConnections.0/@children.0" sourceEnd="//@children.30/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate»" size="97,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="40,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="91,0"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/Activator-Standard::Instantiate->de.ptb.epics.eve.viewer/EngineErrorReader*de.ptb.epics.eve.viewer/Activator-Soyatec::Import->de.ptb.epics.eve.viewer/EngineErrorReader" source="//@children.30" target="//@children.29" targetEnd="//@children.30/@sourceConnections.1/@children.2" label="//@children.30/@sourceConnections.1/@children.0" sourceEnd="//@children.30/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/Activator->Standard::Instantiate" source="//@children.30" target="//@children.29" targetEnd="//@children.30/@sourceConnections.1/@children.2" label="//@children.30/@sourceConnections.1/@children.0" sourceEnd="//@children.30/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate»" size="97,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="31,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="98,0"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/Activator-Standard::Instantiate->de.ptb.epics.eve.viewer/ChainStatusAnalyzer*de.ptb.epics.eve.viewer/Activator-Soyatec::Import->de.ptb.epics.eve.viewer/ChainStatusAnalyzer" source="//@children.30" target="//@children.41" targetEnd="//@children.30/@sourceConnections.2/@children.2" label="//@children.30/@sourceConnections.2/@children.0" sourceEnd="//@children.30/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/Activator->Standard::Instantiate" source="//@children.30" target="//@children.41" targetEnd="//@children.30/@sourceConnections.2/@children.2" label="//@children.30/@sourceConnections.2/@children.0" sourceEnd="//@children.30/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate»" size="97,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="76,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="62,0"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/Activator-Standard::Instantiate->de.ptb.epics.eve.viewer/RequestProcessor*de.ptb.epics.eve.viewer/Activator-Soyatec::Import->de.ptb.epics.eve.viewer/RequestProcessor" source="//@children.30" target="//@children.38" targetEnd="//@children.30/@sourceConnections.3/@children.2" label="//@children.30/@sourceConnections.3/@children.0" sourceEnd="//@children.30/@sourceConnections.3/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/Activator->Standard::Instantiate" source="//@children.30" target="//@children.38" targetEnd="//@children.30/@sourceConnections.3/@children.2" label="//@children.30/@sourceConnections.3/@children.0" sourceEnd="//@children.30/@sourceConnections.3/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate»" size="97,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="35,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="92,29"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/Activator-Standard::Instantiate->de.ptb.epics.eve.viewer/XMLFileDispatcher*de.ptb.epics.eve.viewer/Activator-Soyatec::Import->de.ptb.epics.eve.viewer/XMLFileDispatcher" source="//@children.30" target="//@children.13" targetEnd="//@children.30/@sourceConnections.4/@children.2" label="//@children.30/@sourceConnections.4/@children.0" sourceEnd="//@children.30/@sourceConnections.4/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/Activator->Standard::Instantiate" source="//@children.30" target="//@children.13" targetEnd="//@children.30/@sourceConnections.4/@children.2" label="//@children.30/@sourceConnections.4/@children.0" sourceEnd="//@children.30/@sourceConnections.4/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate»" size="97,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="46,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="113,29"/>
@@ -511,7 +511,7 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/DeviceOptionsContentProvider-Standard::Call->de.ptb.epics.eve.viewer/OptionConnector*de.ptb.epics.eve.viewer/DeviceOptionsContentProvider-Standard::Instantiate->de.ptb.epics.eve.viewer/OptionConnector*de.ptb.epics.eve.viewer/DeviceOptionsContentProvider-Soyatec::Import->de.ptb.epics.eve.viewer/OptionConnector" source="//@children.31" target="//@children.21" targetEnd="//@children.31/@sourceConnections.0/@children.2" label="//@children.31/@sourceConnections.0/@children.0" sourceEnd="//@children.31/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/DeviceOptionsContentProvider->Standard::Call" source="//@children.31" target="//@children.21" targetEnd="//@children.31/@sourceConnections.0/@children.2" label="//@children.31/@sourceConnections.0/@children.0" sourceEnd="//@children.31/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate, Call»" size="122,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="0,19" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="149,8"/>
@@ -522,7 +522,7 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/MessagesTableLabelProvider-Standard::Call->de.ptb.epics.eve.viewer/ViewerMessage*de.ptb.epics.eve.viewer/MessagesTableLabelProvider-Soyatec::Import->de.ptb.epics.eve.viewer/ViewerMessage" source="//@children.32" target="//@children.26" targetEnd="//@children.32/@sourceConnections.0/@children.2" label="//@children.32/@sourceConnections.0/@children.0" sourceEnd="//@children.32/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/MessagesTableLabelProvider->Standard::Call" source="//@children.32" target="//@children.26" targetEnd="//@children.32/@sourceConnections.0/@children.2" label="//@children.32/@sourceConnections.0/@children.0" sourceEnd="//@children.32/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="67,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="229,5" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="0,22"/>
@@ -595,7 +595,7 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/plotGraphComposite-Standard::Call->de.ptb.epics.eve.viewer/XYPlot*de.ptb.epics.eve.viewer/plotGraphComposite-Standard::Instantiate->de.ptb.epics.eve.viewer/XYPlot*de.ptb.epics.eve.viewer/plotGraphComposite-Soyatec::Import->de.ptb.epics.eve.viewer/XYPlot" source="//@children.35" target="//@children.42" targetEnd="//@children.35/@sourceConnections.0/@children.2" label="//@children.35/@sourceConnections.0/@children.0" sourceEnd="//@children.35/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/plotGraphComposite->Standard::Call" source="//@children.35" target="//@children.42" targetEnd="//@children.35/@sourceConnections.0/@children.2" label="//@children.35/@sourceConnections.0/@children.0" sourceEnd="//@children.35/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate, Call»" size="122,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="70,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="60,29"/>
@@ -611,7 +611,7 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/CommonTableElementEngineData-Standard::Call->de.ptb.epics.eve.viewer/CommonTableElement*de.ptb.epics.eve.viewer/CommonTableElementEngineData-Soyatec::Import->de.ptb.epics.eve.viewer/CommonTableElement" source="//@children.36" target="//@children.37" targetEnd="//@children.36/@sourceConnections.0/@children.2" label="//@children.36/@sourceConnections.0/@children.0" sourceEnd="//@children.36/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/CommonTableElementEngineData->Standard::Call" source="//@children.36" target="//@children.37" targetEnd="//@children.36/@sourceConnections.0/@children.2" label="//@children.36/@sourceConnections.0/@children.0" sourceEnd="//@children.36/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="67,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="212,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="6,29"/>
@@ -627,12 +627,12 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/CommonTableElement-Standard::Call->de.ptb.epics.eve.viewer/CommonTableElementPV*de.ptb.epics.eve.viewer/CommonTableElement-Standard::Instantiate->de.ptb.epics.eve.viewer/CommonTableElementPV*de.ptb.epics.eve.viewer/CommonTableElement-Soyatec::Import->de.ptb.epics.eve.viewer/CommonTableElementPV" source="//@children.37" target="//@children.45" targetEnd="//@children.37/@sourceConnections.0/@children.2" label="//@children.37/@sourceConnections.0/@children.0" sourceEnd="//@children.37/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/CommonTableElement->Standard::Call" source="//@children.37" target="//@children.45" targetEnd="//@children.37/@sourceConnections.0/@children.2" label="//@children.37/@sourceConnections.0/@children.0" sourceEnd="//@children.37/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate, Call»" size="122,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="92,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="64,0"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/CommonTableElement-Standard::Call->de.ptb.epics.eve.viewer/CommonTableElementEngineData*de.ptb.epics.eve.viewer/CommonTableElement-Standard::Instantiate->de.ptb.epics.eve.viewer/CommonTableElementEngineData*de.ptb.epics.eve.viewer/CommonTableElement-Soyatec::Import->de.ptb.epics.eve.viewer/CommonTableElementEngineData" source="//@children.37" target="//@children.36" targetEnd="//@children.37/@sourceConnections.1/@children.2" label="//@children.37/@sourceConnections.1/@children.0" sourceEnd="//@children.37/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/CommonTableElement->Standard::Call" source="//@children.37" target="//@children.36" targetEnd="//@children.37/@sourceConnections.1/@children.2" label="//@children.37/@sourceConnections.1/@children.0" sourceEnd="//@children.37/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate, Call»" size="122,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="26,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="232,0"/>
@@ -671,7 +671,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.9/@sourceConnections.0 //@children.10/@sourceConnections.0" name="MathFunction" location="2281,283" size="128,232" id="de.ptb.epics.eve.viewer/MathFunction" runTimeClassModel="UNKNOWN%,MAXIMUM%,MINIMUM%,CENTER%,EDGE%,SUM%,AVERAGE%,DEVIATION%,UNMODIFIED%,FWHM%">
+  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.9/@sourceConnections.0 //@children.10/@sourceConnections.0" name="MathFunction" location="2281,283" size="128,232" id="de.ptb.epics.eve.viewer/MathFunction" runTimeClassModel="UNKNOWN%,MINIMUM%,MAXIMUM%,CENTER%,EDGE%,AVERAGE%,SUM%,DEVIATION%,UNMODIFIED%,FWHM%">
     <children xsi:type="editmodel:CompartmentEditModel" size="83,180">
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="FWHM" id="de.ptb.epics.eve.viewer/MathFunction#FWHM%"/>
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MINIMUM" id="de.ptb.epics.eve.viewer/MathFunction#MINIMUM%"/>
@@ -690,7 +690,7 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/ChainStatusAnalyzer-Standard::Call->de.ptb.epics.eve.viewer/IUpdateListener*de.ptb.epics.eve.viewer/ChainStatusAnalyzer-Soyatec::Import->de.ptb.epics.eve.viewer/IUpdateListener" source="//@children.41" target="//@children.3" targetEnd="//@children.41/@sourceConnections.0/@children.2" label="//@children.41/@sourceConnections.0/@children.0" sourceEnd="//@children.41/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/ChainStatusAnalyzer->Standard::Call" source="//@children.41" target="//@children.3" targetEnd="//@children.41/@sourceConnections.0/@children.2" label="//@children.41/@sourceConnections.0/@children.0" sourceEnd="//@children.41/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="67,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="99,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="53,42"/>
@@ -712,7 +712,7 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider-Standard::Call->de.ptb.epics.eve.viewer/ViewerMessage*de.ptb.epics.eve.viewer/MessagesTableContentProvider-Soyatec::Import->de.ptb.epics.eve.viewer/ViewerMessage" source="//@children.43" target="//@children.26" targetEnd="//@children.43/@sourceConnections.0/@children.2" label="//@children.43/@sourceConnections.0/@children.0" sourceEnd="//@children.43/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider->Standard::Call" source="//@children.43" target="//@children.26" targetEnd="//@children.43/@sourceConnections.0/@children.2" label="//@children.43/@sourceConnections.0/@children.0" sourceEnd="//@children.43/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="67,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="142,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="51,0"/>
@@ -727,7 +727,7 @@
       <children xsi:type="editmodel:AssociationEndEditModel" location="135,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="2,0"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider-Standard::Call->de.ptb.epics.eve.viewer/MessagesContainer*de.ptb.epics.eve.viewer/MessagesTableContentProvider-Soyatec::Import->de.ptb.epics.eve.viewer/MessagesContainer" source="//@children.43" target="//@children.22" targetEnd="//@children.43/@sourceConnections.3/@children.2" label="//@children.43/@sourceConnections.3/@children.0" sourceEnd="//@children.43/@sourceConnections.3/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider->Standard::Call" source="//@children.43" target="//@children.22" targetEnd="//@children.43/@sourceConnections.3/@children.2" label="//@children.43/@sourceConnections.3/@children.0" sourceEnd="//@children.43/@sourceConnections.3/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="67,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="164,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="42,0"/>
@@ -743,7 +743,7 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/CommonTableContentProvider-Standard::Call->de.ptb.epics.eve.viewer/CommonTableElement*de.ptb.epics.eve.viewer/CommonTableContentProvider-Soyatec::Import->de.ptb.epics.eve.viewer/CommonTableElement" source="//@children.44" target="//@children.37" targetEnd="//@children.44/@sourceConnections.0/@children.2" label="//@children.44/@sourceConnections.0/@children.0" sourceEnd="//@children.44/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/CommonTableContentProvider->Standard::Call" source="//@children.44" target="//@children.37" targetEnd="//@children.44/@sourceConnections.0/@children.2" label="//@children.44/@sourceConnections.0/@children.0" sourceEnd="//@children.44/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="67,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="85,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="100,0"/>
@@ -754,7 +754,7 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/CommonTableElementPV-Standard::Call->de.ptb.epics.eve.viewer/CommonTableElement*de.ptb.epics.eve.viewer/CommonTableElementPV-Soyatec::Import->de.ptb.epics.eve.viewer/CommonTableElement" source="//@children.45" target="//@children.37" targetEnd="//@children.45/@sourceConnections.0/@children.2" label="//@children.45/@sourceConnections.0/@children.0" sourceEnd="//@children.45/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/CommonTableElementPV->Standard::Call" source="//@children.45" target="//@children.37" targetEnd="//@children.45/@sourceConnections.0/@children.2" label="//@children.45/@sourceConnections.0/@children.0" sourceEnd="//@children.45/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="67,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="84,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="112,29"/>
