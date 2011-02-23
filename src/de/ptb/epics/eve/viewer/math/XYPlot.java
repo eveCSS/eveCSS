@@ -1,12 +1,14 @@
-/**
+/* 
+ * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
+ * All rights reserved.
  * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
  */
-package de.ptb.epics.eve.viewer;
+package de.ptb.epics.eve.viewer.math;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
-import java.util.Stack;
 
 import org.csstudio.swt.xygraph.dataprovider.CircularBufferDataProvider;
 import org.csstudio.swt.xygraph.figures.Axis;
@@ -16,19 +18,21 @@ import org.csstudio.swt.xygraph.figures.XYGraph;
 import org.eclipse.draw2d.Figure;
 
 /**
- * @author eden
- *
+ * <code>XYPlot</code> is a plot based on the xygraph from csstudio.
+ * 
+ * @author Jens Eden
+ * @author Marcus Michalsky
  */
 public class XYPlot extends Figure {
 
-	/**
-	 * 
-	 */
 	private XYGraph xyGraph;
 	private ToolbarArmedXYGraph toolbarArmedXYGraph;
 	private HashMap<String, Trace> traceMap;
 	private ArrayList<Trace> traceList = new ArrayList<Trace>();
 	
+	/**
+	 * Constructs an <code>XYPlot</code>.
+	 */
 	public XYPlot() {
 
 		xyGraph = new XYGraph();	
@@ -39,13 +43,23 @@ public class XYPlot extends Figure {
 		traceMap = new HashMap<String, Trace>();
 
 		// add a trace for primaryYaxis
-		CircularBufferDataProvider dataProvider = new CircularBufferDataProvider(false);
-        dataProvider.setBufferSize(200);
-		Trace trace = new Trace("Y-Axis", xyGraph.primaryXAxis, xyGraph.primaryYAxis, dataProvider);
+		CircularBufferDataProvider dataProvider = 
+				new CircularBufferDataProvider(false);
+        // TODO here is the data limit of the plot
+		dataProvider.setBufferSize(200);
+        
+		Trace trace = new Trace("Y-Axis", xyGraph.primaryXAxis, 
+								xyGraph.primaryYAxis, dataProvider);
 		traceList.add(trace);
 
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @param name
+	 * @return
+	 */
 	public Trace getTrace(String name) {
 		if (name == null) return null;
 
@@ -56,10 +70,16 @@ public class XYPlot extends Figure {
 			return null;
 	}
 		
-	// TODO
-	// adding/removing axes/traces is not working in all cases  yet
-	// Note: xyGraph always needs at least one y axis as primary y axis
+	/**
+	 * 
+	 * 
+	 * @param name
+	 */
 	public void addTrace(String name) {
+		// TODO
+		// adding/removing axes/traces is not working in all cases  yet
+		// Note: xyGraph always needs at least one y axis as primary y axis
+		
 		if (name == null) return;
 		
 		Axis axis;
@@ -76,7 +96,8 @@ public class XYPlot extends Figure {
 		}
 		else {
 			// create a new axis / trace
-			CircularBufferDataProvider dataProvider = new CircularBufferDataProvider(false);
+			CircularBufferDataProvider dataProvider = 
+					new CircularBufferDataProvider(false);
 	        dataProvider.setBufferSize(200);
 			if (traceMap.isEmpty()){
 				axis = xyGraph.primaryYAxis;
@@ -92,9 +113,15 @@ public class XYPlot extends Figure {
 		xyGraph.addTrace(trace);
 		if (axis != xyGraph.primaryYAxis) xyGraph.addAxis(axis);
 		traceMap.put(name, trace);
-		if ((traceMap.size() > 1) && (traceMap.size() % 2) == 0) axis.setPrimarySide(false);
+		if ((traceMap.size() > 1) && (traceMap.size() % 2) == 0) 
+			axis.setPrimarySide(false);
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param name
+	 */
 	public void removeTrace(String name) {
 		if (name == null) return;
 		
@@ -110,16 +137,28 @@ public class XYPlot extends Figure {
 		}
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @param name
+	 * @param xValue
+	 * @param yValue
+	 */
 	public void setData(String name, Double xValue, Double yValue){
 		if ((name == null) || (xValue == null) ||  (yValue == null)) return;
 		
 		if (traceMap.containsKey(name)){
 			Trace trace = traceMap.get(name);
-			((CircularBufferDataProvider)trace.getDataProvider()).setCurrentXData(xValue);
-			((CircularBufferDataProvider)trace.getDataProvider()).setCurrentYData(yValue);
+			((CircularBufferDataProvider)trace.getDataProvider()).
+														setCurrentXData(xValue);
+			((CircularBufferDataProvider)trace.getDataProvider()).
+														setCurrentYData(yValue);
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public void removeAllTraces(){
 		ArrayList<String> allNames = new ArrayList<String>(traceMap.keySet());
 		for (String name : allNames) {
@@ -127,10 +166,18 @@ public class XYPlot extends Figure {
 		}
 	}
 	
+	/**
+	 * Sets the title of the x axis.
+	 * 
+	 * @param name the title the x axis should be set to
+	 */
 	public void setXAxisTitle(String name) {
 		xyGraph.primaryXAxis.setTitle(name);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void layout() {
 		toolbarArmedXYGraph.setBounds(bounds.getCopy().shrink(5, 5));

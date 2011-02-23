@@ -23,7 +23,7 @@ import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 import de.ptb.epics.eve.ecp1.intern.DataModifier;
 import de.ptb.epics.eve.ecp1.intern.DataType;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.XYPlot;
+import de.ptb.epics.eve.viewer.math.XYPlot;
 
 /**
  * <code>plotGraphComposite</code> contains the xy-plot and is located in the 

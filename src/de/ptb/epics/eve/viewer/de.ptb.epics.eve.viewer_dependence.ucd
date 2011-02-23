@@ -30,11 +30,11 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.9/@sourceConnections.1" name="MathTableContentProvider" location="1513,298" size="212,29" id="de.ptb.epics.eve.viewer/MathTableContentProvider" runTimeClassModel="">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.9/@sourceConnections.1" name="MathTableContentProvider" location="1513,298" size="212,29" id="de.ptb.epics.eve.viewer.math/MathTableContentProvider" runTimeClassModel="">
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/MathTableContentProvider-Soyatec::Import->de.ptb.epics.eve.viewer/MathTableElement" source="//@children.5" target="//@children.10" targetEnd="//@children.5/@sourceConnections.0/@children.2" label="//@children.5/@sourceConnections.0/@children.0" sourceEnd="//@children.5/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.math/MathTableContentProvider-Soyatec::Import->de.ptb.epics.eve.viewer.math/MathTableElement" source="//@children.5" target="//@children.10" targetEnd="//@children.5/@sourceConnections.0/@children.2" label="//@children.5/@sourceConnections.0/@children.0" sourceEnd="//@children.5/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="42,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="128,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="59,0"/>
@@ -52,7 +52,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.26/@sourceConnections.1 //@children.32/@sourceConnections.2 //@children.21/@sourceConnections.2 //@children.33/@sourceConnections.4 //@children.11/@sourceConnections.4 //@children.43/@sourceConnections.4" name="MessageSource" location="570,2685" size="142,376" id="de.ptb.epics.eve.viewer/MessageSource" runTimeClassModel="MHUB%,MFILTER%,SC_CHAIN%,CA_TRANS%,SMDEVICE%,CPARSER%,SCANMOD%,XMLPARSE%,NETWORK%,UNKNOWN%,VIEWER%,EVENT%,PLAYLIST%,STORAGE%,MANAGER%,MATH%,POSCALC%,LTIMER%">
+  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.26/@sourceConnections.1 //@children.32/@sourceConnections.2 //@children.21/@sourceConnections.2 //@children.33/@sourceConnections.4 //@children.11/@sourceConnections.4 //@children.43/@sourceConnections.4" name="MessageSource" location="570,2685" size="142,376" id="de.ptb.epics.eve.viewer/MessageSource" runTimeClassModel="MHUB%,MFILTER%,SC_CHAIN%,CA_TRANS%,SMDEVICE%,CPARSER%,SCANMOD%,XMLPARSE%,NETWORK%,UNKNOWN%,VIEWER%,EVENT%,PLAYLIST%,STORAGE%,MATH%,MANAGER%,POSCALC%,LTIMER%">
     <children xsi:type="editmodel:CompartmentEditModel" size="76,324">
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="UNKNOWN" id="de.ptb.epics.eve.viewer/MessageSource#UNKNOWN%"/>
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="SC_CHAIN" id="de.ptb.epics.eve.viewer/MessageSource#SC_CHAIN%"/>
@@ -95,7 +95,7 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/PlotDetectorComposite-Soyatec::Access->de.ptb.epics.eve.viewer/MathFunction" source="//@children.9" target="//@children.40" targetEnd="//@children.9/@sourceConnections.0/@children.2" label="//@children.9/@sourceConnections.0/@children.0" sourceEnd="//@children.9/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/PlotDetectorComposite-Soyatec::Access->de.ptb.epics.eve.viewer.math/MathFunction" source="//@children.9" target="//@children.40" targetEnd="//@children.9/@sourceConnections.0/@children.2" label="//@children.9/@sourceConnections.0/@children.0" sourceEnd="//@children.9/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Access»" size="45,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="152,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="0,131"/>
@@ -117,16 +117,16 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.9/@sourceConnections.2 //@children.5/@sourceConnections.0" name="MathTableElement" location="1980,598" size="161,29" id="de.ptb.epics.eve.viewer/MathTableElement" runTimeClassModel="">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.9/@sourceConnections.2 //@children.5/@sourceConnections.0" name="MathTableElement" location="1980,598" size="161,29" id="de.ptb.epics.eve.viewer.math/MathTableElement" runTimeClassModel="">
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/MathTableElement->Standard::Call" source="//@children.10" target="//@children.40" targetEnd="//@children.10/@sourceConnections.0/@children.2" label="//@children.10/@sourceConnections.0/@children.0" sourceEnd="//@children.10/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.math/MathTableElement->Standard::Call" source="//@children.10" target="//@children.40" targetEnd="//@children.10/@sourceConnections.0/@children.2" label="//@children.10/@sourceConnections.0/@children.0" sourceEnd="//@children.10/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call, Access»" size="106,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="99,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="0,164"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/MathTableElement-Standard::Call->de.ptb.epics.eve.viewer/Activator" source="//@children.10" target="//@children.30" targetEnd="//@children.10/@sourceConnections.1/@children.2" label="//@children.10/@sourceConnections.1/@children.0" sourceEnd="//@children.10/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.math/MathTableElement-Standard::Call->de.ptb.epics.eve.viewer/Activator" source="//@children.10" target="//@children.30" targetEnd="//@children.10/@sourceConnections.1/@children.2" label="//@children.10/@sourceConnections.1/@children.0" sourceEnd="//@children.10/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Call»" size="31,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="76,29" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="53,0"/>
@@ -386,7 +386,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.26/@sourceConnections.0 //@children.32/@sourceConnections.1 //@children.21/@sourceConnections.3 //@children.33/@sourceConnections.5 //@children.11/@sourceConnections.5 //@children.43/@sourceConnections.2" name="MessageTypes" location="1031,2878" size="134,142" id="de.ptb.epics.eve.viewer/MessageTypes" runTimeClassModel="DEBUG%,ERROR%,FATAL%,MINOR%,INFO%">
+  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.26/@sourceConnections.0 //@children.32/@sourceConnections.1 //@children.21/@sourceConnections.3 //@children.33/@sourceConnections.5 //@children.11/@sourceConnections.5 //@children.43/@sourceConnections.2" name="MessageTypes" location="1031,2878" size="134,142" id="de.ptb.epics.eve.viewer/MessageTypes" runTimeClassModel="ERROR%,DEBUG%,FATAL%,MINOR%,INFO%">
     <children xsi:type="editmodel:CompartmentEditModel" size="55,90">
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="DEBUG" id="de.ptb.epics.eve.viewer/MessageTypes#DEBUG%"/>
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="INFO" id="de.ptb.epics.eve.viewer/MessageTypes#INFO%"/>
@@ -671,18 +671,18 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.9/@sourceConnections.0 //@children.10/@sourceConnections.0" name="MathFunction" location="2281,283" size="128,232" id="de.ptb.epics.eve.viewer/MathFunction" runTimeClassModel="UNKNOWN%,MINIMUM%,MAXIMUM%,CENTER%,EDGE%,AVERAGE%,SUM%,DEVIATION%,UNMODIFIED%,FWHM%">
+  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.9/@sourceConnections.0 //@children.10/@sourceConnections.0" name="MathFunction" location="2281,283" size="128,232" id="de.ptb.epics.eve.viewer.math/MathFunction" runTimeClassModel="UNKNOWN%,MAXIMUM%,MINIMUM%,CENTER%,EDGE%,SUM%,AVERAGE%,DEVIATION%,UNMODIFIED%,FWHM%">
     <children xsi:type="editmodel:CompartmentEditModel" size="83,180">
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="FWHM" id="de.ptb.epics.eve.viewer/MathFunction#FWHM%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MINIMUM" id="de.ptb.epics.eve.viewer/MathFunction#MINIMUM%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MAXIMUM" id="de.ptb.epics.eve.viewer/MathFunction#MAXIMUM%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="UNMODIFIED" id="de.ptb.epics.eve.viewer/MathFunction#UNMODIFIED%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="UNKNOWN" id="de.ptb.epics.eve.viewer/MathFunction#UNKNOWN%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="EDGE" id="de.ptb.epics.eve.viewer/MathFunction#EDGE%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="AVERAGE" id="de.ptb.epics.eve.viewer/MathFunction#AVERAGE%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="SUM" id="de.ptb.epics.eve.viewer/MathFunction#SUM%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="DEVIATION" id="de.ptb.epics.eve.viewer/MathFunction#DEVIATION%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="CENTER" id="de.ptb.epics.eve.viewer/MathFunction#CENTER%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="FWHM" id="de.ptb.epics.eve.viewer.math/MathFunction#FWHM%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MINIMUM" id="de.ptb.epics.eve.viewer.math/MathFunction#MINIMUM%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MAXIMUM" id="de.ptb.epics.eve.viewer.math/MathFunction#MAXIMUM%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="UNMODIFIED" id="de.ptb.epics.eve.viewer.math/MathFunction#UNMODIFIED%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="UNKNOWN" id="de.ptb.epics.eve.viewer.math/MathFunction#UNKNOWN%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="EDGE" id="de.ptb.epics.eve.viewer.math/MathFunction#EDGE%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="AVERAGE" id="de.ptb.epics.eve.viewer.math/MathFunction#AVERAGE%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="SUM" id="de.ptb.epics.eve.viewer.math/MathFunction#SUM%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="DEVIATION" id="de.ptb.epics.eve.viewer.math/MathFunction#DEVIATION%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="CENTER" id="de.ptb.epics.eve.viewer.math/MathFunction#CENTER%"/>
     </children>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
@@ -702,7 +702,7 @@
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.35/@sourceConnections.0" name="XYPlot" location="607,734" size="84,29" id="de.ptb.epics.eve.viewer/XYPlot" runTimeClassModel="">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.35/@sourceConnections.0" name="XYPlot" location="607,734" size="84,29" id="de.ptb.epics.eve.viewer.math/XYPlot" runTimeClassModel="">
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <children xsi:type="editmodel:CompartmentEditModel"/>
