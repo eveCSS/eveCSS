@@ -59,6 +59,9 @@ public class MathTableElement implements IMeasurementDataListener {
 		this.motorPv = motorPv;
 		this.motorId = motorId;
 		this.detectorId = detectorId;
+		
+		// add the constructed math table element to the listener of the engine, 
+		// so that it is notified, when new data has arrived
 		Activator.getDefault().getEcp1Client().addMeasurementDataListener(this);
 	}
 
@@ -93,9 +96,20 @@ public class MathTableElement implements IMeasurementDataListener {
 	 * called by measurementDataTransmitted to convert the data
 	 */
 	private String convert(MeasurementData mData) {
+				
 		if (mData.getDataType() == DataType.DOUBLE || 
 			mData.getDataType() == DataType.FLOAT) 
 		{
+			for(int i=0;i<mData.getValues().size();i++)
+			{
+				System.out.print(mData.getName() + " : " + mData.getPositionCounter() + " : " + 
+						        this.mathFunction.toString() + " : ");
+				System.out.print(mData.getValues().get(i).toString());
+				System.out.print(", ");
+			}
+			System.out.println("");
+			System.out.println("");
+			
 			Double data = (Double) mData.getValues().get(0);
 			return 
 				new PrintfFormat(Locale.ENGLISH, "%12.4g").sprintf(data).trim();
