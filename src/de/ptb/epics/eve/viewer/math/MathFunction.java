@@ -76,7 +76,7 @@ public enum MathFunction {
 	public String toString() {
 		
 		switch (this) {
-			case UNMODIFIED:	return "Raw";
+			case UNMODIFIED:	return "Recent";
 			case MINIMUM:		return "Minimum";
 			case MAXIMUM:		return "Maximum";
 			case CENTER:		return "Center";

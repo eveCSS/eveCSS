@@ -24,7 +24,7 @@ import de.ptb.epics.eve.viewer.Activator;
  * @author Marcus Michalsky
  */
 public class MathTableElement implements IMeasurementDataListener {
-
+	
 	private String value;
 	private MathFunction mathFunction;
 	private String motorPv;
@@ -152,9 +152,6 @@ public class MathTableElement implements IMeasurementDataListener {
 	 * @return
 	 */
 	public String getName() {
-		if (mathFunction == MathFunction.UNMODIFIED)
-			return "";
-		else
 			return mathFunction.toString();
 	}
 
