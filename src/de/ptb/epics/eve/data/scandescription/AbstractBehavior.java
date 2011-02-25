@@ -29,22 +29,22 @@ public abstract class AbstractBehavior implements IModelUpdateListener,
 	/**
 	 * This list contains all listener for update of this model object.
 	 */
-	protected List< IModelUpdateListener > modelUpdateListener;
+	protected List<IModelUpdateListener> modelUpdateListener;
 	
 	/**
-	 * This constructor creates a new AbstractBehavior
+	 * Constructs an <code>AbstractBehavior</code>.
 	 */
 	public AbstractBehavior() {
-		this.modelUpdateListener = new ArrayList< IModelUpdateListener >();
+		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
 	}
 	
 	/**
-	 * This attribute holds the abstract device that is used for this behavior.
+	 * the abstract device that is used for this behavior
 	 */
 	protected AbstractDevice abstractDevice;
 
 	/**
-	 * Gives back the abstract device of this behavior.
+	 * Returns the abstract device of this behavior
 	 * 
 	 * @return An AbstractDevice.
 	 */
@@ -52,12 +52,10 @@ public abstract class AbstractBehavior implements IModelUpdateListener,
 		return abstractDevice;
 	}
 
-	// TODO Comment
 	/**
-	 *
-	 * @param modelUpdateEvent
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener#updateEvent(de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent)
+	 * {@inheritDoc}	
 	 */
+	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
 		final Iterator<IModelUpdateListener> it = 
 				this.modelUpdateListener.iterator();
@@ -65,26 +63,20 @@ public abstract class AbstractBehavior implements IModelUpdateListener,
 			it.next().updateEvent(new ModelUpdateEvent(this,modelUpdateEvent));
 		}	
 	}
-	
-	// TODO Comment
+
 	/**
-	 * 
-	 * @param modelUpdateListener
-	 * @return TRUE or FALSE 
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider#addModelUpdateListener(de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener)
+	 * {@inheritDoc} 
 	 */
+	@Override
 	public boolean addModelUpdateListener(
 				final IModelUpdateListener modelUpdateListener) {
 		return this.modelUpdateListener.add(modelUpdateListener);
 	}
 
-	// TODO Comment
 	/**
-	 * 
-	 * @param modelUpdateListener
-	 * @return TRUE or FALSE 
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider#removeModelUpdateListener(de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener)
+	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean removeModelUpdateListener(
 			final IModelUpdateListener modelUpdateListener) {
 		return this.modelUpdateListener.remove(modelUpdateListener);
