@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
  * All rights reserved.
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ */
 package de.ptb.epics.eve.editor.views;
 
 import java.util.Iterator;
@@ -41,9 +41,17 @@ import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.editor.Activator;
 
+/**
+ * <code>PlotWindowView</code> contains all configurations parts, corresponding 
+ * to plots.
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
 public class PlotWindowView extends ViewPart  {
 
-	public static final String ID = "de.ptb.epics.eve.editor.views.PlotWindowView";
+	public static final String ID = 
+			"de.ptb.epics.eve.editor.views.PlotWindowView";
 
 	private Composite top = null;
 	
@@ -77,17 +85,19 @@ public class PlotWindowView extends ViewPart  {
 	private Combo yAxis1NormalizeChannelComboBox = null;
 	private Label yAxis1NormalizeChannelErrorLabel = null;
 
-	private Label yAxis1ColorLabel = null;
-	private Combo yAxis1ColorComboBox = null;
-	private Label yAxis1ColorErrorLabel = null;
+	// TODO: Bug #53: remove all traces of Color, Linestyle and Markstyle
 	
-	private Label yAxis1LinestyleLabel = null;
-	private Combo yAxis1LinestyleComboBox = null;
-	private Label yAxis1LinestyleErrorLabel = null;
+	private Label yAxis1ColorLabel = null; 	/* deprecated, see Bug #53 */
+	private Combo yAxis1ColorComboBox = null; 	/* deprecated, see Bug #53 */
+	private Label yAxis1ColorErrorLabel = null;/* deprecated, see Bug #53 */
 	
-	private Label yAxis1MarkstyleLabel = null;
-	private Combo yAxis1MarkstyleComboBox = null;
-	private Label yAxis1MarkstyleErrorLabel = null;
+	private Label yAxis1LinestyleLabel = null;	 	/* deprecated, see Bug #53 */
+	private Combo yAxis1LinestyleComboBox = null; /* deprecated, see Bug #53 */
+	private Label yAxis1LinestyleErrorLabel = null;/* deprecated, see Bug #53 */
+	
+	private Label yAxis1MarkstyleLabel = null;		/* deprecated, see Bug #53 */
+	private Combo yAxis1MarkstyleComboBox = null;	/* deprecated, see Bug #53 */
+	private Label yAxis1MarkstyleErrorLabel = null;/* deprecated, see Bug #53 */
 	
 	private Label yAxis1ScaletypeLabel = null;
 	private Combo yAxis1ScaletypeComboBox = null;
@@ -101,17 +111,17 @@ public class PlotWindowView extends ViewPart  {
 	private Combo yAxis2NormalizeChannelComboBox = null;
 	private Label yAxis2NormalizeChannelErrorLabel = null;
 
-	private Label yAxis2ColorLabel = null;
-	private Combo yAxis2ColorComboBox = null;
-	private Label yAxis2ColorErrorLabel = null;
+	private Label yAxis2ColorLabel = null;			/* deprecated, see Bug #53 */
+	private Combo yAxis2ColorComboBox = null;		/* deprecated, see Bug #53 */
+	private Label yAxis2ColorErrorLabel = null;	/* deprecated, see Bug #53 */
 	
-	private Label yAxis2LinestyleLabel = null;
-	private Combo yAxis2LinestyleComboBox = null;
-	private Label yAxis2LinestyleErrorLabel = null;
+	private Label yAxis2LinestyleLabel = null;		/* deprecated, see Bug #53 */
+	private Combo yAxis2LinestyleComboBox = null;	/* deprecated, see Bug #53 */
+	private Label yAxis2LinestyleErrorLabel = null;/* deprecated, see Bug #53 */
 	
-	private Label yAxis2MarkstyleLabel = null;
-	private Combo yAxis2MarkstyleComboBox = null;
-	private Label yAxis2MarkstyleErrorLabel = null;
+	private Label yAxis2MarkstyleLabel = null;		/* deprecated, see Bug #53 */
+	private Combo yAxis2MarkstyleComboBox = null;	/* deprecated, see Bug #53 */
+	private Label yAxis2MarkstyleErrorLabel = null;/* deprecated, see Bug #53 */
 	
 	private Label yAxis2ScaletypeLabel = null;
 	private Combo yAxis2ScaletypeComboBox = null;
@@ -129,6 +139,9 @@ public class PlotWindowView extends ViewPart  {
 
 	private ScanModul scanModul;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void createPartControl( final Composite parent ) {
 		
@@ -343,15 +356,23 @@ public class PlotWindowView extends ViewPart  {
 						yAxis[0] = null;
 					}
 					yAxis1NormalizeChannelComboBox.setEnabled( false );
+					
+					/* deprecated, see Bug #53 */
 					yAxis1ColorComboBox.setEnabled( false );
 					yAxis1LinestyleComboBox.setEnabled( false );
 					yAxis1MarkstyleComboBox.setEnabled( false );
+					/* end of: deprecated, see Bug #53 */
+					
 					yAxis1ScaletypeComboBox.setEnabled( false );
 					
 					yAxis1NormalizeChannelComboBox.setText( "none" );
+					
+					/* deprecated, see Bug #53 */
 					yAxis1ColorComboBox.setText( "" );
 					yAxis1LinestyleComboBox.setText( "" );
 					yAxis1MarkstyleComboBox.setText( "" );
+					/* end of: deprecated, see Bug #53 */
+					
 					yAxis1ScaletypeComboBox.setText( "" );
 
 					if (yAxis[1] == null) {
@@ -794,6 +815,9 @@ public class PlotWindowView extends ViewPart  {
 		this.setEnabledForAll(false);
 	}
 
+	/*
+	 * called by createPartControl to enable all items
+	 */
 	private void setEnabledForAll( final boolean enabled ) {
 		this.plotWindowIDSpinner.setEnabled( enabled );
 		this.motorAxisComboBox.setEnabled( enabled );
@@ -815,36 +839,67 @@ public class PlotWindowView extends ViewPart  {
 		this.yAxis2ScaletypeComboBox.setEnabled( enabled );*/
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Combo getMotorAxisComboBox() {
 		return this.motorAxisComboBox;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Combo getyAxis1DetectorChannelComboBox() {
 		return this.yAxis1DetectorChannelComboBox;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Combo getyAxis2DetectorChannelComboBox() {
 		return this.yAxis2DetectorChannelComboBox;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Combo getyAxis1NormalizeChannelComboBox() {
 		return this.yAxis1NormalizeChannelComboBox;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Combo getyAxis2NormalizeChannelComboBox() {
 		return this.yAxis2NormalizeChannelComboBox;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public PlotWindow getPlotWindow() {
 		return this.plotWindow;
 	}
 	
+	/**
+	 * 
+	 * @param plotWindow
+	 */
 	public void setPlotWindow( final PlotWindow plotWindow ) {
 
 		if( this.plotWindow != null && plotWindow != null ) {
@@ -995,6 +1050,10 @@ public class PlotWindowView extends ViewPart  {
 		}
 	}
 
+	/**
+	 * 
+	 * @param scanModul
+	 */
 	public void setScanModul(ScanModul scanModul) {
 
 		if( scanModul != null ) {
@@ -1025,5 +1084,4 @@ public class PlotWindowView extends ViewPart  {
 		}
 		this.scanModul = scanModul;
 	}
-
 }
