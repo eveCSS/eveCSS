@@ -56,6 +56,9 @@ public class Activator extends AbstractUIPlugin {
 	private RequestProcessor requestProcessor;
 
 //	private final GraphView graphView;
+
+	private final TestListener xmlFileListener;
+	
 	
 	/**
 	 * The constructor
@@ -69,7 +72,7 @@ public class Activator extends AbstractUIPlugin {
 		this.chainStatusAnalyzer = new ChainStatusAnalyzer();
 		// this.measurementDataDispatcher = new MeasurementDataDispatcher();
 		this.ecp1Client.getPlayListController().addNewXMLFileListener( this.xmlFileDispatcher );
-		// this.ecp1Client.addMeasurementDataListener( measurementDataDispatcher );
+		// this.ecp1Client.addMeasurementDataListener( this.measurementDataDispatcher );
 		this.ecp1Client.addErrorListener( this.engineErrorReader );
 		this.ecp1Client.addEngineStatusListener( this.chainStatusAnalyzer );
 		this.ecp1Client.addChainStatusListener( this.chainStatusAnalyzer );
@@ -78,6 +81,9 @@ public class Activator extends AbstractUIPlugin {
 		this.requestProcessor = new RequestProcessor( Display.getCurrent() );
 		this.ecp1Client.addRequestListener( this.requestProcessor );
 
+		this.xmlFileListener = new TestListener();
+//		this.ecp1Client.getPlayListController().addNewXMLFileListener(xmlFileListener);
+		
 	}
 
 	/*

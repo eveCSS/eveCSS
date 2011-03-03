@@ -32,8 +32,12 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -45,6 +49,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -55,7 +60,10 @@ import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
+import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
+import de.ptb.epics.eve.ecp1.client.ECP1Client;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.client.model.PlayListEntry;
@@ -89,6 +97,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 	private Text filenameText;
 
 	private Table statusTable;
+	private Shell shellTable[] = new Shell[10];
 	
 	/**
 	 * {@inheritDoc}
@@ -256,7 +265,6 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		this.filenameText.setLayoutData( gridData );
 
 		// Tabelle für die Statuswerte erzeugen
-		
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
@@ -278,8 +286,11 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		tableColumn2.setWidth(80);
 		tableColumn2.setText("Status");
 		TableColumn tableColumn3 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn3.setWidth(100);
+		tableColumn3.setWidth(120);
 		tableColumn3.setText("remaining Time");
+
+		// SelectionListener um zu erkennen, wann eine Zeile selektiert wird
+		this.statusTable.addSelectionListener(new StatusTableSelectionListener());
 
 		Activator.getDefault().getChainStatusAnalyzer().addUpdateLisner( this );
 		this.rebuildText(0);
@@ -310,10 +321,10 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 	
 	public void fillStatusTable(final int chainId, final int scanModuleId, final String statString, final int remainTime) {
 		// Wenn die scanModuleId -1 ist, wird eine Zeile geändert in der nur die chainId eingetragen ist
-		
+
 		this.statusTable.getDisplay().syncExec( new Runnable() {
 			public void run() {
-
+				
 				final TableItem[] rows = statusTable.getItems();
 				boolean neu = true;
 				for ( int i=0; i<rows.length; i++) {
@@ -343,6 +354,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 				if (neu) {
 					// neuer Tabelleneintrag muß gemacht werden
 					TableItem tableItem = new TableItem( statusTable, 0 );
+
 					tableItem.setText( 0, " "+chainId);
 					if (scanModuleId == -1) {
 						tableItem.setText( 1, " ");
@@ -373,7 +385,6 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 					});
 				}
 				
-				
 				if( Activator.getDefault().getChainStatusAnalyzer().getRunningChains().contains( currentChain ) ) {
 					fillStatusTable(currentChain.getId(), -1, "running", remainTime);
 
@@ -399,7 +410,6 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 						fillStatusTable(currentChain.getId(), scanModule.getId(), "exited", remainTime);
 					}
 				}
-			
 
 				final List< ScanModul > initialized = Activator.getDefault().getChainStatusAnalyzer().getInitializingScanModules();
 				for( final ScanModul scanModule : initialized ) {
@@ -407,7 +417,6 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 						fillStatusTable(currentChain.getId(), scanModule.getId(), "initialized", remainTime);
 					}
 				}
-			
 			
 				final List< ScanModul > paused = Activator.getDefault().getChainStatusAnalyzer().getPausedScanModules();
 				for( final ScanModul scanModule : paused ) {
@@ -424,7 +433,6 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 				}
 			}
 		}
-		
 	}
 
 	@Override
@@ -452,7 +460,6 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 				}
 			}
 		});
-		
 	}
 
 	public void setLoadedScmlFile(final String filename) {
@@ -471,13 +478,13 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 			case IDLE_NO_XML_LOADED:
 				this.playButton.getDisplay().syncExec( new Runnable() {
 					public void run() {
-						playButton.setEnabled(false);
-						pauseButton.setEnabled(false);
-						stopButton.setEnabled(false);
-						skipButton.setEnabled(false);
-						haltButton.setEnabled(false);
-						killButton.setEnabled(false);
-						triggerButton.setEnabled(false);
+//						playButton.setEnabled(false);
+//						pauseButton.setEnabled(false);
+//						stopButton.setEnabled(false);
+//						skipButton.setEnabled(false);
+//						haltButton.setEnabled(false);
+//						killButton.setEnabled(false);
+//						triggerButton.setEnabled(false);
 					}
 				});
 				break;
@@ -485,19 +492,26 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 				this.playButton.getDisplay().syncExec( new Runnable() {
 					public void run() {
 						playButton.setEnabled(true);
-						pauseButton.setEnabled(false);
+//						pauseButton.setEnabled(false);
+						// alte Info-Fenster des letzten XML-Files werden gelöscht
+						for ( int j=0; j<10; j++) {
+							if (shellTable[j] != null) {
+								if (!shellTable[j].isDisposed())
+									shellTable[j].dispose();
+							}
+						}
 					}
 				});
 				break;
 			case EXECUTING:
 				this.playButton.getDisplay().syncExec( new Runnable() {
 					public void run() {
-						playButton.setEnabled(false);
+//						playButton.setEnabled(false);
 						pauseButton.setEnabled(true);
-						stopButton.setEnabled(true);
-						skipButton.setEnabled(true);
-						haltButton.setEnabled(true);
-						killButton.setEnabled(true);
+//						stopButton.setEnabled(true);
+//						skipButton.setEnabled(true);
+//						haltButton.setEnabled(true);
+//						killButton.setEnabled(true);
 					}
 				});
 				break;
@@ -505,7 +519,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 				this.playButton.getDisplay().syncExec( new Runnable() {
 					public void run() {
 						playButton.setEnabled(true);
-						pauseButton.setEnabled(false);
+//						pauseButton.setEnabled(false);
 					}
 				});
 				break;
@@ -513,7 +527,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 				this.playButton.getDisplay().syncExec( new Runnable() {
 					public void run() {
 						playButton.setEnabled(true);
-						pauseButton.setEnabled(false);
+//						pauseButton.setEnabled(false);
 					}
 				});
 				break;
@@ -521,13 +535,16 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 				this.playButton.getDisplay().syncExec( new Runnable() {
 					public void run() {
 						playButton.setEnabled(true);
-						pauseButton.setEnabled(false);
+//						pauseButton.setEnabled(false);
 					}
 				});
 				break;
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setAutoPlayStatus(final boolean autoPlayStatus) {
 		this.autoPlayOnButton.getDisplay().syncExec( new Runnable() {
@@ -544,4 +561,299 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		
 	}
 
+	// Wenn eine Zeile in der Tabelle der Chains und ScanModule angeklickt wird,
+	// öffnet sich ein separates Fenster in dem die Detail der Chain/SM zu sehen sind
+	// Beim nochmaligen anklicken wird das Fenster wieder entfernt.
+	
+	/**
+	 * 
+	 * @author scherr
+	 *
+	 */
+	class StatusTableSelectionListener implements SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			// TODO Auto-generated method stub
+			// für die selektierte Zeile wird ein Info-Fenster angezeigt
+			// mit den Details der Chain oder des ScanModuls
+			int selection = statusTable.getSelectionIndex();
+			
+			// Überprüfen, ob Info schon da ist oder nicht.
+			// Wenn ja, Info wieder wegnehmen.
+			if (shellTable[selection] != null) {
+				// Info ist vorhanden, da shellTable gesetzt
+
+				// Wenn Info-Fenster wirklich nicht gelöscht wurde, wird es jetzt
+				// gelöscht, ansonsten wird das Info-Fenster geöffnet
+				if (!shellTable[selection].isDisposed()) {
+					shellTable[selection].dispose();
+					shellTable[selection] = null;
+					return;
+				}
+			}
+			
+			final TableItem[] rows = statusTable.getItems();
+
+			int aktChain = Integer.parseInt(rows[selection].getText(0).trim());
+			int aktSM;
+			if (rows[selection].getText(1).trim().equals("")) {
+				aktSM = 0;
+			}
+			else {
+				aktSM = Integer.parseInt(rows[selection].getText(1).trim());
+			}
+
+			Chain displayChain = Activator.getDefault().getCurrentScanDescription().getChain(aktChain);
+		
+			if (aktSM > 0) {
+				// ScanModule Zeile wurde ausgewählt, ScanModule Infos anzeigen
+
+				Display display = Activator.getDefault().getWorkbench().getDisplay();
+				Shell chainShell = new Shell(display);
+				chainShell.setSize(500,400);
+				chainShell.setText("Scan Module Info");
+				
+				GridLayout gridLayout = new GridLayout();
+				gridLayout.numColumns = 2;
+				GridData gridData;
+
+				chainShell.setLayout(gridLayout);
+
+				Label chainLabel = new Label(chainShell,SWT.NONE);
+				chainLabel.setText("Chain ID:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				chainLabel.setLayoutData(gridData);
+				Label chainText = new Label(chainShell,SWT.NONE);
+				chainText.setText(rows[selection].getText(0));
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				chainText.setLayoutData(gridData);
+
+				Label smLabel = new Label(chainShell,SWT.NONE);
+				smLabel.setText("Scan Module ID:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				smLabel.setLayoutData(gridData);
+				Label smText = new Label(chainShell,SWT.NONE);
+				smText.setText(rows[selection].getText(1));
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				smText.setLayoutData(gridData);
+				
+				Label trigDelLabel = new Label(chainShell,SWT.NONE);
+				trigDelLabel.setText("Trigger delay:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				trigDelLabel.setLayoutData(gridData);
+				Label trigDelText = new Label(chainShell,SWT.NONE);
+				trigDelText.setText(""+displayChain.getScanModulById(aktSM).getTriggerdelay());
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				trigDelText.setLayoutData(gridData);
+
+				Label settleLabel = new Label(chainShell,SWT.NONE);
+				settleLabel.setText("Settletime:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				settleLabel.setLayoutData(gridData);
+				Label settleText = new Label(chainShell,SWT.NONE);
+				settleText.setText(""+displayChain.getScanModulById(aktSM).getSettletime());
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				settleText.setLayoutData(gridData);
+
+				Label confLabel = new Label(chainShell,SWT.NONE);
+				confLabel.setText("Confirm Trigger:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				confLabel.setLayoutData(gridData);
+				Label confText = new Label(chainShell,SWT.NONE);
+				if (displayChain.getScanModulById(aktSM).isTriggerconfirm()) {
+					confText.setText(" YES ");
+				}
+				else {
+					confText.setText(" NO ");
+				}
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				confText.setLayoutData(gridData);
+
+				Label saveMotLabel = new Label(chainShell,SWT.NONE);
+				saveMotLabel.setText("Save all motorpositions:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				saveMotLabel.setLayoutData(gridData);
+				Label saveMotText = new Label(chainShell,SWT.NONE);
+				saveMotText.setText(displayChain.getScanModulById(aktSM).getSaveAxisPositions().toString());
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				saveMotText.setLayoutData(gridData);
+				
+				// Tabelle für die Motor Axes erzeugen
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				gridData.verticalAlignment = GridData.FILL;
+				gridData.horizontalSpan = 2;
+				gridData.grabExcessHorizontalSpace = true;
+				gridData.grabExcessVerticalSpace = true;
+			    
+			    Table motTable = new Table(chainShell, SWT.NONE);
+			    motTable.setHeaderVisible(true);
+			    motTable.setLinesVisible(true);
+			    motTable.setLayoutData(gridData);
+				TableColumn motColumn = new TableColumn(motTable, SWT.NONE);
+				motColumn.setWidth(250);
+				motColumn.setText("Motor Axis");
+				TableColumn motColumn1 = new TableColumn(motTable, SWT.NONE);
+				motColumn1.setWidth(100);
+				motColumn1.setText("Start");
+				TableColumn motColumn2 = new TableColumn(motTable, SWT.NONE);
+				motColumn2.setWidth(100);
+				motColumn2.setText("Stop");
+				TableColumn motColumn3 = new TableColumn(motTable, SWT.NONE);
+				motColumn3.setWidth(100);
+				motColumn3.setText("Stepwidth");
+
+				Axis[] axis = displayChain.getScanModulById(aktSM).getAxis();
+				for (int i=0; i<axis.length; i++) {
+					// Neuer Tabelleneintrag muß gemacht werden
+					TableItem tableItem = new TableItem( motTable, 0 );
+					tableItem.setText( 0, axis[i].getAbstractDevice().getFullIdentifyer());
+					tableItem.setText( 1, axis[i].getStart());
+					tableItem.setText( 2, axis[i].getStop());
+					tableItem.setText( 3, axis[i].getStepwidth());
+				}
+
+				// Tabelle für die Detector Channels erzeugen
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				gridData.verticalAlignment = GridData.FILL;
+				gridData.horizontalSpan = 2;
+				gridData.grabExcessHorizontalSpace = true;
+				gridData.grabExcessVerticalSpace = true;
+			    
+			    Table detTable = new Table(chainShell, SWT.NONE);
+			    detTable.setHeaderVisible(true);
+			    detTable.setLinesVisible(true);
+			    detTable.setLayoutData(gridData);
+				TableColumn detColumn = new TableColumn(detTable, SWT.NONE);
+				detColumn.setWidth(250);
+				detColumn.setText("Detector Channel");
+				TableColumn detColumn1 = new TableColumn(detTable, SWT.NONE);
+				detColumn1.setWidth(100);
+				detColumn1.setText("Average");
+
+				Channel[] channels = displayChain.getScanModulById(aktSM).getChannels();
+				for (int i=0; i<channels.length; i++) {
+					// Neuer Tabelleneintrag muß gemacht werden
+					TableItem tableItem = new TableItem( detTable, 0 );
+					tableItem.setText( 0, channels[i].getAbstractDevice().getFullIdentifyer());
+					tableItem.setText( 1, "" + channels[i].getAverageCount());
+				}
+				
+				chainShell.open();
+				shellTable[selection] = chainShell;
+			}
+			else {
+				// Chain Infos anzeigen
+				Display display = Activator.getDefault().getWorkbench().getDisplay();
+				Shell chainShell = new Shell(display);
+				chainShell.setSize(500,200);
+				chainShell.setText("Chain Info");
+				
+				GridLayout gridLayout = new GridLayout();
+				gridLayout.numColumns = 2;
+				GridData gridData;
+
+				chainShell.setLayout(gridLayout);
+
+				Label chainLabel = new Label(chainShell,SWT.NONE);
+				chainLabel.setText("Chain ID:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				chainLabel.setLayoutData(gridData);
+				Label chainText = new Label(chainShell,SWT.NONE);
+				chainText.setText(rows[selection].getText(0));
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				chainText.setLayoutData(gridData);
+				
+				Label descLabel = new Label(chainShell,SWT.NONE);
+				descLabel.setText("Save Scan-Description:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				descLabel.setLayoutData(gridData);
+				Label descText = new Label(chainShell,SWT.NONE);
+				if (displayChain.isSaveScanDescription()) {
+					descText.setText(" YES ");
+				}
+				else {
+					descText.setText(" NO ");
+				}
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				descText.setLayoutData(gridData);
+
+				Label confLabel = new Label(chainShell,SWT.NONE);
+				confLabel.setText("Confirm Save:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				confLabel.setLayoutData(gridData);
+				Label confText = new Label(chainShell,SWT.NONE);
+				if (displayChain.isConfirmSave()) {
+					confText.setText(" YES ");
+				}
+				else {
+					confText.setText(" NO ");
+				}
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				confText.setLayoutData(gridData);
+
+				Label autoincrLabel = new Label(chainShell,SWT.NONE);
+				autoincrLabel.setText("Add Autoincrementing Number to Filename:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				autoincrLabel.setLayoutData(gridData);
+				Label autoincrText = new Label(chainShell,SWT.NONE);
+				if (displayChain.isAutoNumber()) {
+					autoincrText.setText(" YES ");
+				}
+				else {
+					autoincrText.setText(" NO ");
+				}
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				autoincrText.setLayoutData(gridData);
+
+				Label commentLabel = new Label(chainShell,SWT.NONE);
+				commentLabel.setText("Comment:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				commentLabel.setLayoutData(gridData);
+				Label commentText = new Label(chainShell,SWT.NONE);
+				commentText.setText(displayChain.getComment());
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				commentText.setLayoutData(gridData);
+				
+				chainShell.open();
+				shellTable[selection] = chainShell;
+			}
+		}
+	}
 }
