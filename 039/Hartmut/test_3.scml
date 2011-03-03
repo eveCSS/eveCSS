@@ -7,20 +7,22 @@
         <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/039/Hartmut/hartmuts_test.h5</savefilename>
         <confirmsave>false</confirmsave>
         <autonumber>true</autonumber>
-        <savescandescription>false</savescandescription>
+        <savescandescription>true</savescandescription>
         <saveplugin name="HDF5">
             <parameter name="location">/messung/eve/lib/linux-x86/libhdf5plugin.so</parameter>
             <parameter name="format">HDF5</parameter>
             <parameter name="suffix">h5</parameter>
         </saveplugin>
+        <redoevent type="detector">
+            <id>D-1-1-ringCurrent1chan1</id>
+        </redoevent>
         <scanmodules>
             <scanmodule id="1">
                 <type>classic</type>
                 <name>SM 1</name>
-                <xpos>101</xpos>
-                <ypos>20</ypos>
+                <xpos>90</xpos>
+                <ypos>25</ypos>
                 <parent>0</parent>
-                <appended>2</appended>
                 <settletime>0.0</settletime>
                 <triggerdelay>0.0</triggerdelay>
                 <triggerconfirm>false</triggerconfirm>
@@ -29,104 +31,33 @@
                     <axisid>PPSMC:gw23715000</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="double">10.0</start>
-                    <stop type="double">16.0</stop>
-                    <stepwidth type="double">0.1</stepwidth>
-                    <ismainaxis>false</ismainaxis>
-                </smaxis>
-                <smchannel>
-                    <channelid>ringCurrent1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <smchannel>
-                    <channelid>ringLifeTime1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <plot id="1">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>true</init>
-                    <yaxis>
-                        <id>ringCurrent1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>solid</linestyle>
-                        <color>blue</color>
-                        <markstyle>star</markstyle>
-                    </yaxis>
-                </plot>
-            </scanmodule>
-            <scanmodule id="2">
-                <type>classic</type>
-                <name>SM 2 append</name>
-                <xpos>224</xpos>
-                <ypos>24</ypos>
-                <parent>1</parent>
-                <appended>3</appended>
-                <settletime>0.0</settletime>
-                <triggerdelay>0.0</triggerdelay>
-                <triggerconfirm>false</triggerconfirm>
-                <saveaxispositions>never</saveaxispositions>
-                <smaxis>
-                    <axisid>PPSMC:gw23715000</axisid>
-                    <stepfunction>Add</stepfunction>
-                    <positionmode>absolute</positionmode>
-                    <start type="double">12.0</start>
+                    <start type="double">5.0</start>
                     <stop type="double">20.0</stop>
-                    <stepwidth type="double">0.10</stepwidth>
+                    <stepwidth type="double">0.40</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smchannel>
                     <channelid>ringCurrent1chan1</channelid>
                     <confirmtrigger>false</confirmtrigger>
+                    <sendreadyevent>true</sendreadyevent>
                 </smchannel>
                 <smchannel>
                     <channelid>ringLifeTime1chan1</channelid>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
-                <plot id="1">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>true</init>
-                    <yaxis>
-                        <id>ringLifeTime1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>solid</linestyle>
-                        <color>blue</color>
-                        <markstyle>star</markstyle>
-                    </yaxis>
-                </plot>
-            </scanmodule>
-            <scanmodule id="3">
-                <type>classic</type>
-                <name>SM 3 append</name>
-                <xpos>336</xpos>
-                <ypos>34</ypos>
-                <parent>2</parent>
-                <settletime>0.0</settletime>
-                <triggerdelay>0.0</triggerdelay>
-                <triggerconfirm>false</triggerconfirm>
-                <saveaxispositions>never</saveaxispositions>
-                <smaxis>
-                    <axisid>PPSMC:gw23715000</axisid>
-                    <stepfunction>Add</stepfunction>
-                    <positionmode>absolute</positionmode>
-                    <start type="double">11.0</start>
-                    <stop type="double">18.0</stop>
-                    <stepwidth type="double">0.10</stepwidth>
-                    <ismainaxis>false</ismainaxis>
-                </smaxis>
-                <smchannel>
-                    <channelid>ringCurrent1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <smchannel>
-                    <channelid>ringLifeTime1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
+                <postscan>
+                    <id>PPSMC:gw23715001</id>
+                    <value type="double">34</value>
+                </postscan>
+                <positioning>
+                    <axis_id>PPSMC:gw23715000</axis_id>
+                    <channel_id>ringCurrent1chan1</channel_id>
+                    <normalize_id>ringLifeTime1chan1</normalize_id>
+                    <plugin name="GOTO-Center">
+                        <parameter name="location">/path/to/plugin3</parameter>
+                        <parameter name="direction">positive</parameter>
+                    </plugin>
+                </positioning>
                 <plot id="1">
                     <xaxis>
                         <id>PPSMC:gw23715000</id>

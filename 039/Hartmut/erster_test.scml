@@ -3,9 +3,10 @@
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <version>0.3.9</version>
     <chain id="1">
-        <comment>falsches proc feld</comment>
+        <comment>Comment 3</comment>
+        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/039/Hartmut/hartmuts_erstser_test0003.h5</savefilename>
         <confirmsave>false</confirmsave>
-        <autonumber>false</autonumber>
+        <autonumber>true</autonumber>
         <savescandescription>false</savescandescription>
         <saveplugin name="HDF5">
             <parameter name="location">/messung/eve/lib/linux-x86/libhdf5plugin.so</parameter>
@@ -16,9 +17,66 @@
             <scanmodule id="1">
                 <type>classic</type>
                 <name>sm3</name>
-                <xpos>116</xpos>
-                <ypos>62</ypos>
+                <xpos>137</xpos>
+                <ypos>37</ypos>
                 <parent>0</parent>
+                <appended>2</appended>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <prescan>
+                    <id>P5000:gw23707function</id>
+                    <value type="string">ACVolts</value>
+                </prescan>
+                <smaxis>
+                    <axisid>PPSMC:gw23715000</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">25.0</start>
+                    <stop type="double">8.0</stop>
+                    <stepwidth type="double">-1</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smaxis>
+                    <axisid>PPSMC:gw23715001</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">5.0</start>
+                    <stop type="double">20.0</stop>
+                    <stepwidth type="double">1</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent1chan1</channelid>
+                    <averagecount>100</averagecount>
+                    <maxdeviation>0.001</maxdeviation>
+                    <minimum>247.0</minimum>
+                    <maxattempts>15</maxattempts>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <plot id="1">
+                    <xaxis>
+                        <id>PPSMC:gw23715000</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent1chan1</id>
+                        <mode>linear</mode>
+                        <linestyle>solid</linestyle>
+                        <color>blue</color>
+                        <markstyle>star</markstyle>
+                    </yaxis>
+                </plot>
+            </scanmodule>
+            <scanmodule id="2">
+                <type>classic</type>
+                <name>SM 2 append</name>
+                <xpos>248</xpos>
+                <ypos>38</ypos>
+                <parent>1</parent>
+                <appended>3</appended>
                 <settletime>0.0</settletime>
                 <triggerdelay>0.0</triggerdelay>
                 <triggerconfirm>false</triggerconfirm>
@@ -27,26 +85,51 @@
                     <axisid>PPSMC:gw23715000</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="double">5.0</start>
-                    <stop type="double">80.0</stop>
+                    <start type="double">50.0</start>
+                    <stop type="double">60.0</stop>
                     <stepwidth type="double">1</stepwidth>
-                    <ismainaxis>false</ismainaxis>
-                </smaxis>
-                <smaxis>
-                    <axisid>PPSMC:gw23715001</axisid>
-                    <stepfunction>Add</stepfunction>
-                    <positionmode>absolute</positionmode>
-                    <start type="double">10.0</start>
-                    <stop type="double">20.0</stop>
-                    <stepwidth type="double">0.4</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smchannel>
                     <channelid>ringCurrent1chan1</channelid>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
+                <plot id="1">
+                    <xaxis>
+                        <id>PPSMC:gw23715000</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent1chan1</id>
+                        <mode>linear</mode>
+                        <linestyle>solid</linestyle>
+                        <color>blue</color>
+                        <markstyle>star</markstyle>
+                    </yaxis>
+                </plot>
+            </scanmodule>
+            <scanmodule id="3">
+                <type>classic</type>
+                <name>SM 3 append</name>
+                <xpos>379</xpos>
+                <ypos>39</ypos>
+                <parent>2</parent>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>PPSMC:gw23715000</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">30.0</start>
+                    <stop type="double">20.0</stop>
+                    <stepwidth type="double">-1</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
                 <smchannel>
-                    <channelid>P5000:gw2370701</channelid>
+                    <channelid>ringCurrent1chan1</channelid>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
                 <plot id="1">
@@ -242,10 +325,10 @@
                 <name>UE56_2shift</name>
                 <id>UE56ID3R:SBasePmGapchan1</id>
                 <read>
-                    <access method="GETCB" type="double" transport="ca">UE56ID3R:SBasePmGap.A</access>
+                    <access method="GETPUTCB" type="double" transport="ca">UE56ID3R:SBasePmGap.A</access>
                 </read>
                 <unit>
-                    <access method="GETCB" type="string" transport="ca">UE56ID3R:SBasePmGap.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">UE56ID3R:SBasePmGap.EGU</access>
                 </unit>
             </channel>
         </detector>
@@ -258,10 +341,10 @@
                 <name>UE56_2gap</name>
                 <id>UE56ID3R:BasePmGapchan1</id>
                 <read>
-                    <access method="GETCB" type="double" transport="ca">UE56ID3R:BasePmGap.A</access>
+                    <access method="GETPUTCB" type="double" transport="ca">UE56ID3R:BasePmGap.A</access>
                 </read>
                 <unit>
-                    <access method="GETCB" type="string" transport="ca">UE56ID3R:BasePmGap.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">UE56ID3R:BasePmGap.EGU</access>
                 </unit>
             </channel>
         </detector>
@@ -274,10 +357,10 @@
                 <name>U41_gap</name>
                 <id>U41IT6R:BasePmGapchan1</id>
                 <read>
-                    <access method="GETCB" type="double" transport="ca">U41IT6R:BasePmGap.A</access>
+                    <access method="GETPUTCB" type="double" transport="ca">U41IT6R:BasePmGap.A</access>
                 </read>
                 <unit>
-                    <access method="GETCB" type="string" transport="ca">U41IT6R:BasePmGap.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">U41IT6R:BasePmGap.EGU</access>
                 </unit>
             </channel>
         </detector>
@@ -290,10 +373,10 @@
                 <name>UE56_1shift</name>
                 <id>UE56ID6R:SBasePmGapchan1</id>
                 <read>
-                    <access method="GETCB" type="double" transport="ca">UE56ID6R:SBasePmGap.A</access>
+                    <access method="GETPUTCB" type="double" transport="ca">UE56ID6R:SBasePmGap.A</access>
                 </read>
                 <unit>
-                    <access method="GETCB" type="string" transport="ca">UE56ID6R:SBasePmGap.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">UE56ID6R:SBasePmGap.EGU</access>
                 </unit>
             </channel>
         </detector>
@@ -306,10 +389,10 @@
                 <name>UE56_1gap</name>
                 <id>UE56ID6R:BasePmGapchan1</id>
                 <read>
-                    <access method="GETCB" type="double" transport="ca">UE56ID6R:BasePmGap.A</access>
+                    <access method="GETPUTCB" type="double" transport="ca">UE56ID6R:BasePmGap.A</access>
                 </read>
                 <unit>
-                    <access method="GETCB" type="string" transport="ca">UE56ID6R:BasePmGap.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">UE56ID6R:BasePmGap.EGU</access>
                 </unit>
             </channel>
         </detector>
@@ -322,10 +405,10 @@
                 <name>U125_gap</name>
                 <id>U125ID7R:BasePmGapchan1</id>
                 <read>
-                    <access method="GETCB" type="double" transport="ca">U125ID7R:BasePmGap.A</access>
+                    <access method="GETPUTCB" type="double" transport="ca">U125ID7R:BasePmGap.A</access>
                 </read>
                 <unit>
-                    <access method="GETCB" type="string" transport="ca">U125ID7R:BasePmGap.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">U125ID7R:BasePmGap.EGU</access>
                 </unit>
             </channel>
         </detector>
@@ -338,10 +421,10 @@
                 <name>U49_2gap</name>
                 <id>U49ID8R:BasePmGapchan1</id>
                 <read>
-                    <access method="GETCB" type="double" transport="ca">U49ID8R:BasePmGap.A</access>
+                    <access method="GETPUTCB" type="double" transport="ca">U49ID8R:BasePmGap.A</access>
                 </read>
                 <unit>
-                    <access method="GETCB" type="string" transport="ca">U49ID8R:BasePmGap.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">U49ID8R:BasePmGap.EGU</access>
                 </unit>
             </channel>
         </detector>
@@ -2007,7 +2090,7 @@
             </axis>
             <axis>
                 <class></class>
-                <name>Filter_1</name>
+                <name>Filter_2</name>
                 <id>DiscPosPPSMC:gw23715001</id>
                 <goto>
                     <access method="GETPUTCB" type="string"
@@ -2346,6 +2429,7 @@
             <id>BSR01U007L:Opened</id>
             <value>
                 <access method="GETCB" type="string" transport="ca">BSR01U007L:Opened</access>
+                <value type="OnOff">0, 1</value>
             </value>
         </device>
         <device>

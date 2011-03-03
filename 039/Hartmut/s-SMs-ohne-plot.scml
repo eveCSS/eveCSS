@@ -42,25 +42,11 @@
                     <channelid>ringLifeTime1chan1</channelid>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
-                <plot id="1">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>true</init>
-                    <yaxis>
-                        <id>ringCurrent1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>solid</linestyle>
-                        <color>blue</color>
-                        <markstyle>star</markstyle>
-                    </yaxis>
-                </plot>
             </scanmodule>
             <scanmodule id="2">
                 <type>classic</type>
                 <name>SM 2 append</name>
-                <xpos>224</xpos>
+                <xpos>223</xpos>
                 <ypos>24</ypos>
                 <parent>1</parent>
                 <appended>3</appended>
@@ -85,25 +71,11 @@
                     <channelid>ringLifeTime1chan1</channelid>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
-                <plot id="1">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>true</init>
-                    <yaxis>
-                        <id>ringLifeTime1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>solid</linestyle>
-                        <color>blue</color>
-                        <markstyle>star</markstyle>
-                    </yaxis>
-                </plot>
             </scanmodule>
             <scanmodule id="3">
                 <type>classic</type>
                 <name>SM 3 append</name>
-                <xpos>336</xpos>
+                <xpos>335</xpos>
                 <ypos>34</ypos>
                 <parent>2</parent>
                 <settletime>0.0</settletime>
@@ -127,20 +99,6 @@
                     <channelid>ringLifeTime1chan1</channelid>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
-                <plot id="1">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>false</init>
-                    <yaxis>
-                        <id>ringCurrent1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>solid</linestyle>
-                        <color>blue</color>
-                        <markstyle>star</markstyle>
-                    </yaxis>
-                </plot>
             </scanmodule>
         </scanmodules>
     </chain>

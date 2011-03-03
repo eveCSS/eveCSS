@@ -4,7 +4,7 @@
     <version>0.3.9</version>
     <chain id="1">
         <comment>falsches proc feld</comment>
-        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/039/Hartmut/hartmuts_test.h5</savefilename>
+        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/039/Hartmut/Daten/multi-axes.h5</savefilename>
         <confirmsave>false</confirmsave>
         <autonumber>true</autonumber>
         <savescandescription>false</savescandescription>
@@ -29,94 +29,27 @@
                     <axisid>PPSMC:gw23715000</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="double">10.0</start>
-                    <stop type="double">16.0</stop>
-                    <stepwidth type="double">0.1</stepwidth>
+                    <start type="double">50.0</start>
+                    <stop type="double">35.0</stop>
+                    <stepwidth type="double">-1</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
-                <smchannel>
-                    <channelid>ringCurrent1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <smchannel>
-                    <channelid>ringLifeTime1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <plot id="1">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>true</init>
-                    <yaxis>
-                        <id>ringCurrent1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>solid</linestyle>
-                        <color>blue</color>
-                        <markstyle>star</markstyle>
-                    </yaxis>
-                </plot>
-            </scanmodule>
-            <scanmodule id="2">
-                <type>classic</type>
-                <name>SM 2 append</name>
-                <xpos>224</xpos>
-                <ypos>24</ypos>
-                <parent>1</parent>
-                <appended>3</appended>
-                <settletime>0.0</settletime>
-                <triggerdelay>0.0</triggerdelay>
-                <triggerconfirm>false</triggerconfirm>
-                <saveaxispositions>never</saveaxispositions>
                 <smaxis>
-                    <axisid>PPSMC:gw23715000</axisid>
+                    <axisid>PPSMC:gw23715001</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="double">12.0</start>
+                    <start type="double">15.0</start>
                     <stop type="double">20.0</stop>
-                    <stepwidth type="double">0.10</stepwidth>
+                    <stepwidth type="double">1</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
-                <smchannel>
-                    <channelid>ringCurrent1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <smchannel>
-                    <channelid>ringLifeTime1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <plot id="1">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>true</init>
-                    <yaxis>
-                        <id>ringLifeTime1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>solid</linestyle>
-                        <color>blue</color>
-                        <markstyle>star</markstyle>
-                    </yaxis>
-                </plot>
-            </scanmodule>
-            <scanmodule id="3">
-                <type>classic</type>
-                <name>SM 3 append</name>
-                <xpos>336</xpos>
-                <ypos>34</ypos>
-                <parent>2</parent>
-                <settletime>0.0</settletime>
-                <triggerdelay>0.0</triggerdelay>
-                <triggerconfirm>false</triggerconfirm>
-                <saveaxispositions>never</saveaxispositions>
                 <smaxis>
-                    <axisid>PPSMC:gw23715000</axisid>
+                    <axisid>PPSMC:gw23715002</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="double">11.0</start>
-                    <stop type="double">18.0</stop>
-                    <stepwidth type="double">0.10</stepwidth>
+                    <start type="double">20.0</start>
+                    <stop type="double">1.0</stop>
+                    <stepwidth type="double">-3</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smchannel>
@@ -125,6 +58,10 @@
                 </smchannel>
                 <smchannel>
                     <channelid>ringLifeTime1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>P5000:gw2370701</channelid>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
                 <plot id="1">
@@ -136,11 +73,39 @@
                     <yaxis>
                         <id>ringCurrent1chan1</id>
                         <mode>linear</mode>
-                        <linestyle>solid</linestyle>
-                        <color>blue</color>
-                        <markstyle>star</markstyle>
+                        <linestyle>dashed</linestyle>
+                        <color>green</color>
+                        <markstyle>point</markstyle>
                     </yaxis>
                 </plot>
+            </scanmodule>
+            <scanmodule id="2">
+                <type>classic</type>
+                <name>SM 2 append</name>
+                <xpos>223</xpos>
+                <ypos>24</ypos>
+                <parent>1</parent>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>PPSMC:gw23715000</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">12.0</start>
+                    <stop type="double">20.0</stop>
+                    <stepwidth type="double">0.7</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>ringLifeTime1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
             </scanmodule>
         </scanmodules>
     </chain>

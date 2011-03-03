@@ -3,24 +3,16 @@
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <version>0.3.9</version>
     <chain id="1">
-        <comment>falsches proc feld</comment>
-        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/039/Hartmut/hartmuts_test.h5</savefilename>
         <confirmsave>false</confirmsave>
-        <autonumber>true</autonumber>
+        <autonumber>false</autonumber>
         <savescandescription>false</savescandescription>
-        <saveplugin name="HDF5">
-            <parameter name="location">/messung/eve/lib/linux-x86/libhdf5plugin.so</parameter>
-            <parameter name="format">HDF5</parameter>
-            <parameter name="suffix">h5</parameter>
-        </saveplugin>
         <scanmodules>
             <scanmodule id="1">
                 <type>classic</type>
                 <name>SM 1</name>
-                <xpos>101</xpos>
-                <ypos>20</ypos>
+                <xpos>133</xpos>
+                <ypos>43</ypos>
                 <parent>0</parent>
-                <appended>2</appended>
                 <settletime>0.0</settletime>
                 <triggerdelay>0.0</triggerdelay>
                 <triggerconfirm>false</triggerconfirm>
@@ -30,7 +22,7 @@
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
                     <start type="double">10.0</start>
-                    <stop type="double">16.0</stop>
+                    <stop type="double">80.0</stop>
                     <stepwidth type="double">0.1</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
@@ -39,108 +31,9 @@
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
                 <smchannel>
-                    <channelid>ringLifeTime1chan1</channelid>
+                    <channelid>ringCurrent2chan1</channelid>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
-                <plot id="1">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>true</init>
-                    <yaxis>
-                        <id>ringCurrent1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>solid</linestyle>
-                        <color>blue</color>
-                        <markstyle>star</markstyle>
-                    </yaxis>
-                </plot>
-            </scanmodule>
-            <scanmodule id="2">
-                <type>classic</type>
-                <name>SM 2 append</name>
-                <xpos>224</xpos>
-                <ypos>24</ypos>
-                <parent>1</parent>
-                <appended>3</appended>
-                <settletime>0.0</settletime>
-                <triggerdelay>0.0</triggerdelay>
-                <triggerconfirm>false</triggerconfirm>
-                <saveaxispositions>never</saveaxispositions>
-                <smaxis>
-                    <axisid>PPSMC:gw23715000</axisid>
-                    <stepfunction>Add</stepfunction>
-                    <positionmode>absolute</positionmode>
-                    <start type="double">12.0</start>
-                    <stop type="double">20.0</stop>
-                    <stepwidth type="double">0.10</stepwidth>
-                    <ismainaxis>false</ismainaxis>
-                </smaxis>
-                <smchannel>
-                    <channelid>ringCurrent1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <smchannel>
-                    <channelid>ringLifeTime1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <plot id="1">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>true</init>
-                    <yaxis>
-                        <id>ringLifeTime1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>solid</linestyle>
-                        <color>blue</color>
-                        <markstyle>star</markstyle>
-                    </yaxis>
-                </plot>
-            </scanmodule>
-            <scanmodule id="3">
-                <type>classic</type>
-                <name>SM 3 append</name>
-                <xpos>336</xpos>
-                <ypos>34</ypos>
-                <parent>2</parent>
-                <settletime>0.0</settletime>
-                <triggerdelay>0.0</triggerdelay>
-                <triggerconfirm>false</triggerconfirm>
-                <saveaxispositions>never</saveaxispositions>
-                <smaxis>
-                    <axisid>PPSMC:gw23715000</axisid>
-                    <stepfunction>Add</stepfunction>
-                    <positionmode>absolute</positionmode>
-                    <start type="double">11.0</start>
-                    <stop type="double">18.0</stop>
-                    <stepwidth type="double">0.10</stepwidth>
-                    <ismainaxis>false</ismainaxis>
-                </smaxis>
-                <smchannel>
-                    <channelid>ringCurrent1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <smchannel>
-                    <channelid>ringLifeTime1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <plot id="1">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>false</init>
-                    <yaxis>
-                        <id>ringCurrent1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>solid</linestyle>
-                        <color>blue</color>
-                        <markstyle>star</markstyle>
-                    </yaxis>
-                </plot>
             </scanmodule>
         </scanmodules>
     </chain>
@@ -154,8 +47,8 @@
         <plugin type="save">
             <name>HDF5</name>
             <location>/messung/eve/lib/linux-x86/libhdf5plugin.so</location>
-            <parameter name="format" datatype="string" default="HDF5" mandatory="false"/>
-            <parameter name="suffix" datatype="string" default="h5" mandatory="false"/>
+            <parameter name="format" datatype="string" default="HDF5" mandatory="false"></parameter>
+            <parameter name="suffix" datatype="string" default="h5" mandatory="false"></parameter>
         </plugin>
         <plugin type="position">
             <name>ReferenceAdd</name>
@@ -2424,7 +2317,7 @@
             <id>BSR01U007L:Opened</id>
             <value>
                 <access method="GETCB" type="string" transport="ca">BSR01U007L:Opened</access>
-                <value type="OnOff">0, 1</value>
+                <value type="OnOff">0</value>
             </value>
         </device>
         <device>
