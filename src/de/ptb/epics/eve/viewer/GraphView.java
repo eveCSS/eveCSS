@@ -623,7 +623,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 
 				Display display = Activator.getDefault().getWorkbench().getDisplay();
 				Shell chainShell = new Shell(display);
-				chainShell.setSize(500,400);
+				chainShell.setSize(600,400);
 				chainShell.setText("Scan Module Info");
 				
 				GridLayout gridLayout = new GridLayout();
