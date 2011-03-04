@@ -33,6 +33,12 @@ import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 
+/**
+ * <code>MotorAxisStartStopStedwidthComposite</code> is a composite to input Start, Stop,
+ * Stepwidth and Stepcount of the motor axis.
+ * @author Hartmut Scherr
+ *
+ */
 public class MotorAxisStartStopStepwidthComposite extends Composite {
 
 	private Combo startCombo;
@@ -68,61 +74,11 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		this.autoFillStartRadioButton = new Button( this, SWT.RADIO );
 		this.autoFillStartRadioButton.setText( "Start:" );
 		this.autoFillStartRadioButton.setToolTipText( "Mark to enable auto-fill for start value." );
-		this.autoFillStartRadioButton.addSelectionListener( new SelectionListener() {
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-			}
-			public void widgetSelected( final SelectionEvent e ) {
-				if (autoFillStartRadioButton.getSelection()) {
-					startCombo.setEnabled( false );
-				}
-				else
-				   startCombo.setEnabled( true );
-			}
-		});
+		this.autoFillStartRadioButton.addSelectionListener( new AutoFillStartRadioButtonSelectionListener());
 
 		this.startCombo = new Combo( this, SWT.NONE );
-		this.startCombo.addFocusListener( new FocusListener() {
-			public void focusGained(FocusEvent e) {
-			}
-			public void focusLost(FocusEvent e) {
-				if( axis != null ) {
-					// TODO set application-wide warning background color
-					String formattedText = axis.formatValue(startCombo.getText());
-					if (formattedText == null){
-						formattedText = axis.getDefaultValue();
-						startCombo.setBackground(new Color(startCombo.getBackground().getDevice(),255, 255, 0));
-					}
-					else {
-						startCombo.setBackground(new Color(startCombo.getBackground().getDevice(),255, 255, 255));
-					}
-					startCombo.setText(formattedText);
-					axis.setStart(formattedText);
-					autoFill();
-				}
-			}
-		});
-
-		this.startCombo.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-			public void widgetSelected(SelectionEvent e) {
-				if( axis != null ) {
-					// TODO set application-wide warning background color
-					String formattedText = axis.formatValue(startCombo.getText());
-					if (formattedText == null){
-						formattedText = axis.getDefaultValue();
-						startCombo.setBackground(new Color(startCombo.getBackground().getDevice(),255, 255, 0));
-					}
-					else {
-						startCombo.setBackground(new Color(startCombo.getBackground().getDevice(),255, 255, 255));
-					}
-					startCombo.setText(formattedText);
-					axis.setStart(formattedText);
-					autoFill();
-				}
-			};
-		});
-		
+		this.startCombo.addFocusListener( new StartComboFocusListener());
+		this.startCombo.addSelectionListener(new StartComboSelectionListener());
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -133,61 +89,11 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		this.autoFillStopRadioButton = new Button( this, SWT.RADIO );
 		this.autoFillStopRadioButton.setText( "Stop:" );
 		this.autoFillStopRadioButton.setToolTipText( "Mark to enable auto-fill for stop value." );
-		this.autoFillStopRadioButton.addSelectionListener( new SelectionListener() {
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-			}
-			public void widgetSelected( final SelectionEvent e ) {
-				if (autoFillStopRadioButton.getSelection()) {
-					stopCombo.setEnabled( false );
-				}
-				else
-				   stopCombo.setEnabled( true );
-			}
-		});
+		this.autoFillStopRadioButton.addSelectionListener( new AutoFillStopRadioButtonSelectionListener());
 
 		this.stopCombo = new Combo( this, SWT.NONE );		
-		this.stopCombo.addFocusListener( new FocusListener() {
-			public void focusGained(FocusEvent e) {
-			}
-			public void focusLost(FocusEvent e) {
-				if( axis != null ) {
-					// TODO set application-wide warning background color
-					String formattedText = axis.formatValue(stopCombo.getText());
-					if (formattedText == null){
-						formattedText = axis.getDefaultValue();
-						stopCombo.setBackground(new Color(stopCombo.getBackground().getDevice(),255, 255, 0));
-					}
-					else {
-						stopCombo.setBackground(new Color(stopCombo.getBackground().getDevice(),255, 255, 255));
-					}
-					stopCombo.setText(formattedText);
-					axis.setStop(formattedText);
-					autoFill();
-				}
-			}
-		});
-
-		this.stopCombo.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-			public void widgetSelected(SelectionEvent e) {
-				if( axis != null ) {
-					// TODO set application-wide warning background color
-					String formattedText = axis.formatValue(stopCombo.getText());
-					if (formattedText == null){
-						formattedText = axis.getDefaultValue();
-						stopCombo.setBackground(new Color(stopCombo.getBackground().getDevice(),255, 255, 0));
-					}
-					else {
-						stopCombo.setBackground(new Color(stopCombo.getBackground().getDevice(),255, 255, 255));
-					}
-					stopCombo.setText(formattedText);
-					axis.setStop(formattedText);
-					autoFill();
-				}
-			};
-		});
-		
+		this.stopCombo.addFocusListener( new StopComboFocusListener());
+		this.stopCombo.addSelectionListener( new StopComboSelectionListener());
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -198,45 +104,10 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		this.autoFillStepwidthRadioButton = new Button( this, SWT.RADIO );
 		this.autoFillStepwidthRadioButton.setText( "Stepwidth:" );
 		this.autoFillStepwidthRadioButton.setToolTipText( "Mark to enable auto-fill for stepwidth value." );
-		this.autoFillStepwidthRadioButton.addSelectionListener( new SelectionListener() {
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-			}
-			public void widgetSelected( final SelectionEvent e ) {
-				if (autoFillStepwidthRadioButton.getSelection()) {
-					stepwidthText.setEnabled( false );
-				}
-				else {
-				   stepwidthText.setEnabled( true );
-				}
-			}
-		});
+		this.autoFillStepwidthRadioButton.addSelectionListener( new AutoFillStepwidthRadioButtonSelectionListener());
 
 		this.stepwidthText = new Text( this, SWT.BORDER );
-		this.stepwidthText.addModifyListener( new ModifyListener() {
-			public void modifyText( final ModifyEvent e ) {
-				if( axis != null ) {
-					if( axis.getMotorAxis().getGoto().isDiscrete() ) {
-						try {
-							// Es wird versucht ein Integer auszulesen, wenn das nicht klappt, wird
-							// der Wert in der Oberfläche zurückgesetzt, weiter passiert dann nichts.
-							final int stepwidth = Integer.parseInt( stepwidthText.getText() );
-							axis.setStepwidth( stepwidthText.getText() );
-							autoFill();
-						} catch( final NumberFormatException ex ) {
-							final double stepwidth_d = Double.parseDouble( stepwidthText.getText() );
-							final int stepwidth = (int)stepwidth_d;
-							stepwidthText.setText("" + stepwidth);
-							stepwidthText.setSelection(stepwidthText.getCharCount());
-						}
-					}
-					else {
-						axis.setStepwidth( stepwidthText.getText() );
-						autoFill();
-					}
-				}
-			}
-		});
-
+		this.stepwidthText.addModifyListener( new StepwidthTextModifyListener());
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -247,48 +118,10 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		this.autoFillStepamountRadioButton = new Button( this, SWT.RADIO );
 		this.autoFillStepamountRadioButton.setText( "Stepcount:" );
 		this.autoFillStepamountRadioButton.setToolTipText( "Mark to enable auto-fill for step count." );
-		this.autoFillStepamountRadioButton.addSelectionListener( new SelectionListener() {
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-			}
-			public void widgetSelected( final SelectionEvent e ) {
-				if (autoFillStepamountRadioButton.getSelection()) {
-					stepamountText.setEnabled( false );
-				}
-				else { 
-					// nur wenn main axis erlaubt ist, darf auch stepamount wieder erlaubt werden
-					if (mainAxisCheckBox.isEnabled()) {
-						stepamountText.setEnabled( true );
-						autoFillStepamountRadioButton.setEnabled( true );
-					}
-				}
-			}
-		});
-		
-		this.stepamountText = new Text( this, SWT.BORDER );
-		this.stepamountText.addModifyListener( new ModifyListener() {
-			public void modifyText( final ModifyEvent e ) {
-				if( axis != null ) {
-					if( axis.getMotorAxis().getGoto().isDiscrete() ) {
-						try {
-							axis.setStepCount(Integer.parseInt(stepamountText.getText()));
-							recalculateStepwidth();
-							autoFill();
-						} catch( final NumberFormatException ex ) {
-							final double stepamount_d = Double.parseDouble( stepamountText.getText() );
-							final int stepamount = (int)stepamount_d;
-							stepamountText.setText("" + stepamount);
-							stepamountText.setSelection(stepamountText.getCharCount());
-						}
-					}
-					else {
-						axis.setStepCount(Double.parseDouble(stepamountText.getText()));
-						recalculateStepwidth();
-						autoFill();
-					}
-				}
-			}
-		});
+		this.autoFillStepamountRadioButton.addSelectionListener( new AutoFillStepamountRadioButtonSelectionListener());
 
+		this.stepamountText = new Text( this, SWT.BORDER );
+		this.stepamountText.addModifyListener( new StepamountTextModifyListener());
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -302,15 +135,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalSpan = 3;
 		this.mainAxisCheckBox.setLayoutData( gridData );
-		this.mainAxisCheckBox.addSelectionListener( new SelectionListener() {
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-			}
-			public void widgetSelected( final SelectionEvent e ) {
-				if( axis != null ) {
-					axis.setMainAxis( mainAxisCheckBox.getSelection() );
-				}
-			}
-		});
+		this.mainAxisCheckBox.addSelectionListener( new MainAxisCheckBoxSelectionListener());
 		
 		this.startCombo.setEnabled( false );
 		this.stopCombo.setEnabled( false );
@@ -458,7 +283,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								final double start = Double.parseDouble( this.startCombo.getText() );
 								final double stepwidth = Double.parseDouble( this.stepwidthText.getText() );
 								final double stepamount = Double.parseDouble( this.stepamountText.getText() );
-								
+
 								this.stopCombo.setText( "" + (start + (stepwidth * stepamount) ) );
 							} catch( final NumberFormatException e ) {
 								
@@ -552,7 +377,26 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 							try {
 								final double start = Double.parseDouble( this.startCombo.getText() );
 								final double stop = Double.parseDouble( this.stopCombo.getText() );
-								final double stepwidth = Double.parseDouble( this.stepwidthText.getText() );
+								double stepwidth = Double.parseDouble( this.stepwidthText.getText() );
+
+								if ((start - stop) > 0) {
+									// stepwidth muß negativ sein!
+									if (stepwidth > 0) {
+										// Vorzeichen von Stepwidth umdrehen!
+										stepwidth = stepwidth * -1;
+										this.stepwidthText.setText( "" + (int)stepwidth );
+										this.stepwidthText.setSelection(2);
+									}
+								}
+								if ((start - stop) < 0) {
+									// stepwidth muß positiv sein!
+									if (stepwidth < 0) {
+										// Vorzeichen von Stepwidth umdrehen!
+										stepwidth = stepwidth * -1;
+										this.stepwidthText.setText( "" + (int)stepwidth );
+										this.stepwidthText.setSelection(1);
+									}
+								}
 								
 								if ( !this.stepamountText.getText().equals("")) {
 									// stepamount Eintrag schon vorhanden
@@ -612,7 +456,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 	}
 
 	/**
-	 * Wenn sich Stepcount der main Axis ändert, wird die Stepwidth aller anderen Achsen neu berechnet.
+	 * If stepcount of main axis changes, stepwidth of all other axis recalculated.
 	 */
 	private void recalculateStepwidth() {
 		if (axis.isMainAxis()) {
@@ -684,4 +528,352 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 			}
 		}
 	}
+
+	// Hier kommen jetzt die verschiedenen Listener Klassen
+	
+	/**
+	 * <code>SelectionListener</code> of AutoFillStart RadioButton from
+	 * <code>MotorAxisStartStopStepwidthComposite</code>
+	 */
+	class AutoFillStartRadioButtonSelectionListener implements SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected( final SelectionEvent e ) {
+			}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected( final SelectionEvent e ) {
+			if (autoFillStartRadioButton.getSelection()) {
+				startCombo.setEnabled( false );
+			}
+			else
+			   startCombo.setEnabled( true );
+		}
+	};
+
+	/**
+	 * <code>FocusListener</code> of Start Combo from
+	 * <code>MotorAxisStartStopStepwidthComposite</code>
+	 */
+	class StartComboFocusListener implements FocusListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void focusGained(FocusEvent e) {
+			// TODO Auto-generated method stub
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void focusLost(FocusEvent e) {
+			// TODO Auto-generated method stub
+			if( axis != null ) {
+				// TODO set application-wide warning background color
+				String formattedText = axis.formatValue(startCombo.getText());
+				if (formattedText == null){
+					formattedText = axis.getDefaultValue();
+					startCombo.setBackground(new Color(startCombo.getBackground().getDevice(),255, 255, 0));
+				}
+				else {
+					startCombo.setBackground(new Color(startCombo.getBackground().getDevice(),255, 255, 255));
+				}
+				startCombo.setText(formattedText);
+				axis.setStart(formattedText);
+				autoFill();
+			}
+		}
+	}
+
+	/**
+	 * <code>SelectionListener</code> of Start Combo from
+	 * <code>MotorAxisStartStopStepwidthComposite</code>
+	 */
+	class StartComboSelectionListener implements SelectionListener {
+	
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			if( axis != null ) {
+				// TODO set application-wide warning background color
+				String formattedText = axis.formatValue(startCombo.getText());
+				if (formattedText == null){
+					formattedText = axis.getDefaultValue();
+					startCombo.setBackground(new Color(startCombo.getBackground().getDevice(),255, 255, 0));
+				}
+				else {
+					startCombo.setBackground(new Color(startCombo.getBackground().getDevice(),255, 255, 255));
+				}
+				startCombo.setText(formattedText);
+				axis.setStart(formattedText);
+				autoFill();
+			}
+		};
+	};
+	
+	/**
+	 * <code>SelectionListener</code> of AutoFillStop RadioButton from
+	 * <code>MotorAxisStartStopStepwidthComposite</code>
+	 */
+	class AutoFillStopRadioButtonSelectionListener implements SelectionListener {
+	 
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected( final SelectionEvent e ) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected( final SelectionEvent e ) {
+			if (autoFillStopRadioButton.getSelection()) {
+				stopCombo.setEnabled( false );
+			}
+			else
+			   stopCombo.setEnabled( true );
+		}
+	}
+
+	/**
+	 * <code>FocusListener</code> of Stop Combo from
+	 * <code>MotorAxisStartStopStepwidthComposite</code>
+	 */
+	class StopComboFocusListener implements FocusListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void focusGained(FocusEvent e) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void focusLost(FocusEvent e) {
+			if( axis != null ) {
+				// TODO set application-wide warning background color
+				String formattedText = axis.formatValue(stopCombo.getText());
+				if (formattedText == null){
+					formattedText = axis.getDefaultValue();
+					stopCombo.setBackground(new Color(stopCombo.getBackground().getDevice(),255, 255, 0));
+				}
+				else {
+					stopCombo.setBackground(new Color(stopCombo.getBackground().getDevice(),255, 255, 255));
+				}
+				stopCombo.setText(formattedText);
+				axis.setStop(formattedText);
+				autoFill();
+			}
+		}
+	}
+
+	/**
+	 * <code>SelectionListener</code> of Stop Combo from
+	 * <code>MotorAxisStartStopStepwidthComposite</code>
+	 */
+	class StopComboSelectionListener implements SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			if( axis != null ) {
+				// TODO set application-wide warning background color
+				String formattedText = axis.formatValue(stopCombo.getText());
+				if (formattedText == null){
+					formattedText = axis.getDefaultValue();
+					stopCombo.setBackground(new Color(stopCombo.getBackground().getDevice(),255, 255, 0));
+				}
+				else {
+					stopCombo.setBackground(new Color(stopCombo.getBackground().getDevice(),255, 255, 255));
+				}
+				stopCombo.setText(formattedText);
+				axis.setStop(formattedText);
+				autoFill();
+			}
+		};
+	}
+
+	/**
+	 * <code>SelectionListener</code> of AutoFillStepwidth RadioButton from
+	 * <code>MotorAxisStartStopStepwidthComposite</code>
+	 */
+	class AutoFillStepwidthRadioButtonSelectionListener implements SelectionListener {
+	
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected( final SelectionEvent e ) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected( final SelectionEvent e ) {
+			if (autoFillStepwidthRadioButton.getSelection()) {
+				stepwidthText.setEnabled( false );
+			}
+			else {
+			   stepwidthText.setEnabled( true );
+			}
+		}
+	}
+
+	/**
+	 * <code>ModifyListener</code> of Stepwidth Text from 
+	 * <code>MotorAxisStartStopStepwidthComposite</code>
+	 */
+	class StepwidthTextModifyListener implements ModifyListener {
+	
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void modifyText( final ModifyEvent e ) {
+			if( axis != null ) {
+				if( axis.getMotorAxis().getGoto().isDiscrete() ) {
+					try {
+						// Es wird versucht ein Integer auszulesen, wenn das nicht klappt, wird
+						// der Wert in der Oberfläche zurückgesetzt, weiter passiert dann nichts.
+						final int stepwidth = Integer.parseInt( stepwidthText.getText() );
+						axis.setStepwidth( stepwidthText.getText() );
+						autoFill();
+					} catch( final NumberFormatException ex ) {
+						final double stepwidth_d = Double.parseDouble( stepwidthText.getText() );
+						final int stepwidth = (int)stepwidth_d;
+						stepwidthText.setText("" + stepwidth);
+						stepwidthText.setSelection(stepwidthText.getCharCount());
+					}
+				}
+				else {
+					axis.setStepwidth( stepwidthText.getText() );
+					autoFill();
+				}
+			}
+		}
+	}
+
+	/**
+	 * <code>SelectionListener</code> of StepamountRadioButton from 
+	 * <code>MotorAxisStartStopStepwidthComposite</code>
+	 */
+	class AutoFillStepamountRadioButtonSelectionListener implements SelectionListener {
+	
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected( final SelectionEvent e ) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected( final SelectionEvent e ) {
+			if (autoFillStepamountRadioButton.getSelection()) {
+				stepamountText.setEnabled( false );
+			}
+			else { 
+				// nur wenn main axis erlaubt ist, darf auch stepamount wieder erlaubt werden
+				if (mainAxisCheckBox.isEnabled()) {
+					stepamountText.setEnabled( true );
+					autoFillStepamountRadioButton.setEnabled( true );
+				}
+			}
+		}
+	}
+
+	/**
+	 * <code>ModifyListener</code> of Stepamount Text from 
+	 * <code>MotorAxisStartStopStepwidthComposite</code>
+	 */
+	class StepamountTextModifyListener implements ModifyListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void modifyText( final ModifyEvent e ) {
+			if( axis != null ) {
+				if( axis.getMotorAxis().getGoto().isDiscrete() ) {
+					try {
+						axis.setStepCount(Integer.parseInt(stepamountText.getText()));
+						recalculateStepwidth();
+						autoFill();
+					} catch( final NumberFormatException ex ) {
+						final double stepamount_d = Double.parseDouble( stepamountText.getText() );
+						final int stepamount = (int)stepamount_d;
+						stepamountText.setText("" + stepamount);
+						stepamountText.setSelection(stepamountText.getCharCount());
+					}
+				}
+				else {
+					axis.setStepCount(Double.parseDouble(stepamountText.getText()));
+					recalculateStepwidth();
+					autoFill();
+				}
+			}
+		}
+	}
+
+	/**
+	 * <code>SelectionListener</code> of MainAxis CheckBox from 
+	 * <code>MotorAxisStartStopStepwidthComposite</code>
+	 */
+	class MainAxisCheckBoxSelectionListener implements SelectionListener {
+	
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected( final SelectionEvent e ) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected( final SelectionEvent e ) {
+			if( axis != null ) {
+				axis.setMainAxis( mainAxisCheckBox.getSelection() );
+			}
+		}
+	}
+	
 }
