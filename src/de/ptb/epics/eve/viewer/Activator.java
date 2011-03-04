@@ -55,10 +55,6 @@ public class Activator extends AbstractUIPlugin {
 	
 	private RequestProcessor requestProcessor;
 
-//	private final GraphView graphView;
-
-	private final TestListener xmlFileListener;
-	
 	
 	/**
 	 * The constructor
@@ -80,9 +76,6 @@ public class Activator extends AbstractUIPlugin {
 		this.fontreg = new FontRegistry();
 		this.requestProcessor = new RequestProcessor( Display.getCurrent() );
 		this.ecp1Client.addRequestListener( this.requestProcessor );
-
-		this.xmlFileListener = new TestListener();
-//		this.ecp1Client.getPlayListController().addNewXMLFileListener(xmlFileListener);
 		
 	}
 
