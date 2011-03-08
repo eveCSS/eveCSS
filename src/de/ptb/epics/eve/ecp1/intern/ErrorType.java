@@ -10,7 +10,8 @@ public enum ErrorType {
 	MESSAGEFILTER_LOW_LIMIT,
 	MESSAGEFILTER_HIGH_LIMIT,
 	MALFORMED_COMMAND,
-	TIMEOUT;
+	TIMEOUT,
+	FILENAME;
 	
 	public static char errorTypeToChar( final ErrorType errorType ) {
 		switch( errorType ) {
@@ -32,6 +33,8 @@ public enum ErrorType {
 				return 0x0008;
 			case TIMEOUT:
 				return 0x0009;
+			case FILENAME:
+				return 0x000A;
 		}
 		return Character.MAX_VALUE;
 	}
@@ -56,6 +59,8 @@ public enum ErrorType {
 				return ErrorType.MALFORMED_COMMAND;
 			case 0x0009:
 				return ErrorType.TIMEOUT;
+			case 0x000A:
+				return ErrorType.FILENAME;
 		}
 		return null;
 	}
