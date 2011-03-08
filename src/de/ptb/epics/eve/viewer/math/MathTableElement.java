@@ -100,6 +100,7 @@ public class MathTableElement implements IMeasurementDataListener {
 		if (mData.getDataType() == DataType.DOUBLE || 
 			mData.getDataType() == DataType.FLOAT) 
 		{
+/*
 			for(int i=0;i<mData.getValues().size();i++)
 			{
 				System.out.print(mData.getName() + " : " + mData.getPositionCounter() + " : " + 
@@ -109,7 +110,7 @@ public class MathTableElement implements IMeasurementDataListener {
 			}
 			System.out.println("");
 			System.out.println("");
-			
+*/			
 			Double data = (Double) mData.getValues().get(0);
 			return 
 				new PrintfFormat(Locale.ENGLISH, "%12.4g").sprintf(data).trim();

@@ -1,82 +1,44 @@
-/* 
- * Copyright (c) 2006 Stiftung Deutsches Elektronen-Synchroton, 
- * Member of the Helmholtz Association, (DESY), HAMBURG, GERMANY.
- *
- * THIS SOFTWARE IS PROVIDED UNDER THIS LICENSE ON AN "../AS IS" BASIS. 
- * WITHOUT WARRANTY OF ANY KIND, EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED 
- * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR PARTICULAR PURPOSE AND 
- * NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
- * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR 
- * THE USE OR OTHER DEALINGS IN THE SOFTWARE. SHOULD THE SOFTWARE PROVE DEFECTIVE 
- * IN ANY RESPECT, THE USER ASSUMES THE COST OF ANY NECESSARY SERVICING, REPAIR OR 
- * CORRECTION. THIS DISCLAIMER OF WARRANTY CONSTITUTES AN ESSENTIAL PART OF THIS LICENSE. 
- * NO USE OF ANY SOFTWARE IS AUTHORIZED HEREUNDER EXCEPT UNDER THIS DISCLAIMER.
- * DESY HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, 
- * OR MODIFICATIONS.
- * THE FULL LICENSE SPECIFYING FOR THE SOFTWARE THE REDISTRIBUTION, MODIFICATION, 
- * USAGE AND OTHER RIGHTS AND OBLIGATIONS IS INCLUDED WITH THE DISTRIBUTION OF THIS 
- * PROJECT IN THE FILE LICENSE.HTML. IF THE LICENSE IS NOT INCLUDED YOU MAY FIND A COPY 
- * AT HTTP://WWW.DESY.DE/LEGAL/LICENSE.HTM
- */
 package de.ptb.epics.eve.viewer;
 
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.ExpandBar;
-import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModul;
-import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
-import de.ptb.epics.eve.ecp1.client.ECP1Client;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
-import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
-import de.ptb.epics.eve.ecp1.client.model.PlayListEntry;
+import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
+import de.ptb.epics.eve.ecp1.client.model.Error;
 import de.ptb.epics.eve.ecp1.intern.EngineStatus;
-import de.ptb.epics.eve.viewer.actions.AddFileToPlayListAction;
+import de.ptb.epics.eve.ecp1.intern.ErrorType;
 
 /**
  * A simple view implementation, which only displays a label.
  * 
  * @author Sven Wende
- *
+ * @author Hartmut Scherr
  */
-public final class GraphView extends ViewPart implements IUpdateListener, IConnectionStateListener {
+public final class GraphView extends ViewPart implements IUpdateListener, IConnectionStateListener, IErrorListener {
 
 	private Composite top = null;
 
@@ -96,9 +58,15 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 	private Label chainFilenameLabel;
 	private Text filenameText;
 
+	private Label commentLabel;
+	private Text commentText;
+	private Button commentSendButton;
+
 	private Table statusTable;
+	//TODO: ShellTable ist auf 10 Einträge vordefiniert,
+	// besser eine LinkedList machen, damit beliebig viele Einträge existieren können
 	private Shell shellTable[] = new Shell[10];
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -121,45 +89,23 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		
 		this.top = new Composite( parent, SWT.NONE );
 		gridLayout = new GridLayout();
-		gridLayout.numColumns = 9;
+		gridLayout.numColumns = 10;
 		this.top.setLayout(gridLayout);
 
 		this.playButton = new Button( this.top, SWT.PUSH );
 		this.playButton.setImage(playIcon);
 		this.playButton.setToolTipText( "Play" );
-		this.playButton.addSelectionListener( new SelectionListener() {
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-			}
-			public void widgetSelected( final SelectionEvent e ) {
-				System.out.println("Play Knopf im Graph Window gedrückt!");
-				Activator.getDefault().getEcp1Client().getPlayController().start();
-			}
-		});
+		this.playButton.addSelectionListener( new PlayButtonSelectionListener());
 
 		this.pauseButton = new Button( this.top, SWT.PUSH );
 		this.pauseButton.setImage(pauseIcon);
 		this.pauseButton.setToolTipText( "Pause" );
-		this.pauseButton.addSelectionListener( new SelectionListener() {
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-			}
-			public void widgetSelected( final SelectionEvent e ) {
-				System.out.println("Pause Knopf im Graph Window gedrückt!");
-				Activator.getDefault().getEcp1Client().getPlayController().pause();
-			}
-		});
+		this.pauseButton.addSelectionListener( new PauseButtonSelectionListener());
 
-		
 		this.stopButton = new Button( this.top, SWT.PUSH );
 		this.stopButton.setImage(stopIcon);
 		this.stopButton.setToolTipText( "Stop" );
-		this.stopButton.addSelectionListener( new SelectionListener() {
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-			}
-			public void widgetSelected( final SelectionEvent e ) {
-				System.out.println("Stop Knopf im Graph Window gedrückt!");
-				Activator.getDefault().getEcp1Client().getPlayController().stop();
-			}
-		});
+		this.stopButton.addSelectionListener( new StopButtonSelectionListener());
 
 		this.skipButton = new Button( this.top, SWT.PUSH );
 		this.skipButton.setImage(skipIcon);
@@ -235,10 +181,10 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		});
 
 		this.loadedScmlLabel = new Label( this.top, SWT.NONE );
-		this.loadedScmlLabel.setText("loaded scml File:");
+		this.loadedScmlLabel.setText("loaded File:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 4;
+		gridData.horizontalSpan = 3;
 		this.loadedScmlLabel.setLayoutData( gridData );
 
 		this.loadedScmlText = new Text( this.top, SWT.BORDER );
@@ -246,7 +192,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 5;
+		gridData.horizontalSpan = 7;
 		this.loadedScmlText.setLayoutData( gridData );
 
 		this.chainFilenameLabel = new Label( this.top, SWT.NONE );
@@ -261,14 +207,50 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 6;
+		gridData.horizontalSpan = 7;
 		this.filenameText.setLayoutData( gridData );
 
+		this.commentLabel = new Label( this.top, SWT.NONE );
+		this.commentLabel.setText("live Comment:");
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 3;
+		this.commentLabel.setLayoutData( gridData );
+
+		this.commentText = new Text( this.top, SWT.BORDER);
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 6;
+		this.commentText.setLayoutData( gridData );
+		
+		this.commentSendButton = new Button( this.top, SWT.NONE);
+		this.commentSendButton.setText( "Send to File" );
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		this.commentSendButton.setEnabled(false);
+		this.commentSendButton.setLayoutData( gridData );
+		this.commentSendButton.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				Activator.getDefault().getEcp1Client().getPlayController().addLiveComment(commentText.getText());
+			}
+			
+		});
+		
 		// Tabelle für die Statuswerte erzeugen
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 9;
+		gridData.horizontalSpan = 10;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 	    
@@ -293,6 +275,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		this.statusTable.addSelectionListener(new StatusTableSelectionListener());
 
 		Activator.getDefault().getChainStatusAnalyzer().addUpdateLisner( this );
+		Activator.getDefault().getEcp1Client().addErrorListener(this);
 		this.rebuildText(0);
 		Activator.getDefault().getEcp1Client().addConnectionStateListener( this );
 	}
@@ -315,6 +298,15 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		this.statusTable.getDisplay().syncExec( new Runnable() {
 			public void run() {
 				statusTable.removeAll();
+			}
+		});
+	}
+
+	public void disableSendToFile() {
+		// send to File wird verboten
+		this.commentSendButton.getDisplay().syncExec( new Runnable() {
+			public void run() {
+				commentSendButton.setEnabled(false);
 			}
 		});
 	}
@@ -377,14 +369,6 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 			while( it.hasNext() ) {
 				final Chain currentChain = it.next();
 
-				if (currentChain.getSaveFilename()!= null) {
-					this.filenameText.getDisplay().syncExec( new Runnable() {
-						public void run() {
-							filenameText.setText(currentChain.getSaveFilename());
-						}
-					});
-				}
-				
 				if( Activator.getDefault().getChainStatusAnalyzer().getRunningChains().contains( currentChain ) ) {
 					fillStatusTable(currentChain.getId(), -1, "running", remainTime);
 
@@ -467,6 +451,15 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		this.loadedScmlText.getDisplay().syncExec( new Runnable() {
 			public void run() {
 				loadedScmlText.setText(filename);
+			}
+		});
+	}
+
+	public void setActualFilename(final String filename) {
+		// der Name des geladenen scml-Files wird angezeigt
+		this.filenameText.getDisplay().syncExec(new Runnable() {
+			public void run() {
+				filenameText.setText(filename);
 			}
 		});
 	}
@@ -856,4 +849,97 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 			}
 		}
 	}
+
+	@Override
+	public void errorOccured(Error error) {
+		if (error.getErrorType() == ErrorType.FILENAME) {
+			System.out.println("Filename wurde geändert");
+			System.out.println("   Neuer Name: " + error.getText());
+
+			// Aktueller Filename wird gesetzt
+			setActualFilename(error.getText());
+			
+			// send to File wird erlaubt
+			this.commentSendButton.getDisplay().syncExec( new Runnable() {
+				public void run() {
+					commentSendButton.setEnabled(true);
+				}
+			});
+
+		}
+	}
+
+	///////////////////////////////////////////////////////////
+	// Hier kommen jetzt die verschiedenen Listener Klassen
+	///////////////////////////////////////////////////////////
+	/**
+	 * <code>SelectionListener</code> of Play Button from
+	 * <code>EngineView</code>
+	 */
+	class PlayButtonSelectionListener implements SelectionListener {
+	
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected( final SelectionEvent e ) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected( final SelectionEvent e ) {
+			System.out.println("Play Knopf im Graph Window gedrückt!");
+			Activator.getDefault().getEcp1Client().getPlayController().start();
+		}
+	}
+
+	/**
+	 * <code>SelectionListener</code> of Pause Button from
+	 * <code>EngineView</code>
+	 */
+	class PauseButtonSelectionListener implements SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			System.out.println("Pause Knopf im Graph Window gedrückt!");
+			Activator.getDefault().getEcp1Client().getPlayController().pause();
+		}
+	}
+		
+	/**
+	 * <code>SelectionListener</code> of Stop Button from
+	 * <code>EngineView</code>
+	 */
+	class StopButtonSelectionListener implements SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			System.out.println("Stop Knopf im Graph Window gedrückt!");
+			Activator.getDefault().getEcp1Client().getPlayController().stop();
+		}
+	}
+	
+	
 }

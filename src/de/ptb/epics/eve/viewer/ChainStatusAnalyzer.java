@@ -263,7 +263,15 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				break;
 
 			case STORAGE_DONE:
+
+				System.out.println("Scan wurde gespeichert, Send to File verbieten");
 				// hier passiert bisher nichts (Hartmut 16.12.10)
+
+				final Iterator< IUpdateListener > it2 = this.updateListener.iterator();
+				while( it2.hasNext() ) {
+					it2.next().disableSendToFile();
+				}
+
 				break;
 				
 		}

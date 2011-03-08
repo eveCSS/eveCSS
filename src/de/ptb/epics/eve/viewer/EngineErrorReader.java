@@ -8,7 +8,6 @@ public class EngineErrorReader implements IErrorListener {
 	public void errorOccured( final Error error ) {
 		
 		Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( error ) );
-
 	}
 
 }

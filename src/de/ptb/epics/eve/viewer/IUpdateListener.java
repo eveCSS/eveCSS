@@ -10,5 +10,6 @@ public interface IUpdateListener {
 	public void setLoadedScmlFile(String name);
 	public void fillEngineStatus(EngineStatus engineStatus);
 	public void setAutoPlayStatus(boolean autoPlayStatus);
+	public void disableSendToFile();
 
 }
