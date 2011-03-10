@@ -505,9 +505,6 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 		this.devices.clear();
 		this.motors.clear();
 		this.detectors.clear();
-		this.selections.setColors( new String[0] );
-		this.selections.setLinestyles( new String[0] );
-		this.selections.setMarkstyles( new String[0] );
 		this.selections.setSmtypes( new String[0] );
 		this.selections.setStepfunctions( new String[0] );
 		this.pluginsMap.clear();
@@ -578,9 +575,6 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 				}
 			}
 			
-			this.selections.setColors( this.getSource().getSelections().getColors() );
-			this.selections.setLinestyles( this.getSource().getSelections().getLinestyles() );
-			this.selections.setMarkstyles( this.getSource().getSelections().getMarkstyles() );
 			this.selections.setSmtypes( this.getSource().getSelections().getSmtypes() );
 			this.selections.setStepfunctions( this.getSource().getSelections().getStepfunctions() );
 			

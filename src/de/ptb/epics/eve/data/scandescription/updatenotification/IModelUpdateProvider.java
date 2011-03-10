@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.scandescription.updatenotification;
 
 /**
@@ -12,7 +5,7 @@ package de.ptb.epics.eve.data.scandescription.updatenotification;
  * update events.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
- *
+ * @author Marcus Michalsky
  */
 public interface IModelUpdateProvider {
 

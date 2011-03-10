@@ -477,38 +477,6 @@ public enum MeasuringStationLoaderStates {
 	SELECTIONS_STEPFUNCTION_READ,
 	
 	/**
-	 * The begin tag of the line styles has been read.
-	 */
-	SELECTIONS_LINESTYLE_NEXT,
-	
-	/**
-	 * The line styles has been read and the handler is waiting for the close 
-	 * tag.
-	 */
-	SELECTIONS_LINESTYLE_READ,
-	
-	/**
-	 * The begin tag of the color has been read.
-	 */
-	SELECTIONS_COLOR_NEXT,
-	
-	/**
-	 * The color has been read and the handler is waiting for the close tag.
-	 */
-	SELECTIONS_COLOR_READ,
-	
-	/**
-	 * The begin tag of the mark styles has been read.
-	 */
-	SELECTIONS_MARKSTYLE_NEXT,
-	
-	/**
-	 * The mark styles has been read and the handler is waiting for the close 
-	 * tag.
-	 */
-	SELECTIONS_MARKSTYLE_READ,
-	
-	/**
 	 * The begin tag of the sm types has been read.
 	 */
 	SELECTIONS_SMTYPE_NEXT,

@@ -1,17 +1,10 @@
-/*
- * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.scandescription.updatenotification;
 
 /**
  * Implemented by classes that listen to model changes of the scan description.
  * 
- * 
  * @author Stephan Rehfeld <stephan.rehfeld ( -at- ) ptb.de>
+ * @author Marcus Michalsky
  */
 public interface IModelUpdateListener {
 

@@ -1,15 +1,12 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
+import org.csstudio.swt.xygraph.figures.Trace.TraceType;
+import org.eclipse.swt.graphics.RGB;
 
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
@@ -18,126 +15,135 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProv
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
 /**
- * This class describes a scan. It is the main container of the Chains and all other
- * components of a scan description.
+ * <code>YAxis</code> represents an y axis of a plot.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.2
+ * @author Marcus Michalsky
  */
 public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 
 	/**
-	 * The detector channel that will be used for the value of the y-Axis.
+	 * The detector channel of the y axis.
 	 */
 	private DetectorChannel detectorChannel;
 	
 	/**
-	 * The plot mode of the y-Axis
+	 * The plot mode of the y axis. (initialized with linear)
 	 */
 	private PlotModes mode = PlotModes.LINEAR;
 	
 	/**
-	 * A detector channel that should be used to normalize the value.
+	 * The detector channel used to normalize the axis.
 	 */
 	private DetectorChannel normalizeChannel;
 	
 	/**
-	 * The linestyle
+	 * The line style the axis should be plotted with.
 	 */
-	private String linestyle = "";
+	private TraceType linestyle;
 	
 	/**
-	 * The style of the points
+	 * The point style the axis should be plotted with.
 	 */
-	private String markstyle = "";
+	private PointStyle markstyle;
 	
 	/**
-	 * The color.
+	 * The color the axis should be plotted with.
 	 */
-	private String color = "";
+	private RGB color;
 
 	/**
-	 * A List that is holding all object that needs to get an update message if this object was updated.
+	 * A List of objects that need to get an update message if the axis is 
+	 * updated.
 	 */
-	private List< IModelUpdateListener > updateListener;
+	private List<IModelUpdateListener> updateListener;
 	
-	/**
-	 * Gives back the color of the line and markpoints of this axis.
-	 * 
-	 * @return The color of the line and markpoints.
-	 */
-	public String getColor() {
-		return this.color;
-	}
-
 	/**
 	 * This constructor creates a new y axis.
 	 */
 	public YAxis() {
-		this.updateListener = new ArrayList< IModelUpdateListener >();
+		this.updateListener = new ArrayList<IModelUpdateListener>();
 	}
 	
 	/**
-	 * Sets the color of the line and markpoints of this axis.
+	 * Returns the color of the line and mark points of the axis.
 	 * 
-	 * @param color The color of the line an markpoints.
+	 * @return the color of the line and mark points
+	 * @see org.eclipse.swt.graphics.RGB
 	 */
-	public void setColor( final String color ) {
+	public RGB getColor() {
+		return this.color;
+	}
+	
+	/**
+	 * Sets the color of the line and mark points of the axis.
+	 * 
+	 * @param color the color of the line and mark points
+	 * @see org.eclipse.swt.graphics.RGB
+	 */
+	public void setColor(final RGB color) {
 		this.color = color;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
+		final Iterator<IModelUpdateListener> updateIterator = 
+			this.updateListener.iterator();
+		while(updateIterator.hasNext()) {
+			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
 
 	/**
-	 * Gives back the stype of the line.
+	 * Returns the style of the line.
 	 * 
-	 * @return The style of the line.
+	 * @return the style of the line
+	 * @see org.csstudio.swt.xygraph.figures.Trace.TraceType
 	 */
-	public String getLinestyle() {
+	public TraceType getLinestyle() {
 		return this.linestyle;
 	}
 
 	/**
 	 * Sets the style of the line.
 	 * 
-	 * @param linestyle The style of the line.
+	 * @param linestyle the style of the line
+	 * @see org.csstudio.swt.xygraph.figures.Trace.TraceType
 	 */
-	public void setLinestyle( final String linestyle ) {
+	public void setLinestyle(final TraceType linestyle) {
 		this.linestyle = linestyle;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
+		final Iterator<IModelUpdateListener> updateIterator = 
+			this.updateListener.iterator();
+		while(updateIterator.hasNext()) {
+			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
 
 	/**
-	 * Gives back the style of the markpoints.
+	 * Returns the style of the mark points.
 	 * 
-	 * @return The style of the markponints.
+	 * @return the style of the mark points
+	 * @see org.csstudio.swt.xygraph.figures.Trace.PointStyle
 	 */
-	public String getMarkstyle() {
+	public PointStyle getMarkstyle() {
 		return this.markstyle;
 	}
 
 	/**
-	 * Sets the style of the markpoints.
+	 * Sets the style of the mark points.
 	 * 
-	 * @param markstyle The style of the mark points
+	 * @param markstyle the style of the mark points
+	 * @see org.csstudio.swt.xygraph.figures.Trace.PointStyle
 	 */
-	public void setMarkstyle( final String markstyle ) {
+	public void setMarkstyle(final PointStyle markstyle) {
 		this.markstyle = markstyle;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
+		final Iterator<IModelUpdateListener> updateIterator = 
+			this.updateListener.iterator();
+		while(updateIterator.hasNext()) {
+			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
 
 	/**
-	 * Gives back the plot mode of the axis.
+	 * Returns the plot mode of the axis.
 	 * 
-	 * @return The plot mode of the axis.
+	 * @return the plot mode of the axis
 	 */
 	public PlotModes getMode() {
 		return this.mode;
@@ -146,92 +152,99 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	/**
 	 * Sets the plot mode of the axis.
 	 * 
-	 * @param mode The plot mode of the axis.
+	 * @param mode the plot mode of the axis.
 	 */
-	public void setMode( final PlotModes mode ) {
+	public void setMode(final PlotModes mode) {
 		this.mode = mode;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
+		final Iterator<IModelUpdateListener> updateIterator = 
+			this.updateListener.iterator();
+		while(updateIterator.hasNext()) {
+			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
 
 	/**
-	 * Gives back the detector channel that is used for this axis.
+	 * Returns the detector channel used as the axis.
 	 * 
-	 * @return The detector channel what is used
+	 * @return the detector channel used as the axis
 	 */
 	public DetectorChannel getDetectorChannel() {
 		return detectorChannel;
 	}
 
 	/**
-	 * Sets the detector channel that will be used to get the values for the axis.
-	 * @param detectorChannel
+	 * Sets the detector channel that should be used as the axis.
+	 * 
+	 * @param detectorChannel the detector channel that should be used as the 
+	 * 		   axis
 	 */
-	public void setDetectorChannel( final DetectorChannel detectorChannel ) {
+	public void setDetectorChannel(final DetectorChannel detectorChannel) {
 		this.detectorChannel = detectorChannel;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
+		final Iterator<IModelUpdateListener> updateIterator = 
+			this.updateListener.iterator();
+		while(updateIterator.hasNext()) {
+			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
 
 	/**
-	 * Gives back the detector channel that is used for normalization.
+	 * Returns the detector channel used for normalization.
 	 * 
-	 * @return The detector channel that is used for normalization.
+	 * @return the detector channel used for normalization
 	 */
 	public DetectorChannel getNormalizeChannel() {
 		return normalizeChannel;
 	}
 
 	/**
-	 * Clear the detector channel that is used for normalization.
-	 * 
+	 * Clears the detector channel used for normalization. 
 	 */
 	public void clearNormalizeChannel() {
 		this.normalizeChannel = null;
 	}
 
 	/**
-	 * Sets the detector channel that is used for normalization.
+	 * Sets the detector channel used for normalization.
 	 * 
-	 * @param normalizeChannel The detector channel that is used for normalization.
+	 * @param normalizeChannel the detector channel that should be used for 
+	 * 		   normalization
 	 */
-	public void setNormalizeChannel( final DetectorChannel normalizeChannel ) {
+	public void setNormalizeChannel(final DetectorChannel normalizeChannel) {
 		this.normalizeChannel = normalizeChannel;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
+		final Iterator<IModelUpdateListener> updateIterator = 
+			this.updateListener.iterator();
+		while(updateIterator.hasNext()) {
+			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener#updateEvent(de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent)
+	/**
+	 * {@inheritDoc}
 	 */
-	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-		final Iterator< IModelUpdateListener > it = this.updateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, modelUpdateEvent ) );
+	@Override
+	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
+		final Iterator<IModelUpdateListener> it = 
+			this.updateListener.iterator();
+		while(it.hasNext()) {
+			it.next().updateEvent(new ModelUpdateEvent(this, modelUpdateEvent));
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider#addModelUpdateListener(de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener)
+	/**
+	 * {@inheritDoc}
 	 */
-	public boolean addModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return this.updateListener.add( modelUpdateListener );
+	@Override
+	public boolean addModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.updateListener.add(modelUpdateListener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider#removeModelUpdateListener(de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener)
+	/**
+	 * {@inheritDoc}
 	 */
-	public boolean removeModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return this.updateListener.remove( modelUpdateListener );
-	}
-	
+	@Override
+	public boolean removeModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.updateListener.remove(modelUpdateListener);
+	}	
 }

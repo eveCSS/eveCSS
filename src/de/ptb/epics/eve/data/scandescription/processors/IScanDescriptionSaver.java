@@ -1,61 +1,55 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription.processors;
-
-import java.util.List;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 
 /**
- * This interface defines some general methods that must be implemented by any
- * implementation, that is saving the model of the Scan Modul Editor.
+ * Defines some general methods that must be implemented by any
+ * implementation, that is saving a scan module.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.3
- *
+ * @author Marcus Michalsky
  */
 public interface IScanDescriptionSaver {
 
 	/**
-	 * Sets the description of the measuring station for which the scan description, that should
-	 * be saved was made for.
+	 * Sets the measuring station the scan description originated from. 
 	 * 
-	 * @param measuringStation The measuring station. The implementation must not accept null here.
+	 * @param measuringStation the measuring station.
+	 * <dt><b>Precondition:</b><dd> the argument is not <code>null</code>
 	 */
-	public void setMeasuringStationDescription( final IMeasuringStation measuringStation );
+	public void setMeasuringStationDescription(
+			final IMeasuringStation measuringStation);
 	
 	/**
-	 * Gives back the measuring station, for that the scan description is for.
+	 * Returns the measuring station the scan description resulted from.
 	 * 
-	 * @return The measuring station. The implementation must not return null!
+	 * @return the measuring station the scan description resulted from
+	 * <dt><b>Postcondition:</b><dd> the return value is not <code>null</code>
 	 */
 	public IMeasuringStation getMeasuringStationDescription();
 	
 	/**
 	 * Sets the scan description that should be saved.
 	 * 
-	 * @param scanDescription The scan descrption that should be saved. The implementation must not accept null here.
+	 * @param scanDescription the scan description that should be saved. 
+	 * <dt><b>Precondition:</b><dd> the argument is not <code>null</code>
 	 */
-	public void setScanDescription( final ScanDescription scanDescription );
+	public void setScanDescription(final ScanDescription scanDescription);
 	
 	/**
-	 * Gives back the scan description that should be saved.
+	 * Returns the scan description that should be saved.
 	 * 
-	 * @return The scan description that should be saved. The implemenation must not return null here!
+	 * @return the scan description that should be saved
+	 * <dt><b>Postcondition:</b><dd> the return value is not <code>null</code> 
 	 */
 	public ScanDescription getScanDescription();
 	
 	/**
-	 * The call of save will save the scan description.
+	 * Saves the scan description.
 	 * 
-	 * @return Returns true if the scan description has been saved correctly and false if not.
+	 * @return <code>true</code> if the scan description has been saved, 
+	 * 			<code>false</code> otherwise
 	 */
-	public boolean save();
-	
+	public boolean save();	
 }

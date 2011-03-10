@@ -1,18 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription.processors;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
+import org.csstudio.swt.xygraph.figures.Trace.TraceType;
+import org.eclipse.swt.graphics.RGB;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -48,13 +46,12 @@ import de.ptb.epics.eve.data.scandescription.ScanModul;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
 import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
-//import de.ptb.epics.eve.editor.Activator;
 
 /**
  * This class represents a load handler for SAX that loads a scan description from a XML file.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
- *
+ * @author Marcus Michalsky
  */
 public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
@@ -1007,56 +1004,76 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case YAXIS_LINESTYLE_NEXT:
 			final String linestyleBuffer = textBuffer.toString();
-			final String[] linestyles = this.measuringStation.getSelections().getLinestyles();
+			
 			boolean foundLinestyle = false;
-			for( int i = 0; i < linestyles.length; ++i ) {
-				if( linestyles[i].equals( linestyleBuffer ) ) {
+				
+			TraceType[] tracetypes = TraceType.values();
+			for(int i=0;i<tracetypes.length;i++) {
+				if(tracetypes[i].toString().equals(linestyleBuffer)) {
 					foundLinestyle = true;
 				}
 			}
-			if( foundLinestyle ) {
-				this.currentYAxis.setLinestyle( linestyleBuffer );
-			} else {
+
+			if(foundLinestyle) {
 				
-			}
+				for(int i=0;i<tracetypes.length;i++) {
+					if(tracetypes[i].toString().equals(linestyleBuffer)) {
+						this.currentYAxis.setLinestyle(tracetypes[i]);
+					}
+				}
+			} 
 			
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_LINESTYLE_READ;
 			break;
 
 		case YAXIS_MARKSTYLE_NEXT:
 			final String markstyleBuffer = textBuffer.toString();
-			final String[] markstyles = this.measuringStation.getSelections().getMarkstyles();
+			
 			boolean foundMarkstyle = false;
-			for( int i = 0; i < markstyles.length; ++i ) {
-				if( markstyles[i].equals( markstyleBuffer ) ) {
-					foundMarkstyle = true;
+			
+			PointStyle[] markstyles = PointStyle.values();
+			
+			for(int i=0;i<markstyles.length;i++) {
+				try {
+					if(markstyles[i].toString().equals(URLDecoder.decode(markstyleBuffer, "UTF-8"))) {
+						foundMarkstyle = true;
+					}
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
 				}
 			}
-			if( foundMarkstyle ) {
-				this.currentYAxis.setMarkstyle( markstyleBuffer );
-			} else {
-				
-			}
 
+			if( foundMarkstyle ) {
+				
+				for(int i=0;i<markstyles.length;i++) {
+					try {
+						if(markstyles[i].toString().equals(URLDecoder.decode(markstyleBuffer, "UTF-8"))) {
+							this.currentYAxis.setMarkstyle(markstyles[i]);
+						}
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						
+					}
+				}	
+			}
+			
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_MARKSTYLE_READ;
 			break;
 
 		case YAXIS_COLOR_NEXT:
 			final String colorBuffer = textBuffer.toString();
-			final String[] colors = this.measuringStation.getSelections().getColors();
-			boolean foundColor = false;
-			
-			for( int i = 0; i < colors.length; ++i ) {
-				if( colors[i].equals( colorBuffer ) ) {
-					foundColor = true;
-				}
-			}
-			
-			if( foundColor ) {
-				this.currentYAxis.setColor( colorBuffer );
-			} else {
-				
-			}
+
+			String red_hex = colorBuffer.substring(0,2);
+			int red = Integer.parseInt(red_hex, 16);
+			String green_hex = colorBuffer.substring(2,4);
+			int green = Integer.parseInt(green_hex, 16);
+			String blue_hex = colorBuffer.substring(4);
+			int blue = Integer.parseInt(blue_hex, 16);
+
+			if(colorBuffer.length()==6)
+				this.currentYAxis.setColor(new RGB(red, green, blue));
+			else
+				this.currentYAxis.setColor(new RGB(0,0,0));
 			
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_COLOR_READ;
 			break;
@@ -1080,8 +1097,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		
 		textBuffer = null;
 
-		/*******************************************************************/
-		/*******************************************************************/
+		/* ******************************************************************/
+		/* ******************************************************************/
 
 		switch (this.state) {
 		case VERSION_READ:

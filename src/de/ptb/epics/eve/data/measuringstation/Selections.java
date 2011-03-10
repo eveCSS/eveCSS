@@ -1,14 +1,6 @@
-/*
- * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.Arrays;
-
 
 /**
  * This class is holding all selections of the measuring station. The selections
@@ -26,51 +18,9 @@ public class Selections {
 	private String[] stepfunctions;
 	
 	/**
-	 * This array holds all available line styles.
-	 */
-	private String[] linestyles;
-	
-	/**
-	 * This array holds all available colors.
-	 */
-	private String[] colors;
-	
-	/**
-	 * This array holds all available mark styles.
-	 */
-	private String[] markstyles;
-	
-	/**
 	 * This array holds all available scan module types.
 	 */
 	private String[] smtypes;
-
-	/**
-	 * Returns the array, that is holding all color;
-	 * 
-	 * @return An Array that is holding all colors.
-	 */
-	public String[] getColors() {
-		return this.colors;
-	}
-
-	/**
-	 * Returns the array, that is holding all line styles.
-	 * 
-	 * @return An Array that is holding all line styles.
-	 */
-	public String[] getLinestyles() {
-		return this.linestyles;
-	}
-
-	/**
-	 * Returns the array, that is holding all mark styles.
-	 * 
-	 * @return An Array that is holding all mark styles.
-	 */
-	public String[] getMarkstyles() {
-		return this.markstyles;
-	}
 
 	/**
 	 * Returns an array, that is holding all scan module types.
@@ -88,33 +38,6 @@ public class Selections {
 	 */
 	public String[] getStepfunctions() {
 		return this.stepfunctions;
-	}
-
-	/**
-	 * Sets the array, that is holding all colors.
-	 * 
-	 * @param colors A Array that is holding all colors.
-	 */
-	public void setColors(final String[] colors) {
-		this.colors = colors;
-	}
-
-	/**
-	 * Sets the array, that is holding all line styles.
-	 * 
-	 * @param linestyles A Array that is holding all line styles.
-	 */
-	public void setLinestyles(final String[] linestyles) {
-		this.linestyles = linestyles;
-	}
-
-	/**
-	 * Sets the array, that is holding all mark styles.
-	 * 
-	 * @param markstyles A Array that is holding all mark styles.
-	 */
-	public void setMarkstyles(final String[] markstyles) {
-		this.markstyles = markstyles;
 	}
 
 	/**
@@ -143,9 +66,6 @@ public class Selections {
 		// TODO Explain !!!!!!!!!!!!!!!!!!!
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + Arrays.hashCode(colors);
-		result = prime * result + Arrays.hashCode(linestyles);
-		result = prime * result + Arrays.hashCode(markstyles);
 		result = prime * result + Arrays.hashCode(smtypes);
 		result = prime * result + Arrays.hashCode(stepfunctions);
 		return result;
@@ -169,16 +89,9 @@ public class Selections {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
+
 		Selections other = (Selections) obj;
-		if (!Arrays.equals(colors, other.colors)) {
-			return false;
-		}
-		if (!Arrays.equals(linestyles, other.linestyles)) {
-			return false;
-		}
-		if (!Arrays.equals(markstyles, other.markstyles)) {
-			return false;
-		}
+
 		if (!Arrays.equals(smtypes, other.smtypes)) {
 			return false;
 		}

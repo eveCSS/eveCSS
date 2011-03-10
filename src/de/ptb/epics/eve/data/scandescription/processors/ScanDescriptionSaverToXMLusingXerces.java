@@ -1,20 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription.processors;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
+import org.eclipse.swt.graphics.RGB;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -63,7 +57,7 @@ import de.ptb.epics.eve.data.scandescription.PositionMode;
  * This class saves a scan description to a file.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
- *
+ * @author Marcus Michalsky
  */
 public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSaver {
 
@@ -1280,18 +1274,34 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 				}
 			
 				this.atts.clear();
-				this.contentHandler.startElement( "", "linestyle", "linestyle", this.atts );
-				this.contentHandler.characters( yaxis.getLinestyle().toCharArray(), 0, yaxis.getLinestyle().length() );
+				this.contentHandler.startElement("", "linestyle", "linestyle", this.atts);
+				this.contentHandler.characters(yaxis.getLinestyle().toString().toCharArray(), 0, yaxis.getLinestyle().toString().length());
 				this.contentHandler.endElement( "", "linestyle", "linestyle" );
 				
 				this.atts.clear();
 				this.contentHandler.startElement( "", "color", "color", this.atts );
-				this.contentHandler.characters( yaxis.getColor().toCharArray(), 0, yaxis.getColor().length() );
+				
+				RGB color =  yaxis.getColor();
+				String red = Integer.toHexString(color.red);
+				String green = Integer.toHexString(color.green);
+				String blue = Integer.toHexString(color.blue);
+				if(red.length()==1) red = "0" + red;
+				if(green.length()==1) green = "0" + green;
+				if(blue.length()==1) blue = "0" + blue;
+				
+				String sColor = red + green + blue;
+				this.contentHandler.characters( sColor.toCharArray(), 0, sColor.length() );
 				this.contentHandler.endElement( "", "color", "color" );
 				
 				this.atts.clear();
 				this.contentHandler.startElement( "", "markstyle", "markstyle", this.atts );
-				this.contentHandler.characters( yaxis.getMarkstyle().toCharArray(), 0, yaxis.getMarkstyle().length() );
+				try {
+					String encoded = URLEncoder.encode(yaxis.getMarkstyle().toString(), "UTF-8");
+					this.contentHandler.characters(encoded.toCharArray(), 0, encoded.length());
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					
+				}
 				this.contentHandler.endElement( "", "markstyle", "markstyle" );
 			
 				this.contentHandler.endElement( "", "yaxis", "yaxis" );
@@ -1649,6 +1659,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 			this.contentHandler.characters( stringBuffer.toString().toCharArray(), 0, stringBuffer.toString().length() );
 			this.contentHandler.endElement( "", "stepfunction", "stepfunction" );
 			
+			/*
 			stringBuffer.delete( 0, stringBuffer.length() );
 			stringArray = selections.getLinestyles();
 			for( int i = 0; i < stringArray.length; ++i ) {
@@ -1687,6 +1698,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 			this.contentHandler.startElement( "", "markstyle", "markstyle", this.atts );
 			this.contentHandler.characters( stringBuffer.toString().toCharArray(), 0, stringBuffer.toString().length() );
 			this.contentHandler.endElement( "", "markstyle", "markstyle" );
+			*/
 			
 			stringBuffer.delete( 0, stringBuffer.length() );
 			stringArray = selections.getSmtypes();

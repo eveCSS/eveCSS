@@ -171,7 +171,7 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="192,108">
       <children xsi:type="editmodel:AttributeEditModel" name="color" id="de.ptb.epics.eve.data.scandescription/YAxis#color"/>
       <children xsi:type="editmodel:AttributeEditModel" name="detectorChannel" id="de.ptb.epics.eve.data.scandescription/YAxis#detectorChannel"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="linestyle" id="de.ptb.epics.eve.data.scandescription/YAxis#linestyle"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="linestyle" id="de.ptb.epics.eve.data.scandescription/YAxis#linestyl"/>
       <children xsi:type="editmodel:AttributeEditModel" name="markstyle" id="de.ptb.epics.eve.data.scandescription/YAxis#markstyle"/>
       <children xsi:type="editmodel:AttributeEditModel" name="mode" id="de.ptb.epics.eve.data.scandescription/YAxis#mode"/>
       <children xsi:type="editmodel:AttributeEditModel" name="normalizeChannel" id="de.ptb.epics.eve.data.scandescription/YAxis#normalizeChannel"/>
@@ -187,10 +187,10 @@
       <children xsi:type="editmodel:MethodEditModel" name="getMode" id="de.ptb.epics.eve.data.scandescription/YAxis#getMode()"/>
       <children xsi:type="editmodel:MethodEditModel" name="getNormalizeChannel" id="de.ptb.epics.eve.data.scandescription/YAxis#getNormalizeChannel()"/>
       <children xsi:type="editmodel:MethodEditModel" name="removeModelUpdateListener" id="de.ptb.epics.eve.data.scandescription/YAxis#removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="setColor" id="de.ptb.epics.eve.data.scandescription/YAxis#setColor(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setColor" id="de.ptb.epics.eve.data.scandescription/YAxis#setColor()"/>
       <children xsi:type="editmodel:MethodEditModel" name="setDetectorChannel" id="de.ptb.epics.eve.data.scandescription/YAxis#setDetectorChannel(Lde.ptb.epics.eve.data.measuringstation.DetectorChannel;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="setLinestyle" id="de.ptb.epics.eve.data.scandescription/YAxis#setLinestyle(Ljava.lang.String;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="setMarkstyle" id="de.ptb.epics.eve.data.scandescription/YAxis#setMarkstyle(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setLinestyle" id="de.ptb.epics.eve.data.scandescription/YAxis#setLinestyle(Lorg.csstudio.swt.xygraph.figures.Trace.TraceType;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMarkstyle" id="de.ptb.epics.eve.data.scandescription/YAxis#setMarkstyle(Lorg.csstudio.swt.xygraph.figures.Trace.PointStyle;)"/>
       <children xsi:type="editmodel:MethodEditModel" name="setMode" id="de.ptb.epics.eve.data.scandescription/YAxis#setMode(Lde.ptb.epics.eve.data.PlotModes;)"/>
       <children xsi:type="editmodel:MethodEditModel" name="setNormalizeChannel" id="de.ptb.epics.eve.data.scandescription/YAxis#setNormalizeChannel(Lde.ptb.epics.eve.data.measuringstation.DetectorChannel;)"/>
       <children xsi:type="editmodel:MethodEditModel" name="updateEvent" id="de.ptb.epics.eve.data.scandescription/YAxis#updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;)"/>

@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- */
 package de.ptb.epics.eve.data.measuringstation.processors;
 
 import org.xml.sax.Attributes;
@@ -124,8 +119,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 	private StringBuffer textBuffer;
 		
 	/**
-	 * This method gets called by SAX at the beginning of the processing.
-	 * 
+	 * {@inheritDoc}
 	 */
 	@Override 
 	public void startDocument() throws SAXException {
@@ -134,13 +128,8 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		this.subState = MeasuringStationLoaderSubStates.NONE;
 	} 
 	
-	// TODO Comment
 	/**
-	 * 
-	 * @param namespaceURI
-	 * @param localName
-	 * @param qName
-	 * @param atts
+	 * {@inheritDoc} 
 	 */
 	@Override 
 	public void startElement(final String namespaceURI, 
@@ -386,12 +375,6 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			case SELECTIONS_LOADING:
 				if( qName.equals( "stepfunction" ) ) {
 					this.state = MeasuringStationLoaderStates.SELECTIONS_STEPFUNCTION_NEXT;
-				} else if( qName.equals( "linestyle" ) ) {
-					this.state = MeasuringStationLoaderStates.SELECTIONS_LINESTYLE_NEXT;
-				} else if( qName.equals( "color" ) ) {
-					this.state = MeasuringStationLoaderStates.SELECTIONS_COLOR_NEXT;
-				} else if( qName.equals( "markstyle" ) ) {
-					this.state = MeasuringStationLoaderStates.SELECTIONS_MARKSTYLE_NEXT;
 				} else if( qName.equals( "smtype" ) ) {
 					this.state = MeasuringStationLoaderStates.SELECTIONS_SMTYPE_NEXT;
 				}
@@ -494,13 +477,10 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 	}
 	
 	/**
-	 * 
-	 * @param ch
-	 * @param start
-	 * @param length
+	 * {@inheritDoc}
 	 */
 	@Override 
-	public void characters( final char[] ch, final int start, final int length ) {
+	public void characters(final char[] ch, final int start, final int length) {
 
 		String s = new String(ch, start, length).trim();
 		if (textBuffer == null) {
@@ -510,21 +490,15 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		} 
 	}
 	
-	// TODO Comment
 	/**
-	 * 
-	 * @param uri
-	 * @param localName
-	 * @param qName
+	 * {@inheritDoc} 
 	 */
 	@Override 
 	public void endElement(final String uri, 
 							final String localName, 
 							final String qName) throws SAXException {
 
-//		if ((textBuffer != null) && (textBuffer.length() > 0)) System.err.println( textBuffer + ": " + this.state + " / " + this.subState);
-
-		switch( this.state ) {
+		switch(this.state) {
 		case VERSION_NEXT:
 			this.measuringStation.setVersion( textBuffer.toString() );
 			this.state = MeasuringStationLoaderStates.VERSION_READ;
@@ -629,22 +603,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			this.measuringStation.getSelections().setStepfunctions( textBuffer.toString().split("," ) );
 			this.state = MeasuringStationLoaderStates.SELECTIONS_STEPFUNCTION_READ;
 			break;
-			
-		case SELECTIONS_COLOR_NEXT:
-			this.measuringStation.getSelections().setColors( textBuffer.toString().split("," ) );
-			this.state = MeasuringStationLoaderStates.SELECTIONS_COLOR_READ;
-			break;
-			
-		case SELECTIONS_MARKSTYLE_NEXT:
-			this.measuringStation.getSelections().setMarkstyles( textBuffer.toString().split("," ) );
-			this.state = MeasuringStationLoaderStates.SELECTIONS_MARKSTYLE_READ;
-			break;
-			
-		case SELECTIONS_LINESTYLE_NEXT:
-			this.measuringStation.getSelections().setLinestyles( textBuffer.toString().split("," ) );
-			this.state = MeasuringStationLoaderStates.SELECTIONS_LINESTYLE_READ;
-			break;
-			
+		
 		case SELECTIONS_SMTYPE_NEXT:
 			this.measuringStation.getSelections().setSmtypes( textBuffer.toString().split("," ) );
 			this.state = MeasuringStationLoaderStates.SELECTIONS_SMTYPE_READ;
@@ -1081,24 +1040,6 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				}
 				break;
 				
-			case SELECTIONS_LINESTYLE_READ:
-				if( qName.equals( "linestyle" ) ) {
-					this.state =  MeasuringStationLoaderStates.SELECTIONS_LOADING;
-				}
-				break;
-				
-			case SELECTIONS_COLOR_READ:
-				if( qName.equals( "color" ) ) {
-					this.state =  MeasuringStationLoaderStates.SELECTIONS_LOADING;
-				}
-				break;
-				
-			case SELECTIONS_MARKSTYLE_READ:
-				if( qName.equals( "markstyle" ) ) {
-					this.state =  MeasuringStationLoaderStates.SELECTIONS_LOADING;
-				}
-				break;
-				
 			case SELECTIONS_SMTYPE_READ:
 				if( qName.equals( "smtype" ) ) {
 					this.state =  MeasuringStationLoaderStates.SELECTIONS_LOADING;
@@ -1168,9 +1109,8 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		}
 	}
 	
-	// TODO Comment
 	/**
-	 * 
+	 * {@inheritDoc}
 	 */
 	@Override 
 	public void endDocument() throws SAXException { 
@@ -1292,12 +1232,11 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 	}
 
 	/**
-	 * This method gives back the loaded measuring station description.
+	 * Returns the loaded measuring station.
 	 * 
-	 * @return The loaded measuring station description.
+	 * @return the loaded measuring station
 	 */
 	public MeasuringStation getMeasuringStation() {
 		return this.measuringStation;
-	}
-	
+	}	
 }
