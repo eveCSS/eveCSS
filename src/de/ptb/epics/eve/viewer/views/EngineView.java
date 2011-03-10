@@ -503,11 +503,11 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	@Override
 	public void stackDisconnected() {
 
+		/*****
 		this.disconnectButton.setEnabled(false);
 		this.connectButton.setEnabled(true);
 		this.killButton.setEnabled(false);
-		
-		/********
+		****/
 		if (!this.loadedScmlText.isDisposed()) this.loadedScmlText.getDisplay().syncExec( new Runnable() {
 
 			public void run() {
@@ -520,7 +520,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 				}
 			}
 		});
-		*******/
 	}
 
 	public void setLoadedScmlFile(final String filename) {
