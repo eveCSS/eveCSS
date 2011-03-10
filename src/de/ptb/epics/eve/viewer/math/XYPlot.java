@@ -1,10 +1,3 @@
-/* 
- * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.viewer.math;
 
 import java.util.ArrayList;
@@ -51,19 +44,20 @@ public class XYPlot extends Figure {
 		Trace trace = new Trace("Y-Axis", xyGraph.primaryXAxis, 
 								xyGraph.primaryYAxis, dataProvider);
 		traceList.add(trace);
-
 	}
 	
 	/**
+	 * Returns the trace with the given name.
 	 * 
-	 * 
-	 * @param name
-	 * @return
+	 * @param name the name of the trace that should be returned
+	 * @return the trace with the given name 
+	 * 			(or <code>null</code> if name is <code>null</code> or 
+	 * 			 not present)
 	 */
 	public Trace getTrace(String name) {
 		if (name == null) return null;
 
-		if (traceMap.containsKey(name)){
+		if (traceMap.containsKey(name)) {
 			return traceMap.get(name);
 		}
 		else
@@ -71,9 +65,10 @@ public class XYPlot extends Figure {
 	}
 		
 	/**
+	 * Adds a trace with a specific name to the plot.
+	 * (Does nothing id name is <code>null</code>.)
 	 * 
-	 * 
-	 * @param name
+	 * @param name the name of the trace that should be added
 	 */
 	public void addTrace(String name) {
 		// TODO
@@ -118,9 +113,9 @@ public class XYPlot extends Figure {
 	}
 
 	/**
+	 * Removes the trace with a specific name from the plot.
 	 * 
-	 * 
-	 * @param name
+	 * @param name the name of the trace that should be removed
 	 */
 	public void removeTrace(String name) {
 		if (name == null) return;
@@ -138,13 +133,15 @@ public class XYPlot extends Figure {
 	}
 	
 	/**
+	 * Sets a new data point (x,y) to a trace of the plot.
+	 * (Does nothing if at least one argument is <code>null</code> or if the 
+	 *  trace is not present.)
 	 * 
-	 * 
-	 * @param name
-	 * @param xValue
-	 * @param yValue
+	 * @param name the name of the trace the point should be added to
+	 * @param xValue the x value of the data point
+	 * @param yValue the y value of the data point
 	 */
-	public void setData(String name, Double xValue, Double yValue){
+	public void setData(String name, Double xValue, Double yValue) {
 		if ((name == null) || (xValue == null) ||  (yValue == null)) return;
 		
 		if (traceMap.containsKey(name)){
@@ -157,9 +154,9 @@ public class XYPlot extends Figure {
 	}
 	
 	/**
-	 * 
+	 * Removes all traces currently in the plot.
 	 */
-	public void removeAllTraces(){
+	public void removeAllTraces() {
 		ArrayList<String> allNames = new ArrayList<String>(traceMap.keySet());
 		for (String name : allNames) {
 			removeTrace(name);

@@ -1,22 +1,14 @@
-/* 
- * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.viewer.views;
 
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 
+import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
@@ -41,8 +33,6 @@ public class PlotGraphComposite extends Composite
 	private int detector1PosCount;
 	private int detector2PosCount;
 	private int motorPosCount;
-	private Combo normalizeComboBox;
-	private Label normalizeLabel;
 	private Double xValue;
 	private int chid;
 	private int smid;
@@ -66,7 +56,7 @@ public class PlotGraphComposite extends Composite
 		
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
-		setLayout( gridLayout );
+		setLayout(gridLayout);
 		
 		GridData gridData = new GridData();
 		gridData.verticalSpan = 2;
@@ -104,9 +94,6 @@ public class PlotGraphComposite extends Composite
 						 String detector1Name, String detector2Id, 
 						 String detector2Name) {
 
-		Font newFont = Activator.getDefault().getFont("VIEWERFONT");
-		GridData gridData;
-
 		// do not clean if plot has "isInit=false" AND detectors and motors are 
 		// still the same
 		if ((this.motorId == motorId) && (this.detector1Id == detector1Id) && 
@@ -125,14 +112,35 @@ public class PlotGraphComposite extends Composite
 		this.motorId = motorId;
 
 		// update the x axis with the new motor name
-		xyPlot.setXAxisTitle(motorName);
-               
+		if(plotWindow.getMode() == PlotModes.LOG)
+			xyPlot.setXAxisTitle(motorName + " (log)");
+		else
+			xyPlot.setXAxisTitle(motorName);
+             	
 		// update first y axis 
 		if (this.detector1Id != null)
 		{
 			this.detector1Name = detector1Name;
 			if (xyPlot.getTrace(detector1Name) == null)
 				xyPlot.addTrace(detector1Name);
+
+			xyPlot.getTrace(detector1Name).setTraceType(
+					plotWindow.getYAxes().get(0).getLinestyle());
+			xyPlot.getTrace(detector1Name).setPointStyle(
+					plotWindow.getYAxes().get(0).getMarkstyle());
+			xyPlot.getTrace(detector1Name).setTraceColor(
+					new Color(null, plotWindow.getYAxes().get(0).getColor()));
+			xyPlot.getTrace(detector1Name).getYAxis().setLogScale(
+					plotWindow.getYAxes().get(0).getMode() == PlotModes.LOG 
+					? true 
+					: false);
+			xyPlot.getTrace(detector1Name).getXAxis().setLogScale(
+					plotWindow.getMode() == PlotModes.LOG 
+					? true
+					: false);
+			if(plotWindow.getYAxes().get(0).getMode() == PlotModes.LOG)
+				xyPlot.getTrace(detector1Name).getYAxis().setTitle(
+													detector1Name + " (log)");
 		}
 		else {
 			xyPlot.removeTrace(detector1Name);
@@ -144,45 +152,29 @@ public class PlotGraphComposite extends Composite
 			this.detector2Name = detector2Name;
 			if (xyPlot.getTrace(detector2Name) == null)
 				xyPlot.addTrace(detector2Name);
+				
+			xyPlot.getTrace(detector2Name).setTraceType(
+					plotWindow.getYAxes().get(1).getLinestyle());
+			xyPlot.getTrace(detector2Name).setPointStyle(
+					plotWindow.getYAxes().get(1).getMarkstyle());
+			xyPlot.getTrace(detector2Name).setTraceColor(
+					new Color(null, plotWindow.getYAxes().get(1).getColor()));
+			xyPlot.getTrace(detector2Name).getYAxis().setLogScale(
+					plotWindow.getYAxes().get(1).getMode() == PlotModes.LOG 
+					? true 
+					: false);
+			xyPlot.getTrace(detector2Name).getXAxis().setLogScale(
+					plotWindow.getMode() == PlotModes.LOG 
+					? true
+					: false);
+			if(plotWindow.getYAxes().get(1).getMode() == PlotModes.LOG)
+				xyPlot.getTrace(detector2Name).getYAxis().setTitle(
+													detector2Name + " (log)");
 		}
 		else {
 			xyPlot.removeTrace(detector2Name);
 			this.detector2Name = null;
 		}
-		// TODO Normalize stuff, Bug #23 in Redmine ! Check...
-		if ((this.detector1Id != null) && (this.detector2Id != null))
-		{
-			if (this.normalizeLabel == null) 
-			{
-				this.normalizeLabel = new Label(this, SWT.NONE);
-				this.normalizeLabel.setFont(newFont);
-				this.normalizeComboBox = new Combo(this, SWT.NONE);
-				gridData = new GridData();
-				//gridData.grabExcessHorizontalSpace = true;
-				gridData.horizontalAlignment = SWT.FILL;
-				this.normalizeComboBox.setLayoutData(gridData);
-				this.normalizeComboBox.setFont(newFont);
-			}
-			this.normalizeLabel.setText("Normalize:");
-			final String[] normalizeItems = {"None", 
-											  detector1Name+"/"+detector2Name, 
-											  detector2Name+"/"+detector1Name};
-			this.normalizeComboBox.setItems(normalizeItems); 
-		}
-		else 
-		{
-			if (normalizeLabel != null) 
-			{ 
-				normalizeLabel.dispose(); 
-				normalizeLabel = null; 
-			}
-			if (normalizeComboBox != null) 
-			{ 
-				normalizeComboBox.dispose(); 
-				normalizeComboBox = null; 
-			}
-		}
-		// end of: Normalize Stuff
 		
 		// redraw
 		canvas.layout();
