@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
 
 import java.util.Iterator;
@@ -59,8 +52,9 @@ import de.ptb.epics.eve.editor.Activator;
 
 public class ScanModulView extends ViewPart implements IModelUpdateListener {
 
-	public static final String ID = "de.ptb.epics.eve.editor.views.ScanModulView"; // TODO
-																							// Needs
+	public static final String ID = 
+			"de.ptb.epics.eve.editor.views.ScanModulView"; // TODO
+																	// Needs
 	private boolean filling;
 	private boolean plotErrors;
 
@@ -159,9 +153,11 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	
 	private int itemhigh = 0;
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		// TODO Auto-generated method stub
 		
 		parent.setLayout(new FillLayout());
 		
@@ -313,7 +309,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		plotWindowsTable.setMenu(menu);
 		plotWindowsTable.addSelectionListener( new SelectionListener() {
 			public void widgetDefaultSelected( final SelectionEvent e ) {
-				// TODO Auto-generated method stub
 			}
 
 			public void widgetSelected( final SelectionEvent e ) {
@@ -341,7 +336,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		TableColumn tableColumn1 = new TableColumn(plotWindowsTable, SWT.NONE);
 		tableColumn1.setWidth(260);
 		tableColumn1.setText("Plot Window");
-		tableColumn1.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
+		//tableColumn1.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
 
 		
 		this.item2 = new ExpandItem(this.bar, SWT.NONE, 0);
@@ -395,11 +390,9 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		eventsTabFolder.addSelectionListener(new SelectionListener() {
 
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
 				// Einträge in der Auswahlliste werden aktualisiert
 				CTabItem wahlItem = eventsTabFolder.getSelection();
 				EventComposite wahlComposite = (EventComposite)wahlItem.getControl();
