@@ -186,6 +186,12 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 			this.contentHandler.characters( ScanDescription.outputVersion.toCharArray(), 0, ScanDescription.outputVersion.length() );
 			this.contentHandler.endElement( "", "", "version" );
 			
+			// TODO this is a dummy, a workaround to produce valid XML, replace with real repeat count
+			this.atts.clear();
+			this.contentHandler.startElement("", "", "repeatcount", atts );
+			this.contentHandler.characters( ("0").toCharArray(), 0, 1 );
+			this.contentHandler.endElement( "", "", "repeatcount" );
+
 			Iterator<Chain> iterator = this.scanDescription.getChains().iterator();
 			while( iterator.hasNext() ) {
 				this.writeChain( iterator.next() );
