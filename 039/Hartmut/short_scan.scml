@@ -4,7 +4,7 @@
     <version>0.3.9</version>
     <chain id="1">
         <comment>Comment 3</comment>
-        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/039/Hartmut/Daten/2sms.h5</savefilename>
+        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/039/Hartmut/Daten/erster_test.h5</savefilename>
         <confirmsave>false</confirmsave>
         <autonumber>true</autonumber>
         <savescandescription>false</savescandescription>
@@ -25,13 +25,17 @@
                 <triggerdelay>0.0</triggerdelay>
                 <triggerconfirm>false</triggerconfirm>
                 <saveaxispositions>never</saveaxispositions>
+                <prescan>
+                    <id>P5000:gw23707function</id>
+                    <value type="string">ACVolts</value>
+                </prescan>
                 <smaxis>
                     <axisid>PPSMC:gw23715000</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
                     <start type="double">25.0</start>
-                    <stop type="double">21.0</stop>
-                    <stepwidth type="double">-1</stepwidth>
+                    <stop type="double">30.0</stop>
+                    <stepwidth type="double">1</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smchannel>
@@ -60,8 +64,8 @@
             <scanmodule id="2">
                 <type>classic</type>
                 <name>SM 2 append</name>
-                <xpos>250</xpos>
-                <ypos>38</ypos>
+                <xpos>229</xpos>
+                <ypos>42</ypos>
                 <parent>1</parent>
                 <settletime>0.0</settletime>
                 <triggerdelay>0.0</triggerdelay>
@@ -71,9 +75,9 @@
                     <axisid>PPSMC:gw23715000</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="double">50.0</start>
-                    <stop type="double">60.0</stop>
-                    <stepwidth type="double">1</stepwidth>
+                    <start type="double">30.0</start>
+                    <stop type="double">35.0</stop>
+                    <stepwidth type="double">1.5</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smchannel>

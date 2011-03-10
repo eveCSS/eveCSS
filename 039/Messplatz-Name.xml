@@ -113,6 +113,14 @@
                 </read>
             </channel>
             <option>
+                <name>valueMonitor</name>
+                <id>P5000:gw2370700.VAL</id>
+                <value>
+                    <access monitor="true" method="GETCB" transport="ca" type="double">P5000:gw2370700.VAL</access>
+                    <value type="double"></value>
+                </value>
+            </option>
+            <option>
                 <name>Function</name>
                 <id>P5000:gw23707function</id>
                 <value>

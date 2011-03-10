@@ -275,7 +275,7 @@
       <element name="class" type="string"></element>
       <element name="name" type="string"></element>
       <element name="id" type="tns:identifier"></element>
-      <element name="read" type="tns:access"></element>
+      <element name="read" type="tns:access" ></element>
       <element name="unit" type="tns:unit" minOccurs="0"></element>   
       <element name="trigger" type="tns:access" minOccurs="0"></element>
       <element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"></element>

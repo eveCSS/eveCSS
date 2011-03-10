@@ -4,7 +4,7 @@
     <version>0.3.9</version>
     <chain id="1">
         <comment>Comment 3</comment>
-        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/039/Hartmut/hartmuts_erstser_test0003.h5</savefilename>
+        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/039/Hartmut/Daten/erster_test.h5</savefilename>
         <confirmsave>false</confirmsave>
         <autonumber>true</autonumber>
         <savescandescription>false</savescandescription>
@@ -73,8 +73,8 @@
             <scanmodule id="2">
                 <type>classic</type>
                 <name>SM 2 append</name>
-                <xpos>248</xpos>
-                <ypos>38</ypos>
+                <xpos>166</xpos>
+                <ypos>101</ypos>
                 <parent>1</parent>
                 <appended>3</appended>
                 <settletime>0.0</settletime>
@@ -112,8 +112,8 @@
             <scanmodule id="3">
                 <type>classic</type>
                 <name>SM 3 append</name>
-                <xpos>379</xpos>
-                <ypos>39</ypos>
+                <xpos>258</xpos>
+                <ypos>58</ypos>
                 <parent>2</parent>
                 <settletime>0.0</settletime>
                 <triggerdelay>0.0</triggerdelay>
