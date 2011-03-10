@@ -7,12 +7,26 @@ import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 
 import de.ptb.epics.eve.data.scandescription.Connector;
 
+/**
+ * <code>EventToScanModulConnectionEditPart</code>
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
 public class EventToScanModulConnectionEditPart extends AbstractConnectionEditPart {
 
-	public EventToScanModulConnectionEditPart( final Connector connector ) {
-		this.setModel( connector );
+	/**
+	 * Constructs an <code>EventToScanModulConnectionEditPart</code>.
+	 * 
+	 * @param connector the connector between scan module and event
+	 */
+	public EventToScanModulConnectionEditPart(final Connector connector) {
+		this.setModel(connector);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected IFigure createFigure() {
 		PolylineConnection connection = new PolylineConnection();
@@ -22,10 +36,10 @@ public class EventToScanModulConnectionEditPart extends AbstractConnectionEditPa
 		return connection;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void createEditPolicies() {
-		// TODO Auto-generated method stub
-		
 	}
-
 }

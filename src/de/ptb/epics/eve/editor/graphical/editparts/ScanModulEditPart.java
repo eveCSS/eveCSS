@@ -6,91 +6,120 @@ import java.util.List;
 
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.ui.IViewReference;
-import org.eclipse.ui.part.EditorPart;
 
 import de.ptb.epics.eve.data.scandescription.ScanModul;
-import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.graphical.editparts.figures.ScanModuleFigure;
 import de.ptb.epics.eve.editor.graphical.GraphicalEditor;
-import de.ptb.epics.eve.editor.views.ScanModulView;
 
-public class ScanModulEditPart extends AbstractGraphicalEditPart implements NodeEditPart, FocusListener {
+/**
+ * <code>ScanModulEditPart</code>.
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
+public class ScanModulEditPart extends AbstractGraphicalEditPart 
+									implements NodeEditPart, FocusListener {
 
-	public ScanModulEditPart( final ScanModul scanModul ) {
-		this.setModel( scanModul );
+	/**
+	 * Constructs a <code>ScanModulEditPart</code>.
+	 * 
+	 * @param scanModul the scan module
+	 */
+	public ScanModulEditPart(final ScanModul scanModul) {
+		this.setModel(scanModul);
 	}
 	
-	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected IFigure createFigure() {
 		final ScanModul scanModul = (ScanModul)this.getModel();
-		return new ScanModuleFigure( scanModul.getName(), scanModul.getX(), scanModul.getY() );
+		return new ScanModuleFigure(
+				scanModul.getName(), scanModul.getX(), scanModul.getY());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void createEditPolicies() {
-		// TODO Auto-generated method stub
-
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected List< ? > getModelSourceConnections() {
-		final List< Object > sourceList = new ArrayList< Object >();
+	protected List<?> getModelSourceConnections() {
+		final List<Object> sourceList = new ArrayList<Object>();
 		final ScanModul scanModul = (ScanModul)this.getModel();
 		
-		if( scanModul.getAppended() != null ) {
-			sourceList.add( scanModul.getAppended() );
+		if(scanModul.getAppended() != null) {
+			sourceList.add(scanModul.getAppended());
 		}
-		if( scanModul.getNested() != null ) {
-			sourceList.add( scanModul.getNested() );
+		if(scanModul.getNested() != null) {
+			sourceList.add(scanModul.getNested());
 		}
 		return sourceList;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected List< ? > getModelTargetConnections() {
-		final List< Object > sourceList = new ArrayList< Object >();
+	protected List<?> getModelTargetConnections() {
+		final List<Object> sourceList = new ArrayList<Object>();
 		final ScanModul scanModul = (ScanModul)this.getModel();
-		if( scanModul.getParent() != null ) {
-			sourceList.add( scanModul.getParent() );
+		if(scanModul.getParent() != null) {
+			sourceList.add(scanModul.getParent());
 		}
 		return sourceList;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public ConnectionAnchor getSourceConnectionAnchor( final ConnectionEditPart connection ) {
+	public ConnectionAnchor getSourceConnectionAnchor(
+										final ConnectionEditPart connection) {
 		final ScanModul scanModul = (ScanModul)this.getModel();
-		if( connection.getModel() == scanModul.getAppended() ) {
+		if(connection.getModel() == scanModul.getAppended()) {
 			return ((ScanModuleFigure)this.figure).getAppendedAnchor();
 		} else {
 			return ((ScanModuleFigure)this.figure).getNestedAnchor();
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public ConnectionAnchor getSourceConnectionAnchor( final Request request ) {
-		return new ChopboxAnchor( this.getFigure() );
+	public ConnectionAnchor getSourceConnectionAnchor(final Request request) {
+		return new ChopboxAnchor(this.getFigure());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public ConnectionAnchor getTargetConnectionAnchor( final ConnectionEditPart connection ) {
+	public ConnectionAnchor getTargetConnectionAnchor(
+										final ConnectionEditPart connection) {
 		return ((ScanModuleFigure)this.figure).getTargetAnchor();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public ConnectionAnchor getTargetConnectionAnchor( final Request request ) {
-		return new ChopboxAnchor( this.getFigure() );
+	public ConnectionAnchor getTargetConnectionAnchor(final Request request) {
+		return new ChopboxAnchor(this.getFigure());
 	}
 
 	private void removeAppendScanModul(ScanModul appendModul) {
@@ -101,11 +130,11 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 		if (appendModul.getAppended().getChildScanModul().getNested() != null) {
 			removeNestedScanModul(appendModul.getAppended().getChildScanModul());
 		}
-		appendModul.getAppended().getChildScanModul().setParent( null );
+		appendModul.getAppended().getChildScanModul().setParent(null);
 		appendModul.getChain().remove(appendModul.getAppended().getChildScanModul());
-		appendModul.getAppended().setChildScanModul( null );
-		this.getViewer().getEditPartRegistry().remove( appendModul.getAppended() );
-		appendModul.setAppended( null );
+		appendModul.getAppended().setChildScanModul(null);
+		this.getViewer().getEditPartRegistry().remove(appendModul.getAppended());
+		appendModul.setAppended(null);
 	}
 
 	private void removeNestedScanModul(ScanModul nestedModul) {
@@ -123,6 +152,9 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 		nestedModul.setNested( null );
 	}
 	
+	/**
+	 * 
+	 */
 	public void removeYourSelf() {
 		final ScanModul scanModul = (ScanModul)this.getModel();
 		if( scanModul.getAppended() != null ) {
@@ -190,6 +222,11 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 		this.setParent( null );
 		
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void refresh() {
 		final ScanModul scanModul = (ScanModul)this.getModel();
 
@@ -210,22 +247,28 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart implements Node
 		super.refresh();
 	}
 
-	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void focusGained(FocusEvent arg0) {
-		// TODO Auto-generated method stub
 	}
 
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void focusLost(FocusEvent arg0) {
-		// TODO Auto-generated method stub
 	}
 
-	public void setFocus( final boolean focus ) {
-		if (this.figure != null ){
-			((ScanModuleFigure)this.figure).setActive( focus );	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setFocus(final boolean focus) {
+		if (this.figure != null) {
+			((ScanModuleFigure)this.figure).setActive(focus);	
 		}
-		super.setFocus( true );
+		super.setFocus(true);
 	}
 }

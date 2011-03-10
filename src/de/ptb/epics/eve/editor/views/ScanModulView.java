@@ -50,11 +50,20 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateList
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 
+/**
+ * <code>ScanModulView</code> shows the currently selected scan module.
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
 public class ScanModulView extends ViewPart implements IModelUpdateListener {
 
+	/**
+	 * the id of the <code>ScanModulView</code>.
+	 */
 	public static final String ID = 
-			"de.ptb.epics.eve.editor.views.ScanModulView"; // TODO
-																	// Needs
+			"de.ptb.epics.eve.editor.views.ScanModulView"; 
+	
 	private boolean filling;
 	private boolean plotErrors;
 
@@ -70,51 +79,36 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	private Composite eventsComposite = null;
 
 	private Label triggerDelayLabel = null;
-
 	private Text triggerDelayText = null;
-
 	private Label triggerDelayErrorLabel = null;
-
 	private Label triggerDelayUnitLabel = null;
 
 	private Label settleTimeLabel = null;
-
 	private Text settleTimeText = null;
-
 	private Label settleTimeErrorLabel = null;
-
 	private Label settleTimeUnitLabel = null;
 
 	private Button confirmTriggerCheckBox = null;
 
 	private Label saveMotorpositionsLabel = null;
-
 	private Combo saveMotorpositionsCombo = null;
 
 	private Table plotWindowsTable = null;
-
 	private Button addPlotWindowButton = null;
 
 	private CTabFolder eventsTabFolder = null;
 
 	private EventComposite pauseEventComposite = null;
-
 	private EventComposite redoEventComposite = null;
-
 	private EventComposite breakEventComposite = null;
-
 	private EventComposite triggerEventComposite = null;
 
 	private CTabFolder behaviorTabFolder = null;
 
 	private Composite motorAxisComposite = null;
-
 	private Composite detectorChannelComposite = null;
-
 	private Composite prescanComposite = null;
-
 	private Composite postscanComposite = null;
-
 	private Composite positioningComposite = null;
 
 	private Button appendScheduleEventCheckBox = null;
@@ -124,7 +118,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	private SelectionListener selectionListener; // @jve:decl-index=0:
 
 	private MenuItem plotWindowRemoveMenuItem;
-
 	private MenuItem plotWindowChangeIDMenuItem;
 
 	private ControlListener itemControlListener;
@@ -360,18 +353,21 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		this.setEnabledForAll(false);
 		this.createListener();
 		this.appendListener();
-
 	}
-
-	@Override
-	public void setFocus() {
-		// TODO Auto-generated method stub
-
-	}
+	
+	// ***********************************************************************
+	// ********************** end of create part control *********************
+	// ***********************************************************************
 
 	/**
-	 * This method initializes eventsTabFolder
-	 * 
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setFocus() {
+	}
+
+	/*
+	 * Initializes eventsTabFolder
 	 */
 	private void createEventsTabFolder() {
 
@@ -389,9 +385,11 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		eventsTabFolder.setLayoutData(gridData);
 		eventsTabFolder.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// Einträge in der Auswahlliste werden aktualisiert
 				CTabItem wahlItem = eventsTabFolder.getSelection();
@@ -399,7 +397,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 				wahlComposite.setEventChoice();
 			}
 		});
-
 
 		this.eventsComposite.addControlListener(new ControlListener() {
 
@@ -418,7 +415,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 			
 		});
 
-		
 		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
 		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
@@ -442,9 +438,8 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		this.triggerEventsTabItem.setControl(triggerEventComposite);
 	}
 
-	/**
-	 * create TabFolder for actions
-	 * 
+	/*
+	 * Creates TabFolder for actions.
 	 */
 	private void createActionsTabFolder() {
 
@@ -461,7 +456,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		this.behaviorTabFolder = new CTabFolder(this.actionsComposite, SWT.FLAT);
 		this.behaviorTabFolder.setLayoutData(gridData);
 
-		
 		this.actionsComposite.addControlListener(new ControlListener() {
 
 			@Override
@@ -501,11 +495,9 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		this.positioningTab.setText(" Positioning ");
 		this.positioningTab.setToolTipText("Move motor to calculated position after scan module is done");
 		this.positioningTab.setControl(this.positioningComposite);
-
 	}
 
-
-	/**
+	/*
 	 * This method initializes motorAxisComposite
 	 * 
 	 */
@@ -514,7 +506,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 				SWT.NONE, this.measuringStation );
 	}
 
-	/**
+	/*
 	 * This method initializes detectorChannelComposite
 	 * 
 	 */
@@ -523,7 +515,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 				SWT.NONE, this.measuringStation );
 	}
 
-	/**
+	/*
 	 * This method initializes prescanComposite
 	 * 
 	 */
@@ -532,7 +524,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 				SWT.NONE, this.measuringStationPrescan );
 	}
 
-	/**
+	/*
 	 * This method initializes postscanComposite
 	 * 
 	 */
@@ -541,7 +533,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 				SWT.NONE, this.measuringStationPostscan );
 	}
 	
-	/**
+	/*
 	 * This method initializes positioningComposite
 	 * 
 	 */
@@ -550,10 +542,18 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 				SWT.NONE);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public ScanModul getCurrentScanModul() {
 		return currentScanModul;
 	}
 
+	/**
+	 * 
+	 * @param currentScanModul
+	 */
 	public void setCurrentScanModul(ScanModul currentScanModul) {
 		if( this.currentScanModul != null ) {
 			this.currentScanModul.removeModelUpdateListener( this );
@@ -1167,91 +1167,110 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		}
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
+	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
 		
 		this.filling = true;
 
-		if( this.currentScanModul != null ) {
-		this.motorAxisTab.setImage( null );
-		this.detectorChannelTab.setImage( null );
-		this.prescanTab.setImage( null );
-		this.postscanTab.setImage( null );
-		this.positioningTab.setImage( null );
+		if(this.currentScanModul != null) {
+			this.motorAxisTab.setImage(null);
+			this.detectorChannelTab.setImage(null);
+			this.prescanTab.setImage(null);
+			this.postscanTab.setImage(null);
+			this.positioningTab.setImage(null);
 		
-		boolean motorAxisErrors = false;
-		boolean detectorChannelErrors = false;
-		boolean prescanErrors = false;
-		boolean postscanErrors = false;
-		boolean positioningErrors = false;
-		boolean plotWindowErrors = false;
+			boolean motorAxisErrors = false;
+			boolean detectorChannelErrors = false;
+			boolean prescanErrors = false;
+			boolean postscanErrors = false;
+			boolean positioningErrors = false;
+			boolean plotWindowErrors = false;
 		
-		final Iterator< IModelError > it = this.currentScanModul.getModelErrors().iterator();
-		while( it.hasNext() ) {
-			final IModelError modelError = it.next();
-			if( modelError instanceof AxisError ) {
-				motorAxisErrors = true;
-			} else if( modelError instanceof ChannelError ) {
-				detectorChannelErrors = true;
-			} else if( modelError instanceof PrescanError ) {
-				prescanErrors = true;
-			} else if( modelError instanceof PostscanError ) {
-				postscanErrors = true;
-			} else if( modelError instanceof PositioningError ) {
-				positioningErrors = true;
-			} else if( modelError instanceof PlotWindowError ) {
-				plotWindowErrors = true;
-			} 
-		}
-		if( motorAxisErrors ) {
-			this.motorAxisTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
-		}
-		if( detectorChannelErrors ) {
-			this.detectorChannelTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
-		}
-		if( prescanErrors ) {
-			this.prescanTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
-		}
-		if( postscanErrors ) {
-			this.postscanTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
-		}
-		if( positioningErrors ) {
-			this.positioningTab.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
-		}
-		if( plotWindowErrors ) {
-			this.plotErrors = true;
-			this.updatePlotWindowsTableError();
-		}
-		else {
-			if (this.plotErrors) {
-				// es gibt noch einen plotError der zurückgesetzt werden muß
+			final Iterator<IModelError> it = 
+					this.currentScanModul.getModelErrors().iterator();
+			
+			while(it.hasNext()) {
+				final IModelError modelError = it.next();
+				if(modelError instanceof AxisError) {
+					motorAxisErrors = true;
+				} else if(modelError instanceof ChannelError) {
+					detectorChannelErrors = true;
+				} else if(modelError instanceof PrescanError) {
+					prescanErrors = true;
+				} else if(modelError instanceof PostscanError) {
+					postscanErrors = true;
+				} else if(modelError instanceof PositioningError) {
+					positioningErrors = true;
+				} else if( modelError instanceof PlotWindowError ) {
+					plotWindowErrors = true;
+				} 
+			}
+			
+			if(motorAxisErrors) {
+				this.motorAxisTab.setImage( 
+						PlatformUI.getWorkbench().getSharedImages().getImage(
+								ISharedImages.IMG_OBJS_ERROR_TSK));
+			}
+			if(detectorChannelErrors) {
+				this.detectorChannelTab.setImage(PlatformUI.getWorkbench().
+											getSharedImages().getImage( 
+											ISharedImages.IMG_OBJS_ERROR_TSK));
+			}
+			if(prescanErrors) {
+				this.prescanTab.setImage(PlatformUI.getWorkbench().
+										getSharedImages().getImage(
+										ISharedImages.IMG_OBJS_ERROR_TSK));
+			}
+			if(postscanErrors) {
+				this.postscanTab.setImage(PlatformUI.getWorkbench().
+										getSharedImages().getImage(
+										ISharedImages.IMG_OBJS_ERROR_TSK));
+			}
+			if(positioningErrors) {
+				this.positioningTab.setImage(PlatformUI.getWorkbench().
+											getSharedImages().getImage(
+											ISharedImages.IMG_OBJS_ERROR_TSK));
+			}
+			if(plotWindowErrors) {
+				this.plotErrors = true;
 				this.updatePlotWindowsTableError();
 			}
-			this.plotErrors = false;
-		}
+			else {
+				if (this.plotErrors) {
+				// es gibt noch einen plotError der zurückgesetzt werden muß
+				this.updatePlotWindowsTableError();
+				}
+				this.plotErrors = false;
+			}
 
-		if( this.currentScanModul.getPauseControlEventManager().getModelErrors().size() > 0 ) {
-			this.pauseEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
-		} else {
-			this.pauseEventsTabItem.setImage( null );
+			if(this.currentScanModul.getPauseControlEventManager().
+									 getModelErrors().size() > 0 ) {
+				this.pauseEventsTabItem.setImage(PlatformUI.getWorkbench().
+												 getSharedImages().
+												 getImage( 
+												ISharedImages.IMG_OBJS_ERROR_TSK ) );
+			} else {
+				this.pauseEventsTabItem.setImage( null );
+			}
+			if( this.currentScanModul.getRedoControlEventManager().getModelErrors().size() > 0 ) {
+				this.redoEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+			} else {
+				this.redoEventsTabItem.setImage( null );
+			}
+			if( this.currentScanModul.getBreakControlEventManager().getModelErrors().size() > 0 ) {
+				this.breakEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+			} else {
+				this.breakEventsTabItem.setImage( null );
+			}
+			if( this.currentScanModul.getTriggerControlEventManager().getModelErrors().size() > 0 ) {
+				this.triggerEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
+			} else {
+				this.triggerEventsTabItem.setImage( null );
+			}
 		}
-		if( this.currentScanModul.getRedoControlEventManager().getModelErrors().size() > 0 ) {
-			this.redoEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
-		} else {
-			this.redoEventsTabItem.setImage( null );
-		}
-		if( this.currentScanModul.getBreakControlEventManager().getModelErrors().size() > 0 ) {
-			this.breakEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
-		} else {
-			this.breakEventsTabItem.setImage( null );
-		}
-		if( this.currentScanModul.getTriggerControlEventManager().getModelErrors().size() > 0 ) {
-			this.triggerEventsTabItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
-		} else {
-			this.triggerEventsTabItem.setImage( null );
-		}
-		}
-		this.filling = false;
-		
+		this.filling = false;	
 	}
 } // @jve:decl-index=0:visual-constraint="10,10,342,376"
