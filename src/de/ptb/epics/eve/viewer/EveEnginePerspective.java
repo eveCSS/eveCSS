@@ -44,7 +44,7 @@ public final class EveEnginePerspective implements IPerspectiveFactory {
 		layout.addView( "MessagesView", IPageLayout.LEFT, 0.35f, IPageLayout.ID_EDITOR_AREA);
 		layout.addView( "MeasuringStationView", IPageLayout.TOP, 0.8f, "MessagesView" );
 		layout.addView( "PlayListView", IPageLayout.LEFT, 0.5f, "MeasuringStationView" );
-		layout.addView( "GraphView", IPageLayout.BOTTOM, 0.75f, "PlayListView" );
+		layout.addView( "EngineView", IPageLayout.BOTTOM, 0.75f, "PlayListView" );
 		
 		IFolderLayout folder = layout.createFolder("DeviceInspectorFolder", IPageLayout.RIGHT, 0.50f, IPageLayout.ID_EDITOR_AREA );
 		folder.addPlaceholder("DeviceInspectorView:*");

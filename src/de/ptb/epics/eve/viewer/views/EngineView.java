@@ -1,12 +1,15 @@
-package de.ptb.epics.eve.viewer;
+package de.ptb.epics.eve.viewer.views;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -14,12 +17,16 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
@@ -31,23 +38,40 @@ import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
 import de.ptb.epics.eve.ecp1.client.model.Error;
 import de.ptb.epics.eve.ecp1.intern.EngineStatus;
 import de.ptb.epics.eve.ecp1.intern.ErrorType;
+import de.ptb.epics.eve.viewer.Activator;
+import de.ptb.epics.eve.viewer.IUpdateListener;
+import de.ptb.epics.eve.viewer.MessageTypes;
+import de.ptb.epics.eve.viewer.ViewerMessage;
+
+import de.ptb.epics.eve.viewer.actions.connectCommandHandler;
+
 
 /**
  * A simple view implementation, which only displays a label.
  * 
- * @author Sven Wende
  * @author Hartmut Scherr
  */
-public final class GraphView extends ViewPart implements IUpdateListener, IConnectionStateListener, IErrorListener {
+public final class EngineView extends ViewPart implements IUpdateListener, IConnectionStateListener, IErrorListener {
 
 	private Composite top = null;
 
+	private Label engineLabel;
+
+	private Composite engineComposite;
+	private Button startButton;
+	private Button killButton;
+	private Button connectButton;
+	private Button disconnectButton;
+	private Label statusLabel;
+
+	private Label scanLabel;
+
+	private Composite scanComposite;
 	private Button playButton;
 	private Button pauseButton;
 	private Button stopButton;
 	private Button skipButton;
 	private Button haltButton;
-	private Button killButton;
 	private Button triggerButton;
 	private Button autoPlayOnButton;
 	private Button autoPlayOffButton;
@@ -66,7 +90,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 	//TODO: ShellTable ist auf 10 Einträge vordefiniert,
 	// besser eine LinkedList machen, damit beliebig viele Einträge existieren können
 	private Shell shellTable[] = new Shell[10];
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -89,93 +113,118 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		
 		this.top = new Composite( parent, SWT.NONE );
 		gridLayout = new GridLayout();
-		gridLayout.numColumns = 10;
+		gridLayout.numColumns = 4;
 		this.top.setLayout(gridLayout);
 
-		this.playButton = new Button( this.top, SWT.PUSH );
+		this.engineLabel = new Label( this.top, SWT.NONE );
+		this.engineLabel.setText("ENGINE:");
+//		gridData = new GridData();
+//		gridData.horizontalAlignment = GridData.FILL;
+//		gridData.horizontalSpan = 1;
+//		this.engineLabel.setLayoutData( gridData );
+
+		this.engineComposite = new Composite( this.top, SWT.NONE );
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 4;
+		this.engineComposite.setLayout(gridLayout);
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 3;
+		this.engineComposite.setLayoutData( gridData );
+		
+		this.startButton = new Button( this.engineComposite, SWT.PUSH );
+		this.startButton.setText("start");
+		this.startButton.setToolTipText( "Start engine" );
+
+		this.killButton = new Button( this.engineComposite, SWT.PUSH );
+		this.killButton.setText("kill");
+		this.killButton.setToolTipText( "Kill engine" );
+		this.killButton.addSelectionListener( new KillButtonSelectionListener());
+
+		this.connectButton = new Button( this.engineComposite, SWT.PUSH );
+		this.connectButton.setText("connect");
+		this.connectButton.setToolTipText( "Connect to Engine" );
+		this.connectButton.addSelectionListener( new ConnectButtonSelectionListener());
+		
+		this.disconnectButton = new Button( this.engineComposite, SWT.PUSH );
+		this.disconnectButton.setText("disconnect");
+		this.disconnectButton.setToolTipText( "Disconnect Engine" );
+		this.disconnectButton.addSelectionListener( new DisconnectButtonSelectionListener());
+		
+		this.statusLabel = new Label( this.engineComposite, SWT.NONE );
+		this.statusLabel.setText("connected to host:... port:...");
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 4;
+		this.statusLabel.setLayoutData( gridData );
+
+		this.scanLabel = new Label( this.top, SWT.NONE );
+		this.scanLabel.setText("SCAN:");
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 1;
+		this.scanLabel.setLayoutData( gridData );
+		
+		this.scanComposite = new Composite( this.top, SWT.NONE );
+		gridLayout = new GridLayout();
+		gridLayout.numColumns = 8;
+		this.scanComposite.setLayout(gridLayout);
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 3;
+		this.scanComposite.setLayoutData( gridData );
+
+		this.playButton = new Button( this.scanComposite, SWT.PUSH );
 		this.playButton.setImage(playIcon);
 		this.playButton.setToolTipText( "Play" );
 		this.playButton.addSelectionListener( new PlayButtonSelectionListener());
 
-		this.pauseButton = new Button( this.top, SWT.PUSH );
+		this.pauseButton = new Button( this.scanComposite, SWT.PUSH );
 		this.pauseButton.setImage(pauseIcon);
 		this.pauseButton.setToolTipText( "Pause" );
 		this.pauseButton.addSelectionListener( new PauseButtonSelectionListener());
 
-		this.stopButton = new Button( this.top, SWT.PUSH );
+		this.stopButton = new Button( this.scanComposite, SWT.PUSH );
 		this.stopButton.setImage(stopIcon);
 		this.stopButton.setToolTipText( "Stop" );
 		this.stopButton.addSelectionListener( new StopButtonSelectionListener());
 
-		this.skipButton = new Button( this.top, SWT.PUSH );
+		this.skipButton = new Button( this.scanComposite, SWT.PUSH );
 		this.skipButton.setImage(skipIcon);
 		this.skipButton.setToolTipText( "Skip" );
-		this.skipButton.addSelectionListener( new SelectionListener() {
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-			}
-			public void widgetSelected( final SelectionEvent e ) {
-				System.out.println("Skip Knopf im Graph Window gedrückt!");
-				Activator.getDefault().getEcp1Client().getPlayController().breakExecution();
-			}
-		});
-		
-		this.haltButton = new Button( this.top, SWT.PUSH );
+		this.skipButton.addSelectionListener( new SkipButtonSelectionListener());
+
+		this.haltButton = new Button( this.scanComposite, SWT.PUSH );
 		this.haltButton.setImage(haltIcon);
 		this.haltButton.setToolTipText( "Halt" );
-		this.haltButton.addSelectionListener( new SelectionListener() {
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-			}
-			public void widgetSelected( final SelectionEvent e ) {
-				System.out.println("Halt Knopf im Graph Window gedrückt!");
-				Activator.getDefault().getEcp1Client().getPlayController().halt();
-			}
-		});
-		
-		this.killButton = new Button( this.top, SWT.PUSH );
-		this.killButton.setImage(killIcon);
-		this.killButton.setToolTipText( "Kill" );
-		this.killButton.addSelectionListener( new SelectionListener() {
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-			}
-			public void widgetSelected( final SelectionEvent e ) {
-				System.out.println("Kill Knopf im Graph Window gedrückt!");
-				Activator.getDefault().getEcp1Client().getPlayController().shutdownEngine();
-			}
-		});
-		
-		this.triggerButton = new Button( this.top, SWT.PUSH );
+		this.haltButton.addSelectionListener( new HaltButtonSelectionListener());
+
+		this.triggerButton = new Button( this.scanComposite, SWT.PUSH );
 		this.triggerButton.setImage(triggerIcon);
 		this.triggerButton.setToolTipText( "Trigger" );
-		this.triggerButton.addSelectionListener( new SelectionListener() {
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-			}
-			public void widgetSelected( final SelectionEvent e ) {
-				System.out.println("Trigger Knopf im Graph Window gedrückt!");
-				System.out.println("   hat noch keine Verwendung");
-				
-			}
-		});
-		
-		this.autoPlayOnButton = new Button( this.top, SWT.TOGGLE );
+		this.triggerButton.addSelectionListener( new TriggerButtonSelectionListener());
+
+
+		this.autoPlayOnButton = new Button( this.scanComposite, SWT.TOGGLE );
 		this.autoPlayOnButton.setImage(autoPlayIcon);
 		this.autoPlayOnButton.setToolTipText( "AutoPlayOn" );
 		this.autoPlayOnButton.addSelectionListener( new SelectionListener() {
 			public void widgetDefaultSelected( final SelectionEvent e ) {
 			}
 			public void widgetSelected( final SelectionEvent e ) {
-				System.out.println("AutoPlayOn Knopf im Graph Window gedrückt!");
+				System.out.println("AutoPlayOn Knopf im Engine Window gedrückt!");
 				Activator.getDefault().getEcp1Client().getPlayListController().setAutoplay(true);
 			}
 		});
 
-		this.autoPlayOffButton = new Button( this.top, SWT.TOGGLE );
+		this.autoPlayOffButton = new Button( this.scanComposite, SWT.TOGGLE );
 		this.autoPlayOffButton.setImage(autoPlayIcon);
 		this.autoPlayOffButton.setToolTipText( "AutoPlayOff" );
 		this.autoPlayOffButton.addSelectionListener( new SelectionListener() {
 			public void widgetDefaultSelected( final SelectionEvent e ) {
 			}
 			public void widgetSelected( final SelectionEvent e ) {
-				System.out.println("AutoPlayOff Knopf im Graph Window gedrückt!");
+				System.out.println("AutoPlayOff Knopf im Engine Window gedrückt!");
 				Activator.getDefault().getEcp1Client().getPlayListController().setAutoplay(false);
 			}
 		});
@@ -184,7 +233,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		this.loadedScmlLabel.setText("loaded File:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 3;
+		gridData.horizontalSpan = 2;
 		this.loadedScmlLabel.setLayoutData( gridData );
 
 		this.loadedScmlText = new Text( this.top, SWT.BORDER );
@@ -192,14 +241,14 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 7;
+		gridData.horizontalSpan = 2;
 		this.loadedScmlText.setLayoutData( gridData );
 
 		this.chainFilenameLabel = new Label( this.top, SWT.NONE );
 		this.chainFilenameLabel.setText("Filename:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 3;
+		gridData.horizontalSpan = 2;
 		this.chainFilenameLabel.setLayoutData( gridData );
 
 		this.filenameText = new Text( this.top, SWT.BORDER );
@@ -207,21 +256,21 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 7;
+		gridData.horizontalSpan = 2;
 		this.filenameText.setLayoutData( gridData );
 
 		this.commentLabel = new Label( this.top, SWT.NONE );
 		this.commentLabel.setText("live Comment:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 3;
+		gridData.horizontalSpan = 2;
 		this.commentLabel.setLayoutData( gridData );
 
 		this.commentText = new Text( this.top, SWT.BORDER);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 6;
+		gridData.horizontalSpan = 1;
 		this.commentText.setLayoutData( gridData );
 		
 		this.commentSendButton = new Button( this.top, SWT.NONE);
@@ -278,6 +327,20 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		Activator.getDefault().getEcp1Client().addErrorListener(this);
 		this.rebuildText(0);
 		Activator.getDefault().getEcp1Client().addConnectionStateListener( this );
+
+		// Wenn Ecp1Client connected ist (also running), wird disconnect erlaubt
+		// ansonsten wird connect erlaubt!
+		if (Activator.getDefault().getEcp1Client().isRunning()) {
+			this.connectButton.setEnabled(false);
+			this.disconnectButton.setEnabled(true);
+			this.killButton.setEnabled(true);
+		} else {
+			this.disconnectButton.setEnabled(false);
+			this.connectButton.setEnabled(true);
+			this.killButton.setEnabled(false);
+		}
+
+	
 	}
 
 	/**
@@ -419,31 +482,45 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void stackConnected() {
+		// das ist ein addConnectionStateListener Zustand
 		// TODO unsure if this is the correct way to do it
-		ToolBarManager toolBarManager = (ToolBarManager) getViewSite().getActionBars().getToolBarManager();
-		int index = toolBarManager.indexOf("de.ptb.epics.eve.viewer.connectCommand");
-		if (index >= 0) toolBarManager.getControl().getItem(index).setEnabled(false);
-		index = toolBarManager.indexOf("de.ptb.epics.eve.viewer.disconnectCommand");
-		if (index >= 0) toolBarManager.getControl().getItem(index).setEnabled(true);
+
+		this.connectButton.setEnabled(false);
+		this.disconnectButton.setEnabled(true);
+		this.killButton.setEnabled(true);
+		
 	}
 
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void stackDisconnected() {
-		// TODO unsure if this is the correct way to do it
+
+		this.disconnectButton.setEnabled(false);
+		this.connectButton.setEnabled(true);
+		this.killButton.setEnabled(false);
+		
+		/********
 		if (!this.loadedScmlText.isDisposed()) this.loadedScmlText.getDisplay().syncExec( new Runnable() {
 
 			public void run() {
 				if (!loadedScmlText.isDisposed()) {
-					ToolBarManager toolBarManager = (ToolBarManager) getViewSite().getActionBars().getToolBarManager();
-					int index = toolBarManager.indexOf("de.ptb.epics.eve.viewer.connectCommand");
-					if (index >= 0) toolBarManager.getControl().getItem(index).setEnabled(true);
-					index = toolBarManager.indexOf("de.ptb.epics.eve.viewer.disconnectCommand");
-					if (index >= 0) toolBarManager.getControl().getItem(index).setEnabled(false);
+
+					disconnectButton.setEnabled(false);
+					connectButton.setEnabled(true);
+					killButton.setEnabled(false);
+					
 				}
 			}
 		});
+		*******/
 	}
 
 	public void setLoadedScmlFile(final String filename) {
@@ -853,19 +930,14 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 	@Override
 	public void errorOccured(Error error) {
 		if (error.getErrorType() == ErrorType.FILENAME) {
-			System.out.println("Filename wurde geändert");
-			System.out.println("   Neuer Name: " + error.getText());
-
 			// Aktueller Filename wird gesetzt
 			setActualFilename(error.getText());
-			
 			// send to File wird erlaubt
 			this.commentSendButton.getDisplay().syncExec( new Runnable() {
 				public void run() {
 					commentSendButton.setEnabled(true);
 				}
 			});
-
 		}
 	}
 
@@ -890,7 +962,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		 */
 		@Override
 		public void widgetSelected( final SelectionEvent e ) {
-			System.out.println("Play Knopf im Graph Window gedrückt!");
+			System.out.println("Play Knopf im Engine Window gedrückt!");
 			Activator.getDefault().getEcp1Client().getPlayController().start();
 		}
 	}
@@ -913,7 +985,7 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			System.out.println("Pause Knopf im Graph Window gedrückt!");
+			System.out.println("Pause Knopf im Engine Window gedrückt!");
 			Activator.getDefault().getEcp1Client().getPlayController().pause();
 		}
 	}
@@ -936,8 +1008,168 @@ public final class GraphView extends ViewPart implements IUpdateListener, IConne
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			System.out.println("Stop Knopf im Graph Window gedrückt!");
+			System.out.println("Stop Knopf im Engine Window gedrückt!");
 			Activator.getDefault().getEcp1Client().getPlayController().stop();
+		}
+	}
+	
+	/**
+	 * <code>SelectionListener</code> of Skip Button from
+	 * <code>EngineView</code>
+	 */
+	class SkipButtonSelectionListener implements SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			System.out.println("Skip Knopf im Engine Window gedrückt!");
+			Activator.getDefault().getEcp1Client().getPlayController().breakExecution();
+		}
+	}
+
+	/**
+	 * <code>SelectionListener</code> of Halt Button from
+	 * <code>EngineView</code>
+	 */
+	class HaltButtonSelectionListener implements SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			System.out.println("Halt Knopf im Engine Window gedrückt!");
+			Activator.getDefault().getEcp1Client().getPlayController().halt();
+		}
+	}
+	
+	/**
+	 * <code>SelectionListener</code> of Kill Button from
+	 * <code>EngineView</code>
+	 */
+	class KillButtonSelectionListener implements SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			Activator.getDefault().getEcp1Client().getPlayController().shutdownEngine();
+		}
+	}
+
+	/**
+	 * <code>SelectionListener</code> of Connect Button from
+	 * <code>EngineView</code>
+	 */
+	class ConnectButtonSelectionListener implements SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			// Das was hier jetzt steht, wird bei HandOver gemacht und sollte 
+			// genauso hier funktionieren!
+			if( !Activator.getDefault().getEcp1Client().isRunning()) {
+				// start ecp1Client
+				IHandlerService handlerService = (IHandlerService) PlatformUI.getWorkbench().getService(IHandlerService.class);
+				try {
+					handlerService.executeCommand("de.ptb.epics.eve.viewer.connectCommand", null);
+				} catch (Exception e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+			}
+
+			
+			
+		
+		}
+	}
+
+	/**
+	 * <code>SelectionListener</code> of Disconnect Button from
+	 * <code>EngineView</code>
+	 */
+	class DisconnectButtonSelectionListener implements SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			if( Activator.getDefault().getEcp1Client().isRunning()) {
+				// start ecp1Client
+				IHandlerService handlerService = (IHandlerService) PlatformUI.getWorkbench().getService(IHandlerService.class);
+				try {
+					handlerService.executeCommand("de.ptb.epics.eve.viewer.disconnectCommand", null);
+				} catch (Exception e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/**
+	 * <code>SelectionListener</code> of Trigger Button from
+	 * <code>EngineView</code>
+	 */
+	class TriggerButtonSelectionListener implements SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			System.out.println("Trigger Knopf im Engine Window gedrückt!");
+			System.out.println("   hat noch keine Verwendung");
+			MessageDialog.openWarning(null, "Warning", "Trigger löst noch keine Aktion aus!");
 		}
 	}
 	

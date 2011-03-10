@@ -25,8 +25,8 @@
       <view
             name="%view.name.0"
             icon="icons/css.gif"
-            class="de.ptb.epics.eve.viewer.GraphView"
-            id="GraphView">
+            class="de.ptb.epics.eve.viewer.views.EngineView"
+            id="EngineView">
       </view>
       <view
             allowMultiple="true"
@@ -104,27 +104,6 @@
             class="de.ptb.epics.eve.viewer.actions.disConnectCommandHandler"
             commandId="de.ptb.epics.eve.viewer.disconnectCommand">
       </handler>
-   </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            locationURI="toolbar:GraphView">
-         <command
-               commandId="de.ptb.epics.eve.viewer.connectCommand"
-               icon="icons/connect.gif"
-               label="keins"
-               style="push"
-               tooltip="Connect to Engine">
-         </command>
-         <command
-               commandId="de.ptb.epics.eve.viewer.disconnectCommand"
-               helpContextId="Disconnect  Engine"
-               icon="icons/disconnect.gif"
-               label="keins"
-               style="push"
-               tooltip="Disconnect  Engine">
-         </command>
-      </menuContribution>
    </extension>
 
 </plugin>
