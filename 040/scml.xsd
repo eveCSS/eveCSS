@@ -564,9 +564,14 @@
       <element name="mode" type="tns:plotmode"></element>
       <element name="normalize_id" type="string" minOccurs="0" ></element>
       <element name="linestyle" type="string"></element>
-      <element name="color" type="string"></element>
+      <element name="color" type="tns:color"></element>
       <element name="markstyle" type="string"></element>
     </sequence>
   </complexType>
  
+  <simpleType name="color">
+    <restriction base="string">
+      <pattern value="[a-fA-F0-9]{6}"/>
+    </restriction>
+  </simpleType>
 </schema>
