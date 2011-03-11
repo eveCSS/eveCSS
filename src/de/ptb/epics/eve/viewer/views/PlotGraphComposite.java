@@ -104,7 +104,7 @@ public class PlotGraphComposite extends Composite
 			xyPlot.removeAllTraces();
 		}
 
-		// set the new values for chain, scan module, motor and detectors
+		// set new values for chain, scan module, motor and detectors
 		this.chid = chid;
 		this.smid = smid;
 		this.detector1Id = detector1Id;
@@ -197,11 +197,11 @@ public class PlotGraphComposite extends Composite
 		boolean detector2HasData = false;
 		boolean motorHasData = false;
 			
-		// are we are still in the same scan module of the same chain ?
+		// are we still in the same scan module of the same chain ?
 		if ((measurementData.getChainId() == chid) && 
 			(measurementData.getScanModuleId() == smid))
 		{
-			// is the data for detector 1 ?
+			// is the data for detector 1 AND is it unmodified ?
 			if (this.detector1Id != null && 
 				this.detector1Id.equals(measurementData.getName()) && 
 				measurementData.getDataModifier() == DataModifier.UNMODIFIED) 
@@ -218,7 +218,7 @@ public class PlotGraphComposite extends Composite
 					y1value = (Double) measurementData.getValues().get(0);
 					detector1HasData = true;
 				}
-			}
+			}			
 			else if (this.detector2Id != null && 
 					  this.detector2Id.equals(measurementData.getName()) && 
 				   measurementData.getDataModifier() == DataModifier.UNMODIFIED) 
@@ -262,8 +262,6 @@ public class PlotGraphComposite extends Composite
 	
 					public void run() 
 					{
-						// TODO logging, take a look at feature #25 in Redmine!
-						// System.out.println("redrawing plot ");
 						if (!isDisposed()) 
 						{
 							if(plotDetector1) 
