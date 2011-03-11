@@ -1,19 +1,70 @@
 package de.ptb.epics.eve.ecp1.intern;
 
+/**
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
 public enum DataModifier {
 
+	/**
+	 * the plain value
+	 */
 	UNMODIFIED,
-	CENTER,
-	EDGE,
-	MIN,
-	MAX,
-	FWHM,
-	MEAN_VALUE,
-	STANDARD_DEVIATION,
-	SUM;
 	
-	public static byte dataModifyerToByte( final DataModifier dataModifyer ) {
-		switch( dataModifyer ) {
+	/**
+	 * median ?
+	 */
+	CENTER,
+	
+	/**
+	 * 
+	 */
+	EDGE,
+	
+	/**
+	 * the minimum
+	 */
+	MIN,
+	
+	/**
+	 * the maximum 
+	 */
+	MAX,
+	
+	/**
+	 * the full width half ?
+	 */
+	FWHM,
+	
+	/**
+	 * the arithmetic mean
+	 */
+	MEAN_VALUE,
+	
+	/**
+	 * the standard deviation
+	 */
+	STANDARD_DEVIATION,
+	
+	/**
+	 * the sum
+	 */
+	SUM,
+	
+	/**
+	 * the normalized data
+	 */
+	NORMALIZED;
+	
+	/**
+	 * Converts a {@link DataModifier} to its corresponding byte code.
+	 * 
+	 * @param dataModifyer the {@link DataModifier}
+	 * @return the byte code of the given data modifier
+	 */
+	public static byte dataModifyerToByte(final DataModifier dataModifyer) {
+		switch(dataModifyer) {
 			case UNMODIFIED:
 				return 0x00;
 			case CENTER:
@@ -32,13 +83,20 @@ public enum DataModifier {
 				return 0x07;
 			case SUM:
 				return 0x08;
-				
+			case NORMALIZED:
+				return 0x09;				
 		}
 		return Byte.MAX_VALUE;
 	}
 	
-	public static DataModifier byteTotDataModifyer( final byte theByte ) {
-		switch( theByte ) {
+	/**
+	 * Converts a byte code to its corresponding {@link DataModifier}.
+	 * 
+	 * @param theByte the byte code that should be converted
+	 * @return the {@link DataModifier} corresponding to the given byte code
+	 */
+	public static DataModifier byteTotDataModifyer(final byte theByte) {
+		switch(theByte) {
 			case 0x00:
 				return DataModifier.UNMODIFIED;
 			case 0x01:
@@ -57,8 +115,9 @@ public enum DataModifier {
 				return DataModifier.STANDARD_DEVIATION;
 			case 0x08:
 				return DataModifier.SUM;
+			case 0x09:
+				return DataModifier.NORMALIZED;
 		}
 		return null;
-	}
-	
+	}	
 }

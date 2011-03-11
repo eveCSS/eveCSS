@@ -2,6 +2,18 @@ package de.ptb.epics.eve.ecp1.client.interfaces;
 
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 
+/**
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
 public interface IMeasurementDataListener {
-	public void measurementDataTransmitted( final MeasurementData measurementData );
+	
+	/**
+	 * Gets called if new data has arrived.
+	 * 
+	 * @param measurementData the 
+	 * 		  {@link de.ptb.epics.eve.ecp1.client.model.MeasurementData}
+	 */
+	public void measurementDataTransmitted(final MeasurementData measurementData);
 }
