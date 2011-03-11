@@ -1,12 +1,4 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
-
 
 import java.util.Iterator;
 
@@ -44,7 +36,7 @@ import de.ptb.epics.eve.editor.Activator;
 
 public class DetectorChannelView extends ViewPart implements IModelUpdateListener {
 
-	public static final String ID = "de.ptb.epics.eve.editor.views.DetectorChannelView"; // TODO Needs to be whatever is mentioned in plugin.xml
+	public static final String ID = "de.ptb.epics.eve.editor.views.DetectorChannelView";
 
 	private Composite top = null;
 

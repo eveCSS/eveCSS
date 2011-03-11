@@ -14,30 +14,33 @@ import de.ptb.epics.eve.editor.graphical.editparts.EventToScanModulConnectionEdi
 import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModulEditPart;
 
-
+/**
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
 public class GraphicalEditorEditPartFactory implements EditPartFactory {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public EditPart createEditPart( final EditPart context, final Object model ) {
-		if( context instanceof ScanModulEditPart || context instanceof EventEditPart ) {
-			return new EventToScanModulConnectionEditPart( (Connector)model );
+	public EditPart createEditPart(final EditPart context, final Object model) {
+		
+		if(context instanceof ScanModulEditPart || 
+		   context instanceof EventEditPart) {
+			return new EventToScanModulConnectionEditPart((Connector)model);
 		} else {
-		
 			if (model instanceof ScanDescription) {
-				return new ScanDescriptionEditPart( (ScanDescription)model );
-			} else if( model instanceof Chain ) {
-				return new ChainEditPart( (Chain)model );
-			} else if( model instanceof ScanModul ) {
-				return new ScanModulEditPart( (ScanModul)model );
-			}  else if( model instanceof StartEvent ) {
-				return new EventEditPart( (StartEvent)model );
+				return new ScanDescriptionEditPart((ScanDescription)model);
+			} else if(model instanceof Chain) {
+				return new ChainEditPart((Chain)model);
+			} else if(model instanceof ScanModul) {
+				return new ScanModulEditPart((ScanModul)model);
+			}  else if(model instanceof StartEvent) {
+				return new EventEditPart((StartEvent)model);
 			}
-		
 		}
-		
 		return null;
-		
-		
 	}
-
 }

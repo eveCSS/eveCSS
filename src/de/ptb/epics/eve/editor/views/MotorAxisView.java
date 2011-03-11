@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
 
 import org.eclipse.swt.events.ModifyEvent;
@@ -26,7 +19,7 @@ import de.ptb.epics.eve.editor.Activator;
 
 public class MotorAxisView extends ViewPart {
 
-	public static final String ID = "de.ptb.epics.eve.editor.views.MotorAxisView"; // TODO Needs to be whatever is mentioned in plugin.xml  //  @jve:decl-index=0:
+	public static final String ID = "de.ptb.epics.eve.editor.views.MotorAxisView";
 
 	private Composite top = null;
 

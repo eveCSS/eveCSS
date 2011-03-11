@@ -154,21 +154,28 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		
 		parent.setLayout(new FillLayout());
 		
-		this.measuringStation = new ExcludeDevicesOfScanModuleFilter( true, true, false, false, false );
-		this.measuringStation.setSource( Activator.getDefault().getMeasuringStation() );
-		this.measuringStation.addModelUpdateListener( this );
+		this.measuringStation = new ExcludeDevicesOfScanModuleFilter(
+				true, true, false, false, false);
+		this.measuringStation.setSource(
+				Activator.getDefault().getMeasuringStation());
+		this.measuringStation.addModelUpdateListener(this);
 
-		this.measuringStationPrescan = new ExcludeDevicesOfScanModuleFilter( false, false, true, false, false );
-		this.measuringStationPrescan.setSource( Activator.getDefault().getMeasuringStation() );
-		this.measuringStationPrescan.addModelUpdateListener( this );
+		this.measuringStationPrescan = new ExcludeDevicesOfScanModuleFilter(
+				false, false, true, false, false);
+		this.measuringStationPrescan.setSource(
+				Activator.getDefault().getMeasuringStation());
+		this.measuringStationPrescan.addModelUpdateListener(this);
 
-		this.measuringStationPostscan = new ExcludeDevicesOfScanModuleFilter( false, false, false, true, false );
-		this.measuringStationPostscan.setSource( Activator.getDefault().getMeasuringStation() );
-		this.measuringStationPostscan.addModelUpdateListener( this );
+		this.measuringStationPostscan = new ExcludeDevicesOfScanModuleFilter( 
+				false, false, false, true, false);
+		this.measuringStationPostscan.setSource(
+				Activator.getDefault().getMeasuringStation());
+		this.measuringStationPostscan.addModelUpdateListener(this);
 
-		if( Activator.getDefault().getMeasuringStation() == null ) {
-			final Label errorLabel = new Label( parent, SWT.NONE );
-			errorLabel.setText( "No Measuring Station has been loaded. Please check Preferences!" );
+		if(Activator.getDefault().getMeasuringStation() == null) {
+			final Label errorLabel = new Label(parent, SWT.NONE);
+			errorLabel.setText("No Measuring Station has been loaded. " +
+					"Please check Preferences!");
 			return;
 		}
 		
@@ -181,7 +188,6 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 			this.eventIDs[i++] = it.next().getID();
 		}
 
-		
 		this.top = new Composite(parent, SWT.NONE);
 		this.top.setLayout(new GridLayout());
 
@@ -300,26 +306,9 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		plotWindowChangeIDMenuItem.setEnabled(false);
 
 		plotWindowsTable.setMenu(menu);
-		plotWindowsTable.addSelectionListener( new SelectionListener() {
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-			}
-
-			public void widgetSelected( final SelectionEvent e ) {
-				IViewReference[] ref = getSite().getPage().getViewReferences();
-				PlotWindowView plotWindowView = null;
-				for (int i = 0; i < ref.length; ++i) {
-					if (ref[i].getId().equals(PlotWindowView.ID)) {
-						plotWindowView = (PlotWindowView) ref[i]
-								.getPart(false);
-					}
-				}
-				if( plotWindowView != null ) {
-					final PlotWindow plotWindow = (PlotWindow)plotWindowsTable.getSelection()[0].getData();
-					plotWindowView.setPlotWindow( plotWindow );
-				}
-			}
-		});
-		
+		plotWindowsTable.addSelectionListener(
+				new PlotWindowsTableSelectionListener());
+						
 		addPlotWindowButton = new Button(this.plottingComposite, SWT.NONE);
 		addPlotWindowButton.setText("Add Plot Window");
 
@@ -469,11 +458,16 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 			
 		});
 		
-		createMotorAxisComposite();
-		createDetectorChannelComposite();
-		createPrescanComposite();
-		createPostscanComposite();
-		createPositioningComposite();
+		motorAxisComposite = new MotorAxisComposite(
+				behaviorTabFolder, SWT.NONE, this.measuringStation);
+		detectorChannelComposite = new DetectorChannelComposite(
+				behaviorTabFolder, SWT.NONE, this.measuringStation);
+		prescanComposite = new PrescanComposite(
+				behaviorTabFolder, SWT.NONE, this.measuringStationPrescan);
+		postscanComposite = new PostscanComposite(
+				behaviorTabFolder, SWT.NONE, this.measuringStationPostscan);
+		positioningComposite = new PositioningComposite(
+				behaviorTabFolder, SWT.NONE);
 		
 		this.motorAxisTab = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
 		this.motorAxisTab.setText(" Motor Axes ");
@@ -497,76 +491,35 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		this.positioningTab.setControl(this.positioningComposite);
 	}
 
-	/*
-	 * This method initializes motorAxisComposite
-	 * 
-	 */
-	private void createMotorAxisComposite() {
-		motorAxisComposite = new MotorAxisComposite(behaviorTabFolder,
-				SWT.NONE, this.measuringStation );
-	}
-
-	/*
-	 * This method initializes detectorChannelComposite
-	 * 
-	 */
-	private void createDetectorChannelComposite() {
-		detectorChannelComposite = new DetectorChannelComposite(behaviorTabFolder,
-				SWT.NONE, this.measuringStation );
-	}
-
-	/*
-	 * This method initializes prescanComposite
-	 * 
-	 */
-	private void createPrescanComposite() {
-		prescanComposite = new PrescanComposite(behaviorTabFolder,
-				SWT.NONE, this.measuringStationPrescan );
-	}
-
-	/*
-	 * This method initializes postscanComposite
-	 * 
-	 */
-	private void createPostscanComposite() {
-		postscanComposite = new PostscanComposite(behaviorTabFolder,
-				SWT.NONE, this.measuringStationPostscan );
-	}
-	
-	/*
-	 * This method initializes positioningComposite
-	 * 
-	 */
-	private void createPositioningComposite() {
-		positioningComposite = new PositioningComposite(behaviorTabFolder,
-				SWT.NONE);
-	}
-
 	/**
+	 * Returns the currently active scan module.
 	 * 
-	 * @return
+	 * @return the scan module
 	 */
 	public ScanModul getCurrentScanModul() {
 		return currentScanModul;
 	}
 
 	/**
+	 * Sets the currently active scan module.
 	 * 
-	 * @param currentScanModul
+	 * @param currentScanModul the scan module that should be set
 	 */
 	public void setCurrentScanModul(ScanModul currentScanModul) {
-		if( this.currentScanModul != null ) {
-			this.currentScanModul.removeModelUpdateListener( this );
+		// if there was already a scan module -> update it
+		if(this.currentScanModul != null) {
+			this.currentScanModul.removeModelUpdateListener(this);
 		}
 		this.currentScanModul = currentScanModul;
 
-		if( this.currentScanModul != null ) {
-			this.currentScanModul.addModelUpdateListener( this );
+		if(this.currentScanModul != null) {
+			this.currentScanModul.addModelUpdateListener(this);
 		}
-		this.measuringStation.setScanModule( this.currentScanModul );
-		this.measuringStationPrescan.setScanModule( this.currentScanModul );
-		this.measuringStationPostscan.setScanModule( this.currentScanModul );
+		this.measuringStation.setScanModule(this.currentScanModul);
+		this.measuringStationPrescan.setScanModule(this.currentScanModul);
+		this.measuringStationPostscan.setScanModule(this.currentScanModul);
 		// this.measuringStationPositioning.setScanModule( this.currentScanModul );
+			
 		this.fillFields();
 	}
 
@@ -593,6 +546,9 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 
 	}
 
+	/*
+	 * called by setCurrentScanModul
+	 */
 	private void fillFields() {
 
 		IViewReference[] ref = getSite().getPage().getViewReferences();
@@ -1172,10 +1128,15 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		
+				
 		this.filling = true;
 
 		if(this.currentScanModul != null) {
+			
+			// rename the title of the view
+			this.setPartName(currentScanModul.getName() + ":" + 
+							 currentScanModul.getId());
+			
 			this.motorAxisTab.setImage(null);
 			this.detectorChannelTab.setImage(null);
 			this.prescanTab.setImage(null);
@@ -1273,4 +1234,45 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 		}
 		this.filling = false;	
 	}
+	
+	// ************************************************************************
+	// ******************** Listener ******************************************
+	// ************************************************************************
+	
+	/**
+	 * 
+	 */
+	class PlotWindowsTableSelectionListener implements SelectionListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+		
+		/**
+		 * Updates the contents of the plot window view.<br><br> 
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			
+			// search for the plot window view
+			IViewReference[] ref = getSite().getPage().getViewReferences();
+			PlotWindowView plotWindowView = null;
+			for (int i = 0; i < ref.length; ++i) {
+				if (ref[i].getId().equals(PlotWindowView.ID)) {
+					plotWindowView = (PlotWindowView) ref[i].getPart(false);
+				}
+			}
+			// if found -> update data
+			if(plotWindowView != null) {
+				final PlotWindow plotWindow = 
+					(PlotWindow)plotWindowsTable.getSelection()[0].getData();
+				plotWindowView.setPlotWindow(plotWindow);
+			}
+		}
+	}
+	
 } // @jve:decl-index=0:visual-constraint="10,10,342,376"

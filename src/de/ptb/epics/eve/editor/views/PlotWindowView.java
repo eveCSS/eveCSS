@@ -51,6 +51,9 @@ import de.ptb.epics.eve.editor.Activator;
  */
 public class PlotWindowView extends ViewPart  {
 
+	/**
+	 * The unique identifier of <code>PlotWindowView</code>.
+	 */
 	public static final String ID = 
 			"de.ptb.epics.eve.editor.views.PlotWindowView";
 
@@ -1775,7 +1778,7 @@ public class PlotWindowView extends ViewPart  {
 					plotWindow.addYAxis(yAxis[1]);
 
 					// default values for color, line style and mark style
-					yAxis[1].setColor(new RGB(0,255,0));
+					yAxis[1].setColor(new RGB(0,128,0));
 					yAxis[1].setLinestyle(TraceType.DASH_LINE);
 					yAxis[1].setMarkstyle(PointStyle.NONE);
 				}
