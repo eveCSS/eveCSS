@@ -1,15 +1,12 @@
 package de.ptb.epics.eve.viewer.views;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -17,7 +14,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -25,7 +21,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 
@@ -38,13 +33,9 @@ import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
 import de.ptb.epics.eve.ecp1.client.model.Error;
 import de.ptb.epics.eve.ecp1.intern.EngineStatus;
 import de.ptb.epics.eve.ecp1.intern.ErrorType;
+import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.IUpdateListener;
-import de.ptb.epics.eve.viewer.MessageTypes;
-import de.ptb.epics.eve.viewer.ViewerMessage;
-
-import de.ptb.epics.eve.viewer.actions.connectCommandHandler;
-
 
 /**
  * A simple view implementation, which only displays a label.
@@ -75,6 +66,8 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	private Button triggerButton;
 	private Button autoPlayOnButton;
 	private Button autoPlayOffButton;
+	private Label repeatCountLabel;
+	private Text repeatCountText;
 
 	private Label loadedScmlLabel;
 	private Text loadedScmlText;
@@ -102,7 +95,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		final Image stopIcon = Activator.getDefault().getImageRegistry().get("STOP16");
 		final Image skipIcon = Activator.getDefault().getImageRegistry().get("SKIP16");
 		final Image haltIcon = Activator.getDefault().getImageRegistry().get("HALT16");
-		final Image killIcon = Activator.getDefault().getImageRegistry().get("KILL16");
 		final Image triggerIcon = Activator.getDefault().getImageRegistry().get("TRIGGER16");
 		final Image autoPlayIcon = Activator.getDefault().getImageRegistry().get("PLAYALL16");
 
@@ -118,10 +110,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 
 		this.engineLabel = new Label( this.top, SWT.NONE );
 		this.engineLabel.setText("ENGINE:");
-//		gridData = new GridData();
-//		gridData.horizontalAlignment = GridData.FILL;
-//		gridData.horizontalSpan = 1;
-//		this.engineLabel.setLayoutData( gridData );
 
 		this.engineComposite = new Composite( this.top, SWT.NONE );
 		gridLayout = new GridLayout();
@@ -135,6 +123,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		this.startButton = new Button( this.engineComposite, SWT.PUSH );
 		this.startButton.setText("start");
 		this.startButton.setToolTipText( "Start engine" );
+		this.startButton.addSelectionListener( new StartButtonSelectionListener());
 
 		this.killButton = new Button( this.engineComposite, SWT.PUSH );
 		this.killButton.setText("kill");
@@ -152,7 +141,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		this.disconnectButton.addSelectionListener( new DisconnectButtonSelectionListener());
 		
 		this.statusLabel = new Label( this.engineComposite, SWT.NONE );
-		this.statusLabel.setText("connected to host:... port:...");
+		this.statusLabel.setText("not connected");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 4;
@@ -167,7 +156,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		
 		this.scanComposite = new Composite( this.top, SWT.NONE );
 		gridLayout = new GridLayout();
-		gridLayout.numColumns = 8;
+		gridLayout.numColumns = 10;
 		this.scanComposite.setLayout(gridLayout);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -204,31 +193,23 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		this.triggerButton.setToolTipText( "Trigger" );
 		this.triggerButton.addSelectionListener( new TriggerButtonSelectionListener());
 
-
 		this.autoPlayOnButton = new Button( this.scanComposite, SWT.TOGGLE );
 		this.autoPlayOnButton.setImage(autoPlayIcon);
 		this.autoPlayOnButton.setToolTipText( "AutoPlayOn" );
-		this.autoPlayOnButton.addSelectionListener( new SelectionListener() {
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-			}
-			public void widgetSelected( final SelectionEvent e ) {
-				System.out.println("AutoPlayOn Knopf im Engine Window gedrückt!");
-				Activator.getDefault().getEcp1Client().getPlayListController().setAutoplay(true);
-			}
-		});
+		this.autoPlayOnButton.addSelectionListener( new AutoPlayOnButtonSelectionListener());
 
 		this.autoPlayOffButton = new Button( this.scanComposite, SWT.TOGGLE );
 		this.autoPlayOffButton.setImage(autoPlayIcon);
 		this.autoPlayOffButton.setToolTipText( "AutoPlayOff" );
-		this.autoPlayOffButton.addSelectionListener( new SelectionListener() {
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-			}
-			public void widgetSelected( final SelectionEvent e ) {
-				System.out.println("AutoPlayOff Knopf im Engine Window gedrückt!");
-				Activator.getDefault().getEcp1Client().getPlayListController().setAutoplay(false);
-			}
-		});
+		this.autoPlayOffButton.addSelectionListener( new AutoPlayOffButtonSelectionListener());
 
+		this.repeatCountLabel = new Label( this.scanComposite, SWT.NONE );
+		this.repeatCountLabel.setText("repeat count:");
+
+		this.repeatCountText = new Text( this.scanComposite, SWT.BORDER );
+		// TODO: sobald repeat Count funktioniert wird die Eingabe auch erlaubt
+		this.repeatCountText.setEnabled(false);
+		
 		this.loadedScmlLabel = new Label( this.top, SWT.NONE );
 		this.loadedScmlLabel.setText("loaded File:");
 		gridData = new GridData();
@@ -251,14 +232,14 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		gridData.horizontalSpan = 2;
 		this.chainFilenameLabel.setLayoutData( gridData );
 
-		this.filenameText = new Text( this.top, SWT.BORDER );
+		this.filenameText = new Text( this.top, SWT.BORDER | SWT.TRAIL);
 		this.filenameText.setEditable( false );
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
 		this.filenameText.setLayoutData( gridData );
-
+				
 		this.commentLabel = new Label( this.top, SWT.NONE );
 		this.commentLabel.setText("live Comment:");
 		gridData = new GridData();
@@ -279,21 +260,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		gridData.horizontalAlignment = GridData.FILL;
 		this.commentSendButton.setEnabled(false);
 		this.commentSendButton.setLayoutData( gridData );
-		this.commentSendButton.addSelectionListener(new SelectionListener() {
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				Activator.getDefault().getEcp1Client().getPlayController().addLiveComment(commentText.getText());
-			}
-			
-		});
+		this.commentSendButton.addSelectionListener(new CommentSendButtonSelectionListener()); 
 		
 		// Tabelle für die Statuswerte erzeugen
 		gridData = new GridData();
@@ -328,18 +295,28 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		this.rebuildText(0);
 		Activator.getDefault().getEcp1Client().addConnectionStateListener( this );
 
-		// Wenn Ecp1Client connected ist (also running), wird disconnect erlaubt
-		// ansonsten wird connect erlaubt!
+		// If Ecp1Client running (connected), enable disconnect and kill
+		// else enable connect and start Button
 		if (Activator.getDefault().getEcp1Client().isRunning()) {
 			this.connectButton.setEnabled(false);
+			this.startButton.setEnabled(false);
 			this.disconnectButton.setEnabled(true);
 			this.killButton.setEnabled(true);
 		} else {
 			this.disconnectButton.setEnabled(false);
 			this.connectButton.setEnabled(true);
 			this.killButton.setEnabled(false);
-		}
+			this.startButton.setEnabled(true);
 
+			// disable scan buttons if engine disconnected
+			playButton.setEnabled(false);
+			pauseButton.setEnabled(false);
+			stopButton.setEnabled(false);
+			skipButton.setEnabled(false);
+			haltButton.setEnabled(false);
+			triggerButton.setEnabled(false);
+
+		}
 	
 	}
 
@@ -487,15 +464,25 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	 */
 	@Override
 	public void stackConnected() {
-		// das ist ein addConnectionStateListener Zustand
-		// TODO unsure if this is the correct way to do it
-
 		this.connectButton.setEnabled(false);
+		this.startButton.setEnabled(false);
 		this.disconnectButton.setEnabled(true);
 		this.killButton.setEnabled(true);
+
+		// Output connected to host.
+		final String engineString = de.ptb.epics.eve.preferences.Activator.getDefault().getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS );
+		this.statusLabel.getDisplay().syncExec( new Runnable() {
+			public void run() {
+				statusLabel.setText("connected to " + engineString);
+			}
+		});
+
+		// Die Scan-Knöpfe können wieder erlaubt werden!
+		// Wie ist der EngineStatus?
+	
+//		Activator.getDefault().getEcp1Client().
 		
 	}
-
 
 	/**
 	 * {@inheritDoc}
@@ -503,11 +490,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	@Override
 	public void stackDisconnected() {
 
-		/*****
-		this.disconnectButton.setEnabled(false);
-		this.connectButton.setEnabled(true);
-		this.killButton.setEnabled(false);
-		****/
 		if (!this.loadedScmlText.isDisposed()) this.loadedScmlText.getDisplay().syncExec( new Runnable() {
 
 			public void run() {
@@ -516,12 +498,24 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 					disconnectButton.setEnabled(false);
 					connectButton.setEnabled(true);
 					killButton.setEnabled(false);
-					
+					startButton.setEnabled(true);
+					statusLabel.setText("not connected");
+
+					// disable scan buttons if engine disconnected
+					playButton.setEnabled(false);
+					pauseButton.setEnabled(false);
+					stopButton.setEnabled(false);
+					skipButton.setEnabled(false);
+					haltButton.setEnabled(false);
+					triggerButton.setEnabled(false);
 				}
 			}
 		});
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setLoadedScmlFile(final String filename) {
 		// der Name des geladenen scml-Files wird angezeigt
 		this.loadedScmlText.getDisplay().syncExec( new Runnable() {
@@ -547,13 +541,12 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 			case IDLE_NO_XML_LOADED:
 				this.playButton.getDisplay().syncExec( new Runnable() {
 					public void run() {
-//						playButton.setEnabled(false);
-//						pauseButton.setEnabled(false);
-//						stopButton.setEnabled(false);
-//						skipButton.setEnabled(false);
-//						haltButton.setEnabled(false);
-//						killButton.setEnabled(false);
-//						triggerButton.setEnabled(false);
+						playButton.setEnabled(false);
+						pauseButton.setEnabled(false);
+						stopButton.setEnabled(false);
+						skipButton.setEnabled(false);
+						haltButton.setEnabled(false);
+						triggerButton.setEnabled(false);
 					}
 				});
 				break;
@@ -561,7 +554,12 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 				this.playButton.getDisplay().syncExec( new Runnable() {
 					public void run() {
 						playButton.setEnabled(true);
-//						pauseButton.setEnabled(false);
+						pauseButton.setEnabled(false);
+						stopButton.setEnabled(true);
+						skipButton.setEnabled(false);
+						// TODO: haltButton wieder auf false setzen, wenn bug74 bearbeitet ist
+						haltButton.setEnabled(true);
+						triggerButton.setEnabled(false);
 						// alte Info-Fenster des letzten XML-Files werden gelöscht
 						for ( int j=0; j<10; j++) {
 							if (shellTable[j] != null) {
@@ -575,12 +573,11 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 			case EXECUTING:
 				this.playButton.getDisplay().syncExec( new Runnable() {
 					public void run() {
-//						playButton.setEnabled(false);
+						playButton.setEnabled(false);
 						pauseButton.setEnabled(true);
-//						stopButton.setEnabled(true);
-//						skipButton.setEnabled(true);
-//						haltButton.setEnabled(true);
-//						killButton.setEnabled(true);
+						stopButton.setEnabled(true);
+						skipButton.setEnabled(true);
+						haltButton.setEnabled(true);
 					}
 				});
 				break;
@@ -588,23 +585,34 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 				this.playButton.getDisplay().syncExec( new Runnable() {
 					public void run() {
 						playButton.setEnabled(true);
-//						pauseButton.setEnabled(false);
+						pauseButton.setEnabled(false);
+						stopButton.setEnabled(true);
+						skipButton.setEnabled(true);
+						haltButton.setEnabled(true);
 					}
 				});
 				break;
 			case STOPPED:
 				this.playButton.getDisplay().syncExec( new Runnable() {
 					public void run() {
-						playButton.setEnabled(true);
-//						pauseButton.setEnabled(false);
+						playButton.setEnabled(false);
+						pauseButton.setEnabled(false);
+						stopButton.setEnabled(false);
+						skipButton.setEnabled(false);
+						haltButton.setEnabled(false);
+						triggerButton.setEnabled(false);
 					}
 				});
 				break;
 			case HALTED:
 				this.playButton.getDisplay().syncExec( new Runnable() {
 					public void run() {
-						playButton.setEnabled(true);
-//						pauseButton.setEnabled(false);
+						playButton.setEnabled(false);
+						pauseButton.setEnabled(false);
+						stopButton.setEnabled(false);
+						skipButton.setEnabled(false);
+						haltButton.setEnabled(false);
+						triggerButton.setEnabled(false);
 					}
 				});
 				break;
@@ -948,14 +956,12 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	 * <code>EngineView</code>
 	 */
 	class PlayButtonSelectionListener implements SelectionListener {
-	
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected( final SelectionEvent e ) {
 		}
-
 		/**
 		 * {@inheritDoc}
 		 */
@@ -971,14 +977,12 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	 * <code>EngineView</code>
 	 */
 	class PauseButtonSelectionListener implements SelectionListener {
-
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
-
 		/**
 		 * {@inheritDoc}
 		 */
@@ -994,14 +998,12 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	 * <code>EngineView</code>
 	 */
 	class StopButtonSelectionListener implements SelectionListener {
-
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
-
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1017,14 +1019,12 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	 * <code>EngineView</code>
 	 */
 	class SkipButtonSelectionListener implements SelectionListener {
-
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
-
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1040,14 +1040,12 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	 * <code>EngineView</code>
 	 */
 	class HaltButtonSelectionListener implements SelectionListener {
-
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
-
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1059,18 +1057,38 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	}
 	
 	/**
-	 * <code>SelectionListener</code> of Kill Button from
+	 * <code>SelectionListener</code> of Start Button from
 	 * <code>EngineView</code>
 	 */
-	class KillButtonSelectionListener implements SelectionListener {
-
+	class StartButtonSelectionListener implements SelectionListener {
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			// Hier muß ein Shell-Skript ausgeführt werden, dass
+			// die Engine dann startet.
+			MessageDialog.openWarning(null, "Warning", "Start löst noch keine Aktion aus!");
+		}
+	}
 
+	/**
+	 * <code>SelectionListener</code> of Kill Button from
+	 * <code>EngineView</code>
+	 */
+	class KillButtonSelectionListener implements SelectionListener {
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1085,21 +1103,17 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	 * <code>EngineView</code>
 	 */
 	class ConnectButtonSelectionListener implements SelectionListener {
-
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
-
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			// Das was hier jetzt steht, wird bei HandOver gemacht und sollte 
-			// genauso hier funktionieren!
 			if( !Activator.getDefault().getEcp1Client().isRunning()) {
 				// start ecp1Client
 				IHandlerService handlerService = (IHandlerService) PlatformUI.getWorkbench().getService(IHandlerService.class);
@@ -1110,10 +1124,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 					e2.printStackTrace();
 				}
 			}
-
-			
-			
-		
 		}
 	}
 
@@ -1122,14 +1132,12 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	 * <code>EngineView</code>
 	 */
 	class DisconnectButtonSelectionListener implements SelectionListener {
-
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
-
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1153,14 +1161,12 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	 * <code>EngineView</code>
 	 */
 	class TriggerButtonSelectionListener implements SelectionListener {
-
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
-
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1169,6 +1175,70 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 			System.out.println("Trigger Knopf im Engine Window gedrückt!");
 			System.out.println("   hat noch keine Verwendung");
 			MessageDialog.openWarning(null, "Warning", "Trigger löst noch keine Aktion aus!");
+		}
+	}
+	
+	/**
+	 * <code>SelectionListener</code> of AutoPlayOn Button from
+	 * <code>EngineView</code>
+	 */
+	class AutoPlayOnButtonSelectionListener implements SelectionListener {
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected( final SelectionEvent e ) {
+		}
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected( final SelectionEvent e ) {
+			System.out.println("AutoPlayOn Knopf im Engine Window gedrückt!");
+			Activator.getDefault().getEcp1Client().getPlayListController().setAutoplay(true);
+		}
+	}
+
+	/**
+	 * <code>SelectionListener</code> of AutoPlayOff Button from
+	 * <code>EngineView</code>
+	 */
+	class AutoPlayOffButtonSelectionListener implements SelectionListener {
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected( final SelectionEvent e ) {
+		}
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected( final SelectionEvent e ) {
+			System.out.println("AutoPlayOff Knopf im Engine Window gedrückt!");
+			Activator.getDefault().getEcp1Client().getPlayListController().setAutoplay(false);
+		}
+	}
+	
+	/**
+	 * <code>SelectionListener</code> of SendtoFile Button from
+	 * <code>EngineView</code>
+	 */
+	class CommentSendButtonSelectionListener implements SelectionListener {
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+			// TODO Auto-generated method stub
+		}
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			// TODO Auto-generated method stub
+			Activator.getDefault().getEcp1Client().getPlayController().addLiveComment(commentText.getText());
 		}
 	}
 	
