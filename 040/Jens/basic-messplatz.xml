@@ -176,53 +176,6 @@
                 </stop>
             </axis>
         </motor>
-        <motor>
-            <class>ServoMotor</class>
-            <name>SX700-</name>
-            <id>OMS58:212000servo</id>
-            <axis>
-	            <class></class>
-                <name>Mirror</name>
-                <id>OMS58:21200000servo</id>
-                <goto>
-                    <access method="PUTCB" type="double" transport="ca">OMS58:21200000</access>
-                </goto>
-                <position>
-                    <access method="GETCB" type="double" transport="ca">OMS58:21200000.RBV</access>
-                </position>
-                <stop>
-                    <access method="PUT" type="int" transport="ca">OMS58:21200000.STOP</access>
-                    <value type="int">1</value>
-                </stop>
-                <status>
-                    <access method="GETCB" type="int" transport="ca">OMS58:21200000.STAT</access>
-                </status>
-                <unit>
-                    <access method="GETCB" type="string" transport="ca">OMS58:21200000.EGU</access>
-                </unit>
-            </axis>
-            <axis>
-	            <class></class>
-                <name>Grating</name>
-                <id>OMS58:21200001servo</id>
-                <goto>
-                    <access method="PUTCB" type="double" transport="ca">OMS58:21200001</access>
-                </goto>
-                <position>
-                    <access method="GETCB" type="double" transport="ca">OMS58:21200001.RBV</access>
-                </position>
-                <stop>
-                    <access method="PUT" type="int" transport="ca">OMS58:21200001.STOP</access>
-                    <value type="int">1</value>
-                </stop>
-                <status>
-                    <access method="GETCB" type="int" transport="ca">OMS58:21200001.MSTA</access>
-                </status>
-                <unit>
-                    <access method="GETCB" type="string" transport="ca">OMS58:21200001.EGU</access>
-                </unit>
-            </axis>
-        </motor>
     </motors>
     <devices>
         <device>
