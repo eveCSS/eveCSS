@@ -342,7 +342,6 @@ public class ECP1Client {
 							System.err.println( "Unknown package type with the id: " + Integer.toHexString( commandId ) );
 						}
 						
-						
 					} catch( final IOException exception ) {
 						// TODO Auto-generated catch block
 						exception.printStackTrace();
