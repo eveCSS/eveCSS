@@ -1,380 +1,396 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <version>0.4.0</version>
-    <repeatcount>0</repeatcount>
-    <!-- plugin section -->
+    <version>0.3.9</version>
+    <chain id="1">
+        <confirmsave>false</confirmsave>
+        <autonumber>false</autonumber>
+        <savescandescription>false</savescandescription>
+        <scanmodules>
+            <scanmodule id="1">
+                <type>classic</type>
+                <name>SM 1</name>
+                <xpos>100</xpos>
+                <ypos>20</ypos>
+                <parent>0</parent>
+                <appended>2</appended>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>PPSMC:gw23715000</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">1.0</start>
+                    <stop type="double">99.0</stop>
+                    <stepwidth type="double">19.6</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>ringLifeTime1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <plot id="1">
+                    <xaxis>
+                        <id>PPSMC:gw23715000</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent1chan1</id>
+                        <mode>linear</mode>
+                        <linestyle>Solid Line</linestyle>
+                        <color>0000ff</color>
+                        <markstyle>point%28%07%29</markstyle>
+                    </yaxis>
+                    <yaxis>
+                        <id>ringLifeTime1chan1</id>
+                        <mode>linear</mode>
+                        <linestyle>Dash Line</linestyle>
+                        <color>00ff00</color>
+                        <markstyle>Bar%28%7C%29</markstyle>
+                    </yaxis>
+                </plot>
+                <plot id="2">
+                    <xaxis>
+                        <id>PPSMC:gw23715000</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringLifeTime1chan1</id>
+                        <mode>log</mode>
+                        <linestyle>Area</linestyle>
+                        <color>ff00ff</color>
+                        <markstyle>point%28%07%29</markstyle>
+                    </yaxis>
+                </plot>
+            </scanmodule>
+            <scanmodule id="2">
+                <type>classic</type>
+                <name>SM 2 append</name>
+                <xpos>231</xpos>
+                <ypos>30</ypos>
+                <parent>1</parent>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>PPSMC:gw23715000</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">88.0</start>
+                    <stop type="double">-50.0</stop>
+                    <stepwidth type="double">-13.8</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>ringLifeTime1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <plot id="1">
+                    <xaxis>
+                        <id>PPSMC:gw23715000</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent1chan1</id>
+                        <mode>linear</mode>
+                        <linestyle>Solid Line</linestyle>
+                        <color>0000ff</color>
+                        <markstyle>None</markstyle>
+                    </yaxis>
+                </plot>
+            </scanmodule>
+        </scanmodules>
+    </chain>
     <plugins>
-        <!-- (dummy) plugin to save data in ascii format -->
         <plugin type="save">
             <name>ASCII</name>
             <location></location>
-            <parameter name="format" datatype="string" default="ASCII"></parameter>
-            <parameter name="suffix" datatype="string" default="txt"></parameter>
+            <parameter name="format" datatype="string" default="ASCII" mandatory="false"></parameter>
+            <parameter name="suffix" datatype="string" default="txt" mandatory="false"></parameter>
         </plugin>
-        <!-- plugin to save data in hdf5 format -->
         <plugin type="save">
             <name>HDF5</name>
             <location>/messung/eve/lib/linux-x86/libhdf5plugin.so</location>
-            <parameter name="format" datatype="string" default="HDF5"></parameter>
-            <parameter name="suffix" datatype="string" default="h5"></parameter>
+            <parameter name="format" datatype="string" default="HDF5" mandatory="false"></parameter>
+            <parameter name="suffix" datatype="string" default="h5" mandatory="false"></parameter>
         </plugin>
-        <!-- position plugin -->
-	<plugin type="position">
-		<name>ReferenceAdd</name>
-		<location>/path/to/referenceadd</location>
-		<parameter name="summand" datatype="double" mandatory="true"></parameter>
-		<parameter name="referenceaxis" datatype="axisid" mandatory="true"></parameter>
-	</plugin>
-        <!-- position plugin -->
-	<plugin type="position">
-		<name>ReferenceMultiply</name>
-		<location>/path/to/referenceadd</location>
-		<parameter name="factor" datatype="double" mandatory="true"></parameter>
-		<parameter name="referenceaxis" datatype="axisid" mandatory="true"></parameter>
-	</plugin>
-        <!-- positioning plugin -->
-	<plugin type="postscanpositioning">
-		<name>GOTO-Peak</name>
-		<location>/path/to/plugin3</location>
-		<parameter name="direction" datatype="string">positive,negative</parameter>
-	</plugin>
-        <!-- positioning plugin -->
-	<plugin type="postscanpositioning">
-		<name>GOTO-Center</name>
-		<location>/path/to/plugin3</location>
-		<parameter name="direction" datatype="string" mandatory="true">positive,negative</parameter>
-	</plugin>
+        <plugin type="position">
+            <name>ReferenceAdd</name>
+            <location>/path/to/referenceadd</location>
+            <parameter name="summand" datatype="double" default="0.0" mandatory="true"></parameter>
+            <parameter name="referenceaxis" datatype="axisid" default="" mandatory="true"></parameter>
+        </plugin>
+        <plugin type="position">
+            <name>ReferenceMultiply</name>
+            <location>/path/to/referenceadd</location>
+            <parameter name="factor" datatype="double" default="0.0" mandatory="true"></parameter>
+            <parameter name="referenceaxis" datatype="axisid" default="" mandatory="true"></parameter>
+        </plugin>
+        <plugin type="postscanpositioning">
+            <name>GOTO-Peak</name>
+            <location>/path/to/plugin3</location>
+            <parameter name="direction" datatype="string"
+                default="positive" mandatory="false">positive,negative</parameter>
+        </plugin>
+        <plugin type="postscanpositioning">
+            <name>GOTO-Center</name>
+            <location>/path/to/plugin3</location>
+            <parameter name="direction" datatype="string"
+                default="positive" mandatory="true">positive,negative</parameter>
+        </plugin>
     </plugins>
-    <!-- detector section -->
     <detectors>
-        <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Ring_1</name>
             <id>ringCurrent1basic</id>
-            <!-- Name, Class, PV -->
-            <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>Ring_1</name>
                 <id>ringCurrent1chan1</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">ringCurrent1.VAL</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double" transport="ca">ringCurrent1.VAL</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">ringCurrent1.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">ringCurrent1.EGU</access>
                 </unit>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Ring_2</name>
             <id>ringCurrent2basic</id>
-            <!-- Name, Class, PV -->
-            <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>Ring_2</name>
                 <id>ringCurrent2chan1</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">ringCurrent2.VAL</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double" transport="ca">ringCurrent2.VAL</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">ringCurrent2.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">ringCurrent2.EGU</access>
                 </unit>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Ring_5</name>
             <id>ringCurrent5basic</id>
-            <!-- Name, Class, PV -->
-            <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>Ring_5</name>
                 <id>ringCurrent5chan1</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">ringCurrent5.VAL</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double" transport="ca">ringCurrent5.VAL</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">ringCurrent5.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">ringCurrent5.EGU</access>
                 </unit>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Bessy_Ringstrom</name>
             <id>MDIZ3T5G:currentbasic</id>
-            <!-- Name, Class, PV -->
-            <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>Bessy_Ringstrom</name>
                 <id>MDIZ3T5G:currentchan1</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">MDIZ3T5G:current.VAL</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double" transport="ca">MDIZ3T5G:current.VAL</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">MDIZ3T5G:current.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">MDIZ3T5G:current.EGU</access>
                 </unit>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Bessy_Lebensdauer</name>
             <id>MDIZ3T5G:lt10basic</id>
-            <!-- Name, Class, PV -->
-            <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>Bessy_Lebensdauer</name>
                 <id>MDIZ3T5G:lt10chan1</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">MDIZ3T5G:lt10.VAL</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double" transport="ca">MDIZ3T5G:lt10.VAL</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">MDIZ3T5G:lt10.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">MDIZ3T5G:lt10.EGU</access>
                 </unit>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Lebensdauer_1</name>
             <id>ringLifeTime1basic</id>
-            <!-- Name, Class, PV -->
-            <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>Lebensdauer_1</name>
                 <id>ringLifeTime1chan1</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">ringLifeTime1.VAL</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double" transport="ca">ringLifeTime1.VAL</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">ringLifeTime1.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">ringLifeTime1.EGU</access>
                 </unit>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Lebensdauer_2</name>
             <id>ringLifeTime2basic</id>
-            <!-- Name, Class, PV -->
-            <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>Lebensdauer_2</name>
                 <id>ringLifeTime2chan1</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">ringLifeTime2.VAL</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double" transport="ca">ringLifeTime2.VAL</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">ringLifeTime2.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">ringLifeTime2.EGU</access>
                 </unit>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Lebensdauer_5</name>
             <id>ringLifeTime5basic</id>
-            <!-- Name, Class, PV -->
-            <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>Lebensdauer_5</name>
                 <id>ringLifeTime5chan1</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">ringLifeTime5.VAL</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double" transport="ca">ringLifeTime5.VAL</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">ringLifeTime5.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">ringLifeTime5.EGU</access>
                 </unit>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector only with read attribut -->
         <detector>
             <class>BessyGaps</class>
             <name>UE56_2shift</name>
             <id>UE56ID3R:SBasePmGapbasic</id>
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>UE56_2shift</name>
                 <id>UE56ID3R:SBasePmGapchan1</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">UE56ID3R:SBasePmGap.A</access>
-                    <value type="double"></value>
-<!--                    <access method="GETCB" transport="ca" type="double">UE56ID3R:SBasePmGap.A</access>-->
+                    <access method="GETPUTCB" type="double" transport="ca">UE56ID3R:SBasePmGap.A</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">UE56ID3R:SBasePmGap.EGU</access>
-<!--                    <access method="GETCB" transport="ca" type="string">UE56ID3R:SBasePmGap.EGU</access>-->
+                    <access method="GETPUT" type="string" transport="ca">UE56ID3R:SBasePmGap.EGU</access>
                 </unit>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector only with read attribut -->
         <detector>
             <class>BessyGaps</class>
             <name>UE56_2gap</name>
             <id>UE56ID3R:BasePmGapbasic</id>
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>UE56_2gap</name>
                 <id>UE56ID3R:BasePmGapchan1</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">UE56ID3R:BasePmGap.A</access>
-                    <value type="double"></value>
-<!--                    <access method="GETCB" transport="ca" type="double">UE56ID3R:BasePmGap.A</access>-->
+                    <access method="GETPUTCB" type="double" transport="ca">UE56ID3R:BasePmGap.A</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">UE56ID3R:BasePmGap.EGU</access>
-<!--                    <access method="GETCB" transport="ca" type="string">UE56ID3R:BasePmGap.EGU</access>-->
+                    <access method="GETPUT" type="string" transport="ca">UE56ID3R:BasePmGap.EGU</access>
                 </unit>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector only with read attribut -->
         <detector>
             <class>BessyGaps</class>
             <name>U41_gap</name>
             <id>U41IT6R:BasePmGapbasic</id>
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>U41_gap</name>
                 <id>U41IT6R:BasePmGapchan1</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">U41IT6R:BasePmGap.A</access>
-                    <value type="double"></value>
-<!--                    <access method="GETCB" transport="ca" type="double">U41IT6R:BasePmGap.A</access>-->
+                    <access method="GETPUTCB" type="double" transport="ca">U41IT6R:BasePmGap.A</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">U41IT6R:BasePmGap.EGU</access>
-<!--                    <access method="GETCB" transport="ca" type="string">U41IT6R:BasePmGap.EGU</access>-->
+                    <access method="GETPUT" type="string" transport="ca">U41IT6R:BasePmGap.EGU</access>
                 </unit>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector only with read attribut -->
         <detector>
             <class>BessyGaps</class>
             <name>UE56_1shift</name>
             <id>UE56ID6R:SBasePmGapbasic</id>
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>UE56_1shift</name>
                 <id>UE56ID6R:SBasePmGapchan1</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">UE56ID6R:SBasePmGap.A</access>
-                    <value type="double"></value>
-<!--                    <access method="GETCB" transport="ca" type="double">UE56ID6R:SBasePmGap.A</access>-->
+                    <access method="GETPUTCB" type="double" transport="ca">UE56ID6R:SBasePmGap.A</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">UE56ID6R:SBasePmGap.EGU</access>
-<!--                    <access method="GETCB" transport="ca" type="string">UE56ID6R:SBasePmGap.EGU</access>-->
+                    <access method="GETPUT" type="string" transport="ca">UE56ID6R:SBasePmGap.EGU</access>
                 </unit>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector only with read attribut -->
         <detector>
             <class>BessyGaps</class>
             <name>UE56_1gap</name>
             <id>UE56ID6R:BasePmGapbasic</id>
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>UE56_1gap</name>
                 <id>UE56ID6R:BasePmGapchan1</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">UE56ID6R:BasePmGap.A</access>
-                    <value type="double"></value>
-<!--                    <access method="GETCB" transport="ca" type="double">UE56ID6R:BasePmGap.A</access>-->
+                    <access method="GETPUTCB" type="double" transport="ca">UE56ID6R:BasePmGap.A</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">UE56ID6R:BasePmGap.EGU</access>
-<!--                    <access method="GETCB" transport="ca" type="string">UE56ID6R:BasePmGap.EGU</access>-->
+                    <access method="GETPUT" type="string" transport="ca">UE56ID6R:BasePmGap.EGU</access>
                 </unit>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector only with read attribut -->
         <detector>
             <class>BessyGaps</class>
             <name>U125_gap</name>
             <id>U125ID7R:BasePmGapbasic</id>
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>U125_gap</name>
                 <id>U125ID7R:BasePmGapchan1</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">U125ID7R:BasePmGap.A</access>
-                    <value type="double"></value>
-<!--                    <access method="GETCB" transport="ca" type="double">U125ID7R:BasePmGap.A</access>-->
+                    <access method="GETPUTCB" type="double" transport="ca">U125ID7R:BasePmGap.A</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">U125ID7R:BasePmGap.EGU</access>
-<!--                    <access method="GETCB" transport="ca" type="string">U125ID7R:BasePmGap.EGU</access>-->
+                    <access method="GETPUT" type="string" transport="ca">U125ID7R:BasePmGap.EGU</access>
                 </unit>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- basic detector only with read attribut -->
         <detector>
             <class>BessyGaps</class>
             <name>U49_2gap</name>
             <id>U49ID8R:BasePmGapbasic</id>
             <channel>
                 <class></class>
-<!--                <name></name>-->
                 <name>U49_2gap</name>
                 <id>U49ID8R:BasePmGapchan1</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">U49ID8R:BasePmGap.A</access>
-                    <value type="double"></value>
-<!--                    <access method="GETCB" transport="ca" type="double">U49ID8R:BasePmGap.A</access>-->
+                    <access method="GETPUTCB" type="double" transport="ca">U49ID8R:BasePmGap.A</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">U49ID8R:BasePmGap.EGU</access>
-<!--                    <access method="GETCB" transport="ca" type="string">U49ID8R:BasePmGap.EGU</access>-->
+                    <access method="GETPUT" type="string" transport="ca">U49ID8R:BasePmGap.EGU</access>
                 </unit>
             </channel>
         </detector>
@@ -387,606 +403,71 @@
                 <name>Timer</name>
                 <id>Timer1-det</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="local" type="datetime">Timer</access>
-                    <value type="datetime"></value>
+                    <access method="GETCB" type="datetime" transport="local">Timer</access>
                 </read>
             </channel>
         </detector>
-        <!-- Name, Class, PV -->
-        <!-- Prema 5000 (must include premaChannel) -->
         <detector>
             <class></class>
             <name>Prema5000</name>
             <id>P5000:gw23707</id>
             <unit>
-                <access method="GETPUT" transport="ca" type="string">P5000:gw23707.EGU</access>
+                <access method="GETPUT" type="string" transport="ca">P5000:gw23707.EGU</access>
             </unit>
             <trigger>
-                <access method="PUTCB" transport="ca" type="int">P5000:gw23707trigger.PROC</access>
+                <access method="PUTCB" type="int" transport="ca">P5000:gw23707trigger.PROC</access>
                 <value type="int">1</value>
             </trigger>
-        		<!-- Name,  PV -->
-        		<!-- channel for Prema 5000 -->
             <channel>
                 <class></class>
                 <name>Channel00</name>
                 <id>P5000:gw2370700</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">P5000:gw2370700.VAL</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double" transport="ca">P5000:gw2370700.VAL</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370700.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw2370700.EGU</access>
                 </unit>
-        		<!-- PV -->
-        		<!-- basic EPICS fields for detectors / detectorchannels -->
-            <option>
-                <name>Hi Error Limit</name>
-                <id>P5000:gw2370700.HIHI</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370700.HIHI</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Error Severity</name>
-                <id>P5000:gw2370700.HHSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370700.HHSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Warn Limit</name>
-                <id>P5000:gw2370700.HIGH</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370700.HIGH</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Warn Severity</name>
-                <id>P5000:gw2370700.HSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370700.HSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Monitor Deadband</name>
-                <id>P5000:gw2370700.MDEL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370700.MDEL</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Warn Limit</name>
-                <id>P5000:gw2370700.LOW</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370700.LOW</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Warn Severity</name>
-                <id>P5000:gw2370700.LSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370700.LSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Error Limit</name>
-                <id>P5000:gw2370700.LOLO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370700.LOLO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Error Severity</name>
-                <id>P5000:gw2370700.LLSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370700.LLSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Raw Offset</name>
-                <id>P5000:gw2370700.ROFF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="int">P5000:gw2370700.ROFF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Scale</name>
-                <id>P5000:gw2370700.ASLO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370700.ASLO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Offset</name>
-                <id>P5000:gw2370700.AOFF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370700.AOFF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Smoothing</name>
-                <id>P5000:gw2370700.SMOO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370700.SMOO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Severity</name>
-                <id>P5000:gw2370700.SEVR</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370700.SEVR</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Status</name>
-                <id>P5000:gw2370700.STAT</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370700.STAT</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-                <option>
-                    <name>Scan</name>
-                    <id>P5000:gw2370700.SCAN</id>
-                    <value>
-                        <access method="GETPUT" transport="ca" type="string">P5000:gw2370700.SCAN</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
             </channel>
-        		<!-- Name,  PV -->
-        		<!-- channel for Prema 5000 -->
             <channel>
                 <class></class>
                 <name>Channel01</name>
                 <id>P5000:gw2370701</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">P5000:gw2370701.VAL</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double" transport="ca">P5000:gw2370701.VAL</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370701.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw2370701.EGU</access>
                 </unit>
-        		<!-- PV -->
-        		<!-- basic EPICS fields for detectors / detectorchannels -->
-            <option>
-                <name>Hi Error Limit</name>
-                <id>P5000:gw2370701.HIHI</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370701.HIHI</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Error Severity</name>
-                <id>P5000:gw2370701.HHSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370701.HHSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Warn Limit</name>
-                <id>P5000:gw2370701.HIGH</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370701.HIGH</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Warn Severity</name>
-                <id>P5000:gw2370701.HSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370701.HSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Monitor Deadband</name>
-                <id>P5000:gw2370701.MDEL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370701.MDEL</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Warn Limit</name>
-                <id>P5000:gw2370701.LOW</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370701.LOW</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Warn Severity</name>
-                <id>P5000:gw2370701.LSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370701.LSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Error Limit</name>
-                <id>P5000:gw2370701.LOLO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370701.LOLO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Error Severity</name>
-                <id>P5000:gw2370701.LLSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370701.LLSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Raw Offset</name>
-                <id>P5000:gw2370701.ROFF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="int">P5000:gw2370701.ROFF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Scale</name>
-                <id>P5000:gw2370701.ASLO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370701.ASLO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Offset</name>
-                <id>P5000:gw2370701.AOFF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370701.AOFF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Smoothing</name>
-                <id>P5000:gw2370701.SMOO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370701.SMOO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Severity</name>
-                <id>P5000:gw2370701.SEVR</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370701.SEVR</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Status</name>
-                <id>P5000:gw2370701.STAT</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370701.STAT</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-                <option>
-                    <name>Scan</name>
-                    <id>P5000:gw2370701.SCAN</id>
-                    <value>
-                        <access method="GETPUT" transport="ca" type="string">P5000:gw2370701.SCAN</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
             </channel>
-        		<!-- Name,  PV -->
-        		<!-- channel for Prema 5000 -->
             <channel>
                 <class></class>
                 <name>Channel02</name>
                 <id>P5000:gw2370702</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">P5000:gw2370702.VAL</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double" transport="ca">P5000:gw2370702.VAL</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370702.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw2370702.EGU</access>
                 </unit>
-        		<!-- PV -->
-        		<!-- basic EPICS fields for detectors / detectorchannels -->
-            <option>
-                <name>Hi Error Limit</name>
-                <id>P5000:gw2370702.HIHI</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370702.HIHI</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Error Severity</name>
-                <id>P5000:gw2370702.HHSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370702.HHSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Warn Limit</name>
-                <id>P5000:gw2370702.HIGH</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370702.HIGH</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Warn Severity</name>
-                <id>P5000:gw2370702.HSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370702.HSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Monitor Deadband</name>
-                <id>P5000:gw2370702.MDEL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370702.MDEL</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Warn Limit</name>
-                <id>P5000:gw2370702.LOW</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370702.LOW</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Warn Severity</name>
-                <id>P5000:gw2370702.LSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370702.LSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Error Limit</name>
-                <id>P5000:gw2370702.LOLO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370702.LOLO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Error Severity</name>
-                <id>P5000:gw2370702.LLSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370702.LLSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Raw Offset</name>
-                <id>P5000:gw2370702.ROFF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="int">P5000:gw2370702.ROFF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Scale</name>
-                <id>P5000:gw2370702.ASLO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370702.ASLO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Offset</name>
-                <id>P5000:gw2370702.AOFF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370702.AOFF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Smoothing</name>
-                <id>P5000:gw2370702.SMOO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370702.SMOO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Severity</name>
-                <id>P5000:gw2370702.SEVR</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370702.SEVR</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Status</name>
-                <id>P5000:gw2370702.STAT</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370702.STAT</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-                <option>
-                    <name>Scan</name>
-                    <id>P5000:gw2370702.SCAN</id>
-                    <value>
-                        <access method="GETPUT" transport="ca" type="string">P5000:gw2370702.SCAN</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
             </channel>
-        		<!-- Name,  PV -->
-        		<!-- channel for Prema 5000 -->
             <channel>
                 <class></class>
                 <name>Channel03</name>
                 <id>P5000:gw2370703</id>
                 <read>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">P5000:gw2370703.VAL</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double" transport="ca">P5000:gw2370703.VAL</access>
                 </read>
                 <unit>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370703.EGU</access>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw2370703.EGU</access>
                 </unit>
-        		<!-- PV -->
-        		<!-- basic EPICS fields for detectors / detectorchannels -->
-            <option>
-                <name>Hi Error Limit</name>
-                <id>P5000:gw2370703.HIHI</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370703.HIHI</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Error Severity</name>
-                <id>P5000:gw2370703.HHSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370703.HHSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Warn Limit</name>
-                <id>P5000:gw2370703.HIGH</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370703.HIGH</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Warn Severity</name>
-                <id>P5000:gw2370703.HSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370703.HSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Monitor Deadband</name>
-                <id>P5000:gw2370703.MDEL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370703.MDEL</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Warn Limit</name>
-                <id>P5000:gw2370703.LOW</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370703.LOW</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Warn Severity</name>
-                <id>P5000:gw2370703.LSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370703.LSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Error Limit</name>
-                <id>P5000:gw2370703.LOLO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370703.LOLO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Error Severity</name>
-                <id>P5000:gw2370703.LLSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370703.LLSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Raw Offset</name>
-                <id>P5000:gw2370703.ROFF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="int">P5000:gw2370703.ROFF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Scale</name>
-                <id>P5000:gw2370703.ASLO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370703.ASLO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Offset</name>
-                <id>P5000:gw2370703.AOFF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370703.AOFF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Smoothing</name>
-                <id>P5000:gw2370703.SMOO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370703.SMOO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Severity</name>
-                <id>P5000:gw2370703.SEVR</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370703.SEVR</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Status</name>
-                <id>P5000:gw2370703.STAT</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw2370703.STAT</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-                <option>
-                    <name>Scan</name>
-                    <id>P5000:gw2370703.SCAN</id>
-                    <value>
-                        <access method="GETPUT" transport="ca" type="string">P5000:gw2370703.SCAN</access>
-                    </value>
-                    <displaygroup>detail</displaygroup>
-                </option>
             </channel>
             <option>
                 <name>Function</name>
                 <id>P5000:gw23707function</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw23707function</access>
-                    <value type="string">DCVolts,ACVolts,DCAmps,ACAmps,Ohms</value>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw23707function</access>
+                    <value type="string">DCVolts, ACVolts, DCAmps, ACAmps, Ohms</value>
                 </value>
                 <displaygroup>summaryl</displaygroup>
             </option>
@@ -994,8 +475,8 @@
                 <name>range</name>
                 <id>P5000:gw23707range</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw23707range</access>
-                    <value type="string">Auto On,0.2 -> V kO,2 -> V mA kO,20 -> V kO,200 -> V kO,2 -> A MO,12 -> MO,Auto Off</value>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw23707range</access>
+                    <value type="string">Auto On, 0.2 -&gt; V kO, 2 -&gt; V mA kO, 20 -&gt; V kO, 200 -&gt; V kO, 2 -&gt; A MO, 12 -&gt; MO, Auto Off</value>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -1003,8 +484,8 @@
                 <name>Integration Time</name>
                 <id>P5000:gw23707intTime</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw23707intTime</access>
-                    <value type="string">0.1 s,1.0 s,10. s</value>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw23707intTime</access>
+                    <value type="string">0.1 s, 1.0 s, 10. s</value>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -1012,7 +493,7 @@
                 <name>Channel Preselect</name>
                 <id>P5000:gw23707channel</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="int">P5000:gw23707channel</access>
+                    <access method="GETPUT" type="int" transport="ca">P5000:gw23707channel</access>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
@@ -1020,14 +501,13 @@
                 <name>Initialize (SDC)</name>
                 <id>P5000:gw23707sdc</id>
                 <value>
-                    <access method="GETPUT" transport="ca" type="string">P5000:gw23707sdc</access>
-                    <value type="string">Init only,SDC+Init</value>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw23707sdc</access>
+                    <value type="string">Init only, SDC+Init</value>
                 </value>
                 <displaygroup>summary</displaygroup>
             </option>
         </detector>
     </detectors>
-    <!-- motor section -->
     <motors>
         <motor>
             <class>Timer</class>
@@ -1038,65 +518,62 @@
                 <name>Time</name>
                 <id>Timer1-mot</id>
                 <goto>
-                    <access method="PUTCB" transport="local" type="datetime">Timer</access>
+                    <access method="PUTCB" type="datetime" transport="local">Timer</access>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="local" type="datetime">Timer</access>
+                    <access method="GETCB" type="datetime" transport="local">Timer</access>
                 </position>
                 <stop>
-                    <access method="PUT" transport="local" type="int">Timer</access>
+                    <access method="PUT" type="int" transport="local">Timer</access>
                     <value type="OnOff">0</value>
                 </stop>
             </axis>
         </motor>
-        <!-- Name, Class, Id -->
-        <!-- basic motor, must include axes -->
-	<motor>
+        <motor>
             <class></class>
             <name></name>
             <id>PPSMC:gw237</id>
-            <!-- Name,  PV -->
-            <!-- axis, to be included by motors -->
             <axis>
                 <class></class>
                 <name>PP_Motor1</name>
                 <id>PPSMC:gw23715000</id>
                 <goto>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double" timeout="100.0">PPSMC:gw23715000</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="100.0">PPSMC:gw23715000</access>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="ca" type="double">PPSMC:gw23715000.RBV</access>
+                    <access method="GETCB" type="double" transport="ca">PPSMC:gw23715000.RBV</access>
                 </position>
                 <stop>
-                    <access method="PUT" transport="ca" type="int">PPSMC:gw23715000.STOP</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715000.STOP</access>
                     <value type="int">1</value>
                 </stop>
                 <unit>
-                    <access method="GETPUTCB" transport="ca" type="string">PPSMC:gw23715000.EGU</access>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715000.EGU</access>
                 </unit>
                 <deadband>
-                    <access method="GETPUTCB" transport="ca" type="double">PPSMC:gw23715000.RDBD</access>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715000.RDBD</access>
                 </deadband>
                 <offset>
-                    <access method="GETPUTCB" transport="ca" type="double">PPSMC:gw23715000.OFF</access>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715000.OFF</access>
                 </offset>
                 <tweakvalue>
-                    <access method="GETPUTCB" transport="ca" type="double">PPSMC:gw23715000.TWV</access>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715000.TWV</access>
                 </tweakvalue>
                 <tweakforward>
-                    <access method="PUT" transport="ca" type="int">PPSMC:gw23715000.TWF</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715000.TWF</access>
                     <value type="int">1</value>
                 </tweakforward>
                 <tweakreverse>
-                    <access method="PUT" transport="ca" type="int">PPSMC:gw23715000.TWR</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715000.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
                     <name>Goto Position</name>
                     <id>PPSMC:gw23715000</id>
                     <value>
-                        <access method="GETPUTCB" type="double" transport="ca" timeout="100.0">PPSMC:gw23715000</access>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">PPSMC:gw23715000</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1177,7 +654,7 @@
                     <id>PPSMC:gw23715000.UEIP</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000.UEIP</access>
-                        <value type="string">No,Yes</value>
+                        <value type="string">No, Yes</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1194,7 +671,7 @@
                     <id>PPSMC:gw23715000.URIP</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000.URIP</access>
-                        <value type="string">No,Yes</value>
+                        <value type="string">No, Yes</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1226,8 +703,7 @@
                     <name>Retry Count</name>
                     <id>PPSMC:gw23715000.RCNT</id>
                     <value>
-                        <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715000.RCNT</access>
-                        <value type="double">PPSMC:gw23715000.RCNT</value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715000.RCNT</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1276,7 +752,7 @@
                     <id>PPSMC:gw23715000.SET</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715000.SET</access>
-                        <value type="string">Use,Set</value>
+                        <value type="string">Use, Set</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1353,48 +829,47 @@
                     <displaygroup>summary</displaygroup>
                 </option>
             </axis>
-            <!-- Name,  PV -->
-            <!-- axis, to be included by motors -->
             <axis>
                 <class></class>
                 <name>PP_Motor2</name>
                 <id>PPSMC:gw23715001</id>
                 <goto>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double" timeout="100.0">PPSMC:gw23715001</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="100.0">PPSMC:gw23715001</access>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="ca" type="double">PPSMC:gw23715001.RBV</access>
+                    <access method="GETCB" type="double" transport="ca">PPSMC:gw23715001.RBV</access>
                 </position>
                 <stop>
-                    <access method="PUT" transport="ca" type="int">PPSMC:gw23715001.STOP</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715001.STOP</access>
                     <value type="int">1</value>
                 </stop>
                 <unit>
-                    <access method="GETPUTCB" transport="ca" type="string">PPSMC:gw23715001.EGU</access>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715001.EGU</access>
                 </unit>
                 <deadband>
-                    <access method="GETPUTCB" transport="ca" type="double">PPSMC:gw23715001.RDBD</access>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715001.RDBD</access>
                 </deadband>
                 <offset>
-                    <access method="GETPUTCB" transport="ca" type="double">PPSMC:gw23715001.OFF</access>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715001.OFF</access>
                 </offset>
                 <tweakvalue>
-                    <access method="GETPUTCB" transport="ca" type="double">PPSMC:gw23715001.TWV</access>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715001.TWV</access>
                 </tweakvalue>
                 <tweakforward>
-                    <access method="PUT" transport="ca" type="int">PPSMC:gw23715001.TWF</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715001.TWF</access>
                     <value type="int">1</value>
                 </tweakforward>
                 <tweakreverse>
-                    <access method="PUT" transport="ca" type="int">PPSMC:gw23715001.TWR</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715001.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
                     <name>Goto Position</name>
                     <id>PPSMC:gw23715001</id>
                     <value>
-                        <access method="GETPUTCB" type="double" transport="ca" timeout="100.0">PPSMC:gw23715001</access>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">PPSMC:gw23715001</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1475,7 +950,7 @@
                     <id>PPSMC:gw23715001.UEIP</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001.UEIP</access>
-                        <value type="string">No,Yes</value>
+                        <value type="string">No, Yes</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1492,7 +967,7 @@
                     <id>PPSMC:gw23715001.URIP</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001.URIP</access>
-                        <value type="string">No,Yes</value>
+                        <value type="string">No, Yes</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1524,8 +999,7 @@
                     <name>Retry Count</name>
                     <id>PPSMC:gw23715001.RCNT</id>
                     <value>
-                        <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715001.RCNT</access>
-                        <value type="double">PPSMC:gw23715001.RCNT</value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715001.RCNT</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1574,7 +1048,7 @@
                     <id>PPSMC:gw23715001.SET</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715001.SET</access>
-                        <value type="string">Use,Set</value>
+                        <value type="string">Use, Set</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1651,48 +1125,47 @@
                     <displaygroup>summary</displaygroup>
                 </option>
             </axis>
-            <!-- Name,  PV -->
-            <!-- axis, to be included by motors -->
             <axis>
                 <class></class>
                 <name>PP_Motor3</name>
                 <id>PPSMC:gw23715002</id>
                 <goto>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double" timeout="100.0">PPSMC:gw23715002</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="100.0">PPSMC:gw23715002</access>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="ca" type="double">PPSMC:gw23715002.RBV</access>
+                    <access method="GETCB" type="double" transport="ca">PPSMC:gw23715002.RBV</access>
                 </position>
                 <stop>
-                    <access method="PUT" transport="ca" type="int">PPSMC:gw23715002.STOP</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715002.STOP</access>
                     <value type="int">1</value>
                 </stop>
                 <unit>
-                    <access method="GETPUTCB" transport="ca" type="string">PPSMC:gw23715002.EGU</access>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715002.EGU</access>
                 </unit>
                 <deadband>
-                    <access method="GETPUTCB" transport="ca" type="double">PPSMC:gw23715002.RDBD</access>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715002.RDBD</access>
                 </deadband>
                 <offset>
-                    <access method="GETPUTCB" transport="ca" type="double">PPSMC:gw23715002.OFF</access>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715002.OFF</access>
                 </offset>
                 <tweakvalue>
-                    <access method="GETPUTCB" transport="ca" type="double">PPSMC:gw23715002.TWV</access>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715002.TWV</access>
                 </tweakvalue>
                 <tweakforward>
-                    <access method="PUT" transport="ca" type="int">PPSMC:gw23715002.TWF</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715002.TWF</access>
                     <value type="int">1</value>
                 </tweakforward>
                 <tweakreverse>
-                    <access method="PUT" transport="ca" type="int">PPSMC:gw23715002.TWR</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715002.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
                     <name>Goto Position</name>
                     <id>PPSMC:gw23715002</id>
                     <value>
-                        <access method="GETPUTCB" type="double" transport="ca" timeout="100.0">PPSMC:gw23715002</access>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">PPSMC:gw23715002</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1773,7 +1246,7 @@
                     <id>PPSMC:gw23715002.UEIP</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715002.UEIP</access>
-                        <value type="string">No,Yes</value>
+                        <value type="string">No, Yes</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1790,7 +1263,7 @@
                     <id>PPSMC:gw23715002.URIP</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715002.URIP</access>
-                        <value type="string">No,Yes</value>
+                        <value type="string">No, Yes</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1822,8 +1295,7 @@
                     <name>Retry Count</name>
                     <id>PPSMC:gw23715002.RCNT</id>
                     <value>
-                        <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715002.RCNT</access>
-                        <value type="double">PPSMC:gw23715002.RCNT</value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715002.RCNT</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1872,7 +1344,7 @@
                     <id>PPSMC:gw23715002.SET</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715002.SET</access>
-                        <value type="string">Use,Set</value>
+                        <value type="string">Use, Set</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1949,48 +1421,47 @@
                     <displaygroup>summary</displaygroup>
                 </option>
             </axis>
-            <!-- Name,  PV -->
-            <!-- axis, to be included by motors -->
             <axis>
                 <class></class>
                 <name>PP_Motor4</name>
                 <id>PPSMC:gw23715003</id>
                 <goto>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="double" timeout="100.0">PPSMC:gw23715003</access>
-                    <value type="double"></value>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="100.0">PPSMC:gw23715003</access>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="ca" type="double">PPSMC:gw23715003.RBV</access>
+                    <access method="GETCB" type="double" transport="ca">PPSMC:gw23715003.RBV</access>
                 </position>
                 <stop>
-                    <access method="PUT" transport="ca" type="int">PPSMC:gw23715003.STOP</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715003.STOP</access>
                     <value type="int">1</value>
                 </stop>
                 <unit>
-                    <access method="GETPUTCB" transport="ca" type="string">PPSMC:gw23715003.EGU</access>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715003.EGU</access>
                 </unit>
                 <deadband>
-                    <access method="GETPUTCB" transport="ca" type="double">PPSMC:gw23715003.RDBD</access>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715003.RDBD</access>
                 </deadband>
                 <offset>
-                    <access method="GETPUTCB" transport="ca" type="double">PPSMC:gw23715003.OFF</access>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715003.OFF</access>
                 </offset>
                 <tweakvalue>
-                    <access method="GETPUTCB" transport="ca" type="double">PPSMC:gw23715003.TWV</access>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715003.TWV</access>
                 </tweakvalue>
                 <tweakforward>
-                    <access method="PUT" transport="ca" type="int">PPSMC:gw23715003.TWF</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715003.TWF</access>
                     <value type="int">1</value>
                 </tweakforward>
                 <tweakreverse>
-                    <access method="PUT" transport="ca" type="int">PPSMC:gw23715003.TWR</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715003.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
                 <option>
                     <name>Goto Position</name>
                     <id>PPSMC:gw23715003</id>
                     <value>
-                        <access method="GETPUTCB" type="double" transport="ca" timeout="100.0">PPSMC:gw23715003</access>
+                        <access method="GETPUTCB" type="double"
+                            transport="ca" timeout="100.0">PPSMC:gw23715003</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2071,7 +1542,7 @@
                     <id>PPSMC:gw23715003.UEIP</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715003.UEIP</access>
-                        <value type="string">No,Yes</value>
+                        <value type="string">No, Yes</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2088,7 +1559,7 @@
                     <id>PPSMC:gw23715003.URIP</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715003.URIP</access>
-                        <value type="string">No,Yes</value>
+                        <value type="string">No, Yes</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2120,8 +1591,7 @@
                     <name>Retry Count</name>
                     <id>PPSMC:gw23715003.RCNT</id>
                     <value>
-                        <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715003.RCNT</access>
-                        <value type="double">PPSMC:gw23715003.RCNT</value>
+                        <access method="GETCB" type="double" transport="ca">PPSMC:gw23715003.RCNT</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2170,7 +1640,7 @@
                     <id>PPSMC:gw23715003.SET</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715003.SET</access>
-                        <value type="string">Use,Set</value>
+                        <value type="string">Use, Set</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2248,31 +1718,28 @@
                 </option>
             </axis>
         </motor>
-        <!-- Name, Class, Id -->
-        <!-- basic motor, must include axes -->
-	<motor>
+        <motor>
             <class></class>
             <name></name>
             <id>PPSMC:gw237</id>
-            <!-- Name,  PV -->
-            <!-- axis, to be included by motors -->
             <axis>
                 <class></class>
                 <name>Filter_1</name>
                 <id>DiscPosPPSMC:gw23715000</id>
                 <goto>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="string" timeout="100.0">PPSMC:gw23715000_Mnu</access>
-                    <value type="string" >Undefined,POS 0, POS 1</value>
+                    <access method="GETPUTCB" type="string"
+                        transport="ca" timeout="100.0">PPSMC:gw23715000_Mnu</access>
+                    <value type="string">Undefined, POS 0,  POS 1</value>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="ca" type="string">PPSMC:gw23715000_Mnu</access>
+                    <access method="GETCB" type="string" transport="ca">PPSMC:gw23715000_Mnu</access>
                 </position>
                 <stop>
-                    <access method="PUT" transport="ca" type="int">PPSMC:gw23715000_stop</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715000_stop</access>
                     <value type="int">1</value>
                 </stop>
                 <unit>
-                    <access method="GETPUTCB" transport="ca" type="string">PPSMC:gw23715000.EGU</access>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715000.EGU</access>
                 </unit>
                 <option>
                     <name>Selected Position</name>
@@ -2587,25 +2054,24 @@
                     <displaygroup>summary</displaygroup>
                 </option>
             </axis>
-            <!-- Name,  PV -->
-            <!-- axis, to be included by motors -->
             <axis>
                 <class></class>
                 <name>Filter_2</name>
                 <id>DiscPosPPSMC:gw23715001</id>
                 <goto>
-                    <access monitor="true" method="GETPUTCB" transport="ca" type="string" timeout="100.0">PPSMC:gw23715001_Mnu</access>
-                    <value type="string" >Undefined,POS 0, POS 1,POS 2,POS 3</value>
+                    <access method="GETPUTCB" type="string"
+                        transport="ca" timeout="100.0">PPSMC:gw23715001_Mnu</access>
+                    <value type="string">Undefined, POS 0,  POS 1, POS 2, POS 3</value>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="ca" type="string">PPSMC:gw23715001_Mnu</access>
+                    <access method="GETCB" type="string" transport="ca">PPSMC:gw23715001_Mnu</access>
                 </position>
                 <stop>
-                    <access method="PUT" transport="ca" type="int">PPSMC:gw23715001_stop</access>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715001_stop</access>
                     <value type="int">1</value>
                 </stop>
                 <unit>
-                    <access method="GETPUTCB" transport="ca" type="string">PPSMC:gw23715001.EGU</access>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715001.EGU</access>
                 </unit>
                 <option>
                     <name>Selected Position</name>
@@ -2922,32 +2388,24 @@
             </axis>
         </motor>
     </motors>
-    <!-- device section -->
     <devices>
-        <!-- Name, Class, PV -->
-        <!-- simple device with datatype string (readonly) -->
         <device>
             <class></class>
             <name>BEAM_SHUTTER</name>
             <id>BSR01U007L:Opened</id>
             <value>
-                <access monitor="true" method="GETCB" transport="ca" type="string">BSR01U007L:Opened</access>
-                <value type="string"></value>
+                <access method="GETCB" type="string" transport="ca">BSR01U007L:Opened</access>
             </value>
         </device>
-        <!-- Name, Class, PV -->
-        <!-- simple device with datatype string (readonly) -->
         <device>
             <class></class>
             <name>UNDULATOR</name>
             <id>U49ID4R:BaseCmdHmLock</id>
             <value>
-                <access monitor="true" method="GETCB" transport="ca" type="string">U49ID4R:BaseCmdHmLock</access>
-                <value type="string"></value>
+                <access method="GETCB" type="string" transport="ca">U49ID4R:BaseCmdHmLock</access>
             </value>
         </device>
     </devices>
-    <!-- smselection section and closing tag -->
     <smselection>
         <stepfunction>Add,Multiply,File,Plugin,Positionlist</stepfunction>
         <smtype>classic, advanced</smtype>

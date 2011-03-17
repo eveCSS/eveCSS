@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <version>0.4.0</version>
+    <version>0.4.1</version>
     <repeatcount>0</repeatcount>
     <!-- plugin section -->
     <plugins>
