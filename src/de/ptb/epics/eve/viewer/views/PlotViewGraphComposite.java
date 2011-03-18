@@ -1,14 +1,15 @@
 package de.ptb.epics.eve.viewer.views;
 
+import gov.aps.jca.dbr.TimeStamp;
+
+// import org.apache.log4j.Logger;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
@@ -24,15 +25,19 @@ import de.ptb.epics.eve.viewer.math.XYPlot;
  * @author Jens Eden
  * @author Marcus Michalsky
  */
-public class PlotGraphComposite extends Composite 
+public class PlotViewGraphComposite extends Composite 
 							implements IMeasurementDataListener {
-
+	
+	// TODO temporary logging for plot
+	//private static Logger logger = Logger.getLogger(PlotViewGraphComposite.class);
+	
 	private String detector1Id;
 	private String detector2Id;
 	private String motorId;
 	private int detector1PosCount;
 	private int detector2PosCount;
-	private int motorPosCount;
+	private int posCount;
+	TimeStamp timestamp;
 	private Double xValue;
 	private int chid;
 	private int smid;
@@ -49,9 +54,10 @@ public class PlotGraphComposite extends Composite
 	 * @param parent the parent
 	 * @param style the style
 	 */
-	public PlotGraphComposite(Composite parent, int style) {
+	public PlotViewGraphComposite(Composite parent, int style) {
 		super(parent, style);
 
+		// this composite wants to be informed if new data is available...
 		Activator.getDefault().getEcp1Client().addMeasurementDataListener(this);
 		
 		final GridLayout gridLayout = new GridLayout();
@@ -93,15 +99,15 @@ public class PlotGraphComposite extends Composite
 						 String motorId, String motorName, String detector1Id, 
 						 String detector1Name, String detector2Id, 
 						 String detector2Name) {
-
+		
 		// do not clean if plot has "isInit=false" AND detectors and motors are 
 		// still the same
 		if ((this.motorId == motorId) && (this.detector1Id == detector1Id) && 
 				(this.detector2Id == detector2Id)) {
-			if (plotWindow.isInit()) xyPlot.removeAllTraces();
+			if (plotWindow.isInit()) xyPlot.init(true);
 		}
 		else {
-			xyPlot.removeAllTraces();
+			xyPlot.init(true);
 		}
 
 		// set new values for chain, scan module, motor and detectors
@@ -110,68 +116,37 @@ public class PlotGraphComposite extends Composite
 		this.detector1Id = detector1Id;
 		this.detector2Id = detector2Id;
 		this.motorId = motorId;
-
-		// update the x axis with the new motor name
-		if(plotWindow.getMode() == PlotModes.LOG)
-			xyPlot.setXAxisTitle(motorName + " (log)");
-		else
-			xyPlot.setXAxisTitle(motorName);
-             	
+		timestamp = null;
+	
 		// update first y axis 
 		if (this.detector1Id != null)
 		{
+			// set the current (1st) detector name
 			this.detector1Name = detector1Name;
+			// does the plot already have a trace of this detector ?
+			// if not -> add as new trace
 			if (xyPlot.getTrace(detector1Name) == null)
-				xyPlot.addTrace(detector1Name);
-
-			xyPlot.getTrace(detector1Name).setTraceType(
-					plotWindow.getYAxes().get(0).getLinestyle());
-			xyPlot.getTrace(detector1Name).setPointStyle(
-					plotWindow.getYAxes().get(0).getMarkstyle());
-			xyPlot.getTrace(detector1Name).setTraceColor(
-					new Color(null, plotWindow.getYAxes().get(0).getColor()));
-			xyPlot.getTrace(detector1Name).getYAxis().setLogScale(
-					plotWindow.getYAxes().get(0).getMode() == PlotModes.LOG 
-					? true 
-					: false);
-			xyPlot.getTrace(detector1Name).getXAxis().setLogScale(
-					plotWindow.getMode() == PlotModes.LOG 
-					? true
-					: false);
-			if(plotWindow.getYAxes().get(0).getMode() == PlotModes.LOG)
-				xyPlot.getTrace(detector1Name).getYAxis().setTitle(
-													detector1Name + " (log)");
+				xyPlot.addTrace(detector1Name, detector1Id, 
+								motorName, motorId, plotWindow);
 		}
 		else {
+			// no first detector -> remove the trace (if present) and set null
 			xyPlot.removeTrace(detector1Name);
 			this.detector1Name = null;
 		}
 		// update second y axis
 		if (this.detector2Id != null)
 		{
+			// set the current (2nd) detector name
 			this.detector2Name = detector2Name;
+			// does the plot already have a trace of this detector ?
+			// if not -> add as new trace
 			if (xyPlot.getTrace(detector2Name) == null)
-				xyPlot.addTrace(detector2Name);
-				
-			xyPlot.getTrace(detector2Name).setTraceType(
-					plotWindow.getYAxes().get(1).getLinestyle());
-			xyPlot.getTrace(detector2Name).setPointStyle(
-					plotWindow.getYAxes().get(1).getMarkstyle());
-			xyPlot.getTrace(detector2Name).setTraceColor(
-					new Color(null, plotWindow.getYAxes().get(1).getColor()));
-			xyPlot.getTrace(detector2Name).getYAxis().setLogScale(
-					plotWindow.getYAxes().get(1).getMode() == PlotModes.LOG 
-					? true 
-					: false);
-			xyPlot.getTrace(detector2Name).getXAxis().setLogScale(
-					plotWindow.getMode() == PlotModes.LOG 
-					? true
-					: false);
-			if(plotWindow.getYAxes().get(1).getMode() == PlotModes.LOG)
-				xyPlot.getTrace(detector2Name).getYAxis().setTitle(
-													detector2Name + " (log)");
+				xyPlot.addTrace(detector2Name, detector2Id, 
+								motorName, motorId, plotWindow);
 		}
 		else {
+			// no second detector -> remove the trace (if present) and set null
 			xyPlot.removeTrace(detector2Name);
 			this.detector2Name = null;
 		}
@@ -192,7 +167,7 @@ public class PlotGraphComposite extends Composite
 		// do nothing if no measurement data was given
 		if (measurementData == null) return;
 
-		// indicators for new data
+		// indicators for new data / for time data
 		boolean detector1HasData = false;
 		boolean detector2HasData = false;
 		boolean motorHasData = false;
@@ -208,7 +183,7 @@ public class PlotGraphComposite extends Composite
 			{
 				detector1PosCount = measurementData.getPositionCounter();
 				DataType dt = measurementData.getDataType();
-				
+
 				// is the data type correct ?
 				if (dt == DataType.DOUBLE || dt == DataType.FLOAT || 
 					dt == DataType.INT32 || dt == DataType.INT16 || 
@@ -217,6 +192,9 @@ public class PlotGraphComposite extends Composite
 					// get the data and indicate that detector 1 has new data
 					y1value = (Double) measurementData.getValues().get(0);
 					detector1HasData = true;
+					
+					//logger.debug("Detector1: " + detector1Id + " - y value: " + 
+					//			 y1value + "(" + detector1PosCount + ")");
 				}
 			}			
 			else if (this.detector2Id != null && 
@@ -226,18 +204,23 @@ public class PlotGraphComposite extends Composite
 				detector2PosCount = measurementData.getPositionCounter();
 				DataType dt = measurementData.getDataType();
 				
+				// is the data type correct ?
 				if (dt == DataType.DOUBLE || dt == DataType.FLOAT || 
 					dt == DataType.INT32 || dt == DataType.INT16 || 
 					dt == DataType.INT8)
 				{
+					// get the data and indicate that detector 2 has new data
 					y2value = (Double) measurementData.getValues().get(0);
 					detector2HasData = true;
+					//logger.debug("Detector2: " + detector2Id + " - y value: " + 
+					//		 y2value + "(" + detector2PosCount + ")");
 				}
 			}
-			else if (this.motorId.equals(measurementData.getName()) && 
+			else if (this.motorId != null && 
+					this.motorId.equals(measurementData.getName()) && 
 				   measurementData.getDataModifier() == DataModifier.UNMODIFIED) 
 			{
-				motorPosCount = measurementData.getPositionCounter();
+				posCount = measurementData.getPositionCounter();
 				DataType dt = measurementData.getDataType();
 				
 				if (dt == DataType.DOUBLE || 
@@ -245,29 +228,56 @@ public class PlotGraphComposite extends Composite
 					dt == DataType.INT16 || dt == DataType.INT8)
 				{
 					xValue = (Double) measurementData.getValues().get(0);
+					motorHasData = true;	
+					//logger.debug("Motor: " + motorId + " - value: (" + 
+					//		 posCount + ", " + xValue + ")");
+				}				
+				else if(dt == DataType.DATETIME)
+				{
+					// measurementData offers a date with Epoch=1/1/1970 (UNIX)
+					// the TimeStamp Object has an epoch of 1/1/1990 (EPICS)
+					// but the plot widget is also based on the unix epoch
+					// therefore nothing needs to be done, but be aware of
+					// the fact that timestamp.toMONDDYYYY returns the year +20
+
+					timestamp = new TimeStamp(
+							measurementData.getGerenalTimeStamp(), 
+							measurementData.getNanoseconds());
+					
+					xValue = Double.valueOf(posCount);
 					motorHasData = true;
+					
+					//logger.debug("Motor: " + motorId + " - time data: " + 
+					//		 timestamp.toMONDDYYYY() + "(" + posCount + ")");
 				}
 			}
 		
-			final boolean plotDetector1 = (detector1HasData || motorHasData)&& 
-										(detector1PosCount == motorPosCount);
-			final boolean plotDetector2 = (detector2HasData || motorHasData)&& 
-										(detector2PosCount == motorPosCount);
-			
 			// if there is new data, update the plot 
+			final boolean plotDetector1 = (detector1HasData || motorHasData)&& 
+										(detector1PosCount == posCount);
+			final boolean plotDetector2 = (detector2HasData || motorHasData)&& 
+										(detector2PosCount == posCount);
+			
 			if ((plotDetector1 || plotDetector2) && !this.isDisposed()) 
 			{
-				// plot synchronously (to assure no side effects)
+				// plot synchronously (to assure no side effects) 
+				// TODO necessary ? or async ?
 				this.getDisplay().syncExec( new Runnable() {
 	
 					public void run() 
 					{
 						if (!isDisposed()) 
 						{
-							if(plotDetector1) 
+							if(plotDetector1 && timestamp == null) 
 								xyPlot.setData(detector1Name, xValue,y1value);
-							if(plotDetector2)
-								xyPlot.setData(detector2Name, xValue,y2value);
+							if(plotDetector2 && timestamp == null)
+								xyPlot.setData(detector2Name, xValue,y2value);				
+							if(plotDetector1 && timestamp != null)
+								xyPlot.setData(detector1Name, posCount, 
+											   y1value, timestamp);
+							if(plotDetector2 && timestamp != null)
+								xyPlot.setData(detector2Name, posCount, 
+											   y2value, timestamp);
 						}
 					}
 				});

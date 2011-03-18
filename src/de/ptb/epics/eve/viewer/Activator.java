@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
 import org.eclipse.core.commands.NotHandledException;
@@ -77,13 +78,14 @@ public class Activator extends AbstractUIPlugin {
 		this.requestProcessor = new RequestProcessor( Display.getCurrent() );
 		this.ecp1Client.addRequestListener( this.requestProcessor );
 		
+		// TODO temporary logging for plot
+		//DOMConfigurator.configure("logger.xml");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	/**
+	 * {@inheritDoc}
 	 */
-	public void start( final BundleContext context ) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		
 		// register fonts, colors and images
@@ -145,11 +147,10 @@ public class Activator extends AbstractUIPlugin {
 		}		
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	/**
+	 * {@inheritDoc}
 	 */
-	public void stop( final BundleContext context ) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
 	}
@@ -163,6 +164,10 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public IMeasuringStation getMeasuringStation() {
 		return this.measuringStation;
 	}
@@ -178,6 +183,11 @@ public class Activator extends AbstractUIPlugin {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
 	
+	/**
+	 * 
+	 * @param colorname
+	 * @return
+	 */
 	public Color getColor(String colorname){
 		Color color = colorreg.get(colorname);
 		if (color == null)
@@ -186,6 +196,11 @@ public class Activator extends AbstractUIPlugin {
 			return color;
 	}
 	
+	/**
+	 * 
+	 * @param fontname
+	 * @return
+	 */
 	public Font getFont(String fontname){
 		Font font = fontreg.get(fontname);
 		if (font == null)
@@ -194,26 +209,50 @@ public class Activator extends AbstractUIPlugin {
 			return font;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public ECP1Client getEcp1Client() {
 		return this.ecp1Client;	
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public MessagesContainer getMessagesContainer() {
 		return this.messagesContainer;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public ScanDescription getCurrentScanDescription() {
 		return this.currentScanDescription;
 	}
 	
+	/**
+	 * 
+	 * @param currentScanDescription
+	 */
 	public void setCurrentScanDescription( final ScanDescription currentScanDescription ) {
 		this.currentScanDescription = currentScanDescription;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public ChainStatusAnalyzer getChainStatusAnalyzer() {
 		return this.chainStatusAnalyzer;
 	}
 
+	/**
+	 * 
+	 * @param file
+	 */
 	public void addScanDescription( final File file ) {
 		
 		if( !this.ecp1Client.isRunning() ) {

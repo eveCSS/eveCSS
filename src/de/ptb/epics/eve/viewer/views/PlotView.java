@@ -19,14 +19,17 @@ import de.ptb.epics.eve.data.scandescription.PlotWindow;
  */
 public class PlotView extends ViewPart {
 
+	/**
+	 * the unique identifier of this view
+	 */
 	public static final String ID = "PlotView";
 
 	private int id = -1;
 	
 	// the composite for the xy-plot
-	private PlotGraphComposite plotGraphComposite;
+	private PlotViewGraphComposite plotGraphComposite;
 	// the composite for the statistics tables
-	private PlotDetectorComposite plotDetectorComposite;
+	private PlotViewDetectorComposite plotDetectorComposite;
 	
 	/**
 	 * {@inheritDoc}
@@ -40,9 +43,9 @@ public class PlotView extends ViewPart {
 		parent.setLayout(gridLayout);
 		
 		// in the left column we put a our plotGraphComposite (the xy plot)
-		plotGraphComposite = new PlotGraphComposite(parent, SWT.NONE);
+		plotGraphComposite = new PlotViewGraphComposite(parent, SWT.NONE);
 		// in the right column we put the statistics tables
-		plotDetectorComposite = new PlotDetectorComposite(parent, SWT.NONE);
+		plotDetectorComposite = new PlotViewDetectorComposite(parent, SWT.NONE);
 		
 		// some alignments for the plotDetectorComposite
 		GridData gridData = new GridData();

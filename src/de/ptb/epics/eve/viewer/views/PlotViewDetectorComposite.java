@@ -1,10 +1,3 @@
-/* 
- * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.viewer.views;
 
 import org.eclipse.jface.layout.TableColumnLayout;
@@ -33,7 +26,7 @@ import de.ptb.epics.eve.viewer.math.MathTableElement;
  * @author Jens Eden
  * @author Marcus Michalsky
  */
-public class PlotDetectorComposite extends Composite {
+public class PlotViewDetectorComposite extends Composite {
 
 	// the table for the first detector
 	private TableViewer tableViewerDet1;
@@ -48,7 +41,7 @@ public class PlotDetectorComposite extends Composite {
 	 * @param parent the parent it should belong to
 	 * @param style the style
 	 */
-	public PlotDetectorComposite(Composite parent, int style) {
+	public PlotViewDetectorComposite(Composite parent, int style) {
 		super(parent, style);
 
 		// grab the goto icon
