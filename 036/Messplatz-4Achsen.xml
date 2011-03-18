@@ -44,21 +44,21 @@
                 </read>
            	    <option>
                 	<name>Monitor Deadband</name>
-                	<id>K6517:2332900MDEL</id>
+                	<id>K6517:2332900.MDEL</id>
                 	<value>
                 	    <access method="GETPUT" transport="ca" type="double">K6517:2332900.MDEL</access>
                 	</value>
             	</option>
             	<option>
                 	<name>Raw Offset</name>
-                	<id>K6517:2332900ROFF</id>
+                	<id>K6517:2332900.ROFF</id>
                 	<value>
                 	    <access method="GETPUT" transport="ca" type="double">K6517:2332900.ROFF</access>
                 	</value>
             	</option>
             	<option>
                 	<name>Offset</name>
-                	<id>K6517:2332900AOFF</id>
+                	<id>K6517:2332900.AOFF</id>
                 	<value>
                 	    <access method="GETPUT" transport="ca" type="double">K6517:2332900.AOFF</access>
                 	</value>

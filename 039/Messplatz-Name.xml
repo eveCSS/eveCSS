@@ -35,7 +35,7 @@
             <name>HDF5</name>
             <location>/messung/eve/lib/linux-x86/libhdf5plugin.so</location>
             <parameter name="format" datatype="string" default="HDF5"></parameter>
-            <parameter name="suffix" datatype="string" default="hd5"></parameter>
+            <parameter name="suffix" datatype="string" default="h5"></parameter>
         </plugin>
         <plugin type="save">
             <name>HDFspezial</name>

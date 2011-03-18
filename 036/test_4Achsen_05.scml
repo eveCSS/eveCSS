@@ -17,8 +17,8 @@
             <scanmodule id="1">
                 <type>classic</type>
                 <name>First</name>
-                <xpos>103</xpos>
-                <ypos>59</ypos>
+                <xpos>45</xpos>
+                <ypos>19</ypos>
                 <parent>0</parent>
                 <appended>2</appended>
                 <triggerconfirm>false</triggerconfirm>
@@ -90,8 +90,8 @@
             <scanmodule id="2">
                 <type>classic</type>
                 <name>Second</name>
-                <xpos>225</xpos>
-                <ypos>59</ypos>
+                <xpos>152</xpos>
+                <ypos>83</ypos>
                 <parent>1</parent>
                 <triggerconfirm>false</triggerconfirm>
                 <saveaxispositions>never</saveaxispositions>

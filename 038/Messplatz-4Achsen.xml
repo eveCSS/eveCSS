@@ -25,6 +25,32 @@
         </plugin>
     </plugins>
     <detectors>
+    	<detector>
+           <class>Timer</class>
+            <name>Uhrzeit</name>
+            <id>Timer03</id>
+            <channel>
+            	<class>none</class>
+                <name>Wecker</name>
+                <id>Timer03.03</id>
+                <read>
+                    <access method="GETCB" type="datetime" transport="local">Timer</access>
+               </read>
+            </channel>
+        </detector>
+    	<detector>
+           <class>Timer</class>
+            <name>Counter</name>
+            <id>Counter03</id>
+            <channel>
+            	<class>none</class>
+                <name>Wecker</name>
+                <id>Counter03.03</id>
+                <read>
+                    <access method="GETCB" type="datetime" transport="local">Counter</access>
+               </read>
+            </channel>
+        </detector>
         <detector>
             <class>Prema5000</class>
             <name></name>
