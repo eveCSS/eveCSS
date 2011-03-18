@@ -7,6 +7,9 @@
  */
 package de.ptb.epics.eve.data.measuringstation;
 
+import java.util.Iterator;
+import java.util.List;
+
 /**
  *  This class represents a motor axis of a device.
  * 
@@ -33,7 +36,34 @@ public class Option extends AbstractPrePostscanDevice {
 		option.setId(this.getID());
 		option.setUnit((Unit)
 				(this.getUnit()!=null?this.getUnit().clone():null));
-		
+
 		return option;
 	}
+
+	/**
+	 * Returns a copy of the internal options list.
+	 * 
+	 * @return A list of Option objects.
+	 */
+	@Override
+	public List<Option> getOptions() {
+		//TODO: austesten was passiert wenn Optionen doch 
+		// Optionen haben, redmine bug #125
+		System.out.println("getOptions von Option liefert null");
+		return null;
+	}
+
+	/**
+	 * Returns an <code>Iterator</code> over the internal <code>List</code> of 
+	 * <code>Option</code>s.
+	 * 
+	 * @return An Iterator<Option> object over the internal options list.
+	 */
+	@Override
+	public Iterator<Option> optionIterator() {
+		System.out.println("optionIterator von Option liefert null");
+		return null;
+	}
+
+
 }
