@@ -1008,14 +1008,34 @@
     </detectors>
     <!-- motor section -->
     <motors>
+         <motor>
+            <class>Timer</class>
+            <name>T1</name>
+            <id>Timer01</id>
+            <axis>
+            	<class></class>
+                <name>Wecker</name>
+                <id>Timer01.01</id>
+                <goto>
+                    <access method="PUTCB" type="datetime" transport="local">Timer</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="datetime" transport="local">Timer</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="local">Timer</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
         <motor>
             <class>Timer</class>
-            <name></name>
-            <id>Timer1</id>
+            <name>T2</name>
+            <id>Timer02</id>
             <axis>
                 <class></class>
-                <name>Time</name>
-                <id>Timer1-mot</id>
+                <name>Time2</name>
+                <id>Timer02.02</id>
                 <goto>
                     <access method="PUTCB" transport="local" type="datetime">Timer</access>
                 </goto>
