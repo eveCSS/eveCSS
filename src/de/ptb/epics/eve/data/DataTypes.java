@@ -64,9 +64,9 @@ public enum DataTypes {
 	 * or an absolute time without date hh:mm:ss.sss which assumes today as date
 	 * or an relative time hh:mm:ss.sss or an relative time ss.sss
 	 * Examples: 
-	 * 	2009-10-01 17:09:20.000 (abs) valid absolute datetime
-	 *  2009-10-01 17:09:20.000 (rel) invalid relative datetime
-	 *             17:09:20.000 (abs) valid absolute datetime assuming date today
+	 * 	2009-10-01 17:09:20.000 (abs) valid absolute <code>DATETIME</code>
+	 *  2009-10-01 17:09:20.000 (rel) invalid relative <code>DATETIME</code>
+	 *             17:09:20.000 (abs) valid absolute <code>DATETIME</code> assuming date today
 	 *             17:09:20.000 (rel) valid relative time (duration of 1580 secs)
 	 *                 1580.0 	(rel) valid relative time (duration of 1580 secs)
 	 * 
