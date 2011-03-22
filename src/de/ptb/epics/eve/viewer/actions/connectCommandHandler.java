@@ -17,8 +17,8 @@ import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.MessageSource;
-import de.ptb.epics.eve.viewer.MessageTypes;
-import de.ptb.epics.eve.viewer.ViewerMessage;
+import de.ptb.epics.eve.viewer.messages.MessageTypes;
+import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 
 /**
  * @author eden

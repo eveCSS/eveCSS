@@ -1,11 +1,4 @@
-/* 
- * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
-package de.ptb.epics.eve.viewer.math;
+package de.ptb.epics.eve.viewer.plot;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -86,15 +86,15 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="MessagesTableLabelProvider" location="1005,1593" size="259,157" id="de.ptb.epics.eve.viewer/MessagesTableLabelProvider" runTimeClassModel="dispose(),getColumnText(Ljava.lang.Object;I),isLabelProperty(Ljava.lang.Object;Ljava.lang.String;),addListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;),getColumnImage(Ljava.lang.Object;I),removeListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;)">
+  <children xsi:type="editmodel:ClassEditModel" name="MessagesTableLabelProvider" location="1005,1593" size="259,157" id="de.ptb.epics.eve.viewer.messages/MessagesTableLabelProvider" runTimeClassModel="dispose(),getColumnText(Ljava.lang.Object;I),isLabelProperty(Ljava.lang.Object;Ljava.lang.String;),addListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;),getColumnImage(Ljava.lang.Object;I),removeListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;)">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="236,108">
-      <children xsi:type="editmodel:MethodEditModel" name="addListener" id="de.ptb.epics.eve.viewer/MessagesTableLabelProvider#addListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer/MessagesTableLabelProvider#dispose()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getColumnImage" id="de.ptb.epics.eve.viewer/MessagesTableLabelProvider#getColumnImage(Ljava.lang.Object;I)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getColumnText" id="de.ptb.epics.eve.viewer/MessagesTableLabelProvider#getColumnText(Ljava.lang.Object;I)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="isLabelProperty" id="de.ptb.epics.eve.viewer/MessagesTableLabelProvider#isLabelProperty(Ljava.lang.Object;Ljava.lang.String;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="removeListener" id="de.ptb.epics.eve.viewer/MessagesTableLabelProvider#removeListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addListener" id="de.ptb.epics.eve.viewer.messages/MessagesTableLabelProvider#addListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.messages/MessagesTableLabelProvider#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getColumnImage" id="de.ptb.epics.eve.viewer.messages/MessagesTableLabelProvider#getColumnImage(Ljava.lang.Object;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getColumnText" id="de.ptb.epics.eve.viewer.messages/MessagesTableLabelProvider#getColumnText(Ljava.lang.Object;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isLabelProperty" id="de.ptb.epics.eve.viewer.messages/MessagesTableLabelProvider#isLabelProperty(Ljava.lang.Object;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeListener" id="de.ptb.epics.eve.viewer.messages/MessagesTableLabelProvider#removeListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;)"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
@@ -164,22 +164,22 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="ViewerMessage" location="1478,614" size="405,265" id="de.ptb.epics.eve.viewer/ViewerMessage" runTimeClassModel="message,messageDateTime,messageSource,getMessageSource(),getMessageType(),messageType,ViewerMessage(Lde.ptb.epics.eve.viewer.MessageTypes;Ljava.lang.String;),getMessageDateTime(),getMessage(),ViewerMessage(Lde.ptb.epics.eve.viewer.MessageSource;Lde.ptb.epics.eve.viewer.MessageTypes;Ljava.lang.String;),ViewerMessage(Lde.ptb.epics.eve.ecp1.client.model.Error;),ViewerMessage(Ljava.util.Calendar;Lde.ptb.epics.eve.viewer.MessageSource;Lde.ptb.epics.eve.viewer.MessageTypes;Ljava.lang.String;)">
+  <children xsi:type="editmodel:ClassEditModel" name="ViewerMessage" location="1478,614" size="405,265" id="de.ptb.epics.eve.viewer.messages/ViewerMessage" runTimeClassModel="message,messageDateTime,messageSource,getMessageSource(),getMessageType(),messageType,ViewerMessage(Lde.ptb.epics.eve.viewer.MessageTypes;Ljava.lang.String;),getMessageDateTime(),getMessage(),ViewerMessage(Lde.ptb.epics.eve.viewer.MessageSource;Lde.ptb.epics.eve.viewer.MessageTypes;Ljava.lang.String;),ViewerMessage(Lde.ptb.epics.eve.ecp1.client.model.Error;),ViewerMessage(Ljava.util.Calendar;Lde.ptb.epics.eve.viewer.MessageSource;Lde.ptb.epics.eve.viewer.MessageTypes;Ljava.lang.String;)">
     <children xsi:type="editmodel:CompartmentEditModel" size="175,72">
-      <children xsi:type="editmodel:AttributeEditModel" name="message" id="de.ptb.epics.eve.viewer/ViewerMessage#message"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="messageDateTime" id="de.ptb.epics.eve.viewer/ViewerMessage#messageDateTime"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="messageSource" id="de.ptb.epics.eve.viewer/ViewerMessage#messageSource"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="messageType" id="de.ptb.epics.eve.viewer/ViewerMessage#messageType"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="message" id="de.ptb.epics.eve.viewer.messages/ViewerMessage#message"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="messageDateTime" id="de.ptb.epics.eve.viewer.messages/ViewerMessage#messageDateTime"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="messageSource" id="de.ptb.epics.eve.viewer.messages/ViewerMessage#messageSource"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="messageType" id="de.ptb.epics.eve.viewer.messages/ViewerMessage#messageType"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="382,144">
-      <children xsi:type="editmodel:MethodEditModel" name="ViewerMessage" id="de.ptb.epics.eve.viewer/ViewerMessage#ViewerMessage(Lde.ptb.epics.eve.ecp1.client.model.Error;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="ViewerMessage" id="de.ptb.epics.eve.viewer/ViewerMessage#ViewerMessage(Ljava.util.Calendar;Lde.ptb.epics.eve.viewer.MessageSource;Lde.ptb.epics.eve.viewer.MessageTypes;Ljava.lang.String;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="ViewerMessage" id="de.ptb.epics.eve.viewer/ViewerMessage#ViewerMessage(Lde.ptb.epics.eve.viewer.MessageSource;Lde.ptb.epics.eve.viewer.MessageTypes;Ljava.lang.String;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="ViewerMessage" id="de.ptb.epics.eve.viewer/ViewerMessage#ViewerMessage(Lde.ptb.epics.eve.viewer.MessageTypes;Ljava.lang.String;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getMessage" id="de.ptb.epics.eve.viewer/ViewerMessage#getMessage()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getMessageDateTime" id="de.ptb.epics.eve.viewer/ViewerMessage#getMessageDateTime()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getMessageSource" id="de.ptb.epics.eve.viewer/ViewerMessage#getMessageSource()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getMessageType" id="de.ptb.epics.eve.viewer/ViewerMessage#getMessageType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ViewerMessage" id="de.ptb.epics.eve.viewer.messages/ViewerMessage#ViewerMessage(Lde.ptb.epics.eve.ecp1.client.model.Error;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ViewerMessage" id="de.ptb.epics.eve.viewer.messages/ViewerMessage#ViewerMessage(Ljava.util.Calendar;Lde.ptb.epics.eve.viewer.MessageSource;Lde.ptb.epics.eve.viewer.messages.MessageTypes;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ViewerMessage" id="de.ptb.epics.eve.viewer.messages/ViewerMessage#ViewerMessage(Lde.ptb.epics.eve.viewer.MessageSource;Lde.ptb.epics.eve.viewer.messages.MessageTypes;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ViewerMessage" id="de.ptb.epics.eve.viewer.messages/ViewerMessage#ViewerMessage(Lde.ptb.epics.eve.viewer.messages.MessageTypes;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMessage" id="de.ptb.epics.eve.viewer.messages/ViewerMessage#getMessage()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMessageDateTime" id="de.ptb.epics.eve.viewer.messages/ViewerMessage#getMessageDateTime()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMessageSource" id="de.ptb.epics.eve.viewer.messages/ViewerMessage#getMessageSource()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMessageType" id="de.ptb.epics.eve.viewer.messages/ViewerMessage#getMessageType()"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
@@ -397,13 +397,13 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:EnumerationEditModel" name="MessageTypes" location="1345,47" size="134,142" id="de.ptb.epics.eve.viewer/MessageTypes" runTimeClassModel="ERROR%,DEBUG%,FATAL%,MINOR%,INFO%">
+  <children xsi:type="editmodel:EnumerationEditModel" name="MessageTypes" location="1345,47" size="134,142" id="de.ptb.epics.eve.viewer.messages/MessageTypes" runTimeClassModel="ERROR%,DEBUG%,FATAL%,MINOR%,INFO%">
     <children xsi:type="editmodel:CompartmentEditModel" size="55,90">
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="ERROR" id="de.ptb.epics.eve.viewer/MessageTypes#ERROR%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="FATAL" id="de.ptb.epics.eve.viewer/MessageTypes#FATAL%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="DEBUG" id="de.ptb.epics.eve.viewer/MessageTypes#DEBUG%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MINOR" id="de.ptb.epics.eve.viewer/MessageTypes#MINOR%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="INFO" id="de.ptb.epics.eve.viewer/MessageTypes#INFO%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="ERROR" id="de.ptb.epics.eve.viewer.messages/MessageTypes#ERROR%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="FATAL" id="de.ptb.epics.eve.viewer.messages/MessageTypes#FATAL%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="DEBUG" id="de.ptb.epics.eve.viewer.messages/MessageTypes#DEBUG%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MINOR" id="de.ptb.epics.eve.viewer.messages/MessageTypes#MINOR%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="INFO" id="de.ptb.epics.eve.viewer.messages/MessageTypes#INFO%"/>
     </children>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
@@ -659,75 +659,75 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="MessagesTableContentProvider" location="51,198" size="262,517" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider" runTimeClassModel="setShowErrorMessages(Z),showApplicationMessages,isShowDebugMessages(),isShowApplicationMessages(),isShowInfoMessages(),getElements(Ljava.lang.Object;),setShowEngineMessages(Z),showInfoMessages,setShowInfoMessages(Z),isShowErrorMessages(),inputChanged(Lorg.eclipse.jface.viewers.Viewer;Ljava.lang.Object;Ljava.lang.Object;),update(),setShowFatalMessages(Z),isShowEngineMessages(),showMinorMessages,dispose(),addElement(Lde.ptb.epics.eve.viewer.ViewerMessage;),setShowApplicationMessages(Z),showDebugMessages,showEngineMessages,showFatalMessages,setShowDebugMessages(Z),isShowMinorMessages(),setShowMinorMessages(Z),isShowFatalMessages(),showErrorMessages">
+  <children xsi:type="editmodel:ClassEditModel" name="MessagesTableContentProvider" location="51,198" size="262,517" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider" runTimeClassModel="setShowErrorMessages(Z),showApplicationMessages,isShowDebugMessages(),isShowApplicationMessages(),isShowInfoMessages(),getElements(Ljava.lang.Object;),setShowEngineMessages(Z),showInfoMessages,setShowInfoMessages(Z),isShowErrorMessages(),inputChanged(Lorg.eclipse.jface.viewers.Viewer;Ljava.lang.Object;Ljava.lang.Object;),update(),setShowFatalMessages(Z),isShowEngineMessages(),showMinorMessages,dispose(),addElement(Lde.ptb.epics.eve.viewer.ViewerMessage;),setShowApplicationMessages(Z),showDebugMessages,showEngineMessages,showFatalMessages,setShowDebugMessages(Z),isShowMinorMessages(),setShowMinorMessages(Z),isShowFatalMessages(),showErrorMessages">
     <children xsi:type="editmodel:CompartmentEditModel" size="187,126">
-      <children xsi:type="editmodel:AttributeEditModel" name="showApplicationMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#showApplicationMessages"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="showDebugMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#showDebugMessages"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="showEngineMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#showEngineMessages"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="showErrorMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#showErrorMessages"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="showFatalMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#showFatalMessages"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="showInfoMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#showInfoMessages"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="showMinorMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#showMinorMessages"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="showApplicationMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#showApplicationMessages"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="showDebugMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#showDebugMessages"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="showEngineMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#showEngineMessages"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="showErrorMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#showErrorMessages"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="showFatalMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#showFatalMessages"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="showInfoMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#showInfoMessages"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="showMinorMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#showMinorMessages"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="239,342">
-      <children xsi:type="editmodel:MethodEditModel" name="addElement" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#addElement(Lde.ptb.epics.eve.viewer.ViewerMessage;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#dispose()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getElements" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#getElements(Ljava.lang.Object;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="inputChanged" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#inputChanged(Lorg.eclipse.jface.viewers.Viewer;Ljava.lang.Object;Ljava.lang.Object;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="isShowApplicationMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#isShowApplicationMessages()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="isShowDebugMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#isShowDebugMessages()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="isShowEngineMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#isShowEngineMessages()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="isShowErrorMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#isShowErrorMessages()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="isShowFatalMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#isShowFatalMessages()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="isShowInfoMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#isShowInfoMessages()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="isShowMinorMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#isShowMinorMessages()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="setShowApplicationMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#setShowApplicationMessages(Z)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="setShowDebugMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#setShowDebugMessages(Z)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="setShowEngineMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#setShowEngineMessages(Z)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="setShowErrorMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#setShowErrorMessages(Z)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="setShowFatalMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#setShowFatalMessages(Z)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="setShowInfoMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#setShowInfoMessages(Z)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="setShowMinorMessages" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#setShowMinorMessages(Z)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="update" id="de.ptb.epics.eve.viewer/MessagesTableContentProvider#update()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addElement" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#addElement(Lde.ptb.epics.eve.viewer.messages.ViewerMessage;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getElements" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#getElements(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="inputChanged" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#inputChanged(Lorg.eclipse.jface.viewers.Viewer;Ljava.lang.Object;Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isShowApplicationMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#isShowApplicationMessages()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isShowDebugMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#isShowDebugMessages()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isShowEngineMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#isShowEngineMessages()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isShowErrorMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#isShowErrorMessages()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isShowFatalMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#isShowFatalMessages()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isShowInfoMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#isShowInfoMessages()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isShowMinorMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#isShowMinorMessages()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setShowApplicationMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#setShowApplicationMessages(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setShowDebugMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#setShowDebugMessages(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setShowEngineMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#setShowEngineMessages(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setShowErrorMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#setShowErrorMessages(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setShowFatalMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#setShowFatalMessages(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setShowInfoMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#setShowInfoMessages(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setShowMinorMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#setShowMinorMessages(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="update" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#update()"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/IMessagesContainerUpdateListener&lt;-de.ptb.epics.eve.viewer/MessagesTableContentProvider" source="//@children.44" target="//@children.45" targetEnd="//@children.44/@sourceConnections.0/@children.1" sourceEnd="//@children.44/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateListener&lt;-de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider" source="//@children.44" target="//@children.45" targetEnd="//@children.44/@sourceConnections.0/@children.1" sourceEnd="//@children.44/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
       <children xsi:type="editmodel:AssociationEndEditModel" location="131,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="132,98"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.44/@sourceConnections.0" name="IMessagesContainerUpdateListener" location="50,50" size="265,98" id="de.ptb.epics.eve.viewer/IMessagesContainerUpdateListener" runTimeClassModel="addElement(Lde.ptb.epics.eve.viewer.ViewerMessage;),update()">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.44/@sourceConnections.0" name="IMessagesContainerUpdateListener" location="50,50" size="265,98" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateListener" runTimeClassModel="addElement(Lde.ptb.epics.eve.viewer.ViewerMessage;),update()">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="171,36">
-      <children xsi:type="editmodel:MethodEditModel" name="addElement" id="de.ptb.epics.eve.viewer/IMessagesContainerUpdateListener#addElement(Lde.ptb.epics.eve.viewer.ViewerMessage;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="update" id="de.ptb.epics.eve.viewer/IMessagesContainerUpdateListener#update()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addElement" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateListener#addElement(Lde.ptb.epics.eve.viewer.messages.ViewerMessage;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="update" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateListener#update()"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.47/@sourceConnections.0" name="IMessagesContainerUpdateProvider" location="330,50" size="425,98" id="de.ptb.epics.eve.viewer/IMessagesContainerUpdateProvider" runTimeClassModel="removeMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.IMessagesContainerUpdateListener;),addMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.IMessagesContainerUpdateListener;)">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.47/@sourceConnections.0" name="IMessagesContainerUpdateProvider" location="330,50" size="425,98" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateProvider" runTimeClassModel="removeMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.IMessagesContainerUpdateListener;),addMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.IMessagesContainerUpdateListener;)">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="402,36">
-      <children xsi:type="editmodel:MethodEditModel" name="addMessagesContainerUpdateListener" id="de.ptb.epics.eve.viewer/IMessagesContainerUpdateProvider#addMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.IMessagesContainerUpdateListener;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="removeMessagesContainerUpdateListener" id="de.ptb.epics.eve.viewer/IMessagesContainerUpdateProvider#removeMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.IMessagesContainerUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addMessagesContainerUpdateListener" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateProvider#addMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeMessagesContainerUpdateListener" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateProvider#removeMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;)"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="MessagesContainer" location="330,198" size="425,175" id="de.ptb.epics.eve.viewer/MessagesContainer" runTimeClassModel="removeMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.IMessagesContainerUpdateListener;),MessagesContainer(),clear(),getList(Ljava.util.List;),getList(),addMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.IMessagesContainerUpdateListener;),addMessage(Lde.ptb.epics.eve.viewer.ViewerMessage;)">
+  <children xsi:type="editmodel:ClassEditModel" name="MessagesContainer" location="330,198" size="425,175" id="de.ptb.epics.eve.viewer.messages/MessagesContainer" runTimeClassModel="removeMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.IMessagesContainerUpdateListener;),MessagesContainer(),clear(),getList(Ljava.util.List;),getList(),addMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.IMessagesContainerUpdateListener;),addMessage(Lde.ptb.epics.eve.viewer.ViewerMessage;)">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="402,126">
-      <children xsi:type="editmodel:MethodEditModel" name="MessagesContainer" id="de.ptb.epics.eve.viewer/MessagesContainer#MessagesContainer()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="addMessage" id="de.ptb.epics.eve.viewer/MessagesContainer#addMessage(Lde.ptb.epics.eve.viewer.ViewerMessage;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="addMessagesContainerUpdateListener" id="de.ptb.epics.eve.viewer/MessagesContainer#addMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.IMessagesContainerUpdateListener;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="clear" id="de.ptb.epics.eve.viewer/MessagesContainer#clear()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getList" id="de.ptb.epics.eve.viewer/MessagesContainer#getList()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getList" id="de.ptb.epics.eve.viewer/MessagesContainer#getList(Ljava.util.List;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="removeMessagesContainerUpdateListener" id="de.ptb.epics.eve.viewer/MessagesContainer#removeMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.IMessagesContainerUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="MessagesContainer" id="de.ptb.epics.eve.viewer.messages/MessagesContainer#MessagesContainer()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addMessage" id="de.ptb.epics.eve.viewer.messages/MessagesContainer#addMessage(Lde.ptb.epics.eve.viewer.messages.ViewerMessage;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addMessagesContainerUpdateListener" id="de.ptb.epics.eve.viewer.messages/MessagesContainer#addMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clear" id="de.ptb.epics.eve.viewer.messages/MessagesContainer#clear()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getList" id="de.ptb.epics.eve.viewer.messages/MessagesContainer#getList()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getList" id="de.ptb.epics.eve.viewer.messages/MessagesContainer#getList(Ljava.util.List;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeMessagesContainerUpdateListener" id="de.ptb.epics.eve.viewer.messages/MessagesContainer#removeMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;)"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/IMessagesContainerUpdateProvider&lt;-de.ptb.epics.eve.viewer/MessagesContainer" source="//@children.47" target="//@children.46" targetEnd="//@children.47/@sourceConnections.0/@children.1" sourceEnd="//@children.47/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateProvider&lt;-de.ptb.epics.eve.viewer.messages/MessagesContainer" source="//@children.47" target="//@children.46" targetEnd="//@children.47/@sourceConnections.0/@children.1" sourceEnd="//@children.47/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
       <children xsi:type="editmodel:AssociationEndEditModel" location="212,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="212,98"/>
     </sourceConnections>

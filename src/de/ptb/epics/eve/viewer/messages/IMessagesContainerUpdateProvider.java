@@ -1,4 +1,5 @@
-package de.ptb.epics.eve.viewer;
+package de.ptb.epics.eve.viewer.messages;
+
 
 public interface IMessagesContainerUpdateProvider {
 	public void addMessagesContainerUpdateListener( final IMessagesContainerUpdateListener listener );

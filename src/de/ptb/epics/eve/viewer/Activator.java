@@ -30,6 +30,7 @@ import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.ecp1.client.ECP1Client;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
+import de.ptb.epics.eve.viewer.messages.MessagesContainer;
 
 /**
  * The activator class controls the plug-in life cycle

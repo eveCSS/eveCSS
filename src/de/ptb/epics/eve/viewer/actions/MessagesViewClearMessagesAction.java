@@ -5,12 +5,12 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 import de.ptb.epics.eve.viewer.Activator;
 
-public class ClearMessagesAction extends Action implements IWorkbenchAction {
+public class MessagesViewClearMessagesAction extends Action implements IWorkbenchAction {
 
 	private static final String ID = "de.ptb.epics.eve.viewer.actions.ClearMessagesAction";  
 	
-	public ClearMessagesAction(){  
-		this.setId( ClearMessagesAction.ID );  
+	public MessagesViewClearMessagesAction(){  
+		this.setId( MessagesViewClearMessagesAction.ID );  
 	} 
 	
 	public void run() {  

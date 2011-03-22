@@ -21,6 +21,8 @@ import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.viewer.messages.MessageTypes;
+import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 
 public class OptionConnector implements IModelUpdateProvider, PVListener {
 

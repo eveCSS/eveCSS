@@ -15,13 +15,13 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 
 
-public class SaveMessagesToFileAction extends Action implements IWorkbenchAction {
+public class MessagesViewSaveMessagesToFileAction extends Action implements IWorkbenchAction {
 
 	private static final String ID = "de.ptb.epics.eve.viewer.actions.SaveMessagesToFileAction";  
 	private final TableViewer tableViewer;
 	
-	public SaveMessagesToFileAction( final TableViewer tableViewer ){  
-		this.setId( SaveMessagesToFileAction.ID ); 
+	public MessagesViewSaveMessagesToFileAction( final TableViewer tableViewer ){  
+		this.setId( MessagesViewSaveMessagesToFileAction.ID ); 
 		this.tableViewer = tableViewer;
 	} 
 	

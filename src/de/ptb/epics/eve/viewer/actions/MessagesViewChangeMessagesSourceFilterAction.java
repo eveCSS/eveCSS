@@ -4,16 +4,16 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
-import de.ptb.epics.eve.viewer.MessagesTableContentProvider;
 import de.ptb.epics.eve.viewer.dialogs.MessageSourcesFilterDialog;
+import de.ptb.epics.eve.viewer.messages.MessagesTableContentProvider;
 
-public class ChangeMessagesSourceFilterAction extends Action implements IWorkbenchAction {
+public class MessagesViewChangeMessagesSourceFilterAction extends Action implements IWorkbenchAction {
 
 	private static final String ID = "de.ptb.epics.eve.viewer.actions.ChangeMessagesSourceFilterAction";  
 	private final TableViewer tableViewer;
 	
-	public ChangeMessagesSourceFilterAction( final TableViewer tableViewer ){  
-		this.setId( ChangeMessagesSourceFilterAction.ID ); 
+	public MessagesViewChangeMessagesSourceFilterAction( final TableViewer tableViewer ){  
+		this.setId( MessagesViewChangeMessagesSourceFilterAction.ID ); 
 		this.tableViewer = tableViewer;
 	} 
 	

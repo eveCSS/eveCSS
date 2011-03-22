@@ -15,9 +15,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.math.MathFunction;
-import de.ptb.epics.eve.viewer.math.MathTableContentProvider;
-import de.ptb.epics.eve.viewer.math.MathTableElement;
+import de.ptb.epics.eve.viewer.plot.MathFunction;
+import de.ptb.epics.eve.viewer.plot.MathTableContentProvider;
+import de.ptb.epics.eve.viewer.plot.MathTableElement;
 
 /**
  * <code>PlotDetectorComposite</code> is a composite containing two tables 

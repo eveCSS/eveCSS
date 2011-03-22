@@ -36,6 +36,8 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.actions.LoadMeasuringStationAction;
+import de.ptb.epics.eve.viewer.messages.MessageTypes;
+import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 
 /**
  * A simple view implementation, which only displays a label.

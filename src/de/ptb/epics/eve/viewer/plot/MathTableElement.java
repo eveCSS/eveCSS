@@ -1,11 +1,4 @@
-/* 
- * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
-package de.ptb.epics.eve.viewer.math;
+package de.ptb.epics.eve.viewer.plot;
 
 import java.util.Locale;
 
@@ -100,17 +93,6 @@ public class MathTableElement implements IMeasurementDataListener {
 		if (mData.getDataType() == DataType.DOUBLE || 
 			mData.getDataType() == DataType.FLOAT) 
 		{
-/*
-			for(int i=0;i<mData.getValues().size();i++)
-			{
-				System.out.print(mData.getName() + " : " + mData.getPositionCounter() + " : " + 
-						        this.mathFunction.toString() + " : ");
-				System.out.print(mData.getValues().get(i).toString());
-				System.out.print(", ");
-			}
-			System.out.println("");
-			System.out.println("");
-*/			
 			Double data = (Double) mData.getValues().get(0);
 			return 
 				new PrintfFormat(Locale.ENGLISH, "%12.4g").sprintf(data).trim();
