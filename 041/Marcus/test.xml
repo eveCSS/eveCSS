@@ -1030,6 +1030,25 @@
     <!-- motor section -->
     <motors>
         <motor>
+            <class>KlasseC1</class>
+            <name>C1</name>
+            <id>Counter01</id>
+            <axis>
+                <name></name>
+                <id>Counter01.01</id>
+                <goto>
+                    <access method="PUTCB" transport="local" type="int">Counter</access>
+                </goto>
+                <position>
+                    <access method="GETCB" transport="local" type="int">Counter</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="local" type="int">Counter</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
+        <motor>
             <class>Timer</class>
             <name></name>
             <id>Timer1</id>
