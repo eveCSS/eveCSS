@@ -1497,13 +1497,13 @@ public class PlotWindowView extends ViewPart  {
 				cur_feld[i] = 
 					cur_channel[i].getDetectorChannel().getFullIdentifyer();
 			}
-			yAxis2NormalizeChannelComboBox.setItems(cur_feld);
+			yAxis1NormalizeChannelComboBox.setItems(cur_feld);
 			
 			// add a "none" item
-			yAxis2NormalizeChannelComboBox.add("none", 0);
+			yAxis1NormalizeChannelComboBox.add("none", 0);
 			
 			// restore previously selected item
-			yAxis2NormalizeChannelComboBox.setText(aktText);	
+			yAxis1NormalizeChannelComboBox.setText(aktText);	
 		}
 
 		/**
