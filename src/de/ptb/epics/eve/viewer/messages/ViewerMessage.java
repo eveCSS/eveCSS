@@ -3,40 +3,49 @@ package de.ptb.epics.eve.viewer.messages;
 import gov.aps.jca.dbr.TimeStamp;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import de.ptb.epics.eve.ecp1.client.model.Error;
 import de.ptb.epics.eve.viewer.MessageSource;
 
 /**
  * <code>ViewerMessage</code> represents a message displayed in the Messages 
- * View of the Viewer.
+ * View of the Viewer. It is composed of  
+ * <ul>
+ * 	<li>a time stamp - indicating when the message occurred</li>
+ *  <li>a source - indicating the origin of the message</li>
+ *  <li>a type - indicating the type of the message (e.g. info or error)</li>
+ *  <li>the content - the text part of the message</li>
+ * </ul>.
  * 
  * @author ?
  * @author Marcus Michalsky
  */
 public class ViewerMessage {
 	
-		// the time of the message
-		private final Calendar messageDateTime;
 		// another representation of the time
 		private final TimeStamp timestamp;
-		// the source of the message
+		// the difference between epics and unix epoch in seconds
+		// epics epoch is 1990/01/01 and unix is 1970/01/01
+		private final long epoch_diff_secs = 631152000;
+		// the source of the message		
 		private final MessageSource messageSource;
 		// the type of the message
 		private final MessageTypes messageType;
 		// the contents of the message
 		private final String message;
 		
+		
 		/**
-		 * Constructor 1
+		 * Constructs a <code>ViewerMessage</code> which has the current date as 
+		 * time.
 		 * 
-		 * @param messageSource
-		 * @param messageType
-		 * @param message
+		 * @param messageSource the source of the message
+		 * @param messageType the type of the message
+		 * @param message the content of the message
 		 */
-		public ViewerMessage( final MessageSource messageSource, final MessageTypes messageType, final String message ) {
-			this.messageDateTime = new GregorianCalendar();
+		public ViewerMessage(final MessageSource messageSource, 
+							 final MessageTypes messageType, 
+							 final String message) {
 			this.timestamp = new TimeStamp();
 			this.messageSource = messageSource;
 			this.messageType = messageType;
@@ -44,13 +53,14 @@ public class ViewerMessage {
 		}
 		
 		/**
-		 * Constructor 2
+		 * Constructs a <code>ViewerMessage</code> which has the current date as 
+		 * time and the Viewer as source.
 		 * 
-		 * @param messageType
-		 * @param message
+		 * @param messageType the type of the message
+		 * @param message the content of the message
 		 */
-		public ViewerMessage( final MessageTypes messageType, final String message ) {
-			this.messageDateTime = new GregorianCalendar();
+		public ViewerMessage(final MessageTypes messageType, 
+							 final String message) {
 			this.timestamp = new TimeStamp();
 			this.messageSource = MessageSource.VIEWER;
 			this.messageType = messageType;
@@ -58,39 +68,44 @@ public class ViewerMessage {
 		}
 
 		/**
-		 * Constructor 3
+		 * Constructs a <code>ViewerMessage</code>.
 		 * 
-		 * @param messageDateTime
-		 * @param messageSource
-		 * @param messageType
-		 * @param message
+		 * @param cal the date of the message 
+		 * @param messageSource the source of the message
+		 * @param messageType the type of the message
+		 * @param message the content of the message
 		 */
-		public ViewerMessage( final Calendar messageDateTime, final MessageSource messageSource, final MessageTypes messageType, final String message ) {
-			this.messageDateTime = messageDateTime;
-			// some dirty trick (subtract milliseconds 01/01/2031-01/01/2011)
-			this.timestamp = new TimeStamp(messageDateTime.getTimeInMillis()-631152000000.0);
+		public ViewerMessage(final Calendar cal, 
+							 final MessageSource messageSource, 
+							 final MessageTypes messageType, 
+							 final String message) {
+			
+			this.timestamp = new TimeStamp(
+					cal.getTimeInMillis() - epoch_diff_secs*1000.0);
 			this.messageSource = messageSource;
 			this.messageType = messageType;
 			this.message = message;
 		}
 		
 		/**
-		 * Constructor 4
+		 * Constructs a <code>ViewerMessage</code> out of an 
+		 * {@link de.ptb.epics.eve.ecp1.client.model.Error}. 
 		 * 
-		 * @param error
+		 * @param error the error as in 
+		 * 		  {@link de.ptb.epics.eve.ecp1.client.model.Error}
 		 */
 		public ViewerMessage(final Error error) {
 			
-			this.messageDateTime = new GregorianCalendar( 1990, 0, 1, 0, 0 );
-			this.messageDateTime.add( Calendar.SECOND, error.getGerenalTimeStamp() );
-			this.messageDateTime.add(Calendar.MILLISECOND, error.getNanoseconds() / 1000000);
-			this.timestamp = new TimeStamp(error.getGerenalTimeStamp()-631152000, error.getNanoseconds());
-			this.messageSource = MessageSource.convertFromErrorFacility( error.getErrorFacility() );
-			this.messageType = MessageTypes.convertFromErrorSeverity( error.getErrorSeverity() );
-			this.message = error.getText();
-			
+			this.timestamp = new TimeStamp(
+					error.getGerenalTimeStamp() - epoch_diff_secs, 
+					error.getNanoseconds());
+			this.messageSource = MessageSource.convertFromErrorFacility(
+					error.getErrorFacility());
+			this.messageType = MessageTypes.convertFromErrorSeverity(
+					error.getErrorSeverity());
+			this.message = error.getText();	
 		}
-
+		
 		/**
 		 * Returns the contents of the message.
 		 * 
@@ -107,15 +122,6 @@ public class ViewerMessage {
 		 */
 		public MessageSource getMessageSource() {
 			return this.messageSource;
-		}
-		
-		/**
-		 * Returns the date of the message.
-		 * 
-		 * @return the message' date
-		 */
-		public Calendar getMessageDateTime() {
-			return this.messageDateTime;
 		}
 
 		/**

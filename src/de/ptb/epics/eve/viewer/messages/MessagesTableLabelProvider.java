@@ -4,9 +4,6 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-
-import java.util.Calendar;
-
 /**
  * <code>MessagesTableLabelProvider</code> is the label provider for the table 
  * viewer of the Messages View.
@@ -32,15 +29,10 @@ public class MessagesTableLabelProvider implements ITableLabelProvider {
 		ViewerMessage message = (ViewerMessage) element;
 		
 		if( columnIndex == 0 ) {
-			// first column is the time
-			return message.getTimeStamp().toMONDDYYYY();
-			/*
-			return message.getMessageDateTime().get( Calendar.HOUR_OF_DAY ) + 
-			       ":" + message.getMessageDateTime().get( Calendar.MINUTE ) + 
-			       ":" + message.getMessageDateTime().get( Calendar.SECOND ) + 
-			       "." + message.getMessageDateTime().get( Calendar.MILLISECOND);
-			       */
-//			return message.getMessageDateTime().get( Calendar.YEAR ) + "-" + message.getMessageDateTime().get( Calendar.MONTH ) + "-" + message.getMessageDateTime().get( Calendar.DAY_OF_MONTH ) + " " + message.getMessageDateTime().get( Calendar.HOUR ) + ":" + message.getMessageDateTime().get( Calendar.MINUTE ) + ":" + message.getMessageDateTime().get( Calendar.SECOND );
+			// first column is the time (show only msecs not nsecs)
+			return message.getTimeStamp().toMONDDYYYY().length()==30 
+				   ? message.getTimeStamp().toMONDDYYYY().substring(0, 24) 
+				   : message.getTimeStamp().toMONDDYYYY();
 		} else if(columnIndex == 1) {
 			// second column is the source
 			return message.getMessageSource().toString();
