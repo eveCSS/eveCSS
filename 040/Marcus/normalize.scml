@@ -14,18 +14,17 @@
                 <xpos>100</xpos>
                 <ypos>20</ypos>
                 <parent>0</parent>
-                <appended>2</appended>
                 <settletime>0.0</settletime>
                 <triggerdelay>0.0</triggerdelay>
                 <triggerconfirm>false</triggerconfirm>
                 <saveaxispositions>never</saveaxispositions>
                 <smaxis>
-                    <axisid>PPSMC:gw23715000</axisid>
+                    <axisid>Timer1-mot</axisid>
                     <stepfunction>Add</stepfunction>
-                    <positionmode>absolute</positionmode>
-                    <start type="double">1.0</start>
-                    <stop type="double">10.0</stop>
-                    <stepwidth type="double">1</stepwidth>
+                    <positionmode>relative</positionmode>
+                    <start type="datetime">00:00:00</start>
+                    <stop type="datetime">00:01:00</stop>
+                    <stepwidth type="datetime">10</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smchannel>
@@ -38,223 +37,17 @@
                 </smchannel>
                 <plot id="1">
                     <xaxis>
-                        <id>PPSMC:gw23715000</id>
+                        <id>Timer1-mot</id>
                         <mode>linear</mode>
-                    </xaxis>
-                    <init>false</init>
-                    <yaxis>
-                        <id>ringLifeTime1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>Solid Line</linestyle>
-                        <color>0000ff</color>
-                        <markstyle>point%28%07%29</markstyle>
-                    </yaxis>
-                    <yaxis>
-                        <id>ringCurrent1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>Dash Line</linestyle>
-                        <color>00ff00</color>
-                        <markstyle>Bar%28%7C%29</markstyle>
-                    </yaxis>
-                </plot>
-                <plot id="2">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>false</init>
-                    <yaxis>
-                        <id>ringLifeTime1chan1</id>
-                        <mode>log</mode>
-                        <normalize_id>ringCurrent1chan1</normalize_id>
-                        <linestyle>Area</linestyle>
-                        <color>ff00ff</color>
-                        <markstyle>point%28%07%29</markstyle>
-                    </yaxis>
-                </plot>
-                <plot id="3">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>log</mode>
                     </xaxis>
                     <init>false</init>
                     <yaxis>
                         <id>ringCurrent1chan1</id>
                         <mode>linear</mode>
-                        <linestyle>Bar</linestyle>
-                        <color>ffa500</color>
-                        <markstyle>Circle%28o%29</markstyle>
-                    </yaxis>
-                    <yaxis>
-                        <id>ringLifeTime1chan1</id>
-                        <mode>log</mode>
-                        <linestyle>Dash Line</linestyle>
-                        <color>1e90ff</color>
-                        <markstyle>XCross%28x%29</markstyle>
-                    </yaxis>
-                </plot>
-                <plot id="4">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>log</mode>
-                    </xaxis>
-                    <init>false</init>
-                    <yaxis>
-                        <id>ringCurrent1chan1</id>
-                        <mode>linear</mode>
+                        <normalize_id>ringLifeTime1chan1</normalize_id>
                         <linestyle>Solid Line</linestyle>
                         <color>0000ff</color>
                         <markstyle>None</markstyle>
-                    </yaxis>
-                </plot>
-                <plot id="5">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>log</mode>
-                    </xaxis>
-                    <init>false</init>
-                    <yaxis>
-                        <id>ringLifeTime1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>Dash Line</linestyle>
-                        <color>00ff00</color>
-                        <markstyle>None</markstyle>
-                    </yaxis>
-                </plot>
-            </scanmodule>
-            <scanmodule id="2">
-                <type>classic</type>
-                <name>SM 2 append</name>
-                <xpos>230</xpos>
-                <ypos>20</ypos>
-                <parent>1</parent>
-                <appended>3</appended>
-                <settletime>0.0</settletime>
-                <triggerdelay>0.0</triggerdelay>
-                <triggerconfirm>false</triggerconfirm>
-                <saveaxispositions>never</saveaxispositions>
-                <smaxis>
-                    <axisid>PPSMC:gw23715000</axisid>
-                    <stepfunction>Add</stepfunction>
-                    <positionmode>absolute</positionmode>
-                    <start type="double">0.0</start>
-                    <stop type="double">20.0</stop>
-                    <stepwidth type="double">2</stepwidth>
-                    <ismainaxis>false</ismainaxis>
-                </smaxis>
-                <smchannel>
-                    <channelid>ringCurrent1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <smchannel>
-                    <channelid>ringLifeTime1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <plot id="6">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>false</init>
-                    <yaxis>
-                        <id>ringLifeTime1chan1</id>
-                        <mode>linear</mode>
-                        <normalize_id>ringCurrent1chan1</normalize_id>
-                        <linestyle>Dash Line</linestyle>
-                        <color>800080</color>
-                        <markstyle>Filled+Diamond</markstyle>
-                    </yaxis>
-                </plot>
-            </scanmodule>
-            <scanmodule id="3">
-                <type>classic</type>
-                <name>SM 3 append</name>
-                <xpos>360</xpos>
-                <ypos>20</ypos>
-                <parent>2</parent>
-                <appended>4</appended>
-                <settletime>0.0</settletime>
-                <triggerdelay>0.0</triggerdelay>
-                <triggerconfirm>false</triggerconfirm>
-                <saveaxispositions>never</saveaxispositions>
-                <smaxis>
-                    <axisid>PPSMC:gw23715000</axisid>
-                    <stepfunction>Add</stepfunction>
-                    <positionmode>absolute</positionmode>
-                    <start type="double">0.0</start>
-                    <stop type="double">10.0</stop>
-                    <stepwidth type="double">1</stepwidth>
-                    <ismainaxis>false</ismainaxis>
-                </smaxis>
-                <smchannel>
-                    <channelid>ringCurrent1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <smchannel>
-                    <channelid>ringLifeTime1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <plot id="7">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>false</init>
-                    <yaxis>
-                        <id>ringCurrent1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>Solid Line</linestyle>
-                        <color>0000ff</color>
-                        <markstyle>None</markstyle>
-                    </yaxis>
-                </plot>
-            </scanmodule>
-            <scanmodule id="4">
-                <type>classic</type>
-                <name>SM 4 append</name>
-                <xpos>490</xpos>
-                <ypos>20</ypos>
-                <parent>3</parent>
-                <settletime>0.0</settletime>
-                <triggerdelay>0.0</triggerdelay>
-                <triggerconfirm>false</triggerconfirm>
-                <saveaxispositions>never</saveaxispositions>
-                <smaxis>
-                    <axisid>PPSMC:gw23715001</axisid>
-                    <stepfunction>Add</stepfunction>
-                    <positionmode>absolute</positionmode>
-                    <start type="double">10.0</start>
-                    <stop type="double">20.0</stop>
-                    <stepwidth type="double">1</stepwidth>
-                    <ismainaxis>false</ismainaxis>
-                </smaxis>
-                <smchannel>
-                    <channelid>ringLifeTime1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <smchannel>
-                    <channelid>ringCurrent1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <plot id="8">
-                    <xaxis>
-                        <id>PPSMC:gw23715001</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>false</init>
-                    <yaxis>
-                        <id>ringLifeTime1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>Step Vertically</linestyle>
-                        <color>90ee90</color>
-                        <markstyle>Cross%28%2B%29</markstyle>
-                    </yaxis>
-                    <yaxis>
-                        <id>ringCurrent1chan1</id>
-                        <mode>log</mode>
-                        <linestyle>Step Horizontally</linestyle>
-                        <color>ffa500</color>
-                        <markstyle>XCross%28x%29</markstyle>
                     </yaxis>
                 </plot>
             </scanmodule>
