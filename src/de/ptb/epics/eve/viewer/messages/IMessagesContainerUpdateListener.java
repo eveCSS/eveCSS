@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.viewer.messages;
 
 /**
+ * <code>IMessagesContainerUpdateListener</code> 
  * 
  * @author ?
  * @author Marcus Michalsky
@@ -8,14 +9,16 @@ package de.ptb.epics.eve.viewer.messages;
 public interface IMessagesContainerUpdateListener {
 	
 	/**
-	 *  update
+	 *  ? update ?
 	 */
 	public void update();
 
 	/**
-	 * adds an element 
+	 * Gets called by the 
+	 * {@link de.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateProvider} 
+	 * the implementing object is registered to when a new message arrived.
 	 * 
-	 * @param viewerMessage the viewer message
+	 * @param viewerMessage the newly arrived message
 	 */
 	public void addElement(ViewerMessage viewerMessage);
 }

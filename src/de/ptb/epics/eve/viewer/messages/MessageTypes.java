@@ -71,7 +71,15 @@ public enum MessageTypes {
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Converts the <code>Enum</code> into a {@link java.lang.String} such that
+	 * <ul>
+	 *  <li><code>DEBUG</code> becomes "D",</li>
+	 *  <li><code>INFO</code> becomes "I",</li>
+	 *  <li><code>MINOR</code> becomes "M",</li>
+	 *  <li><code>ERROR</code> becomes "E",</li>
+	 *  <li><code>FATAL</code> becomes "F".</li>
+	 * </ul>
+	 * The default value is "U".
 	 */
 	@Override
 	public String toString() {

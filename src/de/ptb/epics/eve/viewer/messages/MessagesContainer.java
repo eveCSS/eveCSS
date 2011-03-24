@@ -5,8 +5,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
+ * <code>MessageContainer</code> contains a list of messages and functions as 
+ * an update provider.
  * 
  * @author ?
  * @author Marcus Michalsky
@@ -25,8 +26,11 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 	}
 	
 	/**
+	 * Adds a {@link de.ptb.epics.eve.viewer.messages.ViewerMessage} to the 
+	 * message container.
 	 * 
-	 * @param viewerMessage
+	 * @param viewerMessage the 
+	 * 		  {@link de.ptb.epics.eve.viewer.messages.ViewerMessage}
 	 */
 	public void addMessage(final ViewerMessage viewerMessage) {
 		this.messages.add(0, viewerMessage);
@@ -38,7 +42,7 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 	}
 	
 	/**
-	 * 
+	 * Clears all messages.
 	 */
 	public void clear() {
 		this.messages.clear(); 
@@ -50,8 +54,9 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 	}
 	
 	/**
+	 * Adds all contained messages to the given list.
 	 * 
-	 * @param target
+	 * @param target the list the viewer messages should be added to
 	 */
 	public void getList(final List<ViewerMessage> target) {
 		target.clear();
@@ -59,8 +64,9 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns a list of viewer messages.
+	 *  
+	 * @return a list of {@link de.ptb.epics.eve.viewer.messages.ViewerMessage}s
 	 */
 	public List<ViewerMessage> getList() {
 		final List<ViewerMessage> target = new ArrayList<ViewerMessage>();
