@@ -106,21 +106,21 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	}
 
 	/**
-	 * @see de.trustedcode.scanmoduleditor.data.processors.IScanDescriptionSaver#getMeasuringStationDescription()
+	 *
 	 */
 	public IMeasuringStation getMeasuringStationDescription() {
 		return this.measuringStation;
 	}
 
 	/**
-	 * @see de.trustedcode.scanmoduleditor.data.processors.IScanDescriptionSaver#getScanDescription()
+	 * 
 	 */
 	public ScanDescription getScanDescription() {
 		return this.scanDescription;
 	}
 
 	/**
-	 * @see de.trustedcode.scanmoduleditor.data.processors.IScanDescriptionSaver#setMeasuringStationDescription(MeasuringStation)
+	 * 
 	 */
 	public void setMeasuringStationDescription( final IMeasuringStation measuringStation ) {
 		if( measuringStation == null ) {
@@ -130,7 +130,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	}
 
 	/**
-	 * @see de.trustedcode.scanmoduleditor.data.processors.IScanDescriptionSaver#setScanDescription(ScanDescription)
+	 * 
 	 */
 	public void setScanDescription( final ScanDescription scanDescription ) {
 		if( scanDescription == null ) {
@@ -142,7 +142,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	/**
 	 * Saves the scan description to the given outputStream.
 	 * 
-	 * @see de.trustedcode.scanmoduleditor.data.processors.IScanDescriptionSaver#save()
+	 * 
 	 */
 	public boolean save() {
 		boolean successfull = true;

@@ -94,7 +94,7 @@ public class ScanModulRelationReminder {
 	/**
 	 * This method sets the id of the parent scan module.
 	 * 
-	 * @param nested The id of the parent scan module.
+	 * @param parent The id of the parent scan module.
 	 */
 	public void setParent( final int parent ) {
 		this.parent = parent;

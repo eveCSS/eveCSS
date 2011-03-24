@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.measuringstation;
 
 import de.ptb.epics.eve.data.EventTypes;
@@ -150,7 +143,6 @@ public class Event {
 	 * 				<code>Event</code>.	Must not be null.
 	 * @param id a <code>String</code> containing the id of the 
 	 * 		   <code>Event</code>. Must not be null.
-	 * @param type the type of the <code>Event</code>. Must not be null!
 	 */
 	public Event(final Access access, final TypeValue dataType, 
 				  final String name, final String id) {

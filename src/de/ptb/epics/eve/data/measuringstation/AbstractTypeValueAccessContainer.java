@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.measuringstation;
 
 import de.ptb.epics.eve.data.TypeValue;
@@ -35,6 +28,8 @@ public abstract class AbstractTypeValueAccessContainer {
 	
 	/**
 	 * Constructs an empty <code>AbstractTypeValueAccessContainer</code>.
+	 * 
+	 * @param access an <code>Access</code>
 	 */
 	public AbstractTypeValueAccessContainer(final Access access) {
 		this(access, null);
@@ -44,7 +39,7 @@ public abstract class AbstractTypeValueAccessContainer {
 	 * Constructs an <code>AbstractTypeValueAccessContainer</code> with 
 	 * specific values. 
 	 * 
-	 * @param pv an <code>Access</code>
+	 * @param access an <code>Access</code>
 	 * @param dataType a <code>TypeValue</code>
 	 * @throws IllegalArgumentException if access is <code>null</code>
 	 */

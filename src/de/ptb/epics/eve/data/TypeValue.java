@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data;
 
 import java.util.ArrayList;
@@ -18,7 +11,6 @@ import java.util.List;
  * have a range defined, 
  * @author  Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version  1.4
- * @see  de.ptb.epics.eve.data.measuringstation.ProcessVariable
  */
 public class TypeValue {
 
@@ -63,7 +55,7 @@ public class TypeValue {
 	 * has a limitation of the possible values.
 	 * 
 	 * @param type the basic primitive data type on which this definition based
-	 * @param value the possible values separated by a whitespace
+	 * @param values the possible values separated by a whitespace
 	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public TypeValue(final DataTypes type, final String values) {
@@ -303,7 +295,7 @@ public class TypeValue {
 	/**
 	 * Checks whether the argument and calling object are equal.
 	 * 
-	 * @param the object to be checked
+	 * @param obj the object to be checked
 	 * @return <code>true</code> if objects are equal, 
 	 * 			<code>false</code> otherwise
 	 */
