@@ -21,12 +21,19 @@
     	  <fileset dir="${eclipse_dir}/plugins">
     	    <include name="**/*.jar"/>
     	  </fileset>
+    	  <pathelement location="org.csstudio.platform.libs.epics/lib/caj-1.1.5d.jar" />
+    	  <pathelement location="org.csstudio.platform.libs.epics/lib/jca-2.3.3.jar" />
+    	  <pathelement location="org.csstudio.platform.libs.dal/lib/java-common-4.0.1-SNAPSHOT.jar" />
+    	  <pathelement location="org.csstudio.platform/lib/jdom.jar" />
+    	  <pathelement location="org.csstudio.platform.libs.jms/libs/activemq-all-5.1.0.jar" />
+    	  <pathelement location="org.csstudio.platform/lib/log4j-1.2.14.jar" />
     	</classpath>
 	
       <packageset dir="de.ptb.epics.eve.data/src" defaultexcludes="yes" />
       <packageset dir="de.ptb.epics.eve.ecp1/src" defaultexcludes="yes" />
       <packageset dir="de.ptb.epics.eve.editor/src" defaultexcludes="yes" />
       <packageset dir="de.ptb.epics.eve.viewer/src" defaultexcludes="yes" />
+      <packageset dir="de.ptb.epics.eve.preferences/src" defaultexcludes="yes" />
 
       <packageset dir="org.csstudio.apputil/src" defaultexcludes="yes" />
       <packageset dir="org.csstudio.apputil.ui/src" defaultexcludes="yes" />
@@ -54,6 +61,8 @@
    	  <tag name="uml.dependency" scope="all" enabled="false" />
       <tag name="uml.property" scope="all" enabled="false" />
       <tag name="uml.associationEnd" scope="all" enabled="false" />
+      <tag name="Deprecated" scope="all" enabled="false" />
+      <tag name="Required" scope="all" enabled="false" />
 	
       <group title="EVE Data Model" packages="de.ptb.epics.eve.data*"/>
       <group title="NMP &lt;-&gt; ECP" packages="de.ptb.epics.eve.ecp1*"/>
@@ -61,10 +70,14 @@
       <group title="EVE Viewer" packages="de.ptb.epics.eve.viewer*"/>
       
       <group title="CSS" packages="org.csstudio.*"/>
+      
+      <group title="apache" packages="org.apache.*" />
     
       <link offline="true" href="http://download.oracle.com/javase/6/docs/api/" 
         packagelistLoc="docs/jdk-6u23-docs/docs/api/"/> 
-   
+      <link offline="true" href="http://download.oracle.com/javaee/6/api/" 
+        packagelistLoc="docs/j2ee-6.0.1-docs/" />
+
     </javadoc>
   </target>
 </project>
