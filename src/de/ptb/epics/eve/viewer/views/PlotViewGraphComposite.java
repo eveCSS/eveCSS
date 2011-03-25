@@ -171,7 +171,26 @@ public class PlotViewGraphComposite extends Composite
 		boolean detector1HasData = false;
 		boolean detector2HasData = false;
 		boolean motorHasData = false;
-			
+		
+		// TODO  temporary logging command
+		/*
+		
+		String val = "";
+		if(measurementData.getValues().size() > 0)
+			val = measurementData.getValues().get(0).toString();
+		else val = "no value";
+		
+		logger.debug("Measurement Data arrived: " + 
+				     "ChainID: " + measurementData.getChainId() + ", " + 
+				     "ScanModuleID: " + measurementData.getScanModuleId() + ", " +
+				     "Position: " + measurementData.getPositionCounter() + ", " + 
+				     "Value: " + val + ", " + 
+				     "Name: " + measurementData.getName() + ", " + 
+				     "Data Type: " + measurementData.getDataType() + ", " +
+				     "Data Modifier: " + measurementData.getDataModifier() + ", " + 
+				     "at: " + new TimeStamp(measurementData.getGerenalTimeStamp(), measurementData.getNanoseconds()).toMONDDYYYY());
+		*/
+		
 		// are we still in the same scan module of the same chain ?
 		if ((measurementData.getChainId() == chid) && 
 			(measurementData.getScanModuleId() == smid))

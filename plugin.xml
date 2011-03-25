@@ -39,7 +39,7 @@
       <view
             name="%view.name.2"
             icon="icons/css.gif"
-            class="de.ptb.epics.eve.viewer.MessagesView"
+            class="de.ptb.epics.eve.viewer.views.MessagesView"
             id="MessagesView">
       </view>
       <view

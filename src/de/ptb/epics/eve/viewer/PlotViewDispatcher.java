@@ -18,7 +18,13 @@ import de.ptb.epics.eve.ecp1.intern.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.intern.EngineStatus;
 import de.ptb.epics.eve.viewer.views.PlotView;
 
-public class PlotViewDispatcher implements IEngineStatusListener, IChainStatusListener, IConnectionStateListener {
+/**
+ * 
+ * @author ?
+ *
+ */
+public class PlotViewDispatcher implements 
+		IEngineStatusListener, IChainStatusListener, IConnectionStateListener {
 
 	private ScanDescription scanDescription;
 	private EngineStatus engineStatus;
@@ -26,6 +32,9 @@ public class PlotViewDispatcher implements IEngineStatusListener, IChainStatusLi
 	private int chid;
 	private int smid;
 	
+	/**
+	 * Constructs a <code>PlotViewDispatcher</code>.
+	 */
 	public PlotViewDispatcher(){
 		scanDescription = null;
 		Activator.getDefault().getEcp1Client().addChainStatusListener(this);
@@ -33,6 +42,10 @@ public class PlotViewDispatcher implements IEngineStatusListener, IChainStatusLi
 		//engineStatus = EngineStatus.EXECUTING;
 	}
 
+	/**
+	 * 
+	 * @param scanDescription
+	 */
 	public void setScanDescription(ScanDescription scanDescription){
 		this.scanDescription = scanDescription;
 		if (dispatchDelayed && (engineStatus == EngineStatus.EXECUTING)){
@@ -46,6 +59,9 @@ public class PlotViewDispatcher implements IEngineStatusListener, IChainStatusLi
 		}
 	}
 
+	/*
+	 * called by setScanDescription
+	 */
 	private void doDispatch(int chid, int smid){
 
 		HashMap<Integer, PlotWindow> windowIdMap = new HashMap<Integer, PlotWindow>();
@@ -104,39 +120,44 @@ public class PlotViewDispatcher implements IEngineStatusListener, IChainStatusLi
 		}
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void engineStatusChanged(EngineStatus engineStatus) {
 		this.engineStatus = engineStatus;
 	}
 
 	/**
-	 * all plotViews are resetted after we received a new 
-	 * measuringStation and engine has been started 
-	 * 
-	 * @param engineStatus 
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void chainStatusChanged(ChainStatusCommand chainStatusCommand) {
 		
 		this.chid = chainStatusCommand.getChainId();
 		this.smid = chainStatusCommand.getScanModulId();
-		if (chainStatusCommand.getChainStatus() == ChainStatus.EXECUTING_SM){
-			// If we connect to a running engine, we wait for the current scanDescription to arrive
-			if (scanDescription == null){
+		if (chainStatusCommand.getChainStatus() == ChainStatus.EXECUTING_SM) {
+			// If we connect to a running engine, we wait for the current 
+			//scanDescription to arrive
+			if (scanDescription == null) {
 				dispatchDelayed = true;
 			}
 			else {
 				dispatchDelayed = false;
-				Activator.getDefault().getWorkbench().getDisplay().syncExec( new Runnable() {
+				Activator.getDefault().getWorkbench().getDisplay().syncExec( 
+					new Runnable() {
 
-					public void run() {
-						doDispatch(chid, smid);
-					}
+						public void run() {
+							doDispatch(chid, smid);
+						}
 				});				
 			}
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void stackConnected() {
 		// make sure we start with a fresh scanDescription
@@ -144,6 +165,9 @@ public class PlotViewDispatcher implements IEngineStatusListener, IChainStatusLi
 		dispatchDelayed = false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void stackDisconnected() {
 		// invalidate scanDescription

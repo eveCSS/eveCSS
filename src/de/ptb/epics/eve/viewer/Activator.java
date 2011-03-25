@@ -2,14 +2,8 @@ package de.ptb.epics.eve.viewer;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetSocketAddress;
 
-import org.apache.log4j.xml.DOMConfigurator;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.NotEnabledException;
-import org.eclipse.core.commands.NotHandledException;
-import org.eclipse.core.commands.common.NotDefinedException;
-import org.eclipse.jface.dialogs.InputDialog;
+// import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -19,7 +13,6 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -37,14 +30,16 @@ import de.ptb.epics.eve.viewer.messages.MessagesContainer;
  */
 public class Activator extends AbstractUIPlugin {
 
-	// The plug-in ID
+	/**
+	 * The unique identifier of the plug in
+	 */
 	public static final String PLUGIN_ID = "de.ptb.epics.eve.viewer";
 
 	// The shared instance
 	private static Activator plugin;
+	
 	private final MessagesContainer messagesContainer;
 	private final XMLFileDispatcher xmlFileDispatcher;
-	//private final MeasurementDataDispatcher measurementDataDispatcher;
 	private final EngineErrorReader engineErrorReader;
 	private final ChainStatusAnalyzer chainStatusAnalyzer;
 	private IMeasuringStation measuringStation;
@@ -68,9 +63,9 @@ public class Activator extends AbstractUIPlugin {
 		this.xmlFileDispatcher = new XMLFileDispatcher();
 		this.engineErrorReader = new EngineErrorReader();
 		this.chainStatusAnalyzer = new ChainStatusAnalyzer();
-		// this.measurementDataDispatcher = new MeasurementDataDispatcher();
+
 		this.ecp1Client.getPlayListController().addNewXMLFileListener( this.xmlFileDispatcher );
-		// this.ecp1Client.addMeasurementDataListener( this.measurementDataDispatcher );
+
 		this.ecp1Client.addErrorListener( this.engineErrorReader );
 		this.ecp1Client.addEngineStatusListener( this.chainStatusAnalyzer );
 		this.ecp1Client.addChainStatusListener( this.chainStatusAnalyzer );
@@ -80,7 +75,7 @@ public class Activator extends AbstractUIPlugin {
 		this.ecp1Client.addRequestListener( this.requestProcessor );
 		
 		// TODO temporary logging for plot
-		//DOMConfigurator.configure("logger.xml");
+		// DOMConfigurator.configure("logger.xml");
 	}
 
 	/**
@@ -211,16 +206,19 @@ public class Activator extends AbstractUIPlugin {
 	}
 	
 	/**
+	 * Returns the 
 	 * 
-	 * @return
+	 * @return the 
 	 */
 	public ECP1Client getEcp1Client() {
 		return this.ecp1Client;	
 	}
 	
 	/**
+	 * Returns the {@link de.ptb.epics.eve.viewer.messages.MessagesContainer} 
+	 * used to collect messages of several types from different sources.
 	 * 
-	 * @return
+	 * @return the messages container of the viewer
 	 */
 	public MessagesContainer getMessagesContainer() {
 		return this.messagesContainer;
@@ -236,9 +234,11 @@ public class Activator extends AbstractUIPlugin {
 	
 	/**
 	 * 
+	 * 
 	 * @param currentScanDescription
 	 */
-	public void setCurrentScanDescription( final ScanDescription currentScanDescription ) {
+	public void setCurrentScanDescription(
+			final ScanDescription currentScanDescription) {
 		this.currentScanDescription = currentScanDescription;
 	}
 	
@@ -251,26 +251,34 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
+	 * Adds a scan description to the play list.
 	 * 
-	 * @param file
+	 * @param file the file containing the Scan Description (SCML)
 	 */
-	public void addScanDescription( final File file ) {
+	public void addScanDescription(final File file) {
 		
-		if( !this.ecp1Client.isRunning() ) {
-			// start ecp1Client
-			IHandlerService handlerService = (IHandlerService) PlatformUI.getWorkbench().getService(IHandlerService.class);
+		// if we are not connected to the engine -> connect to it
+		if(!this.ecp1Client.isRunning()) {
+
+			// getting the service to execute registered commands
+			IHandlerService handlerService = (IHandlerService) 
+					PlatformUI.getWorkbench().getService(IHandlerService.class);
+			// execute the connect command
 			try {
-				handlerService.executeCommand("de.ptb.epics.eve.viewer.connectCommand", null);
+				handlerService.executeCommand(
+						"de.ptb.epics.eve.viewer.connectCommand", null);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 
-		if( this.ecp1Client.isRunning() ) {
+		// either we were connected before or have done it above, we are 
+		// connected now and can add the scan description to the play list.
+		if(this.ecp1Client.isRunning()) {
 			try {
-				this.ecp1Client.getPlayListController().addLocalFile( file );
-			} catch( final IOException e ) {
+				this.ecp1Client.getPlayListController().addLocalFile(file);
+			} catch(final IOException e) {
 				e.printStackTrace();
 			}
 		}
