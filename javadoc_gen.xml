@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc" basedir="../">
+  <description>
+  	Ant File for Building JavaDoc... (in the future maybe cvsstats too)	
+  </description>
+  <property name="eclipse_dir" location="${user.home}/eclipse_dir" />
+  
+  <!-- <echo message="eclipse dir is ${eclipse_dir}" /> -->
+	
+  <target name="javadoc">
+    <javadoc
+      destdir="docs/api"
+      access="public"
+      author="true"
+      version="true"
+      use="true"
+      windowtitle="eveCSS API">
+   	
+    	<classpath>
+    	  <pathelement path="${classpath}"/>
+    	  <fileset dir="${eclipse_dir}/plugins">
+    	    <include name="**/*.jar"/>
+    	  </fileset>
+    	</classpath>
+	
+      <packageset dir="de.ptb.epics.eve.data/src" defaultexcludes="yes" />
+      <packageset dir="de.ptb.epics.eve.ecp1/src" defaultexcludes="yes" />
+      <packageset dir="de.ptb.epics.eve.editor/src" defaultexcludes="yes" />
+      <packageset dir="de.ptb.epics.eve.viewer/src" defaultexcludes="yes" />
+
+      <packageset dir="org.csstudio.apputil/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.apputil.ui/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.logbook/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.platform/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.platform.libs.dal/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.platform.libs.dal.epics/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.platform.libs.epics/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.platform.libs.jmock/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.platform.libs.jms/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.platform.ui/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.platform.utility.jms/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.platform.workspace/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.startup/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.startuphelper/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.swt.xygraph/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.utility.pv/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.utility.pv.epics/src" defaultexcludes="yes" />
+
+      <doctitle><![CDATA[<h1>eveCSS</h1>]]></doctitle>
+      <bottom>
+        <![CDATA[<i>Copyright &#169; 2000 Dummy Corp. All Rights Reserved.</i>]]>
+      </bottom>
+       
+   	  <tag name="uml.dependency" scope="all" enabled="false" />
+      <tag name="uml.property" scope="all" enabled="false" />
+      <tag name="uml.associationEnd" scope="all" enabled="false" />
+	
+      <group title="EVE Data Model" packages="de.ptb.epics.eve.data*"/>
+      <group title="NMP &lt;-&gt; ECP" packages="de.ptb.epics.eve.ecp1*"/>
+      <group title="EVE Editor" packages="de.ptb.epics.eve.editor*"/>
+      <group title="EVE Viewer" packages="de.ptb.epics.eve.viewer*"/>
+      
+      <group title="CSS" packages="org.csstudio.*"/>
+    
+      <link offline="true" href="http://download.oracle.com/javase/6/docs/api/" 
+        packagelistLoc="docs/jdk-6u23-docs/docs/api/"/> 
+   
+    </javadoc>
+  </target>
+</project>
