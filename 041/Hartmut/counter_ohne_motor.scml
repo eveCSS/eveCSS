@@ -4,7 +4,7 @@
     <version>0.4.1</version>
     <repeatcount>0</repeatcount>
     <chain id="1">
-        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/041/Hartmut/Daten/zeit-scan-relative.h5</savefilename>
+        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/041/Hartmut/Daten/filename-test.h5</savefilename>
         <confirmsave>false</confirmsave>
         <autonumber>true</autonumber>
         <savescandescription>false</savescandescription>
@@ -25,21 +25,26 @@
                 <triggerconfirm>false</triggerconfirm>
                 <saveaxispositions>never</saveaxispositions>
                 <smaxis>
-                    <axisid>Timer1-mot</axisid>
-                    <stepfunction>Add</stepfunction>
+                    <axisid>PPSMC:gw23715000</axisid>
+                    <stepfunction>Positionlist</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="datetime">16:29:00</start>
-                    <stop type="datetime">16:32:00</stop>
-                    <stepwidth type="datetime">3</stepwidth>
-                    <ismainaxis>false</ismainaxis>
+                    <positionlist>2
+4.5
+7
+3
+1</positionlist>
                 </smaxis>
                 <smchannel>
                     <channelid>ringCurrent1chan1</channelid>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
+                <smchannel>
+                    <channelid>P5000:gw2370701</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
                 <plot id="1">
                     <xaxis>
-                        <id>Timer1-mot</id>
+                        <id>PPSMC:gw23715000</id>
                         <mode>linear</mode>
                     </xaxis>
                     <init>false</init>
@@ -48,6 +53,13 @@
                         <mode>linear</mode>
                         <linestyle>Solid Line</linestyle>
                         <color>0000ff</color>
+                        <markstyle>None</markstyle>
+                    </yaxis>
+                    <yaxis>
+                        <id>P5000:gw2370701</id>
+                        <mode>linear</mode>
+                        <linestyle>Dash Line</linestyle>
+                        <color>008000</color>
                         <markstyle>None</markstyle>
                     </yaxis>
                 </plot>
@@ -1699,7 +1711,7 @@
                     <value type="string">Undefined, POS 0,  POS 1</value>
                 </goto>
                 <position>
-                    <access method="GETCB" type="string" transport="ca">PPSMC:gw23715000_actPos.SVAL</access>
+                    <access method="GETCB" type="string" transport="ca">PPSMC:gw23715000_Mnu</access>
                 </position>
                 <stop>
                     <access method="PUT" type="int" transport="ca">PPSMC:gw23715000_stop</access>
@@ -1782,9 +1794,9 @@
                 </option>
                 <option>
                     <name>Value 1</name>
-                    <id>PPSMC:gw23715000_MnuS.DO1</id>
+                    <id>PPSMC:gw23715000_MnuS.A</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO1</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.A</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1798,9 +1810,9 @@
                 </option>
                 <option>
                     <name>Value 2</name>
-                    <id>PPSMC:gw23715000_MnuS.DO2</id>
+                    <id>PPSMC:gw23715000_MnuS.B</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO2</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.B</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1814,9 +1826,9 @@
                 </option>
                 <option>
                     <name>Value 3</name>
-                    <id>PPSMC:gw23715000_MnuS.DO3</id>
+                    <id>PPSMC:gw23715000_MnuS.C</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO3</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.C</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1830,9 +1842,9 @@
                 </option>
                 <option>
                     <name>Value 4</name>
-                    <id>PPSMC:gw23715000_MnuS.DO4</id>
+                    <id>PPSMC:gw23715000_MnuS.D</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO4</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.D</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1846,9 +1858,9 @@
                 </option>
                 <option>
                     <name>Value 5</name>
-                    <id>PPSMC:gw23715000_MnuS.DO5</id>
+                    <id>PPSMC:gw23715000_MnuS.E</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO5</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.E</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1862,9 +1874,9 @@
                 </option>
                 <option>
                     <name>Value 6</name>
-                    <id>PPSMC:gw23715000_MnuS.DO6</id>
+                    <id>PPSMC:gw23715000_MnuS.F</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO6</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.F</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1878,9 +1890,9 @@
                 </option>
                 <option>
                     <name>Value 7</name>
-                    <id>PPSMC:gw23715000_MnuS.DO7</id>
+                    <id>PPSMC:gw23715000_MnuS.G</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO7</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.G</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1894,9 +1906,9 @@
                 </option>
                 <option>
                     <name>Value 8</name>
-                    <id>PPSMC:gw23715000_MnuS.DO8</id>
+                    <id>PPSMC:gw23715000_MnuS.H</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO8</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.H</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1910,9 +1922,9 @@
                 </option>
                 <option>
                     <name>Value 9</name>
-                    <id>PPSMC:gw23715000_MnuS.DO9</id>
+                    <id>PPSMC:gw23715000_MnuS.I</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO9</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.I</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1926,9 +1938,9 @@
                 </option>
                 <option>
                     <name>Value 10</name>
-                    <id>PPSMC:gw23715000_MnuS.DOA</id>
+                    <id>PPSMC:gw23715000_MnuS.K</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DOA</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.K</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1942,9 +1954,9 @@
                 </option>
                 <option>
                     <name>Value 11</name>
-                    <id>PPSMC:gw23715000_MnuS.DOB</id>
+                    <id>PPSMC:gw23715000_MnuS.L</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DOB</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.L</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1958,9 +1970,9 @@
                 </option>
                 <option>
                     <name>Value 12</name>
-                    <id>PPSMC:gw23715000_MnuS.DOC</id>
+                    <id>PPSMC:gw23715000_MnuS.M</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DOC</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.M</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1974,9 +1986,9 @@
                 </option>
                 <option>
                     <name>Value 13</name>
-                    <id>PPSMC:gw23715000_MnuS.DOD</id>
+                    <id>PPSMC:gw23715000_MnuS.N</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DOD</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.N</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1990,9 +2002,9 @@
                 </option>
                 <option>
                     <name>Value 14</name>
-                    <id>PPSMC:gw23715000_MnuS.DOE</id>
+                    <id>PPSMC:gw23715000_MnuS.O</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DOE</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.O</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2006,9 +2018,9 @@
                 </option>
                 <option>
                     <name>Value 15</name>
-                    <id>PPSMC:gw23715000_MnuS.DOF</id>
+                    <id>PPSMC:gw23715000_MnuS.P</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DOF</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.P</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2031,7 +2043,7 @@
                     <value type="string">Undefined, POS 0,  POS 1, POS 2, POS 3</value>
                 </goto>
                 <position>
-                    <access method="GETCB" type="string" transport="ca">PPSMC:gw23715001_actPos.SVAL</access>
+                    <access method="GETCB" type="string" transport="ca">PPSMC:gw23715001_Mnu</access>
                 </position>
                 <stop>
                     <access method="PUT" type="int" transport="ca">PPSMC:gw23715001_stop</access>
@@ -2114,9 +2126,9 @@
                 </option>
                 <option>
                     <name>Value 1</name>
-                    <id>PPSMC:gw23715001_MnuS.DO1</id>
+                    <id>PPSMC:gw23715001_MnuS.A</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO1</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.A</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2130,9 +2142,9 @@
                 </option>
                 <option>
                     <name>Value 2</name>
-                    <id>PPSMC:gw23715001_MnuS.DO2</id>
+                    <id>PPSMC:gw23715001_MnuS.B</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO2</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.B</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2146,9 +2158,9 @@
                 </option>
                 <option>
                     <name>Value 3</name>
-                    <id>PPSMC:gw23715001_MnuS.DO3</id>
+                    <id>PPSMC:gw23715001_MnuS.C</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO3</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.C</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2162,9 +2174,9 @@
                 </option>
                 <option>
                     <name>Value 4</name>
-                    <id>PPSMC:gw23715001_MnuS.DO4</id>
+                    <id>PPSMC:gw23715001_MnuS.D</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO4</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.D</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2178,9 +2190,9 @@
                 </option>
                 <option>
                     <name>Value 5</name>
-                    <id>PPSMC:gw23715001_MnuS.DO5</id>
+                    <id>PPSMC:gw23715001_MnuS.E</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO5</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.E</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2194,9 +2206,9 @@
                 </option>
                 <option>
                     <name>Value 6</name>
-                    <id>PPSMC:gw23715001_MnuS.DO6</id>
+                    <id>PPSMC:gw23715001_MnuS.F</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO6</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.F</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2210,9 +2222,9 @@
                 </option>
                 <option>
                     <name>Value 7</name>
-                    <id>PPSMC:gw23715001_MnuS.DO7</id>
+                    <id>PPSMC:gw23715001_MnuS.G</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO7</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.G</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2226,9 +2238,9 @@
                 </option>
                 <option>
                     <name>Value 8</name>
-                    <id>PPSMC:gw23715001_MnuS.DO8</id>
+                    <id>PPSMC:gw23715001_MnuS.H</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO8</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.H</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2242,9 +2254,9 @@
                 </option>
                 <option>
                     <name>Value 9</name>
-                    <id>PPSMC:gw23715001_MnuS.DO9</id>
+                    <id>PPSMC:gw23715001_MnuS.I</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO9</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.I</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2258,9 +2270,9 @@
                 </option>
                 <option>
                     <name>Value 10</name>
-                    <id>PPSMC:gw23715001_MnuS.DOA</id>
+                    <id>PPSMC:gw23715001_MnuS.K</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DOA</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.K</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2274,9 +2286,9 @@
                 </option>
                 <option>
                     <name>Value 11</name>
-                    <id>PPSMC:gw23715001_MnuS.DOB</id>
+                    <id>PPSMC:gw23715001_MnuS.L</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DOB</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.L</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2290,9 +2302,9 @@
                 </option>
                 <option>
                     <name>Value 12</name>
-                    <id>PPSMC:gw23715001_MnuS.DOC</id>
+                    <id>PPSMC:gw23715001_MnuS.M</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DOC</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.M</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2306,9 +2318,9 @@
                 </option>
                 <option>
                     <name>Value 13</name>
-                    <id>PPSMC:gw23715001_MnuS.DOD</id>
+                    <id>PPSMC:gw23715001_MnuS.N</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DOD</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.N</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2322,9 +2334,9 @@
                 </option>
                 <option>
                     <name>Value 14</name>
-                    <id>PPSMC:gw23715001_MnuS.DOE</id>
+                    <id>PPSMC:gw23715001_MnuS.O</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DOE</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.O</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2338,9 +2350,9 @@
                 </option>
                 <option>
                     <name>Value 15</name>
-                    <id>PPSMC:gw23715001_MnuS.DOF</id>
+                    <id>PPSMC:gw23715001_MnuS.P</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DOF</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.P</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

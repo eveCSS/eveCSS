@@ -4,7 +4,7 @@
     <version>0.4.1</version>
     <repeatcount>0</repeatcount>
     <chain id="1">
-        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/041/Hartmut/Daten/zeit-scan-relative.h5</savefilename>
+        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/041/Hartmut/Daten/counter-test.h5</savefilename>
         <confirmsave>false</confirmsave>
         <autonumber>true</autonumber>
         <savescandescription>false</savescandescription>
@@ -25,12 +25,21 @@
                 <triggerconfirm>false</triggerconfirm>
                 <saveaxispositions>never</saveaxispositions>
                 <smaxis>
-                    <axisid>Timer1-mot</axisid>
+                    <axisid>Counter-mot</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="datetime">16:29:00</start>
-                    <stop type="datetime">16:32:00</stop>
-                    <stepwidth type="datetime">3</stepwidth>
+                    <start type="int">1</start>
+                    <stop type="int">20</stop>
+                    <stepwidth type="int">1</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smaxis>
+                    <axisid>PPSMC:gw23715000</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">1.0</start>
+                    <stop type="double">20.0</stop>
+                    <stepwidth type="double">1</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smchannel>
@@ -39,7 +48,7 @@
                 </smchannel>
                 <plot id="1">
                     <xaxis>
-                        <id>Timer1-mot</id>
+                        <id>Counter-mot</id>
                         <mode>linear</mode>
                     </xaxis>
                     <init>false</init>
@@ -354,7 +363,7 @@
             <id>Timer1</id>
             <channel>
                 <class></class>
-                <name>Timer</name>
+                <name>Time</name>
                 <id>Timer1-det</id>
                 <read>
                     <access method="GETCB" type="datetime" transport="local">Timer</access>
@@ -474,7 +483,7 @@
             <id>Timer1</id>
             <axis>
                 <class></class>
-                <name>Time</name>
+                <name>Timer</name>
                 <id>Timer1-mot</id>
                 <goto>
                     <access method="PUTCB" type="datetime" transport="local">Timer</access>
@@ -484,6 +493,26 @@
                 </position>
                 <stop>
                     <access method="PUT" type="int" transport="local">Timer</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
+        <motor>
+            <class>Counter</class>
+            <name></name>
+            <id>Counter1</id>
+            <axis>
+                <class></class>
+                <name>Counter</name>
+                <id>Counter-mot</id>
+                <goto>
+                    <access method="PUTCB" type="int" transport="local">Counter</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="int" transport="local">Counter</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="local">Counter</access>
                     <value type="OnOff">0</value>
                 </stop>
             </axis>
