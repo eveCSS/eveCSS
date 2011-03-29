@@ -1,9 +1,10 @@
 package de.ptb.epics.eve.viewer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
-// import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -52,7 +53,6 @@ public class Activator extends AbstractUIPlugin {
 	
 	private RequestProcessor requestProcessor;
 
-	
 	/**
 	 * The constructor
 	 */
@@ -74,8 +74,8 @@ public class Activator extends AbstractUIPlugin {
 		this.requestProcessor = new RequestProcessor( Display.getCurrent() );
 		this.ecp1Client.addRequestListener( this.requestProcessor );
 		
-		// TODO temporary logging for plot
-		// DOMConfigurator.configure("logger.xml");
+		// activate logging 
+		DOMConfigurator.configure("logger.xml");
 	}
 
 	/**

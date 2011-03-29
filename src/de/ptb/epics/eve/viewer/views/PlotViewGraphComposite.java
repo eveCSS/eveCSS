@@ -2,7 +2,7 @@ package de.ptb.epics.eve.viewer.views;
 
 import gov.aps.jca.dbr.TimeStamp;
 
-// import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -28,8 +28,7 @@ import de.ptb.epics.eve.viewer.plot.XYPlot;
 public class PlotViewGraphComposite extends Composite 
 							implements IMeasurementDataListener {
 	
-	// TODO temporary logging for plot
-	//private static Logger logger = Logger.getLogger(PlotViewGraphComposite.class);
+	private static Logger logger = Logger.getLogger(PlotViewGraphComposite.class);
 	
 	private String detector1Id;
 	private String detector2Id;
@@ -172,9 +171,7 @@ public class PlotViewGraphComposite extends Composite
 		boolean detector2HasData = false;
 		boolean motorHasData = false;
 		
-		// TODO  temporary logging command
-		/*
-		
+
 		String val = "";
 		if(measurementData.getValues().size() > 0)
 			val = measurementData.getValues().get(0).toString();
@@ -188,8 +185,9 @@ public class PlotViewGraphComposite extends Composite
 				     "Name: " + measurementData.getName() + ", " + 
 				     "Data Type: " + measurementData.getDataType() + ", " +
 				     "Data Modifier: " + measurementData.getDataModifier() + ", " + 
-				     "at: " + new TimeStamp(measurementData.getGerenalTimeStamp(), measurementData.getNanoseconds()).toMONDDYYYY());
-		*/
+				     "at: " + new TimeStamp(measurementData.getGerenalTimeStamp(), 
+				    		 measurementData.getNanoseconds()).toMONDDYYYY());
+		
 		
 		// are we still in the same scan module of the same chain ?
 		if ((measurementData.getChainId() == chid) && 

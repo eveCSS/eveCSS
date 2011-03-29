@@ -23,14 +23,14 @@ import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.viewer.Activator;
 
 /**
- * <code>XYPlot</code> is a plot based on the xygraph from csstudio.
+ * <code>XYPlot</code> is a plot based on 
+ * {@link org.csstudio.swt.xygraph.figures.XYGraph}.
  * 
  * @author Jens Eden
  * @author Marcus Michalsky
  */
 public class XYPlot extends Figure {
 
-	// temporary logging 
 	private static Logger logger = Logger.getLogger(XYPlot.class);
 	
 	private XYGraph xyGraph;
@@ -43,7 +43,7 @@ public class XYPlot extends Figure {
 	public XYPlot() {
 		init(false);
 		
-		logger.debug("a new xy plot has been created."); // TODO
+		logger.debug("A new XY plot has been created.");
 	}
 	
 	/**
@@ -83,7 +83,7 @@ public class XYPlot extends Figure {
 		
 		if (name == null) return;
 		
-		logger.debug("Trace added: " + name + " , id: " + id); // TODO 
+		logger.debug("Trace added - name: " + name + " , id: " + id);
 		
 		Axis axis;
 		Trace trace;
@@ -178,7 +178,7 @@ public class XYPlot extends Figure {
 	public void removeTrace(String name) {
 		if (name == null) return;
 		
-		logger.debug("Trace has been removed: " + name); // TODO 
+		logger.debug("Trace removed - name: " + name); 
 		
 		if (traceMap.containsKey(name)){
 			Trace trace = traceMap.get(name);
@@ -206,13 +206,13 @@ public class XYPlot extends Figure {
 		
 		if (traceMap.containsKey(name)){
 			
-			logger.info("data set: " + name + "(" + xValue + ", " + yValue + ")"); // TODO 
-			
 			Trace trace = traceMap.get(name);
 			((CircularBufferDataProvider)trace.getDataProvider()).
 														setCurrentXData(xValue);
 			((CircularBufferDataProvider)trace.getDataProvider()).
 														setCurrentYData(yValue);
+			
+			logger.info("Data set - name: " + name + "(" + xValue + ", " + yValue + ")");
 		}
 	}
 	
@@ -238,8 +238,8 @@ public class XYPlot extends Figure {
 			((CircularBufferDataProvider)trace.getDataProvider()).
 												setCurrentYData(yValue, time_in_msecs);
 			
-			logger.info("data set: " + name + "(" + motorPosCount + ", " + yValue + 
-					    ", " + time_in_msecs  + ") - " + timestamp.toMONDDYYYY()); // TODO
+			logger.info("Data set - name: " + name + "(" + motorPosCount + ", " + yValue + 
+					    ", " + time_in_msecs  + ") - " + timestamp.toMONDDYYYY());
 		}
 	}
 	
@@ -304,6 +304,6 @@ public class XYPlot extends Figure {
 		
 		traceMap = new HashMap<String, Trace>();
 		
-		logger.debug("xy plot has been (re-)initialized."); // TODO
+		logger.debug("xy plot has been (re-)initialized.");
 	}
 }
