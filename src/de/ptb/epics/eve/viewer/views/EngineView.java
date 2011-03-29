@@ -63,7 +63,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	private Button stopButton;
 	private Button skipButton;
 	private Button haltButton;
-	private Button triggerButton;
 	private Button autoPlayOnButton;
 	private Button autoPlayOffButton;
 	private Label repeatCountLabel;
@@ -95,7 +94,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		final Image stopIcon = Activator.getDefault().getImageRegistry().get("STOP16");
 		final Image skipIcon = Activator.getDefault().getImageRegistry().get("SKIP16");
 		final Image haltIcon = Activator.getDefault().getImageRegistry().get("HALT16");
-		final Image triggerIcon = Activator.getDefault().getImageRegistry().get("TRIGGER16");
 		final Image autoPlayIcon = Activator.getDefault().getImageRegistry().get("PLAYALL16");
 
 		parent.setLayout( new FillLayout() );		
@@ -156,7 +154,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		
 		this.scanComposite = new Composite( this.top, SWT.NONE );
 		gridLayout = new GridLayout();
-		gridLayout.numColumns = 10;
+		gridLayout.numColumns = 9;
 		this.scanComposite.setLayout(gridLayout);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -187,11 +185,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		this.haltButton.setImage(haltIcon);
 		this.haltButton.setToolTipText( "Halt" );
 		this.haltButton.addSelectionListener( new HaltButtonSelectionListener());
-
-		this.triggerButton = new Button( this.scanComposite, SWT.PUSH );
-		this.triggerButton.setImage(triggerIcon);
-		this.triggerButton.setToolTipText( "Trigger" );
-		this.triggerButton.addSelectionListener( new TriggerButtonSelectionListener());
 
 		this.autoPlayOnButton = new Button( this.scanComposite, SWT.TOGGLE );
 		this.autoPlayOnButton.setImage(autoPlayIcon);
@@ -314,7 +307,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 			stopButton.setEnabled(false);
 			skipButton.setEnabled(false);
 			haltButton.setEnabled(false);
-			triggerButton.setEnabled(false);
 
 		}
 	
@@ -477,7 +469,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 			}
 		});
 
-		// Die Scan-Knöpfe können wieder erlaubt werden!
+		//TODO: Die Scan-Knöpfe können wieder erlaubt werden!
 		// Wie ist der EngineStatus?
 	
 //		Activator.getDefault().getEcp1Client().
@@ -507,7 +499,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 					stopButton.setEnabled(false);
 					skipButton.setEnabled(false);
 					haltButton.setEnabled(false);
-					triggerButton.setEnabled(false);
 				}
 			}
 		});
@@ -546,7 +537,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 						stopButton.setEnabled(false);
 						skipButton.setEnabled(false);
 						haltButton.setEnabled(false);
-						triggerButton.setEnabled(false);
 					}
 				});
 				break;
@@ -555,11 +545,9 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 					public void run() {
 						playButton.setEnabled(true);
 						pauseButton.setEnabled(false);
-						stopButton.setEnabled(true);
+						stopButton.setEnabled(false);
 						skipButton.setEnabled(false);
-						// TODO: haltButton wieder auf false setzen, wenn bug74 bearbeitet ist
 						haltButton.setEnabled(true);
-						triggerButton.setEnabled(false);
 						// alte Info-Fenster des letzten XML-Files werden gelöscht
 						for ( int j=0; j<10; j++) {
 							if (shellTable[j] != null) {
@@ -600,7 +588,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 						stopButton.setEnabled(false);
 						skipButton.setEnabled(false);
 						haltButton.setEnabled(false);
-						triggerButton.setEnabled(false);
 					}
 				});
 				break;
@@ -612,7 +599,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 						stopButton.setEnabled(false);
 						skipButton.setEnabled(false);
 						haltButton.setEnabled(false);
-						triggerButton.setEnabled(false);
 					}
 				});
 				break;
@@ -1156,28 +1142,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		}
 	}
 
-	/**
-	 * <code>SelectionListener</code> of Trigger Button from
-	 * <code>EngineView</code>
-	 */
-	class TriggerButtonSelectionListener implements SelectionListener {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			System.out.println("Trigger Knopf im Engine Window gedrückt!");
-			System.out.println("   hat noch keine Verwendung");
-			MessageDialog.openWarning(null, "Warning", "Trigger löst noch keine Aktion aus!");
-		}
-	}
-	
 	/**
 	 * <code>SelectionListener</code> of AutoPlayOn Button from
 	 * <code>EngineView</code>
