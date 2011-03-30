@@ -28,6 +28,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * components of a scan description.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
+ * @author Hartmut Scherr
  * @version 1.2
  */
 public class ScanDescription implements IModelUpdateProvider, IModelUpdateListener, IModelErrorProvider {
@@ -51,6 +52,11 @@ public class ScanDescription implements IModelUpdateProvider, IModelUpdateListen
 	 * our output schema version
 	 */
 	public static final String outputVersion = "0.4.1";
+	
+	/**
+	 * The repeat count of the scan description
+	 */
+	private int repeatCount;
 	
 	/**
 	 * A List that is holding all chains of the scan description.
@@ -203,6 +209,28 @@ public class ScanDescription implements IModelUpdateProvider, IModelUpdateListen
 			inputVersion =  Integer.parseInt(versionArray[0]);
 			inputRevision =  Integer.parseInt(versionArray[1]);
 			inputModification =  Integer.parseInt(versionArray[2]);
+		}
+	}
+
+	/**
+	 * Gives back the repeat count of the scan description.
+	 * 
+	 * @return repeatCount The number of repeats of the scan description.
+	 */
+	public int getRepeatCount() {
+		return this.repeatCount;
+	}
+
+	/**
+	 * Sets the repeat count of the scan description.
+	 * 
+	 * @param version The version of the scan description.
+	 */
+	public void setRepeatCount( final int repeatCount ) {
+		this.repeatCount = repeatCount;
+		final Iterator<IModelUpdateListener> updateIterator = this.modelUpdateListener.iterator();
+		while( updateIterator.hasNext() ) {
+			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
 		}
 	}
 	

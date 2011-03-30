@@ -32,7 +32,7 @@ import de.ptb.epics.eve.data.scandescription.ScanDescription;
  * This class loads a scan description form a file.
  * 
  * @author Stephan Rehfeld (- at-) ptb.de>
- *
+ * @author Hartmut Scherr
  */
 public class ScanDescriptionLoader {
 

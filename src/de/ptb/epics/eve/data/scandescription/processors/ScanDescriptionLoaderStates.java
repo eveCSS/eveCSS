@@ -31,6 +31,16 @@ public enum ScanDescriptionLoaderStates {
 	VERSION_READ,
 	
 	/**
+	 * The begin tag of the repeat count has been read.
+	 */
+	REPEATCOUNT_NEXT,
+	
+	/**
+	 * The repeat count has been read and the handler waits for the closing tag.
+	 */
+	REPEATCOUNT_READ,
+	
+	/**
 	 * This state indicates the a chain is loading.
 	 */
 	CHAIN_LOADING,

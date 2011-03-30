@@ -29,7 +29,6 @@ import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.Function;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
@@ -58,6 +57,7 @@ import de.ptb.epics.eve.data.scandescription.PositionMode;
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSaver {
 
@@ -180,16 +180,14 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 			
 			this.contentHandler.startElement("tns", "scml", "tns:scml", atts );
 			
-			
 			this.atts.clear();
 			this.contentHandler.startElement("", "", "version", atts );
 			this.contentHandler.characters( ScanDescription.outputVersion.toCharArray(), 0, ScanDescription.outputVersion.length() );
 			this.contentHandler.endElement( "", "", "version" );
 			
-			// TODO this is a dummy, a workaround to produce valid XML, replace with real repeat count
 			this.atts.clear();
 			this.contentHandler.startElement("", "", "repeatcount", atts );
-			this.contentHandler.characters( ("0").toCharArray(), 0, 1 );
+			this.contentHandler.characters( ("" + this.scanDescription.getRepeatCount()).toCharArray(), 0, ("" + this.scanDescription.getRepeatCount()).length() );
 			this.contentHandler.endElement( "", "", "repeatcount" );
 
 			Iterator<Chain> iterator = this.scanDescription.getChains().iterator();

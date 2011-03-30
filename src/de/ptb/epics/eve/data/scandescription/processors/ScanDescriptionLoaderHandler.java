@@ -52,6 +52,7 @@ import de.ptb.epics.eve.data.scandescription.PositionMode;
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
@@ -217,6 +218,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case ROOT:
 			if (qName.equals("version")) {
 				this.state = ScanDescriptionLoaderStates.VERSION_NEXT;
+			} else if (qName.equals("repeatcount")) {
+				this.state = ScanDescriptionLoaderStates.REPEATCOUNT_NEXT;
 			} else if (qName.equals("chain")) {
 				this.currentChain = new Chain( Integer.parseInt(atts.getValue("id") ) );
 				this.chainList.add(this.currentChain);
@@ -623,6 +626,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case VERSION_NEXT:
 			this.scanDescription.setVersion(textBuffer.toString());
 			this.state = ScanDescriptionLoaderStates.VERSION_READ;
+			break;
+
+		case REPEATCOUNT_NEXT:
+			this.scanDescription.setRepeatCount(Integer.parseInt(textBuffer.toString()));
+			this.state = ScanDescriptionLoaderStates.REPEATCOUNT_READ;
 			break;
 
 		case CHAIN_COMMENT_NEXT:
@@ -1103,6 +1111,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		switch (this.state) {
 		case VERSION_READ:
 			if (qName.equals("version")) {
+				this.state = ScanDescriptionLoaderStates.ROOT;
+			}
+			break;
+
+		case REPEATCOUNT_READ:
+			if (qName.equals("repeatcount")) {
 				this.state = ScanDescriptionLoaderStates.ROOT;
 			}
 			break;
