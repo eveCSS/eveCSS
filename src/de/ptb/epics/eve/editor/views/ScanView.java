@@ -56,34 +56,27 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 	private Composite top = null;
 	
 	private Composite savingComposite = null;
-	
 	private Composite commentComposite = null;
-	
 	private Composite eventsComposite = null;
 	
 	private ExpandBar bar = null;
 
 	private Label filenameLabel = null;
-
 	private Text filenameInput = null;
-	
 	private Label filenameErrorLabel = null;
-
 	private Button searchButton = null;
 
 	private Button manualSaveCheckBox = null;
-
 	private Button autoNumberCheckBox = null;
 
 	private Label savePluginLabel = null;
-
 	private Combo savePluginCombo = null;
-	
 	private Label savePluginComboErrorLabel = null;
-	
 	private Button savePluginOptionsButton = null;
-	
 	private Button saveScanDescriptionCheckBox = null;
+
+	private Label repeatCountLabel = null;
+	private Text repeatCountText = null;
 	
 	private Text commentInput = null;
 
@@ -273,9 +266,6 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		gridData.horizontalSpan = 3;
 		this.saveScanDescriptionCheckBox.setLayoutData( gridData );
 		
-		@SuppressWarnings("unused")
-		Label filler12 = new Label( this.savingComposite, SWT.NONE );
-		
 		// Confirm Save Box / Labels
 		this.manualSaveCheckBox = new Button( this.savingComposite, SWT.CHECK );
 		this.manualSaveCheckBox.setText( "Confirm Save" );
@@ -283,17 +273,23 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		this.manualSaveCheckBox.setLayoutData( gridData );
-		
+
 		// Auto Number Box / Labels
 		this.autoNumberCheckBox = new Button( this.savingComposite, SWT.CHECK );
 		this.autoNumberCheckBox.setText( "Add Autoincrementing Number to Filename" );
 		gridData = new GridData();
-		gridData.horizontalSpan = 3;
+		gridData.horizontalSpan = 4;
 		this.autoNumberCheckBox.setLayoutData( gridData );
-
-		@SuppressWarnings("unused")
-		Label filler1 = new Label( this.savingComposite, SWT.NONE );
 		
+		// repeat Count Text / Labels
+		this.repeatCountLabel = new Label( this.savingComposite, SWT.NONE );
+		this.repeatCountLabel.setText( "repeat count:" );
+		this.repeatCountText = new Text( this.savingComposite, SWT.BORDER );
+		this.repeatCountText.setToolTipText( "The number of completions of this scan." );
+		gridData = new GridData();
+		gridData.horizontalSpan = 3;
+		this.repeatCountText.setLayoutData( gridData );
+
 		// first expand item (Save Options)
 		this.item0 = new ExpandItem ( this.bar, SWT.NONE, 0);
 		item0.setText("Save Options");
@@ -489,6 +485,8 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			this.filenameInput.setText( (this.currentChain.getSaveFilename()!=null)?this.currentChain.getSaveFilename():"" );
 			this.manualSaveCheckBox.setSelection( this.currentChain.isConfirmSave() );
 			this.autoNumberCheckBox.setSelection( this.currentChain.isAutoNumber() );
+
+			this.repeatCountText.setText(" " + this.currentChain.getScanDescription().getRepeatCount());
 			
 			this.saveScanDescriptionCheckBox.setSelection( this.currentChain.isSaveScanDescription() );
 			
@@ -605,6 +603,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 	
 	private void appendListener() {
 		this.filenameInput.addModifyListener( this.modifyListener );
+		this.repeatCountText.addModifyListener( this.modifyListener );
 		this.savePluginCombo.addModifyListener( this.modifyListener );
 		this.manualSaveCheckBox.addSelectionListener( this.selectionListener );
 		this.autoNumberCheckBox.addSelectionListener( this.selectionListener );
@@ -620,6 +619,32 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 				if( !filling ) {
 					if( e.widget == filenameInput ) {
 						currentChain.setSaveFilename( filenameInput.getText() );
+					} else if (e.widget == repeatCountText) {
+							//TODO: die Eingabe von repeatCount muß hier
+							// noch verarbeitet werden.
+
+						try {
+							currentChain.getScanDescription().setRepeatCount(Integer.parseInt(repeatCountText.getText()));
+						} catch( final NumberFormatException ex ) {
+//							final double stepamount_d = Double.parseDouble( stepamountText.getText() );
+//							final int stepamount = (int)stepamount_d;
+							repeatCountText.setText("");
+						}
+						/*******
+						try {
+							currentChain.setAutoNumber(false);
+							
+							axis.setStepCount(Integer.parseInt(stepamountText.getText()));
+							recalculateStepwidth();
+							autoFill();
+						} catch( final NumberFormatException ex ) {
+							final double stepamount_d = Double.parseDouble( stepamountText.getText() );
+							final int stepamount = (int)stepamount_d;
+							stepamountText.setText("" + stepamount);
+							stepamountText.setSelection(stepamountText.getCharCount());
+						}
+*************/
+
 					} else if( e.widget == savePluginCombo ) {
 						// TODO: hier kann eigentlich kein Fehler mehr auftauchen, da das Plugin
 						// jetzt nur noch ausgewählt und nicht mehr verändert werden kann (Hartmut 20.4.10)
