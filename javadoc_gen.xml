@@ -58,7 +58,9 @@
         <![CDATA[<i>Copyright &#169; 2000 Dummy Corp. All Rights Reserved.</i>]]>
       </bottom>
        
-   	  <tag name="uml.dependency" scope="all" enabled="false" />
+      <tag name="precondition" scope="all" description="Precondition:"/>
+      <tag name="postcondition" scope="all" description="Postcondition:"/>
+      <tag name="uml.dependency" scope="all" enabled="false" />
       <tag name="uml.property" scope="all" enabled="false" />
       <tag name="uml.associationEnd" scope="all" enabled="false" />
 	
@@ -73,15 +75,16 @@
       
       <group title="SWT" packages="org.eclipse.swt.*" />
     
-      <link offline="true" href="http://download.oracle.com/javase/6/docs/api/" 
+      <link offline="true" href="http://download.oracle.com/javase/6/docs/api" 
         packagelistLoc="docs/api/jdk-6u23/docs/api/"/> 
-      <link offline="true" href="http://download.oracle.com/javaee/6/api/" 
+      <link offline="true" href="http://download.oracle.com/javaee/6/api" 
         packagelistLoc="docs/api/j2ee-6.0.1/" />
-      <link offline="true" href="http://logging.apache.org/log4j/1.2/apidocs/index.html"
+      <link offline="true" href="http://logging.apache.org/log4j/1.2/apidocs"
         packagelistLoc="docs/api/log4j/" />
       <link offline="true" href="http://www.eclipse.org/pde"
         packagelistLoc="docs/api/pde/" />
-
+      <link offline="true" href="http://jca.cosylab.com/apidocs"
+      	packagelistLoc="docs/api/jca-2.3.2/" />
     </javadoc>
   </target>
 </project>
