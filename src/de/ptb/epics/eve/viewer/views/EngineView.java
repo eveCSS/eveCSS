@@ -198,7 +198,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 
 		this.repeatCountLabel = new Label( this.scanComposite, SWT.NONE );
 		this.repeatCountLabel.setText("repeat count:");
-
 		this.repeatCountText = new Text( this.scanComposite, SWT.BORDER );
 		// TODO: sobald repeat Count funktioniert wird die Eingabe auch erlaubt
 		this.repeatCountText.setEnabled(false);

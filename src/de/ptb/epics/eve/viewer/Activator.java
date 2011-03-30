@@ -75,7 +75,7 @@ public class Activator extends AbstractUIPlugin {
 		this.ecp1Client.addRequestListener( this.requestProcessor );
 		
 		// activate logging 
-		DOMConfigurator.configure("logger.xml");
+//		DOMConfigurator.configure("logger.xml");
 	}
 
 	/**
