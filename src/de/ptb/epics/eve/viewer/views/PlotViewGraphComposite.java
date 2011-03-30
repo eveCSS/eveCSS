@@ -33,10 +33,14 @@ public class PlotViewGraphComposite extends Composite
 	private String detector1Id;
 	private String detector2Id;
 	private String motorId;
+	private boolean detector1normalized;
+	private boolean detector2normalized;
 	private int detector1PosCount;
 	private int detector2PosCount;
 	private int posCount;
 	TimeStamp timestamp;
+	TimeStamp timestamp_det1;
+	TimeStamp timestamp_det2;
 	private Double xValue;
 	private int chid;
 	private int smid;
@@ -115,7 +119,13 @@ public class PlotViewGraphComposite extends Composite
 		this.detector1Id = detector1Id;
 		this.detector2Id = detector2Id;
 		this.motorId = motorId;
+		this.detector1normalized = 
+			plotWindow.getYAxes().get(0).getNormalizeChannel() != null;
+		// this.detector2normalized = 
+			//plotWindow.getYAxes().get(1).getNormalizeChannel() != null;
 		timestamp = null;
+		timestamp_det1 = null;
+		timestamp_det2 = null;
 	
 		// update first y axis 
 		if (this.detector1Id != null)
@@ -156,149 +166,202 @@ public class PlotViewGraphComposite extends Composite
 		this.layout();
 		this.redraw();
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void measurementDataTransmitted(MeasurementData measurementData) {
-
+		
 		// do nothing if no measurement data was given
 		if (measurementData == null) return;
 
-		// indicators for new data / for time data
+		// indicators for new data
 		boolean detector1HasData = false;
 		boolean detector2HasData = false;
 		boolean motorHasData = false;
-		
 
+		// ****************** logging *****************************************
 		String val = "";
 		if(measurementData.getValues().size() > 0)
 			val = measurementData.getValues().get(0).toString();
 		else val = "no value";
 		
-		logger.debug("Measurement Data arrived: " + 
-				     "ChainID: " + measurementData.getChainId() + ", " + 
+		logger.debug("ChainID: " + measurementData.getChainId() + ", " + 
 				     "ScanModuleID: " + measurementData.getScanModuleId() + ", " +
+				     "Name: " + measurementData.getName() + ", " + 
 				     "Position: " + measurementData.getPositionCounter() + ", " + 
 				     "Value: " + val + ", " + 
-				     "Name: " + measurementData.getName() + ", " + 
 				     "Data Type: " + measurementData.getDataType() + ", " +
 				     "Data Modifier: " + measurementData.getDataModifier() + ", " + 
-				     "at: " + new TimeStamp(measurementData.getGerenalTimeStamp(), 
+				     "at: " + new TimeStamp(
+				    		 measurementData.getGerenalTimeStamp()-631152000, 
 				    		 measurementData.getNanoseconds()).toMONDDYYYY());
-		
+		// **************end of: logging **************************************
 		
 		// are we still in the same scan module of the same chain ?
 		if ((measurementData.getChainId() == chid) && 
 			(measurementData.getScanModuleId() == smid))
 		{
-			// is the data for detector 1 AND is it unmodified ?
+			// since measurementDataTransmitted each time ANY data is 
+			// transmitted we have to distinguish it
+			
+			// detector 1 data ?
 			if (this.detector1Id != null && 
-				this.detector1Id.equals(measurementData.getName()) && 
-				measurementData.getDataModifier() == DataModifier.UNMODIFIED) 
+				this.detector1Id.equals(measurementData.getName()))
 			{
 				detector1PosCount = measurementData.getPositionCounter();
-				DataType dt = measurementData.getDataType();
-
-				// is the data type correct ?
-				if (dt == DataType.DOUBLE || dt == DataType.FLOAT || 
-					dt == DataType.INT32 || dt == DataType.INT16 || 
-					dt == DataType.INT8)
-				{
-					// get the data and indicate that detector 1 has new data
-					y1value = (Double) measurementData.getValues().get(0);
-					detector1HasData = true;
-					
-					//logger.debug("Detector1: " + detector1Id + " - y value: " + 
-					//			 y1value + "(" + detector1PosCount + ")");
-				}
-			}			
-			else if (this.detector2Id != null && 
-					  this.detector2Id.equals(measurementData.getName()) && 
+				DataType datatype = measurementData.getDataType();
+				
+				if(!detector1normalized &&
 				   measurementData.getDataModifier() == DataModifier.UNMODIFIED) 
+				{
+					switch(datatype)
+					{
+						case DOUBLE: y1value = (Double) 
+											measurementData.getValues().get(0);
+									 detector1HasData = true;
+									 break;
+						case DATETIME:  timestamp_det1 = new TimeStamp(
+											measurementData.getGerenalTimeStamp(), 
+											measurementData.getNanoseconds());
+										detector1HasData = true;
+										break;
+					}
+				}
+				else if(detector1normalized &&
+					measurementData.getDataModifier() == DataModifier.NORMALIZED)
+				{
+					switch(datatype)
+					{
+						case DOUBLE: y1value = (Double) 
+											measurementData.getValues().get(0);
+									 detector1HasData = true;
+									 break;
+					}
+				}
+			}
+			// detector 2 data ?
+			else if (this.detector2Id != null && 
+					 this.detector2Id.equals(measurementData.getName()))
 			{
 				detector2PosCount = measurementData.getPositionCounter();
-				DataType dt = measurementData.getDataType();
+				DataType datatype = measurementData.getDataType();
 				
-				// is the data type correct ?
-				if (dt == DataType.DOUBLE || dt == DataType.FLOAT || 
-					dt == DataType.INT32 || dt == DataType.INT16 || 
-					dt == DataType.INT8)
-				{
-					// get the data and indicate that detector 2 has new data
-					y2value = (Double) measurementData.getValues().get(0);
-					detector2HasData = true;
-					//logger.debug("Detector2: " + detector2Id + " - y value: " + 
-					//		 y2value + "(" + detector2PosCount + ")");
-				}
-			}
-			else if (this.motorId != null && 
-					this.motorId.equals(measurementData.getName()) && 
+				if(!detector2normalized && 
 				   measurementData.getDataModifier() == DataModifier.UNMODIFIED) 
-			{
-				posCount = measurementData.getPositionCounter();
-				DataType dt = measurementData.getDataType();
-				
-				if (dt == DataType.DOUBLE || 
-					dt == DataType.FLOAT || dt == DataType.INT32 || 
-					dt == DataType.INT16 || dt == DataType.INT8)
 				{
-					xValue = (Double) measurementData.getValues().get(0);
-					motorHasData = true;	
-					//logger.debug("Motor: " + motorId + " - value: (" + 
-					//		 posCount + ", " + xValue + ")");
-				}				
-				else if(dt == DataType.DATETIME)
+					switch(datatype)
+					{
+						case DOUBLE: y2value = (Double) 
+											measurementData.getValues().get(0);
+									 detector2HasData = true;
+									 break;
+						case DATETIME: timestamp_det2 = new TimeStamp(
+										 measurementData.getGerenalTimeStamp(), 
+										 measurementData.getNanoseconds());
+									   detector2HasData = true;
+									   break;
+					}
+				}
+				else if(detector2normalized && 
+					measurementData.getDataModifier() == DataModifier.NORMALIZED)
 				{
-					// measurementData offers a date with Epoch=1/1/1970 (UNIX)
-					// the TimeStamp Object has an epoch of 1/1/1990 (EPICS)
-					// but the plot widget is also based on the unix epoch
-					// therefore nothing needs to be done, but be aware of
-					// the fact that timestamp.toMONDDYYYY returns the year +20
-
-					timestamp = new TimeStamp(
-							measurementData.getGerenalTimeStamp(), 
-							measurementData.getNanoseconds());
-					
-					xValue = Double.valueOf(posCount);
-					motorHasData = true;
-					
-					//logger.debug("Motor: " + motorId + " - time data: " + 
-					//		 timestamp.toMONDDYYYY() + "(" + posCount + ")");
+					switch(datatype)
+					{
+						case DOUBLE: y2value = (Double) 
+											measurementData.getValues().get(0);
+									 detector2HasData = true;
+									 break;
+					}
 				}
 			}
-		
-			// if there is new data, update the plot 
-			final boolean plotDetector1 = (detector1HasData || motorHasData)&& 
-										(detector1PosCount == posCount);
-			final boolean plotDetector2 = (detector2HasData || motorHasData)&& 
-										(detector2PosCount == posCount);
-			
-			if ((plotDetector1 || plotDetector2) && !this.isDisposed()) 
+			// motor data ?
+			else if (this.motorId != null && 
+					 this.motorId.equals(measurementData.getName()))  
 			{
-				// plot synchronously (to assure no side effects) 
-				// TODO necessary ? or async ?
-				this.getDisplay().syncExec( new Runnable() {
-	
-					public void run() 
+				if(measurementData.getDataModifier() == DataModifier.UNMODIFIED)
+				{					
+					posCount = measurementData.getPositionCounter();
+					DataType datatype = measurementData.getDataType();
+					
+					switch(datatype)
 					{
-						if (!isDisposed()) 
-						{
-							if(plotDetector1 && timestamp == null) 
-								xyPlot.setData(detector1Name, xValue,y1value);
-							if(plotDetector2 && timestamp == null)
-								xyPlot.setData(detector2Name, xValue,y2value);				
-							if(plotDetector1 && timestamp != null)
-								xyPlot.setData(detector1Name, posCount, 
-											   y1value, timestamp);
-							if(plotDetector2 && timestamp != null)
-								xyPlot.setData(detector2Name, posCount, 
-											   y2value, timestamp);
-						}
+						case DOUBLE: xValue = (Double) 
+										measurementData.getValues().get(0);
+									 motorHasData = true;
+									 break;
+						case INT8: xValue = Double.valueOf((Integer) 
+											measurementData.getValues().get(0)); 
+											motorHasData = true; 
+											break;
+						case INT16: xValue = Double.valueOf((Integer) 
+											measurementData.getValues().get(0)); 
+											motorHasData = true; 
+											break;
+						case INT32: xValue = Double.valueOf((Integer) 
+											measurementData.getValues().get(0)); 
+											motorHasData = true; 
+											break;
+						case DATETIME: timestamp = new TimeStamp(
+										measurementData.getGerenalTimeStamp(), 
+										measurementData.getNanoseconds());
+									   xValue = Double.valueOf(posCount);
+									   motorHasData = true;
+									   break;
+						// measurementData offers a date with Epoch=1/1/1970 (UNIX)
+						// the TimeStamp Object has an epoch of 1/1/1990 (EPICS)
+						// but the plot widget is also based on the unix epoch
+						// therefore nothing needs to be done, but be aware of
+						// the fact that timestamp.toMONDDYYYY returns the year +20
+						case STRING: logger.info("discrete motor position " +
+								                 "detected - not implemented" +
+								                 "yet"); break;
+					}	
+				}
+			}			
+		} // end of if (chid, smid)
+		
+		// if there is new data, update the plot 
+		final boolean plotDetector1 = (detector1HasData || motorHasData)&& 
+									(detector1PosCount == posCount);
+		final boolean plotDetector2 = (detector2HasData || motorHasData)&& 
+									(detector2PosCount == posCount);
+		
+		if ((plotDetector1 || plotDetector2) && !this.isDisposed()) 
+		{
+			// plot synchronously (to assure no side effects) 
+			// TODO necessary ? or async ?
+			this.getDisplay().syncExec( new Runnable() {
+
+				@Override
+				public void run() 
+				{
+					if (!isDisposed()) 
+					{
+						// plot (motor_pos, timestamp:det1)
+						if(plotDetector1 && timestamp_det1 != null)
+							xyPlot.setData(detector1Name, xValue, timestamp_det1);
+						//plot (motor_pos, timestamp:det2)
+						if(plotDetector2 && timestamp_det2 != null)
+							xyPlot.setData(detector2Name, xValue, timestamp_det2);
+						// plot (motor_pos, det1_val)
+						if(plotDetector1 && timestamp == null) 
+							xyPlot.setData(detector1Name, xValue,y1value);
+						// plot (motor_pos, det2_val)
+						if(plotDetector2 && timestamp == null)
+							xyPlot.setData(detector2Name, xValue,y2value);
+						// plot (time stamp, det1_val)
+						if(plotDetector1 && timestamp != null)
+							xyPlot.setData(detector1Name, posCount, 
+										   y1value, timestamp);
+						// plot(time stamp, det2_val)
+						if(plotDetector2 && timestamp != null)
+							xyPlot.setData(detector2Name, posCount, 
+										   y2value, timestamp);
 					}
-				});
-			}
-		}
-	}
+				}
+			});
+		}	
+	} // end of measurementDataTransmitted
 }

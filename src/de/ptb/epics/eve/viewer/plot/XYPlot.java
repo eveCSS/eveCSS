@@ -82,16 +82,19 @@ public class XYPlot extends Figure {
 		// Note: xyGraph always needs at least one y axis as primary y axis
 		
 		if (name == null) return;
-		
-		logger.debug("Trace added - name: " + name + " , id: " + id);
-		
+				
 		Axis axis;
 		Trace trace;
-		
+				
 		// check if we deal with date time data
-		boolean timedata = Activator.getDefault().getMeasuringStation().
-						   getMotorAxisById(motorId).getType() 
-						   == DataTypes.DATETIME;
+		boolean timedata_x = Activator.getDefault().getMeasuringStation().
+						     getMotorAxisById(motorId).getType() 
+						     == DataTypes.DATETIME;
+		boolean timedata_y = Activator.getDefault().getMeasuringStation().
+							 getDetectorChannelById(id).getRead().getType() 
+							 == DataTypes.DATETIME;
+		
+		// if(timedata_x && timedata_y) return; ??? makes it sense ?
 		
 			// create a new trace
 			
@@ -99,7 +102,7 @@ public class XYPlot extends Figure {
 			// ! notice the boolean parameter in the constructor which defines 
 			// if the data is chronological (see CSS)
 			CircularBufferDataProvider dataProvider = 
-					new CircularBufferDataProvider(timedata); 
+					new CircularBufferDataProvider(timedata_x); 
 	        // the size of the buffer // TODO maybe increase
 			dataProvider.setBufferSize(200);
 			
@@ -114,7 +117,8 @@ public class XYPlot extends Figure {
 			}
 			
 	        // set the time unit of the x axis if we deal with time data
-	        if(timedata) xyGraph.primaryXAxis.setTimeUnit(Calendar.MILLISECOND);
+	        if(timedata_x) xyGraph.primaryXAxis.setTimeUnit(Calendar.MILLISECOND);
+	        if(timedata_y) axis.setTimeUnit(Calendar.MILLISECOND);
 	        
 	        // we create the trace with the detector name as name, 
 	        // the primary x axis and either the primary y axis or a second one
@@ -139,13 +143,23 @@ public class XYPlot extends Figure {
 	        trace.setTraceType(axis_to_change.getLinestyle());
 	        trace.setPointStyle(axis_to_change.getMarkstyle());
 	        trace.setTraceColor(new Color(null,axis_to_change.getColor()));
+	       
+	        // 
+	        boolean normalizedata = plotWindow.getYAxes().get(axis_pos).getNormalizeChannel() == null 
+	        					? false : true;
 	        
 	        // if wanted, change to logarithm scale (and change axis title)
+	        
+	        String y_axis_title = name;
+	        if(normalizedata) y_axis_title += 
+	        	" / " + 
+	        	plotWindow.getYAxes().get(axis_pos).getNormalizeChannel().getName(); 
 	        
 	        if(axis_to_change.getMode() == PlotModes.LOG)
 	        {
 	        	trace.getYAxis().setLogScale(true);
-	        	trace.getYAxis().setTitle(name + " (log)");
+	        	//trace.getYAxis().setTitle(name + " (log)");
+	        	y_axis_title += " (log)";
 	        }
 	        
 	        if(plotWindow.getMode() == PlotModes.LOG)
@@ -158,9 +172,11 @@ public class XYPlot extends Figure {
 	        	trace.getXAxis().setTitle(motorName);
 	        }
     
+	        trace.getYAxis().setTitle(y_axis_title);
+	        
 	        // if our motor sends time data, we have to signal it to the x axis
-	        xyGraph.primaryXAxis.setDateEnabled(timedata);
-	
+	        xyGraph.primaryXAxis.setDateEnabled(timedata_x);
+	        axis.setDateEnabled(timedata_y);	
 		
 		axis.setAutoScale(true);
 		xyGraph.addTrace(trace);
@@ -168,6 +184,8 @@ public class XYPlot extends Figure {
 		traceMap.put(name, trace);
 		if ((traceMap.size() > 1) && (traceMap.size() % 2) == 0) 
 			axis.setPrimarySide(false);
+		
+		logger.debug("Trace added - name: " + name + " , id: " + id);
 	}
 
 	/**
@@ -219,28 +237,54 @@ public class XYPlot extends Figure {
 	/**
 	 * Sets a new data point (x,y) with a time stamp to a trace of the plot.
 	 * 
+	 * @precondition name, yValue and timestamp are not <code>null</code>
 	 * @param name the name of the trace the point should be added to
-	 * @param motorPosCount the measurement count (position counter of the motor)
+	 * @param motorPosCount the measurement count
 	 * @param yValue the y value of the data point
 	 * @param timestamp the time when the y value was measured
 	 */
 	public void setData(String name, int motorPosCount, Double yValue, TimeStamp timestamp) {
-		if ((name == null) || (yValue == null)) return;
+		if (name == null || yValue == null || timestamp == null) return;
 		
 		if (traceMap.containsKey(name)){
 						
 			Trace trace = traceMap.get(name);
 
-			long time_in_msecs = timestamp.secPastEpoch()*1000 + timestamp.nsec()/1000000;
+			long time_in_msecs = timestamp.secPastEpoch()*1000 + 
+								 timestamp.nsec()/1000000;
 			
 			((CircularBufferDataProvider)trace.getDataProvider()).
-												setCurrentXData(motorPosCount);
+										setCurrentXData(motorPosCount);
 			((CircularBufferDataProvider)trace.getDataProvider()).
-												setCurrentYData(yValue, time_in_msecs);
+										setCurrentYData(yValue, time_in_msecs);
 			
-			logger.info("Data set - name: " + name + "(" + motorPosCount + ", " + yValue + 
-					    ", " + time_in_msecs  + ") - " + timestamp.toMONDDYYYY());
+			logger.info("Data set - name: " + name + "(" + motorPosCount + 
+						", " + yValue + ", " + time_in_msecs  + ") - " + 
+						timestamp.toMONDDYYYY());
 		}
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 * @param xValue
+	 * @param timestamp
+	 */
+	public void setData(String name, Double xValue, TimeStamp timestamp)
+	{
+		if(name == null || timestamp == null) return;
+		
+		Trace trace = traceMap.get(name);
+		
+		long time_in_msecs = timestamp.secPastEpoch()*1000 + 
+							 timestamp.nsec()/1000000;
+		
+		((CircularBufferDataProvider)trace.getDataProvider()).
+												setCurrentXData(xValue);
+		((CircularBufferDataProvider)trace.getDataProvider()).
+												setCurrentYData(time_in_msecs);
+		
+		logger.info("Data set - detector time");
 	}
 	
 	
