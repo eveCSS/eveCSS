@@ -1,7 +1,6 @@
 package de.ptb.epics.eve.viewer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.log4j.xml.DOMConfigurator;
@@ -75,7 +74,7 @@ public class Activator extends AbstractUIPlugin {
 		this.ecp1Client.addRequestListener( this.requestProcessor );
 		
 		// activate logging 
-//		DOMConfigurator.configure("logger.xml");
+		DOMConfigurator.configure(System.getProperty("user.home") + "/logger.xml");
 	}
 
 	/**
