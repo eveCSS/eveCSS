@@ -10,17 +10,33 @@ import de.ptb.epics.eve.data.measuringstation.Access;
  * with a scan module and represents a start event.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.3
+ * @author Marcus Michalsky
  */
 
 public class Event {
 
-	public enum ScheduleIncident {START, END};
+	/**
+	 * 
+	 */
+	public enum ScheduleIncident {
+	
+		/**
+		 * 
+		 */
+		START, 
+		
+		/**
+		 * 
+		 */
+		END
+	};
+	
 	/**
 	 * The name of the Event. Currently this is generated for 
 	 * SCHEDULE and DETECTOR
 	 */
 	private String pname;		// parentname
+	// the name of the event
 	private String name;		
 		
 	/**
@@ -83,13 +99,13 @@ public class Event {
 	}
 
 	/**
-	 * Constructor for detector event
+	 * Constructs a detector-<code>Event</code>.
 	 * 
-	 * @param detectorid
-	 * @param parentname
-	 * @param detectorname
-	 * @param chainid
-	 * @param smid
+	 * @param detectorid the id of the detector
+	 * @param parentname 
+	 * @param detectorname the name of the detector
+	 * @param chainid the chain id
+	 * @param smid the scan module id
 	 */
 	public Event(String detectorid, String parentname, String detectorname, 
 				  int chainid, int smid) {
@@ -102,12 +118,11 @@ public class Event {
 	}
 	
 	/**
-	 * Constructor for schedule event
+	 * Constructs a schedule-<code>Event</code>.
 	 * 
-	 * @param chainid
-	 * @param smid
-	 * @param incidenet
-	 * 
+	 * @param chainid the chain id
+	 * @param smid the scan module id
+	 * @param incident the incident occurred
 	 */
 	public Event(int chainid, int smid, ScheduleIncident incident) {
 		this.type = EventTypes.SCHEDULE;
@@ -170,10 +185,10 @@ public class Event {
 	/**
 	 * Returns the full id of the <code>Event</code>. If <code>Event</code> is a 
 	 * schedule event, it is generated from chainId, scanModuleId and incident 
-	 * S-<chainId>-<scanModuleId>-[S,E]
+	 * S-&lt;chainId&gt;-&lt;scanModuleId&gt;-[S,E]
 	 * If event is a detector event, it is generated from 
 	 * chainId, scanModuleId and detector_id 
-	 * D-<chainId>-<scanModuleId>-<detectorid>
+	 * D-&lt;chainId&gt;-&lt;scanModuleId&gt;-&lt;detectorid&gt;
 	 * 
 	 * @return the full identifier of the <code>Event</code>
 	 */
@@ -388,7 +403,10 @@ public class Event {
 		return this.scanModuleId;
 	}
 
-	// TODO: Bitte dokumentieren.
+	/**
+	 * 
+	 * @param incidentString
+	 */
 	public void setScheduleIncident( final String incidentString ){
 		if( incidentString.equals( "Start" ) ) {
 			incident = ScheduleIncident.START;
@@ -397,7 +415,10 @@ public class Event {
 		}
 	}
 	
-	// TODO: Bitte dokumentieren.	
+	/**
+	 * 
+	 * @return
+	 */
 	public ScheduleIncident getScheduleIncident() {
 		return incident;
 	}

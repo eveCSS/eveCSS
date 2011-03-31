@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.List;
@@ -12,6 +5,13 @@ import java.util.Set;
 
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider;
 
+/**
+ * <code>IMeasuringStation</code> defines the basic functionality an 
+ * implementing class must have to represent a measuring station.
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
 public interface IMeasuringStation extends IModelUpdateProvider {
 
 	/**
@@ -66,14 +66,19 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	public abstract String getVersion();
 
 	/**
+	 * Returns the name of the file containing the current measuring station 
+	 * description.
 	 * 
-	 * @return the name of the loaded device definition or null
+	 * @return the name of the file containing the current measuring station 
+	 * 		   description
 	 */
 	public abstract String getLoadedFileName();
 
 	/**
+	 * Returns the name of the schema file used to validate the measuring 
+	 * station description.
 	 * 
-	 * @return the currently used schema file
+	 * @return the name of the schema file used for validation
 	 */
 	public abstract String getSchemaFileName();
 
@@ -159,16 +164,18 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 			final String identifier);
 
 	/**
+	 * Returns a list of all available class names.
 	 * 
-	 * @return a String Array with all available class names
+	 * @return a set of <code>String</code>s with all available class names
 	 */
 	public abstract Set<String> getClassNameList();
 
 	/**
+	 * Returns all devices available in a certain class with the specified 
+	 * class name. 
 	 * 
-	 * @param classname 
-	 * @return the list of abstract devices with class name or null 
+	 * @param classname the name of the class of interest 
+	 * @return a list of abstract devices available in the given class 
 	 */
 	public abstract List<AbstractDevice> getDeviceList(String classname);
-
 }
