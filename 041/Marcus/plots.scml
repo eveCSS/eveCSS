@@ -10,36 +10,258 @@
         <scanmodules>
             <scanmodule id="1">
                 <type>classic</type>
-                <name>SM 1</name>
+                <name>UNMOD</name>
                 <xpos>100</xpos>
                 <ypos>20</ypos>
                 <parent>0</parent>
-                <settletime>2.0</settletime>
-                <triggerdelay>2.0</triggerdelay>
+                <appended>2</appended>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
                 <triggerconfirm>false</triggerconfirm>
                 <saveaxispositions>never</saveaxispositions>
                 <smaxis>
-                    <axisid>Counter01.01</axisid>
+                    <axisid>PPSMC:gw23715000</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="int">0</start>
-                    <stop type="int">100</stop>
-                    <stepwidth type="int">1</stepwidth>
+                    <start type="double">1.0</start>
+                    <stop type="double">5.0</stop>
+                    <stepwidth type="double">1</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smchannel>
                     <channelid>ringCurrent1chan1</channelid>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
+                <smchannel>
+                    <channelid>ringLifeTime1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
                 <plot id="1">
                     <xaxis>
-                        <id>Counter01.01</id>
+                        <id>PPSMC:gw23715000</id>
                         <mode>linear</mode>
                     </xaxis>
                     <init>false</init>
                     <yaxis>
                         <id>ringCurrent1chan1</id>
                         <mode>linear</mode>
+                        <linestyle>Area</linestyle>
+                        <color>a52a2a</color>
+                        <markstyle>Triangle</markstyle>
+                    </yaxis>
+                </plot>
+                <plot id="2">
+                    <xaxis>
+                        <id>PPSMC:gw23715000</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent1chan1</id>
+                        <mode>linear</mode>
+                        <linestyle>Solid Line</linestyle>
+                        <color>0000ff</color>
+                        <markstyle>Cross%28%2B%29</markstyle>
+                    </yaxis>
+                    <yaxis>
+                        <id>ringLifeTime1chan1</id>
+                        <mode>log</mode>
+                        <linestyle>Dash Line</linestyle>
+                        <color>008000</color>
+                        <markstyle>Circle%28o%29</markstyle>
+                    </yaxis>
+                </plot>
+            </scanmodule>
+            <scanmodule id="2">
+                <type>classic</type>
+                <name>NORM</name>
+                <xpos>230</xpos>
+                <ypos>20</ypos>
+                <parent>1</parent>
+                <appended>3</appended>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>PPSMC:gw23715000</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">1.0</start>
+                    <stop type="double">5.0</stop>
+                    <stepwidth type="double">1</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>ringLifeTime1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <plot id="3">
+                    <xaxis>
+                        <id>PPSMC:gw23715000</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent1chan1</id>
+                        <mode>linear</mode>
+                        <normalize_id>ringLifeTime1chan1</normalize_id>
+                        <linestyle>Solid Line</linestyle>
+                        <color>0000ff</color>
+                        <markstyle>None</markstyle>
+                    </yaxis>
+                    <yaxis>
+                        <id>ringLifeTime1chan1</id>
+                        <mode>linear</mode>
+                        <normalize_id>ringCurrent1chan1</normalize_id>
+                        <linestyle>Dash Line</linestyle>
+                        <color>008000</color>
+                        <markstyle>None</markstyle>
+                    </yaxis>
+                </plot>
+            </scanmodule>
+            <scanmodule id="3">
+                <type>classic</type>
+                <name>TIMER</name>
+                <xpos>360</xpos>
+                <ypos>21</ypos>
+                <parent>2</parent>
+                <appended>4</appended>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>Timer1-mot</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>relative</positionmode>
+                    <start type="datetime">00:00:05</start>
+                    <stop type="datetime">00:00:20</stop>
+                    <stepwidth type="datetime">00:00:04</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>ringLifeTime1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <plot id="4">
+                    <xaxis>
+                        <id>Timer1-mot</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent1chan1</id>
+                        <mode>linear</mode>
+                        <linestyle>Solid Line</linestyle>
+                        <color>0000ff</color>
+                        <markstyle>None</markstyle>
+                    </yaxis>
+                    <yaxis>
+                        <id>ringLifeTime1chan1</id>
+                        <mode>linear</mode>
+                        <normalize_id>ringCurrent1chan1</normalize_id>
+                        <linestyle>Area</linestyle>
+                        <color>ffa500</color>
+                        <markstyle>XCross%28x%29</markstyle>
+                    </yaxis>
+                </plot>
+            </scanmodule>
+            <scanmodule id="4">
+                <type>classic</type>
+                <name>COUNTER</name>
+                <xpos>396</xpos>
+                <ypos>160</ypos>
+                <parent>3</parent>
+                <appended>5</appended>
+                <settletime>1.0</settletime>
+                <triggerdelay>1.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>Counter01.01</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="int">1</start>
+                    <stop type="int">10</stop>
+                    <stepwidth type="int">1</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>Timer1-det</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>ringCurrent1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <plot id="5">
+                    <xaxis>
+                        <id>Counter01.01</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>Timer1-det</id>
+                        <mode>linear</mode>
+                        <linestyle>Dash Line</linestyle>
+                        <color>ff00ff</color>
+                        <markstyle>Bar%28%7C%29</markstyle>
+                    </yaxis>
+                    <yaxis>
+                        <id>ringCurrent1chan1</id>
+                        <mode>linear</mode>
+                        <linestyle>Dash Line</linestyle>
+                        <color>008000</color>
+                        <markstyle>None</markstyle>
+                    </yaxis>
+                </plot>
+            </scanmodule>
+            <scanmodule id="5">
+                <type>classic</type>
+                <name>Norm Zeit</name>
+                <xpos>493</xpos>
+                <ypos>211</ypos>
+                <parent>4</parent>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>Timer1-mot</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>relative</positionmode>
+                    <start type="datetime">00:00:05</start>
+                    <stop type="datetime">00:00:20</stop>
+                    <stepwidth type="datetime">4</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>ringLifeTime1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <plot id="6">
+                    <xaxis>
+                        <id>Timer1-mot</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent1chan1</id>
+                        <mode>linear</mode>
+                        <normalize_id>ringLifeTime1chan1</normalize_id>
                         <linestyle>Solid Line</linestyle>
                         <color>0000ff</color>
                         <markstyle>None</markstyle>

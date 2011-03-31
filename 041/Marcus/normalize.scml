@@ -14,32 +14,37 @@
                 <xpos>100</xpos>
                 <ypos>20</ypos>
                 <parent>0</parent>
-                <settletime>2.0</settletime>
-                <triggerdelay>2.0</triggerdelay>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
                 <triggerconfirm>false</triggerconfirm>
                 <saveaxispositions>never</saveaxispositions>
                 <smaxis>
-                    <axisid>Counter01.01</axisid>
+                    <axisid>PPSMC:gw23715000</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="int">0</start>
-                    <stop type="int">100</stop>
-                    <stepwidth type="int">1</stepwidth>
+                    <start type="double">1.0</start>
+                    <stop type="double">3.0</stop>
+                    <stepwidth type="double">1</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smchannel>
                     <channelid>ringCurrent1chan1</channelid>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
+                <smchannel>
+                    <channelid>ringLifeTime1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
                 <plot id="1">
                     <xaxis>
-                        <id>Counter01.01</id>
+                        <id>PPSMC:gw23715000</id>
                         <mode>linear</mode>
                     </xaxis>
                     <init>false</init>
                     <yaxis>
                         <id>ringCurrent1chan1</id>
                         <mode>linear</mode>
+                        <normalize_id>ringLifeTime1chan1</normalize_id>
                         <linestyle>Solid Line</linestyle>
                         <color>0000ff</color>
                         <markstyle>None</markstyle>
