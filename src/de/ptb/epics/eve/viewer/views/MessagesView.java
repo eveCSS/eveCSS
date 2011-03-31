@@ -45,7 +45,7 @@ public final class MessagesView extends ViewPart {
 		TableColumn column = 
 			new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 0);
 	    column.setText("Time");
-	    column.setWidth(100);
+	    column.setWidth(180);
 
 	    // second column: source (the sender of the message)
 	    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 1);
