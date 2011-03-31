@@ -11,51 +11,70 @@ import de.ptb.epics.eve.editor.views.PlotWindowView;
 import de.ptb.epics.eve.editor.views.ScanModulView;
 import de.ptb.epics.eve.editor.views.ScanView;
 
+/**
+ * <code>EveEditorPerspective</code> is the only perspective of the editor 
+ * plugin.
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
 public class EveEditorPerspective implements IPerspectiveFactory  {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void createInitialLayout( final IPageLayout layout ) {
+	public void createInitialLayout(final IPageLayout layout) {
+		
+		// (most of) the elements are positioned relative to the editor area, 
+		// therefore get the identifier of it
 		String editorArea = layout.getEditorArea();
+		// the editor should be visible here
 		layout.setEditorAreaVisible(true);
 		
-		IFolderLayout motorAxisFolder = layout.createFolder("motorAxis", IPageLayout.RIGHT, 0.75f, editorArea);
+		// the motor axis view
+		IFolderLayout motorAxisFolder = layout.createFolder(
+				"motorAxis", IPageLayout.RIGHT, 0.75f, editorArea);
 		motorAxisFolder.addPlaceholder(MotorAxisView.ID + ":*");
 		motorAxisFolder.addView(MotorAxisView.ID);
-		layout.getViewLayout( MotorAxisView.ID ).setCloseable( false );
+		layout.getViewLayout(MotorAxisView.ID).setCloseable(false);
 		
-		
-		IFolderLayout detectorChannelFolder = layout.createFolder("detectorChannels", IPageLayout.BOTTOM, 0.3f, "motorAxis");
+		// the detector channel view
+		IFolderLayout detectorChannelFolder = layout.createFolder(
+				"detectorChannels", IPageLayout.BOTTOM, 0.3f, "motorAxis");
 		detectorChannelFolder.addPlaceholder(DetectorChannelView.ID + ":*");
 		detectorChannelFolder.addView(DetectorChannelView.ID);
-		layout.getViewLayout( DetectorChannelView.ID ).setCloseable( false );
+		layout.getViewLayout(DetectorChannelView.ID).setCloseable(false);
 		
-		IFolderLayout plotWindowFolder = layout.createFolder("plotWindows", IPageLayout.BOTTOM, 0.50f, "detectorChannels");	
+		// the plot window view
+		IFolderLayout plotWindowFolder = layout.createFolder(
+				"plotWindows", IPageLayout.BOTTOM, 0.50f, "detectorChannels");	
 		plotWindowFolder.addPlaceholder(PlotWindowView.ID + ":*");
 		plotWindowFolder.addView(PlotWindowView.ID);
-		layout.getViewLayout( PlotWindowView.ID ).setCloseable( false );
+		layout.getViewLayout(PlotWindowView.ID).setCloseable(false);
 
-		IFolderLayout scanFolder = layout.createFolder("scan", IPageLayout.RIGHT, 0.45f, editorArea);
+		// the scan view
+		IFolderLayout scanFolder = layout.createFolder(
+				"scan", IPageLayout.RIGHT, 0.45f, editorArea);
 		scanFolder.addPlaceholder(ScanView.ID + ":*");
 		scanFolder.addView(ScanView.ID);
-		layout.getViewLayout( ScanView.ID ).setCloseable( false );
+		layout.getViewLayout( ScanView.ID ).setCloseable(false);
 
-		IFolderLayout scanModulFolder = layout.createFolder("scanModul", IPageLayout.BOTTOM, 0.38f, "scan");
-		
+		// the scan modul view
+		IFolderLayout scanModulFolder = layout.createFolder(
+				"scanModul", IPageLayout.BOTTOM, 0.38f, "scan");		
 		scanModulFolder.addPlaceholder(ScanModulView.ID + ":*");
 		scanModulFolder.addView(ScanModulView.ID);
-		layout.getViewLayout( ScanModulView.ID ).setCloseable( false );
+		layout.getViewLayout(ScanModulView.ID).setCloseable(false);
 		
-		IFolderLayout errorFolder = layout.createFolder("error", IPageLayout.BOTTOM , 0.8f, editorArea );
+		// the messages view
+		IFolderLayout errorFolder = layout.createFolder(
+				"error", IPageLayout.BOTTOM , 0.8f, editorArea);
 		errorFolder.addPlaceholder(ErrorView.ID + ":*");
 		errorFolder.addView(ErrorView.ID);
-		layout.getViewLayout( ErrorView.ID ).setCloseable( false );
+		layout.getViewLayout(ErrorView.ID).setCloseable(false);
 
-	
-		
-		layout.addActionSet( "de.ptb.epics.eve.editor.handOverActionSet" );
-		
-		
-
+		// register the handover actions
+		layout.addActionSet("de.ptb.epics.eve.editor.handOverActionSet");
 	}
-
 }
