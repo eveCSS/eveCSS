@@ -15,7 +15,9 @@ import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
  */
 public class Activator extends AbstractUIPlugin {
 
-	// The plug-in ID
+	/**
+	 * The unique identifier of the plug in
+	 */
 	public static final String PLUGIN_ID = "de.ptb.epics.eve.editor";
 
 	// The shared instance
@@ -31,24 +33,30 @@ public class Activator extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public Activator() {
+		// activate logging 
+		// DOMConfigurator.configure(System.getProperty("user.home") + "/logger.xml");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	/**
+	 * {@inheritDoc}
 	 */
-	public void start( final BundleContext context ) throws Exception {
-		super.start( context );
+	@Override
+	public void start(final BundleContext context) throws Exception {
+		super.start(context);
 		plugin = this;
 		
+		final String measuringStationDescription = 
+				de.ptb.epics.eve.preferences.Activator.getDefault().
+					getPreferenceStore().getString(
+					PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION);
 		
-		
-		final String measuringStationDescription = de.ptb.epics.eve.preferences.Activator.getDefault().getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION );
-		
-		if( !measuringStationDescription.equals( "" ) ) { 
-			final int lastSeperatorIndex = measuringStationDescription.lastIndexOf( File.separatorChar );
-			final String schemaFileLocation = measuringStationDescription.substring( 0, lastSeperatorIndex + 1 ) + "scml.xsd";
-			this.schemaFile = new File( schemaFileLocation );
+		if(!measuringStationDescription.equals("")) { 
+			final int lastSeperatorIndex = 
+				measuringStationDescription.lastIndexOf(File.separatorChar);
+			final String schemaFileLocation = 
+				measuringStationDescription.substring(0, lastSeperatorIndex + 1) 
+											+ "scml.xsd";
+			this.schemaFile = new File(schemaFileLocation);
 		}
 		
 		if( !measuringStationDescription.equals( "" ) ) {
@@ -73,13 +81,13 @@ public class Activator extends AbstractUIPlugin {
 		this.excludeFilter.setSource( this.measuringStation );
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	/**
+	 * {@inheritDoc}
 	 */
-	public void stop( final BundleContext context ) throws Exception {
+	@Override
+	public void stop(final BundleContext context) throws Exception {
 		plugin = null;
-		super.stop( context );
+		super.stop(context);
 	}
 
 	/**
@@ -91,12 +99,19 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 	
+	/**
+	 * 
+	 * @return measuring station
+	 */
 	public IMeasuringStation getMeasuringStation() {
 		return this.excludeFilter;
 	}
 
+	/**
+	 * 
+	 * @return schema
+	 */
 	public File getSchemaFile() {
 		return this.schemaFile;
-	}
-	
+	}	
 }
