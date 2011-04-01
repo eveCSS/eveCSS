@@ -92,21 +92,23 @@
          </menu>
          <action
                class="de.ptb.epics.eve.editor.actions.HandOverSilentAction"
+               icon="icons/runlast.gif"
                id="de.ptb.epics.eve.editor.actions.HandOverSilentAction"
                label="%action.label"
                menubarPath="handOverMenu/handOverGroup"
                style="push"
                toolbarPath="handOverGroup"
-               tooltip="%action.tooltip">
+               tooltip="Add to Play List">
          </action>
          <action
                class="de.ptb.epics.eve.editor.actions.HandOverAction"
+               icon="icons/run.gif"
                id="de.ptb.epics.eve.editor.actions.HandOverAction"
                label="%action.label.0"
                menubarPath="handOverMenu/handOverGroup"
                style="push"
                toolbarPath="handOverGroup"
-               tooltip="%action.tooltip.0">
+               tooltip="Add to Play List and switch to Engine Perspective">
          </action>
       </actionSet>
    </extension>
