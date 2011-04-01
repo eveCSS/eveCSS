@@ -90,7 +90,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-
 		this.viewer = new ScrollingGraphicalViewer();
 		this.viewer.createControl(parent);
 		this.editDomain.addViewer(this.viewer);
@@ -138,14 +137,13 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					view.setScanDescription(this.scanDescription);
 				}
 			}
-		}
-		
+		}	
 	}
 
 	/**
 	 * 
 	 * 
-	 * @param initScanModul 
+	 * @param initScanModul init scan module
 	 */
 	public static void setInitScanModul(ScanModul initScanModul) {
 		GraphicalEditor.initScanModul = initScanModul;
@@ -153,7 +151,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 
 	/**
 	 *  
-	 * @return
+	 * @return init scan module
 	 */
 	public static ScanModul getInitScanModul() {
 		return initScanModul;
@@ -221,23 +219,22 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				int x = GraphicalEditor.getInitScanModul().getX();
 				int y = GraphicalEditor.getInitScanModul().getY();
 				
-				EditPart part = viewer.findObjectAt( new Point( x, y ) );
-				if( selectedEditPart instanceof ScanModulEditPart ) {
-					((ScanModulEditPart)selectedEditPart).setFocus( false );
+				EditPart part = viewer.findObjectAt(new Point(x, y));
+				if(selectedEditPart instanceof ScanModulEditPart) {
+					((ScanModulEditPart)selectedEditPart).setFocus(false);
 				}
 				selectedEditPart = part;
 				
-				if( selectedEditPart instanceof ScanModulEditPart ) {
-					((ScanModulEditPart)selectedEditPart).setFocus( true );
-					view2.setCurrentScanModul( GraphicalEditor.getInitScanModul() );
+				if(selectedEditPart instanceof ScanModulEditPart) {
+					((ScanModulEditPart)selectedEditPart).setFocus(true);
+					view2.setCurrentScanModul(GraphicalEditor.getInitScanModul());
 					currentScanModul = GraphicalEditor.getInitScanModul();
 				} else {
-					view2.setCurrentScanModul( null );
+					view2.setCurrentScanModul(null);
 					currentScanModul = null;
 				}
 			}
-
-			scanModulView.setCurrentScanModul( currentScanModul );
+			scanModulView.setCurrentScanModul(currentScanModul);
 		}
 	}
 	
@@ -270,26 +267,31 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			return;
 		}
 		
-		final ScanDescriptionLoader scanDescriptionLoader = new ScanDescriptionLoader(Activator.getDefault().getMeasuringStation(), Activator.getDefault().getSchemaFile());
+		final ScanDescriptionLoader scanDescriptionLoader = 
+				new ScanDescriptionLoader(Activator.getDefault().
+													getMeasuringStation(), 
+										  Activator.getDefault().
+										  			getSchemaFile());
 		this.dirty = false;
 		try {
-			scanDescriptionLoader.load( scanDescriptionFile );
+			scanDescriptionLoader.load(scanDescriptionFile);
 			this.scanDescription = scanDescriptionLoader.getScanDescription();
 
 			if (scanDescriptionLoader.getLostDevices() != null) {
 				Shell shell = getSite().getShell();
-				LostDevicesDialog dialog = new LostDevicesDialog( shell, scanDescriptionLoader );
+				LostDevicesDialog dialog = 
+						new LostDevicesDialog(shell, scanDescriptionLoader);
 				dialog.open();
 				this.dirty = true;
 			}
 			
 			this.scanDescription.addModelUpdateListener(this);
 		} catch(final ParserConfigurationException e) {
-			e.printStackTrace();
+			e.printStackTrace(); // TODO
 		} catch(final SAXException e) {
-			e.printStackTrace();
+			e.printStackTrace(); // TODO
 		} catch(final IOException e) {
-			e.printStackTrace();
+			e.printStackTrace(); // TODO
 		}
 		this.firePropertyChange(PROP_DIRTY);
 	}
@@ -326,20 +328,24 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	@Override
 	public void doSaveAs() {
 		// als filePath wird das Verzeichnis des aktuellen Scans gesetzt
-		final FileStoreEditorInput fileStoreEditorInput2 = (FileStoreEditorInput)this.getEditorInput();
+		final FileStoreEditorInput fileStoreEditorInput2 = 
+					(FileStoreEditorInput)this.getEditorInput();
 		
-		int lastSeperatorIndex = fileStoreEditorInput2.getURI().getRawPath().lastIndexOf( "/" );
-		final String filePath = fileStoreEditorInput2.getURI().getRawPath().substring( 0, lastSeperatorIndex + 1 );
+		int lastSeperatorIndex = 
+			fileStoreEditorInput2.getURI().getRawPath().lastIndexOf("/");
+		final String filePath = fileStoreEditorInput2.getURI().getRawPath().
+										substring(0, lastSeperatorIndex + 1);
 		
-		final FileDialog dialog = new FileDialog( this.getEditorSite().getShell(), SWT.SAVE );
+		final FileDialog dialog = 
+				new FileDialog(this.getEditorSite().getShell(), SWT.SAVE);
 		dialog.setFilterPath(filePath);
 		final String fileName = dialog.open();
 
 		String fileNameLang = fileName;
 		
-		if( fileName != null ) {
+		if(fileName != null) {
 			// eventuel vorhandener Datentyp wird weggenommen
-			final int lastPoint = fileName.lastIndexOf( "." );
+			final int lastPoint = fileName.lastIndexOf(".");
 			final int lastSep = fileName.lastIndexOf("/");
 			
 			if ((lastPoint > 0) && (lastPoint > lastSep))
@@ -348,16 +354,23 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				fileNameLang = fileName + ".scml";
 		}
 		
-		final File scanDescriptionFile = new File( fileNameLang );
+		final File scanDescriptionFile = new File(fileNameLang);
 		
 		try {
-			final FileOutputStream os = new FileOutputStream( scanDescriptionFile );	
-			final IMeasuringStation measuringStation = Activator.getDefault().getMeasuringStation();
-			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = new ScanDescriptionSaverToXMLusingXerces( os, measuringStation, this.scanDescription );
+			final FileOutputStream os = 
+					new FileOutputStream(scanDescriptionFile);	
+			final IMeasuringStation measuringStation = 
+					Activator.getDefault().getMeasuringStation();
+			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = 
+					new ScanDescriptionSaverToXMLusingXerces(os, 
+														measuringStation, 
+														this.scanDescription);
 			scanDescriptionSaver.save();
 			
-			final IFileStore fileStore = EFS.getLocalFileSystem().getStore( new Path( fileNameLang ) );
-			final FileStoreEditorInput fileStoreEditorInput = new FileStoreEditorInput( fileStore );
+			final IFileStore fileStore = 
+				EFS.getLocalFileSystem().getStore(new Path(fileNameLang));
+			final FileStoreEditorInput fileStoreEditorInput = 
+				new FileStoreEditorInput(fileStore);
 			this.setInput(fileStoreEditorInput);
 			
 			this.dirty = false;
@@ -369,7 +382,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	/**
@@ -460,7 +472,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				renameScanModulMenuItem.setEnabled(true);
 			} else if(part instanceof EventEditPart) {
 				EventEditPart eventEditPart = (EventEditPart)part;
-				if( ((StartEvent)eventEditPart.getModel()).getConnector() == null) {
+				if(((StartEvent)eventEditPart.getModel()).getConnector() == null) {
 					addAppendedScanModulMenuItem.setEnabled(true);
 				} else {
 					addAppendedScanModulMenuItem.setEnabled(false);
@@ -543,99 +555,112 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
+			
+			// TODO !!!!! split try catch in smaller parts and only there, 
+			// where it is needed !!!!!
 			try {
-				if( rightClickEditPart instanceof ScanModulEditPart ) {
-					ScanModulEditPart scanModulEditPart = (ScanModulEditPart)rightClickEditPart;
-					ScanModul scanModul = (ScanModul)rightClickEditPart.getModel();
+				if(rightClickEditPart instanceof ScanModulEditPart) {
+					ScanModulEditPart scanModulEditPart = 
+							(ScanModulEditPart)rightClickEditPart;
+					ScanModul scanModul = 
+							(ScanModul)rightClickEditPart.getModel();
 					
-					Chain[] chains = scanModul.getChain().getScanDescription().getChains().toArray( new Chain[0] );
+					Chain[] chains = scanModul.getChain().getScanDescription().
+											getChains().toArray(new Chain[0]);
 					int newId = 1;
+					
 					do {
 						boolean repeat = false;
-						for( int i = 0; i < chains.length; ++i ) {
-							ScanModul[] scanModules = chains[i].getScanModuls().toArray( new ScanModul[0] );
-							for( int j = 0; j < scanModules.length; ++j ) {
-								if( scanModules[j].getId() == newId ) {
+						for(int i = 0; i < chains.length; ++i) {
+							ScanModul[] scanModules = chains[i].getScanModuls().
+													  toArray(new ScanModul[0]);
+							for(int j = 0; j < scanModules.length; ++j) {
+								if(scanModules[j].getId() == newId) {
 									newId++;
 									repeat = true;
 								}
-							}
-							
+							}	
 						}
-						if( !repeat )
+						if(!repeat)
 							break;
-					} while( true );
-					ScanModul newScanModul = new ScanModul( newId );
-					newScanModul.setName( "SM " + newId + " append" );
-					newScanModul.setX( scanModul.getX() + 130 );
-					newScanModul.setY( scanModul.getY() );
+					} while(true);
+					
+					ScanModul newScanModul = new ScanModul(newId);
+					newScanModul.setName("SM " + newId + " append");
+					newScanModul.setX(scanModul.getX() + 130);
+					newScanModul.setY(scanModul.getY());
 					// Voreinstellungen für das neue Scan Modul
 					newScanModul.setTriggerdelay(0);
 					newScanModul.setSettletime(0);
 					newScanModul.setSaveAxisPositions(SaveAxisPositionsTypes.NEVER);
 					
 					Connector connector = new Connector();
-					connector.setParentScanModul( scanModul );
-					connector.setChildScanModul( newScanModul );
-					scanModul.setAppended( connector );
-					newScanModul.setParent( connector );
+					connector.setParentScanModul(scanModul);
+					connector.setChildScanModul(newScanModul);
+					scanModul.setAppended(connector);
+					newScanModul.setParent(connector);
 
-					scanModul.getChain().add( newScanModul );
+					scanModul.getChain().add(newScanModul);
 					scanModulEditPart.refresh();
 					scanModulEditPart.getParent().refresh();
 					
-				} else if( rightClickEditPart instanceof EventEditPart ) {
-					EventEditPart eventEditPart = (EventEditPart)rightClickEditPart;
-					StartEvent startEvent = (StartEvent)rightClickEditPart.getModel();
-					Chain[] chains = ((ScanDescription)eventEditPart.getParent().getModel()).getChains().toArray( new Chain[0] );
+				} else if(rightClickEditPart instanceof EventEditPart) {
+					EventEditPart eventEditPart = 
+							(EventEditPart)rightClickEditPart;
+					StartEvent startEvent = 
+							(StartEvent)rightClickEditPart.getModel();
+					Chain[] chains = ((ScanDescription)eventEditPart.getParent().
+							getModel()).getChains().toArray(new Chain[0]);
 					int newId = 1;
+					
 					do {
 						boolean repeat = false;
-						for( int i = 0; i < chains.length; ++i ) {
-							ScanModul[] scanModules = chains[i].getScanModuls().toArray( new ScanModul[0] );
-							for( int j = 0; j < scanModules.length; ++j ) {
-								if( scanModules[j].getId() == newId ) {
+						for(int i = 0; i < chains.length; ++i) {
+							ScanModul[] scanModules = chains[i].getScanModuls().
+													  toArray(new ScanModul[0]);
+							for(int j = 0; j < scanModules.length; ++j) {
+								if(scanModules[j].getId() == newId) {
 									newId++;
 									repeat = true;
 								}
 							}
-							
 						}
-						if( !repeat )
+						if(!repeat)
 							break;
-					} while( true );
-					ScanModul newScanModul = new ScanModul( newId );
-					newScanModul.setName( "SM " + newId );
-					newScanModul.setX( 100 );
-					newScanModul.setY( 20 );
+					} while(true);
+					
+					ScanModul newScanModul = new ScanModul(newId);
+					newScanModul.setName("SM " + newId);
+					newScanModul.setX(100);
+					newScanModul.setY(20);
 					// Voreinstellungen für das neue Scan Modul
 					newScanModul.setTriggerdelay(0);
 					newScanModul.setSettletime(0);
 					newScanModul.setSaveAxisPositions(SaveAxisPositionsTypes.NEVER);
 					
 					Connector connector = new Connector();
-					connector.setParentEvent( startEvent );
-					connector.setChildScanModul( newScanModul );
-					startEvent.setConnector( connector );
-					newScanModul.setParent( connector );
+					connector.setParentEvent(startEvent);
+					connector.setChildScanModul(newScanModul);
+					startEvent.setConnector(connector);
+					newScanModul.setParent(connector);
 					Iterator<Chain> it = scanDescription.getChains().iterator();
-					while( it.hasNext() ) {
+					while(it.hasNext()) {
 						Chain currentChain = it.next();
-						if( currentChain.getStartEvent() == startEvent ) {
-							currentChain.add( newScanModul );
+						if(currentChain.getStartEvent() == startEvent) {
+						   currentChain.add(newScanModul);
 							break;
 						}
 					}
 					eventEditPart.refresh();
 					eventEditPart.getParent().refresh();
 					Iterator it2 = eventEditPart.getParent().getChildren().iterator();
-					while( it2.hasNext() ) {
+					while(it2.hasNext()) {
 						EditPart editPart = (EditPart)it2.next();
-						if( editPart instanceof ChainEditPart ) {
+						if(editPart instanceof ChainEditPart) {
 							ChainEditPart chainEditPart = (ChainEditPart)editPart;
 							final Chain chain = (Chain)editPart.getModel();
-							if( chain.getStartEvent() == startEvent ) {
-								chainEditPart.refresh();
+							if(chain.getStartEvent() == startEvent) {
+							   chainEditPart.refresh();
 							}
 						}
 						
@@ -645,21 +670,22 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					// gerade erzeugte ScanModul wird selektiert
 					IViewReference[] ref = getSite().getPage().getViewReferences();
 					ScanModulView view = null;
-					for( int i = 0; i < ref.length; ++i ) {
-						if( ref[i].getId().equals( ScanModulView.ID ) ) {
-							view = (ScanModulView)ref[i].getPart( false );
+					for(int i = 0; i < ref.length; ++i) {
+						if(ref[i].getId().equals(ScanModulView.ID)) {
+							view = (ScanModulView)ref[i].getPart(false);
 						}
 					}
 
-					EditPart part = viewer.findObjectAt( new Point( 110, 30 ) );
-					if( selectedEditPart instanceof ScanModulEditPart ) {
-						((ScanModulEditPart)selectedEditPart).setFocus( false );
+					EditPart part = viewer.findObjectAt(new Point(110, 30));
+					if(selectedEditPart instanceof ScanModulEditPart) {
+						((ScanModulEditPart)selectedEditPart).setFocus(false);
 					}
 					selectedEditPart = part;
 					
 					if(selectedEditPart instanceof ScanModulEditPart) {
 						((ScanModulEditPart)selectedEditPart).setFocus(true);
-						ScanModul scanModul = (ScanModul)selectedEditPart.getModel();
+						ScanModul scanModul = 
+								(ScanModul)selectedEditPart.getModel();
 						view.setCurrentScanModul(scanModul);
 						currentScanModul = scanModul;
 					} else {
@@ -668,9 +694,9 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					}
 				}
 				
-				} catch(Exception ex) {
-					ex.printStackTrace();
-				}		
+			} catch(Exception ex) {
+				ex.printStackTrace(); // TODO: remove and replace with smaller blocks
+			}		
 		}
 	}
 	
@@ -756,16 +782,16 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					(ScanModulEditPart)rightClickEditPart;
 
 			// Wenn schon ein SM angezeigt wird, wird der Focus weggenommen
-			if( selectedEditPart instanceof ScanModulEditPart ) {
-				((ScanModulEditPart)selectedEditPart).setFocus( false );
+			if(selectedEditPart instanceof ScanModulEditPart) {
+				((ScanModulEditPart)selectedEditPart).setFocus(false);
 			}
 
 			// Parent wird als neues Scan Module angezeigt
 			IViewReference[] ref = getSite().getPage().getViewReferences();
 			ScanModulView view = null;
-			for( int i = 0; i < ref.length; ++i ) {
-				if( ref[i].getId().equals( ScanModulView.ID ) ) {
-					view = (ScanModulView)ref[i].getPart( false );
+			for(int i = 0; i < ref.length; ++i) {
+				if(ref[i].getId().equals(ScanModulView.ID)) {
+					view = (ScanModulView)ref[i].getPart(false);
 				}
 			}
 			
@@ -776,7 +802,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			if (parentModul != null) {
 				int x = parentModul.getX();
 				int y = parentModul.getY();
-				newPart = viewer.findObjectAt( new Point( x, y ) );
+				newPart = viewer.findObjectAt(new Point(x, y));
 			}
 			// scanModul mit angehängten Modulen wird entfernt
 			scanModulEditPart.removeYourSelf();
@@ -784,8 +810,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			if (newPart != null) {
 				// parent ScanModul bekommt den Focus
 				selectedEditPart = newPart;
-				((ScanModulEditPart)selectedEditPart).setFocus( true );
-				view.setCurrentScanModul( parentModul );
+				((ScanModulEditPart)selectedEditPart).setFocus(true);
+				view.setCurrentScanModul(parentModul);
 				currentScanModul = parentModul;
 			}		
 		}
