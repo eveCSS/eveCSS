@@ -91,7 +91,7 @@
             </separator>
          </menu>
          <action
-               class="de.ptb.epics.eve.editor.actions.HandOverSilentAction"
+               class="de.ptb.epics.eve.editor.actions.HandOverAction"
                icon="icons/runlast.gif"
                id="de.ptb.epics.eve.editor.actions.HandOverSilentAction"
                label="%action.label"
