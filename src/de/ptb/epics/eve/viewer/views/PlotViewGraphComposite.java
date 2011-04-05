@@ -28,7 +28,8 @@ import de.ptb.epics.eve.viewer.plot.XYPlot;
 public class PlotViewGraphComposite extends Composite 
 							implements IMeasurementDataListener {
 	
-	private static Logger logger = Logger.getLogger(PlotViewGraphComposite.class);
+	private static Logger logger =
+			Logger.getLogger(PlotViewGraphComposite.class);
 	
 	private String detector1Id;
 	private String detector2Id;
@@ -187,7 +188,8 @@ public class PlotViewGraphComposite extends Composite
 			val = measurementData.getValues().get(0).toString();
 		else val = "no value";
 		
-		logger.debug("ChainID: " + measurementData.getChainId() + ", " + 
+		logger.debug("[" + xyPlot.hashCode() + "] " +
+					 "ChainID: " + measurementData.getChainId() + ", " + 
 				     "ScanModuleID: " + measurementData.getScanModuleId() + ", " +
 				     "Name: " + measurementData.getName() + ", " + 
 				     "Position: " + measurementData.getPositionCounter() + ", " + 
