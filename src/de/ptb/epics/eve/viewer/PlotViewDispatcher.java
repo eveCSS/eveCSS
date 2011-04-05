@@ -9,7 +9,7 @@ import org.eclipse.ui.PlatformUI;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
@@ -70,7 +70,7 @@ public class PlotViewDispatcher implements
 		Chain chain = scanDescription.getChain(chid);
 		if (chain == null) return;
 		
-		ScanModul sm = chain.getScanModulById(smid);
+		ScanModule sm = chain.getScanModulById(smid);
 		if (sm == null) return;
 		
 		PlotWindow[] plotWindows = sm.getPlotWindows();

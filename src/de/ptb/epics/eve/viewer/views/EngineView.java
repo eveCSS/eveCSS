@@ -27,7 +27,7 @@ import org.eclipse.ui.part.ViewPart;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
 import de.ptb.epics.eve.ecp1.client.model.Error;
@@ -410,38 +410,38 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 					fillStatusTable(currentChain.getId(), -1, "idle", remainTime);
 
 				}
-				final List< ScanModul > scanModules = currentChain.getScanModuls();
+				final List< ScanModule > scanModules = currentChain.getScanModuls();
 				
-				final List< ScanModul > running = Activator.getDefault().getChainStatusAnalyzer().getExecutingScanModules();
-				for( final ScanModul scanModule : running ) {
+				final List< ScanModule > running = Activator.getDefault().getChainStatusAnalyzer().getExecutingScanModules();
+				for( final ScanModule scanModule : running ) {
 					if( scanModules.contains( scanModule ) ) {
 						fillStatusTable(currentChain.getId(), scanModule.getId(), "running", remainTime);
 					}
 				}
 				
-				final List< ScanModul > exited = Activator.getDefault().getChainStatusAnalyzer().getExitingScanModules();
-				for( final ScanModul scanModule : exited ) {
+				final List< ScanModule > exited = Activator.getDefault().getChainStatusAnalyzer().getExitingScanModules();
+				for( final ScanModule scanModule : exited ) {
 					if( scanModules.contains( scanModule ) ) {
 						fillStatusTable(currentChain.getId(), scanModule.getId(), "exited", remainTime);
 					}
 				}
 
-				final List< ScanModul > initialized = Activator.getDefault().getChainStatusAnalyzer().getInitializingScanModules();
-				for( final ScanModul scanModule : initialized ) {
+				final List< ScanModule > initialized = Activator.getDefault().getChainStatusAnalyzer().getInitializingScanModules();
+				for( final ScanModule scanModule : initialized ) {
 					if( scanModules.contains( scanModule ) ) {
 						fillStatusTable(currentChain.getId(), scanModule.getId(), "initialized", remainTime);
 					}
 				}
 			
-				final List< ScanModul > paused = Activator.getDefault().getChainStatusAnalyzer().getPausedScanModules();
-				for( final ScanModul scanModule : paused ) {
+				final List< ScanModule > paused = Activator.getDefault().getChainStatusAnalyzer().getPausedScanModules();
+				for( final ScanModule scanModule : paused ) {
 					if( scanModules.contains( scanModule ) ) {
 						fillStatusTable(currentChain.getId(), scanModule.getId(), "paused", remainTime);
 					}
 				}
 
-				final List< ScanModul > waiting = Activator.getDefault().getChainStatusAnalyzer().getWaitingScanModules();
-				for( final ScanModul scanModule : waiting ) {
+				final List< ScanModule > waiting = Activator.getDefault().getChainStatusAnalyzer().getWaitingScanModules();
+				for( final ScanModule scanModule : waiting ) {
 					if( scanModules.contains( scanModule ) ) {
 						fillStatusTable(currentChain.getId(), scanModule.getId(), "waiting for trigger", remainTime);
 					}

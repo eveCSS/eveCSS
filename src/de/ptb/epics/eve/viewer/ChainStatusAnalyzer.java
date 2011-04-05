@@ -9,7 +9,7 @@ import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.client.model.PlayListEntry;
@@ -21,11 +21,11 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 	private final List< Chain > idleChains;
 	private final List< Chain > runningChains;
 	private final List< Chain > exitedChains;
-	private final List< ScanModul > initializingScanModules;
-	private final List< ScanModul > executingScanModules;
-	private final List< ScanModul > pausedScanModules;
-	private final List< ScanModul > waitingScanModules;
-	private final List< ScanModul > exitedScanModules;
+	private final List< ScanModule > initializingScanModules;
+	private final List< ScanModule > executingScanModules;
+	private final List< ScanModule > pausedScanModules;
+	private final List< ScanModule > waitingScanModules;
+	private final List< ScanModule > exitedScanModules;
 
 	private final List< IUpdateListener > updateListener;
 	
@@ -35,11 +35,11 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 		this.runningChains = new ArrayList< Chain >();
 		this.exitedChains = new ArrayList< Chain >();
 		
-		this.initializingScanModules = new ArrayList< ScanModul >();
-		this.executingScanModules = new ArrayList< ScanModul >();
-		this.pausedScanModules = new ArrayList< ScanModul >();
-		this.waitingScanModules = new ArrayList< ScanModul >();
-		this.exitedScanModules = new ArrayList< ScanModul >();
+		this.initializingScanModules = new ArrayList< ScanModule >();
+		this.executingScanModules = new ArrayList< ScanModule >();
+		this.pausedScanModules = new ArrayList< ScanModule >();
+		this.waitingScanModules = new ArrayList< ScanModule >();
+		this.exitedScanModules = new ArrayList< ScanModule >();
 		
 		this.updateListener = new ArrayList< IUpdateListener >();
 
@@ -114,7 +114,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
-						List< ScanModul > scanModules = chains.get( i ).getScanModuls();
+						List< ScanModule > scanModules = chains.get( i ).getScanModuls();
 						for( int j = 0; j < scanModules.size(); ++j ) {
 							if( scanModules.get( j ).getId() == chainStatusCommand.getScanModulId() ) {
 								this.initializingScanModules.add( scanModules.get( j ) );
@@ -132,7 +132,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
-						List< ScanModul > scanModules = chains.get( i ).getScanModuls();
+						List< ScanModule > scanModules = chains.get( i ).getScanModuls();
 						for( int j = 0; j < scanModules.size(); ++j ) {
 							if( scanModules.get( j ).getId() == chainStatusCommand.getScanModulId() ) {
 								this.initializingScanModules.remove( scanModules.get( j ) );
@@ -191,7 +191,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
-						List< ScanModul > scanModules = chains.get( i ).getScanModuls();
+						List< ScanModule > scanModules = chains.get( i ).getScanModuls();
 						for( int j = 0; j < scanModules.size(); ++j ) {
 							if( scanModules.get( j ).getId() == chainStatusCommand.getScanModulId() ) {
 								this.initializingScanModules.remove( scanModules.get( j ) );
@@ -212,7 +212,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
-						List< ScanModul > scanModules = chains.get( i ).getScanModuls();
+						List< ScanModule > scanModules = chains.get( i ).getScanModuls();
 						for( int j = 0; j < scanModules.size(); ++j ) {
 							if( scanModules.get( j ).getId() == chainStatusCommand.getScanModulId() ) {
 								this.initializingScanModules.remove( scanModules.get( j ) );
@@ -233,7 +233,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
-						List< ScanModul > scanModules = chains.get( i ).getScanModuls();
+						List< ScanModule > scanModules = chains.get( i ).getScanModuls();
 						for( int j = 0; j < scanModules.size(); ++j ) {
 							if( scanModules.get( j ).getId() == chainStatusCommand.getScanModulId() ) {
 								this.initializingScanModules.remove( scanModules.get( j ) );
@@ -298,24 +298,24 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 		return new ArrayList< Chain >( this.exitedChains );
 	}
 	
-	public List< ScanModul > getInitializingScanModules() {
-		return new ArrayList< ScanModul >( this.initializingScanModules );
+	public List< ScanModule > getInitializingScanModules() {
+		return new ArrayList< ScanModule >( this.initializingScanModules );
 	}
 	
-	public List< ScanModul > getExecutingScanModules() {
-		return new ArrayList< ScanModul >( this.executingScanModules );
+	public List< ScanModule > getExecutingScanModules() {
+		return new ArrayList< ScanModule >( this.executingScanModules );
 	}
 	
-	public List< ScanModul > getPausedScanModules() {
-		return new ArrayList< ScanModul >( this.pausedScanModules );
+	public List< ScanModule > getPausedScanModules() {
+		return new ArrayList< ScanModule >( this.pausedScanModules );
 	}
 	
-	public List< ScanModul > getWaitingScanModules() {
-		return new ArrayList< ScanModul >( this.waitingScanModules );
+	public List< ScanModule > getWaitingScanModules() {
+		return new ArrayList< ScanModule >( this.waitingScanModules );
 	}
 
-	public List< ScanModul > getExitingScanModules() {
-		return new ArrayList< ScanModul >( this.exitedScanModules );
+	public List< ScanModule > getExitingScanModules() {
+		return new ArrayList< ScanModule >( this.exitedScanModules );
 	}
 
 	private void resetChainList() {
