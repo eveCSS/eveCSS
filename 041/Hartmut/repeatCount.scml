@@ -2,7 +2,7 @@
 <tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <version>0.4.1</version>
-    <repeatcount>3</repeatcount>
+    <repeatcount>5</repeatcount>
     <chain id="1">
         <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/041/Hartmut/Daten/faultier.h5</savefilename>
         <confirmsave>false</confirmsave>

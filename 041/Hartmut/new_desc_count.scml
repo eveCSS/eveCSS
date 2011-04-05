@@ -2,70 +2,22 @@
 <tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <version>0.4.1</version>
-    <repeatcount>3</repeatcount>
+    <repeatcount>0</repeatcount>
     <chain id="1">
-        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/041/Hartmut/Daten/faultier.h5</savefilename>
         <confirmsave>false</confirmsave>
-        <autonumber>true</autonumber>
+        <autonumber>false</autonumber>
         <savescandescription>false</savescandescription>
-        <saveplugin name="HDF5">
-            <parameter name="location">/messung/eve/lib/linux-x86/libhdf5plugin.so</parameter>
-            <parameter name="format">HDF5</parameter>
-            <parameter name="suffix">h5</parameter>
-        </saveplugin>
         <scanmodules>
             <scanmodule id="1">
                 <type>classic</type>
                 <name>SM 1</name>
-                <xpos>92</xpos>
-                <ypos>39</ypos>
+                <xpos>100</xpos>
+                <ypos>20</ypos>
                 <parent>0</parent>
                 <settletime>0.0</settletime>
                 <triggerdelay>0.0</triggerdelay>
                 <triggerconfirm>false</triggerconfirm>
                 <saveaxispositions>never</saveaxispositions>
-                <prescan>
-                    <id>PPSMC:gw23715001</id>
-                    <value type="double">20</value>
-                </prescan>
-                <smaxis>
-                    <axisid>PPSMC:gw23715000</axisid>
-                    <stepfunction>Add</stepfunction>
-                    <positionmode>relative</positionmode>
-                    <start type="double">0.0</start>
-                    <stop type="double">10.0</stop>
-                    <stepwidth type="double">1</stepwidth>
-                    <ismainaxis>false</ismainaxis>
-                </smaxis>
-                <smchannel>
-                    <channelid>ringCurrent1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <smchannel>
-                    <channelid>ringLifeTime1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
-                </smchannel>
-                <plot id="1">
-                    <xaxis>
-                        <id>PPSMC:gw23715000</id>
-                        <mode>linear</mode>
-                    </xaxis>
-                    <init>false</init>
-                    <yaxis>
-                        <id>ringCurrent1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>Solid Line</linestyle>
-                        <color>0000ff</color>
-                        <markstyle>point%28%07%29</markstyle>
-                    </yaxis>
-                    <yaxis>
-                        <id>ringLifeTime1chan1</id>
-                        <mode>linear</mode>
-                        <linestyle>Dash Line</linestyle>
-                        <color>00ff00</color>
-                        <markstyle>Bar%28%7C%29</markstyle>
-                    </yaxis>
-                </plot>
             </scanmodule>
         </scanmodules>
     </chain>
@@ -79,8 +31,8 @@
         <plugin type="save">
             <name>HDF5</name>
             <location>/messung/eve/lib/linux-x86/libhdf5plugin.so</location>
-            <parameter name="format" datatype="string" default="HDF5" mandatory="false"/>
-            <parameter name="suffix" datatype="string" default="h5" mandatory="false"/>
+            <parameter name="format" datatype="string" default="HDF5" mandatory="false"></parameter>
+            <parameter name="suffix" datatype="string" default="h5" mandatory="false"></parameter>
         </plugin>
         <plugin type="position">
             <name>ReferenceAdd</name>

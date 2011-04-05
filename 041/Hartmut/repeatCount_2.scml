@@ -2,11 +2,11 @@
 <tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <version>0.4.1</version>
-    <repeatcount>3</repeatcount>
+    <repeatcount>2</repeatcount>
     <chain id="1">
-        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/041/Hartmut/Daten/faultier.h5</savefilename>
+        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/041/Hartmut/Daten/namenz.h5</savefilename>
         <confirmsave>false</confirmsave>
-        <autonumber>true</autonumber>
+        <autonumber>false</autonumber>
         <savescandescription>false</savescandescription>
         <saveplugin name="HDF5">
             <parameter name="location">/messung/eve/lib/linux-x86/libhdf5plugin.so</parameter>
@@ -31,19 +31,23 @@
                 <smaxis>
                     <axisid>PPSMC:gw23715000</axisid>
                     <stepfunction>Add</stepfunction>
-                    <positionmode>relative</positionmode>
-                    <start type="double">0.0</start>
-                    <stop type="double">10.0</stop>
-                    <stepwidth type="double">1</stepwidth>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">10.0</start>
+                    <stop type="double">50.0</stop>
+                    <stepwidth type="double">10</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smchannel>
                     <channelid>ringCurrent1chan1</channelid>
-                    <confirmtrigger>false</confirmtrigger>
+                    <confirmtrigger>true</confirmtrigger>
                 </smchannel>
                 <smchannel>
                     <channelid>ringLifeTime1chan1</channelid>
                     <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>P5000:gw2370701</channelid>
+                    <confirmtrigger>true</confirmtrigger>
                 </smchannel>
                 <plot id="1">
                     <xaxis>

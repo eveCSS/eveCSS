@@ -2,11 +2,11 @@
 <tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <version>0.4.1</version>
-    <repeatcount>3</repeatcount>
+    <repeatcount>2</repeatcount>
     <chain id="1">
-        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/041/Hartmut/Daten/faultier.h5</savefilename>
+        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/041/Hartmut/Daten/namenz.h5</savefilename>
         <confirmsave>false</confirmsave>
-        <autonumber>true</autonumber>
+        <autonumber>false</autonumber>
         <savescandescription>false</savescandescription>
         <saveplugin name="HDF5">
             <parameter name="location">/messung/eve/lib/linux-x86/libhdf5plugin.so</parameter>
@@ -20,9 +20,10 @@
                 <xpos>92</xpos>
                 <ypos>39</ypos>
                 <parent>0</parent>
+                <appended>2</appended>
                 <settletime>0.0</settletime>
                 <triggerdelay>0.0</triggerdelay>
-                <triggerconfirm>false</triggerconfirm>
+                <triggerconfirm>true</triggerconfirm>
                 <saveaxispositions>never</saveaxispositions>
                 <prescan>
                     <id>PPSMC:gw23715001</id>
@@ -31,10 +32,10 @@
                 <smaxis>
                     <axisid>PPSMC:gw23715000</axisid>
                     <stepfunction>Add</stepfunction>
-                    <positionmode>relative</positionmode>
-                    <start type="double">0.0</start>
-                    <stop type="double">10.0</stop>
-                    <stepwidth type="double">1</stepwidth>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">10.0</start>
+                    <stop type="double">30.0</stop>
+                    <stepwidth type="double">5</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smchannel>
@@ -43,6 +44,10 @@
                 </smchannel>
                 <smchannel>
                     <channelid>ringLifeTime1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>P5000:gw2370701</channelid>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
                 <plot id="1">
@@ -64,6 +69,44 @@
                         <linestyle>Dash Line</linestyle>
                         <color>00ff00</color>
                         <markstyle>Bar%28%7C%29</markstyle>
+                    </yaxis>
+                </plot>
+            </scanmodule>
+            <scanmodule id="2">
+                <type>classic</type>
+                <name>SM 2 append</name>
+                <xpos>222</xpos>
+                <ypos>39</ypos>
+                <parent>1</parent>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>true</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>PPSMC:gw23715000</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">32.0</start>
+                    <stop type="double">36.0</stop>
+                    <stepwidth type="double">1</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent1chan1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <plot id="1">
+                    <xaxis>
+                        <id>PPSMC:gw23715000</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent1chan1</id>
+                        <mode>linear</mode>
+                        <linestyle>Solid Line</linestyle>
+                        <color>0000ff</color>
+                        <markstyle>None</markstyle>
                     </yaxis>
                 </plot>
             </scanmodule>
