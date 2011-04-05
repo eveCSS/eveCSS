@@ -3,7 +3,6 @@
 	<name>de.ptb.epics.eve.ecp1</name>
 	<comment></comment>
 	<projects>
-		<project>de.ptb.epics.ecp1.intern</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

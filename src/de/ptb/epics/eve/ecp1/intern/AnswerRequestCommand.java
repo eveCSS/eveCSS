@@ -28,6 +28,12 @@ public class AnswerRequestCommand implements IECP1Command {
 		this.requestType = requestType;
 		this.booleanBuffer = booleanValue;
 	}
+
+	public AnswerRequestCommand( final int requestId, final RequestType requestType, final int integerValue ) {
+		this.requestId = requestId;
+		this.requestType = requestType;
+		this.integerBuffer = integerValue;
+	}
 	
 	public AnswerRequestCommand( final int requestId, final int integerValue ) {
 		this.requestId = requestId;
@@ -84,6 +90,7 @@ public class AnswerRequestCommand implements IECP1Command {
 				this.booleanBuffer = dataInputStream.readInt()==0?false:true;
 				break;
 			case INT32:
+			case TRIGGER:
 				this.integerBuffer = dataInputStream.readInt();
 				break;
 			case FLOAT32:
@@ -111,6 +118,7 @@ public class AnswerRequestCommand implements IECP1Command {
 		switch( this.requestType ) {
 			case YES_NO:
 			case OK_CANCEL:
+			case TRIGGER:
 			case INT32:
 			case FLOAT32:
 				dataOutputStream.writeInt( 12 );
@@ -136,6 +144,7 @@ public class AnswerRequestCommand implements IECP1Command {
 				break;
 			
 			case INT32:
+			case TRIGGER:
 				dataOutputStream.writeInt( this.integerBuffer );
 				break;
 			

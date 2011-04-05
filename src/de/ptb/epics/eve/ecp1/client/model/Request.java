@@ -58,6 +58,17 @@ public class Request {
 			this.requestState = RequestState.ANSWERED;
 		}
 	}
+
+	public void sendTriggerAnswer( final boolean ok ) {
+		if( this.requestType != RequestType.TRIGGER ) {
+			throw new UnsupportedOperationException( "This Request is not a " + RequestType.TRIGGER + " it is a " + this.requestType + "!" );
+		}
+		if( this.requestState != RequestState.CANELED ) {
+			final int value = 5;
+			this.ecp1Client.addToOutQueue( new AnswerRequestCommand( this.requestId, this.requestType, value ) );
+			this.requestState = RequestState.ANSWERED;
+		}
+	}
 	
 	public void sendInt32Answer( final int value ) {
 		if( this.requestType != RequestType.INT32 ) {
@@ -87,9 +98,5 @@ public class Request {
 			this.ecp1Client.addToOutQueue( new AnswerRequestCommand( this.requestId, this.requestType, text ) );
 			this.requestState = RequestState.ANSWERED;
 		}
-	}
-	
-	public void cancelMessage() {
-		this.requestState = RequestState.CANELED;
 	}
 }

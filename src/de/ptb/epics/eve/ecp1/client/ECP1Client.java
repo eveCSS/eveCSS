@@ -36,6 +36,8 @@ import de.ptb.epics.eve.ecp1.intern.IECP1Command;
 import de.ptb.epics.eve.ecp1.intern.MeasurementDataCommand;
 import de.ptb.epics.eve.ecp1.intern.PlayListCommand;
 
+//import de.ptb.epics.eve.viewer.RequestProcessor;
+
 public class ECP1Client {
 	
 	private Socket socket;
@@ -59,6 +61,7 @@ public class ECP1Client {
 	private final Queue< IErrorListener > errorListener;
 	private final Queue< IMeasurementDataListener > measurementDataListener;
 	private final Queue< IRequestListener > requestListener;
+
 	private final Queue< IConnectionStateListener > connectionStateListener;
 	
 	private PlayController playController;
@@ -70,8 +73,10 @@ public class ECP1Client {
 	private Map< Character, Constructor< ? extends IECP1Command > > commands;
 	
 	private boolean running;
+//	private RequestProcessor requestProcessor;
 	
 	@SuppressWarnings("unchecked")
+//	public ECP1Client(RequestProcessor requestProcessor) {
 	public ECP1Client() {
 		this.self = this;
 		
@@ -80,6 +85,7 @@ public class ECP1Client {
 		
 		this.playController = new PlayController( this );
 		this.playListController = new PlayListController( this );
+//		this.requestProcessor = requestProcessor;
 		
 		this.engineStatusListener = new ConcurrentLinkedQueue< IEngineStatusListener >();
 		this.chainStatusListener = new ConcurrentLinkedQueue< IChainStatusListener >();
@@ -160,6 +166,10 @@ public class ECP1Client {
 			}
 		}
 	}
+
+/*	public RequestProcessor getRequestProcessor() {
+		return requestProcessor;
+	}*/
 
 	public void close() throws IOException {
 		if( this.running ) {
@@ -323,6 +333,7 @@ public class ECP1Client {
 								final Iterator< IRequestListener > it = requestListener.iterator();
 								final GenericRequestCommand genericRequestCommand = (GenericRequestCommand)command;
 								final Request request = new Request( genericRequestCommand, self );
+								
 								requestMap.put( request.getRequestId(), request );
 								while( it.hasNext() ) {
 									it.next().request( request );
@@ -332,7 +343,10 @@ public class ECP1Client {
 								final CancelRequestCommand cancelRequestCommand = (CancelRequestCommand)command;
 								final Request request = requestMap.get( cancelRequestCommand.getRequestId() );
 								if( request != null ) {
-									request.cancelMessage();
+									final Iterator< IRequestListener > it = requestListener.iterator();
+									while( it.hasNext() ) {
+										it.next().cancelRequest( request );
+									}
 								}
 							} else {
 								System.err.println( "Undispatchable Package with the Type " + command.getClass().getName() );
@@ -381,6 +395,10 @@ public class ECP1Client {
 	
 	public IPlayController getPlayController() {
 		return this.playController;
+	}
+
+	public Queue<IRequestListener> getRequestListener() {
+		return requestListener;
 	}
 
 }
