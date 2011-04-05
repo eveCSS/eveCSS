@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.viewer.views;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -12,18 +13,20 @@ import de.ptb.epics.eve.data.scandescription.PlotWindow;
 
 /**
  * <code>Plot View</code> contains an xy plot and tables with statistics 
- * for two detector channels.  
+ * for up to two detector channels.  
  * 
  * @author ?
  * @author Marcus Michalsky
  */
 public class PlotView extends ViewPart {
-
+	
 	/**
 	 * the unique identifier of this view
 	 */
 	public static final String ID = "PlotView";
 
+	private static Logger logger = Logger.getLogger(PlotView.class);	
+	
 	private int id = -1;
 	
 	// the composite for the xy-plot
@@ -42,7 +45,7 @@ public class PlotView extends ViewPart {
 		gridLayout.numColumns = 2;
 		parent.setLayout(gridLayout);
 		
-		// in the left column we put a our plotGraphComposite (the xy plot)
+		// in the left column we put our plotGraphComposite (the xy plot)
 		plotGraphComposite = new PlotViewGraphComposite(parent, SWT.NONE);
 		// in the right column we put the statistics tables
 		plotDetectorComposite = new PlotViewDetectorComposite(parent, SWT.NONE);
@@ -86,7 +89,7 @@ public class PlotView extends ViewPart {
 	}
 
 	/**
-	 * Links the plot window with a <code>plotWindow</code> in the data model.
+	 * Links the plot view with a <code>plotWindow</code> in the data model.
 	 * 
 	 * @param plotWindow the <code>plotWindow</code> of the scan description 
 	 * 		   representing the plot
@@ -132,7 +135,8 @@ public class PlotView extends ViewPart {
 		
 		// check for valid motor id
 		if ((motorId == null) || (motorId.length() < 1)) {
-			System.err.println("invalid motorId: " + motorId);
+			logger.error("Invalid motorId: '" + motorId + 
+						 "'. No plot content created.");
 			return;
 		}
 		
@@ -158,7 +162,8 @@ public class PlotView extends ViewPart {
 		// meaning update them with new values
 		plotGraphComposite.refresh(plotWindow, chid, smid, motorId, motorName, 
 						detector1, detector1Name, detector2, detector2Name);
-		plotDetectorComposite.refresh(chid, smid, motorId, motorName, motorPv, 
+		plotDetectorComposite.refresh(plotWindow, chid, smid, motorId, motorName, 
+						motorPv, 
 						detector1, detector1Name, detector2, detector2Name);		
 	}
 }

@@ -122,8 +122,27 @@ public class PlotViewGraphComposite extends Composite
 		this.motorId = motorId;
 		this.detector1normalized = 
 			plotWindow.getYAxes().get(0).getNormalizeChannel() != null;
-		// this.detector2normalized = 
-			//plotWindow.getYAxes().get(1).getNormalizeChannel() != null;
+		
+		
+		// find the y axis of the detector channel in the plotWindow
+	    int axis_pos = -1;
+	        
+	    for(int i=0;i<plotWindow.getYAxes().size();i++)
+	    {
+	      	if(plotWindow.getYAxes().get(i).getDetectorChannel().getID() == detector2Id)
+	       	{
+	       		axis_pos = i;
+	       	}
+	    }
+		
+	    logger.warn("axis_pos: " + axis_pos);
+	    if(axis_pos != -1)
+	    {
+		this.detector2normalized = 
+			plotWindow.getYAxes().get(axis_pos).getNormalizeChannel() != null;
+	    }
+		logger.warn("2 norm ? = " + detector2normalized);
+		
 		timestamp = null;
 		timestamp_det1 = null;
 		timestamp_det2 = null;

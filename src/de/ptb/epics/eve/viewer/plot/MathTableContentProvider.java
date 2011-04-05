@@ -52,8 +52,9 @@ public class MathTableContentProvider implements IStructuredContentProvider {
 	}
 	
 	/**
-	 * 
-	 * @param element
+	 * Adds an element to the content provider.
+	 * @param element the {@link de.ptb.epics.eve.viewer.plot.MathTableElement}
+	 * 	  	  that should be added
 	 */
 	public void addElement(MathTableElement element){
 		elements.add(element);
@@ -61,7 +62,7 @@ public class MathTableContentProvider implements IStructuredContentProvider {
 	}
 
 	/**
-	 * 
+	 * Clears all elements.
 	 */
 	public void clear() {
 		if (elements.size() > 0) {

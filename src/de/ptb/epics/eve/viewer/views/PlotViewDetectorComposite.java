@@ -12,8 +12,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.PlatformUI;
 
+import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.plot.MathFunction;
 import de.ptb.epics.eve.viewer.plot.MathTableContentProvider;
@@ -66,9 +66,9 @@ public class PlotViewDetectorComposite extends Composite {
 	}
 	
 	/*
-	 * called by the constructor to construct the table
+	 * called by the constructor to construct the tables
 	 */
-	private TableViewer makeTable(){
+	private TableViewer makeTable() {
 		
 		// create the table widget
 		Composite tableComposite = new Composite(this, SWT.FULL_SELECTION);
@@ -172,22 +172,26 @@ public class PlotViewDetectorComposite extends Composite {
 	}
 	
 	/**
+	 * Updates the table with current data.
 	 * 
-	 * 
-	 * @param chid
-	 * @param smid
-	 * @param motorId
-	 * @param motorName
-	 * @param motorPv
-	 * @param detector1Id
-	 * @param detector1Name
-	 * @param detector2Id
-	 * @param detector2Name
+	 * @param plotWindow the 
+	 * 		  {@link de.ptb.epics.eve.data.scandescription.PlotWindow} 
+	 * 		  containing all information corresponding to the plot
+	 * @param chid the id of the chain
+	 * @param smid the id of the scan module
+	 * @param motorId the id of the motor
+	 * @param motorName the name of the motor
+	 * @param motorPv the process variable of the motor
+	 * @param detector1Id the id of the first detector
+	 * @param detector1Name the name of the first detector
+	 * @param detector2Id the id of the second detector
+	 * @param detector2Name the name of the second detector
 	 */
-	public void refresh(int chid, int smid, String motorId, String motorName, 
-						 String motorPv, String detector1Id, 
-						 String detector1Name, String detector2Id, 
-						 String detector2Name) {
+	public void refresh(PlotWindow plotWindow, int chid, int smid, 
+						String motorId, String motorName, 
+						String motorPv, String detector1Id, 
+						String detector1Name, String detector2Id, 
+						String detector2Name) {
 		
 		if (detector1Id != null)
 		{
@@ -215,11 +219,6 @@ public class PlotViewDetectorComposite extends Composite {
 			// detector2Id is null => hide second table
 			tableViewerDet2.getTable().setVisible(false);
 		}
-
-		// TODO next statement should be somewhere else.
-		// just added to get rid of the editor area temporarily
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().
-					setEditorAreaVisible(false);
 		
 		this.layout();
 		this.redraw();
