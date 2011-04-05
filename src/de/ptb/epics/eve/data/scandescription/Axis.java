@@ -76,21 +76,21 @@ public class Axis extends AbstractMainPhaseBehavior {
 	 * This attribute indicates if this axis is the main axis of the scan module.
 	 */
 	private boolean isMainAxis = false;
-	private ScanModul scanModul;
+	private ScanModule scanModul;
 	
 	/**
 	 * The optional plug in controller of this axis.
 	 */
 	private PluginController positionPluginController;
 	
-	public Axis( final ScanModul scanModul ) {
+	public Axis( final ScanModule scanModul ) {
 		if( scanModul == null ) {
 			throw new IllegalArgumentException( "The parameter 'scanModul' must not be null!" );
 		}
 		this.scanModul = scanModul;
 	}
 	
-	public ScanModul getScanModul() {
+	public ScanModule getScanModul() {
 		return this.scanModul;
 	}
 	/**

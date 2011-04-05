@@ -15,7 +15,7 @@ import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 
@@ -25,7 +25,7 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 	private List<IModelUpdateListener> modelUpdateListener;
 	
 	private Chain parentChain;
-	private ScanModul parentScanModul;
+	private ScanModule parentScanModul;
 	private Channel parentChannel;
 	
 	private ControlEventTypes controlEventType;
@@ -47,7 +47,7 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 		this.controlEventType = controlEventType;
 	}
 	
-	public ControlEventManager( final ScanModul parentScanModul, final List<? extends ControlEvent> controlEventList, final ControlEventTypes controlEventType ) {
+	public ControlEventManager( final ScanModule parentScanModul, final List<? extends ControlEvent> controlEventList, final ControlEventTypes controlEventType ) {
 		this( controlEventList );
 		if( parentScanModul == null ) {
 			throw new IllegalArgumentException( "ControlEventManager:  'parentScanModul' must not be null!" );
@@ -149,7 +149,7 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 		return this.parentChain;
 	}
 
-	public ScanModul getParentScanModul() {
+	public ScanModule getParentScanModul() {
 		return this.parentScanModul;
 	}
 

@@ -25,19 +25,19 @@ public class Connector {
 	/**
 	 * If the parent is an scan modoul, it is saved here.
 	 */
-	private ScanModul parentScanModul;
+	private ScanModule parentScanModul;
 	
 	/**
 	 * The child scan modul of the connection.
 	 */
-	private ScanModul childScanModul;
+	private ScanModule childScanModul;
 	
 	/**
 	 * Gives back the child scan modul of this connection.
 	 * 
 	 * @return The child scan modul of this connection.
 	 */
-	public ScanModul getChildScanModul() {
+	public ScanModule getChildScanModul() {
 		return childScanModul;
 	}
 	
@@ -46,7 +46,7 @@ public class Connector {
 	 * 
 	 * @param childScanModul The child scan modul of this connection.
 	 */
-	public void setChildScanModul( final ScanModul childScanModul ) {
+	public void setChildScanModul( final ScanModule childScanModul ) {
 		this.childScanModul = childScanModul;
 	}
 	
@@ -75,7 +75,7 @@ public class Connector {
 	 * 
 	 * @return The parent scan modul.
 	 */
-	public ScanModul getParentScanModul() {
+	public ScanModule getParentScanModul() {
 		return parentScanModul;
 	}
 	
@@ -85,7 +85,7 @@ public class Connector {
 	 * 
 	 * @param parentScanModul The parent scan modul.
 	 */
-	public void setParentScanModul( final ScanModul parentScanModul ) {
+	public void setParentScanModul( final ScanModule parentScanModul ) {
 		this.parentEvent = null;
 		this.parentScanModul = parentScanModul;
 	}

@@ -23,7 +23,7 @@ import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.Postscan;
 import de.ptb.epics.eve.data.scandescription.Prescan;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
@@ -92,7 +92,7 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 	
 	private final List< AbstractDevice > excludeList;
 
-	private ScanModul scanModule;
+	private ScanModule scanModule;
 	
 	private final boolean excludeAxis;
 	private final boolean excludeChannels;
@@ -487,7 +487,7 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 	}
 	
 	
-	public void setScanModule( final ScanModul scanModule ) {
+	public void setScanModule( final ScanModule scanModule ) {
 		if( this.scanModule != null ) {
 			this.scanModule.removeModelUpdateListener( this );
 		}

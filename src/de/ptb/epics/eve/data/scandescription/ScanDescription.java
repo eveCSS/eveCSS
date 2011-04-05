@@ -155,7 +155,7 @@ public class ScanDescription implements IModelUpdateProvider, IModelUpdateListen
 			removeControlEventIfNotInList(loopChain.getStopControlEventManager(), event);
 			removeControlEventIfNotInList(loopChain.getRedoControlEventManager(), event);
 			removeControlEventIfNotInList(loopChain.getPauseControlEventManager(), event);
-			for (ScanModul loopScanModule : loopChain.getScanModuls() ){
+			for (ScanModule loopScanModule : loopChain.getScanModuls() ){
 				removeControlEventIfNotInList(loopScanModule.getBreakControlEventManager(), event);
 				removeControlEventIfNotInList(loopScanModule.getRedoControlEventManager(), event);
 				removeControlEventIfNotInList(loopScanModule.getTriggerControlEventManager(), event);

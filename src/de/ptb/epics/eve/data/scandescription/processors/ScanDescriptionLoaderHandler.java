@@ -42,7 +42,7 @@ import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.Postscan;
 import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
 import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
@@ -89,7 +89,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	/**
 	 * The currently constructed scan module.
 	 */
-	private ScanModul currentScanModul;
+	private ScanModule currentScanModul;
 	
 	/**
 	 * The currently constructed prescan.
@@ -149,12 +149,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	/**
 	 * A map from scan module id to scan module.
 	 */
-	private Map< Integer, ScanModul > idToScanModulMap;
+	private Map< Integer, ScanModule > idToScanModulMap;
 	
 	/**
 	 * A map from scan module to chain.
 	 */
-	private Map< ScanModul, Chain > scanModulChainMap;
+	private Map< ScanModule, Chain > scanModulChainMap;
 		
 	/**
 	 * The currently constructed plug in controller..
@@ -200,8 +200,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		this.controlEventList = new ArrayList<ControlEvent>();
 		this.relationReminders = new ArrayList<ScanModulRelationReminder>();
 		
-		this.idToScanModulMap = new HashMap< Integer, ScanModul >();
-		this.scanModulChainMap = new HashMap< ScanModul, Chain >();
+		this.idToScanModulMap = new HashMap< Integer, ScanModule >();
+		this.scanModulChainMap = new HashMap< ScanModule, Chain >();
 
 		this.lostDevicesList = new ArrayList<String>();
 
@@ -303,7 +303,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULES_LOADING:
 			if (qName.equals("scanmodule")) {
-				this.currentScanModul = new ScanModul(Integer.parseInt(atts
+				this.currentScanModul = new ScanModule(Integer.parseInt(atts
 						.getValue("id")));
 				this.currentRelationReminder = new ScanModulRelationReminder(
 						this.currentScanModul);
@@ -1128,11 +1128,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						.iterator();
 				while (it.hasNext()) {
 					ScanModulRelationReminder reminder = it.next();
-					ScanModul scanModul = reminder.getScanModul();
+					ScanModule scanModul = reminder.getScanModul();
 					
-					ScanModul appendedScanModul = this.currentChain
+					ScanModule appendedScanModul = this.currentChain
 							.getScanModulById(reminder.getAppended());
-					ScanModul nestedScanModul = this.currentChain
+					ScanModule nestedScanModul = this.currentChain
 							.getScanModulById(reminder.getNested());
 
 					Connector connector = new Connector();
@@ -1979,7 +1979,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			se.setChain( loopChain );
 			se.setEvent( startEvent );
 			loopChain.setStartEvent( se );
-			for (ScanModul loopScanModule : loopChain.getScanModuls() ){
+			for (ScanModule loopScanModule : loopChain.getScanModuls() ){
 				if ( loopScanModule.getParent() == null ) {
 					Connector connector = new Connector();
 					connector.setParentEvent( se );
@@ -2011,9 +2011,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						break;
 					}
 					
-					Iterator<ScanModul> scanModulIterator = chain.getScanModuls().iterator();
+					Iterator<ScanModule> scanModulIterator = chain.getScanModuls().iterator();
 					while( scanModulIterator.hasNext() ) {
-						ScanModul scanModul = scanModulIterator.next();
+						ScanModule scanModul = scanModulIterator.next();
 						
 						if( scanModul.isAEventOfTheScanModul( controlEvent )  ) {
 							break;
@@ -2057,10 +2057,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		Iterator<Chain> chainIterator = this.scanDescription.getChains().iterator();
 		while( chainIterator.hasNext() ) {
 			Chain currentChain = chainIterator.next();
-			Iterator<ScanModul> scanModulIterator = currentChain.getScanModuls().iterator();
+			Iterator<ScanModule> scanModulIterator = currentChain.getScanModuls().iterator();
 			
 			while( scanModulIterator.hasNext() ) {
-				ScanModul currentScanModul = scanModulIterator.next();
+				ScanModule currentScanModul = scanModulIterator.next();
 				
 				Prescan[] prescans = currentScanModul.getPrescans();
 				for( int i = 0; i < prescans.length; ++i ) {

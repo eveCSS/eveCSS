@@ -7,7 +7,7 @@
  *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription.processors;
 
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 
 /**
  * This class represents a relation between two scan modules an is used during the loading of a scan description.
@@ -20,7 +20,7 @@ public class ScanModulRelationReminder {
 	/**
 	 * The scan module.
 	 */
-	private ScanModul scanModul;
+	private ScanModule scanModul;
 	
 	/**
 	 * the id of the parent scan module.
@@ -42,7 +42,7 @@ public class ScanModulRelationReminder {
 	 * 
 	 * @param scanModul The scan module.
 	 */
-	public ScanModulRelationReminder( final ScanModul scanModul ) {
+	public ScanModulRelationReminder( final ScanModule scanModul ) {
 		this.scanModul = scanModul;
 	}
 
@@ -105,7 +105,7 @@ public class ScanModulRelationReminder {
 	 * 
 	 * @return The scan module.
 	 */
-	public ScanModul getScanModul() {
+	public ScanModule getScanModul() {
 		return this.scanModul;
 	}
 
@@ -115,7 +115,7 @@ public class ScanModulRelationReminder {
 	 * 
 	 * @param scanModul The scan module.
 	 */
-	public void setScanModul( final ScanModul scanModul ) {
+	public void setScanModul( final ScanModule scanModul ) {
 		this.scanModul = scanModul;
 	}
 	

@@ -40,7 +40,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	/**
 	 * The parent scan module of this channel.
 	 */
-	private ScanModul parentScanModul;
+	private ScanModule parentScanModul;
 	
 	/**
 	 * The max deviation of this channel.
@@ -93,7 +93,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * 
 	 * @param parentScanModul The parent scan module. Must not be 'null'.
 	 */
-	public Channel( final ScanModul parentScanModul ) {
+	public Channel( final ScanModule parentScanModul ) {
 		if( parentScanModul == null ) {
 			throw new IllegalArgumentException( "The parameter 'parentScanModul' must not be null!" );
 
@@ -186,7 +186,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * 
 	 * @return The parent scan module.
 	 */
-	public ScanModul getParentScanModul() {
+	public ScanModule getParentScanModul() {
 		return this.parentScanModul;
 	}
 

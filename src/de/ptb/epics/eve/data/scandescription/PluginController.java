@@ -59,7 +59,7 @@ public class PluginController implements IModelErrorProvider, IModelUpdateProvid
 	/**
 	 * The parent scan module.
 	 */
-	private ScanModul scanModul;
+	private ScanModule scanModul;
 	
 	/**
 	 * This constructor creates a new plug in controller.
@@ -239,7 +239,7 @@ public class PluginController implements IModelErrorProvider, IModelUpdateProvid
 	 * 
 	 * @return The scan module.
 	 */
-	public ScanModul getScanModul() {
+	public ScanModule getScanModul() {
 		return this.scanModul;
 	}
 
@@ -248,7 +248,7 @@ public class PluginController implements IModelErrorProvider, IModelUpdateProvid
 	 * 
 	 * @param scanModul The current scan module.
 	 */
-	public void setScanModul( final ScanModul scanModul ) {
+	public void setScanModul( final ScanModule scanModul ) {
 		this.scanModul = scanModul;
 	}
 

@@ -28,7 +28,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.2
  */
-public class ScanModul implements IModelUpdateListener, IModelUpdateProvider, IModelErrorProvider {
+public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, IModelErrorProvider {
 	
 	/**
 	 * The id of the scan module
@@ -175,7 +175,7 @@ public class ScanModul implements IModelUpdateListener, IModelUpdateProvider, IM
 	 * 
 	 * @param id
 	 */
-	public ScanModul( final int id ) {
+	public ScanModule( final int id ) {
 		if( id < 1 ) {
 			throw new IllegalArgumentException( "The parameter 'id' must be larger than 0!" );
 		}

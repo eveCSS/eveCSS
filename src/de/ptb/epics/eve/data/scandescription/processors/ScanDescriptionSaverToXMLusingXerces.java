@@ -48,7 +48,7 @@ import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.Postscan;
 import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 
@@ -921,7 +921,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 				this.writeControlEvent( controlEventIterator.next(), "stopevent" );
 			}
 			
-			Iterator<ScanModul> it = chain.getScanModuls().iterator();
+			Iterator<ScanModule> it = chain.getScanModuls().iterator();
 			
 			this.atts.clear();
 			
@@ -949,7 +949,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	 * @param scanModul The scan module that should be written.
 	 * @return Returns if the write process was successful.
 	 */
-	private boolean writeScanModule( final ScanModul scanModul ) {
+	private boolean writeScanModule( final ScanModule scanModul ) {
 		boolean successfull = true;
 		
 		try {
