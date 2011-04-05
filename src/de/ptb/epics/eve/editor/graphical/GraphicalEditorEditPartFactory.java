@@ -6,7 +6,7 @@ import org.eclipse.gef.EditPartFactory;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
 import de.ptb.epics.eve.editor.graphical.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.EventEditPart;
@@ -35,8 +35,8 @@ public class GraphicalEditorEditPartFactory implements EditPartFactory {
 				return new ScanDescriptionEditPart((ScanDescription)model);
 			} else if(model instanceof Chain) {
 				return new ChainEditPart((Chain)model);
-			} else if(model instanceof ScanModul) {
-				return new ScanModulEditPart((ScanModul)model);
+			} else if(model instanceof ScanModule) {
+				return new ScanModulEditPart((ScanModule)model);
 			}  else if(model instanceof StartEvent) {
 				return new EventEditPart((StartEvent)model);
 			}

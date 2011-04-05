@@ -29,7 +29,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 
@@ -460,7 +460,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 	 */
 	private void recalculateStepwidth() {
 		if (axis.isMainAxis()) {
-			ScanModul scanModul = axis.getScanModul();
+			ScanModule scanModul = axis.getScanModul();
 			Axis[] axis = scanModul.getAxis();
 			
 			for( int i = 0; i < axis.length; ++i ) {

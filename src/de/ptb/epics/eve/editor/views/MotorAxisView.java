@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Combo;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.PluginController;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
 
 public class MotorAxisView extends ViewPart {
@@ -37,7 +37,7 @@ public class MotorAxisView extends ViewPart {
 	private double stepamount;
 	private String[] stepfunctions;
 	
-	private ScanModul scanModul;
+	private ScanModule scanModul;
 
 	@Override
 	public void createPartControl( final Composite parent ) {
@@ -145,7 +145,7 @@ public class MotorAxisView extends ViewPart {
 		}
 	}
 
-	public void setAxis( final Axis axis, final double stepamount, final ScanModul scanModul ) {
+	public void setAxis( final Axis axis, final double stepamount, final ScanModule scanModul ) {
 		this.scanModul = scanModul;
 		setAxis(axis, stepamount);
 	}

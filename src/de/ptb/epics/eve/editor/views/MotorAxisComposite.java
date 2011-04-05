@@ -35,7 +35,7 @@ import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
@@ -43,7 +43,7 @@ import de.ptb.epics.eve.editor.Activator;
 public class MotorAxisComposite extends Composite implements IModelUpdateListener {
 
 	private TableViewer tableViewer;
-	private ScanModul scanModul;
+	private ScanModule scanModul;
 	private MenuManager menuManager;
 	private final IMeasuringStation measuringStation;
 	
@@ -280,11 +280,11 @@ public class MotorAxisComposite extends Composite implements IModelUpdateListene
 		}
 	}
 	
-	public ScanModul getScanModul() {
+	public ScanModule getScanModul() {
 		return this.scanModul;
 	}
 	
-	public void setScanModul( final ScanModul scanModul ) {
+	public void setScanModul( final ScanModule scanModul ) {
 		
 		if( this.scanModul != null ) {
 			this.scanModul.removeModelUpdateListener( this );

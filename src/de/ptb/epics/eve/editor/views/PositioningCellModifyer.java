@@ -16,7 +16,7 @@ import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.Positioning;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
 
 
@@ -31,7 +31,7 @@ public class PositioningCellModifyer implements ICellModifier {
 	public boolean canModify( final Object element, final String property ) {
 		if (property.equals("channel")) {
 			// Es werden nur die Channels erlaubt die in diesem ScanModul verwendet werden
-			ScanModul scanModul = (ScanModul)this.tableViewer.getInput();
+			ScanModule scanModul = (ScanModule)this.tableViewer.getInput();
 			Channel[] cur_channel = scanModul.getChannels();
 			String[] cur_feld = new String[cur_channel.length];
 			for (int i=0; i<cur_channel.length; ++i) {
@@ -42,7 +42,7 @@ public class PositioningCellModifyer implements ICellModifier {
 		}
 		else if (property.equals("normalize")) {
 			// Es werden nur die Channels erlaubt die in diesem ScanModul verwendet werden
-			ScanModul scanModul = (ScanModul)this.tableViewer.getInput();
+			ScanModule scanModul = (ScanModule)this.tableViewer.getInput();
 			Channel[] cur_channel = scanModul.getChannels();
 			String[] cur_feld = new String[cur_channel.length + 1];
 			cur_feld[0] = "none";

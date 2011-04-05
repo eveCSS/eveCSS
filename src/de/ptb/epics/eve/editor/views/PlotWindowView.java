@@ -35,7 +35,7 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.editor.Activator;
@@ -162,7 +162,7 @@ public class PlotWindowView extends ViewPart  {
 
 	// the scan modules which contains available motors and detector channels
 	// that could be selected via the select boxes
-	private ScanModul scanModul;
+	private ScanModule scanModul;
 
 	/**
 	 * Initializes the available input fields and puts them in the view.
@@ -985,7 +985,7 @@ public class PlotWindowView extends ViewPart  {
 	 * 
 	 * @param scanModul the <code>ScanModul</code> that should be set.
 	 */
-	public void setScanModul(ScanModul scanModul) {
+	public void setScanModul(ScanModule scanModul) {
 
 		if(scanModul != null) {
 			// Es werden nur die Achsen erlaubt die in diesem ScanModul 

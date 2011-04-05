@@ -25,7 +25,7 @@ import org.eclipse.ui.PlatformUI;
 import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Axis;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
@@ -38,7 +38,7 @@ public class MotorAxisPluginComposite extends Composite implements IModelUpdateL
 	private Label parameterLabel;
 	private PluginControllerComposite pluginControllerComposite;
 	private Axis axis;
-	private ScanModul scanModul;
+	private ScanModule scanModul;
 	
 	public MotorAxisPluginComposite( final Composite parent, int style ) {
 		super( parent, style );
@@ -110,7 +110,7 @@ public class MotorAxisPluginComposite extends Composite implements IModelUpdateL
 		this.pluginControllerComposite.setEnabled( false );
 	}
 
-	public void setAxis( final Axis axis, final ScanModul scanModul ) {
+	public void setAxis( final Axis axis, final ScanModule scanModul ) {
 		if( this.axis != null ) {
 			this.axis.removeModelUpdateListener( this );
 		}

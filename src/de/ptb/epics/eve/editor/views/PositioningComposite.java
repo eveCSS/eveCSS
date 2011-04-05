@@ -50,7 +50,7 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.Positioning;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
@@ -58,7 +58,7 @@ import de.ptb.epics.eve.editor.Activator;
 public class PositioningComposite extends Composite implements IModelUpdateListener {
 
 	private TableViewer tableViewer;
-	private ScanModul scanModul;
+	private ScanModule scanModul;
 	private MenuManager menuManager;
 	
 	public PositioningComposite( final Composite parent, final int style) {
@@ -209,11 +209,11 @@ public class PositioningComposite extends Composite implements IModelUpdateListe
 		
 	}
 	
-	public ScanModul getScanModul() {
+	public ScanModule getScanModul() {
 		return this.scanModul;
 	}
 	
-	public void setScanModul( final ScanModul scanModul ) {
+	public void setScanModul( final ScanModule scanModul ) {
 		if( this.scanModul != null ) {
 			this.scanModul.removeModelUpdateListener( this );
 		}

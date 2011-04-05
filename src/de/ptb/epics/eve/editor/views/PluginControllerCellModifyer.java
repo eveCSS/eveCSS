@@ -19,7 +19,7 @@ import de.ptb.epics.eve.data.measuringstation.PluginParameter;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PluginController;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
 
 import java.util.Iterator;
@@ -56,7 +56,7 @@ public class PluginControllerCellModifyer implements ICellModifier {
 				if( pluginParameter.getType() == PluginDataType.AXISID ) {
 					this.tableViewer.getCellEditors()[1].dispose();
 					// hier kommen nur die Achsen zur Auswahl die im scanModul gewählt sind
-					ScanModul scanModul = (ScanModul)((PluginController)this.tableViewer.getInput()).getScanModul();
+					ScanModule scanModul = (ScanModule)((PluginController)this.tableViewer.getInput()).getScanModul();
 					if ( scanModul != null) {
 						Axis[] cur_axis = scanModul.getAxis();
 						String[] cur_feld = new String[cur_axis.length];
@@ -72,7 +72,7 @@ public class PluginControllerCellModifyer implements ICellModifier {
 				} else if( pluginParameter.getType() == PluginDataType.CHANNELID ) {
 					this.tableViewer.getCellEditors()[1].dispose();
 					// hier kommen nur die Channels zur Auswahl die im scanModul gewählt sind
-					ScanModul scanModul = (ScanModul)((PluginController)this.tableViewer.getInput()).getScanModul();
+					ScanModule scanModul = (ScanModule)((PluginController)this.tableViewer.getInput()).getScanModul();
 					if ( scanModul != null) {
 						Channel[] cur_channel = scanModul.getChannels();
 						String[] cur_feld = new String[cur_channel.length];

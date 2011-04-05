@@ -10,7 +10,7 @@ package de.ptb.epics.eve.editor.views;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
@@ -18,14 +18,14 @@ public class PostscanInputWrapper implements IModelUpdateListener,
 		IStructuredContentProvider {
 
 	private Viewer currentViewer;
-	private ScanModul scanModul;
+	private ScanModule scanModul;
 	
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
 		this.currentViewer.refresh();
 	}
 
 	public Object[] getElements( final Object inputElement ) {
-		return ((ScanModul)inputElement).getPostscans();
+		return ((ScanModule)inputElement).getPostscans();
 	}
 
 	public void dispose() {
@@ -33,12 +33,12 @@ public class PostscanInputWrapper implements IModelUpdateListener,
 
 	public void inputChanged( final Viewer viewer, final Object oldInput, final Object newInput ) {
 		if( oldInput != null ) {
-			((ScanModul)oldInput).removeModelUpdateListener( this );
+			((ScanModule)oldInput).removeModelUpdateListener( this );
 		}
 		if( newInput != null ) {
-			((ScanModul)newInput).addModelUpdateListener( this );
+			((ScanModule)newInput).addModelUpdateListener( this );
 		}
-		this.scanModul = (ScanModul)newInput;
+		this.scanModul = (ScanModule)newInput;
 		this.currentViewer = viewer;
 	}
 }

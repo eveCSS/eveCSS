@@ -41,14 +41,14 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Prescan;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
 public class PrescanComposite extends Composite implements IModelUpdateListener {
 
 	private TableViewer tableViewer;
-	private ScanModul scanModul;
+	private ScanModule scanModul;
 	private IMeasuringStation measuringStation;
 	
 	public PrescanComposite( final Composite parent, final int style, final IMeasuringStation measuringStation ) {
@@ -430,11 +430,11 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 
 	}
 	
-	public ScanModul getScanModul() {
+	public ScanModule getScanModul() {
 		return this.scanModul;
 	}
 	
-	public void setScanModul( final ScanModul scanModul ) {
+	public void setScanModul( final ScanModule scanModul ) {
 		if( this.scanModul != null ) {
 			this.scanModul.removeModelUpdateListener( this );
 		}

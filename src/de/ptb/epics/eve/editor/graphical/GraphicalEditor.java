@@ -45,7 +45,7 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionSaverToXMLusingXerces;
@@ -80,8 +80,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	private MenuItem deleteScanModulMenuItem;
 	private MenuItem renameScanModulMenuItem;
 	
-	private ScanModul currentScanModul = null;
-	private static ScanModul initScanModul = null;
+	private ScanModule currentScanModul = null;
+	private static ScanModule initScanModul = null;
 	
 	private boolean dirty;
 	
@@ -145,7 +145,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 * 
 	 * @param initScanModul init scan module
 	 */
-	public static void setInitScanModul(ScanModul initScanModul) {
+	public static void setInitScanModul(ScanModule initScanModul) {
 		GraphicalEditor.initScanModul = initScanModul;
 	}
 
@@ -153,7 +153,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 *  
 	 * @return init scan module
 	 */
-	public static ScanModul getInitScanModul() {
+	public static ScanModule getInitScanModul() {
 		return initScanModul;
 	}
 	
@@ -457,7 +457,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			
 			part.refresh();
 			if(part instanceof ScanModulEditPart) {
-				final ScanModul scanModul = (ScanModul)part.getModel();
+				final ScanModule scanModul = (ScanModule)part.getModel();
 				if(scanModul.getAppended() == null) {
 					addAppendedScanModulMenuItem.setEnabled(true);
 				} else {
@@ -513,7 +513,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				}
 				selectedEditPart = part;
 				((ScanModulEditPart)selectedEditPart).setFocus( true );
-				ScanModul scanModul = (ScanModul)selectedEditPart.getModel();
+				ScanModule scanModul = (ScanModule)selectedEditPart.getModel();
 				view.setCurrentScanModul( scanModul );
 				currentScanModul = scanModul;
 			}
@@ -526,7 +526,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				// Part gesetzt
 				selectedEditPart = rightClickEditPart;
 				((ScanModulEditPart)selectedEditPart).setFocus( true );
-				ScanModul scanModul = (ScanModul)selectedEditPart.getModel();
+				ScanModule scanModul = (ScanModule)selectedEditPart.getModel();
 				view.setCurrentScanModul( scanModul );
 				currentScanModul = scanModul;
 			}
@@ -562,8 +562,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				if(rightClickEditPart instanceof ScanModulEditPart) {
 					ScanModulEditPart scanModulEditPart = 
 							(ScanModulEditPart)rightClickEditPart;
-					ScanModul scanModul = 
-							(ScanModul)rightClickEditPart.getModel();
+					ScanModule scanModul = 
+							(ScanModule)rightClickEditPart.getModel();
 					
 					Chain[] chains = scanModul.getChain().getScanDescription().
 											getChains().toArray(new Chain[0]);
@@ -572,8 +572,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					do {
 						boolean repeat = false;
 						for(int i = 0; i < chains.length; ++i) {
-							ScanModul[] scanModules = chains[i].getScanModuls().
-													  toArray(new ScanModul[0]);
+							ScanModule[] scanModules = chains[i].getScanModuls().
+													  toArray(new ScanModule[0]);
 							for(int j = 0; j < scanModules.length; ++j) {
 								if(scanModules[j].getId() == newId) {
 									newId++;
@@ -585,7 +585,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 							break;
 					} while(true);
 					
-					ScanModul newScanModul = new ScanModul(newId);
+					ScanModule newScanModul = new ScanModule(newId);
 					newScanModul.setName("SM " + newId + " append");
 					newScanModul.setX(scanModul.getX() + 130);
 					newScanModul.setY(scanModul.getY());
@@ -616,8 +616,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					do {
 						boolean repeat = false;
 						for(int i = 0; i < chains.length; ++i) {
-							ScanModul[] scanModules = chains[i].getScanModuls().
-													  toArray(new ScanModul[0]);
+							ScanModule[] scanModules = chains[i].getScanModuls().
+													  toArray(new ScanModule[0]);
 							for(int j = 0; j < scanModules.length; ++j) {
 								if(scanModules[j].getId() == newId) {
 									newId++;
@@ -629,7 +629,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 							break;
 					} while(true);
 					
-					ScanModul newScanModul = new ScanModul(newId);
+					ScanModule newScanModul = new ScanModule(newId);
 					newScanModul.setName("SM " + newId);
 					newScanModul.setX(100);
 					newScanModul.setY(20);
@@ -684,8 +684,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					
 					if(selectedEditPart instanceof ScanModulEditPart) {
 						((ScanModulEditPart)selectedEditPart).setFocus(true);
-						ScanModul scanModul = 
-								(ScanModul)selectedEditPart.getModel();
+						ScanModule scanModul = 
+								(ScanModule)selectedEditPart.getModel();
 						view.setCurrentScanModul(scanModul);
 						currentScanModul = scanModul;
 					} else {
@@ -720,15 +720,15 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			
 			ScanModulEditPart scanModulEditPart = 
 					(ScanModulEditPart)rightClickEditPart;
-			ScanModul scanModul = (ScanModul)rightClickEditPart.getModel();
+			ScanModule scanModul = (ScanModule)rightClickEditPart.getModel();
 			Chain[] chains = scanModul.getChain().getScanDescription().
 					getChains().toArray(new Chain[0]);
 			int newId = 1;
 			do {
 				boolean repeat = false;
 				for(int i=0; i<chains.length; ++i) {
-					ScanModul[] scanModules = 
-						chains[i].getScanModuls().toArray(new ScanModul[0]);
+					ScanModule[] scanModules = 
+						chains[i].getScanModuls().toArray(new ScanModule[0]);
 					for(int j=0; j<scanModules.length; ++j) {
 						if(scanModules[j].getId() == newId) {
 							newId++;
@@ -740,7 +740,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					break;
 			} while(true);
 			
-			ScanModul newScanModul = new ScanModul(newId);
+			ScanModule newScanModul = new ScanModule(newId);
 			newScanModul.setName("SM " + newId + " nested");
 			newScanModul.setX(scanModul.getX() + 130);
 			newScanModul.setY(scanModul.getY() + 100);
@@ -797,8 +797,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			
 			// scanModul bestimmen das den Focus bekommen soll
 			EditPart newPart = null;
-			ScanModul scanModul = (ScanModul)scanModulEditPart.getModel();
-			ScanModul parentModul = scanModul.getParent().getParentScanModul();
+			ScanModule scanModul = (ScanModule)scanModulEditPart.getModel();
+			ScanModule parentModul = scanModul.getParent().getParentScanModul();
 			if (parentModul != null) {
 				int x = parentModul.getX();
 				int y = parentModul.getY();
@@ -839,7 +839,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			
 			ScanModulEditPart scanModulEditPart = 
 					(ScanModulEditPart)rightClickEditPart;
-			ScanModul scanModul = (ScanModul)rightClickEditPart.getModel();
+			ScanModule scanModul = (ScanModule)rightClickEditPart.getModel();
 			
 			// show dialog to input new name
 			Shell shell = getSite().getShell();

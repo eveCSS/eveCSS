@@ -38,7 +38,7 @@ import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilter;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -67,7 +67,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	private boolean filling;
 	private boolean plotErrors;
 
-	private ScanModul currentScanModul; // @jve:decl-index=0:
+	private ScanModule currentScanModul; // @jve:decl-index=0:
 
 	private Composite top = null;
 
@@ -496,7 +496,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	 * 
 	 * @return the scan module
 	 */
-	public ScanModul getCurrentScanModul() {
+	public ScanModule getCurrentScanModul() {
 		return currentScanModul;
 	}
 
@@ -505,7 +505,7 @@ public class ScanModulView extends ViewPart implements IModelUpdateListener {
 	 * 
 	 * @param currentScanModul the scan module that should be set
 	 */
-	public void setCurrentScanModul(ScanModul currentScanModul) {
+	public void setCurrentScanModul(ScanModule currentScanModul) {
 		// if there was already a scan module -> update it
 		if(this.currentScanModul != null) {
 			this.currentScanModul.removeModelUpdateListener(this);

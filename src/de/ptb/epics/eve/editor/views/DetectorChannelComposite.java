@@ -36,7 +36,7 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
@@ -44,7 +44,7 @@ import de.ptb.epics.eve.editor.Activator;
 public class DetectorChannelComposite extends Composite implements IModelUpdateListener {
 
 	private TableViewer tableViewer;
-	private ScanModul scanModul;
+	private ScanModule scanModul;
 	private MenuManager menuManager;
 	private final IMeasuringStation measuringStation;
 	
@@ -276,11 +276,11 @@ public class DetectorChannelComposite extends Composite implements IModelUpdateL
 		}
 	}
 	
-	public ScanModul getScanModul() {
+	public ScanModule getScanModul() {
 		return this.scanModul;
 	}
 	
-	public void setScanModul( final ScanModul scanModul ) {
+	public void setScanModul( final ScanModule scanModul ) {
 		if( this.scanModul != null ) {
 			this.scanModul.removeModelUpdateListener( this );
 		}

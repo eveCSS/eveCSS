@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
 
 import de.ptb.epics.eve.data.scandescription.PluginController;
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
@@ -27,7 +27,7 @@ public class PluginControllerComposite extends Composite implements IModelUpdate
 
 	private TableViewer tableViewer;
 	private PluginController pluginController;
-	private ScanModul scanModul;
+	private ScanModule scanModul;
 	private PluginControllerLabelProvider pluginControllerLabelProvider;
 	
 	public PluginControllerComposite( final Composite parent, final int style) {
@@ -95,11 +95,11 @@ public class PluginControllerComposite extends Composite implements IModelUpdate
 		return this.pluginController;
 	}
 
-	public ScanModul getScanModul() {
+	public ScanModule getScanModul() {
 		return this.scanModul;
 	}
 	
-	public void setScanModul( final ScanModul scanModul ) {
+	public void setScanModul( final ScanModule scanModul ) {
 		this.scanModul = scanModul;
 		pluginController.setScanModul(scanModul);
 	}

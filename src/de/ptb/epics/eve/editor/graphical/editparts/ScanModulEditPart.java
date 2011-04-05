@@ -14,7 +14,7 @@ import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
-import de.ptb.epics.eve.data.scandescription.ScanModul;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.graphical.editparts.figures.ScanModuleFigure;
 import de.ptb.epics.eve.editor.graphical.GraphicalEditor;
 
@@ -32,7 +32,7 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart
 	 * 
 	 * @param scanModul the scan module
 	 */
-	public ScanModulEditPart(final ScanModul scanModul) {
+	public ScanModulEditPart(final ScanModule scanModul) {
 		this.setModel(scanModul);
 	}
 	
@@ -41,7 +41,7 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart
 	 */
 	@Override
 	protected IFigure createFigure() {
-		final ScanModul scanModul = (ScanModul)this.getModel();
+		final ScanModule scanModul = (ScanModule)this.getModel();
 		return new ScanModuleFigure(
 				scanModul.getName(), scanModul.getX(), scanModul.getY());
 	}
@@ -59,7 +59,7 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart
 	@Override
 	protected List<?> getModelSourceConnections() {
 		final List<Object> sourceList = new ArrayList<Object>();
-		final ScanModul scanModul = (ScanModul)this.getModel();
+		final ScanModule scanModul = (ScanModule)this.getModel();
 		
 		if(scanModul.getAppended() != null) {
 			sourceList.add(scanModul.getAppended());
@@ -76,7 +76,7 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart
 	@Override
 	protected List<?> getModelTargetConnections() {
 		final List<Object> sourceList = new ArrayList<Object>();
-		final ScanModul scanModul = (ScanModul)this.getModel();
+		final ScanModule scanModul = (ScanModule)this.getModel();
 		if(scanModul.getParent() != null) {
 			sourceList.add(scanModul.getParent());
 		}
@@ -89,7 +89,7 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(
 										final ConnectionEditPart connection) {
-		final ScanModul scanModul = (ScanModul)this.getModel();
+		final ScanModule scanModul = (ScanModule)this.getModel();
 		if(connection.getModel() == scanModul.getAppended()) {
 			return ((ScanModuleFigure)this.figure).getAppendedAnchor();
 		} else {
@@ -122,7 +122,7 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart
 		return new ChopboxAnchor(this.getFigure());
 	}
 
-	private void removeAppendScanModul(ScanModul appendModul) {
+	private void removeAppendScanModul(ScanModule appendModul) {
 		// append Scan Modul wird entfernt
 		if (appendModul.getAppended().getChildScanModul().getAppended() != null) {
 			removeAppendScanModul(appendModul.getAppended().getChildScanModul());
@@ -137,7 +137,7 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart
 		appendModul.setAppended(null);
 	}
 
-	private void removeNestedScanModul(ScanModul nestedModul) {
+	private void removeNestedScanModul(ScanModule nestedModul) {
 		// nested Scan Modul wird entfernt
 		if (nestedModul.getNested().getChildScanModul().getNested() != null) {
 			removeNestedScanModul(nestedModul.getNested().getChildScanModul());
@@ -156,7 +156,7 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart
 	 * 
 	 */
 	public void removeYourSelf() {
-		final ScanModul scanModul = (ScanModul)this.getModel();
+		final ScanModule scanModul = (ScanModule)this.getModel();
 		if( scanModul.getAppended() != null ) {
 			// append Scan Modul vorhanden, muß auch entfernt werden
 			removeAppendScanModul(scanModul);
@@ -228,11 +228,11 @@ public class ScanModulEditPart extends AbstractGraphicalEditPart
 	 */
 	@Override
 	public void refresh() {
-		final ScanModul scanModul = (ScanModul)this.getModel();
+		final ScanModule scanModul = (ScanModule)this.getModel();
 
 		((ScanModuleFigure)this.figure).setText( scanModul.getName() );
 
-		ScanModul parentModul = scanModul.getParent().getParentScanModul();
+		ScanModule parentModul = scanModul.getParent().getParentScanModul();
 		if (parentModul == null) {
 			// Wenn ScanModul kein parentModul hat, ist es das oberste ScanModul.
 			// Das soll als erstes angezeigt werden, wenn der Scan zum ersten
