@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data;
 
 /**
@@ -12,72 +5,49 @@ package de.ptb.epics.eve.data;
  * to the data types that are defined in the enum DataTypes. 
  * Additionally this enum has the types AXISID, CHANNELID and DEVIDEID that 
  * indicate, that the plug in parameter is a channel, axis or device.
+ * 
  * @author Stephan Rehfeld
  */
 public enum PluginDataType {
 	
 	/**
 	 * On/Off data type is used at some Devices to switch them on or off.
-	 *
-	 * @uml.property  name="oNOFF"
-	 * @uml.associationEnd  
 	 */
 	ONOFF,
 	
 	/**
 	 * Open/Close data type is used to open or close a device 
 	 * e.g. a beam shutter.
-	 *
-	 * @uml.property  name="oPENCLOSE"
-	 * @uml.associationEnd  
 	 */
 	OPENCLOSE,
 	
 	/**
 	 * Normal integer data type.
-	 *
-	 * @uml.property  name="iNT"
-	 * @uml.associationEnd  
 	 */
 	INT, 
 	
 	/**
 	 * Normal double data type.
-	 *
-	 * @uml.property  name="dOUBLE"
-	 * @uml.associationEnd  
 	 */
 	DOUBLE,
 	
 	/**
 	 * Normal String data type.
-	 *
-	 * @uml.property  name="sTRING"
-	 * @uml.associationEnd  
 	 */
 	STRING,
 	
 	/**
 	 * A String that represents an identifier of an axis.
-	 *
-	 * @uml.property  name="aXISID"
-	 * @uml.associationEnd  
 	 */
 	AXISID,
 	
 	/**
 	 * A String that represents an identifier of an channel.
-	 *
-	 * @uml.property  name="cHANNELID"
-	 * @uml.associationEnd  
 	 */
 	CHANNELID,
 	
 	/**
 	 * A String that represents an identifier of an device.
-	 *
-	 * @uml.property  name="dEVICEID"
-	 * @uml.associationEnd  
 	 */
 	DEVICEID;
 	
@@ -125,8 +95,6 @@ public enum PluginDataType {
 						}
 						return true; 
 			
-		// TODO clean programming of the following lines ?
-		// TODO Does it really do what we want ?
 		case STRING:
 		case AXISID:
 		case CHANNELID:

@@ -1,12 +1,4 @@
-/*
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data;
-
 
 /**
  * This enum represents differen Tranfport layer systems for accessing a variable.
@@ -16,17 +8,11 @@ public enum TransportTypes {
 	
 	/**
 	 * Channel Access
-	 *
-	 * @uml.property  name="cA"
-	 * @uml.associationEnd  
 	 */
 	CA,
 	
 	/**
 	 * A local variable
-	 *
-	 * @uml.property  name="lOCAL"
-	 * @uml.associationEnd  
 	 */
 	LOCAL;
 	

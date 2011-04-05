@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data;
 
 import java.util.Locale;
@@ -25,37 +18,22 @@ public enum DataTypes {
 	// TODO correct Datatypes onoff and openclose
 	/**
 	 * Used to display On or Off for data of type integer.
-	 * 
-	 * @uml.property  name="oNOFF"
-	 * @uml.associationEnd  
 	 */
 	ONOFF,
 	/**
 	 *  Used to display Open or Close for data of type integer.
-	 *
-	 * @uml.property  name="oPENCLOSE"
-	 * @uml.associationEnd  
 	 */
 	OPENCLOSE,
 	/**
 	 * Normal integer data type.
-	 *
-	 * @uml.property  name="iNT"
-	 * @uml.associationEnd  
 	 */
 	INT, 
 	/**
 	 * Normal double data type.
-	 *
-	 * @uml.property  name="dOUBLE"
-	 * @uml.associationEnd  
 	 */
 	DOUBLE,
 	/**
 	 * Normal String data type.
-	 *
-	 * @uml.property  name="sTRING"
-	 * @uml.associationEnd  
 	 */
 	STRING,
 	
@@ -69,9 +47,6 @@ public enum DataTypes {
 	 *             17:09:20.000 (abs) valid absolute <code>DATETIME</code> assuming date today
 	 *             17:09:20.000 (rel) valid relative time (duration of 1580 secs)
 	 *                 1580.0 	(rel) valid relative time (duration of 1580 secs)
-	 * 
-	 * @uml.property  name="dATETIME"
-	 * @uml.associationEnd  
 	 */
 	DATETIME;
 	
@@ -344,7 +319,7 @@ public enum DataTypes {
 	 * @param type the data type of which you want to get the allowed 
 	 * <code>ComparisonTypes</code>.
 	 * @return an array containing the allowed <code>comparisonTypes</code>.
-	 * @exception IllegalArgumentException if the argument is <code>null</code>
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public static ComparisonTypes[] getPossibleComparisonTypes(
 												final DataTypes type) {

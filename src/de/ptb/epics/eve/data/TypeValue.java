@@ -9,16 +9,14 @@ import java.util.List;
  * green, red and blue. So the TypeValue class gets initialized with the 
  * DataTypes.STRING and value "green red blue". Integer or Double values may 
  * have a range defined, 
+ * 
  * @author  Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version  1.4
  */
 public class TypeValue {
 
 	/**
-	 * The basic primitive data type on which this definition based.
-	 * 
-	 * @uml.property  name="type"
-	 * @uml.associationEnd  
+	 * The basic primitive data type on which this definition based. 
 	 */
 	private final DataTypes type;
 	
@@ -29,8 +27,8 @@ public class TypeValue {
 	 * 
 	 * @param type The basic primitive data type on which this definition based.
 	 */
-	public TypeValue( final DataTypes type ) {	
-		this( type, null );
+	public TypeValue(final DataTypes type) {	
+		this(type, null);
 	}
 	
 	/**
@@ -40,8 +38,6 @@ public class TypeValue {
 	
 	/**
 	 * value must be one of a set of discrete values
-	 * 
-	 * @uml.property  name="isDiscrete"
 	 */
 	boolean isDiscrete;
 
@@ -69,10 +65,9 @@ public class TypeValue {
 	}
 	
 	/**
-	 * Returns the data type of this TypeValue object.
+	 * Returns the data type of the TypeValue.
 	 * 
-	 * @return  The data type.
-	 * @uml.property  name="type"
+	 * @return the data type of the type value
 	 */
 	public DataTypes getType() {
 		return this.type;
@@ -163,7 +158,6 @@ public class TypeValue {
 	 * 
 	 * @return <code>true</code> if type value is discrete, 
 	 * 			<code>false</code> otherwise
-	 * @uml.property  name="isDiscrete"
 	 */
 	public boolean isDiscrete() {
 		return isDiscrete;
@@ -186,7 +180,7 @@ public class TypeValue {
 	}
 	
 	/**
-	 * Checks if a value is valid under the constraints of this TypeValue.
+	 * Checks whether a value is valid under the constraints of the TypeValue.
 	 * 
 	 * @param value the value that should be checked
 	 * @return <code>true</code> if the value fits the constrains, 
@@ -277,9 +271,9 @@ public class TypeValue {
 	}
 
 	/**
-	 * fancy math
+	 * Returns the hash code.
 	 * 
-	 * @return a hash value
+	 * @return the hash code
 	 */
 	@Override
 	public int hashCode() {
