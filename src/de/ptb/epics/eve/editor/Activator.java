@@ -2,6 +2,7 @@ package de.ptb.epics.eve.editor;
 
 import java.io.File;
 
+import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -28,13 +29,13 @@ public class Activator extends AbstractUIPlugin {
 	private ExcludeFilter excludeFilter;
 		
 	private File schemaFile;
-	
+		
 	/**
 	 * The constructor
 	 */
 	public Activator() {
 		// activate logging 
-		// DOMConfigurator.configure(System.getProperty("user.home") + "/logger.xml");
+		DOMConfigurator.configure(System.getProperty("user.home") + "/logger.xml");
 	}
 
 	/**
