@@ -124,7 +124,7 @@ public class PlotViewDispatcher implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void engineStatusChanged(EngineStatus engineStatus) {
+	public void engineStatusChanged(EngineStatus engineStatus, String xmlName, int repeatCount) {
 		this.engineStatus = engineStatus;
 	}
 

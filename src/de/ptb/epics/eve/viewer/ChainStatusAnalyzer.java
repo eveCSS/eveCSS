@@ -46,31 +46,22 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 	}
 	
 	@Override
-	public void engineStatusChanged(EngineStatus engineStatus) {
+	public void engineStatusChanged(EngineStatus engineStatus, String xmlName, int repeatCount) {
 
 		if (engineStatus == EngineStatus.LOADING_XML) {
 			// Es wird gerade ein neues XML-File geladen, ChainStatusListe löschen
 			this.resetChainList();
 
-			// TODO der Namen des gerade geladenen SCML-Files ist vielleicht schon nicht mehr in der Playlist.
-			// das hier kann schief gehen
-			final Iterator< PlayListEntry > it = Activator.getDefault().getEcp1Client().getPlayListController().getEntries().iterator();
-			String name;
-			if (it.hasNext()) 
-				name =  it.next().getName();
-			else
-				name = "unknown";
-			
-			final Iterator< IUpdateListener > it2 = this.updateListener.iterator();
-			while( it2.hasNext() ) {
-				it2.next().setLoadedScmlFile(name);
+			final Iterator< IUpdateListener > it = this.updateListener.iterator();
+			while( it.hasNext() ) {
+				it.next().setLoadedScmlFile(xmlName);
 			}
 		}
 		else {
 			// bei allen anderen Engine Status Meldungen wird gesetzt, was gemacht werden darf.
-			final Iterator< IUpdateListener > it0 = this.updateListener.iterator();
-			while( it0.hasNext() ) {
-				it0.next().fillEngineStatus(engineStatus);
+			final Iterator< IUpdateListener > it = this.updateListener.iterator();
+			while( it.hasNext() ) {
+				it.next().fillEngineStatus(engineStatus, repeatCount);
 			}
 		}
 	}
@@ -283,7 +274,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 
 	}
 
-	public boolean addUpdateLisner( final IUpdateListener updateListener ) {
+	public boolean addUpdateListener( final IUpdateListener updateListener ) {
 		return this.updateListener.add( updateListener );
 	}
 

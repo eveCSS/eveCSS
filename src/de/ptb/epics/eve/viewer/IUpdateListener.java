@@ -8,7 +8,7 @@ public interface IUpdateListener {
 	public void clearStatusTable();
 	public void fillStatusTable(int chainId, int scanModuleId, String status, int remainTime);
 	public void setLoadedScmlFile(String name);
-	public void fillEngineStatus(EngineStatus engineStatus);
+	public void fillEngineStatus(EngineStatus engineStatus, int repeatCount);
 	public void setAutoPlayStatus(boolean autoPlayStatus);
 	public void disableSendToFile();
 

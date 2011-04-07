@@ -82,6 +82,8 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	//TODO: ShellTable ist auf 10 Einträge vordefiniert,
 	// besser eine LinkedList machen, damit beliebig viele Einträge existieren können
 	private Shell shellTable[] = new Shell[10];
+
+	private int repeatCount;
 	
 	/**
 	 * {@inheritDoc}
@@ -199,8 +201,9 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		this.repeatCountLabel = new Label( this.scanComposite, SWT.NONE );
 		this.repeatCountLabel.setText("repeat count:");
 		this.repeatCountText = new Text( this.scanComposite, SWT.BORDER );
-		// TODO: sobald repeat Count funktioniert wird die Eingabe auch erlaubt
-		this.repeatCountText.setEnabled(false);
+		repeatCount = 0;
+		repeatCountText.setText("     "+String.valueOf(repeatCount));
+		this.repeatCountText.setEditable(false);
 		
 		this.loadedScmlLabel = new Label( this.top, SWT.NONE );
 		this.loadedScmlLabel.setText("loaded File:");
@@ -282,7 +285,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		// SelectionListener um zu erkennen, wann eine Zeile selektiert wird
 		this.statusTable.addSelectionListener(new StatusTableSelectionListener());
 
-		Activator.getDefault().getChainStatusAnalyzer().addUpdateLisner( this );
+		Activator.getDefault().getChainStatusAnalyzer().addUpdateListener( this );
 		Activator.getDefault().getEcp1Client().addErrorListener(this);
 		this.rebuildText(0);
 		Activator.getDefault().getEcp1Client().addConnectionStateListener( this );
@@ -525,8 +528,10 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	}
 
 	@Override
-	public void fillEngineStatus(EngineStatus engineStatus) {
+	public void fillEngineStatus(EngineStatus engineStatus, int repeatCount) {
 
+		setCurrentRepeatCount(repeatCount);
+		
 		switch(engineStatus) {
 			case IDLE_NO_XML_LOADED:
 				this.playButton.getDisplay().syncExec( new Runnable() {
@@ -621,6 +626,17 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 			}
 		});
 		
+	}
+
+	private void setCurrentRepeatCount(final int repeatCount) {
+		if (this.repeatCount != repeatCount){
+			this.repeatCount = repeatCount;
+			this.repeatCountText.getDisplay().syncExec(new Runnable() {
+				public void run() {
+					repeatCountText.setText(String.valueOf(repeatCount));
+				}
+			});
+		}
 	}
 
 	// Wenn eine Zeile in der Tabelle der Chains und ScanModule angeklickt wird,
