@@ -353,7 +353,7 @@ public class PlotViewGraphComposite extends Composite
 		{
 			// plot synchronously (to assure no side effects) 
 			// TODO necessary ? or async ?
-			this.getDisplay().syncExec( new Runnable() {
+			this.getDisplay().asyncExec( new Runnable() {
 
 				@Override
 				public void run() 
