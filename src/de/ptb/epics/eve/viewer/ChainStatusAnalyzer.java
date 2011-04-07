@@ -52,12 +52,18 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 			// Es wird gerade ein neues XML-File geladen, ChainStatusListe löschen
 			this.resetChainList();
 
+			// TODO der Namen des gerade geladenen SCML-Files ist vielleicht schon nicht mehr in der Playlist.
+			// das hier kann schief gehen
 			final Iterator< PlayListEntry > it = Activator.getDefault().getEcp1Client().getPlayListController().getEntries().iterator();
-			final PlayListEntry firstEntry = it.next();
-
+			String name;
+			if (it.hasNext()) 
+				name =  it.next().getName();
+			else
+				name = "unknown";
+			
 			final Iterator< IUpdateListener > it2 = this.updateListener.iterator();
 			while( it2.hasNext() ) {
-				it2.next().setLoadedScmlFile(firstEntry.getName());
+				it2.next().setLoadedScmlFile(name);
 			}
 		}
 		else {
