@@ -52,10 +52,10 @@ public final class MeasurementData {
 				
 			case INT16:
 				{
-					this.values = new ArrayList< Character >();
-					final Iterator< Character > it = (Iterator<Character>) measurementDataCommand.iterator();
+					this.values = new ArrayList< Short >();
+					final Iterator< Short > it = (Iterator<Short>) measurementDataCommand.iterator();
 					while( it.hasNext() ) {
-						((List< Character >)this.values).add( it.next() );
+						((List< Short >)this.values).add( it.next() );
 					}
 				}
 				break;

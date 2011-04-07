@@ -18,6 +18,7 @@ public class EngineStatusCommand implements IECP1Command {
 	
 	private int gerenalTimeStamp;
 	private int nanoseconds;
+	private int repeatCount;
 	private EngineStatus engineStatus;
 	private boolean autoplay;
 	private String xmlName;
@@ -52,11 +53,12 @@ public class EngineStatusCommand implements IECP1Command {
 			throw new WrongTypeIdException( byteArray, commandTypeID, EngineStatusCommand.COMMAND_TYPE_ID );
 		}
 		
-		final int length = dataInputStream.readInt();
-		
+		// unused length field
+		dataInputStream.readInt();
 		this.gerenalTimeStamp = dataInputStream.readInt();
 		this.nanoseconds = dataInputStream.readInt();
-		dataInputStream.readChar();
+		repeatCount = (int) dataInputStream.readShort();
+		if (repeatCount < 0) repeatCount = 0xffff+repeatCount; 
 		byte autoplayByte = dataInputStream.readByte();
 		if( autoplayByte == 0 ) {
 			this.autoplay = false;
@@ -95,7 +97,7 @@ public class EngineStatusCommand implements IECP1Command {
 		
 		dataOutputStream.writeInt( this.gerenalTimeStamp );
 		dataOutputStream.writeInt( this.nanoseconds );
-		dataOutputStream.writeChar( 0 );
+		dataOutputStream.writeShort( (short) this.repeatCount );
 		dataOutputStream.writeByte( this.autoplay?1:0 );
 		dataOutputStream.writeByte( EngineStatus.engineStatusToByte( this.engineStatus ) );
 		
@@ -127,6 +129,14 @@ public class EngineStatusCommand implements IECP1Command {
 
 	public void setNanoseconds( final int nanoseconds ) {
 		this.nanoseconds = nanoseconds;
+	}
+
+	public int getRepeatCount() {
+		return this.repeatCount;
+	}
+
+	public void setRepeatCount( final int repeatCount ) {
+		this.repeatCount = repeatCount;
 	}
 
 	public boolean isAutoplay() {

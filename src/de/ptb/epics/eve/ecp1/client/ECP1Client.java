@@ -299,7 +299,7 @@ public class ECP1Client {
 								final Iterator< IEngineStatusListener > it = engineStatusListener.iterator();
 								final EngineStatusCommand engineStatusCommand = (EngineStatusCommand) command;
 								while( it.hasNext() ) {
-									it.next().engineStatusChanged( engineStatusCommand.getEngineStatus() );
+									it.next().engineStatusChanged( engineStatusCommand.getEngineStatus(), engineStatusCommand.getXmlName(), engineStatusCommand.getRepeatCount() );
 								}
 								playListController.reportAutoplay( engineStatusCommand.isAutoplay() );
 							} else if( command instanceof ChainStatusCommand ) {
