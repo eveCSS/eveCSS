@@ -143,6 +143,22 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		this.stepamountText.setEnabled( false );
 		this.mainAxisCheckBox.setEnabled( false );
 	}
+
+	/**
+	 * calculate the height to see all entries of this composite
+	 * @return the needed height of Composite to see all entries
+	 */
+	public int getTargetHeight() {
+		return (mainAxisCheckBox.getBounds().y + mainAxisCheckBox.getBounds().height + 5);
+	}
+
+	/**
+	 * calculate the width to see all entries of this composite
+	 * @return the needed width of Composite to see all entries
+	 */
+	public int getTargetWidth() {
+		return (mainAxisCheckBox.getBounds().x + mainAxisCheckBox.getBounds().width + 5);
+	}
 	
     public void setAxis( final Axis axis, final double stepamount ) {
 

@@ -1,5 +1,12 @@
 package de.ptb.epics.eve.editor.views;
 
+import java.awt.ScrollPane;
+
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
@@ -17,11 +24,18 @@ import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
 
+/**
+ * <code>MotorAxisView</code> is a composite to input the parameters
+ * of a motor axis from a scanModul.
+ * @author Hartmut Scherr
+ *
+ */
 public class MotorAxisView extends ViewPart {
 
 	public static final String ID = "de.ptb.epics.eve.editor.views.MotorAxisView";
 
 	private Composite top = null;
+	private ScrolledComposite sc = null;
 
 	private Label stepfunctionLabel;
 	private Combo stepFunctionCombo;
@@ -43,7 +57,7 @@ public class MotorAxisView extends ViewPart {
 	public void createPartControl( final Composite parent ) {
 		
 		parent.setLayout(new FillLayout());
-		
+
 		if( Activator.getDefault().getMeasuringStation() == null ) {
 			final Label errorLabel = new Label( parent, SWT.NONE );
 			errorLabel.setText( "No Measuring Station has been loaded. Please check Preferences!" );
@@ -55,9 +69,16 @@ public class MotorAxisView extends ViewPart {
 		gridLayout.numColumns = 3;
 		GridData gridData;
 		
-		this.top = new Composite( parent, SWT.NONE );
+		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+
+		this.top = new Composite( sc, SWT.NONE );
 		this.top.setLayout( gridLayout );
-		
+
+		sc.setContent(this.top);
+        sc.setExpandHorizontal(true);
+        sc.setExpandVertical(true);
+//        sc.setMinSize(this.top.computeSize(480, 310));
+
 		this.stepfunctionLabel = new Label( this.top, SWT.NONE );
 		this.stepfunctionLabel.setText( "Step function: " );
 		gridData = new GridData();
@@ -107,7 +128,7 @@ public class MotorAxisView extends ViewPart {
 		
 		this.stepFunctionCombo.setEnabled( false );
 		this.positionModeCombo.setEnabled( false );
-		
+
 	}
 
 	@Override
@@ -181,6 +202,10 @@ public class MotorAxisView extends ViewPart {
 					holderComposite.layout();
 					holderComposite.setVisible( true );
 					top.layout();
+					// setting minimum width and height of ScrolledComposite
+					int targetHeight = ((MotorAxisFileComposite)holderComposite).getTargetHeight() + holderComposite.getBounds().y;
+					int targetWidth = ((MotorAxisFileComposite)holderComposite).getTargetWidth() + holderComposite.getBounds().x;
+					sc.setMinSize(targetWidth, targetHeight);
 				} else if( axis.getStepfunctionString().equals( "Plugin" ) ) { 
 					if( axis.getPositionPluginController() == null ) {
 						axis.setPositionPluginController( new PluginController() );
@@ -198,6 +223,10 @@ public class MotorAxisView extends ViewPart {
 					holderComposite.layout();
 					holderComposite.setVisible( true );
 					top.layout();
+					// setting minimum width and height of ScrolledComposite
+					int targetHeight = ((MotorAxisPluginComposite)holderComposite).getTargetHeight() + holderComposite.getBounds().y;
+					int targetWidth = ((MotorAxisPluginComposite)holderComposite).getTargetWidth() + holderComposite.getBounds().x;
+					sc.setMinSize(targetWidth, targetHeight);
 				} else if( axis.getStepfunctionString().equals( "Positionlist" ) ) {
 					holderComposite.dispose();
 					holderComposite = new MotorAxisPositionlistComposite( top, SWT.NONE );
@@ -212,6 +241,10 @@ public class MotorAxisView extends ViewPart {
 					holderComposite.layout();
 					holderComposite.setVisible( true );
 					top.layout();
+					// setting minimum width and height of ScrolledComposite
+					int targetHeight = ((MotorAxisPositionlistComposite)holderComposite).getTargetHeight() + holderComposite.getBounds().y;
+					int targetWidth = ((MotorAxisPositionlistComposite)holderComposite).getTargetWidth() + holderComposite.getBounds().x;
+					sc.setMinSize(targetWidth, targetHeight);
 				} else {
 					holderComposite.dispose();
 					holderComposite = new MotorAxisStartStopStepwidthComposite( top, SWT.NONE );
@@ -226,6 +259,10 @@ public class MotorAxisView extends ViewPart {
 					holderComposite.layout();
 					holderComposite.setVisible( true );
 					top.layout();
+					// setting minimum width and height of ScrolledComposite
+					int targetHeight = ((MotorAxisStartStopStepwidthComposite)holderComposite).getTargetHeight() + holderComposite.getBounds().y;
+					int targetWidth = ((MotorAxisStartStopStepwidthComposite)holderComposite).getTargetWidth() + holderComposite.getBounds().x;
+					sc.setMinSize(targetWidth, targetHeight);
 				}
 			}
 		}

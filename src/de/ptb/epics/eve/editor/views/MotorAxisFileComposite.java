@@ -34,6 +34,12 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateList
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 
+/**
+ * <code>MotorAxisFileComposite</code> is a composite to input a filename
+ * with positions of the motor axis.
+ * @author Hartmut Scherr
+ *
+ */
 public class MotorAxisFileComposite extends Composite implements IModelUpdateListener {
 
 	private Label filenameLabel = null;
@@ -64,52 +70,25 @@ public class MotorAxisFileComposite extends Composite implements IModelUpdateLis
 		
 		this.searchButton = new Button( this, SWT.NONE );
 		this.searchButton.setText( "Search" );
-		this.searchButton.addSelectionListener( new SelectionListener() {
+		this.searchButton.addSelectionListener( new SearchButtonSelectionListener());
+		this.filenameText.addModifyListener( new FilenameTextModifyListener());
 
-			public void widgetDefaultSelected( final SelectionEvent e ) {
-								
-			}
+	}
 
-			public void widgetSelected( final SelectionEvent e ) {
-				if( e.widget == searchButton ) {
-					Shell shell = getShell();
+	/**
+	 * calculate the height to see all entries of this composite
+	 * @return the needed height of Composite to see all entries
+	 */
+	public int getTargetHeight() {
+		return (filenameText.getBounds().y + filenameText.getBounds().height + 5);
+	}
 
-					int lastSeperatorIndex;
-					final String filePath;
-					
-					if ((axis.getPositionfile() == null) || (axis.getPositionfile().equals(""))) {
-						lastSeperatorIndex = Activator.getDefault().getMeasuringStation().getLoadedFileName().lastIndexOf( File.separatorChar );
-						filePath = Activator.getDefault().getMeasuringStation().getLoadedFileName().substring( 0, lastSeperatorIndex);
-					}
-					else {
-						// als filePath wird das vorhandene Verzeichnis gesetzt
-						lastSeperatorIndex = axis.getPositionfile().lastIndexOf( File.separatorChar );
-						filePath = axis.getPositionfile().substring( 0, lastSeperatorIndex + 1 );
-					}
-					
-					FileDialog fileWindow = new FileDialog(shell, SWT.SAVE);
-					fileWindow.setFilterPath(filePath);
-					String name = fileWindow.open();
-					
-					if( name == null )
-					      return;
-					filenameText.setText( name );
-				}
-				
-			}
-			
-		});
-		this.filenameText.addModifyListener( new ModifyListener() {
-
-			public void modifyText(ModifyEvent e) {
-				if( axis != null ) {
-					axis.setPositionfile( filenameText.getText() );
-				}
-			}
-			
-			
-			
-		});
+	/**
+	 * calculate the width to see all entries of this composite
+	 * @return the needed width of Composite to see all entries
+	 */
+	public int getTargetWidth() {
+		return (filenameText.getBounds().x + filenameText.getBounds().width + 5);
 	}
 
 	public void setAxis( final Axis axis ) {
@@ -156,7 +135,6 @@ public class MotorAxisFileComposite extends Composite implements IModelUpdateLis
 	@Override
 	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
 		this.filenameErrorLabel.setImage( null );
-		System.out.println("updateEvent von MotorAxisFileComposite aufgerufen");
 		
 		final Iterator< IModelError > it = this.axis.getModelErrors().iterator();
 		while( it.hasNext() ) {
@@ -172,5 +150,72 @@ public class MotorAxisFileComposite extends Composite implements IModelUpdateLis
 		
 	}
 	
-	
+	///////////////////////////////////////////////////////////
+	// Hier kommen jetzt die verschiedenen Listener Klassen
+	///////////////////////////////////////////////////////////
+	/**
+	 * <code>SelectionListener</code> of Search Button from
+	 * <code>MotorAxisFileComposite</code>
+	 */
+	class SearchButtonSelectionListener implements SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected( final SelectionEvent e ) {
+							
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected( final SelectionEvent e ) {
+			if( e.widget == searchButton ) {
+				Shell shell = getShell();
+
+				int lastSeperatorIndex;
+				final String filePath;
+				
+				if ((axis.getPositionfile() == null) || (axis.getPositionfile().equals(""))) {
+					lastSeperatorIndex = Activator.getDefault().getMeasuringStation().getLoadedFileName().lastIndexOf( File.separatorChar );
+					filePath = Activator.getDefault().getMeasuringStation().getLoadedFileName().substring( 0, lastSeperatorIndex);
+				}
+				else {
+					// als filePath wird das vorhandene Verzeichnis gesetzt
+					lastSeperatorIndex = axis.getPositionfile().lastIndexOf( File.separatorChar );
+					filePath = axis.getPositionfile().substring( 0, lastSeperatorIndex + 1 );
+				}
+				
+				FileDialog fileWindow = new FileDialog(shell, SWT.SAVE);
+				fileWindow.setFilterPath(filePath);
+				String name = fileWindow.open();
+				
+				if( name == null )
+				      return;
+				filenameText.setText( name );
+			}
+			
+		}
+		
+	};
+
+	/**
+	 * <code>ModifyListener</code> of Filename Text from
+	 * <code>MotorAxisFileComposite</code>
+	 */
+	class FilenameTextModifyListener implements ModifyListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void modifyText(ModifyEvent e) {
+			if( axis != null ) {
+				axis.setPositionfile( filenameText.getText() );
+			}
+		}
+	};
+
 }

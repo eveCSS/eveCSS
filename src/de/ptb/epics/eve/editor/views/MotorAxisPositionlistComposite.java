@@ -20,10 +20,16 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
+/**
+ * <code>MotorAxisPositionlistComposite</code> is a composite to input a list
+ * of positions for the motor axis.
+ * @author Hartmut Scherr
+ *
+ */
 public class MotorAxisPositionlistComposite extends Composite implements IModelUpdateListener {
 	
 	private Label positionlistLabel;
-	private Text positionlistInput;
+	private Text positionlistText;
 	private Label positionlistErrorLabel;
 	private Label amountLabel;
 	private Text amountText;
@@ -51,30 +57,15 @@ public class MotorAxisPositionlistComposite extends Composite implements IModelU
 		this.positionlistErrorLabel = new Label( this, SWT.NONE );
 		this.positionlistErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ));
 		
-		this.positionlistInput = new Text( this, SWT.BORDER | SWT.V_SCROLL );
+		this.positionlistText = new Text( this, SWT.BORDER | SWT.V_SCROLL );
 		gridData = new GridData();
 		gridData.horizontalSpan = 2;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
-		this.positionlistInput.setLayoutData( gridData );
-		this.positionlistInput.addModifyListener( new ModifyListener() {
-
-			public void modifyText( final ModifyEvent e ) {
-				if( axis != null ) {
-					axis.setPositionlist( positionlistInput.getText() );
-				}
-			}
-			
-		});
-		this.positionlistInput.addModifyListener( new ModifyListener() {
-
-			public void modifyText( final ModifyEvent e ) {
-				amountText.setText( "" + positionlistInput.getText().split( ";" ).length );
-			}
-			
-		});
+		this.positionlistText.setLayoutData( gridData );
+		this.positionlistText.addModifyListener( new PositionlistTextModifyListener());
 		
 		this.amountLabel = new Label( this, SWT.NONE );
 		this.amountLabel.setText( "Amount of positions:" );
@@ -92,7 +83,23 @@ public class MotorAxisPositionlistComposite extends Composite implements IModelU
 		this.positionlistLabel.setEnabled( false );
 		
 	}
-	
+
+	/**
+	 * calculate the height to see all entries of this composite
+	 * @return the needed height of Composite to see all entries
+	 */
+	public int getTargetHeight() {
+		return (amountText.getBounds().y + amountText.getBounds().height + 5);
+	}
+
+	/**
+	 * calculate the width to see all entries of this composite
+	 * @return the needed width of Composite to see all entries
+	 */
+	public int getTargetWidth() {
+		return (amountText.getBounds().x + amountText.getBounds().width + 5);
+	}
+
 	public void setAxis( final Axis axis ) {
 		
 		if( this.axis != null ) {
@@ -101,7 +108,7 @@ public class MotorAxisPositionlistComposite extends Composite implements IModelU
 		this.axis = axis;
 		if( this.axis != null ) {
 			if( this.axis.getPositionlist() != null ) { 
-				this.positionlistInput.setText( axis.getPositionlist() ); 
+				this.positionlistText.setText( axis.getPositionlist() ); 
 			}
 			final Iterator< IModelError > it = this.axis.getModelErrors().iterator();
 			this.positionlistErrorLabel.setImage( null );
@@ -119,7 +126,7 @@ public class MotorAxisPositionlistComposite extends Composite implements IModelU
 			this.axis.addModelUpdateListener( this );
 			
 		} else {
-			this.positionlistInput.setText( "" );
+			this.positionlistText.setText( "" );
 			this.positionlistLabel.setEnabled( false );
 		}
 	}
@@ -147,4 +154,27 @@ public class MotorAxisPositionlistComposite extends Composite implements IModelU
 		}
 		super.dispose();
 	}
+
+	///////////////////////////////////////////////////////////
+	// Hier kommen jetzt die verschiedenen Listener Klassen
+	///////////////////////////////////////////////////////////
+	/**
+	 * <code>ModifyListener</code> of PositionlistInput Text from
+	 * <code>MotorAxisPositionlistComposite</code>
+	 */
+	class PositionlistTextModifyListener implements ModifyListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void modifyText( final ModifyEvent e ) {
+			if( axis != null ) {
+				axis.setPositionlist( positionlistText.getText() );
+			}
+			amountText.setText( "" + positionlistText.getText().split( ";" ).length );
+		}
+		
+	};
+
 }

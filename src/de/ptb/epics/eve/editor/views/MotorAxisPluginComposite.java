@@ -30,6 +30,12 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateList
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 
+/**
+ * <code>MotorAxisPluginComposite</code> is a composite to input plugin values
+ * of the motor axis.
+ * @author Hartmut Scherr
+ *
+ */
 public class MotorAxisPluginComposite extends Composite implements IModelUpdateListener {
 
 	private Label pluginLabel;
@@ -47,7 +53,6 @@ public class MotorAxisPluginComposite extends Composite implements IModelUpdateL
 	}
 
 	private void initialize() {
-		
 		
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
@@ -71,21 +76,7 @@ public class MotorAxisPluginComposite extends Composite implements IModelUpdateL
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.pluginCombo.setLayoutData( gridData );
-		this.pluginCombo.addModifyListener( new ModifyListener() {
-
-			public void modifyText( final ModifyEvent e ) {
-				if( axis != null ) { 
-					PlugIn plugin = Activator.getDefault().getMeasuringStation().getPluginByName( pluginCombo.getText() );
-					if( axis.getPositionPluginController().getPlugin() != plugin ) {
-						axis.getPositionPluginController().setPlugin( plugin );
-						pluginControllerComposite.setPluginController( axis.getPositionPluginController() );
-						// TODO 29.1.10: wird dieser Aufruf von setScanModul wirklich benötigt?
-						pluginControllerComposite.setScanModul(scanModul);
-					}
-				}
-			}
-			
-		});
+		this.pluginCombo.addModifyListener( new PluginComboModifyListener());
 		
 		this.pluginErrorLabel = new Label(this, SWT.NONE );
 		this.pluginErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK ) );
@@ -108,6 +99,22 @@ public class MotorAxisPluginComposite extends Composite implements IModelUpdateL
 		
 		this.pluginCombo.setEnabled( false );
 		this.pluginControllerComposite.setEnabled( false );
+	}
+
+	/**
+	 * calculate the height to see all entries of this composite
+	 * @return the needed height of Composite to see all entries
+	 */
+	public int getTargetHeight() {
+		return (pluginControllerComposite.getBounds().y + pluginControllerComposite.getBounds().height + 5);
+	}
+
+	/**
+	 * calculate the width to see all entries of this composite
+	 * @return the needed width of Composite to see all entries
+	 */
+	public int getTargetWidth() {
+		return (pluginControllerComposite.getBounds().x + pluginControllerComposite.getBounds().width + 5);
 	}
 
 	public void setAxis( final Axis axis, final ScanModule scanModul ) {
@@ -156,6 +163,31 @@ public class MotorAxisPluginComposite extends Composite implements IModelUpdateL
 		
 	}
 
+	///////////////////////////////////////////////////////////
+	// Hier kommen jetzt die verschiedenen Listener Klassen
+	///////////////////////////////////////////////////////////
 
+	/**
+	 * <code>ModifyListener</code> of PluginCombo from
+	 * <code>MotorAxisPluginComposite</code>
+	 */
+	class PluginComboModifyListener implements ModifyListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void modifyText( final ModifyEvent e ) {
+			if( axis != null ) { 
+				PlugIn plugin = Activator.getDefault().getMeasuringStation().getPluginByName( pluginCombo.getText() );
+				if( axis.getPositionPluginController().getPlugin() != plugin ) {
+					axis.getPositionPluginController().setPlugin( plugin );
+					pluginControllerComposite.setPluginController( axis.getPositionPluginController() );
+					// TODO 29.1.10: wird dieser Aufruf von setScanModul wirklich benötigt?
+					pluginControllerComposite.setScanModul(scanModul);
+				}
+			}
+		}
+	};
 	
 }
