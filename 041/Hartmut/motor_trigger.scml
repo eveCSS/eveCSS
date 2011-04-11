@@ -16,7 +16,7 @@
         <scanmodules>
             <scanmodule id="1">
                 <type>classic</type>
-                <name>SM 1</name>
+                <name>motor</name>
                 <xpos>92</xpos>
                 <ypos>39</ypos>
                 <parent>0</parent>
