@@ -10,8 +10,6 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabFolder2Listener;
-import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlEvent;
@@ -24,7 +22,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.GridData;
@@ -102,9 +99,6 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		sc.setContent(this.top);
         sc.setExpandHorizontal(true);
         sc.setExpandVertical(true);
-        //TODO: Zeile wegnehmen, minSize wird erst gesetzt, wenn das Fenster das
-        // erste Mal gefüllt wird.
-        //        sc.setMinSize(this.top.computeSize(480, 310));
 		
 		this.averageLabel = new Label( this.top, SWT.NONE );
 		this.averageLabel.setText( "Average:" );
@@ -623,6 +617,5 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		}
 		
 	};
-
 	
 }
