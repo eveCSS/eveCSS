@@ -10,6 +10,7 @@ package de.ptb.epics.eve.editor.views;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -40,6 +41,8 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelError;
  *
  */
 public class MotorAxisStartStopStepwidthComposite extends Composite {
+
+	private static Logger logger = Logger.getLogger(MotorAxisStartStopStepwidthComposite.class);	
 
 	private Combo startCombo;
 	private Combo stopCombo;
@@ -267,7 +270,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								
 								this.startCombo.setText( "" + (stop - (stepwidth * stepamount) ) );
 							} catch( final NumberFormatException e ) {
-								
+								logger.error(e.getMessage(),e);
 							}
 						}
 					} else {
@@ -288,7 +291,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								
 								this.startCombo.setText( values.get( index ) );
 							} catch( final NumberFormatException e ) {
-								
+								logger.error(e.getMessage(),e);
 							}
 						}
 					}
@@ -302,7 +305,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 
 								this.stopCombo.setText( "" + (start + (stepwidth * stepamount) ) );
 							} catch( final NumberFormatException e ) {
-								
+								logger.error(e.getMessage(),e);
 							}
 						}
 					} else {
@@ -323,7 +326,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								
 								this.stopCombo.setText( values.get( index ) );
 							} catch( final NumberFormatException e ) {
-								
+								logger.error(e.getMessage(),e);
 							}
 						}
 					}
@@ -357,7 +360,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								else
 									this.stepwidthText.setText( "" + ( (stop - start ) / stepamount ) );
 							} catch( final NumberFormatException e ) {
-								
+								logger.error(e.getMessage(),e);
 							}
 						} 
 					} else {
@@ -383,7 +386,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 									this.stepwidthText.setText( "" + ( (stop - start ) / stepamount ) );
 								
 							} catch( final NumberFormatException e ) {
-								
+								logger.error(e.getMessage(),e);
 							}
 						}
 					}
@@ -435,7 +438,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								else
 									this.stepamountText.setText( "" + ( (stop - start) / stepwidth ) );
 							} catch( final NumberFormatException e ) {
-								
+								logger.error(e.getMessage(),e);
 							}
 						}
 					} else {
@@ -460,7 +463,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								else
 									this.stepamountText.setText( "" + (( stop - start) / stepwidth ) );
 							} catch( final NumberFormatException e ) {
-								
+								logger.error(e.getMessage(),e);
 							}
 						}
 					} 
