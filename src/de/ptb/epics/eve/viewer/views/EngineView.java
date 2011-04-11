@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -45,6 +46,7 @@ import de.ptb.epics.eve.viewer.IUpdateListener;
 public final class EngineView extends ViewPart implements IUpdateListener, IConnectionStateListener, IErrorListener {
 
 	private Composite top = null;
+	private ScrolledComposite sc = null;
 
 	private Label engineLabel;
 
@@ -102,12 +104,18 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 
 		GridLayout gridLayout;
 		GridData gridData;
+
+		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		
-		this.top = new Composite( parent, SWT.NONE );
+		this.top = new Composite( sc, SWT.NONE );
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 4;
 		this.top.setLayout(gridLayout);
 
+		sc.setContent(this.top);
+        sc.setExpandHorizontal(true);
+        sc.setExpandVertical(true);
+		
 		this.engineLabel = new Label( this.top, SWT.NONE );
 		this.engineLabel.setText("ENGINE:");
 
@@ -311,7 +319,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 			haltButton.setEnabled(false);
 
 		}
-	
 	}
 
 	/**
@@ -350,6 +357,15 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 
 		this.statusTable.getDisplay().syncExec( new Runnable() {
 			public void run() {
+
+				// TODO: Höhe und Breite ist fertig!
+				// Frage: An welcher Stelle kann das gesetzt werden?
+				// Das muß nicht erst passieren, wenn der erste Status Table
+				// angezeigt werden soll, das kann im Prinzip auch schon vorher sein
+				// Kommt hier auch noch eine Abfrage auf 0 hin?
+				int height = statusTable.getBounds().y + statusTable.getHeaderHeight() * 4 + 5;
+				int width = scanComposite.getBounds().x + repeatCountText.getBounds().x + repeatCountText.getBounds().width + 5;
+				sc.setMinSize(width, height);
 				
 				final TableItem[] rows = statusTable.getItems();
 				boolean neu = true;
@@ -531,7 +547,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	public void fillEngineStatus(EngineStatus engineStatus, int repeatCount) {
 
 		setCurrentRepeatCount(repeatCount);
-		
+
 		switch(engineStatus) {
 			case IDLE_NO_XML_LOADED:
 				this.playButton.getDisplay().syncExec( new Runnable() {
