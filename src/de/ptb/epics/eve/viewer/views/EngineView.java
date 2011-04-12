@@ -387,7 +387,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 						// neuen Wert für die Zeile eintragen
 						neu = false;
 						rows[i].setText(2, statString);
-						if (cell1 == -1) {
+						if ((cell1 == -1) && (remainTime > -1)) {
 							rows[i].setText(3, ""+remainTime);
 						}
 					}
@@ -400,7 +400,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 					tableItem.setText( 0, " "+chainId);
 					if (scanModuleId == -1) {
 						tableItem.setText( 1, " ");
-						tableItem.setText( 3, ""+remainTime);
+						if (remainTime > -1) tableItem.setText( 3, ""+remainTime);
 					}
 					else {
 						tableItem.setText( 1, " "+scanModuleId);
