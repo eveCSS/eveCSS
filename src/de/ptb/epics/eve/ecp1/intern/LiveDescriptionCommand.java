@@ -77,7 +77,7 @@ public class LiveDescriptionCommand implements IECP1Command {
 		} else {
 			final byte[] stringByte = this.liveDescription.getBytes( IECP1Command.STRING_ENCODING );
 			dataOutputStream.writeInt( 4 + stringByte.length );
-			dataOutputStream.writeInt( this.liveDescription.length() );
+			dataOutputStream.writeInt( stringByte.length );
 			dataOutputStream.write( stringByte );
 		}
 		
