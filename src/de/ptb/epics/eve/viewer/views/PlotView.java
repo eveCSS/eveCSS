@@ -2,9 +2,12 @@ package de.ptb.epics.eve.viewer.views;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.TransportTypes;
@@ -17,6 +20,7 @@ import de.ptb.epics.eve.data.scandescription.PlotWindow;
  * 
  * @author ?
  * @author Marcus Michalsky
+ * @author Hartmut Scherr, scrolledComposite added
  */
 public class PlotView extends ViewPart {
 	
@@ -33,6 +37,9 @@ public class PlotView extends ViewPart {
 	private PlotViewGraphComposite plotGraphComposite;
 	// the composite for the statistics tables
 	private PlotViewDetectorComposite plotDetectorComposite;
+
+	private ScrolledComposite sc = null;
+	private Composite top = null;
 	
 	/**
 	 * {@inheritDoc}
@@ -40,16 +47,25 @@ public class PlotView extends ViewPart {
 	@Override
 	public void createPartControl(final Composite parent) {
 		
+		parent.setLayout( new FillLayout() );		
+		
+		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+
+		this.top = new Composite( sc, SWT.NONE );
 		// we use a grid layout with two columns
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
-		parent.setLayout(gridLayout);
-		
+		this.top.setLayout(gridLayout);
+
+		sc.setContent(this.top);
+        sc.setExpandHorizontal(true);
+        sc.setExpandVertical(true);
+        
 		// in the left column we put our plotGraphComposite (the xy plot)
-		plotGraphComposite = new PlotViewGraphComposite(parent, SWT.NONE);
+		plotGraphComposite = new PlotViewGraphComposite(top, SWT.NONE);
 		// in the right column we put the statistics tables
-		plotDetectorComposite = new PlotViewDetectorComposite(parent, SWT.NONE);
-		
+		plotDetectorComposite = new PlotViewDetectorComposite(top, SWT.NONE);
+
 		// some alignments for the plotDetectorComposite
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
@@ -165,5 +181,28 @@ public class PlotView extends ViewPart {
 		plotDetectorComposite.refresh(plotWindow, chid, smid, motorId, motorName, 
 						motorPv, 
 						detector1, detector1Name, detector2, detector2Name);		
+
+		// calculate the minimum width and height of the scrolledWindow
+		int targetHeight = 0;
+		int targetWidth = 0;
+
+		Control[] detArray = plotDetectorComposite.getChildren();
+		for( int i = 0; i < detArray.length; ++i ) {
+			targetHeight = detArray[i].getBounds().height + detArray[i].getBounds().y;
+			targetWidth = detArray[i].getBounds().width + detArray[i].getBounds().x;
+		}
+		
+		int sizeHeight;
+		int sizeWidth;
+		
+		if ( plotGraphComposite.getBounds().height > targetHeight) {
+			sizeHeight = plotGraphComposite.getBounds().height + 5;
+		}
+		else {
+			sizeHeight = targetHeight + 10;
+		}
+		sizeWidth = plotGraphComposite.getBounds().width + plotGraphComposite.getBounds().x + targetWidth + 10;
+		sc.setMinSize(sizeWidth, sizeHeight);
+		
 	}
 }
