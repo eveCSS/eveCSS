@@ -3,6 +3,7 @@ package de.ptb.epics.eve.viewer.views;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -44,6 +45,8 @@ import de.ptb.epics.eve.viewer.IUpdateListener;
  * @author Hartmut Scherr
  */
 public final class EngineView extends ViewPart implements IUpdateListener, IConnectionStateListener, IErrorListener {
+
+	private static Logger logger = Logger.getLogger(EngineView.class);	
 
 	private Composite top = null;
 	private ScrolledComposite sc = null;
@@ -105,7 +108,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		GridLayout gridLayout;
 		GridData gridData;
 
-		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
 		
 		this.top = new Composite( sc, SWT.NONE );
 		gridLayout = new GridLayout();
@@ -357,12 +360,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 
 		this.statusTable.getDisplay().syncExec( new Runnable() {
 			public void run() {
-
-				// TODO: Höhe und Breite ist fertig!
-				// Frage: An welcher Stelle kann das gesetzt werden?
-				// Das muß nicht erst passieren, wenn der erste Status Table
-				// angezeigt werden soll, das kann im Prinzip auch schon vorher sein
-				// Kommt hier auch noch eine Abfrage auf 0 hin?
+				// Die sichtbare Höhe wird auf 3 Zeilen eingestellt
 				int height = statusTable.getBounds().y + statusTable.getHeaderHeight() * 4 + 5;
 				int width = scanComposite.getBounds().x + repeatCountText.getBounds().x + repeatCountText.getBounds().width + 5;
 				sc.setMinSize(width, height);
@@ -487,11 +485,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 			}
 		});
 
-		//TODO: Die Scan-Knöpfe können wieder erlaubt werden!
-		// Wie ist der EngineStatus?
-	
-//		Activator.getDefault().getEcp1Client().
-		
 	}
 
 	/**
@@ -984,7 +977,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		 */
 		@Override
 		public void widgetSelected( final SelectionEvent e ) {
-			System.out.println("Play Knopf im Engine Window gedrückt!");
 			Activator.getDefault().getEcp1Client().getPlayController().start();
 		}
 	}
@@ -1005,7 +997,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			System.out.println("Pause Knopf im Engine Window gedrückt!");
 			Activator.getDefault().getEcp1Client().getPlayController().pause();
 		}
 	}
@@ -1026,7 +1017,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			System.out.println("Stop Knopf im Engine Window gedrückt!");
 			Activator.getDefault().getEcp1Client().getPlayController().stop();
 		}
 	}
@@ -1047,7 +1037,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			System.out.println("Skip Knopf im Engine Window gedrückt!");
 			Activator.getDefault().getEcp1Client().getPlayController().breakExecution();
 		}
 	}
@@ -1068,7 +1057,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			System.out.println("Halt Knopf im Engine Window gedrückt!");
 			Activator.getDefault().getEcp1Client().getPlayController().halt();
 		}
 	}
@@ -1137,8 +1125,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 				try {
 					handlerService.executeCommand("de.ptb.epics.eve.viewer.connectCommand", null);
 				} catch (Exception e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
+					logger.error(e2.getMessage(), e2);
 				}
 			}
 		}
@@ -1166,8 +1153,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 				try {
 					handlerService.executeCommand("de.ptb.epics.eve.viewer.disconnectCommand", null);
 				} catch (Exception e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
+					logger.error(e2.getMessage(), e2);
 				}
 			}
 		}
@@ -1189,7 +1175,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		 */
 		@Override
 		public void widgetSelected( final SelectionEvent e ) {
-			System.out.println("AutoPlayOn Knopf im Engine Window gedrückt!");
 			Activator.getDefault().getEcp1Client().getPlayListController().setAutoplay(true);
 		}
 	}
@@ -1210,7 +1195,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		 */
 		@Override
 		public void widgetSelected( final SelectionEvent e ) {
-			System.out.println("AutoPlayOff Knopf im Engine Window gedrückt!");
 			Activator.getDefault().getEcp1Client().getPlayListController().setAutoplay(false);
 		}
 	}
