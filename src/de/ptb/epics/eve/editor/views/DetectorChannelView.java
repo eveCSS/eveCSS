@@ -91,7 +91,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		gridLayout.numColumns = 3;
 		GridData gridData;
 		
-		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
 
 		this.top = new Composite( sc, SWT.NONE );
 		this.top.setLayout( gridLayout );
@@ -310,7 +310,6 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			if (sc.getMinHeight() == 0) {
 				// Wenn das erste Mal die DetectorChannelView für einen Channel aufgerufen wird, gibt es noch
 				// keine Mindesthöhe für die Scrollbar. Die wird hier dann gesetzt.
-
 				int height = bar.getBounds().y + item0.getHeight() + item0.getHeaderHeight() + 5;
 				int width = bar.getBounds().x + bar.getBounds().width + 5;
 				sc.setMinSize(this.top.computeSize(width, height));
@@ -580,7 +579,6 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			// TODO Auto-generated method stub
 			// Einträge in der Auswahlliste werden aktualisiert
 			CTabItem wahlItem = eventsTabFolder.getSelection();
 			EventComposite wahlComposite = (EventComposite)wahlItem.getControl();

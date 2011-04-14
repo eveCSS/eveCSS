@@ -64,7 +64,7 @@ public class MotorAxisView extends ViewPart {
 		gridLayout.numColumns = 3;
 		GridData gridData;
 		
-		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
 
 		this.top = new Composite( sc, SWT.NONE );
 		this.top.setLayout( gridLayout );
@@ -72,7 +72,6 @@ public class MotorAxisView extends ViewPart {
 		sc.setContent(this.top);
         sc.setExpandHorizontal(true);
         sc.setExpandVertical(true);
-//        sc.setMinSize(this.top.computeSize(480, 310));
 
 		this.stepfunctionLabel = new Label( this.top, SWT.NONE );
 		this.stepfunctionLabel.setText( "Step function: " );
