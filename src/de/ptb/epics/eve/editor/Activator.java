@@ -3,6 +3,8 @@ package de.ptb.epics.eve.editor;
 import java.io.File;
 
 import org.apache.log4j.xml.DOMConfigurator;
+import org.eclipse.core.runtime.ILogListener;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -10,6 +12,7 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
+import de.ptb.epics.eve.editor.logging.EclipseLogListener;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -20,9 +23,11 @@ public class Activator extends AbstractUIPlugin {
 	 * The unique identifier of the plug in
 	 */
 	public static final String PLUGIN_ID = "de.ptb.epics.eve.editor";
-
+	
 	// The shared instance
 	private static Activator plugin;
+	
+	private ILogListener logListener;
 	
 	private IMeasuringStation measuringStation;
 	
@@ -45,6 +50,8 @@ public class Activator extends AbstractUIPlugin {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		logListener = new EclipseLogListener();
+		Platform.addLogListener(logListener);
 		
 		final String measuringStationDescription = 
 				de.ptb.epics.eve.preferences.Activator.getDefault().
@@ -87,6 +94,8 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	@Override
 	public void stop(final BundleContext context) throws Exception {
+		Platform.removeLogListener(logListener);
+		logListener = null;
 		plugin = null;
 		super.stop(context);
 	}
