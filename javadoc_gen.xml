@@ -81,6 +81,8 @@
         packagelistLoc="docs/api/j2ee-6.0.1/" />
       <link offline="true" href="http://logging.apache.org/log4j/1.2/apidocs"
         packagelistLoc="docs/api/log4j/" />
+      <link offline="true" href="http://help.eclipse.org/galileo/index.jsp?topic=/org.eclipse.platform.doc.isv/reference/api/"
+        packagelistLoc="docs/api/eclipse3.5/" />
       <link offline="true" href="http://www.eclipse.org/pde"
         packagelistLoc="docs/api/pde/" />
       <link offline="true" href="http://jca.cosylab.com/apidocs"
