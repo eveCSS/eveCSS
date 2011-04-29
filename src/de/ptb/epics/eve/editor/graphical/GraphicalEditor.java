@@ -8,6 +8,7 @@ import java.util.Iterator;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -21,8 +22,6 @@ import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -55,34 +54,61 @@ import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.dialogs.LostDevicesDialog;
 import de.ptb.epics.eve.editor.graphical.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.EventEditPart;
-import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
-import de.ptb.epics.eve.editor.graphical.editparts.ScanModulEditPart;
+import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.ErrorView;
-import de.ptb.epics.eve.editor.views.ScanModulView;
+import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
+import de.ptb.epics.eve.editor.views.scanview.ScanView;
 
 /**
+ * <code>GraphicalEditor</code> is the central element of the EveEditor Plug In.
+ * It allows creating and editing of scan descriptions.
  * 
  * @author ?
  * @author Marcus Michalsky
  */
 public class GraphicalEditor extends EditorPart implements IModelUpdateListener {
 
+	// logging
+	private static Logger logger = Logger.getLogger(GraphicalEditor.class);
+	
+	// a graphical view of the model (hosts the figures)
 	private ScrollingGraphicalViewer viewer;
+	
+	/*
+	 * the currently loaded scan description
+	 */
 	private ScanDescription scanDescription;
 	
+	/*
+	 * reminder of the currently selected scan module
+	 * decides what is shown in the scan module view
+	 */
+	private ScanModule selectedScanModule = null;
+	
+	/*
+	 * reminder of the currently selected edit part
+	 * if it is a scan module, it is selected (colored)
+	 */
 	private EditPart selectedEditPart;
+	
+	/*
+	 * reminder of the recently right-clicked edit part
+	 * used by the actions of the context menu
+	 */
 	private EditPart rightClickEditPart;
 	
 	private EditDomain editDomain = new EditDomain();
 	
+	// the context menu of the editor (right-click)
+	private Menu menu;
+	
+	// context menu actions to add appended/nested, delete or rename modules
 	private MenuItem addAppendedScanModulMenuItem;
 	private MenuItem addNestedScanModulMenuItem;
 	private MenuItem deleteScanModulMenuItem;
 	private MenuItem renameScanModulMenuItem;
 	
-	private ScanModule currentScanModul = null;
-	private static ScanModule initScanModul = null;
-	
+	// dirty flag indicating whether the editor has unsaved changes
 	private boolean dirty;
 	
 	/**
@@ -90,11 +116,12 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
+		logger.debug("create part control");
+		
 		this.viewer = new ScrollingGraphicalViewer();
 		this.viewer.createControl(parent);
 		this.editDomain.addViewer(this.viewer);
 
-		this.viewer.getControl().addControlListener(new ViewerControlListener());
 		this.viewer.getControl().addMouseListener(new ViewerMouseListener());
 
 		// configure GraphicalViewer		
@@ -107,54 +134,154 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		this.viewer.setEditPartFactory(new GraphicalEditorEditPartFactory());
 		
 		this.viewer.setContents(this.scanDescription);
-
 		
-		Menu menu = new Menu(this.viewer.getControl());
+		menu = createContextMenu();
+		
+		updateViews();
+	}
+
+	private Menu createContextMenu()
+	{
+		menu = new Menu(this.viewer.getControl());
 		this.addAppendedScanModulMenuItem = new MenuItem(menu, SWT.NONE);
 		this.addAppendedScanModulMenuItem.setText("Add appended Scan Modul");
 		this.addAppendedScanModulMenuItem.addSelectionListener(
-				new AddAppendedScanModulMenuItemSelectionListener());
+				new AddAppendedScanModuleMenuItemSelectionListener());
 		this.addNestedScanModulMenuItem = new MenuItem(menu, SWT.NONE);
 		this.addNestedScanModulMenuItem.setText("Add nested Scan Modul");
 		this.addNestedScanModulMenuItem.addSelectionListener(
-				new AddNestedScanModulMenuItemSelectionListener());
+				new AddNestedScanModuleMenuItemSelectionListener());
 		this.deleteScanModulMenuItem = new MenuItem(menu, SWT.NONE);
 		this.deleteScanModulMenuItem.setText("Delete");
 		this.deleteScanModulMenuItem.addSelectionListener(
-				new DeleteScanModulMenuItemSelectionListener());
+				new DeleteScanModuleMenuItemSelectionListener());
 		this.renameScanModulMenuItem = new MenuItem(menu, SWT.NONE);
 		this.renameScanModulMenuItem.setText("Rename");
 		this.renameScanModulMenuItem.addSelectionListener(
-				new RenameScanModulMenuItemSelectionListener());
+				new RenameScanModuleMenuItemSelectionListener());
 		this.viewer.getControl().setMenu(menu);
 		
+		return menu;
+	}
+	
+	/*
+	 * called by setFocus()
+	 */
+	private void updateErrorView()
+	{
+		// get all views
 		IViewReference[] ref = getSite().getPage().getViewReferences();
-		ErrorView view = null;
+		
+		// inform the error view about the current scan description
+		ErrorView errorView = null;
 		for(int i = 0; i < ref.length; ++i) {
 			if(ref[i].getId().equals(ErrorView.ID)) {
-				view = (ErrorView)ref[i].getPart(false);
-				if(view != null) {
-					view.setScanDescription(this.scanDescription);
-				}
+				errorView = (ErrorView)ref[i].getPart(false);
+				
 			}
-		}	
+		}
+		
+		if(errorView != null) {
+			errorView.setCurrentScanDescription(this.scanDescription);
+		}
 	}
-
-	/**
-	 * 
-	 * 
-	 * @param initScanModul init scan module
-	 */
-	public static void setInitScanModul(ScanModule initScanModul) {
-		GraphicalEditor.initScanModul = initScanModul;
+	
+	private void updateScanView()
+	{
+		// get all views
+		IViewReference[] ref = getSite().getPage().getViewReferences();
+		
+		// try to get the scan view
+		ScanView scanView = null;
+		for(int i = 0; i < ref.length; ++i) {
+			if(ref[i].getId().equals(ScanView.ID)) {
+				scanView = (ScanView)ref[i].getPart(false);
+			}
+		}
+		
+		// scan view found ?
+		if(scanView != null) {
+			// tell the view about the currently selected scan module
+			
+			if(selectedScanModule != null)
+			{
+				scanView.setCurrentChain(selectedScanModule.getChain());
+				logger.debug("currentChain: " + selectedScanModule.getChain());
+			}
+			else {
+				scanView.setCurrentChain(null);
+				logger.debug("currentChain: " + null);
+			}
+		} 
 	}
-
-	/**
-	 *  
-	 * @return init scan module
+	
+	/*
+	 * called by setFocus() & the mouse listener
 	 */
-	public static ScanModule getInitScanModul() {
-		return initScanModul;
+	private void updateScanModuleView()
+	{
+		// get all views
+		IViewReference[] ref = getSite().getPage().getViewReferences();
+		
+		// try to get the scan module view
+		ScanModuleView scanModuleView = null;
+		for(int i = 0; i < ref.length; ++i) {
+			if(ref[i].getId().equals(ScanModuleView.ID)) {
+				scanModuleView = (ScanModuleView)ref[i].getPart(false);
+			}
+		}
+		
+		// scan module view found ?
+		if(scanModuleView != null) {
+			// tell the view about the currently selected scan module
+			scanModuleView.setCurrentScanModule(selectedScanModule);
+		}
+		logger.debug("selectedScanModule: " + selectedScanModule);
+	}
+	
+	/*
+	 * wrapper to update all views
+	 */
+	private void updateViews()
+	{
+		updateErrorView();
+		updateScanView();
+		updateScanModuleView();
+	}
+	
+	/*
+	 * used to select a scan module (and deselect the old one) by 
+	 * updating all necessary references
+	 * 
+	 * @param part the corresponding edit part of the scan module that should
+	 * 		  be selected
+	 */
+	private void selectScanModule(ScanModuleEditPart part)
+	{
+		// if a scan module was previously selected -> deselect it
+		if(selectedEditPart instanceof ScanModuleEditPart) {
+			((ScanModuleEditPart)selectedEditPart).setFocus(false);
+		}
+		
+		if(part != null)
+		{
+			// remember the selected scan module
+			selectedEditPart = part;
+		
+			// update the model to the currently selected module 
+			selectedScanModule = (ScanModule)selectedEditPart.getModel();
+						
+			// set the focus (to select/color it)
+			((ScanModuleEditPart)selectedEditPart).setFocus(true);
+		} else {
+			// reset selection
+			selectedEditPart = null;
+			// reset model
+			selectedScanModule = null;
+		}
+		
+		// tell the views about the changes
+		updateViews();
 	}
 	
 	// ***********************************************************************
@@ -166,6 +293,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
+		logger.debug("update event");
 		this.dirty = true;
 		this.firePropertyChange(PROP_DIRTY);	
 	}
@@ -179,63 +307,10 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 */
 	@Override
 	public void setFocus() {
-		IViewReference[] ref = getSite().getPage().getViewReferences();
-		ErrorView view = null;
-		for(int i = 0; i < ref.length; ++i) {
-			if(ref[i].getId().equals(ErrorView.ID)) {
-				view = (ErrorView)ref[i].getPart(false);
-				if(view != null) {
-					view.setScanDescription(this.scanDescription);
-				}
-			}
-		}
-
-		ScanModulView scanModulView = null;
 		
-		for(int i = 0; i < ref.length; ++i) {
-			if(ref[i].getId().equals(ScanModulView.ID)) {
-				scanModulView = (ScanModulView)ref[i].getPart(false);
-			}
-		}
-		if(scanModulView != null) {
-			// Wenn hier currentScanModul nicht gesetzt ist, wird das scanModul angezeigt,
-			// dass über noticeFirstScanModul von ScanModulEditPart übergeben wurde.
-			// Da bei der Initialisierung des ersten ScanModuls aber noch keine Oberfläche vorhanden ist
-			// und damit kein ScanModulView, muß das Setzen des Focus im ersten ScanModul anders erfolgen.
-			// Momentane Lösung: controlResized(ControlEvent e) wird aufgerufen sobald sich die Größe des
-			// ... ändert. Dadurch kann dann das erste ScanModul gesetzt werden! (Hartmut 21.1.11)
-
-			if ((currentScanModul == null) && (GraphicalEditor.getInitScanModul() != null)) {
-
-				// gerade erzeugte bzw. gewünschte ScanModul wird selektiert
-				IViewReference[] ref2 = getSite().getPage().getViewReferences();
-				ScanModulView view2 = null;
-				for( int i = 0; i < ref2.length; ++i ) {
-					if( ref2[i].getId().equals( ScanModulView.ID ) ) {
-						view2 = (ScanModulView)ref2[i].getPart( false );
-					}
-				}
-
-				int x = GraphicalEditor.getInitScanModul().getX();
-				int y = GraphicalEditor.getInitScanModul().getY();
-				
-				EditPart part = viewer.findObjectAt(new Point(x, y));
-				if(selectedEditPart instanceof ScanModulEditPart) {
-					((ScanModulEditPart)selectedEditPart).setFocus(false);
-				}
-				selectedEditPart = part;
-				
-				if(selectedEditPart instanceof ScanModulEditPart) {
-					((ScanModulEditPart)selectedEditPart).setFocus(true);
-					view2.setCurrentScanModul(GraphicalEditor.getInitScanModul());
-					currentScanModul = GraphicalEditor.getInitScanModul();
-				} else {
-					view2.setCurrentScanModul(null);
-					currentScanModul = null;
-				}
-			}
-			scanModulView.setCurrentScanModul(currentScanModul);
-		}
+		logger.debug("Focus gained");
+						
+		updateViews();
 	}
 	
 	// ***********************************************************************
@@ -248,6 +323,10 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	@Override
 	public void init(final IEditorSite site, final IEditorInput input) 
 													throws PartInitException {
+		logger.debug("Init");
+		
+		this.selectedScanModule = null;
+		
 		this.setSite(site);
 		this.setInput(input);
 		this.setPartName(input.getName());
@@ -287,11 +366,11 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			
 			this.scanDescription.addModelUpdateListener(this);
 		} catch(final ParserConfigurationException e) {
-			e.printStackTrace(); // TODO
+			logger.error(e.getMessage(), e);
 		} catch(final SAXException e) {
-			e.printStackTrace(); // TODO
+			logger.error(e.getMessage(), e);
 		} catch(final IOException e) {
-			e.printStackTrace(); // TODO
+			logger.error(e.getMessage(), e);
 		}
 		this.firePropertyChange(PROP_DIRTY);
 	}
@@ -377,10 +456,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			this.firePropertyChange(PROP_DIRTY);
 			
 			this.setPartName(fileStoreEditorInput.getName());
-			
 		} catch(final FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 	}
 	
@@ -400,41 +477,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		return true;
 	}
 	
-	// ***********************************************************************
-	// **************************** Listener *********************************
-	// ***********************************************************************
-	
-	/**
-	 * <code>ControlListener</code> of viewer.
-	 */
-	class ViewerControlListener implements ControlListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlMoved(ControlEvent e) {
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlResized(ControlEvent e) {
-			IViewReference[] ref = getSite().getPage().getViewReferences();
-			ScanModulView scanModulView = null;
-			
-			// TODO is this listener doing something useful at all ?
-			
-			for(int i = 0; i < ref.length; ++i) {
-				if(ref[i].getId().equals(ScanModulView.ID)) {
-					scanModulView = (ScanModulView)ref[i].getPart(false);
-				}
-			}
-			setFocus();
-		}			
-	}
-	
 	/**
 	 * <code>MouseListener</code> of viewer.
 	 */
@@ -448,90 +490,99 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		}
 
 		/**
-		 * {@inheritDoc}
+		 * {@inheritDoc}<br><br>
+		 * Updates available context menu entries depending on where the user 
+		 * (right-)clicked.
 		 */
 		@Override
 		public void mouseDown(MouseEvent e) {
 
+			if(e.button == 1) return;
+			
+			// get the object (part) the user clicked on
 			EditPart part = viewer.findObjectAt(new Point(e.x, e.y));
 			
-			part.refresh();
-			if(part instanceof ScanModulEditPart) {
-				final ScanModule scanModul = (ScanModule)part.getModel();
-				if(scanModul.getAppended() == null) {
+			//part.refresh();
+			
+			// check on what object the user clicked at
+			
+			if(part instanceof ScanModuleEditPart) {
+				
+				// user clicked on a scan module
+				final ScanModule scanModule = (ScanModule)part.getModel();
+				// enable/disable context menu entries depending on the 
+				// selected scan module
+				if(scanModule.getAppended() == null) {
+					// no appended module present -> add appended allowed
 					addAppendedScanModulMenuItem.setEnabled(true);
 				} else {
+					// appended already present -> add appended not allowed
 					addAppendedScanModulMenuItem.setEnabled(false);
 				}
-				if(scanModul.getNested() == null) {
+				if(scanModule.getNested() == null) {
+					// no nested scan module present -> add nested allowed
 					addNestedScanModulMenuItem.setEnabled(true);
 				} else {
+					// nested already present -> add nested not allowed
 					addNestedScanModulMenuItem.setEnabled(false);
 				}
+				// delete and rename is always allowed
 				deleteScanModulMenuItem.setEnabled(true);
 				renameScanModulMenuItem.setEnabled(true);
+				
 			} else if(part instanceof EventEditPart) {
+				
+				// user clicked on an event
 				EventEditPart eventEditPart = (EventEditPart)part;
 				if(((StartEvent)eventEditPart.getModel()).getConnector() == null) {
+					// no appended module present -> add appended allowed
 					addAppendedScanModulMenuItem.setEnabled(true);
 				} else {
+					// appended already present -> add appended not allowed
 					addAppendedScanModulMenuItem.setEnabled(false);
 				}
+				// add nested and delete module never allowed for events
 				addNestedScanModulMenuItem.setEnabled(false);
 				deleteScanModulMenuItem.setEnabled(false);
+				
 			} else {
+				
+				// user clicked anywhere else -> disable all actions
 				addAppendedScanModulMenuItem.setEnabled(false);
 				addNestedScanModulMenuItem.setEnabled(false);
 				deleteScanModulMenuItem.setEnabled(false);
 				renameScanModulMenuItem.setEnabled(false);
 			}
+			
+			// save the edit part the user recently (right-)clicked on
 			rightClickEditPart = part;
 		}
 
 		/**
-		 * {@inheritDoc}
+		 * {@inheritDoc}<br><br>
+		 * Updates the coloring depending on the selected scan module and 
+		 * tells the scan module view about it.
 		 */
 		@Override
 		public void mouseUp(MouseEvent e) {
-
-			// Ansicht des ScanModuls wird aktualisiert
-			IViewReference[] ref = getSite().getPage().getViewReferences();
-			ScanModulView view = null;
-			for( int i = 0; i < ref.length; ++i ) {
-				if( ref[i].getId().equals( ScanModulView.ID ) ) {
-					view = (ScanModulView)ref[i].getPart( false );
-				}
-			}
 			
-			EditPart part = viewer.findObjectAt( new Point( e.x, e.y ) );
+			logger.debug("Mouse " + e.button);
+			
+			if(e.button == 2) return;
+			
+			// find the object the user clicked on
+			EditPart part = viewer.findObjectAt(new Point(e.x, e.y));
 
-			// nur wenn ein Scan Modul selektiert ist, wird die Ansicht geändert
-			if( part instanceof ScanModulEditPart ) {
-				// Wenn schon ein SM angezeigt wird, wird der Focus weggenommen
-				if( selectedEditPart instanceof ScanModulEditPart ) {
-					((ScanModulEditPart)selectedEditPart).setFocus( false );
-				}
-				selectedEditPart = part;
-				((ScanModulEditPart)selectedEditPart).setFocus( true );
-				ScanModule scanModul = (ScanModule)selectedEditPart.getModel();
-				view.setCurrentScanModul( scanModul );
-				currentScanModul = scanModul;
-			}
-			else if( part instanceof ScanDescriptionEditPart ) {
-				// Wenn schon ein SM angezeigt wird, wird der Focus weggenommen
-				if( selectedEditPart instanceof ScanModulEditPart ) {
-					((ScanModulEditPart)selectedEditPart).setFocus( false );
-				}
-				// als EditPart wird der zuletzt mit der rechten Maustaste angeklickte 
-				// Part gesetzt
-				selectedEditPart = rightClickEditPart;
-				((ScanModulEditPart)selectedEditPart).setFocus( true );
-				ScanModule scanModul = (ScanModule)selectedEditPart.getModel();
-				view.setCurrentScanModul( scanModul );
-				currentScanModul = scanModul;
+			if(part instanceof ScanModuleEditPart) {
+				// user clicked on a scan module
+				
+				selectScanModule((ScanModuleEditPart)part);
 			}
 			else
-				return;
+			{
+				// user clicked anywhere else -> deselect scan module
+				selectScanModule(null);
+			}
 		}
 	}
 	
@@ -541,7 +592,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 * <code>SelectionListener</code> of 
 	 * <code>addAppendedScanModulMenuItem</code>.
 	 */
-	class AddAppendedScanModulMenuItemSelectionListener 
+	class AddAppendedScanModuleMenuItemSelectionListener 
 												implements SelectionListener {
 		/**
 		 * {@inheritDoc}
@@ -553,20 +604,27 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		/**
 		 * {@inheritDoc}
 		 */
+		@SuppressWarnings("unchecked")
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			
-			// TODO !!!!! split try catch in smaller parts and only there, 
-			// where it is needed !!!!!
+			// TODO !!!!! split try catch in smaller parts ?
 			try {
-				if(rightClickEditPart instanceof ScanModulEditPart) {
-					ScanModulEditPart scanModulEditPart = 
-							(ScanModulEditPart)rightClickEditPart;
-					ScanModule scanModul = 
+				if(rightClickEditPart instanceof ScanModuleEditPart) {
+					// get the edit part the user right-clicked on
+					// (before choosing add nested scan module)
+					ScanModuleEditPart scanModuleEditPart = 
+							(ScanModuleEditPart)rightClickEditPart;
+					// get the model of the edit part the user clicked on
+					ScanModule scanModule = 
 							(ScanModule)rightClickEditPart.getModel();
 					
-					Chain[] chains = scanModul.getChain().getScanDescription().
+					// find the next free id which can be used for the new module
+					
+					// create a new array of all available chains
+					Chain[] chains = scanModule.getChain().getScanDescription().
 											getChains().toArray(new Chain[0]);
+					
 					int newId = 1;
 					
 					do {
@@ -584,25 +642,34 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 						if(!repeat)
 							break;
 					} while(true);
+					// end of: find new id
 					
-					ScanModule newScanModul = new ScanModule(newId);
-					newScanModul.setName("SM " + newId + " append");
-					newScanModul.setX(scanModul.getX() + 130);
-					newScanModul.setY(scanModul.getY());
+					ScanModule newScanModule = new ScanModule(newId);
+					newScanModule.setName("SM " + newId + " append");
+					newScanModule.setX(scanModule.getX() + 130);
+					newScanModule.setY(scanModule.getY());
 					// Voreinstellungen für das neue Scan Modul
-					newScanModul.setTriggerdelay(0);
-					newScanModul.setSettletime(0);
-					newScanModul.setSaveAxisPositions(SaveAxisPositionsTypes.NEVER);
+					newScanModule.setTriggerdelay(0);
+					newScanModule.setSettletime(0);
+					newScanModule.setSaveAxisPositions(SaveAxisPositionsTypes.NEVER);
 					
 					Connector connector = new Connector();
-					connector.setParentScanModul(scanModul);
-					connector.setChildScanModul(newScanModul);
-					scanModul.setAppended(connector);
-					newScanModul.setParent(connector);
+					connector.setParentScanModul(scanModule);
+					connector.setChildScanModul(newScanModule);
+					scanModule.setAppended(connector);
+					newScanModule.setParent(connector);
 
-					scanModul.getChain().add(newScanModul);
-					scanModulEditPart.refresh();
-					scanModulEditPart.getParent().refresh();
+					scanModule.getChain().add(newScanModule);
+					
+					scanModuleEditPart.refresh();
+					scanModuleEditPart.getParent().refresh();
+					
+					// select the newly created module
+					EditPart part = viewer.findObjectAt(
+							new Point(newScanModule.getX()+2, 
+									  newScanModule.getY()+2));
+					if(part instanceof ScanModuleEditPart)
+						selectScanModule((ScanModuleEditPart)part);
 					
 				} else if(rightClickEditPart instanceof EventEditPart) {
 					EventEditPart eventEditPart = 
@@ -629,31 +696,31 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 							break;
 					} while(true);
 					
-					ScanModule newScanModul = new ScanModule(newId);
-					newScanModul.setName("SM " + newId);
-					newScanModul.setX(100);
-					newScanModul.setY(20);
+					ScanModule newScanModule = new ScanModule(newId);
+					newScanModule.setName("SM " + newId);
+					newScanModule.setX(100);
+					newScanModule.setY(20);
 					// Voreinstellungen für das neue Scan Modul
-					newScanModul.setTriggerdelay(0);
-					newScanModul.setSettletime(0);
-					newScanModul.setSaveAxisPositions(SaveAxisPositionsTypes.NEVER);
+					newScanModule.setTriggerdelay(0);
+					newScanModule.setSettletime(0);
+					newScanModule.setSaveAxisPositions(SaveAxisPositionsTypes.NEVER);
 					
 					Connector connector = new Connector();
 					connector.setParentEvent(startEvent);
-					connector.setChildScanModul(newScanModul);
+					connector.setChildScanModul(newScanModule);
 					startEvent.setConnector(connector);
-					newScanModul.setParent(connector);
+					newScanModule.setParent(connector);
 					Iterator<Chain> it = scanDescription.getChains().iterator();
 					while(it.hasNext()) {
 						Chain currentChain = it.next();
 						if(currentChain.getStartEvent() == startEvent) {
-						   currentChain.add(newScanModul);
+						   currentChain.add(newScanModule);
 							break;
 						}
 					}
 					eventEditPart.refresh();
 					eventEditPart.getParent().refresh();
-					Iterator it2 = eventEditPart.getParent().getChildren().iterator();
+					Iterator<EditPart> it2 = eventEditPart.getParent().getChildren().iterator();
 					while(it2.hasNext()) {
 						EditPart editPart = (EditPart)it2.next();
 						if(editPart instanceof ChainEditPart) {
@@ -663,35 +730,14 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 							   chainEditPart.refresh();
 							}
 						}
-						
 					}
-					// Per Maus soll das erste Scan-Modul aktiviert werden!
-
-					// gerade erzeugte ScanModul wird selektiert
-					IViewReference[] ref = getSite().getPage().getViewReferences();
-					ScanModulView view = null;
-					for(int i = 0; i < ref.length; ++i) {
-						if(ref[i].getId().equals(ScanModulView.ID)) {
-							view = (ScanModulView)ref[i].getPart(false);
-						}
-					}
-
-					EditPart part = viewer.findObjectAt(new Point(110, 30));
-					if(selectedEditPart instanceof ScanModulEditPart) {
-						((ScanModulEditPart)selectedEditPart).setFocus(false);
-					}
-					selectedEditPart = part;
 					
-					if(selectedEditPart instanceof ScanModulEditPart) {
-						((ScanModulEditPart)selectedEditPart).setFocus(true);
-						ScanModule scanModul = 
-								(ScanModule)selectedEditPart.getModel();
-						view.setCurrentScanModul(scanModul);
-						currentScanModul = scanModul;
-					} else {
-						view.setCurrentScanModul(null);
-						currentScanModul = null;
-					}
+					// select the newly created module
+					EditPart part = viewer.findObjectAt(
+							new Point(newScanModule.getX()+2, 
+									  newScanModule.getY()+2));
+					if(part instanceof ScanModuleEditPart)
+						selectScanModule((ScanModuleEditPart)part);
 				}
 				
 			} catch(Exception ex) {
@@ -703,7 +749,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	/**
 	 * <code>SelectionListener</code> of <code>addNestedScanModulMenuItem</code>.
 	 */
-	class AddNestedScanModulMenuItemSelectionListener implements SelectionListener {
+	class AddNestedScanModuleMenuItemSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -718,15 +764,18 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			
-			ScanModulEditPart scanModulEditPart = 
-					(ScanModulEditPart)rightClickEditPart;
-			ScanModule scanModul = (ScanModule)rightClickEditPart.getModel();
-			Chain[] chains = scanModul.getChain().getScanDescription().
+			ScanModuleEditPart scanModuleEditPart = 
+					(ScanModuleEditPart)rightClickEditPart;
+			ScanModule scanModule = (ScanModule)rightClickEditPart.getModel();
+			Chain[] chains = scanModule.getChain().getScanDescription().
 					getChains().toArray(new Chain[0]);
+			
+			// get the next available id
 			int newId = 1;
 			do {
 				boolean repeat = false;
-				for(int i=0; i<chains.length; ++i) {
+				
+				for(int i = 0; i < chains.length; ++i) {
 					ScanModule[] scanModules = 
 						chains[i].getScanModuls().toArray(new ScanModule[0]);
 					for(int j=0; j<scanModules.length; ++j) {
@@ -739,31 +788,40 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				if(!repeat)
 					break;
 			} while(true);
+			// end of: get free id
 			
-			ScanModule newScanModul = new ScanModule(newId);
-			newScanModul.setName("SM " + newId + " nested");
-			newScanModul.setX(scanModul.getX() + 130);
-			newScanModul.setY(scanModul.getY() + 100);
+			ScanModule newScanModule = new ScanModule(newId);
+			newScanModule.setName("SM " + newId + " nested");
+			newScanModule.setX(scanModule.getX() + 130);
+			newScanModule.setY(scanModule.getY() + 100);
 			// Voreinstellungen für das neue Scan Modul
-			newScanModul.setTriggerdelay(0);
-			newScanModul.setSettletime(0);
-			newScanModul.setSaveAxisPositions(SaveAxisPositionsTypes.NEVER);
+			newScanModule.setTriggerdelay(0);
+			newScanModule.setSettletime(0);
+			newScanModule.setSaveAxisPositions(SaveAxisPositionsTypes.NEVER);
 			
 			Connector connector = new Connector();
-			connector.setParentScanModul(scanModul);
-			connector.setChildScanModul(newScanModul);
-			scanModul.setNested(connector);
-			newScanModul.setParent(connector);
-			scanModul.getChain().add(newScanModul);
-			scanModulEditPart.refresh();
-			scanModulEditPart.getParent().refresh();		
+			connector.setParentScanModul(scanModule);
+			connector.setChildScanModul(newScanModule);
+			scanModule.setNested(connector);
+			newScanModule.setParent(connector);
+			
+			scanModule.getChain().add(newScanModule);
+			
+			scanModuleEditPart.refresh();
+			scanModuleEditPart.getParent().refresh();
+			
+			// select the newly created module
+			EditPart part = viewer.findObjectAt(
+					new Point(newScanModule.getX()+2, newScanModule.getY()+2));
+			if(part instanceof ScanModuleEditPart)
+				selectScanModule((ScanModuleEditPart)part);
 		}
 	}
-	
+
 	/**
 	 * <code>SelectionListener</code> of <code>deleteScanModulMenuItem</code>.
 	 */
-	class DeleteScanModulMenuItemSelectionListener implements SelectionListener {
+	class DeleteScanModuleMenuItemSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -778,49 +836,45 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			
-			ScanModulEditPart scanModulEditPart = 
-					(ScanModulEditPart)rightClickEditPart;
+			// get the scan module the user right-clicked
+			ScanModuleEditPart scanModuleEditPart = 
+					(ScanModuleEditPart)rightClickEditPart;
 
-			// Wenn schon ein SM angezeigt wird, wird der Focus weggenommen
-			if(selectedEditPart instanceof ScanModulEditPart) {
-				((ScanModulEditPart)selectedEditPart).setFocus(false);
-			}
-
-			// Parent wird als neues Scan Module angezeigt
-			IViewReference[] ref = getSite().getPage().getViewReferences();
-			ScanModulView view = null;
-			for(int i = 0; i < ref.length; ++i) {
-				if(ref[i].getId().equals(ScanModulView.ID)) {
-					view = (ScanModulView)ref[i].getPart(false);
-				}
+			// deselect currently selected scan module (if existing)
+			if(selectedEditPart instanceof ScanModuleEditPart) {
+				((ScanModuleEditPart)selectedEditPart).setFocus(false);
 			}
 			
-			// scanModul bestimmen das den Focus bekommen soll
+			// try to find parent scan module
 			EditPart newPart = null;
-			ScanModule scanModul = (ScanModule)scanModulEditPart.getModel();
-			ScanModule parentModul = scanModul.getParent().getParentScanModul();
-			if (parentModul != null) {
-				int x = parentModul.getX();
-				int y = parentModul.getY();
+			ScanModule scanModule = (ScanModule)scanModuleEditPart.getModel();
+			ScanModule parentModule = scanModule.getParent().getParentScanModule();
+			if (parentModule != null) {
+				int x = parentModule.getX();
+				int y = parentModule.getY();
 				newPart = viewer.findObjectAt(new Point(x, y));
 			}
-			// scanModul mit angehängten Modulen wird entfernt
-			scanModulEditPart.removeYourSelf();
+			// scanModule mit angehängten Modulen wird entfernt
+			scanModuleEditPart.removeYourSelf();
 			
-			if (newPart != null) {
-				// parent ScanModul bekommt den Focus
-				selectedEditPart = newPart;
-				((ScanModulEditPart)selectedEditPart).setFocus(true);
-				view.setCurrentScanModul(parentModul);
-				currentScanModul = parentModul;
-			}		
+			if (newPart != null){ // && newPart instanceof ScanModuleEditPart) {
+				// parent scan module exists -> select it
+				selectScanModule((ScanModuleEditPart)newPart);
+			} else {
+				// no parent scan module -> select nothing
+				selectedEditPart = null;
+				selectedScanModule = null;
+			}
+			
+			// tell the other views about the change
+			updateViews();
 		}
 	}
 	
 	/**
-	 * <code>SelectionListener</code> of <code>renameScanModulMenuItem</code>.
+	 * <code>SelectionListener</code> of <code>renameScanModuleMenuItem</code>.
 	 */
-	class RenameScanModulMenuItemSelectionListener implements SelectionListener {
+	class RenameScanModuleMenuItemSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -830,29 +884,30 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		}
 		
 		/**
+		 * {@inheritDoc}<br><br>
 		 * Shows a dialog to enter a new name for the scan module. 
-		 * If OK is pressed, the name is changed.<br><br>
-		 * {@inheritDoc} 
+		 * If OK is pressed, the name is changed. 
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			
-			ScanModulEditPart scanModulEditPart = 
-					(ScanModulEditPart)rightClickEditPart;
-			ScanModule scanModul = (ScanModule)rightClickEditPart.getModel();
+			// get the scan module the user right-clicked
+			ScanModuleEditPart scanModuleEditPart = 
+					(ScanModuleEditPart)rightClickEditPart;
+			ScanModule scanModule = (ScanModule)rightClickEditPart.getModel();
 			
 			// show dialog to input new name
 			Shell shell = getSite().getShell();
 			InputDialog dialog = new InputDialog(shell, 
-					"Renaming ScanModul:" + scanModul.getId(), 
-					"Please enter the new name for the Scan Modul.", 
-					scanModul.getName(), null);
+					"Renaming ScanModule:" + scanModule.getId(), 
+					"Please enter a new name for the Scan Module:", 
+					scanModule.getName(), null);
 			// if user acknowledges (OK Button) -> change name, 
 			// do nothing if not (Cancel Button)
 			if(InputDialog.OK == dialog.open()) {
-				scanModul.setName(dialog.getValue());
-				scanModulEditPart.refresh();
-				scanModulEditPart.getFigure().repaint();
+				scanModule.setName(dialog.getValue());
+				scanModuleEditPart.refresh();
+				scanModuleEditPart.getFigure().repaint();
 			}	
 		}
 	}

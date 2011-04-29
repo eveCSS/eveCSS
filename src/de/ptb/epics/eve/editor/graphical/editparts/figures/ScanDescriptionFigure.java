@@ -17,9 +17,8 @@ public class ScanDescriptionFigure extends Figure  {
 	 * Constructs a <code>ScanDescriptionFigure</code>.
 	 */
 	public ScanDescriptionFigure() {
-		//this.setOpaque(true);
 		this.setLayoutManager(new XYLayout());
-		this.setBounds(new Rectangle(0,0,1,1)); // old 2,2,300,300
+		this.setBounds(new Rectangle(0,0,1,1));
 	}
 	
 	/**

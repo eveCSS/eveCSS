@@ -5,6 +5,7 @@ import java.io.File;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -35,12 +36,16 @@ public class Activator extends AbstractUIPlugin {
 		
 	private File schemaFile;
 		
+	private EveEditorPerspectiveListener eveEditorPerspectiveListener;
+	
 	/**
 	 * The constructor
 	 */
 	public Activator() {
 		// activate logging 
 		DOMConfigurator.configure(System.getProperty("user.home") + "/logger.xml");
+		
+		eveEditorPerspectiveListener = new EveEditorPerspectiveListener();
 	}
 
 	/**
@@ -87,6 +92,11 @@ public class Activator extends AbstractUIPlugin {
 		}
 		this.excludeFilter = new ExcludeFilter();
 		this.excludeFilter.setSource( this.measuringStation );
+		
+		
+		
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
+				addPerspectiveListener(eveEditorPerspectiveListener);
 	}
 
 	/**
@@ -94,9 +104,14 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	@Override
 	public void stop(final BundleContext context) throws Exception {
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
+		removePerspectiveListener(eveEditorPerspectiveListener);
+		eveEditorPerspectiveListener = null;
+		
 		Platform.removeLogListener(logListener);
 		logListener = null;
 		plugin = null;
+		
 		super.stop(context);
 	}
 

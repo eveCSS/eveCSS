@@ -35,8 +35,8 @@ public class LostDevicesDialog extends TitleAreaDialog {
 	protected Control createDialogArea( final Composite parent) {
         Composite area = (Composite) super.createDialogArea( parent );
 
-		this.top = new Composite(parent, SWT.RESIZE);
-        this.setTitle( "There are Problems in the loaded scml File(s)");
+		this.top = new Composite(parent, SWT.RESIZE | SWT.BORDER);
+        this.setTitle( "There are Problems in the loaded scml File");
 
         final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
@@ -44,7 +44,7 @@ public class LostDevicesDialog extends TitleAreaDialog {
 		this.top.setLayout( gridLayout );
 
 		this.filenameLabel = new Label( this.top, SWT.NONE );
-		this.filenameLabel.setText( "Scan Description File");
+		this.filenameLabel.setText( "Scan Description File" );
 		this.filenameLabel = new Label( this.top, SWT.NONE );
 		this.filenameLabel.setText( "Problem");
 
@@ -63,13 +63,6 @@ public class LostDevicesDialog extends TitleAreaDialog {
 			this.filenameLabel = new Label( this.top, SWT.NONE );
 			this.filenameLabel.setText( meldung);
 		}
-
-		this.filenameLabel = new Label( this.top, SWT.NONE );
-		this.filenameLabel.setText( " ");
-		this.filenameLabel = new Label( this.top, SWT.NONE );
-		this.filenameLabel.setText( " ");
-		this.filenameLabel = new Label( this.top, SWT.NONE );
-		this.filenameLabel.setText("Attention: If you save one of these files, you lost some settings!");
         
         return area;
     }

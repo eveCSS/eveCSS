@@ -4,12 +4,12 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import de.ptb.epics.eve.editor.views.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.ErrorView;
-import de.ptb.epics.eve.editor.views.MotorAxisView;
-import de.ptb.epics.eve.editor.views.PlotWindowView;
-import de.ptb.epics.eve.editor.views.ScanModulView;
-import de.ptb.epics.eve.editor.views.ScanView;
+import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
+import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView;
+import de.ptb.epics.eve.editor.views.plotwindowview.PlotWindowView;
+import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
+import de.ptb.epics.eve.editor.views.scanview.ScanView;
 
 /**
  * <code>EveEditorPerspective</code> is the only perspective of the editor 
@@ -63,9 +63,9 @@ public class EveEditorPerspective implements IPerspectiveFactory  {
 		// the scan modul view
 		IFolderLayout scanModulFolder = layout.createFolder(
 				"scanModul", IPageLayout.BOTTOM, 0.38f, "scan");		
-		scanModulFolder.addPlaceholder(ScanModulView.ID + ":*");
-		scanModulFolder.addView(ScanModulView.ID);
-		layout.getViewLayout(ScanModulView.ID).setCloseable(false);
+		scanModulFolder.addPlaceholder(ScanModuleView.ID + ":*");
+		scanModulFolder.addView(ScanModuleView.ID);
+		layout.getViewLayout(ScanModuleView.ID).setCloseable(false);
 		
 		// the messages view
 		IFolderLayout errorFolder = layout.createFolder(

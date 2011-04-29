@@ -12,9 +12,12 @@ import de.ptb.epics.eve.editor.graphical.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.EventEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.EventToScanModulConnectionEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
-import de.ptb.epics.eve.editor.graphical.editparts.ScanModulEditPart;
+import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
 
 /**
+ * <code>GraphicalEditorEditPartFactory</code> creates the elements needed in 
+ * the {@link GraphicalEditor}. It recognizes the contents model object and 
+ * constructs this {@link EditPart}.
  * 
  * @author ?
  * @author Marcus Michalsky
@@ -27,7 +30,7 @@ public class GraphicalEditorEditPartFactory implements EditPartFactory {
 	@Override
 	public EditPart createEditPart(final EditPart context, final Object model) {
 		
-		if(context instanceof ScanModulEditPart || 
+		if(context instanceof ScanModuleEditPart || 
 		   context instanceof EventEditPart) {
 			return new EventToScanModulConnectionEditPart((Connector)model);
 		} else {
@@ -36,7 +39,7 @@ public class GraphicalEditorEditPartFactory implements EditPartFactory {
 			} else if(model instanceof Chain) {
 				return new ChainEditPart((Chain)model);
 			} else if(model instanceof ScanModule) {
-				return new ScanModulEditPart((ScanModule)model);
+				return new ScanModuleEditPart((ScanModule)model);
 			}  else if(model instanceof StartEvent) {
 				return new EventEditPart((StartEvent)model);
 			}

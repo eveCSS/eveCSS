@@ -20,7 +20,7 @@ import de.ptb.epics.eve.editor.graphical.editparts.figures.ScanDescriptionFigure
 public class ScanDescriptionEditPart extends AbstractGraphicalEditPart {
 
 	/**
-	 * Constructs a <code>ScanDescriptionEditPart</code>
+	 * Constructs a <code>ScanDescriptionEditPart</code>.
 	 * 
 	 * @param scanDescription the scan description
 	 */

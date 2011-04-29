@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.editor.views;
 
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
@@ -20,18 +13,33 @@ import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
 
+/**
+ * 
+ * @author ?
+ */
 public class ControlEventCellModifyer implements ICellModifier {
 
 	private TableViewer tableViewer;
 	
-	public ControlEventCellModifyer( final TableViewer tableViewer ) {
-		if( tableViewer == null ) {
-			throw new IllegalArgumentException( "The parameter 'tableViewer' must not be null!" );
+	/**
+	 * Constructs a <code>ControlEventcellModifyer</code>.
+	 * 
+	 * @param tableViewer the table viewer the cell modifier is based on
+	 * @throws IllegalArgumentException if the argument is <code>null</code>.
+	 */
+	public ControlEventCellModifyer(final TableViewer tableViewer) {
+		if(tableViewer == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'tableViewer' must not be null!");
 		}
 		this.tableViewer = tableViewer;
 	}
 	
-	public boolean canModify( final Object element, final String property ) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean canModify(final Object element, final String property) {
 		
 		if( property.equals( "source" ) || ((ControlEvent)element).getEvent().getType() == EventTypes.SCHEDULE ) {
 			return false;
@@ -60,6 +68,10 @@ public class ControlEventCellModifyer implements ICellModifier {
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Object getValue( final Object element, final String property ) {
 		if( property.equals( "operator" ) ) {
 			final String[] operators = ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).getItems();
@@ -86,6 +98,10 @@ public class ControlEventCellModifyer implements ICellModifier {
 		return "";
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void modify( final Object element, final String property, final Object value ) {
 		final ControlEvent controlEvent = (element instanceof Item)?(ControlEvent)((Item)element).getData():(ControlEvent)element;
 		if( property.equals( "operator" ) ) {
@@ -100,7 +116,5 @@ public class ControlEventCellModifyer implements ICellModifier {
 			final PauseEvent pauseEvent = (PauseEvent)controlEvent;
 			pauseEvent.setContinueIfFalse( (Boolean)value );
 		}
-	}
-
-	
+	}	
 }

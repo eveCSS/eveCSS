@@ -11,6 +11,10 @@ import org.eclipse.draw2d.MouseMotionListener;
 import org.eclipse.draw2d.XYAnchor;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * <code>ScanModuleFigure</code>
@@ -23,10 +27,12 @@ public class ScanModuleFigure extends Figure {
 	private int xOffset = 0;
 	private int yOffset = 0;
 	
+	// anchor points for incoming, outgoing and nested modules
 	private XYAnchor targetAnchor;
 	private XYAnchor appendedAnchor;
 	private XYAnchor nestedAnchor;
 	
+	// indicated whether the scan module is selected
 	private boolean active;
 	
 	private String text;
@@ -49,81 +55,13 @@ public class ScanModuleFigure extends Figure {
 		this.text = text;
 		this.setToolTip( new Label("Left click to edit me."));
 		
-		this.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseDoubleClicked(final MouseEvent me) {		
-			}
-
-			@Override
-			public void mousePressed(final MouseEvent me) {
-				xOffset = me.x - getLocation().x ;
-				yOffset = me.y - getLocation().y;
-				me.consume();
-			}
-
-			@Override
-			public void mouseReleased(final MouseEvent me) {
-				// if scan module reached bounds, reset it
-				if (me.x - xOffset < 0)
-					me.x = xOffset + 10;
-				if (me.y - yOffset < 0)
-					me.y = yOffset + 10;
-				setLocation(new Point(me.x - xOffset, me.y - yOffset));
-
-				Rectangle newLocation = getBounds();
-
-				targetAnchor.setLocation(new Point(newLocation.x, newLocation.y 
-												   + newLocation.height/2));
-				appendedAnchor.setLocation(new Point(newLocation.x + 
-													 newLocation.width, 
-													 newLocation.y + 
-													 newLocation.height/2));
-				nestedAnchor.setLocation(new Point(newLocation.x + 
-												   newLocation.width/2, 
-												   newLocation.y + 
-												   newLocation.height));
-				xOffset = 0;
-				yOffset = 0;				
-			}
-		});
+		// add listener for mouse button events
+		this.addMouseListener(new ScanModuleFigureMouseListener());
 		
-		this.addMouseMotionListener(new MouseMotionListener() {
-
-			@Override
-			public void mouseDragged(final MouseEvent me) {
-				setLocation(new Point(me.x - xOffset, me.y - yOffset));
-				Rectangle newLocation = getBounds();
-				targetAnchor.setLocation(new Point(newLocation.x, newLocation.y 
-												   + newLocation.height/2));
-				appendedAnchor.setLocation(new Point(newLocation.x + 
-													 newLocation.width, 
-													 newLocation.y + 
-													 newLocation.height/2));
-				nestedAnchor.setLocation(new Point(newLocation.x + 
-												   newLocation.width/2, 
-												   newLocation.y + 
-												   newLocation.height));
-			}
-
-			@Override
-			public void mouseEntered(final MouseEvent me) {		
-			}
-
-			@Override
-			public void mouseExited( final MouseEvent me ) {		
-			}
-
-			@Override
-			public void mouseHover(MouseEvent me) {	
-			}
-
-			@Override
-			public void mouseMoved(MouseEvent me) {
-			}
-			
-		});
+		// add listener for mouse movement
+		this.addMouseMotionListener(new ScanModuleFigureMouseMotionListener());
 		
+		// set anchor points
 		Rectangle rect = this.getBounds();
 		this.targetAnchor = new XYAnchor(
 				new Point(rect.x, rect.y + rect.height/2));
@@ -140,10 +78,36 @@ public class ScanModuleFigure extends Figure {
 	@Override
 	public void paint(final Graphics graphics) {
 		super.paint(graphics);
+		
+		setBackgroundColor(ColorConstants.white);
+		
+		final Rectangle rect = graphics.getClip(new Rectangle());
+
+		// draw a nice gradient
+		Display display = PlatformUI.getWorkbench().getDisplay();
+		
+		
+		if(active)
+		{
+			// if it is active (selected) -> change color
+			graphics.setForegroundColor(new Color(display, new RGB(192,0,0)));
+			graphics.setBackgroundColor(new Color(display, new RGB(255,255,255)));
+		} else {
+			// inactive ones are colorless
+			graphics.setForegroundColor(ColorConstants.white);
+			graphics.setBackgroundColor(ColorConstants.lightGray);
+		}
+		
+		graphics.fillGradient(rect, true);	
+				
+		graphics.setForegroundColor(ColorConstants.black);
+		graphics.setBackgroundColor(ColorConstants.white);
+		
+		graphics.setLineWidth(2);
+		graphics.drawRectangle(rect);
+		
 		graphics.drawText(
 				this.text, this.getLocation().x + 5, this.getLocation().y + 8);
-		final Rectangle rect = new Rectangle();
-		graphics.getClip(rect);
 	}
 
 	/**
@@ -203,17 +167,119 @@ public class ScanModuleFigure extends Figure {
 
 	/**
 	 * Sets whether the scan module is active (selected).
-	 * If it is active, its background is painted gray (white if not).
 	 * 
 	 * @param active <code>true</code> to activate (select) the scan module,
-	 * 				 <code>false</code> otherwise
+	 * 				 <code>false</code> to deactivate (deselect) it
 	 */
 	public void setActive(boolean active) {
 		this.active = active;
-		if(this.active) {
-			setBackgroundColor(ColorConstants.lightGray);
-		} else {
-			setBackgroundColor(ColorConstants.white);
-		}
 	}	
+	
+	// ***************************** Listener ********************************
+	
+	/**
+	 * <code>MouseListener</code> of <code>scanModuleFigure</code>.
+	 */
+	class ScanModuleFigureMouseListener implements MouseListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void mouseDoubleClicked(MouseEvent me) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void mousePressed(MouseEvent me) {
+			xOffset = me.x - getLocation().x ;
+			yOffset = me.y - getLocation().y;
+			me.consume();
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void mouseReleased(MouseEvent me) {
+			// if scan module reached bounds, reset it
+			if (me.x - xOffset < 0)
+				me.x = xOffset + 10;
+			if (me.y - yOffset < 0)
+				me.y = yOffset + 10;
+			setLocation(new Point(me.x - xOffset, me.y - yOffset));
+
+			Rectangle newLocation = getBounds();
+
+			targetAnchor.setLocation(new Point(newLocation.x, newLocation.y 
+											   + newLocation.height/2));
+			appendedAnchor.setLocation(new Point(newLocation.x + 
+												 newLocation.width, 
+												 newLocation.y + 
+												 newLocation.height/2));
+			nestedAnchor.setLocation(new Point(newLocation.x + 
+											   newLocation.width/2, 
+											   newLocation.y + 
+											   newLocation.height));
+			xOffset = 0;
+			yOffset = 0;
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	class ScanModuleFigureMouseMotionListener implements MouseMotionListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void mouseDragged(MouseEvent me) {
+			// (re-)set location of scan module box
+			setLocation(new Point(me.x - xOffset, me.y - yOffset));
+			Rectangle newLocation = getBounds();
+			// (re-)set anchor points for outgoing arrows
+			targetAnchor.setLocation(new Point(newLocation.x, newLocation.y 
+											   + newLocation.height/2));
+			appendedAnchor.setLocation(new Point(newLocation.x + 
+												 newLocation.width, 
+												 newLocation.y + 
+												 newLocation.height/2));
+			nestedAnchor.setLocation(new Point(newLocation.x + 
+											   newLocation.width/2, 
+											   newLocation.y + 
+											   newLocation.height));
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void mouseEntered(MouseEvent me) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void mouseExited(MouseEvent me) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void mouseHover(MouseEvent me) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void mouseMoved(MouseEvent me) {	
+		}
+	}
 }

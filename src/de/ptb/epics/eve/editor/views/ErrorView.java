@@ -2,6 +2,7 @@ package de.ptb.epics.eve.editor.views;
 
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -29,6 +30,8 @@ public class ErrorView extends ViewPart implements IModelUpdateListener {
 	 */
 	public static final String ID = "de.ptb.epics.eve.editor.views.ErrorView";
 
+	private static Logger logger = Logger.getLogger(ErrorView.class);
+	
 	private Composite top = null;
 
 	private Table errorTable = null;
@@ -40,6 +43,8 @@ public class ErrorView extends ViewPart implements IModelUpdateListener {
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
+		logger.debug("createPartControl");
+		
 		parent.setLayout(new FillLayout());
 		
 		// if no measuring station was loaded -> show error and return
@@ -73,26 +78,22 @@ public class ErrorView extends ViewPart implements IModelUpdateListener {
 	}
 	
 	/**
-	 * Returns the currently saved scan description of the error view.
-	 * 
-	 * @return the scan description
-	 */
-	public ScanDescription getScanDescription() {
-		return this.currentScanDescription;
-	}
-	
-	/**
 	 * Sets the currently "active" scan description.
 	 * 
 	 * @param scanDescription the scan description
 	 */
-	public void setScanDescription(final ScanDescription scanDescription) {
+	public void setCurrentScanDescription(final ScanDescription scanDescription) {
+		logger.debug("setScanDescription");
+		
 		// if there was already a scan description saved -> remove it
 		if(currentScanDescription != null) {
 			this.currentScanDescription.removeModelUpdateListener(this);
 		}
 		this.currentScanDescription = scanDescription;
-				
+		if(currentScanDescription != null)
+		{
+			this.currentScanDescription.addModelUpdateListener(this);
+		}
 		// update table with errors present in the new scan description
 		this.updateEvent(null);
 	}
@@ -104,6 +105,9 @@ public class ErrorView extends ViewPart implements IModelUpdateListener {
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
+		if(modelUpdateEvent == null) logger.debug("update event (null)");
+		else logger.debug("update event (" + 
+				modelUpdateEvent.getSender().getClass().getName() + ")");
 		
 		this.errorTable.removeAll();
 		
@@ -120,5 +124,4 @@ public class ErrorView extends ViewPart implements IModelUpdateListener {
 			}
 		}
 	}
-
-}  //  @jve:decl-index=0:visual-constraint="10,10,533,201"
+}

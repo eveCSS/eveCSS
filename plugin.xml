@@ -23,13 +23,13 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="de.ptb.epics.eve.editor.views.ScanView"
+            class="de.ptb.epics.eve.editor.views.scanview.ScanView"
             id="de.ptb.epics.eve.editor.views.ScanView"
             name="%view.name"
             restorable="true">
       </view>
       <view
-            class="de.ptb.epics.eve.editor.views.ScanModulView"
+            class="de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView"
             id="de.ptb.epics.eve.editor.views.ScanModulView"
             name="%view.name.0"
             restorable="true">
@@ -41,19 +41,19 @@
             restorable="true">
       </view>
       <view
-            class="de.ptb.epics.eve.editor.views.MotorAxisView"
+            class="de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView"
             id="de.ptb.epics.eve.editor.views.MotorAxisView"
             name="%view.name.2"
             restorable="true">
       </view>
       <view
-            class="de.ptb.epics.eve.editor.views.DetectorChannelView"
+            class="de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView"
             id="de.ptb.epics.eve.editor.views.DetectorChannelView"
             name="%view.name.3"
             restorable="true">
       </view>
       <view
-            class="de.ptb.epics.eve.editor.views.PlotWindowView"
+            class="de.ptb.epics.eve.editor.views.plotwindowview.PlotWindowView"
             id="de.ptb.epics.eve.editor.views.PlotWindowView"
             name="%view.name.4"
             restorable="true">
@@ -123,5 +123,4 @@
          </newWizardShortcut>
       </perspectiveExtension>
    </extension>
-   
 </plugin>
