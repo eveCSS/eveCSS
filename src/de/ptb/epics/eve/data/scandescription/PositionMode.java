@@ -1,15 +1,17 @@
 package de.ptb.epics.eve.data.scandescription;
 
 /**
- * This enum describes the position mode of a motor axis.
+ * <code>PositionMode</code> represents the position modes available for a 
+ * motor axis.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
- *
+ * @author Marcus Michalsky
  */
 public enum PositionMode {
 	
 	/**
-	 * The positions are understood as relative to the axis position at the beginning of the scan module.
+	 * The positions are understood as relative to the axis position at the 
+	 * beginning of the scan module.
 	 */
 	RELATIVE,
 	
@@ -19,49 +21,52 @@ public enum PositionMode {
 	ABSOLUTE;
 	
 	/**
-	 * This method converts an enum value to a string.
+	 * Converts a <code>PositionMode</code> to a {@link java.lang.String}.
 	 * 
-	 * @param positionMode The enum value to convert.
-	 * @return The corresponding string.
+	 * @param positionMode the position mode that should be converted
+	 * @return the <code>String</code> corresponding to the position mode
 	 */
-	public static String typeToString( final PositionMode positionMode ) {
-		switch( positionMode ) {
+	public static String typeToString(final PositionMode positionMode) {
+		switch(positionMode) {
 			case RELATIVE:
 				return "relative";
 			case ABSOLUTE:
 				return "absolute";
-				
 		}
 		return null;
 	}
 	
 	/**
-	 * This method converts a string to corresponding enum value.
+	 * Converts a {@link java.lang.String} to its corresponding 
+	 * {@link de.ptb.epics.eve.data.scandescription.PositionMode}
 	 * 
-	 * @param name The string that should be converted.
-	 * @return The corresponding enum value.
+	 * @param name the {@link java.lang.String} that should be converted
+	 * @return The corresponding
+	 * 		   {@link de.ptb.epics.eve.data.scandescription.PositionMode}
+	 * @throws IllegalArgumentException if the argument is <code>null</code> 
 	 */
-	public static PositionMode stringToType( final String name ) {
-		if( name == null ) {
-			throw new IllegalArgumentException( "The parameter 'name' must not be null!" );
+	public static PositionMode stringToType(final String name) {
+		if(name == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'name' must not be null!");
 		}
 		
-		if( name.equals( "relative" ) ) {
+		if( name.equals("relative")) {
 			return PositionMode.RELATIVE;
 		}
-		if( name.equals( "absolute" ) ) {
+		if( name.equals("absolute")) {
 			return PositionMode.ABSOLUTE;
 		}
 		return null;
 	}
 	
 	/**
-	 * This method returns all possible position modes as an array of string.
+	 * Returns all available position modes.
 	 * 
-	 * @return All possible position modes as an array of string.
+	 * @return all available position modes
 	 */
 	public static String[] getPossiblePositionModes() {
-		final String[] values = { "relative", "absolute" }; 
+		final String[] values = {"relative", "absolute"}; 
 		return values;
 	}
 }

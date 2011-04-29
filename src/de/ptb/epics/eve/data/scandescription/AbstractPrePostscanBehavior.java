@@ -1,13 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
 import de.ptb.epics.eve.data.measuringstation.Device;
@@ -21,7 +15,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * or option.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.2
+ * @author Marcus Michalsky
  */
 public abstract class AbstractPrePostscanBehavior extends AbstractBehavior {
 
@@ -30,6 +24,9 @@ public abstract class AbstractPrePostscanBehavior extends AbstractBehavior {
 	 */
 	private String value;
 	
+	/**
+	 * Constructs an <code>AbstractPrePostscanBehavior</code>.
+	 */
 	public AbstractPrePostscanBehavior() {
 		this.value = "";
 	}
@@ -46,17 +43,23 @@ public abstract class AbstractPrePostscanBehavior extends AbstractBehavior {
 	/**
 	 * Sets the value, that should be setted to the AbstractPrePostscanDevice.
 	 * 
-	 * @param value A String-object, that's contating the value. Must not be null.
+	 * @param value a String containing the value.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>.
 	 */
-	public void setValue( final String value ) {
+	public void setValue(final String value) {
 		if( value == null ) {
-			throw new IllegalArgumentException( "The parameter 'value' must not be null!" );
+			throw new IllegalArgumentException(
+					"The parameter 'value' must not be null!");
 		}
 		this.value = value;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		final CopyOnWriteArrayList<IModelUpdateListener> list = 
+			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
+		
+		Iterator<IModelUpdateListener> it = list.iterator();
+		
+		while(it.hasNext()) {
+			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		}	
 	}
 	
 	/**
@@ -71,11 +74,15 @@ public abstract class AbstractPrePostscanBehavior extends AbstractBehavior {
 	/**
 	 * Sets the AbstractPrePostscanDevice that is controlled by this behavior.
 	 * 
-	 * @param abstractPrePostscanDevice The device that should be controlled by this behavior. Must not be null!
+	 * @param abstractPrePostscanDevice The device that should be controlled by 
+	 * 		  this behavior.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>.
 	 */
-	public void setAbstractPrePostscanDevice( final AbstractPrePostscanDevice abstractPrePostscanDevice ) {
-		if( abstractPrePostscanDevice == null ) {
-			throw new IllegalArgumentException( "The parameter 'abstractPrePostscanDevice' must not be null!" );
+	public void setAbstractPrePostscanDevice(
+			final AbstractPrePostscanDevice abstractPrePostscanDevice) {
+		if(abstractPrePostscanDevice == null) {
+			throw new IllegalArgumentException(
+				"The parameter 'abstractPrePostscanDevice' must not be null!");
 		}
 		this.abstractDevice = abstractPrePostscanDevice;
 	}
@@ -99,16 +106,19 @@ public abstract class AbstractPrePostscanBehavior extends AbstractBehavior {
 	}
 	
 	/**
-	 * Finds out if a value is possible at this behavior.
+	 * Checks whether the given value is valid.
 	 * 
-	 * @param value A String that should be checked. Must not be null!
-	 * @return Return true if the value is possible and false if not.
+	 * @param value the value that should be checked
+	 * @return <code>true</code> if value is possible, 
+	 * 		   <code>false</code> otherwise
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public boolean isValuePossible( final String value ) {
-		if( value == null ) {
-			throw new IllegalArgumentException( "The parameter'value' must not be null!" );
+	public boolean isValuePossible(final String value) {
+		if(value == null) {
+			throw new IllegalArgumentException(
+					"The parameter'value' must not be null!");
 		}
-		return ((AbstractPrePostscanDevice)this.getAbstractDevice()).isValuePossible( value );
-	}
-	
+		return ((AbstractPrePostscanDevice)
+				this.getAbstractDevice()).isValuePossible(value);
+	}	
 }

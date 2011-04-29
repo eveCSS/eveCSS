@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.ArrayList;
@@ -12,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessage;
@@ -29,7 +23,7 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
  * This class describes a chain in a scan description.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.3
+ * @author Marcus Michalsky
  */
 public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModelErrorProvider {
 	
@@ -209,10 +203,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 			throw new IllegalArgumentException( "The parameter 'saveFilename' must not be null!" );
 		}
 		this.saveFilename = saveFilename;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 		this.checkFileNameConstraints();
 	}
 
@@ -238,10 +229,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.scanModuls.add( scanModul );
 		scanModul.setChain( this );
 		scanModul.addModelUpdateListener( this );
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -257,10 +245,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.scanModulsMap.remove( scanModul.getId() );
 		scanModul.removeModelUpdateListener( this );
 		scanModul.setChain( null );
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -290,10 +275,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public void setConfirmSave( final boolean confirmSave ) {
 		this.confirmSave = confirmSave;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -308,10 +290,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	
 	public void setAutoNumber( final boolean autoNumber ) {
 		this.autoNumber = autoNumber;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -333,10 +312,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 			throw new IllegalArgumentException( "The parameter 'id' must be at least 1!" );
 		}
 		this.id = id;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 
@@ -348,7 +324,6 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public PluginController getSavePluginController() {
 		return this.savePlugInController;
 	}
-	
 	
 	/**
 	 * Gives back the start event. The start event starts the chain.
@@ -366,10 +341,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public void setStartEvent( final StartEvent startEvent ) {
 		this.startEvent = startEvent;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -390,10 +362,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	protected void setScanDescription( final ScanDescription scanDescription ) {
 		this.scanDescription = scanDescription;
 		this.checkAllConstraints();
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -413,10 +382,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public boolean addPauseEvent( final PauseEvent pauseEvent ) {
 		if( this.pauseEvents.add( pauseEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( pauseEvent, ControlEventMessageEnum.ADDED ) ) );
-			}
+			updateListeners();
 			pauseEvent.addModelUpdateListener( this.pauseControlEventManager );
 			this.pauseControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( pauseEvent, ControlEventMessageEnum.ADDED ) ) );
 			return true;
@@ -432,10 +398,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public boolean removePauseEvent( final PauseEvent pauseEvent ) {
 		if( this.pauseEvents.remove( pauseEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			pauseEvent.removeModelUpdateListener( this.pauseControlEventManager );
 			this.pauseControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( pauseEvent, ControlEventMessageEnum.REMOVED ) ) );
 			return true;
@@ -451,10 +414,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public boolean addBreakEvent( final ControlEvent breakEvent ) {
 		if( this.breakEvents.add( breakEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			breakEvent.addModelUpdateListener( this.breakControlEventManager );
 			this.breakControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( breakEvent, ControlEventMessageEnum.ADDED ) ) );
 			return true;
@@ -470,10 +430,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public boolean removeBreakEvent( final ControlEvent breakEvent ) {
 		if( this.breakEvents.remove( breakEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			breakEvent.removeModelUpdateListener( this.breakControlEventManager );
 			this.breakControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( breakEvent, ControlEventMessageEnum.REMOVED ) ) );
 			return true;
@@ -489,10 +446,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public boolean addStartEvent( final ControlEvent startEvent ) {
 		if( this.startEvents.add( startEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			startEvent.addModelUpdateListener( this.startControlEventManager );
 			this.startControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( startEvent, ControlEventMessageEnum.ADDED ) ) );
 			return true;
@@ -508,10 +462,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public boolean removeStartEvent( final ControlEvent startEvent ) {
 		if( this.startEvents.remove( startEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			startEvent.removeModelUpdateListener( this.startControlEventManager );
 			this.startControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( startEvent, ControlEventMessageEnum.REMOVED ) ) );
 			return true;
@@ -527,10 +478,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public boolean addStopEvent( final ControlEvent stopEvent ) {
 		if( this.stopEvents.add( stopEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			stopEvent.addModelUpdateListener( this.stopControlEventManager );
 			this.stopControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( stopEvent, ControlEventMessageEnum.ADDED ) ) );
 			return true;
@@ -546,10 +494,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public boolean removeStopEvent( final ControlEvent stopEvent ) {
 		if( this.stopEvents.remove( stopEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			stopEvent.removeModelUpdateListener( this.stopControlEventManager );
 			this.stopControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( stopEvent, ControlEventMessageEnum.REMOVED ) ) );
 			return true;
@@ -565,10 +510,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public boolean addRedoEvent( final ControlEvent redoEvent ) {
 		if( this.redoEvents.add( redoEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( redoEvent, ControlEventMessageEnum.ADDED ) ) );
 			redoEvent.addModelUpdateListener( this.redoControlEventManager );
 			return true;
@@ -584,10 +526,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public boolean removeRedoEvent( final ControlEvent redoEvent ) {
 		if( this.redoEvents.remove( redoEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( redoEvent, ControlEventMessageEnum.REMOVED ) ) );
 			redoEvent.removeModelUpdateListener( this.redoControlEventManager );
 			return true;
@@ -775,10 +714,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 			throw new IllegalArgumentException( "The parameter 'comment' must not be null!" );
 		}
 		this.comment = comment;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
@@ -797,24 +733,15 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public void setSaveScanDescription( final boolean saveScanDescription ) {
 		this.saveScanDescription = saveScanDescription;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
-	
-
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener#updateEvent(de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent)
+	/**
+	 * {@inheritDoc}
 	 */
-	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-		final Iterator< IModelUpdateListener > it = this.updateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, modelUpdateEvent ) );
-		}
-		
+	@Override
+	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
+		updateListeners();		
 	}
 
 	/*
@@ -840,5 +767,15 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		return errorList;
 	}
 	
-	
+	private void updateListeners()
+	{
+		final CopyOnWriteArrayList<IModelUpdateListener> list = 
+			new CopyOnWriteArrayList<IModelUpdateListener>(this.updateListener);
+		
+		Iterator<IModelUpdateListener> it = list.iterator();
+		
+		while(it.hasNext()) {
+			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		}
+	}
 }

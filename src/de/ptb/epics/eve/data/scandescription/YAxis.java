@@ -3,6 +3,7 @@ package de.ptb.epics.eve.data.scandescription;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
 import org.csstudio.swt.xygraph.figures.Trace.TraceType;
@@ -83,11 +84,7 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 */
 	public void setColor(final RGB color) {
 		this.color = color;
-		final Iterator<IModelUpdateListener> updateIterator = 
-			this.updateListener.iterator();
-		while(updateIterator.hasNext()) {
-			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
-		}
+		updateListeners();
 	}
 
 	/**
@@ -108,11 +105,7 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 */
 	public void setLinestyle(final TraceType linestyle) {
 		this.linestyle = linestyle;
-		final Iterator<IModelUpdateListener> updateIterator = 
-			this.updateListener.iterator();
-		while(updateIterator.hasNext()) {
-			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
-		}
+		updateListeners();
 	}
 
 	/**
@@ -133,11 +126,7 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 */
 	public void setMarkstyle(final PointStyle markstyle) {
 		this.markstyle = markstyle;
-		final Iterator<IModelUpdateListener> updateIterator = 
-			this.updateListener.iterator();
-		while(updateIterator.hasNext()) {
-			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
-		}
+		updateListeners();
 	}
 
 	/**
@@ -156,11 +145,7 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 */
 	public void setMode(final PlotModes mode) {
 		this.mode = mode;
-		final Iterator<IModelUpdateListener> updateIterator = 
-			this.updateListener.iterator();
-		while(updateIterator.hasNext()) {
-			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
-		}
+		updateListeners();
 	}
 
 	/**
@@ -180,11 +165,7 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 */
 	public void setDetectorChannel(final DetectorChannel detectorChannel) {
 		this.detectorChannel = detectorChannel;
-		final Iterator<IModelUpdateListener> updateIterator = 
-			this.updateListener.iterator();
-		while(updateIterator.hasNext()) {
-			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
-		}
+		updateListeners();
 	}
 
 	/**
@@ -211,11 +192,7 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 */
 	public void setNormalizeChannel(final DetectorChannel normalizeChannel) {
 		this.normalizeChannel = normalizeChannel;
-		final Iterator<IModelUpdateListener> updateIterator = 
-			this.updateListener.iterator();
-		while(updateIterator.hasNext()) {
-			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
-		}
+		updateListeners();
 	}
 
 	/**
@@ -223,11 +200,7 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		final Iterator<IModelUpdateListener> it = 
-			this.updateListener.iterator();
-		while(it.hasNext()) {
-			it.next().updateEvent(new ModelUpdateEvent(this, modelUpdateEvent));
-		}
+		updateListeners();
 	}
 
 	/**
@@ -247,4 +220,19 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 			final IModelUpdateListener modelUpdateListener) {
 		return this.updateListener.remove(modelUpdateListener);
 	}	
+	
+	/*
+	 * called by several methods to inform interested parties about changes.
+	 */
+	private void updateListeners()
+	{
+		final CopyOnWriteArrayList<IModelUpdateListener> list = 
+			new CopyOnWriteArrayList<IModelUpdateListener>(this.updateListener);
+		
+		Iterator<IModelUpdateListener> it = list.iterator();
+		
+		while(it.hasNext()) {
+			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		}
+	}
 }

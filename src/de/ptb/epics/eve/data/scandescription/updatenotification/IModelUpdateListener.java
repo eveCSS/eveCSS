@@ -11,7 +11,8 @@ public interface IModelUpdateListener {
 	/**
 	 * This method gets called if a model element has changed.
 	 * 
-	 * @param modelUpdateEvent
+	 * @param modelUpdateEvent the 
+	 * 		  {@link de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent}
 	 */
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent);	
 }

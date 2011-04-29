@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.ArrayList;
@@ -13,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.measuringstation.PluginParameter;
@@ -27,159 +21,154 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 /**
  * This class represents a plug in controller.
  * 
- * A plug in controller take a plugin and save the corresponding parameter values.
- * 
+ * A <code>PluginController</code> takes a 
+ * {@link de.ptb.epics.eve.data.measuringstation.PlugIn} and saves the 
+ * corresponding parameter values.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
- *
+ * @author Marcus Michalsky
  */
 public class PluginController implements IModelErrorProvider, IModelUpdateProvider {
 	
-	/**
+	/*
 	 * The plug in to control.
-	 * 
 	 */
 	private PlugIn plugin;
 	
-	/**
+	/*
 	 * The values of the parameter of the plug in.
 	 */
-	private Map< String, String > values;
+	private Map<String, String> values;
 	
-	/**
+	/*
 	 * The list of model update listener.
 	 */
-	private List< IModelUpdateListener > modelUpdateListener;
+	private List<IModelUpdateListener> modelUpdateListener;
 	
-	/**
+	/*
 	 * This flag indicates if the values has been filled with default values. 
 	 */
 	private boolean defaultFlag;
 	
-	/**
+	/*
 	 * The parent scan module.
 	 */
-	private ScanModule scanModul;
+	private ScanModule scanModule;
 	
 	/**
-	 * This constructor creates a new plug in controller.
+	 * Constructs a(n) (empty) <code>PluginController</code>.
 	 */
 	public PluginController() {
 		this( null );
 	}
 	
 	/**
-	 * This constructor create a new plug in controller with a given plug in to control.
+	 * Constructs a <code>PluginController</code> with a given plug in to 
+	 * control.
 	 * 
-	 * @param plugin The plug in to control.
+	 * @param plugin the plug in to control.
 	 */
-	public PluginController( final PlugIn plugin ) {
+	public PluginController(final PlugIn plugin) {
 		this.plugin = plugin;
-		this.values = new HashMap< String, String >();
-		this.modelUpdateListener = new ArrayList< IModelUpdateListener >();
+		this.values = new HashMap<String, String>();
+		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
 		
-		if( this.plugin != null ) {
+		if(this.plugin != null) {
 			this.fillWithDefaults();
 		}
 	}
 	
 	/**
-	 * This method returns the current plug in to control.
+	 * Returns the current plug in to control.
 	 * 
-	 * @return The current plug in that is controlled by this controller. Maybe 'null'. 
+	 * @return the current plug in that is controlled by this controller 
 	 */
 	public PlugIn getPlugin() {
 		return this.plugin;
 	}
 	
 	/**
-	 * This methods sets the controlled plug in.
+	 * Sets the controlled plug in.
 	 * 
-	 * @param plugin The plug in to control.
+	 * @param plugin the plug in to control.
 	 */
-	public void setPlugin( final PlugIn plugin ) {
+	public void setPlugin(final PlugIn plugin) {
 		this.plugin = plugin;
 		this.values.clear();
-		if( this.plugin != null ) {
+		if(this.plugin != null) {
 			this.fillWithDefaults();
 		}
-		final Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
-	 * This method sets a value for a parameter of the plug in.
+	 * Sets a value for a parameter of the plug in.
 	 * 
-	 * @param name The name of the parameter.
-	 * @param value The value for the parameter.
+	 * @param name the name of the parameter.
+	 * @param value the value for the parameter.
 	 */
-	public void set( final String name, final String value ) {
-		this.values.put( name, value );
+	public void set(final String name, final String value) {
+		this.values.put(name, value);
 		this.defaultFlag = false;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
-	 * This methods unsets a value.
+	 * Sets back a value.
 	 * 
-	 * @param name the name of the value to unset.
+	 * @param name the name of the value that should be set back.
 	 */
-	public void unset( final String name ) {
-		this.values.remove( name );
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+	public void unset(final String name) {
+		this.values.remove(name);
+		updateListeners();
 	}
 	
 	/**
-	 * This method returns a value of a parameter.
+	 * Returns a value of a parameter.
 	 * 
-	 * @param name The name of the parameter.
-	 * @return The value of the parameter.
+	 * @param name the name of the parameter.
+	 * @return the value of the parameter.
 	 */
-	public String get( final String name ) {
-		return this.values.get( name );
+	public String get(final String name) {
+		return this.values.get(name);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider#addModelUpdateListener(de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener)
+	/**
+	 * {@inheritDoc} 
 	 */
-	public boolean addModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return this.modelUpdateListener.add( modelUpdateListener );
+	@Override
+	public boolean addModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.modelUpdateListener.add(modelUpdateListener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider#removeModelUpdateListener(de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener)
+	/**
+	 * {@inheritDoc}
 	 */
-	public boolean removeModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return this.modelUpdateListener.remove( modelUpdateListener );
+	@Override
+	public boolean removeModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.modelUpdateListener.remove(modelUpdateListener);
 	}
 
 	
 	
 	/**
-	 * This method return if the values are currently filled with default values.
+	 * Checks whether the values are filled with default values.
 	 * 
-	 * @return Returns 'true' if the values are currentyl filled with default values.
+	 * @return <code>true</code> if the values are filled, 
+	 * 		   <code>false</code> otherwise
 	 */
 	public boolean isFilledWithDefault() {
 		return this.defaultFlag;
 	}
 	
 	/**
-	 * This method fills the values with default values specified by the plug in.
+	 * Fills the values with default values specified by the plug in.
 	 */
 	private void fillWithDefaults() {
-		Iterator< PluginParameter > it = this.plugin.getParameters().iterator();
-		while( it.hasNext() ) {
+		Iterator<PluginParameter> it = this.plugin.getParameters().iterator();
+		while(it.hasNext()) {
 			final PluginParameter currentPluginParameter = it.next();
 			// TODO um hier vernünftige Werte vorzuschlagen muß irgendwie
 			// erkannt werden, welche Parameter diskrete Werte beinhalten
@@ -190,8 +179,8 @@ public class PluginController implements IModelErrorProvider, IModelUpdateProvid
 
 			if (currentPluginParameter.getType().toString() .equals("AXISID")) {
 				// aus dem scanModul wird der erste Wert des Plugins erzeugt!
-				if ( scanModul != null) {
-					Axis[] cur_axis = scanModul.getAxis();
+				if ( scanModule != null) {
+					Axis[] cur_axis = scanModule.getAxis();
 					String[] cur_feld = new String[cur_axis.length];
 					for (int i=0; i<cur_axis.length; ++i) {
 						cur_feld[i] = cur_axis[i].getMotorAxis().getFullIdentifyer();
@@ -208,57 +197,58 @@ public class PluginController implements IModelErrorProvider, IModelUpdateProvid
 	}
 	
 	/**
-	 * This method returns an array of all elements of the plug in controller.
+	 * Returns an array of all elements of the plug in controller.
 	 * 
-	 * @return An array with all key/value pairs.
+	 * @return an array with all key/value pairs.
 	 */
 	@SuppressWarnings("unchecked")
-	public Entry< String, String >[] getElements() {
-		return this.values.entrySet().toArray( new Entry[0] );
+	public Entry<String, String>[] getElements() {
+		return this.values.entrySet().toArray(new Entry[0]);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
 		final StringBuffer stringBuffer = new StringBuffer();
-		if( this.plugin != null ) {
-			Iterator< PluginParameter > it = this.plugin.getParameters().iterator();
-			while( it.hasNext() ) {
+		if(this.plugin != null) {
+			Iterator<PluginParameter> it = this.plugin.getParameters().iterator();
+			while(it.hasNext()) {
 				final PluginParameter pp = it.next();
-				stringBuffer.append( pp.getName() );
-				stringBuffer.append( '=' );
-				stringBuffer.append( this.values.get( pp.getName() ) );
-				stringBuffer.append( "; " );
-
+				stringBuffer.append(pp.getName());
+				stringBuffer.append('=');
+				stringBuffer.append(this.values.get( pp.getName()));
+				stringBuffer.append("; ");
 			}
 		}
 		return stringBuffer.toString();
 	}
 
 	/**
-	 * This method return the scan module.
+	 * Returns the scan module.
 	 * 
-	 * @return The scan module.
+	 * @return the scan module.
 	 */
-	public ScanModule getScanModul() {
-		return this.scanModul;
+	public ScanModule getScanModule() {
+		return this.scanModule;
 	}
 
 	/**
-	 * This method sets the scan module.
+	 * Sets the scan module.
 	 * 
-	 * @param scanModul The current scan module.
+	 * @param scanModule The current scan module.
 	 */
-	public void setScanModul( final ScanModule scanModul ) {
-		this.scanModul = scanModul;
+	public void setScanModule(final ScanModule scanModule) {
+		this.scanModule = scanModule;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider#getModelErrors()
+	/**
+	 * {@inheritDoc} 
 	 */
 	@Override
-	public List< IModelError > getModelErrors() {
-		final List< IModelError > errorList = new ArrayList< IModelError >();
+	public List<IModelError> getModelErrors() {
+		final List<IModelError> errorList = new ArrayList< IModelError >();
 		if( this.plugin != null ) {
 			final Iterator< PluginParameter > it = this.plugin.getParameters().iterator();
 			while( it.hasNext() ) {
@@ -274,5 +264,20 @@ public class PluginController implements IModelErrorProvider, IModelUpdateProvid
 			errorList.add( new PluginError( this, PluginErrorTypes.PLUING_NOT_SET, "" ) );
 		}
 		return errorList;
+	}
+	
+	/*
+	 * 
+	 */
+	private void updateListeners()
+	{
+		final CopyOnWriteArrayList<IModelUpdateListener> list = 
+			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
+		
+		Iterator<IModelUpdateListener> it = list.iterator();
+		
+		while(it.hasNext()) {
+			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		}
 	}
 }

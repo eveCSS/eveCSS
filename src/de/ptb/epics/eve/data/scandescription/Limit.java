@@ -1,15 +1,9 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.DataTypes;
@@ -21,50 +15,55 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * A Limit is used to specify something.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.2
+ * @author Marcus Michalsky
  */
 public class Limit implements IModelUpdateProvider {
 
-	/**
+	/*
 	 * The data type for the value.
 	 */
 	private DataTypes type;
 	
-	/**
-	 * The comparsion type or operator.
+	/*
+	 * The comparison type or operator.
 	 */
 	private ComparisonTypes comparison;
 	
-	/**
-	 * The value on the right side.
+	/*
+	 * the value on the right side.
 	 */
 	private String value;
 
-	/**
-	 * A List of all Listeners that will be notfied on an Update of this object.
+	/*
+	 * Listeners that will be notified of updates of this object.
 	 */
-	private List< IModelUpdateListener > modelUpdateListener;
+	private List<IModelUpdateListener> modelUpdateListener;
 	
 	/**
-	 * Use this constructor to construct a new Limit value with the data type STRING an the operator EQ.
+	 * Constructs a <code>Limit</code> with the data type STRING an the 
+	 * operator EQ.
 	 *
 	 */
 	public Limit() {
-		this( DataTypes.STRING, ComparisonTypes.EQ );
+		this(DataTypes.STRING, ComparisonTypes.EQ);
 	}
 	
 	/**
-	 * This constructor constructs a new Limit with the given data type and operator.
+	 * Constructs a <code>Limit</code> with the given data type and operator.
 	 *  
-	 * @param type The data type of the comparison. Must not be null!
-	 * @param comparison The operator of the limit. Must not be null!
+	 * @param type the data type of the comparison.
+	 * @param comparison the operator of the limit.
+	 * @throws IllegalArgumentException if at least one argument is 
+	 * 		   <code>null</code>.
 	 */
-	public Limit( final DataTypes type, final ComparisonTypes comparison ) {
-		if( type == null ) {
-			throw new IllegalArgumentException( "The parameter 'type' must not be null!" );
+	public Limit(final DataTypes type, final ComparisonTypes comparison) {
+		if(type == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'type' must not be null!");
 		}
-		if( comparison == null ) {
-			throw new IllegalArgumentException( "The paremeter 'comparison' must not be null!" );
+		if(comparison == null) {
+			throw new IllegalArgumentException(
+					"The paremeter 'comparison' must not be null!");
 		}
 		this.type = type;
 		this.comparison = comparison;
@@ -73,34 +72,33 @@ public class Limit implements IModelUpdateProvider {
 	}
 	
 	/**
-	 * Gives back the operator.
+	 * Returns the operator.
 	 * 
-	 * @return The operator of the comparison.
+	 * @return the operator of the comparison.
 	 */
 	public ComparisonTypes getComparison() {
 		return this.comparison;
 	}
 	
 	/**
-	 * Sets the operator of the comparion.
+	 * Sets the operator of the comparison.
 	 * 
-	 * @param comparison The operator of the comparison. Must not be null!
+	 * @param comparison the operator of the comparison
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public void setComparison( final ComparisonTypes comparison ) {
-		if( comparison == null ) {
-			throw new IllegalArgumentException( "The paremeter 'comparison' must not be null!" );
+	public void setComparison(final ComparisonTypes comparison) {
+		if(comparison == null) {
+			throw new IllegalArgumentException(
+					"The paremeter 'comparison' must not be null!");
 		}
 		this.comparison = comparison;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
-	 * Gives back the data type of the value.
+	 * Returns the data type of the value.
 	 * 
-	 * @return The data type of the value.
+	 * @return the data type of the value.
 	 */
 	public DataTypes getType() {
 		return this.type;
@@ -109,58 +107,72 @@ public class Limit implements IModelUpdateProvider {
 	/**
 	 * Sets the data type of the value.
 	 * 
-	 * @param type The data type of the value. Must not be null!
+	 * @param type the data type of the value.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>.
 	 */
-	public void setType( final DataTypes type ) {
-		if( type == null ) {
-			throw new IllegalArgumentException( "The parameter 'type' must not be null!" );
+	public void setType(final DataTypes type) {
+		if(type == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'type' must not be null!");
 		}
 		this.type = type;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
-	 * Gives back the value of this limit.
+	 * Returns the value of this limit.
 	 * 
-	 * @return The value of this limit. Never returns null!
+	 * @return the value of this limit.
 	 */
 	public String getValue() {
 		return this.value;
 	}
 	
 	/**
-	 * Sets the value of this limit.
+	 * Sets the value of the limit.
 	 * 
-	 * @param value The value of this Limit. Must not be null.
+	 * @param value the value of the Limit.
+	 * @throws IllegalArgumentException if the argument is <code>null</code>.
 	 */
-	public void setValue( final String value) {
-		if( value == null ) {
-			throw new IllegalArgumentException( "The parameter 'value' must not be null!" );
+	public void setValue(final String value) {
+		if(value == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'value' must not be null!");
 		}
 		this.value = value;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider#addModelUpdateListener(de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener)
+	/**
+	 * {@inheritDoc}	 
 	 */
-	public boolean addModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return this.modelUpdateListener.add( modelUpdateListener );
+	@Override
+	public boolean addModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.modelUpdateListener.add(modelUpdateListener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider#removeModelUpdateListener(de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener)
+	/**
+	 * {@inheritDoc} 
 	 */
-	public boolean removeModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return this.modelUpdateListener.remove( modelUpdateListener );
+	@Override
+	public boolean removeModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.modelUpdateListener.remove(modelUpdateListener);
 	}
 	
+	/*
+	 * 
+	 */
+	private void updateListeners()
+	{
+		final CopyOnWriteArrayList<IModelUpdateListener> list = 
+			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
+		
+		Iterator<IModelUpdateListener> it = list.iterator();
+		
+		while(it.hasNext()) {
+			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		}
+	}
 }

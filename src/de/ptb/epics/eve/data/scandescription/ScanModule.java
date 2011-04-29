@@ -1,15 +1,9 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -26,9 +20,10 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * This class represents a scan module.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.2
+ * @author Marcus Michalsky
  */
-public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, IModelErrorProvider {
+public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, 
+														IModelErrorProvider {
 	
 	/**
 	 * The id of the scan module
@@ -274,10 +269,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	public void add( final Prescan prescan ) {
 		this.prescans.add( prescan );
 		prescan.addModelUpdateListener( this );
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -288,10 +280,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	public void add( final Postscan postscan ) {
 		this.postscans.add( postscan );
 		postscan.addModelUpdateListener( this );
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -302,10 +291,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	public void add( final Channel channel ) {
 		this.channels.add( channel );
 		channel.addModelUpdateListener( this );
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -313,13 +299,10 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 * 
 	 * @param axis The axis behavior that should be added to the Scan Modul.
 	 */
-	public void add( final Axis axis ) {
-		this.axis.add( axis );
-		axis.addModelUpdateListener( this );
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+	public void add(final Axis axis) {
+		axis.addModelUpdateListener(this);
+		this.axis.add(axis);	
+		updateListeners();
 	}
 	
 	/**
@@ -330,10 +313,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	public void add( final PlotWindow plotWindow ) {
 		this.plotWindows.add( plotWindow );
 		plotWindow.addModelUpdateListener( this );
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -344,10 +324,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	public void add( final Positioning positioning ) {
 		this.positionings.add( positioning );
 		positioning.addModelUpdateListener( this );
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -358,10 +335,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	public void remove( final Prescan prescan ) {
 		this.prescans.remove( prescan );
 		prescan.removeModelUpdateListener( this );
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -372,10 +346,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	public void remove( final Postscan postscan ) {
 		this.postscans.remove( postscan );
 		postscan.removeModelUpdateListener( this );
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -435,10 +406,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 
 		this.channels.remove( channel );
 		channel.removeModelUpdateListener( this );
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -470,10 +438,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 		}
 		this.axis.remove( axis );
 		axis.removeModelUpdateListener( this );
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -484,10 +449,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	public void remove( final PlotWindow plotWindow ) {
 		this.plotWindows.remove( plotWindow );
 		plotWindow.removeModelUpdateListener( this );
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -498,10 +460,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	public void remove( final Positioning positioning ) {
 		this.positionings.remove( positioning );
 		positioning.removeModelUpdateListener( this );
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -521,10 +480,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 */
 	public void setAppended( final Connector appended ) {
 		this.appended = appended;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
@@ -546,10 +502,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 			throw new IllegalArgumentException( "The parameter 'id' must be larger than 0!" );
 		}
 		this.id = id;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
@@ -568,10 +521,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 */
 	public void setName( final String name ) {
 		this.name = name;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
@@ -628,10 +578,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 */
 	public void setSettletime( final double settletime ) {
 		this.settletime = settletime;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
@@ -650,10 +597,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 */
 	public void setTriggerconfirm( final boolean triggerconfirm ) {
 		this.triggerconfirm = triggerconfirm;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
@@ -672,10 +616,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 */
 	public void setTriggerdelay( final double triggerdelay ) {
 		this.triggerdelay = triggerdelay;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 
@@ -695,10 +636,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 */
 	public void setType( final String type ) {
 		this.type = type;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
@@ -735,10 +673,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 */
 	public void setX( final int x) {
 		this.x = x;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
@@ -755,16 +690,11 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 * 
 	 * @param y The y-position in the graphical diagram.
 	 */
-	public void setY( final int y) {
+	public void setY(final int y) {
 		this.y = y;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
-	
-	
-	
+
 	/**
 	 * Adds a pause event to the scan modul.
 	 * 
@@ -775,10 +705,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 		if( this.pauseEvents.add( pauseEvent ) ) {
 			pauseEvent.addModelUpdateListener( this.pauseControlEventManager );
 			this.pauseControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( pauseEvent, ControlEventMessageEnum.ADDED ) ) );
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( pauseEvent, ControlEventMessageEnum.ADDED ) ) );
-			}
+			updateListeners();
 			return true;
 		} 
 		return false;
@@ -794,10 +721,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 		if( this.pauseEvents.remove( pauseEvent ) ) {
 			pauseEvent.removeModelUpdateListener( this.pauseControlEventManager );
 			this.pauseControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( pauseEvent, ControlEventMessageEnum.REMOVED ) ) );
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( pauseEvent, ControlEventMessageEnum.ADDED ) ) );
-			}
+			updateListeners();
 			return true;
 		} 
 		return false;
@@ -811,10 +735,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 */
 	public boolean addBreakEvent( final ControlEvent breakEvent ) {
 		if( this.breakEvents.add( breakEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			breakEvent.addModelUpdateListener( this.breakControlEventManager );
 			this.breakControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( breakEvent, ControlEventMessageEnum.ADDED ) ) );
 			return true;
@@ -830,10 +751,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 */
 	public boolean removeBreakEvent( final ControlEvent breakEvent ) {
 		if( this.breakEvents.remove( breakEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			breakEvent.removeModelUpdateListener( this.breakControlEventManager );
 			this.breakControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( breakEvent, ControlEventMessageEnum.REMOVED ) ) );
 			return true;
@@ -849,10 +767,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 */
 	public boolean addRedoEvent( final ControlEvent redoEvent ) {
 		if( this.redoEvents.add( redoEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( redoEvent, ControlEventMessageEnum.ADDED ) ) );
 			redoEvent.addModelUpdateListener( this.redoControlEventManager );
 			return true;
@@ -868,22 +783,13 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 */
 	public boolean removeRedoEvent( final ControlEvent redoEvent ) {
 		if( this.redoEvents.remove( redoEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( redoEvent, ControlEventMessageEnum.REMOVED ) ) );
 			redoEvent.removeModelUpdateListener( this.redoControlEventManager );
 			return true;
 		} 
 		return false;
 	}
-	
-	
-	
-	
-	
-	
 	
 	/**
 	 * Adds a trigger event to the scan modul.
@@ -893,10 +799,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 */
 	public boolean addTriggerEvent( final ControlEvent triggerEvent ) {
 		if( this.triggerEvents.add( triggerEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			this.triggerControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( triggerEvent, ControlEventMessageEnum.ADDED ) ) );
 			triggerEvent.addModelUpdateListener( this.triggerControlEventManager );
 			return true;
@@ -912,10 +815,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 */
 	public boolean removeTriggerEvent( final ControlEvent triggerEvent ) {
 		if( this.triggerEvents.remove( triggerEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			this.triggerControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( triggerEvent, ControlEventMessageEnum.REMOVED ) ) );
 			triggerEvent.removeModelUpdateListener( this.triggerControlEventManager );
 			return true;
@@ -1046,32 +946,27 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 		return triggerControlEventManager;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener#updateEvent(de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent)
+	/**
+	 * {@inheritDoc}
 	 */
-	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-		final Iterator< IModelUpdateListener > it = this.updateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, modelUpdateEvent ) );
-		}
-		
+	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
+		updateListeners();		
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider#addModelUpdateListener(de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener)
+	/**
+	 * {@inheritDoc}
 	 */
-	public boolean addModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return this.updateListener.add( modelUpdateListener );
+	public boolean addModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.updateListener.add(modelUpdateListener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider#removeModelUpdateListener(de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener)
+	/**
+	 * {@inheritDoc} 
 	 */
-	public boolean removeModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return this.updateListener.remove( modelUpdateListener );
+	public boolean removeModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.updateListener.remove(modelUpdateListener);
 	}
 
 	
@@ -1091,12 +986,12 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 	 */
 	public void setSaveAxisPositions( final SaveAxisPositionsTypes saveAxisPositions ) {
 		this.saveAxisPositions = saveAxisPositions;
-		final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-		while( updateIterator.hasNext() ) {
-			updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List< IModelError> getModelErrors() {
 		final List< IModelError > errorList = new ArrayList< IModelError >();
@@ -1138,5 +1033,15 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, I
 		return errorList;
 	}
 	
-	
+	private void updateListeners()
+	{
+		final CopyOnWriteArrayList<IModelUpdateListener> list = 
+			new CopyOnWriteArrayList<IModelUpdateListener>(this.updateListener);
+		
+		Iterator<IModelUpdateListener> it = list.iterator();
+		
+		while(it.hasNext()) {
+			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		}
+	}
 }

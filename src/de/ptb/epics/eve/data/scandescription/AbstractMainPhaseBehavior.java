@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription;
 
 /**
@@ -13,7 +6,6 @@ package de.ptb.epics.eve.data.scandescription;
  * to make it possible to identify main phase behaviors easily.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.2
  */
 public abstract class AbstractMainPhaseBehavior extends AbstractBehavior {
 	

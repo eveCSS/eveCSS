@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.ArrayList;
@@ -24,19 +17,17 @@ import de.ptb.epics.eve.data.scandescription.errors.PostscanErrorTypes;
  */
 public abstract class AbstractPostscanBehavior extends AbstractPrePostscanBehavior {
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider#getModelErrors()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
-	public List< IModelError> getModelErrors() {
-		final List< IModelError > modelErrors = new ArrayList< IModelError >();
+	public List<IModelError> getModelErrors() {
+		final List<IModelError> modelErrors = new ArrayList<IModelError>();
 		
-		if( !this.isValuePossible( this.getValue() ) ) {
-			modelErrors.add( new PostscanError( this, PostscanErrorTypes.VALUE_NOT_POSSIBLE ) );
+		if( !this.isValuePossible(this.getValue())) {
+			modelErrors.add(new PostscanError(
+					this, PostscanErrorTypes.VALUE_NOT_POSSIBLE));
 		}
-		
 		return modelErrors;
 	}
-
 }

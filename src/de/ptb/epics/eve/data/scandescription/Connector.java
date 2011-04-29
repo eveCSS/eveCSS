@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription;
 
 /**
@@ -37,7 +30,7 @@ public class Connector {
 	 * 
 	 * @return The child scan modul of this connection.
 	 */
-	public ScanModule getChildScanModul() {
+	public ScanModule getChildScanModule() {
 		return childScanModul;
 	}
 	
@@ -75,7 +68,7 @@ public class Connector {
 	 * 
 	 * @return The parent scan modul.
 	 */
-	public ScanModule getParentScanModul() {
+	public ScanModule getParentScanModule() {
 		return parentScanModul;
 	}
 	

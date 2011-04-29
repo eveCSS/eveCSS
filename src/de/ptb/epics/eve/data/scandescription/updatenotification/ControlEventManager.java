@@ -1,15 +1,9 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription.updatenotification;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
@@ -19,55 +13,102 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 
+/**
+ * <code>ControlEventManager</code>.
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
 public class ControlEventManager implements IControlEventProvider, IModelErrorProvider {
 
 	private List<? extends ControlEvent> controlEventList;
 	private List<IModelUpdateListener> modelUpdateListener;
 	
 	private Chain parentChain;
-	private ScanModule parentScanModul;
+	private ScanModule parentScanModule;
 	private Channel parentChannel;
 	
 	private ControlEventTypes controlEventType;
 	
-	private ControlEventManager(  final List<? extends ControlEvent> controlEventList  ) {
-		if( controlEventList == null ) {
-			throw new IllegalArgumentException( "ControlEventManager:  'controlEventList' must not be null!" ); 
+	private ControlEventManager(
+			final List<? extends ControlEvent> controlEventList) {
+		if(controlEventList == null) {
+			throw new IllegalArgumentException("ControlEventManager:  " +
+									"'controlEventList' must not be null!"); 
 		}
 		this.controlEventList = controlEventList;
 		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
 	}
 	
-	public ControlEventManager( final Chain parentChain, final List<? extends ControlEvent> controlEventList, final ControlEventTypes controlEventType ) {
-		this( controlEventList );
-		if( parentChain == null ) {
-			throw new IllegalArgumentException( "ControlEventManager:  'parentChain' must not be null!" );
+	/**
+	 * Constructs a <code>ControlEventManager</code>.
+	 * 
+	 * @param parentChain
+	 * @param controlEventList
+	 * @param controlEventType
+	 * @throws IllegalArgumentException if <code>parentChain</code> is 
+	 * 		   <code>null</code>
+	 */
+	public ControlEventManager(final Chain parentChain, 
+						final List<? extends ControlEvent> controlEventList, 
+						final ControlEventTypes controlEventType) {
+		this(controlEventList);
+		if(parentChain == null) {
+			throw new IllegalArgumentException("ControlEventManager: " +
+											"'parentChain' must not be null!");
 		}
 		this.parentChain = parentChain;
 		this.controlEventType = controlEventType;
 	}
 	
-	public ControlEventManager( final ScanModule parentScanModul, final List<? extends ControlEvent> controlEventList, final ControlEventTypes controlEventType ) {
-		this( controlEventList );
-		if( parentScanModul == null ) {
-			throw new IllegalArgumentException( "ControlEventManager:  'parentScanModul' must not be null!" );
+	/**
+	 * Constructs a <code>ControlEventManager</code>.
+	 * 
+	 * @param parentScanModule
+	 * @param controlEventList
+	 * @param controlEventType
+	 * @throws IllegalArgumentException if <code>parentScanModule</code> is 
+	 * 		   <code>null</code>
+	 */
+	public ControlEventManager(final ScanModule parentScanModule, 
+						final List<? extends ControlEvent> controlEventList, 
+						final ControlEventTypes controlEventType) {
+		this(controlEventList);
+		if(parentScanModule == null) {
+			throw new IllegalArgumentException("ControlEventManager: " +
+										"'parentScanModule' must not be null!");
 		}
-		this.parentScanModul = parentScanModul;
+		this.parentScanModule = parentScanModule;
 		this.controlEventType = controlEventType;
 	}	
 
-	public ControlEventManager(final Channel parentChannel, final List<? extends ControlEvent> controlEventList,
+	/**
+	 * Constructs a <code>ControlEventManager</code>.
+	 * 
+	 * @param parentChannel
+	 * @param controlEventList
+	 * @param controlEventType
+	 * @throws IllegalArgumentException if <code>parentChannel</code> is
+	 * 		   <code>null</code>
+	 */
+	public ControlEventManager(final Channel parentChannel, 
+							final List<? extends ControlEvent> controlEventList,
 			final ControlEventTypes controlEventType) {
-		this( controlEventList );
-		if( parentChannel == null ) {
-			throw new IllegalArgumentException( "ControlEventManager:  'parentChannel' must not be null!" );
+		this(controlEventList);
+		if(parentChannel == null) {
+			throw new IllegalArgumentException("ControlEventManager: " +
+										"'parentChannel' must not be null!");
 		}
 		this.parentChannel = parentChannel;
 		this.controlEventType = controlEventType;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public List<? extends ControlEvent> getControlEventsList() {
-		return new ArrayList<ControlEvent>( this.controlEventList );
+		return new ArrayList<ControlEvent>(this.controlEventList);
 	}
 
 	public void addControlEvent( final ControlEvent controlEvent ) {
@@ -87,15 +128,15 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 			} else if( this.parentChain.getPauseControlEventManager() == this ) {
 				this.parentChain.addPauseEvent( (PauseEvent)controlEvent );
 			}
-		} else if( this.parentScanModul != null ) {
-			if( this.parentScanModul.getBreakControlEventManager() == this ) {
-				this.parentScanModul.addBreakEvent( controlEvent );
-			} else if( this.parentScanModul.getRedoControlEventManager() == this ) {
-				this.parentScanModul.addRedoEvent( controlEvent );
-			} else if( this.parentScanModul.getPauseControlEventManager() == this ) {
-				this.parentScanModul.addPauseEvent( (PauseEvent)controlEvent );
-			} else if( this.parentScanModul.getTriggerControlEventManager() == this ) {
-				this.parentScanModul.addTriggerEvent( controlEvent );
+		} else if( this.parentScanModule != null ) {
+			if( this.parentScanModule.getBreakControlEventManager() == this ) {
+				this.parentScanModule.addBreakEvent( controlEvent );
+			} else if( this.parentScanModule.getRedoControlEventManager() == this ) {
+				this.parentScanModule.addRedoEvent( controlEvent );
+			} else if( this.parentScanModule.getPauseControlEventManager() == this ) {
+				this.parentScanModule.addPauseEvent( (PauseEvent)controlEvent );
+			} else if( this.parentScanModule.getTriggerControlEventManager() == this ) {
+				this.parentScanModule.addTriggerEvent( controlEvent );
 			}
 		} else if( this.parentChannel != null ) {
 			this.parentChannel.addRedoEvent( controlEvent );
@@ -115,34 +156,45 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 			} else if( this.parentChain.getPauseControlEventManager() == this ) {
 				this.parentChain.removePauseEvent( (PauseEvent)controlEvent );
 			}
-		} else if( this.parentScanModul != null ) {
-			if( this.parentScanModul.getBreakControlEventManager() == this ) {
-				this.parentScanModul.removeBreakEvent( controlEvent );
-			} else if( this.parentScanModul.getRedoControlEventManager() == this ) {
-				this.parentScanModul.removeRedoEvent( controlEvent );
-			} else if( this.parentScanModul.getPauseControlEventManager() == this ) {
-				this.parentScanModul.removePauseEvent( (PauseEvent)controlEvent );
-			} else if( this.parentScanModul.getTriggerControlEventManager() == this ) {
-				this.parentScanModul.removeTriggerEvent( controlEvent );
+		} else if( this.parentScanModule != null ) {
+			if( this.parentScanModule.getBreakControlEventManager() == this ) {
+				this.parentScanModule.removeBreakEvent( controlEvent );
+			} else if( this.parentScanModule.getRedoControlEventManager() == this ) {
+				this.parentScanModule.removeRedoEvent( controlEvent );
+			} else if( this.parentScanModule.getPauseControlEventManager() == this ) {
+				this.parentScanModule.removePauseEvent( (PauseEvent)controlEvent );
+			} else if( this.parentScanModule.getTriggerControlEventManager() == this ) {
+				this.parentScanModule.removeTriggerEvent( controlEvent );
 			}
 		} else if( this.parentChannel != null ) {
 			this.parentChannel.removeRedoEvent( controlEvent );
 		}
 	}
 	
-	public boolean addModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return this.modelUpdateListener.add( modelUpdateListener );
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean addModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.modelUpdateListener.add(modelUpdateListener);
 	}
 
-	public boolean removeModelUpdateListener( final IModelUpdateListener modelUpdateListener  ) {
-		return this.modelUpdateListener.remove( modelUpdateListener );
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean removeModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.modelUpdateListener.remove(modelUpdateListener);
 	}
 
-	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-		Iterator<IModelUpdateListener> it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( modelUpdateEvent );
-		}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
+		updateListeners(modelUpdateEvent);
 	}
 	
 	public Chain getParentChain() {
@@ -150,7 +202,7 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 	}
 
 	public ScanModule getParentScanModul() {
-		return this.parentScanModul;
+		return this.parentScanModule;
 	}
 
 	public ControlEventTypes getControlEventType() {
@@ -161,14 +213,31 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 		return this.parentChannel;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public List< IModelError > getModelErrors() {
-		final List< IModelError > errorList = new ArrayList< IModelError >();
-		final Iterator< ? extends ControlEvent > it = this.controlEventList.iterator();
-		while( it.hasNext() ) {
-			errorList.addAll( it.next().getModelErrors() );
+	public List<IModelError> getModelErrors() {
+		final List<IModelError> errorList = new ArrayList<IModelError>();
+		final Iterator<? extends ControlEvent> it = this.controlEventList.iterator();
+		while(it.hasNext()) {
+			errorList.addAll(it.next().getModelErrors());
 		}
 		return errorList;
 	}
 	
+	/*
+	 * 
+	 */
+	private void updateListeners(final ModelUpdateEvent event)
+	{
+		final CopyOnWriteArrayList<IModelUpdateListener> list = 
+			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
+		
+		Iterator<IModelUpdateListener> it = list.iterator();
+		
+		while(it.hasNext()) {
+			it.next().updateEvent(event);
+		}
+	}
 }

@@ -1,15 +1,11 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Event;
@@ -27,84 +23,81 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * This class describes the behavior of a detector during the main phase.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.2
  */
 public class Channel extends AbstractMainPhaseBehavior {
 
-	/**
+	private static final Logger logger = 
+		Logger.getLogger(Channel.class.getName());
+	
+	/*
 	 * This attribute controls how often the detector should be read to make
 	 * an average value. Voreinstellung ist 1.
 	 */
 	private int averageCount = 1;
 	
-	/**
+	/*
 	 * The parent scan module of this channel.
 	 */
-	private ScanModule parentScanModul;
+	private ScanModule parentScanModule;
 	
-	/**
+	/*
 	 * The max deviation of this channel.
 	 */
 	private double maxDeviation = Double.NEGATIVE_INFINITY;
 	
-	/**
+	/*
 	 * The minimum for this channel.
 	 */
 	private double minumum = Double.NEGATIVE_INFINITY;
 	
-	/**
+	/*
 	 * The maximum attempts for reading the channel.
 	 */
 	private int maxAttempts = Integer.MIN_VALUE;
 
-	/**
+	/*
 	 * A flag if a trigger of this detector must be confirmed.
 	 */
 	private boolean confirmTrigger = false;
 	
-	/**
+	/*
 	 * A flag for repeat on redo.
 	 */
 	private boolean repeatOnRedo = false;
 	
-	/**
+	/*
 	 * The detector ready event.
 	 */
 	private Event detectorReadyEvent;
 
-	/**
+	/*
 	 * A list of the ControlEvents, that holds the configuration for the redo events.
-	 * Beides hinzugefügt analog zu ScanModule.java (Hartmut 19.11.09)
 	 */
 	private List< ControlEvent > redoEvents;
 	
-	/**
+	/*
 	 * This control event manager controls the redo events.
 	 */
 	private ControlEventManager redoControlEventManager;
 	
 	/**
-	 * A List that is holding all object that needs to get an update message if this object was updated.
-	 */
-	private List< IModelUpdateListener > updateListener;
-
-	/**
-	 * This constructor creates a new channel.
+	 * Constructs a <code>Channel</code>.
 	 * 
-	 * @param parentScanModul The parent scan module. Must not be 'null'.
+	 * @param parentScanModule The parent scan module.
+	 * @throws IllegalArgumentException if the parameter is <code>null</code>.
 	 */
-	public Channel( final ScanModule parentScanModul ) {
-		if( parentScanModul == null ) {
-			throw new IllegalArgumentException( "The parameter 'parentScanModul' must not be null!" );
+	public Channel(final ScanModule parentScanModule) {
+		if( parentScanModule == null ) {
+			throw new IllegalArgumentException(
+					"The parameter 'parentScanModul' must not be null!");
 
 		}
-		this.parentScanModul = parentScanModul;
+		this.parentScanModule = parentScanModule;
 
 		this.redoEvents = new ArrayList< ControlEvent >();
-		this.redoControlEventManager = new ControlEventManager( this, this.redoEvents, ControlEventTypes.CONTROL_EVENT );
-		this.redoControlEventManager.addModelUpdateListener( this );
-		this.updateListener = new ArrayList< IModelUpdateListener>();
-
+		this.redoControlEventManager = new ControlEventManager(
+				this, this.redoEvents, ControlEventTypes.CONTROL_EVENT);
+		this.redoControlEventManager.addModelUpdateListener(this);
 	}
 
 	/**
@@ -115,10 +108,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 */
 	public boolean addRedoEvent( final ControlEvent redoEvent ) {
 		if( this.redoEvents.add( redoEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			redoEvent.addModelUpdateListener( this.redoControlEventManager );
 			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( redoEvent, ControlEventMessageEnum.ADDED ) ) );
 			return true;
@@ -134,10 +124,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 */
 	public boolean removeRedoEvent( final ControlEvent redoEvent ) {
 		if( this.redoEvents.remove( redoEvent ) ) {
-			final Iterator<IModelUpdateListener> updateIterator = this.updateListener.iterator();
-			while( updateIterator.hasNext() ) {
-				updateIterator.next().updateEvent( new ModelUpdateEvent( this, null ) );
-			}
+			updateListeners();
 			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( redoEvent, ControlEventMessageEnum.REMOVED ) ) );
 			redoEvent.removeModelUpdateListener( this.redoControlEventManager );
 			return true;
@@ -168,17 +155,17 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * Sets how often the detector should be read to make an average result
 	 * for the measuring.
 	 * 
-	 * @param averageCount How often the detector should be read. Must be at least 0.
+	 * @param averageCount How often the detector should be read.
+	 * @throws IllegalArgumentException if <code>averageCount</code> 
+	 * 		   is less than zero
 	 */
-	public void setAverageCount( final int averageCount ) {
-		if( averageCount < 0 ) {
-			throw new IllegalArgumentException( "The average must be larger than 0." );
+	public void setAverageCount(final int averageCount) {
+		if(averageCount < 0) {
+			throw new IllegalArgumentException(
+					"The average must be larger than 0.");
 		}
 		this.averageCount = averageCount;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
@@ -187,7 +174,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * @return The parent scan module.
 	 */
 	public ScanModule getParentScanModul() {
-		return this.parentScanModul;
+		return this.parentScanModule;
 	}
 
 	/**
@@ -206,10 +193,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 */
 	public void setConfirmTrigger( final boolean confirmTrigger ) {
 		this.confirmTrigger = confirmTrigger;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
@@ -228,10 +212,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 */
 	public void setMaxAttempts( final int maxAttempts ) {
 		this.maxAttempts = maxAttempts;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
@@ -250,10 +231,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 */
 	public void setMaxDeviation( final double maxDeviation ) {
 		this.maxDeviation = maxDeviation;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
@@ -272,10 +250,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 */
 	public void setMinumum( final double minumum ) {
 		this.minumum = minumum;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
@@ -294,10 +269,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 */
 	public void setRepeatOnRedo( final boolean repeatOnRedo ) {
 		this.repeatOnRedo = repeatOnRedo;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -326,10 +298,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 */
 	public void setDetectorReadyEvent( final Event detectorReadyEvent ) {
 		this.detectorReadyEvent = detectorReadyEvent;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
@@ -348,10 +317,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 */
 	public void setDetectorChannel( final DetectorChannel detectorChannel ) {
 		this.abstractDevice = detectorChannel;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -382,5 +348,26 @@ public class Channel extends AbstractMainPhaseBehavior {
 			modelErrors.add( new ChannelError( this, ChannelErrorTypes.PLUGIN_ERROR ) );
 		}
 		return modelErrors;
+	}
+	
+	private void updateListeners()
+	{
+		for(IModelUpdateListener l : modelUpdateListener)
+		{
+			if(logger.isDebugEnabled())
+				logger.debug("listener: " + l.getClass().getName());
+		}
+		
+		final CopyOnWriteArrayList<IModelUpdateListener> list = 
+			new CopyOnWriteArrayList<IModelUpdateListener>(modelUpdateListener);
+		
+		Iterator<IModelUpdateListener> it = list.iterator();
+		
+		while(it.hasNext()) {
+			IModelUpdateListener imul = it.next();
+			if(logger.isDebugEnabled())
+				logger.debug("Iterator item: " + imul.getClass().getName());
+			imul.updateEvent(new ModelUpdateEvent(this, null));
+		}
 	}
 }

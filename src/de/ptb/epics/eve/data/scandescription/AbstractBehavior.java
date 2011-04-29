@@ -1,15 +1,9 @@
-/*
- * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
@@ -21,7 +15,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * This class the basics of all behavior descriptions inside of a scan module.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.2
+ * @author Marcus Michalsky
  */
 public abstract class AbstractBehavior implements IModelUpdateListener, 
 		IModelUpdateProvider, IModelErrorProvider {
@@ -56,12 +50,15 @@ public abstract class AbstractBehavior implements IModelUpdateListener,
 	 * {@inheritDoc}	
 	 */
 	@Override
-	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		final Iterator<IModelUpdateListener> it = 
-				this.modelUpdateListener.iterator();
+	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {		
+		final CopyOnWriteArrayList<IModelUpdateListener> list = 
+			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
+		
+		Iterator<IModelUpdateListener> it = list.iterator();
+		
 		while(it.hasNext()) {
-			it.next().updateEvent(new ModelUpdateEvent(this,modelUpdateEvent));
-		}	
+			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		}
 	}
 
 	/**

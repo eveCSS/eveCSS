@@ -1,15 +1,9 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
@@ -24,244 +18,242 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * Scan Modul.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.4
+ * @author Marcus Michalsky
  */
 public class Axis extends AbstractMainPhaseBehavior {
 
 	
-	/**
-	 * The step function of this axis.
+	/*
+	 * The step function of this axis
 	 */
 	private Stepfunctions stepfunction;
 
-	/**
-	 * If a position file is used, the path to it will be saved in this attribute.
+	/*
+	 * the file path of the position file
 	 */
 	private String positionfile;
 	
-	/**
-	 * If neither a positionfile or a position plugin is used, the start value will
-	 * be saved in this attribute.
+	/*
+	 * the start value (of the triple start, stop, step width)
+	 * (used if neither a position file nor a position plug in is used)
 	 */
 	private String start;
 	
-	/**
-	 * If neither a positionfile or a position plugin is used, the stop value will
-	 * be saved in this attribute.
+	/*
+	 * the stop value (of the triple start, stop, step width)
+	 * (used if neither a position file nor a position plug in is used)
 	 */
 	private String stop;
 	
-	/**
-	 * If neither a positionfile or a position plugin is used, the stepwidth value will
-	 * be saved in this attribute.
+	/*
+	 * the step width (of the triple start, stop, step width)
+	 *(used if neither a position file nor a position plug in is used)
 	 */
 	private String stepwidth;
 	
-	/**
-	 *  stepcount.
+	/*
+	 * the step count
 	 */
 	private double stepcount;
 	
-	/**
-	 * Indicates if the position datas are absolute or relative to axis position at the beginning of the scan module.
+	/*
+	 * default position mode is absolute
 	 */
 	private PositionMode positionMode = PositionMode.ABSOLUTE;
 	
-	/**
-	 * The optional position list of this axis.
+	/*
+	 * the position list
 	 */
 	private String positionlist;
 	
-	/**
-	 * This attribute indicates if this axis is the main axis of the scan module.
+	/*
+	 * indicates whether the axis is the main axis of the scan module
 	 */
 	private boolean isMainAxis = false;
-	private ScanModule scanModul;
 	
-	/**
-	 * The optional plug in controller of this axis.
+	/*
+	 * the scan module the axis corresponds to
+	 */
+	private ScanModule scanModule;
+	
+	/*
+	 * the plug in controller
 	 */
 	private PluginController positionPluginController;
 	
-	public Axis( final ScanModule scanModul ) {
-		if( scanModul == null ) {
-			throw new IllegalArgumentException( "The parameter 'scanModul' must not be null!" );
+	/**
+	 * Constructs an <code>Axis</code>.
+	 * 
+	 * @param scanModule the scan module the axis corresponds to
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
+	 */
+	public Axis(final ScanModule scanModule) {
+		if(scanModule == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'scanModule' must not be null!");
 		}
-		this.scanModul = scanModul;
+		this.scanModule = scanModule;
 	}
 	
-	public ScanModule getScanModul() {
-		return this.scanModul;
+	/**
+	 * Returns the scan module the axis is corresponding to.
+	 * 
+	 * @return the corresponding scan module
+	 */
+	public ScanModule getScanModule() {
+		return this.scanModule;
 	}
 	/**
-	 * Gives back the position file if one is setted.
+	 * Returns the path of the position file.
 	 * 
-	 * @return A String-object, containg the location of the position file or null if it's not set.
+	 * @return the path of the position file or <code>null</code> if none is set
 	 */
 	public String getPositionfile() {
 		return this.positionfile;
 	}
 
 	/**
-	 * Sets the location of a position file.
+	 * Sets the path of the position file.
 	 * 
-	 * @param positionfile A String object, containing the location of a position File or null if a positionfile is not used.
+	 * @param positionfile the path of the position file
 	 */
-	public void setPositionfile( final String positionfile ) {
+	public void setPositionfile(final String positionfile) {
 		this.positionfile = positionfile;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
-	 * This method returns the controller for the position plugin if a plugin is used to control this axis.
+	 * Returns the plug in controller of the position plug in.
 	 * 
-	 * @return The controller for the position plugin or 'null' if it's not set.
+	 * @return the plug in controller of the position plug in or 
+	 * 		   <code>null</code> if none is set
 	 */
 	public PluginController getPositionPluginController() {
 		return this.positionPluginController;
 	}
 
 	/**
-	 * This methods sets the plugin controller to control the axis.
+	 * Sets the plug in controller of the position plug in.
 	 * 
-	 * @param positionPluginController The plugin controller to control the axis. Maybe 'null'
+	 * @param positionPluginController the plug in controller that should be set
 	 */
-	public void setPositionPluginController( final PluginController positionPluginController ) {
-		if( this.positionPluginController != null ) {
-			this.positionPluginController.removeModelUpdateListener( this );
+	public void setPositionPluginController(
+			final PluginController positionPluginController) {
+		if(this.positionPluginController != null) {
+			this.positionPluginController.removeModelUpdateListener(this);
 		}
 		this.positionPluginController = positionPluginController;
-		if( this.positionPluginController != null ) {
-			this.positionPluginController.addModelUpdateListener( this );
+		if(this.positionPluginController != null) {
+			this.positionPluginController.addModelUpdateListener(this);
 		}
-
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
-	 * Gives back the start value, so where the axis should begin at the
-	 * beginning of a ScanModul.
+	 * Returns the start value.
 	 * 
-	 * @return A String object containing the start position or null.
+	 * @return the start value
 	 */
 	public String getStart() {
 		return this.start;
 	}
 
 	/**
-	 * Sets the start value, so where the Axis should start at the begin
-	 * of the ScanModul.
+	 * Sets the start value.
 	 * 
-	 * @param start The start value that should be used or null if it's not used.
+	 * @param start the start value that should be set
 	 */
-	public void setStart( final String start ) {
+	public void setStart(final String start) {
 		this.start = start;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
-	 * Gives back the stepfunction that will be used to determine the positions of
-	 * the axis while running the Scan Modul. 
+	 * Returns the step function.
 	 * 
-	 * @return A String object, that contains the stepfunction.
+	 * @return the step function
 	 */
 	public String getStepfunctionString() {
-		return Stepfunctions.stepfunctionToString( stepfunction );
+		return Stepfunctions.stepfunctionToString(stepfunction);
 	}
 
 	/**
-	 * return the stepfunction 
+	 * Returns the step function 
 	 * 
-	 * @return stepfunction enum.
+	 * @return the step function
 	 */
 	public Stepfunctions getStepfunctionEnum() {
 		return stepfunction;
 	}
 
 	/**
-	 * Sets the stepfunction that is used for moving the axis.
+	 * Sets the step function.
 	 *  
-	 * @param stepfunctionString A Stringobject containing the name of the stepfunction that should be used. Must not be null!
+	 * @param stepfunctionString the step function that should be set
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public void setStepfunction( final String stepfunctionString ) {
-		if( stepfunctionString == null ) {
-			throw new IllegalArgumentException( "The parameter stepfunction must not be null!" );
+	public void setStepfunction(final String stepfunctionString) {
+		if(stepfunctionString == null) {
+			throw new IllegalArgumentException(
+					"The parameter stepfunction must not be null!");
 		}
-		this.stepfunction = Stepfunctions.stepfunctionToEnum( stepfunctionString );
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		this.stepfunction = Stepfunctions.stepfunctionToEnum(stepfunctionString);
+		updateListeners();
 	}
 
 	/**
-	 * Gives back the stepwidth, so how far the axis is moving at every step.
+	 * Returns the step width.
 	 * 
-	 * @return A String object, containg the stepwidth or null if it's not used.
+	 * @return the step width or <code>null</code> if none is set
 	 */
 	public String getStepwidth() {
 		return this.stepwidth;
 	}
 
 	/**
-	 * Sets the stepwidth.
+	 * Sets the step width.
 	 * 
-	 * @param stepwidth A String object containing the stepwidth or null if it's not used.
+	 * @param stepwidth the step width that should be set
 	 */
-	public void setStepwidth( final String stepwidth ) {
+	public void setStepwidth(final String stepwidth) {
 		this.stepwidth = stepwidth;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
-	 * Gives back the position where the axis should finally stop during the ScanModul.
+	 * Returns the stop value
 	 * 
-	 * @return Returns a String object that contains the final position of the axis or gives back null.
+	 * @return the stop value or <code>null</code> if none is set
 	 */
 	public String getStop() {
 		return this.stop;
 	}
 
 	/**
-	 * Sets the stop position of the motor axis.
+	 * Sets the stop value.
 	 * 
-	 * @param stop A String object or null.
+	 * @param stop the stop value that should be set
 	 */
-	public void setStop( final String stop ) {
+	public void setStop(final String stop) {
 		this.stop = stop;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
-	 * Gives back the motor axis that is controlles by this behavior.
+	 * Returns the motor axis.
 	 * 
-	 * @return The motor axis that is controlled by this behavior.
+	 * @return the motor axis
 	 */
 	public MotorAxis getMotorAxis() {
 		return (MotorAxis)this.abstractDevice;
 	}
 	
 	/**
-	 * Sets the motor axis, that is controlles by this behavior.
+	 * Sets the motor axis.
 	 * 
-	 * @param motorAxis The motor axis that is controlled by this behavior.
+	 * @param motorAxis the motor axis that should be set
 	 */
-	public void setMotorAxis( final MotorAxis motorAxis ) {
+	public void setMotorAxis(final MotorAxis motorAxis) {
 		this.abstractDevice = motorAxis;
 
 		this.setStepfunction("Add");
@@ -269,110 +261,98 @@ public class Axis extends AbstractMainPhaseBehavior {
 		this.setStart(formattedText);
 		this.setStop(formattedText);
 		this.setStepwidth("0");
-		
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
-	 * This method gives back the stepcount.
+	 * Returns the step count.
 	 * 
-	 * @return The amount of steps.
+	 * @return the step count
 	 */
 	public double getStepCount() {
 		return this.stepcount;
 	}
 	
 	/**
-	 * This method sets the stepcount.
+	 * Sets the step count.
 	 * 
-	 * @param stepcount number of steps.
+	 * @param stepcount the step count that should be set
 	 */
-	public void setStepCount( final double stepcount ) {
+	public void setStepCount(final double stepcount) {
 		this.stepcount = stepcount;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 	
 	/**
-	 * This method returns the position list if it's set.
+	 * Returns the position list.
 	 * 
-	 * @return Returns the position list or 'null' if it's set.
+	 * @return the position list or <code>null</code> if none is set
 	 */
 	public String getPositionlist() {
 		return this.positionlist;
 	}
 	
 	/**
-	 * This method sets the position list.
+	 * Sets the position list.
 	 * 
-	 * @param positionlist The new position list or 'null'.
+	 * @param positionlist the position list that should be set
 	 */
 	public void setPositionlist( final String positionlist ) {
 		this.positionlist = positionlist;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
-	 * Gives back if this axis is the main axis of the scan module.
+	 * Checks whether the axis is the main axis of the scan module.
 	 * 
-	 * @return Gives back 'true' if this axis is the main axis of the scan module and 'false' if not.
+	 * @return <code>true</code> if the axis is the main axis, 
+	 * 		   <code>false</code> otherwise
 	 */
 	public boolean isMainAxis() {
 		return this.isMainAxis;
 	}
 
 	/**
-	 * Sets if this axis is the main axis of the scan module.
+	 * Sets whether the axis is the main axis of the scan module.
 	 * 
-	 * @param isMainAxis Pass 'true' is this axis is the main axis of the scan module and 'false' if not.
+	 * @param isMainAxis <code>true</code> to set the axis as main axisPass,
+	 * 		  <code>false</code> otherwise
 	 */
-	public void setMainAxis( final boolean isMainAxis ) {
+	public void setMainAxis(final boolean isMainAxis) {
 		this.isMainAxis = isMainAxis;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
-	 * Gives back the postition mode for this axis.
+	 * Returns the position mode.
 	 * 
-	 * @return The position mode for this axis.
+	 * @return the position mode
 	 */
 	public PositionMode getPositionMode() {
 		return this.positionMode;
 	}
 
 	/**
-	 * Sets the position mode of this axis.
+	 * Sets the position mode.
 	 * 
-	 * @param frameOfReference The position mode for this axis.
+	 * @param positionMode the position mode that should be set
 	 */
-	public void setPositionMode( final PositionMode positionMode ) {
+	public void setPositionMode(final PositionMode positionMode) {
 		this.positionMode = positionMode;
-		Iterator< IModelUpdateListener > it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, null ) );
-		}
+		updateListeners();
 	}
 
 	/**
-	 * This method finds out if a value is possible for this. behavior. It can
-	 * be used to precheck the values for start, stop and stepwidth.
+	 * Checks whether a value is valid for the behavior. Used to check 
+	 * possible input parameters for start, stop and step width.
 	 * 
-	 * @param value The value that should be checked. must not be null.
-	 * @return Gives back 'true' if the value is possible and 'false' if not.
+	 * @param value the value that should be checked.
+	 * @return <code>true</code> if the value is valid, 
+	 * 		   <code>false</code> otherwise
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public boolean isValuePossible( final String value ) {
-		return this.getMotorAxis().isValuePossible( value );
+	public boolean isValuePossible(final String value) {
+		return this.getMotorAxis().isValuePossible(value);
 	}
 	
 	/**
@@ -416,9 +396,8 @@ public class Axis extends AbstractMainPhaseBehavior {
 		return this.getMotorAxis().getType();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider#getModelErrors()
+	/**
+	 * {@inheritDoc} 
 	 */
 	@Override
 	public List<IModelError> getModelErrors() {
@@ -457,4 +436,18 @@ public class Axis extends AbstractMainPhaseBehavior {
 		return errorList;
 	}
 
+	/*
+	 * 
+	 */
+	private void updateListeners()
+	{
+		final CopyOnWriteArrayList<IModelUpdateListener> list = 
+			new CopyOnWriteArrayList<IModelUpdateListener>(modelUpdateListener);
+		
+		Iterator<IModelUpdateListener> it = list.iterator();
+		
+		while(it.hasNext()) {
+			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		}
+	}	
 }

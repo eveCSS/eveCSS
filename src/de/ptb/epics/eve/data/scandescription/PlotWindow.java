@@ -3,6 +3,7 @@ package de.ptb.epics.eve.data.scandescription;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
@@ -81,11 +82,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider {
 					"The parameter 'id' must be larger than 0.");
 		}
 		this.id = id;
-		final Iterator<IModelUpdateListener> updateIterator = 
-				this.updateListener.iterator();
-		while(updateIterator.hasNext()) {
-			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
-		}	
+		updateListeners();
 	}
 	
 	/**
@@ -106,11 +103,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider {
 	 */
 	public void setInit(final boolean init) {
 		this.init = init;
-		final Iterator<IModelUpdateListener> updateIterator = 
-				this.updateListener.iterator();
-		while(updateIterator.hasNext()) {
-			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -134,11 +127,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider {
 					"The parameter 'mode' must not be null!");
 		}
 		this.mode = mode;
-		final Iterator<IModelUpdateListener> updateIterator = 
-				this.updateListener.iterator();
-		while(updateIterator.hasNext()) {
-			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -157,11 +146,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider {
 	 */
 	public void setXAxis(final MotorAxis axis) {
 		this.xAxis = axis;
-		final Iterator<IModelUpdateListener> updateIterator = 
-				this.updateListener.iterator();
-		while(updateIterator.hasNext()) {
-			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
-		}
+		updateListeners();
 	}
 
 	/**
@@ -177,12 +162,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider {
 		}
 		yAxis.addModelUpdateListener(this);
 		this.yAxis.add(yAxis);
-		final Iterator<IModelUpdateListener> updateIterator = 
-				this.updateListener.iterator();
-		while(updateIterator.hasNext()) {
-			updateIterator.next().updateEvent(
-					new ModelUpdateEvent(this, null));
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -198,11 +178,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider {
 		}
 		yAxis.removeModelUpdateListener(this);
 		this.yAxis.remove(yAxis);
-		final Iterator<IModelUpdateListener> updateIterator = 
-				this.updateListener.iterator();
-		while(updateIterator.hasNext()) {
-			updateIterator.next().updateEvent(new ModelUpdateEvent(this, null));
-		}
+		updateListeners();
 	}
 	
 	/**
@@ -248,11 +224,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider {
 	 * {@inheritDoc} 
 	 */
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		final Iterator<IModelUpdateListener> it = 
-			this.updateListener.iterator();
-		while(it.hasNext()) {
-			it.next().updateEvent(new ModelUpdateEvent(this, modelUpdateEvent));
-		}
+		updateListeners();
 	}
 
 	/**
@@ -288,4 +260,19 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider {
 		}	
 		return modelErrors;
 	}	
+	
+	/*
+	 * 
+	 */
+	private void updateListeners()
+	{
+		final CopyOnWriteArrayList<IModelUpdateListener> list = 
+			new CopyOnWriteArrayList<IModelUpdateListener>(this.updateListener);
+		
+		Iterator<IModelUpdateListener> it = list.iterator();
+		
+		while(it.hasNext()) {
+			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		}
+	}
 }

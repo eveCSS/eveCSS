@@ -15,4 +15,5 @@ Export-Package: de.ptb.epics.eve.data,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.apache.xml.serialize
 Require-Bundle: org.csstudio.swt.xygraph;bundle-version="1.0.1",
- org.eclipse.swt;bundle-version="3.5.1"
+ org.eclipse.swt;bundle-version="3.5.1",
+ org.csstudio.platform;bundle-version="1.1.0"

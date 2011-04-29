@@ -106,22 +106,25 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	}
 
 	/**
-	 *
+	 * {@inheritDoc}
 	 */
+	@Override
 	public IMeasuringStation getMeasuringStationDescription() {
 		return this.measuringStation;
 	}
 
 	/**
-	 * 
+	 * {@inheritDoc}
 	 */
+	@Override
 	public ScanDescription getScanDescription() {
 		return this.scanDescription;
 	}
 
 	/**
-	 * 
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void setMeasuringStationDescription( final IMeasuringStation measuringStation ) {
 		if( measuringStation == null ) {
 			throw new IllegalArgumentException( "The parameter 'measuringStation' must not be null!" );
@@ -130,8 +133,9 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	}
 
 	/**
-	 * 
+	 * {@inheritDoc} 
 	 */
+	@Override
 	public void setScanDescription( final ScanDescription scanDescription ) {
 		if( scanDescription == null ) {
 			throw new IllegalArgumentException( "The parameter 'scanDescription' must not be null!" );
@@ -140,10 +144,9 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	}
 
 	/**
-	 * Saves the scan description to the given outputStream.
-	 * 
-	 * 
+	 * {@inheritDoc} 
 	 */
+	@Override
 	public boolean save() {
 		boolean successfull = true;
 		this.atts =  new AttributesImpl(); 
@@ -591,8 +594,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	 */
 	private boolean writeFunction( final Function trigger, final String name) {
 		boolean successfull = true;
-		
-		
+			
 		try {
 			this.atts.clear();
 			this.contentHandler.startElement("", name, name, this.atts );
@@ -650,8 +652,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	 */
 	private boolean writeOption( final Option option ) {
 		boolean successfull = true;
-		
-		
+			
 		try {
 			this.atts.clear();
 			this.contentHandler.startElement("", "option", "option", this.atts );
@@ -674,14 +675,12 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 				this.contentHandler.startElement("", "displaygroup", "displaygroup", this.atts );
 				this.contentHandler.characters( option.getDisplaygroup().toCharArray(), 0, option.getDisplaygroup().length() );
 				this.contentHandler.endElement( "", "displaygroup", "displaygroup" );
-			}
-			
+			}		
 			this.contentHandler.endElement( "", "option", "option" );
 		} catch (SAXException e) {
 			System.out.println("writeOption: " + e.getMessage());
 			e.printStackTrace();
-		}
-		
+		}		
 		return successfull;
 	}
 
@@ -694,8 +693,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	 */
 	private boolean writeTypeValue( final TypeValue typeValue,final String name ) {
 		boolean successfull = true;
-		
-		
+				
 		try {
 			this.atts.clear();
 			this.atts.addAttribute( "", "", "type", "CDATA", DataTypes.typeToString( typeValue.getType() ) );
@@ -719,8 +717,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	 * @return Returns if the write process was successful.
 	 */
 	private boolean writeAccess( final Access access, final String name ) {
-		boolean successfull = true;
-		
+		boolean successfull = true;	
 		
 		try {
 			this.atts.clear();
@@ -979,24 +976,24 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 			
 			this.atts.clear();
 			this.contentHandler.startElement( "", "parent", "parent", this.atts );
-			if( scanModul.getParent() != null && scanModul.getParent().getParentScanModul() != null ) {
-				this.contentHandler.characters( ("" + scanModul.getParent().getParentScanModul().getId()).toCharArray(), 0, ("" + scanModul.getParent().getParentScanModul().getId()).length() );
+			if( scanModul.getParent() != null && scanModul.getParent().getParentScanModule() != null ) {
+				this.contentHandler.characters( ("" + scanModul.getParent().getParentScanModule().getId()).toCharArray(), 0, ("" + scanModul.getParent().getParentScanModule().getId()).length() );
 			} else {
 				this.contentHandler.characters( "0".toCharArray(), 0, 1 );
 			}
 			this.contentHandler.endElement(  "", "parent", "parent" );
 			
 			this.atts.clear();
-			if( scanModul.getNested() != null && scanModul.getNested().getChildScanModul() != null ) {
+			if( scanModul.getNested() != null && scanModul.getNested().getChildScanModule() != null ) {
 				this.contentHandler.startElement( "", "nested", "nested", this.atts );
-				this.contentHandler.characters( ("" + scanModul.getNested().getChildScanModul().getId()).toCharArray(), 0, ("" + scanModul.getNested().getChildScanModul().getId()).length() );
+				this.contentHandler.characters( ("" + scanModul.getNested().getChildScanModule().getId()).toCharArray(), 0, ("" + scanModul.getNested().getChildScanModule().getId()).length() );
 				this.contentHandler.endElement(  "", "nested", "nested" );
 			}
 			
 			this.atts.clear();
-			if( scanModul.getAppended() != null && scanModul.getAppended().getChildScanModul() != null ) {
+			if( scanModul.getAppended() != null && scanModul.getAppended().getChildScanModule() != null ) {
 				this.contentHandler.startElement( "", "appended", "appended", this.atts );
-				this.contentHandler.characters( ("" + scanModul.getAppended().getChildScanModul().getId()).toCharArray(), 0, ("" + scanModul.getAppended().getChildScanModul().getId()).length() );
+				this.contentHandler.characters( ("" + scanModul.getAppended().getChildScanModule().getId()).toCharArray(), 0, ("" + scanModul.getAppended().getChildScanModule().getId()).length() );
 				this.contentHandler.endElement(  "", "appended", "appended" );
 			} 
 			
@@ -1205,7 +1202,6 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 	 */
 	private boolean writePlotWindow( final PlotWindow plotWindow ) {
 		boolean successfull = true;
-		
 		
 		try {
 			this.atts.clear();
@@ -1662,48 +1658,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 			this.contentHandler.startElement( "", "stepfunction", "stepfunction", this.atts );
 			this.contentHandler.characters( stringBuffer.toString().toCharArray(), 0, stringBuffer.toString().length() );
 			this.contentHandler.endElement( "", "stepfunction", "stepfunction" );
-			
-			/*
-			stringBuffer.delete( 0, stringBuffer.length() );
-			stringArray = selections.getLinestyles();
-			for( int i = 0; i < stringArray.length; ++i ) {
-				stringBuffer.append( stringArray[i] );
-				if( i != stringArray.length - 1 ) {
-					stringBuffer.append( ',' );		
-				}
-			}
-			this.atts.clear();
-			this.contentHandler.startElement( "", "linestyle", "linestyle", this.atts );
-			this.contentHandler.characters( stringBuffer.toString().toCharArray(), 0, stringBuffer.toString().length() );
-			this.contentHandler.endElement( "", "linestyle", "linestyle" );
-			
-			stringBuffer.delete( 0, stringBuffer.length() );
-			stringArray = selections.getColors();
-			for( int i = 0; i < stringArray.length; ++i ) {
-				stringBuffer.append( stringArray[i] );
-				if( i != stringArray.length - 1 ) {
-					stringBuffer.append( ',' );		
-				}
-			}
-			this.atts.clear();
-			this.contentHandler.startElement( "", "color", "color", this.atts );
-			this.contentHandler.characters( stringBuffer.toString().toCharArray(), 0, stringBuffer.toString().length() );
-			this.contentHandler.endElement( "", "color", "color" );
-			
-			stringBuffer.delete( 0, stringBuffer.length() );
-			stringArray = selections.getMarkstyles();
-			for( int i = 0; i < stringArray.length; ++i ) {
-				stringBuffer.append( stringArray[i] );
-				if( i != stringArray.length - 1 ) {
-					stringBuffer.append( ',' );		
-				}
-			}
-			this.atts.clear();
-			this.contentHandler.startElement( "", "markstyle", "markstyle", this.atts );
-			this.contentHandler.characters( stringBuffer.toString().toCharArray(), 0, stringBuffer.toString().length() );
-			this.contentHandler.endElement( "", "markstyle", "markstyle" );
-			*/
-			
+		
 			stringBuffer.delete( 0, stringBuffer.length() );
 			stringArray = selections.getSmtypes();
 			for( int i = 0; i < stringArray.length; ++i ) {

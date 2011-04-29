@@ -1,13 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessage;
@@ -22,46 +16,58 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * ControlEvent to provide the additional field.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.2
+ * @author Marcus Michalsky
  */
 public class PauseEvent extends ControlEvent {
 
-	/**
+	/*
 	 * The attribute.
 	 */
 	private boolean continueIfFalse;
 
 	/**
-	 * Gives back if the attribute is setted or not.
+	 * Constructs a <code>PauseEvent</code>.
 	 * 
-	 * @return Returns 'true' if its set and 'false' if not.
+	 * @param type The type of the pause event.
+	 */
+	public PauseEvent(final EventTypes type) {
+		super(type);
+	}
+
+	/**
+	 * Checks whether the attribute is set.
+	 * 
+	 * @return <code>true</code> if the attribute is set, 
+	 * 		   <code>false</code> otherwise
 	 */
 	public boolean isContinueIfFalse() {
 		return continueIfFalse;
 	}
-
-	/**
-	 * This constructor creates a new pause event.
-	 * 
-	 * @param type The type of the pause event.
-	 */
-	public PauseEvent( final EventTypes type ) {
-		super( type );
-	}
-
+	
 	/**
 	 * Sets the attribute.
 	 * 
-	 * @param continueIfFalse Set 'true' if you want to continue if false.
+	 * @param continueIfFalse <code>true</code> if continue, 
+	 * 		  				  <code>false</code> otherwise
 	 */
-	public void setContinueIfFalse( boolean continueIfFalse ) {
+	public void setContinueIfFalse(boolean continueIfFalse) {
 		this.continueIfFalse = continueIfFalse;
-		Iterator<IModelUpdateListener> it = this.modelUpdateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( this, ControlEventMessageEnum.UPDATED ) ) );
-		}
+		updateListeners();
 	}
 	
-	
-	
+	/*
+	 * 
+	 */
+	private void updateListeners()
+	{
+		final CopyOnWriteArrayList<IModelUpdateListener> list = 
+			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
+		
+		Iterator<IModelUpdateListener> it = list.iterator();
+		
+		while(it.hasNext()) {
+			it.next().updateEvent(new ModelUpdateEvent(this, 
+				new ControlEventMessage(this, ControlEventMessageEnum.UPDATED)));
+		}
+	}	
 }
