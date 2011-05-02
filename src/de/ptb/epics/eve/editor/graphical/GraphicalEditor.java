@@ -21,6 +21,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -35,6 +36,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.EditorPart;
 import org.xml.sax.SAXException;
@@ -380,6 +382,17 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 */
 	@Override
 	public void doSave(final IProgressMonitor monitor) {
+		
+		if(scanDescription.getModelErrors().size() > 0)
+		{
+			MessageDialog.openError(
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+				"Save Error", 
+				"Scandescription could not be saved! Please remove any errors present.");
+			
+			return;
+		}
+		
 		final FileStoreEditorInput fileStoreEditorInput = 
 				(FileStoreEditorInput)this.getEditorInput();
 		final File scanDescriptionFile = new File(fileStoreEditorInput.getURI());
@@ -476,6 +489,10 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	public boolean isSaveAsAllowed() {
 		return true;
 	}
+	
+	// ***********************************************************************
+	// ************************* Listener ************************************
+	// ***********************************************************************
 	
 	/**
 	 * <code>MouseListener</code> of viewer.
