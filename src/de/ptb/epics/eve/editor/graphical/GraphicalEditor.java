@@ -48,6 +48,7 @@ import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionSaverToXMLusingXerces;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
@@ -388,7 +389,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			MessageDialog.openError(
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
 				"Save Error", 
-				"Scandescription could not be saved! Please remove any errors present.");
+				"Scandescription could not be saved! " +
+				"Consult the Errors View for more Information.");
 			
 			return;
 		}
