@@ -47,7 +47,8 @@ public class ControlEventError implements IModelError {
 	}
 
 	/**
-	 * This method returns the type of the error.
+	 * Returns the error type as defined in 
+	 * {@link de.ptb.epics.eve.data.scandescription.errors.ControlEventErrorTypes}.
 	 * 
 	 * @return The type of the error. Must not be null!
 	 */
@@ -55,73 +56,72 @@ public class ControlEventError implements IModelError {
 		return this.errorType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ( ( controlEvent == null ) ? 0 : controlEvent.hashCode() );
-		result = prime * result + ( ( errorType == null ) ? 0 : errorType.hashCode() );
+		result = prime * result + ((controlEvent == null) 
+				 ? 0 : controlEvent.hashCode());
+		result = prime * result + ((errorType == null) 
+				 ? 0 : errorType.hashCode());
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean equals( final Object obj ) {
-		if( this == obj ) {
+	public boolean equals(final Object obj) {
+		if(this == obj) {
 			return true;
 		}
-		if( obj == null ) {
+		if(obj == null) {
 			return false;
 		}
-		if( getClass() != obj.getClass() ) {
+		if(getClass() != obj.getClass()) {
 			return false;
 		}
 		final ControlEventError other = (ControlEventError)obj;
-		if( controlEvent == null ) {
-			if( other.controlEvent != null ) {
+		if(controlEvent == null) {
+			if(other.controlEvent != null) {
 				return false;
 			}
-		} else if( !controlEvent.equals(other.controlEvent ) ) {
+		} else if(!controlEvent.equals(other.controlEvent)) {
 			return false;
 		}
-		if( errorType == null ) {
-			if( other.errorType != null ) {
+		if(errorType == null) {
+			if(other.errorType != null) {
 				return false;
 			}
-		} else if( !errorType.equals( other.errorType ) ) {
+		} else if(!errorType.equals( other.errorType)) {
 			return false;
 		}
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
-		return "ControlEventError [controlEvent=" + controlEvent + ", errorType=" + errorType + "]";
+		return "ControlEventError [controlEvent=" + controlEvent + 
+			   ", errorType=" + errorType + "]";
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelError#getErrorMessage()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String getErrorMessage() {
-		return "Error in control event " + controlEvent + " because " + errorType;
+		return "Error in control event " + controlEvent + 
+			   " because " + errorType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelError#getErrorName()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String getErrorName() {

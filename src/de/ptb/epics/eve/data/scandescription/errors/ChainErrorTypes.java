@@ -1,7 +1,7 @@
 package de.ptb.epics.eve.data.scandescription.errors;
 
 /**
- * This enumeration describes all possible error types of a chain.
+ * Contains all possible error types of a chain.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
  *
@@ -9,13 +9,12 @@ package de.ptb.epics.eve.data.scandescription.errors;
 public enum ChainErrorTypes {
 
 	/**
-	 * The name of the file is not set.
+	 * The file name is not set.
 	 */
 	FILENAME_EMPTY,
 	
 	/**
-	 * The name of the file contains illegal character.
+	 * The file name contains illegal character.
 	 */
 	FILENAME_ILLEGAL_CHARACTER
-	
 }

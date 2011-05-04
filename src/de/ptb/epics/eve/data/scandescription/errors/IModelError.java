@@ -1,7 +1,7 @@
 package de.ptb.epics.eve.data.scandescription.errors;
 
 /**
- * This interface provides the basis for errors in the scan description model.
+ * Provides the basis for errors in the scan description model.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
  *
@@ -21,5 +21,4 @@ public interface IModelError {
 	 * @return A printable message of the error. Should not return 'null'
 	 */
 	public String getErrorMessage();
-	
 }

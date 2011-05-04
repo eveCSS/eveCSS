@@ -3,61 +3,65 @@ package de.ptb.epics.eve.data.scandescription.errors;
 import de.ptb.epics.eve.data.scandescription.Chain;
 
 /**
- * This class represents an error of a chain object.
+ * Represents an error which occurred in a 
+ * {@link de.ptb.epics.eve.data.scandescription.Chain}.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
  *
  */
 public class ChainError implements IModelError {
 
-	/**
-	 * The chain object where the error occurred.
-	 */
-	final Chain chain;
+	// the chain where the error occurred
+	private final Chain chain;
+	
+	// the error type
+	private final ChainErrorTypes errorType;
 	
 	/**
-	 * The type of error.
-	 */
-	final ChainErrorTypes errorType;
-	
-	/**
-	 * This method creates a new description object for an error in a chain object.
+	 * Constructs a <code>ChainError</code>.
 	 * 
-	 * @param chain The chain object where the error occurred. Must not be null!
-	 * @param errorType The type of the error. Must not be null!
+	 * @param chain the chain where the error occurred
+	 * @param errorType the error type
+	 * @throws IllegalArgumentException 
+	 * 		   <ul>
+	 * 			<li>if <code>chain</code> is <code>null</code></li>
+	 * 			<li>if <code>errorType</code> is <code>null</code></li>
+	 * 		   </ul>
 	 */
-	public ChainError( final Chain chain, final ChainErrorTypes errorType ) {
-		if( chain == null ) {
-			throw new IllegalArgumentException( "The parameter 'chain' must not be null!" );
+	public ChainError(final Chain chain, final ChainErrorTypes errorType) {
+		if(chain == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'chain' must not be null!");
 		}
-		if( errorType == null ) {
-			throw new IllegalArgumentException( "The parameter 'errorType' must not be null!" );
+		if(errorType == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'errorType' must not be null!");
 		}
 		this.chain = chain;
 		this.errorType = errorType;
 	}
 	
 	/**
-	 * This method returns the chain of this chain error. 
+	 * Returns the chain where the error occurred.
 	 * 
-	 * @return The chain where the error is located. Never returns null!
+	 * @return the chain where the error occurred
 	 */
 	public Chain getChain() {
 		return this.chain;
 	}
 	
 	/**
-	 * The type of the error.
+	 * Returns the error type as defined in 
+	 * {@link de.ptb.epics.eve.data.scandescription.errors.ChainErrorTypes}.
 	 * 
-	 * @return The type of the error. Never returns null!
+	 * @return the type of the error
 	 */
 	public ChainErrorTypes getErrorType() {
 		return this.errorType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
@@ -68,52 +72,49 @@ public class ChainError implements IModelError {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean equals( final Object obj ) {
-		if( this == obj ) {
+	public boolean equals(final Object obj) {
+		if(this == obj) {
 			return true;
 		}
-		if( obj == null) {
+		if(obj == null) {
 			return false;
 		}
-		if( getClass() != obj.getClass() ) {
+		if(getClass() != obj.getClass()) {
 			return false;
 		}
 		final ChainError other = (ChainError)obj;
-		if(! this.chain.equals( other.chain ) ) {
+		if(!this.chain.equals(other.chain)) {
 			return false;
 		}
-		if( !this.errorType.equals( other.errorType ) ) {
+		if(!this.errorType.equals( other.errorType)) {
 			return false;
 		}
 		return true;
 	}
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
-		//return "ChainError [chain=" + this.chain + ", errorType=" + this.errorType + "]";
-		return "ChainError [chain=" + this.chain.getId() + ", errorType=" + this.errorType + "]";
+		return "ChainError [chain=" + this.chain.getId() + 
+				", errorType=" + this.errorType + "]";
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelError#getErrorMessage()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String getErrorMessage() {
 		return "Error in chain " + this.chain.getId() + " because " + errorType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelError#getErrorName()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String getErrorName() {

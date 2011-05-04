@@ -1,7 +1,7 @@
 package de.ptb.epics.eve.data.scandescription.errors;
 
 /**
- * This enumeration describes all possible error reasons of an axis.
+ * Contains all possible error types of an axis.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
  *
@@ -19,33 +19,32 @@ public enum AxisErrorTypes {
 	STOP_NOT_SET,
 	
     /**
-	 * The stepwidth value is not set.
+	 * The step width value is not set.
 	 */
 	STEPWIDTH_NOT_SET,
 	
 	/**
-	 * The start value is not possible.
+	 * The start value is invalid.
 	 */
 	START_VALUE_NOT_POSSIBLE,
 	
     /**
-	 * The stop value is not possible.
+	 * The stop value is invalid.
 	 */
 	STOP_VALUE_NOT_POSSIBLE,
 	
 	/**
-	 * The filename value is not set.
+	 * The filename is not set.
 	 */
 	FILENAME_NOT_SET,
 	
     /**
-	 * The position list value is not set.
+	 * The position list is not set.
 	 */
 	POSITIONLIST_NOT_SET,
 
     /**
-	 * In the plugin is an error.
+	 * the plug in contains an error.
 	 */
 	PLUGIN_ERROR
-
 }
