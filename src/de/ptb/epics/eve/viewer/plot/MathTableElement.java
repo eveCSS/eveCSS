@@ -12,6 +12,9 @@ import de.ptb.epics.eve.ecp1.intern.DataType;
 import de.ptb.epics.eve.viewer.Activator;
 
 /**
+ * <code>MathTableElement</code> represents an entry (row) of the tables 
+ * contained in 
+ * {@link de.ptb.epics.eve.viewer.views.plotview.PlotViewDetectorComposite}.
  * 
  * @author ?
  * @author Marcus Michalsky
@@ -121,18 +124,24 @@ public class MathTableElement implements IMeasurementDataListener {
 	}
 	
 	/**
-	 * 
+	 * &lt;not implemented yet&gt;
 	 */
 	public void gotoPos() {
 		if (motorPv == null) return;
+		// TODO IMPLEMENT
 		return;
 	}
 
 	/**
+	 * Checks whether an icon should be shown in the table.
 	 * 
-	 * @return
+	 * @return <code>true</code> if an icon should be shown, 
+	 * 		   <code>false</code> otherwise
 	 */
 	public boolean drawIcon() {
+		// UNMODIFIED is the recently measured value (the motor is/was there)
+		// and AVERAGE, DEVIATION and FWHM are no "real" positions but statistics
+		// -> no GoTo icon is shown for them
 		switch (mathFunction) {
 		case UNMODIFIED:
 		case AVERAGE:
@@ -145,24 +154,27 @@ public class MathTableElement implements IMeasurementDataListener {
 	}
 	
 	/**
+	 * Returns the name of the element.
 	 * 
-	 * @return
+	 * @return the name of the element
 	 */
 	public String getName() {
 			return mathFunction.toString();
 	}
 
 	/**
+	 * Returns the value of the element.
 	 * 
-	 * @return
+	 * @return the value of the elemetn
 	 */
 	public String getValue() {
 		return value;
 	}
 
 	/**
+	 * Returns the position of the motor where the value was measured.
 	 * 
-	 * @return
+	 * @return the position of the motor where the value was measured
 	 */
 	public String getPosition() {
 		if ((mathFunction == MathFunction.UNMODIFIED) || drawIcon())

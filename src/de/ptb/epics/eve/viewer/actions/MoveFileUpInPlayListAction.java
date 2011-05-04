@@ -7,35 +7,64 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 import de.ptb.epics.eve.ecp1.client.model.PlayListEntry;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.MessageSource;
-import de.ptb.epics.eve.viewer.PlayListView;
 import de.ptb.epics.eve.viewer.messages.MessageTypes;
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.playlistview.PlayListView;
 
-public class MoveFileUpInPlayListAction extends Action implements IWorkbenchAction {
+/**
+ * <code>MovieFileUpInPlayListAction</code>.
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
+public class MoveFileUpInPlayListAction extends Action 
+												implements IWorkbenchAction {
 
-	private static final String ID = "de.ptb.epics.eve.viewer.actions.MoveFileUpInPlayListAction";  
+	//
+	private static final String ID = 
+			"de.ptb.epics.eve.viewer.actions.MoveFileUpInPlayListAction";
 	
+	//
 	private PlayListView playListView;
 	
-	public MoveFileUpInPlayListAction( final PlayListView playListView ){  
-		this.setId( MoveFileUpInPlayListAction.ID );
+	/**
+	 * Constructs a <code>MoveFileUpInPlayListAction</code>.
+	 * 
+	 * @param playListView the view where the action is registered (triggered)
+	 */
+	public MoveFileUpInPlayListAction(final PlayListView playListView){
+		this.setId(MoveFileUpInPlayListAction.ID);
 		this.playListView = playListView;
 	} 
 	
-	public void run() {  
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void run() {
 		TableViewer tableViewer = this.playListView.getTableViewer();
 		TableItem[] selectedItems = tableViewer.getTable().getSelection();
-		for( int i = selectedItems.length - 1; i >= 0; --i ) {
+		for(int i = 0; i < selectedItems.length; ++i) {
 			final PlayListEntry entry = (PlayListEntry)selectedItems[i].getData();
-			Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage(MessageTypes.INFO, "Moving up entry: id = " + entry.getId() + " name = " + entry.getName() + " author " + entry.getAuthor() + "." ) );
-			Activator.getDefault().getEcp1Client().getPlayListController().movePlayListEntry( entry, 1 );
+			Activator.getDefault().getMessagesContainer().addMessage(
+					new ViewerMessage(MessageTypes.INFO, 
+									  "Moving up entry: id = " + 
+									  entry.getId() + 
+									  " name = " + 
+									  entry.getName() + 
+									  " author " + 
+									  entry.getAuthor() + 
+									  "."));
+			Activator.getDefault().getEcp1Client().getPlayListController().
+					movePlayListEntry(entry, -1);
 		}
 	} 
 	
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
-
 }

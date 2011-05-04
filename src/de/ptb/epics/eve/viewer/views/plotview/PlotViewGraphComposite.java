@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views;
+package de.ptb.epics.eve.viewer.views.plotview;
 
 import gov.aps.jca.dbr.TimeStamp;
 

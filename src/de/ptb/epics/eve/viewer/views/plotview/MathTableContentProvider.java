@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.plot;
+package de.ptb.epics.eve.viewer.views.plotview;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
+
+import de.ptb.epics.eve.viewer.plot.MathTableElement;
 
 /**
  * 

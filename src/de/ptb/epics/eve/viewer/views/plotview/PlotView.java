@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views;
+package de.ptb.epics.eve.viewer.views.plotview;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -15,12 +15,12 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 
 /**
- * <code>Plot View</code> contains an xy plot and tables with statistics 
- * for up to two detector channels.  
+ * <code>PlotView</code> contains an xy plot and tables with statistics 
+ * for up to two detector channels.
  * 
  * @author ?
  * @author Marcus Michalsky
- * @author Hartmut Scherr, scrolledComposite added
+ * @author Hartmut Scherr
  */
 public class PlotView extends ViewPart {
 	
@@ -29,8 +29,10 @@ public class PlotView extends ViewPart {
 	 */
 	public static final String ID = "PlotView";
 
-	private static Logger logger = Logger.getLogger(PlotView.class);	
+	// logging
+	private static Logger logger = Logger.getLogger(PlotView.class);
 	
+	// the id of the plot
 	private int id = -1;
 	
 	// the composite for the xy-plot
@@ -47,11 +49,11 @@ public class PlotView extends ViewPart {
 	@Override
 	public void createPartControl(final Composite parent) {
 		
-		parent.setLayout( new FillLayout() );		
+		parent.setLayout(new FillLayout());
 		
 		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
 
-		this.top = new Composite( sc, SWT.NONE );
+		this.top = new Composite(sc, SWT.NONE);
 		// we use a grid layout with two columns
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
@@ -180,7 +182,7 @@ public class PlotView extends ViewPart {
 						detector1, detector1Name, detector2, detector2Name);
 		plotDetectorComposite.refresh(plotWindow, chid, smid, motorId, motorName, 
 						motorPv, 
-						detector1, detector1Name, detector2, detector2Name);		
+						detector1, detector1Name, detector2, detector2Name);
 
 		// calculate the minimum width and height of the scrolledWindow
 		int targetHeight = 0;
@@ -188,8 +190,10 @@ public class PlotView extends ViewPart {
 
 		Control[] detArray = plotDetectorComposite.getChildren();
 		for( int i = 0; i < detArray.length; ++i ) {
-			targetHeight = detArray[i].getBounds().height + detArray[i].getBounds().y;
-			targetWidth = detArray[i].getBounds().width + detArray[i].getBounds().x;
+			targetHeight = 
+				detArray[i].getBounds().height + detArray[i].getBounds().y;
+			targetWidth = 
+				detArray[i].getBounds().width + detArray[i].getBounds().x;
 		}
 		
 		int sizeHeight;
@@ -201,8 +205,9 @@ public class PlotView extends ViewPart {
 		else {
 			sizeHeight = targetHeight + 10;
 		}
-		sizeWidth = plotGraphComposite.getBounds().width + plotGraphComposite.getBounds().x + targetWidth + 10;
+		sizeWidth = plotGraphComposite.getBounds().width + 
+					plotGraphComposite.getBounds().x + 
+					targetWidth + 10;
 		sc.setMinSize(sizeWidth, sizeHeight);
-		
 	}
 }

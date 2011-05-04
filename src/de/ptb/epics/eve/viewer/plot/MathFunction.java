@@ -56,6 +56,11 @@ public enum MathFunction {
 	 */
 	SUM, 
 	
+	/**
+	 * normalized data
+	 */
+	NORMALIZED,
+	
 	/** 
 	 * ??? 
 	 */
@@ -78,6 +83,7 @@ public enum MathFunction {
 			case DEVIATION:		return "Deviation";
 			case FWHM:			return "FWHM";
 			case SUM:			return "Sum";
+			case NORMALIZED:	return "Normalized";
 			
 			default:	return "unknown";
 		}
@@ -108,6 +114,8 @@ public enum MathFunction {
 			return DataModifier.FWHM;
 		case SUM:
 			return DataModifier.SUM;
+		case NORMALIZED:
+			return DataModifier.NORMALIZED;
 		default:
 			return DataModifier.UNMODIFIED;
 		}	

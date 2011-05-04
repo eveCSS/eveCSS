@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views;
+package de.ptb.epics.eve.viewer.views.plotview;
 
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.CellEditor;
@@ -16,7 +16,6 @@ import org.eclipse.swt.widgets.Composite;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.plot.MathFunction;
-import de.ptb.epics.eve.viewer.plot.MathTableContentProvider;
 import de.ptb.epics.eve.viewer.plot.MathTableElement;
 
 /**
@@ -35,6 +34,10 @@ public class PlotViewDetectorComposite extends Composite {
 	// the icon used in the goto column to set a motor axis to a specific value
 	private Image gotoIcon;
 
+	// indicates whether normalization is set for the specific axis
+	private boolean normalizeAxis1;
+	private boolean normalizeAxis2;
+	
 	/**
 	 * Constructs a <code>PlotDetectorComposite</code>.
 	 * 
@@ -43,7 +46,7 @@ public class PlotViewDetectorComposite extends Composite {
 	 */
 	public PlotViewDetectorComposite(Composite parent, int style) {
 		super(parent, style);
-
+		
 		// grab the goto icon
 		gotoIcon = Activator.getDefault().getImageRegistry().get("GREENGO12");
 		
@@ -52,17 +55,20 @@ public class PlotViewDetectorComposite extends Composite {
 		gridLayout.numColumns = 1;
 		setLayout(gridLayout);
 		
-		GridData gridData = new GridData();
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		setLayoutData( gridData );
 		
-		// detectorLabel1 = new Label(this, SWT.None);
+		// table for detector 1
 		tableViewerDet1 = makeTable();
-		// detectorLabel2 = new Label(this, SWT.None);
+		// table for detector 2
 		tableViewerDet2 = makeTable();
+		
+		normalizeAxis1 = false;
+		normalizeAxis2 = false;
 	}
 	
 	/*
@@ -96,7 +102,7 @@ public class PlotViewDetectorComposite extends Composite {
 			}
 		});
 		tableColumnLayout.setColumnData(nameColumn.getColumn(), 
-										new ColumnPixelData(75));
+										new ColumnPixelData(85));
 
 		// the second column contains the statistics for the detector channel
 		TableViewerColumn valueColumn = 
@@ -108,7 +114,7 @@ public class PlotViewDetectorComposite extends Composite {
 			}
 		});
 		tableColumnLayout.setColumnData(valueColumn.getColumn(), 
-										new ColumnPixelData(100));
+										new ColumnPixelData(140));
 
 		// the third column contains the positions of the motor axis where the
 		// corresponding statistical value was detected
@@ -195,10 +201,17 @@ public class PlotViewDetectorComposite extends Composite {
 		
 		if (detector1Id != null)
 		{
-			createContent(chid, smid, tableViewerDet1, motorPv, motorId, 
-						  detector1Id);
+			normalizeAxis1 = 
+				(plotWindow.getYAxes().get(0).getNormalizeChannel() != null);
 			
-			tableViewerDet1.getTable().getColumn(1).setText(detector1Name);
+			createContent(1, chid, smid, tableViewerDet1, motorPv, motorId, 
+						  detector1Id);
+			if(!normalizeAxis1)
+				tableViewerDet1.getTable().getColumn(1).setText(detector1Name);
+			else
+				tableViewerDet1.getTable().getColumn(1).setText(detector1Name + 
+						" / " + plotWindow.getYAxes().get(0).
+											getNormalizeChannel().getName());
 			tableViewerDet1.getTable().getColumn(2).setText(motorName);
 			tableViewerDet1.refresh();
 			tableViewerDet1.getTable().setVisible(true);
@@ -206,10 +219,18 @@ public class PlotViewDetectorComposite extends Composite {
 		
 		if (detector2Id != null)
 		{
-			createContent(chid, smid, tableViewerDet2, motorPv, motorId, 
+			normalizeAxis2 = 
+				(plotWindow.getYAxes().get(1).getNormalizeChannel() != null);
+				
+			createContent(2, chid, smid, tableViewerDet2, motorPv, motorId, 
 						  detector2Id);
 			
-			tableViewerDet2.getTable().getColumn(1).setText(detector2Name);
+			if(!normalizeAxis2)
+				tableViewerDet2.getTable().getColumn(1).setText(detector2Name);
+			else
+				tableViewerDet2.getTable().getColumn(1).setText(detector2Name + 
+						" / " + plotWindow.getYAxes().get(1).
+											getNormalizeChannel().getName());
 			tableViewerDet2.getTable().getColumn(2).setText(motorName);
 			tableViewerDet2.refresh();
 			tableViewerDet2.getTable().setVisible(true);
@@ -230,8 +251,9 @@ public class PlotViewDetectorComposite extends Composite {
 	 * called by the refresh method...
 	 * creates the content of the two statistics tables
 	 */
-	private void createContent(int chid, int smid, TableViewer tableViewer, 
-						String motorPv, String motorId, String detectorId) {
+	private void createContent(int axis, int chid, int smid, 
+							   TableViewer tableViewer, String motorPv, 
+							   String motorId, String detectorId) {
 
 		// create a content provider for the table...
 		MathTableContentProvider contentProvider = 
@@ -239,11 +261,23 @@ public class PlotViewDetectorComposite extends Composite {
 		// ...and clear it
 		contentProvider.clear();
 		
+		MathTableElement element;
+		
 		// create the elements of interest and add them to the content provider
 		
-		MathTableElement element = new MathTableElement(chid, smid, tableViewer, 
+		if((axis == 1 && !normalizeAxis1) || (axis == 2 && !normalizeAxis2))
+		{
+			element = new MathTableElement(chid, smid, tableViewer, 
 				MathFunction.UNMODIFIED, motorPv, motorId, detectorId);
-		contentProvider.addElement(element);
+			contentProvider.addElement(element);
+		}
+		if((axis == 1 && normalizeAxis1) || (axis == 2 && normalizeAxis2))
+		{
+			element = new MathTableElement(chid, smid, tableViewer, 
+					MathFunction.NORMALIZED, motorPv, motorId, detectorId);
+				contentProvider.addElement(element);
+		}
+		
 		
 		element = new MathTableElement(chid, smid, tableViewer, 
 				MathFunction.MINIMUM, motorPv, motorId, detectorId);

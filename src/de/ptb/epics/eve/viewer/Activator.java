@@ -120,6 +120,9 @@ public class Activator extends AbstractUIPlugin {
 		imagereg.put("DETECTOR", imageDescriptorFromPlugin(PLUGIN_ID, "icons/detector.gif").createImage());
 		imagereg.put("CHANNEL", imageDescriptorFromPlugin(PLUGIN_ID, "icons/channel.gif").createImage());
 		
+		imagereg.put("MOVEUP", imageDescriptorFromPlugin(PLUGIN_ID, "icons/prev_nav.gif").createImage());
+		imagereg.put("MOVEDOWN", imageDescriptorFromPlugin(PLUGIN_ID, "icons/next_nav.gif").createImage());
+		
 		final String measuringStationDescription = de.ptb.epics.eve.preferences.Activator.getDefault().getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION );
 		
 		if( !measuringStationDescription.equals( "" ) ) { 

@@ -19,7 +19,7 @@
       <view
             name="%view.name"
             icon="icons/css.gif"
-            class="de.ptb.epics.eve.viewer.PlayListView"
+            class="de.ptb.epics.eve.viewer.views.playlistview.PlayListView"
             id="PlayListView">
       </view>
       <view
@@ -56,7 +56,7 @@
             name="%view.name.4"/>
       <view
             allowMultiple="true"
-            class="de.ptb.epics.eve.viewer.views.PlotView"
+            class="de.ptb.epics.eve.viewer.views.plotview.PlotView"
             icon="icons/css.gif"
             id="PlotView"
             name="%view.name.5"/>
