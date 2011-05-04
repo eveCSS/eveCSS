@@ -21,7 +21,8 @@
       author="true"
       version="true"
       use="true"
-      windowtitle="eveCSS API">
+      windowtitle="eveCSS API"
+      linksource="yes">
    	
       <classpath>
     	<pathelement path="${classpath}"/>
