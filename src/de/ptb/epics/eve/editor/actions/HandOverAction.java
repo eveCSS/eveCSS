@@ -60,6 +60,13 @@ public class HandOverAction implements IWorkbenchWindowActionDelegate {
 				return;
 			}
 		}	
+		
+		// if it is still dirty (save unsuccessful) don't switch perspective
+		if(de.ptb.epics.eve.editor.Activator.getDefault().
+				getWorkbench().getActiveWorkbenchWindow().
+				getActivePage().getActiveEditor().isDirty())
+			return;
+		
 		// in all cases -> switch perspective and load file in play list
 		switchPerspective(silent);
 
