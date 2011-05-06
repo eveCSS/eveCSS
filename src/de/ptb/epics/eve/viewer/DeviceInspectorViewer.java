@@ -154,7 +154,7 @@ public class DeviceInspectorViewer extends ViewPart {
 										else if (absdevice instanceof Device ) 
 											addDeviceEntry((Device) absdevice );
 										else if( absdevice instanceof Motor )
-											for (MotorAxis axis : ((Motor)absdevice).getAxis()) 
+											for (MotorAxis axis : ((Motor)absdevice).getAxes()) 
 												addMotorAxisEntry(axis);
 										else if( absdevice instanceof Detector )
 											for (DetectorChannel channel : ((Detector)absdevice).getChannels()) 
@@ -967,8 +967,8 @@ public class DeviceInspectorViewer extends ViewPart {
 			
 			} else if( device instanceof Motor ){
 				final Motor motor = (Motor)device;
-				if( motor.getAxis().size() > 0 ) {
-					List<MotorAxis> axisList = motor.getAxis();
+				if( motor.getAxes().size() > 0 ) {
+					List<MotorAxis> axisList = motor.getAxes();
 					for (MotorAxis axis : axisList) {
 						if (!devices.contains(axis)) addMotorAxisEntry(axis);
 					}

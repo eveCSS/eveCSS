@@ -76,7 +76,7 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 		else if( parentElement instanceof Motor ) {
 			List returnList = new ArrayList();
 			final Motor motor = (Motor)parentElement;
-			final List< MotorAxis > axis = motor.getAxis();
+			final List< MotorAxis > axis = motor.getAxes();
 			for( final MotorAxis a : axis ) {
 				if( a.getClassName().equals( "" ) ) {
 					returnList.add( a );
@@ -143,7 +143,7 @@ public class MeasuringStationTreeViewContentProvider implements ITreeContentProv
 			return (((List)element).size() > 0);
 		} else if( element instanceof Motor ) {
 			final Motor motor = (Motor)element;
-			return motor.getAxis().size() > 0 || motor.getOptions().size() > 0;
+			return motor.getAxes().size() > 0 || motor.getOptions().size() > 0;
 		} else if( element instanceof Detector ) {
 			final Detector detector = (Detector)element;
 			return detector.getChannels().size() > 0 || detector.getOptions().size() > 0;
