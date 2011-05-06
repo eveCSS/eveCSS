@@ -20,8 +20,6 @@
                 <xpos>92</xpos>
                 <ypos>39</ypos>
                 <parent>0</parent>
-                <nested>3</nested>
-                <appended>2</appended>
                 <settletime>0.0</settletime>
                 <triggerdelay>0.0</triggerdelay>
                 <triggerconfirm>false</triggerconfirm>
@@ -72,40 +70,6 @@
                         <markstyle>Bar%28%7C%29</markstyle>
                     </yaxis>
                 </plot>
-            </scanmodule>
-            <scanmodule id="2">
-                <type>classic</type>
-                <name>SM 2 append</name>
-                <xpos>222</xpos>
-                <ypos>39</ypos>
-                <parent>1</parent>
-                <appended>4</appended>
-                <settletime>0.0</settletime>
-                <triggerdelay>0.0</triggerdelay>
-                <triggerconfirm>false</triggerconfirm>
-                <saveaxispositions>never</saveaxispositions>
-            </scanmodule>
-            <scanmodule id="3">
-                <type>classic</type>
-                <name>SM 3 nested</name>
-                <xpos>222</xpos>
-                <ypos>139</ypos>
-                <parent>1</parent>
-                <settletime>0.0</settletime>
-                <triggerdelay>0.0</triggerdelay>
-                <triggerconfirm>false</triggerconfirm>
-                <saveaxispositions>never</saveaxispositions>
-            </scanmodule>
-            <scanmodule id="4">
-                <type>classic</type>
-                <name>SM 4 append</name>
-                <xpos>352</xpos>
-                <ypos>39</ypos>
-                <parent>2</parent>
-                <settletime>0.0</settletime>
-                <triggerdelay>0.0</triggerdelay>
-                <triggerconfirm>false</triggerconfirm>
-                <saveaxispositions>never</saveaxispositions>
             </scanmodule>
         </scanmodules>
     </chain>

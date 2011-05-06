@@ -62,6 +62,13 @@
                         <color>0000ff</color>
                         <markstyle>point%28%07%29</markstyle>
                     </yaxis>
+                    <yaxis>
+                        <id>ringLifeTime1chan1</id>
+                        <mode>linear</mode>
+                        <linestyle>Dash Line</linestyle>
+                        <color>008000</color>
+                        <markstyle>None</markstyle>
+                    </yaxis>
                 </plot>
             </scanmodule>
         </scanmodules>

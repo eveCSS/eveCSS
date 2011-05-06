@@ -2,7 +2,7 @@
 <tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <version>0.4.1</version>
-    <repeatcount>4</repeatcount>
+    <repeatcount>0</repeatcount>
     <chain id="1">
         <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/041/Hartmut/Daten/namenz.h5</savefilename>
         <confirmsave>false</confirmsave>
@@ -35,6 +35,15 @@
                     <start type="double">5.0</start>
                     <stop type="double">10.0</stop>
                     <stepwidth type="double">1</stepwidth>
+                    <ismainaxis>true</ismainaxis>
+                </smaxis>
+                <smaxis>
+                    <axisid>PPSMC:gw23715000</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="double">10.0</start>
+                    <stop type="double">20.0</stop>
+                    <stepwidth type="double">2.0</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smchannel>
@@ -61,6 +70,13 @@
                         <linestyle>Solid Line</linestyle>
                         <color>0000ff</color>
                         <markstyle>point%28%07%29</markstyle>
+                    </yaxis>
+                    <yaxis>
+                        <id>ringLifeTime1chan1</id>
+                        <mode>linear</mode>
+                        <linestyle>Dash Line</linestyle>
+                        <color>008000</color>
+                        <markstyle>None</markstyle>
                     </yaxis>
                 </plot>
             </scanmodule>

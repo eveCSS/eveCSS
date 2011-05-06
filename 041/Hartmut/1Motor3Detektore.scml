@@ -2,7 +2,7 @@
 <tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
     xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <version>0.4.1</version>
-    <repeatcount>4</repeatcount>
+    <repeatcount>0</repeatcount>
     <chain id="1">
         <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/041/Hartmut/Daten/namenz.h5</savefilename>
         <confirmsave>false</confirmsave>
@@ -24,17 +24,13 @@
                 <triggerdelay>0.0</triggerdelay>
                 <triggerconfirm>false</triggerconfirm>
                 <saveaxispositions>never</saveaxispositions>
-                <prescan>
-                    <id>PPSMC:gw23715001</id>
-                    <value type="double">20</value>
-                </prescan>
                 <smaxis>
-                    <axisid>PPSMC:gw23715001</axisid>
+                    <axisid>PPSMC:gw23715000</axisid>
                     <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <start type="double">5.0</start>
-                    <stop type="double">10.0</stop>
-                    <stepwidth type="double">1</stepwidth>
+                    <start type="double">10.0</start>
+                    <stop type="double">40.0</stop>
+                    <stepwidth type="double">2.0</stepwidth>
                     <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smchannel>
@@ -51,7 +47,7 @@
                 </smchannel>
                 <plot id="1">
                     <xaxis>
-                        <id>PPSMC:gw23715001</id>
+                        <id>PPSMC:gw23715000</id>
                         <mode>linear</mode>
                     </xaxis>
                     <init>false</init>
@@ -60,7 +56,7 @@
                         <mode>linear</mode>
                         <linestyle>Solid Line</linestyle>
                         <color>0000ff</color>
-                        <markstyle>point%28%07%29</markstyle>
+                        <markstyle>None</markstyle>
                     </yaxis>
                 </plot>
             </scanmodule>

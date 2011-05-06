@@ -17,9 +17,11 @@
             <scanmodule id="1">
                 <type>classic</type>
                 <name>ohne</name>
-                <xpos>151</xpos>
-                <ypos>53</ypos>
+                <xpos>153</xpos>
+                <ypos>13</ypos>
                 <parent>0</parent>
+                <nested>3</nested>
+                <appended>2</appended>
                 <settletime>0.0</settletime>
                 <triggerdelay>0.0</triggerdelay>
                 <triggerconfirm>false</triggerconfirm>
@@ -62,7 +64,84 @@
                         <color>0000ff</color>
                         <markstyle>point%28%07%29</markstyle>
                     </yaxis>
+                    <yaxis>
+                        <id>ringLifeTime1chan1</id>
+                        <mode>linear</mode>
+                        <linestyle>Dash Line</linestyle>
+                        <color>00ff00</color>
+                        <markstyle>Bar%28%7C%29</markstyle>
+                    </yaxis>
                 </plot>
+            </scanmodule>
+            <scanmodule id="2">
+                <type>classic</type>
+                <name>SM 2 append</name>
+                <xpos>281</xpos>
+                <ypos>53</ypos>
+                <parent>1</parent>
+                <nested>7</nested>
+                <appended>6</appended>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+            </scanmodule>
+            <scanmodule id="3">
+                <type>classic</type>
+                <name>SM 3 nested</name>
+                <xpos>281</xpos>
+                <ypos>153</ypos>
+                <parent>1</parent>
+                <nested>5</nested>
+                <appended>4</appended>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+            </scanmodule>
+            <scanmodule id="4">
+                <type>classic</type>
+                <name>SM 4 append</name>
+                <xpos>411</xpos>
+                <ypos>153</ypos>
+                <parent>3</parent>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+            </scanmodule>
+            <scanmodule id="5">
+                <type>classic</type>
+                <name>SM 5 nested</name>
+                <xpos>411</xpos>
+                <ypos>253</ypos>
+                <parent>3</parent>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+            </scanmodule>
+            <scanmodule id="6">
+                <type>classic</type>
+                <name>SM 6 append</name>
+                <xpos>411</xpos>
+                <ypos>53</ypos>
+                <parent>2</parent>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+            </scanmodule>
+            <scanmodule id="7">
+                <type>classic</type>
+                <name>SM 7 nested</name>
+                <xpos>435</xpos>
+                <ypos>193</ypos>
+                <parent>2</parent>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
             </scanmodule>
         </scanmodules>
     </chain>
