@@ -63,6 +63,8 @@
       <packageset dir="de.ptb.epics.eve.editor/src" defaultexcludes="yes" />
       <packageset dir="de.ptb.epics.eve.viewer/src" defaultexcludes="yes" />
       <packageset dir="de.ptb.epics.eve.preferences/src" defaultexcludes="yes" />
+      
+      <packageset dir="de.ptb.epics.eve.data.tests/src" defaultexcludes="yes" />
 
       <doctitle><![CDATA[<h1>eveCSS</h1>]]></doctitle>
       <bottom>
@@ -79,6 +81,9 @@
       <group title="NMP &lt;-&gt; ECP" packages="de.ptb.epics.eve.ecp1*"/>
       <group title="EVE Editor" packages="de.ptb.epics.eve.editor*"/>
       <group title="EVE Viewer" packages="de.ptb.epics.eve.viewer*"/>
+
+      <group title="Tests" 
+      		 packages="de.ptb.epics.eve.data.measuringstation.filter.tests*" />
 
       <group title="apache" packages="org.apache.*" />
       
@@ -98,6 +103,8 @@
         packagelistLoc="docs/api/css/" />
       <link offline="true" href="http://jca.cosylab.com/apidocs"
       	packagelistLoc="docs/api/jca-2.3.2/" />
+      <link offline="true" href="docs/api/junit-4.8.2"
+      	packagelistLoc="http://kentbeck.github.com/junit/javadoc/latest/" />
     </javadoc>
   </target>
 </project>
