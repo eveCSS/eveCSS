@@ -125,7 +125,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 							final Motor motor = (Motor)device;
 							final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName(), motorImage, "".equals( motor.getName())?motor.getID():motor.getName() );
 							currentClassMenu.add( currentMotorMenu );
-							for( final MotorAxis motorAxis : motor.getAxis() ) {
+							for( final MotorAxis motorAxis : motor.getAxes() ) {
 								final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName(), axisImage, "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
 								for( final Option option : motorAxis.getOptions() ) {
 									final Action setOptionAction = new Action() {
@@ -287,7 +287,7 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 					if( "".equals( motor.getClassName() ) || motor.getClassName() == null ) {
 
 						final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName(), motorImage, "".equals( motor.getName())?motor.getID():motor.getName() );
-						for( final MotorAxis motorAxis : motor.getAxis() ) {
+						for( final MotorAxis motorAxis : motor.getAxes() ) {
 							if( "".equals( motorAxis.getClassName() ) || motorAxis.getClassName() == null ) {
 								final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName(), axisImage, "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
 								for( final Option option : motorAxis.getOptions() ) {

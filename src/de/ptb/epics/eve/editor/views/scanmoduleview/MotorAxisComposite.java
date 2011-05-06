@@ -298,7 +298,7 @@ public class MotorAxisComposite extends Composite {
 						currentClassMenu.add(currentMotorMenu);
 						
 						// iterate for each axis of the motor
-						for(final MotorAxis axis : motor.getAxis()) {
+						for(final MotorAxis axis : motor.getAxes()) {
 							
 							final SetAxisAction setAxisAction = 
 									new SetAxisAction(axis);
@@ -320,7 +320,7 @@ public class MotorAxisComposite extends Composite {
 							new MenuManager("".equals(motor.getName())
 											? motor.getID()
 											: motor.getName());
-						for(final MotorAxis axis : motor.getAxis()) {
+						for(final MotorAxis axis : motor.getAxes()) {
 							if("".equals(axis.getClassName()) || 
 							   axis.getClassName() == null) {
 								final SetAxisAction setAxisAction = 
