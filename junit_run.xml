@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="junit" basedir="."> 
+
+  <property name="eclipse_dir" location="${user.home}/eclipse_dir" />
+
+  <target name="junit">
+    
+    <junit printsummary="yes" showoutput="true">
+       
+      <classpath>
+        <pathelement path="${classpath}"/>
+        <fileset dir="${eclipse_dir}/plugins">
+          <include name="**/*.jar"/>
+        </fileset>
+        
+        <pathelement path="${user.home}/eveCSS/de.ptb.epics.eve.data.tests/bin" />
+        <pathelement path="${user.home}/eveCSS/de.ptb.epics.eve.data/bin" />
+      </classpath>
+    
+      <batchtest>
+        <fileset dir="src">
+          <include name="**/*Test.java" />
+        </fileset>
+      </batchtest>
+      
+    </junit>
+  </target>
+
+</project>
