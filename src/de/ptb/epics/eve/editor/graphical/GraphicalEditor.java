@@ -309,7 +309,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 */
 	@Override
 	public void setFocus() {
-		
 		logger.debug("Focus gained");
 						
 		updateViews();
