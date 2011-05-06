@@ -108,7 +108,7 @@ public final class PlayListView extends ViewPart
 		TableColumn column = 
 			new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 0);
 	    column.setText("File");
-	    column.setWidth(140);
+	    column.setWidth(200);
 
 	    // Author column
 	    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 1);
@@ -127,6 +127,9 @@ public final class PlayListView extends ViewPart
 	    manager.add(this.moveUpAction);
 	    manager.add(this.moveDownAction);
 	    manager.add(this.removeAction);
+
+	    // connect Engine to see all Playlist entries
+	    Activator.getDefault().connectEngine();
 	    
 		if(Activator.getDefault().getEcp1Client().isRunning()) {
 			this.addAction.setEnabled(true);

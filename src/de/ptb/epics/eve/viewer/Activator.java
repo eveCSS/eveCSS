@@ -3,6 +3,7 @@ package de.ptb.epics.eve.viewer;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.FontRegistry;
@@ -29,6 +30,8 @@ import de.ptb.epics.eve.viewer.messages.MessagesContainer;
  * The activator class controls the plug-in life cycle
  */
 public class Activator extends AbstractUIPlugin {
+
+	private static Logger logger = Logger.getLogger(Activator.class);
 
 	/**
 	 * The unique identifier of the plug in
@@ -139,7 +142,7 @@ public class Activator extends AbstractUIPlugin {
 
 				} catch( final Throwable th ) {
 					measuringStation = null;
-					th.printStackTrace();
+					logger.warn(th.getMessage(), th);
 				}
 			}
 		}		
@@ -258,10 +261,25 @@ public class Activator extends AbstractUIPlugin {
 	 * @param file the file containing the Scan Description (SCML)
 	 */
 	public void addScanDescription(final File file) {
-		
-		// if we are not connected to the engine -> connect to it
-		if(!this.ecp1Client.isRunning()) {
 
+		Activator.getDefault().connectEngine();
+		// either we were connected before or have done it above, we are 
+		// connected now and can add the scan description to the play list.
+		if(this.ecp1Client.isRunning()) {
+			try {
+				this.ecp1Client.getPlayListController().addLocalFile(file);
+			} catch(final IOException e) {
+				logger.error(e.getMessage(), e);
+			}
+		}
+	}
+
+	/**
+	 * Connect the Engine if Ecp1Client is running
+	 */
+	public void connectEngine() {
+	    // if we are not connected to the engine -> connect to it
+		if( !Activator.getDefault().getEcp1Client().isRunning()) {
 			// getting the service to execute registered commands
 			IHandlerService handlerService = (IHandlerService) 
 					PlatformUI.getWorkbench().getService(IHandlerService.class);
@@ -269,20 +287,10 @@ public class Activator extends AbstractUIPlugin {
 			try {
 				handlerService.executeCommand(
 						"de.ptb.epics.eve.viewer.connectCommand", null);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage(), e2);
 			}
 		}
+	};
 
-		// either we were connected before or have done it above, we are 
-		// connected now and can add the scan description to the play list.
-		if(this.ecp1Client.isRunning()) {
-			try {
-				this.ecp1Client.getPlayListController().addLocalFile(file);
-			} catch(final IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 }
