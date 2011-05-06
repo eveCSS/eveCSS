@@ -6,8 +6,8 @@ import java.util.Set;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider;
 
 /**
- * <code>IMeasuringStation</code> defines the basic functionality an 
- * implementing class must have to represent a measuring station.
+ * <code>IMeasuringStation</code> defines the methods to compose a measuring 
+ * station.
  * 
  * @author ?
  * @author Marcus Michalsky
@@ -15,115 +15,143 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProv
 public interface IMeasuringStation extends IModelUpdateProvider {
 
 	/**
-	 * Returns a copy of the internal list, that is holding all detector 
-	 * channels.
+	 * Returns a {@link java.util.List} of available 
+	 * 			{@link de.ptb.epics.eve.data.measuringstation.Detector}s.
 	 * 
-	 * @return a <code>List&lt;Detector&gt;</code>
+	 * @return a {@link java.util.List} of available 
+	 * 			{@link de.ptb.epics.eve.data.measuringstation.Detector}s
 	 */
 	public abstract List<Detector> getDetectors();
 
 	/**
-	 * Returns a copy of the internal list, that is holding all devices.
+	 * Returns a {@link java.util.List} of available 
+	 * 			{@link de.ptb.epics.eve.data.measuringstation.Device}s.
 	 * 
-	 * @return a <code>List&lt;Device&gt;</code>
+	 * @return a {@link java.util.List} of available
+	 * 			{@link de.ptb.epics.eve.data.measuringstation.Device}s
 	 */
 	public abstract List<Device> getDevices();
 
 	/**
-	 * Returns a copy of the internal list, that is holding all events.
+	 * Returns a {@link java.util.List} of available 
+	 * 			{@link de.ptb.epics.eve.data.measuringstation.Event}s.
 	 * 
-	 * @return A <code>List&lt;Event&gt;</code> object.
+	 * @return a {@link java.util.List} of available 
+	 * 			{@link de.ptb.epics.eve.data.measuringstation.Event}s
 	 */
 	public abstract List<Event> getEvents();
 
 	/**
-	 * Returns a copy of the internal list, that is holding all motors.
-	 * 
-	 * @return A <code>List&lt;Motor&gt;</code>
+	 * Returns a {@link java.util.List} of available
+	 * 			{@link de.ptb.epics.eve.data.measuringstation.Motor}s.
+	 * @return a {@link java.util.List} of available
+	 * 			{@link de.ptb.epics.eve.data.measuringstation.Motor}s
 	 */
 	public abstract List<Motor> getMotors();
 
 	/**
-	 * Returns a copy of the internal list, that is holding all plug ins.
+	 * Returns a {@link java.util.List} of available 
+	 * 			{@link de.ptb.epics.eve.data.measuringstation.PlugIn}s.
 	 * 
-	 * @return A <code>List&lt;PlugIn&gt;</code>
+	 * @return a {@link java.util.List} of available
+	 * 			{@link de.ptb.epics.eve.data.measuringstation.PlugIn}s
 	 */
 	public abstract List<PlugIn> getPlugins();
 
 	/**
-	 * Returns the <code>Selections</code> of the measuring station.
+	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.Selections} of 
+	 * the measuring station.
 	 * 
-	 * @return A Selections object.
+	 * @return the {@link de.ptb.epics.eve.data.measuringstation.Selections}
 	 */
 	public abstract Selections getSelections();
 
 	/**
 	 * Returns the version of the measuring station description.
 	 * 
-	 * @return A <code>String</code> containing the version of the measuring 
-	 * 			station description or null.
+	 * @return the version of the measuring station or <code>null</code> if 
+	 * 		   none is set
 	 */
 	public abstract String getVersion();
 
 	/**
-	 * Returns the name of the file containing the current measuring station 
-	 * description.
+	 * Returns the file name containing the description of the measuring 
+	 * station.
 	 * 
-	 * @return the name of the file containing the current measuring station 
-	 * 		   description
+	 * @return the file name containing the description of the measuring station
 	 */
 	public abstract String getLoadedFileName();
 
 	/**
-	 * Returns the name of the schema file used to validate the measuring 
+	 * Returns the file name of the schema file used to validate the measuring 
 	 * station description.
 	 * 
-	 * @return the name of the schema file used for validation
+	 * @return the file name of the schema file used for validation
 	 */
 	public abstract String getSchemaFileName();
 
 	/**
-	 * Returns the PlugIn object for the corresponding name.
+	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.PlugIn} with 
+	 * the given name.
 	 * 
-	 * @param name The name of the PlugIn.
-	 * @return A PlugIn or null if the PlugIn was not found.
+	 * @param name the name of the 
+	 * 		  {@link de.ptb.epics.eve.data.measuringstation.PlugIn} that should 
+	 * 		  be returned.
+	 * @return the {@link de.ptb.epics.eve.data.measuringstation.PlugIn} with 
+	 * 		   the given name or <code>null> if not found
 	 */
 	public abstract PlugIn getPluginByName(final String name);
 
 	/**
-	 * Returns the <code>AbstractPrePostscanDevice</code> of the corresponding 
-	 * id.
+	 * Returns the 
+	 * {@link de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice} 
+	 * with the given id.
 	 * 
-	 * @param id a <code>String</code> containing the id of the device.
-	 * @return an <code>AbstractPrePostscanDevice</code> or null if the 
-	 * 			<code>AbstractPrePostscanDevice</code> was not found.
+	 * @param id the id of the 
+	 * {@link de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice} 
+	 *  		that should be returned
+	 * @return the 
+	 * {@link de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice} 
+	 *  		with the given id or <code>null</code> if not found
 	 */
 	public abstract AbstractPrePostscanDevice getPrePostscanDeviceById(
 			final String id);
 
 	/**
-	 * Returns the <code>MotorAxis</code> of the corresponding id.
+	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.MotorAxis} with 
+	 * the given id.
 	 * 
-	 * @param id a <code>String</code> containing the id of the motor axis.
-	 * @return a <code>MotorAxis</code> or null if motor axis was not found.
+	 * @param id the id of the 
+	 * 		 {@link de.ptb.epics.eve.data.measuringstation.MotorAxis} that 
+	 * 		 should be returned
+	 * @return the {@link de.ptb.epics.eve.data.measuringstation.MotorAxis}
+	 * 		   with the given id or <code>null</code> if not found
 	 */
 	public abstract MotorAxis getMotorAxisById(final String id);
 
 	/**
-	 * Returns the <code>DetectorChannel</code> for the corresponding id.
+	 * Returns the 
+	 * {@link de.ptb.epics.eve.data.measuringstation.DetectorChannel} with the 
+	 * given id.
 	 * 
-	 * @param id a <code>String</code> containing the id of the detector 
-	 * 		   channel.
-	 * @return a <code>DetectorChannel</code> or null if detector channel was 
-	 * 			not found.
+	 * @param id the id of the 
+	 * 		{@link de.ptb.epics.eve.data.measuringstation.DetectorChannel} that 
+	 * 		should be returned
+	 * @return the 
+	 * 		{@link de.ptb.epics.eve.data.measuringstation.DetectorChannel} with 
+	 * 		the given id or <code>null</code> if not found.
 	 */
 	public abstract DetectorChannel getDetectorChannelById(final String id);
 
 	/**
-	 * Returns the <code>Event</code> of the corresponding id.
+	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.Event} with 
+	 * the given id.
 	 * 
-	 * @param id a <code>String</code> containing the id of the event.
-	 * @return an <code>Event</code> or null if event was not found.
+	 * @param id the id of the 
+	 * 		{@link de.ptb.epics.eve.data.measuringstation.Event} that should be 
+	 * 		returned
+	 * @return the {@link de.ptb.epics.eve.data.measuringstation.Event} with 
+	 * 		   the given id or <code>null</code> if not found
 	 */
 	public abstract Event getEventById(final String id);
 

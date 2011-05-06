@@ -1119,7 +1119,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		// position and status access if monitor equals true
 		// Create events for options if monitor equals true.
 		for (Motor loopMotor : this.measuringStation.getMotors()) {
-			for (MotorAxis loopAxis : loopMotor.getAxis()){
+			for (MotorAxis loopAxis : loopMotor.getAxes()){
 				String id = loopAxis.getID();
 				if (loopAxis.getPosition().getAccess().getMonitor()){
 					String name = loopAxis.getName() + ".Position";

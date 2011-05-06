@@ -593,7 +593,7 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 					}
 				}
 
-				for( final MotorAxis motorAxis : motor.getAxis() ) {
+				for( final MotorAxis motorAxis : motor.getAxes() ) {
 
 					if( !this.excludeList.contains( motorAxis ) ) {
 						this.motorAxisMap.put( motorAxis.getID(), motorAxis );
@@ -666,7 +666,7 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 				}
 				devices.add( motor );
 				
-				for( final MotorAxis motorAxis : motor.getAxis() ) {
+				for( final MotorAxis motorAxis : motor.getAxes() ) {
 					if( motorAxis.getClassName() != null && !motorAxis.getClassName().equals( "" ) ) {
 						devices = null;
 						if( this.classMap.containsKey( motorAxis.getClassName() ) ) {

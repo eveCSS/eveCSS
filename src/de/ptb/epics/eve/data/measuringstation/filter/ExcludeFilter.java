@@ -494,39 +494,30 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public boolean addModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return this.modelUpdateListener.add( modelUpdateListener );
+	public boolean addModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.modelUpdateListener.add(modelUpdateListener);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public boolean removeModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return this.modelUpdateListener.remove( modelUpdateListener );
+	public boolean removeModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.modelUpdateListener.remove(modelUpdateListener);
 	}
 	
 	/**
-	 * Calling this method will exclude a device and start and notify an update.
-	 * 
-	 * @param abstractDevice The device to exclude
+	 * {@inheritDoc}
 	 */
-	public void exclude( final AbstractDevice abstractDevice ) {
-		this.excludeList.add( abstractDevice );
-		this.updateEvent( new ModelUpdateEvent( this, null ) );
-	}
-	
-	/**
-	 * Calling this method will unexclude a device and start and notify an update.
-	 * 
-	 * @param abstractDevice The device to unexclude
-	 */
-	public void unexclude( final AbstractDevice abstractDevice ) {
-		this.excludeList.remove( abstractDevice );
-		this.updateEvent( new ModelUpdateEvent( this, null ) );
-	}
-	
 	@Override
-	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-
+	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
+	
 		this.events.clear();
 		this.plugins.clear();
 		this.devices.clear();
@@ -540,7 +531,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		this.prePostscanDeviceMap.clear();
 		this.classMap.clear();
 		this.eventsMap.clear();
-
+	
 		if( this.getSource() != null ) {
 			this.events.addAll( this.getSource().getEvents() );
 			
@@ -586,8 +577,8 @@ public class ExcludeFilter extends MeasuringStationFilter {
 						this.prePostscanDeviceMap.put( option.getID(), option );
 					}
 				}
-
-				for( final MotorAxis motorAxis : motor.getAxis() ) {
+	
+				for( final MotorAxis motorAxis : motor.getAxes() ) {
 					if( !this.excludeList.contains( motorAxis ) ) {
 						this.motorAxisMap.put( motorAxis.getID(), motorAxis );
 						for( final Option option : motorAxis.getOptions() ) {
@@ -632,8 +623,30 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			modelUpdateListener.updateEvent( new ModelUpdateEvent( this, null ) );
 		}
 	}
+
+	/**
+	 * Calling this method will exclude a device and start and notify an update.
+	 * 
+	 * @param abstractDevice The device to exclude
+	 */
+	public void exclude(final AbstractDevice abstractDevice) {
+		this.excludeList.add(abstractDevice);
+		this.updateEvent(new ModelUpdateEvent(this, null));
+	}
 	
+	/**
+	 * Includes a device.
+	 * 
+	 * @param abstractDevice The device to unexclude
+	 */
+	public void include(final AbstractDevice abstractDevice) {
+		this.excludeList.remove(abstractDevice);
+		this.updateEvent(new ModelUpdateEvent(this, null));
+	}
 	
+	/*
+	 * 
+	 */
 	private void buildClassMap() {
 		this.classMap.clear();
 		
@@ -648,7 +661,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				}
 				devices.add( motor );
 				
-				for( final MotorAxis motorAxis : motor.getAxis() ) {
+				for( final MotorAxis motorAxis : motor.getAxes() ) {
 					if( motorAxis.getClassName() != null && !motorAxis.getClassName().equals( "" ) ) {
 						devices = null;
 						if( this.classMap.containsKey( motorAxis.getClassName() ) ) {

@@ -35,7 +35,7 @@ public class Motor extends AbstractMainPhaseDevice {
 	 * 
 	 * @return A List of MotorAxis objects of the Motor.
 	 */
-	public List<MotorAxis> getAxis() {	
+	public List<MotorAxis> getAxes() {	
 		return new ArrayList<MotorAxis>(this.axis);
 	}
 	

@@ -4,68 +4,62 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
-
 /**
- * This class represents the base for all filter of measuring station descriptions.
- * The filter it self represents a measuring station description that can be used
+ * Represents the base for all filters of measuring station descriptions.
+ * The filter itself is a measuring station description that can be used
  * in all parts of the application.
  * 
  * The filter mechanism is implemented in the updateEvent Method.
  * 
  * @author Stephan Rehfeld
- *
+ * @author Marcus Michalsky
  */
-public abstract class MeasuringStationFilter implements IMeasuringStation, IModelUpdateListener {
+public abstract class MeasuringStationFilter implements 
+									IMeasuringStation, IModelUpdateListener {
 
-	/**
-	 * The source measuring station to filter. 
-	 * 
-	 */
+	// the measuring station the filter is based on
 	private IMeasuringStation source;
 	
 	/**
-	 * The constructor
+	 * default constructor
 	 */
 	public MeasuringStationFilter() {
 	}
 	
 	/**
-	 * The constructor with a given source.
+	 * Constructs a <code>MeasuringStationFilter</code>.
 	 * 
-	 * @param source The given source.
+	 * @param source the measuring station the filter is based on
 	 */
-	public MeasuringStationFilter( final IMeasuringStation source ) {
+	public MeasuringStationFilter(final IMeasuringStation source) {
 		this.source = source;
-		if( source != null ) {
-			this.source.addModelUpdateListener( this );
+		if(source != null) {
+			this.source.addModelUpdateListener(this);
 		}
 	}
 	
 	/**
-	 * This method returns the current source.
+	 * Returns the measuring station the filter is based on.
 	 * 
-	 * @return
+	 * @return the measuring station the filter is based on
 	 */
 	public IMeasuringStation getSource() {
 		return this.source;
 	}
 	
 	/**
-	 * Sets the current source. If the currents source is changes an update
-	 * event will indicate a change at the current filter and will be propagated
-	 * to a following filter.
+	 * Sets the measuring station the filter should be based on.
 	 * 
-	 * @param source
+	 * @param source the measuring station the filter should be based on
 	 */
-	public void setSource( final IMeasuringStation source ) {
-		if( this.source != null ) {
-			this.source.removeModelUpdateListener( this );
+	public void setSource(final IMeasuringStation source) {
+		if(this.source != null) {
+			this.source.removeModelUpdateListener(this);
 		}
 		this.source = source;
-		if( this.source != null ) {
-			this.source.addModelUpdateListener( this );
+		if(this.source != null) {
+			this.source.addModelUpdateListener(this);
 		}
-		this.updateEvent( new ModelUpdateEvent( this, null ) );
+		this.updateEvent(new ModelUpdateEvent(this, null));
 	}
-	
 }

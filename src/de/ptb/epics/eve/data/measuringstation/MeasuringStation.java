@@ -313,7 +313,7 @@ public class MeasuringStation implements IMeasuringStation {
 	private void classMapAdd(String className, AbstractDevice absdevice) {
 		
 		if( absdevice instanceof Motor ) {
-			final List< MotorAxis> axis = ((Motor)absdevice).getAxis();
+			final List< MotorAxis> axis = ((Motor)absdevice).getAxes();
 			for( final MotorAxis a : axis ) {
 				this.classMapAdd( a.getClassName(), a );
 			}

@@ -355,7 +355,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 				this.writeUnit( motor.getUnit() );
 			}
 			
-			Iterator<MotorAxis> it = motor.getAxis().iterator();
+			Iterator<MotorAxis> it = motor.getAxes().iterator();
 			while( it.hasNext() ) {
 				this.writeMotorAxis( it.next() );
 			}
