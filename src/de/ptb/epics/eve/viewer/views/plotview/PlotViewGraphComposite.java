@@ -127,7 +127,7 @@ public class PlotViewGraphComposite extends Composite
 		// find the y axis of the detector channel in the plotWindow
 	    int axis_pos = -1;
 	        
-	    for(int i=0;i<plotWindow.getYAxes().size();i++)
+	    for(int i = 0;i < plotWindow.getYAxes().size(); i++)
 	    {
 	      	if(plotWindow.getYAxes().get(i).getDetectorChannel().getID() == detector2Id)
 	       	{
@@ -135,14 +135,13 @@ public class PlotViewGraphComposite extends Composite
 	       	}
 	    }
 		
-	    logger.warn("axis_pos: " + axis_pos);
 	    if(axis_pos != -1)
 	    {
 		this.detector2normalized = 
 			plotWindow.getYAxes().get(axis_pos).getNormalizeChannel() != null;
 	    }
-		logger.warn("2 norm ? = " + detector2normalized);
-		
+
+	    // reset time stamp stuff (used in measurementDataReceived)
 		timestamp = null;
 		timestamp_det1 = null;
 		timestamp_det2 = null;
