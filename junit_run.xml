@@ -5,7 +5,7 @@
 
   <target name="junit">
     
-    <junit printsummary="yes" showoutput="true">
+    <junit printsummary="yes" showoutput="yes">
        
       <classpath>
         <pathelement path="${classpath}"/>
