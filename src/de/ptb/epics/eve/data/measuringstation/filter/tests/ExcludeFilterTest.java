@@ -17,6 +17,10 @@ import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 
 /**
+ * <code>ExcludeFilterTest</code> contains 
+ * <a href="http://www.junit.org/">JUnit</a>-Tests for 
+ * {@link de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter}.
+ * 
  * @author Marcus Michalsky
  * @since 0.4.1
  */
@@ -29,10 +33,10 @@ public class ExcludeFilterTest {
 	private ExcludeFilter filteredMeasuringStation;
 	
 	/**
-	 * 
+	 * Tests the exclusion of a motor axis.
 	 */
 	@Test
-	public void testExcludeMotorAxis()
+	public void testExcludeIncludeMotorAxis()
 	{
 		// the motor axis with id: "Counter01.01" should be found
 		assertNotNull(filteredMeasuringStation.getMotorAxisById("Counter01.01"));
@@ -43,13 +47,19 @@ public class ExcludeFilterTest {
 		
 		// now the axis shouldn't be found anymore
 		assertNull(filteredMeasuringStation.getMotorAxisById("Counter01.01"));
+		
+		// include it
+		filteredMeasuringStation.include(ma);
+		
+		// should be found again
+		assertNotNull(filteredMeasuringStation.getMotorAxisById("Counter01.01"));
 	}
 	
 	/**
-	 * 
+	 * Tests the exclusion of a detector channel.
 	 */
 	@Test
-	public void testExcludeDetectorChannel()
+	public void testExcludeIncludeDetectorChannel()
 	{
 		// the detector channel with id: "ringCurrent1chan1" should be found
 		assertNotNull(filteredMeasuringStation.
@@ -63,8 +73,14 @@ public class ExcludeFilterTest {
 		// now the detector shouldn't be found anymore
 		assertNull(filteredMeasuringStation.
 						getDetectorChannelById("ringCurrent1chan1"));
+		
+		// include it
+		filteredMeasuringStation.include(detCh);
+		
+		// should be found again
+		assertNotNull(filteredMeasuringStation.
+				getDetectorChannelById("ringCurrent1chan1"));
 	}
-	
 	
 	// ***********************************************************************
 	// ***********************************************************************
@@ -85,13 +101,10 @@ public class ExcludeFilterTest {
 		try {
 			measuringStationLoader.load(descriptionFile);
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -101,7 +114,7 @@ public class ExcludeFilterTest {
 	}
 	
 	/**
-	 * 
+	 * test wide set up method
 	 */
 	@Before
 	public void beforeEveryTest()
@@ -112,7 +125,7 @@ public class ExcludeFilterTest {
 	}
 	
 	/**
-	 * 
+	 * test wide tear down method
 	 */
 	@After
 	public void afterEveryTest()
