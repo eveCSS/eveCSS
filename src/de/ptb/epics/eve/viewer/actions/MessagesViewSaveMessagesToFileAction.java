@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
@@ -17,6 +18,9 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 public class MessagesViewSaveMessagesToFileAction extends Action implements IWorkbenchAction {
 
+	// logging
+	private static Logger logger = Logger.getLogger(MessagesViewSaveMessagesToFileAction.class);
+	
 	private static final String ID = "de.ptb.epics.eve.viewer.actions.SaveMessagesToFileAction";  
 	private final TableViewer tableViewer;
 	
@@ -38,7 +42,7 @@ public class MessagesViewSaveMessagesToFileAction extends Action implements IWor
 			try {
 				file.createNewFile();
 			} catch( final IOException e ) {
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 				MessageDialog.openInformation( this.tableViewer.getTable().getShell(), "Error", "Can not create file!" );
 				return;
 			}
@@ -48,7 +52,7 @@ public class MessagesViewSaveMessagesToFileAction extends Action implements IWor
 		try {
 			writer = new FileWriter( file );
 		} catch( final IOException e ) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 			MessageDialog.openInformation( this.tableViewer.getTable().getShell(), "Error", "Can not open file for write access!" );
 			return;
 		}
@@ -66,14 +70,14 @@ public class MessagesViewSaveMessagesToFileAction extends Action implements IWor
 				writer.write( "\n" );
 			} catch (IOException e) {
 				MessageDialog.openInformation( this.tableViewer.getTable().getShell(), "Error", "Writing of file was interrupted!" );
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 		}
 		try {
 			writer.close();
 		} catch (IOException e) {
 			MessageDialog.openInformation( this.tableViewer.getTable().getShell(), "Error", "Can not close file!" );
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 	}   
 	
