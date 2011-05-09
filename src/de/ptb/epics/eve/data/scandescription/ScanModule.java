@@ -824,123 +824,136 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	}
 	
 	/**
-	 * Gives back if the pause event is one of the pause events of this scan modul.
+	 * Checks whether the given pause event is a pause event of the scan module.
 	 * 
-	 * @param controlEvent The pause Event that should be checked.
-	 * @return Gives back 'true' if the event is one of the pause events.
+	 * @param controlEvent the pause event that should be checked
+	 * @return <code>true</code> if the given pause event is a pause event of 
+	 * 			the scan module, <code>false</code> otherwise
 	 */
-	public boolean isPauseEventOfTheScanModul( final PauseEvent controlEvent ) {
-		return this.pauseEvents.contains( controlEvent );
+	public boolean isPauseEventOfScanModule(final PauseEvent controlEvent) {
+		return this.pauseEvents.contains(controlEvent);
 	}
 	
 	/**
-	 * Gives back if the control event is one of the redo events of this scan modul.
+	 * Checks whether the given control event is a redo event of the scan 
+	 * module.
 	 * 
-	 * @param redoEvent The control Event that should be checked.
-	 * @return Gives back 'true' if the event is one of the redo events.
+	 * @param redoEvent the control event that should be checked
+	 * @return <code>true</code> if the given control event is a redo event of 
+	 * 			the scan module, <code>false</code> otherwise
 	 */
-	public boolean isRedoEventOfTheScanModul( final ControlEvent redoEvent ) {
-		return this.redoEvents.contains( redoEvent );
+	public boolean isRedoEventOfScanModule(final ControlEvent redoEvent) {
+		return this.redoEvents.contains(redoEvent);
 	}
 	
 	/**
-	 * Gives back if the control event is one of the break events of this scan modul.
+	 * Checks whether the given control event is a break event of the scan 
+	 * module.
 	 * 
-	 * @param breakEvent The control Event that should be checked.
-	 * @return Gives back 'true' if the event is one of the redo events.
+	 * @param breakEvent the control event that should be checked
+	 * @return <code>true</code> if the given control event is a break event of 
+	 * 			the scan module, <code>false</code> otherwise
 	 */
-	public boolean isBreakEventOfTheScanModul( final ControlEvent breakEvent ) {
-		return this.breakEvents.contains( breakEvent );
+	public boolean isBreakEventOfScanModule(final ControlEvent breakEvent) {
+		return this.breakEvents.contains(breakEvent);
 	}
 	
 	/**
-	 * Gives back if the control event is one of the trigger events of this scan modul.
+	 * Checks whether the given control event is a trigger event of the scan 
+	 * module.
 	 * 
-	 * @param triggerEvent The control Event that should be checked.
-	 * @return Gives back 'true' if the event is one of the redo events.
+	 * @param triggerEvent the control event that should be checked
+	 * @return <code>true</code> if the given control event is a trigger event 
+	 * 			of the scan module, <code>false</code> otherwise
 	 */
-	public boolean isTriggerEventOfTheScanModul( final ControlEvent triggerEvent ) {
-		return this.triggerEvents.contains( triggerEvent );
+	public boolean isTriggerEventOfScanModule(final ControlEvent triggerEvent) {
+		return this.triggerEvents.contains(triggerEvent);
 	}
 
 	
 	
 	/**
-	 * This methods checks if the given control event is a pause event, redo event or break event of this scan modul.
+	 * Checks whether the given control event is a pause, redo or break event 
+	 * of the scan module.
 	 * 
-	 * @param controlEvent The control Event that should be checked.
-	 * @return Gives back 'true' if the event is one of the event types of this chain.
+	 * @param controlEvent the control event that should be checked
+	 * @return <code>true</code> if the given control event is a pause, redo or 
+	 * 			break event of the scan module
 	 */
-	public boolean isAEventOfTheScanModul( final ControlEvent controlEvent ) {
-		return ( controlEvent instanceof PauseEvent && this.isPauseEventOfTheScanModul( (PauseEvent)controlEvent ) ) || this.isBreakEventOfTheScanModul( controlEvent ) || this.isRedoEventOfTheScanModul( controlEvent ) || this.isTriggerEventOfTheScanModul( controlEvent );
+	public boolean isAEventOfTheScanModul(final ControlEvent controlEvent) {
+		return (controlEvent instanceof PauseEvent && 
+				this.isPauseEventOfScanModule((PauseEvent)controlEvent)) || 
+				this.isBreakEventOfScanModule(controlEvent) || 
+				this.isRedoEventOfScanModule(controlEvent) || 
+				this.isTriggerEventOfScanModule(controlEvent);
 	}
 	
 	/**
-	 * This method returns an iterator over all pause events.
+	 * Returns an {@link java.util.Iterator} ofthe pause events.
 	 * 
-	 * @return An iterator over all pause events.
+	 * @return an {@link java.util.Iterator} of the pause events
 	 */
-	public Iterator< PauseEvent > getPauseEventsIterator() {
+	public Iterator<PauseEvent> getPauseEventsIterator() {
 		return this.pauseEvents.iterator();
 	}
 	
 	/**
-	 * This method returns an iterator over all break events.
+	 * Returns an {@link java.util.Iterator} of the break events.
 	 * 
-	 * @return An iterator over all break events.
+	 * @return an {@link java.util.Iterator} of the break events
 	 */
-	public Iterator< ControlEvent > getBreakEventsIterator() {
+	public Iterator<ControlEvent> getBreakEventsIterator() {
 		return this.breakEvents.iterator();
 	}
 	
 	/**
-	 * This method returns an iterator over all redo events.
+	 * Returns an {@link java.util.Iterator} of the redo events.
 	 * 
-	 * @return An iterator over all redo events.
+	 * @return an {@link java.util.Iterator} of the redo events
 	 */
-	public Iterator< ControlEvent > getRedoEventsIterator() {
+	public Iterator<ControlEvent> getRedoEventsIterator() {
 		return this.redoEvents.iterator();
 	}
 	/**
-	 * This method returns an iterator over all trigger events.
+	 * Returns an {@link java.util.Iterator} of the trigger events.
 	 * 
-	 * @return An iterator over all trigger events.
+	 * @return an {@link java.util.Iterator} of the trigger events
 	 */
-	public Iterator< ControlEvent > getTriggerEventsIterator() {
+	public Iterator<ControlEvent> getTriggerEventsIterator() {
 		return this.triggerEvents.iterator();
 	}
 
 	/**
-	 * This method returns the control event manager of the break events.
+	 * Returns the control event manager of the break events.
 	 * 
-	 * @return The control event manager of the break events.
+	 * @return the control event manager of the break events
 	 */
 	public ControlEventManager getBreakControlEventManager() {
 		return breakControlEventManager;
 	}
 
 	/**
-	 * This method returns the control event manager of the pause events.
+	 * Returns the control event manager of the pause events.
 	 * 
-	 * @return The control event manager of the pause events.
+	 * @return the control event manager of the pause events
 	 */
 	public ControlEventManager getPauseControlEventManager() {
 		return pauseControlEventManager;
 	}
 
 	/**
-	 * This method returns the control event manager of the redo events.
+	 * Returns the control event manager of the redo events.
 	 * 
-	 * @return The control event manager of the redo events.
+	 * @return the control event manager of the redo events
 	 */
 	public ControlEventManager getRedoControlEventManager() {
 		return redoControlEventManager;
 	}
 	
 	/**
-	 * This method returns the control event manager of the trigger events.
+	 * Returns the control event manager of the trigger events.
 	 * 
-	 * @return The control event manager of the trigger events.
+	 * @return the control event manager of the trigger events
 	 */
 	public ControlEventManager getTriggerControlEventManager() {
 		return triggerControlEventManager;
@@ -950,7 +963,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * {@inheritDoc}
 	 */
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		updateListeners();		
+		updateListeners();
 	}
 
 	/**
@@ -968,23 +981,23 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			final IModelUpdateListener modelUpdateListener) {
 		return this.updateListener.remove(modelUpdateListener);
 	}
-
 	
 	/**
-	 * This method returns on which events all axis positions are saved.
+	 * Returns the types axis positions are saved on.
 	 * 
-	 * @return A value of the correpondering enum.
+	 * @return the types axis positions are saved on
 	 */
 	public SaveAxisPositionsTypes getSaveAxisPositions() {
 		return saveAxisPositions;
 	}
 
 	/**
-	 * This method sets on which events all axis positons are saved.
+	 * Sets the types axis positons are saved on.
 	 * 
-	 * @param saveAxisPositions A value of the correponderung enum.
+	 * @param saveAxisPositions the types axis positions are saved on
 	 */
-	public void setSaveAxisPositions( final SaveAxisPositionsTypes saveAxisPositions ) {
+	public void setSaveAxisPositions(
+			final SaveAxisPositionsTypes saveAxisPositions) {
 		this.saveAxisPositions = saveAxisPositions;
 		updateListeners();
 	}
@@ -993,46 +1006,51 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List< IModelError> getModelErrors() {
-		final List< IModelError > errorList = new ArrayList< IModelError >();
-		errorList.addAll( this.pauseControlEventManager.getModelErrors() );
-		errorList.addAll( this.breakControlEventManager.getModelErrors() );
-		errorList.addAll( this.redoControlEventManager.getModelErrors() );
-		errorList.addAll( this.triggerControlEventManager.getModelErrors() );
+	public List<IModelError> getModelErrors() {
+		final List<IModelError> errorList = new ArrayList<IModelError>();
+		errorList.addAll(this.pauseControlEventManager.getModelErrors());
+		errorList.addAll(this.breakControlEventManager.getModelErrors());
+		errorList.addAll(this.redoControlEventManager.getModelErrors());
+		errorList.addAll(this.triggerControlEventManager.getModelErrors());
 		
-		final Iterator< Axis > axisIterator = this.axis.iterator();
-		while( axisIterator.hasNext() ) {
-			errorList.addAll( axisIterator.next().getModelErrors() );
+		final Iterator<Axis> axisIterator = this.axis.iterator();
+		while(axisIterator.hasNext()) {
+			errorList.addAll(axisIterator.next().getModelErrors());
 		}
 		
-		final Iterator< Channel > channelIterator = this.channels.iterator();
-		while( channelIterator.hasNext() ) {
-			errorList.addAll( channelIterator.next().getModelErrors() );
+		final Iterator<Channel> channelIterator = this.channels.iterator();
+		while(channelIterator.hasNext()) {
+			errorList.addAll(channelIterator.next().getModelErrors());
 		}
 		
-		final Iterator< Prescan > prescanIterator = this.prescans.iterator();
-		while( prescanIterator.hasNext() ) {
-			errorList.addAll( prescanIterator.next().getModelErrors() );
+		final Iterator<Prescan> prescanIterator = this.prescans.iterator();
+		while(prescanIterator.hasNext()) {
+			errorList.addAll(prescanIterator.next().getModelErrors());
 		}
 		
-		final Iterator< Postscan > postscanIterator = this.postscans.iterator();
-		while( postscanIterator.hasNext() ) {
-			errorList.addAll( postscanIterator.next().getModelErrors() );
+		final Iterator<Postscan> postscanIterator = this.postscans.iterator();
+		while(postscanIterator.hasNext()) {
+			errorList.addAll(postscanIterator.next().getModelErrors());
 		}
 		
-		final Iterator< Positioning > positioningIterator = this.positionings.iterator();
-		while( positioningIterator.hasNext() ) {
-			errorList.addAll( positioningIterator.next().getModelErrors() );
+		final Iterator<Positioning> positioningIterator = 
+				this.positionings.iterator();
+		while(positioningIterator.hasNext()) {
+			errorList.addAll(positioningIterator.next().getModelErrors());
 		}
 
-		final Iterator< PlotWindow > plotWindowIterator = this.plotWindows.iterator();
-		while( plotWindowIterator.hasNext() ) {
-			errorList.addAll( plotWindowIterator.next().getModelErrors() );
+		final Iterator<PlotWindow> plotWindowIterator = 
+				this.plotWindows.iterator();
+		while(plotWindowIterator.hasNext()) {
+			errorList.addAll(plotWindowIterator.next().getModelErrors());
 		}
 
 		return errorList;
 	}
 	
+	/*
+	 * 
+	 */
 	private void updateListeners()
 	{
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 

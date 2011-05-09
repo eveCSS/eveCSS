@@ -19,20 +19,13 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateList
  */
 public class MeasuringStation implements IMeasuringStation {
 
-	/*
-	 * The version of the measuring station description.
-	 */
+	// the version of the measuring station description
 	private String version;
 	
-	/*
-	 * The filename containing the measuring station that is loaded. 
-	 */
+	// the filename containing the measuring station that is loaded
 	private String loadedFileName;
 	
-	/*
-	 * The name of the schema file used to validate the measuring station 
-	 * description.
-	 */
+	// the name of the schema file used for validation of the measuring station
 	private String schemaFileName;
 	
 	// TODO
@@ -40,15 +33,20 @@ public class MeasuringStation implements IMeasuringStation {
 	// they are not necessarily equal, (maps are unique) 
 	// remove lists and use only maps
 	
-	/*
-	 * A List containing available events.
-	 */
+	// a List containing available events
 	private List<Event> events;
 	
-	/*
-	 * A List containing available plug ins.
-	 */
+	// a List containing available plug ins
 	private final List<PlugIn> plugins;
+	
+	// a List, that is holding all devices
+	private final List<Device> devices;
+	
+	// a List, that is holding all motors
+	private final List<Motor> motors;
+	
+	// a List, that is holding all detectors
+	private final List<Detector> detectors;
 	
 	/*
 	 * A Selection object, that describes all selections, that are available 
@@ -56,44 +54,19 @@ public class MeasuringStation implements IMeasuringStation {
 	 */
 	private final Selections selections;
 	
-	/*
-	 * A List, that is holding all devices.
-	 */
-	private final List<Device> devices;
-	
-	/*
-	 * A List, that is holding all motors.
-	 */
-	private final List<Motor> motors;
-	
-	/*
-	 * A List, that is holding all detectors.
-	 */
-	private final List<Detector> detectors;
-	
-	/*
-	 * A Map, that makes all PlugIns available by their names.
-	 */
+	// a Map, that makes all PlugIns available by their names
 	private final Map<String, PlugIn> pluginsMap;
 	
-	/*
-	 * A Map, that makes all motor axis available by their ids.
-	 */
+	// a Map, that makes all motor axis available by their ids
 	private final Map<String, MotorAxis> motorAxisMap;
 	
-	/*
-	 * A Map. that makes all detector channels avaiable by their ids.
-	 */
+	// a Map. that makes all detector channels available by their ids
 	private final Map<String, DetectorChannel> detectorChannelsMap;
 	
-	/*
-	 * A Map, that makes all events available by their ids.
-	 */
+	// a Map, that makes all events available by their ids
 	private final Map<String, Event> eventsMap;
 	
-	/*
-	 * A Map, that makes all AbstractPrePostscanDevices available by their ids.
-	 */
+	// a Map, that makes all AbstractPrePostscanDevices available by their ids
 	private final Map<String, AbstractPrePostscanDevice> prePostscanDeviceMap;
 
 	/* 
@@ -102,8 +75,7 @@ public class MeasuringStation implements IMeasuringStation {
 	private Map<String, List<AbstractDevice>> classMap;
 
 	/**
-	 * Constructs a <code>MeasuringStation</code> containing
-	 * no elements (e.g. motor axis or devices).
+	 * Constructs an empty <code>MeasuringStation</code>.
 	 */
 	public MeasuringStation() {
 		this.events = new ArrayList<Event>();
@@ -286,41 +258,45 @@ public class MeasuringStation implements IMeasuringStation {
 		this.detectorChannelsMap.put(detectorChannel.getID(), detectorChannel);
 	}
 
-	// TODO following function correct ? prepostscandevicemap but option ???
 	/**
 	 * Registers an {@link de.ptb.epics.eve.data.measuringstation.Option} at 
 	 * the measuring station. An option registered this way can later be 
 	 * retrieved through {@link #getPrePostscanDeviceById(String)}.
 	 * 
-	 * @param option A Option object, must not be null.
+	 * @param option the {@link de.ptb.epics.eve.data.measuringstation.Option} 
+	 * 		  that should be registered
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
-	public void registerOption( final Option option ) {
-		if( option == null ) {
+	public void registerOption(final Option option) {
+		if(option == null) {
 			throw new IllegalArgumentException(
-					"The parameter 'option' must not be null!" );
+					"The parameter 'option' must not be null!");
 		}
-		this.prePostscanDeviceMap.put( option.getID(), option );
+		this.prePostscanDeviceMap.put(option.getID(), option);
 	}
 	
 	// *************************
 	
 	/**
-	 * add an abstract device with class name to the class hash
+	 * Adds an {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} 
+	 * with class name to the class hash.
 	 * 
-	 * @param className
-	 * @param absdevice
+	 * @param className the name of the class the device is part of
+	 * @param absdevice the 
+	 * 		{@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} that 
+	 * 		should be added
 	 */
 	private void classMapAdd(String className, AbstractDevice absdevice) {
 		
-		if( absdevice instanceof Motor ) {
-			final List< MotorAxis> axis = ((Motor)absdevice).getAxes();
-			for( final MotorAxis a : axis ) {
-				this.classMapAdd( a.getClassName(), a );
+		if(absdevice instanceof Motor) {
+			final List<MotorAxis> axis = ((Motor)absdevice).getAxes();
+			for(final MotorAxis a : axis) {
+				this.classMapAdd(a.getClassName(), a);
 			}
-		} else if( absdevice instanceof Detector ) {
-			final List< DetectorChannel > channels = ((Detector)absdevice).getChannels();
-			for( final DetectorChannel c : channels ) {
-				this.classMapAdd( c.getClassName(), c );
+		} else if(absdevice instanceof Detector) {
+			final List<DetectorChannel> channels = ((Detector)absdevice).getChannels();
+			for(final DetectorChannel c : channels) {
+				this.classMapAdd(c.getClassName(), c);
 			}
 		} 
 		

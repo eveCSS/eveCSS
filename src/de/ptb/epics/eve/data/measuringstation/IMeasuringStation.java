@@ -156,54 +156,60 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	public abstract Event getEventById(final String id);
 
 	/**
-	 * Returns a <code>List</code> of all full identifiers of the axis inside
-	 * of this measuring station.
+	 * Returns a {@link java.util.List} of axis identifiers of the measuring 
+	 * station.
 	 * 
-	 * @return A <code>List</code> that contains the full identifiers of the 
-	 * 			axis.
+	 * @return A {@link java.util.List} of axis identifiers of the measuring
+	 * 		   station.
 	 */
 	public abstract List<String> getAxisFullIdentifyer();
 
 	/**
-	 * Returns a <code>List</code> of all full identifiers of the detector 
-	 * channels inside of this measuring station.
+	 * Returns a {@link java.util.List} of channel identifiers of the measuring 
+	 * station.
 	 * 
-	 * @return a <code>List</code> that contains the full identifiers of the 
-	 * 			detector channels.
+	 * @return a {@link java.util.List} of channel identifiers of the measuring 
+	 * 			station.
 	 */
 	public abstract List<String> getChannelsFullIdentifyer();
 
 	/**
-	 * Returns a list of all full identifiers of the pre and post scan devices 
-	 * inside of the measuring station.
+	 * Returns a {@link java.util.List} of pre/post-scan identifiers of the 
+	 * measuring station.
 	
-	 * @return a <code>List</code> that contains the full identifiers of the 
-	 * 			pre and post scan devices.
+	 * @return a {@link java.util.List} of pre/post-scan identifiers of the 
+	 * 			measuring station.
 	 */
 	public abstract List<String> getPrePostScanDevicesFullIdentifyer();
 
 	/**
-	 * Returns the corresponding device to a full identifier.
+	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} 
+	 * with the given identifier.
 	 * 
-	 * @param identifier a <code>String</code> containing the identifier.
-	 * @return a device or null if the device was not found.
+	 * @param identifier the identifier of the
+	 * 		{@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} that 
+	 * 		should be returned. 
+	 * @return the {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} 
+	 * 			with the given identifier or <code>null</code> if not found.
 	 */
 	public abstract AbstractDevice getAbstractDeviceByFullIdentifyer(
 			final String identifier);
 
 	/**
-	 * Returns a list of all available class names.
+	 * Returns a {@link java.util.Set} of available class names.
 	 * 
-	 * @return a set of <code>String</code>s with all available class names
+	 * @return a {@link java.util.Set} of available class names
 	 */
 	public abstract Set<String> getClassNameList();
 
 	/**
-	 * Returns all devices available in a certain class with the specified 
-	 * class name. 
+	 * Returns a {@link java.util.List} of devices available in the class with 
+	 * the given class name. 
 	 * 
-	 * @param classname the name of the class of interest 
-	 * @return a list of abstract devices available in the given class 
+	 * @param classname the class name whose available devices should be 
+	 * 		  returned.
+	 * @return a {@link java.util.List} of devices available in the class with 
+	 * 		   the given class name
 	 */
 	public abstract List<AbstractDevice> getDeviceList(String classname);
 }
