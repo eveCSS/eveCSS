@@ -2,6 +2,7 @@ package de.ptb.epics.eve.editor.actions;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -21,6 +22,9 @@ import de.ptb.epics.eve.viewer.Activator;
  * @author Marcus Michalsky
  */
 public class HandOverAction implements IWorkbenchWindowActionDelegate {
+
+	// logging
+	private static Logger logger = Logger.getLogger(HandOverAction.class);
 
 	private IWorkbenchWindow window;
 	
@@ -91,8 +95,7 @@ public class HandOverAction implements IWorkbenchWindowActionDelegate {
 			PlatformUI.getWorkbench().showPerspective(
 					"EveEnginePerspective", window);
 		} catch (WorkbenchException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 	}
 	

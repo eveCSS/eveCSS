@@ -410,7 +410,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			this.firePropertyChange(PROP_DIRTY);
 			
 		} catch(final FileNotFoundException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 	}
 
@@ -758,7 +758,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				}
 				
 			} catch(Exception ex) {
-				ex.printStackTrace(); // TODO: remove and replace with smaller blocks
+				// TODO: remove and replace with smaller blocks
+				logger.error(ex.getMessage(), ex);
 			}		
 		}
 	}
