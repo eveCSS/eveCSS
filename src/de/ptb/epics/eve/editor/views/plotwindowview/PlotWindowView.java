@@ -86,6 +86,8 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 	// ******************* end of: underlying model **********************
 	// *******************************************************************
 	
+	private boolean modelUpdateListenerSuspended;
+	
 	// the contents of this view
 	private Composite top = null;
 	
@@ -227,6 +229,8 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
+		
+		modelUpdateListenerSuspended = false;
 		
 		// set the reference on the view itself
 		plotWindowView = this;
@@ -1247,6 +1251,26 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 				yAxis2MarkStyleComboBoxSelectionListener);
 		yAxis2ScaletypeComboBox.removeSelectionListener(
 				yAxis2ScaleTypeComboBoxSelectionListener);
+	}
+	
+	/*
+	 * Suspends (removes) all model update listeners of the view
+	 */
+	private void suspendModelUpdateListener()
+	{
+		plotWindow.removeModelUpdateListener(this);
+		scanModule.removeModelUpdateListener(this);
+		modelUpdateListenerSuspended = true;
+	}
+	
+	/*
+	 * Resumes (adds) all model update listeners of the view
+	 */
+	private void resumeModelUpdateListener()
+	{
+		plotWindow.addModelUpdateListener(this);
+		scanModule.addModelUpdateListener(this);
+		modelUpdateListenerSuspended = false;
 	}
 	
 	// ************************************************************************
