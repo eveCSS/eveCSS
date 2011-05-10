@@ -25,74 +25,46 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, 
 														IModelErrorProvider {
 	
-	/**
-	 * The id of the scan module
-	 */
+	// the id of the scan module
 	private int id;
 	
-	/**
-	 * The type of the scan module
-	 */
+	// the type of the scan module
 	private String type;
 	
-	/**
-	 * The name of the scan module
-	 */
+	// the name of the scan module
 	private String name;
 	
-	/**
-	 * The settle time
-	 */
+	// the settle time
 	private double settletime;
 	
-	/**
-	 * The trigger delay
-	 */
+	// the trigger delay
 	private double triggerdelay;
 	
-	/**
-	 * This field says if a trigger should be confirmed by hand.
-	 */
+	// indicates whether a trigger should be confirmed by hand
 	private boolean triggerconfirm;
 	
-	/**
-	 * A list, containing all prescans.
-	 */
+	// a list containing all prescans
 	private List<Prescan> prescans;
 	
-	/**
-	 * A list, containing all postscans
-	 */
+	// a list containing all postscans
 	private List<Postscan> postscans;
 	
-	/**
-	 * A list, containing all channels that chould be read.
-	 */
+	// a list containing all channels
 	private List<Channel> channels;
 	
-	/**
-	 * A list, containing all axis commands.
-	 */
-	private List<Axis> axis;
+	// a list containing all axes
+	private List<Axis> axes;
 	
-	/**
-	 * A list, containing all plot windows.
-	 */
+	// a list containing all plot windows
 	private List<PlotWindow> plotWindows;
 	
-	/**
-	 * The connector to the appended scan modul
-	 */
+	// the connector to the appended scan module
 	private Connector appended;
 	
-	/**
-	 * The connector to the nested scan modul
-	 */
+	// the connector to the nested scan module
 	private Connector nested;
 	
-	/**
-	 * The connector to the parent element.
-	 */
+	// the connector to the parent element
 	private Connector parent;
 	
 	/**
@@ -120,14 +92,10 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	private Chain chain;
 	
-	/**
-	 * The x position of the scan modul in the graphical editor.
-	 */
+	// the x position of the scan module in the graphical editor
 	private int x;
 	
-	/**
-	 * The y position of the scan modul in the graphical editor.
-	 */
+	// the y position of the scan module in the graphical editor
 	private int y;
 	
 	/**
@@ -166,19 +134,21 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	private List< Positioning > positionings;
 	
 	/**
-	 * This constructor constructs a new scan modul with the given id.
+	 * Constructs a <code>ScanModule</code> with the given id.
 	 * 
-	 * @param id
+	 * @param id the id that should be set
+	 * @throws IllegalArgumentException if the argument is less than 1
 	 */
-	public ScanModule( final int id ) {
-		if( id < 1 ) {
-			throw new IllegalArgumentException( "The parameter 'id' must be larger than 0!" );
+	public ScanModule(final int id) {
+		if(id < 1) {
+			throw new IllegalArgumentException(
+					"The parameter 'id' must be larger than 0!");
 		}
 		this.id = id;
 		this.prescans = new ArrayList<Prescan>();
 		this.postscans = new ArrayList<Postscan>();
 		this.channels = new ArrayList<Channel>();
-		this.axis = new ArrayList<Axis>();
+		this.axes = new ArrayList<Axis>();
 		this.plotWindows = new ArrayList<PlotWindow>();
 		this.settletime = Double.NEGATIVE_INFINITY;
 		this.triggerdelay = 0.0;
@@ -240,7 +210,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @return An Array, that contains all axos behaviors.
 	 */
 	public Axis[] getAxis() {
-		return this.axis.toArray( new Axis[0] );
+		return this.axes.toArray( new Axis[0] );
 	}
 	
 	/**
@@ -301,7 +271,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public void add(final Axis axis) {
 		axis.addModelUpdateListener(this);
-		this.axis.add(axis);	
+		this.axes.add(axis);	
 		updateListeners();
 	}
 	
@@ -436,7 +406,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 				}
 			}
 		}
-		this.axis.remove( axis );
+		this.axes.remove( axis );
 		axis.removeModelUpdateListener( this );
 		updateListeners();
 	}
@@ -1013,7 +983,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		errorList.addAll(this.redoControlEventManager.getModelErrors());
 		errorList.addAll(this.triggerControlEventManager.getModelErrors());
 		
-		final Iterator<Axis> axisIterator = this.axis.iterator();
+		final Iterator<Axis> axisIterator = this.axes.iterator();
 		while(axisIterator.hasNext()) {
 			errorList.addAll(axisIterator.next().getModelErrors());
 		}
