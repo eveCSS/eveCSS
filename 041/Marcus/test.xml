@@ -2272,7 +2272,7 @@
 	<motor>
             <class></class>
             <name></name>
-            <id>PPSMC:gw237</id>
+            <id>PPSMC:gw237a</id>
             <!-- Name,  PV -->
             <!-- axis, to be included by motors -->
             <axis>
