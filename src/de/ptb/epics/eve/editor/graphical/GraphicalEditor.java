@@ -430,7 +430,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			{
 				calculateSpaceDifference(scanDescriptionFile);
 			}
-			System.out.println(scanDescriptionFile.length());
 			
 			this.dirty = false;
 			this.firePropertyChange(PROP_DIRTY);
