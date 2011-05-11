@@ -3,6 +3,8 @@ package de.ptb.epics.eve.editor.views.scanmoduleview;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
+import org.csstudio.swt.xygraph.figures.Trace.TraceType;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
@@ -35,12 +37,16 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGB;
 
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilter;
+import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -791,7 +797,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 
 			// select content from combo box for save all motor positions
 			this.saveMotorpositionsCombo.setText(
-					this.currentScanModule.getSaveAxisPositions().name());		
+					this.currentScanModule.getSaveAxisPositions().name());
 
 			if(behaviorTabFolder.getSelection() == null)
 				behaviorTabFolder.setSelection(0);
@@ -1126,12 +1132,10 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			TableItem[] selectedItems = plotWindowsTable.getSelection();
-			int[] selectedIndexes = plotWindowsTable.getSelectionIndices();
 			for (int i = 0; i < selectedItems.length; ++i) {
 				currentScanModule.remove((PlotWindow) 
 						selectedItems[i].getData());
 			}
-			plotWindowsTable.remove(selectedIndexes);	
 		}
 	}
 	
@@ -1187,6 +1191,9 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 	 */
 	class AddPlotWindowButtonSelectionListener implements SelectionListener {
 		
+		private Axis[] availableMotorAxes;
+		private Channel[] availableDetectorChannels;
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1198,6 +1205,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 		 * {@inheritDoc}
 		 */
 		@Override
+
 		public void widgetSelected(SelectionEvent e) {
 			int newID = 1;
 			PlotWindow[] plotWindows = currentScanModule.getPlotWindows();
@@ -1214,6 +1222,28 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 			} while(true);
 			PlotWindow plotWindow = new PlotWindow();
 			plotWindow.setId(newID);
+
+			// if only one axis available, set this axis as default
+			availableMotorAxes = currentScanModule.getAxis();
+			if (availableMotorAxes.length == 1) {
+				plotWindow.setXAxis(availableMotorAxes[0].getMotorAxis());
+			}
+
+			// if only one channel available, create a yAxis and set 
+			// this channel as default
+			availableDetectorChannels = currentScanModule.getChannels();
+			if (availableDetectorChannels.length == 1) {
+
+				YAxis yAxis1 = new YAxis();
+				// default values for color, line style and mark style
+				yAxis1.setColor(new RGB(0,0,255));
+				yAxis1.setLinestyle(TraceType.SOLID_LINE);
+				yAxis1.setMarkstyle(PointStyle.NONE);
+
+				yAxis1.setDetectorChannel(availableDetectorChannels[0].getDetectorChannel());
+				plotWindow.addYAxis(yAxis1);
+			}
+
 			currentScanModule.add(plotWindow);
 			logger.debug("plot window added");
 			logger.debug("plot window count: " + currentScanModule.getPlotWindows().length);

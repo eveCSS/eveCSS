@@ -25,6 +25,7 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView;
 
@@ -238,6 +239,29 @@ public class MotorAxisComposite extends Composite {
 		tableViewer.getTable().removeSelectionListener(
 				tableViewerSelectionListener);
 	}
+
+	/**
+	 * Sets the Plot Motor Axis if only one axis is available 
+	 */
+	private void setPlotMotorAxis()
+	{
+		final Axis[] availableMotorAxes;
+
+		availableMotorAxes = scanModule.getAxis();
+		String[] axisItems = new String[availableMotorAxes.length];
+		for (int i = 0; i < availableMotorAxes.length; ++i) {
+			axisItems[i] = 
+				availableMotorAxes[i].getMotorAxis().getFullIdentifyer();
+		}		
+		
+		// if only one axis available, set this axis as default in all Plot Windows
+		if (availableMotorAxes.length == 1) {
+			PlotWindow[] plotWindows = scanModule.getPlotWindows();
+			for (int i = 0; i < plotWindows.length; ++i) {
+				plotWindows[i].setXAxis(availableMotorAxes[0].getMotorAxis());
+			}
+		}
+	}
 	
 	// ************************************************************************
 	// **************************** Listener **********************************
@@ -381,6 +405,9 @@ public class MotorAxisComposite extends Composite {
 			a.setMotorAxis(ma);
 			scanModule.add(a);
 			setMotorAxisView(a);
+			// if only one axis available, set this axis for the Plot
+			setPlotMotorAxis();
+
 			tableViewer.refresh();
 		}	
 	}
@@ -398,10 +425,14 @@ public class MotorAxisComposite extends Composite {
 	    		
 			Axis removeAxis = (Axis)((IStructuredSelection)
 					tableViewer.getSelection()).getFirstElement();
-					
+			
 			// MotorAxis wird aus scanModul ausgetragen
 			scanModule.remove(removeAxis);
-		    tableViewer.refresh();
+
+			// if only one axis available, set this axis as for the Plot
+			setPlotMotorAxis();
+
+			tableViewer.refresh();
 	   }
 	}
 }
