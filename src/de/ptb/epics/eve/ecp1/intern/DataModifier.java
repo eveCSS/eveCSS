@@ -55,8 +55,13 @@ public enum DataModifier {
 	/**
 	 * the normalized data
 	 */
-	NORMALIZED;
+	NORMALIZED,
 	
+	// Minimum or maximum peak
+	PEAK,
+	
+	// unknown algorithm
+	UNKNOWN;
 	/**
 	 * Converts a {@link DataModifier} to its corresponding byte code.
 	 * 
@@ -85,6 +90,10 @@ public enum DataModifier {
 				return 0x08;
 			case NORMALIZED:
 				return 0x09;				
+			case PEAK:
+				return 0x0a;				
+			case UNKNOWN:
+				return 0x0b;				
 		}
 		return Byte.MAX_VALUE;
 	}
@@ -117,6 +126,10 @@ public enum DataModifier {
 				return DataModifier.SUM;
 			case 0x09:
 				return DataModifier.NORMALIZED;
+			case 0x0a:
+				return DataModifier.PEAK;
+			case 0x0b:
+				return DataModifier.UNKNOWN;
 		}
 		return null;
 	}	
