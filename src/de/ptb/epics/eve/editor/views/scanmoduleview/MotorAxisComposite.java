@@ -240,7 +240,7 @@ public class MotorAxisComposite extends Composite {
 				tableViewerSelectionListener);
 	}
 
-	/**
+	/*
 	 * Sets the Plot Motor Axis if only one axis is available 
 	 */
 	private void setPlotMotorAxis()
@@ -409,6 +409,8 @@ public class MotorAxisComposite extends Composite {
 			setPlotMotorAxis();
 
 			tableViewer.refresh();
+			tableViewer.getTable().setSelection(
+					tableViewer.getTable().getItemCount()-1);
 		}	
 	}
 	
