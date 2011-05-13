@@ -20,31 +20,46 @@
             <parameter name="suffix" datatype="string" default="h5"></parameter>
         </plugin>
         <!-- position plugin -->
-	<plugin type="position">
-		<name>ReferenceAdd</name>
-		<location>/path/to/referenceadd</location>
-		<parameter name="summand" datatype="double" mandatory="true"></parameter>
-		<parameter name="referenceaxis" datatype="axisid" mandatory="true"></parameter>
-	</plugin>
+		<plugin type="position">
+			<name>ReferenceAdd</name>
+			<location>/path/to/referenceadd</location>
+			<parameter name="summand" datatype="double" mandatory="true"></parameter>
+			<parameter name="referenceaxis" datatype="axisid" mandatory="true"></parameter>
+		</plugin>
         <!-- position plugin -->
-	<plugin type="position">
-		<name>ReferenceMultiply</name>
-		<location>/path/to/referenceadd</location>
-		<parameter name="factor" datatype="double" mandatory="true"></parameter>
-		<parameter name="referenceaxis" datatype="axisid" mandatory="true"></parameter>
-	</plugin>
+		<plugin type="position">
+			<name>ReferenceMultiply</name>
+			<location>/path/to/referenceadd</location>
+			<parameter name="factor" datatype="double" mandatory="true"></parameter>
+			<parameter name="referenceaxis" datatype="axisid" mandatory="true"></parameter>
+		</plugin>
         <!-- positioning plugin -->
-	<plugin type="postscanpositioning">
-		<name>GOTO-Peak</name>
-		<location>/path/to/plugin3</location>
-		<parameter name="direction" datatype="string">positive,negative</parameter>
-	</plugin>
-        <!-- positioning plugin -->
-	<plugin type="postscanpositioning">
-		<name>GOTO-Center</name>
-		<location>/path/to/plugin3</location>
-		<parameter name="direction" datatype="string" mandatory="true">positive,negative</parameter>
-	</plugin>
+		<plugin type="postscanpositioning">
+			<name>GOTO-Peak</name>
+			<location>/path/to/plugin3</location>
+        	<parameter name="algorithm" datatype="string" default="PEAK" mandatory="true"/>
+		</plugin>
+        	<!-- positioning plugin -->
+        <plugin type="postscanpositioning">
+            <name>GOTO-Center</name>
+            <location>/path/to/plugin3</location>
+            <parameter name="algorithm" datatype="string" default="CENTER" mandatory="true"></parameter>
+        </plugin>
+        <plugin type="postscanpositioning">
+            <name>GOTO-Max</name>
+            <location>/path/to/plugin3</location>
+            <parameter name="algorithm" datatype="string" default="MAX" mandatory="true"></parameter>
+        </plugin>
+        <plugin type="postscanpositioning">
+            <name>GOTO-Min</name>
+            <location>/path/to/plugin3</location>
+            <parameter name="algorithm" datatype="string" default="MIN" mandatory="true"></parameter>
+        </plugin>
+        <plugin type="postscanpositioning">
+            <name>GOTO-Edge</name>
+            <location>/path/to/plugin3</location>
+            <parameter name="algorithm" datatype="string" default="EDGE" mandatory="true"></parameter>
+        </plugin>
     </plugins>
     <!-- detector section -->
     <detectors>
