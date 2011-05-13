@@ -494,6 +494,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								final int stop = values.indexOf( this.stopCombo.getText() );
 								final int stepamount = Integer.parseInt( this.stepcountText.getText() );
 
+								if (stepamount != 0) {
 								if ( !this.stepwidthText.getText().equals("")) {
 									// stepwidth Eintrag schon vorhanden
 									final double stepwidth_d = Double.parseDouble( this.stepwidthText.getText() );
@@ -506,7 +507,8 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								}
 								else
 									this.stepwidthText.setText( "" + ( (stop - start ) / stepamount ) );
-								
+
+								}
 							} catch( final NumberFormatException e ) {
 								logger.error(e.getMessage(),e);
 							}
@@ -572,18 +574,20 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								final int stop = values.indexOf( this.stopCombo.getText() );
 								final int stepwidth = Integer.parseInt( this.stepwidthText.getText() );
 
-								if ( !this.stepcountText.getText().equals("")) {
-									// stepamount Eintrag schon vorhanden
-									final double stepamount_d = Double.parseDouble( this.stepcountText.getText() );
-									final int stepamount = (int)stepamount_d;
-									if ( stepamount == (( stop - start) / stepwidth )) {
-										// Wert wird nicht nochmal gesetzt
+								if (stepwidth != 0) {
+									if ( !this.stepcountText.getText().equals("") ) {
+										// stepamount Eintrag schon vorhanden
+										final double stepamount_d = Double.parseDouble( this.stepcountText.getText() );
+										final int stepamount = (int)stepamount_d;
+										if ( stepamount == (( stop - start) / stepwidth )) {
+											// Wert wird nicht nochmal gesetzt
+										}
+										else
+											this.stepcountText.setText( "" + (( stop - start) / stepwidth ) );
 									}
 									else
 										this.stepcountText.setText( "" + (( stop - start) / stepwidth ) );
 								}
-								else
-									this.stepcountText.setText( "" + (( stop - start) / stepwidth ) );
 							} catch( final NumberFormatException e ) {
 								logger.error(e.getMessage(),e);
 							}
@@ -794,13 +798,9 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 					startCombo.setBackground(new Color(startCombo.getBackground().getDevice(),255, 255, 255));
 				}
 				startCombo.setText(formattedText);
-				
-				
-				
 				currentAxis.setStart(formattedText);
 				autoFill();	
 			}
-			
 			motorAxisView.resumeModelUpdateListener();
 		}
 	}
@@ -839,7 +839,6 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 				currentAxis.setStart(formattedText);
 				autoFill();
 			}
-			
 			motorAxisView.resumeModelUpdateListener();
 		}
 	}
@@ -988,27 +987,39 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		public void modifyText( final ModifyEvent e ) {
 			motorAxisView.suspendModelUpdateListener();
 			
-			if( currentAxis != null ) {
+			// if Text is empty, do nothing
+			if( currentAxis != null  && !stepwidthText.getText().equals("")) {
 				if( currentAxis.getMotorAxis().getGoto().isDiscrete() ) {
 					try {
-						// Es wird versucht ein Integer auszulesen, wenn das nicht klappt, wird
-						// der Wert in der Oberfläche zurückgesetzt, weiter passiert dann nichts.
 						final int stepwidth = Integer.parseInt( stepwidthText.getText() );
 						currentAxis.setStepwidth( stepwidthText.getText() );
-						//autoFill();
+						autoFill();
 					} catch( final NumberFormatException ex ) {
-						final double stepwidth_d = Double.parseDouble( stepwidthText.getText() );
-						final int stepwidth = (int)stepwidth_d;
-						stepwidthText.setText(Integer.toString(stepwidth));
+						// unerlaubtes Zeichen eingegeben
+						// Das Zeichen wird von der Eingabe wieder entfernt!
+						int index = stepwidthText.getText().length() -1;
+						stepwidthText.removeModifyListener(stepwidthTextModifyListener);
+						stepwidthText.setText(stepwidthText.getText().substring(0, index));
 						stepwidthText.setSelection(stepwidthText.getCharCount());
+						stepwidthText.addModifyListener(stepwidthTextModifyListener);
 					}
 				}
 				else {
-					currentAxis.setStepwidth(stepwidthText.getText());
-					autoFill();
+					try {
+						final double test = Double.parseDouble(stepwidthText.getText());
+						currentAxis.setStepwidth(stepwidthText.getText());
+						autoFill();
+					} catch( final NumberFormatException ex ) {
+						// unerlaubtes Zeichen eingegeben
+						// Das Zeichen wird von der Eingabe wieder entfernt!
+						int index = stepwidthText.getText().length() -1;
+						stepwidthText.removeModifyListener(stepwidthTextModifyListener);
+						stepwidthText.setText(stepwidthText.getText().substring(0, index));
+						stepwidthText.setSelection(stepwidthText.getCharCount());
+						stepwidthText.addModifyListener(stepwidthTextModifyListener);
+					}
 				}
 			}
-			
 			motorAxisView.resumeModelUpdateListener();
 		}
 	}
@@ -1056,27 +1067,38 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		public void modifyText(final ModifyEvent e) {
 			motorAxisView.suspendModelUpdateListener();
 			
-			if(currentAxis != null) {
+			if( currentAxis != null  && !stepcountText.getText().equals("")) {
 				if(currentAxis.getMotorAxis().getGoto().isDiscrete()) {
 					try {
 						currentAxis.setStepCount(Integer.parseInt(stepcountText.getText()));
 						recalculateStepwidth();
 						autoFill();
 					} catch(final NumberFormatException ex) {
-						final double stepamount_d = 
-							Double.parseDouble( stepcountText.getText() );
-						final int stepamount = (int)stepamount_d;
-						stepcountText.setText(Double.toString(stepamount));
+						// unerlaubtes Zeichen eingegeben
+						// Das Zeichen wird von der Eingabe wieder entfernt!
+						int index = stepcountText.getText().length() -1;
+						stepcountText.removeModifyListener(stepcountTextModifyListener);
+						stepcountText.setText(stepcountText.getText().substring(0, index));
 						stepcountText.setSelection(stepcountText.getCharCount());
+						stepcountText.addModifyListener(stepcountTextModifyListener);
 					}
 				}
 				else {
-					currentAxis.setStepCount(Double.parseDouble(stepcountText.getText()));
-					recalculateStepwidth();
-					autoFill();
+					try {
+						currentAxis.setStepCount(Double.parseDouble(stepcountText.getText()));
+						recalculateStepwidth();
+						autoFill();
+					} catch( final NumberFormatException ex ) {
+						// unerlaubtes Zeichen eingegeben
+						// Das Zeichen wird von der Eingabe wieder entfernt!
+						int index = stepcountText.getText().length() -1;
+						stepcountText.removeModifyListener(stepcountTextModifyListener);
+						stepcountText.setText(stepcountText.getText().substring(0, index));
+						stepcountText.setSelection(stepcountText.getCharCount());
+						stepcountText.addModifyListener(stepcountTextModifyListener);
+					}
 				}
 			}
-			
 			motorAxisView.resumeModelUpdateListener();
 		}
 	}
