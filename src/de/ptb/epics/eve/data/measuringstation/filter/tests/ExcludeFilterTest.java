@@ -18,6 +18,7 @@ import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 
@@ -25,6 +26,10 @@ import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
  * <code>ExcludeFilterTest</code> contains 
  * <a href="http://www.junit.org/">JUnit</a>-Tests for 
  * {@link de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter}.
+ * Most of the tests just test each 
+ * {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} by checking 
+ * its presence, exclude it and check his absence, include it and check its 
+ * presence again.
  * 
  * @author Marcus Michalsky
  * @since 0.4.1
@@ -156,7 +161,7 @@ public class ExcludeFilterTest {
 				MotorAxis currentAxis = 
 					filteredMeasuringStation.getMotorAxisById(ma.getID());
 				
-				logger.debug("Testing motor axis " + ma.getName() + " (" + 
+				logger.info("Testing motor axis " + ma.getName() + " (" + 
 							ma.getID() + ")");
 				
 				// the motor axis should be found
@@ -187,6 +192,96 @@ public class ExcludeFilterTest {
 			logger.info("-----");
 		}
 		log_end("testExcludeIncludeMotorAxis()");
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void testExcludeMotorOption()
+	{
+		log_start("testExcludeMotorOption()");
+		
+		for(Motor m : measuringStation.getMotors())
+		{
+			logger.info("Testing options of motor " + m.getName() + " (" + m.getID() + ")");
+			for(Option o : m.getOptions())
+			{
+				logger.info("Testing option " + o.getName() + 
+						" (" + o.getID() + ")");
+				
+				assertNotNull(filteredMeasuringStation.
+						getPrePostscanDeviceById(o.getID()));
+				logger.info("Option " + o.getName() + " (" + 
+							o.getID() + ") found");
+				
+				filteredMeasuringStation.exclude(o);
+				logger.info("Option " + o.getName() + " (" + 
+						o.getID() + ") excluded");
+				
+				assertNull(filteredMeasuringStation.
+						getPrePostscanDeviceById(o.getID()));
+				logger.info("Option " + o.getName() + " (" + 
+						o.getID() + ") not found");
+				
+				filteredMeasuringStation.include(o);
+				logger.info("Option " + o.getName() + " (" + 
+						o.getID() + ") included");
+				
+				assertNotNull(filteredMeasuringStation.
+						getPrePostscanDeviceById(o.getID()));
+				logger.info("Option " + o.getName() + " (" + 
+						o.getID() + ") found");
+			}
+		}	
+		log_end("testExcludeMotorOption()");
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void testExcludeIncludeMotorAxisOption()
+	{
+		log_start("testExcludeIncludeMotorAxisOption()");
+		for(Motor m : measuringStation.getMotors())
+		{
+			for(MotorAxis ma : m.getAxes())
+			{
+				logger.info("Testing options of motor axis " + 
+							ma.getName() + " (" + ma.getID() + ") of motor " + 
+							m.getName() + "(" + m.getID() + ")");
+				for(Option o : ma.getOptions())
+				{
+					logger.info("Testing option " + o.getName() + 
+								" (" + o.getID() + ") of motor axis " + 
+								ma.getName() + " (" + ma.getID() + ")");
+					assertNotNull(filteredMeasuringStation.
+							getPrePostscanDeviceById(o.getID()));
+					logger.info("Option " + o.getName() + " (" + 
+								o.getID() + ") found");
+					
+					filteredMeasuringStation.exclude(o);
+					logger.info("Option " + o.getName() + " (" + 
+							o.getID() + ") excluded");
+					
+					assertNull(filteredMeasuringStation.
+							getPrePostscanDeviceById(o.getID()));
+					logger.info("Option " + o.getName() + " (" + 
+							o.getID() + ") not found");
+					
+					filteredMeasuringStation.include(o);
+					logger.info("Option " + o.getName() + " (" + 
+							o.getID() + ") included");
+					
+					assertNotNull(filteredMeasuringStation.
+							getPrePostscanDeviceById(o.getID()));
+					logger.info("Option " + o.getName() + " (" + 
+							o.getID() + ") found");
+				}
+			}
+		}
+		log_end("testExcludeIncludeMotorAxisOption()");
 	}
 	
 	/**
@@ -263,7 +358,7 @@ public class ExcludeFilterTest {
 			
 			for(DetectorChannel ch : d.getChannels())
 			{
-				logger.debug("Testing detector channel " + ch.getName() + " (" + 
+				logger.info("Testing detector channel " + ch.getName() + " (" + 
 							ch.getID() + ")");
 				
 				// the detector channel should be found

@@ -1320,15 +1320,6 @@
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
-                    <name>Retry Count</name>
-                    <id>PPSMC:gw23715000.RCNT</id>
-                    <value>
-                        <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715000.RCNT</access>
-                        <value type="double">PPSMC:gw23715000.RCNT</value>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
                     <name>Severity</name>
                     <id>PPSMC:gw23715000.SEVR</id>
                     <value>
@@ -1614,15 +1605,6 @@
                     <id>PPSMC:gw23715001.MSTA</id>
                     <value>
                         <access method="GETCB" type="double" transport="ca">PPSMC:gw23715001.MSTA</access>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
-                    <name>Retry Count</name>
-                    <id>PPSMC:gw23715001.RCNT</id>
-                    <value>
-                        <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715001.RCNT</access>
-                        <value type="double">PPSMC:gw23715001.RCNT</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1916,15 +1898,6 @@
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
-                    <name>Retry Count</name>
-                    <id>PPSMC:gw23715002.RCNT</id>
-                    <value>
-                        <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715002.RCNT</access>
-                        <value type="double">PPSMC:gw23715002.RCNT</value>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
                     <name>Severity</name>
                     <id>PPSMC:gw23715002.SEVR</id>
                     <value>
@@ -2210,15 +2183,6 @@
                     <id>PPSMC:gw23715003.MSTA</id>
                     <value>
                         <access method="GETCB" type="double" transport="ca">PPSMC:gw23715003.MSTA</access>
-                    </value>
-                    <displaygroup>summary</displaygroup>
-                </option>
-                <option>
-                    <name>Retry Count</name>
-                    <id>PPSMC:gw23715003.RCNT</id>
-                    <value>
-                        <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715003.RCNT</access>
-                        <value type="double">PPSMC:gw23715003.RCNT</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
