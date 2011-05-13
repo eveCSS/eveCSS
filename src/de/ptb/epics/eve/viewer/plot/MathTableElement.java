@@ -8,6 +8,7 @@ import com.cosylab.util.PrintfFormat;
 
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
+import de.ptb.epics.eve.ecp1.intern.DataModifier;
 import de.ptb.epics.eve.ecp1.intern.DataType;
 import de.ptb.epics.eve.viewer.Activator;
 
@@ -76,14 +77,21 @@ public class MathTableElement implements IMeasurementDataListener {
 			if(detectorId.equals(measurementData.getName()) && 
 			 measurementData.getDataModifier() == mathFunction.toDataModifier())
 			{
-				value = convert(measurementData);
+				if ((mathFunction == MathFunction.UNMODIFIED) || (mathFunction == MathFunction.NORMALIZED)){
+					value = convert(measurementData, 0);
+				}
+				else {
+					position = convert(measurementData, 0);
+					value = convert(measurementData, 1);
+				}
 				doUpdate();
 			}
-			else if(motorId.equals(measurementData.getName()) && 
-			 measurementData.getDataModifier() == mathFunction.toDataModifier())
+			else if(motorId.equals(measurementData.getName()))
 			{
-				position = convert(measurementData);
-				doUpdate();
+				if ((mathFunction == MathFunction.UNMODIFIED) || (mathFunction == MathFunction.NORMALIZED)){
+					position = convert(measurementData, 0);
+					doUpdate();
+				}
 			}
 		}	
 	}
@@ -91,17 +99,19 @@ public class MathTableElement implements IMeasurementDataListener {
 	/*
 	 * called by measurementDataTransmitted to convert the data
 	 */
-	private String convert(MeasurementData mData) {
+	private String convert(MeasurementData mData, int element) {
 				
+		if (mData.getValues().size() <= element) return "error";
+
 		if (mData.getDataType() == DataType.DOUBLE || 
 			mData.getDataType() == DataType.FLOAT) 
 		{
-			Double data = (Double) mData.getValues().get(0);
+			Double data = (Double) mData.getValues().get(element);
 			return 
 				new PrintfFormat(Locale.ENGLISH, "%12.4g").sprintf(data).trim();
 		}
 		else
-			return mData.getValues().get(0).toString();		
+			return mData.getValues().get(element).toString();		
 	}
 	
 	/*

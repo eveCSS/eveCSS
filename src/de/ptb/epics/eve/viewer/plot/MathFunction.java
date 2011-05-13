@@ -47,7 +47,7 @@ public enum MathFunction {
 	DEVIATION, 
 	
 	/** 
-	 * full width, half ???  
+	 * full width, half maximum  
 	 */
 	FWHM, 
 	
@@ -61,6 +61,7 @@ public enum MathFunction {
 	 */
 	NORMALIZED,
 	
+	PEAK,
 	/** 
 	 * ??? 
 	 */
@@ -84,6 +85,7 @@ public enum MathFunction {
 			case FWHM:			return "FWHM";
 			case SUM:			return "Sum";
 			case NORMALIZED:	return "Normalized";
+			case PEAK:			return "Peak";
 			
 			default:	return "unknown";
 		}
@@ -103,7 +105,7 @@ public enum MathFunction {
 		case MAXIMUM:
 			return DataModifier.MAX;
 		case CENTER:
-			return DataModifier.MEAN_VALUE;
+			return DataModifier.CENTER;
 		case EDGE:
 			return DataModifier.EDGE;
 		case AVERAGE:
@@ -116,8 +118,10 @@ public enum MathFunction {
 			return DataModifier.SUM;
 		case NORMALIZED:
 			return DataModifier.NORMALIZED;
+		case PEAK:
+			return DataModifier.PEAK;
 		default:
-			return DataModifier.UNMODIFIED;
+			return DataModifier.UNKNOWN;
 		}	
 	}
 }

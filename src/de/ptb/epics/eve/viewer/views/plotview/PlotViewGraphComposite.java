@@ -202,6 +202,9 @@ public class PlotViewGraphComposite extends Composite
 
 		// ****************** logging *****************************************
 		String val = "";
+		String val2 = "";
+		if(measurementData.getValues().size() > 1)
+			val2 = measurementData.getValues().get(1).toString();
 		if(measurementData.getValues().size() > 0)
 			val = measurementData.getValues().get(0).toString();
 		else val = "no value";
@@ -211,7 +214,7 @@ public class PlotViewGraphComposite extends Composite
 				     "ScanModuleID: " + measurementData.getScanModuleId() + ", " +
 				     "Name: " + measurementData.getName() + ", " + 
 				     "Position: " + measurementData.getPositionCounter() + ", " + 
-				     "Value: " + val + ", " + 
+				     "Value: " + val + " / " + val2 + ", " +
 				     "Data Type: " + measurementData.getDataType() + ", " +
 				     "Data Modifier: " + measurementData.getDataModifier() + ", " + 
 				     "at: " + new TimeStamp(
