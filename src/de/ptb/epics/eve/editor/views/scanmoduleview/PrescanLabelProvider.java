@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
 import java.util.Iterator;
@@ -20,31 +13,55 @@ import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.PrescanError;
 
+/**
+ * <code>PrescanLabelProvider</code> is the label provider of the table viewer 
+ * defined in 
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PrescanComposite}.
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
 public class PrescanLabelProvider implements ITableLabelProvider {
 
-	public Image getColumnImage( final Object prescan, final int colIndex ) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Image getColumnImage(final Object prescan, final int colIndex) {
 		final Prescan pos = (Prescan)prescan;
-		if( colIndex == 1 ) {
-			final Iterator< IModelError > it = pos.getModelErrors().iterator();
-			while( it.hasNext() ) {
+		if(colIndex == 1) {
+			final Iterator<IModelError> it = pos.getModelErrors().iterator();
+			while(it.hasNext()) {
 				final IModelError modelError = it.next();
-				if( modelError instanceof PrescanError ) {
-					return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
+				if(modelError instanceof PrescanError) {
+					return PlatformUI.getWorkbench().getSharedImages().
+							getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
 				}
 			}
 		}
 		return null;
 	}
 
-	public String getColumnText( final Object prescan, final int colIndex ) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getColumnText(final Object prescan, final int colIndex) {
+		
 		final Prescan pos = (Prescan)prescan;
-		switch( colIndex ) {
+		
+		switch(colIndex) {
+			
 			case 0:
-				return (pos.getAbstractPrePostscanDevice()!=null)?pos.getAbstractPrePostscanDevice().getFullIdentifyer():"";
+				return (pos.getAbstractPrePostscanDevice() != null)
+						? pos.getAbstractPrePostscanDevice().getFullIdentifyer()
+						: "";
 			case 1:
-				if (pos.getAbstractPrePostscanDevice().getValue().getType().equals(DataTypes.ONOFF)) {
-					// Datentyp ONOFF vorhanden, als Value wird On oder Off gesetzt
-					String[] werte = pos.getAbstractPrePostscanDevice().getValue().getDiscreteValues().toArray(new String[0]);
+				if(pos.getAbstractPrePostscanDevice().getValue().getType().
+						equals(DataTypes.ONOFF)) {
+					// ONOFF -> als Value wird On oder Off gesetzt
+					String[] werte = pos.getAbstractPrePostscanDevice().
+						getValue().getDiscreteValues().toArray(new String[0]);
 					if (werte[0].equals(pos.getValue()))
 						// Erster Eintrag ist gesetzt, On anzeigen
 						return "On";
@@ -54,9 +71,11 @@ public class PrescanLabelProvider implements ITableLabelProvider {
 					else
 						return "";
 				}
-				else if (pos.getAbstractPrePostscanDevice().getValue().getType().equals(DataTypes.OPENCLOSE)) {
-					// Datentyp OPENCLOSE vorhanden, als Value wird Open oder Close gesetzt
-					String[] werte = pos.getAbstractPrePostscanDevice().getValue().getDiscreteValues().toArray(new String[0]);
+				else if(pos.getAbstractPrePostscanDevice().getValue().getType().
+						equals(DataTypes.OPENCLOSE)) {
+					// OPENCLOSE -> als Value wird Open oder Close gesetzt
+					String[] werte = pos.getAbstractPrePostscanDevice().
+						getValue().getDiscreteValues().toArray(new String[0]);
 					if (werte[0].equals(pos.getValue()))
 						// Erster Eintrag ist gesetzt, Open anzeigen
 						return "Open";
@@ -67,29 +86,39 @@ public class PrescanLabelProvider implements ITableLabelProvider {
 						return "";
 				}
 				else
-					return (pos.getValue()!=null)?pos.getValue():"";
+					return (pos.getValue() != null)
+							? pos.getValue()
+							: "";
 		}
 		return "";
 	}
 
-	public void addListener( final ILabelProviderListener arg0 ) {
-		// TODO Auto-generated method stub
-
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void addListener(final ILabelProviderListener arg0) {
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
 
-	public boolean isLabelProperty( final Object arg0, String arg1 ) {
-		// TODO Auto-generated method stub
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isLabelProperty(final Object arg0, String arg1) {
 		return false;
 	}
 
-	public void removeListener( final ILabelProviderListener arg0 ) {
-		// TODO Auto-generated method stub
-
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void removeListener(final ILabelProviderListener arg0) {
 	}
-
 }

@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
 import org.eclipse.jface.action.Action;
@@ -16,13 +9,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableColumn;
@@ -31,7 +19,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
-import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
@@ -39,33 +26,39 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
-import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
-public class PrescanComposite extends Composite implements IModelUpdateListener {
+/**
+ * <code>PrescanComposite</code> is part of the 
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView}. 
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
+public class PrescanComposite extends Composite {
 
 	private TableViewer tableViewer;
-	private ScanModule scanModul;
+	private ScanModule scanModule;
 	private IMeasuringStation measuringStation;
 	
-	public PrescanComposite( final Composite parent, final int style, final IMeasuringStation measuringStation ) {
-		super( parent, style );
+	/**
+	 * Constructs a <code>PrescanComposite</code>.
+	 * 
+	 * @param parent the parent composite
+	 * @param style the style
+	 * @param measuringStation the measuring station the menu options should be 
+	 * 		  taken from
+	 */
+	public PrescanComposite(final Composite parent, final int style, 
+							final IMeasuringStation measuringStation) {
+		super(parent, style);
 		this.measuringStation = measuringStation;
-		this.measuringStation.addModelUpdateListener( this );
-		initialize();
-	}
-	
-	public void updateEvent( final ModelUpdateEvent modelUpdateEvent ) {
-	}
 
-	private void initialize() {
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		
-		this.setLayout( gridLayout );
+		this.setLayout(gridLayout);
 		
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -74,378 +67,494 @@ public class PrescanComposite extends Composite implements IModelUpdateListener 
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		
-		this.tableViewer = new TableViewer( this, SWT.NONE );
-		this.tableViewer.getControl().setLayoutData( gridData );
+		this.tableViewer = new TableViewer(this, SWT.NONE);
+		this.tableViewer.getControl().setLayoutData(gridData);
 		
-		TableColumn column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 0 );
-	    column.setText( "Device" );
-	    column.setWidth( 300 );
+		TableColumn column = 
+			new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 0);
+	    column.setText("Device");
+	    column.setWidth(300);
 
-	    column = new TableColumn( this.tableViewer.getTable(), SWT.LEFT, 1 );
-	    column.setText( "Value" );
-	    column.setWidth( 80 );
+	    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 1);
+	    column.setText("Value");
+	    column.setWidth(80);
 
-	    this.tableViewer.getTable().setHeaderVisible( true );
-	    this.tableViewer.getTable().setLinesVisible( true );
+	    this.tableViewer.getTable().setHeaderVisible(true);
+	    this.tableViewer.getTable().setLinesVisible(true);
 	    
-	    // hier wird eine Liste der vorhandenen Prescans des Scan Moduls erstellt
-	    this.tableViewer.setContentProvider( new PrescanInputWrapper() );
-	    this.tableViewer.setLabelProvider( new PrescanLabelProvider() );
+	    this.tableViewer.setContentProvider(new PrescanInputWrapper());
+	    this.tableViewer.setLabelProvider(new PrescanLabelProvider());
 	    
 	    final CellEditor[] editors = new CellEditor[2];
 	    
-	    editors[0] = new TextCellEditor( this.tableViewer.getTable() );
-	    editors[1] = new TextCellEditor( this.tableViewer.getTable() );
+	    editors[0] = new TextCellEditor(this.tableViewer.getTable());
+	    editors[1] = new TextCellEditor(this.tableViewer.getTable());
 	    
-	    this.tableViewer.setCellModifier( new PrescanCellModifyer( this.tableViewer ) );
-	    this.tableViewer.setCellEditors( editors );
+	    this.tableViewer.setCellModifier(
+	    		new PrescanCellModifyer(this.tableViewer));
+	    this.tableViewer.setCellEditors(editors);
 	    
-	    final String[] props = { "device", "value"};
+	    final String[] props = {"device", "value"};
 	    
-	    this.tableViewer.setColumnProperties( props );
+	    this.tableViewer.setColumnProperties(props);
 	    
-		final MenuManager menuManager = new MenuManager( "#PopupMenu" );
-		menuManager.setRemoveAllWhenShown( true );
-		menuManager.addMenuListener( new IMenuListener() {
-
-			final ImageDescriptor motorImage = ImageDescriptor.createFromImage( de.ptb.epics.eve.viewer.Activator.getDefault().getImageRegistry().get("MOTOR") );
-			final ImageDescriptor axisImage = ImageDescriptor.createFromImage( de.ptb.epics.eve.viewer.Activator.getDefault().getImageRegistry().get("AXIS") );
-			final ImageDescriptor detectorImage = ImageDescriptor.createFromImage( de.ptb.epics.eve.viewer.Activator.getDefault().getImageRegistry().get("DETECTOR") );
-			final ImageDescriptor channelImage = ImageDescriptor.createFromImage( de.ptb.epics.eve.viewer.Activator.getDefault().getImageRegistry().get("CHANNEL") );
-			
-			@Override
-			public void menuAboutToShow( final IMenuManager manager ) {
-				
-				for( final String className : measuringStation.getClassNameList() ) {
-
-					final MenuManager currentClassMenu = new MenuManager( className );
-					
-					for( final AbstractDevice device : measuringStation.getDeviceList( className ) ) {
-						if( device instanceof Motor ) {
-							final Motor motor = (Motor)device;
-							final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName(), motorImage, "".equals( motor.getName())?motor.getID():motor.getName() );
-							currentClassMenu.add( currentMotorMenu );
-							for( final MotorAxis motorAxis : motor.getAxes() ) {
-								final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName(), axisImage, "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
-								for( final Option option : motorAxis.getOptions() ) {
-									final Action setOptionAction = new Action() {
-										final Option o = option;
-										public void run() {
-											super.run();
-											for( final Prescan p : scanModul.getPrescans() ) {
-												if( p.getAbstractDevice() == o ) {
-													return;
-												}
-											}
-											final Prescan p = new Prescan();
-											p.setAbstractPrePostscanDevice( o );
-											scanModul.add( p );
-											tableViewer.refresh();
-										}
-									};
-									currentMotorAxisMenu.add( setOptionAction );
-									setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
-								}
-								currentMotorMenu.add( currentMotorAxisMenu );
-							}
-							for( final Option option : motor.getOptions() ) {
-								final Action setOptionAction = new Action() {
-									final Option o = option;
-									public void run() {
-										super.run();
-										for( final Prescan p : scanModul.getPrescans() ) {
-											if( p.getAbstractDevice() == o ) {
-												return;
-											}
-										}
-										final Prescan p = new Prescan();
-										p.setAbstractPrePostscanDevice( o );
-										scanModul.add( p );
-										tableViewer.refresh();
-									}
-								};
-								currentMotorMenu.add( setOptionAction );
-								setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
-							}
-//							currentClassMenu.add( currentMotorMenu );
-						} else if( device instanceof MotorAxis ) {
-							final MotorAxis motorAxis = (MotorAxis)device;
-							final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName(), axisImage, "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
-							for( final Option option : motorAxis.getOptions() ) {
-								final Action setOptionAction = new Action() {
-									final Option o = option;
-									public void run() {
-										super.run();
-										for( final Prescan p : scanModul.getPrescans() ) {
-											if( p.getAbstractDevice() == o ) {
-												return;
-											}
-										}
-										final Prescan p = new Prescan();
-										p.setAbstractPrePostscanDevice( o );
-										scanModul.add( p );
-										tableViewer.refresh();
-									}
-								};
-								currentMotorAxisMenu.add( setOptionAction );
-								setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
-							}
-							currentClassMenu.add( currentMotorAxisMenu );
-						} else if( device instanceof Detector ) {
-							final Detector detector = (Detector)device;
-							final MenuManager currentDetectorMenu = new MenuManager( "".equals( detector.getName())?detector.getID():detector.getName(), detectorImage, "".equals( detector.getName())?detector.getID():detector.getName() );
-							for( final DetectorChannel detectorChannel : detector.getChannels() ) {
-								final MenuManager currentDetectorChannelMenu = new MenuManager( "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName(), channelImage, "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName() );
-								for( final Option option : detectorChannel.getOptions() ) {
-									final Action setOptionAction = new Action() {
-										final Option o = option;
-										public void run() {
-											super.run();
-											for( final Prescan p : scanModul.getPrescans() ) {
-												if( p.getAbstractDevice() == o ) {
-													return;
-												}
-											}
-											final Prescan p = new Prescan();
-											p.setAbstractPrePostscanDevice( o );
-											scanModul.add( p );
-											tableViewer.refresh();
-										}
-									};
-									currentDetectorChannelMenu.add( setOptionAction );
-									setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
-								}
-								currentDetectorMenu.add( currentDetectorChannelMenu );
-							}
-							for( final Option option : detector.getOptions() ) {
-								final Action setOptionAction = new Action() {
-									final Option o = option;
-									public void run() {
-										super.run();
-										for( final Prescan p : scanModul.getPrescans() ) {
-											if( p.getAbstractDevice() == o ) {
-												return;
-											}
-										}
-										final Prescan p = new Prescan();
-										p.setAbstractPrePostscanDevice( o );
-										scanModul.add( p );
-										tableViewer.refresh();
-									}
-								};
-								currentDetectorMenu.add( setOptionAction );
-								setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
-							}
-							currentClassMenu.add( currentDetectorMenu );
-						} else if( device instanceof DetectorChannel ) {
-							final DetectorChannel detectorChannel = (DetectorChannel)device;
-							final MenuManager currentDetectorChannelMenu = new MenuManager( "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName(), channelImage, "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName() );
-							for( final Option option : detectorChannel.getOptions() ) {
-								final Action setOptionAction = new Action() {
-									final Option o = option;
-									public void run() {
-										super.run();
-										for( final Prescan p : scanModul.getPrescans() ) {
-											if( p.getAbstractDevice() == o ) {
-												return;
-											}
-										}
-										final Prescan p = new Prescan();
-										p.setAbstractPrePostscanDevice( o );
-										scanModul.add( p );
-										tableViewer.refresh();
-									}
-								};
-								currentDetectorChannelMenu.add( setOptionAction );
-								setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
-							}
-							currentClassMenu.add( currentDetectorChannelMenu );
-						} else if( device instanceof Device ) {
-							final Action setDeviceAction = new Action() {
-								final Device dv = (Device)device;
-								public void run() {
-									super.run();
-									for( final Prescan p : scanModul.getPrescans() ) {
-										if( p.getAbstractDevice() == dv ) {
-											return;
-										}
-									}
-									final Prescan p = new Prescan();
-									p.setAbstractPrePostscanDevice( dv );
-									scanModul.add( p );
-									tableViewer.refresh();
-								}
-							};
-							currentClassMenu.add( setDeviceAction );
-							setDeviceAction.setText( "".equals( device.getName())?device.getID():device.getName() );
-						}
-					}
-					manager.add( currentClassMenu );
-
-				}
-				for( final Motor motor : measuringStation.getMotors() ) {
-					if( "".equals( motor.getClassName() ) || motor.getClassName() == null ) {
-
-						final MenuManager currentMotorMenu = new MenuManager( "".equals( motor.getName())?motor.getID():motor.getName(), motorImage, "".equals( motor.getName())?motor.getID():motor.getName() );
-						for( final MotorAxis motorAxis : motor.getAxes() ) {
-							if( "".equals( motorAxis.getClassName() ) || motorAxis.getClassName() == null ) {
-								final MenuManager currentMotorAxisMenu = new MenuManager( "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName(), axisImage, "".equals( motorAxis.getName())?motorAxis.getID():motorAxis.getName() );
-								for( final Option option : motorAxis.getOptions() ) {
-									final Action setOptionAction = new Action() {
-										final Option o = option;
-										public void run() {
-											super.run();
-											for( final Prescan p : scanModul.getPrescans() ) {
-												if( p.getAbstractDevice() == o ) {
-													return;
-												}
-											}
-											final Prescan p = new Prescan();
-											p.setAbstractPrePostscanDevice( o );
-											scanModul.add( p );
-											tableViewer.refresh();
-										}
-									};
-									currentMotorAxisMenu.add( setOptionAction );
-									setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
-								}
-								currentMotorMenu.add( currentMotorAxisMenu );
-							}
-						}
-						for( final Option option : motor.getOptions() ) {
-							final Action setOptionAction = new Action() {
-								final Option o = option;
-								public void run() {
-									super.run();
-									for( final Prescan p : scanModul.getPrescans() ) {
-										if( p.getAbstractDevice() == o ) {
-											return;
-										}
-									}
-									final Prescan p = new Prescan();
-									p.setAbstractPrePostscanDevice( o );
-									scanModul.add( p );
-									tableViewer.refresh();
-								}
-							};
-							currentMotorMenu.add( setOptionAction );
-							setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
-						}
-					manager.add( currentMotorMenu );
-					}
-				}
-				for( final Detector detector : measuringStation.getDetectors() ) {
-					if( "".equals( detector.getClassName() ) || detector.getClassName() == null ) {
-						final MenuManager currentDetectorMenu = new MenuManager( "".equals( detector.getName())?detector.getID():detector.getName(), detectorImage, "".equals( detector.getName())?detector.getID():detector.getName() );
-						for( final DetectorChannel detectorChannel : detector.getChannels() ) {
-							if( "".equals( detectorChannel.getClassName() ) || detectorChannel.getClassName() == null ) {
-								final MenuManager currentDetectorChannelMenu = new MenuManager( "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName(), channelImage, "".equals( detectorChannel.getName())?detectorChannel.getID():detectorChannel.getName() );
-								for( final Option option : detectorChannel.getOptions() ) {
-									final Action setOptionAction = new Action() {
-										final Option o = option;
-										public void run() {
-											super.run();
-											for( final Prescan p : scanModul.getPrescans() ) {
-												if( p.getAbstractDevice() == o ) {
-													return;
-												}
-											}
-											final Prescan p = new Prescan();
-											p.setAbstractPrePostscanDevice( o );
-											scanModul.add( p );
-											tableViewer.refresh();
-										}
-									};
-									currentDetectorChannelMenu.add( setOptionAction );
-									setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
-								}
-								currentDetectorMenu.add( currentDetectorChannelMenu );
-							}
-							
-						}
-						for( final Option option : detector.getOptions() ) {
-							final Action setOptionAction = new Action() {
-								final Option o = option;
-								public void run() {
-									super.run();
-									for( final Prescan p : scanModul.getPrescans() ) {
-										if( p.getAbstractDevice() == o ) {
-											return;
-										}
-									}
-									final Prescan p = new Prescan();
-									p.setAbstractPrePostscanDevice( o );
-									scanModul.add( p );
-									tableViewer.refresh();
-								}
-							};
-							currentDetectorMenu.add( setOptionAction );
-							setOptionAction.setText( "".equals( option.getName())?option.getID():option.getName() );
-						}
-						manager.add( currentDetectorMenu );
-					}
-				}
-				for( final Device device : measuringStation.getDevices() ) {
-					if( "".equals( device.getClassName() ) || device.getClassName() == null ) {
-						final Action setDeviceAction = new Action() {
-							final Device dv = (Device)device;
-							public void run() {
-								super.run();
-								for( final Prescan p : scanModul.getPrescans() ) {
-									if( p.getAbstractDevice() == dv ) {
-										return;
-									}
-								}
-								final Prescan p = new Prescan();
-								p.setAbstractPrePostscanDevice( dv );
-								scanModul.add( p );
-								tableViewer.refresh();
-							}
-						};
-						manager.add( setDeviceAction );
-						setDeviceAction.setText( "".equals( device.getName())?device.getID():device.getName() );
-					}
-				}
-				Action deleteAction = new Action(){
-			    	public void run() {
-		    		
-						// Prescan wird aus scanModul ausgetragen
-			    		scanModul.remove( (Prescan)((IStructuredSelection)tableViewer.getSelection()).getFirstElement() );
-			    		
-			    		tableViewer.refresh();
-			    	}
-			    };
-			    
-			    deleteAction.setEnabled( true );
-			    deleteAction.setText( "Delete Prescan" );
-			    deleteAction.setToolTipText( "Deletes Prescan" );
-			    deleteAction.setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE ) );
-
-			    manager.add( deleteAction );
-			}
-		} );
+		final MenuManager menuManager = new MenuManager("#PopupMenu");
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new MenuManagerMenuListener());
 		
-		final Menu contextMenu = menuManager.createContextMenu( this.tableViewer.getControl() );
+		final Menu contextMenu = menuManager.createContextMenu(
+				this.tableViewer.getControl());
 		this.tableViewer.getControl().setMenu( contextMenu );
+	}
 
-	}
 	
-	public ScanModule getScanModul() {
-		return this.scanModul;
-	}
-	
-	public void setScanModule( final ScanModule scanModul ) {
-		if( this.scanModul != null ) {
-			this.scanModul.removeModelUpdateListener( this );
-		}
-		if( scanModul != null ) {
-			scanModul.addModelUpdateListener( this );
+	/**
+	 * Sets the {@link de.ptb.epics.eve.data.scandescription.ScanModule} this 
+	 * composite is based on.
+	 * 
+	 * @param scanModule the 
+	 * {@link de.ptb.epics.eve.data.scandescription.ScanModule} this composite 
+	 * 		is based on
+	 */
+	public void setScanModule(final ScanModule scanModule) {
+
+		if(scanModule != null) {
 			this.tableViewer.getTable().setEnabled(true);
 		} else {
 			this.tableViewer.getTable().setEnabled(false);
 		}
-		this.scanModul = scanModul;
-		this.tableViewer.setInput( scanModul );
+		this.scanModule = scanModule;
+		this.tableViewer.setInput(scanModule);
 	}
 	
+	// ***********************************************************************
+	// *************************** Listener **********************************
+	// ***********************************************************************
+	
+	/**
+	 * <code>MenuManagerMenuListener</code>.
+	 */
+	class MenuManagerMenuListener implements IMenuListener {
+		
+		final ImageDescriptor motorImage = ImageDescriptor.createFromImage(
+				de.ptb.epics.eve.viewer.Activator.getDefault().
+				getImageRegistry().get("MOTOR"));
+		final ImageDescriptor axisImage = ImageDescriptor.createFromImage(
+				de.ptb.epics.eve.viewer.Activator.getDefault().
+				getImageRegistry().get("AXIS"));
+		final ImageDescriptor detectorImage = ImageDescriptor.createFromImage(
+				de.ptb.epics.eve.viewer.Activator.getDefault().
+				getImageRegistry().get("DETECTOR"));
+		final ImageDescriptor channelImage = ImageDescriptor.createFromImage(
+				de.ptb.epics.eve.viewer.Activator.getDefault().
+				getImageRegistry().get("CHANNEL"));
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void menuAboutToShow(IMenuManager manager) {
+			
+			// *************************************************
+			// **** Menu Entries for Devices with Class Names **
+			// *************************************************
+			
+			// iterate over all classes of devices
+			for(final String className : measuringStation.getClassNameList()) {
+
+				// create a menu entry for each class name
+				final MenuManager currentClassMenu = new MenuManager(className);
+				
+				// iterate over each device in that class
+				for(final AbstractDevice device : 
+					measuringStation.getDeviceList(className)) {
+					
+					// *********************************
+					// *********** Motor Start *********
+					// *********************************
+					
+					if(device instanceof Motor) {
+						// device is a motor
+						final Motor motor = (Motor)device;
+						
+						// create a menu entry for that motor and label it
+						final MenuManager currentMotorMenu = 
+							new MenuManager(motor.getName(), 
+											motorImage, 
+											motor.getName());
+						currentClassMenu.add(currentMotorMenu);
+						
+						// iterate over the axes of that motor
+						for(final MotorAxis motorAxis : motor.getAxes()) {
+							
+							// create a menu entry for the motor axis
+							final MenuManager currentMotorAxisMenu = 
+								new MenuManager(motorAxis.getName(), 
+												axisImage, 
+												motorAxis.getName());
+							
+							// iterate over the options of that axis
+							for(final Option option : motorAxis.getOptions()) {
+								
+								SetOptionAction motorAxisSetOptionAction = 
+										new SetOptionAction(option, 
+															option.getName());
+								
+								currentMotorAxisMenu.add(motorAxisSetOptionAction);
+							}
+							
+							// add the motor axis menu to the motor menu entry
+							currentMotorMenu.add(currentMotorAxisMenu);
+						}
+						
+						for(final Option option : motor.getOptions()) {
+							
+							SetOptionAction motorSetOptionAction = 
+									new SetOptionAction(option, 
+														option.getName());
+							
+							currentMotorMenu.add(motorSetOptionAction);
+						}
+						
+						// *********************************
+						// *********** Motor End ***********
+						// *********************************
+						
+						// *********************************
+						// ******** Motor Axis Start *******
+						// *********************************
+						
+					} else if(device instanceof MotorAxis) {
+						
+						final MotorAxis motorAxis = (MotorAxis)device;
+						
+						// create menu entry for the motor axis
+						final MenuManager currentMotorAxisMenu = 
+								new MenuManager(motorAxis.getName(), 
+												axisImage, 
+												motorAxis.getName());
+						
+						// iterate over options of the axis
+						for(final Option option : motorAxis.getOptions()) {
+							
+							SetOptionAction motorAxisSetOptionAction = 
+									new SetOptionAction(option, 
+														option.getName());
+							currentMotorAxisMenu.add(motorAxisSetOptionAction);
+						}
+						
+						// add motor axis menu to the motor menu entry
+						currentClassMenu.add(currentMotorAxisMenu);
+						
+						// *********************************
+						// ********* Motor Axis End ********
+						// *********************************
+						
+						// *********************************
+						// ********* Detector Start ********
+						// *********************************
+						
+					} else if(device instanceof Detector) {
+						
+						final Detector detector = (Detector)device;
+						
+						final MenuManager currentDetectorMenu = 
+								new MenuManager(detector.getName(), 
+												detectorImage, 
+												detector.getName());
+						
+						for(final DetectorChannel detectorChannel : 
+													detector.getChannels()) {
+							
+							final MenuManager currentDetectorChannelMenu = 
+									new MenuManager(detectorChannel.getName(), 
+													channelImage, 
+													detectorChannel.getName());
+							
+							for(final Option option : 
+												detectorChannel.getOptions()) {
+								
+								SetOptionAction channelSetOptionAction = 
+										new SetOptionAction(option, 
+															option.getName());
+								currentDetectorChannelMenu.add(
+										channelSetOptionAction);
+							}
+							currentDetectorMenu.add(currentDetectorChannelMenu);
+						}
+						
+						for(final Option option : detector.getOptions()) {
+							
+							SetOptionAction detectorSetOptionAction = 
+									new SetOptionAction(option, 
+														option.getName());
+							currentDetectorMenu.add(detectorSetOptionAction);
+						}
+						currentClassMenu.add(currentDetectorMenu);
+						
+						// *********************************
+						// ********** Detector End *********
+						// *********************************
+						
+						// *********************************
+						// ***** Detector Channel Start ****
+						// *********************************
+						
+					} else if(device instanceof DetectorChannel) {
+						
+						final DetectorChannel detectorChannel = 
+								(DetectorChannel)device;
+						
+						final MenuManager currentDetectorChannelMenu = 
+								new MenuManager(detectorChannel.getName(), 
+												channelImage, 
+												detectorChannel.getName());
+						
+						for(final Option option : detectorChannel.getOptions()) {
+							
+							SetOptionAction channelSetOptionAction = 
+									new SetOptionAction(option, 
+														option.getName());
+							currentDetectorChannelMenu.add(
+									channelSetOptionAction);
+						}
+						currentClassMenu.add(currentDetectorChannelMenu);
+						
+						// *********************************
+						// ****** Detector Channel End *****
+						// *********************************
+						
+						// *********************************
+						// ********** Device Start *********
+						// *********************************
+						
+					} else if(device instanceof Device) {
+						
+						SetDeviceAction setDeviceAction = 
+								new SetDeviceAction((Device)device, 
+													device.getName());
+						currentClassMenu.add(setDeviceAction);
+						
+						// *********************************
+						// ************ Device End *********
+						// *********************************
+					}
+				}
+				manager.add(currentClassMenu);
+			} // end of: iterate over all classes of devices
+			
+			// *****************************************************
+			// * end of: Menu Entries for Devices with Class Names *
+			// *****************************************************
+			
+			// *************************************************
+			// ** Menu Entries for Devices without Class Names *
+			// *************************************************
+			
+			for(final Motor motor : measuringStation.getMotors()) {
+				
+				// add only entries for motors without class names
+				if("".equals( motor.getClassName()) || 
+				   motor.getClassName() == null) {
+
+					final MenuManager currentMotorMenu = 
+							new MenuManager(motor.getName(), 
+											motorImage,
+											motor.getName());
+					
+					for(final MotorAxis motorAxis : motor.getAxes()) {
+						
+						if("".equals( motorAxis.getClassName()) || 
+						   motorAxis.getClassName() == null) {
+							
+							final MenuManager currentMotorAxisMenu = 
+									new MenuManager(motorAxis.getName(), 
+													axisImage,
+													motorAxis.getName());
+							
+							for(final Option option : motorAxis.getOptions()) {
+								
+								SetOptionAction axisSetOptionAction = 
+										new SetOptionAction(option, 
+															option.getName());
+								currentMotorAxisMenu.add(axisSetOptionAction);
+							}
+							currentMotorMenu.add(currentMotorAxisMenu);
+						}
+					}
+					
+					for(final Option option : motor.getOptions()) {
+						
+						SetOptionAction motorSetOptionAction = 
+								new SetOptionAction(option, option.getName());
+						currentMotorMenu.add(motorSetOptionAction);
+					}
+					manager.add(currentMotorMenu);
+				}
+			}
+			
+			for(final Detector detector : measuringStation.getDetectors()) {
+				
+				// add only menu entries for detectors without class names
+				if("".equals( detector.getClassName()) || 
+				   detector.getClassName() == null) {
+					
+					final MenuManager currentDetectorMenu = 
+							new MenuManager(detector.getName(), 
+											detectorImage,
+											detector.getName());
+					
+					for(final DetectorChannel detectorChannel : 
+													detector.getChannels()) {
+						
+						if("".equals(detectorChannel.getClassName()) || 
+						   detectorChannel.getClassName() == null) {
+							
+							final MenuManager currentDetectorChannelMenu = 
+									new MenuManager(detectorChannel.getName(), 
+													channelImage,
+													detectorChannel.getName());
+							
+							for(final Option option : 
+												detectorChannel.getOptions()) {
+								
+								SetOptionAction channelSetOptionAction = 
+										new SetOptionAction(option,
+															option.getName());
+								currentDetectorChannelMenu.add(
+										channelSetOptionAction);
+							}
+							currentDetectorMenu.add(currentDetectorChannelMenu);
+						}
+					}
+					
+					for(final Option option : detector.getOptions()) {
+						
+						SetOptionAction detectorSetOptionAction = 
+								new SetOptionAction(option, option.getName());
+						currentDetectorMenu.add(detectorSetOptionAction);
+					}
+					manager.add(currentDetectorMenu);
+				}
+			}
+			
+			for(final Device device : measuringStation.getDevices()) {
+				
+				// add only entries for devices without class names
+				if("".equals(device.getClassName()) || 
+				   device.getClassName() == null) {
+					
+					SetDeviceAction setDeviceAction = 
+						new SetDeviceAction((Device)device, device.getName());
+					manager.add(setDeviceAction);
+				}
+			}
+			
+			// ********************************************************
+			// * end of: Menu Entries for Devices without Class Names *
+			// ********************************************************
+			
+			Action deleteAction = new Action(){
+		    	
+				@Override
+				public void run() {
+
+		    		scanModule.remove((Prescan)((IStructuredSelection)
+		    				tableViewer.getSelection()).getFirstElement());
+		    		
+		    		tableViewer.refresh();
+		    	}
+		    };
+		    
+		    deleteAction.setEnabled(true);
+		    deleteAction.setText("Delete Prescan");
+		    deleteAction.setToolTipText("Deletes Prescan");
+		    deleteAction.setImageDescriptor(PlatformUI.getWorkbench().
+		    		getSharedImages().getImageDescriptor(
+		    		ISharedImages.IMG_TOOL_DELETE));
+
+		    manager.add(deleteAction);
+		}
+	}
+	
+	// ***********************************************************************
+	// *************************** Actions ***********************************
+	// ***********************************************************************
+	
+	/**
+	 * <code>SetOptionAction</code>.
+	 */
+	class SetOptionAction extends Action {
+		
+		private final Option option;
+		
+		/**
+		 * Constructs a <code>SetOptionAction</code>.
+		 * 
+		 * @param option the 
+		 * 		  {@link de.ptb.epics.eve.data.measuringstation.Option} that 
+		 * 		  should be set
+		 * @param text the text that appears in the menu entry
+		 */
+		public SetOptionAction(Option option, String text) {
+			this.option = option;
+			this.setText(text);
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void run() {
+			super.run();
+			for(final Prescan p : scanModule.getPrescans()) {
+				if(p.getAbstractDevice() == option) {
+					return;
+				}
+			}
+			final Prescan p = new Prescan();
+			p.setAbstractPrePostscanDevice(option);
+			scanModule.add(p);
+			tableViewer.refresh();
+		}
+	}
+	
+	/**
+	 * <code>SetDeviceAction</code>.
+	 */
+	class SetDeviceAction extends Action {
+		
+		private final Device device;
+		
+		/**
+		 * Constructs a <code>SetDeviceAction</code>.
+		 * 
+		 * @param device the 
+		 * 		  {@link de.ptb.epics.eve.data.measuringstation.Device} that 
+		 * 		  should be set
+		 * @param text the text that appears in the menu
+		 */
+		public SetDeviceAction(Device device, String text)
+		{
+			this.device = device;
+			this.setText(text);
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void run() {
+			super.run();
+			for(final Prescan p : scanModule.getPrescans()) {
+				if(p.getAbstractDevice() == device) {
+					return;
+				}
+			}
+			final Prescan p = new Prescan();
+			p.setAbstractPrePostscanDevice(device);
+			scanModule.add(p);
+			tableViewer.refresh();
+		}
+	}
 }

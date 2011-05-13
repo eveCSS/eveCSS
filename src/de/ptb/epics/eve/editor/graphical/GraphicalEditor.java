@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -44,15 +42,8 @@ import org.eclipse.ui.part.EditorPart;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
-import de.ptb.epics.eve.data.measuringstation.Detector;
-import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
-import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
-import de.ptb.epics.eve.data.measuringstation.Motor;
-import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
-import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
-import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
@@ -81,10 +72,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 
 	// logging
 	private static Logger logger = Logger.getLogger(GraphicalEditor.class);
-	
-	private static Logger filterLogger = 
-		Logger.getLogger("de.ptb.epics.eve.SaveFilter");
-	
+
 	// a graphical view of the model (hosts the figures)
 	private ScrollingGraphicalViewer viewer;
 	
@@ -419,17 +407,14 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			ExcludeFilter measuringStation = new ExcludeFilter();
 			measuringStation.setSource(scanDescription.getMeasuringStation());
 			// comment out following line to deactivate filtering
-			filterStation(measuringStation);
+			measuringStation.excludeUnusedDevices(scanDescription);
+			
+			// save -> filter -> save -> compare in debug... // TODO
 			
 			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = 
 					new ScanDescriptionSaverToXMLusingXerces(
 							os, measuringStation, this.scanDescription);
 			scanDescriptionSaver.save();
-			
-			if(filterLogger.isDebugEnabled())
-			{
-				calculateSpaceDifference(scanDescriptionFile);
-			}
 			
 			this.dirty = false;
 			this.firePropertyChange(PROP_DIRTY);
@@ -437,30 +422,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		} catch(final FileNotFoundException e) {
 			logger.error(e.getMessage(), e);
 		}
-	}
-	
-	/*
-	 * used only in debugging mode to calculate the space saving of the filter
-	 */
-	private void calculateSpaceDifference(File actual) throws FileNotFoundException
-	{
-		File withoutFilter = new File("temp");
-		FileOutputStream os = new FileOutputStream(withoutFilter);
-		ExcludeFilter measuringStation = new ExcludeFilter();
-		measuringStation.setSource(scanDescription.getMeasuringStation());
-		
-		final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = 
-			new ScanDescriptionSaverToXMLusingXerces(
-					os, measuringStation, this.scanDescription);
-		scanDescriptionSaver.save();
-		
-		filterLogger.debug("Original Space Usage: " + withoutFilter.length() + 
-				" Bytes. " + "Filtered Space Usage: " + actual.length() + 
-				" Bytes. " + "Difference: " + 
-				(withoutFilter.length() - actual.length()) + "(" + 
-				(withoutFilter.length() - actual.length()) * 100 / 
-									withoutFilter.length() + "%)");
-		withoutFilter.delete();
 	}
 	
 	/**
@@ -504,7 +465,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			ExcludeFilter measuringStation = new ExcludeFilter();
 			measuringStation.setSource(scanDescription.getMeasuringStation());
 			// comment out following line to deactivate filtering
-			filterStation(measuringStation);
+			measuringStation.excludeUnusedDevices(scanDescription);
 			
 			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = 
 					new ScanDescriptionSaverToXMLusingXerces(os, 
@@ -541,106 +502,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	@Override
 	public boolean isSaveAsAllowed() {
 		return true;
-	}
-	
-	/*
-	 * Used by doSave and doSaveAs to exclude unused axes, channels, motors and 
-	 * detectors.
-	 */
-	private void filterStation(ExcludeFilter filteredMeasuringStation)
-	{
-		// the "full" measuring station
-		IMeasuringStation measuringStation = 
-				scanDescription.getMeasuringStation();
-		
-		// all available motors
-		List<Motor> all_motors = measuringStation.getMotors();
-		// all available detectors
-		List<Detector> all_detectors = measuringStation.getDetectors();
-		
-		// chains of the scan description
-		List<Chain> chains = scanDescription.getChains();
-		
-		// lists to add used devices to
-		List<MotorAxis> used_motor_axes = new LinkedList<MotorAxis>();
-		List<DetectorChannel> used_detector_channels = 
-				new LinkedList<DetectorChannel>();
-		
-		// go through every chain to identify used devices
-		for(Chain ch : chains)
-		{	
-			List<ScanModule> scanModules = ch.getScanModuls();
-			
-			for(ScanModule sm : scanModules)
-			{
-				Axis[] axes = sm.getAxis();
-				Channel[] channels = sm.getChannels();
-				
-				for(int i = 0; i < axes.length; i++)
-				{
-					used_motor_axes.add(axes[i].getMotorAxis());
-				}
-				
-				for(int i = 0; i < channels.length; i++)
-				{
-					used_detector_channels.add(channels[i].getDetectorChannel());
-				}
-			}
-		}
-		
-		// iterate over available motors -> exclude them if they are not used
-		for(Motor m : all_motors)
-		{
-			for(MotorAxis ma : m.getAxes())
-			{
-				if(!used_motor_axes.contains(ma))
-				{
-					if(filterLogger.isDebugEnabled())
-						filterLogger.debug("Axis " + m.getID() + ":" + 
-								ma.getID() + " not used -> exclude");
-					filteredMeasuringStation.exclude(ma);
-				}
-			}
-		}
-		
-		// check for motors with no axes -> exclude them
-		for(Motor m : filteredMeasuringStation.getMotors())
-		{
-			if(m.getAxes().size() == 0)
-			{
-				if(filterLogger.isDebugEnabled())
-					filterLogger.debug("Motor " + m.getID() + " not used " + 
-									   "-> exclude");
-				filteredMeasuringStation.exclude(m);
-			}
-		}
-		
-		// iterate over available detectors -> exclude them if they are not used
-		for(Detector d : all_detectors)
-		{
-			for(DetectorChannel ch : d.getChannels())
-			{
-				if(!used_detector_channels.contains(ch))
-				{
-					if(filterLogger.isDebugEnabled())
-						filterLogger.debug("Detector Channel " + d.getID() + 
-								":" + ch.getID() + " not used -> exclude");
-					filteredMeasuringStation.exclude(ch);
-				}
-			}
-		}
-		
-		// check for detectors with no channels -> exclude them
-		for(Detector d : filteredMeasuringStation.getDetectors())
-		{
-			if(d.getChannels().size() == 0)
-			{
-				if(filterLogger.isDebugEnabled())
-					filterLogger.debug("Detector " + d.getID() + " not used " + 
-									  "-> exclude");
-				filteredMeasuringStation.exclude(d);
-			}
-		}
 	}
 	
 	// ***********************************************************************

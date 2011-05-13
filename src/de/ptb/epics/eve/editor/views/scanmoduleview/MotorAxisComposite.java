@@ -30,7 +30,8 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView;
 
 /**
- * <code>MotorAxisComposite</code>.
+ * <code>MotorAxisComposite</code> is part of the 
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView}.
  * 
  * @author ?
  * @author Marcus Michalsky
