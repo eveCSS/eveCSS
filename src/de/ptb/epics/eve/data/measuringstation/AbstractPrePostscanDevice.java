@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2008 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.measuringstation;
 
 /**
@@ -13,8 +6,6 @@ package de.ptb.epics.eve.data.measuringstation;
  * <code>Option</code>s).
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.4
- * 
  */
 public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	
@@ -124,7 +115,6 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	 * 			<code>false</code> otherwise
 	 */
 	public boolean isValuePossible(final String value) {
-		// TODO EXPLAIN !!!
 		return this.value!=null ? this.value.isValuePossible(value) : true;
 	}
 	
@@ -136,17 +126,14 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	 * 			<code>false</code> otherwise 
 	 */
 	public boolean isDiscrete() {
-		// TODO Explain !!!
 		return this.value!=null?this.value.isDiscrete():false;
 	}
 
 	/**
-	 * 
-	 * @return a fancy value yet unexplained
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
-		// TODO Explain !!!
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result

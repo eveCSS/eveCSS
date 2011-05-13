@@ -608,6 +608,20 @@ public class ExcludeFilter extends MeasuringStationFilter {
 							m.remove((DetectorChannel)d);
 						}
 					}
+					
+					
+					for(DetectorChannel ch : m.getChannels())
+					{
+						for(AbstractDevice d : this.excludeList)
+						{
+							if(d instanceof Option)
+							{
+								ch.remove((Option)d);
+							}
+						}
+					}
+					
+					
 					// add the detector to the list of detectors
 					this.detectors.add(m);
 				}
