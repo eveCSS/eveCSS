@@ -3,6 +3,17 @@
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
+  <appender name="MeasuringStationTestAppender" 
+            class="org.apache.log4j.RollingFileAppender">
+	  <param name="file" value="log/MeasuringStationTest.log" />
+	  <param name="Append" value="false" />
+	  <param name="MaxFileSize" value="10MB"/>
+      <param name="MaxBackupIndex" value="100"/>
+	  <layout class="org.apache.log4j.PatternLayout">
+		  <param name="ConversionPattern" value="%-5p %M: %m%n" />
+	  </layout>
+  </appender>
+
   <appender name="ExcludeFilterTestAppender" 
             class="org.apache.log4j.RollingFileAppender">
 	  <param name="file" value="log/ExcludeFilterTest.log" />
@@ -28,6 +39,11 @@
   <logger name="de.ptb.epics.eve.data.measuringstation.filter.tests.ExcludeFilterTest">
 	  <level value="DEBUG" />
 	  <appender-ref ref="ExcludeFilterTestAppender" />
+  </logger>
+  
+  <logger name="de.ptb.epics.eve.data.measuringstation.tests.MeasuringStationTest">
+      <level value="DEBUG" />
+      <appender-ref ref="MeasuringStationTestAppender" />
   </logger>
   
   <root>
