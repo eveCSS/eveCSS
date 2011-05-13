@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.ArrayList;
@@ -168,11 +161,13 @@ public abstract class AbstractDevice {
 	}
 	
 	/**
-	 * Returns the name of the device.
+	 * Returns the name of the device or its id if the name is an empty 
+	 * {@link java.lang.String}.
 	 * 
-	 * @return A String object that contains the name of the device.
+	 * @return the name of the device or its id if the name is empty
 	 */
 	public String getName() {
+		if(this.name.equals("")) return this.id;
 		return this.name;
 	}
 	

@@ -2,10 +2,13 @@ package de.ptb.epics.eve.data.measuringstation.filter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
@@ -18,6 +21,14 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.measuringstation.Selections;
+import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.Chain;
+import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.Positioning;
+import de.ptb.epics.eve.data.scandescription.Postscan;
+import de.ptb.epics.eve.data.scandescription.Prescan;
+import de.ptb.epics.eve.data.scandescription.ScanDescription;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
@@ -35,6 +46,10 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class ExcludeFilter extends MeasuringStationFilter {
 
+	// logging
+	private static Logger logger = 
+			Logger.getLogger(ExcludeFilter.class.getName());
+	
 	// available events
 	private List<Event> events;
 	
@@ -522,13 +537,14 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
 	
+		// clear everything
 		this.events.clear();
 		this.plugins.clear();
 		this.devices.clear();
 		this.motors.clear();
 		this.detectors.clear();
-		this.selections.setSmtypes( new String[0] );
-		this.selections.setStepfunctions( new String[0] );
+		this.selections.setSmtypes(new String[0]);
+		this.selections.setStepfunctions(new String[0]);
 		this.pluginsMap.clear();
 		this.motorAxisMap.clear();
 		this.detectorChannelsMap.clear();
@@ -536,95 +552,137 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		this.classMap.clear();
 		this.eventsMap.clear();
 	
-		if( this.getSource() != null ) {
-			this.events.addAll( this.getSource().getEvents() );
+		// a source measuring station must be set !
+		if(this.getSource() != null) {
 			
-			this.plugins.addAll( this.getSource().getPlugins() );
+			// include all events (no filtering)
+			this.events.addAll(this.getSource().getEvents());
 			
-			this.devices.addAll( this.getSource().getDevices() );
-			this.devices.removeAll( this.excludeList );
+			// include all plug ins (no filtering)
+			this.plugins.addAll(this.getSource().getPlugins());
 			
-			for( final Motor motor : this.getSource().getMotors() ) {
-				if( !this.excludeList.contains( motor ) ) {
+			// include devices not in the exclude list
+			this.devices.addAll(this.getSource().getDevices());
+			this.devices.removeAll(this.excludeList);
+			
+			// include motors not in the exclude list
+			for(final Motor motor : this.getSource().getMotors()) {
+				// iterate over each motor in the source
+				if(!this.excludeList.contains(motor)) {
+					// it is not in the exclude list -> check if its axes are
 					final Motor m = (Motor)motor.clone();
-					for( final AbstractDevice d : this.excludeList ) {
-						if( d instanceof MotorAxis ) {
-							m.remove( (MotorAxis)d );
+					for(final AbstractDevice d : this.excludeList) {
+						if(d instanceof MotorAxis) {
+							m.remove((MotorAxis)d);
 						}
 					}
-					this.motors.add( m );
+					
+					
+					
+					for(MotorAxis ma : m.getAxes())
+					{
+						for(AbstractDevice d : this.excludeList)
+						{
+							if(d instanceof Option)
+							{
+								ma.remove((Option)d);
+							}
+						}
+					}
+					
+					
+					
+					// add the motor to the list of motors
+					this.motors.add(m);
 				}
 			}
 			
-			for( final Detector detector : this.getSource().getDetectors() ) {
-				if( !this.excludeList.contains( detector ) ) {
+			// include detectors not in the exclude list
+			for(final Detector detector : this.getSource().getDetectors()) {
+				// iterate over each detector in the source
+				if(!this.excludeList.contains(detector)) {
+					// it is not in the exclude ilst -> check if its channels are
 					final Detector m = (Detector)detector.clone();
-					for( final AbstractDevice d : this.excludeList ) {
-						if( d instanceof DetectorChannel ) {
-							m.remove( (DetectorChannel)d );
+					for(final AbstractDevice d : this.excludeList) {
+						if(d instanceof DetectorChannel) {
+							m.remove((DetectorChannel)d);
 						}
 					}
-					this.detectors.add( m );
+					// add the detector to the list of detectors
+					this.detectors.add(m);
 				}
 			}
 			
-			this.selections.setSmtypes( this.getSource().getSelections().getSmtypes() );
-			this.selections.setStepfunctions( this.getSource().getSelections().getStepfunctions() );
+			// include all sm types (no filtering)
+			this.selections.setSmtypes(this.getSource().getSelections().getSmtypes());
+			// include all step functions (no filtering)
+			this.selections.setStepfunctions(this.getSource().getSelections().getStepfunctions());
 			
-			for( final PlugIn plugIn : this.plugins ) {
-				this.pluginsMap.put( plugIn.getName(), plugIn );
+			// *******************
+			// *** builds maps ***
+			// *******************
+			
+			// build plug in map
+			for(final PlugIn plugIn : this.plugins) {
+				this.pluginsMap.put(plugIn.getName(), plugIn);
 			}
 			
-			for( final Motor motor : this.motors ) {
-				for( final Option option : motor.getOptions() ) {
-					if( !this.excludeList.contains( option ) ) {
-						this.prePostscanDeviceMap.put( option.getID(), option );
+			// build motor map and motor axis map (and options)
+			for(final Motor motor : this.motors) {
+				for(final Option option : motor.getOptions()) {
+					if(!this.excludeList.contains(option)) {
+						this.prePostscanDeviceMap.put(option.getID(), option);
 					}
 				}
 	
-				for( final MotorAxis motorAxis : motor.getAxes() ) {
-					if( !this.excludeList.contains( motorAxis ) ) {
-						this.motorAxisMap.put( motorAxis.getID(), motorAxis );
-						for( final Option option : motorAxis.getOptions() ) {
-							if( !this.excludeList.contains( option ) ) {
-								this.prePostscanDeviceMap.put( option.getID(), option );
+				for(final MotorAxis motorAxis : motor.getAxes()) {
+					if(!this.excludeList.contains(motorAxis)) {
+						this.motorAxisMap.put(motorAxis.getID(), motorAxis);
+						for(final Option option : motorAxis.getOptions()) {
+							if( !this.excludeList.contains(option)) {
+								this.prePostscanDeviceMap.put(option.getID(), option);
 							}
 						}
 					}
 				}
 			}
 			
-			for( final Detector detector : this.detectors ) {
-				for( final Option option : detector.getOptions() ) {
-					if ( !this.excludeList.contains(option)) {
-						this.prePostscanDeviceMap.put( option.getID(), option );
+			// build detector map and detector channel map (and options)
+			for(final Detector detector : this.detectors) {
+				for(final Option option : detector.getOptions()) {
+					if (!this.excludeList.contains(option)) {
+						this.prePostscanDeviceMap.put(option.getID(), option);
 					}
 				}
-				for( final DetectorChannel detectorChannel : detector.getChannels() ) {
-					if( !this.excludeList.contains( detectorChannel ) ) {
-						this.detectorChannelsMap.put( detectorChannel.getID(), detectorChannel );
-						for( final Option option : detectorChannel.getOptions() ) {
-							if ( !this.excludeList.contains(option)) {
-								this.prePostscanDeviceMap.put( option.getID(), option );
+				for(final DetectorChannel detectorChannel : detector.getChannels()) {
+					if(!this.excludeList.contains( detectorChannel)) {
+						this.detectorChannelsMap.put(detectorChannel.getID(), detectorChannel);
+						for(final Option option : detectorChannel.getOptions()) {
+							if (!this.excludeList.contains(option)) {
+								this.prePostscanDeviceMap.put(option.getID(), option);
 							}
 						}
 					}
 				}
 			}
 			
-			for( final Device device : this.devices ) {
-				this.prePostscanDeviceMap.put( device.getID(), device );
+			// build device map
+			for(final Device device : this.devices) {
+				this.prePostscanDeviceMap.put(device.getID(), device);
 			}
 			
+			// build class map
 			buildClassMap();
 			
-			for( final Event event : this.events ) {
-				this.eventsMap.put(  event.getID(), event );
+			// build event map
+			for(final Event event : this.events) {
+				this.eventsMap.put(event.getID(), event);
 			}
-		}
+		} // end of: source != null ?
 		
-		for( final IModelUpdateListener modelUpdateListener : this.modelUpdateListener ) {
-			modelUpdateListener.updateEvent( new ModelUpdateEvent( this, null ) );
+		// inform interested parties about the changes
+		for(IModelUpdateListener modelUpdateListener : this.modelUpdateListener) {
+			modelUpdateListener.updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
 
@@ -650,6 +708,228 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	public void include(final AbstractDevice abstractDevice) {
 		this.excludeList.remove(abstractDevice);
 		this.updateEvent(new ModelUpdateEvent(this, null));
+	}
+	
+	/**
+	 * Excludes devices that are not used in the given 
+	 * {@link de.ptb.epics.eve.data.scandescription.ScanDescription}.
+	 * 
+	 * @param scandescription the 
+	 * 		  {@link de.ptb.epics.eve.data.scandescription.ScanDescription} 
+	 * 		  containing the devices which will be excluded
+	 */
+	public void excludeUnusedDevices(ScanDescription scandescription)
+	{
+		// all available motors
+		List<Motor> all_motors = getMotors();
+		// all available detectors
+		List<Detector> all_detectors = getDetectors();
+		// all available devices
+		List<Device> all_devices = getDevices();
+		
+		// Sets to add used devices to (has tables because of speed AND
+		// uniqueness
+		HashSet<MotorAxis> used_motor_axes = new HashSet<MotorAxis>();
+		HashSet<DetectorChannel> used_detector_channels = 
+				new HashSet<DetectorChannel>();
+		HashSet<Device> used_devices = new HashSet<Device>();
+		HashSet<Option> used_options = new HashSet<Option>();
+		
+		
+		// chains of the scan description
+		List<Chain> chains = scandescription.getChains();
+		
+		// iterate through chains to identify used devices
+		for(Chain chain : chains)
+		{
+			// iterate through each scan module of the chain
+			List<ScanModule> scanModules = chain.getScanModuls();
+			
+			for(ScanModule sm : scanModules)
+			{
+				// iterate axes
+				Axis[] axes = sm.getAxis();
+				
+				for(int i = 0; i < axes.length; i++)
+				{
+					used_motor_axes.add(axes[i].getMotorAxis());
+				}
+				
+				// iterate channels
+				Channel[] channels = sm.getChannels();
+				
+				for(int i = 0; i < channels.length; i++)
+				{
+					used_detector_channels.add(channels[i].getDetectorChannel());
+				}
+				
+				
+				// iterate prescans
+				Prescan[] prescans = sm.getPrescans();
+				
+				for(Prescan prescan : prescans)
+				{
+					String id = prescan.getAbstractDevice().getID();
+					
+					if(prescan.isOption())
+					{
+						used_options.add((Option)prescan.getAbstractDevice());
+					}
+					
+					if(prescan.isDevice())
+					{
+						used_devices.add((Device)this.getPrePostscanDeviceById(id));
+					}
+				}
+				
+				// iterate postscans
+				Postscan[] postscans = sm.getPostscans();
+				
+				for(Postscan postscan : postscans)
+				{
+					String id = postscan.getAbstractDevice().getID();
+					
+					if(postscan.isOption())
+					{
+						used_options.add((Option)postscan.getAbstractDevice());
+					}
+					
+					if(postscan.isDevice())
+					{
+						used_devices.add((Device)this.getPrePostscanDeviceById(id));
+					}
+				}
+				
+				Positioning[] positionings = sm.getPositionings();
+				
+				for(Positioning positioning : positionings)
+				{
+					used_motor_axes.add(positioning.getMotorAxis());
+					used_detector_channels.add(positioning.getDetectorChannel());
+				}
+			}
+		}
+		
+		
+		
+		// *******************************************************************
+		
+		// remove unused
+		
+		// iterate over available options -> exclude unused
+		
+		// iterate over available motors -> exclude their axes if not used
+		for(Motor m : all_motors)
+		{
+			for(MotorAxis ma : m.getAxes())
+			{
+				if(!(used_motor_axes.contains(ma)))
+				{
+					boolean option_used = false;
+					for(Option o : ma.getOptions())
+					{
+						if(used_options.contains(o))
+						{
+							option_used = true;
+						} 
+						
+						
+						
+						else {
+							exclude(o);
+							logger.debug("Option " + ma.getName() + ":" + 
+									o.getName() + " not used -> exclude");
+						}
+						
+						
+					}
+					
+					if(!option_used)
+					{
+						exclude(ma);
+						logger.debug("Axis " + m.getName() + ":" + 
+								ma.getName() + " not used -> exclude");
+					}
+				} 
+				
+				
+				
+				else {
+					for(Option o : ma.getOptions())
+					{
+						if(!used_options.contains(o))
+						{
+							exclude(o);
+							logger.debug("Option " + ma.getName() + ":" + 
+									o.getName() + " not used -> exclude");
+						}
+					}
+				}
+				
+				
+				
+				
+			}
+		}
+		
+		// check for motors with no axes -> exclude them
+		for(Motor m : getMotors())
+		{
+			if(m.getAxes().size() == 0)
+			{
+				if(logger.isDebugEnabled())
+					logger.debug("Motor " + m.getName() + " not used " + 
+									   "-> exclude");
+				exclude(m);
+			}
+		}
+		
+		// iterate over available detectors -> exclude their channels if not used
+		for(Detector d : all_detectors)
+		{
+			for(DetectorChannel ch : d.getChannels())
+			{
+				if(!(used_detector_channels.contains(ch)))
+				{
+					exclude(ch);
+					logger.debug("Detector Channel " + d.getName() + 
+							":" + ch.getName() + " not used -> exclude");
+				}
+			}
+		}
+		
+		// check for detectors with no channels -> exclude them
+		for(Detector d : getDetectors())
+		{
+			if(d.getChannels().size() == 0)
+			{
+				boolean option_used = false;
+				for(Option o : d.getOptions())
+				{
+					if(used_options.contains(o))
+					{
+						option_used = true;
+					}
+				}
+				
+				if(!option_used)
+				{
+					exclude(d);
+					if(logger.isDebugEnabled())
+						logger.debug("Detector " + d.getName() + " not used " + 
+									 "-> exclude");
+				}
+			}
+		}
+		
+		for(Device device : all_devices)
+		{
+			if(!(used_devices.contains(device)))
+			{
+				exclude(device);
+				logger.debug("Device: " + device.getName() + " not used -> exclude");
+			}
+		}
 	}
 	
 	/*
