@@ -107,8 +107,10 @@ public class MathTableElement implements IMeasurementDataListener {
 			mData.getDataType() == DataType.FLOAT) 
 		{
 			Double data = (Double) mData.getValues().get(element);
-			return 
-				new PrintfFormat(Locale.ENGLISH, "%12.4g").sprintf(data).trim();
+			if (data.isNaN())
+				return " ";
+			else 
+				return new PrintfFormat(Locale.ENGLISH, "%12.4g").sprintf(data).trim();
 		}
 		else
 			return mData.getValues().get(element).toString();		
