@@ -90,7 +90,7 @@ public class ScanModuleFigure extends Figure {
 		if(active)
 		{
 			// if it is active (selected) -> change color
-			graphics.setForegroundColor(new Color(display, new RGB(192,0,0)));
+			graphics.setForegroundColor(new Color(display, new RGB(0,192,0)));
 			graphics.setBackgroundColor(new Color(display, new RGB(255,255,255)));
 		} else {
 			// inactive ones are colorless
