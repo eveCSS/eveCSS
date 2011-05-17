@@ -1007,6 +1007,25 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 				else {
 					try {
 						final double test = Double.parseDouble(stepwidthText.getText());
+						// if last char is a f or d, cut off this char
+						if (stepwidthText.getText().endsWith("d")) {
+							// unerlaubtes Zeichen eingegeben
+							// Das Zeichen wird von der Eingabe wieder entfernt!
+							int index = stepwidthText.getText().length() -1;
+							stepwidthText.removeModifyListener(stepwidthTextModifyListener);
+							stepwidthText.setText(stepwidthText.getText().substring(0, index));
+							stepwidthText.setSelection(stepwidthText.getCharCount());
+							stepwidthText.addModifyListener(stepwidthTextModifyListener);
+						}
+						if (stepwidthText.getText().endsWith("f")) {
+							// unerlaubtes Zeichen eingegeben
+							// Das Zeichen wird von der Eingabe wieder entfernt!
+							int index = stepwidthText.getText().length() -1;
+							stepwidthText.removeModifyListener(stepwidthTextModifyListener);
+							stepwidthText.setText(stepwidthText.getText().substring(0, index));
+							stepwidthText.setSelection(stepwidthText.getCharCount());
+							stepwidthText.addModifyListener(stepwidthTextModifyListener);
+						}
 						currentAxis.setStepwidth(stepwidthText.getText());
 						autoFill();
 					} catch( final NumberFormatException ex ) {
