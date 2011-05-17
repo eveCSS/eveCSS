@@ -28,6 +28,7 @@ public class MotorAxisTest {
 		clone.setId("MyMotorAxis1");
 		
 		assertEquals(ma,clone);
+		assertEquals(clone,ma);
 		assertEquals(ma,ma);
 		assertEquals(clone,clone);
 		

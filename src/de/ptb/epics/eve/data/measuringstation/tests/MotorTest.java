@@ -7,12 +7,16 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * @author mmichals
+ * @author Marcus Michalsky
+ * @since 0.4.1
  *
  */
 public class MotorTest {
  // test equals, hash and clone
 	
+	/**
+	 * 
+	 */
 	@Ignore
 	@Test
 	public void foo()

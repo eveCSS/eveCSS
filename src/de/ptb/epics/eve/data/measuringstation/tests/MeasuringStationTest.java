@@ -19,7 +19,6 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
-import de.ptb.epics.eve.data.measuringstation.filter.tests.ExcludeFilterTest;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 
 /**
@@ -29,21 +28,12 @@ import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 public class MeasuringStationTest {
 
 	private static Logger logger = 
-		Logger.getLogger(ExcludeFilterTest.class.getName());
+		Logger.getLogger(MeasuringStationTest.class.getName());
 	
 	private static File schemaFile;
 	private static File descriptionFile;
 	private static IMeasuringStation measuringStation;
-	
-	/**
-	 * 
-	 */
-	@Test
-	public void testDummy()
-	{
-		assertTrue(true);
-	}
-	
+
 	/**
 	 * 
 	 */
@@ -120,5 +110,4 @@ public class MeasuringStationTest {
 		descriptionFile = null;
 		logger.info("Class Wide Tear Down Done (files closed)");
 	}
-	
 }
