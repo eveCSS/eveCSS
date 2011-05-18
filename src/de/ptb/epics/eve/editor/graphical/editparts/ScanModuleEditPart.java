@@ -181,6 +181,10 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 		if (this.figure != null) {
 			((ScanModuleFigure)this.figure).setActive(focus);
 		}
+		
+		((ScanModuleFigure)this.figure).
+		setError(((ScanModule)this.getModel()).getModelErrors().size() > 0);
+		
 		super.setFocus(true);
 	}
 	
@@ -204,6 +208,10 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 		    scanModule.setX(this.figure.getBounds().x);
 			scanModule.setY(this.figure.getBounds().y);
 		}
+		
+		((ScanModuleFigure)this.figure).
+				setError(scanModule.getModelErrors().size() > 0);
+		
 		super.refresh();
 	}
 	

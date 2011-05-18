@@ -35,6 +35,8 @@ public class ScanModuleFigure extends Figure {
 	// indicated whether the scan module is selected
 	private boolean active;
 	
+	private boolean contains_errors;
+	
 	private String text;
 	
 	/**
@@ -46,6 +48,7 @@ public class ScanModuleFigure extends Figure {
 	 */
 	public ScanModuleFigure(final String text, int x, int y) {
 		this.active = false;
+		this.contains_errors = false;
 		this.setBackgroundColor(ColorConstants.white);
 		this.setBorder(new LineBorder(ColorConstants.black, 1));
 		this.setOpaque(true);
@@ -100,6 +103,13 @@ public class ScanModuleFigure extends Figure {
 		
 		graphics.fillGradient(rect, true);	
 				
+		if(contains_errors)
+		{
+			graphics.setForegroundColor(ColorConstants.white);
+			graphics.setBackgroundColor(new Color(display, new RGB(192,0,0)));
+			graphics.fillRectangle(getLocation().x+1, getLocation().y+1, 15, 5);
+		}
+		
 		graphics.setForegroundColor(ColorConstants.black);
 		graphics.setBackgroundColor(ColorConstants.white);
 		
@@ -174,6 +184,15 @@ public class ScanModuleFigure extends Figure {
 	public void setActive(boolean active) {
 		this.active = active;
 	}	
+	
+	/**
+	 * 
+	 * @param error
+	 */
+	public void setError(boolean error)
+	{
+		contains_errors = error;
+	}
 	
 	// ***************************** Listener ********************************
 	

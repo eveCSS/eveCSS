@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -297,7 +298,20 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
 		logger.debug("update event");
 		this.dirty = true;
-		this.firePropertyChange(PROP_DIRTY);	
+		this.firePropertyChange(PROP_DIRTY);
+		
+		
+		refreshAllEditParts(viewer.getRootEditPart());
+	}
+
+	@SuppressWarnings("unchecked")
+	private void refreshAllEditParts(EditPart part)
+	{
+		part.refresh();
+		List<EditPart> children = part.getChildren();
+		for (EditPart child : children) {
+			refreshAllEditParts(child);
+		}
 	}
 	
 	// ***********************************************************************
