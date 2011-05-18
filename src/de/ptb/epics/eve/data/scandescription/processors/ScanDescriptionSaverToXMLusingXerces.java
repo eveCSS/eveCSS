@@ -575,6 +575,12 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 			if( channel.getTrigger() != null ) {
 				this.writeFunction( channel.getTrigger(), "trigger" );
 			}
+			
+			for(Option o : channel.getOptions())
+			{
+				writeOption(o);
+			}
+			
 			this.contentHandler.endElement( "", "detector", "detector" );
 		} catch (SAXException e) {
 			System.out.println("writeDetectorChannel: " + e.getMessage());

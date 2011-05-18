@@ -40,6 +40,9 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * {@link #include(AbstractDevice)} and {@link #exclude(AbstractDevice)}.
  * An {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} excluded 
  * this way is not returned by the corresponding getter method.
+ * Notice that this implementation of 
+ * {@link de.ptb.epics.eve.data.measuringstation.IMeasuringStation} does not 
+ * allow adding devices.
  * 
  * @author ?
  * @author Marcus Michalsky
@@ -569,16 +572,26 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			for(final Motor motor : this.getSource().getMotors()) {
 				// iterate over each motor in the source
 				if(!this.excludeList.contains(motor)) {
-					// it is not in the exclude list -> check if its axes are
+					// it is not in the exclude list
+					
+					// clone the whole motor
 					final Motor m = (Motor)motor.clone();
-					for(final AbstractDevice d : this.excludeList) {
-						if(d instanceof MotorAxis) {
+					
+					// delete options & axes which are in the exclude list
+					for(final AbstractDevice d : this.excludeList) 
+					{
+						if(d instanceof MotorAxis) 
+						{
 							m.remove((MotorAxis)d);
+						}
+						if(d instanceof Option) 
+						{
+							m.remove((Option)d);
 						}
 					}
 					
-					
-					
+					// for the remaining axes: remove options which are in the 
+					// exclude list
 					for(MotorAxis ma : m.getAxes())
 					{
 						for(AbstractDevice d : this.excludeList)
@@ -590,26 +603,35 @@ public class ExcludeFilter extends MeasuringStationFilter {
 						}
 					}
 					
-					
-					
-					// add the motor to the list of motors
+					// add the (rest of the) motor to the list of motors
 					this.motors.add(m);
-				}
+				} // end of: if motor not in exclude list
 			}
+			// (if the motor itself is in the exclude list, nothing happens
 			
 			// include detectors not in the exclude list
 			for(final Detector detector : this.getSource().getDetectors()) {
 				// iterate over each detector in the source
 				if(!this.excludeList.contains(detector)) {
-					// it is not in the exclude list -> check if its channels are
+					// it is not in the exclude list
+					
+					// clone the whole detector
 					final Detector m = (Detector)detector.clone();
+					
+					// delete options and channels which are in the exclude list
 					for(final AbstractDevice d : this.excludeList) {
-						if(d instanceof DetectorChannel) {
+						if(d instanceof DetectorChannel) 
+						{
 							m.remove((DetectorChannel)d);
+						}
+						if(d instanceof Option)
+						{
+							m.remove((Option)d);
 						}
 					}
 					
-					
+					// for the remaining channels remove options which are in 
+					// the exclude list
 					for(DetectorChannel ch : m.getChannels())
 					{
 						for(AbstractDevice d : this.excludeList)
@@ -622,15 +644,17 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					}
 					
 					
-					// add the detector to the list of detectors
+					// add the (rest of the) detector to the list of detectors
 					this.detectors.add(m);
 				}
 			}
 			
 			// include all sm types (no filtering)
-			this.selections.setSmtypes(this.getSource().getSelections().getSmtypes());
+			this.selections.setSmtypes(
+					this.getSource().getSelections().getSmtypes());
 			// include all step functions (no filtering)
-			this.selections.setStepfunctions(this.getSource().getSelections().getStepfunctions());
+			this.selections.setStepfunctions(
+					this.getSource().getSelections().getStepfunctions());
 			
 			// *******************
 			// *** builds maps ***
@@ -641,39 +665,52 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				this.pluginsMap.put(plugIn.getName(), plugIn);
 			}
 			
-			// build motor map and motor axis map (and options)
-			for(final Motor motor : this.motors) {
+			// build motor axis and prepostscandevice maps
+			for(final Motor motor : this.motors) 
+			{
+				// add motor options (not in the exclude list)
 				for(final Option option : motor.getOptions()) {
 					if(!this.excludeList.contains(option)) {
 						this.prePostscanDeviceMap.put(option.getID(), option);
 					}
 				}
-	
+				
+				// add motor axes (not in the exclude list) AND
+				// add axis options (not in the exclude list)
 				for(final MotorAxis motorAxis : motor.getAxes()) {
 					if(!this.excludeList.contains(motorAxis)) {
 						this.motorAxisMap.put(motorAxis.getID(), motorAxis);
 						for(final Option option : motorAxis.getOptions()) {
 							if( !this.excludeList.contains(option)) {
-								this.prePostscanDeviceMap.put(option.getID(), option);
+								this.prePostscanDeviceMap.put(
+										option.getID(), option);
 							}
 						}
 					}
 				}
 			}
 			
-			// build detector map and detector channel map (and options)
-			for(final Detector detector : this.detectors) {
+			// build detector channel and prepostscandevice map
+			for(final Detector detector : this.detectors) 
+			{
+				// add detector options (not in the exclude list) 
 				for(final Option option : detector.getOptions()) {
 					if (!this.excludeList.contains(option)) {
 						this.prePostscanDeviceMap.put(option.getID(), option);
 					}
 				}
-				for(final DetectorChannel detectorChannel : detector.getChannels()) {
-					if(!this.excludeList.contains( detectorChannel)) {
-						this.detectorChannelsMap.put(detectorChannel.getID(), detectorChannel);
+				// add detector channels (not in the exclude list) AND
+				// add channel options (not in the exclude list)
+				for(final DetectorChannel detectorChannel : 
+							detector.getChannels()) {
+					if(!this.excludeList.contains(detectorChannel)) 
+					{
+						this.detectorChannelsMap.put(
+								detectorChannel.getID(), detectorChannel);
 						for(final Option option : detectorChannel.getOptions()) {
 							if (!this.excludeList.contains(option)) {
-								this.prePostscanDeviceMap.put(option.getID(), option);
+								this.prePostscanDeviceMap.put(
+										option.getID(), option);
 							}
 						}
 					}
@@ -724,6 +761,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		this.updateEvent(new ModelUpdateEvent(this, null));
 	}
 	
+	// TODO Rephrase
 	/**
 	 * Excludes devices that are not used in the given 
 	 * {@link de.ptb.epics.eve.data.scandescription.ScanDescription}.
@@ -731,26 +769,36 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	 * The exclusion works as follows:
 	 * <ul>
 	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.Motor} is excluded 
-	 *   	if all of the following conditions are met:
+	 *   	if <u>all</u> of the following conditions are met:
 	 *     <ul>
-	 *       <li>the motor is not used (not in the given scan description</li>
-	 *       <li>none of its axes is used</li>
-	 *       <li>none of its axes options (pre or post scan) is used</li>
+	 *       <li>the motor is not used (in the main phase of any scan module)</li>
+	 *       <li>none of its options are used</li>
+	 *       <li>none of its axes are used</li>
+	 *       <li>none of its axes options (pre or post scan) are used</li>
 	 *     </ul>
 	 *   </li>
 	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.MotorAxis} is 
-	 *   	excluded if one of the following condition is met:
+	 *   	excluded if one of the following conditions is met:
 	 *     <ul>
 	 *       <li>its motor is not used</li>
-	 *       <li>...</li>
+	 *       <li>the motor axis itself <u>and</u> none of its 
+	 *       	options are used</li>
 	 *     </ul>
 	 *   </li>
-	 *   <li></li>
 	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.Detector} will be 
-	 *   	excluded if 
+	 *   	excluded if <u>all</u> of the following conditions are met:
 	 *     <ul>
-	 *       <li></li>
+	 *       <li>the detector is not used (in the main phase of any scan module)</li>
+	 *       <li>none of its options are used</li>
+	 *       <li>none of its channels are used</li>
+	 *       <li>none of its channels options are used</li>
 	 *     </ul>
+	 *   </li>
+	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.DetectorChannel} 
+	 *   	will be excluded if one of the following conditions is met:
+	 *   	<ul>
+	 *   	  <li>its detector is not used</li>
+	 *   	</ul>
 	 *   </li>
 	 * </ul>
 	 * 
@@ -761,14 +809,14 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	public void excludeUnusedDevices(ScanDescription scandescription)
 	{
 		// all available motors
-		List<Motor> all_motors = getMotors();
+		List<Motor> all_motors = getSource().getMotors();
 		// all available detectors
-		List<Detector> all_detectors = getDetectors();
+		List<Detector> all_detectors = getSource().getDetectors();
 		// all available devices
-		List<Device> all_devices = getDevices();
+		List<Device> all_devices = getSource().getDevices();
 		
 		// Sets to add used devices to (has tables because of speed AND
-		// uniqueness
+		// sets because of uniqueness
 		HashSet<MotorAxis> used_motor_axes = new HashSet<MotorAxis>();
 		HashSet<DetectorChannel> used_detector_channels = 
 				new HashSet<DetectorChannel>();
@@ -800,7 +848,8 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				
 				for(int i = 0; i < channels.length; i++)
 				{
-					used_detector_channels.add(channels[i].getDetectorChannel());
+					used_detector_channels.add(channels[i].
+							getDetectorChannel());
 				}
 				
 				
@@ -818,7 +867,8 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					
 					if(prescan.isDevice())
 					{
-						used_devices.add((Device)this.getPrePostscanDeviceById(id));
+						used_devices.add((Device)getSource().
+								getPrePostscanDeviceById(id));
 					}
 				}
 				
@@ -836,7 +886,8 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					
 					if(postscan.isDevice())
 					{
-						used_devices.add((Device)this.getPrePostscanDeviceById(id));
+						used_devices.add((Device)getSource().
+								getPrePostscanDeviceById(id));
 					}
 				}
 				
@@ -845,7 +896,8 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				for(Positioning positioning : positionings)
 				{
 					used_motor_axes.add(positioning.getMotorAxis());
-					used_detector_channels.add(positioning.getDetectorChannel());
+					used_detector_channels.add(positioning.
+							getDetectorChannel());
 				}
 			}
 		}
@@ -854,9 +906,8 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		
 		// *******************************************************************
 		
-		// remove unused
-		
-		// iterate over available options -> exclude unused
+		// remove unused by iterating all available devices and check if they 
+		// are used by checking its presence in the used_sets...
 		
 		// iterate over available motors -> exclude their axes if not used
 		for(Motor m : all_motors)
@@ -870,31 +921,31 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					{
 						if(used_options.contains(o))
 						{
+							// option is used, set flag
 							option_used = true;
 						} 
-						
-						
-						
-						else {
+						else 
+						{
+							// option not used -> exclude
 							exclude(o);
 							logger.debug("Option " + ma.getName() + ":" + 
 									o.getName() + " not used -> exclude");
 						}
-						
-						
 					}
 					
+					// if any option is used, the flag was set, 
+					// if not -> exclude axis
 					if(!option_used)
 					{
 						exclude(ma);
 						logger.debug("Axis " + m.getName() + ":" + 
-								ma.getName() + " not used -> exclude");
+									ma.getName() + 
+									"(and options) not used -> exclude");
 					}
-				} 
-				
-				
-				
-				else {
+				}
+				else 
+				{
+					// motor axis is used -> exclude unused options
 					for(Option o : ma.getOptions())
 					{
 						if(!used_options.contains(o))
@@ -905,22 +956,30 @@ public class ExcludeFilter extends MeasuringStationFilter {
 						}
 					}
 				}
-				
-				
-				
-				
+			
+			
+				// exclude unused motor options as well
+				for(Option o : m.getOptions())
+				{
+					if(!used_options.contains(o))
+					{
+						exclude(o);
+						logger.debug("Option " + m.getName() + ":" + 
+								o.getName() + " not used -> exclude");
+					}
+				}
 			}
 		}
 		
-		// check for motors with no axes -> exclude them
+		// check for motors with no axes AND no options -> exclude them
 		for(Motor m : getMotors())
 		{
-			if(m.getAxes().size() == 0)
+			if(m.getAxes().size() == 0 && m.getOptions().size() == 0)
 			{
+				exclude(m);
 				if(logger.isDebugEnabled())
 					logger.debug("Motor " + m.getName() + " not used " + 
 									   "-> exclude");
-				exclude(m);
 			}
 		}
 		
@@ -931,9 +990,42 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			{
 				if(!(used_detector_channels.contains(ch)))
 				{
-					exclude(ch);
-					logger.debug("Detector Channel " + d.getName() + 
-							":" + ch.getName() + " not used -> exclude");
+					boolean option_used = false;
+					for(Option o : ch.getOptions())
+					{
+						if(used_options.contains(o))
+						{
+							// option is used, set flag
+							option_used = true;
+						}
+						else
+						{
+							// option not used -> exclude
+							exclude(o);
+							logger.debug("Option " + ch.getName() + ":" + 
+									o.getName() + " not used -> exclude");
+						}
+					}
+					
+					// if any option is used, the flag is set, 
+					// if not -> eyclude channel
+					if(!option_used)
+					{
+						exclude(ch);
+						logger.debug("Detector Channel " + d.getName() + 
+								":" + ch.getName() + " not used -> exclude");
+					}
+				}
+			}
+			
+			// exclude unused options as well
+			for(Option o : d.getOptions())
+			{
+				if(!used_options.contains(o))
+				{
+					exclude(o);
+					logger.debug("Option " + d.getName() + ":" + 
+							o.getName() + " not used -> exclude");
 				}
 			}
 		}
@@ -941,24 +1033,12 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		// check for detectors with no channels -> exclude them
 		for(Detector d : getDetectors())
 		{
-			if(d.getChannels().size() == 0)
+			if(d.getChannels().size() == 0 && d.getOptions().size() == 0)
 			{
-				boolean option_used = false;
-				for(Option o : d.getOptions())
-				{
-					if(used_options.contains(o))
-					{
-						option_used = true;
-					}
-				}
-				
-				if(!option_used)
-				{
-					exclude(d);
-					if(logger.isDebugEnabled())
-						logger.debug("Detector " + d.getName() + " not used " + 
-									 "-> exclude");
-				}
+				exclude(d);
+				if(logger.isDebugEnabled())
+					logger.debug("Detector " + d.getName() + 
+								"(and options) not used " + "-> exclude");
 			}
 		}
 		
@@ -967,7 +1047,8 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			if(!(used_devices.contains(device)))
 			{
 				exclude(device);
-				logger.debug("Device: " + device.getName() + " not used -> exclude");
+				logger.debug("Device: " + device.getName() + 
+							" not used -> exclude");
 			}
 		}
 		
