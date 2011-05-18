@@ -2,17 +2,11 @@ package de.ptb.epics.eve.data.measuringstation.filter.tests;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.RollingFileAppender;
-import org.apache.log4j.xml.DOMConfigurator;
 import org.junit.*;
-import org.xml.sax.SAXException;
 
+import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
@@ -20,7 +14,7 @@ import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
-import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
+import de.ptb.epics.eve.data.tests.Configurator;
 
 /**
  * <code>ExcludeFilterTest</code> contains 
@@ -30,26 +24,28 @@ import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
  * {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} by checking 
  * its presence, exclude it and check his absence, include it and check its 
  * presence again. The presence and absence of excluded/included sub devices 
- * (e.g. an axis of a motor or a channel of a detector) are also checked.
+ * (e.g. an axis of a motor or a channel of a detector or options) are also 
+ * tested.
  * 
  * @author Marcus Michalsky
  * @since 0.4.1
  */
 public class ExcludeFilterTest {
 	
+	// logging
 	private static Logger logger = 
 		Logger.getLogger(ExcludeFilterTest.class.getName());
 	
-	private static File schemaFile;
-	private static File descriptionFile;
+	// the "real"/source measuring station
 	private static IMeasuringStation measuringStation;
 	
+	// the exclude filter
 	private ExcludeFilter filteredMeasuringStation;
 	
 	/**
 	 * <code>testExcludeIncludeMotor</code> tries to exclude motors (each one 
 	 * by one) and checks the getter methods for its absence. It also checks 
-	 * the presence / absence of their axis and options.Afterwards they are 
+	 * the presence / absence of their axis and options. Afterwards they are 
 	 * included and presence is checked again.
 	 */
 	@Test
@@ -59,110 +55,115 @@ public class ExcludeFilterTest {
 		
 		for(Motor m : measuringStation.getMotors())
 		{
-			logger.info("Testing Motor: " + m.getName() + 
-						" (" + m.getID() + ")");
+			logger.info("Testing Motor: " + deviceString(m));
 			
 			// the motor should be found
 			assertTrue(isMotor(filteredMeasuringStation, m));
-			logger.info("Motor " + m.getName() + " (" + m.getID() + ") found.");
+			logger.info("Motor " + deviceString(m) + " found.");
 			
 			// its options should be found
 			for(Option o : m.getOptions())
 			{
 				assertTrue(isOption(filteredMeasuringStation, o));
-				logger.info("Motor Option " + o.getName() + " (" + 
-							o.getID() + ") found.");
+				logger.info("Motor Option " + deviceString(o) + " found.");
 			}
+			if(m.getOptions().size() == 0)
+				logger.info("Motor " + deviceString(m) + " has no options.");
 			
 			// its axis should also be found
 			for(MotorAxis ma : m.getAxes())
 			{
 				assertTrue(isMotorAxis(filteredMeasuringStation, ma));
-				logger.info("Motor Axis " + ma.getName() + " (" + 
-							ma.getID() + ") found.");
+				logger.info("Motor Axis " + deviceString(ma) + " found.");
 				
 				// axis options should be found as well
 				for(Option o : ma.getOptions())
 				{
 					assertTrue(isOption(filteredMeasuringStation, o));
-					logger.info("Motor Axis Option " + o.getName() + " (" + 
-							o.getID() + ") found.");
+					logger.info("Motor Axis Option " + deviceString(o) + 
+								" found.");
 				}
+				if(ma.getOptions().size() == 0)
+					logger.info("Motor Axis " + deviceString(ma) + 
+								" has no options.");
 			}
 			
 			logger.info("***");
 			
 			// exclude the motor
 			filteredMeasuringStation.exclude(m);
-			logger.info("Motor " + m.getName() + " (" + 
-						m.getID() + ") excluded.");
+			logger.info("Motor " + deviceString(m) + " excluded.");
 			
 			// now the motor shouldn't be found anymore
 			assertFalse(isMotor(filteredMeasuringStation, m));
-			logger.info("Motor " + m.getName() + " (" + 
-						m.getID() + ") not found.");
+			logger.info("Motor " + deviceString(m) + " not found.");
 			
 			// its options shouldn't be found
 			for(Option o : m.getOptions())
 			{
 				assertFalse(isOption(filteredMeasuringStation, o));
-				logger.info("Motor Option " + o.getName() + " (" + 
-							o.getID() + ") not found.");
+				logger.info("Motor Option " + deviceString(o) + " not found.");
 			}
+			if(m.getOptions().size() == 0)
+				logger.info("Motor " + deviceString(m) + " has no options.");
 			
 			// all axes of the motor also shouldn't be found
 			for(MotorAxis ma : m.getAxes())
 			{
-				logger.info("Checking if axis " + ma.getName() + " (" + 
-							ma.getID() + ") of the motor is also excluded");
+				logger.info("Checking if axis " + deviceString(ma) + 
+							" of the motor is also excluded");
 				assertFalse(isMotorAxis(filteredMeasuringStation, ma));
-				logger.info("Motor Axis " + ma.getName() + " (" + 
-							ma.getID() + ") not found.");
+				logger.info("Motor Axis " + deviceString(ma) + " not found.");
 				
 				// axis options shouldn't be found as well
 				for(Option o : ma.getOptions())
 				{
 					assertFalse(isOption(filteredMeasuringStation, o));
-					logger.info("Motor Axis Option " + o.getName() + " (" + 
-							o.getID() + ") not found.");
+					logger.info("Motor Axis Option " + deviceString(o) + 
+								" not found.");
 				}
+				if(ma.getOptions().size() == 0)
+					logger.info("Motor Axis " + deviceString(ma) + 
+								" has no options.");
 			}
 			
 			logger.info("***");
 			
 			// include the motor
 			filteredMeasuringStation.include(m);
-			logger.info("Motor " + m.getName() + " (" + 
-						m.getID() + ") included.");
+			logger.info("Motor " + deviceString(m) + " included.");
 			
 			// now the motor should be found again
 			assertTrue(isMotor(filteredMeasuringStation, m));
-			logger.info("Motor " + m.getName() + " (" + m.getID() + ") found.");
+			logger.info("Motor " + deviceString(m) + " found.");
 			
 			// its options should be found
 			for(Option o : m.getOptions())
 			{
 				assertTrue(isOption(filteredMeasuringStation, o));
-				logger.info("Motor Option " + o.getName() + " (" + 
-							o.getID() + ") found.");
+				logger.info("Motor Option " + deviceString(o) + " found.");
 			}
+			if(m.getOptions().size() == 0)
+				logger.info("Motor " + deviceString(m) + " has no options.");
 			
 			// all axes of the motor also should be back
 			for(MotorAxis ma : m.getAxes())
 			{
-				logger.info("Checking if axis " + ma.getName() + " (" + 
-							ma.getID() + ") of the motor is also included");
+				logger.info("Checking if axis " + deviceString(ma) + 
+							" of the motor is also included");
 				assertTrue(isMotorAxis(filteredMeasuringStation, ma));
-				logger.info("Motor Axis " + ma.getName() + " (" + 
-							ma.getID() + ") found.");
+				logger.info("Motor Axis " + deviceString(ma) + " found.");
 				
 				// axis options should be found as well
 				for(Option o : ma.getOptions())
 				{
 					assertTrue(isOption(filteredMeasuringStation, o));
-					logger.info("Motor Axis Option " + o.getName() + " (" + 
-							o.getID() + ") found.");
+					logger.info("Motor Axis Option " + deviceString(o) + 
+								" found.");
 				}
+				if(ma.getOptions().size() == 0)
+					logger.info("Motor Axis " + deviceString(ma) + 
+								" has no options.");
 			}
 			logger.info("-----");
 		}	
@@ -182,65 +183,63 @@ public class ExcludeFilterTest {
 		
 		for(Motor m : measuringStation.getMotors())
 		{
-			logger.info("Testing axes of motor " + m.getName() + 
-						" (" + m.getID() + ")");
+			logger.info("Testing axes of motor " + deviceString(m));
+			assertTrue(isMotor(filteredMeasuringStation, m));
+			
 			for(MotorAxis ma : m.getAxes())
 			{
-				logger.info("Testing motor axis " + ma.getName() + " (" + 
-							ma.getID() + ")");
+				logger.info("Testing motor axis " + deviceString(ma));
 				
 				// the motor axis should be found
 				assertTrue(isMotorAxis(filteredMeasuringStation, ma));
-				logger.info("Motor axis " + ma.getName() + " (" + 
-						ma.getID() + ") found");
+				logger.info("Motor axis " + deviceString(ma) + " found");
 				
 				// axis options should be found as well
 				for(Option o : ma.getOptions())
 				{
 					assertTrue(isOption(filteredMeasuringStation, o));
-					logger.info("Motor Axis Option " + o.getName() + " (" + 
-							o.getID() + ") found.");
+					logger.info("Motor Axis Option " + deviceString(o) + 
+								" found.");
 				}
 				
 				logger.info("***");
 				
 				// exclude it
 				filteredMeasuringStation.exclude(ma);
-				logger.info("Motor axis " + ma.getName() + " (" + 
-							ma.getID() + ") excluded.");
+				logger.info("Motor axis " + deviceString(ma) + " excluded.");
 				
 				// now it shouldn't be found anymore
 				assertFalse(isMotorAxis(filteredMeasuringStation, ma));
-				logger.info("Motor axis " + ma.getName() + " (" + 
-							ma.getID() + ") not found");
+				logger.info("Motor axis " + deviceString(ma) + " not found");
 				
 				// axis options shouldn't be found as well
 				for(Option o : ma.getOptions())
 				{
 					assertFalse(isOption(filteredMeasuringStation, o));
-					logger.info("Motor Axis Option " + o.getName() + " (" + 
-							o.getID() + ") not found.");
+					logger.info("Motor Axis Option " + deviceString(o) + 
+								" not found.");
 				}
+				
+				assertTrue(isMotor(filteredMeasuringStation, m));
+				logger.info("Motor " + deviceString(m) + " found");
 				
 				logger.info("***");
 				
 				// include it
 				filteredMeasuringStation.include(ma);
-				logger.info("Motor axis " + ma.getName() + " (" + 
-						ma.getID() + ") included.");
+				logger.info("Motor axis " + deviceString(ma) + " included.");
 				
 				// now it should be found again
 				assertNotNull(filteredMeasuringStation.
 								getMotorAxisById(ma.getID()));
-				logger.info("Motor axis " + ma.getName() + " (" + 
-						ma.getID() + ") found");
+				logger.info("Motor axis " + deviceString(ma) + " found");
 				
 				// axis options should be found as well
 				for(Option o : ma.getOptions())
 				{
 					assertTrue(isOption(filteredMeasuringStation, o));
-					logger.info("Motor Axis Option " + o.getName() + " (" + 
-							o.getID() + ") found.");
+					logger.info("Motor Axis Option " + deviceString(o) + 
+								" found.");
 				}
 			}
 			logger.info("-----");
@@ -260,33 +259,34 @@ public class ExcludeFilterTest {
 		
 		for(Motor m : measuringStation.getMotors())
 		{
-			logger.info("Testing options of motor " + m.getName() + 
-						" (" + m.getID() + ")");
+			logger.info("Testing options of motor " + deviceString(m));
 			for(Option o : m.getOptions())
 			{
-				logger.info("Testing option " + o.getName() + 
-						" (" + o.getID() + ")");
+				logger.info("Testing option " + deviceString(o));
 				
+				// test if the option is found
 				assertTrue(isOption(filteredMeasuringStation, o));
-				logger.info("Option " + o.getName() + " (" + 
-							o.getID() + ") found");
+				logger.info("Option " + deviceString(o) + " found");
 				
+				// exclude it
 				filteredMeasuringStation.exclude(o);
-				logger.info("Option " + o.getName() + " (" + 
-						o.getID() + ") excluded");
+				logger.info("Option " + deviceString(o) + " excluded");
 				
+				// test its absence
 				assertFalse(isOption(filteredMeasuringStation, o));
-				logger.info("Option " + o.getName() + " (" + 
-						o.getID() + ") not found");
+				logger.info("Option " + deviceString(o) + " not found");
 				
+				// check if the (parent) motor is still there
+				assertTrue(isMotor(filteredMeasuringStation, m));
+				
+				// include it
 				filteredMeasuringStation.include(o);
-				logger.info("Option " + o.getName() + " (" + 
-						o.getID() + ") included");
+				logger.info("Option " + deviceString(o) + " included");
 				
+				// test its presence
 				assertNotNull(filteredMeasuringStation.
 						getPrePostscanDeviceById(o.getID()));
-				logger.info("Option " + o.getName() + " (" + 
-						o.getID() + ") found");
+				logger.info("Option " + deviceString(o) + " found");
 			}
 		}	
 		log_end("testExcludeIncludeMotorOption()");
@@ -306,35 +306,30 @@ public class ExcludeFilterTest {
 			for(MotorAxis ma : m.getAxes())
 			{
 				logger.info("Testing options of motor axis " + 
-							ma.getName() + " (" + ma.getID() + ") of motor " + 
-							m.getName() + "(" + m.getID() + ")");
+							deviceString(ma) + " of motor " + 
+							deviceString(m));
 				for(Option o : ma.getOptions())
 				{
-					logger.info("Testing option " + o.getName() + 
-								" (" + o.getID() + ") of motor axis " + 
-								ma.getName() + " (" + ma.getID() + ")");
-					assertNotNull(filteredMeasuringStation.
-							getPrePostscanDeviceById(o.getID()));
-					logger.info("Option " + o.getName() + " (" + 
-								o.getID() + ") found");
+					logger.info("Testing option " + deviceString(o) + 
+								" of motor axis " + deviceString(ma));
+					assertTrue(isOption(filteredMeasuringStation, o));
+					logger.info("Option " + deviceString(o) + " found");
 					
 					filteredMeasuringStation.exclude(o);
-					logger.info("Option " + o.getName() + " (" + 
-							o.getID() + ") excluded");
+					logger.info("Option " + deviceString(o) + " excluded");
+					if(filteredMeasuringStation.getPrePostscanDeviceById(o.getID()) != null)
+						logger.debug(deviceString(filteredMeasuringStation.getPrePostscanDeviceById(o.getID())));
+					assertTrue(isMotorAxis(filteredMeasuringStation, ma));
+					assertTrue(isMotor(filteredMeasuringStation, m));
 					
-					assertNull(filteredMeasuringStation.
-							getPrePostscanDeviceById(o.getID()));
-					logger.info("Option " + o.getName() + " (" + 
-							o.getID() + ") not found");
+					assertFalse(isOption(filteredMeasuringStation, o));
+					logger.info("Option " + deviceString(o) + " not found");
 					
 					filteredMeasuringStation.include(o);
-					logger.info("Option " + o.getName() + " (" + 
-							o.getID() + ") included");
+					logger.info("Option " + deviceString(o) + " included");
 					
-					assertNotNull(filteredMeasuringStation.
-							getPrePostscanDeviceById(o.getID()));
-					logger.info("Option " + o.getName() + " (" + 
-							o.getID() + ") found");
+					assertTrue(isOption(filteredMeasuringStation, o));
+					logger.info("Option " + deviceString(o) + " found");
 				}
 			}
 		}
@@ -497,6 +492,8 @@ public class ExcludeFilterTest {
 		log_end("testEqualityMotorListMap");
 	}
 	
+	// ****************************************************************
+	
 	/**
 	 * 
 	 */
@@ -559,6 +556,16 @@ public class ExcludeFilterTest {
 		return option != null;
 	}
 	
+	// ****************************************************************
+	
+	/*
+	 * 
+	 */
+	private String deviceString(AbstractDevice d)
+	{
+		return d.getName() + " (" + d.getID() + ")";
+	}
+	
 	/*
 	 * 
 	 */
@@ -584,72 +591,63 @@ public class ExcludeFilterTest {
 	// ***********************************************************************
 	
 	/**
-	 * class wide setup method
+	 * Initializes logging and loads the measuring station (Class wide setup 
+	 * method of the test).
 	 */
 	@BeforeClass
-	public static void runBeforeClass() {
+	public static void beforeClass() {
 		
-		DOMConfigurator.configure("log4j-conf.xml");
+		Configurator.configureLogging();
 		
 		((RollingFileAppender)logger.
 				getAppender("ExcludeFilterTestAppender")).rollOver();
 		
-		// run for one time before all test cases
-		schemaFile = new File("xml/scml.xsd");
-		descriptionFile = new File("xml/test.xml");
-		
-		final MeasuringStationLoader measuringStationLoader = 
-			new MeasuringStationLoader(schemaFile);
-		
-		try {
-			measuringStationLoader.load(descriptionFile);
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		measuringStation = measuringStationLoader.getMeasuringStation();
+		measuringStation = Configurator.getMeasuringStation();
 		
 		assertNotNull(measuringStation);
+		
+		logger.info("*******************************************************");
 		logger.info("Class Wide Setup Done (measuring station loaded)");
+		logger.info("*******************************************************");
 	}
 	
 	/**
-	 * test wide set up method
+	 * Initializes the measuring station filter (test wide set up method).
 	 */
 	@Before
-	public void beforeEveryTest()
+	public void beforeTest()
 	{
 		filteredMeasuringStation = new ExcludeFilter();
 		filteredMeasuringStation.setSource(measuringStation);
 		assertNotNull(filteredMeasuringStation);
+		logger.info("**********************************************************");
 		logger.info(
 			"Test Wide Setup Done (measuring station filter initialized)");
+		logger.info("**********************************************************");
 	}
 	
 	/**
-	 * test wide tear down method
+	 * Garbages the measuring station filter (test wide tear down method).
 	 */
 	@After
-	public void afterEveryTest()
+	public void afterTest()
 	{
 		filteredMeasuringStation.setSource(null);
 		filteredMeasuringStation = null;
+		logger.info("**********************************************************");
 		logger.info(
 			"Test Wide Tear Down Done (measuring station filter garbaged)");
+		logger.info("**********************************************************");
 	}
 	
 	/**
-	 * class wide tear down method
+	 * Class wide tear down method.
 	 */
 	@AfterClass
 	public static void afterClass()
 	{
-		schemaFile = null;
-		descriptionFile = null;
+		logger.info("*******************************************************");
 		logger.info("Class Wide Tear Down Done (files closed)");
+		logger.info("*******************************************************");
 	}
 }
