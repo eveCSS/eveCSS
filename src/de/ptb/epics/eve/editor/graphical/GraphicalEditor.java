@@ -301,7 +301,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		this.firePropertyChange(PROP_DIRTY);
 		
 		
-		refreshAllEditParts(viewer.getRootEditPart());
+		//refreshAllEditParts(viewer.getRootEditPart());
 	}
 
 	@SuppressWarnings("unchecked")
