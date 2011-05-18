@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.measuringstation;
 
 import de.ptb.epics.eve.data.DataTypes;
@@ -15,44 +8,32 @@ import de.ptb.epics.eve.data.TransportTypes;
  * Represents an access description through a mediated layer like EPICS.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.2
+ * @author Marcus Michalsky
  */
 public class Access {
 	
-	/**
-	 * The method type
-	 */
+	// the method type
 	private MethodTypes method;
 	
-	/**
-	 * The data type
-	 */
+	// The data type
 	private DataTypes type;
 	
-	/**
+	/*
 	 * If this access leads to an array type of data, the array size is in this 
 	 * attribute.
 	 */
 	private int count;
 	
-	/**
-	 * The variable id
-	 */
+	// The variable id
 	private String variableID;
 	
-	/**
-	 * The transport type
-	 */
+	// The transport type
 	private TransportTypes transport;
 	
-	/**
-	 * The timeout
-	 */
+	// The timeout
 	private double timeout;
 	
-	/**
-	 * may be monitored
-	 */
+	// may be monitored
 	private boolean monitor;
 	
 	/**
@@ -73,8 +54,10 @@ public class Access {
 	 * @param type
 	 * @param count
 	 * @param method
-	 * @throws IllegalArgumentException if variableID or method is 
-	 * 			<code>null</code>
+	 * @param transport
+	 * @param timeout
+	 * @throws IllegalArgumentException if <code>variableID</code> or 
+	 * 			<code>method<code> is <code>null</code>
 	 */
 	public Access(final String variableID, final DataTypes type, 
 				   final int count, final MethodTypes method, 
@@ -96,18 +79,22 @@ public class Access {
 	}
 	
 	/**
-	 * Returns the method type.
+	 * Returns the method type as defined in 
+	 * {@link de.ptb.epics.eve.data.MethodTypes}.
 	 * 
-	 * @return a value of <code>MethodTypes</code>
+	 * @return the method type as defined in 
+	 * 			{@link de.ptb.epics.eve.data.MethodTypes}
 	 */
 	public MethodTypes getMethod() {
 		return this.method;
 	}
 	
 	/**
-	 * Returns the data type.
+	 * Returns the data type as defined in 
+	 * {@link de.ptb.epics.eve.data.DataTypes}
 	 * 
-	 * @return a value of <code>DataTypes</code>
+	 * @return the data type as defined in 
+	 * 			{@link de.ptb.epics.eve.data.DataTypes}
 	 */
 	public DataTypes getType() {
 		return this.type;
@@ -235,7 +222,7 @@ public class Access {
 	}
 
 	/**
-	 * checks whether a value is valid for this <code>Access</code>.
+	 * checks whether the given value is valid for this <code>Access</code>.
 	 * 
 	 * @param value the value that should be checked.
 	 * @return <code>true</code> if the value is valid,
@@ -295,11 +282,8 @@ public class Access {
 		}
 	}
 
-	// TODO Explain !!
 	/**
-	 * Mystical Math
-	 * 
-	 * @return some fancy hash value
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {

@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.measuringstation;
 
 import de.ptb.epics.eve.data.MethodTypes;
@@ -17,23 +10,19 @@ import de.ptb.epics.eve.data.DataTypes;
  * with a scan module and represents a start event.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.3
+ * @author Marcus Michalsky
  */
 public class MonitorEvent extends AbstractNothingNullTypeValueAccessContainer {
 
-	/**
-	 * The name of the MonitorEvent.
-	 */
+	// the name
 	private String name;
 	
-	/**
-	 * The id of the MonitorEvent.
-	 */
+	// the id
 	private String id;
 
 	/**
-	 * Constructs a <code>MonitorEvent</code> with a <code>String</code> data 
-	 * type, an empty monitor process variable and empty name.
+	 * Constructs a <code>MonitorEvent</code> with a {@link java.lang.String} 
+	 * as data type, an empty monitor process variable and empty name.
 	 */
 	public MonitorEvent() {
 		this(new Access(MethodTypes.GETCB), 
@@ -41,11 +30,12 @@ public class MonitorEvent extends AbstractNothingNullTypeValueAccessContainer {
 	}
 	
 	/**
-	 * Constructs a <code>MonitorEvent</code> with a given value (dataType) and 
-	 * a given access. 
+	 * Constructs a <code>MonitorEvent</code> with a given 
+	 * {@link de.ptb.epics.eve.data.TypeValue} and a given 
+	 * {@link de.ptb.epics.eve.data.measuringstation.Access}. 
 	 * 
-	 * @param access specifies the <code>Access</code> of the 
-	 * 		   <code>MonitorEvent</code>. Must not be null and the the method 
+	 * @param access the {@link de.ptb.epics.eve.data.measuringstation.Access} 
+	 * 			that should be set. Must not be null and the method 
 	 * 		   type of the access must be Monitor.
 	 * @param dataType specifies the data type of this 
 	 * 		   <code>MonitorEvent</code>. Must not be null.
@@ -72,15 +62,13 @@ public class MonitorEvent extends AbstractNothingNullTypeValueAccessContainer {
 	 * Constructs a <code>MonitorEvent</code> with given data type (value), 
 	 * process variable, name, id and MonitorEvent type.
 	 * 
-	 * @param dataType specifies the data type of this 
-	 * 		   <code>MonitorEvent</code>. Must not be null.
-	 * @param access specifies the <code>Access</code> of the 
-	 * 		   <code>MonitorEvent</code>. Must not be null and the method type 
-	 * 			of the <code>Access</code> must be Monitor.
-	 * @param name a <code>String</code> containing the name of the 
-	 * 			<code>MonitorEvent</code>. Must not be null.
-	 * @param id a <code>String</code> containing the id of the 
-	 * 			<code>MonitorEvent</code>. Must not be null.
+	 * @param dataType the {@link de.ptb.epics.eve.data.TypeValue}
+	 * @param access the {@link de.ptb.epics.eve.data.measuringstation.Access}
+	 * @param name the name
+	 * @param id the id
+	 * @throws IllegalArgumentException if at least one of 
+	 * 			<code>access, dataType</code> or <code>id</code> is 
+	 * 			<code>null</code> 
 	 */
 	public MonitorEvent(final Access access, final TypeValue dataType, 
 						 final String name, final String id) {
@@ -95,17 +83,16 @@ public class MonitorEvent extends AbstractNothingNullTypeValueAccessContainer {
 	}
 	
 	/**
-	 * Returns the name of the <code>MonitorEvent</code>.
+	 * Returns the name.
 	 * 
-	 * @return a <code>String</code> containing the name of the 
-	 * 			<code>MonitorEvent</code>. Never returns null.
+	 * @return the name
 	 */
 	public String getName() {
 		return this.name;
 	}
 	
 	/**
-	 * Returns the id of the <code>MonitorEvent<code>.
+	 * Returns the id.
 	 * 
 	 * @return the id
 	 */
@@ -114,11 +101,11 @@ public class MonitorEvent extends AbstractNothingNullTypeValueAccessContainer {
 	}
 	
 	/**
-	 * Sets the id of this MonitorEvent. The id is a unique identifier of this 
-	 * <code>MonitorEvent</code> inside a measuring station.
+	 * Sets the id. The id is a unique identifier within 
+	 * the measuring station. 
 	 * 
-	 * @param id a <code>String</code> containing the name of the 
-	 * 			<code>MonitorEvent</code>. Must not be null!
+	 * @param id the id that should be set
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public void setId(final String id) {
 		if(id == null) {
@@ -129,10 +116,10 @@ public class MonitorEvent extends AbstractNothingNullTypeValueAccessContainer {
 	}
 
 	/**
-	 * Sets the name of this <code>MonitorEvent</code>.
+	 * Sets the name.
 	 * 
-	 * @param name a <code>String</code> containing the name of the 
-	 * 			<code>MonitorEvent</code>. Must not be null!
+	 * @param name a the name that should be set
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public void setName(final String name) {
 		if(name == null) {
@@ -142,41 +129,11 @@ public class MonitorEvent extends AbstractNothingNullTypeValueAccessContainer {
 		this.name = name;
 	}
 
-	/*
-	 * Sets the function that is used to communicate with the event trought the control system,
-	 * 
-	 * @param value The function that is used to communicate with the event trough the control system.
-	 */
-	//public void setValue( final Function value ) {
-	//	this.value = value;
-	//}
-
-	/*
-	 * This method gives back the function that is used to communicate with the monitor event,
-	 * 
-	 * @return The Function that is used to communicate with the MonitorEvent.
-	 */
-	//public Function getValue() {
-	//	return this.value;
-//	}
-
-
 	/**
-	 * Sets the <code>Access</code> of the <code>MonitorEvent</code>.
-	 * 
-	 * @param access an <code>Access</code>. Must not be null.
-	 */
-	@Override
-	public void setAccess(final Access access) {
-		super.setAccess(access);
-	}
-
-	/**
-	 * @return a hash
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
-		// TODO Explain !!!!!!!!!!!!!!!!!!
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -218,5 +175,5 @@ public class MonitorEvent extends AbstractNothingNullTypeValueAccessContainer {
 			return false;
 		}
 		return true;
-	}	
+	}
 }

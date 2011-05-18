@@ -4,44 +4,39 @@ import de.ptb.epics.eve.data.TypeValue;
 
 /**
  * The <code>AbstractTypeValueAccessContainer</code> is the base class of all 
- * classes that contain a <code>TypeValue</code> and an <code>Access</code>. 
- * The basic 'not null' validations for <code>Access</code> are implemented in 
+ * classes that contain a {@link de.ptb.epics.eve.data.TypeValue} and an 
+ * {@link de.ptb.epics.eve.data.measuringstation.Access}. 
+ * The basic 'not null' validations for 
+ * {@link de.ptb.epics.eve.data.measuringstation.Access} are implemented in 
  * this class.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.3
- * 
- * @see de.ptb.epics.eve.data.measuringstation.Access
- * @see de.ptb.epics.eve.data.measuringstation.Event
+ * @author Marcus Michalsky
  */
 public abstract class AbstractTypeValueAccessContainer {
 
-	/**
-	 * The TypeValue object of the <code>AbstractTypeValueAccessContainer</code> 
-	 */
+	// the type value 
 	private TypeValue dataType;
 	
-	/**
-	 * The Access object of the <code>AbstractTypevalueAccessContainer</code>  
-	 */
+	// the Access object
 	private Access access;
 	
 	/**
 	 * Constructs an empty <code>AbstractTypeValueAccessContainer</code>.
 	 * 
-	 * @param access an <code>Access</code>
+	 * @param access the {@link de.ptb.epics.eve.data.measuringstation.Access}
 	 */
 	public AbstractTypeValueAccessContainer(final Access access) {
 		this(access, null);
 	}
 	
 	/**
-	 * Constructs an <code>AbstractTypeValueAccessContainer</code> with 
-	 * specific values. 
+	 * Constructs an <code>AbstractTypeValueAccessContainer</code>.
 	 * 
-	 * @param access an <code>Access</code>
-	 * @param dataType a <code>TypeValue</code>
-	 * @throws IllegalArgumentException if access is <code>null</code>
+	 * @param access the {@link de.ptb.epics.eve.data.measuringstation.Access}
+	 * @param dataType the {@link de.ptb.epics.eve.data.TypeValue}
+	 * @throws IllegalArgumentException if <code>access</code> is 
+	 * 			<code>null</code>
 	 */
 	public AbstractTypeValueAccessContainer(final Access access, 
 											final TypeValue dataType) {
@@ -54,27 +49,28 @@ public abstract class AbstractTypeValueAccessContainer {
 	}
 	
 	/**
-	 * Returns the <code>TypeValue</code> of this container.
+	 * Returns the {@link de.ptb.epics.eve.data.TypeValue}.
 	 * 
-	 * @return the <code>TypeValue</code>
+	 * @return the {@link de.ptb.epics.eve.data.TypeValue}
 	 */
 	public TypeValue getDataType() {
 		return this.dataType;
 	}
 	
 	/**
-	 * Returns the <code>Access</code> of this container.
+	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.Access}.
 	 * 
-	 * @return the <code>Access</code>
+	 * @return the {@link de.ptb.epics.eve.data.measuringstation.Access}
 	 */
 	public Access getAccess() {
 		return this.access;
 	}
 	
 	/**
-	 * Sets the <code>Access</code>.
+	 * Sets the {@link de.ptb.epics.eve.data.measuringstation.Access}.
 	 * 
-	 * @param access the <code>Access</code> to be set
+	 * @param access the {@link de.ptb.epics.eve.data.measuringstation.Access} 
+	 * 			that should be set
 	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public void setAccess(final Access access) {
@@ -86,20 +82,20 @@ public abstract class AbstractTypeValueAccessContainer {
 	}
 	
 	/**
-	 * Sets the <code>TypeValue</code>.
+	 * Sets the {@link de.ptb.epics.eve.data.TypeValue}.
 	 * 
-	 * @param dataType the <code>TypeValue</code> to be set
+	 * @param dataType the {@link de.ptb.epics.eve.data.TypeValue} that should 
+	 * 			be set
 	 */
 	public void setDataType(final TypeValue dataType) {
 		this.dataType = dataType;
 	}
 
 	/**
-	 * some fancy math
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
-		// TODO Explain !
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((access == null) ? 0 : access.hashCode());
@@ -143,5 +139,5 @@ public abstract class AbstractTypeValueAccessContainer {
 			return false;
 		}
 		return true;
-	}	
+	}
 }

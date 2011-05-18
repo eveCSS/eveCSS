@@ -601,7 +601,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			for(final Detector detector : this.getSource().getDetectors()) {
 				// iterate over each detector in the source
 				if(!this.excludeList.contains(detector)) {
-					// it is not in the exclude ilst -> check if its channels are
+					// it is not in the exclude list -> check if its channels are
 					final Detector m = (Detector)detector.clone();
 					for(final AbstractDevice d : this.excludeList) {
 						if(d instanceof DetectorChannel) {
@@ -727,10 +727,36 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	/**
 	 * Excludes devices that are not used in the given 
 	 * {@link de.ptb.epics.eve.data.scandescription.ScanDescription}.
+	 * <p>
+	 * The exclusion works as follows:
+	 * <ul>
+	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.Motor} is excluded 
+	 *   	if all of the following conditions are met:
+	 *     <ul>
+	 *       <li>the motor is not used (not in the given scan description</li>
+	 *       <li>none of its axes is used</li>
+	 *       <li>none of its axes options (pre or post scan) is used</li>
+	 *     </ul>
+	 *   </li>
+	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.MotorAxis} is 
+	 *   	excluded if one of the following condition is met:
+	 *     <ul>
+	 *       <li>its motor is not used</li>
+	 *       <li>...</li>
+	 *     </ul>
+	 *   </li>
+	 *   <li></li>
+	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.Detector} will be 
+	 *   	excluded if 
+	 *     <ul>
+	 *       <li></li>
+	 *     </ul>
+	 *   </li>
+	 * </ul>
 	 * 
 	 * @param scandescription the 
 	 * 		  {@link de.ptb.epics.eve.data.scandescription.ScanDescription} 
-	 * 		  containing the devices which will be excluded
+	 * 		  containing the devices which will NOT be excluded
 	 */
 	public void excludeUnusedDevices(ScanDescription scandescription)
 	{
@@ -944,6 +970,8 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				logger.debug("Device: " + device.getName() + " not used -> exclude");
 			}
 		}
+		
+		updateEvent(null);
 	}
 	
 	/*
