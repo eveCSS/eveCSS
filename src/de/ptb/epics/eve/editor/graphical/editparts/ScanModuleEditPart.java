@@ -181,10 +181,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 		if (this.figure != null) {
 			((ScanModuleFigure)this.figure).setActive(focus);
 		}
-		
-		((ScanModuleFigure)this.figure).
-		setError(((ScanModule)this.getModel()).getModelErrors().size() > 0);
-		
+
 		super.setFocus(true);
 	}
 	
