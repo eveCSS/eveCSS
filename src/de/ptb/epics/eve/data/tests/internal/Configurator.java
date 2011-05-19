@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.ptb.epics.eve.data.tests;
+package de.ptb.epics.eve.data.tests.internal;
 
 import java.io.File;
 import java.io.IOException;

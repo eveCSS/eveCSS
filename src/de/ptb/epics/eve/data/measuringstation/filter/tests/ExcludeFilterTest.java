@@ -14,7 +14,7 @@ import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
-import de.ptb.epics.eve.data.tests.Configurator;
+import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 /**
  * <code>ExcludeFilterTest</code> contains 
@@ -317,8 +317,10 @@ public class ExcludeFilterTest {
 					
 					filteredMeasuringStation.exclude(o);
 					logger.info("Option " + deviceString(o) + " excluded");
-					if(filteredMeasuringStation.getPrePostscanDeviceById(o.getID()) != null)
-						logger.debug(deviceString(filteredMeasuringStation.getPrePostscanDeviceById(o.getID())));
+					if(filteredMeasuringStation.
+							getPrePostscanDeviceById(o.getID()) != null)
+						logger.debug(deviceString(filteredMeasuringStation.
+								getPrePostscanDeviceById(o.getID())));
 					assertTrue(isMotorAxis(filteredMeasuringStation, ma));
 					assertTrue(isMotor(filteredMeasuringStation, m));
 					

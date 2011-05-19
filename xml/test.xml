@@ -1324,7 +1324,7 @@
                     <id>PPSMC:gw23715000.RCNT</id>
                     <value>
                         <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715000.RCNT</access>
-                        <value type="double"></value>
+                        <value type="double">PPSMC:gw23715000.RCNT</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
