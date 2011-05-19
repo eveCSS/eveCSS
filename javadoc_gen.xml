@@ -83,7 +83,7 @@
       <group title="EVE Viewer" packages="de.ptb.epics.eve.viewer*"/>
 
       <group title="Tests" 
-      		 packages="de.ptb.epics.eve.data.measuringstation.filter.tests*,de.ptb.epics.eve.data.measuringstation.tests*,de.ptb.epics.eve.data.tests*" />
+      		 packages="de.ptb.epics.eve.data.measuringstation.filter.tests*,de.ptb.epics.eve.data.measuringstation.tests*,de.ptb.epics.eve.data.tests*,de.ptb.epics.eve.data.tests.internal.*" />
 
       <group title="apache" packages="org.apache.*" />
       
