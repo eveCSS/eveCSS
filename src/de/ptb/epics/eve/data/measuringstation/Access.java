@@ -46,7 +46,6 @@ public class Access {
 		this("", null, 0, method, null, 0.0);
 	}
 	
-	// TODO Describe following parameters !
 	/**
 	 * Constructs an <code>Access</code> with specific values.
 	 * 
@@ -370,7 +369,16 @@ public class Access {
 	 */
 	@Override
 	public Object clone() {
+		
+		// TODO monitor property was not cloned !!!! is now, but not used 
+		// in the constructor...
+		/*
 		return new Access(this.variableID, this.type, this.count, 
+							this.method, this.transport, this.timeout);*/
+		Access access = new Access(this.variableID, this.type, this.count, 
 							this.method, this.transport, this.timeout);
+		access.setMonitor(this.getMonitor());
+		return access;
+		
 	}	
 }
