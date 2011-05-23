@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription.processors;
 
 import java.io.ByteArrayInputStream;
@@ -12,16 +5,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-//import javax.xml.XMLConstants;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-
-//import javax.xml.validation.Schema;
-//import javax.xml.validation.SchemaFactory;
 
 import org.xml.sax.SAXException;
 
@@ -36,9 +25,7 @@ import de.ptb.epics.eve.data.scandescription.ScanDescription;
  */
 public class ScanDescriptionLoader {
 
-	/**
-	 * The file to load.
-	 */
+	// the file to load.
 	private File fileToLoad;
 	
 	/**
@@ -61,6 +48,13 @@ public class ScanDescriptionLoader {
 	 */
 	private final File schemaFile;
 	
+	/**
+	 * Constructs a <code>ScanDescriptionLoader</code>.
+	 * 
+	 * @param measuringStation 
+	 * @param schemaFile
+	 * @throws IllegalArgumentException 
+	 */
 	public ScanDescriptionLoader( final IMeasuringStation measuringStation, final File schemaFile ) {
 		if( schemaFile == null ) {
 			throw new IllegalArgumentException( "The parameter 'schemaFile' must not be null!" );
@@ -174,6 +168,10 @@ public class ScanDescriptionLoader {
 		return scanDescription;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public List<String> getLostDevices() {
 
 		if ( (this.lostDevicesList != null) && (!this.lostDevicesList.isEmpty()))

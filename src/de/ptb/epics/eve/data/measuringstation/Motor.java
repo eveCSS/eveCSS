@@ -16,14 +16,11 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  */
 public class Motor extends AbstractMainPhaseDevice {
 
-	/**
-	 * A List, that is holding all axis of this motor
-	 */
+	// a List holding all axis of this motor
 	private List<MotorAxis> axis;
 	
 	/**
-	 * This constructor constructs a and empty Motor.
-	 *
+	 * Constructs an empty Motor.
 	 */
 	public Motor() {
 		this.axis = new ArrayList<MotorAxis>();
@@ -142,6 +139,7 @@ public class Motor extends AbstractMainPhaseDevice {
 		motor.setClassName(this.getClassName());
 		motor.setTrigger((Function)
 				(this.getTrigger()!=null?this.getTrigger().clone():null));
+		this.setName(this.getName()); // 
 		motor.setName(this.getName());
 		motor.setId(this.getID());
 		motor.setUnit((Unit)

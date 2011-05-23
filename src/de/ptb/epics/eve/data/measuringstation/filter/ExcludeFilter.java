@@ -761,7 +761,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		this.updateEvent(new ModelUpdateEvent(this, null));
 	}
 	
-	// TODO Rephrase
+	// TODO Rephrase ?
 	/**
 	 * Excludes devices that are not used in the given 
 	 * {@link de.ptb.epics.eve.data.scandescription.ScanDescription}.
@@ -771,43 +771,74 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.Motor} is excluded 
 	 *   	if <u>all</u> of the following conditions are met:
 	 *     <ul>
-	 *       <li>the motor is not used (in the main phase of any scan module)</li>
 	 *       <li>none of its options are used</li>
 	 *       <li>none of its axes are used</li>
 	 *       <li>none of its axes options (pre or post scan) are used</li>
 	 *     </ul>
 	 *   </li>
+	 *   <li>an {@link de.ptb.epics.eve.data.measuringstation.Option} of a 
+	 *   	{@link de.ptb.epics.eve.data.measuringstation.Motor} is excluded 
+	 *   	if it is not used.
+	 *   </li>
 	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.MotorAxis} is 
-	 *   	excluded if one of the following conditions is met:
+	 *   	excluded if <u>all</u> of the following conditions is met:
 	 *     <ul>
-	 *       <li>its motor is not used</li>
-	 *       <li>the motor axis itself <u>and</u> none of its 
-	 *       	options are used</li>
+	 *       <li>the motor axis itself is not used</li>
+	 *       <li>none of its options are used</li>
 	 *     </ul>
+	 *   </li>
+	 *   <li>an {@link de.ptb.epics.eve.data.measuringstation.Option} of a 
+	 *   	{@link de.ptb.epics.eve.data.measuringstation.MotorAxis} is excluded 
+	 *   	if it is not used.
 	 *   </li>
 	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.Detector} will be 
 	 *   	excluded if <u>all</u> of the following conditions are met:
 	 *     <ul>
-	 *       <li>the detector is not used (in the main phase of any scan module)</li>
 	 *       <li>none of its options are used</li>
 	 *       <li>none of its channels are used</li>
 	 *       <li>none of its channels options are used</li>
 	 *     </ul>
 	 *   </li>
+	 *   <li>an {@link de.ptb.epics.eve.data.measuringstation.Option} of a 
+	 *   	{@link de.ptb.epics.eve.data.measuringstation.Detector} is excluded 
+	 *   	if it is not used.
+	 *   </li>
 	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.DetectorChannel} 
-	 *   	will be excluded if one of the following conditions is met:
+	 *   	will be excluded if <u>all</u> of the following conditions is met:
 	 *   	<ul>
-	 *   	  <li>its detector is not used</li>
+	 *   	  <li>the detector channel itself is not used</li>
+	 *   	  <li>none of its options are used</li>
 	 *   	</ul>
+	 *   </li>
+	 *   <li>an {@link de.ptb.epics.eve.data.measuringstation.Option} of a 
+	 *   	{@link de.ptb.epics.eve.data.measuringstation.DetectorChannel} is 
+	 *   	excluded if it is not used.
 	 *   </li>
 	 * </ul>
 	 * 
 	 * @param scandescription the 
 	 * 		  {@link de.ptb.epics.eve.data.scandescription.ScanDescription} 
-	 * 		  containing the devices which will NOT be excluded
+	 * 		  containing the devices which will remain (all other are excluded)
 	 */
 	public void excludeUnusedDevices(ScanDescription scandescription)
 	{
+		/*
+		 * implementation works as follows:
+		 * Hash sets are created for motor axes, detector channels, devices 
+		 * and options. Hash because of performance reasons (they will be 
+		 * accessed frequently) and sets because of uniqueness (marking a 
+		 * device as used if it was already doesn't hurt).
+		 * The whole scan description is iterated (each scan module of each 
+		 * chain) and all devices and options found are added to the 
+		 * corresponding used lists.
+		 * The second part iterates through all available devices and options 
+		 * of the measuring station (source). If a device is not used (it is 
+		 * not in the exclude list) it is excluded.
+		 * XXX A Performance issue: each time a single device is excluded the 
+		 * 		exclude method calls updateEvent. This is not necessary (just 
+		 * 		calling it once at the end would suffice). 
+		 */
+		
 		// all available motors
 		List<Motor> all_motors = getSource().getMotors();
 		// all available detectors
@@ -815,8 +846,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		// all available devices
 		List<Device> all_devices = getSource().getDevices();
 		
-		// Sets to add used devices to (has tables because of speed AND
-		// sets because of uniqueness
+		// Sets to add used devices to
 		HashSet<MotorAxis> used_motor_axes = new HashSet<MotorAxis>();
 		HashSet<DetectorChannel> used_detector_channels = 
 				new HashSet<DetectorChannel>();
@@ -1008,7 +1038,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					}
 					
 					// if any option is used, the flag is set, 
-					// if not -> eyclude channel
+					// if not -> exclude channel
 					if(!option_used)
 					{
 						exclude(ch);
@@ -1046,9 +1076,31 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		{
 			if(!(used_devices.contains(device)))
 			{
-				exclude(device);
-				logger.debug("Device: " + device.getName() + 
-							" not used -> exclude");
+				boolean option_used = false;
+				for(Option o : device.getOptions())
+				{
+					if(used_options.contains(o))
+					{
+						// option is used, set flag
+						option_used = true;
+					}
+					else
+					{
+						// option not used -> exclude
+						exclude(o);
+						logger.debug("Option " + device.getName() + ":" + 
+								o.getName() + " not used -> exclude");
+					}
+				}
+				
+				// if any option is used, the flag is set, 
+				// if not -> exclude device
+				if(!option_used)
+				{
+					exclude(device);
+					logger.debug("Device " + device.getID() + " (" +
+							device.getName() + ") not used -> exclude");
+				}
 			}
 		}
 		
