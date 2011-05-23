@@ -1,27 +1,25 @@
 package de.ptb.epics.eve.data.measuringstation.tests;
 
+import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
 import static org.junit.Assert.*;
-
-import java.io.File;
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.RollingFileAppender;
-import org.apache.log4j.xml.DOMConfigurator;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
-import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
+import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 /**
+ * <code>MeasuringStationTest</code> contains 
+ * <a href="http://www.junit.org/">JUnit</a>-Tests for 
+ * {@link de.ptb.epics.eve.data.measuringstation.MeasuringStation}.
+ * 
  * @author Marcus Michalsky
  * @since 0.4.1
  */
@@ -29,9 +27,7 @@ public class MeasuringStationTest {
 
 	private static Logger logger = 
 		Logger.getLogger(MeasuringStationTest.class.getName());
-	
-	private static File schemaFile;
-	private static File descriptionFile;
+
 	private static IMeasuringStation measuringStation;
 
 	/**
@@ -41,45 +37,34 @@ public class MeasuringStationTest {
 	@Test
 	public void testCompareXMLandJava()
 	{
-
+		log_start(logger, "testCompareXMLandJava()");
+		
+		
+		
+		log_end(logger, "testCompareXMLandJava()");
 	}
-	
 	
 	// ***********************************************************************
 	// ***********************************************************************
 	// ***********************************************************************
 	
 	/**
-	 * class wide setup method
+	 * Initializes logging and loads the measuring station (Class wide setup 
+	 * method of the test).
 	 */
 	@BeforeClass
 	public static void runBeforeClass() {
 		
-		DOMConfigurator.configure("log4j-conf.xml");
+		Configurator.configureLogging();
 		
-		((RollingFileAppender)logger.getAppender("MeasuringStationTestAppender")).rollOver();
+		((RollingFileAppender)logger.
+				getAppender("MeasuringStationTestAppender")).rollOver();
 		
-		// run for one time before all test cases
-		schemaFile = new File("xml/scml.xsd");
-		descriptionFile = new File("xml/test.xml");
-		
-		final MeasuringStationLoader measuringStationLoader = 
-			new MeasuringStationLoader(schemaFile);
-		
-		try {
-			measuringStationLoader.load(descriptionFile);
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		measuringStation = measuringStationLoader.getMeasuringStation();
+		measuringStation = Configurator.getMeasuringStation();
 		
 		assertNotNull(measuringStation);
-		logger.info("Class Wide Setup Done (measuring station loaded)");
+		
+		classSetUp(logger);
 	}
 	
 	/**
@@ -88,7 +73,7 @@ public class MeasuringStationTest {
 	@Before
 	public void beforeEveryTest()
 	{
-		logger.info("Test Wide Setup Done");
+		testSetUp(logger);
 	}
 	
 	/**
@@ -97,7 +82,7 @@ public class MeasuringStationTest {
 	@After
 	public void afterEveryTest()
 	{
-		logger.info("Test Wide Tear Down Done");
+		testTearDown(logger);
 	}
 	
 	/**
@@ -106,8 +91,6 @@ public class MeasuringStationTest {
 	@AfterClass
 	public static void afterClass()
 	{
-		schemaFile = null;
-		descriptionFile = null;
-		logger.info("Class Wide Tear Down Done (files closed)");
+		classTearDown(logger);
 	}
 }

@@ -3,12 +3,18 @@
 
 <log4j:configuration debug="false" xmlns:log4j="http://jakarta.apache.org/log4j/">
 
+  <appender name="ConsoleAppender" class="org.apache.log4j.ConsoleAppender">
+  	<layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] %c: %m%n" />
+    </layout>
+  </appender>
+
   <appender name="TypeValueTestAppender"
             class="org.apache.log4j.RollingFileAppender">
       <param name="file" value="log/TypeValueTest.log" />
-	  <param name="Append" value="false" />
+	  <param name="Append" value="true" />
 	  <param name="MaxFileSize" value="10MB"/>
-      <param name="MaxBackupIndex" value="5"/>
+      <param name="MaxBackupIndex" value="2"/>
 	  <layout class="org.apache.log4j.PatternLayout">
 		  <param name="ConversionPattern" value="%-5p %M: %m%n" />
 	  </layout>
@@ -19,9 +25,9 @@
   <appender name="AccessTestAppender" 
             class="org.apache.log4j.RollingFileAppender">
 	  <param name="file" value="log/AccessTest.log" />
-	  <param name="Append" value="false" />
+	  <param name="Append" value="true" />
 	  <param name="MaxFileSize" value="10MB"/>
-      <param name="MaxBackupIndex" value="5"/>
+      <param name="MaxBackupIndex" value="2"/>
 	  <layout class="org.apache.log4j.PatternLayout">
 		  <param name="ConversionPattern" value="%-5p %M: %m%n" />
 	  </layout>
@@ -30,9 +36,31 @@
   <appender name="MeasuringStationTestAppender" 
             class="org.apache.log4j.RollingFileAppender">
 	  <param name="file" value="log/MeasuringStationTest.log" />
-	  <param name="Append" value="false" />
+	  <param name="Append" value="true" />
 	  <param name="MaxFileSize" value="10MB"/>
-      <param name="MaxBackupIndex" value="5"/>
+      <param name="MaxBackupIndex" value="2"/>
+	  <layout class="org.apache.log4j.PatternLayout">
+		  <param name="ConversionPattern" value="%-5p %M: %m%n" />
+	  </layout>
+  </appender>
+
+  <appender name="MotorAxisTestAppender" 
+            class="org.apache.log4j.RollingFileAppender">
+	  <param name="file" value="log/MotorAxisTest.log" />
+	  <param name="Append" value="true" />
+	  <param name="MaxFileSize" value="10MB"/>
+      <param name="MaxBackupIndex" value="2"/>
+	  <layout class="org.apache.log4j.PatternLayout">
+		  <param name="ConversionPattern" value="%-5p %M: %m%n" />
+	  </layout>
+  </appender>
+
+  <appender name="MotorTestAppender" 
+            class="org.apache.log4j.RollingFileAppender">
+	  <param name="file" value="log/MotorTest.log" />
+	  <param name="Append" value="true" />
+	  <param name="MaxFileSize" value="10MB"/>
+      <param name="MaxBackupIndex" value="2"/>
 	  <layout class="org.apache.log4j.PatternLayout">
 		  <param name="ConversionPattern" value="%-5p %M: %m%n" />
 	  </layout>
@@ -41,36 +69,37 @@
   <appender name="OptionTestAppender" 
             class="org.apache.log4j.RollingFileAppender">
 	  <param name="file" value="log/OptionTest.log" />
-	  <param name="Append" value="false" />
+	  <param name="Append" value="true" />
 	  <param name="MaxFileSize" value="10MB"/>
-      <param name="MaxBackupIndex" value="5"/>
+      <param name="MaxBackupIndex" value="2"/>
 	  <layout class="org.apache.log4j.PatternLayout">
 		  <param name="ConversionPattern" value="%-5p %M: %m%n" />
 	  </layout>
   </appender>
-
 
   <appender name="ExcludeFilterTestAppender" 
             class="org.apache.log4j.RollingFileAppender">
 	  <param name="file" value="log/ExcludeFilterTest.log" />
-	  <param name="Append" value="false" />
+	  <param name="Append" value="true" />
 	  <param name="MaxFileSize" value="10MB"/>
-      <param name="MaxBackupIndex" value="5"/>
+      <param name="MaxBackupIndex" value="2"/>
 	  <layout class="org.apache.log4j.PatternLayout">
 		  <param name="ConversionPattern" value="%-5p %M: %m%n" />
 	  </layout>
   </appender>
 
-  <appender name="ExcludeDevicesOfScanModuleFilterTestDailyAppender" 
+  <appender name="ExcludeDevicesOfScanModuleFilterTestAppender" 
             class="org.apache.log4j.RollingFileAppender">
 	  <param name="file" value="log/ExcludeDevicesOfScanModuleFilterTest.log" />
-	  <param name="Append" value="false" />
+	  <param name="Append" value="true" />
 	  <param name="MaxFileSize" value="10MB"/>
-      <param name="MaxBackupIndex" value="5"/>
+      <param name="MaxBackupIndex" value="2"/>
 	  <layout class="org.apache.log4j.PatternLayout">
-		  <param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] %c#%M: %m%n" />
+		  <param name="ConversionPattern" value="%-5p %M: %m%n" />
 	  </layout>
   </appender>
+
+  <!-- *****  -->
 
   <logger name="de.ptb.epics.eve.data.tests.TypeValueTest">
       <level value="DEBUG" />
@@ -87,9 +116,24 @@
       <appender-ref ref="MeasuringStationTestAppender" />
   </logger>
 
+  <logger name="de.ptb.epics.eve.data.measuringstation.tests.MotorAxisTest">
+      <level value="DEBUG" />
+      <appender-ref ref="MotorAxisTestAppender" />
+  </logger>
+
+  <logger name="de.ptb.epics.eve.data.measuringstation.tests.MotorTest">
+      <level value="DEBUG" />
+      <appender-ref ref="MotorTestAppender" />
+  </logger>
+
   <logger name="de.ptb.epics.eve.data.measuringstation.tests.OptionTest">
       <level value="DEBUG" />
       <appender-ref ref="OptionTestAppender" />
+  </logger>
+
+<logger name="de.ptb.epics.eve.data.measuringstation.filter.tests.ExcludeDevicesOfScanModuleFilterTest">
+	  <level value="DEBUG" />
+	  <appender-ref ref="ExcludeDevicesOfScanModuleFilterTestAppender" />
   </logger>
 
   <logger name="de.ptb.epics.eve.data.measuringstation.filter.tests.ExcludeFilterTest">
@@ -97,8 +141,14 @@
 	  <appender-ref ref="ExcludeFilterTestAppender" />
   </logger>
   
+  <logger name="de.ptb.epics.eve.data.tests.internal">
+      <level value="WARN" />
+      <appender-ref ref="ConsoleAppender" />
+  </logger>
+  
   <root>
 	  <priority value="WARN" />
+	
   </root>
   
 </log4j:configuration>

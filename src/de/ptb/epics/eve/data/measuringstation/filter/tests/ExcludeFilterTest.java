@@ -1,19 +1,28 @@
 package de.ptb.epics.eve.data.measuringstation.filter.tests;
 
+import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
+
 import static org.junit.Assert.*;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.RollingFileAppender;
 import org.junit.*;
 
-import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
+import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.Chain;
+import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.Postscan;
+import de.ptb.epics.eve.data.scandescription.Prescan;
+import de.ptb.epics.eve.data.scandescription.ScanDescription;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 /**
@@ -43,6 +52,16 @@ public class ExcludeFilterTest {
 	private ExcludeFilter filteredMeasuringStation;
 	
 	/**
+	 * Dummy Test (always fails). Only for presentation reasons of the junit 
+	 * report.
+	 */
+	@Test
+	public void testDummyAlwaysFails()
+	{
+		assertTrue(false);
+	}
+	
+	/**
 	 * <code>testExcludeIncludeMotor</code> tries to exclude motors (each one 
 	 * by one) and checks the getter methods for its absence. It also checks 
 	 * the presence / absence of their axis and options. Afterwards they are 
@@ -51,7 +70,7 @@ public class ExcludeFilterTest {
 	@Test
 	public void testExcludeIncludeMotor()
 	{
-		log_start("testExcludeIncludeMotor()");
+		log_start(logger, "testExcludeIncludeMotor()");
 		
 		for(Motor m : measuringStation.getMotors())
 		{
@@ -167,7 +186,7 @@ public class ExcludeFilterTest {
 			}
 			logger.info("-----");
 		}	
-		log_end("testExcludeIncludeMotor()");
+		log_end(logger, "testExcludeIncludeMotor()");
 	}
 	
 	/**
@@ -179,7 +198,7 @@ public class ExcludeFilterTest {
 	@Test
 	public void testExcludeIncludeMotorAxis()
 	{
-		log_start("testExcludeIncludeMotorAxis()");
+		log_start(logger, "testExcludeIncludeMotorAxis()");
 		
 		for(Motor m : measuringStation.getMotors())
 		{
@@ -244,7 +263,7 @@ public class ExcludeFilterTest {
 			}
 			logger.info("-----");
 		}
-		log_end("testExcludeIncludeMotorAxis()");
+		log_end(logger, "testExcludeIncludeMotorAxis()");
 	}
 	
 	/**
@@ -255,7 +274,7 @@ public class ExcludeFilterTest {
 	@Test
 	public void testExcludeIncludeMotorOption()
 	{
-		log_start("testExcludeIncludeMotorOption()");
+		log_start(logger, "testExcludeIncludeMotorOption()");
 		
 		for(Motor m : measuringStation.getMotors())
 		{
@@ -289,7 +308,7 @@ public class ExcludeFilterTest {
 				logger.info("Option " + deviceString(o) + " found");
 			}
 		}	
-		log_end("testExcludeIncludeMotorOption()");
+		log_end(logger, "testExcludeIncludeMotorOption()");
 	}
 	
 	/**
@@ -300,7 +319,7 @@ public class ExcludeFilterTest {
 	@Test
 	public void testExcludeIncludeMotorAxisOption()
 	{
-		log_start("testExcludeIncludeMotorAxisOption()");
+		log_start(logger, "testExcludeIncludeMotorAxisOption()");
 		for(Motor m : measuringStation.getMotors())
 		{
 			for(MotorAxis ma : m.getAxes())
@@ -335,7 +354,7 @@ public class ExcludeFilterTest {
 				}
 			}
 		}
-		log_end("testExcludeIncludeMotorAxisOption()");
+		log_end(logger, "testExcludeIncludeMotorAxisOption()");
 	}
 	
 	// **********************************************************
@@ -349,66 +368,54 @@ public class ExcludeFilterTest {
 	@Test
 	public void testExcludeIncludeDetector()
 	{
-		log_start("testExcludeIncludeDetector()");
+		log_start(logger, "testExcludeIncludeDetector()");
 		
 		for(Detector d : measuringStation.getDetectors())
 		{
-			logger.info("Testing Detector: " + d.getName() + 
-					" (" + d.getID() + ")");
+			logger.info("Testing Detector: " + deviceString(d));
 			
-			// the motor should be found
-			assertNotNull(filteredMeasuringStation.
-					getAbstractDeviceByFullIdentifyer(d.getFullIdentifyer()));
-			logger.info("Detector " + d.getName() + " (" + 
-						d.getID() + ") found.");
+			// the detector should be found
+			assertTrue(isDetector(filteredMeasuringStation, d));
+			logger.info("Detector " + deviceString(d) + " found.");
 			
 			// exclude the detector
 			filteredMeasuringStation.exclude(d);
-			logger.info("Detector " + d.getName() + " (" + 
-						d.getID() + ") excluded.");
+			logger.info("Detector " + deviceString(d) + " excluded.");
 			
 			// now the detector shouldn't be found anymore
-			assertNull(filteredMeasuringStation.
-					getAbstractDeviceByFullIdentifyer(d.getFullIdentifyer()));
-			logger.info("Detector " + d.getName() + " (" + 
-						d.getID() + ") not found.");
+			assertFalse(isDetector(filteredMeasuringStation, d));
+			logger.info("Detector " + deviceString(d) + " not found.");
 			
 			// all channels of the detector also shouldn't be found
 			for(DetectorChannel ch : d.getChannels())
 			{
-				logger.info("Checking if channel " + ch.getName() + " (" + 
-							ch.getID() + ") of the detector is also excluded");
-				assertNull(filteredMeasuringStation.
-						getDetectorChannelById(ch.getID()));
-				logger.info("Detector Channel " + ch.getName() + " (" + 
-							ch.getID() + ") not found.");
+				logger.info("Checking if channel " + deviceString(ch) + 
+							" of the detector is also excluded");
+				assertFalse(isDetectorChannel(filteredMeasuringStation, ch));
+				logger.info("Detector Channel " + deviceString(ch) + 
+							" not found.");
 			}
 			
 			// include the detector
 			filteredMeasuringStation.include(d);
-			logger.info("Detector " + d.getName() + " (" + 
-						d.getID() + ") included.");
+			logger.info("Detector " + deviceString(d) + " included.");
 			
 			// now the detector should be found again
-			assertNotNull(filteredMeasuringStation.
-					getAbstractDeviceByFullIdentifyer(d.getFullIdentifyer()));
-			logger.info("Detector " + d.getName() + " (" + 
-						d.getID() + ") found.");
-
+			assertTrue(isDetector(filteredMeasuringStation, d));
+			logger.info("Detector " + deviceString(d) + " found.");
+			
 			// all channels of the detector also should be back
 			for(DetectorChannel ch : d.getChannels())
 			{
-				logger.info("Checking if channel " + ch.getName() + " (" + 
-							ch.getID() + ") of the detector is also included");
-				assertNotNull(filteredMeasuringStation.
-						getDetectorChannelById(ch.getID()));
-				logger.info("DetectorChannel " + ch.getName() + " (" + 
-							ch.getID() + ") found.");
+				logger.info("Checking if channel " + deviceString(ch) + 
+							" of the detector is also included");
+				assertTrue(isDetectorChannel(filteredMeasuringStation, ch));
+				logger.info("DetectorChannel " + deviceString(ch) + " found.");
 			}
 			logger.info("-----");
 		}
 		
-		log_end("testExcludeIncludeDetector()");
+		log_end(logger, "testExcludeIncludeDetector()");
 	}
 	
 	/**
@@ -419,111 +426,190 @@ public class ExcludeFilterTest {
 	@Test
 	public void testExcludeIncludeDetectorChannel()
 	{
-		log_start("testExcludeIncludeDetectorChannel()");
+		log_start(logger, "testExcludeIncludeDetectorChannel()");
 		
 		for(Detector d : measuringStation.getDetectors())
 		{
-			logger.info("Testing channels of detector " + d.getName() + 
-						" (" + d.getID() + ")");
+			logger.info("Testing channels of detector " + deviceString(d));
 			
 			for(DetectorChannel ch : d.getChannels())
 			{
-				logger.info("Testing detector channel " + ch.getName() + " (" + 
-							ch.getID() + ")");
+				logger.info("Testing detector channel " + deviceString(ch));
 				
 				// the detector channel should be found
-				assertNotNull(filteredMeasuringStation.
-								getDetectorChannelById(ch.getID()));
-				logger.info("DetectorChannel " + ch.getName() + " (" + 
-							ch.getID() + ") found");
+				assertTrue(isDetectorChannel(filteredMeasuringStation, ch));
+				logger.info("DetectorChannel " + deviceString(ch) + " found");
 				
 				// exclude it
 				filteredMeasuringStation.exclude(ch);
-				logger.info("Detector Channel " + ch.getName() + " (" + 
-							ch.getID() + ") excluded.");
+				logger.info("Detector Channel " + deviceString(ch) + " excluded.");
 				
 				// now it shouldn't be found anymore
-				assertNull(filteredMeasuringStation.
-								getDetectorChannelById(ch.getID()));
-				logger.info("Detector Channel " + ch.getName() + " (" + 
-							ch.getID() + ") not found");
+				assertFalse(isDetectorChannel(filteredMeasuringStation, ch));
+				logger.info("Detector Channel " + deviceString(ch) + " not found");
 				
 				// include it
 				filteredMeasuringStation.include(ch);
-				logger.info("Detector Channel " + ch.getName() + " (" + 
-						ch.getID() + ") included.");
+				logger.info("Detector Channel " + deviceString(ch) + " included.");
 				
 				// now it should be found again
-				assertNotNull(filteredMeasuringStation.
-								getDetectorChannelById(ch.getID()));
-				logger.info("Detector Channel " + ch.getName() + " (" + 
-						ch.getID() + ") found");
+				assertTrue(isDetectorChannel(filteredMeasuringStation, ch));
+				logger.info("Detector Channel " + deviceString(ch) + " found");
 			}
 			logger.info("-----");
 		}
-		log_end("testExcludeIncludeDetectorChannel()");
+		log_end(logger, "testExcludeIncludeDetectorChannel()");
 	}
 	
 	// *********************************************************************
 	
 	/**
-	 * 
+	 * <code>testEqualityMotorListMap</code> checks whether each motor axis 
+	 * contained in the motor list is also available via 
+	 * {@link de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter#getMotorAxisById(String)}.
 	 */
 	@Test
 	public void testEqualityMotorListMap()
 	{
-		log_start("testEqualityMotorListMap");
+		log_start(logger, "testEqualityMotorListMap");
 		
 		filteredMeasuringStation.updateEvent(null);
 		
 		for(Motor m : filteredMeasuringStation.getMotors())
 		{
-			logger.info("Testing motor " + m.getID() + " (" + m.getName() + ")");
-			assertNotNull(filteredMeasuringStation.
-							getAbstractDeviceByFullIdentifyer(m.getFullIdentifyer()));
-			logger.info("Motor " + m.getID() + " (" + m.getName() + ") found in Map");
-			
 			for(MotorAxis ma : m.getAxes())
 			{
-				logger.info("Testing motor axis " + ma.getID() + " (" + ma.getName() + ")");
+				logger.info("Testing motor axis " + deviceString(ma) + " (of the list)");
 				assertNotNull(filteredMeasuringStation.getMotorAxisById(ma.getID()));
-				logger.info("Motor Axis " + ma.getID() + " (" + ma.getName() + ") found in Map");
+				logger.info("Motor Axis " + deviceString(ma) + " found in Map");
 			}
 		}
 		
-		log_end("testEqualityMotorListMap");
+		log_end(logger, "testEqualityMotorListMap");
 	}
 	
 	// ****************************************************************
 	
 	/**
-	 * 
+	 * Test for {@link de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter#excludeUnusedDevices(ScanDescription)}.
+	 * Tests if the devices used in the scan description (obtained by 
+	 * {@link de.ptb.epics.eve.data.tests.internal.Configurator#getScanDescription()}) 
+	 * are available after executing 
+	 * {@link de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter#excludeUnusedDevices(ScanDescription)}. 
+	 * Does NOT test (for now) whether unused devices are not there.
 	 */
-	@Ignore("Not Implemented Yet")
 	@Test
-	public void testExcludeUnusedDevicesWithMotors()
+	public void testExcludeUnusedDevices()
 	{
-		assertTrue(true);
-	}
-	
-	/**
-	 * 
-	 */
-	@Ignore("Not Implemented Yet")
-	@Test
-	public void testExcludeUnusedDevicesWithDetectors()
-	{
-		assertTrue(true);
-	}
-	
-	/**
-	 * 
-	 */
-	@Ignore("Not Implemented Yet")
-	@Test
-	public void testExcludeUnusedDevicesWithDevices()
-	{
-		assertTrue(true);
+		log_start(logger, "testExcludeUnusedDevices()");
+		
+		ScanDescription sd = Configurator.getScanDescription();
+		assertNotNull(sd);
+		
+		filteredMeasuringStation.excludeUnusedDevices(sd);
+		logger.info("excluded unused devices (unused = not in the scan description)");
+		
+		for(Chain chain : sd.getChains())
+		{
+			for(ScanModule sm : chain.getScanModuls())
+			{
+				for(Axis a : sm.getAxis())
+				{
+					assertTrue(isMotorAxis(filteredMeasuringStation, 
+											a.getMotorAxis()));
+					logger.info("Motor Axis " + deviceString(a.getMotorAxis()) + 
+								" is still available");
+					assertTrue(isMotor(filteredMeasuringStation, 
+							(Motor)a.getAbstractDevice().getParent()));
+					logger.info("Parent: Motor " + deviceString(
+								(Motor) a.getAbstractDevice().getParent()) + 
+								" is also available");
+				}
+				
+				for(Channel ch : sm.getChannels())
+				{
+					assertTrue(isDetectorChannel(filteredMeasuringStation, 
+												ch.getDetectorChannel()));
+					logger.info("Detector Channel " + 
+								deviceString(ch.getDetectorChannel()) + 
+								" is still available");
+					assertTrue(isDetector(filteredMeasuringStation, 
+							(Detector)ch.getAbstractDevice().getParent()));
+					logger.info("Parent: Detector " + deviceString(
+								(Detector) ch.getAbstractDevice().getParent()) + 
+								" is also available");
+				}
+				
+				for(Prescan prescan : sm.getPrescans())
+				{
+					if(prescan.isDevice())
+					{
+						assertTrue(isDevice(filteredMeasuringStation, 
+								(Device)prescan.getAbstractPrePostscanDevice()));
+						logger.info("Device " + deviceString(
+									prescan.getAbstractPrePostscanDevice()) + 
+									" is still available");
+					}
+					if(prescan.isOption())
+					{
+						assertTrue(isOption(filteredMeasuringStation, 
+							(Option)prescan.getAbstractPrePostscanDevice()));
+						logger.info("Option " + deviceString(
+									prescan.getAbstractPrePostscanDevice()) + 
+									" is still available");
+						assertNotNull(filteredMeasuringStation.
+								getAbstractDeviceByFullIdentifyer(
+								prescan.getAbstractDevice().getParent().
+								getFullIdentifyer()));
+						logger.info("Parent " + deviceString(
+									prescan.getAbstractDevice().getParent()) + 
+									" is also available");
+						
+						if(prescan.getAbstractDevice().getParent().getParent() != null)
+						{
+							logger.info("Parent of Parent " + deviceString(
+									prescan.getAbstractDevice().getParent().getParent()) + 
+									" is also available");
+						}
+					}
+				}
+				
+				for(Postscan postscan : sm.getPostscans())
+				{
+					if(postscan.isDevice())
+					{
+						assertTrue(isDevice(filteredMeasuringStation, 
+								(Device)postscan.getAbstractPrePostscanDevice()));
+						logger.info("Device " + deviceString(
+									postscan.getAbstractPrePostscanDevice()) + 
+									" is still available");
+					}
+					if(postscan.isOption())
+					{
+						assertTrue(isOption(filteredMeasuringStation, 
+							(Option)postscan.getAbstractPrePostscanDevice()));
+						logger.info("Option " + deviceString(
+									postscan.getAbstractPrePostscanDevice()) + 
+									" is still available");
+						assertNotNull(filteredMeasuringStation.
+								getAbstractDeviceByFullIdentifyer(
+								postscan.getAbstractDevice().getParent().
+								getFullIdentifyer()));
+						logger.info("Parent " + deviceString(
+									postscan.getAbstractDevice().getParent()) + 
+									" is also available");
+						if(postscan.getAbstractDevice().getParent().getParent() != null)
+						{
+							logger.info("Parent of Parent " + deviceString(
+									postscan.getAbstractDevice().getParent().getParent()) + 
+									" is also available");
+						}
+					}
+				}
+			}
+		}
+		
+		log_end(logger, "testExcludeUnunsedDevices()");
 	}
 	
 	// ****************************************************************
@@ -551,43 +637,45 @@ public class ExcludeFilterTest {
 	/*
 	 * 
 	 */
+	private boolean isDetector(IMeasuringStation measuringstation, Detector d)
+	{
+		Detector detector = (Detector) measuringstation.
+				getAbstractDeviceByFullIdentifyer(d.getFullIdentifyer());
+		return detector != null;
+	}
+	
+	/*
+	 * 
+	 */
+	private boolean isDetectorChannel(IMeasuringStation measuringstation, 
+										DetectorChannel ch)
+	{
+		DetectorChannel channel = (DetectorChannel) measuringstation.
+				getDetectorChannelById(ch.getID());
+		return channel != null;
+	}
+	
+	/*
+	 * 
+	 */
+	private boolean isDevice(IMeasuringStation measuringstation, 
+								Device dev)
+	{
+		Device device = (Device) measuringstation.
+				getAbstractDeviceByFullIdentifyer(dev.getFullIdentifyer());
+		return device != null;
+	}
+	
+	/*
+	 * 
+	 */
 	private boolean isOption(IMeasuringStation measuringstation, Option o)
 	{
 		Option option = (Option) 
 				measuringstation.getPrePostscanDeviceById(o.getID());
 		return option != null;
 	}
-	
-	// ****************************************************************
-	
-	/*
-	 * 
-	 */
-	private String deviceString(AbstractDevice d)
-	{
-		return d.getName() + " (" + d.getID() + ")";
-	}
-	
-	/*
-	 * 
-	 */
-	private void log_start(String name)
-	{
-		logger.info("*******************************************************");
-		logger.info("**** " + name + " started");
-		logger.info("*******************************************************");
-	}
-	
-	/*
-	 * 
-	 */
-	private void log_end(String name)
-	{
-		logger.info("*******************************************************");
-		logger.info("**** " + name + " finished");
-		logger.info("*******************************************************");
-	}
-	
+
 	// ***********************************************************************
 	// ***********************************************************************
 	// ***********************************************************************
@@ -605,12 +693,8 @@ public class ExcludeFilterTest {
 				getAppender("ExcludeFilterTestAppender")).rollOver();
 		
 		measuringStation = Configurator.getMeasuringStation();
-		
 		assertNotNull(measuringStation);
-		
-		logger.info("*******************************************************");
-		logger.info("Class Wide Setup Done (measuring station loaded)");
-		logger.info("*******************************************************");
+		classSetUp(logger);
 	}
 	
 	/**
@@ -622,10 +706,7 @@ public class ExcludeFilterTest {
 		filteredMeasuringStation = new ExcludeFilter();
 		filteredMeasuringStation.setSource(measuringStation);
 		assertNotNull(filteredMeasuringStation);
-		logger.info("**********************************************************");
-		logger.info(
-			"Test Wide Setup Done (measuring station filter initialized)");
-		logger.info("**********************************************************");
+		testSetUp(logger);
 	}
 	
 	/**
@@ -636,10 +717,7 @@ public class ExcludeFilterTest {
 	{
 		filteredMeasuringStation.setSource(null);
 		filteredMeasuringStation = null;
-		logger.info("**********************************************************");
-		logger.info(
-			"Test Wide Tear Down Done (measuring station filter garbaged)");
-		logger.info("**********************************************************");
+		testTearDown(logger);
 	}
 	
 	/**
@@ -648,8 +726,6 @@ public class ExcludeFilterTest {
 	@AfterClass
 	public static void afterClass()
 	{
-		logger.info("*******************************************************");
-		logger.info("Class Wide Tear Down Done (files closed)");
-		logger.info("*******************************************************");
+		classTearDown(logger);
 	}
 }

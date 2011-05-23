@@ -2,10 +2,13 @@
 <project default="junit" basedir="."> 
 
   <property name="eclipse_dir" location="${user.home}/eclipse_dir" />
-
+  
   <target name="junit">
     
-    <junit printsummary="yes" showoutput="yes">
+    <mkdir dir="../docs/tests/test-results"/>
+    
+    <junit fork="true" forkmode="perBatch" haltonfailure="false" 
+    	   failureproperty="test.failed">
        
       <classpath>
         <pathelement path="${classpath}"/>
@@ -15,15 +18,31 @@
         
         <pathelement path="${user.home}/eveCSS/de.ptb.epics.eve.data.tests/bin" />
         <pathelement path="${user.home}/eveCSS/de.ptb.epics.eve.data/bin" />
+        <pathelement path="${user.home}/eveCSS/org.csstudio.swt.xygraph/bin" />
+        <pathelement path="lib/log4j-1.2.16.jar" />
       </classpath>
     
-      <batchtest>
+      <formatter type="brief" usefile="false" />
+      <formatter type="xml" />
+
+      <batchtest todir="../docs/tests/test-results">
         <fileset dir="src">
           <include name="**/*Test.java" />
         </fileset>
       </batchtest>
       
     </junit>
+    
+    <mkdir dir="../docs/tests/test-report"/>
+    <junitreport todir="../docs/tests/test-report">
+        <fileset dir="../docs/tests/test-results">
+            <include name="TEST-*.xml"/>
+        </fileset>
+        <report format="frames" todir="../docs/tests/test-report"/>
+    </junitreport>
+    
+    <fail if="test.failed"/>
+    
   </target>
 
 </project>

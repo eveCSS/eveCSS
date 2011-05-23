@@ -21,6 +21,10 @@ import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 /**
+ * <code>TypeValueTest</code> contains 
+ * <a href="http://www.junit.org/">JUnit</a>-Tests for 
+ * {@link de.ptb.epics.eve.data.TypeValue}.
+ * 
  * @author Marcus Michalsky
  * @since 0.4.1
  */
@@ -46,15 +50,14 @@ public class TypeValueTest
 	 * Test method for {@link de.ptb.epics.eve.data.TypeValue#equals(java.lang.Object)}.
 	 */
 	@Test
-	public final void testEquals() {
+	public final void testCloneEquals() {
 
 		log_start(logger, "testEquals");
 		
 		for(Motor m : measuringStation.getMotors())
 		{
 			for(MotorAxis ma : m.getAxes())
-			{
-				
+			{		
 				for(Option o : ma.getOptions())
 				{
 					if(o.getValue().getValue() != null)
@@ -77,24 +80,16 @@ public class TypeValueTest
 		log_end(logger, "testEquals");
 	}
 
-	/**
-	 * Test method for {@link de.ptb.epics.eve.data.TypeValue#clone()}.
-	 */
-	@Ignore("Not Implemented Yet!")
-	@Test
-	public final void testClone() {
-		fail("Not yet implemented"); // TODO
-	}
-
 	// **********************************************************************
 	// **************************** Setup ***********************************
 	// **********************************************************************
 	
 	/**
-	 * @throws java.lang.Exception
+	 * Initializes logging and loads the measuring station (Class wide setup 
+	 * method of the test).
 	 */
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	public static void setUpBeforeClass() {
 		
 		Configurator.configureLogging();
 		
@@ -105,42 +100,30 @@ public class TypeValueTest
 		
 		assertNotNull(measuringStation);
 		
-		logger.info("*******************************************************");
-		logger.info("Class Wide Setup Done (measuring station loaded)");
-		logger.info("*******************************************************");
+		classSetUp(logger);
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * Class wide tear down method.
 	 */
 	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		logger.info("*******************************************************");
-		logger.info("Class Wide Tear Down Done (files closed)");
-		logger.info("*******************************************************");
+	public static void tearDownAfterClass() {
+		classTearDown(logger);
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * Test wide set up method.
 	 */
 	@Before
-	public void setUp() throws Exception {
-		
-		logger.info("**********************************************************");
-		logger.info(
-			"Test Wide Setup Done (measuring station filter initialized)");
-		logger.info("**********************************************************");
+	public void setUp() {
+		testSetUp(logger);
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * Test wide tear down method.
 	 */
 	@After
-	public void tearDown() throws Exception {
-		logger.info("**********************************************************");
-		logger.info(
-			"Test Wide Tear Down Done (measuring station filter garbaged)");
-		logger.info("**********************************************************");
+	public void tearDown() {
+		testTearDown(logger);
 	}
-	
 }

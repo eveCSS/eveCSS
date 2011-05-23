@@ -20,6 +20,10 @@ import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 /**
+ * <code>AccessTest</code> contains 
+ * <a href="http://www.junit.org/">JUnit</a>-Tests for 
+ * {@link de.ptb.epics.eve.data.measuringstation.Access}.
+ * 
  * @author Marcus Michalsky
  * @since 0.4.1
  */
@@ -33,10 +37,11 @@ public class AccessTest {
 	
 	/**
 	 * Test method for 
+	 * {@link de.ptb.epics.eve.data.measuringstation.Access#clone()} and 
 	 * {@link de.ptb.epics.eve.data.measuringstation.Access#equals(java.lang.Object)}.
 	 */
 	@Test
-	public final void testEquals() {
+	public void testCloneEquals() {
 		
 		log_start(logger, "testEquals");
 		
@@ -44,7 +49,6 @@ public class AccessTest {
 		{
 			for(MotorAxis ma : m.getAxes())
 			{
-				
 				for(Option o : ma.getOptions())
 				{
 					logger.info("Testing Access of option " + deviceString(o));
@@ -66,10 +70,11 @@ public class AccessTest {
 	// **********************************************************************
 	
 	/**
-	 * @throws java.lang.Exception
+	 * Initializes logging and loads the measuring station (Class wide setup 
+	 * method of the test).
 	 */
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	public static void setUpBeforeClass() {
 		
 		Configurator.configureLogging();
 		
@@ -84,27 +89,27 @@ public class AccessTest {
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * Class wide tear down method.
 	 */
 	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
+	public static void tearDownAfterClass() {
 		classTearDown(logger);
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * Test wide set up method.
 	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		
 		testSetUp(logger);
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * Test wide tear down method.
 	 */
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		testTearDown(logger);
-	}	
+	}
 }
