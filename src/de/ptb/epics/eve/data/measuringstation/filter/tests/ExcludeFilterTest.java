@@ -63,9 +63,9 @@ public class ExcludeFilterTest {
 	
 	/**
 	 * <code>testExcludeIncludeMotor</code> tries to exclude motors (each one 
-	 * by one) and checks the getter methods for its absence. It also checks 
-	 * the presence / absence of their axis and options. Afterwards they are 
-	 * included and presence is checked again.
+	 * by one) and verifies their absence. It also checks the presence / absence 
+	 * of their axis and options. Afterwards they are included and presence is 
+	 * checked again.
 	 */
 	@Test
 	public void testExcludeIncludeMotor()
@@ -107,7 +107,7 @@ public class ExcludeFilterTest {
 								" has no options.");
 			}
 			
-			logger.info("***");
+			// ***
 			
 			// exclude the motor
 			filteredMeasuringStation.exclude(m);
@@ -146,7 +146,7 @@ public class ExcludeFilterTest {
 								" has no options.");
 			}
 			
-			logger.info("***");
+			// ***"
 			
 			// include the motor
 			filteredMeasuringStation.include(m);
@@ -191,9 +191,9 @@ public class ExcludeFilterTest {
 	
 	/**
 	 * <code>testExcludeIncludeMotorAxis</code> tries to exclude motor axis 
-	 * (each one by one) and checks the getter methods for its absence. It also 
-	 * checks the presence / absence of their options.Afterwards they are 
-	 * included and presence is checked again.
+	 * (each one by one) and verifies their absence. It also checks the 
+	 * presence / absence of their options. Afterwards they are included and 
+	 * presence is checked again.
 	 */
 	@Test
 	public void testExcludeIncludeMotorAxis()
@@ -221,7 +221,7 @@ public class ExcludeFilterTest {
 								" found.");
 				}
 				
-				logger.info("***");
+				// ***
 				
 				// exclude it
 				filteredMeasuringStation.exclude(ma);
@@ -242,7 +242,7 @@ public class ExcludeFilterTest {
 				assertTrue(isMotor(filteredMeasuringStation, m));
 				logger.info("Motor " + deviceString(m) + " found");
 				
-				logger.info("***");
+				// ***
 				
 				// include it
 				filteredMeasuringStation.include(ma);
@@ -260,6 +260,8 @@ public class ExcludeFilterTest {
 					logger.info("Motor Axis Option " + deviceString(o) + 
 								" found.");
 				}
+				
+				logger.info("***");
 			}
 			logger.info("-----");
 		}
@@ -268,8 +270,8 @@ public class ExcludeFilterTest {
 	
 	/**
 	 * <code>testExcludeIncludeMotorOption</code> tries to exclude motor options 
-	 * (each one by one) and checks the getter methods for its absence. 
-	 * Afterwards they are included and presence is checked again.
+	 * (each one by one) and verifies their absence. Afterwards they are 
+	 * included and presence is checked again.
 	 */
 	@Test
 	public void testExcludeIncludeMotorOption()
@@ -287,6 +289,8 @@ public class ExcludeFilterTest {
 				assertTrue(isOption(filteredMeasuringStation, o));
 				logger.info("Option " + deviceString(o) + " found");
 				
+				// ***"
+				
 				// exclude it
 				filteredMeasuringStation.exclude(o);
 				logger.info("Option " + deviceString(o) + " excluded");
@@ -298,6 +302,8 @@ public class ExcludeFilterTest {
 				// check if the (parent) motor is still there
 				assertTrue(isMotor(filteredMeasuringStation, m));
 				
+				// ***
+				
 				// include it
 				filteredMeasuringStation.include(o);
 				logger.info("Option " + deviceString(o) + " included");
@@ -306,15 +312,23 @@ public class ExcludeFilterTest {
 				assertNotNull(filteredMeasuringStation.
 						getPrePostscanDeviceById(o.getID()));
 				logger.info("Option " + deviceString(o) + " found");
+				
+				logger.info("***");
 			}
+			if(m.getOptions().size() == 0)
+			{
+				logger.info("Motor " + deviceString(m) + " has no options");
+			}
+			
+			logger.info("-----");
 		}	
 		log_end(logger, "testExcludeIncludeMotorOption()");
 	}
 	
 	/**
 	 * <code>testExcludeIncludeMotorAxisOption</code> tries to exclude motor 
-	 * axes options (each one by one) and checks the getter methods for its 
-	 * absence. Afterwards they are included and presence is checked again.
+	 * axes options (each one by one) and verifies their absence. Afterwards 
+	 * they are included and presence is checked again.
 	 */
 	@Test
 	public void testExcludeIncludeMotorAxisOption()
@@ -334,6 +348,8 @@ public class ExcludeFilterTest {
 					assertTrue(isOption(filteredMeasuringStation, o));
 					logger.info("Option " + deviceString(o) + " found");
 					
+					// ***
+					
 					filteredMeasuringStation.exclude(o);
 					logger.info("Option " + deviceString(o) + " excluded");
 					if(filteredMeasuringStation.
@@ -346,12 +362,18 @@ public class ExcludeFilterTest {
 					assertFalse(isOption(filteredMeasuringStation, o));
 					logger.info("Option " + deviceString(o) + " not found");
 					
+					// ***
+					
 					filteredMeasuringStation.include(o);
 					logger.info("Option " + deviceString(o) + " included");
 					
 					assertTrue(isOption(filteredMeasuringStation, o));
 					logger.info("Option " + deviceString(o) + " found");
+					
+					logger.info("***");
 				}
+				
+				logger.info("-----");
 			}
 		}
 		log_end(logger, "testExcludeIncludeMotorAxisOption()");
@@ -361,9 +383,9 @@ public class ExcludeFilterTest {
 	
 	/**
 	 * <code>testExcludeIncludeDetector</code> tries to exclude detectors (each 
-	 * one by one) and checks the getter methods for its absence. It also checks 
-	 * the presence / absence of their channels and options.Afterwards they are 
-	 * included and presence is checked again.
+	 * one by one) and verifies their absence. It also checks the presence / 
+	 * absence of their channels and options. Afterwards they are included and 
+	 * presence is checked again.
 	 */
 	@Test
 	public void testExcludeIncludeDetector()
@@ -377,6 +399,8 @@ public class ExcludeFilterTest {
 			// the detector should be found
 			assertTrue(isDetector(filteredMeasuringStation, d));
 			logger.info("Detector " + deviceString(d) + " found.");
+			
+			// ***
 			
 			// exclude the detector
 			filteredMeasuringStation.exclude(d);
@@ -395,6 +419,8 @@ public class ExcludeFilterTest {
 				logger.info("Detector Channel " + deviceString(ch) + 
 							" not found.");
 			}
+			
+			// ***
 			
 			// include the detector
 			filteredMeasuringStation.include(d);
@@ -420,8 +446,8 @@ public class ExcludeFilterTest {
 	
 	/**
 	 * <code>testExcludeIncludeDetectorChannel</code> tries to exclude 
-	 * detectors (each one by one) and checks the getter methods for its 
-	 * absence. Afterwards they are included and presence is checked again.
+	 * detector channels (each one by one) and verifies their absence. 
+	 * Afterwards they are included and presence is checked again.
 	 */
 	@Test
 	public void testExcludeIncludeDetectorChannel()
@@ -438,27 +464,244 @@ public class ExcludeFilterTest {
 				
 				// the detector channel should be found
 				assertTrue(isDetectorChannel(filteredMeasuringStation, ch));
-				logger.info("DetectorChannel " + deviceString(ch) + " found");
+				logger.info("Detector Channel " + deviceString(ch) + " found");
+				
+				// its options should also be found
+				for(Option o : ch.getOptions())
+				{
+					assertTrue(isOption(filteredMeasuringStation, o));
+					logger.info("Detector Channel Option " + deviceString(o) + " found");
+				}
+				
+				// ***
 				
 				// exclude it
 				filteredMeasuringStation.exclude(ch);
-				logger.info("Detector Channel " + deviceString(ch) + " excluded.");
+				logger.info("Detector Channel " + deviceString(ch) + " excluded");
 				
 				// now it shouldn't be found anymore
 				assertFalse(isDetectorChannel(filteredMeasuringStation, ch));
 				logger.info("Detector Channel " + deviceString(ch) + " not found");
 				
+				// its options shouldn't be found
+				for(Option o : ch.getOptions())
+				{
+					assertFalse(isOption(filteredMeasuringStation, o));
+					logger.info("Detector Channel Option " + deviceString(o) + " not found");
+				}
+				
+				// ***"
+				
 				// include it
 				filteredMeasuringStation.include(ch);
-				logger.info("Detector Channel " + deviceString(ch) + " included.");
+				logger.info("Detector Channel " + deviceString(ch) + " included");
 				
 				// now it should be found again
 				assertTrue(isDetectorChannel(filteredMeasuringStation, ch));
 				logger.info("Detector Channel " + deviceString(ch) + " found");
+				
+				// its options should also be found
+				for(Option o : ch.getOptions())
+				{
+					assertTrue(isOption(filteredMeasuringStation, o));
+					logger.info("Detector Channel Option " + deviceString(o) + " found");
+				}
+				
+				logger.info("***");
 			}
 			logger.info("-----");
 		}
 		log_end(logger, "testExcludeIncludeDetectorChannel()");
+	}
+	
+	/**
+	 * <code>testExcludeIncludeDetectorOption</code> tries to exclude detector 
+	 * options (each one by one) and verifies their absence.Afterwards they are 
+	 * included and presence is checked again.
+	 */
+	@Test
+	public void testExcludeIncludeDetectorOption()
+	{
+		for(Detector d : measuringStation.getDetectors())
+		{
+			logger.info("Testing options of detector " + deviceString(d));
+			
+			for(Option o : d.getOptions())
+			{
+				assertTrue(isOption(filteredMeasuringStation, o));
+				logger.info("Option " + deviceString(o) + " found");
+				
+				// ***"
+				
+				filteredMeasuringStation.exclude(o);
+				logger.info("Option " + deviceString(o) + " excluded");
+				
+				assertFalse(isOption(filteredMeasuringStation, o));
+				logger.info("Option " + deviceString(o) + " not found");
+				
+				// ***"
+				
+				filteredMeasuringStation.include(o);
+				logger.info("Option " + deviceString(o) + " included");
+				
+				assertTrue(isOption(filteredMeasuringStation, o));
+				logger.info("Option " + deviceString(o) + " found");
+				
+				logger.info("***");
+			}
+			if(d.getOptions().size() == 0)
+			{
+				logger.info("Detector " + deviceString(d) + " has no options");
+			}
+			
+			logger.info("-----");
+		}
+	}
+	
+	/**
+	 * <code>testExcludeIncludeDetectorChannelOption</code> tries to exclude 
+	 * detector channel options (each one by one) and verifies their absence. 
+	 * Afterwards they are included and presence is checked again.
+	 */
+	@Test
+	public void testExcludeIncludeDetectorChannelOption()
+	{
+		for(Detector d : measuringStation.getDetectors())
+		{
+			for(DetectorChannel ch : d.getChannels())
+			{
+				logger.info("Testing options of detector channel " + deviceString(ch));
+				
+				for(Option o : ch.getOptions())
+				{
+					assertTrue(isOption(filteredMeasuringStation, o));
+					logger.info("Option " + deviceString(o) + " found");
+					
+					// ***
+					
+					filteredMeasuringStation.exclude(o);
+					logger.info("Option " + deviceString(o) + " excluded");
+					
+					assertFalse(isOption(filteredMeasuringStation, o));
+					logger.info("Option " + deviceString(o) + " not found");
+					
+					// ***
+					
+					filteredMeasuringStation.include(o);
+					logger.info("Option " + deviceString(o) + " included");
+					
+					assertTrue(isOption(filteredMeasuringStation, o));
+					logger.info("Option " + deviceString(o) + " found");
+					
+					logger.info("***");
+				}
+				
+				logger.info("-----");
+			}
+		}
+	}
+	
+	/**
+	 * <code>testExcludeIncludeDevice</code> tries to exclude devices 
+	 * (each one by one) and verifies their absence (options of the devices 
+	 * are also checked). Afterwards they are included and presence is checked 
+	 * again.
+	 */
+	@Test
+	public void testExcludeIncludeDevice()
+	{
+		log_start(logger, "testExcludeIncludeDevice()");
+		
+		for(Device dev : measuringStation.getDevices())
+		{
+			logger.info("Testing device " + deviceString(dev));
+			
+			//  the device should be found
+			assertTrue(isDevice(filteredMeasuringStation, dev));
+			logger.info("Device " + deviceString(dev) + " found");
+			
+			// its options should be found
+			for(Option o : dev.getOptions())
+			{
+				assertTrue(isOption(filteredMeasuringStation, o));
+				logger.info("Device Option " + deviceString(o) + " found");
+			}
+			
+			// ***
+			
+			// exclude it
+			filteredMeasuringStation.exclude(dev);
+			logger.info("Device " + deviceString(dev) + " excluded");
+			
+			// now it shouldn't be found anymore
+			assertFalse(isDevice(filteredMeasuringStation, dev));
+			logger.info("Device " + deviceString(dev) + " not found");
+			
+			// its options should be found
+			for(Option o : dev.getOptions())
+			{
+				assertFalse(isOption(filteredMeasuringStation, o));
+				logger.info("Device Option " + deviceString(o) + " not found");
+			}
+			
+			// ***
+			
+			// include it
+			filteredMeasuringStation.include(dev);
+			logger.info("Device " + deviceString(dev) + " included");
+			
+			// now it should be found again
+			assertTrue(isDevice(filteredMeasuringStation, dev));
+			logger.info("Device " + deviceString(dev) + " found");
+			
+			// its options should be found
+			for(Option o : dev.getOptions())
+			{
+				assertTrue(isOption(filteredMeasuringStation, o));
+				logger.info("Device Option " + deviceString(o) + " found");
+			}
+			
+			logger.info("-----");
+		}
+		
+		log_end(logger, "testExcludeIncludeDevice()");
+	}
+	
+	/**
+	 * <code>testExcludeIncludeDeviceOption</code> tries to exclude 
+	 * device options (each one by one) and verifies their absence. Afterwards 
+	 * they are included and presence is checked again.
+	 */
+	@Test
+	public void testExcludeIncludeDeviceOption()
+	{
+		log_start(logger, "testExcludeIncludeDeviceOption()");
+		
+		for(Device dev : measuringStation.getDevices())
+		{
+			logger.info("Testing options of device " + deviceString(dev));
+			
+			for(Option o : dev.getOptions())
+			{
+				assertTrue(isOption(filteredMeasuringStation, o));
+				logger.info("Option " + deviceString(o) + " found");
+				
+				filteredMeasuringStation.exclude(o);
+				assertFalse(isOption(filteredMeasuringStation, o));
+				logger.info("Option " + deviceString(o) + " not found");
+				
+				assertTrue(isOption(filteredMeasuringStation, o));
+				logger.info("Option " + deviceString(o) + " found");
+				
+				logger.info("***");
+			}
+			if(dev.getOptions().size() == 0)
+				logger.info("Device " + deviceString(dev) + " has no options.");
+			
+			logger.info("-----");
+		}
+		
+		log_end(logger, "testExcludeIncludeDeviceOption()");
 	}
 	
 	// *********************************************************************
@@ -496,7 +739,7 @@ public class ExcludeFilterTest {
 	 * {@link de.ptb.epics.eve.data.tests.internal.Configurator#getScanDescription()}) 
 	 * are available after executing 
 	 * {@link de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter#excludeUnusedDevices(ScanDescription)}. 
-	 * Does NOT test (for now) whether unused devices are not there.
+	 * Does NOT test (for now) whether unused devices aren't available.
 	 */
 	@Test
 	public void testExcludeUnusedDevices()
