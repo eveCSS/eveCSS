@@ -4,8 +4,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -301,7 +309,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		this.firePropertyChange(PROP_DIRTY);
 		
 		
-		//refreshAllEditParts(viewer.getRootEditPart());
+		// refreshAllEditParts(viewer.getRootEditPart());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -411,24 +419,76 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		
 		// no errors present -> save
 		
+		// tell the progress monitor the name of the task and the number of 
+		// subtasks it depends on
+		monitor.beginTask("save scandescription", 4);
+		// 1: create files
+		// 2: save whole file
+		// 3: save filtered file
+		// 4: calculate and log difference
+		
 		final FileStoreEditorInput fileStoreEditorInput = 
 				(FileStoreEditorInput)this.getEditorInput();
 		final File scanDescriptionFile = new File(fileStoreEditorInput.getURI());
+		File tempFile = null;
+		try {
+			tempFile = new File(new URL(fileStoreEditorInput.getURI().
+					toString() + ".temp").toURI());
+		} catch (MalformedURLException e1) {
+			logger.error(e1.getMessage(), e1);
+		} catch (URISyntaxException e1) {
+			logger.error(e1.getMessage(), e1);
+		}
+		
+		monitor.worked(1);
 		
 		try {
 			final FileOutputStream os = new FileOutputStream(scanDescriptionFile);	
+			final FileOutputStream os_temp = new FileOutputStream(tempFile);
 			
+			// save the whole file without filtering first
+			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaverFull = 
+				new ScanDescriptionSaverToXMLusingXerces(os_temp, 
+					scanDescription.getMeasuringStation(), this.scanDescription);
+			scanDescriptionSaverFull.save();
+			
+			// get the size of the unfiltered file
+			long full = tempFile.length();
+			
+			monitor.worked(1);
+	
+			// do the filtering
 			ExcludeFilter measuringStation = new ExcludeFilter();
 			measuringStation.setSource(scanDescription.getMeasuringStation());
 			// comment out following line to deactivate filtering
 			measuringStation.excludeUnusedDevices(scanDescription);
 			
-			// save -> filter -> save -> compare in debug... // TODO
-			
+			// now save the "real" / filtered file
 			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = 
 					new ScanDescriptionSaverToXMLusingXerces(
 							os, measuringStation, this.scanDescription);
 			scanDescriptionSaver.save();
+			
+			// determine filtered file size
+			long filtered = scanDescriptionFile.length();
+			
+			monitor.worked(1);
+
+			// format to percent
+			NumberFormat form = 
+				NumberFormat.getPercentInstance(new Locale("de-DE"));
+			
+			// log the result
+			logger.info("File size reduced due to filtering: " + 
+				(form.format(new Double(((double)(full - filtered))/full))) + 
+				" (" + new DecimalFormat("#.##").format((float)filtered/1024) + 
+				"kB of " + new DecimalFormat("#.##").format((float)full/1024) + 
+				"kB remain)");
+			
+			// delete the temp file
+			tempFile.delete();
+			
+			monitor.worked(1);
 			
 			this.dirty = false;
 			this.firePropertyChange(PROP_DIRTY);
@@ -436,6 +496,9 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		} catch(final FileNotFoundException e) {
 			logger.error(e.getMessage(), e);
 		}
+		
+		// tell the progress monitor that the task is finished
+		monitor.done();
 	}
 	
 	/**
