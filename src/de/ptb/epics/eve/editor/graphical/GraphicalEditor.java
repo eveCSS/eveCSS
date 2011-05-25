@@ -80,12 +80,10 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	// logging
 	private static Logger logger = Logger.getLogger(GraphicalEditor.class);
 
-	// a graphical view of the model (hosts the figures)
+	// a graphical view of the model (hosts the figures) (Draw2d FigureCanvas)
 	private ScrollingGraphicalViewer viewer;
 	
-	/*
-	 * the currently loaded scan description
-	 */
+	// the currently loaded scan description
 	private ScanDescription scanDescription;
 	
 	/*
@@ -117,7 +115,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	private MenuItem deleteScanModulMenuItem;
 	private MenuItem renameScanModulMenuItem;
 	
-	// dirty flag indicating whether the editor has unsaved changes
+	// indicates whether the editor has unsaved changes
 	private boolean dirty;
 	
 	/**
@@ -133,7 +131,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 
 		this.viewer.getControl().addMouseListener(new ViewerMouseListener());
 
-		// configure GraphicalViewer		
+		// configure GraphicalViewer
 		this.viewer.getControl().setBackground(ColorConstants.listBackground);
 		
 		((ScalableRootEditPart)this.viewer.getRootEditPart()).
@@ -149,23 +147,26 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		updateViews();
 	}
 
+	/*
+	 * 
+	 */
 	private Menu createContextMenu()
 	{
 		menu = new Menu(this.viewer.getControl());
 		this.addAppendedScanModulMenuItem = new MenuItem(menu, SWT.NONE);
-		this.addAppendedScanModulMenuItem.setText("Add appended Scan Modul");
+		this.addAppendedScanModulMenuItem.setText("Add appended Scan Module");
 		this.addAppendedScanModulMenuItem.addSelectionListener(
 				new AddAppendedScanModuleMenuItemSelectionListener());
 		this.addNestedScanModulMenuItem = new MenuItem(menu, SWT.NONE);
-		this.addNestedScanModulMenuItem.setText("Add nested Scan Modul");
+		this.addNestedScanModulMenuItem.setText("Add nested Scan Module");
 		this.addNestedScanModulMenuItem.addSelectionListener(
 				new AddNestedScanModuleMenuItemSelectionListener());
 		this.deleteScanModulMenuItem = new MenuItem(menu, SWT.NONE);
-		this.deleteScanModulMenuItem.setText("Delete");
+		this.deleteScanModulMenuItem.setText("Delete Scan Module");
 		this.deleteScanModulMenuItem.addSelectionListener(
 				new DeleteScanModuleMenuItemSelectionListener());
 		this.renameScanModulMenuItem = new MenuItem(menu, SWT.NONE);
-		this.renameScanModulMenuItem.setText("Rename");
+		this.renameScanModulMenuItem.setText("Rename Scan Module");
 		this.renameScanModulMenuItem.addSelectionListener(
 				new RenameScanModuleMenuItemSelectionListener());
 		this.viewer.getControl().setMenu(menu);
@@ -174,7 +175,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	}
 	
 	/*
-	 * called by setFocus()
+	 * 
 	 */
 	private void updateErrorView()
 	{
@@ -195,6 +196,9 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		}
 	}
 	
+	/*
+	 * 
+	 */
 	private void updateScanView()
 	{
 		// get all views
@@ -225,7 +229,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	}
 	
 	/*
-	 * called by setFocus() & the mouse listener
+	 * 
 	 */
 	private void updateScanModuleView()
 	{
@@ -334,7 +338,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	@Override
 	public void setFocus() {
 		logger.debug("Focus gained");
-						
+		
 		updateViews();
 	}
 	

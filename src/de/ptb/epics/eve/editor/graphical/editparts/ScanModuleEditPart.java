@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.FocusEvent;
-import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.NodeEditPart;
@@ -25,8 +24,11 @@ import de.ptb.epics.eve.editor.graphical.editparts.figures.ScanModuleFigure;
  * @author Marcus Michalsky
  */
 public class ScanModuleEditPart extends AbstractGraphicalEditPart 
-									implements NodeEditPart, FocusListener {
+									implements NodeEditPart {
 
+	private static Logger logger = 
+			Logger.getLogger(ScanModuleEditPart.class.getName());
+	
 	/**
 	 * Constructs a <code>ScanModulEditPart</code>.
 	 * 
@@ -37,11 +39,11 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 	}
 	
 	/**
-	 * Deletes the scan module.
+	 * Deletes the scan module. ????
 	 */
 	public void delete()
 	{
-				
+		
 	}
 	
 	/**
@@ -182,6 +184,18 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 			((ScanModuleFigure)this.figure).setActive(focus);
 		}
 
+		logger.debug("Scan Module coords : x = " + 
+					((ScanModule)getModel()).getX() + " , y = " + 
+					((ScanModule)getModel()).getY());
+		
+		// update coords in the model
+		((ScanModule)getModel()).setX(getFigure().getClientArea().x);
+		((ScanModule)getModel()).setY(getFigure().getClientArea().y);
+		
+		logger.debug("Scan Module Figure coords : x = " + 
+					getFigure().getClientArea().x + " , y = " +
+					getFigure().getClientArea().y);
+		
 		super.setFocus(true);
 	}
 	
@@ -283,23 +297,5 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(final Request request) {
 		return new ChopboxAnchor(this.getFigure());
-	}
-
-	// ************************************************************************
-	// ****************** Methods inherited from FocusListener ****************
-	// ************************************************************************		
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void focusGained(FocusEvent arg0) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void focusLost(FocusEvent arg0) {
 	}
 }

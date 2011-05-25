@@ -73,7 +73,7 @@ public class EventEditPart extends AbstractGraphicalEditPart implements NodeEdit
 	 */
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(final Request request) {
-		return ((EventFigure)this.figure).getSourceAnchor();		
+		return ((EventFigure)this.figure).getSourceAnchor();
 	}
 
 	/**

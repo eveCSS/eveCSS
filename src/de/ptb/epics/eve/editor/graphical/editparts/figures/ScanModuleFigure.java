@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.editor.graphical.editparts.figures;
 
+import org.apache.log4j.Logger;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
@@ -24,6 +25,9 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ScanModuleFigure extends Figure {
 	
+	private static Logger logger = 
+			Logger.getLogger(ScanModuleFigure.class.getName());
+	
 	private int xOffset = 0;
 	private int yOffset = 0;
 	
@@ -32,11 +36,13 @@ public class ScanModuleFigure extends Figure {
 	private XYAnchor appendedAnchor;
 	private XYAnchor nestedAnchor;
 	
-	// indicated whether the scan module is selected
+	// indicates whether the scan module is selected
 	private boolean active;
 	
+	// indicates whether the scan module contains errors
 	private boolean contains_errors;
 	
+	// the text displayed inside of the scan module figure
 	private String text;
 	
 	/**
@@ -216,6 +222,8 @@ public class ScanModuleFigure extends Figure {
 			xOffset = me.x - getLocation().x ;
 			yOffset = me.y - getLocation().y;
 			me.consume();
+			
+			logger.debug("Mouse Pressed : x = " + me.x + " , y = " + me.y );
 		}
 		
 		/**
@@ -244,11 +252,13 @@ public class ScanModuleFigure extends Figure {
 											   newLocation.height));
 			xOffset = 0;
 			yOffset = 0;
+			
+			logger.debug("Mouse Released : x = " + me.x + " , y = " + me.y );
 		}
 	}
 	
 	/**
-	 * 
+	 * <code>ScanModuleFigureMouseMotionListener</code>.
 	 */
 	class ScanModuleFigureMouseMotionListener implements MouseMotionListener {
 		
@@ -271,6 +281,8 @@ public class ScanModuleFigure extends Figure {
 											   newLocation.width/2, 
 											   newLocation.y + 
 											   newLocation.height));
+			
+			logger.debug("Mouse Dragged : x = " + me.x + " , y = " + me.y );
 		}
 		
 		/**
