@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.ArrayList;
@@ -306,10 +299,7 @@ public class PluginParameter {
 		}
 		
 		escape = false;
-		
-		// TODO some explanations/descriptions of these long code parts
-		// would be nice
-		
+
 		if(this.isDiscrete()) {
 			escape = false;
 			int lastIndex = 0;
@@ -384,7 +374,7 @@ public class PluginParameter {
 	}
 
 	/**
-	 * @return a hash
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {

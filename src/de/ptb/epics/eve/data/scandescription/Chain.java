@@ -288,7 +288,11 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		return autoNumber;
 	}
 	
-	public void setAutoNumber( final boolean autoNumber ) {
+	/**
+	 * 
+	 * @param autoNumber
+	 */
+	public void setAutoNumber(final boolean autoNumber) {
 		this.autoNumber = autoNumber;
 		updateListeners();
 	}
