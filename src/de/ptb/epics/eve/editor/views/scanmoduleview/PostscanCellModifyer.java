@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
@@ -17,15 +10,32 @@ import org.eclipse.swt.widgets.TableItem;
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Postscan;
 
+/**
+ * <code>PostscanCellModifyer</code> is the cell modifier for the table 
+ * viewer defined in 
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PostcanComposite}.
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
 public class PostscanCellModifyer implements ICellModifier {
 
 	private final TableViewer tableViewer;
 	
-	public PostscanCellModifyer( final TableViewer tableViewer ) {
+	/**
+	 * Constructs a <code>PostscanCellModifyer</code<.
+	 * 
+	 * @param tableViewer the table viewer the cell modifier should be added to
+	 */
+	public PostscanCellModifyer(final TableViewer tableViewer) {
 		this.tableViewer = tableViewer;
 	}
 	
-	public boolean canModify( final Object element, final String property ) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean canModify(final Object element, final String property) {
 		if (property.equals("value")) {
 			// mögliche Auswahl muß erstellt werden
 			final Postscan postscan = (Postscan)element;
@@ -34,11 +44,12 @@ public class PostscanCellModifyer implements ICellModifier {
 			
 			if (postscan.getAbstractPrePostscanDevice().isDiscrete()){
 				// Postscan erlaubt nur disrecte Werte => ComboBoxCellEditor
-			    if (this.tableViewer.getCellEditors()[1] instanceof TextCellEditor) {
+				if (this.tableViewer.getCellEditors()[1] instanceof TextCellEditor) {
 					// aus dem TextCellEditor eine ComobBox machen
 					this.tableViewer.getCellEditors()[1].dispose();
-
-			    	// Wenn der PostcanDatatype on/off oder open/close ist, dieses zur Auswahl stellen und nicht die
+					
+			    	// Wenn der PostcanDatatype on/off oder open/close ist, 
+					// dieses zur Auswahl stellen und nicht die
 			    	// vorhandenen Zahlen.
 			    	if (postscan.getAbstractPrePostscanDevice().getValue().getType().equals(DataTypes.ONOFF)) {
 			    		this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor( this.tableViewer.getTable(), new String[] { "On", "Off"}, SWT.READ_ONLY);
@@ -72,34 +83,38 @@ public class PostscanCellModifyer implements ICellModifier {
 					this.tableViewer.getCellEditors()[1] = new TextCellEditor( this.tableViewer.getTable());
 			    }
 			}
-			return property.equals( "value" );
+			return property.equals("value");
 		}
 		else if (property.equals("reset")) {
-			return property.equals( "reset" );
+			return property.equals("reset");
 		}
 		return false;
 	}
 
-	public Object getValue( final Object element, final String property ) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Object getValue(final Object element, final String property) {
 		final Postscan postscan = (Postscan)element;
-		if( property.equals( "value" ) ) {
+		if( property.equals("value")) {
 		    if (this.tableViewer.getCellEditors()[1] instanceof ComboBoxCellEditor) {
 		    	// Feld ist ein ComboBoxCellEditor
 		    	final String[] operators = ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).getItems();
-		    	for( int i = 0; i < operators.length; ++i ) {
-		    		if( operators[i].equals(postscan.getValue())) {
+		    	for(int i = 0; i < operators.length; ++i) {
+		    		if(operators[i].equals(postscan.getValue())) {
 		    			return i;
 		    		}
 		    	}
 		    	// mit return 0 wird der erste Wert voreingestellt
 		    	return 0;
-		    }		    
+		    }
 		    else {
 		    	// Feld ist ein TextCellEditor
 				return ((Postscan)element).getValue();
 		    }
 		}
-		if( property.equals( "reset" ) ) {
+		if( property.equals("reset")) {
 			// Feld ist ein ComboBoxCellEditor
 		    if (postscan.isReset())
 		    	return 0;	// reset = yes
@@ -109,9 +124,13 @@ public class PostscanCellModifyer implements ICellModifier {
 		return -1;
 	}
 
-	public void modify( final Object element, final String property, final Object value ) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void modify(final Object element, final String property, final Object value) {
 		final Postscan postscan = (Postscan)((TableItem)element).getData();
-		if( property.equals( "value" ) ) {
+		if( property.equals("value")) {
 		    if (this.tableViewer.getCellEditors()[1] instanceof ComboBoxCellEditor) {
 		    	// Feld ist ein ComboBoxCellEditor
 		    	
@@ -120,22 +139,19 @@ public class PostscanCellModifyer implements ICellModifier {
 		    	if (postscan.getAbstractPrePostscanDevice().getValue().getType().equals(DataTypes.ONOFF)) {
 			    	final String[] auswahl = (postscan.getAbstractPrePostscanDevice().getValue().getDiscreteValues().toArray(new String[0]));
 			    	postscan.setValue(auswahl[(Integer)value]);
-		    	}
-		    	else if (postscan.getAbstractPrePostscanDevice().getValue().getType().equals(DataTypes.OPENCLOSE)) {
+		    	} else if (postscan.getAbstractPrePostscanDevice().getValue().getType().equals(DataTypes.OPENCLOSE)) {
 			    	final String[] auswahl = (postscan.getAbstractPrePostscanDevice().getValue().getDiscreteValues().toArray(new String[0]));
 			    	postscan.setValue(auswahl[(Integer)value]);
-		    	}
-		    	else {
+		    	} else {
 		    		final String[] operators = ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).getItems();
 		    		postscan.setValue(operators[(Integer)value]);
 		    	}
-		    }
-		    else {
+		    } else {
 		    	// Feld ist ein TextCellEditor
 			    postscan.setValue(value.toString());
 		    }
 		}
-		if( property.equals( "reset" ) ) {
+		if(property.equals("reset")) {
 	    	final String[] operators = ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[2]).getItems();
 	    	if (operators[(Integer)value].equals("yes"))
 	    		postscan.setReset(true);
@@ -144,5 +160,4 @@ public class PostscanCellModifyer implements ICellModifier {
 		}
 		this.tableViewer.refresh();
 	}
-
 }

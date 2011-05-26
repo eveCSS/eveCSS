@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
 import java.util.Iterator;
@@ -22,10 +15,22 @@ import de.ptb.epics.eve.data.scandescription.Postscan;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.PostscanError;
 
+/**
+ * <code>PostscanLabelProvider</code> is the label provider for the table 
+ * viewer defined in 
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PostcanComposite}.
+ * 
+ * @author ?
+ */
 public class PostscanLabelProvider implements ITableLabelProvider {
 
-	// Names of images used to represent checkboxes
+	/**
+	 *  Name of images used to represent checkboxes
+	 */
 	public static final String CHECKED_IMAGE 	= "checked";
+	/**
+	 *  Name of images used to represent checkboxes
+	 */
 	public static final String UNCHECKED_IMAGE  = "unchecked";
 
 	// For the checkbox images
@@ -35,27 +40,23 @@ public class PostscanLabelProvider implements ITableLabelProvider {
 	 * Note: An image registry owns all of the image objects registered with it,
 	 * and automatically disposes of them the SWT Display is disposed.
 	 */ 
-	
 	static {
-		String iconPath = "../"; 
 		//TODO Frage: Kann hier das image auch irgendwo von SWT hergeholt werden?
 		// Wie muß der iconPath gesetzt sein, damit auch darüberliegende Verzeichnisse
 		// durchsucht werden? (Hartmut 19.4.10)
 		imageRegistry.put(CHECKED_IMAGE, ImageDescriptor.createFromFile(
 				PostscanComposite.class, 
 				CHECKED_IMAGE + ".gif"
-//				iconPath + CHECKED_IMAGE + ".gif"
 				)
 			);
 		imageRegistry.put(UNCHECKED_IMAGE, ImageDescriptor.createFromFile(
 				PostscanComposite.class, 
 				UNCHECKED_IMAGE + ".gif"
-//				iconPath + UNCHECKED_IMAGE + ".gif"
 				)
 			);	
 	}
 	
-	/**
+	/*
 	 * Returns the image with the given key, or <code>null</code> if not found.
 	 */
 	private Image getImage(boolean isSelected) {
@@ -63,8 +64,11 @@ public class PostscanLabelProvider implements ITableLabelProvider {
 		return  imageRegistry.get(key);
 	}
 	
-	public Image getColumnImage( final Object postscan, final int colIndex ) {
-		// TODO Auto-generated method stub
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Image getColumnImage(final Object postscan, final int colIndex) {
 		if (colIndex == 2) {
 			// TODO Fehlerbehandlung fehlt
 			Image bild = getImage(((Postscan) postscan).isReset());
@@ -82,10 +86,13 @@ public class PostscanLabelProvider implements ITableLabelProvider {
 			}
 		}
 		return null;
-		
 	}
 	
-	public String getColumnText( final Object postscan, final int colIndex ) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getColumnText(final Object postscan, final int colIndex) {
 		final Postscan pos = (Postscan)postscan;
 		switch( colIndex ) {
 			case 0:
@@ -126,24 +133,32 @@ public class PostscanLabelProvider implements ITableLabelProvider {
 		return "";
 	}
 
-	public void addListener( final ILabelProviderListener arg0 ) {
-		// TODO Auto-generated method stub
-
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
 
-	public boolean isLabelProperty( final Object arg0, String arg1 ) {
-		// TODO Auto-generated method stub
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isLabelProperty(final Object arg0, String arg1) {
 		return false;
 	}
-
-	public void removeListener( final ILabelProviderListener arg0 ) {
-		// TODO Auto-generated method stub
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void addListener(final ILabelProviderListener arg0) {
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void removeListener(final ILabelProviderListener arg0) {
+	}
 }

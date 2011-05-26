@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
@@ -19,16 +12,30 @@ import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
 
-
+/**
+ * <code>PositioningCellModifyer</code>.
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
 public class PositioningCellModifyer implements ICellModifier {
 
 	private final TableViewer tableViewer;
 	
-	public PositioningCellModifyer( final TableViewer tableViewer ) {
+	/**
+	 * Constructs a <code>PositioningCellModifyer</code>.
+	 * 
+	 * @param tableViewer the table viewer the modifier should be set to
+	 */
+	public PositioningCellModifyer(final TableViewer tableViewer) {
 		this.tableViewer = tableViewer;
 	}
 	
-	public boolean canModify( final Object element, final String property ) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean canModify(final Object element, final String property) {
 		if (property.equals("channel")) {
 			// Es werden nur die Channels erlaubt die in diesem ScanModul verwendet werden
 			ScanModule scanModul = (ScanModule)this.tableViewer.getInput();
@@ -55,7 +62,11 @@ public class PositioningCellModifyer implements ICellModifier {
 		return property.equals( "plugin" ) || property.equals( "parameter" );
 	}
 
-	public Object getValue( final Object element, final String property ) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Object getValue(final Object element, final String property) {
 		final Positioning positioning = (Positioning)element;
 		if( property.equals( "plugin" ) ) {
 			if( positioning.getPluginController().getPlugin() != null ) {
@@ -96,7 +107,11 @@ public class PositioningCellModifyer implements ICellModifier {
 		return -1;
 	}
 
-	public void modify( final Object element, final String property, final Object value ) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void modify(final Object element, final String property, final Object value) {
 		final Positioning positioning = (Positioning)((TableItem)element).getData();
 		if( property.equals( "plugin" ) ) {
 			final String[] pluginsArray = ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).getItems();
@@ -118,5 +133,4 @@ public class PositioningCellModifyer implements ICellModifier {
 		}
 		this.tableViewer.refresh();
 	}
-
 }

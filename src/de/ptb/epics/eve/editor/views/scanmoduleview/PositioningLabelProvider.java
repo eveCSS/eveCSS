@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
 import java.util.Iterator;
@@ -22,9 +15,21 @@ import de.ptb.epics.eve.data.scandescription.errors.PluginErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.PositioningError;
 import de.ptb.epics.eve.data.scandescription.errors.PositioningErrorTypes;
 
+/**
+ * <code>PositioningLabelProvider</code> is the label provider for the table 
+ * viewer in 
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PositioningComposite}.
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
 public class PositioningLabelProvider implements ITableLabelProvider {
 
-	public Image getColumnImage( final Object positioning, final int colIndex ) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Image getColumnImage(final Object positioning, final int colIndex) {
 		final Positioning pos = (Positioning)positioning;
 		if( colIndex == 1 ) {
 			final Iterator< IModelError > it = pos.getModelErrors().iterator();
@@ -65,7 +70,11 @@ public class PositioningLabelProvider implements ITableLabelProvider {
 		return null;
 	}
 
-	public String getColumnText( final Object positioning, final int colIndex ) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getColumnText(final Object positioning, final int colIndex) {
 		final Positioning pos = (Positioning)positioning;
 		switch( colIndex ) {
 			case 0:
@@ -82,24 +91,32 @@ public class PositioningLabelProvider implements ITableLabelProvider {
 		return "";
 	}
 
-	public void addListener( final ILabelProviderListener arg0 ) {
-		// TODO Auto-generated method stub
-
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void addListener(final ILabelProviderListener arg0) {
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
 
-	public boolean isLabelProperty( final Object arg0, String arg1 ) {
-		// TODO Auto-generated method stub
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isLabelProperty(final Object arg0, String arg1) {
 		return false;
 	}
 
-	public void removeListener( final ILabelProviderListener arg0 ) {
-		// TODO Auto-generated method stub
-
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void removeListener(final ILabelProviderListener arg0) {
 	}
-
 }
