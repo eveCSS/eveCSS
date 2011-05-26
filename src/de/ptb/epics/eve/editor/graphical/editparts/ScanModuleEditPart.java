@@ -109,6 +109,9 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 		// auskokmmentiert am 11.1.11. Funktionen scheinen nicht
 		// gebraucht zu werden. Wofür sollten sie sein?
 
+		// TODO: steht in der GEF Doku... =aufräumen
+		// da aber GEF im Grunde nicht benutzt wird...
+		
 //		this.getFigure().getParent().remove( this.getFigure() );
 		this.deactivate();
 //		this.removeNotify();
@@ -188,9 +191,16 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 					((ScanModule)getModel()).getX() + " , y = " + 
 					((ScanModule)getModel()).getY());
 		
+		// FIXME below code infers dirty state even if not moved but only selected
+		
+		/*
 		// update coords in the model
-		((ScanModule)getModel()).setX(getFigure().getClientArea().x);
-		((ScanModule)getModel()).setY(getFigure().getClientArea().y);
+		if ((((ScanModule)getModel()).getX() != getFigure().getClientArea().x) &&
+			(((ScanModule)getModel()).getY() != getFigure().getClientArea().y))
+		{
+			((ScanModule)getModel()).setX(getFigure().getClientArea().x);
+			((ScanModule)getModel()).setY(getFigure().getClientArea().y);
+		}*/
 		
 		logger.debug("Scan Module Figure coords : x = " + 
 					getFigure().getClientArea().x + " , y = " +
