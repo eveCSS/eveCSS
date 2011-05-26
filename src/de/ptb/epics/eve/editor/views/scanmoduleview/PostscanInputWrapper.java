@@ -10,7 +10,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 /**
  * <code>PostscanInputWrapper</code> is the content provider for the table 
  * viewer defined in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PostcanComposite}.
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PostscanComposite}.
  * 
  * @author ?
  * @author Marcus Michalsky

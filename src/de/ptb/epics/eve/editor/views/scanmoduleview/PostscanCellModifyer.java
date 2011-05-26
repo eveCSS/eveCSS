@@ -13,7 +13,7 @@ import de.ptb.epics.eve.data.scandescription.Postscan;
 /**
  * <code>PostscanCellModifyer</code> is the cell modifier for the table 
  * viewer defined in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PostcanComposite}.
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PostscanComposite}.
  * 
  * @author ?
  * @author Marcus Michalsky

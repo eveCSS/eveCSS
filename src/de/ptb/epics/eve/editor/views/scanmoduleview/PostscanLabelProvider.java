@@ -18,7 +18,7 @@ import de.ptb.epics.eve.data.scandescription.errors.PostscanError;
 /**
  * <code>PostscanLabelProvider</code> is the label provider for the table 
  * viewer defined in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PostcanComposite}.
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PostscanComposite}.
  * 
  * @author ?
  */
