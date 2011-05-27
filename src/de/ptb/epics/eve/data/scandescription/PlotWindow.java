@@ -107,9 +107,11 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider {
 	}
 	
 	/**
-	 * Returns the plot mode of the plot window.
+	 * Returns the plot mode of the plot window as defined in 
+	 * {@link de.ptb.epics.eve.data.PlotModes}.
 	 * 
-	 * @return the plot mode of the plot window
+	 * @return the plot mode of the plot window as defined in 
+	 * 		{@link de.ptb.epics.eve.data.PlotModes}
 	 */
 	public PlotModes getMode() {
 		return this.mode;
