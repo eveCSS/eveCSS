@@ -3,6 +3,7 @@ package de.ptb.epics.eve.editor.actions;
 import java.io.File;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -43,7 +44,7 @@ public class HandOverAction implements IWorkbenchWindowActionDelegate {
 		// unsaved changes
 		boolean unsaved = de.ptb.epics.eve.editor.Activator.getDefault().
 								getWorkbench().getActiveWorkbenchWindow().
-								getActivePage().getActiveEditor().isDirty();	
+								getActivePage().getActiveEditor().isDirty();
 				
 		// if there are unsaved changes, inform the user
 		if(unsaved)
@@ -52,12 +53,13 @@ public class HandOverAction implements IWorkbenchWindowActionDelegate {
 								getWorkbench().getActiveWorkbenchWindow().
 								getActivePage().getActiveEditor().getTitle();
 			
-			boolean confirm = MessageDialog.openConfirm(null, "Unsaved Changes", 
+			boolean confirm = MessageDialog.openConfirm(null, "Unsaved Changes",
 					filename + " has been modified. Save Changes ?");
 				
 			if(confirm)
 			{   // save changes 
-				window.getActivePage().getActiveEditor().doSave(null);					
+				window.getActivePage().getActiveEditor().
+						doSave(new NullProgressMonitor());
 			}
 			else
 			{ // abort = do nothing
