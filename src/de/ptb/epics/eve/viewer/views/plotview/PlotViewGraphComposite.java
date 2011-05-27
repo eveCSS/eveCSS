@@ -103,7 +103,7 @@ public class PlotViewGraphComposite extends Composite
 						 String motorId, String motorName, String detector1Id, 
 						 String detector1Name, String detector2Id, 
 						 String detector2Name) {
-		
+		// XXX get rid of parameters, 9 is too much !
 		// do not clean if plot has "isInit=false" AND detectors and motors are 
 		// still the same
 		if ((this.motorId == motorId) && (this.detector1Id == detector1Id) && 
@@ -201,6 +201,8 @@ public class PlotViewGraphComposite extends Composite
 		boolean motorHasData = false;
 
 		// ****************** logging *****************************************
+		if(logger.isDebugEnabled())
+		{
 		String val = "";
 		String val2 = "";
 		if(measurementData.getValues().size() > 1)
@@ -220,6 +222,7 @@ public class PlotViewGraphComposite extends Composite
 				     "at: " + new TimeStamp(
 				    		 measurementData.getGerenalTimeStamp()-631152000, 
 				    		 measurementData.getNanoseconds()).toMONDDYYYY());
+		}
 		// **************end of: logging **************************************
 		
 		// are we still in the same scan module of the same chain ?
