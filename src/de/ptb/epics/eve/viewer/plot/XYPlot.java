@@ -76,10 +76,11 @@ public class XYPlot extends Figure {
 	 * @param plotWindow the 
 	 * 		  {@link de.ptb.epics.eve.data.scandescription.PlotWindow} which
 	 * 		  contains style information (color, line style, mark style, mode)
+	 * @param axisNo the position number of the axis in the axis list
 	 */
 	public void addTrace(String name, String id, 
 						 String motorName, String motorId, 
-						 PlotWindow plotWindow) {
+						 PlotWindow plotWindow, int axisNo) {
 		// Note: xyGraph always needs at least one y axis as primary y axis
 		
 		if (name == null) return;
@@ -126,6 +127,8 @@ public class XYPlot extends Figure {
 	    // as decided above and our data Provider
 	    trace = new Trace(name, xyGraph.primaryXAxis, axis, dataProvider);
 			
+	   /*
+	    
 	    // find the y axis of the detector channel in the plotWindow
 	    int axis_pos = -1;
 	        
@@ -138,7 +141,10 @@ public class XYPlot extends Figure {
 	    }
 	        
 	    // now that we know which y axis we need, we can style it
-	        
+	        */
+	    
+	    int axis_pos = axisNo;
+	    
 	    YAxis axis_to_change = plotWindow.getYAxes().get(axis_pos);
 	        
 	    trace.setTraceType(axis_to_change.getLinestyle());
@@ -146,17 +152,17 @@ public class XYPlot extends Figure {
 	    trace.setTraceColor(new Color(null,axis_to_change.getColor()));
 	       
 	    // 
-	    boolean normalizedata = 
+	   /* boolean normalizedata = 
 	       	plotWindow.getYAxes().get(axis_pos).getNormalizeChannel() == null 
 	       	? false : true;
-	        
+	        */
 	    // if wanted, change to logarithm scale (and change axis title)
 	        
 	    String y_axis_title = name;
-	    if(normalizedata) y_axis_title += 
+	   /* if(normalizedata) y_axis_title += 
 	       	" / " + 
 	       	plotWindow.getYAxes().get(axis_pos).getNormalizeChannel().getName(); 
-	        
+	        */
 	    if(axis_to_change.getMode() == PlotModes.LOG)
 	    {
 	       	trace.getYAxis().setLogScale(true);

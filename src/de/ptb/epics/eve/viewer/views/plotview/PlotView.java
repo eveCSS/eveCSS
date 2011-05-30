@@ -210,4 +210,13 @@ public class PlotView extends ViewPart {
 					targetWidth + 10;
 		sc.setMinSize(sizeWidth, sizeHeight);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() {
+		plotGraphComposite.dispose();
+		super.dispose();
+	}
 }

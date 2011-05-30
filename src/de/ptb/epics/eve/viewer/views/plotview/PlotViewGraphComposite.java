@@ -52,6 +52,9 @@ public class PlotViewGraphComposite extends Composite
 	private String detector1Name;
 	private String detector2Name;
 	
+	private String traceNameForDet1;
+	private String traceNameForDet2;
+	
 	/**
 	 * Constructs a <code>plotGraphComposite</code>.
 	 * 
@@ -127,6 +130,8 @@ public class PlotViewGraphComposite extends Composite
 		// find the y axis of the detector channel in the plotWindow
 	    int axis_pos = -1;
 	        
+	    // Note: if both axes have the same detector channel (one with normalize)
+	    // axis_pos is first set to 0 then to 1 (intended behavior).
 	    for(int i = 0;i < plotWindow.getYAxes().size(); i++)
 	    {
 	      	if(plotWindow.getYAxes().get(i).getDetectorChannel().getID() == detector2Id)
@@ -136,16 +141,36 @@ public class PlotViewGraphComposite extends Composite
 	    }
 		
 	    if(axis_pos != -1)
-	    {
+	    { // axis of detector 2 was found -> check if it is normalized
 		this.detector2normalized = 
 			plotWindow.getYAxes().get(axis_pos).getNormalizeChannel() != null;
 	    }
 
+	    if(logger.isDebugEnabled())
+	    {
+	    	logger.debug("detector 1 normalized ? " + detector1normalized);
+	    	logger.debug("detector 2 normalized ? " + detector2normalized);
+	    }
+	    
 	    // reset time stamp stuff (used in measurementDataReceived)
 		timestamp = null;
 		timestamp_det1 = null;
 		timestamp_det2 = null;
-	
+		
+		traceNameForDet1 = detector1Name;
+		if(detector1normalized)
+		{
+			traceNameForDet1 += " / " + 
+				plotWindow.getYAxes().get(0).getNormalizeChannel().getName();
+		}
+		
+		traceNameForDet2 = detector2Name;
+		if(detector2normalized)
+		{
+			traceNameForDet2 += " / " +  
+				plotWindow.getYAxes().get(1).getNormalizeChannel().getName();
+		}
+		
 		// update first y axis 
 		if (this.detector1Id != null)
 		{
@@ -153,13 +178,13 @@ public class PlotViewGraphComposite extends Composite
 			this.detector1Name = detector1Name;
 			// does the plot already have a trace of this detector ?
 			// if not -> add as new trace
-			if (xyPlot.getTrace(detector1Name) == null)
-				xyPlot.addTrace(detector1Name, detector1Id, 
-								motorName, motorId, plotWindow);
+			if (xyPlot.getTrace(traceNameForDet1) == null)
+				xyPlot.addTrace(traceNameForDet1, detector1Id, 
+								motorName, motorId, plotWindow, 0);
 		}
 		else {
 			// no first detector -> remove the trace (if present) and set null
-			xyPlot.removeTrace(detector1Name);
+			xyPlot.removeTrace(traceNameForDet1);
 			this.detector1Name = null;
 		}
 		// update second y axis
@@ -169,13 +194,13 @@ public class PlotViewGraphComposite extends Composite
 			this.detector2Name = detector2Name;
 			// does the plot already have a trace of this detector ?
 			// if not -> add as new trace
-			if (xyPlot.getTrace(detector2Name) == null)
-				xyPlot.addTrace(detector2Name, detector2Id, 
-								motorName, motorId, plotWindow);
+			if (xyPlot.getTrace(traceNameForDet2) == null)
+				xyPlot.addTrace(traceNameForDet2, detector2Id, 
+								motorName, motorId, plotWindow, 1);
 		}
 		else {
 			// no second detector -> remove the trace (if present) and set null
-			xyPlot.removeTrace(detector2Name);
+			xyPlot.removeTrace(traceNameForDet2);
 			this.detector2Name = null;
 		}
 		
@@ -184,6 +209,16 @@ public class PlotViewGraphComposite extends Composite
 		canvas.redraw();
 		this.layout();
 		this.redraw();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() {
+		Activator.getDefault().getEcp1Client().removeMeasurementDataListener(this);
+		xyPlot.erase();
+		// super.dispose();
 	}
 	
 	/**
@@ -268,7 +303,7 @@ public class PlotViewGraphComposite extends Composite
 				}
 			}
 			// detector 2 data ?
-			else if (this.detector2Id != null && 
+			if (this.detector2Id != null && 
 					 this.detector2Id.equals(measurementData.getName()))
 			{
 				detector2PosCount = measurementData.getPositionCounter();
@@ -367,23 +402,23 @@ public class PlotViewGraphComposite extends Composite
 					{
 						// plot (motor_pos, timestamp:det1)
 						if(plotDetector1 && timestamp_det1 != null)
-							xyPlot.setData(detector1Name, xValue, timestamp_det1);
+							xyPlot.setData(traceNameForDet1, xValue, timestamp_det1);
 						//plot (motor_pos, timestamp:det2)
 						if(plotDetector2 && timestamp_det2 != null)
-							xyPlot.setData(detector2Name, xValue, timestamp_det2);
+							xyPlot.setData(traceNameForDet2, xValue, timestamp_det2);
 						// plot (motor_pos, det1_val)
 						if(plotDetector1 && timestamp == null) 
-							xyPlot.setData(detector1Name, xValue,y1value);
+							xyPlot.setData(traceNameForDet1, xValue,y1value);
 						// plot (motor_pos, det2_val)
 						if(plotDetector2 && timestamp == null)
-							xyPlot.setData(detector2Name, xValue,y2value);
+							xyPlot.setData(traceNameForDet2, xValue,y2value);
 						// plot (time stamp, det1_val)
 						if(plotDetector1 && timestamp != null)
-							xyPlot.setData(detector1Name, posCount, 
+							xyPlot.setData(traceNameForDet1, posCount, 
 										   y1value, timestamp);
 						// plot(time stamp, det2_val)
 						if(plotDetector2 && timestamp != null)
-							xyPlot.setData(detector2Name, posCount, 
+							xyPlot.setData(traceNameForDet2, posCount, 
 										   y2value, timestamp);
 					}
 				}
