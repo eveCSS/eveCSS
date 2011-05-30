@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="de.ptb.epics.eve.data.scandescription_plotwindow" size="1855,1418" id="de.ptb.epics.eve.data.scandescription" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D313030302064652E7074622E65706963732E6576652E646174612F6D6D696368616C73">
+  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.5/@sourceConnections.0 //@children.6/@sourceConnections.2" name="PlotWindowErrorTypes" location="555,45" size="206,102" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowErrorTypes" runTimeClassModel="NO_X_AXIS_SET%,NO_Y_AXIS_SET%">
+    <children xsi:type="editmodel:CompartmentEditModel" size="108,36">
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="NO_X_AXIS_SET" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowErrorTypes#NO_X_AXIS_SET%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="NO_Y_AXIS_SET" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowErrorTypes#NO_Y_AXIS_SET%"/>
+    </children>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.7/@sourceConnections.0 //@children.6/@sourceConnections.0" name="PlotModes" location="959,45" size="146,102" id="de.ptb.epics.eve.data/PlotModes" runTimeClassModel="LOG%,LINEAR%">
+    <children xsi:type="editmodel:CompartmentEditModel" size="57,36">
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="LOG" id="de.ptb.epics.eve.data/PlotModes#LOG%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="LINEAR" id="de.ptb.epics.eve.data/PlotModes#LINEAR%"/>
+    </children>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.7/@sourceConnections.1" name="DetectorChannel" location="1005,1080" size="250,225" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel" runTimeClassModel="DetectorChannel(),DetectorChannel(Lde.ptb.epics.eve.data.measuringstation.Function;),clone(),getRead(),getDetector(),equals(Ljava.lang.Object;),hashCode(),read,setRead(Lde.ptb.epics.eve.data.measuringstation.Function;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="99,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="read" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#read"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="185,144">
+      <children xsi:type="editmodel:MethodEditModel" name="DetectorChannel" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#DetectorChannel(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="DetectorChannel" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#DetectorChannel()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDetector" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#getDetector()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getRead" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#getRead()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setRead" id="de.ptb.epics.eve.data.measuringstation/DetectorChannel#setRead(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.6/@sourceConnections.4" name="MotorAxis" location="45,311" size="373,711" id="de.ptb.epics.eve.data.measuringstation/MotorAxis" runTimeClassModel="position,stop,MotorAxis(),getGoto(),setStatus(Lde.ptb.epics.eve.data.measuringstation.Function;),tweakValue,getType(),setOffset(Lde.ptb.epics.eve.data.measuringstation.Function;),getTweakValue(),getTweakReverse(),deadband,getStop(),setTweakValue(Lde.ptb.epics.eve.data.measuringstation.Function;),formatValueDefault(Ljava.lang.String;),MotorAxis(Lde.ptb.epics.eve.data.measuringstation.Function;Lde.ptb.epics.eve.data.measuringstation.Function;Lde.ptb.epics.eve.data.measuringstation.Function;Lde.ptb.epics.eve.data.measuringstation.Function;),setTweakForward(Lde.ptb.epics.eve.data.measuringstation.Function;),equals(Ljava.lang.Object;),getPosition(),offset,getDefaultValue(),setStop(Lde.ptb.epics.eve.data.measuringstation.Function;),status,getOffset(),tweakReverse,isValuePossible(Ljava.lang.String;),tweakForward,setPosition(Lde.ptb.epics.eve.data.measuringstation.Function;),setDeadband(Lde.ptb.epics.eve.data.measuringstation.Function;),setTweakReverse(Lde.ptb.epics.eve.data.measuringstation.Function;),clone(),getTweakForward(),getStatus(),hashCode(),getDeadband(),setGoto(Lde.ptb.epics.eve.data.measuringstation.Function;),formatValue(Ljava.lang.String;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="152,144">
+      <children xsi:type="editmodel:AttributeEditModel" name="deadband" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#deadband"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="offset" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#offset"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="position" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#position"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="status" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#status"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="stop" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#stop"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="tweakForward" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#tweakForward"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="tweakReverse" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#tweakReverse"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="tweakValue" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#tweakValue"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="350,504">
+      <children xsi:type="editmodel:MethodEditModel" name="MotorAxis" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#MotorAxis(Lde.ptb.epics.eve.data.measuringstation.Function;Lde.ptb.epics.eve.data.measuringstation.Function;Lde.ptb.epics.eve.data.measuringstation.Function;Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="MotorAxis" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#MotorAxis()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="formatValue" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#formatValue(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="formatValueDefault" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#formatValueDefault(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDeadband" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getDeadband()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDefaultValue" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getDefaultValue()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getGoto" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getGoto()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getOffset" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getOffset()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPosition" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getPosition()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStatus" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getStatus()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStop" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getStop()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTweakForward" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getTweakForward()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTweakReverse" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getTweakReverse()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTweakValue" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getTweakValue()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getType" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#getType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isValuePossible" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#isValuePossible(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setDeadband" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setDeadband(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setGoto" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setGoto(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setOffset" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setOffset(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setPosition" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setPosition(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStatus" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setStatus(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStop" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setStop(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setTweakForward" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setTweakForward(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setTweakReverse" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setTweakReverse(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setTweakValue" id="de.ptb.epics.eve.data.measuringstation/MotorAxis#setTweakValue(Lde.ptb.epics.eve.data.measuringstation.Function;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="Trace" location="1515,30" size="320,1353" id="org.csstudio.swt.xygraph.figures/Trace" runTimeClassModel="axisRevalidated(Lorg.csstudio.swt.xygraph.figures.Axis;),getYErrorBarType(),setXYGraph(Lorg.csstudio.swt.xygraph.figures.XYGraph;),pointSize,areaAlpha,setErrorBarColor(Lorg.eclipse.swt.graphics.Color;),setTraceType(Lorg.csstudio.swt.xygraph.figures.Trace.TraceType;),setYErrorBarType(Lorg.csstudio.swt.xygraph.figures.Trace.ErrorBarType;),getName(),getYAxis(),isAntiAliasing(),getBaseLine(),errorBarEnabled,isErrorBarEnabled(),org.csstudio.swt.xygraph.figures.Trace.ErrorBarType,errorBarCapWidth,setXErrorBarType(Lorg.csstudio.swt.xygraph.figures.Trace.ErrorBarType;),getDataProvider(),baseLine,setName(Ljava.lang.String;),antiAliasing,org.csstudio.swt.xygraph.figures.Trace.PointStyle,setAntiAliasing(Z),setXAxis(Lorg.csstudio.swt.xygraph.figures.Axis;),drawPoint,getAreaAlpha(),setTraceColor(Lorg.eclipse.swt.graphics.Color;),getXYGraph(),setAreaAlpha(I),getHotSampleList(),isDrawYErrorInArea(),getPointStyle(),getTraceColor(),Trace(Ljava.lang.String;Lorg.csstudio.swt.xygraph.figures.Axis;Lorg.csstudio.swt.xygraph.figures.Axis;Lorg.csstudio.swt.xygraph.dataprovider.IDataProvider;),traceType,setErrorBarEnabled(Z),getErrorBarColor(),toString(),yAxis,setLineWidth(I),name,drawLine,getXAxis(),xAxis,getPointSize(),setDataProvider(Lorg.csstudio.swt.xygraph.dataprovider.IDataProvider;),setYAxis(Lorg.csstudio.swt.xygraph.figures.Axis;),setPointSize(I),getLineWidth(),traceColor,getTraceType(),xErrorBarType,yErrorBarType,dataChanged(Lorg.csstudio.swt.xygraph.dataprovider.IDataProvider;),getErrorBarCapWidth(),lineWidth,pointStyle,setBaseLine(Lorg.csstudio.swt.xygraph.figures.Trace.BaseLine;),errorBarColor,org.csstudio.swt.xygraph.figures.Trace.TraceType,org.csstudio.swt.xygraph.figures.Trace.BaseLine,setDrawYErrorInArea(Z),drawYErrorInArea,setErrorBarCapWidth(I),axisRangeChanged(Lorg.csstudio.swt.xygraph.figures.Axis;Lorg.csstudio.swt.xygraph.linearscale.Range;Lorg.csstudio.swt.xygraph.linearscale.Range;),setPointStyle(Lorg.csstudio.swt.xygraph.figures.Trace.PointStyle;),getXErrorBarType()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="297,828">
+      <children xsi:type="editmodel:MethodEditModel" name="Trace" id="org.csstudio.swt.xygraph.figures/Trace#Trace(Ljava.lang.String;Lorg.csstudio.swt.xygraph.figures.Axis;Lorg.csstudio.swt.xygraph.figures.Axis;Lorg.csstudio.swt.xygraph.dataprovider.IDataProvider;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setXAxis" id="org.csstudio.swt.xygraph.figures/Trace#setXAxis(Lorg.csstudio.swt.xygraph.figures.Axis;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getXAxis" id="org.csstudio.swt.xygraph.figures/Trace#getXAxis()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setYAxis" id="org.csstudio.swt.xygraph.figures/Trace#setYAxis(Lorg.csstudio.swt.xygraph.figures.Axis;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setDataProvider" id="org.csstudio.swt.xygraph.figures/Trace#setDataProvider(Lorg.csstudio.swt.xygraph.dataprovider.IDataProvider;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTraceType" id="org.csstudio.swt.xygraph.figures/Trace#getTraceType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setTraceColor" id="org.csstudio.swt.xygraph.figures/Trace#setTraceColor(Lorg.eclipse.swt.graphics.Color;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTraceColor" id="org.csstudio.swt.xygraph.figures/Trace#getTraceColor()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setTraceType" id="org.csstudio.swt.xygraph.figures/Trace#setTraceType(Lorg.csstudio.swt.xygraph.figures.Trace.TraceType;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setBaseLine" id="org.csstudio.swt.xygraph.figures/Trace#setBaseLine(Lorg.csstudio.swt.xygraph.figures.Trace.BaseLine;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setPointStyle" id="org.csstudio.swt.xygraph.figures/Trace#setPointStyle(Lorg.csstudio.swt.xygraph.figures.Trace.PointStyle;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setLineWidth" id="org.csstudio.swt.xygraph.figures/Trace#setLineWidth(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setPointSize" id="org.csstudio.swt.xygraph.figures/Trace#setPointSize(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setAreaAlpha" id="org.csstudio.swt.xygraph.figures/Trace#setAreaAlpha(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setAntiAliasing" id="org.csstudio.swt.xygraph.figures/Trace#setAntiAliasing(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setName" id="org.csstudio.swt.xygraph.figures/Trace#setName(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getName" id="org.csstudio.swt.xygraph.figures/Trace#getName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPointSize" id="org.csstudio.swt.xygraph.figures/Trace#getPointSize()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAreaAlpha" id="org.csstudio.swt.xygraph.figures/Trace#getAreaAlpha()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getYAxis" id="org.csstudio.swt.xygraph.figures/Trace#getYAxis()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" id="org.csstudio.swt.xygraph.figures/Trace#toString()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dataChanged" id="org.csstudio.swt.xygraph.figures/Trace#dataChanged(Lorg.csstudio.swt.xygraph.dataprovider.IDataProvider;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="axisRevalidated" id="org.csstudio.swt.xygraph.figures/Trace#axisRevalidated(Lorg.csstudio.swt.xygraph.figures.Axis;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="axisRangeChanged" id="org.csstudio.swt.xygraph.figures/Trace#axisRangeChanged(Lorg.csstudio.swt.xygraph.figures.Axis;Lorg.csstudio.swt.xygraph.linearscale.Range;Lorg.csstudio.swt.xygraph.linearscale.Range;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setErrorBarEnabled" id="org.csstudio.swt.xygraph.figures/Trace#setErrorBarEnabled(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDataProvider" id="org.csstudio.swt.xygraph.figures/Trace#getDataProvider()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setYErrorBarType" id="org.csstudio.swt.xygraph.figures/Trace#setYErrorBarType(Lorg.csstudio.swt.xygraph.figures.Trace.ErrorBarType;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setXErrorBarType" id="org.csstudio.swt.xygraph.figures/Trace#setXErrorBarType(Lorg.csstudio.swt.xygraph.figures.Trace.ErrorBarType;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setDrawYErrorInArea" id="org.csstudio.swt.xygraph.figures/Trace#setDrawYErrorInArea(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setErrorBarCapWidth" id="org.csstudio.swt.xygraph.figures/Trace#setErrorBarCapWidth(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setErrorBarColor" id="org.csstudio.swt.xygraph.figures/Trace#setErrorBarColor(Lorg.eclipse.swt.graphics.Color;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getHotSampleList" id="org.csstudio.swt.xygraph.figures/Trace#getHotSampleList()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getBaseLine" id="org.csstudio.swt.xygraph.figures/Trace#getBaseLine()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPointStyle" id="org.csstudio.swt.xygraph.figures/Trace#getPointStyle()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLineWidth" id="org.csstudio.swt.xygraph.figures/Trace#getLineWidth()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isAntiAliasing" id="org.csstudio.swt.xygraph.figures/Trace#isAntiAliasing()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isErrorBarEnabled" id="org.csstudio.swt.xygraph.figures/Trace#isErrorBarEnabled()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getYErrorBarType" id="org.csstudio.swt.xygraph.figures/Trace#getYErrorBarType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getXErrorBarType" id="org.csstudio.swt.xygraph.figures/Trace#getXErrorBarType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getErrorBarCapWidth" id="org.csstudio.swt.xygraph.figures/Trace#getErrorBarCapWidth()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getErrorBarColor" id="org.csstudio.swt.xygraph.figures/Trace#getErrorBarColor()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isDrawYErrorInArea" id="org.csstudio.swt.xygraph.figures/Trace#isDrawYErrorInArea()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setXYGraph" id="org.csstudio.swt.xygraph.figures/Trace#setXYGraph(Lorg.csstudio.swt.xygraph.figures.XYGraph;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getXYGraph" id="org.csstudio.swt.xygraph.figures/Trace#getXYGraph()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="161,452">
+      <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.7/@sourceConnections.2" name="TraceType" location="12258,13493" size="161,179" id="org.csstudio.swt.xygraph.figures/Trace$TraceType" runTimeClassModel="STEP_VERTICALLY%,BAR%,DASH_LINE%,stringValues(),AREA%,POINT%,STEP_HORIZONTALLY%,SOLID_LINE%,toString()">
+        <children xsi:type="editmodel:CompartmentEditModel" size="138,126">
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="AREA" id="org.csstudio.swt.xygraph.figures/Trace$TraceType#AREA%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="BAR" id="org.csstudio.swt.xygraph.figures/Trace$TraceType#BAR%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="DASH_LINE" id="org.csstudio.swt.xygraph.figures/Trace$TraceType#DASH_LINE%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="POINT" id="org.csstudio.swt.xygraph.figures/Trace$TraceType#POINT%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="SOLID_LINE" id="org.csstudio.swt.xygraph.figures/Trace$TraceType#SOLID_LINE%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="STEP_HORIZONTALLY" id="org.csstudio.swt.xygraph.figures/Trace$TraceType#STEP_HORIZONTALLY%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="STEP_VERTICALLY" id="org.csstudio.swt.xygraph.figures/Trace$TraceType#STEP_VERTICALLY%"/>
+        </children>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+      <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.7/@sourceConnections.3" name="PointStyle" location="10672,12480" size="138,269" id="org.csstudio.swt.xygraph.figures/Trace$PointStyle" runTimeClassModel="FILLED_DIAMOND%,FILLED_SQUARE%,stringValues(),CIRCLE%,SQUARE%,CROSS%,toString(),NONE%,BAR%,TRIANGLE%,XCROSS%,DIAMOND%,POINT%,FILLED_TRIANGLE%">
+        <children xsi:type="editmodel:CompartmentEditModel" size="115,216">
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="BAR" id="org.csstudio.swt.xygraph.figures/Trace$PointStyle#BAR%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="CIRCLE" id="org.csstudio.swt.xygraph.figures/Trace$PointStyle#CIRCLE%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="CROSS" id="org.csstudio.swt.xygraph.figures/Trace$PointStyle#CROSS%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="DIAMOND" id="org.csstudio.swt.xygraph.figures/Trace$PointStyle#DIAMOND%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="FILLED_DIAMOND" id="org.csstudio.swt.xygraph.figures/Trace$PointStyle#FILLED_DIAMOND%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="FILLED_SQUARE" id="org.csstudio.swt.xygraph.figures/Trace$PointStyle#FILLED_SQUARE%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="FILLED_TRIANGLE" id="org.csstudio.swt.xygraph.figures/Trace$PointStyle#FILLED_TRIANGLE%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="NONE" id="org.csstudio.swt.xygraph.figures/Trace$PointStyle#NONE%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="POINT" id="org.csstudio.swt.xygraph.figures/Trace$PointStyle#POINT%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="SQUARE" id="org.csstudio.swt.xygraph.figures/Trace$PointStyle#SQUARE%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="TRIANGLE" id="org.csstudio.swt.xygraph.figures/Trace$PointStyle#TRIANGLE%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="XCROSS" id="org.csstudio.swt.xygraph.figures/Trace$PointStyle#XCROSS%"/>
+        </children>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+    </children>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="org.csstudio.swt.xygraph.figures/Trace-Standard::Call->org.eclipse.swt.graphics/RGB*org.csstudio.swt.xygraph.figures/Trace-Standard::Instantiate->org.eclipse.swt.graphics/RGB" source="//@children.4" target="//@children.8" targetEnd="//@children.4/@sourceConnections.0/@children.2" label="//@children.4/@sourceConnections.0/@children.0" sourceEnd="//@children.4/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Instantiate, Call»" size="103,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,121" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="186,121"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.6/@sourceConnections.1" name="PlotWindowError" location="45,45" size="369,243" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowError" runTimeClassModel="plotWindow,errorType,getErrorMessage(),PlotWindowError(Lde.ptb.epics.eve.data.scandescription.PlotWindow;Lde.ptb.epics.eve.data.scandescription.errors.PlotWindowErrorTypes;),hashCode(),equals(Ljava.lang.Object;),getErrorName(),getPlotWindow(),getErrorType(),toString()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="205,36">
+      <children xsi:type="editmodel:AttributeEditModel" name="errorType" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowError#errorType"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="plotWindow" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowError#plotWindow"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="346,144">
+      <children xsi:type="editmodel:MethodEditModel" name="PlotWindowError" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowError#PlotWindowError(Lde.ptb.epics.eve.data.scandescription.PlotWindow;Lde.ptb.epics.eve.data.scandescription.errors.PlotWindowErrorTypes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowError#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getErrorMessage" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowError#getErrorMessage()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getErrorName" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowError#getErrorName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getErrorType" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowError#getErrorType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPlotWindow" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowError#getPlotWindow()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowError#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowError#toString()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowError-Standard::Call->de.ptb.epics.eve.data.scandescription.errors/PlotWindowErrorTypes*de.ptb.epics.eve.data.scandescription.errors/PlotWindowError-Soyatec::Import->de.ptb.epics.eve.data.scandescription.errors/PlotWindowErrorTypes" source="//@children.5" target="//@children.0" targetEnd="//@children.5/@sourceConnections.0/@children.2" label="//@children.5/@sourceConnections.0/@children.0" sourceEnd="//@children.5/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="369,50" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,50"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription.errors/PlotWindowError-Soyatec::Import->de.ptb.epics.eve.data.scandescription/PlotWindow" source="//@children.5" target="//@children.6" targetEnd="//@children.5/@sourceConnections.1/@children.2" label="//@children.5/@sourceConnections.1/@children.0" sourceEnd="//@children.5/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="369,176" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,26"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.5/@sourceConnections.1" name="PlotWindow" location="555,195" size="405,482" id="de.ptb.epics.eve.data.scandescription/PlotWindow" runTimeClassModel="setMode(Lde.ptb.epics.eve.data.PlotModes;),addYAxis(Lde.ptb.epics.eve.data.scandescription.YAxis;),getYAxisAmount(),clearYAxis(),updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;),getModelErrors(),init,setInit(Z),setId(I),removeYAxis(Lde.ptb.epics.eve.data.scandescription.YAxis;),mode,getMode(),id,isInit(),getYAxisIterator(),getId(),setXAxis(Lde.ptb.epics.eve.data.measuringstation.MotorAxis;),getYAxes(),getXAxis(),PlotWindow(),xAxis,addModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;),removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="123,90">
+      <children xsi:type="editmodel:AttributeEditModel" name="xAxis" id="de.ptb.epics.eve.data.scandescription/PlotWindow#xAxis"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="yAxis" id="de.ptb.epics.eve.data.scandescription/PlotWindow#yAxis"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="id" id="de.ptb.epics.eve.data.scandescription/PlotWindow#id"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="mode" id="de.ptb.epics.eve.data.scandescription/PlotWindow#mode"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="init" id="de.ptb.epics.eve.data.scandescription/PlotWindow#init"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="382,342">
+      <children xsi:type="editmodel:MethodEditModel" name="PlotWindow" id="de.ptb.epics.eve.data.scandescription/PlotWindow#PlotWindow()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getId" id="de.ptb.epics.eve.data.scandescription/PlotWindow#getId()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setId" id="de.ptb.epics.eve.data.scandescription/PlotWindow#setId(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isInit" id="de.ptb.epics.eve.data.scandescription/PlotWindow#isInit()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setInit" id="de.ptb.epics.eve.data.scandescription/PlotWindow#setInit(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMode" id="de.ptb.epics.eve.data.scandescription/PlotWindow#getMode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMode" id="de.ptb.epics.eve.data.scandescription/PlotWindow#setMode(Lde.ptb.epics.eve.data.PlotModes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getXAxis" id="de.ptb.epics.eve.data.scandescription/PlotWindow#getXAxis()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setXAxis" id="de.ptb.epics.eve.data.scandescription/PlotWindow#setXAxis(Lde.ptb.epics.eve.data.measuringstation.MotorAxis;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addYAxis" id="de.ptb.epics.eve.data.scandescription/PlotWindow#addYAxis(Lde.ptb.epics.eve.data.scandescription.YAxis;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeYAxis" id="de.ptb.epics.eve.data.scandescription/PlotWindow#removeYAxis(Lde.ptb.epics.eve.data.scandescription.YAxis;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getYAxisIterator" id="de.ptb.epics.eve.data.scandescription/PlotWindow#getYAxisIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getYAxes" id="de.ptb.epics.eve.data.scandescription/PlotWindow#getYAxes()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getYAxisAmount" id="de.ptb.epics.eve.data.scandescription/PlotWindow#getYAxisAmount()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clearYAxis" id="de.ptb.epics.eve.data.scandescription/PlotWindow#clearYAxis()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="updateEvent" id="de.ptb.epics.eve.data.scandescription/PlotWindow#updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addModelUpdateListener" id="de.ptb.epics.eve.data.scandescription/PlotWindow#addModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeModelUpdateListener" id="de.ptb.epics.eve.data.scandescription/PlotWindow#removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getModelErrors" id="de.ptb.epics.eve.data.scandescription/PlotWindow#getModelErrors()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/PlotWindow-Soyatec::Access->de.ptb.epics.eve.data/PlotModes*de.ptb.epics.eve.data.scandescription/PlotWindow-Soyatec::Import->de.ptb.epics.eve.data/PlotModes" source="//@children.6" target="//@children.1" targetEnd="//@children.6/@sourceConnections.0/@children.2" label="//@children.6/@sourceConnections.0/@children.0" sourceEnd="//@children.6/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Access, Import»" location="855,160" size="99,13" automaticRelocationAllowed="false" locationOnWireFromSource="4.999999999999999" distanceFromWire="55.0" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="404,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,102"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/PlotWindow-Standard::Instantiate->de.ptb.epics.eve.data.scandescription.errors/PlotWindowError" source="//@children.6" target="//@children.5" targetEnd="//@children.6/@sourceConnections.1/@children.2" label="//@children.6/@sourceConnections.1/@children.0" sourceEnd="//@children.6/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Instantiate»" size="74,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,46" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="369,196"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/PlotWindow-Soyatec::Access->de.ptb.epics.eve.data.scandescription.errors/PlotWindowErrorTypes" source="//@children.6" target="//@children.0" targetEnd="//@children.6/@sourceConnections.2/@children.2" label="//@children.6/@sourceConnections.2/@children.0" sourceEnd="//@children.6/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Access»" size="54,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="102,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="102,102"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/PlotWindow-Standard::Call->de.ptb.epics.eve.data.scandescription/YAxis*de.ptb.epics.eve.data.scandescription/PlotWindow-Soyatec::Import->de.ptb.epics.eve.data.scandescription/YAxis" source="//@children.6" target="//@children.7" targetEnd="//@children.6/@sourceConnections.3/@children.2" label="//@children.6/@sourceConnections.3/@children.0" sourceEnd="//@children.6/@sourceConnections.3/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="405,293" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,188"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/PlotWindow-Soyatec::Import->de.ptb.epics.eve.data.measuringstation/MotorAxis" source="//@children.6" target="//@children.3" targetEnd="//@children.6/@sourceConnections.4/@children.2" label="//@children.6/@sourceConnections.4/@children.0" sourceEnd="//@children.6/@sourceConnections.4/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,298" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="373,182"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.6/@sourceConnections.3" name="YAxis" location="1065,300" size="405,464" id="de.ptb.epics.eve.data.scandescription/YAxis" runTimeClassModel="setMode(Lde.ptb.epics.eve.data.PlotModes;),markstyle,getDetectorChannel(),YAxis(),getLinestyle(),updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;),setMarkstyle(Lorg.csstudio.swt.xygraph.figures.Trace.PointStyle;),getColor(),getMode(),mode,setLinestyle(Lorg.csstudio.swt.xygraph.figures.Trace.TraceType;),color,setNormalizeChannel(Lde.ptb.epics.eve.data.measuringstation.DetectorChannel;),detectorChannel,clearNormalizeChannel(),setDetectorChannel(Lde.ptb.epics.eve.data.measuringstation.DetectorChannel;),getMarkstyle(),getNormalizeChannel(),normalizeChannel,addModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;),removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;),linestyle,setColor(Lorg.eclipse.swt.graphics.RGB;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="222,108">
+      <children xsi:type="editmodel:AttributeEditModel" name="color" id="de.ptb.epics.eve.data.scandescription/YAxis#color"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="detectorChannel" id="de.ptb.epics.eve.data.scandescription/YAxis#detectorChannel"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="linestyle" id="de.ptb.epics.eve.data.scandescription/YAxis#linestyle"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="markstyle" id="de.ptb.epics.eve.data.scandescription/YAxis#markstyle"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="mode" id="de.ptb.epics.eve.data.scandescription/YAxis#mode"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="normalizeChannel" id="de.ptb.epics.eve.data.scandescription/YAxis#normalizeChannel"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="382,306">
+      <children xsi:type="editmodel:MethodEditModel" name="YAxis" id="de.ptb.epics.eve.data.scandescription/YAxis#YAxis()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addModelUpdateListener" id="de.ptb.epics.eve.data.scandescription/YAxis#addModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clearNormalizeChannel" id="de.ptb.epics.eve.data.scandescription/YAxis#clearNormalizeChannel()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getColor" id="de.ptb.epics.eve.data.scandescription/YAxis#getColor()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDetectorChannel" id="de.ptb.epics.eve.data.scandescription/YAxis#getDetectorChannel()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLinestyle" id="de.ptb.epics.eve.data.scandescription/YAxis#getLinestyle()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMarkstyle" id="de.ptb.epics.eve.data.scandescription/YAxis#getMarkstyle()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMode" id="de.ptb.epics.eve.data.scandescription/YAxis#getMode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getNormalizeChannel" id="de.ptb.epics.eve.data.scandescription/YAxis#getNormalizeChannel()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeModelUpdateListener" id="de.ptb.epics.eve.data.scandescription/YAxis#removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setColor" id="de.ptb.epics.eve.data.scandescription/YAxis#setColor(Lorg.eclipse.swt.graphics.RGB;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setDetectorChannel" id="de.ptb.epics.eve.data.scandescription/YAxis#setDetectorChannel(Lde.ptb.epics.eve.data.measuringstation.DetectorChannel;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setLinestyle" id="de.ptb.epics.eve.data.scandescription/YAxis#setLinestyle(Lorg.csstudio.swt.xygraph.figures.Trace.TraceType;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMarkstyle" id="de.ptb.epics.eve.data.scandescription/YAxis#setMarkstyle(Lorg.csstudio.swt.xygraph.figures.Trace.PointStyle;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMode" id="de.ptb.epics.eve.data.scandescription/YAxis#setMode(Lde.ptb.epics.eve.data.PlotModes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setNormalizeChannel" id="de.ptb.epics.eve.data.scandescription/YAxis#setNormalizeChannel(Lde.ptb.epics.eve.data.measuringstation.DetectorChannel;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="updateEvent" id="de.ptb.epics.eve.data.scandescription/YAxis#updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/YAxis-Soyatec::Access->de.ptb.epics.eve.data/PlotModes*de.ptb.epics.eve.data.scandescription/YAxis-Soyatec::Import->de.ptb.epics.eve.data/PlotModes" source="//@children.7" target="//@children.1" targetEnd="//@children.7/@sourceConnections.0/@children.2" label="//@children.7/@sourceConnections.0/@children.0" sourceEnd="//@children.7/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Access, Import»" location="1095,242" size="99,13" automaticRelocationAllowed="false" locationOnWireFromSource="-25.0" distanceFromWire="-60.0" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="19,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="125,102"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/YAxis-Soyatec::Import->de.ptb.epics.eve.data.measuringstation/DetectorChannel" source="//@children.7" target="//@children.2" targetEnd="//@children.7/@sourceConnections.1/@children.2" label="//@children.7/@sourceConnections.1/@children.0" sourceEnd="//@children.7/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="94,464" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="154,0"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/YAxis-Soyatec::Import->org.csstudio.swt.xygraph.figures/Trace$TraceType" source="//@children.7" target="//@children.4/@children.2/@children.0" targetEnd="//@children.7/@sourceConnections.2/@children.2" label="//@children.7/@sourceConnections.2/@children.0" sourceEnd="//@children.7/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" location="1433,814" size="51,13" automaticRelocationAllowed="false" locationOnWireFromSource="-10.212535046688297" distanceFromWire="-36.94190206148248" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="405,443" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,6"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/YAxis-Soyatec::Import->org.csstudio.swt.xygraph.figures/Trace$PointStyle" source="//@children.7" target="//@children.4/@children.2/@children.1" targetEnd="//@children.7/@sourceConnections.3/@children.2" label="//@children.7/@sourceConnections.3/@children.0" sourceEnd="//@children.7/@sourceConnections.3/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" location="1434,944" size="51,13" automaticRelocationAllowed="false" locationOnWireFromSource="4.557167447682054" distanceFromWire="-38.36967845648158" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="405,456" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,58"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/YAxis-Soyatec::Import->org.eclipse.swt.graphics/RGB" source="//@children.7" target="//@children.8" targetEnd="//@children.7/@sourceConnections.4/@children.1" label="//@children.7/@sourceConnections.4/@children.2" sourceEnd="//@children.7/@sourceConnections.4/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="240,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="105,243"/>
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.7/@sourceConnections.4 //@children.4/@sourceConnections.0" name="RGB" location="1200,30" size="211,243" id="org.eclipse.swt.graphics/RGB" runTimeClassModel="getHSB(),red,blue,green,hashCode(),equals(Ljava.lang.Object;),serialVersionUID,RGB(III),toString(),RGB(FFF)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="144,72">
+      <children xsi:type="editmodel:AttributeEditModel" name="blue" id="org.eclipse.swt.graphics/RGB#blue"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="green" id="org.eclipse.swt.graphics/RGB#green"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="red" id="org.eclipse.swt.graphics/RGB#red"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="serialVersionUID" id="org.eclipse.swt.graphics/RGB#serialVersionUID"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="188,108">
+      <children xsi:type="editmodel:MethodEditModel" name="RGB" id="org.eclipse.swt.graphics/RGB#RGB(III)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="RGB" id="org.eclipse.swt.graphics/RGB#RGB(FFF)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="org.eclipse.swt.graphics/RGB#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getHSB" id="org.eclipse.swt.graphics/RGB#getHSB()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="org.eclipse.swt.graphics/RGB#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" id="org.eclipse.swt.graphics/RGB#toString()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=5;Product=eUML2" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>
