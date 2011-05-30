@@ -23,44 +23,32 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 
-	/**
-	 * The detector channel of the y axis.
-	 */
+	// the detector channel of the y axis
 	private DetectorChannel detectorChannel;
 	
-	/**
-	 * The plot mode of the y axis. (initialized with linear)
-	 */
+	// the plot mode of the y axis. (initialized with linear)
 	private PlotModes mode = PlotModes.LINEAR;
 	
-	/**
-	 * The detector channel used to normalize the axis.
-	 */
+	// the detector channel used to normalize the axis
 	private DetectorChannel normalizeChannel;
 	
-	/**
-	 * The line style the axis should be plotted with.
-	 */
+	// the line style the axis should be plotted with
 	private TraceType linestyle;
 	
-	/**
-	 * The point style the axis should be plotted with.
-	 */
+	// the point style the axis should be plotted with
 	private PointStyle markstyle;
 	
-	/**
-	 * The color the axis should be plotted with.
-	 */
+	// the color the axis should be plotted with
 	private RGB color;
 
-	/**
+	/*
 	 * A List of objects that need to get an update message if the axis is 
 	 * updated.
 	 */
 	private List<IModelUpdateListener> updateListener;
 	
 	/**
-	 * This constructor creates a new y axis.
+	 * Constructs a <code>YAxis</code>.
 	 */
 	public YAxis() {
 		this.updateListener = new ArrayList<IModelUpdateListener>();
@@ -179,9 +167,13 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 
 	/**
 	 * Clears the detector channel used for normalization. 
+	 * 
+	 * @deprecated use {@link #setNormalizeChannel(DetectorChannel)} with 
+	 * 				<code>null</code> as parameter
 	 */
 	public void clearNormalizeChannel() {
 		this.normalizeChannel = null;
+		updateListeners();
 	}
 
 	/**
