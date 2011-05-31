@@ -45,6 +45,11 @@ public class ScanModuleFigure extends Figure {
 	// the text displayed inside of the scan module figure
 	private String text;
 	
+	// mouse coordinates after mouse button was pressed
+	// used to determine if the figure was moved
+	private int mousePressedX;
+	private int mousePressedY;
+	
 	/**
 	 * Constructs a <code>ScanModuleFigure</code>.
 	 * 
@@ -221,6 +226,11 @@ public class ScanModuleFigure extends Figure {
 		public void mousePressed(MouseEvent me) {
 			xOffset = me.x - getLocation().x ;
 			yOffset = me.y - getLocation().y;
+			
+			// save the location the figure had, when the button was pressed
+			mousePressedX = getLocation().x;
+			mousePressedY = getLocation().y;
+			
 			me.consume();
 			
 			logger.debug("Mouse Pressed : x = " + me.x + " , y = " + me.y );
@@ -252,6 +262,14 @@ public class ScanModuleFigure extends Figure {
 											   newLocation.height));
 			xOffset = 0;
 			yOffset = 0;
+			
+			// if the figure has moved since the button was pressed ->
+			// fire event
+			if(getLocation().x != mousePressedX || 
+				getLocation().y != mousePressedY)
+			{
+				fireCoordinateSystemChanged();
+			}
 			
 			logger.debug("Mouse Released : x = " + me.x + " , y = " + me.y );
 		}
@@ -310,7 +328,7 @@ public class ScanModuleFigure extends Figure {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void mouseMoved(MouseEvent me) {	
+		public void mouseMoved(MouseEvent me) {
 		}
 	}
 }

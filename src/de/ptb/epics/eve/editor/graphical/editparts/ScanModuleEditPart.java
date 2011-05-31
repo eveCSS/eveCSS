@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionAnchor;
+import org.eclipse.draw2d.CoordinateListener;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.NodeEditPart;
@@ -17,8 +18,8 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.graphical.editparts.figures.ScanModuleFigure;
 
 /**
- * <code>ScanModulEditPart</code> is a controller in the editor which links 
- * its model ({@link ScanModule}) and view ({@link ScanModuleFigure}) together.
+ * <code>ScanModulEditPart</code> is the controller of the graphical editor 
+ * linking its model ({@link ScanModule}) and view ({@link ScanModuleFigure}).
  * 
  * @author ?
  * @author Marcus Michalsky
@@ -46,6 +47,9 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 		
 	}
 	
+	
+	// TODO explain
+	// TODO remove CoordinateListener
 	/**
 	 * 
 	 */
@@ -109,8 +113,9 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 		// auskokmmentiert am 11.1.11. Funktionen scheinen nicht
 		// gebraucht zu werden. Wofür sollten sie sein?
 
-		// TODO: steht in der GEF Doku... =aufräumen
+		// TODO: steht in der GEF Doku... =clean up
 		// da aber GEF im Grunde nicht benutzt wird...
+		// Redmine Bug #168
 		
 //		this.getFigure().getParent().remove( this.getFigure() );
 		this.deactivate();
@@ -166,9 +171,14 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 	 */
 	@Override
 	protected IFigure createFigure() {
-		final ScanModule scanModul = (ScanModule)this.getModel();
-		return new ScanModuleFigure(
-				scanModul.getName(), scanModul.getX(), scanModul.getY());
+		final ScanModule scanModule = (ScanModule)this.getModel();
+		ScanModuleFigure scanModuleFigure = 
+			new ScanModuleFigure(scanModule.getName(), 
+								scanModule.getX(), 
+								scanModule.getY());
+		scanModuleFigure.addCoordinateListener(
+				new ScanModuleFigureCoordinateListener());
+		return scanModuleFigure;
 	}
 
 	/**
@@ -176,6 +186,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 	 */
 	@Override
 	protected void createEditPolicies() {
+		// TODO Redmine Bug #168
 	}
 
 	/**
@@ -186,22 +197,10 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 		if (this.figure != null) {
 			((ScanModuleFigure)this.figure).setActive(focus);
 		}
-
 		logger.debug("Scan Module coords : x = " + 
 					((ScanModule)getModel()).getX() + " , y = " + 
 					((ScanModule)getModel()).getY());
-		
-		// FIXME below code infers dirty state even if not moved but only selected
-		
-		/*
-		// update coords in the model
-		if ((((ScanModule)getModel()).getX() != getFigure().getClientArea().x) &&
-			(((ScanModule)getModel()).getY() != getFigure().getClientArea().y))
-		{
-			((ScanModule)getModel()).setX(getFigure().getClientArea().x);
-			((ScanModule)getModel()).setY(getFigure().getClientArea().y);
-		}*/
-		
+
 		logger.debug("Scan Module Figure coords : x = " + 
 					getFigure().getClientArea().x + " , y = " +
 					getFigure().getClientArea().y);
@@ -307,5 +306,21 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(final Request request) {
 		return new ChopboxAnchor(this.getFigure());
+	}
+	
+	// ************************************************************************
+	// ***************************** Listeners ********************************
+	// ************************************************************************
+	class ScanModuleFigureCoordinateListener implements CoordinateListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void coordinateSystemChanged(IFigure figure) {
+			logger.debug("ScanModuleFigure moved -> save (x,y) to model");
+			((ScanModule)getModel()).setX(getFigure().getBounds().x);
+			((ScanModule)getModel()).setY(getFigure().getBounds().y);
+		}
 	}
 }
