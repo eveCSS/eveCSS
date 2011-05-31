@@ -102,7 +102,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 	private Label fileFormatComboErrorLabel = null;
 	private Button fileFormatOptionsButton = null;
 	
-	private FileFormatComboModifiedListener fileFormatComboModifiedListener;
+	private FileFormatComboSelectionListener fileFormatComboSelectionListener;
 	private FileFormatOptionsButtonSelectionListener 
 			fileFormatOptionsButtonSelectionListener;
 	
@@ -217,8 +217,8 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		this.fileFormatCombo.setItems(pluginNames.toArray(new String[0]));
 		
 		// initialize & register the modify listener to the combo box
-		fileFormatComboModifiedListener = new FileFormatComboModifiedListener();
-		this.fileFormatCombo.addModifyListener(fileFormatComboModifiedListener);
+		fileFormatComboSelectionListener = new FileFormatComboSelectionListener();
+		this.fileFormatCombo.addSelectionListener(fileFormatComboSelectionListener);
 		
 		// Save Plug in Error Label
 		this.fileFormatComboErrorLabel = 
@@ -523,6 +523,10 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			  ? this.currentChain.getSavePluginController().getPlugin().getName()
 			  : "");
 			
+			if(this.currentChain.getSavePluginController().getPlugin() == null) {
+				this.fileFormatCombo.deselectAll();
+			}
+			
 			this.filenameInput.setText(
 					(this.currentChain.getSaveFilename() != null)
 					? this.currentChain.getSaveFilename()
@@ -586,7 +590,8 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			
 		} else {
 			// current chain is null -> clear (no model is represented)
-			this.fileFormatCombo.setText("");
+			//this.fileFormatCombo.setText("");
+			this.fileFormatCombo.deselectAll();
 			this.fileFormatComboErrorLabel.setImage(null);		
 			this.filenameInput.setText("");
 			this.saveScanDescriptionCheckBox.setSelection(false);
@@ -652,6 +657,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 				getSharedImages().getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 			this.fileFormatComboErrorLabel.setToolTipText(
 				"There is at least one error in the plug in configuration!");
+			this.fileFormatCombo.deselectAll();
 		} else {
 			this.fileFormatComboErrorLabel.setImage(null);
 			this.fileFormatComboErrorLabel.setToolTipText("");	
@@ -716,7 +722,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 	{
 		this.filenameInput.addModifyListener(fileNameInputModifiedListener);
 		this.repeatCountText.addModifyListener(repeatCountTextModifiedListener);
-		this.fileFormatCombo.addModifyListener(fileFormatComboModifiedListener);
+		this.fileFormatCombo.addSelectionListener(fileFormatComboSelectionListener);
 		this.commentInput.addModifyListener(commentInputModifiedListener);
 		
 		this.confirmSaveCheckBox.addSelectionListener(
@@ -738,8 +744,8 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		this.filenameInput.removeModifyListener(fileNameInputModifiedListener);
 		this.repeatCountText.removeModifyListener(
 				repeatCountTextModifiedListener);
-		this.fileFormatCombo.removeModifyListener(
-				fileFormatComboModifiedListener);
+		this.fileFormatCombo.removeSelectionListener(
+				fileFormatComboSelectionListener);
 		this.commentInput.removeModifyListener(commentInputModifiedListener);
 		
 		this.confirmSaveCheckBox.removeSelectionListener(
@@ -1005,13 +1011,20 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 	 * {@link org.eclipse.swt.events.ModifyListener} of
 	 * <code>savePluginCombo</code>.
 	 */
-	class FileFormatComboModifiedListener implements ModifyListener {
+	class FileFormatComboSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void modifyText(ModifyEvent e) {
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
 			if( fileFormatCombo.getText().equals("") || 
 				Helper.contains(fileFormatCombo.getItems(), 
 								fileFormatCombo.getText())) 
