@@ -16,23 +16,18 @@
       <children xsi:type="editmodel:AssociationEndEditModel" location="139,112"/>
     </sourceConnections>
     <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/MessagesTableLabelProvider-Soyatec::Implement->org.eclipse.jface.viewers/ITableLabelProvider" source="//@children.0" target="//@children.8" targetEnd="//@children.0/@sourceConnections.1/@children.2" label="//@children.0/@sourceConnections.1/@children.0" sourceEnd="//@children.0/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:WireLabelEditModel" name="«Implement»" size="74,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Implement»" location="90,375" size="74,13" automaticRelocationAllowed="false" locationOnWireFromSource="-3.0" distanceFromWire="54.0" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="130,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="119,112"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/MessagesTableLabelProvider-Standard::Call->de.ptb.epics.eve.viewer.messages/ViewerMessage*de.ptb.epics.eve.viewer.messages/MessagesTableLabelProvider-Soyatec::Import->de.ptb.epics.eve.viewer.messages/ViewerMessage" source="//@children.0" target="//@children.10" targetEnd="//@children.0/@sourceConnections.2/@children.2" label="//@children.0/@sourceConnections.2/@children.0" sourceEnd="//@children.0/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="301,116" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="0,64"/>
-    </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/MessagesTableLabelProvider-Standard::Call->de.ptb.epics.eve.viewer.messages/MessageTypes" source="//@children.0" target="//@children.11" targetEnd="//@children.0/@sourceConnections.3/@children.2" label="//@children.0/@sourceConnections.3/@children.0" sourceEnd="//@children.0/@sourceConnections.3/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/MessagesTableLabelProvider-Standard::Call->de.ptb.epics.eve.viewer.messages/MessageTypes" source="//@children.0" target="//@children.11" targetEnd="//@children.0/@sourceConnections.2/@children.2" label="//@children.0/@sourceConnections.2/@children.0" sourceEnd="//@children.0/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Call»" size="35,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="150,158" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="189,0"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="150,0"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.0" name="IMessagesContainerUpdateProvider" location="1050,195" size="512,99" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateProvider" runTimeClassModel="removeMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;),addMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;)">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.0" name="IMessagesContainerUpdateProvider" location="1140,45" size="512,99" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateProvider" runTimeClassModel="removeMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;),addMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;)">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="489,36">
       <children xsi:type="editmodel:MethodEditModel" name="addMessagesContainerUpdateListener" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateProvider#addMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;)"/>
@@ -41,12 +36,12 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateProvider-Soyatec::Import->de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateListener" source="//@children.1" target="//@children.3" targetEnd="//@children.1/@sourceConnections.0/@children.2" label="//@children.1/@sourceConnections.0/@children.0" sourceEnd="//@children.1/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="9,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="294,99"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,49" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="304,49"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.4/@sourceConnections.3" name="MessagesContainer" location="825,351" size="512,176" id="de.ptb.epics.eve.viewer.messages/MessagesContainer" runTimeClassModel="MessagesContainer(),removeMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;),clear(),getList(Ljava.util.List;),getList(),addMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;),addMessage(Lde.ptb.epics.eve.viewer.messages.ViewerMessage;)">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.4/@sourceConnections.4" name="MessagesContainer" location="1140,200" size="512,176" id="de.ptb.epics.eve.viewer.messages/MessagesContainer" runTimeClassModel="MessagesContainer(),clear(),removeMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;),getList(Ljava.util.List;),getList(),addMessagesContainerUpdateListener(Lde.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;),addMessage(Lde.ptb.epics.eve.viewer.messages.ViewerMessage;)">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="489,126">
       <children xsi:type="editmodel:MethodEditModel" name="MessagesContainer" id="de.ptb.epics.eve.viewer.messages/MessagesContainer#MessagesContainer()"/>
@@ -60,22 +55,17 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/MessagesContainer-Soyatec::Implement->de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateProvider" source="//@children.2" target="//@children.1" targetEnd="//@children.2/@sourceConnections.0/@children.2" label="//@children.2/@sourceConnections.0/@children.0" sourceEnd="//@children.2/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Implement»" size="74,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="368,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="143,99"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="256,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="256,99"/>
     </sourceConnections>
     <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/MessagesContainer-Soyatec::Import->de.ptb.epics.eve.viewer.messages/ViewerMessage" source="//@children.2" target="//@children.10" targetEnd="//@children.2/@sourceConnections.1/@children.2" label="//@children.2/@sourceConnections.1/@children.0" sourceEnd="//@children.2/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="233,176" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="248,0"/>
-    </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/MessagesContainer-Standard::Call->de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateListener*de.ptb.epics.eve.viewer.messages/MessagesContainer-Soyatec::Import->de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateListener" source="//@children.2" target="//@children.3" targetEnd="//@children.2/@sourceConnections.2/@children.2" label="//@children.2/@sourceConnections.2/@children.0" sourceEnd="//@children.2/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="121,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="181,99"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="173,176" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="308,0"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.4/@sourceConnections.0 //@children.1/@sourceConnections.0 //@children.2/@sourceConnections.2" name="IMessagesContainerUpdateListener" location="765,45" size="304,99" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateListener" runTimeClassModel="addElement(Lde.ptb.epics.eve.viewer.messages.ViewerMessage;),update()">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.4/@sourceConnections.0 //@children.1/@sourceConnections.0" name="IMessagesContainerUpdateListener" location="765,45" size="304,99" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateListener" runTimeClassModel="addElement(Lde.ptb.epics.eve.viewer.messages.ViewerMessage;),update()">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="201,36">
       <children xsi:type="editmodel:MethodEditModel" name="addElement" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateListener#addElement(Lde.ptb.epics.eve.viewer.messages.ViewerMessage;)"/>
@@ -84,12 +74,12 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateListener-Soyatec::Import->de.ptb.epics.eve.viewer.messages/ViewerMessage" source="//@children.3" target="//@children.10" targetEnd="//@children.3/@sourceConnections.0/@children.2" label="//@children.3/@sourceConnections.0/@children.0" sourceEnd="//@children.3/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="174,99" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="129,0"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="271,99" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="31,0"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.5/@sourceConnections.1" name="MessagesTableContentProvider" location="405,375" size="300,536" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider" runTimeClassModel="setShowErrorMessages(Z),showApplicationMessages,addElement(Lde.ptb.epics.eve.viewer.messages.ViewerMessage;),isShowDebugMessages(),isShowApplicationMessages(),isShowInfoMessages(),setShowEngineMessages(Z),getElements(Ljava.lang.Object;),setShowInfoMessages(Z),showInfoMessages,isShowErrorMessages(),inputChanged(Lorg.eclipse.jface.viewers.Viewer;Ljava.lang.Object;Ljava.lang.Object;),update(),setShowFatalMessages(Z),isShowEngineMessages(),showMinorMessages,dispose(),setShowApplicationMessages(Z),showDebugMessages,showEngineMessages,showFatalMessages,setShowDebugMessages(Z),isShowMinorMessages(),setShowMinorMessages(Z),isShowFatalMessages(),viewer,showErrorMessages">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.5/@sourceConnections.1" name="MessagesTableContentProvider" location="600,391" size="300,536" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider" runTimeClassModel="setShowErrorMessages(Z),addElement(Lde.ptb.epics.eve.viewer.messages.ViewerMessage;),showApplicationMessages,isShowDebugMessages(),isShowApplicationMessages(),isShowInfoMessages(),getElements(Ljava.lang.Object;),setShowEngineMessages(Z),isShowErrorMessages(),showInfoMessages,setShowInfoMessages(Z),inputChanged(Lorg.eclipse.jface.viewers.Viewer;Ljava.lang.Object;Ljava.lang.Object;),update(),setShowFatalMessages(Z),isShowEngineMessages(),showMinorMessages,dispose(),setShowApplicationMessages(Z),showDebugMessages,showEngineMessages,showFatalMessages,setShowDebugMessages(Z),isShowMinorMessages(),setShowMinorMessages(Z),isShowFatalMessages(),showErrorMessages">
     <children xsi:type="editmodel:CompartmentEditModel" size="221,144">
       <children xsi:type="editmodel:AttributeEditModel" name="viewer" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#viewer"/>
       <children xsi:type="editmodel:AttributeEditModel" name="showEngineMessages" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider#showEngineMessages"/>
@@ -124,36 +114,31 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider-Soyatec::Implement->de.ptb.epics.eve.viewer.messages/IMessagesContainerUpdateListener" source="//@children.4" target="//@children.3" targetEnd="//@children.4/@sourceConnections.0/@children.2" label="//@children.4/@sourceConnections.0/@children.0" sourceEnd="//@children.4/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Implement»" size="74,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="300,41" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="119,99"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="232,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="67,99"/>
     </sourceConnections>
     <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/IStructuredContentProvider&lt;-de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider" source="//@children.4" target="//@children.6" targetEnd="//@children.4/@sourceConnections.1/@children.1" sourceEnd="//@children.4/@sourceConnections.1/@children.0" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="166,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="121,94"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="46,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="196,94"/>
     </sourceConnections>
     <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider-Soyatec::Implement->org.eclipse.jface.viewers/IStructuredContentProvider" source="//@children.4" target="//@children.6" targetEnd="//@children.4/@sourceConnections.2/@children.2" label="//@children.4/@sourceConnections.2/@children.0" sourceEnd="//@children.4/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:WireLabelEditModel" name="«Implement»" size="74,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="146,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="101,94"/>
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Implement»" location="539,343" size="74,13" automaticRelocationAllowed="false" locationOnWireFromSource="-2.0" distanceFromWire="49.00000000000001" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="26,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="176,94"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider-Standard::Call->de.ptb.epics.eve.viewer.messages/MessagesContainer*de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider-Soyatec::Import->de.ptb.epics.eve.viewer.messages/MessagesContainer" source="//@children.4" target="//@children.2" targetEnd="//@children.4/@sourceConnections.3/@children.2" label="//@children.4/@sourceConnections.3/@children.0" sourceEnd="//@children.4/@sourceConnections.3/@children.1" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="300,76" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="29,100"/>
-    </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider-Standard::Call->de.ptb.epics.eve.viewer.messages/ViewerMessage*de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider-Soyatec::Import->de.ptb.epics.eve.viewer.messages/ViewerMessage" source="//@children.4" target="//@children.10" targetEnd="//@children.4/@sourceConnections.4/@children.2" label="//@children.4/@sourceConnections.4/@children.0" sourceEnd="//@children.4/@sourceConnections.4/@children.1" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="300,318" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="0,123"/>
-    </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider-Soyatec::Access->de.ptb.epics.eve.viewer.messages/MessageTypes" source="//@children.4" target="//@children.11" targetEnd="//@children.4/@sourceConnections.5/@children.2" label="//@children.4/@sourceConnections.5/@children.0" sourceEnd="//@children.4/@sourceConnections.5/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider-Soyatec::Access->de.ptb.epics.eve.viewer.messages/MessageTypes" source="//@children.4" target="//@children.11" targetEnd="//@children.4/@sourceConnections.3/@children.2" label="//@children.4/@sourceConnections.3/@children.0" sourceEnd="//@children.4/@sourceConnections.3/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Access»" size="54,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="0,455" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="358,79"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,441" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="379,93"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider-Standard::Call->de.ptb.epics.eve.viewer.messages/MessagesContainer*de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider-Soyatec::Import->de.ptb.epics.eve.viewer.messages/MessagesContainer" source="//@children.4" target="//@children.2" targetEnd="//@children.4/@sourceConnections.4/@children.2" label="//@children.4/@sourceConnections.4/@children.0" sourceEnd="//@children.4/@sourceConnections.4/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="300,182" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="103,176"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="MessagesView" location="75,615" size="229,117" id="de.ptb.epics.eve.viewer.views/MessagesView" runTimeClassModel="setFocus(),createPartControl(Lorg.eclipse.swt.widgets.Composite;)">
+  <children xsi:type="editmodel:ClassEditModel" name="MessagesView" location="255,600" size="229,117" id="de.ptb.epics.eve.viewer.views/MessagesView" runTimeClassModel="setFocus(),createPartControl(Lorg.eclipse.swt.widgets.Composite;)">
     <children xsi:type="editmodel:CompartmentEditModel" size="160,18">
       <children xsi:type="editmodel:AttributeEditModel" name="tableViewer" id="de.ptb.epics.eve.viewer.views/MessagesView#tableViewer"/>
     </children>
@@ -163,14 +148,14 @@
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.views/MessagesView-Standard::Instantiate->de.ptb.epics.eve.viewer.messages/MessagesTableLabelProvider" source="//@children.5" target="//@children.0" targetEnd="//@children.5/@sourceConnections.0/@children.2" label="//@children.5/@sourceConnections.0/@children.0" sourceEnd="//@children.5/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:WireLabelEditModel" name="«Instantiate»" size="74,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="114,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="138,158"/>
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Instantiate»" location="203,577" size="74,13" automaticRelocationAllowed="false" locationOnWireFromSource="-2.0" distanceFromWire="62.00000000000001" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="48,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="252,158"/>
     </sourceConnections>
     <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.views/MessagesView-Standard::Instantiate->de.ptb.epics.eve.viewer.messages/MessagesTableContentProvider" source="//@children.5" target="//@children.4" targetEnd="//@children.5/@sourceConnections.1/@children.2" label="//@children.5/@sourceConnections.1/@children.0" sourceEnd="//@children.5/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Instantiate»" size="74,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="229,58" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="0,298"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,267"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
@@ -219,7 +204,7 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.2 //@children.2/@sourceConnections.1 //@children.3/@sourceConnections.0 //@children.4/@sourceConnections.4" name="ViewerMessage" location="810,570" size="482,248" id="de.ptb.epics.eve.viewer.messages/ViewerMessage" runTimeClassModel="message,ViewerMessage(Ljava.util.Calendar;Lde.ptb.epics.eve.viewer.MessageSource;Lde.ptb.epics.eve.viewer.messages.MessageTypes;Ljava.lang.String;),ViewerMessage(Lde.ptb.epics.eve.viewer.messages.MessageTypes;Ljava.lang.String;),getTimeStamp(),messageSource,getMessageSource(),getMessageType(),ViewerMessage(Lde.ptb.epics.eve.viewer.MessageSource;Lde.ptb.epics.eve.viewer.messages.MessageTypes;Ljava.lang.String;),messageType,ViewerMessage(Lde.ptb.epics.eve.ecp1.client.model.Error;),getMessage()">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.2/@sourceConnections.1 //@children.3/@sourceConnections.0" name="ViewerMessage" location="1005,675" size="482,248" id="de.ptb.epics.eve.viewer.messages/ViewerMessage" runTimeClassModel="message,ViewerMessage(Ljava.util.Calendar;Lde.ptb.epics.eve.viewer.MessageSource;Lde.ptb.epics.eve.viewer.messages.MessageTypes;Ljava.lang.String;),ViewerMessage(Lde.ptb.epics.eve.viewer.messages.MessageTypes;Ljava.lang.String;),getTimeStamp(),messageSource,getMessageSource(),ViewerMessage(Lde.ptb.epics.eve.viewer.MessageSource;Lde.ptb.epics.eve.viewer.messages.MessageTypes;Ljava.lang.String;),getMessageType(),messageType,getMessage(),ViewerMessage(Lde.ptb.epics.eve.ecp1.client.model.Error;)">
     <children xsi:type="editmodel:CompartmentEditModel" size="211,72">
       <children xsi:type="editmodel:AttributeEditModel" name="message" id="de.ptb.epics.eve.viewer.messages/ViewerMessage#message"/>
       <children xsi:type="editmodel:AttributeEditModel" name="messageSource" id="de.ptb.epics.eve.viewer.messages/ViewerMessage#messageSource"/>
@@ -236,14 +221,9 @@
       <children xsi:type="editmodel:MethodEditModel" name="ViewerMessage" id="de.ptb.epics.eve.viewer.messages/ViewerMessage#ViewerMessage(Ljava.util.Calendar;Lde.ptb.epics.eve.viewer.MessageSource;Lde.ptb.epics.eve.viewer.messages.MessageTypes;Ljava.lang.String;)"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/ViewerMessage-Standard::Call->de.ptb.epics.eve.viewer.messages/MessageTypes*de.ptb.epics.eve.viewer.messages/ViewerMessage-Soyatec::Import->de.ptb.epics.eve.viewer.messages/MessageTypes" source="//@children.10" target="//@children.11" targetEnd="//@children.10/@sourceConnections.0/@children.2" label="//@children.10/@sourceConnections.0/@children.0" sourceEnd="//@children.10/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="0,214" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="379,33"/>
-    </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.0/@sourceConnections.3 //@children.4/@sourceConnections.5 //@children.10/@sourceConnections.0" name="MessageTypes" location="12,751" size="379,199" id="de.ptb.epics.eve.viewer.messages/MessageTypes" runTimeClassModel="DEBUG%,ERROR%,FATAL%,convertFromErrorSeverity(Lde.ptb.epics.eve.ecp1.intern.ErrorSeverity;),MINOR%,INFO%,toString()">
+  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.0/@sourceConnections.2 //@children.4/@sourceConnections.3" name="MessageTypes" location="51,739" size="379,199" id="de.ptb.epics.eve.viewer.messages/MessageTypes" runTimeClassModel="DEBUG%,ERROR%,FATAL%,convertFromErrorSeverity(Lde.ptb.epics.eve.ecp1.intern.ErrorSeverity;),MINOR%,INFO%,toString()">
     <children xsi:type="editmodel:CompartmentEditModel" size="59,90">
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="DEBUG" id="de.ptb.epics.eve.viewer.messages/MessageTypes#DEBUG%"/>
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="ERROR" id="de.ptb.epics.eve.viewer.messages/MessageTypes#ERROR%"/>
@@ -257,14 +237,9 @@
       <children xsi:type="editmodel:MethodEditModel" name="toString" id="de.ptb.epics.eve.viewer.messages/MessageTypes#toString()"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.messages/MessageTypes-Standard::Call->de.ptb.epics.eve.ecp1.intern/ErrorSeverity*de.ptb.epics.eve.viewer.messages/MessageTypes-Soyatec::Access->de.ptb.epics.eve.ecp1.intern/ErrorSeverity*de.ptb.epics.eve.viewer.messages/MessageTypes-Soyatec::Import->de.ptb.epics.eve.ecp1.intern/ErrorSeverity" source="//@children.11" target="//@children.12" targetEnd="//@children.11/@sourceConnections.0/@children.2" label="//@children.11/@sourceConnections.0/@children.0" sourceEnd="//@children.11/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call, Access»" size="128,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="379,77" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="0,78"/>
-    </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" enumerationClassMode="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.11/@sourceConnections.0" name="ErrorSeverity" location="1200,750" size="185,156" id="de.ptb.epics.eve.ecp1.intern/ErrorSeverity" runTimeClassModel="ERROR%,DEBUG%,FATAL%,MINOR%,INFO%">
+  <children xsi:type="editmodel:EnumerationEditModel" name="ErrorSeverity" location="1395,460" size="185,156" id="de.ptb.epics.eve.ecp1.intern/ErrorSeverity" runTimeClassModel="ERROR%,DEBUG%,FATAL%,MINOR%,INFO%">
     <children xsi:type="editmodel:CompartmentEditModel" size="59,90">
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="INFO" id="de.ptb.epics.eve.ecp1.intern/ErrorSeverity#INFO%"/>
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MINOR" id="de.ptb.epics.eve.ecp1.intern/ErrorSeverity#MINOR%"/>
