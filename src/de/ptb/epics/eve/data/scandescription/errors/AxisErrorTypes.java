@@ -4,6 +4,7 @@ package de.ptb.epics.eve.data.scandescription.errors;
  * Contains all possible error types of an axis.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
+ * @author scherr
  *
  */
 public enum AxisErrorTypes {
@@ -22,6 +23,11 @@ public enum AxisErrorTypes {
 	 * The step width value is not set.
 	 */
 	STEPWIDTH_NOT_SET,
+	
+    /**
+	 * The step count value is not set.
+	 */
+	STEPCOUNT_NOT_SET,
 	
 	/**
 	 * The start value is invalid.

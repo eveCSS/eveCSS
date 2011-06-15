@@ -219,6 +219,10 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 			throw new IllegalArgumentException(
 					"The parameter value must not be null");
 		}
+
+		if(value.equals("Undefined")) {
+			return false;
+		}
 		
 		if(this.gotoAdvisor != null) {
 			return this.gotoAdvisor.isValuePossible(value);

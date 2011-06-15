@@ -403,6 +403,7 @@ public class Axis extends AbstractMainPhaseBehavior {
 	public List<IModelError> getModelErrors() {
 		final List< IModelError > errorList = new ArrayList< IModelError >();
 		if( this.stepfunction == Stepfunctions.ADD || this.stepfunction == Stepfunctions.MULTIPLY ) {
+
 			if( this.start == null || this.start.equals( "" ) ) {
 				errorList.add( new AxisError( this, AxisErrorTypes.START_NOT_SET ) );
 			} else if( !this.getMotorAxis().isValuePossible( this.start ) ) {
@@ -415,6 +416,9 @@ public class Axis extends AbstractMainPhaseBehavior {
 			}
 			if( this.stepwidth == null || this.stepwidth.equals( "" ) ) {
 				errorList.add( new AxisError( this, AxisErrorTypes.STEPWIDTH_NOT_SET ) );
+			}
+			if( this.stepcount == -1.0) {
+				errorList.add( new AxisError( this, AxisErrorTypes.STEPCOUNT_NOT_SET ) );
 			}
 			
 		} else if( this.stepfunction == Stepfunctions.FILE ) {
