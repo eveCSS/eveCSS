@@ -1,32 +1,42 @@
-package de.ptb.epics.eve.viewer;
+package de.ptb.epics.eve.viewer.views.deviceinspectorview;
 
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 
+
+/**
+ * <code>CommonTableEditingSupport</code>.
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
 public class CommonTableEditingSupport extends EditingSupport {
 	
 	private TableViewer viewer;
 	private String column;
-	private TextCellEditor textEditor;
 	
+	/**
+	 * Constructs a <code>CommonTableEditingSupport</code>.
+	 * 
+	 * @param viewer the table viewer the editing support is based on
+	 * @param column the column of the table the support is based on
+	 */
 	public CommonTableEditingSupport(TableViewer viewer, String column) {
 		super(viewer);
 		this.viewer = viewer;
 		this.column = column;
-		// TODO never used
-		textEditor = new TextCellEditor(viewer.getTable());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected boolean canEdit(Object element) {
-		System.err.println("CommonTableEditingSupport: canEdit");
 		if (column.equals("remove")) {
 			((CommonTableContentProvider)viewer.getInput()).removeElement(element);
-			
 		}
 		else if (column.equals("trigger")) {
 			((CommonTableElement) element).trigger();
@@ -39,38 +49,39 @@ public class CommonTableEditingSupport extends EditingSupport {
 		}
 		else if (column.equals("tweakreverse")) {
 			((CommonTableElement) element).tweak(false);
-		}
-		else {
+		} else {
 			CommonTableElement ctb = (CommonTableElement) element;
 			if (!ctb.isReadonly(column) && ctb.isConnected(column))return true;
 		}
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected CellEditor getCellEditor(Object element) {
-		System.err.println("CommonTableEditingSupport: getCellEditor");
-
 		CommonTableElement ctb = (CommonTableElement) element;
 		
-		if (ctb.getCellEditor(column) == null){
-			if (ctb.isDiscrete(column)){
-				 ctb.setCellEditor (new ComboBoxCellEditor(viewer.getTable(), ctb.getSelectStrings(column)), column);
-			}
-			else {
-				 ctb.setCellEditor ( new TextCellEditor(viewer.getTable()), column);
+		if (ctb.getCellEditor(column) == null) {
+			if (ctb.isDiscrete(column)) {
+				ctb.setCellEditor(new ComboBoxCellEditor(viewer.getTable(), 
+						ctb.getSelectStrings(column)), column);
+			} else {
+				ctb.setCellEditor(new TextCellEditor(viewer.getTable()), column);
 			}
 		}
 		return ctb.getCellEditor(column);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected Object getValue(Object element) {
-
-		System.err.println("CommonTableEditingSupport: getValue");
 		CommonTableElement ctb = (CommonTableElement) element;
 		CellEditor ceditor = ctb.getCellEditor(column);
-		if (ceditor instanceof ComboBoxCellEditor){
+		if (ceditor instanceof ComboBoxCellEditor) {
 			int count = 0;
 			String currentVal = ctb.getValue(column);
 			for (String selection : ctb.getSelectStrings(column)) {
@@ -78,17 +89,17 @@ public class CommonTableEditingSupport extends EditingSupport {
 				++count;
 			}
 			return 0;
-		}
-		else
+		} else {
 			return ctb.getValue(column);
+		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void setValue(Object element, Object value) {
-		System.err.println("CommonTableEditingSupport: setValue");
-		// TODO Auto-generated method stub
 		CommonTableElement ctb = (CommonTableElement) element;
 		ctb.setValue(value, column);
 	}
-
 }

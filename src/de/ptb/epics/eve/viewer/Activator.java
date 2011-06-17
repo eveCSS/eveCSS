@@ -126,6 +126,9 @@ public class Activator extends AbstractUIPlugin {
 		imagereg.put("MOVEUP", imageDescriptorFromPlugin(PLUGIN_ID, "icons/prev_nav.gif").createImage());
 		imagereg.put("MOVEDOWN", imageDescriptorFromPlugin(PLUGIN_ID, "icons/next_nav.gif").createImage());
 		
+		imagereg.put("RESTOREVIEW", imageDescriptorFromPlugin(PLUGIN_ID, "icons/thin_restore_view.gif").createImage());
+		imagereg.put("MAXIMIZE", imageDescriptorFromPlugin(PLUGIN_ID, "icons/maximize.gif").createImage());
+		
 		final String measuringStationDescription = de.ptb.epics.eve.preferences.Activator.getDefault().getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION );
 		
 		if( !measuringStationDescription.equals( "" ) ) { 

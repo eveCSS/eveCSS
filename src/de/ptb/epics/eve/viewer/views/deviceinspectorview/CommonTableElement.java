@@ -1,31 +1,25 @@
-package de.ptb.epics.eve.viewer;
+package de.ptb.epics.eve.viewer.views.deviceinspectorview;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import org.csstudio.platform.data.ISeverity;
-import org.csstudio.utility.pv.PV;
-import org.csstudio.utility.pv.PVFactory;
-import org.csstudio.utility.pv.PVListener;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
-import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
-import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
+import de.ptb.epics.eve.viewer.Activator;
 
+/**
+ * <code>CommonTableElement</code>.
+ * 
+ * @author ?
+ */
 public class CommonTableElement {
 	
 	private AbstractDevice device;
@@ -46,7 +40,17 @@ public class CommonTableElement {
 	private boolean initialized = false;
 	private HashMap<String, CellEditor> cellEditorHash;
 	
-	public CommonTableElement(AbstractDevice abstractdevice, TableViewer viewer){
+	/**
+	 * <code>CommonTableElement</code> is the contents (row) of the table 
+	 * viewers defined in the 
+	 * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView}.
+	 * 
+	 * @param abstractdevice the 
+	 * 		{@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} the 
+	 * 		element represents
+	 * @param viewer the viewer the element is contained in
+	 */
+	public CommonTableElement(AbstractDevice abstractdevice, TableViewer viewer) {
 		this.device = abstractdevice;
 		this.viewer = viewer;
 		name = abstractdevice.getName();
@@ -56,8 +60,7 @@ public class CommonTableElement {
 		unit = "";
 		cellEditorHash = new HashMap<String, CellEditor>();
 
-
-		if( device instanceof MotorAxis ){
+		if(device instanceof MotorAxis) {
 			MotorAxis motorAxis = (MotorAxis)device;
 			engine = new CommonTableElementEngineData(abstractdevice.getID(), this);
 			if ( (motorAxis.getPosition() != null) && 
@@ -146,10 +149,16 @@ public class CommonTableElement {
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public void init() {
 		initialized  = true;
 	}
 
+	/**
+	 * 
+	 */
 	public void dispose(){
 		
 		if (valuePv != null) valuePv.dispose();
@@ -163,7 +172,11 @@ public class CommonTableElement {
 		cellEditorHash.clear();
 	}
 	
-	
+	/**
+	 * 
+	 * @param property
+	 * @return
+	 */
 	public boolean isReadonly(String property){
 		if (property.equals("value") && (valuePv != null))
 			return valuePv.isReadOnly();
@@ -179,6 +192,11 @@ public class CommonTableElement {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @param property
+	 * @return
+	 */
 	public boolean isDiscrete(String property){
 
 		boolean pvDiscrete = false;
@@ -198,6 +216,11 @@ public class CommonTableElement {
 		return pvDiscrete;
 	}
 
+	/**
+	 * 
+	 * @param property
+	 * @return
+	 */
 	public boolean isConnected(String property) {
 		if ((property.equals("value")) && (valuePv != null))
 			return valuePv.isConnected();
@@ -213,7 +236,11 @@ public class CommonTableElement {
 		return false;
 	}
 	
-	// TODO colors should be COLOR_PV_CONNECTED/DISCONNECTED
+	/**
+	 * 
+	 * @param property
+	 * @return
+	 */
 	public Color getConnectColor(String property) {
 		if (isConnected(property))
 			return Activator.getDefault().getColor("COLOR_PV_CONNECTED");
@@ -221,6 +248,11 @@ public class CommonTableElement {
 			return Activator.getDefault().getColor("COLOR_PV_DISCONNECTED");
 	}
 
+	/**
+	 * 
+	 * @param property
+	 * @return
+	 */
 	// TODO we need the severity Color here
 	public Color getSeverityColor(String property) {
 		String status = ""; 
@@ -262,6 +294,11 @@ public class CommonTableElement {
 		return Activator.getDefault().getColor("COLOR_PV_INITIAL");
 	}
 
+	/**
+	 * 
+	 * @param property
+	 * @return
+	 */
 	public String[] getSelectStrings(String property) {
 		if (isDiscrete(property)){
 			if (property.equals("value")){
@@ -280,6 +317,9 @@ public class CommonTableElement {
 		return new ArrayList<String>().toArray(new String[0]);
 	}
 
+	/**
+	 * 
+	 */
 	public void update() {
 
 		final CommonTableElement thisCommonTableElement = this;
@@ -297,10 +337,20 @@ public class CommonTableElement {
 		}
 	}
 
+	/**
+	 * 
+	 * @param cellEditor
+	 * @param column
+	 */
 	public void setCellEditor(CellEditor cellEditor, String column) {
 		cellEditorHash.put(column, cellEditor);
 	}
 
+	/**
+	 * 
+	 * @param column
+	 * @return
+	 */
 	public CellEditor getCellEditor(String column) {
 		if (cellEditorHash.containsKey(column)){
 			return cellEditorHash.get(column);
@@ -309,6 +359,11 @@ public class CommonTableElement {
 			return null;
 	}
 
+	/**
+	 * 
+	 * @param property
+	 * @return
+	 */
 	public String getValue(String property) {
 		if (property.equals("set") && (setPv != null))
 			return setPv.getValue();
@@ -343,6 +398,11 @@ public class CommonTableElement {
 		return "";
 	}
 
+	/**
+	 * 
+	 * @param value
+	 * @param column
+	 */
 	public void setValue(Object value, String column) {
 		String newValue = "";
 		if (getCellEditor(column) instanceof ComboBoxCellEditor){
@@ -366,6 +426,9 @@ public class CommonTableElement {
 			tweakvaluePv.setValue(newValue);
 	}
 
+	/**
+	 * 
+	 */
 	public void trigger() {
 		if (triggerPv != null && triggerPv.isConnected()){
 			DetectorChannel channel = (DetectorChannel)device;
@@ -374,6 +437,9 @@ public class CommonTableElement {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void stop() {
 		if (stopPv != null && stopPv.isConnected()){
 			MotorAxis axis = (MotorAxis)device;
@@ -382,10 +448,18 @@ public class CommonTableElement {
 		}
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public AbstractDevice getAbstractDevice() {
 		return device;
 	}
 
+	/**
+	 * 
+	 * @param forward
+	 */
 	public void tweak(boolean forward) {
 		if (forward && (tweakforwardPv != null) && tweakforwardPv.isConnected()){
 			MotorAxis motorAxis = (MotorAxis)device;

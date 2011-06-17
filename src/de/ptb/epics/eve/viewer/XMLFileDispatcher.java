@@ -17,6 +17,7 @@ import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
 import de.ptb.epics.eve.ecp1.client.interfaces.INewXMLFileListener;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
+import de.ptb.epics.eve.viewer.views.devicesview.DevicesView;
 
 public class XMLFileDispatcher implements INewXMLFileListener {
 	
@@ -35,19 +36,23 @@ public class XMLFileDispatcher implements INewXMLFileListener {
 			final File schemaFile = new File( schemaFileLocation );
 			final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader( schemaFile );
 			final IMeasuringStation measuringStation = measuringStationLoader.loadFromByteArray( xmlData );
+			
+			// FIXME fix devices view (reference correct station) then enable code again
+			/* set loaded station in devicesView... devices view a bit buggy
 			Activator.getDefault().getWorkbench().getDisplay().syncExec( new Runnable() {
 
 				public void run() {
 					IViewReference[] ref = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
-					MeasuringStationView mview = null;
+					DevicesView mview = null;
 					for( int i = 0; i < ref.length; ++i ) {
-						if( ref[i].getId().equals( MeasuringStationView.ID ) ) {
-							mview = (MeasuringStationView)ref[i].getPart( false );
+						if( ref[i].getId().equals( DevicesView.ID ) ) {
+							mview = (DevicesView)ref[i].getPart( false );
 						}
 					}
 					if (mview != null) mview.setMeasuringStation( measuringStation );
 					
 				}} );
+			*/
 			
 			final ScanDescriptionLoader scanDescriptionLoader = new ScanDescriptionLoader( measuringStation, schemaFile );
 			scanDescriptionLoader.loadFromByteArray( xmlData );
