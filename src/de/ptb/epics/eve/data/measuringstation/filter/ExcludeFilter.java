@@ -761,7 +761,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		this.updateEvent(new ModelUpdateEvent(this, null));
 	}
 	
-	// TODO Rephrase ?
 	/**
 	 * Excludes devices that are not used in the given 
 	 * {@link de.ptb.epics.eve.data.scandescription.ScanDescription}.
@@ -781,7 +780,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	 *   	if it is not used.
 	 *   </li>
 	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.MotorAxis} is 
-	 *   	excluded if <u>all</u> of the following conditions is met:
+	 *   	excluded if <u>all</u> of the following conditions are met:
 	 *     <ul>
 	 *       <li>the motor axis itself is not used</li>
 	 *       <li>none of its options are used</li>
@@ -804,7 +803,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	 *   	if it is not used.
 	 *   </li>
 	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.DetectorChannel} 
-	 *   	will be excluded if <u>all</u> of the following conditions is met:
+	 *   	will be excluded if <u>all</u> of the following conditions are met:
 	 *   	<ul>
 	 *   	  <li>the detector channel itself is not used</li>
 	 *   	  <li>none of its options are used</li>
