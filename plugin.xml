@@ -92,7 +92,7 @@
          </menu>
          <action
                class="de.ptb.epics.eve.editor.actions.HandOverAction"
-               icon="icons/runlast.gif"
+               icon="icons/profile_exc.gif"
                id="de.ptb.epics.eve.editor.actions.HandOverSilentAction"
                label="%action.label"
                menubarPath="handOverMenu/handOverGroup"
