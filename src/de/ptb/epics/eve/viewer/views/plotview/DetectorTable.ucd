@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="DetectorTable" size="1806,491" id="" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D313030302064652E7074622E65706963732E6576652E7669657765722F6D6D696368616C73">
-  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.4/@sourceConnections.0" name="MathTableElement" location="405,39" size="345,207" id="de.ptb.epics.eve.viewer.plot/MathTableElement" runTimeClassModel="getValue(),getName(),position,measurementDataTransmitted(Lde.ptb.epics.eve.ecp1.client.model.MeasurementData;),MathTableElement(IILorg.eclipse.jface.viewers.TableViewer;Lde.ptb.epics.eve.viewer.plot.MathFunction;Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;),gotoPos(),value,getPosition(),drawIcon()">
-    <children xsi:type="editmodel:CompartmentEditModel" size="106,36">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.4/@sourceConnections.1" name="MathTableElement" location="352,39" size="345,315" id="de.ptb.epics.eve.viewer.plot/MathTableElement" runTimeClassModel="position,MathTableElement(IILorg.eclipse.jface.viewers.TableViewer;Lde.ptb.epics.eve.viewer.plot.MathFunction;Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;),motorPv,chid,smid,drawIcon(),getValue(),getName(),mathFunction,measurementDataTransmitted(Lde.ptb.epics.eve.ecp1.client.model.MeasurementData;),value,gotoPos(),detectorId,getPosition(),motorId">
+    <children xsi:type="editmodel:CompartmentEditModel" size="175,144">
       <children xsi:type="editmodel:AttributeEditModel" name="value" id="de.ptb.epics.eve.viewer.plot/MathTableElement#value"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="mathFunction" id="de.ptb.epics.eve.viewer.plot/MathTableElement#mathFunction"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="motorPv" id="de.ptb.epics.eve.viewer.plot/MathTableElement#motorPv"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="detectorId" id="de.ptb.epics.eve.viewer.plot/MathTableElement#detectorId"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="chid" id="de.ptb.epics.eve.viewer.plot/MathTableElement#chid"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="smid" id="de.ptb.epics.eve.viewer.plot/MathTableElement#smid"/>
       <children xsi:type="editmodel:AttributeEditModel" name="position" id="de.ptb.epics.eve.viewer.plot/MathTableElement#position"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="motorId" id="de.ptb.epics.eve.viewer.plot/MathTableElement#motorId"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="322,108">
       <children xsi:type="editmodel:MethodEditModel" name="measurementDataTransmitted" id="de.ptb.epics.eve.viewer.plot/MathTableElement#measurementDataTransmitted(Lde.ptb.epics.eve.ecp1.client.model.MeasurementData;)"/>
@@ -20,52 +26,51 @@
     </sourceConnections>
     <sourceConnections xsi:type="editmodel:DependencyEditModel" id="de.ptb.epics.eve.viewer.plot/MathTableElement-Soyatec::Implement->de.ptb.epics.eve.ecp1.client.interfaces/IMeasurementDataListener" source="//@children.0" target="//@children.3" targetEnd="//@children.0/@sourceConnections.1/@children.2" label="//@children.0/@sourceConnections.1/@children.0" sourceEnd="//@children.0/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Implement»" size="74,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="344,24" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="342,34" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="0,26"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.plot/MathTableElement-Standard::Call->de.ptb.epics.eve.viewer.plot/MathFunction*de.ptb.epics.eve.viewer.plot/MathTableElement-Soyatec::Access->de.ptb.epics.eve.viewer.plot/MathFunction*de.ptb.epics.eve.viewer.plot/MathTableElement-Soyatec::Import->de.ptb.epics.eve.viewer.plot/MathFunction" source="//@children.0" target="//@children.1" targetEnd="//@children.0/@sourceConnections.2/@children.2" label="//@children.0/@sourceConnections.2/@children.0" sourceEnd="//@children.0/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call, Access»" size="128,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="0,103" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="182,103"/>
-    </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.plot/MathTableElement-Standard::Call->de.ptb.epics.eve.ecp1.client/ECP1Client" source="//@children.0" target="//@children.2" targetEnd="//@children.0/@sourceConnections.3/@children.2" label="//@children.0/@sourceConnections.3/@children.0" sourceEnd="//@children.0/@sourceConnections.3/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.plot/MathTableElement-Standard::Call->de.ptb.epics.eve.ecp1.client/ECP1Client" source="//@children.0" target="//@children.2" targetEnd="//@children.0/@sourceConnections.2/@children.2" label="//@children.0/@sourceConnections.2/@children.0" sourceEnd="//@children.0/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Call»" size="35,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="336,207" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="8,0"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="345,258" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="134,0"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.0/@sourceConnections.2 //@children.4/@sourceConnections.1" name="MathFunction" location="60,39" size="182,282" id="de.ptb.epics.eve.viewer.plot/MathFunction" runTimeClassModel="UNKNOWN%,MINIMUM%,MAXIMUM%,PEAK%,CENTER%,EDGE%,SUM%,AVERAGE%,DEVIATION%,NORMALIZED%,UNMODIFIED%,FWHM%">
+  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.4/@sourceConnections.0" name="MathFunction" location="60,39" size="215,338" id="de.ptb.epics.eve.viewer.plot/MathFunction" runTimeClassModel="MINIMUM%,CENTER%,EDGE%,UNMODIFIED%,toDataModifier(),toString(),FWHM%,UNKNOWN%,MAXIMUM%,PEAK%,AVERAGE%,SUM%,DEVIATION%,NORMALIZED%">
     <children xsi:type="editmodel:CompartmentEditModel" size="92,216">
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="UNMODIFIED" id="de.ptb.epics.eve.viewer.plot/MathFunction#UNMODIFIED%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="EDGE" id="de.ptb.epics.eve.viewer.plot/MathFunction#EDGE%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="UNKNOWN" id="de.ptb.epics.eve.viewer.plot/MathFunction#UNKNOWN%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="SUM" id="de.ptb.epics.eve.viewer.plot/MathFunction#SUM%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MINIMUM" id="de.ptb.epics.eve.viewer.plot/MathFunction#MINIMUM%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="DEVIATION" id="de.ptb.epics.eve.viewer.plot/MathFunction#DEVIATION%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MAXIMUM" id="de.ptb.epics.eve.viewer.plot/MathFunction#MAXIMUM%"/>
-      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="FWHM" id="de.ptb.epics.eve.viewer.plot/MathFunction#FWHM%"/>
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="AVERAGE" id="de.ptb.epics.eve.viewer.plot/MathFunction#AVERAGE%"/>
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="CENTER" id="de.ptb.epics.eve.viewer.plot/MathFunction#CENTER%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="DEVIATION" id="de.ptb.epics.eve.viewer.plot/MathFunction#DEVIATION%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="EDGE" id="de.ptb.epics.eve.viewer.plot/MathFunction#EDGE%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="FWHM" id="de.ptb.epics.eve.viewer.plot/MathFunction#FWHM%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MAXIMUM" id="de.ptb.epics.eve.viewer.plot/MathFunction#MAXIMUM%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MINIMUM" id="de.ptb.epics.eve.viewer.plot/MathFunction#MINIMUM%"/>
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="NORMALIZED" id="de.ptb.epics.eve.viewer.plot/MathFunction#NORMALIZED%"/>
       <children xsi:type="editmodel:EnumerationLiteralEditModel" name="PEAK" id="de.ptb.epics.eve.viewer.plot/MathFunction#PEAK%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="SUM" id="de.ptb.epics.eve.viewer.plot/MathFunction#SUM%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="UNKNOWN" id="de.ptb.epics.eve.viewer.plot/MathFunction#UNKNOWN%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="UNMODIFIED" id="de.ptb.epics.eve.viewer.plot/MathFunction#UNMODIFIED%"/>
     </children>
-    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="192,36">
+      <children xsi:type="editmodel:MethodEditModel" name="toDataModifier" id="de.ptb.epics.eve.viewer.plot/MathFunction#toDataModifier()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" id="de.ptb.epics.eve.viewer.plot/MathFunction#toString()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" enumerationClassMode="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.3" name="ECP1Client" location="733,320" size="467,153" id="de.ptb.epics.eve.ecp1.client/ECP1Client" runTimeClassModel="removeMeasurementDataListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;),removeErrorListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;),addEngineStatusListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;),close(),addRequestListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IRequestListener;),removeChainStatusListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;),playListController,isRunning(),addConnectionStateListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;),addErrorListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;),loginName,getLoginName(),removeRequestListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IRequestListener;),getPlayListController(),addChainStatusListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;),ECP1Client(),getRequestListener(),addToOutQueue(Lde.ptb.epics.eve.ecp1.intern.IECP1Command;),addMeasurementDataListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;),connect(Ljava.net.SocketAddress;Ljava.lang.String;),removeEngineStatusListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;),removeConnectionStateListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;),getPlayController(),playController,requestListener">
-    <children xsi:type="editmodel:CompartmentEditModel" size="387,36">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.2" name="ECP1Client" location="735,397" size="467,117" id="de.ptb.epics.eve.ecp1.client/ECP1Client" runTimeClassModel="removeMeasurementDataListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;),removeErrorListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;),addEngineStatusListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;),close(),addRequestListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IRequestListener;),measurementDataListener,removeChainStatusListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;),addConnectionStateListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;),playListController,isRunning(),addErrorListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;),loginName,getLoginName(),removeRequestListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IRequestListener;),getPlayListController(),addChainStatusListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;),ECP1Client(),getRequestListener(),addToOutQueue(Lde.ptb.epics.eve.ecp1.intern.IECP1Command;),addMeasurementDataListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;),connect(Ljava.net.SocketAddress;Ljava.lang.String;),removeEngineStatusListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;),removeConnectionStateListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;),getPlayController(),playController,requestListener">
+    <children xsi:type="editmodel:CompartmentEditModel" size="387,18">
       <children xsi:type="editmodel:AttributeEditModel" name="measurementDataListener" id="de.ptb.epics.eve.ecp1.client/ECP1Client#measurementDataListener"/>
-      <children xsi:type="editmodel:AttributeEditModel" name="requestListener" id="de.ptb.epics.eve.ecp1.client/ECP1Client#requestListener"/>
     </children>
-    <children xsi:type="editmodel:CompartmentEditModel" size="444,54">
+    <children xsi:type="editmodel:CompartmentEditModel" size="444,36">
       <children xsi:type="editmodel:MethodEditModel" name="addMeasurementDataListener" id="de.ptb.epics.eve.ecp1.client/ECP1Client#addMeasurementDataListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;)"/>
       <children xsi:type="editmodel:MethodEditModel" name="removeMeasurementDataListener" id="de.ptb.epics.eve.ecp1.client/ECP1Client#removeMeasurementDataListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getRequestListener" id="de.ptb.epics.eve.ecp1.client/ECP1Client#getRequestListener()"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/ECP1Client-Soyatec::Import->de.ptb.epics.eve.ecp1.client.interfaces/IMeasurementDataListener" source="//@children.2" target="//@children.3" targetEnd="//@children.2/@sourceConnections.0/@children.2" label="//@children.2/@sourceConnections.0/@children.0" sourceEnd="//@children.2/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="294,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="292,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="172,94"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
@@ -78,22 +83,24 @@
     <children xsi:type="editmodel:CompartmentEditModel"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="PlotViewDetectorComposite" location="60,374" size="637,99" id="de.ptb.epics.eve.viewer.views.plotview/PlotViewDetectorComposite" runTimeClassModel="refresh(Lde.ptb.epics.eve.data.scandescription.PlotWindow;IILjava.lang.String;Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;),PlotViewDetectorComposite(Lorg.eclipse.swt.widgets.Composite;I)">
-    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <children xsi:type="editmodel:CompartmentEditModel" size="614,36">
-      <children xsi:type="editmodel:MethodEditModel" name="PlotViewDetectorComposite" id="de.ptb.epics.eve.viewer.views.plotview/PlotViewDetectorComposite#PlotViewDetectorComposite(Lorg.eclipse.swt.widgets.Composite;I)"/>
+  <children xsi:type="editmodel:ClassEditModel" name="PlotViewDetectorComposite" location="60,397" size="637,117" id="de.ptb.epics.eve.viewer.views.plotview/PlotViewDetectorComposite" runTimeClassModel="tableViewerDet2,tableViewerDet1,refresh(Lde.ptb.epics.eve.data.scandescription.PlotWindow;IILjava.lang.String;Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;),PlotViewDetectorComposite(Lorg.eclipse.swt.widgets.Composite;I)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="186,36">
+      <children xsi:type="editmodel:AttributeEditModel" name="tableViewerDet1" id="de.ptb.epics.eve.viewer.views.plotview/PlotViewDetectorComposite#tableViewerDet1"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="tableViewerDet2" id="de.ptb.epics.eve.viewer.views.plotview/PlotViewDetectorComposite#tableViewerDet2"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="614,18">
       <children xsi:type="editmodel:MethodEditModel" name="refresh" id="de.ptb.epics.eve.viewer.views.plotview/PlotViewDetectorComposite#refresh(Lde.ptb.epics.eve.data.scandescription.PlotWindow;IILjava.lang.String;Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;)"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.views.plotview/PlotViewDetectorComposite-Standard::Instantiate->de.ptb.epics.eve.viewer.plot/MathTableElement*de.ptb.epics.eve.viewer.views.plotview/PlotViewDetectorComposite-Soyatec::Import->de.ptb.epics.eve.viewer.plot/MathTableElement" source="//@children.4" target="//@children.0" targetEnd="//@children.4/@sourceConnections.0/@children.2" label="//@children.4/@sourceConnections.0/@children.0" sourceEnd="//@children.4/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate»" size="119,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="490,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="145,207"/>
-    </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.views.plotview/PlotViewDetectorComposite-Soyatec::Access->de.ptb.epics.eve.viewer.plot/MathFunction" source="//@children.4" target="//@children.1" targetEnd="//@children.4/@sourceConnections.1/@children.2" label="//@children.4/@sourceConnections.1/@children.0" sourceEnd="//@children.4/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.views.plotview/PlotViewDetectorComposite-Soyatec::Access->de.ptb.epics.eve.viewer.plot/MathFunction" source="//@children.4" target="//@children.1" targetEnd="//@children.4/@sourceConnections.0/@children.2" label="//@children.4/@sourceConnections.0/@children.0" sourceEnd="//@children.4/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Access»" size="54,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="90,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="90,238"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="107,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="107,295"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.views.plotview/PlotViewDetectorComposite-Standard::Instantiate->de.ptb.epics.eve.viewer.plot/MathTableElement*de.ptb.epics.eve.viewer.views.plotview/PlotViewDetectorComposite-Soyatec::Import->de.ptb.epics.eve.viewer.plot/MathTableElement" source="//@children.4" target="//@children.0" targetEnd="//@children.4/@sourceConnections.1/@children.2" label="//@children.4/@sourceConnections.1/@children.0" sourceEnd="//@children.4/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate»" size="119,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="464,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="172,315"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
