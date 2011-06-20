@@ -11,7 +11,6 @@
             <location></location>
             <parameter name="format" datatype="string" default="ASCII"></parameter>
             <parameter name="suffix" datatype="string" default="txt"></parameter>
-            <parameter name="extent" datatype="int" default="0"></parameter>
         </plugin>
         <!-- plugin to save data in hdf5 format -->
         <plugin type="save">
@@ -19,7 +18,6 @@
             <location>/messung/eve/lib/linux-x86/libhdf5plugin.so</location>
             <parameter name="format" datatype="string" default="HDF5"></parameter>
             <parameter name="suffix" datatype="string" default="h5"></parameter>
-            <parameter name="extent" datatype="int" default="0"></parameter>
         </plugin>
         <!-- position plugin -->
 	<plugin type="position">
@@ -51,7 +49,7 @@
     <!-- detector section -->
     <detectors>
         <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel)  only with read attribut-->
+        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Ring_1</name>
@@ -60,11 +58,11 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <!-- <name></name>-->
+<!--                <name></name>-->
                 <name>Ring_1</name>
                 <id>ringCurrent1chan1</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">ringCurrent1.VAL</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">ringCurrent1.VAL</access>
                     <value type="double"></value>
                 </read>
                 <unit>
@@ -73,7 +71,7 @@
             </channel>
         </detector>
         <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel)  only with read attribut-->
+        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Ring_2</name>
@@ -82,11 +80,11 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <!-- <name></name>-->
+<!--                <name></name>-->
                 <name>Ring_2</name>
                 <id>ringCurrent2chan1</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">ringCurrent2.VAL</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">ringCurrent2.VAL</access>
                     <value type="double"></value>
                 </read>
                 <unit>
@@ -95,7 +93,7 @@
             </channel>
         </detector>
         <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel)  only with read attribut-->
+        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Ring_5</name>
@@ -104,11 +102,11 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <!-- <name></name>-->
+<!--                <name></name>-->
                 <name>Ring_5</name>
                 <id>ringCurrent5chan1</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">ringCurrent5.VAL</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">ringCurrent5.VAL</access>
                     <value type="double"></value>
                 </read>
                 <unit>
@@ -117,7 +115,7 @@
             </channel>
         </detector>
         <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel)  only with read attribut-->
+        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Bessy_Ringstrom</name>
@@ -126,11 +124,11 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <!-- <name></name>-->
+<!--                <name></name>-->
                 <name>Bessy_Ringstrom</name>
                 <id>MDIZ3T5G:currentchan1</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">MDIZ3T5G:current.VAL</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">MDIZ3T5G:current.VAL</access>
                     <value type="double"></value>
                 </read>
                 <unit>
@@ -139,7 +137,7 @@
             </channel>
         </detector>
         <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel)  only with read attribut-->
+        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Bessy_Lebensdauer</name>
@@ -148,11 +146,11 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <!-- <name></name>-->
+<!--                <name></name>-->
                 <name>Bessy_Lebensdauer</name>
                 <id>MDIZ3T5G:lt10chan1</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">MDIZ3T5G:lt10.VAL</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">MDIZ3T5G:lt10.VAL</access>
                     <value type="double"></value>
                 </read>
                 <unit>
@@ -161,7 +159,7 @@
             </channel>
         </detector>
         <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel)  only with read attribut-->
+        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Lebensdauer_1</name>
@@ -170,11 +168,11 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <!-- <name></name>-->
+<!--                <name></name>-->
                 <name>Lebensdauer_1</name>
                 <id>ringLifeTime1chan1</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">ringLifeTime1.VAL</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">ringLifeTime1.VAL</access>
                     <value type="double"></value>
                 </read>
                 <unit>
@@ -183,7 +181,7 @@
             </channel>
         </detector>
         <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel)  only with read attribut-->
+        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Lebensdauer_2</name>
@@ -192,11 +190,11 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <!-- <name></name>-->
+<!--                <name></name>-->
                 <name>Lebensdauer_2</name>
                 <id>ringLifeTime2chan1</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">ringLifeTime2.VAL</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">ringLifeTime2.VAL</access>
                     <value type="double"></value>
                 </read>
                 <unit>
@@ -205,7 +203,7 @@
             </channel>
         </detector>
         <!-- Name, Class, PV -->
-        <!-- basic detector (must include a channel)  only with read attribut-->
+        <!-- basic detector (must include a channel) -->
         <detector>
             <class>Ringstrom</class>
             <name>Lebensdauer_5</name>
@@ -214,11 +212,11 @@
             <!-- channel, to be included by motors -->
             <channel>
                 <class></class>
-                <!-- <name></name>-->
+<!--                <name></name>-->
                 <name>Lebensdauer_5</name>
                 <id>ringLifeTime5chan1</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">ringLifeTime5.VAL</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">ringLifeTime5.VAL</access>
                     <value type="double"></value>
                 </read>
                 <unit>
@@ -234,15 +232,17 @@
             <id>UE56ID3R:SBasePmGapbasic</id>
             <channel>
                 <class></class>
-                <!-- <name></name>-->
+<!--                <name></name>-->
                 <name>UE56_2shift</name>
                 <id>UE56ID3R:SBasePmGapchan1</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">UE56ID3R:SBasePmGap.A</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">UE56ID3R:SBasePmGap.A</access>
                     <value type="double"></value>
+<!--                    <access method="GETCB" transport="ca" type="double">UE56ID3R:SBasePmGap.A</access>-->
                 </read>
                 <unit>
                     <access method="GETPUT" transport="ca" type="string">UE56ID3R:SBasePmGap.EGU</access>
+<!--                    <access method="GETCB" transport="ca" type="string">UE56ID3R:SBasePmGap.EGU</access>-->
                 </unit>
             </channel>
         </detector>
@@ -254,15 +254,17 @@
             <id>UE56ID3R:BasePmGapbasic</id>
             <channel>
                 <class></class>
-                <!-- <name></name>-->
+<!--                <name></name>-->
                 <name>UE56_2gap</name>
                 <id>UE56ID3R:BasePmGapchan1</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">UE56ID3R:BasePmGap.A</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">UE56ID3R:BasePmGap.A</access>
                     <value type="double"></value>
+<!--                    <access method="GETCB" transport="ca" type="double">UE56ID3R:BasePmGap.A</access>-->
                 </read>
                 <unit>
                     <access method="GETPUT" transport="ca" type="string">UE56ID3R:BasePmGap.EGU</access>
+<!--                    <access method="GETCB" transport="ca" type="string">UE56ID3R:BasePmGap.EGU</access>-->
                 </unit>
             </channel>
         </detector>
@@ -274,15 +276,17 @@
             <id>U41IT6R:BasePmGapbasic</id>
             <channel>
                 <class></class>
-                <!-- <name></name>-->
+<!--                <name></name>-->
                 <name>U41_gap</name>
                 <id>U41IT6R:BasePmGapchan1</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">U41IT6R:BasePmGap.A</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">U41IT6R:BasePmGap.A</access>
                     <value type="double"></value>
+<!--                    <access method="GETCB" transport="ca" type="double">U41IT6R:BasePmGap.A</access>-->
                 </read>
                 <unit>
                     <access method="GETPUT" transport="ca" type="string">U41IT6R:BasePmGap.EGU</access>
+<!--                    <access method="GETCB" transport="ca" type="string">U41IT6R:BasePmGap.EGU</access>-->
                 </unit>
             </channel>
         </detector>
@@ -294,15 +298,17 @@
             <id>UE56ID6R:SBasePmGapbasic</id>
             <channel>
                 <class></class>
-                <!-- <name></name>-->
+<!--                <name></name>-->
                 <name>UE56_1shift</name>
                 <id>UE56ID6R:SBasePmGapchan1</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">UE56ID6R:SBasePmGap.A</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">UE56ID6R:SBasePmGap.A</access>
                     <value type="double"></value>
+<!--                    <access method="GETCB" transport="ca" type="double">UE56ID6R:SBasePmGap.A</access>-->
                 </read>
                 <unit>
                     <access method="GETPUT" transport="ca" type="string">UE56ID6R:SBasePmGap.EGU</access>
+<!--                    <access method="GETCB" transport="ca" type="string">UE56ID6R:SBasePmGap.EGU</access>-->
                 </unit>
             </channel>
         </detector>
@@ -314,15 +320,17 @@
             <id>UE56ID6R:BasePmGapbasic</id>
             <channel>
                 <class></class>
-                <!-- <name></name>-->
+<!--                <name></name>-->
                 <name>UE56_1gap</name>
                 <id>UE56ID6R:BasePmGapchan1</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">UE56ID6R:BasePmGap.A</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">UE56ID6R:BasePmGap.A</access>
                     <value type="double"></value>
+<!--                    <access method="GETCB" transport="ca" type="double">UE56ID6R:BasePmGap.A</access>-->
                 </read>
                 <unit>
                     <access method="GETPUT" transport="ca" type="string">UE56ID6R:BasePmGap.EGU</access>
+<!--                    <access method="GETCB" transport="ca" type="string">UE56ID6R:BasePmGap.EGU</access>-->
                 </unit>
             </channel>
         </detector>
@@ -334,15 +342,17 @@
             <id>U125ID7R:BasePmGapbasic</id>
             <channel>
                 <class></class>
-                <!-- <name></name>-->
+<!--                <name></name>-->
                 <name>U125_gap</name>
                 <id>U125ID7R:BasePmGapchan1</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">U125ID7R:BasePmGap.A</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">U125ID7R:BasePmGap.A</access>
                     <value type="double"></value>
+<!--                    <access method="GETCB" transport="ca" type="double">U125ID7R:BasePmGap.A</access>-->
                 </read>
                 <unit>
                     <access method="GETPUT" transport="ca" type="string">U125ID7R:BasePmGap.EGU</access>
+<!--                    <access method="GETCB" transport="ca" type="string">U125ID7R:BasePmGap.EGU</access>-->
                 </unit>
             </channel>
         </detector>
@@ -354,15 +364,17 @@
             <id>U49ID8R:BasePmGapbasic</id>
             <channel>
                 <class></class>
-                <!-- <name></name>-->
+<!--                <name></name>-->
                 <name>U49_2gap</name>
                 <id>U49ID8R:BasePmGapchan1</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">U49ID8R:BasePmGap.A</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">U49ID8R:BasePmGap.A</access>
                     <value type="double"></value>
+<!--                    <access method="GETCB" transport="ca" type="double">U49ID8R:BasePmGap.A</access>-->
                 </read>
                 <unit>
                     <access method="GETPUT" transport="ca" type="string">U49ID8R:BasePmGap.EGU</access>
+<!--                    <access method="GETCB" transport="ca" type="string">U49ID8R:BasePmGap.EGU</access>-->
                 </unit>
             </channel>
         </detector>
@@ -372,7 +384,7 @@
             <id>Timer1</id>
             <channel>
                 <class></class>
-                <name>Time</name>
+                <name>Timer</name>
                 <id>Timer1-det</id>
                 <read>
                     <access monitor="true" method="GETCB" transport="local" type="datetime">Timer</access>
@@ -386,21 +398,28 @@
             <class></class>
             <name>Prema5000</name>
             <id>P5000:gw23707</id>
-            <!-- Name,  PV -->
-            <!-- channel for Prema 5000 -->
+            <unit>
+                <access method="GETPUT" transport="ca" type="string">P5000:gw23707.EGU</access>
+            </unit>
+            <trigger>
+                <access method="PUTCB" transport="ca" type="int">P5000:gw23707trigger.PROC</access>
+                <value type="int">1</value>
+            </trigger>
+        		<!-- Name,  PV -->
+        		<!-- channel for Prema 5000 -->
             <channel>
                 <class></class>
                 <name>Channel00</name>
                 <id>P5000:gw2370700</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">P5000:gw2370700.VAL</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">P5000:gw2370700.VAL</access>
                     <value type="double"></value>
                 </read>
                 <unit>
                     <access method="GETPUT" transport="ca" type="string">P5000:gw2370700.EGU</access>
                 </unit>
-            <!-- PV -->
-            <!-- basic EPICS fields for detectors / detectorchannels -->
+        		<!-- PV -->
+        		<!-- basic EPICS fields for detectors / detectorchannels -->
             <option>
                 <name>Hi Error Limit</name>
                 <id>P5000:gw2370700.HIHI</id>
@@ -430,14 +449,6 @@
                 <id>P5000:gw2370700.HSV</id>
                 <value>
                     <access method="GETPUT" transport="ca" type="string">P5000:gw2370700.HSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Raw Value</name>
-                <id>P5000:gw2370700.RVAL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370700.RVAL</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -514,22 +525,6 @@
                 <displaygroup>detail</displaygroup>
             </option>
             <option>
-                <name>Hi Full Scale Value</name>
-                <id>P5000:gw2370700.EGUF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370700.EGUF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Lo Full Scale Value</name>
-                <id>P5000:gw2370700.EGUL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370700.EGUL</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
                 <name>Severity</name>
                 <id>P5000:gw2370700.SEVR</id>
                 <value>
@@ -554,21 +549,21 @@
                     <displaygroup>detail</displaygroup>
                 </option>
             </channel>
-            <!-- Name,  PV -->
-            <!-- channel for Prema 5000 -->
+        		<!-- Name,  PV -->
+        		<!-- channel for Prema 5000 -->
             <channel>
                 <class></class>
                 <name>Channel01</name>
                 <id>P5000:gw2370701</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">P5000:gw2370701.VAL</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">P5000:gw2370701.VAL</access>
                     <value type="double"></value>
                 </read>
                 <unit>
                     <access method="GETPUT" transport="ca" type="string">P5000:gw2370701.EGU</access>
                 </unit>
-            <!-- PV -->
-            <!-- basic EPICS fields for detectors / detectorchannels -->
+        		<!-- PV -->
+        		<!-- basic EPICS fields for detectors / detectorchannels -->
             <option>
                 <name>Hi Error Limit</name>
                 <id>P5000:gw2370701.HIHI</id>
@@ -598,14 +593,6 @@
                 <id>P5000:gw2370701.HSV</id>
                 <value>
                     <access method="GETPUT" transport="ca" type="string">P5000:gw2370701.HSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Raw Value</name>
-                <id>P5000:gw2370701.RVAL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370701.RVAL</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -682,22 +669,6 @@
                 <displaygroup>detail</displaygroup>
             </option>
             <option>
-                <name>Hi Full Scale Value</name>
-                <id>P5000:gw2370701.EGUF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370701.EGUF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Lo Full Scale Value</name>
-                <id>P5000:gw2370701.EGUL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370701.EGUL</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
                 <name>Severity</name>
                 <id>P5000:gw2370701.SEVR</id>
                 <value>
@@ -722,21 +693,21 @@
                     <displaygroup>detail</displaygroup>
                 </option>
             </channel>
-            <!-- Name,  PV -->
-            <!-- channel for Prema 5000 -->
+        		<!-- Name,  PV -->
+        		<!-- channel for Prema 5000 -->
             <channel>
                 <class></class>
                 <name>Channel02</name>
                 <id>P5000:gw2370702</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">P5000:gw2370702.VAL</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">P5000:gw2370702.VAL</access>
                     <value type="double"></value>
                 </read>
                 <unit>
                     <access method="GETPUT" transport="ca" type="string">P5000:gw2370702.EGU</access>
                 </unit>
-            <!-- PV -->
-            <!-- basic EPICS fields for detectors / detectorchannels -->
+        		<!-- PV -->
+        		<!-- basic EPICS fields for detectors / detectorchannels -->
             <option>
                 <name>Hi Error Limit</name>
                 <id>P5000:gw2370702.HIHI</id>
@@ -766,14 +737,6 @@
                 <id>P5000:gw2370702.HSV</id>
                 <value>
                     <access method="GETPUT" transport="ca" type="string">P5000:gw2370702.HSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Raw Value</name>
-                <id>P5000:gw2370702.RVAL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370702.RVAL</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -850,22 +813,6 @@
                 <displaygroup>detail</displaygroup>
             </option>
             <option>
-                <name>Hi Full Scale Value</name>
-                <id>P5000:gw2370702.EGUF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370702.EGUF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Lo Full Scale Value</name>
-                <id>P5000:gw2370702.EGUL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370702.EGUL</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
                 <name>Severity</name>
                 <id>P5000:gw2370702.SEVR</id>
                 <value>
@@ -890,21 +837,21 @@
                     <displaygroup>detail</displaygroup>
                 </option>
             </channel>
-            <!-- Name,  PV -->
-            <!-- channel for Prema 5000 -->
+        		<!-- Name,  PV -->
+        		<!-- channel for Prema 5000 -->
             <channel>
                 <class></class>
                 <name>Channel03</name>
                 <id>P5000:gw2370703</id>
                 <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">P5000:gw2370703.VAL</access>
+                    <access monitor="true" method="GETPUTCB" transport="ca" type="double">P5000:gw2370703.VAL</access>
                     <value type="double"></value>
                 </read>
                 <unit>
                     <access method="GETPUT" transport="ca" type="string">P5000:gw2370703.EGU</access>
                 </unit>
-            <!-- PV -->
-            <!-- basic EPICS fields for detectors / detectorchannels -->
+        		<!-- PV -->
+        		<!-- basic EPICS fields for detectors / detectorchannels -->
             <option>
                 <name>Hi Error Limit</name>
                 <id>P5000:gw2370703.HIHI</id>
@@ -934,14 +881,6 @@
                 <id>P5000:gw2370703.HSV</id>
                 <value>
                     <access method="GETPUT" transport="ca" type="string">P5000:gw2370703.HSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Raw Value</name>
-                <id>P5000:gw2370703.RVAL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370703.RVAL</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -1014,22 +953,6 @@
                 <id>P5000:gw2370703.SMOO</id>
                 <value>
                     <access method="GETPUT" transport="ca" type="double">P5000:gw2370703.SMOO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Full Scale Value</name>
-                <id>P5000:gw2370703.EGUF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370703.EGUF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Lo Full Scale Value</name>
-                <id>P5000:gw2370703.EGUL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">P5000:gw2370703.EGUL</access>
                 </value>
                 <displaygroup>detail</displaygroup>
             </option>
@@ -1112,7 +1035,7 @@
             <id>Timer1</id>
             <axis>
                 <class></class>
-                <name>Timer</name>
+                <name>Time</name>
                 <id>Timer1-mot</id>
                 <goto>
                     <access method="PUTCB" transport="local" type="datetime">Timer</access>
@@ -1122,26 +1045,6 @@
                 </position>
                 <stop>
                     <access method="PUT" transport="local" type="int">Timer</access>
-                    <value type="OnOff">0</value>
-                </stop>
-            </axis>
-        </motor>
-        <motor>
-            <class>Counter</class>
-            <name></name>
-            <id>Counter1</id>
-            <axis>
-                <class></class>
-                <name>Counter</name>
-                <id>Counter-mot</id>
-                <goto>
-                    <access method="PUTCB" transport="local" type="int">Counter</access>
-                </goto>
-                <position>
-                    <access method="GETCB" transport="local" type="int">Counter</access>
-                </position>
-                <stop>
-                    <access method="PUT" transport="local" type="int">Counter</access>
                     <value type="OnOff">0</value>
                 </stop>
             </axis>
@@ -1324,7 +1227,7 @@
                     <id>PPSMC:gw23715000.RCNT</id>
                     <value>
                         <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715000.RCNT</access>
-						<value type="double">PPSMC:gw23715000.RCNT</value>
+                        <value type="double">PPSMC:gw23715000.RCNT</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1622,7 +1525,7 @@
                     <id>PPSMC:gw23715001.RCNT</id>
                     <value>
                         <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715001.RCNT</access>
-						<value type="double">PPSMC:gw23715001.RCNT</value>
+                        <value type="double">PPSMC:gw23715001.RCNT</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1920,7 +1823,7 @@
                     <id>PPSMC:gw23715002.RCNT</id>
                     <value>
                         <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715002.RCNT</access>
-						<value type="double">PPSMC:gw23715002.RCNT</value>
+                        <value type="double">PPSMC:gw23715002.RCNT</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2218,7 +2121,7 @@
                     <id>PPSMC:gw23715003.RCNT</id>
                     <value>
                         <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715003.RCNT</access>
-						<value type="double">PPSMC:gw23715003.RCNT</value>
+                        <value type="double">PPSMC:gw23715003.RCNT</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2344,6 +2247,13 @@
                     <displaygroup>summary</displaygroup>
                 </option>
             </axis>
+        </motor>
+        <!-- Name, Class, Id -->
+        <!-- basic motor, must include axes -->
+	<motor>
+            <class></class>
+            <name></name>
+            <id>PPSMC:gw237a</id>
             <!-- Name,  PV -->
             <!-- axis, to be included by motors -->
             <axis>
@@ -2352,10 +2262,10 @@
                 <id>DiscPosPPSMC:gw23715000</id>
                 <goto>
                     <access monitor="true" method="GETPUTCB" transport="ca" type="string" timeout="100.0">PPSMC:gw23715000_Mnu</access>
-                    <value type="string" >Undefined,Pos1,Pos2,Pos3,Pos4,Pos5,Pos6,Pos7,Pos8,Pos9</value>
+                    <value type="string" >Undefined,POS 0, POS 1</value>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="ca" type="string">PPSMC:gw23715000_actPos.SVAL</access>
+                    <access method="GETCB" transport="ca" type="string">PPSMC:gw23715000_Mnu</access>
                 </position>
                 <stop>
                     <access method="PUT" transport="ca" type="int">PPSMC:gw23715000_stop</access>
@@ -2366,7 +2276,7 @@
                 </unit>
                 <option>
                     <name>Selected Position</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu</id>
+                    <id>PPSMC:gw23715000_Mnu</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715000_Mnu</access>
                     </value>
@@ -2374,7 +2284,7 @@
                 </option>
                 <option>
                     <name>Move Done</name>
-                    <id>DiscPosPPSMC:gw23715000.DMOV</id>
+                    <id>PPSMC:gw23715000.DMOV</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715000.DMOV</access>
                     </value>
@@ -2382,7 +2292,7 @@
                 </option>
                 <option>
                     <name>Severity</name>
-                    <id>DiscPosPPSMC:gw23715000.SEVR</id>
+                    <id>PPSMC:gw23715000.SEVR</id>
                     <value>
                         <access method="GETCB" type="string" transport="ca">PPSMC:gw23715000.SEVR</access>
                     </value>
@@ -2390,7 +2300,7 @@
                 </option>
                 <option>
                     <name>Status</name>
-                    <id>DiscPosPPSMC:gw23715000.STAT</id>
+                    <id>PPSMC:gw23715000.STAT</id>
                     <value>
                         <access method="GETCB" type="string" transport="ca">PPSMC:gw23715000.STAT</access>
                     </value>
@@ -2398,7 +2308,7 @@
                 </option>
                 <option>
                     <name>control Mode</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.OMSL</id>
+                    <id>PPSMC:gw23715000_Mnu.OMSL</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.OMSL</access>
                     </value>
@@ -2406,7 +2316,7 @@
                 </option>
                 <option>
                     <name>lvio</name>
-                    <id>DiscPosPPSMC:gw23715000.LVIO</id>
+                    <id>PPSMC:gw23715000.LVIO</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000.LVIO</access>
                     </value>
@@ -2414,7 +2324,7 @@
                 </option>
                 <option>
                     <name>miss</name>
-                    <id>DiscPosPPSMC:gw23715000.MISS</id>
+                    <id>PPSMC:gw23715000.MISS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000.MISS</access>
                     </value>
@@ -2422,7 +2332,7 @@
                 </option>
                 <option>
                     <name>rlls</name>
-                    <id>DiscPosPPSMC:gw23715000.RLLS</id>
+                    <id>PPSMC:gw23715000.RLLS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000.RLLS</access>
                     </value>
@@ -2430,7 +2340,7 @@
                 </option>
                 <option>
                     <name>rhls</name>
-                    <id>DiscPosPPSMC:gw23715000.RHLS</id>
+                    <id>PPSMC:gw23715000.RHLS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000.RHLS</access>
                     </value>
@@ -2438,15 +2348,15 @@
                 </option>
                 <option>
                     <name>Value 1</name>
-                    <id>DiscPosPPSMC:gw23715000_MnuS.DO1</id>
+                    <id>PPSMC:gw23715000_MnuS.A</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO1</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.A</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 1</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.ONST</id>
+                    <id>PPSMC:gw23715000_Mnu.ONST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.ONST</access>
                     </value>
@@ -2454,15 +2364,15 @@
                 </option>
                 <option>
                     <name>Value 2</name>
-                    <id>DiscPosPPSMC:gw23715000_MnuS.DO2</id>
+                    <id>PPSMC:gw23715000_MnuS.B</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO2</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.B</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 2</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.TWST</id>
+                    <id>PPSMC:gw23715000_Mnu.TWST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.TWST</access>
                     </value>
@@ -2470,15 +2380,15 @@
                 </option>
                 <option>
                     <name>Value 3</name>
-                    <id>DiscPosPPSMC:gw23715000_MnuS.DO3</id>
+                    <id>PPSMC:gw23715000_MnuS.C</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO3</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.C</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 3</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.THST</id>
+                    <id>PPSMC:gw23715000_Mnu.THST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.THST</access>
                     </value>
@@ -2486,15 +2396,15 @@
                 </option>
                 <option>
                     <name>Value 4</name>
-                    <id>DiscPosPPSMC:gw23715000_MnuS.DO4</id>
+                    <id>PPSMC:gw23715000_MnuS.D</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO4</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.D</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 4</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.FRST</id>
+                    <id>PPSMC:gw23715000_Mnu.FRST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.FRST</access>
                     </value>
@@ -2502,15 +2412,15 @@
                 </option>
                 <option>
                     <name>Value 5</name>
-                    <id>DiscPosPPSMC:gw23715000_MnuS.DO5</id>
+                    <id>PPSMC:gw23715000_MnuS.E</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO5</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.E</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 5</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.FVST</id>
+                    <id>PPSMC:gw23715000_Mnu.FVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.FVST</access>
                     </value>
@@ -2518,15 +2428,15 @@
                 </option>
                 <option>
                     <name>Value 6</name>
-                    <id>DiscPosPPSMC:gw23715000_MnuS.DO6</id>
+                    <id>PPSMC:gw23715000_MnuS.F</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO6</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.F</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 6</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.SXST</id>
+                    <id>PPSMC:gw23715000_Mnu.SXST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.SXST</access>
                     </value>
@@ -2534,15 +2444,15 @@
                 </option>
                 <option>
                     <name>Value 7</name>
-                    <id>DiscPosPPSMC:gw23715000_MnuS.DO7</id>
+                    <id>PPSMC:gw23715000_MnuS.G</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO7</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.G</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 7</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.SVST</id>
+                    <id>PPSMC:gw23715000_Mnu.SVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.SVST</access>
                     </value>
@@ -2550,15 +2460,15 @@
                 </option>
                 <option>
                     <name>Value 8</name>
-                    <id>DiscPosPPSMC:gw23715000_MnuS.DO8</id>
+                    <id>PPSMC:gw23715000_MnuS.H</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO8</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.H</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 8</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.EIST</id>
+                    <id>PPSMC:gw23715000_Mnu.EIST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.EIST</access>
                     </value>
@@ -2566,15 +2476,15 @@
                 </option>
                 <option>
                     <name>Value 9</name>
-                    <id>DiscPosPPSMC:gw23715000_MnuS.DO9</id>
+                    <id>PPSMC:gw23715000_MnuS.I</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DO9</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.I</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 9</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.NIST</id>
+                    <id>PPSMC:gw23715000_Mnu.NIST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.NIST</access>
                     </value>
@@ -2582,15 +2492,15 @@
                 </option>
                 <option>
                     <name>Value 10</name>
-                    <id>DiscPosPPSMC:gw23715000_MnuS.DOA</id>
+                    <id>PPSMC:gw23715000_MnuS.K</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DOA</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.K</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 10</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.TEST</id>
+                    <id>PPSMC:gw23715000_Mnu.TEST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.TEST</access>
                     </value>
@@ -2598,15 +2508,15 @@
                 </option>
                 <option>
                     <name>Value 11</name>
-                    <id>DiscPosPPSMC:gw23715000_MnuS.DOB</id>
+                    <id>PPSMC:gw23715000_MnuS.L</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DOB</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.L</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 11</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.ELST</id>
+                    <id>PPSMC:gw23715000_Mnu.ELST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.ELST</access>
                     </value>
@@ -2614,15 +2524,15 @@
                 </option>
                 <option>
                     <name>Value 12</name>
-                    <id>DiscPosPPSMC:gw23715000_MnuS.DOC</id>
+                    <id>PPSMC:gw23715000_MnuS.M</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DOC</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.M</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 12</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.TVST</id>
+                    <id>PPSMC:gw23715000_Mnu.TVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.TVST</access>
                     </value>
@@ -2630,15 +2540,15 @@
                 </option>
                 <option>
                     <name>Value 13</name>
-                    <id>DiscPosPPSMC:gw23715000_MnuS.DOD</id>
+                    <id>PPSMC:gw23715000_MnuS.N</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DOD</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.N</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 13</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.TTST</id>
+                    <id>PPSMC:gw23715000_Mnu.TTST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.TTST</access>
                     </value>
@@ -2646,15 +2556,15 @@
                 </option>
                 <option>
                     <name>Value 14</name>
-                    <id>DiscPosPPSMC:gw23715000_MnuS.DOE</id>
+                    <id>PPSMC:gw23715000_MnuS.O</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DOE</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.O</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 14</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.FTST</id>
+                    <id>PPSMC:gw23715000_Mnu.FTST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.FTST</access>
                     </value>
@@ -2662,15 +2572,15 @@
                 </option>
                 <option>
                     <name>Value 15</name>
-                    <id>DiscPosPPSMC:gw23715000_MnuS.DOF</id>
+                    <id>PPSMC:gw23715000_MnuS.P</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.DOF</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_MnuS.P</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 15</name>
-                    <id>DiscPosPPSMC:gw23715000_Mnu.FFST</id>
+                    <id>PPSMC:gw23715000_Mnu.FFST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715000_Mnu.FFST</access>
                     </value>
@@ -2685,10 +2595,10 @@
                 <id>DiscPosPPSMC:gw23715001</id>
                 <goto>
                     <access monitor="true" method="GETPUTCB" transport="ca" type="string" timeout="100.0">PPSMC:gw23715001_Mnu</access>
-                    <value type="string" >Undefined,Position eins,Position zwei,Position drei</value>
+                    <value type="string" >Undefined,POS 0, POS 1,POS 2,POS 3</value>
                 </goto>
                 <position>
-                    <access method="GETCB" transport="ca" type="string">PPSMC:gw23715001_actPos.SVAL</access>
+                    <access method="GETCB" transport="ca" type="string">PPSMC:gw23715001_Mnu</access>
                 </position>
                 <stop>
                     <access method="PUT" transport="ca" type="int">PPSMC:gw23715001_stop</access>
@@ -2699,7 +2609,7 @@
                 </unit>
                 <option>
                     <name>Selected Position</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu</id>
+                    <id>PPSMC:gw23715001_Mnu</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715001_Mnu</access>
                     </value>
@@ -2707,7 +2617,7 @@
                 </option>
                 <option>
                     <name>Move Done</name>
-                    <id>DiscPosPPSMC:gw23715001.DMOV</id>
+                    <id>PPSMC:gw23715001.DMOV</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715001.DMOV</access>
                     </value>
@@ -2715,7 +2625,7 @@
                 </option>
                 <option>
                     <name>Severity</name>
-                    <id>DiscPosPPSMC:gw23715001.SEVR</id>
+                    <id>PPSMC:gw23715001.SEVR</id>
                     <value>
                         <access method="GETCB" type="string" transport="ca">PPSMC:gw23715001.SEVR</access>
                     </value>
@@ -2723,7 +2633,7 @@
                 </option>
                 <option>
                     <name>Status</name>
-                    <id>DiscPosPPSMC:gw23715001.STAT</id>
+                    <id>PPSMC:gw23715001.STAT</id>
                     <value>
                         <access method="GETCB" type="string" transport="ca">PPSMC:gw23715001.STAT</access>
                     </value>
@@ -2731,7 +2641,7 @@
                 </option>
                 <option>
                     <name>control Mode</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.OMSL</id>
+                    <id>PPSMC:gw23715001_Mnu.OMSL</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.OMSL</access>
                     </value>
@@ -2739,7 +2649,7 @@
                 </option>
                 <option>
                     <name>lvio</name>
-                    <id>DiscPosPPSMC:gw23715001.LVIO</id>
+                    <id>PPSMC:gw23715001.LVIO</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001.LVIO</access>
                     </value>
@@ -2747,7 +2657,7 @@
                 </option>
                 <option>
                     <name>miss</name>
-                    <id>DiscPosPPSMC:gw23715001.MISS</id>
+                    <id>PPSMC:gw23715001.MISS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001.MISS</access>
                     </value>
@@ -2755,7 +2665,7 @@
                 </option>
                 <option>
                     <name>rlls</name>
-                    <id>DiscPosPPSMC:gw23715001.RLLS</id>
+                    <id>PPSMC:gw23715001.RLLS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001.RLLS</access>
                     </value>
@@ -2763,7 +2673,7 @@
                 </option>
                 <option>
                     <name>rhls</name>
-                    <id>DiscPosPPSMC:gw23715001.RHLS</id>
+                    <id>PPSMC:gw23715001.RHLS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001.RHLS</access>
                     </value>
@@ -2771,15 +2681,15 @@
                 </option>
                 <option>
                     <name>Value 1</name>
-                    <id>DiscPosPPSMC:gw23715001_MnuS.DO1</id>
+                    <id>PPSMC:gw23715001_MnuS.A</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO1</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.A</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 1</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.ONST</id>
+                    <id>PPSMC:gw23715001_Mnu.ONST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.ONST</access>
                     </value>
@@ -2787,15 +2697,15 @@
                 </option>
                 <option>
                     <name>Value 2</name>
-                    <id>DiscPosPPSMC:gw23715001_MnuS.DO2</id>
+                    <id>PPSMC:gw23715001_MnuS.B</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO2</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.B</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 2</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.TWST</id>
+                    <id>PPSMC:gw23715001_Mnu.TWST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.TWST</access>
                     </value>
@@ -2803,15 +2713,15 @@
                 </option>
                 <option>
                     <name>Value 3</name>
-                    <id>DiscPosPPSMC:gw23715001_MnuS.DO3</id>
+                    <id>PPSMC:gw23715001_MnuS.C</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO3</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.C</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 3</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.THST</id>
+                    <id>PPSMC:gw23715001_Mnu.THST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.THST</access>
                     </value>
@@ -2819,15 +2729,15 @@
                 </option>
                 <option>
                     <name>Value 4</name>
-                    <id>DiscPosPPSMC:gw23715001_MnuS.DO4</id>
+                    <id>PPSMC:gw23715001_MnuS.D</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO4</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.D</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 4</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.FRST</id>
+                    <id>PPSMC:gw23715001_Mnu.FRST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.FRST</access>
                     </value>
@@ -2835,15 +2745,15 @@
                 </option>
                 <option>
                     <name>Value 5</name>
-                    <id>DiscPosPPSMC:gw23715001_MnuS.DO5</id>
+                    <id>PPSMC:gw23715001_MnuS.E</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO5</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.E</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 5</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.FVST</id>
+                    <id>PPSMC:gw23715001_Mnu.FVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.FVST</access>
                     </value>
@@ -2851,15 +2761,15 @@
                 </option>
                 <option>
                     <name>Value 6</name>
-                    <id>DiscPosPPSMC:gw23715001_MnuS.DO6</id>
+                    <id>PPSMC:gw23715001_MnuS.F</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO6</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.F</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 6</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.SXST</id>
+                    <id>PPSMC:gw23715001_Mnu.SXST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.SXST</access>
                     </value>
@@ -2867,15 +2777,15 @@
                 </option>
                 <option>
                     <name>Value 7</name>
-                    <id>DiscPosPPSMC:gw23715001_MnuS.DO7</id>
+                    <id>PPSMC:gw23715001_MnuS.G</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO7</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.G</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 7</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.SVST</id>
+                    <id>PPSMC:gw23715001_Mnu.SVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.SVST</access>
                     </value>
@@ -2883,15 +2793,15 @@
                 </option>
                 <option>
                     <name>Value 8</name>
-                    <id>DiscPosPPSMC:gw23715001_MnuS.DO8</id>
+                    <id>PPSMC:gw23715001_MnuS.H</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO8</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.H</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 8</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.EIST</id>
+                    <id>PPSMC:gw23715001_Mnu.EIST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.EIST</access>
                     </value>
@@ -2899,15 +2809,15 @@
                 </option>
                 <option>
                     <name>Value 9</name>
-                    <id>DiscPosPPSMC:gw23715001_MnuS.DO9</id>
+                    <id>PPSMC:gw23715001_MnuS.I</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DO9</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.I</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 9</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.NIST</id>
+                    <id>PPSMC:gw23715001_Mnu.NIST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.NIST</access>
                     </value>
@@ -2915,15 +2825,15 @@
                 </option>
                 <option>
                     <name>Value 10</name>
-                    <id>DiscPosPPSMC:gw23715001_MnuS.DOA</id>
+                    <id>PPSMC:gw23715001_MnuS.K</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DOA</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.K</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 10</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.TEST</id>
+                    <id>PPSMC:gw23715001_Mnu.TEST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.TEST</access>
                     </value>
@@ -2931,15 +2841,15 @@
                 </option>
                 <option>
                     <name>Value 11</name>
-                    <id>DiscPosPPSMC:gw23715001_MnuS.DOB</id>
+                    <id>PPSMC:gw23715001_MnuS.L</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DOB</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.L</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 11</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.ELST</id>
+                    <id>PPSMC:gw23715001_Mnu.ELST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.ELST</access>
                     </value>
@@ -2947,15 +2857,15 @@
                 </option>
                 <option>
                     <name>Value 12</name>
-                    <id>DiscPosPPSMC:gw23715001_MnuS.DOC</id>
+                    <id>PPSMC:gw23715001_MnuS.M</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DOC</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.M</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 12</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.TVST</id>
+                    <id>PPSMC:gw23715001_Mnu.TVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.TVST</access>
                     </value>
@@ -2963,15 +2873,15 @@
                 </option>
                 <option>
                     <name>Value 13</name>
-                    <id>DiscPosPPSMC:gw23715001_MnuS.DOD</id>
+                    <id>PPSMC:gw23715001_MnuS.N</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DOD</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.N</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 13</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.TTST</id>
+                    <id>PPSMC:gw23715001_Mnu.TTST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.TTST</access>
                     </value>
@@ -2979,15 +2889,15 @@
                 </option>
                 <option>
                     <name>Value 14</name>
-                    <id>DiscPosPPSMC:gw23715001_MnuS.DOE</id>
+                    <id>PPSMC:gw23715001_MnuS.O</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DOE</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.O</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 14</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.FTST</id>
+                    <id>PPSMC:gw23715001_Mnu.FTST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.FTST</access>
                     </value>
@@ -2995,15 +2905,15 @@
                 </option>
                 <option>
                     <name>Value 15</name>
-                    <id>DiscPosPPSMC:gw23715001_MnuS.DOF</id>
+                    <id>PPSMC:gw23715001_MnuS.P</id>
                     <value>
-                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.DOF</access>
+                        <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_MnuS.P</access>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
                 <option>
                     <name>Label 15</name>
-                    <id>DiscPosPPSMC:gw23715001_Mnu.FFST</id>
+                    <id>PPSMC:gw23715001_Mnu.FFST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">PPSMC:gw23715001_Mnu.FFST</access>
                     </value>
