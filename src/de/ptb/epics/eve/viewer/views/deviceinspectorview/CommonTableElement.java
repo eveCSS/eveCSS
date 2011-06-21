@@ -16,9 +16,12 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.viewer.Activator;
 
 /**
- * <code>CommonTableElement</code>.
+ * <code>CommonTableElement</code> is an element (row entry) of the tables 
+ * defined in 
+ * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView}.
  * 
  * @author ?
+ * @author Marcus Michalsky
  */
 public class CommonTableElement {
 	
@@ -54,7 +57,7 @@ public class CommonTableElement {
 		this.device = abstractdevice;
 		this.viewer = viewer;
 		name = abstractdevice.getName();
-		if( name == null || "".equals( this.name ) ) {
+		if(name == null || name.isEmpty()) {
 			this.name = abstractdevice.getID();
 		}
 		unit = "";
@@ -69,7 +72,7 @@ public class CommonTableElement {
 				valuePv.setReadOnly(motorAxis.getPosition().getAccess().isReadOnly());
 			}
 			if ((motorAxis.getGoto().getAccess() != null) &&
-					(motorAxis.getGoto().getAccess().getTransport() == TransportTypes.CA)){
+					(motorAxis.getGoto().getAccess().getTransport() == TransportTypes.CA)) {
 				gotoPv = new CommonTableElementPV(motorAxis.getGoto().getAccess().getVariableID(), this);
 				gotoPv.setReadOnly(motorAxis.getGoto().getAccess().isReadOnly());
 				if (motorAxis.getGoto().isDiscrete()) gotoPv.setDiscreteValues((String[]) motorAxis.getGoto().getDiscreteValues().toArray(new String[0]));
@@ -81,7 +84,7 @@ public class CommonTableElement {
 				setPv = new CommonTableElementPV(setPvName, this);
 				//if (motorAxis.getSet().isDiscrete()) setPv.setDiscreteValues((String[]) motorAxis.getSet().getDiscreteValues().toArray(new String[0]));
 			}
-			if (motorAxis.getUnit() != null){
+			if (motorAxis.getUnit() != null) {
 				if (motorAxis.getUnit().getAccess() != null) {
 					if (motorAxis.getUnit().getAccess().getTransport() == TransportTypes.CA){
 						unitPv = new CommonTableElementPV( motorAxis.getUnit().getAccess().getVariableID(), this);
@@ -91,33 +94,33 @@ public class CommonTableElement {
 					unit = motorAxis.getUnit().getValue();
 			}
 			if ((motorAxis.getStatus() != null && motorAxis.getStatus().getAccess() != null) &&
-					(motorAxis.getStatus().getAccess().getTransport() == TransportTypes.CA)){
+					(motorAxis.getStatus().getAccess().getTransport() == TransportTypes.CA)) {
 				statusPv = new CommonTableElementPV(motorAxis.getStatus().getAccess().getVariableID(), this);
 			}
 			if ((motorAxis.getStop() != null && motorAxis.getStop().getAccess() != null) &&
-					(motorAxis.getStop().getAccess().getTransport() == TransportTypes.CA)){
+					(motorAxis.getStop().getAccess().getTransport() == TransportTypes.CA)) {
 				stopPv = new CommonTableElementPV(motorAxis.getStop().getAccess().getVariableID(), this);
 			}
 			if ((motorAxis.getTweakForward() != null && motorAxis.getTweakForward().getAccess() != null) &&
-					(motorAxis.getTweakForward().getAccess().getTransport() == TransportTypes.CA)){
+					(motorAxis.getTweakForward().getAccess().getTransport() == TransportTypes.CA)) {
 				tweakforwardPv = new CommonTableElementPV(motorAxis.getTweakForward().getAccess().getVariableID(), this);
 			}
 			if (( motorAxis.getTweakReverse() != null && motorAxis.getTweakReverse().getAccess() != null) &&
-					(motorAxis.getTweakReverse().getAccess().getTransport() == TransportTypes.CA)){
+					(motorAxis.getTweakReverse().getAccess().getTransport() == TransportTypes.CA)) {
 				tweakreversePv = new CommonTableElementPV(motorAxis.getTweakReverse().getAccess().getVariableID(), this);
 			}
 			if (( motorAxis.getTweakValue() != null && motorAxis.getTweakValue().getAccess() != null) &&
-					(motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.CA)){
+					(motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.CA)) {
 				tweakvaluePv = new CommonTableElementPV(motorAxis.getTweakValue().getAccess().getVariableID(), this);
 				tweakvaluePv.setReadOnly(motorAxis.getTweakValue().getAccess().isReadOnly());
 				if (motorAxis.getTweakValue().isDiscrete()) tweakvaluePv.setDiscreteValues((String[]) motorAxis.getTweakValue().getDiscreteValues().toArray(new String[0]));
 			}
 		}
-		if( device instanceof DetectorChannel ){
+		if(device instanceof DetectorChannel) {
 			DetectorChannel channel = (DetectorChannel)device;
 			engine = new CommonTableElementEngineData(abstractdevice.getID(), this);
 			if ((channel.getRead() != null) && 
-					( channel.getRead().getAccess().getTransport() == TransportTypes.CA )) {
+					(channel.getRead().getAccess().getTransport() == TransportTypes.CA)) {
 				valuePv = new CommonTableElementPV(  channel.getRead().getAccess().getVariableID(), this);
 				valuePv.setReadOnly(channel.getRead().getAccess().isReadOnly());
 			}
@@ -131,17 +134,17 @@ public class CommonTableElement {
 			}
 			//TODO missing TRIGGER ...
 		}
-		if( device instanceof Device ){
+		if(device instanceof Device) {
 			Device realDevice = (Device)device;
 			if ((realDevice.getValue() != null) && 
-					( realDevice.getValue().getAccess().getTransport() == TransportTypes.CA )) {
+					(realDevice.getValue().getAccess().getTransport() == TransportTypes.CA)) {
 				valuePv = new CommonTableElementPV( realDevice.getValue().getAccess().getVariableID(), this);
 				valuePv.setReadOnly(realDevice.getValue().getAccess().isReadOnly());
 			}
 			if (realDevice.getUnit() != null){
 				if (realDevice.getUnit().getAccess() != null) {
 					if (realDevice.getUnit().getAccess().getTransport() == TransportTypes.CA)
-						unitPv = new CommonTableElementPV( realDevice.getUnit().getAccess().getVariableID(), this);
+						unitPv = new CommonTableElementPV(realDevice.getUnit().getAccess().getVariableID(), this);
 				}
 				else
 					unit = realDevice.getUnit().getValue();
@@ -159,12 +162,13 @@ public class CommonTableElement {
 	/**
 	 * 
 	 */
-	public void dispose(){
-		
+	public void dispose() {
 		if (valuePv != null) valuePv.dispose();
 		if (gotoPv != null) gotoPv.dispose();
 		if (unitPv != null) unitPv.dispose();
 		if (setPv != null) setPv.dispose();
+		if (statusPv != null) statusPv.dispose();
+		if (stopPv != null) stopPv.dispose();
 		if (triggerPv != null) triggerPv.dispose();
 		if (tweakvaluePv != null) tweakvaluePv.dispose();
 		if (tweakforwardPv != null) tweakforwardPv.dispose();
@@ -173,66 +177,133 @@ public class CommonTableElement {
 	}
 	
 	/**
+	 * Checks whether the process variable corresponding to the given property 
+	 * is read only.
 	 * 
-	 * @param property
-	 * @return
+	 * @param property the property that should be checked
+	 * @return <code>true</code> if the process variable corresponding to the 
+	 * 			given property is read only, <code>false</code> otherwise
 	 */
-	public boolean isReadonly(String property){
-		if (property.equals("value") && (valuePv != null))
+	public boolean isReadonly(String property) {
+		if (property.equals("value") && (valuePv != null)) {
 			return valuePv.isReadOnly();
-		else if (property.equals("goto") && (gotoPv != null))
+		}
+		else if (property.equals("goto") && (gotoPv != null)) {
 			return gotoPv.isReadOnly();
-		else if (property.equals("tweakvalue") && (tweakvaluePv != null))
-			return tweakvaluePv.isReadOnly();
-		else if (property.equals("unit") && (unitPv != null))
-				return unitPv.isReadOnly();
-		else if (property.equals("set") && (setPv != null)) 
+		}
+		else if (property.equals("unit") && (unitPv != null)) {
+			return unitPv.isReadOnly();
+		}
+		else if (property.equals("set") && (setPv != null)) {
 			return setPv.isReadOnly();
+		}
+		else if (property.equals("status") && (statusPv != null)) {
+			return statusPv.isReadOnly();
+		}
+		else if (property.equals("stop") && (stopPv != null)) {
+			return stopPv.isReadOnly();
+		}
+		else if (property.equals("trigger") && (triggerPv != null)) {
+			return triggerPv.isReadOnly();
+		}
+		else if (property.equals("tweakvalue") && (tweakvaluePv != null)) {
+			return tweakvaluePv.isReadOnly();
+		}
+		else if (property.equals("tweakforward") && (tweakforwardPv != null)) {
+			return tweakforwardPv.isReadOnly();
+		}
+		else if (property.equals("tweakreverse") && (tweakreversePv != null)) {
+			return tweakreversePv.isReadOnly();
+		}
+		
 		
 		return true;
 	}
 	
 	/**
+	 * Checks whether the process variable corresponding to the given property 
+	 * is discrete.
 	 * 
-	 * @param property
-	 * @return
+	 * @param property the property that should be checked
+	 * @return <code>true</code> if the process variable corresponding to the 
+	 * 			given property is discrete, <code>false</code> otherwise
 	 */
-	public boolean isDiscrete(String property){
-
-		boolean pvDiscrete = false;
-		
-		if (property.equals("value")){
-			if (valuePv != null) pvDiscrete = valuePv.isDiscrete();
+	public boolean isDiscrete(String property) {	
+		if (property.equals("value") && valuePv != null) {
+			return valuePv.isDiscrete();
 		}
-		else if (property.equals("set")){
-			if (setPv != null) pvDiscrete = setPv.isDiscrete();
+		else if (property.equals("goto") && gotoPv != null) {
+			return gotoPv.isDiscrete();
 		}
-		else if (property.equals("goto")){
-			if (gotoPv != null) pvDiscrete = gotoPv.isDiscrete();
+		else if (property.equals("unit") && unitPv != null) {
+			return unitPv.isDiscrete();
 		}
-		else if (property.equals("tweakvalue")){
-			if (tweakvaluePv != null) pvDiscrete = tweakvaluePv.isDiscrete();
+		else if (property.equals("set") && setPv != null) {
+			return setPv.isDiscrete();
 		}
-		return pvDiscrete;
+		else if (property.equals("status") && statusPv != null) {
+			return statusPv.isDiscrete();
+		}
+		else if (property.equals("stop") && stopPv != null) {
+			return stopPv.isDiscrete();
+		}
+		else if (property.equals("trigger") && triggerPv != null) {
+			return triggerPv.isDiscrete();
+		}
+		else if (property.equals("tweakvalue") && tweakvaluePv != null) {
+			return tweakvaluePv.isDiscrete();
+		}
+		else if (property.equals("tweakforward") && tweakforwardPv != null) {
+			return tweakforwardPv.isDiscrete();
+		}
+		else if (property.equals("tweakreverse") && tweakreversePv != null) {
+			return tweakreversePv.isDiscrete();
+		}
+		return false;
 	}
 
 	/**
+	 * Checks whether the process variable corresponding to the given property 
+	 * is connected.
 	 * 
-	 * @param property
-	 * @return
+	 * @param property the property that should be checked
+	 * @return <code>true</code> if the process variable corresponding to the 
+	 * 			given property is connected, <code>false</code> otherwise
 	 */
 	public boolean isConnected(String property) {
-		if ((property.equals("value")) && (valuePv != null))
+		if (property.equals("name") && valuePv != null) {
 			return valuePv.isConnected();
-		if ((property.equals("name")) && (valuePv != null))
+		}
+		else if (property.equals("value") && valuePv != null) {
 			return valuePv.isConnected();
-		if ((property.equals("goto")) && (gotoPv != null))
+		}
+		else if (property.equals("goto") && gotoPv != null) {
 			return gotoPv.isConnected();
-		if ((property.equals("tweakvalue")) && (tweakvaluePv != null))
-			return tweakvaluePv.isConnected();
-		if ((property.equals("set")) && (setPv != null))
+		}
+		else if (property.equals("unit") && unitPv != null) {
+			return unitPv.isConnected();
+		}
+		else if (property.equals("set") && setPv != null) {
 			return setPv.isConnected();
-			
+		}
+		else if (property.equals("status") && statusPv != null) {
+			return statusPv.isConnected();
+		}
+		else if (property.equals("stop") && stopPv != null) {
+			return stopPv.isConnected();
+		}
+		else if (property.equals("trigger") && triggerPv != null) {
+			return triggerPv.isConnected();
+		}
+		else if (property.equals("tweakvalue") && tweakvaluePv != null) {
+			return tweakvaluePv.isConnected();
+		}
+		else if (property.equals("tweakforward") && tweakforwardPv != null) {
+			return tweakforwardPv.isConnected();
+		}
+		else if (property.equals("tweakreverse") && tweakreversePv != null) {
+			return tweakreversePv.isConnected();
+		}
 		return false;
 	}
 	
@@ -242,10 +313,10 @@ public class CommonTableElement {
 	 * @return
 	 */
 	public Color getConnectColor(String property) {
-		if (isConnected(property))
+		if (isConnected(property)) {
 			return Activator.getDefault().getColor("COLOR_PV_CONNECTED");
-		else
-			return Activator.getDefault().getColor("COLOR_PV_DISCONNECTED");
+		}
+		return Activator.getDefault().getColor("COLOR_PV_DISCONNECTED");
 	}
 
 	/**
@@ -256,22 +327,22 @@ public class CommonTableElement {
 	// TODO we need the severity Color here
 	public Color getSeverityColor(String property) {
 		String status = ""; 
-		if (property.equals("value")){
+		if (property.equals("value")) {
 			if (valuePv != null) status = valuePv.getStatus();
 		}
-		else if (property.equals("unit")){
+		else if (property.equals("unit")) {
 			if (unitPv != null) status = unitPv.getStatus();
 		}
-		else if (property.equals("goto")){
+		else if (property.equals("goto")) {
 			if (gotoPv != null) status = gotoPv.getStatus();
 		}
-		else if (property.equals("set")){
+		else if (property.equals("set")) {
 			if (gotoPv != null) status = gotoPv.getStatus();
 		}
-		else if (property.equals("goto")){
+		else if (property.equals("goto")) {
 			if (gotoPv != null) status = gotoPv.getStatus();
 		}
-		else if (property.equals("tweakvalue")){
+		else if (property.equals("tweakvalue")) {
 			if (tweakvaluePv != null) status = tweakvaluePv.getStatus();
 		}
 		else if ((property.equals("status")) && (statusPv != null)) {
@@ -352,7 +423,7 @@ public class CommonTableElement {
 	 * @return
 	 */
 	public CellEditor getCellEditor(String column) {
-		if (cellEditorHash.containsKey(column)){
+		if (cellEditorHash.containsKey(column)) {
 			return cellEditorHash.get(column);
 		}
 		else
@@ -386,13 +457,13 @@ public class CommonTableElement {
 				return valueString;
 			}
 		}
-		else if (property.equals("unit")){
+		else if (property.equals("unit")) {
 			if (unitPv != null)
 				return unitPv.getValue();
 			else
 				return unit;
 		}
-		else if (property.equals( "tweakvalue") && (tweakvaluePv != null))
+		else if (property.equals("tweakvalue") && (tweakvaluePv != null))
 			return tweakvaluePv.getValue();
 
 		return "";
@@ -430,7 +501,7 @@ public class CommonTableElement {
 	 * 
 	 */
 	public void trigger() {
-		if (triggerPv != null && triggerPv.isConnected()){
+		if (triggerPv != null && triggerPv.isConnected()) {
 			DetectorChannel channel = (DetectorChannel)device;
 			if (channel.getTrigger().getValue() != null)
 				triggerPv.setValue(channel.getTrigger().getValue().getDefaultValue());
@@ -441,7 +512,7 @@ public class CommonTableElement {
 	 * 
 	 */
 	public void stop() {
-		if (stopPv != null && stopPv.isConnected()){
+		if (stopPv != null && stopPv.isConnected()) {
 			MotorAxis axis = (MotorAxis)device;
 			if (axis.getStop().getValue() != null)
 				stopPv.setValue(axis.getStop().getValue().getDefaultValue());
@@ -449,8 +520,11 @@ public class CommonTableElement {
 	}
 
 	/**
+	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} 
+	 * the <code>CommonTableElement</code> represents.
 	 * 
-	 * @return
+	 * @return the {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice}
+	 * 			the <code>CommonTableElement</code> represents
 	 */
 	public AbstractDevice getAbstractDevice() {
 		return device;
@@ -458,18 +532,23 @@ public class CommonTableElement {
 
 	/**
 	 * 
+	 * 
 	 * @param forward
 	 */
 	public void tweak(boolean forward) {
-		if (forward && (tweakforwardPv != null) && tweakforwardPv.isConnected()){
+		if (forward && (tweakforwardPv != null) && tweakforwardPv.isConnected()) {
 			MotorAxis motorAxis = (MotorAxis)device;
-			if (motorAxis.getTweakForward().getValue() != null)
-				tweakforwardPv.setValue(motorAxis.getTweakForward().getValue().getDefaultValue());
+			if (motorAxis.getTweakForward().getValue() != null) {
+				tweakforwardPv.setValue(
+					motorAxis.getTweakForward().getValue().getDefaultValue());
+			}
 		}
-		else if (!forward && (tweakreversePv != null) && tweakreversePv.isConnected()){
+		else if (!forward && (tweakreversePv != null) && tweakreversePv.isConnected()) {
 			MotorAxis motorAxis = (MotorAxis)device;
-			if (motorAxis.getTweakReverse().getValue() != null)
-			tweakreversePv.setValue(motorAxis.getTweakReverse().getValue().getDefaultValue());
+			if (motorAxis.getTweakReverse().getValue() != null) {
+				tweakreversePv.setValue(
+					motorAxis.getTweakReverse().getValue().getDefaultValue());
+			}
 		}
 	}
 }

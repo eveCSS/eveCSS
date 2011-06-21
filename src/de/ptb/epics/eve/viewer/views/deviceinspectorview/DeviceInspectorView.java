@@ -111,9 +111,13 @@ public class DeviceInspectorView extends ViewPart {
 	
 	private Image deleteIcon;
 	private Image leftArrowIcon;
+	private Image leftArrowIconDisabled;
 	private Image rightArrowIcon;
+	private Image rightArrowIconDisabled;
 	private Image playIcon;
+	private Image playIconDisabled;
 	private Image stopIcon;
+	private Image stopIconDisabled;
 	private Image restoreIcon;
 	private Image maximizeIcon;
 	private Image axisImage;
@@ -160,18 +164,23 @@ public class DeviceInspectorView extends ViewPart {
 			getImageDescriptor(ISharedImages.IMG_TOOL_DELETE).createImage();
 		leftArrowIcon = PlatformUI.getWorkbench().getSharedImages().
 			getImageDescriptor(ISharedImages.IMG_TOOL_BACK).createImage();
+		leftArrowIconDisabled = PlatformUI.getWorkbench().getSharedImages().
+			getImageDescriptor(ISharedImages.IMG_TOOL_BACK_DISABLED).createImage();
 		rightArrowIcon = PlatformUI.getWorkbench().
 				getSharedImages().getImageDescriptor(
 				ISharedImages.IMG_TOOL_FORWARD).createImage();
-		playIcon = 
-				Activator.getDefault().getImageRegistry().get("PLAY16");
-		stopIcon = 
-				Activator.getDefault().getImageRegistry().get("STOP16");
+		rightArrowIconDisabled = PlatformUI.getWorkbench().getSharedImages().
+			getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD_DISABLED).createImage();
+		playIcon = Activator.getDefault().getImageRegistry().get("PLAY16");
+		playIconDisabled = 
+			Activator.getDefault().getImageRegistry().get("PLAY16_DISABLED");
+		stopIcon = Activator.getDefault().getImageRegistry().get("STOP16");
+		stopIconDisabled = 
+			Activator.getDefault().getImageRegistry().get("STOP16_DISABLED");
 		restoreIcon = 
 				Activator.getDefault().getImageRegistry().get("RESTOREVIEW");
 		maximizeIcon = 
 				Activator.getDefault().getImageRegistry().get("MAXIMIZE");
-		
 		axisImage = 
 				Activator.getDefault().getImageRegistry().get("AXIS");
 		channelImage = 
@@ -518,8 +527,23 @@ public class DeviceInspectorView extends ViewPart {
 		stopColumn.setEditingSupport(
 				new CommonTableEditingSupport(axisTableViewer, "stop"));
 		stopColumn.setLabelProvider(new ColumnLabelProvider() {
-			@Override public Image getImage(Object element) {return stopIcon;}
+			@Override public Image getImage(Object element) {
+				CommonTableElement cte = (CommonTableElement) element;
+				if(cte.isConnected("stop")) {
+					return stopIcon;
+				} else {
+					return stopIconDisabled;
+				}
+			}
 			@Override public String getText(Object element) {return null;}
+			@Override public String getToolTipText(Object element) {
+				MotorAxis axis = (MotorAxis)
+					((CommonTableElement)element).getAbstractDevice();
+				if(axis.getStop() != null && axis.getStop().getAccess() != null) {
+					return axis.getStop().getAccess().getVariableID();
+				}
+				return null;
+			}
 		});
 		stopColumn.getColumn().setWidth(40);
 		
@@ -566,8 +590,22 @@ public class DeviceInspectorView extends ViewPart {
 		tweakRColumn.setEditingSupport(
 				new CommonTableEditingSupport(axisTableViewer, "tweakreverse"));
 		tweakRColumn.setLabelProvider(new ColumnLabelProvider() {
-			@Override public Image getImage(Object element) {return leftArrowIcon;}
+			@Override public Image getImage(Object element) {
+				if(((CommonTableElement)element).isConnected("tweakvalue")) {
+					return leftArrowIcon;
+				} else {
+					return leftArrowIconDisabled;
+				}
+			}
 			@Override public String getText(Object element) {return null;}
+			@Override public String getToolTipText(Object element) {
+				MotorAxis axis = (MotorAxis) 
+						((CommonTableElement)element).getAbstractDevice();
+				if(axis.getTweakForward() != null && axis.getTweakForward().getAccess() != null) {
+					return axis.getTweakForward().getAccess().getVariableID();
+				}
+				return null;
+			}
 		});
 		tweakRColumn.getColumn().setWidth(22);
 		
@@ -600,8 +638,23 @@ public class DeviceInspectorView extends ViewPart {
 		tweakFColumn.setEditingSupport(
 				new CommonTableEditingSupport(axisTableViewer, "tweakforward"));
 		tweakFColumn.setLabelProvider(new ColumnLabelProvider() {
-			@Override public Image getImage(Object element) {return rightArrowIcon;}
+			@Override public Image getImage(Object element) {
+				if(((CommonTableElement)element).isConnected("tweakvalue")) {
+					return rightArrowIcon;
+				} else {
+					return rightArrowIconDisabled;
+				}
+			}
 			@Override public String getText(Object element) {return null;}
+			@Override public String getToolTipText(Object element) {
+				MotorAxis axis = (MotorAxis) 
+						((CommonTableElement)element).getAbstractDevice();
+				if(axis.getTweakReverse() !=  null && axis.getTweakReverse().getAccess() != null) {
+					return axis.getTweakReverse().getAccess().getVariableID();
+				} else {
+					return null;
+				}
+			}
 		});
 		tweakFColumn.getColumn().setWidth(22);
 	} 
@@ -707,7 +760,14 @@ public class DeviceInspectorView extends ViewPart {
 		triggerColumn.setEditingSupport(
 				new CommonTableEditingSupport(axisTableViewer, "trigger"));
 		triggerColumn.setLabelProvider(new ColumnLabelProvider() {
-			@Override public Image getImage(Object element) {return playIcon;}
+			@Override public Image getImage(Object element) {
+				if (((CommonTableElement)element).isConnected("trigger")) {
+					return playIcon;
+				} else {
+					return playIconDisabled;
+				}
+				
+			}
 			@Override public String getText(Object element) {return null;}
 			@Override public String getToolTipText(Object element) {
 				DetectorChannel channel = (DetectorChannel) 
