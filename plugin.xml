@@ -169,7 +169,7 @@
          </command>
          <command
                commandId="de.ptb.epics.eve.viewer.ResetDeviceInspector"
-               icon="icons/reset.gif"
+               icon="icons/cp_order_obj.gif"
                label="resetDeviceInspector"
                style="push"
                tooltip="Reset Layout">
