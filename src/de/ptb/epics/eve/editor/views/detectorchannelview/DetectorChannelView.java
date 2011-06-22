@@ -19,6 +19,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
@@ -69,27 +71,33 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 	// ****************** end of: underlying model ***********************
 	// *******************************************************************
 	
+	private boolean modelUpdateListenerSuspended;
+
 	private Composite top = null;
 	private ScrolledComposite sc = null;
 
 	private Label averageLabel;
 	private Text averageText;
 	private Label averageErrorLabel;
+	private TextNumberVerifyListener averageTextVerifyListener;
 	private AverageTextModifyListener averageTextModifyListener;
 	
 	private Label maxDeviationLabel;
 	private Text maxDeviationText;
 	private Label maxDeviationErrorLabel;
+	private TextDoubleVerifyListener maxDeviationTextVerifyListener;
 	private MaxDeviationTextModifyListener maxDeviationTextModifyListener;
 	
 	private Label minimumLabel;
 	private Text minimumText;
 	private Label minimumErrorLabel;
+	private TextDoubleVerifyListener minimumTextVerifyListener;
 	private MinimumTextModifyListener minimumTextModifyListener;
 	
 	private Label maxAttemptsLabel;
 	private Text maxAttemptsText;
 	private Label maxAttemptsErrorLabel;	
+	private TextNumberVerifyListener maxAttemptsTextVerifyListener;
 	private MaxAttemptsTextModifyListener maxAttemptsTextModifyListener;
 	
 	private Button confirmTriggerManualCheckBox;
@@ -150,6 +158,8 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.averageText.setLayoutData(gridData);
+		this.averageTextVerifyListener = new TextNumberVerifyListener();
+		this.averageText.addVerifyListener(averageTextVerifyListener);
 		this.averageTextModifyListener = new AverageTextModifyListener();
 		this.averageText.addModifyListener(averageTextModifyListener); 
 		
@@ -170,8 +180,9 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.maxDeviationText.setLayoutData(gridData);
-		this.maxDeviationTextModifyListener = 
-				new MaxDeviationTextModifyListener();
+		this.maxDeviationTextVerifyListener = new TextDoubleVerifyListener();
+		this.maxDeviationText.addVerifyListener(maxDeviationTextVerifyListener);
+		this.maxDeviationTextModifyListener = new MaxDeviationTextModifyListener();
 		this.maxDeviationText.addModifyListener(maxDeviationTextModifyListener);
 		
 		this.maxDeviationErrorLabel = new Label(this.top, SWT.NONE);
@@ -192,6 +203,8 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.minimumText.setLayoutData(gridData);
+		this.minimumTextVerifyListener = new TextDoubleVerifyListener();
+		this.minimumText.addVerifyListener(minimumTextVerifyListener);
 		this.minimumTextModifyListener = new MinimumTextModifyListener();
 		this.minimumText.addModifyListener(minimumTextModifyListener);
 		
@@ -213,6 +226,8 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.maxAttemptsText.setLayoutData(gridData);
+		this.maxAttemptsTextVerifyListener = new TextNumberVerifyListener();
+		this.maxAttemptsText.addVerifyListener(maxAttemptsTextVerifyListener);
 		this.maxAttemptsTextModifyListener = new MaxAttemptsTextModifyListener();
 		this.maxAttemptsText.addModifyListener(maxAttemptsTextModifyListener);
 		
@@ -343,7 +358,9 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		
 		if(modelUpdateEvent != null) 
 			logger.debug(modelUpdateEvent.getSender().getClass().getName());
-		
+
+		if(modelUpdateListenerSuspended) return;
+
 		removeListeners();
 		
 		if(this.currentChannel != null) {
@@ -357,8 +374,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			this.averageText.setText("" + this.currentChannel.getAverageCount());
 			
 			// set max deviation
-			if(this.currentChannel.getMaxDeviation() 
-			   != Double.NEGATIVE_INFINITY) {
+			if(this.currentChannel.getMaxDeviation() != Double.NEGATIVE_INFINITY) {
 				this.maxDeviationText.setText(
 						"" + this.currentChannel.getMaxDeviation());
 			} else {
@@ -388,7 +404,6 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			this.detectorReadyEventCheckBox.setSelection(
 					this.currentChannel.getDetectorReadyEvent() != null);
 			
-
 			this.averageText.setEnabled(true);
 			this.maxDeviationText.setEnabled(true);
 			this.minimumText.setEnabled(true);
@@ -402,9 +417,9 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			
 			// TODO von Hartmut: da maxDeviation und minimum keine 
 			// ChannelErrors liefern, muß hier auch keien Abfrage erfolgen!
+// TODO: entfernen
 			this.maxDeviationErrorLabel.setImage(null);
 			this.minimumErrorLabel.setImage(null);
-		
 			
 			if (sc.getMinHeight() == 0) {
 				// Wenn das erste Mal die DetectorChannelView für einen Channel 
@@ -458,23 +473,45 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 	 */
 	private void checkForErrors()
 	{
+    	// reset errors
+    	this.averageErrorLabel.setImage(null);
+		this.averageErrorLabel.setToolTipText("");
+		this.maxDeviationErrorLabel.setImage(null);
+		this.maxDeviationErrorLabel.setToolTipText("");
+		this.minimumErrorLabel.setImage(null);
+		this.minimumErrorLabel.setToolTipText("");	
+		this.maxAttemptsErrorLabel.setImage(null);
+		this.maxAttemptsErrorLabel.setToolTipText("");	
+
 		final Iterator<IModelError> it = 
 				this.currentChannel.getModelErrors().iterator();
+
 		while(it.hasNext()) {
 			final IModelError modelError = it.next();
 			if(modelError instanceof ChannelError) {
 				final ChannelError channelError = (ChannelError) modelError;
-				if(channelError.getErrorType() == 
-				   ChannelErrorTypes.MAX_DEVIATION_NOT_POSSIBLE) {
-					this.maxDeviationErrorLabel.setImage(
-							PlatformUI.getWorkbench().getSharedImages().
-							getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-				} else if(channelError.getErrorType() == 
-						  ChannelErrorTypes.MINIMUM_NOT_POSSIBLE) {
-					this.minimumErrorLabel.setImage(
-							PlatformUI.getWorkbench().getSharedImages().
-							getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+				
+				switch(channelError.getErrorType()) {
+					case MAX_DEVIATION_NOT_POSSIBLE:
+						this.maxDeviationErrorLabel.setImage(
+								PlatformUI.getWorkbench().getSharedImages().
+								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+						this.maxDeviationErrorLabel.setToolTipText("Max Deviation value not possible");
+						break;
+					case MINIMUM_NOT_POSSIBLE:
+						this.minimumErrorLabel.setImage(
+								PlatformUI.getWorkbench().getSharedImages().
+								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+						this.minimumErrorLabel.setToolTipText("Minimum value not possible");
+						break;
+					case MAX_ATTEMPTS_NOT_POSSIBLE:
+						this.maxAttemptsErrorLabel.setImage(
+								PlatformUI.getWorkbench().getSharedImages().
+								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+						this.maxAttemptsErrorLabel.setToolTipText("Max Attempts value not possible");
+						break;
 				}
+				
 			}
 		}
 		if(this.currentChannel.getRedoControlEventManager().
@@ -487,15 +524,31 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		}
 	}
 	
+	protected void suspendModelUpdateListener()
+	{
+		currentChannel.removeModelUpdateListener(this);
+		modelUpdateListenerSuspended = true;
+	}
+	
+	protected void resumeModelUpdateListener()
+	{
+		currentChannel.addModelUpdateListener(this);
+		modelUpdateListenerSuspended = false;
+	}
+
 	/*
 	 * 
 	 */
 	private void addListeners()
 	{
 		averageText.addModifyListener(averageTextModifyListener);
+		averageText.addVerifyListener(averageTextVerifyListener);
 		maxDeviationText.addModifyListener(maxDeviationTextModifyListener);
+		maxDeviationText.addVerifyListener(maxDeviationTextVerifyListener);
 		minimumText.addModifyListener(minimumTextModifyListener);
+		minimumText.addVerifyListener(minimumTextVerifyListener);
 		maxAttemptsText.addModifyListener(maxAttemptsTextModifyListener);
+		maxAttemptsText.addVerifyListener(maxAttemptsTextVerifyListener);
 		
 		confirmTriggerManualCheckBox.addSelectionListener(
 				confirmTriggerManualCheckBoxSelectionListener);
@@ -513,9 +566,13 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 	private void removeListeners()
 	{
 		averageText.removeModifyListener(averageTextModifyListener);
+		averageText.removeVerifyListener(averageTextVerifyListener);
 		maxDeviationText.removeModifyListener(maxDeviationTextModifyListener);
+		maxDeviationText.removeVerifyListener(maxDeviationTextVerifyListener);
 		minimumText.removeModifyListener(minimumTextModifyListener);
+		minimumText.removeVerifyListener(minimumTextVerifyListener);
 		maxAttemptsText.removeModifyListener(maxAttemptsTextModifyListener);
+		maxAttemptsText.removeVerifyListener(maxAttemptsTextVerifyListener);
 		
 		confirmTriggerManualCheckBox.removeSelectionListener(
 				confirmTriggerManualCheckBoxSelectionListener);
@@ -542,39 +599,20 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		@Override
 		public void modifyText(final ModifyEvent e) {
 			logger.debug("average text modified");
+// sollen logger Infos auch in das MotorAxisStart... geschrieben werden?
 			
+			suspendModelUpdateListener();
+
 			if(currentChannel != null) {
-				if(averageText.getText().equals("")) {
-					// average soll immer gefüllt sein, obwohl es im xsd-File
-					// bisher kein Pflichtfeld ist (Hartmut 6.5.10)
-					// Stand 24.04.2011: averagecount hat minOccurs 0
-					averageErrorLabel.setImage(
-							PlatformUI.getWorkbench().getSharedImages().
-							getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-					averageErrorLabel.setToolTipText(
-							"The average must not be empty!");
-				} else {
-					try {
-						currentChannel.setAverageCount(
-								Integer.parseInt(averageText.getText()));
-						logger.debug("set average text to: " + Integer.parseInt(averageText.getText()));
-						averageErrorLabel.setImage(null);
-						averageErrorLabel.setToolTipText(null);
-					} catch(final NumberFormatException ex) {
-						averageErrorLabel.setImage(
-								PlatformUI.getWorkbench().getSharedImages().
-								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-						averageErrorLabel.setToolTipText(
-								"The average must be a integer number.");
-					}
-					catch(final IllegalArgumentException ex) {
-						averageErrorLabel.setImage(
-								PlatformUI.getWorkbench().getSharedImages().
-								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-						averageErrorLabel.setToolTipText(ex.getMessage());
-					}
+				try {
+					currentChannel.setAverageCount(Integer.parseInt(averageText.getText()));
+					logger.debug("set average text to: " + Integer.parseInt(averageText.getText()));
+				} catch(final NumberFormatException ex) {
+					currentChannel.setAverageCount(0);
 				}
 			}
+			checkForErrors();
+			resumeModelUpdateListener();
 		}
 	}
 
@@ -588,26 +626,22 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		 */
 		@Override
 		public void modifyText(final ModifyEvent e) {
+
+			suspendModelUpdateListener();
+			
 			if(currentChannel != null) {
 				if(maxDeviationText.getText().equals("")) {
 					currentChannel.setMaxDeviation(Double.NEGATIVE_INFINITY);
-					maxDeviationErrorLabel.setImage(null);
-					maxDeviationErrorLabel.setToolTipText(null);
 				} else {
 					try {
-						currentChannel.setMaxDeviation(
-								Double.parseDouble(maxDeviationText.getText()));
-						maxDeviationErrorLabel.setImage(null);
-						maxDeviationErrorLabel.setToolTipText(null);
+						currentChannel.setMaxDeviation(Double.parseDouble(maxDeviationText.getText()));
 					} catch(final NumberFormatException ex) {
-						maxDeviationErrorLabel.setImage(
-								PlatformUI.getWorkbench().getSharedImages().
-								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-						maxDeviationErrorLabel.setToolTipText("The max " +
-								"deviation must be a floating point number!");
+						currentChannel.setMaxDeviation(Double.NaN);
 					}
 				}
 			}
+			checkForErrors();
+			resumeModelUpdateListener();
 		}
 	}
 
@@ -621,26 +655,22 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		 */
 		@Override
 		public void modifyText(final ModifyEvent e) {
+
+			suspendModelUpdateListener();
+
 			if(currentChannel != null) {
 				if(minimumText.getText().equals("")) {
 					currentChannel.setMinumum(Double.NEGATIVE_INFINITY);
-					minimumErrorLabel.setImage(null);
-					minimumErrorLabel.setToolTipText(null);
 				} else {
 					try {
-						currentChannel.setMinumum(
-								Double.parseDouble( minimumText.getText()));
-						minimumErrorLabel.setImage(null);
-						minimumErrorLabel.setToolTipText(null);
+						currentChannel.setMinumum(Double.parseDouble( minimumText.getText()));
 					} catch(final NumberFormatException ex) {
-						minimumErrorLabel.setImage(PlatformUI.getWorkbench().
-								getSharedImages().getImage(
-								ISharedImages.IMG_OBJS_ERROR_TSK));
-						minimumErrorLabel.setToolTipText("The minimum must " +
-								"be a floating point number!");
+						currentChannel.setMinumum(Double.NaN);
 					}
 				}
 			}
+			checkForErrors();
+			resumeModelUpdateListener();
 		}
 	}
 
@@ -654,26 +684,22 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		 */
 		@Override
 		public void modifyText(final ModifyEvent e) {
+
+			suspendModelUpdateListener();
+
 			if(currentChannel != null) {
 				if(maxAttemptsText.getText().equals("")) {
 					currentChannel.setMaxAttempts(Integer.MIN_VALUE);
-					maxAttemptsErrorLabel.setImage(null);
-					maxAttemptsErrorLabel.setToolTipText(null);
 				} else {
 					try {
-						currentChannel.setMaxAttempts(
-								Integer.parseInt(maxAttemptsText.getText()));
-						maxAttemptsErrorLabel.setImage(null);
-						maxAttemptsErrorLabel.setToolTipText(null);
+						currentChannel.setMaxAttempts(Integer.parseInt(maxAttemptsText.getText()));
 					} catch(final NumberFormatException ex) {
-						maxAttemptsErrorLabel.setImage(
-								PlatformUI.getWorkbench().getSharedImages().
-								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-						maxAttemptsErrorLabel.setToolTipText("The max " +
-							"attempts must be a non negativ integer number!");
+						currentChannel.setMaxAttempts(-1);
 					}
 				}
 			}
+			checkForErrors();
+			resumeModelUpdateListener();
 		}
 	}
 
@@ -681,8 +707,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 	 * <code>SelectionListener</code> of 
 	 * <code>confirmTriggerManualCheckBox</code>.
 	 */
-	class ConfirmTriggerManualCheckBoxSelectionListener 
-												implements SelectionListener {
+	class ConfirmTriggerManualCheckBoxSelectionListener implements SelectionListener {
 
 		/**
 		 * {@inheritDoc}
@@ -707,8 +732,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 	 * <code>SelectionListener</code> of 
 	 * <code>detectorReadyEventCheckBox</code>.
 	 */
-	class DetectorReadyEventCheckBoxSelectionListener 
-												implements SelectionListener {
+	class DetectorReadyEventCheckBoxSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -817,4 +841,91 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		public void controlResized(ControlEvent e) {
 		}	
 	}
+
+	/**
+	 * <code>VerifyListener</code> of Text Widget from
+	 * <code>DetectorChannelView</code>
+	 */
+	class TextNumberVerifyListener implements VerifyListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void verifyText(VerifyEvent e) {
+
+			switch (e.keyCode) {  
+            	case SWT.BS:           // Backspace  
+            	case SWT.DEL:          // Delete  
+			    case SWT.HOME:         // Home  
+			    case SWT.END:          // End  
+			    case SWT.ARROW_LEFT:   // Left arrow  
+			    case SWT.ARROW_RIGHT:  // Right arrow  
+			    	return;  
+			}  
+
+			if (!Character.isDigit(e.character)) {  
+					e.doit = false;  // disallow the action  
+		    }  			
+		}
+
+	}
+
+	/**
+	 * <code>VerifyListener</code> of Text Widget from
+	 * <code>MotorAxisStartStopStepwidthComposite</code>
+	 */
+	class TextDoubleVerifyListener implements VerifyListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void verifyText(VerifyEvent e) {
+
+			switch (e.keyCode) {  
+            	case SWT.BS:           // Backspace  
+            	case SWT.DEL:          // Delete  
+			    case SWT.HOME:         // Home  
+			    case SWT.END:          // End  
+			    case SWT.ARROW_LEFT:   // Left arrow  
+			    case SWT.ARROW_RIGHT:  // Right arrow  
+			    	return;  
+			}  
+
+			String oldText = ((Text)(e.widget)).getText();
+
+			if (!Character.isDigit(e.character)) {  
+				if (e.character == '.') {
+					// character . is a valid character, if he is not in the old string
+					if (oldText.contains("."))
+						e.doit = false;
+				} 
+				else if (e.character == '-') {
+					// character - is a valid character as first sign and after an e
+					if (oldText.isEmpty()) {
+						// oldText is emtpy, - is valid
+					}
+					else {
+						// wenn das letzte Zeichen von oldText ein e ist, ist das minus auch erlaubt
+						int index = oldText.length();
+						if (oldText.substring(index-1).equals("e")) {
+							// letzte Zeichen ist ein e und damit erlaubt
+						}
+						else
+							e.doit = false;
+					}
+				} 
+				else if (e.character == 'e') {
+					// character e is a valid character, if he is not in the old string
+					if (oldText.contains("e"))
+						e.doit = false;
+				} 
+				else {
+					e.doit = false;  // disallow the action  
+		        }
+		    }  			
+		}
+	}
+
 }

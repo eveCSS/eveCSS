@@ -77,7 +77,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 			autoFillStepwidthRadioButtonSelectionListener;
 	
 	private Text stepwidthText;
-	private TextVerifyListener stepwidthTextVerifyListener;
+	private TextDoubleVerifyListener stepwidthTextVerifyListener;
 	private StepwidthTextModifyListener stepwidthTextModifyListener;
 	private Label stepwidthErrorLabel;
 	// end of: step width elements
@@ -88,7 +88,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 			autoFillStepcountRadioButtonSelectionListener;
 	
 	private Text stepcountText;
-	private TextStepcountVerifyListener stepcountTextVerifyListener;
+	private TextNumberVerifyListener stepcountTextVerifyListener;
 	private StepcountTextModifyListener stepcountTextModifyListener;
 	private Label stepcountErrorLabel;
 	// end of step count elements
@@ -176,7 +176,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 				autoFillStepwidthRadioButtonSelectionListener);
 
 		this.stepwidthText = new Text(this, SWT.BORDER);
-		this.stepwidthTextVerifyListener = new TextVerifyListener();
+		this.stepwidthTextVerifyListener = new TextDoubleVerifyListener();
 		this.stepwidthText.addVerifyListener(stepwidthTextVerifyListener);
 		this.stepwidthTextModifyListener = new StepwidthTextModifyListener();
 		this.stepwidthText.addModifyListener(stepwidthTextModifyListener);
@@ -199,7 +199,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 				autoFillStepcountRadioButtonSelectionListener);
 
 		this.stepcountText = new Text(this, SWT.BORDER);
-		this.stepcountTextVerifyListener = new TextStepcountVerifyListener();
+		this.stepcountTextVerifyListener = new TextNumberVerifyListener();
 		this.stepcountText.addVerifyListener(stepcountTextVerifyListener);
 		this.stepcountTextModifyListener = new StepcountTextModifyListener();
 		this.stepcountText.addModifyListener(stepcountTextModifyListener);
@@ -884,6 +884,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 					autoFill();	
 				} catch( final NumberFormatException ex ) {
 					// string is not a double
+					System.out.println("String ist leer oder kein double");
 					currentAxis.setStart(null);
 				}
 			}
@@ -1251,7 +1252,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 	 * <code>VerifyListener</code> of Text Widget from
 	 * <code>MotorAxisStartStopStepwidthComposite</code>
 	 */
-	class TextVerifyListener implements VerifyListener {
+	class TextDoubleVerifyListener implements VerifyListener {
 
 		/**
 		 * {@inheritDoc}
@@ -1273,12 +1274,12 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 
 			if (!Character.isDigit(e.character)) {  
 				if (e.character == '.') {
-					// charecter . is a valid character, if he is not in the old string
+					// character . is a valid character, if he is not in the old string
 					if (oldText.contains("."))
 						e.doit = false;
 				} 
 				else if (e.character == '-') {
-					// charecter - is a valid character as first sign and after an e
+					// character - is a valid character as first sign and after an e
 					if (oldText.isEmpty()) {
 						// oldText is emtpy, - is valid
 					}
@@ -1293,7 +1294,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 					}
 				} 
 				else if (e.character == 'e') {
-					// charecter e is a valid character, if he is not in the old string
+					// character e is a valid character, if he is not in the old string
 					if (oldText.contains("e"))
 						e.doit = false;
 				} 
@@ -1309,7 +1310,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 	 * <code>VerifyListener</code> of Text Widget from
 	 * <code>MotorAxisStartStopStepwidthComposite</code>
 	 */
-	class TextStepcountVerifyListener implements VerifyListener {
+	class TextNumberVerifyListener implements VerifyListener {
 
 		/**
 		 * {@inheritDoc}
