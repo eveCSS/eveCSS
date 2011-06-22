@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.scandescription.errors.AxisError;
+import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -23,6 +25,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * This class describes the behavior of a detector during the main phase.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
+ * @author Hartmut Scherr
  */
 public class Channel extends AbstractMainPhaseBehavior {
 
@@ -42,6 +45,8 @@ public class Channel extends AbstractMainPhaseBehavior {
 	
 	/*
 	 * The max deviation of this channel.
+	 * Double.NaN = value is invalid
+	 * Double.NEGATIVE_INFINITY = value is empty
 	 */
 	private double maxDeviation = Double.NEGATIVE_INFINITY;
 	
@@ -337,12 +342,23 @@ public class Channel extends AbstractMainPhaseBehavior {
 	public List<IModelError> getModelErrors() {
 		final List< IModelError > modelErrors = new ArrayList< IModelError >();
 		// TODO von Hartmut: maxDeviation und minimum liefern keine ChannelErrors mehr!
-		if( this.maxDeviation != Double.NEGATIVE_INFINITY  && !this.getDetectorChannel().getRead().isValuePossible( "" + this.maxDeviation ) ) {
+
+		if( Double.compare(this.maxDeviation, Double.NaN) == 0 ) {
+			modelErrors.add( new ChannelError( this, ChannelErrorTypes.MAX_DEVIATION_NOT_POSSIBLE ) );
+		} else if( !this.getDetectorChannel().getRead().isValuePossible( "" + this.maxDeviation ) ) {
 			modelErrors.add( new ChannelError( this, ChannelErrorTypes.MAX_DEVIATION_NOT_POSSIBLE ) );
 		}
-		if( this.minumum != Double.NEGATIVE_INFINITY  && !this.getDetectorChannel().getRead().isValuePossible( "" + this.minumum ) ) {
+
+		if( Double.compare(this.minumum, Double.NaN) == 0 ) {
+			modelErrors.add( new ChannelError( this, ChannelErrorTypes.MINIMUM_NOT_POSSIBLE ) );
+		} else if( !this.getDetectorChannel().getRead().isValuePossible( "" + this.minumum ) ) {
 			modelErrors.add( new ChannelError( this, ChannelErrorTypes.MINIMUM_NOT_POSSIBLE ) );
 		}
+
+		if( this.maxAttempts == -1.0) {
+			modelErrors.add( new ChannelError( this, ChannelErrorTypes.MAX_ATTEMPTS_NOT_POSSIBLE ) );
+		}
+
 		if( this.redoControlEventManager.getModelErrors().size() > 0 ) {
 			modelErrors.addAll( this.redoControlEventManager.getModelErrors() );
 			modelErrors.add( new ChannelError( this, ChannelErrorTypes.PLUGIN_ERROR ) );
