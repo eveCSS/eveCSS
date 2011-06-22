@@ -45,6 +45,8 @@
                 </smaxis>
                 <smchannel>
                     <channelid>ringCurrent2chan1</channelid>
+                    <maxdeviation>1.0E7</maxdeviation>
+                    <maxattempts>7</maxattempts>
                     <confirmtrigger>false</confirmtrigger>
                 </smchannel>
                 <plot id="1">
@@ -115,7 +117,7 @@
                 <name>Ring_2</name>
                 <id>ringCurrent2chan1</id>
                 <read>
-                    <access method="GETCB" type="double" transport="ca">ringCurrent2.VAL</access>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">ringCurrent2.VAL</access>
                     <value type="double"></value>
                 </read>
                 <unit>
@@ -135,7 +137,7 @@
                 <id>PPSMC:gw23715000</id>
                 <goto>
                     <access method="GETPUTCB" type="double"
-                        transport="ca" timeout="100.0">PPSMC:gw23715000</access>
+                        transport="ca" monitor="true" timeout="100.0">PPSMC:gw23715000</access>
                     <value type="double"></value>
                 </goto>
                 <position>
@@ -172,7 +174,7 @@
                 <id>DiscPosPPSMC:gw23715000</id>
                 <goto>
                     <access method="GETPUTCB" type="string"
-                        transport="ca" timeout="100.0">PPSMC:gw23715000_Mnu</access>
+                        transport="ca" monitor="true" timeout="100.0">PPSMC:gw23715000_Mnu</access>
                     <value type="string">Undefined, Pos1, Pos2, Pos3, Pos4, Pos5, Pos6, Pos7, Pos8, Pos9</value>
                 </goto>
                 <position>
