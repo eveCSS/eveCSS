@@ -32,7 +32,6 @@ import org.eclipse.swt.layout.GridData;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
-import de.ptb.epics.eve.data.scandescription.errors.ChannelErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -162,11 +161,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		this.averageText.addVerifyListener(averageTextVerifyListener);
 		this.averageTextModifyListener = new AverageTextModifyListener();
 		this.averageText.addModifyListener(averageTextModifyListener); 
-		
 		this.averageErrorLabel = new Label(this.top, SWT.NONE);
-		this.averageErrorLabel.setImage(PlatformUI.getWorkbench().
-										getSharedImages().getImage(
-										ISharedImages.IMG_OBJS_WARN_TSK));
 		
 		// GUI: Max. Deviation (%): <TextBox> x
 		this.maxDeviationLabel = new Label(this.top, SWT.NONE);
@@ -184,10 +179,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		this.maxDeviationText.addVerifyListener(maxDeviationTextVerifyListener);
 		this.maxDeviationTextModifyListener = new MaxDeviationTextModifyListener();
 		this.maxDeviationText.addModifyListener(maxDeviationTextModifyListener);
-		
 		this.maxDeviationErrorLabel = new Label(this.top, SWT.NONE);
-		this.maxDeviationErrorLabel.setImage(PlatformUI.getWorkbench().
-				getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK));
 		
 		// GUI: Minimum: <TextBox> x
 		this.minimumLabel = new Label(this.top, SWT.NONE);
@@ -207,10 +199,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		this.minimumText.addVerifyListener(minimumTextVerifyListener);
 		this.minimumTextModifyListener = new MinimumTextModifyListener();
 		this.minimumText.addModifyListener(minimumTextModifyListener);
-		
 		this.minimumErrorLabel = new Label(this.top, SWT.NONE);
-		this.minimumErrorLabel.setImage(PlatformUI.getWorkbench().
-				getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK));
 		
 		// GUI: Max. Attempts: <TextBox> x
 		this.maxAttemptsLabel = new Label(this.top, SWT.NONE);
@@ -230,10 +219,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		this.maxAttemptsText.addVerifyListener(maxAttemptsTextVerifyListener);
 		this.maxAttemptsTextModifyListener = new MaxAttemptsTextModifyListener();
 		this.maxAttemptsText.addModifyListener(maxAttemptsTextModifyListener);
-		
 		this.maxAttemptsErrorLabel = new Label(this.top, SWT.NONE);
-		this.maxAttemptsErrorLabel.setImage(PlatformUI.getWorkbench().
-				getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK));
 		
 		// GUI: [] Confirm Trigger Manual
 		this.confirmTriggerManualCheckBox = new Button(this.top, SWT.CHECK);
@@ -415,12 +401,6 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			this.redoEventComposite.setControlEventManager(
 					this.currentChannel.getRedoControlEventManager());
 			
-			// TODO von Hartmut: da maxDeviation und minimum keine 
-			// ChannelErrors liefern, muß hier auch keien Abfrage erfolgen!
-// TODO: entfernen
-			this.maxDeviationErrorLabel.setImage(null);
-			this.minimumErrorLabel.setImage(null);
-			
 			if (sc.getMinHeight() == 0) {
 				// Wenn das erste Mal die DetectorChannelView für einen Channel 
 				// aufgerufen wird, gibt es noch keine Mindesthöhe für die 
@@ -429,12 +409,12 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 				int height = bar.getBounds().y + 
 							 itemEventOptions.getHeight() + 
 							 itemEventOptions.getHeaderHeight() + 5;
-				int width = bar.getBounds().x + bar.getBounds().width + 5;
+// TODO: Höhe und Breite muß noch besser berechnet werden (Hartmut 22.6.11)
+				int width = bar.getBounds().x + bar.getBounds().width - 25;
 				sc.setMinSize(this.top.computeSize(width, height));
 			}
 		
-			checkForErrors();
-			
+			checkForErrors();			
 			top.setVisible(true);
 			
 		} else {
@@ -497,18 +477,22 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 								PlatformUI.getWorkbench().getSharedImages().
 								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 						this.maxDeviationErrorLabel.setToolTipText("Max Deviation value not possible");
+						// update and resize View with getParent().layout()
+						this.maxDeviationErrorLabel.getParent().layout();
 						break;
 					case MINIMUM_NOT_POSSIBLE:
 						this.minimumErrorLabel.setImage(
 								PlatformUI.getWorkbench().getSharedImages().
 								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 						this.minimumErrorLabel.setToolTipText("Minimum value not possible");
+						this.minimumErrorLabel.getParent().layout();
 						break;
 					case MAX_ATTEMPTS_NOT_POSSIBLE:
 						this.maxAttemptsErrorLabel.setImage(
 								PlatformUI.getWorkbench().getSharedImages().
 								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 						this.maxAttemptsErrorLabel.setToolTipText("Max Attempts value not possible");
+						this.maxAttemptsErrorLabel.getParent().layout();
 						break;
 				}
 				
@@ -608,7 +592,8 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 					currentChannel.setAverageCount(Integer.parseInt(averageText.getText()));
 					logger.debug("set average text to: " + Integer.parseInt(averageText.getText()));
 				} catch(final NumberFormatException ex) {
-					currentChannel.setAverageCount(0);
+					// set default value (1)
+					currentChannel.setAverageCount(1);
 				}
 			}
 			checkForErrors();

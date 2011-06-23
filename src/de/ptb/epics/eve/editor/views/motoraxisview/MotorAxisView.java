@@ -105,8 +105,8 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 		gridLayout.numColumns = 3;
 		GridData gridData;
 		
-		this.sc = new ScrolledComposite(parent, 
-									SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | 
+										SWT.V_SCROLL | SWT.BORDER);
 
 		this.top = new Composite(sc, SWT.NONE);
 		this.top.setLayout(gridLayout);
@@ -237,10 +237,9 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 	 */
 	public void setCurrentAxis(final Axis axis, final double stepamount, 
 							   final ScanModule scanModule) {
-		removeListeners();
-		
 		this.scanModule = scanModule;
 		setCurrentAxis(axis, stepamount);
+
 	}
 
 	/**
@@ -273,6 +272,8 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 					new MotorAxisStartStopStepwidthComposite(top, SWT.NONE, this);
 				((MotorAxisStartStopStepwidthComposite)holderComposite).
 						setCurrentAxis(currentAxis, stepcount);
+
+				top.layout();
 				targetHeight = (
 						(MotorAxisStartStopStepwidthComposite)holderComposite).
 						getTargetHeight() + holderComposite.getBounds().y;
@@ -282,6 +283,7 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 			} else if(currentAxis.getStepfunctionString().equals("File")) {
 				holderComposite = new MotorAxisFileComposite(top, SWT.NONE, this);
 				((MotorAxisFileComposite)holderComposite).setAxis(currentAxis);
+				top.layout();
 				targetHeight = (
 						(MotorAxisFileComposite)holderComposite).
 						getTargetHeight() + holderComposite.getBounds().y;
@@ -292,6 +294,7 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 				holderComposite = new MotorAxisPluginComposite(top, SWT.NONE, this);
 				((MotorAxisPluginComposite)holderComposite).
 						setAxis(currentAxis, scanModule);
+				top.layout();
 				targetHeight = (
 						(MotorAxisPluginComposite)holderComposite).
 						getTargetHeight() + holderComposite.getBounds().y;
@@ -302,6 +305,7 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 				holderComposite = 
 					new MotorAxisPositionlistComposite(top, SWT.NONE, this);
 				((MotorAxisPositionlistComposite)holderComposite).setAxis(currentAxis);
+				top.layout();
 				targetHeight = (
 						(MotorAxisPositionlistComposite)holderComposite).
 						getTargetHeight() + holderComposite.getBounds().y;
@@ -325,7 +329,6 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 			holderComposite.setVisible(true);
 			
 			top.layout();
-			// setting minimum width and height of ScrolledComposite
 			sc.setMinSize(targetWidth, targetHeight);
 			
 			top.setVisible(true);
@@ -408,7 +411,7 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-	
+
 			if(currentAxis != null) {
 				currentAxis.setStepfunction(stepFunctionCombo.getText());
 				//setCurrentAxis(currentAxis, stepcount);

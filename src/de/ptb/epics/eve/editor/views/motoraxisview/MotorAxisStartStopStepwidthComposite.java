@@ -161,7 +161,6 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.stopCombo.setLayoutData(gridData);
-
 		this.stopErrorLabel = new Label(this, SWT.NONE);
 		// end of: initialize stop elements
 		
@@ -184,7 +183,6 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.stepwidthText.setLayoutData(gridData);
-		
 		this.stepwidthErrorLabel = new Label(this, SWT.NONE);
 		// end of: initialize step width elements 
 		
@@ -207,7 +205,6 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.stepcountText.setLayoutData(gridData);
-
 		this.stepcountErrorLabel = new Label(this, SWT.NONE);
 		// end of: initialize step count elements
 		
@@ -373,6 +370,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 											ISharedImages.IMG_OBJS_ERROR_TSK));
 						this.startErrorLabel.setToolTipText(
 								"Start values has not been set!");
+						// update and resize View with getParent().layout()
 						this.startErrorLabel.getParent().layout();
 						break;
 						
