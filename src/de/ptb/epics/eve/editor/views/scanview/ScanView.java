@@ -811,15 +811,18 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 									substring(0, lastSeperatorIndex + 1);
 			}
 			else {
-				// no filename -> set path to path of measuring station 
-				// description
-				lastSeperatorIndex = Activator.getDefault().
-									getMeasuringStation().getLoadedFileName().
-									lastIndexOf(File.separatorChar);
-				filePath = Activator.getDefault().getMeasuringStation().
-									 getLoadedFileName().substring( 
-										0, lastSeperatorIndex + 1) + "daten/";
+				// no filename -> set path to <rootDir>/daten/ or <rootDir>
+				String rootdir = Activator.getDefault().getRootDirectory();
+				File file = new File(rootdir + "daten/");
+				if(file.exists()) {
+					filePath = rootdir + "daten/";
+				} else {
+					filePath = rootdir;
+				}
+				file = null;
 			}
+			
+			logger.debug(filePath);
 			
 			Shell shell = getSite().getShell();
 

@@ -78,7 +78,8 @@ import de.ptb.epics.eve.editor.views.scanview.ScanView;
 public class GraphicalEditor extends EditorPart implements IModelUpdateListener {
 
 	// logging
-	private static Logger logger = Logger.getLogger(GraphicalEditor.class);
+	private static Logger logger = 
+			Logger.getLogger(GraphicalEditor.class.getName());
 
 	// a graphical view of the model (hosts the figures) (Draw2d FigureCanvas)
 	private ScrollingGraphicalViewer viewer;
@@ -516,6 +517,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		final FileStoreEditorInput fileStoreEditorInput2 = 
 					(FileStoreEditorInput)this.getEditorInput();
 		
+		// does this work under windows ? "/" vs "\" ???
 		int lastSeperatorIndex = 
 			fileStoreEditorInput2.getURI().getRawPath().lastIndexOf("/");
 		final String filePath = fileStoreEditorInput2.getURI().getRawPath().

@@ -60,7 +60,7 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 		
 		Button button = new Button(container, SWT.PUSH);
 		button.setText("Browse...");
-		button.addSelectionListener(new buttonSelectionListener());
+		button.addSelectionListener(new ButtonSelectionListener());
 		
 		fileText.setText("");
 		setControl(container);
@@ -120,7 +120,7 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 	/**
 	 * <code>SelectionListener</code> of <code>button</code>.
 	 */
-	class buttonSelectionListener implements SelectionListener {
+	class ButtonSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -134,16 +134,15 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			
-			// file path = location of the measuring station description
-			int lastSeperatorIndex = Activator.getDefault().
-											   getMeasuringStation().
-											   getLoadedFileName().
-											   lastIndexOf(File.separatorChar);
-			final String filePath = Activator.getDefault().
-											  getMeasuringStation().
-											  getLoadedFileName().
-								substring(0, lastSeperatorIndex + 1) + "scan/";
+			String filePath;
+			String rootdir = Activator.getDefault().getRootDirectory();
+			File file = new File(rootdir + "scml/");
+			if(file.exists()) {
+				filePath = rootdir + "scml/";
+			} else {
+				filePath = rootdir;
+			}
+			file = null;
 
 			// show a file dialog
 			final FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);

@@ -14,11 +14,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.gef;bundle-version="3.5.0",
  org.eclipse.core.resources,
  org.eclipse.core.filesystem;bundle-version="1.2.0",
- org.eclipse.debug.core;bundle-version="3.5.0",
  org.csstudio.swt.xygraph;bundle-version="1.0.1",
  org.csstudio.platform;bundle-version="1.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Import-Package: org.eclipse.core.filesystem.provider,
- org.eclipse.debug.core.sourcelookup.containers
 Export-Package: de.ptb.epics.eve.editor

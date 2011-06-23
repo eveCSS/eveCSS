@@ -227,14 +227,14 @@ public class MotorAxisFileComposite extends Composite {
 			int lastSeperatorIndex;
 			final String filePath;
 			
-			if ((axis.getPositionfile() == null) || (axis.getPositionfile().equals(""))) {
-				lastSeperatorIndex = Activator.getDefault().getMeasuringStation().getLoadedFileName().lastIndexOf( File.separatorChar );
-				filePath = Activator.getDefault().getMeasuringStation().getLoadedFileName().substring( 0, lastSeperatorIndex);
+			if (axis.getPositionfile() == null || 
+				axis.getPositionfile().isEmpty()) {
+				filePath = Activator.getDefault().getRootDirectory();
 			}
 			else {
 				// als filePath wird das vorhandene Verzeichnis gesetzt
-				lastSeperatorIndex = axis.getPositionfile().lastIndexOf( File.separatorChar );
-				filePath = axis.getPositionfile().substring( 0, lastSeperatorIndex + 1 );
+				lastSeperatorIndex = axis.getPositionfile().lastIndexOf(File.separatorChar);
+				filePath = axis.getPositionfile().substring(0, lastSeperatorIndex + 1);
 			}
 			
 			FileDialog fileWindow = new FileDialog(shell, SWT.SAVE);
