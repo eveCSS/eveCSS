@@ -11,34 +11,59 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
+import de.ptb.epics.eve.viewer.Activator;
 
-
-public class MessagesViewSaveMessagesToFileAction extends Action implements IWorkbenchAction {
+/**
+ * 
+ * @author ?
+ * @author Marcus Michalsky
+ */
+public class MessagesViewSaveMessagesToFileAction extends Action 
+												implements IWorkbenchAction {
 
 	// logging
-	private static Logger logger = Logger.getLogger(MessagesViewSaveMessagesToFileAction.class);
+	private static Logger logger = 
+			Logger.getLogger(MessagesViewSaveMessagesToFileAction.class);
 	
-	private static final String ID = "de.ptb.epics.eve.viewer.actions.SaveMessagesToFileAction";  
+	private static final String ID = 
+			"de.ptb.epics.eve.viewer.actions.SaveMessagesToFileAction";  
 	private final TableViewer tableViewer;
 	
-	public MessagesViewSaveMessagesToFileAction( final TableViewer tableViewer ){  
-		this.setId( MessagesViewSaveMessagesToFileAction.ID ); 
+	/**
+	 * 
+	 * @param tableViewer
+	 */
+	public MessagesViewSaveMessagesToFileAction(final TableViewer tableViewer) {
+		this.setId(MessagesViewSaveMessagesToFileAction.ID); 
 		this.tableViewer = tableViewer;
 	} 
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void run() { 
 		
-		String name = new FileDialog( this.tableViewer.getTable().getShell(), SWT.SAVE ).open();
+		String filePath = Activator.getDefault().getRootDirectory();
+		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		FileDialog fileDialog = new FileDialog(shell, SWT.SAVE);
+		fileDialog.setFilterPath(filePath);
+		fileDialog.open();
 		
-		if( name == null )
-		      return;
+		String name = fileDialog.getFileName();
 		
-		final File file = new File( name );
+		if(name == null) {
+			return;
+		}
 		
-		if( !file.exists() ) {
+		final File file = new File(name);
+		
+		if(!file.exists()) {
 			try {
 				file.createNewFile();
 			} catch( final IOException e ) {
@@ -79,10 +104,12 @@ public class MessagesViewSaveMessagesToFileAction extends Action implements IWor
 			MessageDialog.openInformation( this.tableViewer.getTable().getShell(), "Error", "Can not close file!" );
 			logger.error(e.getMessage(), e);
 		}
-	}   
-	
-	public void dispose() {
-		
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() {	
+	}
 }

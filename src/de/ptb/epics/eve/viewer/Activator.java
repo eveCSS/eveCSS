@@ -3,8 +3,11 @@ package de.ptb.epics.eve.viewer;
 import java.io.File;
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -18,6 +21,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
@@ -31,8 +35,6 @@ import de.ptb.epics.eve.viewer.messages.MessagesContainer;
  */
 public class Activator extends AbstractUIPlugin {
 
-	private static Logger logger = Logger.getLogger(Activator.class);
-
 	/**
 	 * The unique identifier of the plug in
 	 */
@@ -40,6 +42,8 @@ public class Activator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static Activator plugin;
+	
+	private static Logger logger = Logger.getLogger(Activator.class.getName());
 	
 	private final MessagesContainer messagesContainer;
 	private final XMLFileDispatcher xmlFileDispatcher;
@@ -55,6 +59,11 @@ public class Activator extends AbstractUIPlugin {
 	
 	private RequestProcessor requestProcessor;
 
+	private File schemaFile;
+	private String rootDir;
+	private boolean debug;
+	
+	
 	/**
 	 * The constructor
 	 */
@@ -65,19 +74,6 @@ public class Activator extends AbstractUIPlugin {
 		this.xmlFileDispatcher = new XMLFileDispatcher();
 		this.engineErrorReader = new EngineErrorReader();
 		this.chainStatusAnalyzer = new ChainStatusAnalyzer();
-
-		this.ecp1Client.getPlayListController().addNewXMLFileListener( this.xmlFileDispatcher );
-
-		this.ecp1Client.addErrorListener( this.engineErrorReader );
-		this.ecp1Client.addEngineStatusListener( this.chainStatusAnalyzer );
-		this.ecp1Client.addChainStatusListener( this.chainStatusAnalyzer );
-		this.colorreg = new ColorRegistry();
-		this.fontreg = new FontRegistry();
-		this.requestProcessor = new RequestProcessor( Display.getCurrent() );
-		this.ecp1Client.addRequestListener( this.requestProcessor );
-		
-		// activate logging 
-		DOMConfigurator.configure(System.getProperty("user.home") + "/logger.xml");
 	}
 
 	/**
@@ -86,71 +82,23 @@ public class Activator extends AbstractUIPlugin {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		
-		// register fonts, colors and images
-		Font defaultFont = fontreg.defaultFont();
-		FontData[] fontData = defaultFont.getFontData();
-		// Use a smaller font if system font is higher 11
-		for (int i = 0; i < fontData.length; i++) {
-			if (fontData[i].getHeight() > 11) fontData[i].setHeight(11);
+		readStartupParameters();
+		if(!checkRootDir()) {
+			context.getBundle().stop();
+			context.getBundle().uninstall();
+			return;
 		}
-		fontreg.put("VIEWERFONT", fontData);
+		configureLogging();
+		loadMeasuringStation();
+		loadColorsAndFonts();
+		startupReport();
 		
-		colorreg.put("COLOR_PV_INITIAL", new RGB(0, 0, 0));
-		colorreg.put("COLOR_PV_CONNECTED", new RGB(0, 0, 0));
-		colorreg.put("COLOR_PV_DISCONNECTED", new RGB(130, 130, 130));
-		colorreg.put("COLOR_PV_ALARM", new RGB(255, 0, 0));
-		colorreg.put("COLOR_PV_OK", new RGB(0, 180, 0));
-		colorreg.put("COLOR_PV_MINOR", new RGB(255, 255, 50));
-		colorreg.put("COLOR_PV_MAJOR", new RGB(255, 0, 0));
-		colorreg.put("COLOR_PV_INVALID", new RGB(180, 180, 180));
-		colorreg.put("COLOR_PV_UNKNOWN", new RGB(130, 130, 130));
-		
-		ImageRegistry imagereg = getImageRegistry();
-		imagereg.put("GREENPLUS12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenPlus12.12.gif").createImage());
-		imagereg.put("GREENMINUS12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenMinus12.12.gif").createImage());
-		imagereg.put("GREENGO12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenGo12.12.gif").createImage());
-		imagereg.put("PLAY16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/play.gif").createImage());
-		imagereg.put("PLAY16_DISABLED", imageDescriptorFromPlugin(PLUGIN_ID, "icons/play_disabled.gif").createImage());
-		imagereg.put("PAUSE16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/pause.gif").createImage());
-		imagereg.put("STOP16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/stop.gif").createImage());
-		imagereg.put("STOP16_DISABLED", imageDescriptorFromPlugin(PLUGIN_ID, "icons/stop_disabled.gif").createImage());
-		imagereg.put("SKIP16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/skip.gif").createImage());
-		imagereg.put("HALT16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/halt.gif").createImage());
-		imagereg.put("KILL16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/kill.gif").createImage());
-		imagereg.put("TRIGGER16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/trigger.gif").createImage());
-		imagereg.put("PLAYALL16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/playAll2.gif").createImage());
-		
-		imagereg.put("MOTOR", imageDescriptorFromPlugin(PLUGIN_ID, "icons/motor.gif").createImage());
-		imagereg.put("AXIS", imageDescriptorFromPlugin(PLUGIN_ID, "icons/axis.gif").createImage());
-		imagereg.put("DETECTOR", imageDescriptorFromPlugin(PLUGIN_ID, "icons/detector.gif").createImage());
-		imagereg.put("CHANNEL", imageDescriptorFromPlugin(PLUGIN_ID, "icons/channel.gif").createImage());
-		
-		imagereg.put("MOVEUP", imageDescriptorFromPlugin(PLUGIN_ID, "icons/prev_nav.gif").createImage());
-		imagereg.put("MOVEDOWN", imageDescriptorFromPlugin(PLUGIN_ID, "icons/next_nav.gif").createImage());
-		
-		imagereg.put("RESTOREVIEW", imageDescriptorFromPlugin(PLUGIN_ID, "icons/thin_restore_view.gif").createImage());
-		imagereg.put("MAXIMIZE", imageDescriptorFromPlugin(PLUGIN_ID, "icons/maximize.gif").createImage());
-		
-		final String measuringStationDescription = de.ptb.epics.eve.preferences.Activator.getDefault().getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION );
-		
-		if( !measuringStationDescription.equals( "" ) ) { 
-			final int lastSeperatorIndex = measuringStationDescription.lastIndexOf( File.separatorChar );
-			final String schemaFileLocation = measuringStationDescription.substring( 0, lastSeperatorIndex + 1 ) + "scml.xsd";
-			final File schemaFile = new File( schemaFileLocation );
-			final File measuringStationDescriptionFile = new File( measuringStationDescription );
-
-			if( measuringStationDescriptionFile.exists() ) {
-				try {
-					final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader( schemaFile );
-					measuringStationLoader.load( measuringStationDescriptionFile );
-					measuringStation = measuringStationLoader.getMeasuringStation();
-
-				} catch( final Throwable th ) {
-					measuringStation = null;
-					logger.warn(th.getMessage(), th);
-				}
-			}
-		}		
+		this.ecp1Client.getPlayListController().addNewXMLFileListener(this.xmlFileDispatcher);
+		this.ecp1Client.addErrorListener(this.engineErrorReader);
+		this.ecp1Client.addEngineStatusListener(this.chainStatusAnalyzer);
+		this.ecp1Client.addChainStatusListener(this.chainStatusAnalyzer);
+		this.requestProcessor = new RequestProcessor(Display.getCurrent());
+		this.ecp1Client.addRequestListener(this.requestProcessor);
 	}
 
 	/**
@@ -170,6 +118,14 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	/**
+	 * 
+	 * @return the root directory
+	 */
+	public String getRootDirectory() {
+		return rootDir;
+	}
+	
 	/**
 	 * 
 	 * @return
@@ -296,6 +252,192 @@ public class Activator extends AbstractUIPlugin {
 				logger.error(e2.getMessage(), e2);
 			}
 		}
-	};
+	}
 
+	/*
+	 * 
+	 */
+	private void readStartupParameters() {
+		String[] args = Platform.getCommandLineArgs();
+		debug = false;
+		int i = 0;
+		while (i < args.length)
+		{
+			if (args[i].equals("-eve.root")) {
+				i++;
+				rootDir = args[i];
+				
+			}
+			if (args[i].equals("-eve.debug")) {
+				i++;
+				debug = args[i].equals("1") ? true : false;
+			}
+			i++;
+		}
+	}
+	
+	/*
+	 * Checks whether the directory (given by parameter -rootdir) contains a 
+	 * folder named eve.
+	 * 
+	 * @return <code>true</code> if the root directory contains a folder named 
+	 * 			eve, <code>false</code> otherwise
+	 */
+	private boolean checkRootDir() {
+		if(!rootDir.endsWith("/")) rootDir += "/";
+		String path = rootDir;
+		File file = new File(path + "eve/");
+		if(!file.exists()) {
+			return false;
+		}
+		return true;
+	}
+	
+	/*
+	 * 
+	 */
+	private void configureLogging() {
+		String pathToConfigFile = new String();
+		if(debug) {
+			pathToConfigFile = rootDir + "eve/logger-debug.xml";
+		} else {
+			pathToConfigFile = rootDir + "eve/logger.xml";
+		}
+		
+		File file = new File(pathToConfigFile);
+		if(file.exists()) {
+			// setting property so that the log4j configuration file can access it
+			System.setProperty("eve.logdir", rootDir + "eve/log");
+			DOMConfigurator.configure(pathToConfigFile);
+		}
+		// DOMConfigurator.configure(System.getProperty("user.home") + "/logger.xml");
+	}
+	
+	/*
+	 * 
+	 */
+	private void loadMeasuringStation() {
+		
+		String measuringStationDescription = new String();
+		
+		// get entry stored in the preferences
+		final String preferencesEntry = de.ptb.epics.eve.preferences.Activator.
+				getDefault().getPreferenceStore().getString(
+				PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION);
+		
+		if(preferencesEntry.isEmpty()) {
+			File pathToDefaultMeasuringStation = 
+				new File(rootDir + "eve/default.xml");
+			if(!pathToDefaultMeasuringStation.exists()) {
+				measuringStation = null;
+				schemaFile = null;
+				return;
+			}
+			measuringStationDescription = rootDir + "eve/default.xml";
+		} else {
+			File measuringStationFile = new File(preferencesEntry);
+			if(!measuringStationFile.exists()) {
+				// preferences entry present, but target does not exist
+				measuringStation = null;
+				schemaFile = null;
+				return;
+			}
+			measuringStationDescription = preferencesEntry;
+		}
+		
+		File measuringStationDescriptionFile = 
+				new File(measuringStationDescription);
+		
+		// now we know the location of the measuring station description
+		// -> checking schema file
+		
+		File pathToSchemaFile = new File(rootDir + "eve/schema.xsd");
+		if(!pathToSchemaFile.exists()) {
+			schemaFile = null;
+			return;
+		}
+		schemaFile = pathToSchemaFile;
+		
+		// measuring station and schema present -> start loading
+
+		final MeasuringStationLoader measuringStationLoader = 
+				new MeasuringStationLoader(schemaFile);
+		try {
+			measuringStationLoader.load(measuringStationDescriptionFile);
+			measuringStation = measuringStationLoader.getMeasuringStation();
+		} catch (ParserConfigurationException e) {
+			measuringStation = null;
+			logger.error(e.getMessage(), e);
+		} catch (SAXException e) {
+			measuringStation = null;
+			logger.error(e.getMessage(), e);
+		} catch (IOException e) {
+			measuringStation = null;
+			logger.error(e.getMessage(), e);
+		}
+	}
+	
+	/*
+	 * 
+	 */
+	private void startupReport() {
+		if(logger.isInfoEnabled()) {
+			logger.info("debug mode: " + debug);
+			logger.info("root directory: " + rootDir);
+			logger.info("measuring station: " + 
+					measuringStation.getLoadedFileName());
+		}
+	}
+	
+	/*
+	 * 
+	 */
+	private void loadColorsAndFonts() {
+		// register fonts, colors and images
+		this.colorreg = new ColorRegistry();
+		this.fontreg = new FontRegistry();
+		Font defaultFont = fontreg.defaultFont();
+		FontData[] fontData = defaultFont.getFontData();
+		// Use a smaller font if system font is higher 11
+		for (int i = 0; i < fontData.length; i++) {
+			if (fontData[i].getHeight() > 11) fontData[i].setHeight(11);
+		}
+		fontreg.put("VIEWERFONT", fontData);
+		
+		colorreg.put("COLOR_PV_INITIAL", new RGB(0, 0, 0));
+		colorreg.put("COLOR_PV_CONNECTED", new RGB(0, 0, 0));
+		colorreg.put("COLOR_PV_DISCONNECTED", new RGB(130, 130, 130));
+		colorreg.put("COLOR_PV_ALARM", new RGB(255, 0, 0));
+		colorreg.put("COLOR_PV_OK", new RGB(0, 180, 0));
+		colorreg.put("COLOR_PV_MINOR", new RGB(255, 255, 50));
+		colorreg.put("COLOR_PV_MAJOR", new RGB(255, 0, 0));
+		colorreg.put("COLOR_PV_INVALID", new RGB(180, 180, 180));
+		colorreg.put("COLOR_PV_UNKNOWN", new RGB(130, 130, 130));
+		
+		ImageRegistry imagereg = getImageRegistry();
+		imagereg.put("GREENPLUS12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenPlus12.12.gif").createImage());
+		imagereg.put("GREENMINUS12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenMinus12.12.gif").createImage());
+		imagereg.put("GREENGO12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenGo12.12.gif").createImage());
+		imagereg.put("PLAY16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/play.gif").createImage());
+		imagereg.put("PLAY16_DISABLED", imageDescriptorFromPlugin(PLUGIN_ID, "icons/play_disabled.gif").createImage());
+		imagereg.put("PAUSE16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/pause.gif").createImage());
+		imagereg.put("STOP16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/stop.gif").createImage());
+		imagereg.put("STOP16_DISABLED", imageDescriptorFromPlugin(PLUGIN_ID, "icons/stop_disabled.gif").createImage());
+		imagereg.put("SKIP16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/skip.gif").createImage());
+		imagereg.put("HALT16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/halt.gif").createImage());
+		imagereg.put("KILL16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/kill.gif").createImage());
+		imagereg.put("TRIGGER16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/trigger.gif").createImage());
+		imagereg.put("PLAYALL16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/playAll2.gif").createImage());
+		
+		imagereg.put("MOTOR", imageDescriptorFromPlugin(PLUGIN_ID, "icons/motor.gif").createImage());
+		imagereg.put("AXIS", imageDescriptorFromPlugin(PLUGIN_ID, "icons/axis.gif").createImage());
+		imagereg.put("DETECTOR", imageDescriptorFromPlugin(PLUGIN_ID, "icons/detector.gif").createImage());
+		imagereg.put("CHANNEL", imageDescriptorFromPlugin(PLUGIN_ID, "icons/channel.gif").createImage());
+		
+		imagereg.put("MOVEUP", imageDescriptorFromPlugin(PLUGIN_ID, "icons/prev_nav.gif").createImage());
+		imagereg.put("MOVEDOWN", imageDescriptorFromPlugin(PLUGIN_ID, "icons/next_nav.gif").createImage());
+		
+		imagereg.put("RESTOREVIEW", imageDescriptorFromPlugin(PLUGIN_ID, "icons/thin_restore_view.gif").createImage());
+		imagereg.put("MAXIMIZE", imageDescriptorFromPlugin(PLUGIN_ID, "icons/maximize.gif").createImage());
+	}
 }
