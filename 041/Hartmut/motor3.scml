@@ -27,9 +27,12 @@
                 <saveaxispositions>never</saveaxispositions>
                 <smaxis>
                     <axisid>DiscPosPPSMC:gw23715000</axisid>
-                    <stepfunction>File</stepfunction>
+                    <stepfunction>Add</stepfunction>
                     <positionmode>absolute</positionmode>
-                    <stepfilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/041/Hartmut/listFile.txt</stepfilename>
+                    <start type="string">Pos2</start>
+                    <stop type="string">Pos8</stop>
+                    <stepwidth type="string">1</stepwidth>
+                    <ismainaxis>false</ismainaxis>
                 </smaxis>
                 <smaxis>
                     <axisid>PPSMC:gw23715000</axisid>
@@ -39,6 +42,12 @@
                     <stop type="double">5</stop>
                     <stepwidth type="double">34</stepwidth>
                     <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smaxis>
+                    <axisid>PPSMC:gw23715002</axisid>
+                    <stepfunction>File</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <stepfilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/041/Hartmut/listFile.txt</stepfilename>
                 </smaxis>
                 <smchannel>
                     <channelid>ringCurrent2chan1</channelid>
@@ -162,6 +171,43 @@
                 </tweakforward>
                 <tweakreverse>
                     <access method="PUT" type="int" transport="ca">PPSMC:gw23715000.TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>
+            </axis>
+            <axis>
+                <class></class>
+                <name>PP_Motor3</name>
+                <id>PPSMC:gw23715002</id>
+                <goto>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" monitor="true" timeout="100.0">PPSMC:gw23715002</access>
+                    <value type="double"></value>
+                </goto>
+                <position>
+                    <access method="GETCB" type="double" transport="ca">PPSMC:gw23715002.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715002.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <unit>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715002.EGU</access>
+                </unit>
+                <deadband>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715002.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715002.OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715002.TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715002.TWF</access>
+                    <value type="int">1</value>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715002.TWR</access>
                     <value type="int">1</value>
                 </tweakreverse>
             </axis>
