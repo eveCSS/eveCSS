@@ -34,7 +34,8 @@ public class Channel extends AbstractMainPhaseBehavior {
 	
 	/*
 	 * This attribute controls how often the detector should be read to make
-	 * an average value. Voreinstellung ist 1.
+	 * an average value. default value is 1.
+	 * If input is invalid, set 0
 	 */
 	private int averageCount = 1;
 	
@@ -52,11 +53,15 @@ public class Channel extends AbstractMainPhaseBehavior {
 	
 	/*
 	 * The minimum for this channel.
+	 * Double.NaN = value is invalid
+	 * Double.NEGATIVE_INFINITY = value is empty
 	 */
 	private double minumum = Double.NEGATIVE_INFINITY;
 	
 	/*
 	 * The maximum attempts for reading the channel.
+	 * -1 = value is invalid
+	 * Integer.MIN_VALUE = value is empty
 	 */
 	private int maxAttempts = Integer.MIN_VALUE;
 
