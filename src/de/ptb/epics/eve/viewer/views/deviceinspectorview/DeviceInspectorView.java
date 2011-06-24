@@ -63,7 +63,7 @@ public class DeviceInspectorView extends ViewPart {
 	public static final String ID = "DeviceInspectorView";
 	
 	/** the secondary id of the <code>DeviceInspectorView</code> that is shown */
-	public static String activeDeviceInspectorView;
+	public static String activeDeviceInspectorView = "";
 	
 	private static Logger logger = 
 			Logger.getLogger(DeviceInspectorView.class.getName());
@@ -399,7 +399,12 @@ public class DeviceInspectorView extends ViewPart {
 		
 		restoreState();
 		
-		activeDeviceInspectorView = this.getViewSite().getSecondaryId();
+		if(getViewSite().getSecondaryId() != null) {
+			activeDeviceInspectorView = this.getViewSite().getSecondaryId();
+		} else {
+			activeDeviceInspectorView = "";
+		}
+		
 		
 		selectionProviderWrapper = new SelectionProviderWrapper();
 		getSite().setSelectionProvider(selectionProviderWrapper);

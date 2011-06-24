@@ -103,8 +103,8 @@ public final class DevicesView extends ViewPart {
 		// listen to double clicks (inserts the clicked element to the inspector)
 		treeViewer.addDoubleClickListener(new TreeViewerDoubleClickListener());
 		
-		treeViewerFocusListener = new TreeViewerFocusListener();
-		treeViewer.getTree().addFocusListener(treeViewerFocusListener);
+		//treeViewerFocusListener = new TreeViewerFocusListener();
+		//treeViewer.getTree().addFocusListener(treeViewerFocusListener);
 		
 		// listen to selections (triggers the device options view)
 		//treeViewer.getTree().addSelectionListener(
