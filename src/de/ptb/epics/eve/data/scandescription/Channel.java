@@ -9,8 +9,6 @@ import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Event;
-import de.ptb.epics.eve.data.scandescription.errors.AxisError;
-import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -26,11 +24,12 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Hartmut Scherr
+ * @author Marcus Michalsky
  */
 public class Channel extends AbstractMainPhaseBehavior {
 
 	private static final Logger logger = 
-		Logger.getLogger(Channel.class.getName());
+			Logger.getLogger(Channel.class.getName());
 	
 	/*
 	 * This attribute controls how often the detector should be read to make
@@ -56,7 +55,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * Double.NaN = value is invalid
 	 * Double.NEGATIVE_INFINITY = value is empty
 	 */
-	private double minumum = Double.NEGATIVE_INFINITY;
+	private double minimum = Double.NEGATIVE_INFINITY;
 	
 	/*
 	 * The maximum attempts for reading the channel.
@@ -97,65 +96,69 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * @throws IllegalArgumentException if the parameter is <code>null</code>.
 	 */
 	public Channel(final ScanModule parentScanModule) {
-		if( parentScanModule == null ) {
+		if(parentScanModule == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'parentScanModul' must not be null!");
 
 		}
 		this.parentScanModule = parentScanModule;
 
-		this.redoEvents = new ArrayList< ControlEvent >();
+		this.redoEvents = new ArrayList<ControlEvent>();
 		this.redoControlEventManager = new ControlEventManager(
 				this, this.redoEvents, ControlEventTypes.CONTROL_EVENT);
 		this.redoControlEventManager.addModelUpdateListener(this);
 	}
 
 	/**
-	 * Adds a redo event to the detector. 
+	 * Adds a redo event. 
 	 * 
-	 * @param redoEvent The redo event that should be added to the scan module.
-	 * @return Gives back 'true' if the event has been added and false if not.
+	 * @param redoEvent the redo event that should be added
+	 * @return <code>true</code> if the event has been added, 
+	 * 			<code>false</code> otherwise
 	 */
-	public boolean addRedoEvent( final ControlEvent redoEvent ) {
-		if( this.redoEvents.add( redoEvent ) ) {
+	public boolean addRedoEvent(final ControlEvent redoEvent) {
+		if(this.redoEvents.add(redoEvent)) {
 			updateListeners();
-			redoEvent.addModelUpdateListener( this.redoControlEventManager );
-			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( redoEvent, ControlEventMessageEnum.ADDED ) ) );
+			redoEvent.addModelUpdateListener(this.redoControlEventManager);
+			this.redoControlEventManager.updateEvent(new ModelUpdateEvent(this, 
+				new ControlEventMessage(redoEvent, ControlEventMessageEnum.ADDED)));
 			return true;
 		} 
 		return false;
 	}
 
 	/**
-	 * Removes a redo event from the scan module.
+	 * Removes a redo event.
 	 * 
-	 * @param redoEvent The redo event that should be removed from the scan module.
-	 * @return Gives back 'true' if the event has been removed and false if not.
+	 * @param redoEvent the redo event that should be removed
+	 * @return <code>true</code> if the event has been removed, 
+	 * 			<code>false</code> otherwise
 	 */
-	public boolean removeRedoEvent( final ControlEvent redoEvent ) {
-		if( this.redoEvents.remove( redoEvent ) ) {
+	public boolean removeRedoEvent(final ControlEvent redoEvent) {
+		if( this.redoEvents.remove(redoEvent)) {
 			updateListeners();
-			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( redoEvent, ControlEventMessageEnum.REMOVED ) ) );
-			redoEvent.removeModelUpdateListener( this.redoControlEventManager );
+			this.redoControlEventManager.updateEvent(new ModelUpdateEvent(this, 
+				new ControlEventMessage(redoEvent, ControlEventMessageEnum.REMOVED)));
+			redoEvent.removeModelUpdateListener(this.redoControlEventManager);
 			return true;
 		} 
 		return false;
 	}
 
 	/**
-	 * This method returns an iterator over all redo events.
+	 * Returns an iterator of the redo events.
 	 * 
-	 * @return 
+	 * @return an iterator of the redo events
 	 */
-	public Iterator< ControlEvent > getRedoEventsIterator() {
+	public Iterator<ControlEvent> getRedoEventsIterator() {
 		return this.redoEvents.iterator();
 	}
 	
 	/**
-	 * Gives back how often the detector should be read to make an average
+	 * Returns how often the detector should be read to make an average
 	 * result for the measuring.
 	 * 
-	 * @return An non negative integer.
+	 * @return the average count
 	 */
 	public int getAverageCount() {
 		return this.averageCount;
@@ -179,18 +182,19 @@ public class Channel extends AbstractMainPhaseBehavior {
 	}
 
 	/**
-	 * This method returns the parent scan module of this channel.
+	 * Returns the parent scan module of the channel.
 	 * 
-	 * @return The parent scan module.
+	 * @return the parent scan module
 	 */
 	public ScanModule getParentScanModul() {
 		return this.parentScanModule;
 	}
 
 	/**
-	 * This method returns if a trigger of this detector must be confirmed.
+	 * Checks whether a trigger of the detector must be confirmed.
 	 * 
-	 * @return Returns 'true' if a trigger of this trigger must be confirmed and 'false' if not.
+	 * @return <code>true</code> if a trigger of the detector must be confirmed, 
+	 * 			<code>false</code> otherwise
 	 */
 	public boolean isConfirmTrigger() {
 		return confirmTrigger;
@@ -201,7 +205,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * 
 	 * @param confirmTrigger Pass 'true' if a trigger of this channel must be confirmed and 'false' if not.
 	 */
-	public void setConfirmTrigger( final boolean confirmTrigger ) {
+	public void setConfirmTrigger(final boolean confirmTrigger) {
 		this.confirmTrigger = confirmTrigger;
 		updateListeners();
 	}
@@ -250,7 +254,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * @return The minimum for this channel.
 	 */
 	public double getMinumum() {
-		return this.minumum;
+		return this.minimum;
 	}
 
 	/**
@@ -258,8 +262,8 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * 
 	 * @param minumum The new minimum for this channel.
 	 */
-	public void setMinumum( final double minumum ) {
-		this.minumum = minumum;
+	public void setMinumum(final double minumum) {
+		this.minimum = minumum;
 		updateListeners();
 	}
 
@@ -277,7 +281,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * 
 	 * @param repeatOnRedo Pass 'true' if the detector read should be repeated on a redo event.
 	 */
-	public void setRepeatOnRedo( final boolean repeatOnRedo ) {
+	public void setRepeatOnRedo(final boolean repeatOnRedo) {
 		this.repeatOnRedo = repeatOnRedo;
 		updateListeners();
 	}
@@ -296,7 +300,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * @return true if channel sends an ready event
 	 */
 	public Boolean hasReadyEvent() {
-		if (detectorReadyEvent != null )
+		if (detectorReadyEvent != null)
 			return true;
 		else
 			return false;
@@ -306,7 +310,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * 
 	 * @param detectorReadyEvent add a detectorReadyEvent
 	 */
-	public void setDetectorReadyEvent( final Event detectorReadyEvent ) {
+	public void setDetectorReadyEvent(final Event detectorReadyEvent) {
 		this.detectorReadyEvent = detectorReadyEvent;
 		updateListeners();
 	}
@@ -325,7 +329,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * 
 	 * @param detectorChannel The detector channel that will be controlles by this behavior.
 	 */
-	public void setDetectorChannel( final DetectorChannel detectorChannel ) {
+	public void setDetectorChannel(final DetectorChannel detectorChannel) {
 		this.abstractDevice = detectorChannel;
 		updateListeners();
 	}
@@ -339,38 +343,41 @@ public class Channel extends AbstractMainPhaseBehavior {
 		return (DetectorChannel)this.abstractDevice;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider#getModelErrors()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public List<IModelError> getModelErrors() {
-		final List< IModelError > modelErrors = new ArrayList< IModelError >();
+		final List<IModelError> modelErrors = new ArrayList<IModelError>();
 		// TODO von Hartmut: maxDeviation und minimum liefern keine ChannelErrors mehr!
 
-		if( Double.compare(this.maxDeviation, Double.NaN) == 0 ) {
-			modelErrors.add( new ChannelError( this, ChannelErrorTypes.MAX_DEVIATION_NOT_POSSIBLE ) );
-		} else if( !this.getDetectorChannel().getRead().isValuePossible( "" + this.maxDeviation ) ) {
-			modelErrors.add( new ChannelError( this, ChannelErrorTypes.MAX_DEVIATION_NOT_POSSIBLE ) );
+		if(Double.compare(this.maxDeviation, Double.NaN) == 0) {
+			modelErrors.add(new ChannelError(this, ChannelErrorTypes.MAX_DEVIATION_NOT_POSSIBLE));
+		} else if(!this.getDetectorChannel().getRead().isValuePossible(Double.toString(maxDeviation))) {
+			modelErrors.add(new ChannelError(this, ChannelErrorTypes.MAX_DEVIATION_NOT_POSSIBLE));
 		}
 
-		if( Double.compare(this.minumum, Double.NaN) == 0 ) {
-			modelErrors.add( new ChannelError( this, ChannelErrorTypes.MINIMUM_NOT_POSSIBLE ) );
-		} else if( !this.getDetectorChannel().getRead().isValuePossible( "" + this.minumum ) ) {
-			modelErrors.add( new ChannelError( this, ChannelErrorTypes.MINIMUM_NOT_POSSIBLE ) );
+		if( Double.compare(this.minimum, Double.NaN) == 0 ) {
+			modelErrors.add(new ChannelError(this, ChannelErrorTypes.MINIMUM_NOT_POSSIBLE));
+		} else if(!this.getDetectorChannel().getRead().isValuePossible(Double.toString(minimum))) {
+			modelErrors.add(new ChannelError(this, ChannelErrorTypes.MINIMUM_NOT_POSSIBLE));
 		}
 
 		if( this.maxAttempts == -1.0) {
-			modelErrors.add( new ChannelError( this, ChannelErrorTypes.MAX_ATTEMPTS_NOT_POSSIBLE ) );
+			modelErrors.add(new ChannelError(
+					this, ChannelErrorTypes.MAX_ATTEMPTS_NOT_POSSIBLE));
 		}
 
-		if( this.redoControlEventManager.getModelErrors().size() > 0 ) {
-			modelErrors.addAll( this.redoControlEventManager.getModelErrors() );
-			modelErrors.add( new ChannelError( this, ChannelErrorTypes.PLUGIN_ERROR ) );
+		if(this.redoControlEventManager.getModelErrors().size() > 0) {
+			modelErrors.addAll(this.redoControlEventManager.getModelErrors());
+			modelErrors.add(new ChannelError(this, ChannelErrorTypes.PLUGIN_ERROR));
 		}
 		return modelErrors;
 	}
 	
+	/*
+	 * 
+	 */
 	private void updateListeners()
 	{
 		for(IModelUpdateListener l : modelUpdateListener)
