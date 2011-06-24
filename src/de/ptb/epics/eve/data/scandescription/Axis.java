@@ -430,7 +430,10 @@ public class Axis extends AbstractMainPhaseBehavior {
 				errorList.add( new AxisError( this, AxisErrorTypes.POSITIONLIST_NOT_SET ) );
 			}
 		} else if( this.stepfunction == Stepfunctions.PLUGIN ) {
-			if( this.positionPluginController != null ) {
+			if (this.positionPluginController == null) {
+				errorList.add( new AxisError( this, AxisErrorTypes.PLUGIN_NOT_SET ) );
+			} else {
+				// TODO: Austesten ob Fehler wirklich erkannt werden
 				errorList.addAll( this.positionPluginController.getModelErrors() );
 				if (this.getPositionPluginController().getModelErrors().size() > 0 ) {
 					errorList.add( new AxisError( this, AxisErrorTypes.PLUGIN_ERROR ) );

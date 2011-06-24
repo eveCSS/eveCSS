@@ -50,6 +50,11 @@ public enum AxisErrorTypes {
 	POSITIONLIST_NOT_SET,
 
     /**
+	 * The plugin is not set.
+	 */
+	PLUGIN_NOT_SET,
+
+	/**
 	 * the plug in contains an error.
 	 */
 	PLUGIN_ERROR
