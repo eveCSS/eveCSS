@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.editor.views.motoraxisview;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -21,6 +22,9 @@ import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.errors.AxisError;
+import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.editor.Activator;
 
 /**
@@ -174,13 +178,34 @@ public class MotorAxisPluginComposite extends Composite {
 	 */
 	private void checkForErrors()
 	{
-		if(axis.getPositionPluginController() != null &&
-				this.axis.getPositionPluginController().getModelErrors().size() > 0) {
-			this.pluginErrorLabel.setImage(PlatformUI.getWorkbench().
-										   getSharedImages().getImage(
-										   ISharedImages.IMG_OBJS_ERROR_TSK));
-		} else {
-			this.pluginErrorLabel.setImage(null);
+		this.pluginErrorLabel.setImage(null);
+		this.pluginErrorLabel.setToolTipText("");
+		
+		final Iterator<IModelError> it = this.axis.getModelErrors().iterator();
+
+		while(it.hasNext()) {
+			final IModelError modelError = it.next();
+			if(modelError instanceof AxisError) {
+				final AxisError axisError = (AxisError)modelError;
+
+				switch(axisError.getErrorType()) {
+					case PLUGIN_NOT_SET:
+						this.pluginErrorLabel.setImage(PlatformUI.
+								getWorkbench().getSharedImages().getImage(
+								ISharedImages.IMG_OBJS_ERROR_TSK));
+						this.pluginErrorLabel.setToolTipText("Plugin not set");
+						this.pluginErrorLabel.getParent().layout();
+						break;
+					case PLUGIN_ERROR:
+						this.pluginErrorLabel.setImage(PlatformUI.
+								getWorkbench().getSharedImages().getImage(
+								ISharedImages.IMG_OBJS_ERROR_TSK));
+						this.pluginErrorLabel.setToolTipText("Plugin error");
+						this.pluginErrorLabel.getParent().layout();
+						break;
+				}
+				
+			}
 		}
 	}
 	
@@ -250,6 +275,7 @@ public class MotorAxisPluginComposite extends Composite {
 					pluginControllerComposite.setScanModule(scanModule);
 			}
 			
+			checkForErrors();
 			motorAxisView.resumeModelUpdateListener();
 		}
 	}	

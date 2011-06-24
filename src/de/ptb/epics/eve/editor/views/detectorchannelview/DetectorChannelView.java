@@ -227,19 +227,21 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		this.confirmTriggerManualCheckBox.setToolTipText(
 				"Mark to ask before trigger this channel");
 		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 3;
+		gridData.horizontalSpan = 2;
 		this.confirmTriggerManualCheckBox.setLayoutData(gridData);
 		this.confirmTriggerManualCheckBoxSelectionListener = 
 				new ConfirmTriggerManualCheckBoxSelectionListener();
 		this.confirmTriggerManualCheckBox.addSelectionListener( 
 				confirmTriggerManualCheckBoxSelectionListener);
 
+		top.layout();
 		// Expand Bar
 		this.bar = new ExpandBar(this.top, SWT.V_SCROLL);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
+// TODO: Warum wird bei GridData.FILL die Breite des Fensters zu groß angelegt?
+// 		Woher wird bestimmt wie breit FILL gesetzt wird? (Hartmut 23.6.11)
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;
@@ -279,7 +281,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		gridData.grabExcessVerticalSpace = true;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalAlignment = GridData.FILL;
-
+		
 		// Event Options Tab
 		eventsTabFolder = new CTabFolder(this.eventComposite, SWT.FLAT );
 		eventsTabFolder.setLayoutData(gridData);
@@ -410,7 +412,8 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 							 itemEventOptions.getHeight() + 
 							 itemEventOptions.getHeaderHeight() + 5;
 // TODO: Höhe und Breite muß noch besser berechnet werden (Hartmut 22.6.11)
-				int width = bar.getBounds().x + bar.getBounds().width - 25;
+//				int width = bar.getBounds().x + bar.getBounds().width - 25;
+				int width = bar.getBounds().x + bar.getBounds().width -25;
 				sc.setMinSize(this.top.computeSize(width, height));
 			}
 		

@@ -3,8 +3,8 @@ package de.ptb.epics.eve.editor.views.motoraxisview;
 import java.util.Iterator;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -29,10 +29,10 @@ public class MotorAxisPositionlistComposite extends Composite {
 	
 	private Label positionlistLabel;
 	private Text positionlistText;
-	private PositionlistTextFocusListener positionlistTextFocusListener;
+	private PositionlistTextModifyListener positionlistTextModifyListener;
 	private Label positionlistErrorLabel;
 	private Label amountLabel;
-	private Text amountText;
+	private Label amountLabelCount;
 	
 	private Axis axis;
 	
@@ -57,16 +57,13 @@ public class MotorAxisPositionlistComposite extends Composite {
 		this.setLayout(gridLayout);
 		
 		this.positionlistLabel = new Label(this, SWT.NONE);
-		this.positionlistLabel.setText("Positionlist:");
+		this.positionlistLabel.setText("Positionlist:   ( Sign between positions is ; )");
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.positionlistLabel.setLayoutData(gridData);
 		
 		this.positionlistErrorLabel = new Label(this, SWT.NONE);
-		this.positionlistErrorLabel.setImage(PlatformUI.getWorkbench().
-											 getSharedImages().getImage(
-											 ISharedImages.IMG_OBJS_ERROR_TSK));
 		
 		this.positionlistText = new Text(this, SWT.BORDER | SWT.V_SCROLL);
 		gridData = new GridData();
@@ -76,8 +73,8 @@ public class MotorAxisPositionlistComposite extends Composite {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		this.positionlistText.setLayoutData(gridData);
-		positionlistTextFocusListener = new PositionlistTextFocusListener();
-		this.positionlistText.addFocusListener(positionlistTextFocusListener);
+		this.positionlistTextModifyListener = new PositionlistTextModifyListener();
+		this.positionlistText.addModifyListener(positionlistTextModifyListener);
 		
 		this.amountLabel = new Label(this, SWT.NONE);
 		this.amountLabel.setText("Amount of positions:");
@@ -85,13 +82,13 @@ public class MotorAxisPositionlistComposite extends Composite {
 		gridData.horizontalAlignment = GridData.FILL;
 		this.amountLabel.setLayoutData(gridData);
 		
-		this.amountText = new Text(this, SWT.BORDER);
+		this.amountLabelCount = new Label(this, SWT.BORDER);
+		this.amountLabelCount.setText("?");
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		this.amountText.setLayoutData(gridData);
-		this.amountText.setEnabled(false);
-		
+		this.amountLabelCount.setLayoutData(gridData);
+
 		this.positionlistLabel.setEnabled(false);
 	}
 
@@ -100,7 +97,7 @@ public class MotorAxisPositionlistComposite extends Composite {
 	 * @return the needed height of Composite to see all entries
 	 */
 	public int getTargetHeight() {
-		return (amountText.getBounds().y + amountText.getBounds().height + 5);
+		return (amountLabel.getBounds().y + amountLabel.getBounds().height + 5);
 	}
 
 	/**
@@ -108,7 +105,7 @@ public class MotorAxisPositionlistComposite extends Composite {
 	 * @return the needed width of Composite to see all entries
 	 */
 	public int getTargetWidth() {
-		return (amountText.getBounds().x + amountText.getBounds().width + 5);
+		return (amountLabel.getBounds().x + amountLabel.getBounds().width + 5);
 	}
 
 	/**
@@ -126,6 +123,8 @@ public class MotorAxisPositionlistComposite extends Composite {
 		if(this.axis != null) {
 			if(this.axis.getPositionlist() != null) { 
 				this.positionlistText.setText(axis.getPositionlist()); 
+				this.amountLabelCount.setText(Integer.toString(
+					       this.positionlistText.getText().split(";").length));
 			}
 			
 			checkForErrors();
@@ -145,6 +144,7 @@ public class MotorAxisPositionlistComposite extends Composite {
 	private void checkForErrors()
 	{
 		this.positionlistErrorLabel.setImage(null);
+		this.positionlistErrorLabel.setToolTipText("");
 		
 		final Iterator<IModelError> it = this.axis.getModelErrors().iterator();
 		
@@ -156,6 +156,8 @@ public class MotorAxisPositionlistComposite extends Composite {
 					this.positionlistErrorLabel.setImage(PlatformUI.
 							getWorkbench().getSharedImages().getImage(
 							ISharedImages.IMG_OBJS_ERROR_TSK));
+					this.positionlistErrorLabel.setToolTipText("Positionlist has no position!");
+					this.positionlistErrorLabel.getParent().layout();
 					break;
 				}
 			}
@@ -167,7 +169,7 @@ public class MotorAxisPositionlistComposite extends Composite {
 	 */
 	private void addListeners()
 	{
-		positionlistText.addFocusListener(positionlistTextFocusListener);
+		positionlistText.addModifyListener(positionlistTextModifyListener);
 	}
 	
 	/*
@@ -175,7 +177,7 @@ public class MotorAxisPositionlistComposite extends Composite {
 	 */
 	private void removeListeners()
 	{
-		positionlistText.removeFocusListener(positionlistTextFocusListener);
+		positionlistText.removeModifyListener(positionlistTextModifyListener);
 	}
 	
 	///////////////////////////////////////////////////////////
@@ -185,28 +187,26 @@ public class MotorAxisPositionlistComposite extends Composite {
 	 * <code>ModifyListener</code> of PositionlistInput Text from
 	 * <code>MotorAxisPositionlistComposite</code>
 	 */
-	class PositionlistTextFocusListener implements FocusListener {
+	class PositionlistTextModifyListener implements ModifyListener {
 
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void focusGained(FocusEvent e) {	
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void focusLost(FocusEvent e) {
+		public void modifyText(ModifyEvent e) {
 			motorAxisView.suspendModelUpdateListener();
-			
+
 			if(axis != null) {
 				axis.setPositionlist(positionlistText.getText());
-			}
-			amountText.setText(Integer.toString(
+
+				if (positionlistText.getText().equals("")) {
+					amountLabelCount.setText("0");
+				} else {
+					amountLabelCount.setText(Integer.toString(
 						       positionlistText.getText().split(";").length));
-			
+				}	
+			}
+			checkForErrors();
 			motorAxisView.resumeModelUpdateListener();
 		}	
 	}
