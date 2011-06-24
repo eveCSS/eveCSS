@@ -52,16 +52,6 @@ public class ExcludeFilterTest {
 	private ExcludeFilter filteredMeasuringStation;
 	
 	/**
-	 * Dummy Test (always fails). Only for presentation reasons of the junit 
-	 * report.
-	 */
-	@Test
-	public void testDummyAlwaysFails()
-	{
-		assertTrue(false);
-	}
-	
-	/**
 	 * <code>testExcludeIncludeMotor</code> tries to exclude motors (each one 
 	 * by one) and verifies their absence. It also checks the presence / absence 
 	 * of their axis and options. Afterwards they are included and presence is 
@@ -754,9 +744,9 @@ public class ExcludeFilterTest {
 		
 		for(Chain chain : sd.getChains())
 		{
-			for(ScanModule sm : chain.getScanModuls())
+			for(ScanModule sm : chain.getScanModules())
 			{
-				for(Axis a : sm.getAxis())
+				for(Axis a : sm.getAxes())
 				{
 					assertTrue(isMotorAxis(filteredMeasuringStation, 
 											a.getMotorAxis()));
