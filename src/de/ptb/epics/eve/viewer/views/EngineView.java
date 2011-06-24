@@ -427,7 +427,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 					fillStatusTable(currentChain.getId(), -1, "idle", remainTime);
 
 				}
-				final List< ScanModule > scanModules = currentChain.getScanModuls();
+				final List< ScanModule > scanModules = currentChain.getScanModules();
 				
 				final List< ScanModule > running = Activator.getDefault().getChainStatusAnalyzer().getExecutingScanModules();
 				for( final ScanModule scanModule : running ) {
@@ -815,7 +815,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 				motColumn3.setWidth(100);
 				motColumn3.setText("Stepwidth");
 
-				Axis[] axis = displayChain.getScanModulById(aktSM).getAxis();
+				Axis[] axis = displayChain.getScanModulById(aktSM).getAxes();
 				for (int i=0; i<axis.length; i++) {
 					// Neuer Tabelleneintrag muß gemacht werden
 					TableItem tableItem = new TableItem( motTable, 0 );

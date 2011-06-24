@@ -111,7 +111,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
-						List< ScanModule > scanModules = chains.get( i ).getScanModuls();
+						List< ScanModule > scanModules = chains.get( i ).getScanModules();
 						for( int j = 0; j < scanModules.size(); ++j ) {
 							if( scanModules.get( j ).getId() == chainStatusCommand.getScanModulId() ) {
 								this.initializingScanModules.add( scanModules.get( j ) );
@@ -129,7 +129,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
-						List< ScanModule > scanModules = chains.get( i ).getScanModuls();
+						List< ScanModule > scanModules = chains.get( i ).getScanModules();
 						for( int j = 0; j < scanModules.size(); ++j ) {
 							if( scanModules.get( j ).getId() == chainStatusCommand.getScanModulId() ) {
 								this.initializingScanModules.remove( scanModules.get( j ) );
@@ -188,7 +188,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
-						List< ScanModule > scanModules = chains.get( i ).getScanModuls();
+						List< ScanModule > scanModules = chains.get( i ).getScanModules();
 						for( int j = 0; j < scanModules.size(); ++j ) {
 							if( scanModules.get( j ).getId() == chainStatusCommand.getScanModulId() ) {
 								this.initializingScanModules.remove( scanModules.get( j ) );
@@ -209,7 +209,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
-						List< ScanModule > scanModules = chains.get( i ).getScanModuls();
+						List< ScanModule > scanModules = chains.get( i ).getScanModules();
 						for( int j = 0; j < scanModules.size(); ++j ) {
 							if( scanModules.get( j ).getId() == chainStatusCommand.getScanModulId() ) {
 								this.initializingScanModules.remove( scanModules.get( j ) );
@@ -230,7 +230,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 				chains = Activator.getDefault().getCurrentScanDescription().getChains();
 				for( int i = 0; i < chains.size(); ++i ) {
 					if( chains.get( i ).getId() == chainStatusCommand.getChainId() ) {
-						List< ScanModule > scanModules = chains.get( i ).getScanModuls();
+						List< ScanModule > scanModules = chains.get( i ).getScanModules();
 						for( int j = 0; j < scanModules.size(); ++j ) {
 							if( scanModules.get( j ).getId() == chainStatusCommand.getScanModulId() ) {
 								this.initializingScanModules.remove( scanModules.get( j ) );
