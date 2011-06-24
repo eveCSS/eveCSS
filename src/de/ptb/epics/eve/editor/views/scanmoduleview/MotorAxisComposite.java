@@ -153,7 +153,7 @@ public class MotorAxisComposite extends Composite {
 			{
 				// the step amount will be adjusted if one of the axes is defined 
 				// as main axis
-				Axis[] axis = scanModule.getAxis();
+				Axis[] axis = scanModule.getAxes();
 				double stepamount = -1.0;
 				for(int j = 0; j < axis.length; ++j) {
 					if(axis[j].isMainAxis()) {
@@ -248,7 +248,7 @@ public class MotorAxisComposite extends Composite {
 	{
 		final Axis[] availableMotorAxes;
 
-		availableMotorAxes = scanModule.getAxis();
+		availableMotorAxes = scanModule.getAxes();
 		String[] axisItems = new String[availableMotorAxes.length];
 		for (int i = 0; i < availableMotorAxes.length; ++i) {
 			axisItems[i] = 
@@ -287,7 +287,7 @@ public class MotorAxisComposite extends Composite {
 		public void widgetSelected(SelectionEvent e) {
 			final String axisName = 
 					tableViewer.getTable().getSelection()[0].getText(0);
-			Axis[] axis = scanModule.getAxis();
+			Axis[] axis = scanModule.getAxes();
 			for(int i = 0; i < axis.length; ++i) {
 				if(axis[i].getMotorAxis().getFullIdentifyer().equals(axisName)) {
 					setMotorAxisView(axis[i]);
@@ -396,7 +396,7 @@ public class MotorAxisComposite extends Composite {
 		@Override
 		public void run() {
 			
-			for(final Axis a : scanModule.getAxis()) {
+			for(final Axis a : scanModule.getAxes()) {
 				if(a.getAbstractDevice() == ma) {
 					return;
 				}

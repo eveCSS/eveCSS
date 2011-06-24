@@ -816,7 +816,7 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 			// General
 			
 			// determine available motor axes (as choices in select box)
-			availableMotorAxes = scanModule.getAxis();
+			availableMotorAxes = scanModule.getAxes();
 			String[] axisItems = new String[availableMotorAxes.length];
 			for (int i = 0; i < availableMotorAxes.length; ++i) {
 				axisItems[i] = 

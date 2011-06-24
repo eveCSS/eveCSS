@@ -1224,7 +1224,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 			plotWindow.setId(newID);
 
 			// if only one axis available, set this axis as default
-			availableMotorAxes = currentScanModule.getAxis();
+			availableMotorAxes = currentScanModule.getAxes();
 			if (availableMotorAxes.length == 1) {
 				plotWindow.setXAxis(availableMotorAxes[0].getMotorAxis());
 			}

@@ -687,7 +687,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 	private void recalculateStepwidth() {
 		if (currentAxis.isMainAxis()) {
 			ScanModule scanModul = currentAxis.getScanModule();
-			Axis[] axis = scanModul.getAxis();
+			Axis[] axis = scanModul.getAxes();
 			
 			for( int i = 0; i < axis.length; ++i ) {
 				if( !axis[i].isMainAxis() ) {

@@ -46,6 +46,6 @@ public class ChainEditPart extends AbstractGraphicalEditPart {
 	@Override
 	protected List<?> getModelChildren() {
 		final Chain chain = (Chain)this.getModel();
-		return chain.getScanModuls();
+		return chain.getScanModules();
 	}
 }

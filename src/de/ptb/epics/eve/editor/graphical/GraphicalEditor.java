@@ -746,7 +746,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					do {
 						boolean repeat = false;
 						for(int i = 0; i < chains.length; ++i) {
-							ScanModule[] scanModules = chains[i].getScanModuls().
+							ScanModule[] scanModules = chains[i].getScanModules().
 													  toArray(new ScanModule[0]);
 							for(int j = 0; j < scanModules.length; ++j) {
 								if(scanModules[j].getId() == newId) {
@@ -799,7 +799,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					do {
 						boolean repeat = false;
 						for(int i = 0; i < chains.length; ++i) {
-							ScanModule[] scanModules = chains[i].getScanModuls().
+							ScanModule[] scanModules = chains[i].getScanModules().
 													  toArray(new ScanModule[0]);
 							for(int j = 0; j < scanModules.length; ++j) {
 								if(scanModules[j].getId() == newId) {
@@ -894,7 +894,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				
 				for(int i = 0; i < chains.length; ++i) {
 					ScanModule[] scanModules = 
-						chains[i].getScanModuls().toArray(new ScanModule[0]);
+						chains[i].getScanModules().toArray(new ScanModule[0]);
 					for(int j=0; j<scanModules.length; ++j) {
 						if(scanModules[j].getId() == newId) {
 							newId++;

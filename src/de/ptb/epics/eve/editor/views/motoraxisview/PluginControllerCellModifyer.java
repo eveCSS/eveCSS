@@ -71,7 +71,7 @@ public class PluginControllerCellModifyer implements ICellModifier {
 					// hier kommen nur die Achsen zur Auswahl die im scanModul gewählt sind
 					ScanModule scanModul = (ScanModule)((PluginController)this.tableViewer.getInput()).getScanModule();
 					if ( scanModul != null) {
-						Axis[] cur_axis = scanModul.getAxis();
+						Axis[] cur_axis = scanModul.getAxes();
 						String[] cur_feld = new String[cur_axis.length];
 						for (int i=0; i<cur_axis.length; ++i) {
 							cur_feld[i] = cur_axis[i].getMotorAxis().getFullIdentifyer();

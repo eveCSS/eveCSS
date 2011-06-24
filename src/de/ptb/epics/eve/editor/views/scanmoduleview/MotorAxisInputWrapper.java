@@ -33,7 +33,7 @@ public class MotorAxisInputWrapper implements IModelUpdateListener,
 	 */
 	@Override
 	public Object[] getElements(final Object inputElement) {
-		return ((ScanModule)inputElement).getAxis();
+		return ((ScanModule)inputElement).getAxes();
 	}
 
 	/**

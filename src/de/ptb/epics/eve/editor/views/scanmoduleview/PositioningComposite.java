@@ -168,7 +168,7 @@ public class PositioningComposite extends Composite {
 				posList.add(positionings[i].getMotorAxis());
 			}
 			
-			for(final Axis axis : scanModule.getAxis()) {
+			for(final Axis axis : scanModule.getAxes()) {
 				// die Achsen für die es Positioning gibt, werden entfernt
 				if (posList.contains(axis.getMotorAxis())) {
 					continue;
