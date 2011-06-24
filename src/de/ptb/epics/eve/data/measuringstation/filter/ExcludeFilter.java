@@ -860,12 +860,12 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		for(Chain chain : chains)
 		{
 			// iterate through each scan module of the chain
-			List<ScanModule> scanModules = chain.getScanModuls();
+			List<ScanModule> scanModules = chain.getScanModules();
 			
 			for(ScanModule sm : scanModules)
 			{
 				// iterate axes
-				Axis[] axes = sm.getAxis();
+				Axis[] axes = sm.getAxes();
 				
 				for(int i = 0; i < axes.length; i++)
 				{

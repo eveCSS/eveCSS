@@ -1979,7 +1979,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			se.setChain( loopChain );
 			se.setEvent( startEvent );
 			loopChain.setStartEvent( se );
-			for (ScanModule loopScanModule : loopChain.getScanModuls() ){
+			for (ScanModule loopScanModule : loopChain.getScanModules() ){
 				if ( loopScanModule.getParent() == null ) {
 					Connector connector = new Connector();
 					connector.setParentEvent( se );
@@ -2011,7 +2011,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						break;
 					}
 					
-					Iterator<ScanModule> scanModulIterator = chain.getScanModuls().iterator();
+					Iterator<ScanModule> scanModulIterator = chain.getScanModules().iterator();
 					while( scanModulIterator.hasNext() ) {
 						ScanModule scanModul = scanModulIterator.next();
 						
@@ -2057,7 +2057,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		Iterator<Chain> chainIterator = this.scanDescription.getChains().iterator();
 		while( chainIterator.hasNext() ) {
 			Chain currentChain = chainIterator.next();
-			Iterator<ScanModule> scanModulIterator = currentChain.getScanModuls().iterator();
+			Iterator<ScanModule> scanModulIterator = currentChain.getScanModules().iterator();
 			
 			while( scanModulIterator.hasNext() ) {
 				ScanModule currentScanModul = scanModulIterator.next();
@@ -2077,7 +2077,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					}
 				}
 				
-				Axis[] axis = currentScanModul.getAxis();
+				Axis[] axis = currentScanModul.getAxes();
 				for( int i = 0; i < axis.length; ++i ) {
 					if( axis[i] != null ) {
 						AbstractDevice device = null;

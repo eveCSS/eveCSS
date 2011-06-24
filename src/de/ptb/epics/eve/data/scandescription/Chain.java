@@ -90,7 +90,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	/**
 	 * A list that holds all the scan moduls inside of the chain.
 	 */
-	private List<ScanModule> scanModuls;
+	private List<ScanModule> scanModules;
 	
 	/**
 	 * A refrence to the scan description, that is the parent of this chain.
@@ -100,7 +100,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	/**
 	 * A map that is mapping the id of a scan modul to the scan modul it self.
 	 */
-	private Map< Integer, ScanModule > scanModulsMap;
+	private Map< Integer, ScanModule > scanModuleMap;
 	
 	/**
 	 * A List that is holding all object that needs to get an update message if this object was updated.
@@ -153,8 +153,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 			throw new IllegalArgumentException( "The parameter 'id' must be at least 1!" );
 		}
 		this.id = id;
-		this.scanModuls = new ArrayList<ScanModule>();
-		this.scanModulsMap = new HashMap< Integer, ScanModule >();
+		this.scanModules = new ArrayList<ScanModule>();
+		this.scanModuleMap = new HashMap< Integer, ScanModule >();
 		this.redoEvents = new ArrayList<ControlEvent>();
 		this.breakEvents = new ArrayList<ControlEvent>();
 		this.startEvents = new ArrayList<ControlEvent>();
@@ -212,8 +212,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * 
 	 * @return A copy of the internal list, that is holding all scan modules. Never returns null.
 	 */
-	public List< ScanModule > getScanModuls() {
-		return new ArrayList< ScanModule >( this.scanModuls );
+	public List< ScanModule > getScanModules() {
+		return new ArrayList< ScanModule >( this.scanModules );
 	}
 	
 	/**
@@ -225,8 +225,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		if( scanModul == null ) {
 			throw new IllegalArgumentException( "The parameter 'scanModul' must not be null!" );
 		}
-		this.scanModulsMap.put( scanModul.getId(), scanModul );
-		this.scanModuls.add( scanModul );
+		this.scanModuleMap.put( scanModul.getId(), scanModul );
+		this.scanModules.add( scanModul );
 		scanModul.setChain( this );
 		scanModul.addModelUpdateListener( this );
 		updateListeners();
@@ -241,8 +241,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		if( scanModul == null ) {
 			throw new IllegalArgumentException( "The parameter 'scanModul' must not be null!" );
 		}
-		this.scanModuls.remove( scanModul );
-		this.scanModulsMap.remove( scanModul.getId() );
+		this.scanModules.remove( scanModul );
+		this.scanModuleMap.remove( scanModul.getId() );
 		scanModul.removeModelUpdateListener( this );
 		scanModul.setChain( null );
 		updateListeners();
@@ -355,7 +355,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * @return The ScanModul or 'null' if it's not found.
 	 */
 	public ScanModule getScanModulById( final int id ) {
-		return this.scanModulsMap.get( id );
+		return this.scanModuleMap.get( id );
 	}
 	
 	/**
@@ -764,7 +764,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		errorList.addAll( this.redoControlEventManager.getModelErrors() );
 		errorList.addAll( this.stopControlEventManager.getModelErrors() );
 		errorList.addAll( this.startControlEventManager.getModelErrors() );
-		final Iterator< ScanModule > it = this.scanModuls.iterator();
+		final Iterator< ScanModule > it = this.scanModules.iterator();
 		while( it.hasNext() ) {
 			errorList.addAll( it.next().getModelErrors() );
 		}

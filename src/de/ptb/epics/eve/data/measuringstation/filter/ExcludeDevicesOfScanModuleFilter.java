@@ -569,7 +569,7 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 			this.excludeList.clear();
 			if(this.scanModule != null) {
 				if(this.excludeAxes) {
-					for(final Axis axis : this.scanModule.getAxis()) {
+					for(final Axis axis : this.scanModule.getAxes()) {
 						this.excludeList.add(axis.getAbstractDevice());
 					}
 				}

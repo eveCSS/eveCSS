@@ -180,7 +180,7 @@ public class PluginController implements IModelErrorProvider, IModelUpdateProvid
 			if (currentPluginParameter.getType().toString() .equals("AXISID")) {
 				// aus dem scanModul wird der erste Wert des Plugins erzeugt!
 				if ( scanModule != null) {
-					Axis[] cur_axis = scanModule.getAxis();
+					Axis[] cur_axis = scanModule.getAxes();
 					String[] cur_feld = new String[cur_axis.length];
 					for (int i=0; i<cur_axis.length; ++i) {
 						cur_feld[i] = cur_axis[i].getMotorAxis().getFullIdentifyer();

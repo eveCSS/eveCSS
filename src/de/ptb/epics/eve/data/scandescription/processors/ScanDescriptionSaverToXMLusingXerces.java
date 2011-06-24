@@ -924,7 +924,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 				this.writeControlEvent( controlEventIterator.next(), "stopevent" );
 			}
 			
-			Iterator<ScanModule> it = chain.getScanModuls().iterator();
+			Iterator<ScanModule> it = chain.getScanModules().iterator();
 			
 			this.atts.clear();
 			
@@ -1053,7 +1053,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 				this.writePrescan( prescans[i] );
 			}
 			
-			Axis[] axis = scanModul.getAxis();
+			Axis[] axis = scanModul.getAxes();
 			for( int i = 0; i < axis.length; ++i ) {
 				try{
 					this.writeAxis( axis[i] );

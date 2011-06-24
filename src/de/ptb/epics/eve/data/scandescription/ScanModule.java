@@ -207,9 +207,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	/**
 	 * Gives back an Array that contains all axis behaviors.
 	 * 
-	 * @return An Array, that contains all axos behaviors.
+	 * @return An Array, that contains all axes behaviors.
 	 */
-	public Axis[] getAxis() {
+	public Axis[] getAxes() {
 		return this.axes.toArray( new Axis[0] );
 	}
 	
