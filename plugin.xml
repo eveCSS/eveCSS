@@ -123,4 +123,20 @@
          </newWizardShortcut>
       </perspectiveExtension>
    </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:file/new">
+         <command
+               commandId="org.eclipse.ui.newWizard"
+               icon="icons/sample.gif"
+               label="Scan Description"
+               style="push">
+            <parameter
+                  name="newWizardId"
+                  value="de.ptb.epics.eve.editor.wizards.NewScanDescriptionWizard">
+            </parameter>
+         </command>
+      </menuContribution>
+   </extension>
 </plugin>
