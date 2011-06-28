@@ -32,7 +32,8 @@ public class XMLFileDispatcher implements INewXMLFileListener {
 			
 			final String measuringStationDescription = de.ptb.epics.eve.preferences.Activator.getDefault().getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION );
 			final int lastSeperatorIndex = measuringStationDescription.lastIndexOf( File.separatorChar );
-			final String schemaFileLocation = measuringStationDescription.substring( 0, lastSeperatorIndex + 1 ) + "scml.xsd";
+			// final String schemaFileLocation = measuringStationDescription.substring( 0, lastSeperatorIndex + 1 ) + "scml.xsd";
+			final String schemaFileLocation = Activator.getDefault().getRootDirectory() + "eve/schema.xsd";
 			final File schemaFile = new File( schemaFileLocation );
 			final MeasuringStationLoader measuringStationLoader = new MeasuringStationLoader( schemaFile );
 			final IMeasuringStation measuringStation = measuringStationLoader.loadFromByteArray( xmlData );
