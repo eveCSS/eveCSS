@@ -46,6 +46,9 @@ import de.ptb.epics.eve.viewer.IUpdateListener;
  */
 public final class EngineView extends ViewPart implements IUpdateListener, IConnectionStateListener, IErrorListener {
 
+	/** the public identifier of the view */
+	public static final String id = "EngineView";
+	
 	private static Logger logger = Logger.getLogger(EngineView.class);	
 
 	private Composite top = null;
@@ -527,6 +530,10 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		});
 	}
 
+	/**
+	 * 
+	 * @param filename
+	 */
 	public void setActualFilename(final String filename) {
 		// der Name des geladenen scml-Files wird angezeigt
 		this.filenameText.getDisplay().syncExec(new Runnable() {

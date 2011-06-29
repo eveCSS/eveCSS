@@ -19,6 +19,7 @@ import de.ptb.epics.eve.ecp1.intern.EngineStatus;
 import de.ptb.epics.eve.viewer.views.plotview.PlotView;
 
 /**
+ * <code>PlotViewDispatcher</code>.
  * 
  * @author ?
  *
@@ -46,16 +47,17 @@ public class PlotViewDispatcher implements
 	 * 
 	 * @param scanDescription
 	 */
-	public void setScanDescription(ScanDescription scanDescription){
+	public void setScanDescription(ScanDescription scanDescription) {
 		this.scanDescription = scanDescription;
-		if (dispatchDelayed && (engineStatus == EngineStatus.EXECUTING)){
+		if (dispatchDelayed && (engineStatus == EngineStatus.EXECUTING)) {
 			dispatchDelayed = false;
-			Activator.getDefault().getWorkbench().getDisplay().syncExec( new Runnable() {
-
-				public void run() {
-					doDispatch(chid, smid);
+			Activator.getDefault().getWorkbench().getDisplay().syncExec(
+				new Runnable() {
+					@Override public void run() {
+						doDispatch(chid, smid);
+					}
 				}
-			});				
+			);
 		}
 	}
 
@@ -76,7 +78,6 @@ public class PlotViewDispatcher implements
 		PlotWindow[] plotWindows = sm.getPlotWindows();
 		for (PlotWindow plotWindow : plotWindows) {
 			windowIdMap.put(plotWindow.getId(), plotWindow);
-			System.out.println("Found plotWindow with id " + plotWindow.getId());
 		}
 		
 		// create a new plotView for all remaining windowIds without corresponding plotView
@@ -85,7 +86,6 @@ public class PlotViewDispatcher implements
 			if (viewRef == null) {
 				// TODO create new plotView with secondary id windowI
 				try {
-					System.out.println("opening plot with secondary id "+windowId.toString());
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(PlotView.ID, windowId.toString(), IWorkbenchPage.VIEW_ACTIVATE);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -107,7 +107,6 @@ public class PlotViewDispatcher implements
 					e.printStackTrace();
 					return;
 				}
-				System.out.println("PlotView with windowId " + plotViewId);
 				if (windowIdMap.containsKey(plotViewId)) {
 					plotView.setPlotWindow(windowIdMap.get(plotViewId), chid, smid);
 					windowIdMap.remove(plotViewId);
@@ -141,16 +140,14 @@ public class PlotViewDispatcher implements
 			//scanDescription to arrive
 			if (scanDescription == null) {
 				dispatchDelayed = true;
-			}
-			else {
+			} else {
 				dispatchDelayed = false;
-				Activator.getDefault().getWorkbench().getDisplay().syncExec( 
+				Activator.getDefault().getWorkbench().getDisplay().syncExec(
 					new Runnable() {
-
-						public void run() {
+						@Override public void run() {
 							doDispatch(chid, smid);
 						}
-				});				
+				});
 			}
 		}
 	}
@@ -171,7 +168,7 @@ public class PlotViewDispatcher implements
 	@Override
 	public void stackDisconnected() {
 		// invalidate scanDescription
-		scanDescription = null;				
+		scanDescription = null;
 		dispatchDelayed = false;
 	}
 }

@@ -32,6 +32,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IPartService;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -105,7 +106,13 @@ public class DeviceInspectorView extends ViewPart {
 	
 	private List<AbstractDevice> devices;
 	
+	// the selection service only accepts one selection provider per view,
+	// since we have three tables capable of providing selections a wrapper 
+	// handles them and registers the active one with the global selection 
+	// service
 	private SelectionProviderWrapper selectionProviderWrapper;
+	
+	private DeviceInspectorViewPartListener deviceInspectorViewPartListener;
 	
 	private IMemento memento;
 	
@@ -123,7 +130,6 @@ public class DeviceInspectorView extends ViewPart {
 	private Image axisImage;
 	private Image channelImage;
 	private Image deviceImage;
-	
 	
 	/**
 	 * {@inheritDoc}
@@ -158,7 +164,6 @@ public class DeviceInspectorView extends ViewPart {
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		
 		// icons
 		deleteIcon = PlatformUI.getWorkbench().getSharedImages().
 			getImageDescriptor(ISharedImages.IMG_TOOL_DELETE).createImage();
@@ -405,6 +410,10 @@ public class DeviceInspectorView extends ViewPart {
 			activeDeviceInspectorView = "";
 		}
 		
+		deviceInspectorViewPartListener = new DeviceInspectorViewPartListener();
+		IPartService service = 
+			(IPartService) getSite().getService(IPartService.class);
+		service.addPartListener(deviceInspectorViewPartListener);
 		
 		selectionProviderWrapper = new SelectionProviderWrapper();
 		getSite().setSelectionProvider(selectionProviderWrapper);
@@ -871,7 +880,7 @@ public class DeviceInspectorView extends ViewPart {
 			}
 		});
 		unitColumn.getColumn().setWidth(35);
-	} 
+	} // end of: createDeviceTableColumns
 	
 	/**
 	 * Renames the <code>DeviceInspectorView</code>.
@@ -883,7 +892,11 @@ public class DeviceInspectorView extends ViewPart {
 	}
 	
 	/**
-	 * Resets all layout changes made.
+	 * Resets all layout changes made:
+	 * <ul>
+	 *   <li>resets maximized window (if one)</li>
+	 *   <li>makes all tables heights equal</li>
+	 * </ul>
 	 */
 	public void resetLayout() {
 		motorAxesCompositeMaximized = false;
@@ -920,6 +933,9 @@ public class DeviceInspectorView extends ViewPart {
 	 *  <li>for a {@link de.ptb.epics.eve.data.measuringstation.Detector} all of 
 	 *  	its channels that aren't already present are added to the detector 
 	 *  	channels table</li>
+	 *  <li>a {@link de.ptb.epics.eve.data.measuringstation.Device} is added if 
+	 *  	it isn't already present in the devices table</li>
+	 * </ul>
 	 * 
 	 * @precondition <code>device</code> is not <code>null</code>
 	 * @param device the 
@@ -1094,6 +1110,21 @@ public class DeviceInspectorView extends ViewPart {
 		for(final AbstractDevice d : devs) {
 			this.addAbstractDevice(d);
 		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() {
+		IPartService service = 
+			(IPartService) getSite().getService(IPartService.class);
+		service.removePartListener(deviceInspectorViewPartListener);
+		
+		getSite().setSelectionProvider(null);
+		selectionProviderWrapper = null;
+		
+		super.dispose();
 	}
 	
 	// ***********************************************************************

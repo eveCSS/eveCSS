@@ -111,15 +111,20 @@
             id="de.ptb.epics.eve.viewer.views.deviceinspectorview"
             name="DeviceInspectorView">
       </category>
+      <command
+            defaultHandler="de.ptb.epics.eve.viewer.handler.EveViewerStartCommandHandler"
+            id="de.ptb.epics.eve.viewer.start"
+            name="EveViewer">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="de.ptb.epics.eve.viewer.actions.connectCommandHandler"
+            class="de.ptb.epics.eve.viewer.handler.engineview.ConnectCommandHandler"
             commandId="de.ptb.epics.eve.viewer.connectCommand">
       </handler>
       <handler
-            class="de.ptb.epics.eve.viewer.actions.disConnectCommandHandler"
+            class="de.ptb.epics.eve.viewer.handler.engineview.DisconnectCommandHandler"
             commandId="de.ptb.epics.eve.viewer.disconnectCommand">
       </handler>
       <handler
@@ -200,6 +205,15 @@
                label="Open in separate options window"
                style="push"
                tooltip="Open Device in a new Device Options window">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:display">
+         <command
+               commandId="de.ptb.epics.eve.viewer.start"
+               icon="icons/read_obj.gif"
+               label="EveViewer"
+               style="push">
          </command>
       </menuContribution>
    </extension>

@@ -19,8 +19,6 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -70,12 +68,13 @@ public final class DevicesView extends ViewPart {
 	
 	private DragSource source;
 
+	private boolean dragInProgress;
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void setFocus() {
-	
 	}
 
 	/**
@@ -103,13 +102,9 @@ public final class DevicesView extends ViewPart {
 		// listen to double clicks (inserts the clicked element to the inspector)
 		treeViewer.addDoubleClickListener(new TreeViewerDoubleClickListener());
 		
-		//treeViewerFocusListener = new TreeViewerFocusListener();
-		//treeViewer.getTree().addFocusListener(treeViewerFocusListener);
-		
-		// listen to selections (triggers the device options view)
-		//treeViewer.getTree().addSelectionListener(
-				//new TreeViewerTreeSelectionListener());
-		
+		treeViewerFocusListener = new TreeViewerFocusListener();
+		treeViewer.getTree().addFocusListener(treeViewerFocusListener);
+
 		// set this tree viewer as a source for drag n drop (drop in inspector)
 		this.source = new DragSource(
 				this.treeViewer.getTree(), DND.DROP_COPY | DND.DROP_MOVE);
@@ -126,6 +121,8 @@ public final class DevicesView extends ViewPart {
 		this.treeViewer.getTree().setMenu(contextMenu);
 		
 		getSite().setSelectionProvider(treeViewer);
+		
+		dragInProgress = false;
 	}
 
 	/**
@@ -192,49 +189,6 @@ public final class DevicesView extends ViewPart {
 						measuringstation.getDeviceList((String)selection);
 					for(AbstractDevice d : devices) {
 						deviceInspectorView.addAbstractDevice(d);
-					}
-				}
-			}
-		}
-	}
-	
-	/**
-	 *
-	 */
-	class TreeViewerTreeSelectionListener implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			
-			// get all views
-			IViewReference[] ref = getSite().getPage().getViewReferences();
-			
-			DeviceOptionsView deviceOptionsView = null;
-			for(IViewReference ivr : ref) {
-				if(ivr.getId().equals(DeviceOptionsView.ID)) {
-					if(DeviceOptionsView.activeDeviceOptionsView != null && 
-					   DeviceOptionsView.activeDeviceOptionsView.equals(ivr.getSecondaryId())) {
-						deviceOptionsView = (DeviceOptionsView)ivr.getPart(false);
-					}
-				}
-			}
-			
-			if(deviceOptionsView != null) {
-				TreeItem[] items = treeViewer.getTree().getSelection();
-				
-				if(items.length > 0) {
-					if(items[0].getData() instanceof AbstractDevice) {
-						deviceOptionsView.setDevice((AbstractDevice)items[0].getData());
 					}
 				}
 			}
@@ -322,7 +276,6 @@ public final class DevicesView extends ViewPart {
 		 */
 		@Override
 		public void dragStart(final DragSourceEvent event) {
-			
 			event.doit = true;
 			
 			for(TreeItem item : treeViewer.getTree().getSelection()) {
@@ -336,6 +289,8 @@ public final class DevicesView extends ViewPart {
 					event.doit = false;
 				}
 			}
+			
+			dragInProgress = true;
 		}
 		
 		/**
@@ -418,6 +373,8 @@ public final class DevicesView extends ViewPart {
 			// if a move operation has been performed -> remove the data 
 			// from the source
 			// ! we only want to copy data -> do nothing
+			dragInProgress = false;
+			treeViewer.getTree().deselectAll();
 		}
 	}
 	
@@ -442,7 +399,9 @@ public final class DevicesView extends ViewPart {
 		 */
 		@Override
 		public void focusLost(FocusEvent e) {
-			treeViewer.getTree().deselectAll();
+			if(!dragInProgress) {
+				treeViewer.getTree().deselectAll();
+			}
 		}
 	}
 }

@@ -62,6 +62,7 @@ public class DevicesViewTreeViewerLabelProvider implements ILabelProvider {
 	@Override
 	public String getText(final Object element) {
 		if(element instanceof List<?>) {
+			if(((List<Object>)element).size() == 0) return null;
 			Object obj = ((List<Object>)element).get(0);
 			if(obj instanceof Motor) {
 				return "Motors";
@@ -73,7 +74,7 @@ public class DevicesViewTreeViewerLabelProvider implements ILabelProvider {
 				return "Devices";
 			}
 		}
-		else if(element instanceof String){
+		else if(element instanceof String) {
 				return (String)element;
 		}
 		else if(element instanceof AbstractDevice) {

@@ -10,7 +10,12 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 
 /**
- * <code>SelectionProviderWrapper</code> 
+ * <code>SelectionProviderWrapper</code> allows to have multiple selection 
+ * providers in one view by registering itself at the selection service (as a 
+ * {@link org.eclipse.jface.viewers.ISelectionProvider}). The contained viewers 
+ * interested in providing selections have to manage which one is the currently 
+ * active provider (e.g., with a {@link org.eclipse.swt.events.FocusListener}) 
+ * by using {@link #setSelectionProvider(ISelectionProvider)}. 
  * 
  * @author Marcus Michalsky
  * @since 0.4.1
@@ -83,11 +88,13 @@ public class SelectionProviderWrapper implements ISelectionProvider {
 	}
 
 	/**
+	 * Sets the given {@link org.eclipse.jface.viewers.ISelectionProvider} as 
+	 * the selection provider of the view. 
 	 * 
-	 * @param selectionProvider
+	 * @param selectionProvider the 
+	 * 	{@link org.eclipse.jface.viewers.ISelectionProvider} that should be set 
 	 */
 	public void setSelectionProvider(ISelectionProvider selectionProvider) {
-		
 		if(this.selectionProvider != selectionProvider) {
 			if(this.selectionProvider != null) {
 				for(ISelectionChangedListener iscl : selectionChangedListeners) {
@@ -103,13 +110,15 @@ public class SelectionProviderWrapper implements ISelectionProvider {
 			} else {
 				setSelection(emptySelection);
 			}
-			
 		}
 	}
 	
 	/**
+	 * Returns the currently set 
+	 * {@link org.eclipse.jface.viewers.ISelectionProvider}.
 	 * 
-	 * @return
+	 * @return the current set
+	 * 			{@link org.eclipse.jface.viewers.ISelectionProvider}
 	 */
 	public ISelectionProvider getSelectionProvider() {
 		return selectionProvider;

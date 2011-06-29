@@ -45,21 +45,7 @@ public class MessagesTableLabelProvider implements ITableLabelProvider {
 		}	
 		return null;
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void addListener(final ILabelProviderListener listener) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void dispose() {
-	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -72,6 +58,20 @@ public class MessagesTableLabelProvider implements ITableLabelProvider {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public void addListener(final ILabelProviderListener listener) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void removeListener(final ILabelProviderListener listener) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() {
 	}
 }

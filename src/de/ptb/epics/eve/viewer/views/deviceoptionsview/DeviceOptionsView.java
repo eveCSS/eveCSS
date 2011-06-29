@@ -11,6 +11,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.IPartService;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewReference;
@@ -52,9 +53,13 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	// underlying model of this view
 	private AbstractDevice device;
 	
+	private DeviceOptionsViewPartListener deviceOptionsViewPartListener;
+	
 	@Override
 	public void init(final IViewSite site, final IMemento memento) 
 													throws PartInitException {
+		//site.getWorkbenchWindow().getActivePage().getPerspective().getId();
+		
 		super.init(site, memento);
 		if(memento != null) {
 			final String identifier = memento.getString("device");
@@ -120,17 +125,20 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 		
 		// get all views
 		IViewReference[] ref = getSite().getPage().getViewReferences();
-		
 		DeviceOptionsView deviceOptionsView = null;
 		for(IViewReference ivr : ref) {
 			if(ivr.getId().equals(DeviceOptionsView.ID)) {
 					deviceOptionsView = (DeviceOptionsView)ivr.getPart(false);
 			}
 		}
-		
 		if(deviceOptionsView == null) {
 			activeDeviceOptionsView = this.getViewSite().getSecondaryId();
 		}
+		
+		deviceOptionsViewPartListener = new DeviceOptionsViewPartListener();
+		IPartService service = 
+				(IPartService) getSite().getService(IPartService.class);
+		service.addPartListener(deviceOptionsViewPartListener);
 		
 		// listen to selection changes
 		getSite().getWorkbenchWindow().getSelectionService().
@@ -155,6 +163,13 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	 */
 	@Override
 	public void dispose() {
+		IPartService service = 
+			(IPartService) getSite().getService(IPartService.class);
+		service.removePartListener(deviceOptionsViewPartListener);
+	
+		getSite().getWorkbenchWindow().getSelectionService().
+			removeSelectionListener(this);
+		
 		tableViewer.getContentProvider().dispose();
 		tableViewer.getLabelProvider().dispose();
 		tableViewer.getTable().dispose();

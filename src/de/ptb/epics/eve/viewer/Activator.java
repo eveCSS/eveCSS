@@ -141,7 +141,7 @@ public class Activator extends AbstractUIPlugin {
 	 * @param path the path
 	 * @return the image descriptor
 	 */
-	public static ImageDescriptor getImageDescriptor( final String path ) {
+	public static ImageDescriptor getImageDescriptor(final String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
 	
@@ -194,6 +194,14 @@ public class Activator extends AbstractUIPlugin {
 	 * 
 	 * @return
 	 */
+	public ChainStatusAnalyzer getChainStatusAnalyzer() {
+		return this.chainStatusAnalyzer;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
 	public ScanDescription getCurrentScanDescription() {
 		return this.currentScanDescription;
 	}
@@ -209,20 +217,11 @@ public class Activator extends AbstractUIPlugin {
 	}
 	
 	/**
-	 * 
-	 * @return
-	 */
-	public ChainStatusAnalyzer getChainStatusAnalyzer() {
-		return this.chainStatusAnalyzer;
-	}
-
-	/**
 	 * Adds a scan description to the play list.
 	 * 
 	 * @param file the file containing the Scan Description (SCML)
 	 */
 	public void addScanDescription(final File file) {
-
 		Activator.getDefault().connectEngine();
 		// either we were connected before or have done it above, we are 
 		// connected now and can add the scan description to the play list.
@@ -303,14 +302,12 @@ public class Activator extends AbstractUIPlugin {
 		} else {
 			pathToConfigFile = rootDir + "eve/logger.xml";
 		}
-		
 		File file = new File(pathToConfigFile);
 		if(file.exists()) {
 			// setting property so that the log4j configuration file can access it
 			System.setProperty("eve.logdir", rootDir + "eve/log");
 			DOMConfigurator.configure(pathToConfigFile);
 		}
-		// DOMConfigurator.configure(System.getProperty("user.home") + "/logger.xml");
 	}
 	
 	/*
@@ -415,29 +412,50 @@ public class Activator extends AbstractUIPlugin {
 		colorreg.put("COLOR_PV_UNKNOWN", new RGB(130, 130, 130));
 		
 		ImageRegistry imagereg = getImageRegistry();
-		imagereg.put("GREENPLUS12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenPlus12.12.gif").createImage());
-		imagereg.put("GREENMINUS12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenMinus12.12.gif").createImage());
-		imagereg.put("GREENGO12", imageDescriptorFromPlugin(PLUGIN_ID, "icons/greenGo12.12.gif").createImage());
-		imagereg.put("PLAY16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/play.gif").createImage());
-		imagereg.put("PLAY16_DISABLED", imageDescriptorFromPlugin(PLUGIN_ID, "icons/play_disabled.gif").createImage());
-		imagereg.put("PAUSE16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/pause.gif").createImage());
-		imagereg.put("STOP16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/stop.gif").createImage());
-		imagereg.put("STOP16_DISABLED", imageDescriptorFromPlugin(PLUGIN_ID, "icons/stop_disabled.gif").createImage());
-		imagereg.put("SKIP16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/skip.gif").createImage());
-		imagereg.put("HALT16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/halt.gif").createImage());
-		imagereg.put("KILL16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/kill.gif").createImage());
-		imagereg.put("TRIGGER16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/trigger.gif").createImage());
-		imagereg.put("PLAYALL16", imageDescriptorFromPlugin(PLUGIN_ID, "icons/playAll2.gif").createImage());
+		imagereg.put("GREENPLUS12", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/greenPlus12.12.gif").createImage());
+		imagereg.put("GREENMINUS12", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/greenMinus12.12.gif").createImage());
+		imagereg.put("GREENGO12", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/greenGo12.12.gif").createImage());
+		imagereg.put("PLAY16", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/play.gif").createImage());
+		imagereg.put("PLAY16_DISABLED", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/play_disabled.gif").createImage());
+		imagereg.put("PAUSE16", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/pause.gif").createImage());
+		imagereg.put("STOP16", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/stop.gif").createImage());
+		imagereg.put("STOP16_DISABLED", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/stop_disabled.gif").createImage());
+		imagereg.put("SKIP16", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/skip.gif").createImage());
+		imagereg.put("HALT16", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/halt.gif").createImage());
+		imagereg.put("KILL16", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/kill.gif").createImage());
+		imagereg.put("TRIGGER16", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/trigger.gif").createImage());
+		imagereg.put("PLAYALL16", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/playAll2.gif").createImage());
 		
-		imagereg.put("MOTOR", imageDescriptorFromPlugin(PLUGIN_ID, "icons/motor.gif").createImage());
-		imagereg.put("AXIS", imageDescriptorFromPlugin(PLUGIN_ID, "icons/axis.gif").createImage());
-		imagereg.put("DETECTOR", imageDescriptorFromPlugin(PLUGIN_ID, "icons/detector.gif").createImage());
-		imagereg.put("CHANNEL", imageDescriptorFromPlugin(PLUGIN_ID, "icons/channel.gif").createImage());
+		imagereg.put("MOTOR", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/motor.gif").createImage());
+		imagereg.put("AXIS", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/axis.gif").createImage());
+		imagereg.put("DETECTOR", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/detector.gif").createImage());
+		imagereg.put("CHANNEL", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/channel.gif").createImage());
 		
-		imagereg.put("MOVEUP", imageDescriptorFromPlugin(PLUGIN_ID, "icons/prev_nav.gif").createImage());
-		imagereg.put("MOVEDOWN", imageDescriptorFromPlugin(PLUGIN_ID, "icons/next_nav.gif").createImage());
+		imagereg.put("MOVEUP", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/prev_nav.gif").createImage());
+		imagereg.put("MOVEDOWN", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/next_nav.gif").createImage());
 		
-		imagereg.put("RESTOREVIEW", imageDescriptorFromPlugin(PLUGIN_ID, "icons/thin_restore_view.gif").createImage());
-		imagereg.put("MAXIMIZE", imageDescriptorFromPlugin(PLUGIN_ID, "icons/maximize.gif").createImage());
+		imagereg.put("RESTOREVIEW", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/thin_restore_view.gif").createImage());
+		imagereg.put("MAXIMIZE", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/maximize.gif").createImage());
 	}
 }

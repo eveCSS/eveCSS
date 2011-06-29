@@ -6,20 +6,36 @@ import org.eclipse.ui.IPerspectiveFactory;
 
 /**
  * 
+ * 
  * @author ?
+ * @author Marcus Michalsky
  */
 public class EveDevicePerspective implements IPerspectiveFactory {
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void createInitialLayout(final IPageLayout layout) {
 		layout.setEditorAreaVisible(false);
 
-		layout.addView( "MessagesView", IPageLayout.LEFT, 0.35f, IPageLayout.ID_EDITOR_AREA);
-		layout.addView( "LocalDevicesView", IPageLayout.TOP, 0.8f, "MessagesView" );
+		layout.addView("MessagesView", IPageLayout.LEFT, 0.25f, 
+				IPageLayout.ID_EDITOR_AREA);
+		layout.addView("LocalDevicesView", 
+				IPageLayout.TOP, 0.8f, "MessagesView");
 	
-		IFolderLayout folder = layout.createFolder("DeviceInspectorFolder", IPageLayout.RIGHT, 0.50f, IPageLayout.ID_EDITOR_AREA );
-		folder.addPlaceholder("DeviceInspectorView:*");	
-		folder.addView( "DeviceInspectorView" );
+		String sec_id = String.valueOf(System.nanoTime());
 		
-		layout.addView( "DeviceOptionsView", IPageLayout.RIGHT, 0.80f, "DeviceInspectorView" );
+		IFolderLayout deviceInspectorFolder = 
+				layout.createFolder("DeviceInspectorFolder", 
+				IPageLayout.RIGHT, 0.40f, IPageLayout.ID_EDITOR_AREA);
+		deviceInspectorFolder.addPlaceholder("DeviceInspectorView:*");	
+		deviceInspectorFolder.addView("DeviceInspectorView:" + sec_id);
+		
+		IFolderLayout deviceOptionsFolder = 
+				layout.createFolder("DeviceOptionsFolder", 
+				IPageLayout.RIGHT, 0.80f, "DeviceInspectorView:" + sec_id);
+		
+		deviceOptionsFolder.addView("DeviceOptionsView:" + sec_id);
 	}
 }
