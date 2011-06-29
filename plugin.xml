@@ -136,7 +136,41 @@
                   name="newWizardId"
                   value="de.ptb.epics.eve.editor.wizards.NewScanDescriptionWizard">
             </parameter>
+            <visibleWhen>
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+               </reference>
+            </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            locationURI="menu:editors">
+         <command
+               commandId="de.ptb.epics.eve.editor.start"
+               icon="icons/threadgroup_obj.gif"
+               label="EveEditor"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+         <with
+               variable="activeWorkbenchWindow.activePerspective">
+            <equals
+                  value="EveEditorPerpective">
+            </equals>
+         </with>
+      </definition>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="de.ptb.epics.eve.editor.handler.EveEditorStartCommandHandler"
+            id="de.ptb.epics.eve.editor.start"
+            name="EveEditor">
+      </command>
    </extension>
 </plugin>

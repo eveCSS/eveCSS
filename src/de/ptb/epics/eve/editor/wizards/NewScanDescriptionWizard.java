@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.editor.wizards;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -33,6 +34,9 @@ import de.ptb.epics.eve.editor.Activator;
  */
 public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 	
+	private static Logger logger = 
+			Logger.getLogger(NewScanDescriptionWizard.class.getName());
+	
 	// the only page in the wizard
 	private NewScanDescriptionWizardPage page;
 
@@ -65,12 +69,10 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 	 */
 	@Override
 	public boolean performFinish() {
-		
 		final String fileName = page.getFileName();
-		
+	
 		IRunnableWithProgress op = new IRunnableWithProgress() {
-			@Override
-			public void run(IProgressMonitor monitor) 
+			@Override public void run(IProgressMonitor monitor) 
 											throws InvocationTargetException {
 				try {
 					doFinish(fileName, monitor);
@@ -91,11 +93,10 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 			MessageDialog.openError(getShell(), "Error", realException.getMessage());
 			return false;
 		}
-		
 		return true;
 	}
 	
-	/**
+	/*
 	 * The worker method. It will find the container, create the
 	 * file if missing or just replace its contents, and open
 	 * the editor on the newly created file.<br><br>
@@ -113,9 +114,20 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
+		} else {
+			// file already exists
+			/*
+			if(!MessageDialog.openConfirm(getShell(), 
+					"Overwrite existing file ?", 
+					"File already exists, overwrite ?")) {
+				// user wishes not to overwrite the file
+				MessageDialog.openWarning(getShell(), "File not created.", 
+						"Could not create a new file.");
+				return;
+			}*/
+			return;
 		}
 		
 		final IMeasuringStation measuringStation =  
@@ -136,8 +148,7 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 															 scanDescription);
 			scanDescriptionSaver.save();
 		} catch(final FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			logger.error(e1.getMessage(), e1);
 		}
 		
 		final IFileStore fileStore = 
@@ -146,7 +157,7 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 				new FileStoreEditorInput(fileStore);	
 			
 		getShell().getDisplay().asyncExec(new Runnable() {
-			public void run() {
+			@Override public void run() {
 				IWorkbenchPage page = PlatformUI.getWorkbench().
 												 getActiveWorkbenchWindow().
 												 getActivePage();
@@ -154,7 +165,7 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 					IDE.openEditor(page, fileStoreEditorInput, 
 						"de.ptb.epics.eve.editor.graphical.GraphicalEditor");
 				} catch(final PartInitException e) {
-					// TODO
+					logger.error(e.getMessage(), e);
 				}
 			}
 		});

@@ -26,6 +26,7 @@ import de.ptb.epics.eve.editor.Activator;
 
 public class NewScanDescriptionWizardPage extends WizardPage {
 	
+	// the filename / path for the new file
 	private Text fileText;
 
 	/**
@@ -51,7 +52,7 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 		layout.verticalSpacing = 9;
 		
 		Label label = new Label(container, SWT.NULL);
-		label.setText("&File name:");
+		label.setText("File name:");
 
 		fileText = new Text(container, SWT.BORDER | SWT.SINGLE);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -59,15 +60,24 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 		fileText.addModifyListener(new FileTextModifiedListener());
 		
 		Button button = new Button(container, SWT.PUSH);
-		button.setText("Browse...");
+		button.setText("Search...");
 		button.addSelectionListener(new ButtonSelectionListener());
 		
-		fileText.setText("");
+		String rootdir = Activator.getDefault().getRootDirectory();
+		File file = new File(rootdir + "scml/");
+		if(file.exists()) {
+			fileText.insert(rootdir + "scml/");
+		} else {
+			fileText.insert(rootdir);
+		}
+		file = null;
+		setErrorMessage("File name must be \"/path/to/file/filename.scml\"");
+		setPageComplete(false);
 		setControl(container);
 	}
 
 	/**
-	 * Returns the file name set by the user with browse...
+	 * Returns the file name set by the user
 	 * 
 	 * @return the user selected file name
 	 */
@@ -91,30 +101,35 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 			
 			// read filename from text field
 			String fileName = fileText.getText();
-
+			
 			// show error message if no file name is given
 			if (fileName.length() == 0) {
 				setErrorMessage("File name must be specified!");
 				setPageComplete(false);
 				return;
 			}
-
+			
 			// show error message if file extension is not scml
 			int dotLoc = fileName.lastIndexOf('.');
-		
 			if (dotLoc != -1) {
+				// suffix is not scml
 				String ext = fileName.substring(dotLoc + 1);
 				if (!ext.equalsIgnoreCase("scml")) {
 					setErrorMessage("Extension must be \"scml\"");
 					setPageComplete(false);
 					return;
 				}
+			} else {
+				// no suffix set
+				setErrorMessage("Extension must be \"scml\"");
+				setPageComplete(false);
+				return;
 			}
 			
 			// if none of the above events occurred everything is ok:
 			setErrorMessage(null);
 			setPageComplete(true);
-		}	
+		}
 	}
 	
 	/**
@@ -153,7 +168,20 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 			
 			// set selected file (if one was selected)
 			if(fileName != null) {
-				fileText.setText(fileName);
+				int dotLoc = fileName.lastIndexOf('.');
+				if(dotLoc != -1) {
+					String ext = fileName.substring(dotLoc + 1);
+					if (!ext.equalsIgnoreCase("scml")) {
+						// file name with dot but not scml
+						fileText.setText(fileName + ".scml");
+					} else {
+						// file name with .scml
+						fileText.setText(fileName);
+					}
+				} else {
+					// file name without a dot
+					fileText.setText(fileName + ".scml");
+				}
 			}
 		}
 	}
