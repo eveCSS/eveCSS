@@ -11,8 +11,9 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 import de.ptb.epics.eve.editor.views.scanview.ScanView;
 
 /**
- * <code>EveEditorPerspective</code> is the only perspective of the editor 
- * plugin.
+ * <code>EveEditorPerspective</code> is the factory for the editor perspective.
+ * <p> 
+ * The editor perspective is used to construct and modify scan descriptions.
  * 
  * @author ?
  * @author Marcus Michalsky

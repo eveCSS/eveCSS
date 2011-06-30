@@ -809,14 +809,13 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			final String filePath;
 			
 			if (currentChain.getSaveFilename() != null && 
-				currentChain.getSaveFilename() != "") 
+				!currentChain.getSaveFilename().isEmpty()) 
 			{ // there already is a filename (and path) -> show the path
 				lastSeperatorIndex = currentChain.getSaveFilename().
 											lastIndexOf(File.separatorChar);
 				filePath = currentChain.getSaveFilename().
 									substring(0, lastSeperatorIndex + 1);
-			}
-			else {
+			} else {
 				// no filename -> set path to <rootDir>/daten/ or <rootDir>
 				String rootdir = Activator.getDefault().getRootDirectory();
 				File file = new File(rootdir + "daten/");

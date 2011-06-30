@@ -539,6 +539,9 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				fileNameLang = fileName.substring(0, lastPoint) + ".scml";
 			else
 				fileNameLang = fileName + ".scml";
+		} else {
+			// user pressed "cancel" -> do nothing
+			return;
 		}
 		
 		final File scanDescriptionFile = new File(fileNameLang);

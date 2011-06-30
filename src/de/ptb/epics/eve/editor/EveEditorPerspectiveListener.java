@@ -13,6 +13,9 @@ import de.ptb.epics.eve.editor.views.scanview.ScanView;
 /**
  * <code>EveEditorPerspectiveListener</code> listens to perspective changes of 
  * the {@link EveEditorPerspective}.
+ * <p>
+ * It detects whether there are open editor windows. If no editor window is open 
+ * the views are reset.
  * 
  * @author Marcus Michalsky
  * @since 0.4.1

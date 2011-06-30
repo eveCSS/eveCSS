@@ -40,6 +40,8 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 	// the only page in the wizard
 	private NewScanDescriptionWizardPage page;
 
+	private boolean overwrite;
+	
 	/**
 	 * Constructs a <code>NewScanDescriptionWizard</code>.
 	 */
@@ -111,6 +113,7 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 		
 		final File file = new File(fileName);
 		if(!file.exists()) {
+			overwrite = true;
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
@@ -118,17 +121,23 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 			}
 		} else {
 			// file already exists
-			/*
-			if(!MessageDialog.openConfirm(getShell(), 
-					"Overwrite existing file ?", 
-					"File already exists, overwrite ?")) {
-				// user wishes not to overwrite the file
-				MessageDialog.openWarning(getShell(), "File not created.", 
-						"Could not create a new file.");
-				return;
-			}*/
-			return;
+			overwrite = false;
+			getShell().getDisplay().syncExec(new Runnable() {
+				@Override public void run() {
+					if(!MessageDialog.openConfirm(getShell(), 
+							"Overwrite existing file ?", 
+							"File already exists and will be overwritten, continue ?")) {
+						// user wishes not to overwrite the file
+						MessageDialog.openWarning(getShell(), "File not created.", 
+								"New File creation aborted.");
+						overwrite = false;
+					} else {
+						overwrite = true;
+					}
+				}
+			});
 		}
+		if(!overwrite) return;
 		
 		final IMeasuringStation measuringStation =  
 				Activator.getDefault().getMeasuringStation();
@@ -168,8 +177,7 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 					logger.error(e.getMessage(), e);
 				}
 			}
-		});
-		
+		});	
 		monitor.worked(1);
 	}
 }
