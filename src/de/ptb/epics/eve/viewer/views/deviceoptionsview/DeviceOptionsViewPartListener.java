@@ -1,6 +1,3 @@
-/**
- * 
- */
 package de.ptb.epics.eve.viewer.views.deviceoptionsview;
 
 import org.eclipse.ui.IPartListener2;
@@ -8,10 +5,9 @@ import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPartReference;
 
 /**
- * <code>
+ * <code>DeviceOptionsViewPartListener</code> listens to changes in parts.
  * <p>
  *  Used to update the currently active 
- * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView} 
  * and {@link de.ptb.epics.eve.viewer.views.deviceoptionsview.DeviceOptionsView}.
  * If such a part is made visible, it is set as the current one.
  * 
