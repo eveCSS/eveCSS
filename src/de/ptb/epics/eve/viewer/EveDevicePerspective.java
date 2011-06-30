@@ -5,7 +5,10 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
 /**
- * 
+ * <code>EveDevicePerspective</code> is the factory for the device perspective.
+ * <p>
+ * The device perspective usually is used to monitor devices of the loaded 
+ * measuring station and sending (channel access) commands to them.
  * 
  * @author ?
  * @author Marcus Michalsky

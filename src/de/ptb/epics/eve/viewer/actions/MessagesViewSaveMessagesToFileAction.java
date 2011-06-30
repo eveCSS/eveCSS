@@ -53,9 +53,8 @@ public class MessagesViewSaveMessagesToFileAction extends Action
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		FileDialog fileDialog = new FileDialog(shell, SWT.SAVE);
 		fileDialog.setFilterPath(filePath);
-		fileDialog.open();
 		
-		String name = fileDialog.getFileName();
+		String name = fileDialog.open();
 		
 		if(name == null) {
 			return;

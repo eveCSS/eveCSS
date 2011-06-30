@@ -79,8 +79,8 @@ public final class MessagesView extends ViewPart {
 	    // action to clear messages (empty the table)
 		this.clearMessageAction = new MessagesViewClearMessagesAction();
 		this.clearMessageAction.setText("Clear Messages");
-		this.clearMessageAction.setImageDescriptor(PlatformUI.getWorkbench().
-			getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
+		this.clearMessageAction.setImageDescriptor(Activator.getDefault().
+				getImageRegistry().getDescriptor("CLEAR"));
 		tbmngr.add(this.clearMessageAction);
 
 		// action to filter sources
@@ -105,10 +105,9 @@ public final class MessagesView extends ViewPart {
 		this.saveMessagesToFileAction = 
 			new MessagesViewSaveMessagesToFileAction(this.tableViewer);
 		this.saveMessagesToFileAction.setText("Save messages to a file.");
-		this.saveMessagesToFileAction.setImageDescriptor(
-				PlatformUI.getWorkbench().getSharedImages().
-				getImageDescriptor(ISharedImages.IMG_OBJ_FILE));
-		tbmngr.add(this.saveMessagesToFileAction);		
+		this.saveMessagesToFileAction.setImageDescriptor(Activator.getDefault().
+				getImageRegistry().getDescriptor("SAVE"));
+		tbmngr.add(this.saveMessagesToFileAction);
 	}
 
 	/**

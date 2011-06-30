@@ -7,7 +7,10 @@ import org.eclipse.ui.IPerspectiveFactory;
 import de.ptb.epics.eve.viewer.views.plotview.PlotView;
 
 /**
- * <code>EveEnginePerspective</code>.
+ * <code>EveEnginePerspective</code> is the factory for the engine perspective.
+ * <p>
+ * The perspective is usually used when running scan descriptions to monitor the 
+ * progress and measured data.
  * 
  * @author ?
  * @author Marcus Michalsky
