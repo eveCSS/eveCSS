@@ -95,6 +95,8 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	// excluded devices
 	private final List<AbstractDevice> excludeList;
 	
+	private boolean filterInProgress;
+	
 	/**
 	 * Constructs an <code>ExcludeFilter</code>.
 	 */
@@ -113,6 +115,8 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		this.eventsMap = new HashMap<String, Event>();
 		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
 		this.excludeList = new ArrayList<AbstractDevice>();
+		
+		filterInProgress = false;
 	}
 	
 	/**
@@ -746,7 +750,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	 */
 	public void exclude(final AbstractDevice abstractDevice) {
 		this.excludeList.add(abstractDevice);
-		this.updateEvent(new ModelUpdateEvent(this, null));
+		if(!filterInProgress) {
+			this.updateEvent(new ModelUpdateEvent(this, null));
+		}
 	}
 	
 	/**
@@ -758,7 +764,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	 */
 	public void include(final AbstractDevice abstractDevice) {
 		this.excludeList.remove(abstractDevice);
-		this.updateEvent(new ModelUpdateEvent(this, null));
+		if(!filterInProgress) {
+			this.updateEvent(new ModelUpdateEvent(this, null));
+		}
 	}
 	
 	/**
@@ -837,6 +845,8 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		 * 		exclude method calls updateEvent. This is not necessary (just 
 		 * 		calling it once at the end would suffice). 
 		 */
+		
+		filterInProgress = true;
 		
 		// all available motors
 		List<Motor> all_motors = getSource().getMotors();
@@ -1103,6 +1113,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			}
 		}
 		
+		filterInProgress = false;
 		updateEvent(null);
 	}
 	
