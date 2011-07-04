@@ -2,6 +2,8 @@ package de.ptb.epics.eve.data.measuringstation.filter.tests;
 
 import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 import org.apache.log4j.Logger;
@@ -45,6 +47,8 @@ public class ExcludeFilterTest {
 	private static Logger logger = 
 		Logger.getLogger(ExcludeFilterTest.class.getName());
 	
+	private static List<IMeasuringStation> stations;
+	
 	// the "real"/source measuring station
 	private static IMeasuringStation measuringStation;
 	
@@ -61,6 +65,8 @@ public class ExcludeFilterTest {
 	public void testExcludeIncludeMotor()
 	{
 		log_start(logger, "testExcludeIncludeMotor()");
+		
+		for(IMeasuringStation ims : stations) {
 		
 		for(Motor m : measuringStation.getMotors())
 		{
@@ -177,6 +183,8 @@ public class ExcludeFilterTest {
 			logger.info("-----");
 		}	
 		log_end(logger, "testExcludeIncludeMotor()");
+		
+		}
 	}
 	
 	/**
@@ -927,6 +935,10 @@ public class ExcludeFilterTest {
 		
 		measuringStation = Configurator.getMeasuringStation();
 		assertNotNull(measuringStation);
+		stations = Configurator.getMeasuringStations();
+		for(IMeasuringStation ims : stations) {
+			assertNotNull(ims);
+		}
 		classSetUp(logger);
 	}
 	

@@ -30,7 +30,7 @@ public class Configurator {
 	private static final File schemaFile = new File("xml/scml.xsd");
 	private static final File descriptionFile = new File("xml/test.xml");
 	
-	private static final File scan = new File("xml/scan1.scml");
+	private static final File scan = new File("scml/scan1.scml");
 	
 	private static boolean configured = false;
 	
@@ -62,8 +62,11 @@ public class Configurator {
 	}
 	
 	/**
+	 * Returns all available 
+	 * {@link de.ptb.epics.eve.data.measuringstation.IMeasuringStation}s.
 	 * 
-	 * @return
+	 * @return all available 
+	 * 		{@link de.ptb.epics.eve.data.measuringstation.IMeasuringStation}s
 	 */
 	public static List<IMeasuringStation> getMeasuringStations() {
 		List<IMeasuringStation> stations = new ArrayList<IMeasuringStation>();

@@ -26,6 +26,9 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 /**
+ * <code>MeasuringStationLoaderTest</code> contains 
+ * <a href="http://www.junit.org/">JUnit</a>-Tests for 
+ * {@link de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader}.
  * 
  * @author Marcus Michalsky
  * @since 0.4.1
@@ -38,7 +41,12 @@ public class MeasuringStationLoaderTest {
 	private static List<IMeasuringStation> stations;
 	
 	/**
+	 * Tests the available 
+	 * {@link de.ptb.epics.eve.data.measuringstation.MeasuringStation}s for 
+	 * duplicate IDs.
+	 * <p>
 	 * 
+	 * @see java.util.Collections#sort(List)
 	 */
 	@Test
 	public void testUniqueIDs() {
@@ -83,13 +91,18 @@ public class MeasuringStationLoaderTest {
 				
 				logger.debug("Testing ids of: " + ims.getLoadedFileName());
 				
+				int count = 0;
+				
 				for(int i = 0; i < idNames.size()-1; i++) {
 					if(idNames.get(i).equals(idNames.get(i+1))) {
 						logger.debug("duplicate id found: " + idNames.get(i));
+						count++;
 					}
 				}
 				
-				logger.debug("-----");
+				logger.debug("-----> Found " + count + " duplicates.");
+				
+				logger.debug("****************************************");
 			}
 		}
 		
