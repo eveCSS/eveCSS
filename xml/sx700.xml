@@ -53,7 +53,7 @@
         <detector>
             <class>Timer</class>
             <name></name>
-            <id>Timer1</id>
+            <id>detTimer</id>
             <channel>
                 <class></class>
                 <name>Time</name>
@@ -63,494 +63,6 @@
                     <value type="datetime"></value>
                 </read>
             </channel>
-        </detector>
-        <!-- Name, Class, PV -->
-        <!-- Keithley 617 with a single channel -->
-        <detector>
-            <class>BigRef</class>
-            <name>Keithley_1</name>
-            <id>K0617:23328</id>
-            <unit>
-                <access method="GETPUT" transport="ca" type="string">K0617:23328.EGU</access>
-            </unit>
-            <trigger>
-                <access method="PUTCB" transport="ca" type="int">K0617:23328.PROC</access>
-                <value type="int">1</value>
-            </trigger>
-            <!-- Name, Class, PV -->
-            <!-- channel, to be included by detetctors -->
-            <channel>
-                <class></class>
-                <!-- <name></name>-->
-                <name>Keithley_1</name>
-                <id>K0617:23328chan1</id>
-                <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">K0617:23328.VAL</access>
-                    <value type="double"></value>
-                </read>
-            </channel>
-            <!-- PV -->
-            <!-- basic EPICS fields for detectors / detectorchannels -->
-            <option>
-                <name>Hi Error Limit</name>
-                <id>K0617:23328.HIHI</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23328.HIHI</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Error Severity</name>
-                <id>K0617:23328.HHSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23328.HHSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Warn Limit</name>
-                <id>K0617:23328.HIGH</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23328.HIGH</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Warn Severity</name>
-                <id>K0617:23328.HSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23328.HSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Raw Value</name>
-                <id>K0617:23328.RVAL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23328.RVAL</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Monitor Deadband</name>
-                <id>K0617:23328.MDEL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23328.MDEL</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Warn Limit</name>
-                <id>K0617:23328.LOW</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23328.LOW</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Warn Severity</name>
-                <id>K0617:23328.LSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23328.LSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Error Limit</name>
-                <id>K0617:23328.LOLO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23328.LOLO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Error Severity</name>
-                <id>K0617:23328.LLSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23328.LLSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Raw Offset</name>
-                <id>K0617:23328.ROFF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="int">K0617:23328.ROFF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Scale</name>
-                <id>K0617:23328.ASLO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23328.ASLO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Offset</name>
-                <id>K0617:23328.AOFF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23328.AOFF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Smoothing</name>
-                <id>K0617:23328.SMOO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23328.SMOO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Full Scale Value</name>
-                <id>K0617:23328.EGUF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23328.EGUF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Lo Full Scale Value</name>
-                <id>K0617:23328.EGUL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23328.EGUL</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Severity</name>
-                <id>K0617:23328.SEVR</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23328.SEVR</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Status</name>
-                <id>K0617:23328.STAT</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23328.STAT</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Function</name>
-                <id>K0617:23328function</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23328function</access>
-                    <value type="string">Voltage,Current,Resistance</value>
-                </value>
-                <displaygroup>summary</displaygroup>
-            </option>
-            <option>
-                <name>Range</name>
-                <id>K0617:23328range</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23328range</access>
-                    <value type="string">Auto,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,Cancel Auto</value>
-                </value>
-                <displaygroup>summary</displaygroup>
-            </option>
-            <option>
-                <name>Zero Check</name>
-                <id>K0617:23328zeroChk</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23328zeroChk</access>
-                    <value type="string">zCheckOff,zCheckOn</value>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Zero Correct</name>
-                <id>K0617:23328zeroCor</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23328zeroCor</access>
-                    <value type="string">zCorrOff,zCorrOn</value>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Zero Suppress</name>
-                <id>K0617:23328blSupp</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23328blSupp</access>
-                    <value type="string">bSuppOff,bSuppOn</value>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Voltage Source Mode</name>
-                <id>K0617:23328vsMode</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23328vsMode</access>
-                    <value type="string">vSourceOff,vSourceOn</value>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Show on display</name>
-                <id>K0617:23328display</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23328display</access>
-                    <value type="string">Electrometer,Voltage Source</value>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Initialize (SDC)</name>
-                <id>K0617:23328sdc</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23328sdc</access>
-                    <value type="string">Init only,SDC+Init</value>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-        </detector>
-        <!-- Name, Class, PV -->
-        <!-- Keithley 617 with a single channel -->
-        <detector>
-            <class>BigRef</class>
-            <name>Keithley_2</name>
-            <id>K0617:23327</id>
-            <unit>
-                <access method="GETPUT" transport="ca" type="string">K0617:23327.EGU</access>
-            </unit>
-            <trigger>
-                <access method="PUTCB" transport="ca" type="int">K0617:23327.PROC</access>
-                <value type="int">1</value>
-            </trigger>
-            <!-- Name, Class, PV -->
-            <!-- channel, to be included by detetctors -->
-            <channel>
-                <class></class>
-                <!-- <name></name>-->
-                <name>Keithley_2</name>
-                <id>K0617:23327chan1</id>
-                <read>
-                    <access monitor="true" method="GETCB" transport="ca" type="double">K0617:23327.VAL</access>
-                    <value type="double"></value>
-                </read>
-            </channel>
-            <!-- PV -->
-            <!-- basic EPICS fields for detectors / detectorchannels -->
-            <option>
-                <name>Hi Error Limit</name>
-                <id>K0617:23327.HIHI</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23327.HIHI</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Error Severity</name>
-                <id>K0617:23327.HHSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23327.HHSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Warn Limit</name>
-                <id>K0617:23327.HIGH</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23327.HIGH</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Warn Severity</name>
-                <id>K0617:23327.HSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23327.HSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Raw Value</name>
-                <id>K0617:23327.RVAL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23327.RVAL</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Monitor Deadband</name>
-                <id>K0617:23327.MDEL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23327.MDEL</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Warn Limit</name>
-                <id>K0617:23327.LOW</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23327.LOW</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Warn Severity</name>
-                <id>K0617:23327.LSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23327.LSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Error Limit</name>
-                <id>K0617:23327.LOLO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23327.LOLO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Low Error Severity</name>
-                <id>K0617:23327.LLSV</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23327.LLSV</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Raw Offset</name>
-                <id>K0617:23327.ROFF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="int">K0617:23327.ROFF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Scale</name>
-                <id>K0617:23327.ASLO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23327.ASLO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Offset</name>
-                <id>K0617:23327.AOFF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23327.AOFF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Smoothing</name>
-                <id>K0617:23327.SMOO</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23327.SMOO</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Hi Full Scale Value</name>
-                <id>K0617:23327.EGUF</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23327.EGUF</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Lo Full Scale Value</name>
-                <id>K0617:23327.EGUL</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="double">K0617:23327.EGUL</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Severity</name>
-                <id>K0617:23327.SEVR</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23327.SEVR</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Status</name>
-                <id>K0617:23327.STAT</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23327.STAT</access>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Function</name>
-                <id>K0617:23327function</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23327function</access>
-                    <value type="string">Voltage,Current,Resistance</value>
-                </value>
-                <displaygroup>summary</displaygroup>
-            </option>
-            <option>
-                <name>Range</name>
-                <id>K0617:23327range</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23327range</access>
-                    <value type="string">Auto,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10,R11,Cancel Auto</value>
-                </value>
-                <displaygroup>summary</displaygroup>
-            </option>
-            <option>
-                <name>Zero Check</name>
-                <id>K0617:23327zeroChk</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23327zeroChk</access>
-                    <value type="string">zCheckOff,zCheckOn</value>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Zero Correct</name>
-                <id>K0617:23327zeroCor</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23327zeroCor</access>
-                    <value type="string">zCorrOff,zCorrOn</value>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Zero Suppress</name>
-                <id>K0617:23327blSupp</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23327blSupp</access>
-                    <value type="string">bSuppOff,bSuppOn</value>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Voltage Source Mode</name>
-                <id>K0617:23327vsMode</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23327vsMode</access>
-                    <value type="string">vSourceOff,vSourceOn</value>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Show on display</name>
-                <id>K0617:23327display</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23327display</access>
-                    <value type="string">Electrometer,Voltage Source</value>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
-            <option>
-                <name>Initialize (SDC)</name>
-                <id>K0617:23327sdc</id>
-                <value>
-                    <access method="GETPUT" transport="ca" type="string">K0617:23327sdc</access>
-                    <value type="string">Init only,SDC+Init</value>
-                </value>
-                <displaygroup>detail</displaygroup>
-            </option>
         </detector>
         <!-- Name, Class, PV -->
         <!-- basic detector (must include a channel)  only with read attribut-->
@@ -8188,12 +7700,12 @@
         <detector>
             <class>Syres1</class>
             <name>Crab_KI</name>
-            <id>syres1:CavControlbasic</id>
+            <id>Kisyres1:CavControlbasic</id>
             <channel>
                 <class></class>
                 <!-- <name></name>-->
                 <name>Crab_KI</name>
-                <id>syres1:CavControlchan1</id>
+                <id>Kisyres1:CavControlchan1</id>
                 <read>
                     <access monitor="true" method="GETCB" transport="ca" type="double">syres1:CavControl.KI</access>
                     <value type="double"></value>
@@ -8208,12 +7720,12 @@
         <detector>
             <class>Syres1</class>
             <name>Crab_KP</name>
-            <id>syres1:CavControlbasic</id>
+            <id>Kpsyres1:CavControlbasic</id>
             <channel>
                 <class></class>
                 <!-- <name></name>-->
                 <name>Crab_KP</name>
-                <id>syres1:CavControlchan1</id>
+                <id>Kpsyres1:CavControlchan1</id>
                 <read>
                     <access monitor="true" method="GETCB" transport="ca" type="double">syres1:CavControl.KP</access>
                     <value type="double"></value>
@@ -8247,7 +7759,7 @@
         <detector>
             <class>Timer</class>
             <name></name>
-            <id>Timer1</id>
+            <id>detTimer</id>
             <channel>
                 <class></class>
                 <name>Time</name>
@@ -11049,7 +10561,7 @@
         <motor>
             <class>Timer</class>
             <name></name>
-            <id>Timer1</id>
+            <id>motTimer</id>
             <axis>
                 <class></class>
                 <name>Timer</name>
@@ -20371,7 +19883,7 @@
         <motor>
             <class>Timer</class>
             <name></name>
-            <id>Timer1</id>
+            <id>motTimer</id>
             <axis>
                 <class></class>
                 <name>Timer</name>
@@ -20779,7 +20291,7 @@
                 </unit>
                 <option>
                     <name>moveDone</name>
-                    <id>Energ:21200000Energ:21200000dmov</id>
+                    <id>Energ:21200000dmov</id>
                     <value>
                         <access method="GETCB" type="double" transport="ca">Energ:21200000dmov</access>
                     </value>
@@ -20825,7 +20337,7 @@
                 </unit>
                 <option>
                     <name>moveDone</name>
-                    <id>Energ:21200001Energ:21200000dmov</id>
+                    <id>Energ:21200001dmov</id>
                     <value>
                         <access method="GETCB" type="double" transport="ca">Energ:21200000dmov</access>
                     </value>
@@ -20856,7 +20368,7 @@
                 </unit>
                 <option>
                     <name>moveDone</name>
-                    <id>radEnerg:21200000Energ:21200000dmov</id>
+                    <id>radEnerg:21200000dmov</id>
                     <value>
                         <access method="GETCB" type="double" transport="ca">Energ:21200000dmov</access>
                     </value>
