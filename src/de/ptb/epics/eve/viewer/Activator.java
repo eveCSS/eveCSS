@@ -12,6 +12,7 @@ import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -152,10 +153,11 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public Color getColor(String colorname){
 		Color color = colorreg.get(colorname);
-		if (color == null)
+		if (color == null) {
 			return colorreg.get("COLOR_PV_INITIAL");
-		else
+		} else {
 			return color;
+		}
 	}
 	
 	/**
@@ -401,15 +403,23 @@ public class Activator extends AbstractUIPlugin {
 		}
 		fontreg.put("VIEWERFONT", fontData);
 		
-		colorreg.put("COLOR_PV_INITIAL", new RGB(0, 0, 0));
-		colorreg.put("COLOR_PV_CONNECTED", new RGB(0, 0, 0));
-		colorreg.put("COLOR_PV_DISCONNECTED", new RGB(130, 130, 130));
-		colorreg.put("COLOR_PV_ALARM", new RGB(255, 0, 0));
-		colorreg.put("COLOR_PV_OK", new RGB(0, 180, 0));
+		colorreg.put("COLOR_PV_INITIAL", 
+			Display.getCurrent().getSystemColor(SWT.COLOR_BLACK).getRGB());
+		colorreg.put("COLOR_PV_CONNECTED", 
+			Display.getCurrent().getSystemColor(SWT.COLOR_BLACK).getRGB());
+		colorreg.put("COLOR_PV_DISCONNECTED", 
+			Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY).getRGB());
+		colorreg.put("COLOR_PV_ALARM", 
+			Display.getCurrent().getSystemColor(SWT.COLOR_RED).getRGB());
+		colorreg.put("COLOR_PV_OK", 
+			Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GREEN).getRGB());
 		colorreg.put("COLOR_PV_MINOR", new RGB(255, 255, 50));
-		colorreg.put("COLOR_PV_MAJOR", new RGB(255, 0, 0));
-		colorreg.put("COLOR_PV_INVALID", new RGB(180, 180, 180));
-		colorreg.put("COLOR_PV_UNKNOWN", new RGB(130, 130, 130));
+		colorreg.put("COLOR_PV_MAJOR", 
+			Display.getCurrent().getSystemColor(SWT.COLOR_RED).getRGB());
+		colorreg.put("COLOR_PV_INVALID", 
+			Display.getCurrent().getSystemColor(SWT.COLOR_GRAY).getRGB());
+		colorreg.put("COLOR_PV_UNKNOWN", 
+			Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY).getRGB());
 		
 		ImageRegistry imagereg = getImageRegistry();
 		imagereg.put("GREENPLUS12", imageDescriptorFromPlugin(

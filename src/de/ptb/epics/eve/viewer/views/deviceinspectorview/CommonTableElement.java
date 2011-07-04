@@ -324,7 +324,6 @@ public class CommonTableElement {
 	 * @param property
 	 * @return
 	 */
-	// TODO we need the severity Color here
 	public Color getSeverityColor(String property) {
 		String status = ""; 
 		if (property.equals("value")) {
@@ -520,6 +519,37 @@ public class CommonTableElement {
 	}
 
 	/**
+	 * Tweaks the device in the given direction with the amount of the tweak 
+	 * value.
+	 * 
+	 * @precondition Depending on the direction (<code>forward</code parameter) 
+	 * 				either the tweak forward process variable or the tweak 
+	 * 				reverse process variable must exist (usually the case for 
+	 * 				motor axes)
+	 * @param forward the direction of the tweak<br>
+	 * 			<code>true</code> tweaks forward, 
+	 * 			<code>false</code> tweaks backward (reverse)
+	 */
+	public void tweak(boolean forward) {
+		if (forward && (tweakforwardPv != null) && 
+			tweakforwardPv.isConnected()) {
+			MotorAxis motorAxis = (MotorAxis)device;
+			if (motorAxis.getTweakForward().getValue() != null) {
+				tweakforwardPv.setValue(
+					motorAxis.getTweakForward().getValue().getDefaultValue());
+			}
+		}
+		else if(!forward && (tweakreversePv != null) && 
+				tweakreversePv.isConnected()) {
+			MotorAxis motorAxis = (MotorAxis)device;
+			if (motorAxis.getTweakReverse().getValue() != null) {
+				tweakreversePv.setValue(
+					motorAxis.getTweakReverse().getValue().getDefaultValue());
+			}
+		}
+	}
+
+	/**
 	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} 
 	 * the <code>CommonTableElement</code> represents.
 	 * 
@@ -528,27 +558,5 @@ public class CommonTableElement {
 	 */
 	public AbstractDevice getAbstractDevice() {
 		return device;
-	}
-
-	/**
-	 * 
-	 * 
-	 * @param forward
-	 */
-	public void tweak(boolean forward) {
-		if (forward && (tweakforwardPv != null) && tweakforwardPv.isConnected()) {
-			MotorAxis motorAxis = (MotorAxis)device;
-			if (motorAxis.getTweakForward().getValue() != null) {
-				tweakforwardPv.setValue(
-					motorAxis.getTweakForward().getValue().getDefaultValue());
-			}
-		}
-		else if (!forward && (tweakreversePv != null) && tweakreversePv.isConnected()) {
-			MotorAxis motorAxis = (MotorAxis)device;
-			if (motorAxis.getTweakReverse().getValue() != null) {
-				tweakreversePv.setValue(
-					motorAxis.getTweakReverse().getValue().getDefaultValue());
-			}
-		}
 	}
 }

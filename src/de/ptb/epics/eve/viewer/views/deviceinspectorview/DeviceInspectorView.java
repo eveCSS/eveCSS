@@ -375,6 +375,11 @@ public class DeviceInspectorView extends ViewPart {
 		// end of: Devices Composite
 		
 	
+		// TODO the sashes allow resizing beyond dimensions that make sense 
+		// (e.g. moving them to the top such that the table isn't visible 
+		// anymore) 
+		// if it is resized beyond this point it should be reset to a min height
+		
 		/*
 		// Set a minimum width on the sash so that the
 		// controls on the left are always visible.
@@ -674,7 +679,7 @@ public class DeviceInspectorView extends ViewPart {
 	} 
 	
 	/*
-	 * 
+	 * Channel Table Columns
 	 */
 	private void createChannelTableColumns() {
 		ColumnViewerToolTipSupport.enableFor(
@@ -752,7 +757,7 @@ public class DeviceInspectorView extends ViewPart {
 				new TableViewerColumn(channelTableViewer, SWT.NONE);
 		unitColumn.getColumn().setText("Unit");
 		unitColumn.setEditingSupport(
-				new CommonTableEditingSupport(axisTableViewer, "unit"));
+				new CommonTableEditingSupport(channelTableViewer, "unit"));
 		unitColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
 				return ((CommonTableElement) element).getValue("unit");
@@ -772,7 +777,7 @@ public class DeviceInspectorView extends ViewPart {
 				new TableViewerColumn(channelTableViewer, SWT.NONE);
 		triggerColumn.getColumn().setText("Trig");
 		triggerColumn.setEditingSupport(
-				new CommonTableEditingSupport(axisTableViewer, "trigger"));
+				new CommonTableEditingSupport(channelTableViewer, "trigger"));
 		triggerColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public Image getImage(Object element) {
 				if (((CommonTableElement)element).isConnected("trigger")) {
@@ -780,7 +785,6 @@ public class DeviceInspectorView extends ViewPart {
 				} else {
 					return playIconDisabled;
 				}
-				
 			}
 			@Override public String getText(Object element) {return null;}
 			@Override public String getToolTipText(Object element) {
@@ -796,7 +800,7 @@ public class DeviceInspectorView extends ViewPart {
 	}
 	
 	/*
-	 * 
+	 * Device Table Columns
 	 */
 	private void createDeviceTableColumns() {
 		ColumnViewerToolTipSupport.enableFor(
@@ -865,7 +869,7 @@ public class DeviceInspectorView extends ViewPart {
 		unitColumn.getColumn().setText("Unit");
 		unitColumn.getColumn().setMoveable(true);
 		unitColumn.setEditingSupport(
-				new CommonTableEditingSupport(axisTableViewer, "unit"));
+				new CommonTableEditingSupport(deviceTableViewer, "unit"));
 		unitColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public String getText(Object element) {
 				return ((CommonTableElement) element).getValue("unit");
