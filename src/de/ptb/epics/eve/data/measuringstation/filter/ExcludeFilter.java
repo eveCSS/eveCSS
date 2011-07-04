@@ -42,7 +42,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * this way is not returned by the corresponding getter method.
  * Notice that this implementation of 
  * {@link de.ptb.epics.eve.data.measuringstation.IMeasuringStation} does not 
- * allow adding devices.
+ * support adding devices.?
  * 
  * @author ?
  * @author Marcus Michalsky
@@ -980,6 +980,10 @@ public class ExcludeFilter extends MeasuringStationFilter {
 						logger.debug("Axis " + m.getName() + ":" + 
 									ma.getName() + 
 									"(and options) not used -> exclude");
+					} else {
+						logger.debug("Axis " + m.getName() + ":" + 
+								ma.getName() + 
+								"has at least one used option -> do not exclude");
 					}
 				}
 				else 
@@ -1018,7 +1022,13 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				exclude(m);
 				if(logger.isDebugEnabled())
 					logger.debug("Motor " + m.getName() + " not used " + 
-									   "-> exclude");
+									"-> exclude");
+			} else {
+				logger.info(m.getAxes());
+				logger.info(m.getOptions());
+				
+				logger.debug("Motor " + m.getName() + " has used axes or options " + 
+									"-> do not exclude");
 			}
 		}
 		

@@ -217,9 +217,7 @@ public class MeasuringStation implements IMeasuringStation {
 	}
 	
 	// *************************
-	
-	// TODO ??? explain the difference between add(device) und register(...) ???
-	
+
 	/**
 	 * Registers a {@link de.ptb.epics.eve.data.measuringstation.MotorAxis} at 
 	 * the measuring station. An axis registered this way can later be 
