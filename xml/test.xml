@@ -1622,7 +1622,7 @@
                     <id>PPSMC:gw23715001.RCNT</id>
                     <value>
                         <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715001.RCNT</access>
-                        <value type="double"></value>
+                        <value type="double">PPSMC:gw23715001.RCNT</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -1920,7 +1920,7 @@
                     <id>PPSMC:gw23715002.RCNT</id>
                     <value>
                         <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715002.RCNT</access>
-                        <value type="double"></value>
+                        <value type="double">PPSMC:gw23715002.RCNT</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>
@@ -2218,7 +2218,7 @@
                     <id>PPSMC:gw23715003.RCNT</id>
                     <value>
                         <access monitor="true" method="GETCB" type="double" transport="ca">PPSMC:gw23715003.RCNT</access>
-                        <value type="double"></value>
+                        <value type="double">PPSMC:gw23715003.RCNT</value>
                     </value>
                     <displaygroup>summary</displaygroup>
                 </option>

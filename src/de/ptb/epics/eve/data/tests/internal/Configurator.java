@@ -2,6 +2,8 @@ package de.ptb.epics.eve.data.tests.internal;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -57,6 +59,34 @@ public class Configurator {
 		}
 		
 		return measuringStationLoader.getMeasuringStation();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static List<IMeasuringStation> getMeasuringStations() {
+		List<IMeasuringStation> stations = new ArrayList<IMeasuringStation>();
+		
+		final MeasuringStationLoader measuringStationLoader = 
+			new MeasuringStationLoader(schemaFile);
+		
+		File test = new File("xml/test.xml");
+		File qnim = new File("xml/qnim.xml");
+		
+		try {
+			measuringStationLoader.load(test);
+			stations.add(measuringStationLoader.getMeasuringStation());
+			measuringStationLoader.load(qnim);
+			stations.add(measuringStationLoader.getMeasuringStation());
+		} catch (ParserConfigurationException e) {
+			logger.error(e.getMessage(), e);
+		} catch (SAXException e) {
+			logger.error(e.getMessage(), e);
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+		}
+		return stations;
 	}
 	
 	/**
