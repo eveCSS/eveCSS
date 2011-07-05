@@ -392,8 +392,8 @@ public class PlotViewGraphComposite extends Composite
 		if ((plotDetector1 || plotDetector2) && !this.isDisposed()) 
 		{
 			// plot synchronously (to assure no side effects) 
-			// TODO necessary ? or async ?
-			this.getDisplay().asyncExec( new Runnable() {
+			// (if async is used and a counter with no delay it fails)
+			this.getDisplay().syncExec( new Runnable() {
 
 				@Override
 				public void run() 
