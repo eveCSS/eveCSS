@@ -413,7 +413,8 @@ public class Activator extends AbstractUIPlugin {
 			Display.getCurrent().getSystemColor(SWT.COLOR_RED).getRGB());
 		colorreg.put("COLOR_PV_OK", 
 			Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GREEN).getRGB());
-		colorreg.put("COLOR_PV_MINOR", new RGB(255, 255, 50));
+		colorreg.put("COLOR_PV_MINOR", 
+			Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW).getRGB());
 		colorreg.put("COLOR_PV_MAJOR", 
 			Display.getCurrent().getSystemColor(SWT.COLOR_RED).getRGB());
 		colorreg.put("COLOR_PV_INVALID", 

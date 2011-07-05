@@ -228,7 +228,7 @@ public class CommonTableElement {
 	 * @return <code>true</code> if the process variable corresponding to the 
 	 * 			given property is discrete, <code>false</code> otherwise
 	 */
-	public boolean isDiscrete(String property) {	
+	public boolean isDiscrete(String property) {
 		if (property.equals("value") && valuePv != null) {
 			return valuePv.isDiscrete();
 		}

@@ -32,7 +32,7 @@ public class CommonTableElementPV implements PVListener {
 	private boolean extraReadOnly = false;
 	private String[] discreteValues = null;
 	private boolean isEnum = false;
-	private String pvname;
+	//private String pvname;
 	private CommonTableElement tableElement;
 	private String pvstatus = "";
 	private boolean hasDiscreteValues = false;
@@ -46,9 +46,8 @@ public class CommonTableElementPV implements PVListener {
 	 * 		(row) the process variable corresponds to
 	 */
 	public CommonTableElementPV(String pvname, CommonTableElement tableElement) {
-
 		this.tableElement = tableElement;
-		this.pvname = pvname;
+		//this.pvname = pvname;
 		try {
 			pv = PVFactory.createPV("ca://" + pvname);
 			pv.addListener(this);
@@ -74,7 +73,6 @@ public class CommonTableElementPV implements PVListener {
 	 */
 	@Override
 	public void pvValueUpdate(PV pv) {
-		
 		if(pv.isConnected()) isConnected = true;
 		if(!pv.isWriteAllowed()) isReadOnly = true;
 		pvstatus  = pv.getValue().getSeverity().toString();
@@ -82,9 +80,9 @@ public class CommonTableElementPV implements PVListener {
 		try {
 			Double.parseDouble(this.value);
 			this.value = String.format(
-					Locale.US, "%g", ValueUtil.getDouble( pv.getValue()));
+					Locale.US, "%g", ValueUtil.getDouble(pv.getValue()));
 		} catch(final Exception e) {
-			//logger.error(e.getMessage(), e);
+			// pv value is not a double
 		}
         final IMetaData meta = pv.getValue().getMetaData();
         // enum values override discreteValues
@@ -101,7 +99,7 @@ public class CommonTableElementPV implements PVListener {
 	 * @return <code>true</code> if the process variable is discrete, 
 	 * 			<code>false</code> otherwise
 	 */
-	boolean isDiscrete(){
+	boolean isDiscrete() {
 		return (isEnum || hasDiscreteValues);
 	}
 	
@@ -111,7 +109,7 @@ public class CommonTableElementPV implements PVListener {
 	 * @return <code>true</code> if the process variable is read only, 
 	 * 			<code>false</code> otherwise
 	 */
-	public boolean isReadOnly(){
+	public boolean isReadOnly() {
 		return isReadOnly | extraReadOnly;
 	}
 	
@@ -122,7 +120,7 @@ public class CommonTableElementPV implements PVListener {
 	 * @return the discrete values of the process variable or <code>null</code> 
 	 * 			if {@link #isDiscrete()} == <code>false</code>
 	 */
-	public String[] getDiscreteValues(){
+	public String[] getDiscreteValues() {
 		return discreteValues;
 	}
 

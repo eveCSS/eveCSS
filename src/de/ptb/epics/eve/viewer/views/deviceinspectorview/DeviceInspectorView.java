@@ -112,6 +112,8 @@ public class DeviceInspectorView extends ViewPart {
 	// service
 	private SelectionProviderWrapper selectionProviderWrapper;
 	
+	// listens to the event that the part becomes visible in order to update 
+	// the static property activeDeviceInspector
 	private DeviceInspectorViewPartListener deviceInspectorViewPartListener;
 	
 	private IMemento memento;
@@ -133,6 +135,9 @@ public class DeviceInspectorView extends ViewPart {
 	
 	/**
 	 * {@inheritDoc}
+	 * <p>
+	 * Restores devices present in the axes, channels and devices table during 
+	 * shutdown of the application.
 	 */
 	@Override
 	public void init(final IViewSite site, final IMemento memento) 

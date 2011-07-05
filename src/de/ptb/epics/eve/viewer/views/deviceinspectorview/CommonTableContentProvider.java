@@ -62,13 +62,14 @@ public class CommonTableContentProvider implements IStructuredContentProvider {
 	}
 	
 	/**
-	 * Adds the given element.
+	 * Adds the given element if it is not already present.
 	 * 
+	 * @precondition <code>element</code> must not be <code>null</code>
 	 * @param element the element that should be added
 	 * @return <code>true</code> if the element was added, 
 	 * 			<code>false</code> otherwise
 	 */
-	public boolean addElement(CommonTableElement element){
+	public boolean addElement(CommonTableElement element) {
 		if (element == null) return false;
 		for (CommonTableElement cte : elements) {
 			if (cte.getAbstractDevice() == element.getAbstractDevice()) {
