@@ -15,11 +15,10 @@ import java.util.List;
  */
 public class TypeValue {
 
-	/**
+	/*
 	 * The basic primitive data type on which this definition based. 
 	 */
 	private final DataTypes type;
-	
 	
 	/**
 	 * Used if a TypeValue object should be initialized that has no further 
@@ -27,7 +26,7 @@ public class TypeValue {
 	 * 
 	 * @param type The basic primitive data type on which this definition based.
 	 */
-	public TypeValue(final DataTypes type) {	
+	public TypeValue(final DataTypes type) {
 		this(type, null);
 	}
 	
@@ -193,7 +192,6 @@ public class TypeValue {
 			return true;
 	}
 
-	// TODO Describe what happens here exactly
 	/**
 	 * Returns a string formatted to the corresponding DataTypes.
 	 * If the string can be converted, return a well-formatted string, else null.
@@ -230,7 +228,6 @@ public class TypeValue {
 		return returnString;
 	}
 
-	// TODO Describe what happens here exactly
 	/**
 	 * Return a string formatted to the corresponding DataTypes or a valid 
 	 * default value (if the string can be converted).
@@ -238,7 +235,7 @@ public class TypeValue {
 	 * @param value string to be formatted
 	 * @return a formatted string or null
 	 */
-	public String formatValueDefault(String value){
+	public String formatValueDefault(String value) {
 		
 		String returnString = formatValue(value);
 		if (returnString == null){
@@ -250,7 +247,6 @@ public class TypeValue {
 		return returnString;
 	}
 
-	// TODO Describe what happens here exactly
 	/**
 	 * Returns a well-formatted string with a valid default value, which 
 	 * is the low limit (range) or the first element (set) or the default for 
@@ -258,7 +254,7 @@ public class TypeValue {
 	 * 
 	 * @return a default value
 	 */
-	public String getDefaultValue(){
+	public String getDefaultValue() {
 
 		if (isDiscrete || hasRange)
 			return elements.get(0);

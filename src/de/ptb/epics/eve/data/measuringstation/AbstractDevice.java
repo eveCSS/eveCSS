@@ -11,40 +11,15 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  * It describes the measuring station (e.g. motors, detectors). 
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.5
- * 
+ * @author Marcus Michalsky
  */
 public abstract class AbstractDevice {
 	
-	/**
-	 * The name of the device.
-	 */
 	private String name;
-	
-	/**
-	 * The id of the device.
-	 */
 	private String id;
-	
-	/**
-	 * The unit of the device.
-	 */
 	private Unit unit;
-	
-	/**
-	 * The parent of the device.
-	 */
 	private AbstractDevice parent;
-	
-	/**
-	 * A <code>List</code>, that contains all <code>Option</code>s of the device.
-	 */
 	private final List<Option> options;
-	
-	// TODO define what the fullIdentifier is
-	/**
-	 * 
-	 */
 	private String fullIdentifier = null;
 		
 	/**
@@ -374,7 +349,7 @@ public abstract class AbstractDevice {
 			}
 		} else if(!name.equals(other.name)) {
 			return false;
-		}	
+		}
 		return true;
 	}
 }

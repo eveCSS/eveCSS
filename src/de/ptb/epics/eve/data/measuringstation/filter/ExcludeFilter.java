@@ -42,7 +42,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * this way is not returned by the corresponding getter method.
  * Notice that this implementation of 
  * {@link de.ptb.epics.eve.data.measuringstation.IMeasuringStation} does not 
- * support adding devices.?
+ * support adding devices.
  * 
  * @author ?
  * @author Marcus Michalsky
@@ -568,10 +568,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			// include all plug ins (no filtering)
 			this.plugins.addAll(this.getSource().getPlugins());
 			
-			// include devices not in the exclude list
-			this.devices.addAll(this.getSource().getDevices());
-			this.devices.removeAll(this.excludeList);
-			
 			// include motors not in the exclude list
 			for(final Motor motor : this.getSource().getMotors()) {
 				// iterate over each motor in the source
@@ -633,7 +629,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 							m.remove((Option)d);
 						}
 					}
-					
 					// for the remaining channels remove options which are in 
 					// the exclude list
 					for(DetectorChannel ch : m.getChannels())
@@ -646,10 +641,21 @@ public class ExcludeFilter extends MeasuringStationFilter {
 							}
 						}
 					}
-					
-					
 					// add the (rest of the) detector to the list of detectors
 					this.detectors.add(m);
+				}
+			}
+			
+			for(Device device : getSource().getDevices()) {
+				if(!excludeList.contains(device)) {
+					final Device d = (Device)device.clone();
+					
+					for(final AbstractDevice ad : excludeList) {
+						if(ad instanceof Option) {
+							d.remove((Option)ad);
+						}
+					}
+					this.devices.add(d);
 				}
 			}
 			
@@ -661,7 +667,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					this.getSource().getSelections().getStepfunctions());
 			
 			// *******************
-			// *** builds maps ***
+			// *** build  maps ***
 			// *******************
 			
 			// build plug in map
@@ -724,6 +730,12 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			// build device map
 			for(final Device device : this.devices) {
 				this.prePostscanDeviceMap.put(device.getID(), device);
+				
+				for(Option option : device.getOptions()) {
+					if(!this.excludeList.contains(option)) {
+						this.prePostscanDeviceMap.put(option.getID(), option);
+					}
+				}
 			}
 			
 			// build class map
@@ -841,9 +853,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		 * The second part iterates through all available devices and options 
 		 * of the measuring station (source). If a device is not used (it is 
 		 * not in the exclude list) it is excluded.
-		 * XXX A Performance issue: each time a single device is excluded the 
-		 * 		exclude method calls updateEvent. This is not necessary (just 
-		 * 		calling it once at the end would suffice). 
 		 */
 		
 		filterInProgress = true;
@@ -962,9 +971,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 						{
 							// option is used, set flag
 							option_used = true;
-						} 
-						else 
-						{
+						} else {
 							// option not used -> exclude
 							exclude(o);
 							logger.debug("Option " + ma.getName() + ":" + 
@@ -1015,21 +1022,24 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		}
 		
 		// check for motors with no axes AND no options -> exclude them
-		for(Motor m : getMotors())
-		{
-			if(m.getAxes().size() == 0 && m.getOptions().size() == 0)
-			{
-				exclude(m);
-				if(logger.isDebugEnabled())
-					logger.debug("Motor " + m.getName() + " not used " + 
-									"-> exclude");
-			} else {
-				logger.info(m.getAxes());
-				logger.info(m.getOptions());
-				
-				logger.debug("Motor " + m.getName() + " has used axes or options " + 
-									"-> do not exclude");
+	Motors:
+		for(Motor m : all_motors) {
+			for(MotorAxis ma : m.getAxes()) {
+				if(used_motor_axes.contains(ma)) {
+					continue Motors;
+				}
+				for(Option axisOption : ma.getOptions()) {
+					if(used_options.contains(axisOption)) {
+						continue Motors;
+					}
+				}
 			}
+			for(Option motorOption : m.getOptions()) {
+				if(used_options.contains(motorOption)) {
+					continue Motors;
+				}
+			}
+			exclude(m);
 		}
 		
 		// iterate over available detectors -> exclude their channels if not used
@@ -1080,17 +1090,27 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		}
 		
 		// check for detectors with no channels -> exclude them
-		for(Detector d : getDetectors())
-		{
-			if(d.getChannels().size() == 0 && d.getOptions().size() == 0)
-			{
+		Detectors:
+			for(Detector d : all_detectors) {
+				for(DetectorChannel ch : d.getChannels()) {
+					if(used_detector_channels.contains(ch)) {
+						continue Detectors;
+					}
+					for(Option channelOption : ch.getOptions()) {
+						if(used_options.contains(channelOption)) {
+							continue Detectors;
+						}
+					}
+				}
+				for(Option detectorOption : d.getOptions()) {
+					if(used_options.contains(detectorOption)) {
+						continue Detectors;
+					}
+				}
 				exclude(d);
-				if(logger.isDebugEnabled())
-					logger.debug("Detector " + d.getName() + 
-								"(and options) not used " + "-> exclude");
 			}
-		}
-		
+
+		// iterate over all devices ->
 		for(Device device : all_devices)
 		{
 			if(!(used_devices.contains(device)))
@@ -1128,60 +1148,102 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	}
 	
 	/*
-	 * 
+	 * Be aware of the fact that the locally used devices list is NOT the global 
+	 * list of Devices used in the class !
 	 */
 	private void buildClassMap() {
 		this.classMap.clear();
 		
-		for( final Motor motor : this.motors ) {
-			if( motor.getClassName() != null && !motor.getClassName().equals( "" ) ) {
-				List< AbstractDevice > devices = null;
-				if( this.classMap.containsKey( motor.getClassName() ) ) {
-					devices = this.classMap.get( motor.getClassName() );
+		// handle motors
+		for(final Motor motor : this.motors) {
+			if(motor.getClassName() != null && !motor.getClassName().isEmpty()) {
+				// the motor has a non null, non empty class name
+				// -> check if this class already exists
+				List<AbstractDevice> devices = null;
+				if(this.classMap.containsKey(motor.getClassName())) {
+					// class already exists -> get it
+					devices = this.classMap.get(motor.getClassName());
 				} else {
-					devices = new ArrayList< AbstractDevice >();
-					this.classMap.put( motor.getClassName(), devices );
+					// new class -> create new list
+					devices = new ArrayList<AbstractDevice>();
+					// add the new class to the class map
+					this.classMap.put(motor.getClassName(), devices);
 				}
-				devices.add( motor );
+				// add the motor to the list
+				devices.add(motor);
 				
-				for( final MotorAxis motorAxis : motor.getAxes() ) {
-					if( motorAxis.getClassName() != null && !motorAxis.getClassName().equals( "" ) ) {
+				// handle axes
+				for(final MotorAxis motorAxis : motor.getAxes()) {
+					if (motorAxis.getClassName() != null && 
+						!motorAxis.getClassName().isEmpty()) {
+						// the axis has a non null, non empty class name
+						// -> check if this class already exists
 						devices = null;
-						if( this.classMap.containsKey( motorAxis.getClassName() ) ) {
-							devices = this.classMap.get( motorAxis.getClassName() );
+						if(this.classMap.containsKey(motorAxis.getClassName())) {
+							// true -> get class
+							devices = this.classMap.get(motorAxis.getClassName());
 						} else {
-							devices = new ArrayList< AbstractDevice >();
-							this.classMap.put( motorAxis.getClassName(), devices );
+							// false -> create new list
+							devices = new ArrayList<AbstractDevice>();
+							// add it to the class map
+							this.classMap.put(motorAxis.getClassName(), devices);
 						}
-						devices.add( motorAxis );
+						devices.add(motorAxis);
 					}
 				}
 			}
 		}
 		
-		for( final Detector detector : this.detectors ) {
-			if( detector.getClassName() != null && !detector.getClassName().equals( "" ) ) {
-				List< AbstractDevice > devices = null;
-				if( this.classMap.containsKey( detector.getClassName() ) ) {
-					devices = this.classMap.get( detector.getClassName() );
+		// handle detectors
+		for(final Detector detector : this.detectors) {
+			if (detector.getClassName() != null && 
+				!detector.getClassName().isEmpty()) {
+				// detector has a non null non empty class name
+				List<AbstractDevice> devices = null;
+				if(this.classMap.containsKey(detector.getClassName())) {
+					// class already exists -> get it
+					devices = this.classMap.get(detector.getClassName());
 				} else {
-					devices = new ArrayList< AbstractDevice >();
-					this.classMap.put( detector.getClassName(), devices );
+					// class does not exist -> create new list
+					devices = new ArrayList<AbstractDevice>();
+					// add it to the class map
+					this.classMap.put(detector.getClassName(), devices);
 				}
-				devices.add( detector );
+				devices.add(detector);
 				
-				for( final DetectorChannel detectorChannel : detector.getChannels() ) {
-					if( detectorChannel.getClassName() != null && !detectorChannel.getClassName().equals( "" ) ) {
+				// handle channels
+				for(final DetectorChannel detectorChannel : detector.getChannels()) {
+					if (detectorChannel.getClassName() != null && 
+						!detectorChannel.getClassName().isEmpty()) {
+						// channel has a non null non empty class name
 						devices = null;
-						if( this.classMap.containsKey( detectorChannel.getClassName() ) ) {
-							devices = this.classMap.get( detectorChannel.getClassName() );
+						if(this.classMap.containsKey(detectorChannel.getClassName())) {
+							// class already exists -> get it
+							devices = this.classMap.get(detectorChannel.getClassName());
 						} else {
-							devices = new ArrayList< AbstractDevice >();
-							this.classMap.put( detectorChannel.getClassName(), devices );
+							// class does not exist -> create new list
+							devices = new ArrayList<AbstractDevice>();
+							// add it to the class map
+							this.classMap.put(detectorChannel.getClassName(), devices);
 						}
-						devices.add( detectorChannel );
+						// add the channel to the class
+						devices.add(detectorChannel);
 					}
 				}
+			}
+		}
+		
+		// handle devices
+		for(final Device device : this.devices) {
+			if(device.getClassName() != null && !device.getClassName().isEmpty()) {
+				List<AbstractDevice> devices = null;
+				if(this.classMap.containsKey(device.getClassName())) {
+					devices = this.classMap.get(device.getClassName());
+				} else {
+					devices = new ArrayList<AbstractDevice>();
+					this.classMap.put(device.getClassName(), devices);
+				}
+				devices.add(device);
 			}
 		}
 	}

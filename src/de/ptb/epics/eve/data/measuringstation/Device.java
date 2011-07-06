@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.measuringstation;
 
 import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedException;
@@ -13,7 +6,7 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  * This class represents a Device.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.3
+ * @author Marcus Michalsky
  */
 public class Device extends AbstractPrePostscanDevice {
 
@@ -29,6 +22,7 @@ public class Device extends AbstractPrePostscanDevice {
 	protected void setParent(final AbstractDevice parent) 
 							throws ParentNotAllowedException {
 		// TODO empty but throws declaration ?
+		// get or set Parent ???
 	}
 	
 	/**
@@ -49,6 +43,10 @@ public class Device extends AbstractPrePostscanDevice {
 		device.setId(this.getID());
 		device.setUnit((Unit)
 				(this.getUnit()!=null?this.getUnit().clone():null));
+		
+		for(Option o : this.getOptions()) {
+			device.add(o);
+		}
 		
 		return device;
 	}

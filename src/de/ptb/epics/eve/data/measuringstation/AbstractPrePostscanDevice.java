@@ -174,16 +174,16 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 			if(other.displaygroup != null) {
 				return false;
 			}
-		} else if(!displaygroup.equals( other.displaygroup)) {
+		} else if(!displaygroup.equals(other.displaygroup)) {
 			return false;
 		}
 		if(value == null) {
 			if(other.value != null) {
 				return false;
 			}
-		} else if(!value.equals( other.value)) {
+		} else if(!value.equals(other.value)) {
 			return false;
 		}
 		return true;
-	}	
+	}
 }
