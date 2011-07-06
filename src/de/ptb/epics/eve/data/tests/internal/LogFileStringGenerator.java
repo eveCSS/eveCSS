@@ -3,6 +3,7 @@ package de.ptb.epics.eve.data.tests.internal;
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 
 /**
  * <code>LogFileStringGenerator</code> offers methods to write often used 
@@ -23,6 +24,18 @@ public class LogFileStringGenerator {
 	public static String deviceString(AbstractDevice d)
 	{
 		return d.getName() + " (" + d.getID() + ")";
+	}
+	
+	/**
+	 * Generates an info level log message for a measuring station.
+	 * 
+	 * @param logger the logger the message should be written to
+	 * @param station the measuring station the name is taken from
+	 */
+	public static void log_station(Logger logger, IMeasuringStation station) {
+		logger.info("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		logger.info("Testing station " + station.getLoadedFileName());
+		logger.info("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 	}
 	
 	/**

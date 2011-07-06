@@ -49,12 +49,6 @@ public class ExcludeFilterTest {
 	
 	private static List<IMeasuringStation> stations;
 	
-	// the "real"/source measuring station
-	private static IMeasuringStation measuringStation;
-	
-	// the exclude filter
-	private ExcludeFilter filteredMeasuringStation;
-	
 	/**
 	 * <code>testExcludeIncludeMotor</code> tries to exclude motors (each one 
 	 * by one) and verifies their absence. It also checks the presence / absence 
@@ -66,8 +60,17 @@ public class ExcludeFilterTest {
 	{
 		log_start(logger, "testExcludeIncludeMotor()");
 		
-		for(IMeasuringStation ims : stations) {
+		for(IMeasuringStation measuringStation : stations) {
 		
+			logger.debug("***************************************************");
+			logger.debug("*** Testing station: " + 
+					measuringStation.getLoadedFileName() + " ***");
+			logger.debug("***************************************************");
+			
+			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
+			filteredMeasuringStation.setSource(measuringStation);
+			assertNotNull(filteredMeasuringStation);
+			
 		for(Motor m : measuringStation.getMotors())
 		{
 			logger.info("Testing Motor: " + deviceString(m));
@@ -181,10 +184,9 @@ public class ExcludeFilterTest {
 								" has no options.");
 			}
 			logger.info("-----");
-		}	
-		log_end(logger, "testExcludeIncludeMotor()");
-		
 		}
+		}
+		log_end(logger, "testExcludeIncludeMotor()");
 	}
 	
 	/**
@@ -197,6 +199,17 @@ public class ExcludeFilterTest {
 	public void testExcludeIncludeMotorAxis()
 	{
 		log_start(logger, "testExcludeIncludeMotorAxis()");
+		
+		for(IMeasuringStation measuringStation : stations) {
+			
+			logger.debug("***************************************************");
+			logger.debug("*** Testing station: " + 
+					measuringStation.getLoadedFileName() + " ***");
+			logger.debug("***************************************************");
+			
+			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
+			filteredMeasuringStation.setSource(measuringStation);
+			assertNotNull(filteredMeasuringStation);
 		
 		for(Motor m : measuringStation.getMotors())
 		{
@@ -263,6 +276,7 @@ public class ExcludeFilterTest {
 			}
 			logger.info("-----");
 		}
+		}
 		log_end(logger, "testExcludeIncludeMotorAxis()");
 	}
 	
@@ -275,6 +289,17 @@ public class ExcludeFilterTest {
 	public void testExcludeIncludeMotorOption()
 	{
 		log_start(logger, "testExcludeIncludeMotorOption()");
+		
+		for(IMeasuringStation measuringStation : stations) {
+			
+			logger.debug("***************************************************");
+			logger.debug("*** Testing station: " + 
+					measuringStation.getLoadedFileName() + " ***");
+			logger.debug("***************************************************");
+			
+			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
+			filteredMeasuringStation.setSource(measuringStation);
+			assertNotNull(filteredMeasuringStation);
 		
 		for(Motor m : measuringStation.getMotors())
 		{
@@ -319,7 +344,8 @@ public class ExcludeFilterTest {
 			}
 			
 			logger.info("-----");
-		}	
+		}
+		}
 		log_end(logger, "testExcludeIncludeMotorOption()");
 	}
 	
@@ -332,6 +358,18 @@ public class ExcludeFilterTest {
 	public void testExcludeIncludeMotorAxisOption()
 	{
 		log_start(logger, "testExcludeIncludeMotorAxisOption()");
+		
+		for(IMeasuringStation measuringStation : stations) {
+			
+			logger.debug("***************************************************");
+			logger.debug("*** Testing station: " + 
+					measuringStation.getLoadedFileName() + " ***");
+			logger.debug("***************************************************");
+			
+			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
+			filteredMeasuringStation.setSource(measuringStation);
+			assertNotNull(filteredMeasuringStation);
+		
 		for(Motor m : measuringStation.getMotors())
 		{
 			for(MotorAxis ma : m.getAxes())
@@ -374,6 +412,7 @@ public class ExcludeFilterTest {
 				logger.info("-----");
 			}
 		}
+		}
 		log_end(logger, "testExcludeIncludeMotorAxisOption()");
 	}
 	
@@ -389,6 +428,17 @@ public class ExcludeFilterTest {
 	public void testExcludeIncludeDetector()
 	{
 		log_start(logger, "testExcludeIncludeDetector()");
+		
+		for(IMeasuringStation measuringStation : stations) {
+			
+			logger.debug("***************************************************");
+			logger.debug("*** Testing station: " + 
+					measuringStation.getLoadedFileName() + " ***");
+			logger.debug("***************************************************");
+			
+			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
+			filteredMeasuringStation.setSource(measuringStation);
+			assertNotNull(filteredMeasuringStation);
 		
 		for(Detector d : measuringStation.getDetectors())
 		{
@@ -438,7 +488,7 @@ public class ExcludeFilterTest {
 			}
 			logger.info("-----");
 		}
-		
+		}
 		log_end(logger, "testExcludeIncludeDetector()");
 	}
 	
@@ -451,6 +501,17 @@ public class ExcludeFilterTest {
 	public void testExcludeIncludeDetectorChannel()
 	{
 		log_start(logger, "testExcludeIncludeDetectorChannel()");
+		
+		for(IMeasuringStation measuringStation : stations) {
+			
+			logger.debug("***************************************************");
+			logger.debug("*** Testing station: " + 
+					measuringStation.getLoadedFileName() + " ***");
+			logger.debug("***************************************************");
+			
+			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
+			filteredMeasuringStation.setSource(measuringStation);
+			assertNotNull(filteredMeasuringStation);
 		
 		for(Detector d : measuringStation.getDetectors())
 		{
@@ -509,6 +570,7 @@ public class ExcludeFilterTest {
 			}
 			logger.info("-----");
 		}
+		}
 		log_end(logger, "testExcludeIncludeDetectorChannel()");
 	}
 	
@@ -520,6 +582,17 @@ public class ExcludeFilterTest {
 	@Test
 	public void testExcludeIncludeDetectorOption()
 	{
+		for(IMeasuringStation measuringStation : stations) {
+			
+			logger.debug("***************************************************");
+			logger.debug("*** Testing station: " + 
+					measuringStation.getLoadedFileName() + " ***");
+			logger.debug("***************************************************");
+			
+			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
+			filteredMeasuringStation.setSource(measuringStation);
+			assertNotNull(filteredMeasuringStation);
+		
 		for(Detector d : measuringStation.getDetectors())
 		{
 			logger.info("Testing options of detector " + deviceString(d));
@@ -554,6 +627,7 @@ public class ExcludeFilterTest {
 			
 			logger.info("-----");
 		}
+		}
 	}
 	
 	/**
@@ -564,6 +638,19 @@ public class ExcludeFilterTest {
 	@Test
 	public void testExcludeIncludeDetectorChannelOption()
 	{
+		log_start(logger, "testExcludeIncludeDetectorChannelOption");
+		
+		for(IMeasuringStation measuringStation : stations) {
+			
+			logger.debug("***************************************************");
+			logger.debug("*** Testing station: " + 
+					measuringStation.getLoadedFileName() + " ***");
+			logger.debug("***************************************************");
+			
+			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
+			filteredMeasuringStation.setSource(measuringStation);
+			assertNotNull(filteredMeasuringStation);
+		
 		for(Detector d : measuringStation.getDetectors())
 		{
 			for(DetectorChannel ch : d.getChannels())
@@ -597,6 +684,8 @@ public class ExcludeFilterTest {
 				logger.info("-----");
 			}
 		}
+		}
+		log_end(logger, "testExcludeIncludeDetectorChannelOption");
 	}
 	
 	/**
@@ -610,11 +699,22 @@ public class ExcludeFilterTest {
 	{
 		log_start(logger, "testExcludeIncludeDevice()");
 		
+		for(IMeasuringStation measuringStation : stations) {
+			
+			logger.debug("***************************************************");
+			logger.debug("*** Testing station: " + 
+					measuringStation.getLoadedFileName() + " ***");
+			logger.debug("***************************************************");
+			
+			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
+			filteredMeasuringStation.setSource(measuringStation);
+			assertNotNull(filteredMeasuringStation);
+		
 		for(Device dev : measuringStation.getDevices())
 		{
 			logger.info("Testing device " + deviceString(dev));
 			
-			//  the device should be found
+			// the device should be found
 			assertTrue(isDevice(filteredMeasuringStation, dev));
 			logger.info("Device " + deviceString(dev) + " found");
 			
@@ -661,7 +761,7 @@ public class ExcludeFilterTest {
 			
 			logger.info("-----");
 		}
-		
+		}
 		log_end(logger, "testExcludeIncludeDevice()");
 	}
 	
@@ -674,6 +774,17 @@ public class ExcludeFilterTest {
 	public void testExcludeIncludeDeviceOption()
 	{
 		log_start(logger, "testExcludeIncludeDeviceOption()");
+		
+		for(IMeasuringStation measuringStation : stations) {
+			
+			logger.debug("***************************************************");
+			logger.debug("*** Testing station: " + 
+					measuringStation.getLoadedFileName() + " ***");
+			logger.debug("***************************************************");
+			
+			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
+			filteredMeasuringStation.setSource(measuringStation);
+			assertNotNull(filteredMeasuringStation);
 		
 		for(Device dev : measuringStation.getDevices())
 		{
@@ -688,6 +799,7 @@ public class ExcludeFilterTest {
 				assertFalse(isOption(filteredMeasuringStation, o));
 				logger.info("Option " + deviceString(o) + " not found");
 				
+				filteredMeasuringStation.include(o);
 				assertTrue(isOption(filteredMeasuringStation, o));
 				logger.info("Option " + deviceString(o) + " found");
 				
@@ -698,7 +810,7 @@ public class ExcludeFilterTest {
 			
 			logger.info("-----");
 		}
-		
+		}
 		log_end(logger, "testExcludeIncludeDeviceOption()");
 	}
 	
@@ -714,6 +826,17 @@ public class ExcludeFilterTest {
 	{
 		log_start(logger, "testEqualityMotorListMap");
 		
+		for(IMeasuringStation measuringStation : stations) {
+			
+			logger.debug("***************************************************");
+			logger.debug("*** Testing station: " + 
+					measuringStation.getLoadedFileName() + " ***");
+			logger.debug("***************************************************");
+			
+			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
+			filteredMeasuringStation.setSource(measuringStation);
+			assertNotNull(filteredMeasuringStation);
+		
 		filteredMeasuringStation.updateEvent(null);
 		
 		for(Motor m : filteredMeasuringStation.getMotors())
@@ -725,7 +848,7 @@ public class ExcludeFilterTest {
 				logger.info("Motor Axis " + deviceString(ma) + " found in Map");
 			}
 		}
-		
+		}
 		log_end(logger, "testEqualityMotorListMap");
 	}
 	
@@ -746,6 +869,10 @@ public class ExcludeFilterTest {
 		
 		ScanDescription sd = Configurator.getScanDescription();
 		assertNotNull(sd);
+		
+		IMeasuringStation measuringStation = Configurator.getMeasuringStation();
+		ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
+		filteredMeasuringStation.setSource(measuringStation);
 		
 		filteredMeasuringStation.excludeUnusedDevices(sd);
 		logger.info("excluded unused devices (unused = not in the scan description)");
@@ -932,9 +1059,7 @@ public class ExcludeFilterTest {
 		
 		((RollingFileAppender)logger.
 				getAppender("ExcludeFilterTestAppender")).rollOver();
-		
-		measuringStation = Configurator.getMeasuringStation();
-		assertNotNull(measuringStation);
+
 		stations = Configurator.getMeasuringStations();
 		for(IMeasuringStation ims : stations) {
 			assertNotNull(ims);
@@ -943,25 +1068,20 @@ public class ExcludeFilterTest {
 	}
 	
 	/**
-	 * Initializes the measuring station filter (test wide set up method).
+	 * Test wide set up method.
 	 */
 	@Before
 	public void beforeTest()
 	{
-		filteredMeasuringStation = new ExcludeFilter();
-		filteredMeasuringStation.setSource(measuringStation);
-		assertNotNull(filteredMeasuringStation);
 		testSetUp(logger);
 	}
 	
 	/**
-	 * Garbages the measuring station filter (test wide tear down method).
+	 * Test wide tear down method.
 	 */
 	@After
 	public void afterTest()
 	{
-		filteredMeasuringStation.setSource(null);
-		filteredMeasuringStation = null;
 		testTearDown(logger);
 	}
 	

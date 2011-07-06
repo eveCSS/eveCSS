@@ -42,6 +42,8 @@ public class Configurator {
 	 * @return an 
 	 * 		{@link de.ptb.epics.eve.data.measuringstation.IMeasuringStation} to 
 	 * 		test with
+	 * @deprecated tests should use {@link #getMeasuringStations()} instead and 
+	 * 			do the tests for each station returned.
 	 */
 	public static IMeasuringStation getMeasuringStation()
 	{
