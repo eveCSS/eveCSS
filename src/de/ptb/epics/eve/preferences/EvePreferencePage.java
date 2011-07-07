@@ -31,7 +31,7 @@ public class EvePreferencePage extends FieldEditorPreferencePage
 		FileFieldEditor fileFieldEditor = new FileFieldEditor(
 				PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION, 
 				"device definition file:", this.getFieldEditorParent());
-		fileFieldEditor.setFileExtensions(new String[]{"*.scml"});
+		fileFieldEditor.setFileExtensions(new String[]{"*.xml"});
 		
 		String rootdir = Activator.getDefault().getRootDirectory();
 		File file = new File(rootdir + "scml/");
