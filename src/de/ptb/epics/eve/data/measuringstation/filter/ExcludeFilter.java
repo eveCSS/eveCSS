@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
@@ -883,6 +884,17 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			
 			for(ScanModule sm : scanModules)
 			{
+				boolean save_all_motorpositions = !sm.getSaveAxisPositions().
+						equals(SaveAxisPositionsTypes.NEVER);
+				
+				if(save_all_motorpositions) {
+					for(Motor m : all_motors) {
+						for(MotorAxis ma : m.getAxes()) {
+							used_motor_axes.add(ma);
+						}
+					}
+				}
+				
 				// iterate axes
 				Axis[] axes = sm.getAxes();
 				
