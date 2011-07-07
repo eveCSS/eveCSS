@@ -17792,7 +17792,7 @@
                 </unit>
                 <option>
                     <name>Selected Position</name>
-                    <id>OMS58:21602001_Mnu</id>
+                    <id>DiscPosOMS58:21602001_Mnu</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">OMS58:21602001_Mnu</access>
                     </value>
@@ -17800,7 +17800,7 @@
                 </option>
                 <option>
                     <name>Move Done</name>
-                    <id>OMS58:21602001.DMOV</id>
+                    <id>DiscPosOMS58:21602001.DMOV</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">OMS58:21602001.DMOV</access>
                     </value>
@@ -17808,7 +17808,7 @@
                 </option>
                 <option>
                     <name>Severity</name>
-                    <id>OMS58:21602001.SEVR</id>
+                    <id>DiscPosOMS58:21602001.SEVR</id>
                     <value>
                         <access method="GETCB" type="string" transport="ca">OMS58:21602001.SEVR</access>
                     </value>
@@ -17816,7 +17816,7 @@
                 </option>
                 <option>
                     <name>Status</name>
-                    <id>OMS58:21602001.STAT</id>
+                    <id>DiscPosOMS58:21602001.STAT</id>
                     <value>
                         <access method="GETCB" type="string" transport="ca">OMS58:21602001.STAT</access>
                     </value>
@@ -17824,7 +17824,7 @@
                 </option>
                 <option>
                     <name>control Mode</name>
-                    <id>OMS58:21602001_Mnu.OMSL</id>
+                    <id>DiscPosOMS58:21602001_Mnu.OMSL</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.OMSL</access>
                     </value>
@@ -17832,7 +17832,7 @@
                 </option>
                 <option>
                     <name>lvio</name>
-                    <id>OMS58:21602001.LVIO</id>
+                    <id>DiscPosOMS58:21602001.LVIO</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001.LVIO</access>
                     </value>
@@ -17840,7 +17840,7 @@
                 </option>
                 <option>
                     <name>miss</name>
-                    <id>OMS58:21602001.MISS</id>
+                    <id>DiscPosOMS58:21602001.MISS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001.MISS</access>
                     </value>
@@ -17848,7 +17848,7 @@
                 </option>
                 <option>
                     <name>rlls</name>
-                    <id>OMS58:21602001.RLLS</id>
+                    <id>DiscPosOMS58:21602001.RLLS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001.RLLS</access>
                     </value>
@@ -17856,7 +17856,7 @@
                 </option>
                 <option>
                     <name>rhls</name>
-                    <id>OMS58:21602001.RHLS</id>
+                    <id>DiscPosOMS58:21602001.RHLS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001.RHLS</access>
                     </value>
@@ -17864,7 +17864,7 @@
                 </option>
                 <option>
                     <name>Value 1</name>
-                    <id>OMS58:21602001_MnuS.DO1</id>
+                    <id>DiscPosOMS58:21602001_MnuS.DO1</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_MnuS.DO1</access>
                     </value>
@@ -17872,7 +17872,7 @@
                 </option>
                 <option>
                     <name>Label 1</name>
-                    <id>OMS58:21602001_Mnu.ONST</id>
+                    <id>DiscPosOMS58:21602001_Mnu.ONST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.ONST</access>
                     </value>
@@ -17880,7 +17880,7 @@
                 </option>
                 <option>
                     <name>Value 2</name>
-                    <id>OMS58:21602001_MnuS.DO2</id>
+                    <id>DiscPosOMS58:21602001_MnuS.DO2</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_MnuS.DO2</access>
                     </value>
@@ -17888,7 +17888,7 @@
                 </option>
                 <option>
                     <name>Label 2</name>
-                    <id>OMS58:21602001_Mnu.TWST</id>
+                    <id>DiscPosOMS58:21602001_Mnu.TWST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.TWST</access>
                     </value>
@@ -17896,7 +17896,7 @@
                 </option>
                 <option>
                     <name>Value 3</name>
-                    <id>OMS58:21602001_MnuS.DO3</id>
+                    <id>DiscPosOMS58:21602001_MnuS.DO3</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_MnuS.DO3</access>
                     </value>
@@ -17904,7 +17904,7 @@
                 </option>
                 <option>
                     <name>Label 3</name>
-                    <id>OMS58:21602001_Mnu.THST</id>
+                    <id>DiscPosOMS58:21602001_Mnu.THST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.THST</access>
                     </value>
@@ -17912,7 +17912,7 @@
                 </option>
                 <option>
                     <name>Value 4</name>
-                    <id>OMS58:21602001_MnuS.DO4</id>
+                    <id>DiscPosOMS58:21602001_MnuS.DO4</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_MnuS.DO4</access>
                     </value>
@@ -17920,7 +17920,7 @@
                 </option>
                 <option>
                     <name>Label 4</name>
-                    <id>OMS58:21602001_Mnu.FRST</id>
+                    <id>DiscPosOMS58:21602001_Mnu.FRST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.FRST</access>
                     </value>
@@ -17928,7 +17928,7 @@
                 </option>
                 <option>
                     <name>Value 5</name>
-                    <id>OMS58:21602001_MnuS.DO5</id>
+                    <id>DiscPosOMS58:21602001_MnuS.DO5</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_MnuS.DO5</access>
                     </value>
@@ -17936,7 +17936,7 @@
                 </option>
                 <option>
                     <name>Label 5</name>
-                    <id>OMS58:21602001_Mnu.FVST</id>
+                    <id>DiscPosOMS58:21602001_Mnu.FVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.FVST</access>
                     </value>
@@ -17944,7 +17944,7 @@
                 </option>
                 <option>
                     <name>Value 6</name>
-                    <id>OMS58:21602001_MnuS.DO6</id>
+                    <id>DiscPosOMS58:21602001_MnuS.DO6</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_MnuS.DO6</access>
                     </value>
@@ -17952,7 +17952,7 @@
                 </option>
                 <option>
                     <name>Label 6</name>
-                    <id>OMS58:21602001_Mnu.SXST</id>
+                    <id>DiscPosOMS58:21602001_Mnu.SXST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.SXST</access>
                     </value>
@@ -17960,7 +17960,7 @@
                 </option>
                 <option>
                     <name>Value 7</name>
-                    <id>OMS58:21602001_MnuS.DO7</id>
+                    <id>DiscPosOMS58:21602001_MnuS.DO7</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_MnuS.DO7</access>
                     </value>
@@ -17968,7 +17968,7 @@
                 </option>
                 <option>
                     <name>Label 7</name>
-                    <id>OMS58:21602001_Mnu.SVST</id>
+                    <id>DiscPosOMS58:21602001_Mnu.SVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.SVST</access>
                     </value>
@@ -17976,7 +17976,7 @@
                 </option>
                 <option>
                     <name>Value 8</name>
-                    <id>OMS58:21602001_MnuS.DO8</id>
+                    <id>DiscPosOMS58:21602001_MnuS.DO8</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_MnuS.DO8</access>
                     </value>
@@ -17984,7 +17984,7 @@
                 </option>
                 <option>
                     <name>Label 8</name>
-                    <id>OMS58:21602001_Mnu.EIST</id>
+                    <id>DiscPosOMS58:21602001_Mnu.EIST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.EIST</access>
                     </value>
@@ -17992,7 +17992,7 @@
                 </option>
                 <option>
                     <name>Value 9</name>
-                    <id>OMS58:21602001_MnuS.DO9</id>
+                    <id>DiscPosOMS58:21602001_MnuS.DO9</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_MnuS.DO9</access>
                     </value>
@@ -18000,7 +18000,7 @@
                 </option>
                 <option>
                     <name>Label 9</name>
-                    <id>OMS58:21602001_Mnu.NIST</id>
+                    <id>DiscPosOMS58:21602001_Mnu.NIST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.NIST</access>
                     </value>
@@ -18008,7 +18008,7 @@
                 </option>
                 <option>
                     <name>Value 10</name>
-                    <id>OMS58:21602001_MnuS.DOA</id>
+                    <id>DiscPosOMS58:21602001_MnuS.DOA</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_MnuS.DOA</access>
                     </value>
@@ -18016,7 +18016,7 @@
                 </option>
                 <option>
                     <name>Label 10</name>
-                    <id>OMS58:21602001_Mnu.TEST</id>
+                    <id>DiscPosOMS58:21602001_Mnu.TEST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.TEST</access>
                     </value>
@@ -18024,7 +18024,7 @@
                 </option>
                 <option>
                     <name>Value 11</name>
-                    <id>OMS58:21602001_MnuS.DOB</id>
+                    <id>DiscPosOMS58:21602001_MnuS.DOB</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_MnuS.DOB</access>
                     </value>
@@ -18032,7 +18032,7 @@
                 </option>
                 <option>
                     <name>Label 11</name>
-                    <id>OMS58:21602001_Mnu.ELST</id>
+                    <id>DiscPosOMS58:21602001_Mnu.ELST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.ELST</access>
                     </value>
@@ -18040,7 +18040,7 @@
                 </option>
                 <option>
                     <name>Value 12</name>
-                    <id>OMS58:21602001_MnuS.DOC</id>
+                    <id>DiscPosOMS58:21602001_MnuS.DOC</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_MnuS.DOC</access>
                     </value>
@@ -18048,7 +18048,7 @@
                 </option>
                 <option>
                     <name>Label 12</name>
-                    <id>OMS58:21602001_Mnu.TVST</id>
+                    <id>DiscPosOMS58:21602001_Mnu.TVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.TVST</access>
                     </value>
@@ -18056,7 +18056,7 @@
                 </option>
                 <option>
                     <name>Value 13</name>
-                    <id>OMS58:21602001_MnuS.DOD</id>
+                    <id>DiscPosOMS58:21602001_MnuS.DOD</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_MnuS.DOD</access>
                     </value>
@@ -18064,7 +18064,7 @@
                 </option>
                 <option>
                     <name>Label 13</name>
-                    <id>OMS58:21602001_Mnu.TTST</id>
+                    <id>DiscPosOMS58:21602001_Mnu.TTST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.TTST</access>
                     </value>
@@ -18072,7 +18072,7 @@
                 </option>
                 <option>
                     <name>Value 14</name>
-                    <id>OMS58:21602001_MnuS.DOE</id>
+                    <id>DiscPosOMS58:21602001_MnuS.DOE</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_MnuS.DOE</access>
                     </value>
@@ -18080,7 +18080,7 @@
                 </option>
                 <option>
                     <name>Label 14</name>
-                    <id>OMS58:21602001_Mnu.FTST</id>
+                    <id>DiscPosOMS58:21602001_Mnu.FTST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.FTST</access>
                     </value>
@@ -18088,7 +18088,7 @@
                 </option>
                 <option>
                     <name>Value 15</name>
-                    <id>OMS58:21602001_MnuS.DOF</id>
+                    <id>DiscPosOMS58:21602001_MnuS.DOF</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_MnuS.DOF</access>
                     </value>
@@ -18096,7 +18096,7 @@
                 </option>
                 <option>
                     <name>Label 15</name>
-                    <id>OMS58:21602001_Mnu.FFST</id>
+                    <id>DiscPosOMS58:21602001_Mnu.FFST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21602001_Mnu.FFST</access>
                     </value>
@@ -18132,7 +18132,7 @@
                 </unit>
                 <option>
                     <name>Selected Position</name>
-                    <id>OMS58:21606000_Mnu</id>
+                    <id>DiscPosOMS58:21606000_Mnu</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">OMS58:21606000_Mnu</access>
                     </value>
@@ -18140,7 +18140,7 @@
                 </option>
                 <option>
                     <name>Move Done</name>
-                    <id>OMS58:21606000.DMOV</id>
+                    <id>DiscPosOMS58:21606000.DMOV</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">OMS58:21606000.DMOV</access>
                     </value>
@@ -18148,7 +18148,7 @@
                 </option>
                 <option>
                     <name>Severity</name>
-                    <id>OMS58:21606000.SEVR</id>
+                    <id>DiscPosOMS58:21606000.SEVR</id>
                     <value>
                         <access method="GETCB" type="string" transport="ca">OMS58:21606000.SEVR</access>
                     </value>
@@ -18156,7 +18156,7 @@
                 </option>
                 <option>
                     <name>Status</name>
-                    <id>OMS58:21606000.STAT</id>
+                    <id>DiscPosOMS58:21606000.STAT</id>
                     <value>
                         <access method="GETCB" type="string" transport="ca">OMS58:21606000.STAT</access>
                     </value>
@@ -18164,7 +18164,7 @@
                 </option>
                 <option>
                     <name>control Mode</name>
-                    <id>OMS58:21606000_Mnu.OMSL</id>
+                    <id>DiscPosOMS58:21606000_Mnu.OMSL</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.OMSL</access>
                     </value>
@@ -18172,7 +18172,7 @@
                 </option>
                 <option>
                     <name>lvio</name>
-                    <id>OMS58:21606000.LVIO</id>
+                    <id>DiscPosOMS58:21606000.LVIO</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000.LVIO</access>
                     </value>
@@ -18180,7 +18180,7 @@
                 </option>
                 <option>
                     <name>miss</name>
-                    <id>OMS58:21606000.MISS</id>
+                    <id>DiscPosOMS58:21606000.MISS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000.MISS</access>
                     </value>
@@ -18188,7 +18188,7 @@
                 </option>
                 <option>
                     <name>rlls</name>
-                    <id>OMS58:21606000.RLLS</id>
+                    <id>DiscPosOMS58:21606000.RLLS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000.RLLS</access>
                     </value>
@@ -18196,7 +18196,7 @@
                 </option>
                 <option>
                     <name>rhls</name>
-                    <id>OMS58:21606000.RHLS</id>
+                    <id>DiscPosOMS58:21606000.RHLS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000.RHLS</access>
                     </value>
@@ -18204,7 +18204,7 @@
                 </option>
                 <option>
                     <name>Value 1</name>
-                    <id>OMS58:21606000_MnuS.DO1</id>
+                    <id>DiscPosOMS58:21606000_MnuS.DO1</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_MnuS.DO1</access>
                     </value>
@@ -18212,7 +18212,7 @@
                 </option>
                 <option>
                     <name>Label 1</name>
-                    <id>OMS58:21606000_Mnu.ONST</id>
+                    <id>DiscPosOMS58:21606000_Mnu.ONST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.ONST</access>
                     </value>
@@ -18220,7 +18220,7 @@
                 </option>
                 <option>
                     <name>Value 2</name>
-                    <id>OMS58:21606000_MnuS.DO2</id>
+                    <id>DiscPosOMS58:21606000_MnuS.DO2</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_MnuS.DO2</access>
                     </value>
@@ -18228,7 +18228,7 @@
                 </option>
                 <option>
                     <name>Label 2</name>
-                    <id>OMS58:21606000_Mnu.TWST</id>
+                    <id>DiscPosOMS58:21606000_Mnu.TWST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.TWST</access>
                     </value>
@@ -18236,7 +18236,7 @@
                 </option>
                 <option>
                     <name>Value 3</name>
-                    <id>OMS58:21606000_MnuS.DO3</id>
+                    <id>DiscPosOMS58:21606000_MnuS.DO3</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_MnuS.DO3</access>
                     </value>
@@ -18244,7 +18244,7 @@
                 </option>
                 <option>
                     <name>Label 3</name>
-                    <id>OMS58:21606000_Mnu.THST</id>
+                    <id>DiscPosOMS58:21606000_Mnu.THST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.THST</access>
                     </value>
@@ -18252,7 +18252,7 @@
                 </option>
                 <option>
                     <name>Value 4</name>
-                    <id>OMS58:21606000_MnuS.DO4</id>
+                    <id>DiscPosOMS58:21606000_MnuS.DO4</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_MnuS.DO4</access>
                     </value>
@@ -18260,7 +18260,7 @@
                 </option>
                 <option>
                     <name>Label 4</name>
-                    <id>OMS58:21606000_Mnu.FRST</id>
+                    <id>DiscPosOMS58:21606000_Mnu.FRST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.FRST</access>
                     </value>
@@ -18268,7 +18268,7 @@
                 </option>
                 <option>
                     <name>Value 5</name>
-                    <id>OMS58:21606000_MnuS.DO5</id>
+                    <id>DiscPosOMS58:21606000_MnuS.DO5</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_MnuS.DO5</access>
                     </value>
@@ -18276,7 +18276,7 @@
                 </option>
                 <option>
                     <name>Label 5</name>
-                    <id>OMS58:21606000_Mnu.FVST</id>
+                    <id>DiscPosOMS58:21606000_Mnu.FVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.FVST</access>
                     </value>
@@ -18284,7 +18284,7 @@
                 </option>
                 <option>
                     <name>Value 6</name>
-                    <id>OMS58:21606000_MnuS.DO6</id>
+                    <id>DiscPosOMS58:21606000_MnuS.DO6</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_MnuS.DO6</access>
                     </value>
@@ -18292,7 +18292,7 @@
                 </option>
                 <option>
                     <name>Label 6</name>
-                    <id>OMS58:21606000_Mnu.SXST</id>
+                    <id>DiscPosOMS58:21606000_Mnu.SXST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.SXST</access>
                     </value>
@@ -18300,7 +18300,7 @@
                 </option>
                 <option>
                     <name>Value 7</name>
-                    <id>OMS58:21606000_MnuS.DO7</id>
+                    <id>DiscPosOMS58:21606000_MnuS.DO7</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_MnuS.DO7</access>
                     </value>
@@ -18308,7 +18308,7 @@
                 </option>
                 <option>
                     <name>Label 7</name>
-                    <id>OMS58:21606000_Mnu.SVST</id>
+                    <id>DiscPosOMS58:21606000_Mnu.SVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.SVST</access>
                     </value>
@@ -18316,7 +18316,7 @@
                 </option>
                 <option>
                     <name>Value 8</name>
-                    <id>OMS58:21606000_MnuS.DO8</id>
+                    <id>DiscPosOMS58:21606000_MnuS.DO8</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_MnuS.DO8</access>
                     </value>
@@ -18324,7 +18324,7 @@
                 </option>
                 <option>
                     <name>Label 8</name>
-                    <id>OMS58:21606000_Mnu.EIST</id>
+                    <id>DiscPosOMS58:21606000_Mnu.EIST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.EIST</access>
                     </value>
@@ -18332,7 +18332,7 @@
                 </option>
                 <option>
                     <name>Value 9</name>
-                    <id>OMS58:21606000_MnuS.DO9</id>
+                    <id>DiscPosOMS58:21606000_MnuS.DO9</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_MnuS.DO9</access>
                     </value>
@@ -18340,7 +18340,7 @@
                 </option>
                 <option>
                     <name>Label 9</name>
-                    <id>OMS58:21606000_Mnu.NIST</id>
+                    <id>DiscPosOMS58:21606000_Mnu.NIST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.NIST</access>
                     </value>
@@ -18348,7 +18348,7 @@
                 </option>
                 <option>
                     <name>Value 10</name>
-                    <id>OMS58:21606000_MnuS.DOA</id>
+                    <id>DiscPosOMS58:21606000_MnuS.DOA</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_MnuS.DOA</access>
                     </value>
@@ -18356,7 +18356,7 @@
                 </option>
                 <option>
                     <name>Label 10</name>
-                    <id>OMS58:21606000_Mnu.TEST</id>
+                    <id>DiscPosOMS58:21606000_Mnu.TEST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.TEST</access>
                     </value>
@@ -18364,7 +18364,7 @@
                 </option>
                 <option>
                     <name>Value 11</name>
-                    <id>OMS58:21606000_MnuS.DOB</id>
+                    <id>DiscPosOMS58:21606000_MnuS.DOB</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_MnuS.DOB</access>
                     </value>
@@ -18372,7 +18372,7 @@
                 </option>
                 <option>
                     <name>Label 11</name>
-                    <id>OMS58:21606000_Mnu.ELST</id>
+                    <id>DiscPosOMS58:21606000_Mnu.ELST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.ELST</access>
                     </value>
@@ -18380,7 +18380,7 @@
                 </option>
                 <option>
                     <name>Value 12</name>
-                    <id>OMS58:21606000_MnuS.DOC</id>
+                    <id>DiscPosOMS58:21606000_MnuS.DOC</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_MnuS.DOC</access>
                     </value>
@@ -18388,7 +18388,7 @@
                 </option>
                 <option>
                     <name>Label 12</name>
-                    <id>OMS58:21606000_Mnu.TVST</id>
+                    <id>DiscPosOMS58:21606000_Mnu.TVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.TVST</access>
                     </value>
@@ -18396,7 +18396,7 @@
                 </option>
                 <option>
                     <name>Value 13</name>
-                    <id>OMS58:21606000_MnuS.DOD</id>
+                    <id>DiscPosOMS58:21606000_MnuS.DOD</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_MnuS.DOD</access>
                     </value>
@@ -18404,7 +18404,7 @@
                 </option>
                 <option>
                     <name>Label 13</name>
-                    <id>OMS58:21606000_Mnu.TTST</id>
+                    <id>DiscPosOMS58:21606000_Mnu.TTST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.TTST</access>
                     </value>
@@ -18412,7 +18412,7 @@
                 </option>
                 <option>
                     <name>Value 14</name>
-                    <id>OMS58:21606000_MnuS.DOE</id>
+                    <id>DiscPosOMS58:21606000_MnuS.DOE</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_MnuS.DOE</access>
                     </value>
@@ -18420,7 +18420,7 @@
                 </option>
                 <option>
                     <name>Label 14</name>
-                    <id>OMS58:21606000_Mnu.FTST</id>
+                    <id>DiscPosOMS58:21606000_Mnu.FTST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.FTST</access>
                     </value>
@@ -18428,7 +18428,7 @@
                 </option>
                 <option>
                     <name>Value 15</name>
-                    <id>OMS58:21606000_MnuS.DOF</id>
+                    <id>DiscPosOMS58:21606000_MnuS.DOF</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_MnuS.DOF</access>
                     </value>
@@ -18436,7 +18436,7 @@
                 </option>
                 <option>
                     <name>Label 15</name>
-                    <id>OMS58:21606000_Mnu.FFST</id>
+                    <id>DiscPosOMS58:21606000_Mnu.FFST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606000_Mnu.FFST</access>
                     </value>
@@ -18465,7 +18465,7 @@
                 </unit>
                 <option>
                     <name>Selected Position</name>
-                    <id>OMS58:21606003_Mnu</id>
+                    <id>DiscPosOMS58:21606003_Mnu</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">OMS58:21606003_Mnu</access>
                     </value>
@@ -18473,7 +18473,7 @@
                 </option>
                 <option>
                     <name>Move Done</name>
-                    <id>OMS58:21606003.DMOV</id>
+                    <id>DiscPosOMS58:21606003.DMOV</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">OMS58:21606003.DMOV</access>
                     </value>
@@ -18481,7 +18481,7 @@
                 </option>
                 <option>
                     <name>Severity</name>
-                    <id>OMS58:21606003.SEVR</id>
+                    <id>DiscPosOMS58:21606003.SEVR</id>
                     <value>
                         <access method="GETCB" type="string" transport="ca">OMS58:21606003.SEVR</access>
                     </value>
@@ -18489,7 +18489,7 @@
                 </option>
                 <option>
                     <name>Status</name>
-                    <id>OMS58:21606003.STAT</id>
+                    <id>DiscPosOMS58:21606003.STAT</id>
                     <value>
                         <access method="GETCB" type="string" transport="ca">OMS58:21606003.STAT</access>
                     </value>
@@ -18497,7 +18497,7 @@
                 </option>
                 <option>
                     <name>control Mode</name>
-                    <id>OMS58:21606003_Mnu.OMSL</id>
+                    <id>DiscPosOMS58:21606003_Mnu.OMSL</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.OMSL</access>
                     </value>
@@ -18505,7 +18505,7 @@
                 </option>
                 <option>
                     <name>lvio</name>
-                    <id>OMS58:21606003.LVIO</id>
+                    <id>DiscPosOMS58:21606003.LVIO</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003.LVIO</access>
                     </value>
@@ -18513,7 +18513,7 @@
                 </option>
                 <option>
                     <name>miss</name>
-                    <id>OMS58:21606003.MISS</id>
+                    <id>DiscPosOMS58:21606003.MISS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003.MISS</access>
                     </value>
@@ -18521,7 +18521,7 @@
                 </option>
                 <option>
                     <name>rlls</name>
-                    <id>OMS58:21606003.RLLS</id>
+                    <id>DiscPosOMS58:21606003.RLLS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003.RLLS</access>
                     </value>
@@ -18529,7 +18529,7 @@
                 </option>
                 <option>
                     <name>rhls</name>
-                    <id>OMS58:21606003.RHLS</id>
+                    <id>DiscPosOMS58:21606003.RHLS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003.RHLS</access>
                     </value>
@@ -18537,7 +18537,7 @@
                 </option>
                 <option>
                     <name>Value 1</name>
-                    <id>OMS58:21606003_MnuS.DO1</id>
+                    <id>DiscPosOMS58:21606003_MnuS.DO1</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_MnuS.DO1</access>
                     </value>
@@ -18545,7 +18545,7 @@
                 </option>
                 <option>
                     <name>Label 1</name>
-                    <id>OMS58:21606003_Mnu.ONST</id>
+                    <id>DiscPosOMS58:21606003_Mnu.ONST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.ONST</access>
                     </value>
@@ -18553,7 +18553,7 @@
                 </option>
                 <option>
                     <name>Value 2</name>
-                    <id>OMS58:21606003_MnuS.DO2</id>
+                    <id>DiscPosOMS58:21606003_MnuS.DO2</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_MnuS.DO2</access>
                     </value>
@@ -18561,7 +18561,7 @@
                 </option>
                 <option>
                     <name>Label 2</name>
-                    <id>OMS58:21606003_Mnu.TWST</id>
+                    <id>DiscPosOMS58:21606003_Mnu.TWST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.TWST</access>
                     </value>
@@ -18569,7 +18569,7 @@
                 </option>
                 <option>
                     <name>Value 3</name>
-                    <id>OMS58:21606003_MnuS.DO3</id>
+                    <id>DiscPosOMS58:21606003_MnuS.DO3</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_MnuS.DO3</access>
                     </value>
@@ -18577,7 +18577,7 @@
                 </option>
                 <option>
                     <name>Label 3</name>
-                    <id>OMS58:21606003_Mnu.THST</id>
+                    <id>DiscPosOMS58:21606003_Mnu.THST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.THST</access>
                     </value>
@@ -18585,7 +18585,7 @@
                 </option>
                 <option>
                     <name>Value 4</name>
-                    <id>OMS58:21606003_MnuS.DO4</id>
+                    <id>DiscPosOMS58:21606003_MnuS.DO4</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_MnuS.DO4</access>
                     </value>
@@ -18593,7 +18593,7 @@
                 </option>
                 <option>
                     <name>Label 4</name>
-                    <id>OMS58:21606003_Mnu.FRST</id>
+                    <id>DiscPosOMS58:21606003_Mnu.FRST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.FRST</access>
                     </value>
@@ -18601,7 +18601,7 @@
                 </option>
                 <option>
                     <name>Value 5</name>
-                    <id>OMS58:21606003_MnuS.DO5</id>
+                    <id>DiscPosOMS58:21606003_MnuS.DO5</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_MnuS.DO5</access>
                     </value>
@@ -18609,7 +18609,7 @@
                 </option>
                 <option>
                     <name>Label 5</name>
-                    <id>OMS58:21606003_Mnu.FVST</id>
+                    <id>DiscPosOMS58:21606003_Mnu.FVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.FVST</access>
                     </value>
@@ -18617,7 +18617,7 @@
                 </option>
                 <option>
                     <name>Value 6</name>
-                    <id>OMS58:21606003_MnuS.DO6</id>
+                    <id>DiscPosOMS58:21606003_MnuS.DO6</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_MnuS.DO6</access>
                     </value>
@@ -18625,7 +18625,7 @@
                 </option>
                 <option>
                     <name>Label 6</name>
-                    <id>OMS58:21606003_Mnu.SXST</id>
+                    <id>DiscPosOMS58:21606003_Mnu.SXST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.SXST</access>
                     </value>
@@ -18633,7 +18633,7 @@
                 </option>
                 <option>
                     <name>Value 7</name>
-                    <id>OMS58:21606003_MnuS.DO7</id>
+                    <id>DiscPosOMS58:21606003_MnuS.DO7</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_MnuS.DO7</access>
                     </value>
@@ -18641,7 +18641,7 @@
                 </option>
                 <option>
                     <name>Label 7</name>
-                    <id>OMS58:21606003_Mnu.SVST</id>
+                    <id>DiscPosOMS58:21606003_Mnu.SVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.SVST</access>
                     </value>
@@ -18649,7 +18649,7 @@
                 </option>
                 <option>
                     <name>Value 8</name>
-                    <id>OMS58:21606003_MnuS.DO8</id>
+                    <id>DiscPosOMS58:21606003_MnuS.DO8</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_MnuS.DO8</access>
                     </value>
@@ -18657,7 +18657,7 @@
                 </option>
                 <option>
                     <name>Label 8</name>
-                    <id>OMS58:21606003_Mnu.EIST</id>
+                    <id>DiscPosOMS58:21606003_Mnu.EIST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.EIST</access>
                     </value>
@@ -18665,7 +18665,7 @@
                 </option>
                 <option>
                     <name>Value 9</name>
-                    <id>OMS58:21606003_MnuS.DO9</id>
+                    <id>DiscPosOMS58:21606003_MnuS.DO9</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_MnuS.DO9</access>
                     </value>
@@ -18673,7 +18673,7 @@
                 </option>
                 <option>
                     <name>Label 9</name>
-                    <id>OMS58:21606003_Mnu.NIST</id>
+                    <id>DiscPosOMS58:21606003_Mnu.NIST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.NIST</access>
                     </value>
@@ -18681,7 +18681,7 @@
                 </option>
                 <option>
                     <name>Value 10</name>
-                    <id>OMS58:21606003_MnuS.DOA</id>
+                    <id>DiscPosOMS58:21606003_MnuS.DOA</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_MnuS.DOA</access>
                     </value>
@@ -18689,7 +18689,7 @@
                 </option>
                 <option>
                     <name>Label 10</name>
-                    <id>OMS58:21606003_Mnu.TEST</id>
+                    <id>DiscPosOMS58:21606003_Mnu.TEST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.TEST</access>
                     </value>
@@ -18697,7 +18697,7 @@
                 </option>
                 <option>
                     <name>Value 11</name>
-                    <id>OMS58:21606003_MnuS.DOB</id>
+                    <id>DiscPosOMS58:21606003_MnuS.DOB</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_MnuS.DOB</access>
                     </value>
@@ -18705,7 +18705,7 @@
                 </option>
                 <option>
                     <name>Label 11</name>
-                    <id>OMS58:21606003_Mnu.ELST</id>
+                    <id>DiscPosOMS58:21606003_Mnu.ELST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.ELST</access>
                     </value>
@@ -18713,7 +18713,7 @@
                 </option>
                 <option>
                     <name>Value 12</name>
-                    <id>OMS58:21606003_MnuS.DOC</id>
+                    <id>DiscPosOMS58:21606003_MnuS.DOC</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_MnuS.DOC</access>
                     </value>
@@ -18721,7 +18721,7 @@
                 </option>
                 <option>
                     <name>Label 12</name>
-                    <id>OMS58:21606003_Mnu.TVST</id>
+                    <id>DiscPosOMS58:21606003_Mnu.TVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.TVST</access>
                     </value>
@@ -18729,7 +18729,7 @@
                 </option>
                 <option>
                     <name>Value 13</name>
-                    <id>OMS58:21606003_MnuS.DOD</id>
+                    <id>DiscPosOMS58:21606003_MnuS.DOD</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_MnuS.DOD</access>
                     </value>
@@ -18737,7 +18737,7 @@
                 </option>
                 <option>
                     <name>Label 13</name>
-                    <id>OMS58:21606003_Mnu.TTST</id>
+                    <id>DiscPosOMS58:21606003_Mnu.TTST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.TTST</access>
                     </value>
@@ -18745,7 +18745,7 @@
                 </option>
                 <option>
                     <name>Value 14</name>
-                    <id>OMS58:21606003_MnuS.DOE</id>
+                    <id>DiscPosOMS58:21606003_MnuS.DOE</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_MnuS.DOE</access>
                     </value>
@@ -18753,7 +18753,7 @@
                 </option>
                 <option>
                     <name>Label 14</name>
-                    <id>OMS58:21606003_Mnu.FTST</id>
+                    <id>DiscPosOMS58:21606003_Mnu.FTST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.FTST</access>
                     </value>
@@ -18761,7 +18761,7 @@
                 </option>
                 <option>
                     <name>Value 15</name>
-                    <id>OMS58:21606003_MnuS.DOF</id>
+                    <id>DiscPosOMS58:21606003_MnuS.DOF</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_MnuS.DOF</access>
                     </value>
@@ -18769,7 +18769,7 @@
                 </option>
                 <option>
                     <name>Label 15</name>
-                    <id>OMS58:21606003_Mnu.FFST</id>
+                    <id>DiscPosOMS58:21606003_Mnu.FFST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21606003_Mnu.FFST</access>
                     </value>
@@ -26114,7 +26114,7 @@
                 </unit>
                 <option>
                     <name>Selected Position</name>
-                    <id>OMS58:21205002_Mnu</id>
+                    <id>DiscPosOMS58:21205002_Mnu</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">OMS58:21205002_Mnu</access>
                     </value>
@@ -26122,7 +26122,7 @@
                 </option>
                 <option>
                     <name>Move Done</name>
-                    <id>OMS58:21205002.DMOV</id>
+                    <id>DiscPosOMS58:21205002.DMOV</id>
                     <value>
                         <access method="GETPUTCB" type="string" transport="ca">OMS58:21205002.DMOV</access>
                     </value>
@@ -26130,7 +26130,7 @@
                 </option>
                 <option>
                     <name>Severity</name>
-                    <id>OMS58:21205002.SEVR</id>
+                    <id>DiscPosOMS58:21205002.SEVR</id>
                     <value>
                         <access method="GETCB" type="string" transport="ca">OMS58:21205002.SEVR</access>
                     </value>
@@ -26138,7 +26138,7 @@
                 </option>
                 <option>
                     <name>Status</name>
-                    <id>OMS58:21205002.STAT</id>
+                    <id>DiscPosOMS58:21205002.STAT</id>
                     <value>
                         <access method="GETCB" type="string" transport="ca">OMS58:21205002.STAT</access>
                     </value>
@@ -26146,7 +26146,7 @@
                 </option>
                 <option>
                     <name>control Mode</name>
-                    <id>OMS58:21205002_Mnu.OMSL</id>
+                    <id>DiscPosOMS58:21205002_Mnu.OMSL</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.OMSL</access>
                     </value>
@@ -26154,7 +26154,7 @@
                 </option>
                 <option>
                     <name>lvio</name>
-                    <id>OMS58:21205002.LVIO</id>
+                    <id>DiscPosOMS58:21205002.LVIO</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002.LVIO</access>
                     </value>
@@ -26162,7 +26162,7 @@
                 </option>
                 <option>
                     <name>miss</name>
-                    <id>OMS58:21205002.MISS</id>
+                    <id>DiscPosOMS58:21205002.MISS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002.MISS</access>
                     </value>
@@ -26170,7 +26170,7 @@
                 </option>
                 <option>
                     <name>rlls</name>
-                    <id>OMS58:21205002.RLLS</id>
+                    <id>DiscPosOMS58:21205002.RLLS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002.RLLS</access>
                     </value>
@@ -26178,7 +26178,7 @@
                 </option>
                 <option>
                     <name>rhls</name>
-                    <id>OMS58:21205002.RHLS</id>
+                    <id>DiscPosOMS58:21205002.RHLS</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002.RHLS</access>
                     </value>
@@ -26186,7 +26186,7 @@
                 </option>
                 <option>
                     <name>Value 1</name>
-                    <id>OMS58:21205002_MnuS.DO1</id>
+                    <id>DiscPosOMS58:21205002_MnuS.DO1</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_MnuS.DO1</access>
                     </value>
@@ -26194,7 +26194,7 @@
                 </option>
                 <option>
                     <name>Label 1</name>
-                    <id>OMS58:21205002_Mnu.ONST</id>
+                    <id>DiscPosOMS58:21205002_Mnu.ONST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.ONST</access>
                     </value>
@@ -26202,7 +26202,7 @@
                 </option>
                 <option>
                     <name>Value 2</name>
-                    <id>OMS58:21205002_MnuS.DO2</id>
+                    <id>DiscPosOMS58:21205002_MnuS.DO2</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_MnuS.DO2</access>
                     </value>
@@ -26210,7 +26210,7 @@
                 </option>
                 <option>
                     <name>Label 2</name>
-                    <id>OMS58:21205002_Mnu.TWST</id>
+                    <id>DiscPosOMS58:21205002_Mnu.TWST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.TWST</access>
                     </value>
@@ -26218,7 +26218,7 @@
                 </option>
                 <option>
                     <name>Value 3</name>
-                    <id>OMS58:21205002_MnuS.DO3</id>
+                    <id>DiscPosOMS58:21205002_MnuS.DO3</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_MnuS.DO3</access>
                     </value>
@@ -26226,7 +26226,7 @@
                 </option>
                 <option>
                     <name>Label 3</name>
-                    <id>OMS58:21205002_Mnu.THST</id>
+                    <id>DiscPosOMS58:21205002_Mnu.THST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.THST</access>
                     </value>
@@ -26234,7 +26234,7 @@
                 </option>
                 <option>
                     <name>Value 4</name>
-                    <id>OMS58:21205002_MnuS.DO4</id>
+                    <id>DiscPosOMS58:21205002_MnuS.DO4</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_MnuS.DO4</access>
                     </value>
@@ -26242,7 +26242,7 @@
                 </option>
                 <option>
                     <name>Label 4</name>
-                    <id>OMS58:21205002_Mnu.FRST</id>
+                    <id>DiscPosOMS58:21205002_Mnu.FRST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.FRST</access>
                     </value>
@@ -26250,7 +26250,7 @@
                 </option>
                 <option>
                     <name>Value 5</name>
-                    <id>OMS58:21205002_MnuS.DO5</id>
+                    <id>DiscPosOMS58:21205002_MnuS.DO5</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_MnuS.DO5</access>
                     </value>
@@ -26258,7 +26258,7 @@
                 </option>
                 <option>
                     <name>Label 5</name>
-                    <id>OMS58:21205002_Mnu.FVST</id>
+                    <id>DiscPosOMS58:21205002_Mnu.FVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.FVST</access>
                     </value>
@@ -26266,7 +26266,7 @@
                 </option>
                 <option>
                     <name>Value 6</name>
-                    <id>OMS58:21205002_MnuS.DO6</id>
+                    <id>DiscPosOMS58:21205002_MnuS.DO6</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_MnuS.DO6</access>
                     </value>
@@ -26274,7 +26274,7 @@
                 </option>
                 <option>
                     <name>Label 6</name>
-                    <id>OMS58:21205002_Mnu.SXST</id>
+                    <id>DiscPosOMS58:21205002_Mnu.SXST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.SXST</access>
                     </value>
@@ -26282,7 +26282,7 @@
                 </option>
                 <option>
                     <name>Value 7</name>
-                    <id>OMS58:21205002_MnuS.DO7</id>
+                    <id>DiscPosOMS58:21205002_MnuS.DO7</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_MnuS.DO7</access>
                     </value>
@@ -26290,7 +26290,7 @@
                 </option>
                 <option>
                     <name>Label 7</name>
-                    <id>OMS58:21205002_Mnu.SVST</id>
+                    <id>DiscPosOMS58:21205002_Mnu.SVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.SVST</access>
                     </value>
@@ -26298,7 +26298,7 @@
                 </option>
                 <option>
                     <name>Value 8</name>
-                    <id>OMS58:21205002_MnuS.DO8</id>
+                    <id>DiscPosOMS58:21205002_MnuS.DO8</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_MnuS.DO8</access>
                     </value>
@@ -26306,7 +26306,7 @@
                 </option>
                 <option>
                     <name>Label 8</name>
-                    <id>OMS58:21205002_Mnu.EIST</id>
+                    <id>DiscPosOMS58:21205002_Mnu.EIST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.EIST</access>
                     </value>
@@ -26314,7 +26314,7 @@
                 </option>
                 <option>
                     <name>Value 9</name>
-                    <id>OMS58:21205002_MnuS.DO9</id>
+                    <id>DiscPosOMS58:21205002_MnuS.DO9</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_MnuS.DO9</access>
                     </value>
@@ -26322,7 +26322,7 @@
                 </option>
                 <option>
                     <name>Label 9</name>
-                    <id>OMS58:21205002_Mnu.NIST</id>
+                    <id>DiscPosOMS58:21205002_Mnu.NIST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.NIST</access>
                     </value>
@@ -26330,7 +26330,7 @@
                 </option>
                 <option>
                     <name>Value 10</name>
-                    <id>OMS58:21205002_MnuS.DOA</id>
+                    <id>DiscPosOMS58:21205002_MnuS.DOA</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_MnuS.DOA</access>
                     </value>
@@ -26338,7 +26338,7 @@
                 </option>
                 <option>
                     <name>Label 10</name>
-                    <id>OMS58:21205002_Mnu.TEST</id>
+                    <id>DiscPosOMS58:21205002_Mnu.TEST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.TEST</access>
                     </value>
@@ -26346,7 +26346,7 @@
                 </option>
                 <option>
                     <name>Value 11</name>
-                    <id>OMS58:21205002_MnuS.DOB</id>
+                    <id>DiscPosOMS58:21205002_MnuS.DOB</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_MnuS.DOB</access>
                     </value>
@@ -26354,7 +26354,7 @@
                 </option>
                 <option>
                     <name>Label 11</name>
-                    <id>OMS58:21205002_Mnu.ELST</id>
+                    <id>DiscPosOMS58:21205002_Mnu.ELST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.ELST</access>
                     </value>
@@ -26362,7 +26362,7 @@
                 </option>
                 <option>
                     <name>Value 12</name>
-                    <id>OMS58:21205002_MnuS.DOC</id>
+                    <id>DiscPosOMS58:21205002_MnuS.DOC</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_MnuS.DOC</access>
                     </value>
@@ -26370,7 +26370,7 @@
                 </option>
                 <option>
                     <name>Label 12</name>
-                    <id>OMS58:21205002_Mnu.TVST</id>
+                    <id>DiscPosOMS58:21205002_Mnu.TVST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.TVST</access>
                     </value>
@@ -26378,7 +26378,7 @@
                 </option>
                 <option>
                     <name>Value 13</name>
-                    <id>OMS58:21205002_MnuS.DOD</id>
+                    <id>DiscPosOMS58:21205002_MnuS.DOD</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_MnuS.DOD</access>
                     </value>
@@ -26386,7 +26386,7 @@
                 </option>
                 <option>
                     <name>Label 13</name>
-                    <id>OMS58:21205002_Mnu.TTST</id>
+                    <id>DiscPosOMS58:21205002_Mnu.TTST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.TTST</access>
                     </value>
@@ -26394,7 +26394,7 @@
                 </option>
                 <option>
                     <name>Value 14</name>
-                    <id>OMS58:21205002_MnuS.DOE</id>
+                    <id>DiscPosOMS58:21205002_MnuS.DOE</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_MnuS.DOE</access>
                     </value>
@@ -26402,7 +26402,7 @@
                 </option>
                 <option>
                     <name>Label 14</name>
-                    <id>OMS58:21205002_Mnu.FTST</id>
+                    <id>DiscPosOMS58:21205002_Mnu.FTST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.FTST</access>
                     </value>
@@ -26410,7 +26410,7 @@
                 </option>
                 <option>
                     <name>Value 15</name>
-                    <id>OMS58:21205002_MnuS.DOF</id>
+                    <id>DiscPosOMS58:21205002_MnuS.DOF</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_MnuS.DOF</access>
                     </value>
@@ -26418,7 +26418,7 @@
                 </option>
                 <option>
                     <name>Label 15</name>
-                    <id>OMS58:21205002_Mnu.FFST</id>
+                    <id>DiscPosOMS58:21205002_Mnu.FFST</id>
                     <value>
                         <access method="GETPUT" type="string" transport="ca">OMS58:21205002_Mnu.FFST</access>
                     </value>
