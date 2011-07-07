@@ -459,10 +459,6 @@ public class DeviceInspectorView extends ViewPart {
 			@Override public Color getForeground(Object element) {
 				return ((CommonTableElement) element).getConnectColor("value");
 			}
-			@Override public String getToolTipText(Object element) {
-				return ((MotorAxis)((CommonTableElement)element).
-						getAbstractDevice()).getID();
-			}
 		});
 		nameColumn.getColumn().setWidth(100);
 		

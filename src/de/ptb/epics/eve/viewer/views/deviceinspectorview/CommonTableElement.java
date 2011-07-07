@@ -17,7 +17,7 @@ import de.ptb.epics.eve.viewer.Activator;
 
 /**
  * <code>CommonTableElement</code> is an element (row entry) of the tables 
- * defined in 
+ * defined in the
  * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView}.
  * 
  * @author ?
@@ -44,9 +44,7 @@ public class CommonTableElement {
 	private HashMap<String, CellEditor> cellEditorHash;
 	
 	/**
-	 * <code>CommonTableElement</code> is the contents (row) of the table 
-	 * viewers defined in the 
-	 * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView}.
+	 * Constructs a <code>CommonTableElement</code>.
 	 * 
 	 * @param abstractdevice the 
 	 * 		{@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} the 
@@ -54,6 +52,7 @@ public class CommonTableElement {
 	 * @param viewer the viewer the element is contained in
 	 */
 	public CommonTableElement(AbstractDevice abstractdevice, TableViewer viewer) {
+		
 		this.device = abstractdevice;
 		this.viewer = viewer;
 		name = abstractdevice.getName();
@@ -66,17 +65,22 @@ public class CommonTableElement {
 		if(device instanceof MotorAxis) {
 			MotorAxis motorAxis = (MotorAxis)device;
 			engine = new CommonTableElementEngineData(abstractdevice.getID(), this);
-			if ( (motorAxis.getPosition() != null) && 
-					( motorAxis.getPosition().getAccess().getTransport() == TransportTypes.CA )) {
-				valuePv = new CommonTableElementPV(motorAxis.getPosition().getAccess().getVariableID(), this);
-				valuePv.setReadOnly(motorAxis.getPosition().getAccess().isReadOnly());
+			if ((motorAxis.getPosition() != null) && 
+				(motorAxis.getPosition().getAccess().getTransport() == TransportTypes.CA)) {
+				valuePv = new CommonTableElementPV(motorAxis.getPosition().
+						getAccess().getVariableID(), this);
+				valuePv.setReadOnly(motorAxis.getPosition().getAccess().
+						isReadOnly());
 			}
 			if ((motorAxis.getGoto().getAccess() != null) &&
-					(motorAxis.getGoto().getAccess().getTransport() == TransportTypes.CA)) {
-				gotoPv = new CommonTableElementPV(motorAxis.getGoto().getAccess().getVariableID(), this);
+				(motorAxis.getGoto().getAccess().getTransport() == TransportTypes.CA)) {
+				gotoPv = new CommonTableElementPV(motorAxis.getGoto().
+						getAccess().getVariableID(), this);
 				gotoPv.setReadOnly(motorAxis.getGoto().getAccess().isReadOnly());
-				if (motorAxis.getGoto().isDiscrete()) gotoPv.setDiscreteValues((String[]) motorAxis.getGoto().getDiscreteValues().toArray(new String[0]));
-
+				if (motorAxis.getGoto().isDiscrete()) {
+					gotoPv.setDiscreteValues((String[]) motorAxis.getGoto().
+							getDiscreteValues().toArray(new String[0]));
+				}
 				// TODO getSet is not yet defined in xml
 				String setPvName = motorAxis.getGoto().getAccess().getVariableID();
 				if (setPvName.endsWith(".VAL")) setPvName.replaceFirst(".VAL$", "");
@@ -87,52 +91,70 @@ public class CommonTableElement {
 			if (motorAxis.getUnit() != null) {
 				if (motorAxis.getUnit().getAccess() != null) {
 					if (motorAxis.getUnit().getAccess().getTransport() == TransportTypes.CA){
-						unitPv = new CommonTableElementPV( motorAxis.getUnit().getAccess().getVariableID(), this);
+						unitPv = new CommonTableElementPV( motorAxis.getUnit().
+								getAccess().getVariableID(), this);
 					}
-				}
-				else
+				} else {
 					unit = motorAxis.getUnit().getValue();
+				}
 			}
 			if ((motorAxis.getStatus() != null && motorAxis.getStatus().getAccess() != null) &&
-					(motorAxis.getStatus().getAccess().getTransport() == TransportTypes.CA)) {
-				statusPv = new CommonTableElementPV(motorAxis.getStatus().getAccess().getVariableID(), this);
+				(motorAxis.getStatus().getAccess().getTransport() == TransportTypes.CA)) {
+					statusPv = new CommonTableElementPV(motorAxis.getStatus().
+							getAccess().getVariableID(), this);
 			}
 			if ((motorAxis.getStop() != null && motorAxis.getStop().getAccess() != null) &&
-					(motorAxis.getStop().getAccess().getTransport() == TransportTypes.CA)) {
-				stopPv = new CommonTableElementPV(motorAxis.getStop().getAccess().getVariableID(), this);
+				(motorAxis.getStop().getAccess().getTransport() == TransportTypes.CA)) {
+					stopPv = new CommonTableElementPV(motorAxis.getStop().
+							getAccess().getVariableID(), this);
 			}
 			if ((motorAxis.getTweakForward() != null && motorAxis.getTweakForward().getAccess() != null) &&
-					(motorAxis.getTweakForward().getAccess().getTransport() == TransportTypes.CA)) {
-				tweakforwardPv = new CommonTableElementPV(motorAxis.getTweakForward().getAccess().getVariableID(), this);
+				(motorAxis.getTweakForward().getAccess().getTransport() == TransportTypes.CA)) {
+					tweakforwardPv = new CommonTableElementPV(motorAxis.
+							getTweakForward().getAccess().getVariableID(), this);
 			}
-			if (( motorAxis.getTweakReverse() != null && motorAxis.getTweakReverse().getAccess() != null) &&
-					(motorAxis.getTweakReverse().getAccess().getTransport() == TransportTypes.CA)) {
-				tweakreversePv = new CommonTableElementPV(motorAxis.getTweakReverse().getAccess().getVariableID(), this);
+			if ((motorAxis.getTweakReverse() != null && motorAxis.getTweakReverse().getAccess() != null) &&
+				(motorAxis.getTweakReverse().getAccess().getTransport() == TransportTypes.CA)) {
+					tweakreversePv = new CommonTableElementPV(motorAxis.
+							getTweakReverse().getAccess().getVariableID(), this);
 			}
-			if (( motorAxis.getTweakValue() != null && motorAxis.getTweakValue().getAccess() != null) &&
-					(motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.CA)) {
-				tweakvaluePv = new CommonTableElementPV(motorAxis.getTweakValue().getAccess().getVariableID(), this);
-				tweakvaluePv.setReadOnly(motorAxis.getTweakValue().getAccess().isReadOnly());
-				if (motorAxis.getTweakValue().isDiscrete()) tweakvaluePv.setDiscreteValues((String[]) motorAxis.getTweakValue().getDiscreteValues().toArray(new String[0]));
+			if ((motorAxis.getTweakValue() != null && motorAxis.getTweakValue().getAccess() != null) &&
+				(motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.CA)) {
+					tweakvaluePv = new CommonTableElementPV(motorAxis.
+							getTweakValue().getAccess().getVariableID(), this);
+					tweakvaluePv.setReadOnly(motorAxis.getTweakValue().
+							getAccess().isReadOnly());
+				if (motorAxis.getTweakValue().isDiscrete()) {
+					tweakvaluePv.setDiscreteValues(
+							(String[]) motorAxis.getTweakValue().
+							getDiscreteValues().toArray(new String[0]));
+				}
 			}
 		}
 		if(device instanceof DetectorChannel) {
 			DetectorChannel channel = (DetectorChannel)device;
 			engine = new CommonTableElementEngineData(abstractdevice.getID(), this);
 			if ((channel.getRead() != null) && 
-					(channel.getRead().getAccess().getTransport() == TransportTypes.CA)) {
-				valuePv = new CommonTableElementPV(  channel.getRead().getAccess().getVariableID(), this);
+				(channel.getRead().getAccess().getTransport() == TransportTypes.CA)) {
+				valuePv = new CommonTableElementPV(channel.getRead().
+						getAccess().getVariableID(), this);
 				valuePv.setReadOnly(channel.getRead().getAccess().isReadOnly());
 			}
 			if (channel.getUnit() != null){
 				if (channel.getUnit().getAccess() != null) {
-					if (channel.getUnit().getAccess().getTransport() == TransportTypes.CA)
-						unitPv = new CommonTableElementPV( channel.getUnit().getAccess().getVariableID(), this);
-				}
-				else
+					if (channel.getUnit().getAccess().getTransport() == TransportTypes.CA) {
+						unitPv = new CommonTableElementPV( channel.getUnit().
+								getAccess().getVariableID(), this);
+					}
+				} else {
 					unit = channel.getUnit().getValue();
+				}
 			}
-			//TODO missing TRIGGER ...
+			if (channel.getTrigger() != null &&
+				channel.getTrigger().getAccess().getTransport() == TransportTypes.CA) {
+					triggerPv = new CommonTableElementPV(channel.getTrigger().
+						getAccess().getVariableID(), this);
+			}
 		}
 		if(device instanceof Device) {
 			Device realDevice = (Device)device;
@@ -145,9 +167,9 @@ public class CommonTableElement {
 				if (realDevice.getUnit().getAccess() != null) {
 					if (realDevice.getUnit().getAccess().getTransport() == TransportTypes.CA)
 						unitPv = new CommonTableElementPV(realDevice.getUnit().getAccess().getVariableID(), this);
-				}
-				else
+				} else {
 					unit = realDevice.getUnit().getValue();
+				}
 			}
 		}
 	}
@@ -215,8 +237,6 @@ public class CommonTableElement {
 		else if (property.equals("tweakreverse") && (tweakreversePv != null)) {
 			return tweakreversePv.isReadOnly();
 		}
-		
-		
 		return true;
 	}
 	
