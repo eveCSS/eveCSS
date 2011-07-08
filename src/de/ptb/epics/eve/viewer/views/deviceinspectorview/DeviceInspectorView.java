@@ -30,7 +30,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPartService;
@@ -539,18 +538,22 @@ public class DeviceInspectorView extends ViewPart {
 		});
 		gotoColumn.getColumn().setWidth(100);
 		
-		TableViewerColumn stopColumn = 
+		TableViewerColumn startStopColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
-		stopColumn.getColumn().setText("Stop");
-		stopColumn.setEditingSupport(
+		startStopColumn.getColumn().setText("Start/Stop");
+		startStopColumn.setEditingSupport(
 				new CommonTableEditingSupport(axisTableViewer, "stop"));
-		stopColumn.setLabelProvider(new ColumnLabelProvider() {
+		startStopColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public Image getImage(Object element) {
 				CommonTableElement cte = (CommonTableElement) element;
 				if(cte.isConnected("stop")) {
+					if(cte.getValue("status") == "") {
+						
+					}
+					
 					return stopIcon;
 				} else {
-					return stopIconDisabled;
+					return playIconDisabled;
 				}
 			}
 			@Override public String getText(Object element) {return null;}
@@ -563,7 +566,7 @@ public class DeviceInspectorView extends ViewPart {
 				return null;
 			}
 		});
-		stopColumn.getColumn().setWidth(40);
+		startStopColumn.getColumn().setWidth(80);
 		
 		TableViewerColumn statusColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);

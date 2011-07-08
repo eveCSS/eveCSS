@@ -465,10 +465,10 @@ public class CommonTableElement {
 			return name;
 		else if (property.equals("value") && (valuePv != null))
 			return valuePv.getValue();
-		else if (property.equals("status") && (statusPv != null)){
+		else if (property.equals("status") && (statusPv != null)) {
 			String valueString = statusPv.getValue();
 			try {
-				int status = Integer.parseInt(valueString);
+				long status = Long.parseLong(valueString);
 				if (((status & 4) > 0) || ((status & 8192) > 0)) return "Limit";
 				else if ((status & 1024) > 0) return "Moving";
 				else return "Idle";

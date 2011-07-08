@@ -76,15 +76,22 @@ public class CommonTableElementPV implements PVListener {
 		if(pv.isConnected()) isConnected = true;
 		if(!pv.isWriteAllowed()) isReadOnly = true;
 		pvstatus  = pv.getValue().getSeverity().toString();
+		
 		this.value = ValueUtil.getString(pv.getValue());
+		
 		try {
-			Double.parseDouble(this.value);
-			this.value = String.format(
-					Locale.US, "%g", ValueUtil.getDouble(pv.getValue()));
-		} catch(final Exception e) {
-			// pv value is not a double
+			Long.parseLong(this.value);
+		} catch(NumberFormatException e) {
+			try {
+				Double.parseDouble(this.value);
+				this.value = String.format(
+						Locale.US, "%g", ValueUtil.getDouble(pv.getValue()));
+			} catch(NumberFormatException nfe) {
+				
+			}
 		}
-        final IMetaData meta = pv.getValue().getMetaData();
+		
+		final IMetaData meta = pv.getValue().getMetaData();
         // enum values override discreteValues
         if (meta instanceof IEnumeratedMetaData) {
         	this.discreteValues = ((IEnumeratedMetaData)meta).getStates();
