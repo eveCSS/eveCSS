@@ -10,16 +10,21 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.TableDropTargetEffect;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -31,6 +36,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPartService;
 import org.eclipse.ui.ISharedImages;
@@ -38,6 +45,7 @@ import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.PluginTransfer;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
@@ -265,7 +273,6 @@ public class DeviceInspectorView extends ViewPart {
 			axisTableMenuManager, axisTableViewer);
 		// end of: Motor Axes Composite
 		
-		
 		// Detector Channels Composite
 		detectorChannelsComposite = new Composite(sashForm, SWT.BORDER);
 		gridLayout = new GridLayout();
@@ -379,30 +386,24 @@ public class DeviceInspectorView extends ViewPart {
 			deviceTableMenuManager, deviceTableViewer);
 		// end of: Devices Composite
 		
-	
 		// TODO the sashes allow resizing beyond dimensions that make sense 
 		// (e.g. moving them to the top such that the table isn't visible 
 		// anymore) 
 		// if it is resized beyond this point it should be reset to a min height
-		
+		// below is an incomplete snippet
 		/*
 		// Set a minimum width on the sash so that the
-		// controls on the left are always visible.
+		// tables are always visible.
 
 		// First, find the sash child on the sashform...
 		Control[] comps = sashForm.getChildren();
 		for (Control comp : comps) {
-
 			if (comp instanceof Sash) {
-
 				final Sash sash = (Sash)comp;
-
 				sash.addSelectionListener (new SelectionAdapter () {
 					@Override public void widgetSelected (SelectionEvent event) {
 						if (event.detail != SWT.DRAG) {
-
-							
-							
+							// TODO resize
 							sashForm.layout();
 							logger.debug("min size");
 						}
@@ -444,6 +445,10 @@ public class DeviceInspectorView extends ViewPart {
 		delColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public Image getImage(Object element) {return deleteIcon;}
 			@Override public String getText(Object element) {return null;}
+			@Override public String getToolTipText(Object element) {
+				String name = ((CommonTableElement)element).getValue("name");
+				return "Remove \"" + name + "\"";
+			}
 		});
 		delColumn.getColumn().setWidth(22);
 		
@@ -621,8 +626,8 @@ public class DeviceInspectorView extends ViewPart {
 			@Override public String getToolTipText(Object element) {
 				MotorAxis axis = (MotorAxis) 
 						((CommonTableElement)element).getAbstractDevice();
-				if(axis.getTweakForward() != null && axis.getTweakForward().getAccess() != null) {
-					return axis.getTweakForward().getAccess().getVariableID();
+				if(axis.getTweakReverse() != null && axis.getTweakReverse().getAccess() != null) {
+					return axis.getTweakReverse().getAccess().getVariableID();
 				}
 				return null;
 			}
@@ -669,15 +674,15 @@ public class DeviceInspectorView extends ViewPart {
 			@Override public String getToolTipText(Object element) {
 				MotorAxis axis = (MotorAxis) 
 						((CommonTableElement)element).getAbstractDevice();
-				if(axis.getTweakReverse() !=  null && axis.getTweakReverse().getAccess() != null) {
-					return axis.getTweakReverse().getAccess().getVariableID();
+				if(axis.getTweakForward() !=  null && axis.getTweakForward().getAccess() != null) {
+					return axis.getTweakForward().getAccess().getVariableID();
 				} else {
 					return null;
 				}
 			}
 		});
 		tweakFColumn.getColumn().setWidth(22);
-	} 
+	}
 	
 	/*
 	 * Channel Table Columns
@@ -693,6 +698,10 @@ public class DeviceInspectorView extends ViewPart {
 		delColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public Image getImage(Object element) {return deleteIcon;}
 			@Override public String getText(Object element) {return null;}
+			@Override public String getToolTipText(Object element) {
+				String name = ((CommonTableElement)element).getValue("name");
+				return "Remove \"" + name + "\"";
+			}
 		});
 		delColumn.getColumn().setWidth(22);
 
@@ -707,11 +716,6 @@ public class DeviceInspectorView extends ViewPart {
 			}
 			@Override public Color getForeground(Object element) {
 				return ((CommonTableElement) element).getConnectColor("name");
-			}
-			@Override public String getToolTipText(Object element) {
-				DetectorChannel channel = (DetectorChannel) 
-						((CommonTableElement)element).getAbstractDevice();
-				return channel.getID();
 			}
 		});
 		nameColumn.getColumn().setWidth(200);
@@ -814,8 +818,10 @@ public class DeviceInspectorView extends ViewPart {
 		delColumn.getColumn().setMoveable(true);
 		delColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public Image getImage(Object element) {return deleteIcon;}
-			public String getText(Object element) {
-				return null;
+			@Override public String getText(Object element) {return null;}
+			@Override public String getToolTipText(Object element) {
+				String name = ((CommonTableElement)element).getValue("name");
+				return "Remove \"" + name + "\"";
 			}
 		});
 		delColumn.getColumn().setWidth(22);
@@ -832,11 +838,6 @@ public class DeviceInspectorView extends ViewPart {
 			}
 			@Override public Color getForeground(Object element) {
 				return ((CommonTableElement) element).getConnectColor("name");
-			}
-			@Override public String getToolTipText(Object element) {
-				Device device = (Device) 
-						((CommonTableElement)element).getAbstractDevice();
-				return device.getID();
 			}
 		});
 		nameColumn.getColumn().setWidth(100);
