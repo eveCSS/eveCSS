@@ -7,6 +7,9 @@ import org.apache.log4j.Logger;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationListener;
+import org.eclipse.jface.viewers.ColumnViewerEditorDeactivationEvent;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -115,6 +118,10 @@ public class DeviceInspectorView extends ViewPart {
 	// listens to the event that the part becomes visible in order to update 
 	// the static property activeDeviceInspector
 	private DeviceInspectorViewPartListener deviceInspectorViewPartListener;
+	
+	// listens to events of the cell editor of the motor axis table
+	private AxisTableColumnEditorActivationListener 
+			axisTableColumnEditorActivationListener;
 	
 	private IMemento memento;
 	
@@ -395,7 +402,7 @@ public class DeviceInspectorView extends ViewPart {
 				sash.addSelectionListener (new SelectionAdapter () {
 					@Override public void widgetSelected (SelectionEvent event) {
 						if (event.detail != SWT.DRAG) {
-							// TODO resize
+							// resize here
 							sashForm.layout();
 							logger.debug("min size");
 						}
@@ -404,6 +411,11 @@ public class DeviceInspectorView extends ViewPart {
 			}
 		}
 		*/
+		
+		axisTableColumnEditorActivationListener = 
+				new AxisTableColumnEditorActivationListener();
+		axisTableViewer.getColumnViewerEditor().addEditorActivationListener(
+				axisTableColumnEditorActivationListener);
 		
 		restoreState();
 		
@@ -457,7 +469,7 @@ public class DeviceInspectorView extends ViewPart {
 				return ((CommonTableElement) element).getConnectColor("value");
 			}
 		});
-		nameColumn.getColumn().setWidth(100);
+		nameColumn.getColumn().setWidth(200);
 		
 		TableViewerColumn valueColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
@@ -538,22 +550,17 @@ public class DeviceInspectorView extends ViewPart {
 		});
 		gotoColumn.getColumn().setWidth(100);
 		
-		TableViewerColumn startStopColumn = 
+		TableViewerColumn stopColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
-		startStopColumn.getColumn().setText("Start/Stop");
-		startStopColumn.setEditingSupport(
+		stopColumn.setEditingSupport(
 				new CommonTableEditingSupport(axisTableViewer, "stop"));
-		startStopColumn.setLabelProvider(new ColumnLabelProvider() {
+		stopColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override public Image getImage(Object element) {
 				CommonTableElement cte = (CommonTableElement) element;
 				if(cte.isConnected("stop")) {
-					if(cte.getValue("status") == "") {
-						
-					}
-					
 					return stopIcon;
 				} else {
-					return playIconDisabled;
+					return stopIconDisabled;
 				}
 			}
 			@Override public String getText(Object element) {return null;}
@@ -566,7 +573,7 @@ public class DeviceInspectorView extends ViewPart {
 				return null;
 			}
 		});
-		startStopColumn.getColumn().setWidth(80);
+		stopColumn.getColumn().setWidth(22);
 		
 		TableViewerColumn statusColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
@@ -678,7 +685,16 @@ public class DeviceInspectorView extends ViewPart {
 			}
 		});
 		tweakFColumn.getColumn().setWidth(22);
-	}
+		
+		TableViewerColumn emptyColumn = 
+				new TableViewerColumn(axisTableViewer, SWT.NONE);
+		emptyColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override public String getText(Object element) {
+				return null;
+			}
+		});
+		emptyColumn.getColumn().setWidth(1);
+	} // end of: createMotorTableColumns
 	
 	/*
 	 * Channel Table Columns
@@ -798,7 +814,16 @@ public class DeviceInspectorView extends ViewPart {
 			}
 		});
 		triggerColumn.getColumn().setWidth(22);
-	}
+		
+		TableViewerColumn emptyColumn = 
+			new TableViewerColumn(channelTableViewer, SWT.NONE);
+		emptyColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override public String getText(Object element) {
+				return null;
+			}
+		});
+		emptyColumn.getColumn().setWidth(1);
+	} // end of: createChannelTableColumns
 	
 	/*
 	 * Device Table Columns
@@ -836,7 +861,7 @@ public class DeviceInspectorView extends ViewPart {
 				return ((CommonTableElement) element).getConnectColor("name");
 			}
 		});
-		nameColumn.getColumn().setWidth(100);
+		nameColumn.getColumn().setWidth(200);
 
 		TableViewerColumn valueColumn = 
 				new TableViewerColumn(deviceTableViewer, SWT.NONE);
@@ -882,6 +907,15 @@ public class DeviceInspectorView extends ViewPart {
 			}
 		});
 		unitColumn.getColumn().setWidth(35);
+		
+		TableViewerColumn emptyColumn = 
+			new TableViewerColumn(deviceTableViewer, SWT.NONE);
+		emptyColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override public String getText(Object element) {
+				return null;
+			}
+		});
+		emptyColumn.getColumn().setWidth(1);
 	} // end of: createDeviceTableColumns
 	
 	/**
@@ -1123,6 +1157,10 @@ public class DeviceInspectorView extends ViewPart {
 			(IPartService) getSite().getService(IPartService.class);
 		service.removePartListener(deviceInspectorViewPartListener);
 		
+		axisTableViewer.getColumnViewerEditor().removeEditorActivationListener(
+				axisTableColumnEditorActivationListener);
+		
+		axisTableColumnEditorActivationListener = null;
 		getSite().setSelectionProvider(null);
 		selectionProviderWrapper = null;
 		
@@ -1576,6 +1614,56 @@ public class DeviceInspectorView extends ViewPart {
 		@Override
 		public void focusLost(FocusEvent arg0) {
 			deviceTableViewer.getTable().deselectAll();
+		}
+	}
+	
+	// **********************
+	
+	/**
+	 * 
+	 */
+	class AxisTableColumnEditorActivationListener 
+								extends ColumnViewerEditorActivationListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void beforeEditorActivated(
+				ColumnViewerEditorActivationEvent event) {
+			logger.debug("before editor activated");
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void afterEditorActivated(
+				ColumnViewerEditorActivationEvent event) {
+			logger.debug("after editor activated");
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void beforeEditorDeactivated(
+				ColumnViewerEditorDeactivationEvent event) {
+			logger.debug("before editor deactivated");
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void afterEditorDeactivated(
+				ColumnViewerEditorDeactivationEvent event) {
+			logger.debug("after editor deactivated");
+			if(event.eventType == ColumnViewerEditorDeactivationEvent.EDITOR_CANCELED) {
+				logger.debug("(editor canceled)");
+			} else if(event.eventType == ColumnViewerEditorDeactivationEvent.EDITOR_SAVED) {
+				logger.debug("(editor saved)");
+			}
 		}
 	}
 }

@@ -21,6 +21,7 @@ public class DeviceOptionsLabelProvider implements ITableLabelProvider, ITableCo
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Image getColumnImage(final Object element, final int columnIndex) {
 		return null;
 	}
@@ -28,37 +29,13 @@ public class DeviceOptionsLabelProvider implements ITableLabelProvider, ITableCo
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getColumnText(final Object element, int columnIndex) {
 		final OptionConnector optionConnector = (OptionConnector)element;
 		if(columnIndex == 0) {
 			return optionConnector.getOption().getName();
 		}
 		return optionConnector.getValue();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void dispose() {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public boolean isLabelProperty(final Object element, final String property) {
-		return false;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void addListener(final ILabelProviderListener listener) {
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public void removeListener(final ILabelProviderListener listener) {
 	}
 
 	/**
@@ -82,5 +59,36 @@ public class DeviceOptionsLabelProvider implements ITableLabelProvider, ITableCo
 			return Activator.getDefault().getColor("COLOR_PV_OK");
 		else
 			return Activator.getDefault().getColor("COLOR_PV_ALARM");
+	}
+	
+	
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isLabelProperty(final Object element, final String property) {
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void addListener(final ILabelProviderListener listener) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void removeListener(final ILabelProviderListener listener) {
 	}
 }

@@ -469,9 +469,17 @@ public class CommonTableElement {
 			String valueString = statusPv.getValue();
 			try {
 				long status = Long.parseLong(valueString);
-				if (((status & 4) > 0) || ((status & 8192) > 0)) return "Limit";
-				else if ((status & 1024) > 0) return "Moving";
-				else return "Idle";
+				if((status & 4) > 0) {
+					return "Limit (+)";
+				} else if ((status & 8) > 0 || (status & 128) > 0) {
+					return "Home";
+				} else if ((status & 1024) > 0) {
+					return "Moving";
+				} else if ((status & 8192) > 0) {
+					return "Limit (-)";
+				} else {
+					return "Idle";
+				}
 			} catch (Exception e) {
 				return valueString;
 			}

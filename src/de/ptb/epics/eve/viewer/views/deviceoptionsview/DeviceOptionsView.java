@@ -42,7 +42,10 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	/** the unique identifier of this view */
 	public static final String ID = "DeviceOptionsView";
 	
-	/** the secondary id of the <code>DeviceOptionsView</code> that is shown */
+	/** 
+	 * The secondary id of the <code>DeviceOptionsView</code> that is shown. 
+	 * (Changes in the selection service will be addressed only by this one) 
+	 */
 	public static String activeDeviceOptionsView;
 	
 	private static Logger logger = 
@@ -53,13 +56,16 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	// underlying model of this view
 	private AbstractDevice device;
 	
+	// ensures that the right Device Options View is active after a perspective 
+	// switch.
 	private DeviceOptionsViewPartListener deviceOptionsViewPartListener;
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void init(final IViewSite site, final IMemento memento) 
 													throws PartInitException {
-		//site.getWorkbenchWindow().getActivePage().getPerspective().getId();
-		
 		super.init(site, memento);
 		if(memento != null) {
 			final String identifier = memento.getString("device");
@@ -103,13 +109,17 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 		
 		this.tableViewer.getTable().setHeaderVisible(true);
 		this.tableViewer.getTable().setLinesVisible(true);
-		
+
 		this.tableViewer.setContentProvider(new DeviceOptionsContentProvider());
 		this.tableViewer.setLabelProvider(new DeviceOptionsLabelProvider());
 		final CellEditor[] editors = new CellEditor[2];
 		
 		editors[0] = null;
-		editors[1] = new TextCellEditor(this.tableViewer.getTable());
+		editors[1] = new TextCellEditor(this.tableViewer.getTable()) {
+			@Override protected void focusLost() {
+				fireCancelEditor();
+			}
+		};
 		
 		this.tableViewer.setCellModifier(
 				new DeviceOptionsCellModifier(this.tableViewer));
@@ -186,18 +196,18 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	 * {@link org.eclipse.jface.viewers.IStructuredSelection} and the contained 
 	 * data is either a 
 	 * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement}
-	 * or an {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} its 
-	 * options will be displayed.
+	 * (a row in one of the device inspector tables) 
+	 * or an {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} 
+	 * (an item in the devices view tree) its options will be displayed.
 	 */
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		// if this view instance is not the currently active one 
 		// (the one in front) -> do nothing
-		if(activeDeviceOptionsView == null ||
-		  !(activeDeviceOptionsView.equals(this.getViewSite().getSecondaryId()))) {
+		if (activeDeviceOptionsView == null ||
+			!(activeDeviceOptionsView.equals(this.getViewSite().getSecondaryId()))) {
 			return;
 		}
-		
 		if(logger.isDebugEnabled() && selection != null) {
 			logger.debug(selection.toString());
 		}
@@ -212,15 +222,30 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 			// one device we take the first element of the selection
 			Object o = ((IStructuredSelection) selection).toList().get(0);
 			if(o instanceof CommonTableElement) {
+				if (this.device != null && this.device.equals(
+					((CommonTableElement)o).getAbstractDevice())) {
+						// the same element in the inspector was selected again
+						return;
+				}
 				// the selection is a tableViewer selection (from the inspector)
 				this.device = ((CommonTableElement)o).getAbstractDevice();
 				this.tableViewer.setInput(device);
 				this.setPartName(device.getFullIdentifyer());
 			} else if(o instanceof AbstractDevice) {
+				if (this.device != null && this.device.equals(
+					(AbstractDevice)o)) {
+						// the same element in the options was selected again
+						return;
+				}
+				
 				// the selection is from a treeViewer (DevicesView)
 				this.device = (AbstractDevice)o;
 				this.tableViewer.setInput(device);
 				this.setPartName(device.getFullIdentifyer());
+			} else {
+				this.tableViewer.setInput(null);
+				this.device = null;
+				this.setPartName("nothing selected");
 			}
 		} else {
 			this.tableViewer.setInput(null);
@@ -233,6 +258,14 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	 * Sets the device of which options should be shown.
 	 * 
 	 * @param device the device that should be set
+	 * @deprecated To ensure a loose coupling, the eclipse built-in selection 
+	 * service should be used instead.The <code>DeviceOptionsView</code> 
+	 * implements {@link org.eclipse.ui.ISelectionListener} and registers 
+	 * itself to the selection service. Parties interested in showing options 
+	 * of a device should register a selection provider. Consult the 
+	 * <a href="http://www.eclipse.org/articles/Article-WorkbenchSelections/article.html">
+	 * Eclipse Article</a> for further details.
+	 * 
 	 */
 	public void setDevice(final AbstractDevice device) {
 		this.device = device;

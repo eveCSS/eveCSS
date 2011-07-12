@@ -68,7 +68,16 @@ public class CommonTableEditingSupport extends EditingSupport {
 				ctb.setCellEditor(new ComboBoxCellEditor(viewer.getTable(), 
 						ctb.getSelectStrings(column)), column);
 			} else {
-				ctb.setCellEditor(new TextCellEditor(viewer.getTable()), column);
+				TextCellEditor textCellEditor = 
+						new TextCellEditor(viewer.getTable()) {
+					@Override protected void focusLost() {
+						if (isActivated()) {
+							fireCancelEditor();
+						}
+						deactivate();
+					}
+				};
+				ctb.setCellEditor(textCellEditor, column);
 			}
 		}
 		return ctb.getCellEditor(column);
