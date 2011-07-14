@@ -25,7 +25,6 @@ import de.ptb.epics.eve.data.measuringstation.Access;
 import de.ptb.epics.eve.data.measuringstation.Unit;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 
-
 /**
  * This class is a SAX Handler to load a measuring station description.
  * 
@@ -34,87 +33,71 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
  */
 public class MeasuringStationLoaderHandler extends DefaultHandler {
 
-	/**
-	 * The measuring station object that is constructed by this handler.
-	 * 
-	 */
+	// the measuring station object that is constructed by this handler
 	private MeasuringStation measuringStation;
 	
 	/**
 	 * The current state of the handler.
-	 * 
 	 */
 	private MeasuringStationLoaderStates state;
 	
 	/**
 	 * The current sub state of the handler.
-	 * 
 	 */
 	private MeasuringStationLoaderSubStates subState;
 	
 	/**
 	 * The current plug in that is loaded by the handler.
-	 * 
 	 */
 	private PlugIn currentPlugin;
 	
 	/**
 	 * The current plug in parameter that is loaded by the handler.
-	 * 
 	 */
 	private PluginParameter currentPluginParameter;
 	
 	/**
 	 * The current detector that is loaded by the handler.
-	 * 
 	 */
 	private Detector currentDetector;
 	
 	/**
 	 * The current option that is loaded by the handler.
-	 * 
 	 */
 	private Option currentOption;
 	
 	/**
 	 * The current unit that is loaded by the handler.
-	 * 
 	 */
 	private Unit currentUnit;
 	
 	/**
 	 * The current function that is loaded by the handler.
-	 * 
 	 */
 	private Function currentFunction;
 	
 	/**
 	 * The current detector channel that is loaded by the handler.
-	 * 
 	 */
 	private DetectorChannel currentDetectorChannel;
 	
 	/**
 	 * The current motor that is loaded by the handler.
-	 * 
 	 */
 	private Motor currentMotor;
 	
 	/**
 	 * The current motor axis that is loaded by the handler.
-	 * 
 	 */
 	private MotorAxis currentMotorAxis;
 	
 	/**
 	 * The current device that is loaded by the handler.
-	 * 
 	 */
 	private Device currentDevice;
 	
 	/**
 	 * The current text buffer that is used for some operations.
-	 * 
 	 */
 	private StringBuffer textBuffer;
 		
@@ -148,6 +131,8 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			case ROOT:
 				if( qName.equals( "version" ) ) {
 					this.state = MeasuringStationLoaderStates.VERSION_NEXT;
+				} else if(qName.equals("measuringstation")) {
+					this.state = MeasuringStationLoaderStates.MEASURINGSTATION_NEXT;
 				} else if( qName.equals( "plugins" ) ) {
 					this.state = MeasuringStationLoaderStates.PLUGINS_LOADING;
 				} else if( qName.equals( "detectors" ) ) {
@@ -324,6 +309,10 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				} else if( qName.equals( "offset" ) ) {
 					this.currentFunction = new Function();
 					this.state = MeasuringStationLoaderStates.MOTOR_AXIS_OFFSET_LOADING;
+					this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
+				} else if(qName.equals("setmode")) {
+					this.currentFunction = new Function();
+					this.state = MeasuringStationLoaderStates.MOTOR_AXIS_SETMODE_LOADING;
 					this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 				} else if( qName.equals( "tweakvalue" ) ) {
 					this.currentFunction = new Function();
@@ -504,6 +493,11 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			this.state = MeasuringStationLoaderStates.VERSION_READ;
 			break;
 		
+		case MEASURINGSTATION_NEXT:
+			this.measuringStation.setName(textBuffer.toString());
+			this.state = MeasuringStationLoaderStates.MEASURINGSTATION_READ;
+			break;
+			
 		case PLUGIN_NAME_NEXT:
 			this.currentPlugin.setName( textBuffer.toString() );
 			this.state = MeasuringStationLoaderStates.PLUGIN_NAME_READ;
@@ -668,6 +662,12 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		switch( this.state ) {
 			case VERSION_READ:
 				if( qName.equals( "version" ) ) {
+					this.state = MeasuringStationLoaderStates.ROOT;
+				}
+				break;
+				
+			case MEASURINGSTATION_READ:
+				if(qName.equals("measuringstation")) {
 					this.state = MeasuringStationLoaderStates.ROOT;
 				}
 				break;
@@ -938,6 +938,13 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 					this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
 				}
 				break;
+				
+			case MOTOR_AXIS_SETMODE_LOADING:
+				if(qName.equals("setmode")) {
+					this.currentMotorAxis.setSet(this.currentFunction);
+					this.subState = MeasuringStationLoaderSubStates.NONE;
+					this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
+				}
 				
 			case MOTOR_AXIS_TWEAKVALUE_LOADING:
 				if( qName.equals( "tweakvalue" ) ) {

@@ -11,53 +11,38 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  */
 public class MotorAxis extends AbstractMainPhaseDevice {
 
-	/**
-	 * The position function.
-	 */
+	// the position (read back value)
 	private Function position;
 	
-	/**
-	 * The status function.
-	 */
+	// the status
 	private Function status;
 	
-	/**
-	 * The goto of the motor axis.
-	 */
+	// the goto of the motor axis
 	private Function gotoAdvisor;
 	
-	/**
-	 * The stop trigger.
-	 */
+	// the stop trigger
 	private Function stop;
 	
-	/**
-	 * accepted deviation from target position
-	 */
+	// accepted deviation from target position
 	private Function deadband;
 	
-	/**
-	 * offset between user and system coordinates
-	 */
+	// offset between user and system coordinates
 	private Function offset;
 	
-	/**
-	 * value used for tweak forward / reverse
-	 */
+	// the position mode (set or use)
+	private Function set;
+	
+	// value used for tweak forward / reverse
 	private Function tweakValue;
 	
-	/**
-	 * tweak forward
-	 */
+	// tweak forward
 	private Function tweakForward;
 	
-	/**
-	 * tweak reverse
-	 */
+	// tweak reverse
 	private Function tweakReverse;
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public MotorAxis() {
 		this(new Function(), null, new Function(), new Function());
@@ -87,7 +72,6 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 			throw new IllegalArgumentException(
 					"The parameter 'stop' must not be null!");
 		}
-		
 		this.position = position;
 		this.status = status;
 		this.gotoAdvisor = gotoAdvisor;
@@ -133,6 +117,28 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 		return this.stop;
 	}
 
+	/**
+	 * Returns the set <code>Function</code>.
+	 * 
+	 * @return the set <code>Function</code>
+	 */
+	public Function getSet() {
+		return this.set;
+	}
+	
+	/**
+	 * Sets the set <code>Function</code>.
+	 * 
+	 * @param set the set <code>Function</code> that should be set
+	 * @throws IllegalArgumentException if <code>set</code> is <code>null</code>
+	 */
+	public void setSet(final Function set) {
+		if(set == null) {
+			throw new IllegalArgumentException("The parameter must not be null");
+		}
+		this.set = set;
+	}
+	
 	/**
 	 * Sets the goto <code>Function</code> of the motor axis.
 	 * 
@@ -185,9 +191,8 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * Sets the parent device.
+	 * {@inheritDoc}
 	 * 
-	 * @param parent The parent that should be set
 	 * @throws ParentNotAllowedException if parent Device incompatible
 	 */
 	@Override

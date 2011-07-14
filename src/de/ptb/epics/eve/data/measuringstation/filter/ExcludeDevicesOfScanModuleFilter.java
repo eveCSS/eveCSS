@@ -229,6 +229,14 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public String getName() {
+		return this.getSource().getName();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public PlugIn getPluginByName(final String name) {
 		return this.pluginsMap.get(name);
 	}

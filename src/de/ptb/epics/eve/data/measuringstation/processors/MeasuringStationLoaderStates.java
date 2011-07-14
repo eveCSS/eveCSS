@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.measuringstation.processors;
 
 /**
@@ -31,6 +24,16 @@ public enum MeasuringStationLoaderStates {
 	 * close version tag.
 	 */
 	VERSION_READ,
+	
+	/**
+	 * 
+	 */
+	MEASURINGSTATION_NEXT,
+
+	/**
+	 * 
+	 */
+	MEASURINGSTATION_READ,
 	
 	/**
 	 * The begin tag of the plug ins section has been read.
@@ -335,6 +338,11 @@ public enum MeasuringStationLoaderStates {
 	 * The offset of a motor axis is loading. Processing is done in sub states.
 	 */
 	MOTOR_AXIS_OFFSET_LOADING,
+	
+	/**
+	 * set or use
+	 */
+	MOTOR_AXIS_SETMODE_LOADING,
 	
 	/**
 	 * The tweak value of a motor axis is loading. Processing is done in sub 

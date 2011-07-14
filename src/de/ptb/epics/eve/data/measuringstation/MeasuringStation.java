@@ -28,6 +28,9 @@ public class MeasuringStation implements IMeasuringStation {
 	// the name of the schema file used for validation of the measuring station
 	private String schemaFileName;
 	
+	// the name of the measuring station (e.g., sx700, qnim, ...)
+	private String name;
+	
 	// TODO
 	// we have a List and a Map for events, plug ins, channels, axes
 	// they are not necessarily equal, (maps are unique) 
@@ -122,6 +125,24 @@ public class MeasuringStation implements IMeasuringStation {
 		schemaFileName = filename;
 	}
 
+	/**
+	 * Returns the name.
+	 * 
+	 * @return the name
+	 */
+	public String getName() {
+		return this.name;
+	}
+	
+	/**
+	 * Sets the name.
+	 * 
+	 * @param name the name that should be set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	// *************************
 	
 	/**

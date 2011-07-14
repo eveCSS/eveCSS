@@ -91,6 +91,13 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	public abstract String getSchemaFileName();
 
 	/**
+	 * Returns the name of the measuring station.
+	 * 
+	 * @return the name of the measuring station
+	 */
+	public abstract String getName();
+	
+	/**
 	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.PlugIn} with 
 	 * the given name.
 	 * 

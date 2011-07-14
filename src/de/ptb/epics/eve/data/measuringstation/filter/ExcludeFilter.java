@@ -192,6 +192,14 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	public String getName() {
+		return this.getSource().getName();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	public PlugIn getPluginByName(final String name) {
 		return this.pluginsMap.get(name);
 	}
