@@ -28,25 +28,31 @@ public class EvePreferencePage extends FieldEditorPreferencePage
 	 */
 	@Override
 	public void createFieldEditors() {
-		FileFieldEditor fileFieldEditor = new FileFieldEditor(
+		FileFieldEditor stationFileFieldEditor = new FileFieldEditor(
 				PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION, 
 				"device definition file:", this.getFieldEditorParent());
-		fileFieldEditor.setFileExtensions(new String[]{"*.xml"});
+		stationFileFieldEditor.setFileExtensions(new String[]{"*.xml"});
+		
+		FileFieldEditor engineFileFieldEditor = new FileFieldEditor(
+				PreferenceConstants.P_DEFAULT_ENGINE_LOCATION, 
+				"Engine location:", this.getFieldEditorParent());
 		
 		String rootdir = Activator.getDefault().getRootDirectory();
 		File file = new File(rootdir + "scml/");
 		if(file.exists()) {
 			// TODO set filter path to "file" (introduced in Eclipse 3.6 - Bug # 184)
+			// with fileFieldEditor.setFilterPath...
 		} else {
 			// TODO set filter path to "new File(rootdir)"
 		}
 		file = null;
 		
-		addField(fileFieldEditor);
+		addField(stationFileFieldEditor);
 		addField(new StringFieldEditor(
 				PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS, 
 				"Engine (name:port):", 
 				this.getFieldEditorParent()));
+		addField(engineFileFieldEditor);
 	}
 	
 	/**

@@ -12,9 +12,6 @@
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="de.ptb.epics.eve.preferences.PreferenceInitializer">
-      </initializer>
    </extension>
 
 </plugin>
