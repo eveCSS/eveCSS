@@ -252,10 +252,10 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		String tooltip = "The file name where the data should be saved.\n " +
 						"Use wild cards as followed:\n" + 
 						"${WEEK} : calendar week\n" + 
-						"${DATE} : date as YYYYMMDD (e.g., 20111231)\n" + 
-						"${DATE-} : date as YYYY-MM-DD (e.g., 2011-12-31)\n" + 
-						"${TIME} : time as hhmmss\n" +
-						"${TIME-} : time as hh-mm-ss";
+						"${DATE} : date as yyyyMMdd (e.g., 20111231)\n" + 
+						"${DATE-} : date as yyyy-MM-dd (e.g., 2011-12-31)\n" + 
+						"${TIME} : time as HHmmss\n" +
+						"${TIME-} : time as HH-mm-ss";
 		this.filenameInput.setToolTipText(tooltip);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;

@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.motoraxisview;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Text;
@@ -132,6 +135,10 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		this.startCombo.addModifyListener(startComboModifyListener);
 		this.startComboSelectionListener = new StartComboSelectionListener();
 		this.startCombo.addSelectionListener(startComboSelectionListener);
+		String tooltip = "The input format for datetime values are\n " +
+		"yyyy-MM-dd HH:mm:ss.SSS\n" + 
+		"or HH:mm:ss.SSS";
+		this.startCombo.setToolTipText(tooltip);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -157,6 +164,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		this.stopCombo.addModifyListener(stopComboModifyListener);
 		this.stopComboSelectionListener = new StopComboSelectionListener();
 		this.stopCombo.addSelectionListener(stopComboSelectionListener);
+		this.stopCombo.setToolTipText(tooltip);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -179,6 +187,8 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		this.stepwidthText.addVerifyListener(stepwidthTextVerifyListener);
 		this.stepwidthTextModifyListener = new StepwidthTextModifyListener();
 		this.stepwidthText.addModifyListener(stepwidthTextModifyListener);
+		String tooltip2 = "The input format for datetime values are HH:mm:ss.SSS";
+		this.stepwidthText.setToolTipText(tooltip2);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -286,6 +296,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 				this.stopCombo.setEditable(true);
 				this.stopCombo.setVisibleItemCount(0);
 			}
+			
 			this.startCombo.setText(this.currentAxis.getStart() != null
 								    ? this.currentAxis.getStart()
 								    : "");
@@ -432,6 +443,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		boolean stopOk = true;
 		boolean stepwidthOk = true;
 		boolean stepcountOk = true;
+
 		
 		for (IModelError error: this.currentAxis.getModelErrors()) {
 			if( error instanceof AxisError) {
@@ -461,10 +473,25 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 				if ( stopOk && stepwidthOk && stepcountOk) {
 					// Alle Werte OK, Start-Wert kann berechnet werden
 					if( !this.currentAxis.getMotorAxis().getGoto().isDiscrete() ) {
-						final double stop = Double.parseDouble( this.startCombo.getText() );
-						final double stepwidth = Double.parseDouble( this.stepwidthText.getText() );
-						final double stepcount = Double.parseDouble( this.stepcountText.getText() );
 
+						double stop;
+						double stepwidth;
+						double stepcount;
+						
+						switch( this.currentAxis.getMotorAxis().getPosition().getType()) {
+							case DATETIME:
+								System.out.println("AutoFill für DATETIME fehlt noch");
+								stop = 0;
+								stepwidth = 0;
+								stepcount = 0;
+								break;
+							default:
+								stop = Double.parseDouble( this.stopCombo.getText() );
+								stepwidth = Double.parseDouble( this.stepwidthText.getText() );
+								stepcount = Double.parseDouble( this.stepcountText.getText() );
+								break;
+						}
+						
 						this.startCombo.setText( "" + (stop - (stepwidth * stepcount) ) );
 						currentAxis.setStart(this.startCombo.getText());
 					} else {
@@ -491,9 +518,24 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 			} else if( this.autoFillStopRadioButton.getSelection() ) {
 				if ( startOk && stepwidthOk && stepcountOk) {
 					if( !this.currentAxis.getMotorAxis().getGoto().isDiscrete() ) {
-						final double start = Double.parseDouble( this.startCombo.getText() );
-						final double stepwidth = Double.parseDouble( this.stepwidthText.getText() );
-						final double stepcount = Double.parseDouble( this.stepcountText.getText() );
+
+						double start;
+						double stepwidth;
+						double stepcount;
+						
+						switch( this.currentAxis.getMotorAxis().getPosition().getType()) {
+							case DATETIME:
+								System.out.println("AutoFill für DATETIME fehlt noch");
+								start = 0;
+								stepwidth = 0;
+								stepcount = 0;
+								break;
+							default:
+								start = Double.parseDouble( this.startCombo.getText() );
+								stepwidth = Double.parseDouble( this.stepwidthText.getText() );
+								stepcount = Double.parseDouble( this.stepcountText.getText() );
+								break;
+						}
 
 						this.stopCombo.setText( "" + (start + (stepwidth * stepcount) ) );
 						currentAxis.setStop(this.startCombo.getText());
@@ -521,9 +563,24 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 			} else if( this.autoFillStepwidthRadioButton.getSelection() ) {
 				if ( startOk && stopOk && stepcountOk) {
 					if( !this.currentAxis.getMotorAxis().getGoto().isDiscrete() ) {
-						final double start = Double.parseDouble( this.startCombo.getText() );
-						final double stop = Double.parseDouble( this.stopCombo.getText() );
-						final double stepcount = Double.parseDouble( this.stepcountText.getText() );
+
+						final double start;
+						final double stop;
+						final double stepcount;
+						
+						switch( this.currentAxis.getMotorAxis().getPosition().getType()) {
+							case DATETIME:
+							   System.out.println("AutoFill für DATETIME fehlt noch");
+							   start = 0;
+							   stop = 0;
+							   stepcount = 0;
+							   break;
+							default:
+								start = Double.parseDouble( this.startCombo.getText() );
+								stop = Double.parseDouble( this.stopCombo.getText() );
+								stepcount = Double.parseDouble( this.stepcountText.getText() );
+								break;
+						}
 								
 						if ( !this.stepwidthText.getText().equals("")) {
 							// stepwidth Eintrag schon vorhanden
@@ -580,9 +637,24 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 			} else if( this.autoFillStepcountRadioButton.getSelection() ) {
 				if ( startOk && stopOk && stepwidthOk) {
 					if( !this.currentAxis.getMotorAxis().getGoto().isDiscrete() ) {
-						final double start = Double.parseDouble( this.startCombo.getText() );
-						final double stop = Double.parseDouble( this.stopCombo.getText() );
-						double stepwidth = Double.parseDouble( this.stepwidthText.getText() );
+
+						double start;
+						double stop;
+						double stepwidth;
+						
+						switch( this.currentAxis.getMotorAxis().getPosition().getType()) {
+							case DATETIME:
+								System.out.println("AutoFill für DATETIME fehlt noch");
+								start = 0;
+								stop = 0;
+								stepwidth = 0;
+								break;
+							default:
+								start = Double.parseDouble( this.startCombo.getText() );
+								stop = Double.parseDouble( this.stopCombo.getText() );
+								stepwidth = Double.parseDouble( this.stepwidthText.getText() );
+								break;
+						}
 
 						if ((start - stop) > 0) {
 							// stepwidth muß negativ sein!
@@ -873,17 +945,32 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 
 			motorAxisView.suspendModelUpdateListener();
 			removeListeners();
+			
 			if( currentAxis != null ) {
-				// if string is a double set value in model
-				// else set null in model
-				try {
-					Double.parseDouble( startCombo.getText() );
-					currentAxis.setStart(startCombo.getText());
-					autoFill();	
-				} catch( final NumberFormatException ex ) {
-					// string is not a double
-					System.out.println("String ist leer oder kein double");
-					currentAxis.setStart(null);
+				
+				switch (	currentAxis.getMotorAxis().getPosition().getType()) {
+					case DATETIME:
+						if (currentAxis.getMotorAxis().isValuePossible(startCombo.getText())) {
+							currentAxis.setStart(startCombo.getText());
+							autoFill();	
+						}
+						else {
+							currentAxis.setStart(null);
+						}
+						break;
+					default: 
+						// if string is a double set value in model
+						// else set null in model
+						try {
+							Double.parseDouble( startCombo.getText() );
+							currentAxis.setStart(startCombo.getText());
+							autoFill();	
+						} catch( final NumberFormatException ex ) {
+							// string is not a double
+							System.out.println("String ist leer oder kein double");
+							currentAxis.setStart(null);
+						}
+						break;
 				}
 			}
 			checkForErrors();
@@ -966,20 +1053,32 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 			motorAxisView.suspendModelUpdateListener();
 			removeListeners();
 			if( currentAxis != null ) {
-				// if string is a double set value in model
-				// else set null in model
-				try {
-					Double.parseDouble( stopCombo.getText() );
-					currentAxis.setStop(stopCombo.getText());
-					autoFill();	
-				} catch( final NumberFormatException ex ) {
-					// string is not a double
-					currentAxis.setStop(null);
+				switch (	currentAxis.getMotorAxis().getPosition().getType()) {
+					case DATETIME:
+						if (currentAxis.getMotorAxis().isValuePossible(stopCombo.getText())) {
+							currentAxis.setStop(stopCombo.getText());
+							autoFill();	
+						}
+						else {
+							currentAxis.setStop(null);
+						}
+						break;
+					default: 
+						// if string is a double set value in model
+						// else set null in model
+						try {
+							Double.parseDouble( stopCombo.getText() );
+							currentAxis.setStop(stopCombo.getText());
+							autoFill();	
+						} catch( final NumberFormatException ex ) {
+							// string is not a double
+							currentAxis.setStop(null);
+						}
 				}
+				checkForErrors();
+				addListeners();
+				motorAxisView.resumeModelUpdateListener();
 			}
-			checkForErrors();
-			addListeners();
-			motorAxisView.resumeModelUpdateListener();
 		}
 	}
 
@@ -1070,13 +1169,31 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 					}
 				}
 				else {
-					try {
-						Double.parseDouble( stepwidthText.getText() );
-						currentAxis.setStepwidth(stepwidthText.getText());
-						autoFill();	
-					} catch( final NumberFormatException ex ) {
-						// string is not a double
-						currentAxis.setStepwidth(null);
+					switch (	currentAxis.getMotorAxis().getPosition().getType()) {
+						case DATETIME:
+							// Abfrage auf Datetime Format muß reduziert werden.
+							// Eingabe darf nur HH:mm:ss.SSS enthalten, deshalb 
+							// wird nicht auf isValuePossible abgefragt
+							DateFormat formatTime = DateFormat.getTimeInstance();
+							try {
+								formatTime.setLenient(false);
+								formatTime.parse(stepwidthText.getText());
+								currentAxis.setStepwidth( stepwidthText.getText() );
+								autoFill();	
+							}
+							catch (final ParseException ef ){
+								currentAxis.setStepwidth(null);
+							}
+							break;
+						default: 
+							try {
+								Double.parseDouble( stepwidthText.getText() );
+								currentAxis.setStepwidth(stepwidthText.getText());
+								autoFill();	
+							} catch( final NumberFormatException ex ) {
+								// string is not a double
+								currentAxis.setStepwidth(null);
+							}
 					}
 				}
 			}
@@ -1213,36 +1330,65 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 
 			String oldText = ((CCombo)(e.widget)).getText();
 			
-			if (!Character.isDigit(e.character)) {  
-				if (e.character == '.') {
-					// charecter . is a valid character, if he is not in the old string
-					if (oldText.contains("."))
-						e.doit = false;
-				} 
-				else if (e.character == '-') {
-					// charecter - is a valid character as first sign and after an e
-					if (oldText.isEmpty()) {
-						// oldText is emtpy, - is valid
-					}
-					else {
-						// wenn das letzte Zeichen von oldText ein e ist, ist das minus auch erlaubt
-						int index = oldText.length();
-						if (oldText.substring(index-1).equals("e")) {
-							// letzte Zeichen ist ein e und damit erlaubt
-						}
-						else
-							e.doit = false;
-					}
-				} 
-				else if (e.character == 'e') {
-					// charecter e is a valid character, if he is not in the old string
-					if (oldText.contains("e"))
-						e.doit = false;
-				} 
-				else {
-					e.doit = false;  // disallow the action  
-		        }
-		    }  			
+			switch (currentAxis.getMotorAxis().getPosition().getType()) {
+				case DATETIME:
+					if (!Character.isDigit(e.character)) {  
+						if (e.character == '.') {
+							// charecter . is a valid character, if he is not in the old string
+							if (oldText.contains("."))
+								e.doit = false;
+						} 
+						else if (e.character == ':') {
+							// character : is a valid characterm for the timer
+							return;
+						} 
+						else if (e.character == '-') {
+							// character - is a valid characterm for the timer, if he is not in the old string
+							return;
+						} 
+						else if (e.character == ' ') {
+							// charecter ' ' is a valid character, if he is not in the old string
+							if (oldText.contains(" "))
+								e.doit = false;
+						} 
+						else {
+							e.doit = false;  // disallow the action  
+				        }
+					} 
+					break;
+				default: 
+					if (!Character.isDigit(e.character)) {  
+						if (e.character == '.') {
+							// charecter . is a valid character, if he is not in the old string
+							if (oldText.contains("."))
+								e.doit = false;
+						} 
+						else if (e.character == '-') {
+							// character - is a valid character as first sign and after an e
+							if (oldText.isEmpty()) {
+								// oldText is emtpy, - is valid
+							}
+							else {
+								// wenn das letzte Zeichen von oldText ein e ist, ist das minus auch erlaubt
+								int index = oldText.length();
+								if (oldText.substring(index-1).equals("e")) {
+									// letzte Zeichen ist ein e und damit erlaubt
+								}
+								else
+									e.doit = false;
+							}
+						} 
+						else if (e.character == 'e') {
+							// character e is a valid character, if he is not in the old string
+							if (oldText.contains("e"))
+								e.doit = false;
+						} 
+						else {
+							e.doit = false;  // disallow the action  
+				        }
+					} 
+					break;
+			}
 		}
 	}
 
@@ -1270,39 +1416,67 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 
 			String oldText = ((Text)(e.widget)).getText();
 
-			if (!Character.isDigit(e.character)) {  
-				if (e.character == '.') {
-					// character . is a valid character, if he is not in the old string
-					if (oldText.contains("."))
-						e.doit = false;
-				} 
-				else if (e.character == '-') {
-					// character - is a valid character as first sign and after an e
-					if (oldText.isEmpty()) {
-						// oldText is emtpy, - is valid
-					}
-					else {
-						// wenn das letzte Zeichen von oldText ein e ist, ist das minus auch erlaubt
-						int index = oldText.length();
-						if (oldText.substring(index-1).equals("e")) {
-							// letzte Zeichen ist ein e und damit erlaubt
+			switch (currentAxis.getMotorAxis().getPosition().getType()) {
+				case DATETIME:
+					if (!Character.isDigit(e.character)) {  
+						if (e.character == '.') {
+							// charecter . is a valid character, if he is not in the old string
+							if (oldText.contains("."))
+								e.doit = false;
+						}	 
+						else if (e.character == ':') {
+							// character : is a valid characterm for the timer
+							return;
+						} 
+						else if (e.character == '-') {
+							// character - is a valid characterm for the timer, if he is not in the old string
+							return;
+						} 
+						else if (e.character == ' ') {
+							// charecter ' ' is a valid character, if he is not in the old string
+							if (oldText.contains(" "))
+								e.doit = false;
+						} 
+						else {
+							e.doit = false;  // disallow the action  
 						}
-						else
-							e.doit = false;
-					}
-				} 
-				else if (e.character == 'e') {
-					// character e is a valid character, if he is not in the old string
-					if (oldText.contains("e"))
-						e.doit = false;
-				} 
-				else {
-					e.doit = false;  // disallow the action  
-		        }
-		    }  			
+					} 
+					break;
+				default: 
+					if (!Character.isDigit(e.character)) {  
+						if (e.character == '.') {
+							// charecter . is a valid character, if he is not in the old string
+							if (oldText.contains("."))
+								e.doit = false;
+						} 
+						else if (e.character == '-') {
+							// character - is a valid character as first sign and after an e
+							if (oldText.isEmpty()) {
+								// oldText is emtpy, - is valid
+							}
+							else {
+								// wenn das letzte Zeichen von oldText ein e ist, ist das minus auch erlaubt
+								int index = oldText.length();
+								if (oldText.substring(index-1).equals("e")) {
+									// letzte Zeichen ist ein e und damit erlaubt
+								}
+								else
+									e.doit = false;
+							}
+						}
+						else if (e.character == 'e') {
+							// character e is a valid character, if he is not in the old string
+							if (oldText.contains("e"))
+								e.doit = false;
+						} 
+						else {
+							e.doit = false;  // disallow the action  
+						}
+					} 
+					break;
+			}
 		}
 	}
-
 
 	/**
 	 * <code>VerifyListener</code> of Text Widget from
