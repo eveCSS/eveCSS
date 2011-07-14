@@ -81,12 +81,11 @@ public class CommonTableElement {
 					gotoPv.setDiscreteValues((String[]) motorAxis.getGoto().
 							getDiscreteValues().toArray(new String[0]));
 				}
-				// TODO getSet is not yet defined in xml
-				String setPvName = motorAxis.getGoto().getAccess().getVariableID();
-				if (setPvName.endsWith(".VAL")) setPvName.replaceFirst(".VAL$", "");
-				setPvName += ".SET";
-				setPv = new CommonTableElementPV(setPvName, this);
-				//if (motorAxis.getSet().isDiscrete()) setPv.setDiscreteValues((String[]) motorAxis.getSet().getDiscreteValues().toArray(new String[0]));
+			}
+			if ((motorAxis.getSet() != null) &&
+				(motorAxis.getSet().getAccess().getTransport() == TransportTypes.CA)) {
+				setPv = new CommonTableElementPV(motorAxis.getSet().
+						getAccess().getVariableID(), this);
 			}
 			if (motorAxis.getUnit() != null) {
 				if (motorAxis.getUnit().getAccess() != null) {
