@@ -19,6 +19,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class Axis extends AbstractMainPhaseBehavior {
 
@@ -260,7 +261,7 @@ public class Axis extends AbstractMainPhaseBehavior {
 		String formattedText = this.getDefaultValue();
 		this.setStart(formattedText);
 		this.setStop(formattedText);
-		this.setStepwidth("0");
+		this.setStepwidth(formattedText);
 		updateListeners();
 	}
 	

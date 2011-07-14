@@ -4,7 +4,7 @@ package de.ptb.epics.eve.data.scandescription.errors;
  * Contains all possible error types of an axis.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
- * @author scherr
+ * @author Hartmut Scherr
  *
  */
 public enum AxisErrorTypes {

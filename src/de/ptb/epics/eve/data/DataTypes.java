@@ -1,5 +1,8 @@
 package de.ptb.epics.eve.data;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,6 +15,7 @@ import java.util.regex.Pattern;
  * 
  * @author   Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version   1.4
+ * @author   Hartmut Scherr
  */
 public enum DataTypes {
 
@@ -46,7 +50,6 @@ public enum DataTypes {
 	 *  2009-10-01 17:09:20.000 (rel) invalid relative <code>DATETIME</code>
 	 *             17:09:20.000 (abs) valid absolute <code>DATETIME</code> assuming date today
 	 *             17:09:20.000 (rel) valid relative time (duration of 1580 secs)
-	 *                 1580.0 	(rel) valid relative time (duration of 1580 secs)
 	 */
 	DATETIME;
 	
@@ -97,13 +100,28 @@ public enum DataTypes {
 						
 		case STRING:	return true;
 		case DATETIME:	
-						if (value.matches(
-					"\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$"))
-							return true;
-						else if (value.matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$"))
-							return true;
-						else
-							return isValuePossible(DOUBLE, value);
+						if (value.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$")) {
+							DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+							try {
+								formatDate.setLenient(false);
+								formatDate.parse(value);
+								return true;
+							}
+							catch (final ParseException e ){
+								return false;
+							}
+						}
+						else if (value.matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
+							DateFormat formatTime = DateFormat.getTimeInstance();
+							try {
+								formatTime.setLenient(false);
+								formatTime.parse(value);
+								return true;
+							}
+							catch (final ParseException e ){
+								return false;
+							}
+						}
 		}
 		return false;	
 	}
