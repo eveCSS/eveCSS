@@ -15,6 +15,7 @@ import org.osgi.framework.BundleContext;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
@@ -44,6 +45,8 @@ public class Activator extends AbstractUIPlugin {
 	private String rootDir;
 	private boolean debug;
 	
+	private String defaultWindowTitle;
+	
 	private EveEditorPerspectiveListener eveEditorPerspectiveListener;
 	
 	/**
@@ -70,6 +73,9 @@ public class Activator extends AbstractUIPlugin {
 		configureLogging();
 		loadMeasuringStation();
 		startupReport();
+		
+		defaultWindowTitle = PlatformUI.getWorkbench().
+				getActiveWorkbenchWindow().getShell().getText();
 		
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
 				addPerspectiveListener(eveEditorPerspectiveListener);
@@ -123,6 +129,14 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public File getSchemaFile() {
 		return this.schemaFile;
+	}
+	
+	/**
+	 * 
+	 * @return windowTitle
+	 */
+	public String getDefaultWindowTitle() {
+		return this.defaultWindowTitle;
 	}
 	
 	/*
@@ -264,6 +278,9 @@ public class Activator extends AbstractUIPlugin {
 			logger.info("debug mode: " + debug);
 			logger.info("root directory: " + rootDir);
 			logger.info("measuring station: " + 
+				((MeasuringStation)measuringStation).getName() + " (" +
+				measuringStation.getVersion() + ")");
+			logger.info("measuring station location: " + 
 					measuringStation.getLoadedFileName());
 		}
 	}
