@@ -36,6 +36,7 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
  * 
  * @author ?
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class PostscanComposite extends Composite {
 
@@ -201,21 +202,23 @@ public class PostscanComposite extends Composite {
 						// iterate over the axes of that motor
 						for(final MotorAxis motorAxis : motor.getAxes()) {
 							
-							// create a menu entry for the motor axis
-							final MenuManager currentMotorAxisMenu = 
-								new MenuManager(motorAxis.getName(), 
+							if (motorAxis.getClassName().isEmpty()) {
+								// add only axis which have no className
+								// create a menu entry for the motor axis
+								final MenuManager currentMotorAxisMenu = 
+										new MenuManager(motorAxis.getName(), 
 												axisImage, 
 												motorAxis.getName());
 							
-							// iterate over the options of that axis
-							for(final Option option : motorAxis.getOptions()) {
-								
-								SetOptionAction setOptionAction = 
-									new SetOptionAction(option, option.getName());
-								currentMotorAxisMenu.add(setOptionAction);
+								// iterate over the options of that axis
+								for(final Option option : motorAxis.getOptions()) {
+									SetOptionAction setOptionAction = 
+										new SetOptionAction(option, option.getName());
+									currentMotorAxisMenu.add(setOptionAction);
+								}
+								// add the motor axis menu to the motor menu entry
+								currentMotorMenu.add(currentMotorAxisMenu);
 							}
-							// add the motor axis menu to the motor menu entry
-							currentMotorMenu.add(currentMotorAxisMenu);
 						}
 						for(final Option option : motor.getOptions()) {
 							
@@ -268,22 +271,20 @@ public class PostscanComposite extends Composite {
 								new MenuManager(detector.getName(), 
 												detectorImage, 
 												detector.getName());
-						for(final DetectorChannel detectorChannel : 
-							detector.getChannels()) {
+						for(final DetectorChannel detectorChannel : detector.getChannels()) {
+							if (detectorChannel.getClassName().isEmpty()) {
+								// add only channels which have no className
 								final MenuManager currentDetectorChannelMenu = 
 									new MenuManager(detectorChannel.getName(), 
 													channelImage, 
 													detectorChannel.getName());
-							for(final Option option : 
-								detectorChannel.getOptions()) {
-								
+								for(final Option option : detectorChannel.getOptions()) {
 									SetOptionAction setOptionAction = 
-										new SetOptionAction(
-												option, option.getName());
-									currentDetectorChannelMenu.add(
-											setOptionAction);
+											new SetOptionAction(option, option.getName());
+									currentDetectorChannelMenu.add(	setOptionAction);
+								}
+								currentDetectorMenu.add(currentDetectorChannelMenu);
 							}
-							currentDetectorMenu.add(currentDetectorChannelMenu);
 						}
 						for(final Option option : detector.getOptions()) {
 							
@@ -440,26 +441,28 @@ public class PostscanComposite extends Composite {
 			// * end of: Menu Entries for Devices without Class Names *
 			// ********************************************************
 			
-			Action deleteAction = new Action(){
-				
-				@Override
-		    	public void run() {
-		    		
-		    		scanModule.remove((Postscan)((IStructuredSelection)
-		    				tableViewer.getSelection()).getFirstElement());
-		    		
-		    		tableViewer.refresh();
-		    	}
-		    };
-		    
-		    deleteAction.setEnabled(true);
-		    deleteAction.setText("Delete Postscan");
-		    deleteAction.setToolTipText("Deletes Postscan");
-		    deleteAction.setImageDescriptor(PlatformUI.getWorkbench().
-		    							getSharedImages().getImageDescriptor(
-		    							ISharedImages.IMG_TOOL_DELETE));
-		   
-		    manager.add(deleteAction);
+			if (scanModule.getPostscans().length > 0) {
+				Action deleteAction = new Action(){
+					
+					@Override
+			    	public void run() {
+			    		
+			    		scanModule.remove((Postscan)((IStructuredSelection)
+			    				tableViewer.getSelection()).getFirstElement());
+			    		
+			    		tableViewer.refresh();
+			    	}
+			    };
+			    
+			    deleteAction.setEnabled(true);
+			    deleteAction.setText("Delete Postscan");
+			    deleteAction.setToolTipText("Deletes Postscan");
+			    deleteAction.setImageDescriptor(PlatformUI.getWorkbench().
+			    							getSharedImages().getImageDescriptor(
+			    							ISharedImages.IMG_TOOL_DELETE));
+			   
+			    manager.add(deleteAction);
+			}
 		}
 	}
 	

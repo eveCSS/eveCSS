@@ -29,10 +29,12 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
 
 /**
- * <code>DetectorChannelComposite</code>.
+ * <code>DetectorChannelComposite</code>. is part of the
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView}.
  * 
  * @author ?
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class DetectorChannelComposite extends Composite {
 
@@ -236,20 +238,21 @@ public class DetectorChannelComposite extends Composite {
 											? detector.getID()
 											: detector.getName());
 						currentClassMenu.add(currentDetectorMenu);
-						
-						for(final DetectorChannel channel : 
-							detector.getChannels()) {
-								final Action setChannelAction = 
-									new SetChannelAction(channel);
+
+						// iterate for each channel of the detector
+						for(final DetectorChannel channel : detector.getChannels()) {
+							if (channel.getClassName().isEmpty()) {
+								// add only channels which have no className
+								final Action setChannelAction = new SetChannelAction(channel);
 								containsAtLeastOne = true;
 								currentDetectorMenu.add(setChannelAction);
+							}
 						}
 					} else if(device instanceof DetectorChannel) {
-							containsAtLeastOne = true;	
-							final Action setChannelAction = 
-								new SetChannelAction((DetectorChannel)device);
-							containsAtLeastOne = true;
-							currentClassMenu.add(setChannelAction);
+						containsAtLeastOne = true;	
+						final Action setChannelAction = new SetChannelAction((DetectorChannel)device);
+						containsAtLeastOne = true;
+						currentClassMenu.add(setChannelAction);
 					}
 					if(containsAtLeastOne) {
 						manager.add(currentClassMenu);
@@ -258,9 +261,7 @@ public class DetectorChannelComposite extends Composite {
 			}
 				
 			for(final Detector detector : measuringStation.getDetectors()) {
-			
-				if("".equals(detector.getClassName()) || 
-				   detector.getClassName() == null) {
+				if("".equals(detector.getClassName()) || detector.getClassName() == null) {
 					boolean containsAtLeastOne = false;
 					final MenuManager currentDetectorMenu = 
 							new MenuManager("".equals(detector.getName())
@@ -281,16 +282,19 @@ public class DetectorChannelComposite extends Composite {
 					} 
 				}
 			}
-				
+
+			if (scanModule.getChannels().length > 0) {
 				Action deleteAction = new DeleteAction();
-			    deleteAction.setEnabled(true);
-			    deleteAction.setText("Delete Channel");
-			    deleteAction.setToolTipText("Deletes Channel");
-			    deleteAction.setImageDescriptor(PlatformUI.getWorkbench().
-			    								getSharedImages().
-			    								getImageDescriptor(
-			    								ISharedImages.IMG_TOOL_DELETE));
-			    manager.add(deleteAction);	
+				deleteAction.setEnabled(true);
+				deleteAction.setText("Delete Channel");
+				deleteAction.setToolTipText("Deletes Channel");
+				deleteAction.setImageDescriptor(PlatformUI.getWorkbench().
+				   								getSharedImages().
+				   								getImageDescriptor(
+				   								ISharedImages.IMG_TOOL_DELETE));
+				manager.add(deleteAction);	
+			}
+			
 		}
 	}
 	

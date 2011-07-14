@@ -35,6 +35,7 @@ import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView;
  * 
  * @author ?
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class MotorAxisComposite extends Composite {
 	
@@ -313,7 +314,7 @@ public class MotorAxisComposite extends Composite {
 				
 				for(final AbstractDevice device : 
 					measuringStation.getDeviceList(className)) {
-						
+
 					if(device instanceof Motor) {
 						final Motor motor = (Motor)device;
 						final MenuManager currentMotorMenu = 
@@ -324,10 +325,11 @@ public class MotorAxisComposite extends Composite {
 						
 						// iterate for each axis of the motor
 						for(final MotorAxis axis : motor.getAxes()) {
-							
-							final SetAxisAction setAxisAction = 
-									new SetAxisAction(axis);
-							currentMotorMenu.add(setAxisAction);
+							if (axis.getClassName().isEmpty()) {
+								// add only axis which have no className
+								final SetAxisAction setAxisAction = new SetAxisAction(axis);
+								currentMotorMenu.add(setAxisAction);
+							}
 						}
 					} else if(device instanceof MotorAxis) {
 						final SetAxisAction setAxisAction = 
@@ -339,33 +341,32 @@ public class MotorAxisComposite extends Composite {
 			}
 				
 			for(final Motor motor : measuringStation.getMotors()) {
-				if("".equals(motor.getClassName()) || 
-				   motor.getClassName() == null) {
-						final MenuManager currentMotorMenu = 
+				if("".equals(motor.getClassName()) || motor.getClassName() == null) {
+					final MenuManager currentMotorMenu = 
 							new MenuManager("".equals(motor.getName())
 											? motor.getID()
 											: motor.getName());
-						for(final MotorAxis axis : motor.getAxes()) {
-							if("".equals(axis.getClassName()) || 
-							   axis.getClassName() == null) {
-								final SetAxisAction setAxisAction = 
-										new SetAxisAction(axis);
-								currentMotorMenu.add(setAxisAction);
-							}
+					for(final MotorAxis axis : motor.getAxes()) {
+						if("".equals(axis.getClassName()) || axis.getClassName() == null) {
+							final SetAxisAction setAxisAction = new SetAxisAction(axis);
+							currentMotorMenu.add(setAxisAction);
 						}
-				manager.add(currentMotorMenu);
+					}
+					manager.add(currentMotorMenu);
 				}
 			}
 				
-			DeleteAction deleteAction = new DeleteAction(); 
-			deleteAction.setEnabled(true);
-			deleteAction.setText("Delete Axis");
-			deleteAction.setToolTipText("Deletes Axis");
-			deleteAction.setImageDescriptor(PlatformUI.getWorkbench().
-											getSharedImages().
-											getImageDescriptor(
-											ISharedImages.IMG_TOOL_DELETE));
-			manager.add(deleteAction);
+			if (scanModule.getAxes().length > 0) {
+				DeleteAction deleteAction = new DeleteAction(); 
+				deleteAction.setEnabled(true);
+				deleteAction.setText("Delete Axis");
+				deleteAction.setToolTipText("Deletes Axis");
+				deleteAction.setImageDescriptor(PlatformUI.getWorkbench().
+												getSharedImages().
+												getImageDescriptor(
+												ISharedImages.IMG_TOOL_DELETE));
+				manager.add(deleteAction);
+			}
 		}
 	}
 	
