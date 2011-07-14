@@ -49,6 +49,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * 
  * @author ?
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 	
@@ -737,25 +738,23 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 					this.classMap.put( motor.getClassName(), devices );
 				}
 				devices.add( motor );
-				
-				for( final MotorAxis motorAxis : motor.getAxes() ) {
-					if( motorAxis.getClassName() != null && !motorAxis.getClassName().equals( "" ) ) {
-						devices = null;
-						if( this.classMap.containsKey( motorAxis.getClassName() ) ) {
-							devices = this.classMap.get( motorAxis.getClassName() );
-						} else {
-							devices = new ArrayList< AbstractDevice >();
-							this.classMap.put( motorAxis.getClassName(), devices );
-						}
-						devices.add( motorAxis );
+			}
+			for( final MotorAxis motorAxis : motor.getAxes() ) {
+				List< AbstractDevice > devices = null;
+				if( motorAxis.getClassName() != null && !motorAxis.getClassName().equals( "" ) ) {
+					if( this.classMap.containsKey( motorAxis.getClassName() ) ) {
+						devices = this.classMap.get( motorAxis.getClassName() );
+					} else {
+						devices = new ArrayList< AbstractDevice >();
+						this.classMap.put( motorAxis.getClassName(), devices );
 					}
+					devices.add( motorAxis );
 				}
 			}
 		}
 		
 		for(final Detector detector : this.detectors) {
-			if(detector.getClassName() != null && 
-			   !detector.getClassName().equals("")) {
+			if(detector.getClassName() != null && !detector.getClassName().equals("")) {
 				List<AbstractDevice> devices = null;
 				if(this.classMap.containsKey(detector.getClassName())) {
 					devices = this.classMap.get(detector.getClassName());
@@ -764,20 +763,31 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 					this.classMap.put(detector.getClassName(), devices);
 				}
 				devices.add(detector);
-				
-				for(final DetectorChannel detectorChannel : detector.getChannels()) {
-					if(detectorChannel.getClassName() != null && 
-					   !detectorChannel.getClassName().equals("")) {
-						devices = null;
-						if(this.classMap.containsKey(detectorChannel.getClassName())) {
-							devices = this.classMap.get(detectorChannel.getClassName());
-						} else {
-							devices = new ArrayList<AbstractDevice>();
-							this.classMap.put(detectorChannel.getClassName(), devices);
-						}
-						devices.add(detectorChannel);
+			}
+			for(final DetectorChannel detectorChannel : detector.getChannels()) {
+				List<AbstractDevice> devices = null;
+				if(detectorChannel.getClassName() != null && !detectorChannel.getClassName().equals("")) {
+					if(this.classMap.containsKey(detectorChannel.getClassName())) {
+						devices = this.classMap.get(detectorChannel.getClassName());
+					} else {
+						devices = new ArrayList<AbstractDevice>();
+						this.classMap.put(detectorChannel.getClassName(), devices);
 					}
+					devices.add(detectorChannel);
 				}
+			}
+		}
+
+		for(final Device device : this.devices) {
+			if(device.getClassName() != null && !device.getClassName().equals("")) {
+				List<AbstractDevice> devices = null;
+				if(this.classMap.containsKey(device.getClassName())) {
+					devices = this.classMap.get(device.getClassName());
+				} else {
+					devices = new ArrayList<AbstractDevice>();
+					this.classMap.put(device.getClassName(), devices);
+				}
+				devices.add(device);
 			}
 		}
 	}
