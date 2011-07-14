@@ -18,7 +18,7 @@ import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
  * @author Marcus Michalsky
  * @since 0.4.1
  */
-public class ResetDeviceInspectorCommandHandler implements IHandler {
+public class Reset implements IHandler {
 	
 	/**
 	 * {@inheritDoc}

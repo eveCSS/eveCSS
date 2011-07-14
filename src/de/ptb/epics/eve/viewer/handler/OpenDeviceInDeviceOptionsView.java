@@ -24,10 +24,10 @@ import de.ptb.epics.eve.viewer.views.deviceoptionsview.DeviceOptionsView;
  * @author Marcus Michalsky
  * @since 0.4.1
  */
-public class OpenDeviceInDeviceOptionsViewCommandHandler implements IHandler {
+public class OpenDeviceInDeviceOptionsView implements IHandler {
 
 	private static Logger logger = Logger.getLogger(
-			OpenDeviceInDeviceOptionsViewCommandHandler.class.getName());
+			OpenDeviceInDeviceOptionsView.class.getName());
 	
 	/**
 	 * {@inheritDoc}

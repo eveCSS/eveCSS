@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views;
+package de.ptb.epics.eve.viewer.views.engineview;
 
 import java.util.Iterator;
 import java.util.List;
@@ -1073,20 +1073,27 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	 * <code>EngineView</code>
 	 */
 	class StartButtonSelectionListener implements SelectionListener {
+		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
+		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			// Hier muß ein Shell-Skript ausgeführt werden, dass
-			// die Engine dann startet.
-			MessageDialog.openWarning(null, "Warning", "Start löst noch keine Aktion aus!");
+			IHandlerService handlerService = (IHandlerService) 
+				PlatformUI.getWorkbench().getService(IHandlerService.class);
+			try {
+				handlerService.executeCommand(
+						"de.ptb.epics.eve.viewer.startCommand", null);
+			} catch (Exception ex) {
+				logger.error(ex.getMessage(), ex);
+			}
 		}
 	}
 
@@ -1175,14 +1182,15 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void widgetDefaultSelected( final SelectionEvent e ) {
+		public void widgetDefaultSelected(final SelectionEvent e) {
 		}
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void widgetSelected( final SelectionEvent e ) {
-			Activator.getDefault().getEcp1Client().getPlayListController().setAutoplay(true);
+		public void widgetSelected(final SelectionEvent e) {
+			Activator.getDefault().getEcp1Client().getPlayListController().
+					setAutoplay(true);
 		}
 	}
 
@@ -1191,18 +1199,21 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	 * <code>EngineView</code>
 	 */
 	class AutoPlayOffButtonSelectionListener implements SelectionListener {
+		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void widgetDefaultSelected( final SelectionEvent e ) {
+		public void widgetDefaultSelected(final SelectionEvent e) {
 		}
+		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void widgetSelected( final SelectionEvent e ) {
-			Activator.getDefault().getEcp1Client().getPlayListController().setAutoplay(false);
+		public void widgetSelected(final SelectionEvent e) {
+			Activator.getDefault().getEcp1Client().getPlayListController().
+					setAutoplay(false);
 		}
 	}
 	
@@ -1211,22 +1222,22 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	 * <code>EngineView</code>
 	 */
 	class CommentSendButtonSelectionListener implements SelectionListener {
+		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
-			// TODO Auto-generated method stub
 		}
+		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			// TODO Auto-generated method stub
-			Activator.getDefault().getEcp1Client().getPlayController().addLiveComment(commentText.getText());
+			Activator.getDefault().getEcp1Client().getPlayController().
+					addLiveComment(commentText.getText());
 		}
 	}
-	
-	
 }

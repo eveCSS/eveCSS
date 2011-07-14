@@ -1,5 +1,5 @@
 /**
- * Contains all command handler related to multiple sources.
+ * Contains command handler used by multiple sources.
  * 
  * @author Marcus Michalsky
  * @since 0.4.1

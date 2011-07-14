@@ -17,7 +17,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
  * @author Marcus Michalsky
  * @since 0.4.1
  */
-public class EveViewerStartCommandHandler implements IHandler {
+public class Start implements IHandler {
 
 	/**
 	 * {@inheritDoc}

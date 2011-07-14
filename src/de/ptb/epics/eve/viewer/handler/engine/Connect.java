@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.handler.engineview;
+package de.ptb.epics.eve.viewer.handler.engine;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -23,10 +23,10 @@ import de.ptb.epics.eve.viewer.messages.ViewerMessage;
  * @author Jens Eden
  * @author Marcus Michalsky
  */
-public class ConnectCommandHandler extends AbstractHandler {
+public class Connect extends AbstractHandler {
 
 	private static Logger logger = 
-			Logger.getLogger(ConnectCommandHandler.class.getName());
+			Logger.getLogger(Connect.class.getName());
 
 	/**
 	 * {@inheritDoc}

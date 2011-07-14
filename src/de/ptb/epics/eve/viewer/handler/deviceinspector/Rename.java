@@ -20,7 +20,7 @@ import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
  * @author Marcus Michalsky
  * @since 0.4.1
  */
-public class RenameDeviceInspectorCommandHandler implements IHandler {
+public class Rename implements IHandler {
 
 	/**
 	 * {@inheritDoc}

@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.handler.engineview;
+package de.ptb.epics.eve.viewer.handler.engine;
 
 import java.io.IOException;
 
@@ -18,10 +18,10 @@ import de.ptb.epics.eve.viewer.messages.ViewerMessage;
  * @author Jens Eden
  * @author Marcus Michalsky
  */
-public class DisconnectCommandHandler extends AbstractHandler {
+public class Disconnect extends AbstractHandler {
 
 	private static Logger logger = 
-			Logger.getLogger(DisconnectCommandHandler.class.getName());
+			Logger.getLogger(Disconnect.class.getName());
 	
 	/**
 	 * {@inheritDoc}

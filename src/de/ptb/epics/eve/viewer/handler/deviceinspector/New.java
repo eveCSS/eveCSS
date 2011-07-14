@@ -23,10 +23,10 @@ import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
  * @author Marcus Michalsky
  * @since 0.4.1
  */
-public class NewDeviceInspectorCommandHandler implements IHandler {
+public class New implements IHandler {
 
 	private static Logger logger = Logger.getLogger(
-			NewDeviceInspectorCommandHandler.class.getName());
+			New.class.getName());
 	
 	/**
 	 * {@inheritDoc}

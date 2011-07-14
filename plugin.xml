@@ -25,7 +25,7 @@
       <view
             name="%view.name.0"
             icon="icons/css.gif"
-            class="de.ptb.epics.eve.viewer.views.EngineView"
+            class="de.ptb.epics.eve.viewer.views.engineview.EngineView"
             id="EngineView">
       </view>
       <view
@@ -39,7 +39,7 @@
       <view
             name="%view.name.2"
             icon="icons/css.gif"
-            class="de.ptb.epics.eve.viewer.views.MessagesView"
+            class="de.ptb.epics.eve.viewer.views.messagesview.MessagesView"
             id="MessagesView">
       </view>
       <view
@@ -85,25 +85,25 @@
       </command>
       <command
             categoryId="de.ptb.epics.eve.viewer.views.deviceinspectorview"
-            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.NewDeviceInspectorCommandHandler"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.New"
             description="New Device Inspector"
             id="de.ptb.epics.eve.viewer.newDeviceInspectorCommand"
             name="newDeviceInspectorCommand">
       </command>
       <command
             categoryId="de.ptb.epics.eve.viewer.views.deviceinspectorview"
-            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.RenameDeviceInspectorCommandHandler"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.Rename"
             id="de.ptb.epics.eve.viewer.renameDeviceInspectorCommand"
             name="Rename Device Inspector">
       </command>
       <command
             categoryId="de.ptb.epics.eve.viewer.views.deviceinspectorview"
-            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.ResetDeviceInspectorCommandHandler"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.Reset"
             id="de.ptb.epics.eve.viewer.ResetDeviceInspector"
             name="Reset Device Inspector">
       </command>
       <command
-            defaultHandler="de.ptb.epics.eve.viewer.handler.OpenDeviceInDeviceOptionsViewCommandHandler"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.OpenDeviceInDeviceOptionsView"
             id="de.ptb.epics.eve.viewer.OpenDeviceInDeviceOptionsView"
             name="Open Device in Device Options View">
       </command>
@@ -112,23 +112,32 @@
             name="DeviceInspectorView">
       </category>
       <command
-            defaultHandler="de.ptb.epics.eve.viewer.handler.EveViewerStartCommandHandler"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.Start"
             id="de.ptb.epics.eve.viewer.start"
             name="EveViewer">
+      </command>
+      <category
+            id="de.ptb.epics.eve.viewer.views.engineview"
+            name="EngineView">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.engineview"
+            id="de.ptb.epics.eve.viewer.startCommand"
+            name="startCommand">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="de.ptb.epics.eve.viewer.handler.engineview.ConnectCommandHandler"
+            class="de.ptb.epics.eve.viewer.handler.engine.Connect"
             commandId="de.ptb.epics.eve.viewer.connectCommand">
       </handler>
       <handler
-            class="de.ptb.epics.eve.viewer.handler.engineview.DisconnectCommandHandler"
+            class="de.ptb.epics.eve.viewer.handler.engine.Disconnect"
             commandId="de.ptb.epics.eve.viewer.disconnectCommand">
       </handler>
       <handler
-            class="de.ptb.epics.eve.viewer.handler.deviceinspector.NewDeviceInspectorCommandHandler"
+            class="de.ptb.epics.eve.viewer.handler.deviceinspector.New"
             commandId="de.ptb.epics.eve.viewer.newDeviceInspectorCommand">
          <activeWhen>
             <reference
@@ -136,7 +145,7 @@
             </reference></activeWhen>
       </handler>
       <handler
-            class="de.ptb.epics.eve.viewer.handler.deviceinspector.RenameDeviceInspectorCommandHandler"
+            class="de.ptb.epics.eve.viewer.handler.deviceinspector.Rename"
             commandId="de.ptb.epics.eve.viewer.renameDeviceInspectorCommand">
          <activeWhen>
             <reference
@@ -145,13 +154,17 @@
          </activeWhen>
       </handler>
       <handler
-            class="de.ptb.epics.eve.viewer.handler.deviceinspector.ResetDeviceInspectorCommandHandler"
+            class="de.ptb.epics.eve.viewer.handler.deviceinspector.Reset"
             commandId="de.ptb.epics.eve.viewer.ResetDeviceInspector">
          <activeWhen>
             <reference
                   definitionId="DeviceInspectorViewActive">
             </reference>
          </activeWhen>
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.viewer.handler.engine.Start"
+            commandId="de.ptb.epics.eve.viewer.startCommand">
       </handler>
    </extension>
    <extension
