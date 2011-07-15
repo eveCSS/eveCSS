@@ -79,15 +79,6 @@ public class DevicesViewTreeViewerContentProvider
 
 	/**
 	 * {@inheritDoc}
-	 * <p>
-	 * <i>copied from the original documentation:</i><br>
-	 * Returns the child elements of the given parent element.
-	 * The difference between this method and 
-	 * <code>IStructuredContentProvider.getElements</code> is that getElements 
-	 * is called to obtain the tree viewer's root elements, whereas getChildren 
-	 * is used to obtain the children of a given parent element in the tree 
-	 * (including a root).<br>
-	 * The result is not modified by the viewer. 
 	 */
 	@Override
 	public Object[] getChildren(final Object parentElement) {
@@ -147,7 +138,6 @@ public class DevicesViewTreeViewerContentProvider
 		 *  - all devices without a class name
 		 */
 		if(inputElement instanceof IMeasuringStation) {
-			// input is set to a measuring station
 			final IMeasuringStation measuringStation = 
 					(IMeasuringStation)inputElement;
 			List<Object> returnList = new ArrayList<Object>();
@@ -158,15 +148,18 @@ public class DevicesViewTreeViewerContentProvider
 			}
 			
 			// add motors without class names as motors entry
-			if(motorsWithoutClassName != null) {
+			if (motorsWithoutClassName != null && 
+				!motorsWithoutClassName.isEmpty()) {
 				returnList.add(motorsWithoutClassName);
 			}
 			// add detectors without class names as detectors entry
-			if(detectorsWithoutClassName != null) {
+			if (detectorsWithoutClassName != null && 
+				!detectorsWithoutClassName.isEmpty()) {
 				returnList.add(detectorsWithoutClassName);
 			}
 			// add devices without class names as devices entry
-			if(devicesWithoutClassName != null) {
+			if (devicesWithoutClassName != null && 
+				!devicesWithoutClassName.isEmpty()) {
 				returnList.add(devicesWithoutClassName);
 			}
 			return returnList.toArray();
