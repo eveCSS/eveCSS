@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionEvent;
@@ -40,11 +39,12 @@ import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.IUpdateListener;
 
 /**
- * A simple view implementation, which only displays a label.
+ * <code>EngineView</code>.
  * 
  * @author Hartmut Scherr
  */
-public final class EngineView extends ViewPart implements IUpdateListener, IConnectionStateListener, IErrorListener {
+public final class EngineView extends ViewPart 
+		implements IUpdateListener, IConnectionStateListener, IErrorListener {
 
 	/** the public identifier of the view */
 	public static final String id = "EngineView";
@@ -97,23 +97,29 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void createPartControl( final Composite parent ) {
+	public void createPartControl(final Composite parent) {
 		
-		final Image playIcon = Activator.getDefault().getImageRegistry().get("PLAY16");
-		final Image pauseIcon = Activator.getDefault().getImageRegistry().get("PAUSE16");
-		final Image stopIcon = Activator.getDefault().getImageRegistry().get("STOP16");
-		final Image skipIcon = Activator.getDefault().getImageRegistry().get("SKIP16");
-		final Image haltIcon = Activator.getDefault().getImageRegistry().get("HALT16");
-		final Image autoPlayIcon = Activator.getDefault().getImageRegistry().get("PLAYALL16");
+		final Image playIcon = 
+			Activator.getDefault().getImageRegistry().get("PLAY16");
+		final Image pauseIcon = 
+			Activator.getDefault().getImageRegistry().get("PAUSE16");
+		final Image stopIcon = 
+			Activator.getDefault().getImageRegistry().get("STOP16");
+		final Image skipIcon = 
+			Activator.getDefault().getImageRegistry().get("SKIP16");
+		final Image haltIcon = 
+			Activator.getDefault().getImageRegistry().get("HALT16");
+		final Image autoPlayIcon = 
+			Activator.getDefault().getImageRegistry().get("PLAYALL16");
 
-		parent.setLayout( new FillLayout() );		
+		parent.setLayout(new FillLayout());
 
 		GridLayout gridLayout;
 		GridData gridData;
 
 		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
 		
-		this.top = new Composite( sc, SWT.NONE );
+		this.top = new Composite(sc, SWT.NONE);
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 4;
 		this.top.setLayout(gridLayout);
@@ -122,17 +128,17 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
         sc.setExpandHorizontal(true);
         sc.setExpandVertical(true);
 		
-		this.engineLabel = new Label( this.top, SWT.NONE );
+		this.engineLabel = new Label(this.top, SWT.NONE);
 		this.engineLabel.setText("ENGINE:");
 
-		this.engineComposite = new Composite( this.top, SWT.NONE );
+		this.engineComposite = new Composite(this.top, SWT.NONE);
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 4;
 		this.engineComposite.setLayout(gridLayout);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;
-		this.engineComposite.setLayoutData( gridData );
+		this.engineComposite.setLayoutData(gridData);
 		
 		this.startButton = new Button( this.engineComposite, SWT.PUSH );
 		this.startButton.setText("start");
@@ -335,11 +341,18 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void updateOccured(int remainTime) {
 		this.rebuildText(remainTime);
-		
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void clearStatusTable() {
 		// die Tabelle mit den Statusanzeigen wird geleert
 		this.statusTable.getDisplay().syncExec( new Runnable() {
@@ -349,6 +362,10 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		});
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void disableSendToFile() {
 		// send to File wird verboten
 		this.commentSendButton.getDisplay().syncExec( new Runnable() {
@@ -358,11 +375,15 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		});
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void fillStatusTable(final int chainId, final int scanModuleId, final String statString, final int remainTime) {
 		// Wenn die scanModuleId -1 ist, wird eine Zeile geändert in der nur die chainId eingetragen ist
 
 		this.statusTable.getDisplay().syncExec( new Runnable() {
-			public void run() {
+			@Override public void run() {
 				// Die sichtbare Höhe wird auf 3 Zeilen eingestellt
 				int height = statusTable.getBounds().y + statusTable.getHeaderHeight() * 4 + 5;
 				int width = scanComposite.getBounds().x + repeatCountText.getBounds().x + repeatCountText.getBounds().width + 5;
@@ -483,7 +504,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		// Output connected to host.
 		final String engineString = de.ptb.epics.eve.preferences.Activator.getDefault().getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS );
 		this.statusLabel.getDisplay().syncExec( new Runnable() {
-			public void run() {
+			@Override public void run() {
 				statusLabel.setText("connected to " + engineString);
 			}
 		});
@@ -498,7 +519,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 
 		if (!this.loadedScmlText.isDisposed()) this.loadedScmlText.getDisplay().syncExec( new Runnable() {
 
-			public void run() {
+			@Override public void run() {
 				if (!loadedScmlText.isDisposed()) {
 
 					disconnectButton.setEnabled(false);
@@ -524,7 +545,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	public void setLoadedScmlFile(final String filename) {
 		// der Name des geladenen scml-Files wird angezeigt
 		this.loadedScmlText.getDisplay().syncExec( new Runnable() {
-			public void run() {
+			@Override public void run() {
 				loadedScmlText.setText(filename);
 			}
 		});
@@ -537,12 +558,15 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	public void setActualFilename(final String filename) {
 		// der Name des geladenen scml-Files wird angezeigt
 		this.filenameText.getDisplay().syncExec(new Runnable() {
-			public void run() {
+			@Override public void run() {
 				filenameText.setText(filename);
 			}
 		});
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void fillEngineStatus(EngineStatus engineStatus, int repeatCount) {
 
@@ -551,7 +575,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		switch(engineStatus) {
 			case IDLE_NO_XML_LOADED:
 				this.playButton.getDisplay().syncExec( new Runnable() {
-					public void run() {
+					@Override public void run() {
 						playButton.setEnabled(false);
 						pauseButton.setEnabled(false);
 						stopButton.setEnabled(false);
@@ -562,7 +586,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 				break;
 			case IDLE_XML_LOADED:
 				this.playButton.getDisplay().syncExec( new Runnable() {
-					public void run() {
+					@Override public void run() {
 						playButton.setEnabled(true);
 						pauseButton.setEnabled(false);
 						stopButton.setEnabled(false);
@@ -580,7 +604,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 				break;
 			case EXECUTING:
 				this.playButton.getDisplay().syncExec( new Runnable() {
-					public void run() {
+					@Override public void run() {
 						playButton.setEnabled(false);
 						pauseButton.setEnabled(true);
 						stopButton.setEnabled(true);
@@ -591,7 +615,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 				break;
 			case PAUSED:
 				this.playButton.getDisplay().syncExec( new Runnable() {
-					public void run() {
+					@Override public void run() {
 						playButton.setEnabled(true);
 						pauseButton.setEnabled(false);
 						stopButton.setEnabled(true);
@@ -602,7 +626,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 				break;
 			case STOPPED:
 				this.playButton.getDisplay().syncExec( new Runnable() {
-					public void run() {
+					@Override public void run() {
 						playButton.setEnabled(false);
 						pauseButton.setEnabled(false);
 						stopButton.setEnabled(false);
@@ -613,7 +637,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 				break;
 			case HALTED:
 				this.playButton.getDisplay().syncExec( new Runnable() {
-					public void run() {
+					@Override public void run() {
 						playButton.setEnabled(false);
 						pauseButton.setEnabled(false);
 						stopButton.setEnabled(false);
@@ -631,7 +655,7 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	@Override
 	public void setAutoPlayStatus(final boolean autoPlayStatus) {
 		this.autoPlayOnButton.getDisplay().syncExec( new Runnable() {
-			public void run() {
+			@Override public void run() {
 				if (autoPlayStatus == true) {
 					autoPlayOnButton.setEnabled(false);
 					autoPlayOffButton.setEnabled(true);
@@ -644,25 +668,49 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		
 	}
 
+	/*
+	 * 
+	 */
 	private void setCurrentRepeatCount(final int repeatCount) {
 		if (this.repeatCount != repeatCount){
 			this.repeatCount = repeatCount;
 			this.repeatCountText.getDisplay().syncExec(new Runnable() {
-				public void run() {
+				@Override public void run() {
 					repeatCountText.setText(String.valueOf(repeatCount));
 				}
 			});
 		}
 	}
+	
+	/**
+	 * {@inheritDoc}}
+	 */
+	@Override
+	public void errorOccured(Error error) {
+		if (error.getErrorType() == ErrorType.FILENAME) {
+			// Aktueller Filename wird gesetzt
+			setActualFilename(error.getText());
+			// send to File wird erlaubt
+			this.commentSendButton.getDisplay().syncExec( new Runnable() {
+				public void run() {
+					commentSendButton.setEnabled(true);
+				}
+			});
+		}
+	}
 
+	///////////////////////////////////////////////////////////
+	// Hier kommen jetzt die verschiedenen Listener Klassen
+	///////////////////////////////////////////////////////////
+	
 	// Wenn eine Zeile in der Tabelle der Chains und ScanModule angeklickt wird,
 	// öffnet sich ein separates Fenster in dem die Detail der Chain/SM zu sehen sind
 	// Beim nochmaligen anklicken wird das Fenster wieder entfernt.
 	
+	
 	/**
+	 * {@link org.eclipse.swt.events.SelectionListener}
 	 * 
-	 * @author scherr
-	 *
 	 */
 	class StatusTableSelectionListener implements SelectionListener {
 
@@ -671,8 +719,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
-			// TODO Auto-generated method stub
-			
 		}
 
 		/**
@@ -680,7 +726,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			// TODO Auto-generated method stub
 			// für die selektierte Zeile wird ein Info-Fenster angezeigt
 			// mit den Details der Chain oder des ScanModuls
 			int selection = statusTable.getSelectionIndex();
@@ -951,26 +996,9 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		}
 	}
 
-	@Override
-	public void errorOccured(Error error) {
-		if (error.getErrorType() == ErrorType.FILENAME) {
-			// Aktueller Filename wird gesetzt
-			setActualFilename(error.getText());
-			// send to File wird erlaubt
-			this.commentSendButton.getDisplay().syncExec( new Runnable() {
-				public void run() {
-					commentSendButton.setEnabled(true);
-				}
-			});
-		}
-	}
-
-	///////////////////////////////////////////////////////////
-	// Hier kommen jetzt die verschiedenen Listener Klassen
-	///////////////////////////////////////////////////////////
 	/**
-	 * <code>SelectionListener</code> of Play Button from
-	 * <code>EngineView</code>
+	 * {@link org.eclipse.swt.events.SelectionListener} of Play Button from
+	 * <code>EngineView</code>.
 	 */
 	class PlayButtonSelectionListener implements SelectionListener {
 		/**
@@ -989,8 +1017,8 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	}
 
 	/**
-	 * <code>SelectionListener</code> of Pause Button from
-	 * <code>EngineView</code>
+	 * {@link org.eclipse.swt.events.SelectionListener} of Pause Button from
+	 * <code>EngineView</code>.
 	 */
 	class PauseButtonSelectionListener implements SelectionListener {
 		/**
@@ -1009,8 +1037,8 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	}
 		
 	/**
-	 * <code>SelectionListener</code> of Stop Button from
-	 * <code>EngineView</code>
+	 * {@link org.eclipse.swt.events.SelectionListener} of Stop Button from
+	 * <code>EngineView</code>.
 	 */
 	class StopButtonSelectionListener implements SelectionListener {
 		/**
@@ -1029,8 +1057,8 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	}
 	
 	/**
-	 * <code>SelectionListener</code> of Skip Button from
-	 * <code>EngineView</code>
+	 * {@link org.eclipse.swt.events.SelectionListener} of Skip Button from
+	 * <code>EngineView</code>.
 	 */
 	class SkipButtonSelectionListener implements SelectionListener {
 		/**
@@ -1049,8 +1077,8 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	}
 
 	/**
-	 * <code>SelectionListener</code> of Halt Button from
-	 * <code>EngineView</code>
+	 * {@link org.eclipse.swt.events.SelectionListener} of Halt Button from
+	 * <code>EngineView</code>.
 	 */
 	class HaltButtonSelectionListener implements SelectionListener {
 		/**
@@ -1069,8 +1097,8 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	}
 	
 	/**
-	 * <code>SelectionListener</code> of Start Button from
-	 * <code>EngineView</code>
+	 * {@link org.eclipse.swt.events.SelectionListener} of Start Button from
+	 * <code>EngineView</code>.
 	 */
 	class StartButtonSelectionListener implements SelectionListener {
 		
@@ -1098,8 +1126,8 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	}
 
 	/**
-	 * <code>SelectionListener</code> of Kill Button from
-	 * <code>EngineView</code>
+	 * {@link org.eclipse.swt.events.SelectionListener} of Kill Button from
+	 * <code>EngineView</code>.
 	 */
 	class KillButtonSelectionListener implements SelectionListener {
 		/**
@@ -1118,8 +1146,8 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	}
 
 	/**
-	 * <code>SelectionListener</code> of Connect Button from
-	 * <code>EngineView</code>
+	 * {@link org.eclipse.swt.events.SelectionListener} of Connect Button from
+	 * <code>EngineView</code>.
 	 */
 	class ConnectButtonSelectionListener implements SelectionListener {
 		/**
@@ -1146,8 +1174,8 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	}
 
 	/**
-	 * <code>SelectionListener</code> of Disconnect Button from
-	 * <code>EngineView</code>
+	 * {@link org.eclipse.swt.events.SelectionListener} of Disconnect Button 
+	 * from <code>EngineView</code>.
 	 */
 	class DisconnectButtonSelectionListener implements SelectionListener {
 		/**
@@ -1174,8 +1202,8 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	}
 
 	/**
-	 * <code>SelectionListener</code> of AutoPlayOn Button from
-	 * <code>EngineView</code>
+	 * {@link org.eclipse.swt.events.SelectionListener} of AutoPlayOn Button 
+	 * from <code>EngineView</code>.
 	 */
 	class AutoPlayOnButtonSelectionListener implements SelectionListener {
 		/**
@@ -1195,8 +1223,8 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	}
 
 	/**
-	 * <code>SelectionListener</code> of AutoPlayOff Button from
-	 * <code>EngineView</code>
+	 * {@link org.eclipse.swt.events.SelectionListener} of AutoPlayOff Button 
+	 * from <code>EngineView</code>.
 	 */
 	class AutoPlayOffButtonSelectionListener implements SelectionListener {
 		
@@ -1218,8 +1246,8 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 	}
 	
 	/**
-	 * <code>SelectionListener</code> of SendtoFile Button from
-	 * <code>EngineView</code>
+	 * {@link org.eclipse.swt.events.SelectionListener}
+	 *  of SendtoFile Button from <code>EngineView</code>.
 	 */
 	class CommentSendButtonSelectionListener implements SelectionListener {
 		
@@ -1235,7 +1263,6 @@ public final class EngineView extends ViewPart implements IUpdateListener, IConn
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			// TODO Auto-generated method stub
 			Activator.getDefault().getEcp1Client().getPlayController().
 					addLiveComment(commentText.getText());
 		}
