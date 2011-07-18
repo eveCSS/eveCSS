@@ -245,6 +245,8 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 		((ScanModuleFigure)this.figure).
 				setError(scanModule.getModelErrors().size() > 0);
 		
+		((ScanModuleFigure)this.figure).repaint();
+		
 		super.refresh();
 	}
 	
