@@ -205,6 +205,19 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 					getFigure().getClientArea().x + " , y = " +
 					getFigure().getClientArea().y);
 		
+		/*
+		 * dirty
+		 * some hacks to get rid of repainting the necessary stuff without 
+		 * using the GEF Framework correctly... (see Redmine Bug #168)
+		 */
+		Iterator it = getViewer().getEditPartRegistry().values().iterator();
+		while(it.hasNext()) {
+			 Object obj = it.next();
+			if(obj instanceof ScanModuleEditPart) {
+				((ScanModuleEditPart)obj).getFigure().repaint();
+				System.out.println(it.next());
+			}
+		}
 		super.setFocus(true);
 	}
 	

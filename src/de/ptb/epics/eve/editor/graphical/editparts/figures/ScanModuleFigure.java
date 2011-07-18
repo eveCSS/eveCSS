@@ -67,7 +67,7 @@ public class ScanModuleFigure extends Figure {
 		this.setLocation(new Point(x, y));
 
 		this.text = text;
-		this.setToolTip( new Label("Left click to edit me."));
+		this.setToolTip( new Label("Right click to edit me."));
 		
 		// add listener for mouse button events
 		this.addMouseListener(new ScanModuleFigureMouseListener());
@@ -93,13 +93,18 @@ public class ScanModuleFigure extends Figure {
 	public void paint(final Graphics graphics) {
 		super.paint(graphics);
 		
-		setBackgroundColor(ColorConstants.white);
+		// event loop caused by setBackgroundColor(ColorConstants.white);
+		//setBackgroundColor(ColorConstants.white);
+		// had repainted the figure
+		// but without the active state (green) isnt correct ?!?
 		
 		final Rectangle rect = graphics.getClip(new Rectangle());
 
+		//graphics.setBackgroundColor(ColorConstants.white);
+		//graphics.fillRectangle(rect);
+		
 		// draw a nice gradient
 		Display display = PlatformUI.getWorkbench().getDisplay();
-		
 		
 		if(active)
 		{
@@ -112,8 +117,9 @@ public class ScanModuleFigure extends Figure {
 			graphics.setBackgroundColor(ColorConstants.lightGray);
 		}
 		
-		graphics.fillGradient(rect, true);	
-				
+		graphics.fillGradient(rect, true);
+		
+		// red error bar if module contains errors
 		if(contains_errors)
 		{
 			graphics.setForegroundColor(ColorConstants.white);
@@ -129,6 +135,8 @@ public class ScanModuleFigure extends Figure {
 		
 		graphics.drawText(
 				this.text, this.getLocation().x + 5, this.getLocation().y + 8);
+		
+		logger.debug("paint Scan Module");
 	}
 
 	/**
@@ -299,6 +307,8 @@ public class ScanModuleFigure extends Figure {
 											   newLocation.width/2, 
 											   newLocation.y + 
 											   newLocation.height));
+			
+			fireFigureMoved();
 			
 			logger.debug("Mouse Dragged : x = " + me.x + " , y = " + me.y );
 		}

@@ -311,7 +311,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		this.dirty = true;
 		this.firePropertyChange(PROP_DIRTY);
 		
-		
 		refreshAllEditParts(viewer.getRootEditPart());
 	}
 
