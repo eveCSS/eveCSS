@@ -139,6 +139,16 @@ public class PostscanComposite extends Composite {
 		}
 		this.scanModule = scanModule;
 		this.tableViewer.setInput(scanModule);
+
+		// if there are postcans present... 
+		if(tableViewer.getTable().getItems().length > 0)
+		{
+			// ... and none is selected ...
+			if(tableViewer.getTable().getSelectionCount() == 0)
+			{	// ... select the first one
+				tableViewer.getTable().select(0);
+			}
+		}
 	}
 	
 	// ***********************************************************************

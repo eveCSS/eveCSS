@@ -149,6 +149,16 @@ public class PositioningComposite extends Composite {
 		}
 		this.scanModule = scanModule;
 		this.tableViewer.setInput(scanModule);
+
+		// if there are positioings present... 
+		if(tableViewer.getTable().getItems().length > 0)
+		{
+			// ... and none is selected ...
+			if(tableViewer.getTable().getSelectionCount() == 0)
+			{	// ... select the first one
+				tableViewer.getTable().select(0);
+			}
+		}
 	}
 	
 	/**

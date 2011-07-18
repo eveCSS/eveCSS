@@ -26,6 +26,7 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
+import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 
@@ -126,6 +127,16 @@ public class PrescanComposite extends Composite {
 		}
 		this.scanModule = scanModule;
 		this.tableViewer.setInput(scanModule);
+
+		// if there are prescans present... 
+		if(tableViewer.getTable().getItems().length > 0)
+		{
+			// ... and none is selected ...
+			if(tableViewer.getTable().getSelectionCount() == 0)
+			{	// ... select the first one
+				tableViewer.getTable().select(0);
+			}
+		}
 	}
 	
 	// ***********************************************************************
@@ -457,18 +468,7 @@ public class PrescanComposite extends Composite {
 			// ********************************************************
 			
 			if (scanModule.getPrescans().length > 0) {
-				Action deleteAction = new Action(){
-			    	
-					@Override
-					public void run() {
-
-			    		scanModule.remove((Prescan)((IStructuredSelection)
-			    				tableViewer.getSelection()).getFirstElement());
-			    		
-			    		tableViewer.refresh();
-			    	}
-			    };
-			    
+				Action deleteAction = new DeleteAction();
 			    deleteAction.setEnabled(true);
 			    deleteAction.setText("Delete Prescan");
 			    deleteAction.setToolTipText("Deletes Prescan");
@@ -560,5 +560,23 @@ public class PrescanComposite extends Composite {
 			scanModule.add(p);
 			tableViewer.refresh();
 		}
+	}
+
+	/**
+	 * 
+	 */
+	class DeleteAction extends Action {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void run() {
+    		
+    		scanModule.remove((Prescan)((IStructuredSelection)
+    				tableViewer.getSelection()).getFirstElement());
+
+    		tableViewer.refresh();
+    	}
 	}
 }
