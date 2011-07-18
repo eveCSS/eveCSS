@@ -31,10 +31,16 @@ public class EveEditorPerspectiveListener implements IPerspectiveListener {
 	@Override
 	public void perspectiveActivated(IWorkbenchPage page,
 			IPerspectiveDescriptor perspective) {
+		if(logger.isDebugEnabled()) {
+			logger.debug("Perspective enabled: " + perspective.getId());
+		}
 		if(perspective.getId().equals("EveEditorPerpective")) {
+			final String name = 
+				Activator.getDefault().getMeasuringStation().getName() == null 
+				? "" : Activator.getDefault().getMeasuringStation().getName();
 			page.getWorkbenchWindow().getShell().setText(
 				Activator.getDefault().getDefaultWindowTitle() + " - " +
-				Activator.getDefault().getMeasuringStation().getName() + " (v" +
+				name + " (v" +
 				Activator.getDefault().getMeasuringStation().getVersion() + ")");
 		} else {
 			page.getWorkbenchWindow().getShell().setText(

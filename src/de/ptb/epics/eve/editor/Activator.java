@@ -45,7 +45,7 @@ public class Activator extends AbstractUIPlugin {
 	private String rootDir;
 	private boolean debug;
 	
-	private String defaultWindowTitle;
+	private final String defaultWindowTitle = "Control System Studio";
 	
 	private EveEditorPerspectiveListener eveEditorPerspectiveListener;
 	
@@ -73,10 +73,7 @@ public class Activator extends AbstractUIPlugin {
 		configureLogging();
 		loadMeasuringStation();
 		startupReport();
-		
-		defaultWindowTitle = PlatformUI.getWorkbench().
-				getActiveWorkbenchWindow().getShell().getText();
-		
+
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
 				addPerspectiveListener(eveEditorPerspectiveListener);
 	}
@@ -87,7 +84,7 @@ public class Activator extends AbstractUIPlugin {
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
-		removePerspectiveListener(eveEditorPerspectiveListener);
+			removePerspectiveListener(eveEditorPerspectiveListener);
 		eveEditorPerspectiveListener = null;
 		
 		Platform.removeLogListener(logListener);
