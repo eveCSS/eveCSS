@@ -64,7 +64,6 @@ public class Activator extends AbstractUIPlugin {
 	private String rootDir;
 	private boolean debug;
 	
-	
 	/**
 	 * The constructor
 	 */
@@ -93,7 +92,7 @@ public class Activator extends AbstractUIPlugin {
 		loadMeasuringStation();
 		loadColorsAndFonts();
 		startupReport();
-		
+
 		this.ecp1Client.getPlayListController().addNewXMLFileListener(this.xmlFileDispatcher);
 		this.ecp1Client.addErrorListener(this.engineErrorReader);
 		this.ecp1Client.addEngineStatusListener(this.chainStatusAnalyzer);
