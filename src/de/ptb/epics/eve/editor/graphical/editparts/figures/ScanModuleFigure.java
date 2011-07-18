@@ -94,7 +94,7 @@ public class ScanModuleFigure extends Figure {
 		super.paint(graphics);
 		
 		// event loop caused by setBackgroundColor(ColorConstants.white);
-		//setBackgroundColor(ColorConstants.white);
+		setBackgroundColor(ColorConstants.white);
 		// had repainted the figure
 		// but without the active state (green) isnt correct ?!?
 		
@@ -308,7 +308,7 @@ public class ScanModuleFigure extends Figure {
 											   newLocation.y + 
 											   newLocation.height));
 			
-			fireFigureMoved();
+			//fireFigureMoved();
 			
 			logger.debug("Mouse Dragged : x = " + me.x + " , y = " + me.y );
 		}

@@ -30,6 +30,8 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 	private static Logger logger = 
 			Logger.getLogger(ScanModuleEditPart.class.getName());
 	
+	private ScanModuleFigureCoordinateListener scanModuleFigureCoordinateListener;
+	
 	/**
 	 * Constructs a <code>ScanModulEditPart</code>.
 	 * 
@@ -46,14 +48,13 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 	{
 		
 	}
-	
-	
-	// TODO explain
-	// TODO remove CoordinateListener
+
 	/**
 	 * 
 	 */
 	public void removeYourSelf() {
+		this.getFigure().removeCoordinateListener(scanModuleFigureCoordinateListener);
+		
 		final ScanModule scanModule = (ScanModule)this.getModel();
 		if( scanModule.getAppended() != null ) {
 			// append Scan Modul vorhanden, muß auch entfernt werden
@@ -107,7 +108,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 		
 		scanModule.getChain().remove(scanModule);
 
-		this.getParent().refresh();
+		//this.getParent().refresh();
 
 		// TODO: this.getFigure..., this.removeNotify und this.unregister
 		// auskokmmentiert am 11.1.11. Funktionen scheinen nicht
@@ -176,8 +177,10 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 			new ScanModuleFigure(scanModule.getName(), 
 								scanModule.getX(), 
 								scanModule.getY());
+		scanModuleFigureCoordinateListener = 
+			new ScanModuleFigureCoordinateListener();
 		scanModuleFigure.addCoordinateListener(
-				new ScanModuleFigureCoordinateListener());
+				scanModuleFigureCoordinateListener);
 		return scanModuleFigure;
 	}
 
@@ -210,14 +213,18 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 		 * some hacks to get rid of repainting the necessary stuff without 
 		 * using the GEF Framework correctly... (see Redmine Bug #168)
 		 */
+		
+		/*
 		Iterator it = getViewer().getEditPartRegistry().values().iterator();
 		while(it.hasNext()) {
 			 Object obj = it.next();
+			 System.out.println(obj);
 			if(obj instanceof ScanModuleEditPart) {
 				((ScanModuleEditPart)obj).getFigure().repaint();
-				System.out.println(it.next());
+				//System.out.println(it.next());
 			}
-		}
+		}*/
+		
 		super.setFocus(true);
 	}
 	
@@ -245,7 +252,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 		((ScanModuleFigure)this.figure).
 				setError(scanModule.getModelErrors().size() > 0);
 		
-		((ScanModuleFigure)this.figure).repaint();
+		//((ScanModuleFigure)this.figure).repaint();
 		
 		super.refresh();
 	}
