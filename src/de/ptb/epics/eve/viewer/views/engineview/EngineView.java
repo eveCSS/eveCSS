@@ -49,7 +49,7 @@ public final class EngineView extends ViewPart
 	/** the public identifier of the view */
 	public static final String id = "EngineView";
 	
-	private static Logger logger = Logger.getLogger(EngineView.class);	
+	private static Logger logger = Logger.getLogger(EngineView.class.getName());
 
 	private Composite top = null;
 	private ScrolledComposite sc = null;
@@ -310,6 +310,10 @@ public final class EngineView extends ViewPart
 		this.rebuildText(0);
 		Activator.getDefault().getEcp1Client().addConnectionStateListener( this );
 
+		final String engineString = de.ptb.epics.eve.preferences.Activator.
+				getDefault().getPreferenceStore().getString(
+				PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
+		
 		// If Ecp1Client running (connected), enable disconnect and kill
 		// else enable connect and start Button
 		if (Activator.getDefault().getEcp1Client().isRunning()) {
@@ -317,19 +321,19 @@ public final class EngineView extends ViewPart
 			this.startButton.setEnabled(false);
 			this.disconnectButton.setEnabled(true);
 			this.killButton.setEnabled(true);
+			statusLabel.setText("connected to " + engineString);
 		} else {
 			this.disconnectButton.setEnabled(false);
 			this.connectButton.setEnabled(true);
 			this.killButton.setEnabled(false);
 			this.startButton.setEnabled(true);
-
+			
 			// disable scan buttons if engine disconnected
 			playButton.setEnabled(false);
 			pauseButton.setEnabled(false);
 			stopButton.setEnabled(false);
 			skipButton.setEnabled(false);
 			haltButton.setEnabled(false);
-
 		}
 	}
 
@@ -338,7 +342,7 @@ public final class EngineView extends ViewPart
 	 */
 	@Override
 	public void setFocus() {
-
+		
 	}
 
 	/**
