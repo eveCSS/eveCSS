@@ -36,8 +36,6 @@ import de.ptb.epics.eve.ecp1.intern.IECP1Command;
 import de.ptb.epics.eve.ecp1.intern.MeasurementDataCommand;
 import de.ptb.epics.eve.ecp1.intern.PlayListCommand;
 
-//import de.ptb.epics.eve.viewer.RequestProcessor;
-
 public class ECP1Client {
 	
 	private Socket socket;
@@ -73,10 +71,8 @@ public class ECP1Client {
 	private Map< Character, Constructor< ? extends IECP1Command > > commands;
 	
 	private boolean running;
-//	private RequestProcessor requestProcessor;
-	
+
 	@SuppressWarnings("unchecked")
-//	public ECP1Client(RequestProcessor requestProcessor) {
 	public ECP1Client() {
 		this.self = this;
 		
@@ -85,8 +81,7 @@ public class ECP1Client {
 		
 		this.playController = new PlayController( this );
 		this.playListController = new PlayListController( this );
-//		this.requestProcessor = requestProcessor;
-		
+	
 		this.engineStatusListener = new ConcurrentLinkedQueue< IEngineStatusListener >();
 		this.chainStatusListener = new ConcurrentLinkedQueue< IChainStatusListener >();
 		this.errorListener = new ConcurrentLinkedQueue< IErrorListener >();
@@ -166,10 +161,6 @@ public class ECP1Client {
 			}
 		}
 	}
-
-/*	public RequestProcessor getRequestProcessor() {
-		return requestProcessor;
-	}*/
 
 	public void close() throws IOException {
 		if( this.running ) {
