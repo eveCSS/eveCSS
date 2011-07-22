@@ -8,6 +8,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.core.runtime.*;
 import org.eclipse.jface.operation.*;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Calendar;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.core.runtime.CoreException;
@@ -144,6 +145,10 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 		final ScanDescription scanDescription = 
 				new ScanDescription(measuringStation);
 		final Chain chain = new Chain(1);
+		chain.setSaveFilename(Activator.getDefault().getRootDirectory() + 
+								"data/" + 
+								Calendar.getInstance().get(Calendar.YEAR) + "/" + 
+								"kw" + Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) + "/");
 		final StartEvent startEvent = 
 				new StartEvent(scanDescription.getEventById("S0") , chain);
 		chain.setStartEvent(startEvent);
