@@ -70,8 +70,11 @@ public class Start extends AbstractHandler {
 						new ViewerMessage(MessageTypes.ERROR, message));
 			} else {
 				runtime.exec(engineLocation, parameters, null);
-				logger.info("started engine process at: " + engineLocation +
-						"(Port: " + enginePort + ")");
+				String message = "started engine process at: " + engineLocation +
+				"(Port: " + enginePort + ")";
+				logger.info(message);
+				Activator.getDefault().getMessagesContainer().addMessage(
+						new ViewerMessage(MessageTypes.INFO, message));
 			}
 			
 			Thread.sleep(1000);
