@@ -9,6 +9,7 @@ import org.eclipse.draw2d.MouseMotionListener;
 import org.eclipse.draw2d.XYAnchor;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 
 /**
@@ -54,6 +55,7 @@ public class EventFigure extends Figure {
 	public void paint(Graphics graphics) {
 		
 		super.paint(graphics);
+		graphics.setAntialias(SWT.ON);
 		// get current background color
 		Color color = graphics.getBackgroundColor();
 		// set background color to black (for our event)

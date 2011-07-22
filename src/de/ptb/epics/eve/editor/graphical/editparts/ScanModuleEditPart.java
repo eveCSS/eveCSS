@@ -40,14 +40,6 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 	public ScanModuleEditPart(final ScanModule scanModule) {
 		this.setModel(scanModule);
 	}
-	
-	/**
-	 * Deletes the scan module. ????
-	 */
-	public void delete()
-	{
-		
-	}
 
 	/**
 	 * 
@@ -207,24 +199,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 		logger.debug("Scan Module Figure coords : x = " + 
 					getFigure().getClientArea().x + " , y = " +
 					getFigure().getClientArea().y);
-		
-		/*
-		 * dirty
-		 * some hacks to get rid of repainting the necessary stuff without 
-		 * using the GEF Framework correctly... (see Redmine Bug #168)
-		 */
-		
-		/*
-		Iterator it = getViewer().getEditPartRegistry().values().iterator();
-		while(it.hasNext()) {
-			 Object obj = it.next();
-			 System.out.println(obj);
-			if(obj instanceof ScanModuleEditPart) {
-				((ScanModuleEditPart)obj).getFigure().repaint();
-				//System.out.println(it.next());
-			}
-		}*/
-		
+
 		super.setFocus(true);
 	}
 	
@@ -243,16 +218,15 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 		// check if the scan module is still in a "safe" area, and if not move 
 		// it into it
 		if( (scanModule.getX() != this.figure.getBounds().x) || 
-			 scanModule.getY() != this.figure.getBounds().y) 
-		{
-		    scanModule.setX(this.figure.getBounds().x);
-			scanModule.setY(this.figure.getBounds().y);
+			 scanModule.getY() != this.figure.getBounds().y) {
+				scanModule.setX(this.figure.getBounds().x);
+				scanModule.setY(this.figure.getBounds().y);
 		}
 		
 		((ScanModuleFigure)this.figure).
 				setError(scanModule.getModelErrors().size() > 0);
 		
-		//((ScanModuleFigure)this.figure).repaint();
+		((ScanModuleFigure)this.figure).repaint();
 		
 		super.refresh();
 	}

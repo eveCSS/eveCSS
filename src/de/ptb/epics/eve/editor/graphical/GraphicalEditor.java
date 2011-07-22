@@ -145,6 +145,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		
 		menu = createContextMenu();
 		
+		getSite().setSelectionProvider(viewer);
+		
 		updateViews();
 	}
 
@@ -250,6 +252,9 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			// tell the view about the currently selected scan module
 			scanModuleView.setCurrentScanModule(selectedScanModule);
 		}
+		
+		refreshAllEditParts(viewer.getRootEditPart());
+		
 		logger.debug("selectedScanModule: " + selectedScanModule);
 	}
 	
@@ -338,6 +343,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	@Override
 	public void setFocus() {
 		logger.debug("Focus gained");
+		
+		refreshAllEditParts(viewer.getRootEditPart());
 		
 		updateViews();
 	}
@@ -591,6 +598,15 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		return true;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() {
+		getSite().setSelectionProvider(null);
+		super.dispose();
+	}
+	
 	// ***********************************************************************
 	// ************************* Listener ************************************
 	// ***********************************************************************
@@ -725,8 +741,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		@SuppressWarnings("unchecked")
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			
-			// TODO !!!!! split try catch in smaller parts ?
 			try {
 				if(rightClickEditPart instanceof ScanModuleEditPart) {
 					// get the edit part the user right-clicked on
@@ -859,9 +873,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				}
 				
 			} catch(Exception ex) {
-				// TODO: remove and replace with smaller blocks
 				logger.error(ex.getMessage(), ex);
-			}		
+			}
 		}
 	}
 	

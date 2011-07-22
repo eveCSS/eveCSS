@@ -4,6 +4,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
+import org.eclipse.swt.SWT;
 
 import de.ptb.epics.eve.data.scandescription.Connector;
 
@@ -31,8 +32,9 @@ public class EventToScanModulConnectionEditPart extends AbstractConnectionEditPa
 	protected IFigure createFigure() {
 		PolylineConnection connection = new PolylineConnection();
 		PolygonDecoration decoration = new PolygonDecoration();
-	    decoration.setTemplate( PolygonDecoration.TRIANGLE_TIP );
-	    connection.setTargetDecoration( decoration );
+	    decoration.setTemplate(PolygonDecoration.TRIANGLE_TIP);
+	    connection.setTargetDecoration(decoration);
+	    connection.setAntialias(SWT.ON);
 		return connection;
 	}
 	

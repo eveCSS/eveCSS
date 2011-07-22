@@ -4,16 +4,14 @@ import org.apache.log4j.Logger;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.MouseEvent;
 import org.eclipse.draw2d.MouseListener;
 import org.eclipse.draw2d.MouseMotionListener;
 import org.eclipse.draw2d.XYAnchor;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
@@ -61,13 +59,12 @@ public class ScanModuleFigure extends Figure {
 		this.active = false;
 		this.contains_errors = false;
 		this.setBackgroundColor(ColorConstants.white);
-		this.setBorder(new LineBorder(ColorConstants.black, 1));
-		this.setOpaque(true);
+		//this.setOpaque(true);
 		this.setSize(70, 30);
 		this.setLocation(new Point(x, y));
 
 		this.text = text;
-		this.setToolTip( new Label("Right click to edit me."));
+		//this.setToolTip( new Label("Right click to edit me."));
 		
 		// add listener for mouse button events
 		this.addMouseListener(new ScanModuleFigureMouseListener());
@@ -93,50 +90,77 @@ public class ScanModuleFigure extends Figure {
 	public void paint(final Graphics graphics) {
 		super.paint(graphics);
 		
-		// event loop caused by setBackgroundColor(ColorConstants.white);
-		setBackgroundColor(ColorConstants.white);
-		// had repainted the figure
-		// but without the active state (green) isnt correct ?!?
+		graphics.setAntialias(SWT.ON);
 		
-		final Rectangle rect = graphics.getClip(new Rectangle());
-
-		//graphics.setBackgroundColor(ColorConstants.white);
-		//graphics.fillRectangle(rect);
-		
-		// draw a nice gradient
 		Display display = PlatformUI.getWorkbench().getDisplay();
-		
 		if(active)
 		{
 			// if it is active (selected) -> change color
-			graphics.setForegroundColor(new Color(display, new RGB(0,192,0)));
-			graphics.setBackgroundColor(new Color(display, new RGB(255,255,255)));
+			graphics.setForegroundColor(ColorConstants.titleGradient);
+			graphics.setBackgroundColor(ColorConstants.white);
 		} else {
 			// inactive ones are colorless
 			graphics.setForegroundColor(ColorConstants.white);
 			graphics.setBackgroundColor(ColorConstants.lightGray);
 		}
 		
-		graphics.fillGradient(rect, true);
+		// save the old clipping
+		Rectangle oldClipping = graphics.getClip(new Rectangle());
+
+		Path path = new Path(display);
+		int spline_control_point = 8;
+		
+		path.moveTo(this.bounds.width + this.bounds.x - spline_control_point, 
+					this.bounds.y);
+		path.quadTo(this.bounds.width + this.bounds.x, this.bounds.y, 
+					this.bounds.width + this.bounds.x, this.bounds.y + 
+					spline_control_point);
+		// right
+		path.lineTo(this.bounds.width + this.bounds.x, 
+					this.bounds.y + this.bounds.height - spline_control_point);
+		path.quadTo(this.bounds.width + this.bounds.x, 
+					this.bounds.y + this.bounds.height, 
+					this.bounds.width + this.bounds.x - spline_control_point, 
+					this.bounds.y + this.bounds.height);
+		// bottom
+		path.lineTo(this.bounds.x + spline_control_point, 
+					this.bounds.y + this.bounds.height);
+		path.quadTo(this.bounds.x, this.bounds.y + this.bounds.height, 
+					this.bounds.x, this.bounds.y + this.bounds.height - 
+					spline_control_point);
+		// left
+		path.lineTo(this.bounds.x, this.bounds.y + spline_control_point);
+		path.quadTo(this.bounds.x, this.bounds.y, 
+					this.bounds.x + spline_control_point, this.bounds.y);
+		// top
+		path.close();
+		graphics.setClip(path);
+		graphics.fillGradient(this.bounds, true);
 		
 		// red error bar if module contains errors
 		if(contains_errors)
 		{
 			graphics.setForegroundColor(ColorConstants.white);
-			graphics.setBackgroundColor(new Color(display, new RGB(192,0,0)));
+			graphics.setBackgroundColor(ColorConstants.red);
 			graphics.fillRectangle(getLocation().x+1, getLocation().y+1, 15, 5);
 		}
 		
+		// draw border
 		graphics.setForegroundColor(ColorConstants.black);
 		graphics.setBackgroundColor(ColorConstants.white);
-		
 		graphics.setLineWidth(2);
-		graphics.drawRectangle(rect);
+		graphics.drawPath(path);
 		
+		// draw scan module name
 		graphics.drawText(
 				this.text, this.getLocation().x + 5, this.getLocation().y + 8);
 		
-		logger.debug("paint Scan Module");
+		// restore old clipping
+		graphics.setClip(oldClipping);
+		// free
+		path.dispose();
+		
+		logger.debug("paint Scan Module " + this);
 	}
 
 	/**
@@ -307,8 +331,6 @@ public class ScanModuleFigure extends Figure {
 											   newLocation.width/2, 
 											   newLocation.y + 
 											   newLocation.height));
-			
-			//fireFigureMoved();
 			
 			logger.debug("Mouse Dragged : x = " + me.x + " , y = " + me.y );
 		}
