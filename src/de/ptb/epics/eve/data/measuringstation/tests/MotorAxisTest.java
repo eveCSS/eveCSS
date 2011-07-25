@@ -2,6 +2,8 @@ package de.ptb.epics.eve.data.measuringstation.tests;
 
 import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 import org.apache.log4j.Logger;
@@ -27,12 +29,10 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  */
 public class MotorAxisTest {
 
-	// logging
 	private static Logger logger = 
 			Logger.getLogger(MotorAxisTest.class.getName());
 
-	// the measuring station
-	private static IMeasuringStation measuringStation;
+	private static List<IMeasuringStation> stations;
 	
 	/**
 	 * Test method for 
@@ -44,20 +44,21 @@ public class MotorAxisTest {
 	{
 		log_start(logger, "testCloneEquals()");
 		
-		for(Motor m : measuringStation.getMotors())
-		{
-			for(MotorAxis ma : m.getAxes())
-			{
-				logger.info("Testing axis " + deviceString(ma));
+		for(IMeasuringStation measuringStation : stations) {
+			logger.info("Testing station " + measuringStation.getName());
+			for(Motor m : measuringStation.getMotors()) {
+				for(MotorAxis ma : m.getAxes()) {
+					logger.info("Testing axis " + deviceString(ma));
 				
-				MotorAxis clone = (MotorAxis) ma.clone();
+					MotorAxis clone = (MotorAxis) ma.clone();
 				
-				assertEquals(ma,ma);
-				assertEquals(clone,clone);
-				assertEquals(ma,clone);
-				assertEquals(clone,ma);
-				logger.info("Motor Axis " + deviceString(ma) + 
-							" and its clone are equal");
+					assertEquals(ma,ma);
+					assertEquals(clone,clone);
+					assertEquals(ma,clone);
+					assertEquals(clone,ma);
+					logger.info("Motor Axis " + deviceString(ma) + 
+								" and its clone are equal");
+				}
 			}
 		}
 		
@@ -80,9 +81,11 @@ public class MotorAxisTest {
 		((RollingFileAppender)logger.
 				getAppender("MotorAxisTestAppender")).rollOver();
 		
-		measuringStation = Configurator.getMeasuringStation();
+		stations = Configurator.getMeasuringStations();
 		
-		assertNotNull(measuringStation);
+		for(IMeasuringStation ims : stations) {
+			assertNotNull(ims);
+		}
 		
 		classSetUp(logger);
 	}

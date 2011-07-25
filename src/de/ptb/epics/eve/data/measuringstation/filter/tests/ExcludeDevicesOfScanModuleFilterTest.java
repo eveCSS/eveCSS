@@ -57,6 +57,8 @@ public class ExcludeDevicesOfScanModuleFilterTest {
 	@Test
 	public void testExcludeAxis()
 	{
+		
+		
 		// create a measuring station with filtered axes
 		filteredMeasuringStation = new ExcludeDevicesOfScanModuleFilter(
 				true, false, false, false, false);

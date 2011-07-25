@@ -27,13 +27,13 @@ public class Configurator {
 	private static Logger logger = 
 			Logger.getLogger(Configurator.class.getName());
 	
-	private static final File schemaFile = new File("xml/scml.xsd");
-	private static final File descriptionFile = new File("xml/test.xml");
-	
-	private static final File scan = new File("scml/scan1.scml");
-	
 	private static boolean configured = false;
 	
+	private static final File schemaFile = new File("xml/scml.xsd");
+	private static final File descriptionFile = new File("xml/test.xml"); // deprecated
+	
+	private static final File scan = new File("scml/scan1.scml"); // deprecated
+
 	/**
 	 * Returns a 
 	 * {@link de.ptb.epics.eve.data.measuringstation.IMeasuringStation} to test 
@@ -78,11 +78,14 @@ public class Configurator {
 		
 		File test = new File("xml/test.xml");
 		File qnim = new File("xml/qnim.xml");
+		File sx700 = new File("xml/sx700.xml");
 		
 		try {
 			measuringStationLoader.load(test);
 			stations.add(measuringStationLoader.getMeasuringStation());
 			measuringStationLoader.load(qnim);
+			stations.add(measuringStationLoader.getMeasuringStation());
+			measuringStationLoader.load(sx700);
 			stations.add(measuringStationLoader.getMeasuringStation());
 		} catch (ParserConfigurationException e) {
 			logger.error(e.getMessage(), e);
@@ -102,6 +105,8 @@ public class Configurator {
 	 * @return a 
 	 * 		{@link de.ptb.epics.eve.data.scandescription.ScanDescription} to 
 	 * 		test with 
+	 * @deprecated uses {@link #getMeasuringStation()} - should 
+	 * 				be replaced in the future by a station depended getter
 	 */
 	public static ScanDescription getScanDescription()
 	{

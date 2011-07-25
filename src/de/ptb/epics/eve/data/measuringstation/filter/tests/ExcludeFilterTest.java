@@ -62,10 +62,7 @@ public class ExcludeFilterTest {
 		
 		for(IMeasuringStation measuringStation : stations) {
 		
-			logger.debug("***************************************************");
-			logger.debug("*** Testing station: " + 
-					measuringStation.getLoadedFileName() + " ***");
-			logger.debug("***************************************************");
+			log_station(logger, measuringStation);
 			
 			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
 			filteredMeasuringStation.setSource(measuringStation);
@@ -202,10 +199,7 @@ public class ExcludeFilterTest {
 		
 		for(IMeasuringStation measuringStation : stations) {
 			
-			logger.debug("***************************************************");
-			logger.debug("*** Testing station: " + 
-					measuringStation.getLoadedFileName() + " ***");
-			logger.debug("***************************************************");
+			log_station(logger, measuringStation);
 			
 			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
 			filteredMeasuringStation.setSource(measuringStation);
@@ -292,10 +286,7 @@ public class ExcludeFilterTest {
 		
 		for(IMeasuringStation measuringStation : stations) {
 			
-			logger.debug("***************************************************");
-			logger.debug("*** Testing station: " + 
-					measuringStation.getLoadedFileName() + " ***");
-			logger.debug("***************************************************");
+			log_station(logger, measuringStation);
 			
 			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
 			filteredMeasuringStation.setSource(measuringStation);
@@ -361,10 +352,7 @@ public class ExcludeFilterTest {
 		
 		for(IMeasuringStation measuringStation : stations) {
 			
-			logger.debug("***************************************************");
-			logger.debug("*** Testing station: " + 
-					measuringStation.getLoadedFileName() + " ***");
-			logger.debug("***************************************************");
+			log_station(logger, measuringStation);
 			
 			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
 			filteredMeasuringStation.setSource(measuringStation);
@@ -431,10 +419,7 @@ public class ExcludeFilterTest {
 		
 		for(IMeasuringStation measuringStation : stations) {
 			
-			logger.debug("***************************************************");
-			logger.debug("*** Testing station: " + 
-					measuringStation.getLoadedFileName() + " ***");
-			logger.debug("***************************************************");
+			log_station(logger, measuringStation);
 			
 			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
 			filteredMeasuringStation.setSource(measuringStation);
@@ -504,10 +489,7 @@ public class ExcludeFilterTest {
 		
 		for(IMeasuringStation measuringStation : stations) {
 			
-			logger.debug("***************************************************");
-			logger.debug("*** Testing station: " + 
-					measuringStation.getLoadedFileName() + " ***");
-			logger.debug("***************************************************");
+			log_station(logger, measuringStation);
 			
 			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
 			filteredMeasuringStation.setSource(measuringStation);
@@ -584,10 +566,7 @@ public class ExcludeFilterTest {
 	{
 		for(IMeasuringStation measuringStation : stations) {
 			
-			logger.debug("***************************************************");
-			logger.debug("*** Testing station: " + 
-					measuringStation.getLoadedFileName() + " ***");
-			logger.debug("***************************************************");
+			log_station(logger, measuringStation);
 			
 			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
 			filteredMeasuringStation.setSource(measuringStation);
@@ -642,10 +621,7 @@ public class ExcludeFilterTest {
 		
 		for(IMeasuringStation measuringStation : stations) {
 			
-			logger.debug("***************************************************");
-			logger.debug("*** Testing station: " + 
-					measuringStation.getLoadedFileName() + " ***");
-			logger.debug("***************************************************");
+			log_station(logger, measuringStation);
 			
 			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
 			filteredMeasuringStation.setSource(measuringStation);
@@ -701,10 +677,7 @@ public class ExcludeFilterTest {
 		
 		for(IMeasuringStation measuringStation : stations) {
 			
-			logger.debug("***************************************************");
-			logger.debug("*** Testing station: " + 
-					measuringStation.getLoadedFileName() + " ***");
-			logger.debug("***************************************************");
+			log_station(logger, measuringStation);
 			
 			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
 			filteredMeasuringStation.setSource(measuringStation);
@@ -777,10 +750,7 @@ public class ExcludeFilterTest {
 		
 		for(IMeasuringStation measuringStation : stations) {
 			
-			logger.debug("***************************************************");
-			logger.debug("*** Testing station: " + 
-					measuringStation.getLoadedFileName() + " ***");
-			logger.debug("***************************************************");
+			log_station(logger, measuringStation);
 			
 			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
 			filteredMeasuringStation.setSource(measuringStation);
@@ -828,10 +798,7 @@ public class ExcludeFilterTest {
 		
 		for(IMeasuringStation measuringStation : stations) {
 			
-			logger.debug("***************************************************");
-			logger.debug("*** Testing station: " + 
-					measuringStation.getLoadedFileName() + " ***");
-			logger.debug("***************************************************");
+			log_station(logger, measuringStation);
 			
 			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
 			filteredMeasuringStation.setSource(measuringStation);

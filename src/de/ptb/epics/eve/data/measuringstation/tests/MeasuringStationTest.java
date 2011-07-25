@@ -3,6 +3,8 @@ package de.ptb.epics.eve.data.measuringstation.tests;
 import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.RollingFileAppender;
 import org.junit.After;
@@ -28,10 +30,11 @@ public class MeasuringStationTest {
 	private static Logger logger = 
 		Logger.getLogger(MeasuringStationTest.class.getName());
 
-	private static IMeasuringStation measuringStation;
+	private static List<IMeasuringStation> stations;
 
 	/**
-	 * 
+	 * Should check whether the loaded java model and the xml file entries are 
+	 * equal.
 	 */
 	@Ignore("Not implemented yet")
 	@Test
@@ -60,9 +63,11 @@ public class MeasuringStationTest {
 		((RollingFileAppender)logger.
 				getAppender("MeasuringStationTestAppender")).rollOver();
 		
-		measuringStation = Configurator.getMeasuringStation();
+		stations = Configurator.getMeasuringStations();
 		
-		assertNotNull(measuringStation);
+		for(IMeasuringStation ims : stations) {
+			assertNotNull(ims);
+		}
 		
 		classSetUp(logger);
 	}

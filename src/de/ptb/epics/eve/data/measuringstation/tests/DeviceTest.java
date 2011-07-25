@@ -1,14 +1,7 @@
 package de.ptb.epics.eve.data.measuringstation.tests;
 
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.classSetUp;
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.classTearDown;
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.deviceString;
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.log_end;
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.log_start;
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.testSetUp;
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.testTearDown;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -29,11 +22,10 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  * @since 0.4.1
  */
 public class DeviceTest {
-	// logging
+
 	private static Logger logger = 
 			Logger.getLogger(DeviceTest.class.getName());
 
-	// the measuring station
 	private static List<IMeasuringStation> stations;
 	
 	/**
@@ -45,9 +37,7 @@ public class DeviceTest {
 		
 		for(IMeasuringStation measuringStation : stations) {
 			
-			logger.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-			logger.debug("Testing station " + measuringStation.getLoadedFileName());
-			logger.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+			log_station(logger, measuringStation);
 			
 			for(Device device : measuringStation.getDevices()) {
 				logger.info("Testing device " + deviceString(device));
@@ -59,14 +49,22 @@ public class DeviceTest {
 				logger.debug("class names are equal (" + device.getClassName() + ")");
 				assertEquals(device.getDisplaygroup(), clone.getDisplaygroup());
 				logger.debug("displaygroups are equal (" + device.getDisplaygroup() + ")");
-				//assertEquals(device.getValue(), clone.getValue()); value is a function
-				//logger.debug("values are equal (" + ")");
+				assertEquals(device.getValue(), clone.getValue());
+				logger.debug("values are equal");
 				
 				// check inherited properties from AbstractDevice
 				assertEquals(device.getName(), clone.getName());
 				assertEquals(device.getID(), clone.getID());
-				// unit Unit
+				assertEquals(device.getUnit(), clone.getUnit());
+
 				// option list List<Options>
+				// device options are cloned but the equals method (inherited 
+				// from AbstractPrePostScanDevice) doesn't validate them ->
+				// two devices one with and one without options could be equal.
+				// cannot simply change the method, because Option is also a 
+				// sub type of AbstractPrePostscanDevice inheriting the equals
+				// (options should not have options)
+				
 				// parent AbstractDevice
 				
 				logger.debug("-----");
@@ -89,9 +87,7 @@ public class DeviceTest {
 		
 		for(IMeasuringStation measuringStation : stations) {
 		
-			logger.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-			logger.debug("Testing station " + measuringStation.getLoadedFileName());
-			logger.debug("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+			log_station(logger, measuringStation);
 			
 			for(Device d : measuringStation.getDevices()) {
 				

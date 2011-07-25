@@ -30,13 +30,11 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  * @author Marcus Michalsky
  * @since 0.4.1
  */
-public class TypeValueTest 
-{
-	// logging
+public class TypeValueTest {
+	
 	private static Logger logger = 
 			Logger.getLogger(TypeValueTest.class.getName());
 
-	// the "real"/source measuring station
 	private static List<IMeasuringStation> stations;
 
 	/**
@@ -96,9 +94,77 @@ public class TypeValueTest
 						logger.debug("stop type values are equal");
 					}
 					
-					// TODO test optional type values of:
-					// status, trigger, unit, deadband, offset, tweakvalue, 
-					// tweakforward, tweakreverse
+					// testing status (optional)
+					if(ma.getStatus() != null && ma.getStatus().getValue() != null) {
+						TypeValue statusTypeValue = ma.getStatus().getValue();
+						TypeValue statusClone = (TypeValue)statusTypeValue.clone();
+						assertEquals(statusTypeValue, statusClone);
+						logger.debug("status type values are equal");
+					} else {
+						logger.debug("no status entry");
+					}
+					
+					// testing trigger (optional)
+					if(ma.getTrigger() != null && ma.getTrigger().getValue() != null) {
+						TypeValue triggerTypeValue = ma.getTrigger().getValue();
+						TypeValue triggerClone = (TypeValue)triggerTypeValue.clone();
+						assertEquals(triggerTypeValue, triggerClone);
+						logger.debug("trigger type values are equal");
+					} else {
+						logger.debug("no trigger entry");
+					}
+					
+					// testing deadband (optional)
+					if(ma.getDeadband() != null && ma.getDeadband().getValue() != null) {
+						TypeValue deadbandTypeValue = ma.getDeadband().getValue();
+						TypeValue deadbandClone = (TypeValue)deadbandTypeValue.clone();
+						assertEquals(deadbandTypeValue, deadbandClone);
+						logger.debug("deadband type values are equal");
+					} else {
+						logger.debug("no deadband entry");
+					}
+					
+					// testing offset (optional)
+					if(ma.getOffset() != null && ma.getOffset().getValue() != null) {
+						TypeValue offsetTypeValue = ma.getOffset().getValue();
+						TypeValue offsetClone = (TypeValue)offsetTypeValue.clone();
+						assertEquals(offsetTypeValue, offsetClone);
+						logger.debug("offset type values are equal");
+					} else {
+						logger.debug("no offset entry");
+					}
+					
+					// testing tweakvalue (optional)
+					if(ma.getTweakValue() != null && ma.getTweakValue().getValue() != null) {
+						TypeValue tweakValueTypeValue = ma.getTweakValue().getValue();
+						TypeValue tweakValueClone = (TypeValue)tweakValueTypeValue.clone();
+						assertEquals(tweakValueTypeValue, tweakValueClone);
+						logger.debug("tweak value type values are equal");
+					} else {
+						logger.debug("no tweak value entry");
+					}
+					
+					// testing tweak forward (optional)
+					if(ma.getTweakForward() != null && ma.getTweakForward().getValue() != null) {
+						TypeValue tweakForwardTypeValue = ma.getTweakForward().getValue();
+						TypeValue tweakForwardClone = (TypeValue)tweakForwardTypeValue.clone();
+						assertEquals(tweakForwardTypeValue, tweakForwardClone);
+						logger.debug("tweak forward type values are equal");
+					} else {
+						logger.debug("no tweak forward entry");
+					}
+					
+					// testing tweak reverse (optional)
+					if(ma.getTweakReverse() != null && ma.getTweakReverse().getValue() != null) {
+						TypeValue tweakReverseTypeValue = ma.getTweakReverse().getValue();
+						TypeValue tweakReverseClone = (TypeValue)tweakReverseTypeValue.clone();
+						assertEquals(tweakReverseTypeValue, tweakReverseClone);
+						logger.debug("tweak reverse type values are equal");
+					} else {
+						logger.debug("no tweak reverse entry");
+					}
+					
+					// TODO Unit ?
 					
 					for(Option o : ma.getOptions()) {
 						if(o.getValue().getValue() != null) {

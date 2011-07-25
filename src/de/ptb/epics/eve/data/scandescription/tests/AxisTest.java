@@ -2,6 +2,9 @@ package de.ptb.epics.eve.data.scandescription.tests;
 
 import static org.junit.Assert.*;
 
+import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
+
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -9,10 +12,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
-import de.ptb.epics.eve.data.scandescription.Chain;
-import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.scandescription.Stepfunctions;
+import de.ptb.epics.eve.data.scandescription.errors.AxisError;
+import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
+import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 /**
@@ -23,31 +26,58 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  */
 public class AxisTest {
 
-	// 
-	private ScanDescription scanDescription;
+	private static Logger logger = Logger.getLogger(AxisTest.class.getName());
+	
+	private Axis axis;
 	
 	/**
 	 * 
 	 */
 	@Test
-	public void testGetModelErrors() {
-		assertTrue(scanDescription.getModelErrors().size() == 0);
+	public void testGetModelErrorsStepFunctionsAdd() {
+		log_start(logger, "testGetModelErrors");
 		
-		// run test for each axis we find in the scan description
-		for(Chain ch : scanDescription.getChains()) {
-			for(ScanModule sm : ch.getScanModules()) {
-				for(Axis a : sm.getAxes()) {
-					// initially no error should occur
-					assertTrue(a.getModelErrors().size() == 0);
-					
-					if (a.getStepfunctionEnum() == Stepfunctions.ADD ||
-						a.getStepfunctionEnum() == Stepfunctions.MULTIPLY) {
-						// start, stop, step width case
-						
-					}
-				}
-			}
-		}
+		// before modification, no errors should be present
+		assertTrue(axis.getModelErrors().isEmpty());
+		
+		IModelError startError =  new AxisError(axis, AxisErrorTypes.START_NOT_SET);
+		IModelError stopError = new AxisError(axis, AxisErrorTypes.STOP_NOT_SET);
+		IModelError stepwidthError = new AxisError(axis, AxisErrorTypes.STEPWIDTH_NOT_SET);
+		
+		axis.setStepfunction("add");
+		assertTrue(axis.getModelErrors().size() == 3);
+		assertTrue(axis.getModelErrors().contains(startError));
+		assertTrue(axis.getModelErrors().contains(stopError));
+		assertTrue(axis.getModelErrors().contains(stepwidthError));
+		
+		// TODO without a motor axis set, a null pointer is thrown below
+		// TODO maybe a model flaw. the axis could be constructed by passing 
+		// a scan module. At least some more description in the usage of the 
+		// axis model would be wise.
+		// It seems that if one sets a MotorAxis for the Axis, then the 
+		// step function is automatically set to "add" and default values are 
+		// inserted.
+		/*
+		axis.setStart("1");
+		assertTrue(axis.getModelErrors().size() == 2);
+		assertFalse(axis.getModelErrors().contains(startError));
+		
+		axis.setStop("2");
+		assertTrue(axis.getModelErrors().size() == 1);
+		assertFalse(axis.getModelErrors().contains(stopError));
+		
+		axis.setStepwidth("1");
+		assertTrue(axis.getModelErrors().isEmpty());
+		assertFalse(axis.getModelErrors().contains(stepwidthError));
+		*/
+		
+		// TODO set start and stop to invalid values such that isValuePossible 
+		// is false
+		
+		// stepcount == -1 should produce an error, but when is it set to -1 ? 
+		// only in the GUI ? // TODO
+		
+		log_end(logger, "testGetModelErrors");
 	}
 	
 	// ***********************************************************************
@@ -66,7 +96,8 @@ public class AxisTest {
 	 */
 	@Before
 	public void beforeEveryTest() {
-		scanDescription = Configurator.getScanDescription();
+		ScanModule scanModule = new ScanModule(1);
+		axis = new Axis(scanModule);
 	}
 	
 	/**
@@ -74,7 +105,6 @@ public class AxisTest {
 	 */
 	@After
 	public void afterEveryTest() {
-		
 	}
 	
 	/**
@@ -82,7 +112,5 @@ public class AxisTest {
 	 */
 	@AfterClass
 	public static void afterClass() {
-		
 	}
-	
 }

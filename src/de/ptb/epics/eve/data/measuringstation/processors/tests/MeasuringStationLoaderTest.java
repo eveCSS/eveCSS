@@ -1,7 +1,7 @@
 package de.ptb.epics.eve.data.measuringstation.processors.tests;
 
 import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,7 +53,11 @@ public class MeasuringStationLoaderTest {
 		
 		log_start(logger, "testUniqueIDs");
 		
+		int count = 0;
+		
 		for(IMeasuringStation ims : stations) {
+			
+			logger.info("Testing station " + ims.getName());
 			
 			String station = ims.getLoadedFileName();
 			
@@ -91,7 +95,7 @@ public class MeasuringStationLoaderTest {
 				
 				logger.debug("Testing ids of: " + ims.getLoadedFileName());
 				
-				int count = 0;
+				count = 0;
 				
 				for(int i = 0; i < idNames.size()-1; i++) {
 					if(idNames.get(i).equals(idNames.get(i+1))) {
@@ -104,6 +108,7 @@ public class MeasuringStationLoaderTest {
 				
 				logger.debug("****************************************");
 			}
+			assertTrue(count == 0);
 		}
 		
 		log_end(logger, "testUniqueIDs");

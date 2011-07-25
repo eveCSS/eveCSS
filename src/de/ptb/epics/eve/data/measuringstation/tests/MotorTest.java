@@ -2,6 +2,8 @@ package de.ptb.epics.eve.data.measuringstation.tests;
 
 import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 import org.apache.log4j.Logger;
@@ -26,11 +28,9 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  */
 public class MotorTest {
 
-	// logging
 	private static Logger logger = Logger.getLogger(MotorTest.class.getName());
 
-	// the measuring station
-	private static IMeasuringStation measuringStation;
+	private static List<IMeasuringStation> stations;
 	
 	/**
 	 * Test method for 
@@ -38,22 +38,23 @@ public class MotorTest {
 	 * {@link de.ptb.epics.eve.data.measuringstation.Motor#equals(Object)}.
 	 */
 	@Test
-	public void testCloneEquals()
-	{
+	public void testCloneEquals() {
+		
 		log_start(logger, "testCloneEquals()");
 		
-		for(Motor m : measuringStation.getMotors())
-		{
-			logger.info("Testing motor " + deviceString(m));
+		for(IMeasuringStation measuringStation : stations) {
+			for(Motor m : measuringStation.getMotors()) {
+				logger.info("Testing motor " + deviceString(m));
 				
-			Motor clone = (Motor) m.clone();
+				Motor clone = (Motor) m.clone();
 				
-			assertEquals(m, m);
-			assertEquals(clone, clone);
-			assertEquals(m, clone);
-			assertEquals(clone, m);
-			logger.info("Motor " + deviceString(m) + 
-						" and its clone are equal");
+				assertEquals(m, m);
+				assertEquals(clone, clone);
+				assertEquals(m, clone);
+				assertEquals(clone, m);
+				logger.info("Motor " + deviceString(m) + 
+							" and its clone are equal");
+			}
 		}
 		
 		log_end(logger, "testCloneEquals()");
@@ -75,9 +76,11 @@ public class MotorTest {
 		((RollingFileAppender)logger.
 				getAppender("MotorTestAppender")).rollOver();
 		
-		measuringStation = Configurator.getMeasuringStation();
+		stations = Configurator.getMeasuringStations();
 		
-		assertNotNull(measuringStation);
+		for(IMeasuringStation ims : stations) {
+			assertNotNull(ims);
+		}
 		
 		classSetUp(logger);
 	}

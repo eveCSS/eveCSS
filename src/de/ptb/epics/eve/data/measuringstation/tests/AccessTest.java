@@ -34,10 +34,8 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  */
 public class AccessTest {
 
-	// logging
 	private static Logger logger = Logger.getLogger(AccessTest.class.getName());
 
-	// the measuring station
 	private static List<IMeasuringStation> stations;
 	
 	/**
@@ -60,6 +58,24 @@ public class AccessTest {
 			log_station(logger, measuringStation);
 			for(Motor m : measuringStation.getMotors()) {
 				logger.debug("Testing motor " + deviceString(m));
+				
+				if(m.getTrigger() != null) {
+					Access triggerAccess = m.getTrigger().getAccess();
+					Access triggerClone = (Access)triggerAccess.clone();
+					assertEquals(triggerAccess, triggerClone);
+					logger.debug("trigger Access' are equal");
+				} else {
+					logger.debug("no trigger entry");
+				}
+				
+				if(m.getUnit() != null && m.getUnit().getAccess() != null) {
+					Access unitAccess = m.getUnit().getAccess();
+					Access unitClone = (Access)unitAccess.clone();
+					assertEquals(unitAccess, unitClone);
+					logger.debug("unit Access' are equal");
+				} else {
+					logger.debug("no unit entry");
+				}
 				
 				for(Option motorOption : m.getOptions()) {
 					logger.info("Testing Access of option " + deviceString(motorOption));
@@ -86,9 +102,86 @@ public class AccessTest {
 					assertEquals(stopAccess, stopClone);
 					logger.debug("stop Access' are equal");
 					
-					// TODO test optional type values of:
-					// status, trigger, unit, deadband, offset, tweakvalue, 
-					// tweakforward, tweakreverse
+					if(ma.getStatus() != null) {
+						Access statusAccess = ma.getStatus().getAccess();
+						Access statusClone = (Access)statusAccess.clone();
+						assertEquals(statusAccess, statusClone);
+						logger.debug("status Access' are equal");
+					} else {
+						logger.debug("no status entry");
+					}
+					
+					if(ma.getTrigger() != null) {
+						Access triggerAccess = ma.getTrigger().getAccess();
+						Access triggerClone = (Access)triggerAccess.clone();
+						assertEquals(triggerAccess, triggerClone);
+						logger.debug("trigger Access' are equal");
+					} else {
+						logger.debug("no trigger entry");
+					}
+					
+					if(ma.getDeadband() != null) {
+						Access deadbandAccess = ma.getDeadband().getAccess();
+						Access deadbandClone = (Access)deadbandAccess.clone();
+						assertEquals(deadbandAccess, deadbandClone);
+						logger.debug("deadband Access' are equal");
+					} else {
+						logger.debug("no deadband entry");
+					}
+					
+					if(ma.getOffset() != null) {
+						Access offsetAccess = ma.getOffset().getAccess();
+						Access offsetClone = (Access)offsetAccess.clone();
+						assertEquals(offsetAccess, offsetClone);
+						logger.debug("offset Access' are equal");
+					} else {
+						logger.debug("no offset entry");
+					}
+					
+					if(ma.getSet() != null) {
+						Access setAccess = ma.getSet().getAccess();
+						Access setClone = (Access)setAccess.clone();
+						assertEquals(setAccess, setClone);
+						logger.debug("set Access' are equal");
+					} else {
+						logger.debug("no setmode entry");
+					}
+					
+					if(ma.getTweakValue() != null) {
+						Access tweakValAccess = ma.getTweakValue().getAccess();
+						Access tweakValClone = (Access) tweakValAccess.clone();
+						assertEquals(tweakValAccess, tweakValClone);
+						logger.debug("tweakValue Access' are equal");
+					} else {
+						logger.debug("no tweak value entry");
+					}
+					
+					if(ma.getTweakForward() != null) {
+						Access tweakForwardAccess = ma.getTweakForward().getAccess();
+						Access tweakForwardClone = (Access)tweakForwardAccess.clone();
+						assertEquals(tweakForwardAccess, tweakForwardClone);
+						logger.debug("tweak forward Access' are equal");
+					} else {
+						logger.debug("no tweak forward entry");
+					}
+					
+					if(ma.getTweakReverse() != null) {
+						Access tweakReverseAccess = ma.getTweakReverse().getAccess();
+						Access tweakReverseClone = (Access)tweakReverseAccess.clone();
+						assertEquals(tweakReverseAccess, tweakReverseClone);
+						logger.debug("tweak reverse Access' are equal");
+					} else {
+						logger.debug("no tweak reverse entry");
+					}
+					
+					if(ma.getUnit() != null && ma.getUnit().getAccess() != null) {
+						Access unitAccess = ma.getUnit().getAccess();
+						Access unitClone = (Access)unitAccess.clone();
+						assertEquals(unitAccess, unitClone);
+						logger.debug("unit Access' are equal");
+					} else {
+						logger.debug("no unit entry");
+					}
 					
 					for(Option o : ma.getOptions()) {
 						logger.info("Testing Access of option " + deviceString(o));
@@ -102,11 +195,27 @@ public class AccessTest {
 							" and clone are equal.");
 					}
 				}
-			}
+			} // end of motor for loop
 			for(Detector detector : measuringStation.getDetectors()) {
 				logger.info("Testing detector " + deviceString(detector));
 				
-				// TODO optional unit, trigger
+				if(detector.getUnit() != null && detector.getUnit().getAccess() != null) {
+					Access unitAccess = detector.getUnit().getAccess();
+					Access unitClone = (Access)unitAccess.clone();
+					assertEquals(unitAccess, unitClone);
+					logger.debug("unit Access' are equal");
+				} else {
+					logger.debug("no unit entry");
+				}
+				
+				if(detector.getTrigger() != null) {
+					Access triggerAccess = detector.getTrigger().getAccess();
+					Access triggerClone = (Access)triggerAccess.clone();
+					assertEquals(triggerAccess, triggerClone);
+					logger.debug("trigger Access' are equal");
+				} else {
+					logger.debug("no trigger entry");
+				}
 				
 				for(Option detectorOption : detector.getOptions()) {
 					Access detectorOptionAccess = detectorOption.getValue().getAccess();
@@ -122,7 +231,24 @@ public class AccessTest {
 					assertEquals(read, readClone);
 					logger.debug("read Access' are equal");
 					
-					// TODO optional unit, trigger
+					if(ch.getUnit() != null && ch.getUnit().getAccess() != null) {
+						Access unitAccess = ch.getUnit().getAccess();
+						Access unitClone = (Access)unitAccess.clone();
+						assertEquals(unitAccess, unitClone);
+						logger.debug("unit Access' are equal");
+					} else {
+						logger.debug("no unit entry");
+					}
+					
+					if(ch.getTrigger() != null) {
+						Access triggerAccess = ch.getTrigger().getAccess();
+						Access triggerClone = (Access)triggerAccess.clone();
+						assertEquals(triggerAccess, triggerClone);
+						logger.debug("trigger Access' are equal");
+					} else {
+						logger.debug("no trigger entry");
+					}
+					
 					for(Option channelOption : ch.getOptions()) {
 						logger.info("Testing detector channel option " + deviceString(channelOption));
 						Access channelOptionAccess = channelOption.getValue().getAccess();
@@ -139,7 +265,14 @@ public class AccessTest {
 				assertEquals(deviceValueAccess, deviceValueClone);
 				logger.debug("device value Access' are equal");
 				
-				// TODO optional unit
+				if(device.getUnit() != null && device.getUnit().getAccess() != null) {
+					Access unitAccess = device.getUnit().getAccess();
+					Access unitClone = (Access)unitAccess.clone();
+					assertEquals(unitAccess, unitClone);
+					logger.debug("unit Access' are equal");
+				} else {
+					logger.debug("no unit entry");
+				}
 				
 				for(Option deviceOption : device.getOptions()) {
 					logger.info("Testing device option " + deviceString(deviceOption));
