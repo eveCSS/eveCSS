@@ -350,7 +350,8 @@ public class Channel extends AbstractMainPhaseBehavior {
 	public List<IModelError> getModelErrors() {
 		final List<IModelError> modelErrors = new ArrayList<IModelError>();
 		// TODO von Hartmut: maxDeviation und minimum liefern keine ChannelErrors mehr!
-
+		// wieso gibt es dann invalid Zustände und Fehlertypen dafür ?
+		
 		if(Double.compare(this.maxDeviation, Double.NaN) == 0) {
 			modelErrors.add(new ChannelError(this, ChannelErrorTypes.MAX_DEVIATION_NOT_POSSIBLE));
 		} else if(!this.getDetectorChannel().getRead().isValuePossible(Double.toString(maxDeviation))) {
