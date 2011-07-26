@@ -821,7 +821,7 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 			for (int i = 0; i < availableMotorAxes.length; ++i) {
 				axisItems[i] = 
 					availableMotorAxes[i].getMotorAxis().getFullIdentifyer();
-			}		
+			}
 			// set available axes as choices in the select box
 			this.motorAxisComboBox.setItems(axisItems);
 			// add "none" as additional choice
@@ -1548,8 +1548,9 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 			
 			if(yAxis1NormalizeChannelComboBox.getText().equals("none")) {
 				// remove normalize channel
-				if (yAxis1 != null)
-					yAxis1.clearNormalizeChannel();
+				if (yAxis1 != null) {
+					yAxis1.setNormalizeChannel(null);
+				}
 			} else {
 				// set normalize channel to the one selected
 				yAxis1.setNormalizeChannel(
@@ -1886,8 +1887,9 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 			scanModule.removeModelUpdateListener(plotWindowView);
 			
 			if(yAxis2NormalizeChannelComboBox.getText().equals("none")) {
-				if(yAxis2 != null)
-					yAxis2.clearNormalizeChannel();
+				if(yAxis2 != null) {
+					yAxis2.setNormalizeChannel(null);
+				}
 			} else {
 				yAxis2.setNormalizeChannel((DetectorChannel)
 						Activator.getDefault().getMeasuringStation().
