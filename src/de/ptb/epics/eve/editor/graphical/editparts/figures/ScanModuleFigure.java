@@ -142,7 +142,8 @@ public class ScanModuleFigure extends Figure {
 		{
 			graphics.setForegroundColor(ColorConstants.white);
 			graphics.setBackgroundColor(ColorConstants.red);
-			graphics.fillRectangle(getLocation().x+1, getLocation().y+1, 15, 5);
+			graphics.fillGradient(getLocation().x, getLocation().y, 
+								this.bounds.width, 5, false);
 		}
 		
 		// draw border
