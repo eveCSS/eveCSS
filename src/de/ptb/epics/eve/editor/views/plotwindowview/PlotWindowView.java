@@ -1188,7 +1188,8 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 				yAxis1NormalizeChannelComboBoxSelectionListener);
 		yAxis1ColorComboBox.addSelectionListener(
 				yAxis1ColorComboBoxSelectionListener);
-		yAxis1ColorFieldEditor.setPropertyChangeListener(null);
+		yAxis1ColorFieldEditor.setPropertyChangeListener(
+				yAxis1ColorFieldEditorPropertyChangeListener);
 		yAxis1LinestyleComboBox.addSelectionListener(
 				yAxis1LineStyleComboBoxSelectionListener);
 		yAxis1MarkstyleComboBox.addSelectionListener(
@@ -1229,8 +1230,7 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 				yAxis1NormalizeChannelComboBoxSelectionListener);
 		yAxis1ColorComboBox.removeSelectionListener(
 				yAxis1ColorComboBoxSelectionListener);
-		yAxis1ColorFieldEditor.setPropertyChangeListener(
-				yAxis1ColorFieldEditorPropertyChangeListener);
+		yAxis1ColorFieldEditor.setPropertyChangeListener(null);
 		yAxis1LinestyleComboBox.removeSelectionListener(
 				yAxis1LineStyleComboBoxSelectionListener);
 		yAxis1MarkstyleComboBox.removeSelectionListener(
@@ -1620,9 +1620,10 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 			plotWindow.removeModelUpdateListener(plotWindowView);
 			scanModule.removeModelUpdateListener(plotWindowView);
 			
-			yAxis1ColorComboBox.select(6);
 			yAxis1.setColor(
 					yAxis1ColorFieldEditor.getColorSelector().getColorValue());
+			
+			updateColorsAxis(1);
 			
 			// re-enable listeners
 			plotWindow.addModelUpdateListener(plotWindowView);
@@ -1954,9 +1955,10 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 			plotWindow.removeModelUpdateListener(plotWindowView);
 			scanModule.removeModelUpdateListener(plotWindowView);
 			
-			yAxis2ColorComboBox.select(6);
 			yAxis2.setColor(
 					yAxis2ColorFieldEditor.getColorSelector().getColorValue());
+			
+			updateColorsAxis(2);
 			
 			// re-enable listeners
 			plotWindow.addModelUpdateListener(plotWindowView);
