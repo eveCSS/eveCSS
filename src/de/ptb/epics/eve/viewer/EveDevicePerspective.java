@@ -38,7 +38,6 @@ public class EveDevicePerspective implements IPerspectiveFactory {
 		IFolderLayout deviceOptionsFolder = 
 				layout.createFolder("DeviceOptionsFolder", 
 				IPageLayout.RIGHT, 0.80f, "DeviceInspectorView:" + sec_id);
-		
 		deviceOptionsFolder.addView("DeviceOptionsView:" + sec_id);
 	}
 }

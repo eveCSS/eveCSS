@@ -36,8 +36,7 @@ public final class EveEnginePerspective implements IPerspectiveFactory {
 				"DeviceInspectorFolder", 
 				IPageLayout.RIGHT, 0.50f, IPageLayout.ID_EDITOR_AREA);
 		deviceInspectorFolder.addPlaceholder("DeviceInspectorView:*");
-		deviceInspectorFolder.addView(
-				"DeviceInspectorView:" + sec_id);
+		deviceInspectorFolder.addView("DeviceInspectorView:" + sec_id);
 		
 		IFolderLayout plotViewFolder = layout.createFolder("PlotViewFolder", 
 				IPageLayout.TOP, 0.50f, "DeviceInspectorView:" + sec_id);

@@ -12,6 +12,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement;
 import de.ptb.epics.eve.viewer.views.deviceoptionsview.DeviceOptionsView;
 
@@ -55,6 +56,20 @@ public class OpenDeviceInDeviceOptionsView implements IHandler {
 						((DeviceOptionsView)view).setDevice(
 								cte.getAbstractDevice());
 					} catch (PartInitException e) {
+						logger.error(e.getMessage(), e);
+					}
+				} else if(o instanceof AbstractDevice) {
+					AbstractDevice dev = (AbstractDevice)o;
+					logger.debug(dev.getID());
+					try {
+						final IViewPart view = HandlerUtil.
+							getActiveWorkbenchWindow(event).getActivePage().
+							showView(
+							"DeviceOptionsView", 
+							dev.getName(), 
+							IWorkbenchPage.VIEW_CREATE);
+						((DeviceOptionsView)view).setDevice(dev);
+					} catch(PartInitException e) {
 						logger.error(e.getMessage(), e);
 					}
 				}

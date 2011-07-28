@@ -34,6 +34,14 @@ public class DevicesViewTreeViewerLabelProvider implements ILabelProvider {
 			Activator.getDefault().getImageRegistry().get("DETECTOR");
 	final Image channelImage = 
 			Activator.getDefault().getImageRegistry().get("CHANNEL");
+	final Image classImage = 
+			Activator.getDefault().getImageRegistry().get("CLASS");
+	final Image motorsImage = 
+			Activator.getDefault().getImageRegistry().get("MOTORS");
+	final Image detectorsImage =
+			Activator.getDefault().getImageRegistry().get("DETECTORS");
+	final Image devicesImage = 
+			Activator.getDefault().getImageRegistry().get("DEVICES");
 	
 	/**
 	 * {@inheritDoc}
@@ -51,6 +59,18 @@ public class DevicesViewTreeViewerLabelProvider implements ILabelProvider {
 		} else if(element instanceof Device) {
 			return PlatformUI.getWorkbench().getSharedImages().
 				getImageDescriptor(ISharedImages.IMG_ELCL_SYNCED).createImage();
+		} else if(element instanceof String) {
+			return this.classImage;
+		} else if(element instanceof List<?>) {
+			if(!((List<?>) element).isEmpty()) {
+				if (((List<?>) element).get(0) instanceof Motor) {
+					return motorsImage;
+				} else if (((List<?>) element).get(0) instanceof Detector) {
+					return detectorsImage;
+				} else if(((List<?>) element).get(0) instanceof Device) {
+					return devicesImage;
+				}
+			}
 		}
 		return null;
 	}

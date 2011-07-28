@@ -7,6 +7,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.FontRegistry;
@@ -79,6 +81,7 @@ public class Activator extends AbstractUIPlugin {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		
@@ -104,6 +107,7 @@ public class Activator extends AbstractUIPlugin {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void stop(final BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
@@ -384,6 +388,9 @@ public class Activator extends AbstractUIPlugin {
 			logger.info("root directory: " + rootDir);
 			logger.info("measuring station: " + 
 					measuringStation.getLoadedFileName());
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			logger.info("workspace: " + workspace.getRoot().getLocation().
+					toFile().getAbsolutePath());
 		}
 	}
 	
@@ -458,6 +465,12 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, "icons/detector.gif").createImage());
 		imagereg.put("CHANNEL", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/channel.gif").createImage());
+		imagereg.put("MOTORS", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/motors.gif").createImage());
+		imagereg.put("DETECTORS", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/detectors.gif").createImage());
+		imagereg.put("DEVICES", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/devices.gif").createImage());
 		
 		imagereg.put("MOVEUP", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/prev_nav.gif").createImage());
@@ -473,5 +486,13 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, "icons/clear_co.gif").createImage());
 		imagereg.put("SAVE", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/save_edit.gif").createImage());
+		
+		imagereg.put("ASCENDING", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/alpha_mode.gif").createImage());
+		imagereg.put("DESCENDING", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/alpha_mode_reverse.gif").createImage());
+		
+		imagereg.put("CLASS", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/class_obj.png").createImage());
 	}
 }

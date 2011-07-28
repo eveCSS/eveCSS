@@ -232,8 +232,7 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 				this.tableViewer.setInput(device);
 				this.setPartName(device.getFullIdentifyer());
 			} else if(o instanceof AbstractDevice) {
-				if (this.device != null && this.device.equals(
-					(AbstractDevice)o)) {
+				if (this.device != null && this.device.equals(o)) {
 						// the same element in the options was selected again
 						return;
 				}
@@ -264,8 +263,9 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	 * itself to the selection service. Parties interested in showing options 
 	 * of a device should register a selection provider. Consult the 
 	 * <a href="http://www.eclipse.org/articles/Article-WorkbenchSelections/article.html">
-	 * Eclipse Article</a> for further details.
-	 * 
+	 * Eclipse Article</a> for further details.<br>
+	 * If a new view is created it should grab the active selection and set 
+	 * the device itself...
 	 */
 	public void setDevice(final AbstractDevice device) {
 		this.device = device;

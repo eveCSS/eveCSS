@@ -27,6 +27,8 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
@@ -85,6 +87,11 @@ public class DeviceInspectorView extends ViewPart {
 	private AxisTableDropTargetListener axisTableDropTargetListener;
 	private AxisTableFocusListener axisTableFocusListener;
 	
+	// sorting
+	private AxisTableNameColumnSelectionListener axisTableNameColumnSelectionListener;
+	private TableViewerComparator axisTableViewerComparator;
+	private int axisTableSortState; // 0 no sort, 1 asc, 2 desc
+	
 	private Composite detectorChannelsComposite;
 	private boolean detectorChannelsCompositeMaximized;
 	private Label channelMaxIcon;
@@ -96,6 +103,11 @@ public class DeviceInspectorView extends ViewPart {
 	private ChannelTableDropTargetListener channelTableDropTargetListener;
 	private ChannelTableFocusListener channelTableFocusListener;
 	
+	// sorting
+	private ChannelTableNameColumnSelectionListener channelTableNameColumnSelectionListener;
+	private TableViewerComparator channelTableViewerComparator;
+	private int channelTableSortState;
+	
 	private Composite devicesComposite;
 	private boolean devicesCompositeMaximized;
 	private Label deviceMaxIcon;
@@ -106,6 +118,11 @@ public class DeviceInspectorView extends ViewPart {
 	private CommonTableContentProvider deviceTableContentProvider;
 	private DeviceTableDropTargetListener deviceTableDropTargetListener;
 	private DeviceTableFocusListener deviceTableFocusListener;
+	
+	// sorting
+	private DeviceTableNameColumnSelectionListener deviceTableNameColumnSelectionListener;
+	private TableViewerComparator deviceTableViewerComparator;
+	private int deviceTableSortState;
 	
 	private List<AbstractDevice> devices;
 	
@@ -123,6 +140,7 @@ public class DeviceInspectorView extends ViewPart {
 	private AxisTableColumnEditorActivationListener 
 			axisTableColumnEditorActivationListener;
 	
+	// saves/restores user defined settings
 	private IMemento memento;
 	
 	private Image deleteIcon;
@@ -139,6 +157,8 @@ public class DeviceInspectorView extends ViewPart {
 	private Image axisImage;
 	private Image channelImage;
 	private Image deviceImage;
+	private Image ascending;
+	private Image descending;
 	
 	/**
 	 * {@inheritDoc}
@@ -204,12 +224,12 @@ public class DeviceInspectorView extends ViewPart {
 				Activator.getDefault().getImageRegistry().get("CHANNEL");
 		deviceImage = PlatformUI.getWorkbench().getSharedImages().
 			getImageDescriptor(ISharedImages.IMG_ELCL_SYNCED).createImage();
+		ascending =	 Activator.getDefault().getImageRegistry().get("ASCENDING");
+		descending = Activator.getDefault().getImageRegistry().get("DESCENDING");
 		
 		parent.setLayout(new FillLayout());
 		
 		sashForm = new SashForm(parent, SWT.VERTICAL);
-		//sashForm.setBackground(parent.getDisplay().
-		//		getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
 		sashForm.SASH_WIDTH = 4;
 		
 		// Motor Axes Composite
@@ -241,6 +261,11 @@ public class DeviceInspectorView extends ViewPart {
 		axisTableViewer.getTable().setLayoutData(gridData);
 		axisTableViewer.getTable().setHeaderVisible(true);
 		axisTableViewer.getTable().setLinesVisible(true);
+		
+		axisTableViewerComparator = new TableViewerComparator();
+		axisTableNameColumnSelectionListener = 
+			new AxisTableNameColumnSelectionListener();
+		
 		createAxisTableColumns();
 		axisTableContentProvider = 
 				new CommonTableContentProvider(axisTableViewer, devices);
@@ -300,6 +325,11 @@ public class DeviceInspectorView extends ViewPart {
 		channelTableViewer.getTable().setLayoutData(gridData);
 		channelTableViewer.getTable().setHeaderVisible(true);
 		channelTableViewer.getTable().setLinesVisible(true);
+		
+		channelTableViewerComparator = new TableViewerComparator();
+		channelTableNameColumnSelectionListener = 
+			new ChannelTableNameColumnSelectionListener();
+		
 		createChannelTableColumns();
 		channelTableContentProvider = 
 				new CommonTableContentProvider(channelTableViewer, devices);
@@ -357,6 +387,11 @@ public class DeviceInspectorView extends ViewPart {
 		deviceTableViewer.getTable().setLayoutData(gridData);
 		deviceTableViewer.getTable().setHeaderVisible(true);
 		deviceTableViewer.getTable().setLinesVisible(true);
+		
+		deviceTableViewerComparator = new TableViewerComparator();
+		deviceTableNameColumnSelectionListener = 
+			new DeviceTableNameColumnSelectionListener();
+		
 		createDeviceTableColumns();
 		deviceTableContentProvider = 
 				new CommonTableContentProvider(deviceTableViewer, devices);
@@ -470,6 +505,8 @@ public class DeviceInspectorView extends ViewPart {
 			}
 		});
 		nameColumn.getColumn().setWidth(200);
+		nameColumn.getColumn().addSelectionListener(
+				axisTableNameColumnSelectionListener);
 		
 		TableViewerColumn valueColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
@@ -731,7 +768,9 @@ public class DeviceInspectorView extends ViewPart {
 			}
 		});
 		nameColumn.getColumn().setWidth(200);
-
+		nameColumn.getColumn().addSelectionListener(
+				channelTableNameColumnSelectionListener);
+		
 		TableViewerColumn valueColumn = 
 				new TableViewerColumn(channelTableViewer, SWT.NONE);
 		valueColumn.getColumn().setText("Value");
@@ -846,7 +885,7 @@ public class DeviceInspectorView extends ViewPart {
 			}
 		});
 		delColumn.getColumn().setWidth(22);
-
+		
 		TableViewerColumn nameColumn = 
 				new TableViewerColumn(deviceTableViewer, SWT.NONE);
 		nameColumn.getColumn().setText("Name");
@@ -862,7 +901,9 @@ public class DeviceInspectorView extends ViewPart {
 			}
 		});
 		nameColumn.getColumn().setWidth(200);
-
+		nameColumn.getColumn().addSelectionListener(
+				deviceTableNameColumnSelectionListener);
+		
 		TableViewerColumn valueColumn = 
 				new TableViewerColumn(deviceTableViewer, SWT.NONE);
 		valueColumn.getColumn().setText("Value");
@@ -953,6 +994,39 @@ public class DeviceInspectorView extends ViewPart {
 	@Override
 	public void setFocus() {
 		activeDeviceInspectorView = this.getViewSite().getSecondaryId();
+	}
+	
+	/**
+	 * Removes all elements in the axes table.
+	 */
+	public void clearMotorAxesTable() {
+		CommonTableContentProvider ctcp = (CommonTableContentProvider)
+				this.axisTableViewer.getContentProvider();
+		for(Object o : ctcp.getElements(null)) {
+			ctcp.removeElement(o);
+		}
+	}
+	
+	/**
+	 * Removes all elements in the channels table.
+	 */
+	public void clearDetectorChannelsTable() {
+		CommonTableContentProvider ctcp = (CommonTableContentProvider)
+				this.channelTableViewer.getContentProvider();
+		for(Object o : ctcp.getElements(null)) {
+			ctcp.removeElement(o);
+		}
+	}
+	
+	/**
+	 * Removes all elements in the devices table
+	 */
+	public void clearDevicesTable() {
+		CommonTableContentProvider ctcp = (CommonTableContentProvider)
+				this.deviceTableViewer.getContentProvider();
+		for(Object o : ctcp.getElements(null)) {
+			ctcp.removeElement(o);
+		}
 	}
 	
 	/**
@@ -1076,6 +1150,11 @@ public class DeviceInspectorView extends ViewPart {
 		}
 		memento.putString("devices", devicesString.toString());
 		
+		// save sorting
+		memento.putInteger("axisTableSortState", axisTableSortState);
+		memento.putInteger("channelTableSortState", channelTableSortState);
+		memento.putInteger("deviceTableSortState", deviceTableSortState);
+		
 		// save part name (view title)
 		memento.putString("partName", this.getPartName());
 		
@@ -1103,6 +1182,47 @@ public class DeviceInspectorView extends ViewPart {
 		// restore part name (view title)
 		if(memento.getString("partName") != null) {
 			this.setPartName(memento.getString("partName"));
+		}
+		
+		// restore sorting
+		axisTableSortState = (memento.getInteger("axisTableSortState") == null) 
+								? 0 
+								: memento.getInteger("axisTableSortState");
+		if(axisTableSortState != 0) {
+			axisTableViewerComparator.setDirection(
+					axisTableSortState == 1
+					? TableViewerComparator.ASCENDING
+					: TableViewerComparator.DESCENDING);
+			axisTableViewer.getTable().getColumn(1).setImage(
+					axisTableSortState == 1 ? ascending : descending);
+			axisTableViewer.setComparator(axisTableViewerComparator);
+			axisTableViewer.refresh();
+		}
+		channelTableSortState = (memento.getInteger("channelTableSortState") == null)
+								? 0 
+								: memento.getInteger("channelTableSortState");
+		if(channelTableSortState != 0) {
+			channelTableViewerComparator.setDirection(
+					channelTableSortState == 1
+					? TableViewerComparator.ASCENDING
+					: TableViewerComparator.DESCENDING);
+			channelTableViewer.getTable().getColumn(1).setImage(
+					channelTableSortState == 1 ? ascending : descending);
+			channelTableViewer.setComparator(channelTableViewerComparator);
+			channelTableViewer.refresh();
+		}
+		deviceTableSortState = (memento.getInteger("deviceTableSortState") == null) 
+								? 0
+								: memento.getInteger("deviceTableSortState");
+		if(deviceTableSortState != 0) {
+			deviceTableViewerComparator.setDirection(
+					axisTableSortState == 1
+					? TableViewerComparator.ASCENDING
+					: TableViewerComparator.DESCENDING);
+			deviceTableViewer.getTable().getColumn(1).setImage(
+					deviceTableSortState == 1 ? ascending : descending);
+			deviceTableViewer.setComparator(deviceTableViewerComparator);
+			deviceTableViewer.refresh();
 		}
 		
 		// restore heights of the composites
@@ -1618,6 +1738,161 @@ public class DeviceInspectorView extends ViewPart {
 	}
 	
 	// **********************
+	
+	/**
+	 * 
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 0.4.2
+	 */
+	class AxisTableNameColumnSelectionListener implements SelectionListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			logger.debug("name column (axes table) clicked");
+			logger.debug("old axis table sort state: " + axisTableSortState);
+			switch(axisTableSortState) {
+				case 0: // was no sorting -> now ascending
+						axisTableViewerComparator.setDirection(
+								TableViewerComparator.ASCENDING);
+						axisTableViewer.setComparator(axisTableViewerComparator);
+						axisTableViewer.getTable().getColumn(1).
+								setImage(ascending);
+						break;
+				case 1: // was ascending -> now descending
+						axisTableViewerComparator.setDirection(
+								TableViewerComparator.DESCENDING);
+						axisTableViewer.setComparator(axisTableViewerComparator);
+						axisTableViewer.refresh();
+						axisTableViewer.getTable().getColumn(1).
+								setImage(descending);
+						break;
+				case 2: // was descending -> now no sorting
+						axisTableViewer.setComparator(null);
+						axisTableViewer.getTable().getColumn(1).setImage(null);
+						break;
+			}
+			// set is {0,1,2}
+			// if it becomes 3 it has to be 0 again
+			// but before the state has to be increased to the new state
+			axisTableSortState = ++axisTableSortState % 3;
+			logger.debug("new axis table sort state: " + axisTableSortState);
+		}
+	}
+	
+	/**
+	 *
+	 *
+	 * @author Marcus Michalsky
+	 * @since 0.4.2
+	 */
+	class ChannelTableNameColumnSelectionListener implements SelectionListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			logger.debug("name column (channels table) clicked");
+			logger.debug("old channels table sort state: " + channelTableSortState);
+			switch(channelTableSortState) {
+				case 0: // was no sorting -> now ascending
+						channelTableViewerComparator.setDirection(
+								TableViewerComparator.ASCENDING);
+						channelTableViewer.setComparator(channelTableViewerComparator);
+						channelTableViewer.getTable().getColumn(1).
+								setImage(ascending);
+						break;
+				case 1: // was ascending -> now descending
+						channelTableViewerComparator.setDirection(
+								TableViewerComparator.DESCENDING);
+						channelTableViewer.setComparator(channelTableViewerComparator);
+						channelTableViewer.refresh();
+						channelTableViewer.getTable().getColumn(1).
+								setImage(descending);
+						break;
+				case 2: // was descending -> now no sorting
+						channelTableViewer.setComparator(null);
+						channelTableViewer.getTable().getColumn(1).setImage(null);
+						break;
+			}
+			// set is {0,1,2}
+			// if it becomes 3 it has to be 0 again
+			// but before the state has to be increased to the new state
+			channelTableSortState = ++channelTableSortState % 3;
+			logger.debug("new channel table sort state: " + channelTableSortState);
+		}
+	}
+	
+	/**
+	 *
+	 *
+	 * @author Marcus Michalsky
+	 * @since 0.4.2
+	 */
+	class DeviceTableNameColumnSelectionListener implements SelectionListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			logger.debug("name column (devices table) clicked");
+			logger.debug("old devices table sort state: " + deviceTableSortState);
+			switch(deviceTableSortState) {
+				case 0: // was no sorting -> now ascending
+						deviceTableViewerComparator.setDirection(
+								TableViewerComparator.ASCENDING);
+						deviceTableViewer.setComparator(deviceTableViewerComparator);
+						deviceTableViewer.getTable().getColumn(1).
+								setImage(ascending);
+						break;
+				case 1: // was ascending -> now descending
+						deviceTableViewerComparator.setDirection(
+								TableViewerComparator.DESCENDING);
+						deviceTableViewer.setComparator(deviceTableViewerComparator);
+						deviceTableViewer.refresh();
+						deviceTableViewer.getTable().getColumn(1).
+								setImage(descending);
+						break;
+				case 2: // was descending -> now no sorting
+						deviceTableViewer.setComparator(null);
+						deviceTableViewer.getTable().getColumn(1).setImage(null);
+						break;
+			}
+			// set is {0,1,2}
+			// if it becomes 3 it has to be 0 again
+			// but before the state has to be increased to the new state
+			deviceTableSortState = ++deviceTableSortState % 3;
+			logger.debug("new device table sort state: " + deviceTableSortState);
+		}
+	}
+	
+	// ******************************
 	
 	/**
 	 * 

@@ -3,10 +3,8 @@ package de.ptb.epics.eve.viewer.views.devicesview;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -22,12 +20,9 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
@@ -43,7 +38,6 @@ import de.ptb.epics.eve.viewer.MessageSource;
 import de.ptb.epics.eve.viewer.messages.MessageTypes;
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
-import de.ptb.epics.eve.viewer.views.deviceoptionsview.DeviceOptionsView;
 
 /**
  * <code>DevicesView</code> visualizes available 
@@ -104,7 +98,17 @@ public final class DevicesView extends ViewPart {
 		
 		treeViewerFocusListener = new TreeViewerFocusListener();
 		treeViewer.getTree().addFocusListener(treeViewerFocusListener);
-
+		
+		// create context menu
+		MenuManager menuManager = new MenuManager();
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		treeViewer.getTree().setMenu(
+				menuManager.createContextMenu(treeViewer.getTree()));
+		// register menu
+		getSite().registerContextMenu(
+				"de.ptb.epics.eve.viewer.views.devicesview.treepopup", 
+				menuManager, treeViewer);
+		
 		// set this tree viewer as a source for drag n drop (drop in inspector)
 		this.source = new DragSource(
 				this.treeViewer.getTree(), DND.DROP_COPY | DND.DROP_MOVE);
@@ -113,12 +117,6 @@ public final class DevicesView extends ViewPart {
 		source.addDragListener(new DragSourceDragListener());
 		
 		setMeasuringStation(measuringStation);
-			
-		final MenuManager menuManager = new MenuManager( "#PopupMenu" );
-		menuManager.setRemoveAllWhenShown( true );
-		menuManager.addMenuListener(new TreeViewerTreeMenuManagerMenuListener());
-		final Menu contextMenu = menuManager.createContextMenu(this.treeViewer.getTree());
-		this.treeViewer.getTree().setMenu(contextMenu);
 		
 		getSite().setSelectionProvider(treeViewer);
 		
@@ -195,75 +193,6 @@ public final class DevicesView extends ViewPart {
 		}
 	}
 	
-	// ***************************** Menu **********************************
-	
-	/**
-	 * 
-	 */
-	class TreeViewerTreeMenuManagerMenuListener implements IMenuListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void menuAboutToShow(IMenuManager manager) {
-			
-			final IWorkbenchPage page = getSite().getPage();
-			
-			final TreeItem[] selectedItems = treeViewer.getTree().getSelection();
-			if(selectedItems != null && selectedItems.length > 0) {
-				final Action openAction = new Action() {
-					
-					@Override public void run() {
-						super.run();
-						for(final TreeItem item : selectedItems) {
-							if(item.getData() instanceof AbstractDevice) {
-								try {
-									final IViewPart view = page.showView(
-										"DeviceOptionsView", 
-										((AbstractDevice)item.getData()).getName(), 
-										IWorkbenchPage.VIEW_CREATE);
-									((DeviceOptionsView)view).setDevice(
-											(AbstractDevice)item.getData());
-								} catch (PartInitException e) {
-									logger.error(e.getMessage(), e);
-								}
-							}
-							
-						}
-					}
-				};
-				openAction.setText("Open in seperate options window");
-				manager.add(openAction);
-				
-				final MenuManager deviceInspectors = 
-						new MenuManager("Open in Device Inspector");
-				
-				IViewReference[] ref = getSite().getPage().getViewReferences();
-				for(final IViewReference r : ref) {
-					if(r.getId().equals("DeviceInspectorView")) {
-						final Action action = new Action() {
-							
-							@Override public void run() {
-								super.run();
-								for(final TreeItem item : selectedItems) {
-									if(item.getData() instanceof AbstractDevice) {
-										((DeviceInspectorView)r.getPart(true)).
-											addAbstractDevice(
-											(AbstractDevice)item.getData());
-									}
-								}
-							}
-						};
-						action.setText(r.getPartName());
-						deviceInspectors.add(action);
-					}
-				}
-				manager.add(deviceInspectors);
-			}
-		}
-	}
-	
 	// ************************* DnD *****************************************
 	
 	/**
@@ -289,7 +218,6 @@ public final class DevicesView extends ViewPart {
 					event.doit = false;
 				}
 			}
-			
 			dragInProgress = true;
 		}
 		
@@ -391,7 +319,7 @@ public final class DevicesView extends ViewPart {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void focusGained(FocusEvent e) {	
+		public void focusGained(FocusEvent e) {
 		}
 		
 		/**
