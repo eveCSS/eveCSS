@@ -7,6 +7,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.PlatformUI;
@@ -36,6 +38,12 @@ public class Activator extends AbstractUIPlugin {
 	
 	private static Logger logger = Logger.getLogger(Activator.class.getName());
 	
+	/*
+	 * Listener for the Eclipse Logger. catches logs of eclipse and forwards 
+	 * them to the log4j logger. (only logs with level 
+	 * org.eclipse.core.runtime.IStatus.WARNING or
+	 * org.eclipse.core.runtime.IStatus.ERROR are forwarded).
+	 */
 	private ILogListener logListener;
 	
 	private IMeasuringStation measuringStation;
@@ -197,7 +205,6 @@ public class Activator extends AbstractUIPlugin {
 			logListener = new EclipseLogListener();
 			Platform.addLogListener(logListener);
 		}
-		// DOMConfigurator.configure(System.getProperty("user.home") + "/logger.xml");
 	}
 	
 	/*
@@ -279,6 +286,9 @@ public class Activator extends AbstractUIPlugin {
 				measuringStation.getVersion() + ")");
 			logger.info("measuring station location: " + 
 					measuringStation.getLoadedFileName());
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			logger.info("workspace: " + workspace.getRoot().getLocation().
+					toFile().getAbsolutePath());
 		}
 	}
 }
