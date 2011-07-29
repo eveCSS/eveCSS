@@ -78,7 +78,7 @@ public class CommonTableElement {
 						getAccess().getVariableID(), this);
 				gotoPv.setReadOnly(motorAxis.getGoto().getAccess().isReadOnly());
 				if (motorAxis.getGoto().isDiscrete()) {
-					gotoPv.setDiscreteValues((String[]) motorAxis.getGoto().
+					gotoPv.setDiscreteValues(motorAxis.getGoto().
 							getDiscreteValues().toArray(new String[0]));
 				}
 			}
@@ -124,8 +124,7 @@ public class CommonTableElement {
 					tweakvaluePv.setReadOnly(motorAxis.getTweakValue().
 							getAccess().isReadOnly());
 				if (motorAxis.getTweakValue().isDiscrete()) {
-					tweakvaluePv.setDiscreteValues(
-							(String[]) motorAxis.getTweakValue().
+					tweakvaluePv.setDiscreteValues(motorAxis.getTweakValue().
 							getDiscreteValues().toArray(new String[0]));
 				}
 			}
