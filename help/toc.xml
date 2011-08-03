@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="EVE Viewer" link_to="../org.csstudio.platform.ui/tocApps.xml#display">
+   <topic label="EVE Viewer">
+      <topic href="help/content/overview.html" label="Overview">
+      </topic>
+      <topic label="Getting Started">
+      </topic>
+      <topic label="Concepts">
+      </topic>
+      <topic label="Tasks">
+      </topic>
+      <topic label="Reference">
+      </topic>
+      <topic label="What&apos;s New">
+      </topic>
+      <topic label="Legal">
+      </topic>
+   </topic>
+</toc>
