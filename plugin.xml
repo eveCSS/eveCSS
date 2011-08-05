@@ -116,6 +116,26 @@
             name="Reset Device Inspector">
       </command>
       <command
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.AddAllDevices"
+            id="de.ptb.epics.eve.viewer.addAllDevices"
+            name="add all devices">
+      </command>
+      <command
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.AddAllAxes"
+            id="de.ptb.epics.eve.viewer.addAxes"
+            name="add all motor axes">
+      </command>
+      <command
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.AddAllChannels"
+            id="de.ptb.epics.eve.viewer.addChannels"
+            name="add all detector channels">
+      </command>
+      <command
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.AddAllPPDevices"
+            id="de.ptb.epics.eve.viewer.addDevices"
+            name="add all (pre-/postscan) devices">
+      </command>
+      <command
             defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.ClearAllTables"
             id="de.ptb.epics.eve.viewer.clearAllTables"
             name="clear all tables">
@@ -227,11 +247,39 @@
                tooltip="Reset Layout">
          </command>
          <command
+               commandId="de.ptb.epics.eve.viewer.addAllDevices"
+               icon="icons/add.gif"
+               id="addAllDevices"
+               label="add all devices"
+               style="pulldown">
+         </command>
+         <command
                commandId="de.ptb.epics.eve.viewer.clearAllTables"
                icon="icons/clear_co.gif"
                id="clearAllTables"
                label="clear all tables"
                style="pulldown">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:addAllDevices">
+         <command
+               commandId="de.ptb.epics.eve.viewer.addAxes"
+               icon="icons/axis_add.gif"
+               label="add all motor axes"
+               style="push">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.addChannels"
+               icon="icons/channel_add.gif"
+               label="add all detector channels"
+               style="push">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.addDevices"
+               icon="icons/device_add.gif"
+               label="add all (pre-/postscan) devices"
+               style="push">
          </command>
       </menuContribution>
       <menuContribution

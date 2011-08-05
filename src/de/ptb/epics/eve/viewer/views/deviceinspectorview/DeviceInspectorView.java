@@ -596,9 +596,8 @@ public class DeviceInspectorView extends ViewPart {
 				CommonTableElement cte = (CommonTableElement) element;
 				if(cte.isConnected("stop")) {
 					return stopIcon;
-				} else {
-					return stopIconDisabled;
 				}
+				return stopIconDisabled;
 			}
 			@Override public String getText(Object element) {return null;}
 			@Override public String getToolTipText(Object element) {
@@ -658,9 +657,8 @@ public class DeviceInspectorView extends ViewPart {
 			@Override public Image getImage(Object element) {
 				if(((CommonTableElement)element).isConnected("tweakvalue")) {
 					return leftArrowIcon;
-				} else {
-					return leftArrowIconDisabled;
 				}
+				return leftArrowIconDisabled;
 			}
 			@Override public String getText(Object element) {return null;}
 			@Override public String getToolTipText(Object element) {
@@ -706,9 +704,8 @@ public class DeviceInspectorView extends ViewPart {
 			@Override public Image getImage(Object element) {
 				if(((CommonTableElement)element).isConnected("tweakvalue")) {
 					return rightArrowIcon;
-				} else {
-					return rightArrowIconDisabled;
 				}
+				return rightArrowIconDisabled;
 			}
 			@Override public String getText(Object element) {return null;}
 			@Override public String getToolTipText(Object element) {
@@ -716,9 +713,8 @@ public class DeviceInspectorView extends ViewPart {
 						((CommonTableElement)element).getAbstractDevice();
 				if(axis.getTweakForward() !=  null && axis.getTweakForward().getAccess() != null) {
 					return axis.getTweakForward().getAccess().getVariableID();
-				} else {
-					return null;
 				}
+				return null;
 			}
 		});
 		tweakFColumn.getColumn().setWidth(22);
@@ -838,9 +834,8 @@ public class DeviceInspectorView extends ViewPart {
 			@Override public Image getImage(Object element) {
 				if (((CommonTableElement)element).isConnected("trigger")) {
 					return playIcon;
-				} else {
-					return playIconDisabled;
 				}
+				return playIconDisabled;
 			}
 			@Override public String getText(Object element) {return null;}
 			@Override public String getToolTipText(Object element) {
@@ -1068,22 +1063,18 @@ public class DeviceInspectorView extends ViewPart {
 				}
 			} else if(device instanceof Motor) {
 				final Motor motor = (Motor)device;
-				if(motor.getAxes().size() > 0) {
-					List<MotorAxis> axisList = motor.getAxes();
-					for(MotorAxis axis : axisList) {
-						if(!devices.contains(axis)) {
+				for(MotorAxis axis : motor.getAxes()) {
+					if (axis.getClassName().equals(motor.getClassName()) && 
+						!devices.contains(axis)) {
 							addMotorAxisEntry(axis);
-						}
 					}
 				}
 			} else if(device instanceof Detector) {
 				final Detector detector = (Detector)device;
-				if(detector.getChannels().size() > 0) {
-					List<DetectorChannel> channelList = detector.getChannels();
-					for (DetectorChannel channel : channelList) {
-						if(!devices.contains(channel)) {
+				for(DetectorChannel channel : detector.getChannels()) {
+					if (channel.getClassName().equals(detector.getClassName()) && 
+						!devices.contains(channel)) {
 							addDetectorChannelEntry(channel);
-						}
 					}
 				}
 			}
@@ -1473,7 +1464,9 @@ public class DeviceInspectorView extends ViewPart {
 									s.substring(1, s.length()));
 					if(m != null) {
 						for(MotorAxis ma : m.getAxes()) {
-							addMotorAxisEntry(ma);
+							if(ma.getClassName().equals(m.getClassName())) {
+								addMotorAxisEntry(ma);
+							}
 						}
 					}
 					refuse = false;
@@ -1565,7 +1558,9 @@ public class DeviceInspectorView extends ViewPart {
 									s.substring(1, s.length()));
 					if(d != null) {
 						for(DetectorChannel ch : d.getChannels()) {
-							addDetectorChannelEntry(ch);
+							if(ch.getClassName().equals(d.getClassName())) {
+								addDetectorChannelEntry(ch);
+							}
 						}
 					}
 					refuse = false;

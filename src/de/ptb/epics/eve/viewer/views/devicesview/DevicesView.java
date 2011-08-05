@@ -89,8 +89,8 @@ public final class DevicesView extends ViewPart {
 		parent.setLayout(fillLayout);
 		
 		treeViewer = new TreeViewer(parent);
-		treeViewer.setContentProvider(new DevicesViewTreeViewerContentProvider());
-		treeViewer.setLabelProvider(new DevicesViewTreeViewerLabelProvider());
+		treeViewer.setContentProvider(new TreeViewerContentProvider());
+		treeViewer.setLabelProvider(new TreeViewerLabelProvider());
 		treeViewer.getTree().setEnabled(false);
 		
 		// listen to double clicks (inserts the clicked element to the inspector)
@@ -115,6 +115,10 @@ public final class DevicesView extends ViewPart {
 		Transfer[] types = new Transfer[] {TextTransfer.getInstance()};
 		source.setTransfer(types);
 		source.addDragListener(new DragSourceDragListener());
+		
+		// Filter test
+		//ViewerFilter[] filters = new ViewerFilter[] {new TreeViewerFilter()};
+		//treeViewer.setFilters(filters);
 		
 		setMeasuringStation(measuringStation);
 		
@@ -211,7 +215,6 @@ public final class DevicesView extends ViewPart {
 				if(logger.isDebugEnabled()) {
 					logger.debug(item.getData() + " selected");
 				}
-				
 				// if the selection contains a class (a collection of different
 				// devices) do not allow dragNdrop
 				if(item.getData() instanceof String) {

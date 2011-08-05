@@ -24,7 +24,7 @@ import de.ptb.epics.eve.viewer.Activator;
  * @author ?
  * @author Marcus Michalsky
  */
-public class DevicesViewTreeViewerLabelProvider implements ILabelProvider {
+public class TreeViewerLabelProvider implements ILabelProvider {
 
 	final Image motorImage = 
 			Activator.getDefault().getImageRegistry().get("MOTOR");
@@ -42,6 +42,10 @@ public class DevicesViewTreeViewerLabelProvider implements ILabelProvider {
 			Activator.getDefault().getImageRegistry().get("DETECTORS");
 	final Image devicesImage = 
 			Activator.getDefault().getImageRegistry().get("DEVICES");
+	final Image motorsAxesImage = 
+			Activator.getDefault().getImageRegistry().get("MOTORSAXES");
+	final Image detectorsChannelsImage = 
+			Activator.getDefault().getImageRegistry().get("DETECTORSCHANNELS");
 	
 	/**
 	 * {@inheritDoc}
@@ -63,10 +67,11 @@ public class DevicesViewTreeViewerLabelProvider implements ILabelProvider {
 			return this.classImage;
 		} else if(element instanceof List<?>) {
 			if(!((List<?>) element).isEmpty()) {
-				if (((List<?>) element).get(0) instanceof Motor) {
-					return motorsImage;
+				if (((List<?>) element).get(0) instanceof Motor ||
+					((List<?>) element).get(0) instanceof MotorAxis) {
+					return motorsAxesImage;
 				} else if (((List<?>) element).get(0) instanceof Detector) {
-					return detectorsImage;
+					return detectorsChannelsImage;
 				} else if(((List<?>) element).get(0) instanceof Device) {
 					return devicesImage;
 				}
@@ -84,20 +89,16 @@ public class DevicesViewTreeViewerLabelProvider implements ILabelProvider {
 		if(element instanceof List<?>) {
 			if(((List<Object>)element).size() == 0) return null;
 			Object obj = ((List<Object>)element).get(0);
-			if(obj instanceof Motor) {
-				return "Motors";
-			}
-			else if(obj instanceof Detector) {
-				return "Detectors";
-			}
-			else if(obj instanceof Device) {
+			if(obj instanceof Motor || obj instanceof MotorAxis) {
+				return "Motors & Axes";
+			} else if(obj instanceof Detector || obj instanceof DetectorChannel) {
+				return "Detectors & Channels";
+			} else if(obj instanceof Device) {
 				return "Devices";
 			}
-		}
-		else if(element instanceof String) {
+		} else if(element instanceof String) {
 				return (String)element;
-		}
-		else if(element instanceof AbstractDevice) {
+		} else if(element instanceof AbstractDevice) {
 			final AbstractDevice device = (AbstractDevice)element;
 			String label = device.getName();
 			if (label.length() == 0) label = device.getID();

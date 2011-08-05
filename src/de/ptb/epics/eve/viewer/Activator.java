@@ -471,6 +471,10 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, "icons/detectors.gif").createImage());
 		imagereg.put("DEVICES", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/devices.gif").createImage());
+		imagereg.put("MOTORSAXES", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/motorsaxes.gif").createImage());
+		imagereg.put("DETECTORSCHANNELS", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/detectorschannels.gif"));
 		
 		imagereg.put("MOVEUP", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/prev_nav.gif").createImage());
