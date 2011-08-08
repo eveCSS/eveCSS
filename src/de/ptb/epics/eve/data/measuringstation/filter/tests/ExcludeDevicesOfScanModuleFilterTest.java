@@ -169,7 +169,7 @@ public class ExcludeDevicesOfScanModuleFilterTest {
 		
 		// run for one time before all test cases
 		schemaFile = new File("xml/scml.xsd");
-		descriptionFile = new File("xml/test.xml");
+		/*descriptionFile = new File("xml/test.xml");
 		
 		final MeasuringStationLoader measuringStationLoader = 
 			new MeasuringStationLoader(schemaFile);
@@ -186,7 +186,7 @@ public class ExcludeDevicesOfScanModuleFilterTest {
 		
 		measuringStation = measuringStationLoader.getMeasuringStation();
 		
-		assertNotNull(measuringStation);
+		assertNotNull(measuringStation);*/
 		classSetUp(logger);
 	}
 	
