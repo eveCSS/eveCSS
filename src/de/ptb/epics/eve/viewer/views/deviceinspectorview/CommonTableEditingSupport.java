@@ -98,9 +98,8 @@ public class CommonTableEditingSupport extends EditingSupport {
 				++count;
 			}
 			return 0;
-		} else {
-			return ctb.getValue(column);
 		}
+		return ctb.getValue(column);
 	}
 
 	/**

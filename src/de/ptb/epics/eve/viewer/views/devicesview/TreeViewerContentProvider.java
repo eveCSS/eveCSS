@@ -7,8 +7,6 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
-import de.ptb.epics.eve.data.measuringstation.AbstractMainPhaseDevice;
-import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
@@ -35,10 +33,9 @@ public class TreeViewerContentProvider
 	// a reference to the viewer this provider is assigned to
 	private Viewer viewer;
 	
-	// lists of devices (by group) without class names
-	private List<AbstractMainPhaseDevice> motorsAndAxesWithoutClassName;
-	private List<AbstractMainPhaseDevice> detectorsAndChannelsWithoutClassName;
-	private List<AbstractPrePostscanDevice> devicesWithoutClassName;
+	private List<Motor> motorsWithoutClassName;
+	private List<Detector> detectorsWithoutClassName;
+	private List<Device> devicesWithoutClassName;
 	
 	/**
 	 * {@inheritDoc}
@@ -72,11 +69,11 @@ public class TreeViewerContentProvider
 			returnList.addAll(measuringStation.getClassNameList());
 		}
 		
-		if(!motorsAndAxesWithoutClassName.isEmpty()) {
-			returnList.add(motorsAndAxesWithoutClassName);
+		if(!motorsWithoutClassName.isEmpty()) {
+			returnList.add(motorsWithoutClassName);
 		}
-		if(!detectorsAndChannelsWithoutClassName.isEmpty()) {
-			returnList.add(detectorsAndChannelsWithoutClassName);
+		if(!detectorsWithoutClassName.isEmpty()) {
+			returnList.add(detectorsWithoutClassName);
 		}
 		if(!devicesWithoutClassName.isEmpty()) {
 			returnList.add(devicesWithoutClassName);
@@ -91,33 +88,18 @@ public class TreeViewerContentProvider
 	@Override
 	public Object[] getChildren(Object parentElement) {
 		if(parentElement instanceof String) {
-			// add (nearly) all devices of the given class (see below)...
+			// parentElement is a class -> add all devices of the given class
 			List<AbstractDevice> classDevices = measuringStation.
 					getDeviceList((String)parentElement);
+			// initialize the list that is returned (the children)
 			List<AbstractDevice> returnList = new ArrayList<AbstractDevice>();
-			for(AbstractDevice ad : classDevices) {
-				if(ad instanceof Device) {
-					returnList.add(ad);
-					continue;
-				}
-				if(ad instanceof Motor || ad instanceof Detector) {
-					returnList.add(ad);
-					continue;
-				}
-				// ...for axes and channels we have to check if their parents 
-				// are also in this class:
-				// if they are they are not added hence they would occur twice
-				if(!((AbstractMainPhaseDevice)ad).getClassName().equals(
-					((AbstractMainPhaseDevice)(ad.getParent())).getClassName())) {
-						returnList.add(ad);
-				}
-			}
+			returnList.addAll(classDevices);
 			return returnList.toArray();
 		} else if(parentElement instanceof Motor) {
 			List<MotorAxis> returnList = new ArrayList<MotorAxis>();
 			Motor m = (Motor)parentElement;
 			for(MotorAxis ma : m.getAxes()) {
-				if(ma.getClassName().equals(m.getClassName())) {
+				if(ma.getClassName().isEmpty()) {
 					returnList.add(ma);
 				}
 			}
@@ -126,7 +108,7 @@ public class TreeViewerContentProvider
 			List<DetectorChannel> returnList = new ArrayList<DetectorChannel>();
 			Detector d = (Detector)parentElement;
 			for(DetectorChannel ch : d.getChannels()) {
-				if(ch.getClassName().equals(d.getClassName())) {
+				if(ch.getClassName().isEmpty()) {
 					returnList.add(ch);
 				}
 			}
@@ -134,10 +116,10 @@ public class TreeViewerContentProvider
 		} else if(parentElement instanceof List<?>) {
 			// return all motors/detectors/devices without a class name
 			Object object = ((List<?>)parentElement).get(0);
-			if(object instanceof Motor || object instanceof MotorAxis) {
-				return motorsAndAxesWithoutClassName.toArray();
-			} else if(object instanceof Detector || object instanceof DetectorChannel) {
-				return detectorsAndChannelsWithoutClassName.toArray();
+			if(object instanceof Motor) {
+				return motorsWithoutClassName.toArray();
+			} else if(object instanceof Detector) {
+				return detectorsWithoutClassName.toArray();
 			} else if(object instanceof Device) {
 				return devicesWithoutClassName.toArray();
 			}
@@ -154,16 +136,16 @@ public class TreeViewerContentProvider
 			// a class has children if it has any devices
 			return (measuringStation.getDeviceList((String)element).size() > 0);
 		} else if(element instanceof Motor) {
-			// a motor has children if it has axes that have the same class
+			// a motor has children if it has axes without a class name
 			for(MotorAxis ma : ((Motor)element).getAxes()) {
-				if(ma.getClassName().equals(((Motor)element).getClassName())) {
+				if(ma.getClassName().isEmpty()) {
 					return true;
 				}
 			}
 		} else if(element instanceof Detector) {
-			// a detector has children if it has channels that have the same class
+			// a detector has children if it has channels without a class name
 			for(DetectorChannel ch : ((Detector)element).getChannels()) {
-				if(ch.getClassName().equals(((Detector)element).getClassName())) {
+				if(ch.getClassName().isEmpty()) {
 					return true;
 				}
 			}
@@ -192,12 +174,12 @@ public class TreeViewerContentProvider
 			return this.measuringStation;
 		} else if(element instanceof Motor) {
 			if(((Motor)element).getClassName().isEmpty()) {
-				return this.motorsAndAxesWithoutClassName;
+				return this.motorsWithoutClassName;
 			} 
 			return ((Motor)element).getClassName();
 		} else if(element instanceof Detector) {
 			if(((Detector)element).getClassName().isEmpty()) {
-				return this.detectorsAndChannelsWithoutClassName;
+				return this.detectorsWithoutClassName;
 			}
 			return ((Detector)element).getClassName();
 		} else if(element instanceof Device) {
@@ -255,48 +237,24 @@ public class TreeViewerContentProvider
 	 * that don't have class names
 	 */
 	private void updateDeviceLists() {
-		// reinitialize list of motors and axes
-		motorsAndAxesWithoutClassName = new ArrayList<AbstractMainPhaseDevice>();
-		// add all motors without class names
+		// reinitialize list of motors
+		motorsWithoutClassName = new ArrayList<Motor>();
 		for(Motor m : measuringStation.getMotors()) {
 			if(m.getClassName().isEmpty()) {
-				motorsAndAxesWithoutClassName.add(m);
-			}
-		}
-		// iterate again to ensure that axes are shown after motors in the tree
-		for(Motor m : measuringStation.getMotors()) {
-			// add all motor axes without class names IF (and only if) their 
-			// parent (motor) has a different one (otherwise they appear as a 
-			// child of them through the getChildren() method...
-			for(MotorAxis ma : m.getAxes()) {
-				if (ma.getClassName().isEmpty() && !(m.getClassName().isEmpty())) {
-					motorsAndAxesWithoutClassName.add(ma);
-				}
+				motorsWithoutClassName.add(m);
 			}
 		}
 		
-		// reinitialize list of detectors and channels
-		detectorsAndChannelsWithoutClassName = new ArrayList<AbstractMainPhaseDevice>();
-		// add all detectors without class names
+		// reinitialize list of detectors
+		detectorsWithoutClassName = new ArrayList<Detector>();
 		for(Detector d : measuringStation.getDetectors()) {
 			if(d.getClassName().isEmpty()) {
-				detectorsAndChannelsWithoutClassName.add(d);
-			}
-		}
-		// iterate again to ensure that channels are shown after detectors
-		for(Detector d : measuringStation.getDetectors()) {
-			// add all detector channels without class names IF (and only if) 
-			// their parent (detector) has a different one (otherwise they 
-			// appear as a child of them through the getChildren() method...
-			for(DetectorChannel ch : d.getChannels()) {
-				if(ch.getClassName().isEmpty() && !d.getClassName().isEmpty()) {
-					detectorsAndChannelsWithoutClassName.add(ch);
-				}
+				detectorsWithoutClassName.add(d);
 			}
 		}
 		
 		// reinitialize list of devices
-		devicesWithoutClassName = new ArrayList<AbstractPrePostscanDevice>();
+		devicesWithoutClassName = new ArrayList<Device>();
 		for(Device dev : measuringStation.getDevices()) {
 			if(dev.getClassName().isEmpty()) {
 				devicesWithoutClassName.add(dev);

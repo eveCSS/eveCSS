@@ -116,6 +116,9 @@ public final class DevicesView extends ViewPart {
 		source.setTransfer(types);
 		source.addDragListener(new DragSourceDragListener());
 		
+		// Filtering
+		
+		
 		// Filter test
 		//ViewerFilter[] filters = new ViewerFilter[] {new TreeViewerFilter()};
 		//treeViewer.setFilters(filters);

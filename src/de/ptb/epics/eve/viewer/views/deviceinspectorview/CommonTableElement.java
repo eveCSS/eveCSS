@@ -364,10 +364,10 @@ public class CommonTableElement {
 		}
 		else if ((property.equals("status")) && (statusPv != null)) {
 			String statusVal = getValue("status");
-			if (statusVal.equals("Limit"))
+			if (statusVal.equals("Limit")) {
 				return Activator.getDefault().getColor("COLOR_PV_MAJOR");
-			else
-				return Activator.getDefault().getColor("COLOR_PV_OK");
+			}
+			return Activator.getDefault().getColor("COLOR_PV_OK");
 		}
 
 		if(status.equals("OK"))
@@ -443,8 +443,7 @@ public class CommonTableElement {
 		if (cellEditorHash.containsKey(column)) {
 			return cellEditorHash.get(column);
 		}
-		else
-			return null;
+		return null;
 	}
 
 	/**
@@ -483,10 +482,10 @@ public class CommonTableElement {
 			}
 		}
 		else if (property.equals("unit")) {
-			if (unitPv != null)
+			if (unitPv != null) {
 				return unitPv.getValue();
-			else
-				return unit;
+			}
+			return unit;
 		}
 		else if (property.equals("tweakvalue") && (tweakvaluePv != null))
 			return tweakvaluePv.getValue();

@@ -1064,7 +1064,7 @@ public class DeviceInspectorView extends ViewPart {
 			} else if(device instanceof Motor) {
 				final Motor motor = (Motor)device;
 				for(MotorAxis axis : motor.getAxes()) {
-					if (axis.getClassName().equals(motor.getClassName()) && 
+					if (axis.getClassName().isEmpty() && 
 						!devices.contains(axis)) {
 							addMotorAxisEntry(axis);
 					}
@@ -1072,7 +1072,7 @@ public class DeviceInspectorView extends ViewPart {
 			} else if(device instanceof Detector) {
 				final Detector detector = (Detector)device;
 				for(DetectorChannel channel : detector.getChannels()) {
-					if (channel.getClassName().equals(detector.getClassName()) && 
+					if (channel.getClassName().isEmpty() && 
 						!devices.contains(channel)) {
 							addDetectorChannelEntry(channel);
 					}
@@ -1464,7 +1464,7 @@ public class DeviceInspectorView extends ViewPart {
 									s.substring(1, s.length()));
 					if(m != null) {
 						for(MotorAxis ma : m.getAxes()) {
-							if(ma.getClassName().equals(m.getClassName())) {
+							if(ma.getClassName().isEmpty()) {
 								addMotorAxisEntry(ma);
 							}
 						}
@@ -1558,7 +1558,7 @@ public class DeviceInspectorView extends ViewPart {
 									s.substring(1, s.length()));
 					if(d != null) {
 						for(DetectorChannel ch : d.getChannels()) {
-							if(ch.getClassName().equals(d.getClassName())) {
+							if(ch.getClassName().isEmpty()) {
 								addDetectorChannelEntry(ch);
 							}
 						}
