@@ -158,9 +158,8 @@ public class Activator extends AbstractUIPlugin {
 		Color color = colorreg.get(colorname);
 		if (color == null) {
 			return colorreg.get("COLOR_PV_INITIAL");
-		} else {
-			return color;
 		}
+		return color;
 	}
 	
 	/**
@@ -170,10 +169,10 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public Font getFont(String fontname){
 		Font font = fontreg.get(fontname);
-		if (font == null)
+		if (font == null) {
 			return fontreg.defaultFont();
-		else
-			return font;
+		}
+		return font;
 	}
 	
 	/**
@@ -465,6 +464,10 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, "icons/detector.gif").createImage());
 		imagereg.put("CHANNEL", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/channel.gif").createImage());
+		imagereg.put("DEVICE", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/device.gif").createImage());
+		imagereg.put("OPTION", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/extension_obj.gif").createImage());
 		imagereg.put("MOTORS", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/motors.gif").createImage());
 		imagereg.put("DETECTORS", imageDescriptorFromPlugin(

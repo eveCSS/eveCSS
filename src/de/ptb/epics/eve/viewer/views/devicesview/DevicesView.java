@@ -92,6 +92,8 @@ public final class DevicesView extends ViewPart {
 		treeViewer.setContentProvider(new TreeViewerContentProvider());
 		treeViewer.setLabelProvider(new TreeViewerLabelProvider());
 		treeViewer.getTree().setEnabled(false);
+		treeViewer.setAutoExpandLevel(1);
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=177669
 		
 		// listen to double clicks (inserts the clicked element to the inspector)
 		treeViewer.addDoubleClickListener(new TreeViewerDoubleClickListener());
@@ -141,7 +143,6 @@ public final class DevicesView extends ViewPart {
 		this.measuringStation = measuringStation;
 		this.treeViewer.setInput(this.measuringStation);
 		this.treeViewer.getTree().setEnabled(this.measuringStation != null);
-		this.treeViewer.expandAll();
 	}
 	
 	// ***********************************************************************
