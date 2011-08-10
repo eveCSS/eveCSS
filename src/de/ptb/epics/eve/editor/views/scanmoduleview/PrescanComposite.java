@@ -27,7 +27,6 @@ import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
-import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 
@@ -149,6 +148,9 @@ public class PrescanComposite extends Composite {
 	 */
 	class MenuManagerMenuListener implements IMenuListener {
 		
+		final ImageDescriptor classImage = ImageDescriptor.createFromImage(
+				de.ptb.epics.eve.viewer.Activator.getDefault().
+				getImageRegistry().get("CLASS"));
 		final ImageDescriptor motorImage = ImageDescriptor.createFromImage(
 				de.ptb.epics.eve.viewer.Activator.getDefault().
 				getImageRegistry().get("MOTOR"));
@@ -161,6 +163,12 @@ public class PrescanComposite extends Composite {
 		final ImageDescriptor channelImage = ImageDescriptor.createFromImage(
 				de.ptb.epics.eve.viewer.Activator.getDefault().
 				getImageRegistry().get("CHANNEL"));
+		final ImageDescriptor deviceImage = ImageDescriptor.createFromImage(
+				de.ptb.epics.eve.viewer.Activator.getDefault().
+				getImageRegistry().get("DEVICE"));
+		final ImageDescriptor optionImage = ImageDescriptor.createFromImage(
+				de.ptb.epics.eve.viewer.Activator.getDefault().
+				getImageRegistry().get("OPTION"));
 		
 		/**
 		 * {@inheritDoc}
@@ -178,7 +186,8 @@ public class PrescanComposite extends Composite {
 			for(final String className : measuringStation.getClassNameList()) {
 
 				// create a menu entry for each class name
-				final MenuManager currentClassMenu = new MenuManager(className);
+				final MenuManager currentClassMenu = new MenuManager(
+						className, classImage, className);
 				
 				// iterate over each device in that class
 				for(final AbstractDevice device : 
@@ -194,9 +203,7 @@ public class PrescanComposite extends Composite {
 						
 						// create a menu entry for that motor and label it
 						final MenuManager currentMotorMenu = 
-							new MenuManager(motor.getName(), 
-											motorImage, 
-											motor.getName());
+							new MenuManager(motor.getName(), motorImage, motor.getName());
 						currentClassMenu.add(currentMotorMenu);
 						
 						// iterate over the axes of that motor
@@ -215,6 +222,7 @@ public class PrescanComposite extends Composite {
 								
 									SetOptionAction motorAxisSetOptionAction = 
 											new SetOptionAction(option, option.getName());
+									motorAxisSetOptionAction.setImageDescriptor(optionImage);
 									currentMotorAxisMenu.add(motorAxisSetOptionAction);
 								}
 							
@@ -228,7 +236,7 @@ public class PrescanComposite extends Composite {
 							SetOptionAction motorSetOptionAction = 
 									new SetOptionAction(option, 
 														option.getName());
-							
+							motorSetOptionAction.setImageDescriptor(optionImage);
 							currentMotorMenu.add(motorSetOptionAction);
 						}
 						
@@ -256,6 +264,7 @@ public class PrescanComposite extends Composite {
 							SetOptionAction motorAxisSetOptionAction = 
 									new SetOptionAction(option, 
 														option.getName());
+							motorAxisSetOptionAction.setImageDescriptor(optionImage);
 							currentMotorAxisMenu.add(motorAxisSetOptionAction);
 						}
 						
@@ -293,6 +302,7 @@ public class PrescanComposite extends Composite {
 									SetOptionAction channelSetOptionAction = 
 											new SetOptionAction(option, 
 															option.getName());
+									channelSetOptionAction.setImageDescriptor(optionImage);
 									currentDetectorChannelMenu.add(channelSetOptionAction);
 								}
 								currentDetectorMenu.add(currentDetectorChannelMenu);
@@ -304,6 +314,7 @@ public class PrescanComposite extends Composite {
 							SetOptionAction detectorSetOptionAction = 
 									new SetOptionAction(option, 
 														option.getName());
+							detectorSetOptionAction.setImageDescriptor(optionImage);
 							currentDetectorMenu.add(detectorSetOptionAction);
 						}
 						currentClassMenu.add(currentDetectorMenu);
@@ -331,6 +342,7 @@ public class PrescanComposite extends Composite {
 							SetOptionAction channelSetOptionAction = 
 									new SetOptionAction(option, 
 														option.getName());
+							channelSetOptionAction.setImageDescriptor(optionImage);
 							currentDetectorChannelMenu.add(
 									channelSetOptionAction);
 						}
@@ -349,6 +361,7 @@ public class PrescanComposite extends Composite {
 						SetDeviceAction setDeviceAction = 
 								new SetDeviceAction((Device)device, 
 													device.getName());
+						setDeviceAction.setImageDescriptor(deviceImage);
 						currentClassMenu.add(setDeviceAction);
 						
 						// *********************************
@@ -393,6 +406,7 @@ public class PrescanComposite extends Composite {
 								SetOptionAction axisSetOptionAction = 
 										new SetOptionAction(option, 
 															option.getName());
+								axisSetOptionAction.setImageDescriptor(optionImage);
 								currentMotorAxisMenu.add(axisSetOptionAction);
 							}
 							currentMotorMenu.add(currentMotorAxisMenu);
@@ -403,6 +417,7 @@ public class PrescanComposite extends Composite {
 						
 						SetOptionAction motorSetOptionAction = 
 								new SetOptionAction(option, option.getName());
+						motorSetOptionAction.setImageDescriptor(optionImage);
 						currentMotorMenu.add(motorSetOptionAction);
 					}
 					manager.add(currentMotorMenu);
@@ -437,6 +452,7 @@ public class PrescanComposite extends Composite {
 								SetOptionAction channelSetOptionAction = 
 										new SetOptionAction(option,
 															option.getName());
+								channelSetOptionAction.setImageDescriptor(optionImage);
 								currentDetectorChannelMenu.add(
 										channelSetOptionAction);
 							}
@@ -448,6 +464,7 @@ public class PrescanComposite extends Composite {
 						
 						SetOptionAction detectorSetOptionAction = 
 								new SetOptionAction(option, option.getName());
+						detectorSetOptionAction.setImageDescriptor(optionImage);
 						currentDetectorMenu.add(detectorSetOptionAction);
 					}
 					manager.add(currentDetectorMenu);
@@ -461,7 +478,8 @@ public class PrescanComposite extends Composite {
 				   device.getClassName() == null) {
 					
 					SetDeviceAction setDeviceAction = 
-						new SetDeviceAction((Device)device, device.getName());
+						new SetDeviceAction(device, device.getName());
+					setDeviceAction.setImageDescriptor(deviceImage);
 					manager.add(setDeviceAction);
 				}
 			}

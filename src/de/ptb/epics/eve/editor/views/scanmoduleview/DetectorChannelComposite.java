@@ -4,6 +4,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -222,10 +223,21 @@ public class DetectorChannelComposite extends Composite {
 		@Override
 		public void menuAboutToShow(IMenuManager manager) {
 			
+			final ImageDescriptor classImage = ImageDescriptor.createFromImage(
+					de.ptb.epics.eve.viewer.Activator.getDefault().
+					getImageRegistry().get("CLASS"));
+			final ImageDescriptor detectorImage = ImageDescriptor.createFromImage(
+					de.ptb.epics.eve.viewer.Activator.getDefault().
+					getImageRegistry().get("DETECTOR"));
+			final ImageDescriptor channelImage = ImageDescriptor.createFromImage(
+					de.ptb.epics.eve.viewer.Activator.getDefault().
+					getImageRegistry().get("CHANNEL"));
+			
 			for(final String className : measuringStation.getClassNameList()) {
 				
 				boolean containsAtLeastOne = false;
-				final MenuManager currentClassMenu = new MenuManager(className);
+				final MenuManager currentClassMenu = new MenuManager(
+						className, classImage, className);
 				
 				for(final AbstractDevice device : 
 					measuringStation.getDeviceList(className)) {
@@ -234,9 +246,7 @@ public class DetectorChannelComposite extends Composite {
 						containsAtLeastOne = true;
 						final Detector detector = (Detector)device;
 						final MenuManager currentDetectorMenu = 
-							new MenuManager("".equals( detector.getName())
-											? detector.getID()
-											: detector.getName());
+							new MenuManager(detector.getName(), detectorImage, detector.getName());
 						currentClassMenu.add(currentDetectorMenu);
 
 						// iterate for each channel of the detector
@@ -244,6 +254,7 @@ public class DetectorChannelComposite extends Composite {
 							if (channel.getClassName().isEmpty()) {
 								// add only channels which have no className
 								final Action setChannelAction = new SetChannelAction(channel);
+								setChannelAction.setImageDescriptor(channelImage);
 								containsAtLeastOne = true;
 								currentDetectorMenu.add(setChannelAction);
 							}
@@ -251,6 +262,7 @@ public class DetectorChannelComposite extends Composite {
 					} else if(device instanceof DetectorChannel) {
 						containsAtLeastOne = true;	
 						final Action setChannelAction = new SetChannelAction((DetectorChannel)device);
+						setChannelAction.setImageDescriptor(channelImage);
 						containsAtLeastOne = true;
 						currentClassMenu.add(setChannelAction);
 					}
@@ -264,15 +276,14 @@ public class DetectorChannelComposite extends Composite {
 				if("".equals(detector.getClassName()) || detector.getClassName() == null) {
 					boolean containsAtLeastOne = false;
 					final MenuManager currentDetectorMenu = 
-							new MenuManager("".equals(detector.getName())
-											? detector.getID()
-											: detector.getName());
+							new MenuManager(detector.getName(), detectorImage, detector.getName());
 					for(final DetectorChannel channel : 
 						detector.getChannels()) {
 							if("".equals(channel.getClassName()) || 
 							   channel.getClassName() == null) {
 							final Action setChannelAction = 
 								new SetChannelAction(channel);
+							setChannelAction.setImageDescriptor(channelImage);
 							containsAtLeastOne = true;
 							currentDetectorMenu.add( setChannelAction );
 						}

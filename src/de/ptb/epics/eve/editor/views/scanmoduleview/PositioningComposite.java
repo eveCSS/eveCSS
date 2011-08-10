@@ -8,6 +8,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -166,6 +167,10 @@ public class PositioningComposite extends Composite {
 	 */
 	class MenuManagerMenuListener implements IMenuListener {
 		
+		final ImageDescriptor axisImage = ImageDescriptor.createFromImage(
+				de.ptb.epics.eve.viewer.Activator.getDefault().
+				getImageRegistry().get("AXIS"));
+		
 		/**
 		 * {@inheritDoc}
 		 */
@@ -204,28 +209,29 @@ public class PositioningComposite extends Composite {
 				};
 				
 				addPositioningAction.setText(axis.getMotorAxis().getName());
+				addPositioningAction.setImageDescriptor(axisImage);
 				manager.add(addPositioningAction);
 			}
 			
-			Action deleteAction = new Action() {
+			if(scanModule.getPositionings().length > 0) {
+				Action deleteAction = new Action() {
 				
-				@Override
-		    	public void run() {
-		    		
-		    		Positioning weg = (Positioning)((IStructuredSelection)
-		    				tableViewer.getSelection()).getFirstElement();
-		    		scanModule.remove(weg);
-		    		tableViewer.refresh();
-		    	}
-		    };
-		    
-		    deleteAction.setEnabled(true);
-		    deleteAction.setText("Delete Positioning");
-		    deleteAction.setToolTipText("Deletes Positioning");
-		    deleteAction.setImageDescriptor(PlatformUI.getWorkbench().
-		    							getSharedImages().getImageDescriptor(
-		    							ISharedImages.IMG_TOOL_DELETE));
-		    manager.add(deleteAction);
+					@Override public void run() {
+						Positioning weg = (Positioning)((IStructuredSelection)
+								tableViewer.getSelection()).getFirstElement();
+						scanModule.remove(weg);
+						tableViewer.refresh();
+					}
+				};
+				
+				deleteAction.setEnabled(true);
+				deleteAction.setText("Delete Positioning");
+				deleteAction.setToolTipText("Deletes Positioning");
+				deleteAction.setImageDescriptor(PlatformUI.getWorkbench().
+									getSharedImages().getImageDescriptor(
+									ISharedImages.IMG_TOOL_DELETE));
+				manager.add(deleteAction);
+			}
 		}
 	}
 }

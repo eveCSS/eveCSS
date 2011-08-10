@@ -161,6 +161,9 @@ public class PostscanComposite extends Composite {
 	 */
 	class MenuManagerMenuListener implements IMenuListener {
 		
+		final ImageDescriptor classImage = ImageDescriptor.createFromImage(
+				de.ptb.epics.eve.viewer.Activator.getDefault().
+				getImageRegistry().get("CLASS"));
 		final ImageDescriptor motorImage = ImageDescriptor.createFromImage(
 				de.ptb.epics.eve.viewer.Activator.getDefault().
 				getImageRegistry().get("MOTOR"));
@@ -173,6 +176,12 @@ public class PostscanComposite extends Composite {
 		final ImageDescriptor channelImage = ImageDescriptor.createFromImage(
 				de.ptb.epics.eve.viewer.Activator.getDefault().
 				getImageRegistry().get("CHANNEL"));
+		final ImageDescriptor deviceImage = ImageDescriptor.createFromImage(
+				de.ptb.epics.eve.viewer.Activator.getDefault().
+				getImageRegistry().get("DEVICE"));
+		final ImageDescriptor optionImage = ImageDescriptor.createFromImage(
+				de.ptb.epics.eve.viewer.Activator.getDefault().
+				getImageRegistry().get("OPTION"));
 		
 		/**
 		 * {@inheritDoc}
@@ -190,7 +199,8 @@ public class PostscanComposite extends Composite {
 			for(final String className : measuringStation.getClassNameList()) {
 				
 				// create a menu entry for each class name
-				final MenuManager currentClassMenu = new MenuManager(className);
+				final MenuManager currentClassMenu = new MenuManager(
+						className, classImage, className);
 				
 				// iterate over each device in that class
 				for(final AbstractDevice device : 
@@ -227,6 +237,7 @@ public class PostscanComposite extends Composite {
 								for(final Option option : motorAxis.getOptions()) {
 									SetOptionAction setOptionAction = 
 										new SetOptionAction(option, option.getName());
+									setOptionAction.setImageDescriptor(optionImage);
 									currentMotorAxisMenu.add(setOptionAction);
 								}
 								// add the motor axis menu to the motor menu entry
@@ -237,6 +248,7 @@ public class PostscanComposite extends Composite {
 							
 							SetOptionAction setOptionAction = 
 								new SetOptionAction(option, option.getName());
+							setOptionAction.setImageDescriptor(optionImage);
 							currentMotorMenu.add(setOptionAction);
 						}
 						
@@ -263,6 +275,7 @@ public class PostscanComposite extends Composite {
 							
 							SetOptionAction setOptionAction = 
 								new SetOptionAction(option, option.getName());
+							setOptionAction.setImageDescriptor(optionImage);
 							currentMotorAxisMenu.add(setOptionAction);
 						}
 						// add motor axis menu to the motor menu entry
@@ -294,7 +307,8 @@ public class PostscanComposite extends Composite {
 								for(final Option option : detectorChannel.getOptions()) {
 									SetOptionAction setOptionAction = 
 											new SetOptionAction(option, option.getName());
-									currentDetectorChannelMenu.add(	setOptionAction);
+									setOptionAction.setImageDescriptor(optionImage);
+									currentDetectorChannelMenu.add(setOptionAction);
 								}
 								currentDetectorMenu.add(currentDetectorChannelMenu);
 							}
@@ -303,6 +317,7 @@ public class PostscanComposite extends Composite {
 							
 							SetOptionAction setOptionAction = 
 								new SetOptionAction(option, option.getName());
+							setOptionAction.setImageDescriptor(optionImage);
 							currentDetectorMenu.add(setOptionAction);
 						}
 						currentClassMenu.add(currentDetectorMenu);
@@ -327,6 +342,7 @@ public class PostscanComposite extends Composite {
 							
 							SetOptionAction setOptionAction = 
 								new SetOptionAction(option, option.getName());
+							setOptionAction.setImageDescriptor(optionImage);
 							currentDetectorChannelMenu.add(setOptionAction);
 						}
 						currentClassMenu.add(currentDetectorChannelMenu);
@@ -344,6 +360,7 @@ public class PostscanComposite extends Composite {
 						SetDeviceAction setDeviceAction = 
 								new SetDeviceAction(
 										(Device)device, device.getName());
+						setDeviceAction.setImageDescriptor(deviceImage);
 						currentClassMenu.add(setDeviceAction);
 						
 						// *********************************
@@ -387,6 +404,7 @@ public class PostscanComposite extends Composite {
 								
 								SetOptionAction setOptionAction = 
 									new SetOptionAction(option, option.getName());
+								setOptionAction.setImageDescriptor(optionImage);
 								currentMotorAxisMenu.add(setOptionAction);
 							}
 							currentMotorMenu.add(currentMotorAxisMenu);
@@ -396,6 +414,7 @@ public class PostscanComposite extends Composite {
 						
 						SetOptionAction setOptionAction = 
 								new SetOptionAction(option, option.getName());
+						setOptionAction.setImageDescriptor(optionImage);
 						currentMotorMenu.add(setOptionAction);
 					}
 				manager.add(currentMotorMenu);
@@ -423,6 +442,7 @@ public class PostscanComposite extends Composite {
 								
 								SetOptionAction setOptionAction = 
 									new SetOptionAction(option, option.getName());
+								setOptionAction.setImageDescriptor(optionImage);
 								currentDetectorChannelMenu.add(setOptionAction);
 							}
 							currentDetectorMenu.add(currentDetectorChannelMenu);
@@ -432,6 +452,7 @@ public class PostscanComposite extends Composite {
 						
 						SetOptionAction setOptionAction = 
 							new SetOptionAction(option, option.getName());
+						setOptionAction.setImageDescriptor(optionImage);
 						currentDetectorMenu.add(setOptionAction);
 					}
 					manager.add(currentDetectorMenu);
@@ -446,6 +467,7 @@ public class PostscanComposite extends Composite {
 					
 					SetDeviceAction setDeviceAction = 
 						new SetDeviceAction(device, device.getName());
+					setDeviceAction.setImageDescriptor(deviceImage);
 					manager.add(setDeviceAction);
 				}
 			}

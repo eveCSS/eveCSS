@@ -4,6 +4,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -309,11 +310,22 @@ public class MotorAxisComposite extends Composite {
 		@Override
 		public void menuAboutToShow(IMenuManager manager) {
 			
+			final ImageDescriptor classImage = ImageDescriptor.createFromImage(
+					de.ptb.epics.eve.viewer.Activator.getDefault().
+					getImageRegistry().get("CLASS"));
+			final ImageDescriptor motorImage = ImageDescriptor.createFromImage(
+					de.ptb.epics.eve.viewer.Activator.getDefault().
+					getImageRegistry().get("MOTOR"));
+			final ImageDescriptor axisImage = ImageDescriptor.createFromImage(
+					de.ptb.epics.eve.viewer.Activator.getDefault().
+					getImageRegistry().get("AXIS"));
+			
 			((ExcludeDevicesOfScanModuleFilterManualUpdate)measuringStation).update();
 			
 			for(final String className : measuringStation.getClassNameList()) {
 				
-				final MenuManager currentClassMenu = new MenuManager(className);
+				final MenuManager currentClassMenu = new MenuManager(
+						className, classImage, className);
 				
 				for(final AbstractDevice device : 
 					measuringStation.getDeviceList(className)) {
@@ -321,9 +333,8 @@ public class MotorAxisComposite extends Composite {
 					if(device instanceof Motor) {
 						final Motor motor = (Motor)device;
 						final MenuManager currentMotorMenu = 
-							new MenuManager("".equals( motor.getName())
-											? motor.getID()
-											: motor.getName());
+							new MenuManager(
+								motor.getName(), motorImage, motor.getName());
 						currentClassMenu.add(currentMotorMenu);
 						
 						// iterate for each axis of the motor
@@ -331,12 +342,14 @@ public class MotorAxisComposite extends Composite {
 							if (axis.getClassName().isEmpty()) {
 								// add only axis which have no className
 								final SetAxisAction setAxisAction = new SetAxisAction(axis);
+								setAxisAction.setImageDescriptor(axisImage);
 								currentMotorMenu.add(setAxisAction);
 							}
 						}
 					} else if(device instanceof MotorAxis) {
 						final SetAxisAction setAxisAction = 
 							new SetAxisAction((MotorAxis)device);
+						setAxisAction.setImageDescriptor(axisImage);
 						currentClassMenu.add(setAxisAction);
 					}
 					manager.add(currentClassMenu);
@@ -346,12 +359,11 @@ public class MotorAxisComposite extends Composite {
 			for(final Motor motor : measuringStation.getMotors()) {
 				if("".equals(motor.getClassName()) || motor.getClassName() == null) {
 					final MenuManager currentMotorMenu = 
-							new MenuManager("".equals(motor.getName())
-											? motor.getID()
-											: motor.getName());
+							new MenuManager(motor.getName(), motorImage, motor.getName());
 					for(final MotorAxis axis : motor.getAxes()) {
 						if("".equals(axis.getClassName()) || axis.getClassName() == null) {
 							final SetAxisAction setAxisAction = new SetAxisAction(axis);
+							setAxisAction.setImageDescriptor(axisImage);
 							currentMotorMenu.add(setAxisAction);
 						}
 					}
