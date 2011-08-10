@@ -27,6 +27,7 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
+import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.Postscan;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 
@@ -178,6 +179,8 @@ public class PostscanComposite extends Composite {
 		 */
 		@Override
 		public void menuAboutToShow(IMenuManager manager) {
+			
+			((ExcludeDevicesOfScanModuleFilterManualUpdate)measuringStation).update();
 			
 			// *************************************************
 			// **** Menu Entries for Devices with Class Names **

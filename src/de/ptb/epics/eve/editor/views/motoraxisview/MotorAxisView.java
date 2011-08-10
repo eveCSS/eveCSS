@@ -248,6 +248,11 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
 
+		if(modelUpdateEvent != null) {
+			logger.debug(modelUpdateEvent.getSender());
+			logger.debug(modelUpdateEvent.getMessage());
+		}
+		
 		if(modelUpdateListenerSuspended) return;
 		
 		removeListeners();

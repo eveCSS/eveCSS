@@ -42,6 +42,7 @@ import org.eclipse.swt.graphics.RGB;
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilter;
+import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
@@ -168,9 +169,9 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 	private CTabItem breakEventsTabItem;
 	private CTabItem triggerEventsTabItem;
 	
-	private ExcludeDevicesOfScanModuleFilter measuringStation;
-	private ExcludeDevicesOfScanModuleFilter measuringStationPrescan;
-	private ExcludeDevicesOfScanModuleFilter measuringStationPostscan;
+	private ExcludeDevicesOfScanModuleFilterManualUpdate measuringStation;
+	private ExcludeDevicesOfScanModuleFilterManualUpdate measuringStationPrescan;
+	private ExcludeDevicesOfScanModuleFilterManualUpdate measuringStationPostscan;
 	
 	/**
 	 * {@inheritDoc}
@@ -181,19 +182,19 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 		
 		parent.setLayout(new FillLayout());
 		
-		this.measuringStation = new ExcludeDevicesOfScanModuleFilter(
+		this.measuringStation = new ExcludeDevicesOfScanModuleFilterManualUpdate(
 				true, true, false, false, false);
 		this.measuringStation.setSource(
 				Activator.getDefault().getMeasuringStation());
 		this.measuringStation.addModelUpdateListener(this);
 
-		this.measuringStationPrescan = new ExcludeDevicesOfScanModuleFilter(
+		this.measuringStationPrescan = new ExcludeDevicesOfScanModuleFilterManualUpdate(
 				false, false, true, false, false);
 		this.measuringStationPrescan.setSource(
 				Activator.getDefault().getMeasuringStation());
 		this.measuringStationPrescan.addModelUpdateListener(this);
 
-		this.measuringStationPostscan = new ExcludeDevicesOfScanModuleFilter( 
+		this.measuringStationPostscan = new ExcludeDevicesOfScanModuleFilterManualUpdate( 
 				false, false, false, true, false);
 		this.measuringStationPostscan.setSource(
 				Activator.getDefault().getMeasuringStation());
@@ -588,7 +589,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 		this.measuringStation.setScanModule(this.currentScanModule);
 		this.measuringStationPrescan.setScanModule(this.currentScanModule);
 		this.measuringStationPostscan.setScanModule(this.currentScanModule);
-		// this.measuringStationPositioning.setScanModule( this.currentScanModul );
+		//this.measuringStationPositioning.setScanModule(this.currentScanModule);
 			
 		updateEvent(null);
 	}
@@ -1312,7 +1313,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 					//check if this event is used by any ControlEvents
 					// and notify them, that we remove the event
 					currentScanModule.getChain().getScanDescription().
-									  remove(event);								
+									  remove(event);
 				} 
 			}		
 		}
@@ -1469,7 +1470,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 		 */
 		@Override
 		public void controlMoved(ControlEvent e) {
-			resize();		
+			resize();
 		}
 		
 		/**
@@ -1477,7 +1478,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 		 */
 		@Override
 		public void controlResized(ControlEvent e) {
-			resize();		
+			resize();
 		}
 	}
 	
@@ -1500,7 +1501,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 		 */
 		@Override
 		public void controlResized(ControlEvent e) {
-			resize();		
+			resize();
 		}
 	}
 }

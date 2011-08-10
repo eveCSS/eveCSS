@@ -24,6 +24,7 @@ import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
@@ -307,7 +308,9 @@ public class MotorAxisComposite extends Composite {
 		 */
 		@Override
 		public void menuAboutToShow(IMenuManager manager) {
-			 
+			
+			((ExcludeDevicesOfScanModuleFilterManualUpdate)measuringStation).update();
+			
 			for(final String className : measuringStation.getClassNameList()) {
 				
 				final MenuManager currentClassMenu = new MenuManager(className);
