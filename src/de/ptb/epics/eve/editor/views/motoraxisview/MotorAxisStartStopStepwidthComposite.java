@@ -2,8 +2,11 @@ package de.ptb.epics.eve.editor.views.motoraxisview;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.custom.CCombo;
@@ -641,13 +644,91 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 						double start;
 						double stop;
 						double stepwidth;
+
+						// Korrekturzahlen für die Umrechnung der Millisekunden von der Zahl ohne führende Nullen
+						// in die Zahl als sogenannter float Wert
+						// Bei der Eingabe von der Zeit in z.B. 00:00:00.5 macht die Funktion
+						// getTimeInMillis() aus der Zeit 00:00:00.005
+						int addStart = 0;
+						int addStop = 0;
+						int addStepwidth = 0;
 						
 						switch( this.currentAxis.getMotorAxis().getPosition().getType()) {
 							case DATETIME:
-								System.out.println("AutoFill für DATETIME fehlt noch");
+
+								DateFormat startDate = DateFormat.getTimeInstance();
+								DateFormat stopDate = DateFormat.getTimeInstance();
+								DateFormat stepwidthDate = DateFormat.getTimeInstance();
+
+								// Herausfinden welches Format die übergebene Zeit hat
+								if (this.startCombo.getText().matches("\\d+:\\d+:\\d+?$")) {
+									startDate = new SimpleDateFormat("HH:mm:ss");
+								}
+								else if (this.startCombo.getText().matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
+									startDate = new SimpleDateFormat("HH:mm:ss.SSS");
+									//Nachkommazahl bestimmen
+									//Stelle des Punktes
+									int indexP = this.startCombo.getText().indexOf('.');
+									double nachkomma = Double.parseDouble(this.startCombo.getText().substring(indexP));
+									int nachMinus = Integer.parseInt(this.startCombo.getText().substring(indexP + 1));
+									addStart = (int) (nachkomma * 1000 - nachMinus);
+								}
+
+								if (this.stopCombo.getText().matches("\\d+:\\d+:\\d+?$")) {
+									stopDate = new SimpleDateFormat("HH:mm:ss");
+								}
+								else if (this.stopCombo.getText().matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
+									stopDate = new SimpleDateFormat("HH:mm:ss.SSS");
+									//Nachkommazahl bestimmen
+									//Stelle des Punktes
+									int indexP = this.stopCombo.getText().indexOf('.');
+									double nachkomma = Double.parseDouble(this.stopCombo.getText().substring(indexP));
+									int nachMinus = Integer.parseInt(this.stopCombo.getText().substring(indexP + 1));
+									addStop = (int) (nachkomma * 1000 - nachMinus);
+								}
+								
+								if (this.stepwidthText.getText().matches("\\d+:\\d+:\\d+?$")) {
+									stepwidthDate = new SimpleDateFormat("HH:mm:ss");
+								}
+								else if (this.stepwidthText.getText().matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
+									stepwidthDate = new SimpleDateFormat("HH:mm:ss.SSS");
+									//Nachkommazahl bestimmen
+									//Stelle des Punktes
+									int indexP = this.stepwidthText.getText().indexOf('.');
+									double nachkomma = Double.parseDouble(this.stepwidthText.getText().substring(indexP));
+									int nachMinus = Integer.parseInt(this.stepwidthText.getText().substring(indexP + 1));
+									addStepwidth = (int) (nachkomma * 1000 - nachMinus);
+								}
+
 								start = 0;
 								stop = 0;
 								stepwidth = 0;
+								
+								try {
+									startDate.setLenient(false);
+									startDate.parse(this.startCombo.getText());
+									Calendar startTime = startDate.getCalendar();
+									start = startTime.getTimeInMillis() + addStart + 3600000;
+									
+									stopDate.setLenient(false);
+									stopDate.parse(this.stopCombo.getText());
+									Calendar stopTime = stopDate.getCalendar();
+									stop = stopTime.getTimeInMillis() + addStop + 3600000;
+									
+									stepwidthDate.setLenient(false);
+									stepwidthDate.parse(this.stepwidthText.getText());
+									Calendar stepwidthTime = stepwidthDate.getCalendar();
+									stepwidth = stepwidthTime.getTimeInMillis() + addStepwidth + 3600000;
+									
+									// Wenn Start > Stop beenden
+									if (start > stop)
+										return;
+									
+								}
+								catch (final ParseException ef ){
+									System.out.println("String ist nicht korrekt");
+								}
+
 								break;
 							default:
 								start = Double.parseDouble( this.startCombo.getText() );
@@ -661,21 +742,26 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 							if (stepwidth > 0) {
 								// Vorzeichen von Stepwidth umdrehen!
 								stepwidth = stepwidth * -1;
-								this.stepwidthText.setText( "" + (int)stepwidth );
-								this.stepwidthText.setSelection(2);
+								this.stepwidthText.setText( "" + stepwidth );
 								currentAxis.setStepwidth(this.stepwidthText.getText());
 							}
 						}
 						if ((start - stop) < 0) {
-							// stepwidth muß positiv sein!
-							if (stepwidth < 0) {
-								// Vorzeichen von Stepwidth umdrehen!
-								stepwidth = stepwidth * -1;
-								this.stepwidthText.setText( "" + (int)stepwidth );
-								this.stepwidthText.setSelection(1);
-								currentAxis.setStepwidth(this.stepwidthText.getText());
+							switch( this.currentAxis.getMotorAxis().getPosition().getType()) {
+								case DATETIME:
+									break;
+								default:
+									// stepwidth muß positiv sein!
+									if (stepwidth < 0) {
+										// Vorzeichen von Stepwidth umdrehen!
+										stepwidth = stepwidth * -1;
+										this.stepwidthText.setText( "" + stepwidth );
+										currentAxis.setStepwidth(this.stepwidthText.getText());
+									}
+									break;
 							}
 						}
+
 						if ( !this.stepcountText.getText().equals("")) {
 							// stepcount Eintrag schon vorhanden
 							final double stepcount = Double.parseDouble( this.stepcountText.getText() );
@@ -706,8 +792,14 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 
 						final int start = values.indexOf( this.startCombo.getText() );
 						final int stop = values.indexOf( this.stopCombo.getText() );
-						int stepwidth = Integer.parseInt( this.stepwidthText.getText() );
-
+						int stepwidth;
+						try {
+							stepwidth = Integer.parseInt( this.stepwidthText.getText() );
+						}
+						catch (NumberFormatException e)	{
+							stepwidth = 0;
+						}
+						
 						if ((start - stop) > 0) {
 							// stepwidth muß negativ sein!
 							if (stepwidth > 0) {
@@ -1169,24 +1261,46 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 					}
 				}
 				else {
-					switch (	currentAxis.getMotorAxis().getPosition().getType()) {
+					switch ( currentAxis.getMotorAxis().getPosition().getType()) {
 						case DATETIME:
-							// Abfrage auf Datetime Format muß reduziert werden.
-							// Eingabe darf nur HH:mm:ss.SSS enthalten, deshalb 
-							// wird nicht auf isValuePossible abgefragt
-							DateFormat formatTime = DateFormat.getTimeInstance();
-							try {
-								formatTime.setLenient(false);
-								formatTime.parse(stepwidthText.getText());
-								currentAxis.setStepwidth( stepwidthText.getText() );
+							if (currentAxis.getMotorAxis().isValuePossible(stepwidthText.getText())) {
+								currentAxis.setStepwidth(stepwidthText.getText());
 								autoFill();	
 							}
-							catch (final ParseException ef ){
+							else {
 								currentAxis.setStepwidth(null);
 							}
 							break;
 						default: 
 							try {
+								double start = Double.parseDouble(startCombo.getText());
+								double stop = Double.parseDouble(stopCombo.getText());
+								double stepwidth = Double.parseDouble(stepwidthText.getText());
+								
+								if (start > stop) {
+									if (stepwidth > 0) {
+										// Vorzeichen von Stepwidth umdrehen!
+										stepwidth = stepwidth * -1;
+										stepwidthText.setText( "" + (int)stepwidth );
+										stepwidthText.setSelection(2);
+									}
+									
+									if (stepwidthText.getText().equals("0")) {
+									//Vorzeichen umdrehen
+									stepwidthText.setText( "-0" );
+									stepwidthText.setSelection(2);
+									}
+								}
+
+								if (start < stop) {
+									if (stepwidth < 0) {
+										// Vorzeichen von Stepwidth umdrehen!
+										stepwidth = stepwidth * -1;
+										stepwidthText.setText( "" + (int)stepwidth );
+										stepwidthText.setSelection(1);
+									}
+								}
+								
 								Double.parseDouble( stepwidthText.getText() );
 								currentAxis.setStepwidth(stepwidthText.getText());
 								autoFill();	
