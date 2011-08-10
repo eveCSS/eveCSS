@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.apache.log4j.Logger;
+
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
@@ -27,6 +29,9 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class ScanDescription implements IModelUpdateProvider, 
 									IModelUpdateListener, IModelErrorProvider {
+	
+	private static Logger logger = 
+		Logger.getLogger(ScanDescription.class.getName());
 	
 	/**
 	 * Schema version of the output.
@@ -322,7 +327,13 @@ public class ScanDescription implements IModelUpdateProvider,
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		updateListeners();		
+		if(logger.isDebugEnabled()) {
+			if(modelUpdateEvent != null) {
+				logger.debug(modelUpdateEvent.getSender());
+			}
+			logger.debug("null");
+		}
+		updateListeners();
 	}
 
 	/**

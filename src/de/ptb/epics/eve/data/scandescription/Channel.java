@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.apache.log4j.Logger;
-
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
@@ -28,9 +26,6 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class Channel extends AbstractMainPhaseBehavior {
 
-	private static final Logger logger = 
-			Logger.getLogger(Channel.class.getName());
-	
 	/*
 	 * This attribute controls how often the detector should be read to make
 	 * an average value. default value is 1.
@@ -300,10 +295,10 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * @return true if channel sends an ready event
 	 */
 	public Boolean hasReadyEvent() {
-		if (detectorReadyEvent != null)
+		if (detectorReadyEvent != null){
 			return true;
-		else
-			return false;
+		}
+		return false;
 	}
 
 	/**
@@ -381,22 +376,13 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 */
 	private void updateListeners()
 	{
-		for(IModelUpdateListener l : modelUpdateListener)
-		{
-			if(logger.isDebugEnabled())
-				logger.debug("listener: " + l.getClass().getName());
-		}
-		
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
 			new CopyOnWriteArrayList<IModelUpdateListener>(modelUpdateListener);
 		
 		Iterator<IModelUpdateListener> it = list.iterator();
 		
 		while(it.hasNext()) {
-			IModelUpdateListener imul = it.next();
-			if(logger.isDebugEnabled())
-				logger.debug("Iterator item: " + imul.getClass().getName());
-			imul.updateEvent(new ModelUpdateEvent(this, null));
+			it.next().updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
 }

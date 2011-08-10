@@ -6,6 +6,8 @@ package de.ptb.epics.eve.data.scandescription.updatenotification;
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
  * @author Marcus Michalsky
+ * @see {@link java.util.Observable}
+ * @see {@link java.beans.PropertyChangeSupport}
  */
 public interface IModelUpdateProvider {
 

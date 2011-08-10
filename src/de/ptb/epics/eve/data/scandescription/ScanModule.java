@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.apache.log4j.Logger;
+
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
@@ -24,6 +26,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, 
 														IModelErrorProvider {
+	
+	private static Logger logger = Logger.getLogger(ScanModule.class.getName());
 	
 	// the id of the scan module
 	private int id;
@@ -933,6 +937,12 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * {@inheritDoc}
 	 */
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
+		if(logger.isDebugEnabled()) {
+			if(modelUpdateEvent != null) {
+				logger.debug(modelUpdateEvent.getSender());
+			}
+			logger.debug("null");
+		}
 		updateListeners();
 	}
 

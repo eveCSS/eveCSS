@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.apache.log4j.Logger;
+
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessage;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessageEnum;
@@ -26,6 +28,8 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
  * @author Marcus Michalsky
  */
 public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModelErrorProvider {
+	
+	private static Logger logger = Logger.getLogger(Chain.class.getName());
 	
 	/**
 	 * The unique id of the chain.
@@ -745,7 +749,13 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		updateListeners();		
+		if(logger.isDebugEnabled()) {
+			if(modelUpdateEvent != null) {
+				logger.debug(modelUpdateEvent.getSender());
+			}
+			logger.debug("null");
+		}
+		updateListeners();
 	}
 
 	/*
