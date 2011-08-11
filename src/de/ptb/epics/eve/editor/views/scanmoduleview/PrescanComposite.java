@@ -219,11 +219,15 @@ public class PrescanComposite extends Composite {
 							
 								// iterate over the options of that axis
 								for(final Option option : motorAxis.getOptions()) {
-								
-									SetOptionAction motorAxisSetOptionAction = 
+									// option Severity and Status not inserted in the menu
+									if ((!option.getName().equals("Severity")) &&
+										(!option.getName().equals("Status"))) {
+
+										SetOptionAction motorAxisSetOptionAction = 
 											new SetOptionAction(option, option.getName());
-									motorAxisSetOptionAction.setImageDescriptor(optionImage);
-									currentMotorAxisMenu.add(motorAxisSetOptionAction);
+										motorAxisSetOptionAction.setImageDescriptor(optionImage);
+										currentMotorAxisMenu.add(motorAxisSetOptionAction);
+									}
 								}
 							
 								// add the motor axis menu to the motor menu entry
@@ -232,12 +236,15 @@ public class PrescanComposite extends Composite {
 						}
 						
 						for(final Option option : motor.getOptions()) {
+							// option Severity and Status not inserted in the menu
+							if ((!option.getName().equals("Severity")) &&
+								(!option.getName().equals("Status"))) {
 							
-							SetOptionAction motorSetOptionAction = 
-									new SetOptionAction(option, 
-														option.getName());
-							motorSetOptionAction.setImageDescriptor(optionImage);
-							currentMotorMenu.add(motorSetOptionAction);
+								SetOptionAction motorSetOptionAction = 
+									new SetOptionAction(option, option.getName());
+								motorSetOptionAction.setImageDescriptor(optionImage);
+								currentMotorMenu.add(motorSetOptionAction);
+							}
 						}
 						
 						// *********************************
@@ -260,12 +267,15 @@ public class PrescanComposite extends Composite {
 						
 						// iterate over options of the axis
 						for(final Option option : motorAxis.getOptions()) {
+							// option Severity and Status not inserted in the menu
+							if ((!option.getName().equals("Severity")) &&
+								(!option.getName().equals("Status"))) {
 							
-							SetOptionAction motorAxisSetOptionAction = 
-									new SetOptionAction(option, 
-														option.getName());
-							motorAxisSetOptionAction.setImageDescriptor(optionImage);
-							currentMotorAxisMenu.add(motorAxisSetOptionAction);
+								SetOptionAction motorAxisSetOptionAction = 
+									new SetOptionAction(option, option.getName());
+								motorAxisSetOptionAction.setImageDescriptor(optionImage);
+								currentMotorAxisMenu.add(motorAxisSetOptionAction);
+							}
 						}
 						
 						// add motor axis menu to the motor menu entry
@@ -299,23 +309,30 @@ public class PrescanComposite extends Composite {
 													detectorChannel.getName());
 							
 								for(final Option option : detectorChannel.getOptions()) {
-									SetOptionAction channelSetOptionAction = 
-											new SetOptionAction(option, 
-															option.getName());
-									channelSetOptionAction.setImageDescriptor(optionImage);
-									currentDetectorChannelMenu.add(channelSetOptionAction);
+									// option Severity and Status not inserted in the menu
+									if ((!option.getName().equals("Severity")) &&
+										(!option.getName().equals("Status"))) {
+
+										SetOptionAction channelSetOptionAction = 
+											new SetOptionAction(option, option.getName());
+										channelSetOptionAction.setImageDescriptor(optionImage);
+										currentDetectorChannelMenu.add(channelSetOptionAction);
+									}
 								}
 								currentDetectorMenu.add(currentDetectorChannelMenu);
 							}
 						}
 						
 						for(final Option option : detector.getOptions()) {
+							// option Severity and Status not inserted in the menu
+							if ((!option.getName().equals("Severity")) &&
+								(!option.getName().equals("Status"))) {
 							
-							SetOptionAction detectorSetOptionAction = 
-									new SetOptionAction(option, 
-														option.getName());
-							detectorSetOptionAction.setImageDescriptor(optionImage);
-							currentDetectorMenu.add(detectorSetOptionAction);
+								SetOptionAction detectorSetOptionAction = 
+									new SetOptionAction(option, option.getName());
+								detectorSetOptionAction.setImageDescriptor(optionImage);
+								currentDetectorMenu.add(detectorSetOptionAction);
+							}
 						}
 						currentClassMenu.add(currentDetectorMenu);
 						
@@ -338,13 +355,15 @@ public class PrescanComposite extends Composite {
 												detectorChannel.getName());
 						
 						for(final Option option : detectorChannel.getOptions()) {
+							// option Severity and Status not inserted in the menu
+							if ((!option.getName().equals("Severity")) &&
+								(!option.getName().equals("Status"))) {
 							
-							SetOptionAction channelSetOptionAction = 
-									new SetOptionAction(option, 
-														option.getName());
-							channelSetOptionAction.setImageDescriptor(optionImage);
-							currentDetectorChannelMenu.add(
-									channelSetOptionAction);
+								SetOptionAction channelSetOptionAction = 
+									new SetOptionAction(option, option.getName());
+								channelSetOptionAction.setImageDescriptor(optionImage);
+								currentDetectorChannelMenu.add(channelSetOptionAction);
+							}
 						}
 						currentClassMenu.add(currentDetectorChannelMenu);
 						
@@ -402,23 +421,30 @@ public class PrescanComposite extends Composite {
 													motorAxis.getName());
 							
 							for(final Option option : motorAxis.getOptions()) {
+								// option Severity and Status not inserted in the menu
+								if ((!option.getName().equals("Severity")) &&
+									(!option.getName().equals("Status"))) {
 								
-								SetOptionAction axisSetOptionAction = 
-										new SetOptionAction(option, 
-															option.getName());
-								axisSetOptionAction.setImageDescriptor(optionImage);
-								currentMotorAxisMenu.add(axisSetOptionAction);
+									SetOptionAction axisSetOptionAction = 
+										new SetOptionAction(option, option.getName());
+									axisSetOptionAction.setImageDescriptor(optionImage);
+									currentMotorAxisMenu.add(axisSetOptionAction);
+								}
 							}
 							currentMotorMenu.add(currentMotorAxisMenu);
 						}
 					}
 					
 					for(final Option option : motor.getOptions()) {
+						// option Severity and Status not inserted in the menu
+						if ((!option.getName().equals("Severity")) &&
+							(!option.getName().equals("Status"))) {
 						
-						SetOptionAction motorSetOptionAction = 
+							SetOptionAction motorSetOptionAction = 
 								new SetOptionAction(option, option.getName());
-						motorSetOptionAction.setImageDescriptor(optionImage);
-						currentMotorMenu.add(motorSetOptionAction);
+							motorSetOptionAction.setImageDescriptor(optionImage);
+							currentMotorMenu.add(motorSetOptionAction);
+						}
 					}
 					manager.add(currentMotorMenu);
 				}
@@ -446,26 +472,31 @@ public class PrescanComposite extends Composite {
 													channelImage,
 													detectorChannel.getName());
 							
-							for(final Option option : 
-												detectorChannel.getOptions()) {
-								
-								SetOptionAction channelSetOptionAction = 
-										new SetOptionAction(option,
-															option.getName());
-								channelSetOptionAction.setImageDescriptor(optionImage);
-								currentDetectorChannelMenu.add(
-										channelSetOptionAction);
+							for(final Option option : detectorChannel.getOptions()) {
+								// option Severity and Status not inserted in the menu
+								if ((!option.getName().equals("Severity")) &&
+									(!option.getName().equals("Status"))) {
+
+									SetOptionAction channelSetOptionAction = 
+										new SetOptionAction(option, option.getName());
+									channelSetOptionAction.setImageDescriptor(optionImage);
+									currentDetectorChannelMenu.add(channelSetOptionAction);
+								}
 							}
 							currentDetectorMenu.add(currentDetectorChannelMenu);
 						}
 					}
 					
 					for(final Option option : detector.getOptions()) {
+						// option Severity and Status not inserted in the menu
+						if ((!option.getName().equals("Severity")) &&
+							(!option.getName().equals("Status"))) {
 						
-						SetOptionAction detectorSetOptionAction = 
+							SetOptionAction detectorSetOptionAction = 
 								new SetOptionAction(option, option.getName());
-						detectorSetOptionAction.setImageDescriptor(optionImage);
-						currentDetectorMenu.add(detectorSetOptionAction);
+							detectorSetOptionAction.setImageDescriptor(optionImage);
+							currentDetectorMenu.add(detectorSetOptionAction);
+						}
 					}
 					manager.add(currentDetectorMenu);
 				}

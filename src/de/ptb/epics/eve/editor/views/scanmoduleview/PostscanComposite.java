@@ -235,23 +235,31 @@ public class PostscanComposite extends Composite {
 							
 								// iterate over the options of that axis
 								for(final Option option : motorAxis.getOptions()) {
-									SetOptionAction setOptionAction = 
-										new SetOptionAction(option, option.getName());
-									setOptionAction.setImageDescriptor(optionImage);
-									currentMotorAxisMenu.add(setOptionAction);
+									// option Severity and Status not inserted in the menu
+									if ((!option.getName().equals("Severity")) &&
+										(!option.getName().equals("Status"))) {
+
+										SetOptionAction setOptionAction = 
+											new SetOptionAction(option, option.getName());
+										setOptionAction.setImageDescriptor(optionImage);
+										currentMotorAxisMenu.add(setOptionAction);
+									}
 								}
 								// add the motor axis menu to the motor menu entry
 								currentMotorMenu.add(currentMotorAxisMenu);
 							}
 						}
 						for(final Option option : motor.getOptions()) {
+							// option Severity and Status not inserted in the menu
+							if ((!option.getName().equals("Severity")) &&
+								(!option.getName().equals("Status"))) {
 							
-							SetOptionAction setOptionAction = 
-								new SetOptionAction(option, option.getName());
-							setOptionAction.setImageDescriptor(optionImage);
-							currentMotorMenu.add(setOptionAction);
+								SetOptionAction setOptionAction = 
+										new SetOptionAction(option, option.getName());
+								setOptionAction.setImageDescriptor(optionImage);
+								currentMotorMenu.add(setOptionAction);
+							}
 						}
-						
 						// *********************************
 						// *********** Motor End ***********
 						// *********************************
@@ -272,11 +280,15 @@ public class PostscanComposite extends Composite {
 						
 						// iterate over options of the axis
 						for(final Option option : motorAxis.getOptions()) {
-							
-							SetOptionAction setOptionAction = 
-								new SetOptionAction(option, option.getName());
-							setOptionAction.setImageDescriptor(optionImage);
-							currentMotorAxisMenu.add(setOptionAction);
+							// option Severity and Status not inserted in the menu
+							if ((!option.getName().equals("Severity")) &&
+								(!option.getName().equals("Status"))) {
+						
+								SetOptionAction setOptionAction = 
+										new SetOptionAction(option, option.getName());
+								setOptionAction.setImageDescriptor(optionImage);
+								currentMotorAxisMenu.add(setOptionAction);
+							}
 						}
 						// add motor axis menu to the motor menu entry
 						currentClassMenu.add(currentMotorAxisMenu);
@@ -305,20 +317,29 @@ public class PostscanComposite extends Composite {
 													channelImage, 
 													detectorChannel.getName());
 								for(final Option option : detectorChannel.getOptions()) {
-									SetOptionAction setOptionAction = 
+									// option Severity and Status not inserted in the menu
+									if ((!option.getName().equals("Severity")) &&
+										(!option.getName().equals("Status"))) {
+
+										SetOptionAction setOptionAction = 
 											new SetOptionAction(option, option.getName());
-									setOptionAction.setImageDescriptor(optionImage);
-									currentDetectorChannelMenu.add(setOptionAction);
+										setOptionAction.setImageDescriptor(optionImage);
+										currentDetectorChannelMenu.add(setOptionAction);
+									}
 								}
 								currentDetectorMenu.add(currentDetectorChannelMenu);
 							}
 						}
 						for(final Option option : detector.getOptions()) {
+							// option Severity and Status not inserted in the menu
+							if ((!option.getName().equals("Severity")) &&
+								(!option.getName().equals("Status"))) {
 							
-							SetOptionAction setOptionAction = 
-								new SetOptionAction(option, option.getName());
-							setOptionAction.setImageDescriptor(optionImage);
-							currentDetectorMenu.add(setOptionAction);
+								SetOptionAction setOptionAction = 
+										new SetOptionAction(option, option.getName());
+								setOptionAction.setImageDescriptor(optionImage);
+								currentDetectorMenu.add(setOptionAction);
+							}
 						}
 						currentClassMenu.add(currentDetectorMenu);
 						
@@ -339,11 +360,15 @@ public class PostscanComposite extends Composite {
 												detectorChannel.getName());
 						
 						for(final Option option : detectorChannel.getOptions()) {
+							// option Severity and Status not inserted in the menu
+							if ((!option.getName().equals("Severity")) &&
+								(!option.getName().equals("Status"))) {
 							
-							SetOptionAction setOptionAction = 
-								new SetOptionAction(option, option.getName());
-							setOptionAction.setImageDescriptor(optionImage);
-							currentDetectorChannelMenu.add(setOptionAction);
+								SetOptionAction setOptionAction = 
+										new SetOptionAction(option, option.getName());
+								setOptionAction.setImageDescriptor(optionImage);
+								currentDetectorChannelMenu.add(setOptionAction);
+							}
 						}
 						currentClassMenu.add(currentDetectorChannelMenu);
 						
