@@ -564,6 +564,8 @@ public final class EngineView extends ViewPart
 		this.filenameText.getDisplay().syncExec(new Runnable() {
 			@Override public void run() {
 				filenameText.setText(filename);
+				int lastSign = filename.length();
+				filenameText.setSelection(lastSign);
 			}
 		});
 	}
