@@ -56,6 +56,7 @@ import de.ptb.epics.eve.editor.views.EventComposite;
  * 
  * @author ?
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class ScanView extends ViewPart implements IModelUpdateListener {
 
@@ -77,6 +78,8 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 	// *******************************************************************
 	// ******************* end of: underlying model **********************
 	// *******************************************************************
+
+	private boolean modelUpdateListenerSuspended;
 	
 	// the utmost composite (which contains all elements)
 	private Composite top = null;
@@ -163,6 +166,8 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 	public void createPartControl(final Composite parent) {
 	    logger.debug("createPartControl");
 		
+		modelUpdateListenerSuspended = false;
+
 		parent.setLayout(new FillLayout());
 		
 		// if no measuring station is loaded -> show error and do nothing
@@ -518,6 +523,8 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			logger.debug("update event (" + 
 				modelUpdateEvent.getSender().getClass().getName() + ")");
 		
+		if(modelUpdateListenerSuspended) return;
+
 		// temporarily remove listeners to prevent event loops
 		removeListeners();
 		
@@ -537,6 +544,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 					(this.currentChain.getSaveFilename() != null)
 					? this.currentChain.getSaveFilename()
 					: "");
+			this.filenameInput.setSelection(this.filenameInput.getText().length());
 			
 			this.filenameErrorLabel.setImage(null);
 			this.filenameErrorLabel.setToolTipText("");
@@ -720,7 +728,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			this.stopTabItem.setImage(null);
 		}
 	}
-	
+
 	/*
 	 * used by updateEvent() to re-enable listeners
 	 */
@@ -860,14 +868,16 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 					final int lastPoint = name.lastIndexOf(".");
 					final int lastSep = name.lastIndexOf("/");
 
-					if ((lastPoint > 0) && (lastPoint > lastSep))
-						filenameInput.setText(
-								name.substring(0, lastPoint) + "." + suffix);
-					else
+					if ((lastPoint > 0) && (lastPoint > lastSep)) { 
+						filenameInput.setText(name.substring(0, lastPoint) + "." + suffix);
+					} else {
 						filenameInput.setText(name + "." + suffix);
+					}
 				}
-				else
+				else {
 					filenameInput.setText(name);
+				}
+				filenameInput.setSelection(filenameInput.getText().length());
 			}
 		}
 		
@@ -989,7 +999,12 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		 */
 		@Override
 		public void modifyText(ModifyEvent e) {
+			
+			modelUpdateListenerSuspended = true;
+			
 			currentChain.setSaveFilename(filenameInput.getText());
+
+			modelUpdateListenerSuspended = false;
 		}
 	}
 	
