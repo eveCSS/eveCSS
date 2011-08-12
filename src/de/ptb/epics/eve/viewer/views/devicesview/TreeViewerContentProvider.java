@@ -218,8 +218,11 @@ public class TreeViewerContentProvider
 		
 		this.viewer = viewer;
 		
-		// a new measuring station was set -> collect devices without class names
-		updateDeviceLists();
+		if(measuringStation != null) {
+			// a new measuring station was set -> 
+			// collect devices without class names
+			updateDeviceLists();
+		}
 	}
 
 
