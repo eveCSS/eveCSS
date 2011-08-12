@@ -22,11 +22,6 @@ public enum ChannelErrorTypes {
 	MINIMUM_NOT_POSSIBLE,
 	
 	/**
-	 * The minimum is not a possible value.
-	 */
-	MAX_ATTEMPTS_NOT_POSSIBLE,
-
-	/**
 	 * In the plugin is an error.
 	 */
 	PLUGIN_ERROR
