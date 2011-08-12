@@ -180,7 +180,7 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 		getSite().getWorkbenchWindow().getSelectionService().
 			removeSelectionListener(this);
 		
-		if(activeDeviceOptionsView.equals(this.getViewSite().getSecondaryId())) {
+		if(this.getViewSite().getSecondaryId().equals(activeDeviceOptionsView)) {
 			activeDeviceOptionsView = null;
 		}
 		super.dispose();
