@@ -180,9 +180,6 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 		getSite().getWorkbenchWindow().getSelectionService().
 			removeSelectionListener(this);
 		
-		tableViewer.getContentProvider().dispose();
-		tableViewer.getLabelProvider().dispose();
-		tableViewer.getTable().dispose();
 		if(activeDeviceOptionsView.equals(this.getViewSite().getSecondaryId())) {
 			activeDeviceOptionsView = null;
 		}
