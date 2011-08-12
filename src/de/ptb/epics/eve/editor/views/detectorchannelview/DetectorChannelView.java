@@ -360,7 +360,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			
 			// set average text
 			this.averageText.setText("" + this.currentChannel.getAverageCount());
-			
+
 			// set max deviation
 			if(this.currentChannel.getMaxDeviation() != Double.NEGATIVE_INFINITY) {
 				this.maxDeviationText.setText(
@@ -489,13 +489,6 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 						this.minimumErrorLabel.setToolTipText("Minimum value not possible");
 						this.minimumErrorLabel.getParent().layout();
-						break;
-					case MAX_ATTEMPTS_NOT_POSSIBLE:
-						this.maxAttemptsErrorLabel.setImage(
-								PlatformUI.getWorkbench().getSharedImages().
-								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-						this.maxAttemptsErrorLabel.setToolTipText("Max Attempts value not possible");
-						this.maxAttemptsErrorLabel.getParent().layout();
 						break;
 				}
 				

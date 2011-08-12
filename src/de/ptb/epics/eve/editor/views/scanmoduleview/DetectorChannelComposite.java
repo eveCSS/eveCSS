@@ -25,6 +25,7 @@ import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
@@ -232,7 +233,9 @@ public class DetectorChannelComposite extends Composite {
 			final ImageDescriptor channelImage = ImageDescriptor.createFromImage(
 					de.ptb.epics.eve.viewer.Activator.getDefault().
 					getImageRegistry().get("CHANNEL"));
-			
+
+			((ExcludeDevicesOfScanModuleFilterManualUpdate)measuringStation).update();
+
 			for(final String className : measuringStation.getClassNameList()) {
 				
 				boolean containsAtLeastOne = false;
