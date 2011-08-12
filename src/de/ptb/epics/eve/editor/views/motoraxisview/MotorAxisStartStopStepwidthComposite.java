@@ -1480,6 +1480,9 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 							if (oldText.isEmpty()) {
 								// oldText is emtpy, - is valid
 							}
+							else if ((((CCombo)e.widget).getSelection().x) == 0) {
+								// - is the first sign an valid
+							}
 							else {
 								// wenn das letzte Zeichen von oldText ein e ist, ist das minus auch erlaubt
 								int index = oldText.length();
@@ -1565,6 +1568,9 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 							// character - is a valid character as first sign and after an e
 							if (oldText.isEmpty()) {
 								// oldText is emtpy, - is valid
+							}
+							else if ((((Text)e.widget).getSelection().x) == 0) {
+								// - is the first sign an valid
 							}
 							else {
 								// wenn das letzte Zeichen von oldText ein e ist, ist das minus auch erlaubt

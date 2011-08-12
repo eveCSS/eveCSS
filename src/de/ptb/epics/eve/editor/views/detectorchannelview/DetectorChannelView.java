@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swt.layout.GridData;
 
 import de.ptb.epics.eve.data.measuringstation.Event;
@@ -579,7 +580,6 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		@Override
 		public void modifyText(final ModifyEvent e) {
 			logger.debug("average text modified");
-// sollen logger Infos auch in das MotorAxisStart... geschrieben werden?
 			
 			suspendModelUpdateListener();
 
@@ -886,6 +886,9 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 					// character - is a valid character as first sign and after an e
 					if (oldText.isEmpty()) {
 						// oldText is emtpy, - is valid
+					}
+					else if ((((Text)e.widget).getSelection().x) == 0) {
+						// - is the first sign an valid
 					}
 					else {
 						// wenn das letzte Zeichen von oldText ein e ist, ist das minus auch erlaubt
