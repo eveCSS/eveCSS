@@ -222,7 +222,9 @@ public final class EngineView extends ViewPart
 		this.repeatCountLabel.setText("repeat count:");
 		this.repeatCountText = new Text( this.scanComposite, SWT.BORDER );
 		repeatCount = 0;
-		repeatCountText.setText("     "+String.valueOf(repeatCount));
+		repeatCountText.setText("000000");
+		// TODO: Wenn repeatCount während der Laufzeit des Scans verändert werden 
+		// darf, muß die nächste Zeile entfernt werden
 		this.repeatCountText.setEditable(false);
 		
 		this.loadedScmlLabel = new Label( this.top, SWT.NONE );
