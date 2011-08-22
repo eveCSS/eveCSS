@@ -333,8 +333,7 @@ public class MotorAxisComposite extends Composite {
 					if(device instanceof Motor) {
 						final Motor motor = (Motor)device;
 						final MenuManager currentMotorMenu = 
-							new MenuManager(
-								motor.getName(), motorImage, motor.getName());
+							new MenuManager(motor.getName(), motorImage, motor.getName());
 						currentClassMenu.add(currentMotorMenu);
 						
 						// iterate for each axis of the motor
@@ -346,6 +345,19 @@ public class MotorAxisComposite extends Composite {
 								currentMotorMenu.add(setAxisAction);
 							}
 						}
+						// if only one axis in MotorMenu, switch axis from MotorMenu into ClassMenu
+						if (currentMotorMenu.getSize() == 1) {
+							currentMotorMenu.removeAll();
+							// Eintrag muß zur Class hinzugefügt werden.
+							for(final MotorAxis axis : motor.getAxes()) {
+								if (axis.getClassName().isEmpty()) {
+									// add only axis which have no className
+									final SetAxisAction setAxisAction = new SetAxisAction(axis);
+									setAxisAction.setImageDescriptor(axisImage);
+									currentClassMenu.add(setAxisAction);
+								}
+							}
+						}					
 					} else if(device instanceof MotorAxis) {
 						final SetAxisAction setAxisAction = 
 							new SetAxisAction((MotorAxis)device);
@@ -365,6 +377,19 @@ public class MotorAxisComposite extends Composite {
 							final SetAxisAction setAxisAction = new SetAxisAction(axis);
 							setAxisAction.setImageDescriptor(axisImage);
 							currentMotorMenu.add(setAxisAction);
+						}
+					}
+					// if only one axis in MotorMenu, switch axis from MotorMenu into ClassMenu
+					if (currentMotorMenu.getSize() == 1) {
+						currentMotorMenu.removeAll();
+						// Eintrag muß zur Class hinzugefügt werden.
+						for(final MotorAxis axis : motor.getAxes()) {
+							if (axis.getClassName().isEmpty()) {
+								// add only axis which have no className
+								final SetAxisAction setAxisAction = new SetAxisAction(axis);
+								setAxisAction.setImageDescriptor(axisImage);
+								manager.add(setAxisAction);
+							}
 						}
 					}
 					manager.add(currentMotorMenu);

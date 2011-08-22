@@ -25,10 +25,12 @@ import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
+import de.ptb.epics.eve.editor.views.scanmoduleview.MotorAxisComposite.SetAxisAction;
 
 /**
  * <code>DetectorChannelComposite</code>. is part of the
@@ -238,7 +240,6 @@ public class DetectorChannelComposite extends Composite {
 
 			for(final String className : measuringStation.getClassNameList()) {
 				
-				boolean containsAtLeastOne = false;
 				final MenuManager currentClassMenu = new MenuManager(
 						className, classImage, className);
 				
@@ -246,7 +247,6 @@ public class DetectorChannelComposite extends Composite {
 					measuringStation.getDeviceList(className)) {
 				
 					if(device instanceof Detector) {
-						containsAtLeastOne = true;
 						final Detector detector = (Detector)device;
 						final MenuManager currentDetectorMenu = 
 							new MenuManager(detector.getName(), detectorImage, detector.getName());
@@ -258,42 +258,57 @@ public class DetectorChannelComposite extends Composite {
 								// add only channels which have no className
 								final Action setChannelAction = new SetChannelAction(channel);
 								setChannelAction.setImageDescriptor(channelImage);
-								containsAtLeastOne = true;
 								currentDetectorMenu.add(setChannelAction);
 							}
 						}
+						// if only one channel in DetectorMenu, switch channel from DetectorMenu into ClassMenu
+						if (currentDetectorMenu.getSize() == 1) {
+							currentDetectorMenu.removeAll();
+							// Eintrag muß zur Class hinzugefügt werden.
+							for(final DetectorChannel channel : detector.getChannels()) {
+								if (channel.getClassName().isEmpty()) {
+									// add only channels which have no className
+									final Action setChannelAction = new SetChannelAction(channel);
+									setChannelAction.setImageDescriptor(channelImage);
+									currentClassMenu.add(setChannelAction);
+								}
+							}
+						}					
 					} else if(device instanceof DetectorChannel) {
-						containsAtLeastOne = true;	
 						final Action setChannelAction = new SetChannelAction((DetectorChannel)device);
 						setChannelAction.setImageDescriptor(channelImage);
-						containsAtLeastOne = true;
 						currentClassMenu.add(setChannelAction);
 					}
-					if(containsAtLeastOne) {
-						manager.add(currentClassMenu);
-					} 
+					manager.add(currentClassMenu);
 				}
 			}
 				
 			for(final Detector detector : measuringStation.getDetectors()) {
 				if("".equals(detector.getClassName()) || detector.getClassName() == null) {
-					boolean containsAtLeastOne = false;
 					final MenuManager currentDetectorMenu = 
 							new MenuManager(detector.getName(), detectorImage, detector.getName());
-					for(final DetectorChannel channel : 
-						detector.getChannels()) {
-							if("".equals(channel.getClassName()) || 
-							   channel.getClassName() == null) {
+					for(final DetectorChannel channel : detector.getChannels()) {
+						if("".equals(channel.getClassName()) || channel.getClassName() == null) {
 							final Action setChannelAction = 
 								new SetChannelAction(channel);
 							setChannelAction.setImageDescriptor(channelImage);
-							containsAtLeastOne = true;
 							currentDetectorMenu.add( setChannelAction );
 						}
 					}
-					if(containsAtLeastOne) {
-						manager.add(currentDetectorMenu);
-					} 
+					// if only one channel in DetectorMenu, switch channel from DetectorMenu into ClassMenu
+					if (currentDetectorMenu.getSize() == 1) {
+						currentDetectorMenu.removeAll();
+						// Eintrag muß zur Class hinzugefügt werden.
+						for(final DetectorChannel channel : detector.getChannels()) {
+							if (channel.getClassName().isEmpty()) {
+								// add only channels which have no className
+								final Action setChannelAction = new SetChannelAction(channel);
+								setChannelAction.setImageDescriptor(channelImage);
+								manager.add(setChannelAction);
+							}
+						}
+					}					
+					manager.add(currentDetectorMenu);
 				}
 			}
 
