@@ -28,6 +28,7 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
+import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView;
 
@@ -446,6 +447,14 @@ public class MotorAxisComposite extends Composite {
 			Axis a = new Axis(scanModule);
 			a.setMotorAxis(ma);
 			scanModule.add(a);
+			// TODO: Wenn der MotorName TimerInt ist, wird der PositionMode auf relativ
+			// voreingestellt. Vorschlag: Den Wunsch nach relativer Schrittweite in das
+			// xsubst File eintragen und von dort übernehmen! Dann ist die Einstellung
+			// unabhängig vom Gerätenamen! (Hartmut 23.8.11)
+			if (ma.getName().equals("TimerInt")) {
+				a.setPositionMode(PositionMode.RELATIVE);
+			}
+
 			setMotorAxisView(a);
 			// if only one axis available, set this axis for the Plot
 			setPlotMotorAxis();
