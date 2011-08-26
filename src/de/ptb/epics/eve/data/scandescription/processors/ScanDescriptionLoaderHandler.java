@@ -2,12 +2,17 @@ package de.ptb.epics.eve.data.scandescription.processors;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
 import org.csstudio.swt.xygraph.figures.Trace.TraceType;
 import org.eclipse.swt.graphics.RGB;
@@ -52,6 +57,10 @@ import de.ptb.epics.eve.data.scandescription.PositionMode;
  * @author Hartmut Scherr
  */
 public class ScanDescriptionLoaderHandler extends DefaultHandler {
+	
+	// logging
+	private static Logger logger = 
+			Logger.getLogger(ScanDescriptionLoaderHandler.class.getName());
 
 	/**
 	 * The measuring station that contains the devices.
@@ -685,7 +694,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			try {
 				settletime = Double.parseDouble( textBuffer.toString() );
 			} catch( final NumberFormatException e ) {
-				
+				logger.error(e.getMessage(), e);
 			}
 			this.currentScanModul.setSettletime( settletime );
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SETTLETIME_READ;
@@ -696,7 +705,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			try {
 				triggerdelay = Double.parseDouble( textBuffer.toString() );
 			} catch( final NumberFormatException e ) {
-				
+				logger.error(e.getMessage(), e);
 			}
 			this.currentScanModul.setTriggerdelay( triggerdelay );
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERDELAY_READ;
@@ -716,7 +725,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			try {
 				this.currentPrescan.setAbstractPrePostscanDevice(this.measuringStation.getPrePostscanDeviceById(textBuffer.toString()));
 			} catch( IllegalArgumentException e ) {
-				
+				logger.error(e.getMessage(), e);
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PRESCAN_ID_READ;
 			break;
@@ -730,7 +739,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			try {
 				this.currentPostscan.setAbstractPrePostscanDevice(this.measuringStation.getPrePostscanDeviceById(textBuffer.toString()));
 			} catch( IllegalArgumentException e ) {
-				
+				logger.error(e.getMessage(), e);
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSTSCAN_ID_READ;
 			break;
@@ -811,7 +820,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			try {
 				averageCount = Integer.parseInt( textBuffer.toString() );
 			} catch( NumberFormatException e ) {
-				
+				logger.error(e.getMessage(), e);
 			}
 			
 			if (this.currentChannel.getAbstractDevice() != null) {
@@ -1044,7 +1053,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						foundMarkstyle = true;
 					}
 				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
+					logger.error(e.getMessage(), e);
 				}
 			}
 
@@ -1056,8 +1065,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 							this.currentYAxis.setMarkstyle(markstyles[i]);
 						}
 					} catch (UnsupportedEncodingException e) {
-						// TODO Auto-generated catch block
-						
+						logger.error(e.getMessage(), e);
 					}
 				}	
 			}
@@ -1553,22 +1561,143 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 										this.currentAxis.setStepCount( ((stop - start) / stepwidth ) );
 									}
 								} catch( final NumberFormatException e ) {
-									
+									logger.error(e.getMessage(), e);
 								}
 							} else {
 								try {
-									final double start = Double.parseDouble( this.currentAxis.getStart() );
-									final double stop = Double.parseDouble( this.currentAxis.getStop() );
-									final double stepwidth = Double.parseDouble( this.currentAxis.getStepwidth() );
-									
-									if ( (start - stop == 0) || (stepwidth == 0)) {
-										this.currentAxis.setStepCount( 0 );
-									}
-									else {
-										this.currentAxis.setStepCount( ( (stop - start) / stepwidth ) );
+									double start = 0;
+									double stop = 0;
+									double stepwidth = 0;
+
+									switch( this.currentAxis.getMotorAxis().getPosition().getType()) {
+										case DATETIME:
+											int addStart = 0;
+											int addStop = 0;
+											int addStepwidth = 0;
+
+											int startJahr = 1;
+											int stopJahr = 1;
+											
+											DateFormat startDate = DateFormat.getTimeInstance();
+											DateFormat stopDate = DateFormat.getTimeInstance();
+											DateFormat stepwidthDate = DateFormat.getTimeInstance();
+											// Herausfinden welches Format die übergebene Zeit hat
+											if (this.currentAxis.getStart().matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$")) {
+												startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+												startJahr = 1;
+												//Nachkommazahl bestimmen
+												//Stelle des Punktes
+												int indexP = this.currentAxis.getStart().indexOf('.');
+												double nachkomma = Double.parseDouble(this.currentAxis.getStart().substring(indexP));
+												int nachMinus = Integer.parseInt(this.currentAxis.getStart().substring(indexP + 1));
+												addStart = (int) (nachkomma * 1000 - nachMinus);
+											}
+											else if (this.currentAxis.getStart().matches("\\d+:\\d+:\\d+?$")) {
+												startDate = new SimpleDateFormat("HH:mm:ss");
+												startJahr = 0;
+											}
+											else if (this.currentAxis.getStart().matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
+												startDate = new SimpleDateFormat("HH:mm:ss.SSS");
+												startJahr = 0;
+												//Nachkommazahl bestimmen
+												//Stelle des Punktes
+												int indexP = this.currentAxis.getStart().indexOf('.');
+												double nachkomma = Double.parseDouble(this.currentAxis.getStart().substring(indexP));
+												int nachMinus = Integer.parseInt(this.currentAxis.getStart().substring(indexP + 1));
+												addStart = (int) (nachkomma * 1000 - nachMinus);
+											}
+
+											if (this.currentAxis.getStop().matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$")) {
+												stopDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+												stopJahr = 1;
+												//Nachkommazahl bestimmen
+												//Stelle des Punktes
+												int indexP = this.currentAxis.getStop().indexOf('.');
+												double nachkomma = Double.parseDouble(this.currentAxis.getStop().substring(indexP));
+												int nachMinus = Integer.parseInt(this.currentAxis.getStop().substring(indexP + 1));
+												addStop = (int) (nachkomma * 1000 - nachMinus);
+											}
+											else if (this.currentAxis.getStop().matches("\\d+:\\d+:\\d+?$")) {
+												stopDate = new SimpleDateFormat("HH:mm:ss");
+												stopJahr = 0;
+											}
+											else if (this.currentAxis.getStop().matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
+												stopDate = new SimpleDateFormat("HH:mm:ss.SSS");
+												stopJahr = 0;
+												//Nachkommazahl bestimmen
+												//Stelle des Punktes
+												int indexP = this.currentAxis.getStop().indexOf('.');
+												double nachkomma = Double.parseDouble(this.currentAxis.getStop().substring(indexP));
+												int nachMinus = Integer.parseInt(this.currentAxis.getStop().substring(indexP + 1));
+												addStop = (int) (nachkomma * 1000 - nachMinus);
+											}
+											
+											if (this.currentAxis.getStepwidth().matches("\\d+:\\d+:\\d+?$")) {
+												stepwidthDate = new SimpleDateFormat("HH:mm:ss");
+											}
+											else if (this.currentAxis.getStepwidth().matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
+												stepwidthDate = new SimpleDateFormat("HH:mm:ss.SSS");
+												//Nachkommazahl bestimmen
+												//Stelle des Punktes
+												int indexP = this.currentAxis.getStepwidth().indexOf('.');
+												double nachkomma = Double.parseDouble(this.currentAxis.getStepwidth().substring(indexP));
+												int nachMinus = Integer.parseInt(this.currentAxis.getStepwidth().substring(indexP + 1));
+												addStepwidth = (int) (nachkomma * 1000 - nachMinus);
+											}
+
+											// Wenn startJahr != stopJahr dann wird nicht weitergemacht, weil die Formate nicht gleich sind
+											if (startJahr != stopJahr)
+												return;
+											
+											try {
+												startDate.setLenient(false);
+												startDate.parse(this.currentAxis.getStart());
+												Calendar startTime = startDate.getCalendar();
+												start = startTime.getTimeInMillis() + addStart + 3600000;
+
+												stopDate.setLenient(false);
+												stopDate.parse(this.currentAxis.getStop());
+												Calendar stopTime = stopDate.getCalendar();
+												stop = stopTime.getTimeInMillis() + addStop + 3600000;
+
+												stepwidthDate.setLenient(false);
+												stepwidthDate.parse(this.currentAxis.getStepwidth());
+												Calendar stepwidthTime = stepwidthDate.getCalendar();
+												stepwidth = stepwidthTime.getTimeInMillis() + addStepwidth + 3600000;
+
+												// Wenn Start > Stop beenden
+												if (start > stop)
+													return;
+
+												if ( (start - stop == 0) || (stepwidth == 0)) {
+													this.currentAxis.setStepCount( 0 );
+												}
+												else {
+													this.currentAxis.setStepCount( ( (stop - start) / stepwidth ) );
+												}
+												
+											}
+											catch (final ParseException ef ){
+												logger.error(ef.getMessage(), ef);
+											}
+
+											break;
+										default:
+											start = Double.parseDouble( this.currentAxis.getStart() );
+											stop = Double.parseDouble( this.currentAxis.getStop() );
+											stepwidth = Double.parseDouble( this.currentAxis.getStepwidth() );
+
+											if ( (start - stop == 0) || (stepwidth == 0)) {
+												this.currentAxis.setStepCount( 0 );
+											}
+											else {
+												this.currentAxis.setStepCount( ( (stop - start) / stepwidth ) );
+											}
+
+											break;
 									}
 								} catch( final NumberFormatException e ) {
-									
+									logger.error(e.getMessage(), e);
 								}
 							}
 						}
