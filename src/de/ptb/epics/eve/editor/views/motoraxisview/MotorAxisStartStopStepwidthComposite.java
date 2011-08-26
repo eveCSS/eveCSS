@@ -314,15 +314,16 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 				if(this.currentAxis.getMotorAxis().getGoto().isDiscrete()) {
 					Integer stepInt = (int)stepcount;
 					this.stepcountText.setText(Integer.toString(stepInt));
-				} else
-				   this.stepcountText.setText(Double.toString(stepcount));
+				} else {
+					this.stepcountText.setText(Double.toString(stepcount));
+				}
 			} else {
 				if(this.currentAxis.getMotorAxis().getGoto().isDiscrete()) {
 					Integer stepInt = (int)currentAxis.getStepCount();
 					this.stepcountText.setText(Integer.toString(stepInt));
-				} else
-					this.stepcountText.setText(
-						Double.toString(currentAxis.getStepCount()));
+				} else {
+					this.stepcountText.setText(Double.toString(currentAxis.getStepCount()));
+				}
 			}
 
 			this.mainAxisCheckBox.setSelection(this.currentAxis.isMainAxis());
@@ -488,10 +489,23 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								int addStop = 0;
 								int addStepwidth = 0;
 
+								int stopJahr = 0;	// 1 = Format von Jahr = yyyy-MM-dd HH:mm:ss.SSS
+													// 0 = Format von Jahr = HH:mm:ss(.SSS)
+
 								DateFormat stopDate = DateFormat.getTimeInstance();
 								DateFormat stepwidthDate = DateFormat.getTimeInstance();
 
-								if (this.stopCombo.getText().matches("\\d+:\\d+:\\d+?$")) {
+								if (this.stopCombo.getText().matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$")) {
+									stopDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+									stopJahr = 1;
+									//Nachkommazahl bestimmen
+									//Stelle des Punktes
+									int indexP = this.stopCombo.getText().indexOf('.');
+									double nachkomma = Double.parseDouble(this.stopCombo.getText().substring(indexP));
+									int nachMinus = Integer.parseInt(this.stopCombo.getText().substring(indexP + 1));
+									addStop = (int) (nachkomma * 1000 - nachMinus);
+								}
+								else if (this.stopCombo.getText().matches("\\d+:\\d+:\\d+?$")) {
 									stopDate = new SimpleDateFormat("HH:mm:ss");
 								}
 								else if (this.stopCombo.getText().matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
@@ -533,23 +547,33 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 									
 								}
 								catch (final ParseException ef ){
-									System.out.println("String ist nicht korrekt");
+									logger.error(ef.getMessage(), ef);
 								}
 								stepcount = Double.parseDouble( this.stepcountText.getText() );
 								
 								//calculate new value for start 
 								double start = stop - (stepwidth * stepcount);
 
-								if (start < 0) {
+								if (stopJahr == 1) {
+									Calendar startTime = Calendar.getInstance();
+									startTime.setTimeInMillis((long)(start - 3600000));
+
+									String startString = String.format("%s-%02d-%02d %02d:%02d:%02d.%03d", 
+											startTime.get(Calendar.YEAR), 
+											startTime.get(Calendar.MONTH) + 1, 
+											startTime.get(Calendar.DATE), 
+											startTime.get(Calendar.HOUR_OF_DAY), 
+											startTime.get(Calendar.MINUTE), 
+											startTime.get(Calendar.SECOND),	
+											startTime.get(Calendar.MILLISECOND));
+									this.startCombo.setText(startString);
+									currentAxis.setStart(this.startCombo.getText());
+								}
+								else if (start < 0) {
 									// start value not valid
 									this.startCombo.setText("not calculable");
 									currentAxis.setStart(this.startCombo.getText());
 								} else {
-									// TODO: Was fehlt noch? In der jetzigen Berechnung wird davon 
-									// ausgegangen, dass das Format das gesetzt werden soll vom Typ
-									// HH:mm:ss.SSS ist. Wenn aber ein komplettes Datum einegeben 
-									// wird, funtkioniert diese Berechnung nicht. => Berechnung
-									// für yyyy-mm-dd HH:mm:ss.SSS noch hinzufügen (Hartmut 24.8.11)
 									// convert start in calender value
 									Calendar startTime = Calendar.getInstance();
 									startTime.setTimeInMillis((long)(start - 3600000));
@@ -560,7 +584,6 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 										startTime.get(Calendar.MINUTE), 
 										startTime.get(Calendar.SECOND),	
 										startTime.get(Calendar.MILLISECOND));
-								
 									this.startCombo.setText(startString);
 									currentAxis.setStart(this.startCombo.getText());
 								}								
@@ -575,7 +598,6 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								
 								this.startCombo.setText( "" + startInt );
 								currentAxis.setStart(this.startCombo.getText());
-								
 								break;
 							default:
 								stop = Double.parseDouble( this.stopCombo.getText() );
@@ -623,11 +645,24 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								int addStart = 0;
 								int addStepwidth = 0;
 
+								int startJahr = 0;	// 1 = Format von Jahr = yyyy-MM-dd HH:mm:ss.SSS
+								int stopJahr = 0;	// 0 = Format von Jahr = HH:mm:ss(.SSS)
+
 								DateFormat startDate = DateFormat.getTimeInstance();
 								DateFormat stepwidthDate = DateFormat.getTimeInstance();
 
 								// Herausfinden welches Format die übergebene Zeit hat
-								if (this.startCombo.getText().matches("\\d+:\\d+:\\d+?$")) {
+								if (this.startCombo.getText().matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$")) {
+									startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+									startJahr = 1;
+									//Nachkommazahl bestimmen
+									//Stelle des Punktes
+									int indexP = this.startCombo.getText().indexOf('.');
+									double nachkomma = Double.parseDouble(this.startCombo.getText().substring(indexP));
+									int nachMinus = Integer.parseInt(this.startCombo.getText().substring(indexP + 1));
+									addStart = (int) (nachkomma * 1000 - nachMinus);
+								}
+								else if (this.startCombo.getText().matches("\\d+:\\d+:\\d+?$")) {
 									startDate = new SimpleDateFormat("HH:mm:ss");
 								}
 								else if (this.startCombo.getText().matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
@@ -669,24 +704,35 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 									
 								}
 								catch (final ParseException ef ){
-									System.out.println("String ist nicht korrekt");
+									logger.error(ef.getMessage(), ef);
 								}
 								stepcount = Double.parseDouble( this.stepcountText.getText() );
 
 								//calculate new value for stop 
 								double stop = start + (stepwidth * stepcount);
-								
-								if (stop >= 86400000) {
+
+								if (startJahr == 1) {
+									Calendar stopTime = Calendar.getInstance();
+									stopTime.setTimeInMillis((long)(stop - 3600000));
+
+									// convert calender Time in an output string
+									String stopString = String.format("%s-%02d-%02d %02d:%02d:%02d.%03d", 
+											stopTime.get(Calendar.YEAR), 
+											stopTime.get(Calendar.MONTH) + 1, 
+											stopTime.get(Calendar.DATE), 
+											stopTime.get(Calendar.HOUR_OF_DAY), 
+											stopTime.get(Calendar.MINUTE), 
+											stopTime.get(Calendar.SECOND),	
+											stopTime.get(Calendar.MILLISECOND));
+									this.stopCombo.setText(stopString);
+									currentAxis.setStop(this.stopCombo.getText());
+								}
+								else if (stop >= 86400000) {
 									// stop value not valid, more than 24 hours
 									this.stopCombo.setText("not calculable, more than 24 hours");
 									currentAxis.setStop(this.stopCombo.getText());
 								}
 								else {
-									// TODO: Was fehlt noch? In der jetzigen Berechnung wird davon 
-									// ausgegangen, dass das Format das gesetzt werden soll vom Typ
-									// HH:mm:ss.SSS ist. Wenn aber ein komplettes Datum einegeben 
-									// wird, funtkioniert diese Berechnung nicht. => Berechnung
-									// für yyyy-mm-dd HH:mm:ss.SSS noch hinzufügen (Hartmut 24.8.11)
 									// convert stop in calender value
 									Calendar stopTime = Calendar.getInstance();
 									stopTime.setTimeInMillis((long)(stop - 3600000));
@@ -697,7 +743,6 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 										stopTime.get(Calendar.MINUTE), 
 										stopTime.get(Calendar.SECOND),	
 										stopTime.get(Calendar.MILLISECOND));
-								
 									this.stopCombo.setText(stopString);
 									currentAxis.setStop(this.stopCombo.getText());
 								}								
@@ -758,16 +803,31 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								// getTimeInMillis() aus der Zeit 00:00:00.005
 								int addStart = 0;
 								int addStop = 0;
-								
+
+								int startJahr = 0;	// 1 = Format von Jahr = yyyy-MM-dd HH:mm:ss.SSS
+								int stopJahr = 0;	// 0 = Format von Jahr = HH:mm:ss(.SSS)
+							
 								DateFormat startDate = DateFormat.getTimeInstance();
 								DateFormat stopDate = DateFormat.getTimeInstance();
 
 								// Herausfinden welches Format die übergebene Zeit hat
-								if (this.startCombo.getText().matches("\\d+:\\d+:\\d+?$")) {
+								if (this.startCombo.getText().matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$")) {
+									startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+									startJahr = 1;
+									//Nachkommazahl bestimmen
+									//Stelle des Punktes
+									int indexP = this.startCombo.getText().indexOf('.');
+									double nachkomma = Double.parseDouble(this.startCombo.getText().substring(indexP));
+									int nachMinus = Integer.parseInt(this.startCombo.getText().substring(indexP + 1));
+									addStart = (int) (nachkomma * 1000 - nachMinus);
+								}
+								else if (this.startCombo.getText().matches("\\d+:\\d+:\\d+?$")) {
 									startDate = new SimpleDateFormat("HH:mm:ss");
+									startJahr = 0;
 								}
 								else if (this.startCombo.getText().matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
 									startDate = new SimpleDateFormat("HH:mm:ss.SSS");
+									startJahr = 0;
 									//Nachkommazahl bestimmen
 									//Stelle des Punktes
 									int indexP = this.startCombo.getText().indexOf('.');
@@ -776,11 +836,23 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 									addStart = (int) (nachkomma * 1000 - nachMinus);
 								}
 
-								if (this.stopCombo.getText().matches("\\d+:\\d+:\\d+?$")) {
+								if (this.stopCombo.getText().matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$")) {
+									stopDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+									stopJahr = 1;
+									//Nachkommazahl bestimmen
+									//Stelle des Punktes
+									int indexP = this.stopCombo.getText().indexOf('.');
+									double nachkomma = Double.parseDouble(this.stopCombo.getText().substring(indexP));
+									int nachMinus = Integer.parseInt(this.stopCombo.getText().substring(indexP + 1));
+									addStop = (int) (nachkomma * 1000 - nachMinus);
+								}
+								else if (this.stopCombo.getText().matches("\\d+:\\d+:\\d+?$")) {
 									stopDate = new SimpleDateFormat("HH:mm:ss");
+									stopJahr = 0;
 								}
 								else if (this.stopCombo.getText().matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
 									stopDate = new SimpleDateFormat("HH:mm:ss.SSS");
+									stopJahr = 0;
 									//Nachkommazahl bestimmen
 									//Stelle des Punktes
 									int indexP = this.stopCombo.getText().indexOf('.');
@@ -792,6 +864,10 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								start = 0;
 								stop = 0;
 								
+								// Wenn startJahr != stopJahr dann wird nicht weitergemacht, weil die Formate nicht gleich sind
+								if (startJahr != stopJahr)
+									return;
+
 								try {
 									startDate.setLenient(false);
 									startDate.parse(this.startCombo.getText());
@@ -802,10 +878,9 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 									stopDate.parse(this.stopCombo.getText());
 									Calendar stopTime = stopDate.getCalendar();
 									stop = stopTime.getTimeInMillis() + addStop + 3600000;
-									
 								}
 								catch (final ParseException ef ){
-									System.out.println("String ist nicht korrekt");
+									logger.error(ef.getMessage(), ef);
 								}
 								
 								stepcount = Double.parseDouble( this.stepcountText.getText() );
@@ -817,11 +892,6 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								}
 								else {
 									double stepwidth = (stop - start) / stepcount;
-									// TODO: Was fehlt noch? In der jetzigen Berechnung wird davon 
-									// ausgegangen, dass das Format das gesetzt werden soll vom Typ
-									// HH:mm:ss.SSS ist. Wenn aber ein komplettes Datum einegeben 
-									// wird, funtkioniert diese Berechnung nicht. => Berechnung
-									// für yyyy-mm-dd HH:mm:ss.SSS noch hinzufügen (Hartmut 24.8.11)
 									// convert stop in calender value
 									Calendar stepwidthTime = Calendar.getInstance();
 									stepwidthTime.setTimeInMillis((long)(stepwidth - 3600000));
@@ -832,7 +902,6 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 										stepwidthTime.get(Calendar.MINUTE), 
 										stepwidthTime.get(Calendar.SECOND),	
 										stepwidthTime.get(Calendar.MILLISECOND));
-								
 									this.stepwidthText.setText(stepwidthString);
 									currentAxis.setStepwidth(this.stepwidthText.getText());
 								}								
@@ -939,19 +1008,33 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 						int addStart = 0;
 						int addStop = 0;
 						int addStepwidth = 0;
-						
+
+						int startJahr = 0;	// 1 = Format von Jahr = yyyy-MM-dd HH:mm:ss.SSS
+						int stopJahr = 0;	// 0 = Format von Jahr = HH:mm:ss(.SSS)
+
 						switch( this.currentAxis.getMotorAxis().getPosition().getType()) {
 							case DATETIME:
 								DateFormat startDate = DateFormat.getTimeInstance();
 								DateFormat stopDate = DateFormat.getTimeInstance();
 								DateFormat stepwidthDate = DateFormat.getTimeInstance();
-
 								// Herausfinden welches Format die übergebene Zeit hat
-								if (this.startCombo.getText().matches("\\d+:\\d+:\\d+?$")) {
+								if (this.startCombo.getText().matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$")) {
+									startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+									startJahr = 1;
+									//Nachkommazahl bestimmen
+									//Stelle des Punktes
+									int indexP = this.startCombo.getText().indexOf('.');
+									double nachkomma = Double.parseDouble(this.startCombo.getText().substring(indexP));
+									int nachMinus = Integer.parseInt(this.startCombo.getText().substring(indexP + 1));
+									addStart = (int) (nachkomma * 1000 - nachMinus);
+								}
+								else if (this.startCombo.getText().matches("\\d+:\\d+:\\d+?$")) {
 									startDate = new SimpleDateFormat("HH:mm:ss");
+									startJahr = 0;
 								}
 								else if (this.startCombo.getText().matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
 									startDate = new SimpleDateFormat("HH:mm:ss.SSS");
+									startJahr = 0;
 									//Nachkommazahl bestimmen
 									//Stelle des Punktes
 									int indexP = this.startCombo.getText().indexOf('.');
@@ -960,11 +1043,23 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 									addStart = (int) (nachkomma * 1000 - nachMinus);
 								}
 
-								if (this.stopCombo.getText().matches("\\d+:\\d+:\\d+?$")) {
+								if (this.stopCombo.getText().matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$")) {
+									stopDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+									stopJahr = 1;
+									//Nachkommazahl bestimmen
+									//Stelle des Punktes
+									int indexP = this.stopCombo.getText().indexOf('.');
+									double nachkomma = Double.parseDouble(this.stopCombo.getText().substring(indexP));
+									int nachMinus = Integer.parseInt(this.stopCombo.getText().substring(indexP + 1));
+									addStop = (int) (nachkomma * 1000 - nachMinus);
+								}
+								else if (this.stopCombo.getText().matches("\\d+:\\d+:\\d+?$")) {
 									stopDate = new SimpleDateFormat("HH:mm:ss");
+									stopJahr = 0;
 								}
 								else if (this.stopCombo.getText().matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
 									stopDate = new SimpleDateFormat("HH:mm:ss.SSS");
+									stopJahr = 0;
 									//Nachkommazahl bestimmen
 									//Stelle des Punktes
 									int indexP = this.stopCombo.getText().indexOf('.');
@@ -989,30 +1084,33 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								start = 0;
 								stop = 0;
 								stepwidth = 0;
+
+								// Wenn startJahr != stopJahr dann wird nicht weitergemacht, weil die Formate nicht gleich sind
+								if (startJahr != stopJahr)
+									return;
 								
 								try {
 									startDate.setLenient(false);
 									startDate.parse(this.startCombo.getText());
 									Calendar startTime = startDate.getCalendar();
 									start = startTime.getTimeInMillis() + addStart + 3600000;
-									
+
 									stopDate.setLenient(false);
 									stopDate.parse(this.stopCombo.getText());
 									Calendar stopTime = stopDate.getCalendar();
 									stop = stopTime.getTimeInMillis() + addStop + 3600000;
-									
+
 									stepwidthDate.setLenient(false);
 									stepwidthDate.parse(this.stepwidthText.getText());
 									Calendar stepwidthTime = stepwidthDate.getCalendar();
 									stepwidth = stepwidthTime.getTimeInMillis() + addStepwidth + 3600000;
-									
+
 									// Wenn Start > Stop beenden
 									if (start > stop)
 										return;
-									
 								}
 								catch (final ParseException ef ){
-									System.out.println("String ist nicht korrekt");
+									logger.error(ef.getMessage(), ef);
 								}
 
 								break;
@@ -1044,6 +1142,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 						if ((start - stop) < 0) {
 							switch( this.currentAxis.getMotorAxis().getPosition().getType()) {
 								case DATETIME:
+									// stop time less than start time is not possible
 									break;
 								case INT:
 									if (stepwidth < 0) {
@@ -1361,7 +1460,6 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 							autoFill();	
 						} catch( final NumberFormatException ex ) {
 							// string is not a double
-							System.out.println("String ist leer oder kein double");
 							currentAxis.setStart(null);
 						}
 						break;
