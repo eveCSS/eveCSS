@@ -460,8 +460,9 @@ public class CommonTableElement {
 			return engine.getValue();
 		else if (property.equals( "name"))
 			return name;
-		else if (property.equals("value") && (valuePv != null))
+		else if (property.equals("value") && (valuePv != null)) {
 			return valuePv.getValue();
+		}
 		else if (property.equals("status") && (statusPv != null)) {
 			String valueString = statusPv.getValue();
 			try {
