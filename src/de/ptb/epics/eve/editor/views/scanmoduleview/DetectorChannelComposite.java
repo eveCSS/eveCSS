@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
+import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
+import org.csstudio.swt.xygraph.figures.Trace.TraceType;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -12,6 +14,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -27,8 +30,11 @@ import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
+import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.MotorAxisComposite.SetAxisAction;
 
@@ -182,6 +188,39 @@ public class DetectorChannelComposite extends Composite {
 			setDetectorChannelView(null);
 	}
 	
+	/*
+	 * Sets the Plot Detector Channel if only one channel is available 
+	 */
+	private void setPlotDetectorChannel()
+	{
+		final Channel[] availableDetectorChannels;
+
+		availableDetectorChannels = scanModule.getChannels();
+		String[] channelItems = new String[availableDetectorChannels.length];
+		for (int i = 0; i < availableDetectorChannels.length; ++i) {
+			channelItems[i] = 
+				availableDetectorChannels[i].getDetectorChannel().getFullIdentifyer();
+		}		
+		
+		// if only one channel available, create a yAxis and set 
+		// this channel as default
+		if (availableDetectorChannels.length == 1) {
+
+			YAxis yAxis1 = new YAxis();
+			// default values for color, line style and mark style
+			yAxis1.setColor(new RGB(0,0,255));
+			yAxis1.setLinestyle(TraceType.SOLID_LINE);
+			yAxis1.setMarkstyle(PointStyle.NONE);
+
+			yAxis1.setDetectorChannel(availableDetectorChannels[0].getDetectorChannel());
+			PlotWindow[] plotWindows = scanModule.getPlotWindows();
+			for (int i = 0; i < plotWindows.length; ++i) {
+				plotWindows[i].addYAxis(yAxis1);
+			}
+		}
+	
+	}
+
 	// ************************************************************************
 	// **************************** Listeners *********************************
 	// ************************************************************************
@@ -377,7 +416,10 @@ public class DetectorChannelComposite extends Composite {
     		scanModule.remove((Channel)((IStructuredSelection)
     				tableViewer.getSelection()).getFirstElement());
 
-    		tableViewer.refresh();
+			// if only one channel available, set this channel as for the Plot
+			setPlotDetectorChannel();
+
+			tableViewer.refresh();
     	}
 	}
 }
