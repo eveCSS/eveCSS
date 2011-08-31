@@ -136,10 +136,6 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		this.startCombo.addModifyListener(startComboModifyListener);
 		this.startComboSelectionListener = new StartComboSelectionListener();
 		this.startCombo.addSelectionListener(startComboSelectionListener);
-		String tooltip = "The input format for datetime values are\n " +
-		"yyyy-MM-dd HH:mm:ss.SSS\n" + 
-		"or HH:mm:ss.SSS";
-		this.startCombo.setToolTipText(tooltip);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -165,7 +161,6 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		this.stopCombo.addModifyListener(stopComboModifyListener);
 		this.stopComboSelectionListener = new StopComboSelectionListener();
 		this.stopCombo.addSelectionListener(stopComboSelectionListener);
-		this.stopCombo.setToolTipText(tooltip);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -188,8 +183,6 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		this.stepwidthText.addVerifyListener(stepwidthTextVerifyListener);
 		this.stepwidthTextModifyListener = new StepwidthTextModifyListener();
 		this.stepwidthText.addModifyListener(stepwidthTextModifyListener);
-		String tooltip2 = "The input format for datetime values are HH:mm:ss.SSS";
-		this.stepwidthText.setToolTipText(tooltip2);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -310,6 +303,29 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 									   ? this.currentAxis.getStepwidth()
 									   : "");
 
+			// set the tooltips
+			
+			switch( this.currentAxis.getMotorAxis().getPosition().getType()) {
+				case DATETIME:
+					String tooltip = "The input format are yyyy-MM-dd HH:mm:ss.SSS or \n" + 
+					"HH:mm:ss.SSS";
+					this.startCombo.setToolTipText(tooltip);
+					this.stopCombo.setToolTipText(tooltip);
+					String tooltip2 = "The input format is HH:mm:ss.SSS";
+					this.stepwidthText.setToolTipText(tooltip2);
+					break;
+				case INT:
+					this.startCombo.setToolTipText("the input format is integer");
+					this.stopCombo.setToolTipText("the input format is integer");
+					this.stepwidthText.setToolTipText("the input format is integer");
+					break;
+				default:
+					this.startCombo.setToolTipText("the input format is double");
+					this.stopCombo.setToolTipText("the input format is double");
+					this.stepwidthText.setToolTipText("the input format is double");
+					break;
+			}
+			
 			if(stepcount != -1.0 && !axis.isMainAxis()) {
 				if(this.currentAxis.getMotorAxis().getGoto().isDiscrete()) {
 					Integer stepInt = (int)stepcount;
@@ -646,7 +662,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 								int addStepwidth = 0;
 
 								int startJahr = 0;	// 1 = Format von Jahr = yyyy-MM-dd HH:mm:ss.SSS
-								int stopJahr = 0;	// 0 = Format von Jahr = HH:mm:ss(.SSS)
+													// 0 = Format von Jahr = HH:mm:ss(.SSS)
 
 								DateFormat startDate = DateFormat.getTimeInstance();
 								DateFormat stepwidthDate = DateFormat.getTimeInstance();
@@ -934,36 +950,6 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 									this.stepwidthText.setText( "" + (( stop - start) / stepcount ) );
 									currentAxis.setStepwidth(this.stepwidthText.getText());
 								}
-
-/********* Warum dieser ganze lange Block?
- * Dadurch, dass jetzt die Eingaben der Felder mit Verify-Listener überprüft werden kann hier einiges
- * gespart werden.
-								if ( !this.stepwidthText.getText().equals("")) {
-									// stepwidth Eintrag schon vorhanden
-									final double stepwidth = Double.parseDouble( this.stepwidthText.getText() );
-									// Wenn Zähler oder Nenner gleich 0, besondere Behandlung
-									if ((stop - start == 0) || (stepcount == 0)) {
-										if ( stepwidth == 0) {
-											// Wert wird nicht nochmal gesetzt
-										}
-										else {
-											this.stepwidthText.setText( "0" );
-											currentAxis.setStepwidth(this.stepwidthText.getText());
-										}
-									}
-									else if ( stepwidth == (( stop - start) / stepcount )) {
-										// Wert wird nicht nochmal gesetzt
-									}
-									else {
-										this.stepwidthText.setText( "" + (( stop - start) / stepcount ) );
-										currentAxis.setStepwidth(this.stepwidthText.getText());
-									}
-								}
-								else {
-									this.stepwidthText.setText( "" + ( (stop - start ) / stepcount ) );
-									currentAxis.setStepwidth(this.stepwidthText.getText());
-									}
- */
 								break;
 						}
 					} else {
