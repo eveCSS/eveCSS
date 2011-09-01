@@ -279,7 +279,11 @@ public class PlotViewGraphComposite extends Composite
 				{
 					switch(datatype)
 					{
-						case DOUBLE: y1value = (Double) 
+						case INT32: y1value = ((Integer) 
+											measurementData.getValues().get(0)).doubleValue();
+											detector1HasData = true;
+												break;
+						case DOUBLE: y1value = (Double)
 											measurementData.getValues().get(0);
 									 detector1HasData = true;
 									 break;
@@ -314,6 +318,10 @@ public class PlotViewGraphComposite extends Composite
 				{
 					switch(datatype)
 					{
+						case INT32: y1value = ((Integer) 
+							measurementData.getValues().get(0)).doubleValue();
+							detector2HasData = true;
+							break;
 						case DOUBLE: y2value = (Double) 
 											measurementData.getValues().get(0);
 									 detector2HasData = true;
