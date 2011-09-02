@@ -179,6 +179,18 @@
             file="help/toc.xml"
             primary="false">
       </toc>
+      <toc
+            file="help/content/concepts/toc_concepts.xml"
+            primary="false">
+      </toc>
+      <toc
+            file="help/content/reference/toc_reference.xml"
+            primary="false">
+      </toc>
+      <toc
+            file="help/content/tasks/toc_tasks.xml"
+            primary="false">
+      </toc>
    </extension>
    <extension
          point="org.eclipse.help.index">

@@ -1,6 +1,6 @@
 h1. Overview
 
-The EVE Editor plug in allows creating (,saving and modifying) scan descriptions 
-which define measuring processes. These processes can be executed in the 
+The EVE Editor plug in allows creating, saving and modifying scan descriptions 
+which define measuring processes. These processes can then be executed in the 
 "EVE Viewer":/help/topic/de.ptb.epics.eve.viewer/help/content/overview.html plug in (in combination with the EVE Engine).
 
