@@ -19,7 +19,7 @@
 	<target name="generate-html" 
 			description="Generate HTML from textile source">
 		<wikitext-to-html markupLanguage="Textile" multipleOutputFiles="true" 
-						overwrite="true">
+						overwrite="false">
 			<fileset dir="${basedir}">
 					<include name="**/*.textile"/>
 			</fileset>
