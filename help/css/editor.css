@@ -11,6 +11,16 @@ p {
 	margin: 10px 0;
 }
 
-eveRefTable {
-	border: 1;
+.eveRefTable {
+	empty-cells: show;
+	border: 2px solid black;
+	padding: 0;
+	margin: 2px;
+	border-collapse: collapse;
+}
+
+.eveRefTable th, td {
+	border: 1px solid black;
+	margin: 0;
+	padding: 4px;
 }

@@ -1,0 +1,9 @@
+h1(eveTopic). Detector Channel Properties
+
+table(eveRefTable).
+|_. Property |_. Description|_. Domain|_. Mandatory|
+| __Average__| number of measurements per axis position| integer| false|
+| __Max. Deviation (%)__| allowed deviation of a measurement| | false|
+| __Minimum__| | | false|
+| __Max.Attempts__| | integer| false|
+| __Confirm Trigger manual__| | {true, false}| true|

@@ -1,6 +1,6 @@
 h1(eveTopic). Add a Scan Module
 
-There are two kinds of scan modules you cann add: 1) an appended scan module, 2) a nested scan module. Starting with an "empty scan description":createscandescription.html follow these steps:
+There are two kinds of scan modules you can add: 1) an appended scan module, 2) a nested scan module. Starting with an "empty scan description":createscandescription.html follow these steps:
 ==<br/>==
 # In the editor right click on the start event S-0 to open the context menu. Click "Add appended Scan Module". ==<br/>== !(eveImage)../../img/tasks/addscanmodule-appended.png(add appended scan module)!==<br/>==(The option "Add nested Scan Module" isn't available here since events don't have nested elements.)
 # Once you've created a scan module it is automatically named. If you right click the created scan module you can either add an appended or a nested scan module or both. If you do both the result should look as follows: ==<br/>== !(eveImage)../../img/concepts/scandescription.png(a scan description containing appended and nested scan modules)!

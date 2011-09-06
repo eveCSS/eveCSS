@@ -1,0 +1,14 @@
+h1(eveTopic). Motor Axis Properties
+
+table(eveRefTable).
+|_. Step function |_. Property |_. Description|_. Domain|
+|/6. __Add/Multiply__| Position mode| | {absolute, relative}|
+| Start | | |
+| Stop | | |
+| Stepwidth | | |
+| Stepcount | | |
+| main axis |  | {true, false}|
+| __File__| filename | the filename containing axis positions|
+| __Plugin__| | |
+| __Positionlist__| | |
+
