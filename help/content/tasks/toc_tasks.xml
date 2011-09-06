@@ -2,5 +2,13 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Tasks">
+   <topic href="help/content/tasks/createscandescription.html" label="Creating a Scan Description">
+   </topic>
+   <topic href="help/content/tasks/addscanmodule.html" label="Add a Scan Module">
+   </topic>
+   <topic href="help/content/tasks/adddevicetoscanmodule.html" label="Add Devices to a Scan Module">
+   </topic>
+   <topic href="help/content/tasks/manipulatebehaviorofdevice.html" label="Manipulate the Behavior of a Device">
+   </topic>
 
 </toc>

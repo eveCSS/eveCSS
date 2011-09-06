@@ -1,0 +1,19 @@
+h1(eveTopic). Measuring Station
+
+A measuring station is a collection of all devices available at a test site. It is a list of motors, axes, detectors, channels, devices, options, ... etc. which are available.
+
+h2(eveTopic). Motor
+
+h2(eveTopic). Motor Axis
+
+h2(eveTopic). Detector
+
+h2(eveTopic). Detector Channel
+
+h2(eveTopic). Device
+
+h2(eveTopic). Option
+
+h2(eveTopic). Plug In
+
+h2(eveTopic). Event

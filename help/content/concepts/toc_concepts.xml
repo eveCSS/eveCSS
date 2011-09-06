@@ -2,5 +2,9 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Concepts">
+   <topic href="help/content/concepts/measuringstation.html" label="Measuring Station">
+   </topic>
+   <topic href="help/content/concepts/scandescription.html" label="Scan Description">
+   </topic>
 
 </toc>

@@ -1,0 +1,15 @@
+h1(eveTopic). Creating a Scan Description
+
+p. If you are not familiar with the concept of a scan description consider reading this "topic":../concepts/scandescription.html first.
+
+==<br/>==
+
+To create a new scan description follow these steps:
+
+==<br/>==
+
+# On the open Editor Perspective click __File -> New -> Scan Description__ ==<br/>== !(eveImage)../../img/tasks/createscandescription-filenew.png(click __File -> New -> Scan Description__)!
+# In the appearing dialog either use the "Search..." button or enter a file name manually. Please keep in mind that the file extension must be ".scml". ==<br/>== !(eveImage)../../img/tasks/createscandescription-filename.png(enter a file name)!
+# After clicking the "Finish" button you see a new tab in the editor with an empty scan description (only the start event S-0 is present). ==<br/>== !(eveImage)../../img/tasks/createscandescription-done.png(a new scan description)!
+
+p. Now you are able to "Add a scan module":addscanmodule.html to your scan description.

@@ -1,0 +1,27 @@
+h1(eveTopic). Scan Description
+
+p. A scan description is a complete description of a measurement process. It defines which devices will be involved and how they behave.
+Within a scan description multiple scans are possible. Each of them is represented by a chain. A chain is a composition of appended and nested scan modules (arranged as a tree) preceded by an Event. The following figure shows a graphical representation of a scan description as it would appear in the editor.
+
+p=. !(eveImage)../../img/concepts/scandescription.png(a scan description example)!
+
+This scan description example only has one chain started by S-0 (the Start Event) followed by a scan module "SM 1" which has one appended ("SM 2 appended") and one nested ("SM 3 nested") scan module.
+
+h2. Scan Modules
+
+p. Scan modules are partitioned into three stages, a prescan phase, a main phase and a postscan phase:
+
+p=. !(eveImage)../../img/concepts/scanmodule.png(the three phases of a scan module)!
+
+* Prescan-phase (prior to a scan): values and options of devices will be set (e.g. open beam shutter).
+* Main-phase: actually measuring something by controlling devices (e.g. moving motor axis) and reading detector channels.
+* Postscan-phase (after measuring): options and devices are eventually set again, or reset (e.g. close beam shutter)
+
+h3. Appended Scan Module
+
+An appended scan module is executed after the preceding module is completed.
+
+h3. Nested Scan Module
+
+A nested scan module is processed at each motor position of its parent scan module. If multiple axes are moved the positions of the axis defined as "main axis" are used.
+Consider that a scan modules prescan and postscan phases are only processed once (not at each iteration of the nested module(s)).

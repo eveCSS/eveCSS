@@ -2,5 +2,9 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Reference">
+   <topic href="help/content/reference/motoraxisbehavior.html" label="Motor Axis Behavior">
+   </topic>
+   <topic href="help/content/reference/detectorchannelbehavior.html" label="Detector Channel Behavior">
+   </topic>
 
 </toc>
