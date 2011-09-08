@@ -2,8 +2,8 @@ h1(eveTopic). Detector Channel Properties
 
 table(eveRefTable).
 |_. Property |_. Description|_. Domain|_. Mandatory|
-| __Average__| number of measurements per axis position| integer| false|
-| __Max. Deviation (%)__| allowed deviation of a measurement| | false|
+| __Average__| The (arithmetic) mean is calculated from __Average__ measurements. (if omitted no average is calculated.)| integer| false|
+| __Max. Deviation (%)__| The deviation (%) of __Average__ successive measurements must be less or equal the given value. If that constraint is not fulfilled the first measurement is dropped and a new one is taken until the condition is met. (if omitted the tolerance check always validates.)| | false|
 | __Minimum__| | | false|
 | __Max.Attempts__| | integer| false|
 | __Confirm Trigger manual__| | {true, false}| true|

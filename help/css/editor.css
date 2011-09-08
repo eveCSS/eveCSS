@@ -15,8 +15,9 @@ p {
 	empty-cells: show;
 	border: 2px solid black;
 	padding: 0;
-	margin: 2px;
+	margin: 15px 5px;
 	border-collapse: collapse;
+	max-width: 700px;
 }
 
 .eveRefTable th, td {

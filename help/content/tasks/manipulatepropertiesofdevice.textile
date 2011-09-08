@@ -6,4 +6,4 @@ In order to change the properties of a motor axes or detector channel follow the
 # Whether you selected a motor axes or detector channel the corresponding view (Motor Axis View or Detector Channel View) will show the current settings of the device. ==<br/>== !(eveImage)../../img/tasks/manipulatepropertiesofdevice-views.png(motor axis and detector channel view)!
 # Now you can change the properties of the device.
 
-To get more information about the effects of these settings consult "motor axis properties":../reference/motoraxisproperties.html and "detector channel properties":../reference/detectorchannelproperties.html .
+p. To get more information about the effects of these settings consult "motor axis properties":../reference/motoraxisproperties.html and "detector channel properties":../reference/detectorchannelproperties.html .

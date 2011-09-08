@@ -1,6 +1,6 @@
 h1(eveTopic). Motor Axis Properties
 
-table(eveRefTable).
+table(eveRefTable){max-width:700px}.
 |_. Step function |_. Property |_. Description|_. Domain|
 |/6. __Add/Multiply__| Position mode| | {absolute, relative}|
 | Start | | |
