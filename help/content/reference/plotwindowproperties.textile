@@ -1,6 +1,6 @@
 h1(eveTopic). Plot Window Properties
 
-table(eveRefTable){max-width:700px}.
+table(eveRefTable).
 |_. Property |_. Description|_. Domain|_. Mandatory|
 | __Motor Axis__| the motor axis defining the x axis of the plot| set of motor axes present in the scan module| true|
 | __Preinit Window__| defines whether the plot should be cleared (false only has any effect if the axes are still the same)| {true, false}| ==&#8212;==|
