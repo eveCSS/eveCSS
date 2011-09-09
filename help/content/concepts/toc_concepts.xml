@@ -2,5 +2,9 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Concepts">
+   <topic href="help/content/concepts/evedeviceperspective.html" label="EveDevice Perspective">
+   </topic>
+   <topic href="help/content/concepts/eveengineperspective.html" label="EveEngine Perspective">
+   </topic>
 
 </toc>

@@ -2,5 +2,7 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Reference">
+   <topic href="help/content/reference/icons.html" label="Icons">
+   </topic>
 
 </toc>

@@ -2,5 +2,7 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Tasks">
+   <topic href="help/content/tasks/adddevicetodeviceinspector.html" label="Add a Device to the Device Inspector">
+   </topic>
 
 </toc>

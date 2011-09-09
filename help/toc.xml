@@ -5,7 +5,7 @@
    <topic label="EVE Viewer">
       <topic href="help/content/overview.html" label="Overview">
       </topic>
-      <topic label="Getting Started">
+      <topic href="help/content/gettingstarted.html" label="Getting Started">
       </topic>
       <topic label="Concepts">
          <link toc="help/content/concepts/toc_concepts.xml"/>
