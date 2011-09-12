@@ -2,7 +2,7 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Tasks">
-   <topic href="help/content/tasks/createscandescription.html" label="Creating a Scan Description">
+   <topic href="help/content/tasks/createscandescription.html" label="Create a Scan Description">
    </topic>
    <topic href="help/content/tasks/addscanmodule.html" label="Add a Scan Module">
    </topic>

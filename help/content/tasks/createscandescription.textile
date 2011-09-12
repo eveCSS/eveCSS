@@ -1,4 +1,4 @@
-h1(eveTopic). Creating a Scan Description
+h1(eveTopic). Create a Scan Description
 
 p. If you are not familiar with the concept of a scan description consider reading this "topic":../concepts/scandescription.html first.
 

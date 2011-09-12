@@ -1,7 +1,23 @@
 h1(eveTopic). Device Classes (and their influence)
 
-p. The examples below show different possibilities to set classes for devices and the 
-resulting context menu in the scan module view:
+p. Each device (motor, motor axis, detector, detector channel and pre-/postscan device) could be assigned a class name. Depending on that class is the location in the context menu of the scan module view the device appears in.
+
+table(eveRefTable).
+|_. Device |_. Class Name |_. Location |
+|/2. Motor | C | child of root element "C"[1] |
+| ==&#8212;== | appears in the root list[1] |
+|/2. Motor Axis | C | child of root element "C" |
+| ==&#8212;== | child of its parent (Motor)[1] |
+|/2. Detector | C | child of root element "C"[2] |
+| ==&#8212;== | appears in the root list[2] |
+|/2. Detector Channel | C | child of root element "C" |
+| ==&#8212;== | child of its parent (Detector)[2] |
+|/2. (Pre-/Postscan) Device | C | child of root element "C" |
+| ==&#8212;== | appears in the root list |
+
+fn1. If a Motor only has one child element (Axis) the child is pulled up a level and the motor disappears.
+
+fn2. If a Detector only has one child element (Channel) the child is pulled up a level and the detector disappears. 
 
 h2. Example 1
 
@@ -33,4 +49,4 @@ table(eveRefTable).
 |_. Motor (PPSMC:gw237)|_. Axis 1 (PP_Motor1)|_. Axis 2 (PP_Motor2)|_. Axis 3 (PP_Motor3)|_. Axis 4 (PP_Motor4)|
 | ==&#8212;==| "Class A"| "Class A"| "Class A"| ==&#8212;==|
 
-!../../img/reference/classes-example3a.png(Class Menu)!
+!../../img/reference/classes-example4.png(Class Menu)!
