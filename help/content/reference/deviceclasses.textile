@@ -1,0 +1,40 @@
+h1(eveTopic). Device Classes (and their influence)
+
+p. Each device (motor, motor axis, detector, detector channel and pre-/postscan device) could be assigned a class name. Depending on that class is the location in the tree hierarchy of the (Local) Devices View the device appears in. The following table shows where to expect a device with a certain class name:
+
+table(eveRefTable).
+|_. Device |_. Class Name |_. Location |
+|/2. Motor | C | child of root element "C" |
+| ==&#8212;== | child of root element "Motors & Axes" |
+|/2. Motor Axis | C | child of root element "C" |
+| ==&#8212;== | child of its parent (Motor) |
+|/2. Detector | C | child of root element "C" |
+| ==&#8212;== | child of root element "Detectors & Channels" |
+|/2. Detector Channel | C | child of root element "C" |
+| ==&#8212;== | child of its parent (Detector) |
+|/2. (Pre-/Postscan) Device | C | child of root element "C" |
+| ==&#8212;== | child of root element "Devices" |
+
+h2. Example 1
+
+table(eveRefTable).
+|_. Motor (PPSMC:gw237)|_. Axis 1 (PP_Motor1)|_. Axis 2 (PP_Motor2)|_. Axis 3 (PP_Motor3)|_. Axis 4 (PP_Motor4)|
+| ==&#8212;==| "Class A"| "Class A"| "Class A"| ==&#8212;==|
+
+table(eveRefTable).
+|_. Prema5000|_. Channel00|_. Channel01|
+| ==&#8212;==| "Class A"| ==&#8212;==|
+
+!(eveRefImage)../../img/reference/classes-example1.png(class tree)!
+
+h2. Example 2
+
+table(eveRefTable).
+|_. Motor (PPSMC:gw237)|_. Axis 1 (PP_Motor1)|_. Axis 2 (PP_Motor2)|_. Axis 3 (PP_Motor3)|_. Axis 4 (PP_Motor4)|
+| "Class A"| "Class A"| "Class A"| "Class A"| ==&#8212;==|
+
+table(eveRefTable).
+|_. Prema5000|_. Channel00|_. Channel01|
+| "Class B"| "Class A"| ==&#8212;==|
+
+!(eveRefImage)../../img/reference/classes-example2.png(class tree)!
