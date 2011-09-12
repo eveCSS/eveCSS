@@ -1,0 +1,36 @@
+h1(eveTopic). Device Classes (and their influence)
+
+p. The examples below show different possibilities to set classes for devices and the 
+resulting context menu in the scan module view:
+
+h2. Example 1
+
+table(eveRefTable).
+|_. Motor (PPSMC:gw237)|_. Axis 1 (PP_Motor1)|_. Axis 2 (PP_Motor2)|_. Axis 3 (PP_Motor3)|_. Axis 4 (PP_Motor4)|
+| "Class A"| "Class B"| ==&#8212;==| ==&#8212;==| ==&#8212;==|
+
+!../../img/reference/classes-example1a.png(Class B Menu)! !../../img/reference/classes-example1b.png(Class A Menu)!
+
+h2. Example 2
+
+table(eveRefTable).
+|_. Motor (PPSMC:gw237)|_. Axis 1 (PP_Motor1)|_. Axis 2 (PP_Motor2)|_. Axis 3 (PP_Motor3)|_. Axis 4 (PP_Motor4)|
+| "Class A"| "Class A"| "Class B"| ==&#8212;==| ==&#8212;==|
+
+!../../img/reference/classes-example2a.png(Class B Menu)! !../../img/reference/classes-example2b.png(Class A Menu)!
+
+h2. Example 3
+
+table(eveRefTable).
+|_. Motor (PPSMC:gw237)|_. Axis 1 (PP_Motor1)|_. Axis 2 (PP_Motor2)|_. Axis 3 (PP_Motor3)|_. Axis 4 (PP_Motor4)|
+| ==&#8212;==| "Class A"| ==&#8212;==| ==&#8212;==| ==&#8212;==|
+
+!../../img/reference/classes-example3a.png(Class A Menu)! !../../img/reference/classes-example3b.png(Motor Menu)!
+
+h2. Example 4
+
+table(eveRefTable).
+|_. Motor (PPSMC:gw237)|_. Axis 1 (PP_Motor1)|_. Axis 2 (PP_Motor2)|_. Axis 3 (PP_Motor3)|_. Axis 4 (PP_Motor4)|
+| ==&#8212;==| "Class A"| "Class A"| "Class A"| ==&#8212;==|
+
+!../../img/reference/classes-example3a.png(Class Menu)!
