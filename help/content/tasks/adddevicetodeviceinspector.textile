@@ -34,4 +34,4 @@ p. However since most test sites contain a large number of devices this feature 
 
 <hr/>
 
-p. * You can also identify the type of device by its icon.
+p. * You can also identify the type of device by its "icon":../reference/icons.html .
