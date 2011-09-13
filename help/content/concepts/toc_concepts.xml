@@ -2,8 +2,6 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Concepts">
-   <topic href="help/content/concepts/devicedescription.html" label="Device Description">
-   </topic>
    <topic href="help/content/concepts/scandescription.html" label="Scan Description">
    </topic>
 
