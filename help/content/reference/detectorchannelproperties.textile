@@ -7,3 +7,62 @@ table(eveRefTable).
 | __Minimum__| If the mean of the first __Average__ measurements is less than __Minimum__ a tolerance check is conducted (if omitted no tolerance check is done).| | false|
 | __Max.Attempts__| If the tolerance check fails __Max.Attempts__ times the lastly calculated mean is used (and a warning is given). (If omitted __Max.Attempts__ = ==&infin;== is assumed, if __Max.Attempts__ < __Average__ then __Max.Attempts__ = __Average__ is assumed.)| !../../img/math/N.png(natural numbers)!| false|
 | __Confirm Trigger manual__| | {true, false}| true|
+
+h2. Example 1
+
+p. __Average__ = ==&empty;==, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = ==&empty;==, __Max. Attempts__ = ==&empty;==
+
+==<br/>==
+
+p. __Average__ omitted ==&rArr;== no average is calculated.
+
+h2. Example 2
+
+p. __Average__ = 3, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = ==&empty;==, __Max. Attempts__ = ==&empty;==
+
+==<br/>==
+
+p. __Minimum__ omitted ==&rArr;== __Average__ is calculated from three subsequent measurements.
+
+h2. Example 3
+
+p. __Average__ = 3, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = 0.01, __Max. Attempts__ = ==&empty;==
+
+==<br/>==
+
+p. measured value: 0.00215 ==&rArr;== __Average__ = 0.00215 (first measured value < __Minimum__). ! ... 
+
+h2. Example 4
+
+p. __Average__ = 3, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = 0.0001, __Max. Attempts__ = ==&empty;==
+
+==<br/>==
+
+p. measured values: {%(green)0.00197%, %(green)0.00199%, %(green)0.00153%} ==&rArr;== __Average__ = 0.00183
+
+h2. Example 5
+
+p. __Average__ = 3, __Max. Deviation (%)__ = 0.1, __Minimum__ = 0.0001, __Max. Attempts__ = ==&empty;==
+
+==<br/>==
+
+p. measured values: {%(red)0.00247%, %(red)0.00243%, %(red)0.00237%, %(red)0.00244%, %(green)0.00214%, %(green)0.00214%, %(green)0.00217%}
+
+p. ==&rArr;== __Average__ = 0.00215
+
+h2. Example 6
+
+p. __Average__ = 3, __Max. Deviation (%)__ = 0.1, __Minimum__ = 0.1, __Max. Attempts__ = ==&empty;==
+
+==<br/>==
+
+p. measured value: 0.00216 ==&rArr;== __Average__ = 0.00216 (first measured value < __Minimum__). ! ...
+
+h2. Example 7
+
+p. __Average__ = 3, __Max. Deviation (%)__ = 0.01, __Minimum__ = 0.0001, __Max. Attempts__ = 3
+
+==<br/>==
+
+p. measured values: {%(red)0.00203%, %(red)0.00210%, %(green)0.00212%} ==&rArr;== __Average__ = 0.00212 (...)
+
