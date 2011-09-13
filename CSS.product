@@ -29,7 +29,8 @@ See http://ics-web.sns.ornl.gov/css
    <launcherArgs>
       <vmArgs>-Xmx256m
 -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog
--Dorg.apache.commons.logging.simplelog.defaultlog=fatal</vmArgs>
+-Dorg.apache.commons.logging.simplelog.defaultlog=fatal
+-Dno_proxy=127.0.0.1,localhost</vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
@@ -60,6 +61,7 @@ See http://ics-web.sns.ornl.gov/css
       <plugin id="de.ptb.epics.eve.data"/>
       <plugin id="de.ptb.epics.eve.ecp1"/>
       <plugin id="de.ptb.epics.eve.editor"/>
+      <plugin id="de.ptb.epics.eve.help"/>
       <plugin id="de.ptb.epics.eve.preferences"/>
       <plugin id="de.ptb.epics.eve.viewer"/>
       <plugin id="de.ptb.epics.product"/>
