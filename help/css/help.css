@@ -1,0 +1,27 @@
+p {
+	text-align: justify;
+}
+
+/* ********* classes ********** */
+.eveTopic {
+	margin-bottom: 10px;
+}
+
+.eveImage {
+	margin: 10px 0;
+}
+
+.eveRefTable {
+	empty-cells: show;
+	border: 2px solid black;
+	padding: 0;
+	margin: 15px 5px;
+	border-collapse: collapse;
+	max-width: 700px;
+}
+
+.eveRefTable th, td {
+	border: 1px solid black;
+	margin: 0;
+	padding: 4px;
+}
