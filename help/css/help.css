@@ -3,6 +3,7 @@ p {
 }
 
 /* ********* classes ********** */
+
 .eveTopic {
 	margin-bottom: 10px;
 }
@@ -24,4 +25,15 @@ p {
 	border: 1px solid black;
 	margin: 0;
 	padding: 4px;
+}
+
+.eveUl {
+	margin 10px 0;
+}
+
+.code {
+	font-family: "Courier New", "Lucida", "Console";
+	margin: 10px 40px;
+	background: Lavender;
+	padding: 5px;
 }

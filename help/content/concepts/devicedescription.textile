@@ -1,19 +1,20 @@
 h1(eveTopic). Device Description
 
-A device description (file) is a collection of devices. It is a list of motors, axes, detectors, channels, devices, options, ... etc. which are available.
+A device description (file) is a collection of devices defined in XML. It is a list of motors and axes, detectors and channels, devices, options, plug ins and events which should be available in the program.
 
-h2(eveTopic). Motor
+h2(eveTopic). Motors & Motor Axes
 
-h2(eveTopic). Motor Axis
 
-h2(eveTopic). Detector
 
-h2(eveTopic). Detector Channel
+h2(eveTopic). Detectors & Detector Channels
 
-h2(eveTopic). Device
+
+h2(eveTopic). (Pre-/Postscan) Device
 
 h2(eveTopic). Option
 
 h2(eveTopic). Plug In
 
 h2(eveTopic). Event
+
+p. How to create a device description is described "here":../tasks/createdevicedescription.html .
