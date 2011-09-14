@@ -9,7 +9,7 @@ This scan description example only has one chain started by S-0 (the Start Event
 
 h2. Scan Modules
 
-p. Scan modules are partitioned into three stages, a prescan phase, a main phase and a postscan phase:
+p. Scan modules are self-contained units which are partitioned into three stages, a prescan phase, a main phase and a postscan phase:
 
 p=. !(eveImage)../../img/concepts/scanmodule.png(the three phases of a scan module)!
 

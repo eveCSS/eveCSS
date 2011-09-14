@@ -2,6 +2,7 @@ h1(eveTopic). Manipulate Properties of a Device
 
 In order to change the properties of a motor axes or detector channel follow these steps:
 ==<br/>==
+# Select the scan module containing the device of interest by (left-)clicking on it. ==<br/>== !(eveImage)../../img/tasks/adddevicetoscanmodule-selectscanmodule.png(select the scan module by clicking on it)!
 # Select the device you want to change (left click) in the appropriate table (motor axes / detector channels table) in the scan module view. ==<br/>== !(eveImage)../../img/tasks/adddevicetoscanmodule-done.png(select the device of interest)!
 # Whether you selected a motor axes or detector channel the corresponding view (Motor Axis View or Detector Channel View) will show the current settings of the device. ==<br/>== !(eveImage)../../img/tasks/manipulatepropertiesofdevice-views.png(motor axis and detector channel view)!
 # Now you can change the properties of the device.

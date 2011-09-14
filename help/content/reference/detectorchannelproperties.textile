@@ -3,10 +3,10 @@ h1(eveTopic). Detector Channel Properties
 table(eveRefTable).
 |_. Property |_. Description|_. Domain|_. Mandatory|
 | __Average__| The (arithmetic) mean is calculated from __Average__ measurements. (if omitted no average is calculated.)| !../../img/math/N.png(natural numbers)!| false|
-| __Max. Deviation (%)__| The deviation (%) of __Average__ successive measurements must be less or equal the given value. If that constraint is not fulfilled the first measurement is dropped and a new one is taken until the condition is met. (If omitted the tolerance check always validates.)| [0,100]| false|
-| __Minimum__| If the mean of the first __Average__ measurements is less than __Minimum__ a tolerance check is conducted (if omitted no tolerance check is done).| | false|
+| __Max. Deviation (%)__| The deviation (%) of the first two measured values must be less or equal the given value. If that constraint is not fulfilled the first measurement is dropped and a new one is taken until the condition is met. Then the __Average__ calculation begins. (If omitted the tolerance check always validates.)| float| false|
+| __Minimum__| If (and only if) the first measured value is ==&ge;== __Minimum__ a tolerance check is conducted, otherwise only one value is measured. (if omitted no tolerance check is done.)| float| false|
 | __Max.Attempts__| If the tolerance check fails __Max.Attempts__ times the lastly calculated mean is used (and a warning is given). (If omitted __Max.Attempts__ = ==&infin;== is assumed, if __Max.Attempts__ < __Average__ then __Max.Attempts__ = __Average__ is assumed.)| !../../img/math/N.png(natural numbers)!| false|
-| __Confirm Trigger manual__| | {true, false}| true|
+| __Confirm Trigger manual__| Sets whether triggering should be confirmed by user interaction.| {true, false}| ==&#8212;==|
 
 h2. Example 1
 
@@ -30,7 +30,7 @@ p. __Average__ = 3, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = 0.01, __
 
 ==<br/>==
 
-p. measured value: 0.00215 ==&rArr;== __Average__ = 0.00215 (first measured value < __Minimum__). ! ... 
+p. measured value: 0.00215 ==&rArr;== __Average__ = 0.00215 (first measured value < __Minimum__).
 
 h2. Example 4
 
@@ -56,7 +56,7 @@ p. __Average__ = 3, __Max. Deviation (%)__ = 0.1, __Minimum__ = 0.1, __Max. Atte
 
 ==<br/>==
 
-p. measured value: 0.00216 ==&rArr;== __Average__ = 0.00216 (first measured value < __Minimum__). ! ...
+p. measured value: 0.00216 ==&rArr;== __Average__ = 0.00216 (first measured value < __Minimum__).
 
 h2. Example 7
 
@@ -64,5 +64,5 @@ p. __Average__ = 3, __Max. Deviation (%)__ = 0.01, __Minimum__ = 0.0001, __Max. 
 
 ==<br/>==
 
-p. measured values: {%(red)0.00203%, %(red)0.00210%, %(green)0.00212%} ==&rArr;== __Average__ = 0.00212 (...)
+p. measured values: {%(red)0.00203%, %(red)0.00210%, %(red)0.00212%} ==&rArr;== __Average__ = 0.00212 (__Max. Attempts__ reached).
 

@@ -1,2 +1,7 @@
 h1(eveTopic). Add a Plot Window
 
+To add a plot window to a scan module follow these steps:
+==<br/>==
+# Select the scan module where the plot window should be added to by (left-)clicking on it. ==<br/>== !(eveImage)../../img/tasks/adddevicetoscanmodule-selectscanmodule.png(select the scan module by clicking on it)!
+# In the Scan Module View click on the "Add Plot Window" button. Select the entry appearing in the table above.
+# Now you can edit the properties of the plot window in the Plot Window View (bottom right).

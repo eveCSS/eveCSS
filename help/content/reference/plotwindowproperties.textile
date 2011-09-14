@@ -13,4 +13,10 @@ table(eveRefTable).
 | __Markstyle__| the mark style of the graph (e.g. circle or square)| set of CSS mark styles| ==&#8212;==|
 | __Scaletyle__| defines whether the axis should be scaled linear or logarithmic| {linear, log}| ==&#8212;==|
 
-*Note:* __Detector Channel, Normalize Channel, Color, Linestyle, Markstyle__ and __Scaletype__ appear twice (once for each y axis).
+p. *Note:* __Detector Channel, Normalize Channel, Color, Linestyle, Markstyle__ and __Scaletype__ appear twice (once for each y axis).
+
+==<br/>==
+
+p. *Note:* These settings can also be modified after "creating a scan description":../tasks/createscandescription.html and executing the scan by clicking on the configure button in the plot view of the "EveEngine Perspective":/help/topic/de.ptb.epics.eve.viewer/help/content/concepts/eveengineperspective.html (see image below).
+
+!(eveImage)../../img/reference/plotwindowproperties-configure.png(Configure Plot Window Properties)!
