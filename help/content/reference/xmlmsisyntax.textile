@@ -1,0 +1,65 @@
+h1(eveTopic). __xmlmsi__ Argument Syntax
+
+h2(eveTopic). Command Syntax
+
+p(code). xmlmsi [-v] [-V] [-I __includeDir__]... [-o __outfile__] __substitutionfile__
+
+table(eveRefTable).
+| -v| verbose output|
+| -V| any undefined macro discovered in the template file (with no associated default value) is considered an error|
+| -I __includeDir__ | one or more include directories containing template files (__.xtmpl__)|
+| -o __outfile__ | output filename, if omitted default output filename (__substitutionfile__ filename with extension replaced by __.xml__) is used.|
+
+h2(eveTopic). Substitution File Syntax
+
+* Lines starting with a ==&#35;== are considered comments and will be ignored.
+* Lines starting with __include "otherfile.xsubst"__ will include the substitution file __otherfile.xsubst__.
+* Lines starting with any of the section keywords __plugins:__, __detectors:__, __motors:__, __devices:__ start the corresponding section.
+* Lines starting with one or two dots below a section keyword process the file with the filename derived from the part of the line between the heading dots and the trailing colon (see example below). The number of dots is the level of nesting. The substitution commands follow the colon, with arbitrary whitespaces in between.
+* Lines consisting of whitespaces end a section.
+* From all words up to the colon (without leading dots) a filename is derived by appending __.xtmpl__. With this file the substitution commands which follow the colon will be executed and concatenated to the output file.
+
+h2(eveTopic). Template File Syntax
+
+p. Template files may have any textual content. The following rules apply:
+
+==<br/>==
+
+* ==&#36;=={} or ==&#36;==() define a macro to be substituted. A macro may have a default value.
+* __include "filename"__ will include another template file.
+* __substitute parameter="value"__ will substitute the macro ==&#36;=={__parameter__} with __value__
+
+h2(eveTopic). Example
+
+p(code).     # include another file
+    include "more.xsubst"
+==&nbsp;==
+    #section plugins (ends at the next blank line)
+    plugins:
+    # template with filename pluginAscii will be loaded and all tags ${Name} will be substituted by Test
+    .pluginAscii: Name="Test"
+==&nbsp;==
+    detectors:
+    .keithley617: Name=„Keithley”, Class=„Exposure”, PV="K0617:00012abc"
+    .ortec9704: Name=„Ortec”, Class=„Scattering”, PV="Ortec:00012def"
+    ..ortecChannel:Name=„Kanal1”, PV="Ortec:00012def_chan1"
+==&nbsp;==
+    motors:
+    .motor: Name="", Class="Exposure"
+    ..axis: Name=„X-Axis”, PV=""
+    ..axis: Name=„Y-Axis”, PV=""
+    .asynmotor: Name=„Hexapod”, Class="Scattering Chamber"
+    ..axis: Name=„L1”, PV="OMSMv:01001"
+    ..axis: Name=„L2”, PV="OMSMv:01002"
+    ..axis: Name=„L3”, PV="OMSMv:01003"
+==&nbsp;==
+    devices:
+    .beamShutter: Name=„Front Shutter”, PV="Sdlc1:0001"
+
+p. More information on the syntax provides [1], a more detailed explanation gives [2].
+
+<hr/>
+
+fn1. ==<a href="http://pubs.opengroup.org/onlinepubs/009604499/basedefs/xbd_chap12.html" target="_blank">WWW: The Open Group Base Specifications Issue 6 - IEEE Std 1003.1</a> (Accessed: 2011-09-15)==
+
+fn2. ==<a href="http://www.aps.anl.gov/epics/EpicsDocumentation/ExtensionsManuals/msi/msi.html" target="_blank">WWW: msi: Macro Substitution and Include Tool</a> (Accessed: 2001-09-15)==

@@ -1,3 +1,7 @@
+body {
+ 	max-width: 800px;
+}
+
 p {
 	text-align: justify;
 }
@@ -32,8 +36,9 @@ p {
 }
 
 .code {
+	text-align: left;
 	font-family: "Courier New", "Lucida", "Console";
-	margin: 10px 40px;
+	margin: 15px 40px;
 	background: Lavender;
-	padding: 5px;
+	padding: 10px;
 }
