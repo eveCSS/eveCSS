@@ -29,3 +29,19 @@ p {
 	margin: 0;
 	padding: 4px;
 }
+
+.DarkGreen {
+	color: DarkGreen;
+}
+
+.Yellow {
+	color: #FFCC00;
+}
+
+.Red {
+	color: Red;
+}
+
+.DarkGray {
+	color: DarkGray;
+}

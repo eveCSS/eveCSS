@@ -2,6 +2,8 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Reference">
+   <topic href="help/content/reference/severitycolors.html" label="Colors">
+   </topic>
    <topic href="help/content/reference/icons.html" label="Icons">
    </topic>
    <topic href="help/content/reference/deviceclasses.html" label="Device Classes">

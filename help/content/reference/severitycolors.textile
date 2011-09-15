@@ -1,0 +1,20 @@
+h1(eveTopic). (Device Inspector) Colors
+
+p. The table below shows the colors used in the tables of the Device Inspector View. 
+
+table(eveRefTable).
+|_. Color|_.Boundary|_. Severity|
+|(DarkGray). gray| value undefined| INVALID|
+|(Red) red| value > __.HIHI__ ==&#124;====&#124;== value < __.LOLO__| MAJOR|
+|(Yellow) yellow| value > __.HIGH__ ==&#124;====&#124;== value < __.LOW__| MINOR|
+|(DarkGreen) green| none of above conditions is true|NO_ALARM|
+
+h2(eveTopic). Example
+
+p. Below is a captured state of measured values of a detector with four channels:
+
+!(eveImage)../../img/reference/colors-premachannels-inspector.png(Prema5000 Channels)!
+
+p. Respective to that state are the following options of the four channels:
+
+!(eveImage)../../img/reference/colors-premachannels-options.png(Prema5000 Channel Options)!
