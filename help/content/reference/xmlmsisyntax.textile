@@ -29,37 +29,10 @@ p. Template files may have any textual content. The following rules apply:
 * __include "filename"__ will include another template file.
 * __substitute parameter="value"__ will substitute the macro ==&#36;=={__parameter__} with __value__
 
-h2(eveTopic). Example
-
-p(code).     # include another file
-    include "more.xsubst"
-==&nbsp;==
-    #section plugins (ends at the next blank line)
-    plugins:
-    # template with filename pluginAscii will be loaded and all tags ${Name} will be substituted by Test
-    .pluginAscii: Name="Test"
-==&nbsp;==
-    detectors:
-    .keithley617: Name=„Keithley”, Class=„Exposure”, PV="K0617:00012abc"
-    .ortec9704: Name=„Ortec”, Class=„Scattering”, PV="Ortec:00012def"
-    ..ortecChannel:Name=„Kanal1”, PV="Ortec:00012def_chan1"
-==&nbsp;==
-    motors:
-    .motor: Name="", Class="Exposure"
-    ..axis: Name=„X-Axis”, PV=""
-    ..axis: Name=„Y-Axis”, PV=""
-    .asynmotor: Name=„Hexapod”, Class="Scattering Chamber"
-    ..axis: Name=„L1”, PV="OMSMv:01001"
-    ..axis: Name=„L2”, PV="OMSMv:01002"
-    ..axis: Name=„L3”, PV="OMSMv:01003"
-==&nbsp;==
-    devices:
-    .beamShutter: Name=„Front Shutter”, PV="Sdlc1:0001"
-
 p. More information on the syntax provides [1], a more detailed explanation gives [2].
 
 <hr/>
 
-fn1. ==<a href="http://pubs.opengroup.org/onlinepubs/009604499/basedefs/xbd_chap12.html" target="_blank">WWW: The Open Group Base Specifications Issue 6 - IEEE Std 1003.1</a> (Accessed: 2011-09-15)==
+fn1. ==<a href="http://pubs.opengroup.org/onlinepubs/009604499/basedefs/xbd_chap12.html" target="_blank">WWW: The Open Group Base Specifications Issue 6 - IEEE Std 1003.1</a> (Accessed: September 2011)==
 
-fn2. ==<a href="http://www.aps.anl.gov/epics/EpicsDocumentation/ExtensionsManuals/msi/msi.html" target="_blank">WWW: msi: Macro Substitution and Include Tool</a> (Accessed: 2001-09-15)==
+fn2. ==<a href="http://www.aps.anl.gov/epics/EpicsDocumentation/ExtensionsManuals/msi/msi.html" target="_blank">WWW: msi: Macro Substitution and Include Tool</a> (Accessed: September 2011)==
