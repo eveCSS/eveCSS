@@ -1,28 +1,107 @@
 h1(eveTopic). Create a Device Description
 
-h2(eveTopic). Example
-
-p(code).     # include another file
-    include "more.xsubst"
-==&nbsp;==
-    #section plugins (ends at the next blank line)
-    plugins:
-    # template with filename pluginAscii will be loaded and all tags ${Name} will be substituted by Test
-    .pluginAscii: Name="Test"
-==&nbsp;==
-    detectors:
-    .keithley617: Name=„Keithley”, Class=„Exposure”, PV="K0617:00012abc"
-    .ortec9704: Name=„Ortec”, Class=„Scattering”, PV="Ortec:00012def"
-    ..ortecChannel:Name=„Kanal1”, PV="Ortec:00012def_chan1"
-==&nbsp;==
-    motors:
-    .motor: Name="", Class="Exposure"
-    ..axis: Name=„X-Axis”, PV=""
-    ..axis: Name=„Y-Axis”, PV=""
-    .asynmotor: Name=„Hexapod”, Class="Scattering Chamber"
-    ..axis: Name=„L1”, PV="OMSMv:01001"
-    ..axis: Name=„L2”, PV="OMSMv:01002"
-    ..axis: Name=„L3”, PV="OMSMv:01003"
-==&nbsp;==
-    devices:
-    .beamShutter: Name=„Front Shutter”, PV="Sdlc1:0001"
+ <ol class="eveOl">
+ 	<li>Open a file with an editor of your choice.</li>
+ 	<li>Save it in a convenient location as <i>myfirst.xsubst</i>.</li>
+ 	<li>Insert the following code:
+ 		<p class="code">
+ 			# xsubst template<br/>
+ 			appinfos:<br/>
+ 			<br/>
+ 			plugins:<br/>
+ 			<br/>
+ 			# ----------<br/>
+ 			<br/>
+ 			detectors:<br/>
+ 			<br/>
+ 			motors:<br/>
+ 			<br/>
+ 			devices:<br/>
+ 			<br/>
+ 		</p>
+ 		We now have a file defining the five available sections.
+ 	</li>
+ 	<li>
+ 		Next we insert some basic things:
+ 		<p class="code">
+ 			# xsubst template<br/>
+ 			appinfos:<br/>
+ 			<span class="new">.version:</span><br/>
+ 			<span class="new">.measuringstation: mp="myFirstDeviceDescription"</span><br/>
+ 			<span class="new">.repeatcount:</span><br/>
+ 			<br/>
+ 			plugins:<br/>
+ 			<span class="new">.ascii:</span><br/>
+			<span class="new">.hdf5:</span><br/>
+			<span class="new">.referenceAdd:</span><br/>
+			<span class="new">.referenceMultiply:</span><br/>
+			<span class="new">.gotoPeak:</span><br/>
+			<span class="new">.gotoCenter:</span><br/>
+ 			<br/>
+ 			# ----------<br/>
+ 			<br/>
+ 			detectors:<br/>
+ 			<br/>
+ 			motors:<br/>
+ 			<br/>
+ 			devices:<br/>
+ 			<br/>
+ 		</p>
+ 		The appinfos section contains basic information about the device description. Notice the <i>mp="myFirstDeviceDescription"</i> declaration. This assigns a name to the resulting file which as a reminder appears in the window title if it is loaded:<br/>
+ 		<img src="../../img/tasks/createdevicedescription-windowtitle.png" class="eveImage"></img><br/>
+ 		The plugins section defines plugins of different types. The first two are file plugins (to allow saving data files in different formats), the next two are ways to move a motor axis and the last two are positioning plugins.
+ 	</li>
+ 	<li>
+ 		Now it is time to add some devices.
+ 		<p class="code">
+ 			# xsubst template<br/>
+ 			appinfos:<br/>
+ 			.version:<br/>
+ 			.measuringstation: mp="myFirstDeviceDescription"<br/>
+ 			.repeatcount:<br/>
+ 			<br/>
+ 			plugins:<br/>
+ 			.ascii:<br/>
+			.hdf5:<br/>
+			.referenceAdd:<br/>
+			.referenceMultiply:<br/>
+			.gotoPeak:<br/>
+			.gotoCenter:<br/>
+ 			<br/>
+ 			# ----------<br/>
+ 			<br/>
+ 			detectors:<br/>
+ 			<span class="new">.prema5000:	Name="Prema5000", Class="A", PV="P5000:gw23707"</span><br/>
+			<span class="new">..premaChannel:	Name="Channel00", PV="P5000:gw2370700"</span><br/>
+			<span class="new">..premaChannel:	Name="Channel01", PV="P5000:gw2370701"</span><br/>
+ 			<br/>
+ 			motors:<br/>
+ 			<span class="new">.motor: Id="PPSMC:gw237", Class="A"</span><br/>
+			<span class="new">..axis: Name="PP_Motor1", PV="PPSMC:gw23715000"</span><br/>
+			<span class="new">..axis: Name="PP_Motor2", PV="PPSMC:gw23715001"</span><br/>
+ 			<br/>
+ 			devices:<br/>
+ 			<span class="new">.beamShutter:	Name="BEAM_SHUTTER", PV="BSR01U007L:Opened"</span><br/>
+ 			<br/>
+ 		</p>
+ 		We have added a detector with two channels, a motor with two axes and a device. Notice the <i>PV=</i> declarations. Theses are the macro replacements of the <a href="../concepts/xmlmsi.html">xmlmsi tool</a>. To learn the effects of the <i>Class</i> declarations read on <a href="/help/topic/de.ptb.epics.eve.editor/help/content/reference/deviceclasses.html" alt="Device Classes (Editor)">here</a> and <a href="/help/topic/de.ptb.epics.eve.viewer/help/content/reference/deviceclasses.html" alt="Device Classes (Viewer)">here</a>.
+ 	</li>
+ 	<li>Save the file now.</li>
+ 	<li>
+ 		Run the following command:
+ 		<p class="code">
+ 			xmlmsi myfirst.xsubst
+ 		</p>
+ 		The output should look like this:
+ 		<p class="code">
+			******** Starting with substitution       ************<br/>
+			generating file ./myfirst.xml<br/>
+			<br/>
+			******** Validating using schema scml.xsd ************<br/>
+			./myfirst.xml validates<br/>
+			<br/>
+			******** checking for ambiguous id-Tags    ************<br/>
+ 		</p>
+ 		Now there should be a file named <i>myfirst.xml</i> in the same folder. This is the device description file used by EVE. Consider to take a look at the source of the xml file.
+ 	</li>
+ </ol>

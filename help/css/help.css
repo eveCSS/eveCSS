@@ -42,3 +42,12 @@ p {
 	background: Lavender;
 	padding: 10px;
 }
+
+.new {
+	color: DarkRed;
+	float: left;
+}
+
+.eveOl li {
+	margin-bottom: 10px;
+}

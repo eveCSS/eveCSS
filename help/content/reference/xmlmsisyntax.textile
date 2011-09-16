@@ -2,7 +2,7 @@ h1(eveTopic). __xmlmsi__ Argument Syntax
 
 h2(eveTopic). Command Syntax
 
-p(code). xmlmsi [-v] [-V] [-I __includeDir__]... [-o __outfile__] __substitutionfile__
+p(code). xmlmsi [-v] [-V] -I __includeDir__... [-o __outfile__] __substitutionfile__
 
 table(eveRefTable).
 | -v| verbose output|
