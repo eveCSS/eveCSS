@@ -1,6 +1,5 @@
 package de.ptb.epics.eve.viewer;
 
-import org.csstudio.platform.simpledal.ValueType;
 import de.ptb.epics.eve.data.DataTypes;
 
 public class Helper {
