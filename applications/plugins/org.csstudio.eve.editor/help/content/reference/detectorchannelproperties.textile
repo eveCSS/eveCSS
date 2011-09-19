@@ -1,0 +1,73 @@
+h1(eveTopic). Detector Channel Properties
+
+table(eveRefTable).
+|_. Property |_. Description|_. Domain|_. Mandatory|
+| __Average__| The (arithmetic) mean is calculated from __Average__ measurements. (if omitted no average is calculated.)| !../../img/math/N.png(natural numbers)![1]| false|
+| __Max. Deviation (%)__| The deviation (%) of the first two measured values must be less or equal the given value. If that constraint is not fulfilled the first measurement is dropped and a new one is taken until the condition is met. Then the __Average__ calculation begins. (If omitted the tolerance check always validates.)| float| false|
+| __Minimum__| If (and only if) the first measured value is ==&ge;== __Minimum__ a tolerance check is conducted, otherwise only one value is measured. (if omitted no tolerance check is done.)| float| false|
+| __Max.Attempts__| If the tolerance check fails __Max.Attempts__ times the lastly calculated mean is used (and a warning is given). (If omitted __Max.Attempts__ = ==&infin;== is assumed, if __Max.Attempts__ < __Average__ then __Max.Attempts__ = __Average__ is assumed.)| !../../img/math/N.png(natural numbers)![1]| false|
+| __Confirm Trigger manual__| Sets whether triggering should be confirmed by user interaction.| {true, false}| ==&#8212;==|
+
+h2. Example 1
+
+p. __Average__ = ==&empty;==, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = ==&empty;==, __Max. Attempts__ = ==&empty;==
+
+==<br/>==
+
+p. __Average__ omitted ==&rArr;== no average is calculated.
+
+h2. Example 2
+
+p. __Average__ = 3, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = ==&empty;==, __Max. Attempts__ = ==&empty;==
+
+==<br/>==
+
+p. __Minimum__ omitted ==&rArr;== __Average__ is calculated from three subsequent measurements.
+
+h2. Example 3
+
+p. __Average__ = 3, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = 0.01, __Max. Attempts__ = ==&empty;==
+
+==<br/>==
+
+p. measured value: 0.00215 ==&rArr;== __Average__ = 0.00215 (first measured value < __Minimum__).
+
+h2. Example 4
+
+p. __Average__ = 3, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = 0.0001, __Max. Attempts__ = ==&empty;==
+
+==<br/>==
+
+p. measured values: {%(green)0.00197%, %(green)0.00199%, %(green)0.00153%} ==&rArr;== __Average__ = 0.00183
+
+h2. Example 5
+
+p. __Average__ = 3, __Max. Deviation (%)__ = 0.1, __Minimum__ = 0.0001, __Max. Attempts__ = ==&empty;==
+
+==<br/>==
+
+p. measured values: {%(red)0.00247%, %(red)0.00243%, %(red)0.00237%, %(red)0.00244%, %(green)0.00214%, %(green)0.00214%, %(green)0.00217%}
+
+p. ==&rArr;== __Average__ = 0.00215
+
+h2. Example 6
+
+p. __Average__ = 3, __Max. Deviation (%)__ = 0.1, __Minimum__ = 0.1, __Max. Attempts__ = ==&empty;==
+
+==<br/>==
+
+p. measured value: 0.00216 ==&rArr;== __Average__ = 0.00216 (first measured value < __Minimum__).
+
+h2. Example 7
+
+p. __Average__ = 3, __Max. Deviation (%)__ = 0.01, __Minimum__ = 0.0001, __Max. Attempts__ = 3
+
+==<br/>==
+
+p. measured values: {%(red)0.00203%, %(red)0.00210%, %(red)0.00212%} ==&rArr;== __Average__ = 0.00212 (__Max. Attempts__ reached).
+
+==<br/>==
+
+<hr/>
+
+fn1. To be exact the domain is {x | x ==&isin;== !../../img/math/N.png(natural numbers)! ==&and;== 0 < x ==&le;== 2.147.483.647 = 2<sup>31</sup> -1} (positive range of an __integer__ with 32 bits).

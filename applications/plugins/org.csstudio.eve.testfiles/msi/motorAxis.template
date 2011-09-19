@@ -1,0 +1,173 @@
+            <axis>
+                <name>$(Name)</name>
+                <id>$(PV)</id>
+                <goto>
+                    <access method="GETPUTCB" transport="ca" type="double" timeout="100.0">$(PV)</access>
+                </goto>
+                <position>
+                    <access method="GETCB" transport="ca" type="double">$(PV).RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" transport="ca" type="int">$(PV).STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <status>
+                    <access method="GETCB" transport="ca" type="int">$(PV).MSTA</access>
+                </status>
+                <unit>
+                    <access method="GETPUTCB" transport="ca" type="string">$(PV).EGU</access>
+                </unit>
+                <deadband>
+                    <access method="GETPUTCB" transport="ca" type="double">$(PV).RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" transport="ca" type="double">$(PV).OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" transport="ca" type="double">$(PV).TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="PUT" transport="ca" type="int">$(PV).TWF</access>
+                    <value type="int">1</value>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="PUT" transport="ca" type="int">$(PV).TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>
+                <option>
+                    <name>Position Readback</name>
+                    <id>$(PV).RBV</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">$(PV).RBV</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Velocity</name>
+                    <id>$(PV).VELO</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">$(PV).VELO</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft High Limit</name>
+                    <id>$(PV).HLM</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">$(PV).HLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Soft Low Limit</name>
+                    <id>$(PV).LLM</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">$(PV).LLM</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Offset</name>
+                    <id>$(PV).OFF</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">$(PV).OFF</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Dial Value</name>
+                    <id>$(PV).DVAL</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">$(PV).DVAL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Acceleration</name>
+                    <id>$(PV).ACCL</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">$(PV).ACCL</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Motor Resolution</name>
+                    <id>$(PV).MRES</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">$(PV).MRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Encoder Resolution</name>
+                    <id>$(PV).ERES</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">$(PV).ERES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Encoder</name>
+                    <id>$(PV).UEIP</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">$(PV).UEIP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Readback Resolution</name>
+                    <id>$(PV).RRES</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">$(PV).RRES</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Use Readback</name>
+                    <id>$(PV).URIP</id>
+                    <value>
+                        <access method="GETPUTCB" type="string" transport="ca">$(PV).URIP</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Base Velocity</name>
+                    <id>$(PV).VBAS</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">$(PV).VBAS</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Deadband</name>
+                    <id>$(PV).RDBD</id>
+                    <value>
+                        <access method="GETPUTCB" type="double" transport="ca">$(PV).RDBD</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>$(PV).MSTA</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">$(PV).MSTA</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Retry Count</name>
+                    <id>$(PV).RCNT</id>
+                    <value>
+                        <access method="GETCB" type="double" transport="ca">$(PV).RCNT</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>$(PV).SEVR</id>
+                    <value>
+                        <access method="GETCB" type="string" transport="ca">$(PV).SEVR</access>
+                    </value>
+                    <displaygroup>summary</displaygroup>
+                </option>
+            </axis>

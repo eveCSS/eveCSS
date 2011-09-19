@@ -1,0 +1,5 @@
+h1(eveTopic). Getting Started
+
+p. Depending on "what you want to do":overview.html (monitor/manipulate devices or execute scans) either activate the "EveDevice":concepts/evedeviceperspective.html or "EveEngine":concepts/eveengineperspective.html Perspective by clicking on the respective button at the top of the window (see following image for illustration).
+
+!(eveImage)../img/gettingstarted-perspectives.png(EVE Viewer Perspectives)!

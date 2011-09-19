@@ -1,0 +1,170 @@
+        <detector>
+            <class>$(Class)</class>
+            <name>$(Name)</name>
+            <id>$(PV)</id>
+            <unit>
+                <access method="GETCB" transport="ca" type="string">$(PV).EGU</access>
+            </unit>
+            <trigger>
+                <access method="PUTCB" transport="ca" type="int">$(PV).TRIG</access>
+                <value type="int">1</value>
+            </trigger>
+            <channel>
+                <name>$(Chan1Name)</name>
+                <id>$(Chan1PV)</id>
+                <read>
+                    <access method="GETCB" transport="ca" type="double">$(Chan1PV).VAL</access>
+                </read>
+           	    <option>
+                	<name>Monitor Deadband</name>
+                	<id>$(Chan1PV)MDEL</id>
+                	<value>
+                	    <access method="GETPUT" transport="ca" type="double">$(Chan1PV)MDEL</access>
+                	</value>
+            	</option>
+            	<option>
+                	<name>Raw Offset</name>
+                	<id>$(Chan1PV)ROFF</id>
+                	<value>
+                	    <access method="GETPUT" transport="ca" type="double">$(Chan1PV)ROFF</access>
+                	</value>
+            	</option>
+            	<option>
+                	<name>Offset</name>
+                	<id>$(Chan1PV)AOFF</id>
+                	<value>
+                	    <access method="GETPUT" transport="ca" type="double">$(Chan1PV)AOFF</access>
+                	</value>
+            	</option>
+            </channel>
+            <option>
+                <name>Function</name>
+                <id>$(PV)function</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">$(PV)function</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>triggerMode</name>
+                <id>$(PV)triggerMode</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">$(PV)triggerMode</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>triggerDelay</name>
+                <id>$(PV)triggerDelay</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">$(PV)triggerDelay</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Range Current</name>
+                <id>$(PV)rangeCurr</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">$(PV)rangeCurr</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Integration Time Current</name>
+                <id>$(PV)intTimeCurr</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">$(PV)intTimeCurr</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Range Voltage</name>
+                <id>$(PV)rangeVolt</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">$(PV)rangeVolt</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Integration Time Voltage</name>
+                <id>$(PV)intTimeVolt</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">$(PV)intTimeVolt</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Range Resistance</name>
+                <id>$(PV)rangeOhms</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">$(PV)rangeOhms</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Integration Time Resistance</name>
+                <id>$(PV)intTimeOhms</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">$(PV)intTimeOhms</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Range Charge</name>
+                <id>$(PV)rangeChar</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">$(PV)rangeChar</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Integration Time Charge</name>
+                <id>$(PV)intTimeChar</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">$(PV)intTimeChar</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Zero Check</name>
+                <id>$(PV)zeroChk</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">$(PV)zeroChk</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Zero Correct</name>
+                <id>$(PV)zeroCor</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">$(PV)zeroCor</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Zero Suppress</name>
+                <id>$(PV)blSupp</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">$(PV)blSupp</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Voltage Source Mode</name>
+                <id>$(PV)vsMode</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="string">$(PV)vsMode</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+            <option>
+                <name>Voltage Source Value</name>
+                <id>$(PV)vsVal</id>
+                <value>
+                    <access method="GETPUT" transport="ca" type="double">$(PV)vsVal</access>
+                </value>
+                <displaygroup>summary</displaygroup>
+            </option>
+        </detector>
+        
+       
