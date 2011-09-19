@@ -1,0 +1,22 @@
+h1(eveTopic). Plot Window Properties
+
+table(eveRefTable).
+|_. Property |_. Description|_. Domain|_. Mandatory|
+| __Motor Axis__| the motor axis defining the x axis of the plot| set of motor axes present in the scan module| true|
+| __Preinit Window__| defines whether the plot should be cleared (false only has any effect if the axes are still the same)| {true, false}| ==&#8212;==|
+| __Scale Type__| defines whether the axis should be scaled linear or logarithmic| {linear, log}| ==&#8212;==|
+|\4. Y Axis:|
+| __Detector Channel__| the detector channel defining the y axis of the plot| set of detector channels present in the scan module| true|
+| __Normalize Channel__| the detector channel the y axis channel should be normalized with (select __none__ for no normalization)| set of detector channels present in the scan module| false|
+| __Color__| the color of the graph| RGB| ==&#8212;==|
+| __Linestyle__| the line style of the graph (e.g. solid or dashed)| set of CSS line styles| ==&#8212;==|
+| __Markstyle__| the mark style of the graph (e.g. circle or square)| set of CSS mark styles| ==&#8212;==|
+| __Scaletyle__| defines whether the axis should be scaled linear or logarithmic| {linear, log}| ==&#8212;==|
+
+p. *Note:* __Detector Channel, Normalize Channel, Color, Linestyle, Markstyle__ and __Scaletype__ appear twice (once for each y axis).
+
+==<br/>==
+
+p. *Note:* These settings can also be modified after "creating a scan description":../tasks/createscandescription.html and executing the scan by clicking on the configure button in the plot view of the "EveEngine Perspective":/help/topic/de.ptb.epics.eve.viewer/help/content/concepts/eveengineperspective.html (see image below).
+
+!(eveImage)../../img/reference/plotwindowproperties-configure.png(Configure Plot Window Properties)!

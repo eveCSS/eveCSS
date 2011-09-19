@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Concepts">
+   <topic href="help/content/concepts/devicedescription.html" label="Device Description">
+   </topic>
+   <topic href="help/content/concepts/xmlmsi.html" label="The xmlmsi Tool">
+   </topic>
+
+</toc>

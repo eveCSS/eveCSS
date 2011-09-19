@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc" basedir="../"> <!-- base directory is eveCSS -->
+
+  <description>
+  	Ant File for Building JavaDoc...
+  </description>
+
+  <property name="eclipse_dir" location="${user.home}/eclipse_dir" />
+
+  <target name="clean" description="delete (old) javadoc files">
+      <delete dir="docs/api/eveCSS" />
+      <echo message="deleting (old) javadoc files" />
+  </target> 
+
+  <target name="javadoc">
+  	<mkdir dir="docs/api/eveCSS" />
+  
+    <javadoc
+      destdir="docs/api/eveCSS"
+      access="public"
+      author="true"
+      version="true"
+      use="true"
+      windowtitle="eveCSS API"
+      linksource="yes">
+   	
+      <classpath>
+    	<pathelement path="${classpath}"/>
+    	<fileset dir="${eclipse_dir}/plugins">
+    	  <include name="**/*.jar"/>
+    	</fileset>
+    	
+    	<pathelement location="org.csstudio.apputil/bin" />
+    	<pathelement location="org.csstudio.apputil.ui/bin" />
+    	<pathelement location="org.csstudio.logbook/bin" />
+    	<pathelement location="org.csstudio.platform/classes" />
+    	<pathelement location="org.csstudio.platform.libs.dal/bin" />
+    	<pathelement location="org.csstudio.platform.libs.dal.epics/bin" />
+    	<pathelement location="org.csstudio.platform.libs.epics/bin" />
+    	<pathelement location="org.csstudio.platform.libs.jmock/bin" />
+    	<pathelement location="org.csstudio.platform.libs.jms/bin" />
+    	<pathelement location="org.csstudio.platform.ui/bin" />
+    	<pathelement location="org.csstudio.platform.utility.jms/bin" />
+    	<pathelement location="org.csstudio.platform.workspace/bin" />
+    	<pathelement location="org.csstudio.startup/bin" />
+    	<pathelement location="org.csstudio.startuphelper/bin" />
+    	<pathelement location="org.csstudio.swt.xygraph/bin" />
+    	<pathelement location="org.csstudio.utility.pv/bin" />
+    	<pathelement location="org.csstudio.utility.pv.epics/bin" />
+    	
+    	<pathelement location="org.csstudio.platform.libs.epics/lib/caj-1.1.5d.jar" />
+    	<pathelement location="org.csstudio.platform.libs.epics/lib/jca-2.3.3.jar" />
+    	<pathelement location="org.csstudio.platform.libs.dal/lib/java-common-4.0.1-SNAPSHOT.jar" />
+    	<pathelement location="org.csstudio.platform/lib/jdom.jar" />
+    	<pathelement location="org.csstudio.platform.libs.jms/libs/activemq-all-5.1.0.jar" />
+    	
+    	<!--<pathelement location="org.csstudio.platform/lib/log4j-1.2.14.jar" />-->
+    	<pathelement location="lib/log4j-1.2.16.jar" />
+      </classpath>
+	
+      <packageset dir="de.ptb.epics.eve.data/src" defaultexcludes="yes" />
+      <packageset dir="de.ptb.epics.eve.ecp1/src" defaultexcludes="yes" />
+      <packageset dir="de.ptb.epics.eve.editor/src" defaultexcludes="yes" />
+      <packageset dir="de.ptb.epics.eve.viewer/src" defaultexcludes="yes" />
+      <packageset dir="de.ptb.epics.eve.preferences/src" defaultexcludes="yes" />
+      
+      <packageset dir="de.ptb.epics.eve.data.tests/src" defaultexcludes="yes" />
+
+      <doctitle><![CDATA[<h1>eveCSS</h1>]]></doctitle>
+      <bottom>
+        <![CDATA[<i>Copyright &#169; 2000 Dummy Corp. All Rights Reserved.</i>]]>
+      </bottom>
+       
+      <tag name="precondition" scope="all" description="Precondition:"/>
+      <tag name="postcondition" scope="all" description="Postcondition:"/>
+      <tag name="uml.dependency" scope="all" enabled="false" />
+      <tag name="uml.property" scope="all" enabled="false" />
+      <tag name="uml.associationEnd" scope="all" enabled="false" />
+	
+      <group title="EVE Data Model" packages="de.ptb.epics.eve.data*"/>
+      <group title="NMP &lt;-&gt; ECP" packages="de.ptb.epics.eve.ecp1*"/>
+      <group title="EVE Editor" packages="de.ptb.epics.eve.editor*"/>
+      <group title="EVE Viewer" packages="de.ptb.epics.eve.viewer*"/>
+
+      <group title="Tests" 
+      		 packages="de.ptb.epics.eve.data.measuringstation.filter.tests*,de.ptb.epics.eve.data.measuringstation.tests*,de.ptb.epics.eve.data.tests*,de.ptb.epics.eve.data.tests.internal.*,de.ptb.epics.eve.data.scandescription.tests*,de.ptb.epics.eve.data.measuringstation.processors.tests*" />
+
+      <group title="apache" packages="org.apache.*" />
+      
+      <group title="SWT" packages="org.eclipse.swt.*" />
+    
+      <link offline="true" href="http://download.oracle.com/javase/6/docs/api" 
+        packagelistLoc="docs/api/jdk-6u23/docs/api/"/> 
+      <link offline="true" href="http://download.oracle.com/javaee/6/api" 
+        packagelistLoc="docs/api/j2ee-6.0.1/" />
+      <link offline="true" href="http://logging.apache.org/log4j/1.2/apidocs"
+        packagelistLoc="docs/api/log4j/" />
+      <link offline="true" href="http://help.eclipse.org/galileo/index.jsp?topic=/org.eclipse.platform.doc.isv/reference/api/"
+        packagelistLoc="docs/api/eclipse3.5/" />
+      <link offline="true" href="http://www.eclipse.org/pde"
+        packagelistLoc="docs/api/pde/" />
+      <link offline="true" href="http://http://sourceforge.net/apps/trac/cs-studio/"
+        packagelistLoc="docs/api/css/" />
+      <link offline="true" href="http://jca.cosylab.com/apidocs"
+      	packagelistLoc="docs/api/jca-2.3.2/" />
+      <link offline="true" href="docs/api/junit-4.8.2"
+      	packagelistLoc="http://kentbeck.github.com/junit/javadoc/latest/" />
+    </javadoc>
+  </target>
+</project>

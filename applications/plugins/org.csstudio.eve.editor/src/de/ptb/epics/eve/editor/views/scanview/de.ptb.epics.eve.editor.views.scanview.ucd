@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" size="975,1472" id="de.ptb.epics.eve.editor.views.scanview" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D313030302064652E7074622E65706963732E6576652E656469746F722F6D6D696368616C73">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.1/@sourceConnections.0" name="IModelUpdateListener" location="86,50" size="345,94" id="de.ptb.epics.eve.data.scandescription.updatenotification/IModelUpdateListener" runTimeClassModel="updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="219,18">
+      <children xsi:type="editmodel:MethodEditModel" name="updateEvent" id="de.ptb.epics.eve.data.scandescription.updatenotification/IModelUpdateListener#updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ScanView" location="86,194" size="417,1258" id="de.ptb.epics.eve.editor.views.scanview/ScanView" runTimeClassModel="setCurrentChain(Lde.ptb.epics.eve.data.scandescription.Chain;),de.ptb.epics.eve.editor.views.scanview.ScanView.SaveScanDescriptionCheckBoxSelectionListener,currentChain,updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;),de.ptb.epics.eve.editor.views.scanview.ScanView.EventsTabFolderSelectionListener,de.ptb.epics.eve.editor.views.scanview.ScanView.FileFormatOptionsButtonSelectionListener,de.ptb.epics.eve.editor.views.scanview.ScanView.SearchButtonMouseListener,setFocus(),de.ptb.epics.eve.editor.views.scanview.ScanView.FileFormatComboModifiedListener,de.ptb.epics.eve.editor.views.scanview.ScanView.FileNameInputModifiedListener,de.ptb.epics.eve.editor.views.scanview.ScanView.EventsCompositeControlListener,iD,de.ptb.epics.eve.editor.views.scanview.ScanView.ConfirmSaveCheckBoxSelectionListener,de.ptb.epics.eve.editor.views.scanview.ScanView.CommentInputModifiedListener,de.ptb.epics.eve.editor.views.scanview.ScanView.SavingCompositeControlListener,de.ptb.epics.eve.editor.views.scanview.ScanView.RepeatCountTextModifiedListener,de.ptb.epics.eve.editor.views.scanview.ScanView.BarControlListener,de.ptb.epics.eve.editor.views.scanview.ScanView.AutoIncrementCheckBoxSelectionListener,createPartControl(Lorg.eclipse.swt.widgets.Composite;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="132,36">
+      <children xsi:type="editmodel:AttributeEditModel" name="currentChain" id="de.ptb.epics.eve.editor.views.scanview/ScanView#currentChain"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="iD" id="de.ptb.epics.eve.editor.views.scanview/ScanView#iD"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="219,72">
+      <children xsi:type="editmodel:MethodEditModel" name="createPartControl" id="de.ptb.epics.eve.editor.views.scanview/ScanView#createPartControl(Lorg.eclipse.swt.widgets.Composite;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setCurrentChain" id="de.ptb.epics.eve.editor.views.scanview/ScanView#setCurrentChain(Lde.ptb.epics.eve.data.scandescription.Chain;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setFocus" id="de.ptb.epics.eve.editor.views.scanview/ScanView#setFocus()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="updateEvent" id="de.ptb.epics.eve.editor.views.scanview/ScanView#updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="394,1090">
+      <children xsi:type="editmodel:ClassEditModel" name="AutoIncrementCheckBoxSelectionListener" size="348,68" id="de.ptb.epics.eve.editor.views.scanview/ScanView$AutoIncrementCheckBoxSelectionListener" runTimeClassModel="widgetDefaultSelected(Lorg.eclipse.swt.events.SelectionEvent;),widgetSelected(Lorg.eclipse.swt.events.SelectionEvent;)">
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="214,18">
+          <children xsi:type="editmodel:MethodEditModel" name="widgetSelected" id="de.ptb.epics.eve.editor.views.scanview/ScanView$AutoIncrementCheckBoxSelectionListener#widgetSelected(Lorg.eclipse.swt.events.SelectionEvent;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+      <children xsi:type="editmodel:ClassEditModel" name="BarControlListener" size="222,86" id="de.ptb.epics.eve.editor.views.scanview/ScanView$BarControlListener" runTimeClassModel="controlResized(Lorg.eclipse.swt.events.ControlEvent;),controlMoved(Lorg.eclipse.swt.events.ControlEvent;)">
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="199,36">
+          <children xsi:type="editmodel:MethodEditModel" name="controlMoved" id="de.ptb.epics.eve.editor.views.scanview/ScanView$BarControlListener#controlMoved(Lorg.eclipse.swt.events.ControlEvent;)"/>
+          <children xsi:type="editmodel:MethodEditModel" name="controlResized" id="de.ptb.epics.eve.editor.views.scanview/ScanView$BarControlListener#controlResized(Lorg.eclipse.swt.events.ControlEvent;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+      <children xsi:type="editmodel:ClassEditModel" name="CommentInputModifiedListener" size="274,68" id="de.ptb.epics.eve.editor.views.scanview/ScanView$CommentInputModifiedListener" runTimeClassModel="modifyText(Lorg.eclipse.swt.events.ModifyEvent;)">
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="172,18">
+          <children xsi:type="editmodel:MethodEditModel" name="modifyText" id="de.ptb.epics.eve.editor.views.scanview/ScanView$CommentInputModifiedListener#modifyText(Lorg.eclipse.swt.events.ModifyEvent;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+      <children xsi:type="editmodel:ClassEditModel" name="ConfirmSaveCheckBoxSelectionListener" size="332,68" id="de.ptb.epics.eve.editor.views.scanview/ScanView$ConfirmSaveCheckBoxSelectionListener" runTimeClassModel="widgetDefaultSelected(Lorg.eclipse.swt.events.SelectionEvent;),widgetSelected(Lorg.eclipse.swt.events.SelectionEvent;)">
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="214,18">
+          <children xsi:type="editmodel:MethodEditModel" name="widgetSelected" id="de.ptb.epics.eve.editor.views.scanview/ScanView$ConfirmSaveCheckBoxSelectionListener#widgetSelected(Lorg.eclipse.swt.events.SelectionEvent;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+      <children xsi:type="editmodel:ClassEditModel" name="EventsCompositeControlListener" size="282,86" id="de.ptb.epics.eve.editor.views.scanview/ScanView$EventsCompositeControlListener" runTimeClassModel="controlResized(Lorg.eclipse.swt.events.ControlEvent;),controlMoved(Lorg.eclipse.swt.events.ControlEvent;)">
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="199,36">
+          <children xsi:type="editmodel:MethodEditModel" name="controlMoved" id="de.ptb.epics.eve.editor.views.scanview/ScanView$EventsCompositeControlListener#controlMoved(Lorg.eclipse.swt.events.ControlEvent;)"/>
+          <children xsi:type="editmodel:MethodEditModel" name="controlResized" id="de.ptb.epics.eve.editor.views.scanview/ScanView$EventsCompositeControlListener#controlResized(Lorg.eclipse.swt.events.ControlEvent;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+      <children xsi:type="editmodel:ClassEditModel" name="EventsTabFolderSelectionListener" size="288,86" id="de.ptb.epics.eve.editor.views.scanview/ScanView$EventsTabFolderSelectionListener" runTimeClassModel="widgetDefaultSelected(Lorg.eclipse.swt.events.SelectionEvent;),widgetSelected(Lorg.eclipse.swt.events.SelectionEvent;)">
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="254,36">
+          <children xsi:type="editmodel:MethodEditModel" name="widgetDefaultSelected" id="de.ptb.epics.eve.editor.views.scanview/ScanView$EventsTabFolderSelectionListener#widgetDefaultSelected(Lorg.eclipse.swt.events.SelectionEvent;)"/>
+          <children xsi:type="editmodel:MethodEditModel" name="widgetSelected" id="de.ptb.epics.eve.editor.views.scanview/ScanView$EventsTabFolderSelectionListener#widgetSelected(Lorg.eclipse.swt.events.SelectionEvent;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+      <children xsi:type="editmodel:ClassEditModel" name="FileFormatComboModifiedListener" size="295,68" id="de.ptb.epics.eve.editor.views.scanview/ScanView$FileFormatComboModifiedListener" runTimeClassModel="modifyText(Lorg.eclipse.swt.events.ModifyEvent;)">
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="172,18">
+          <children xsi:type="editmodel:MethodEditModel" name="modifyText" id="de.ptb.epics.eve.editor.views.scanview/ScanView$FileFormatComboModifiedListener#modifyText(Lorg.eclipse.swt.events.ModifyEvent;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+      <children xsi:type="editmodel:ClassEditModel" name="FileFormatOptionsButtonSelectionListener" size="352,86" id="de.ptb.epics.eve.editor.views.scanview/ScanView$FileFormatOptionsButtonSelectionListener" runTimeClassModel="widgetDefaultSelected(Lorg.eclipse.swt.events.SelectionEvent;),widgetSelected(Lorg.eclipse.swt.events.SelectionEvent;)">
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="254,36">
+          <children xsi:type="editmodel:MethodEditModel" name="widgetDefaultSelected" id="de.ptb.epics.eve.editor.views.scanview/ScanView$FileFormatOptionsButtonSelectionListener#widgetDefaultSelected(Lorg.eclipse.swt.events.SelectionEvent;)"/>
+          <children xsi:type="editmodel:MethodEditModel" name="widgetSelected" id="de.ptb.epics.eve.editor.views.scanview/ScanView$FileFormatOptionsButtonSelectionListener#widgetSelected(Lorg.eclipse.swt.events.SelectionEvent;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+      <children xsi:type="editmodel:ClassEditModel" name="FileNameInputModifiedListener" size="272,68" id="de.ptb.epics.eve.editor.views.scanview/ScanView$FileNameInputModifiedListener" runTimeClassModel="modifyText(Lorg.eclipse.swt.events.ModifyEvent;)">
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="172,18">
+          <children xsi:type="editmodel:MethodEditModel" name="modifyText" id="de.ptb.epics.eve.editor.views.scanview/ScanView$FileNameInputModifiedListener#modifyText(Lorg.eclipse.swt.events.ModifyEvent;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+      <children xsi:type="editmodel:ClassEditModel" name="RepeatCountTextModifiedListener" size="290,68" id="de.ptb.epics.eve.editor.views.scanview/ScanView$RepeatCountTextModifiedListener" runTimeClassModel="modifyText(Lorg.eclipse.swt.events.ModifyEvent;)">
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="172,18">
+          <children xsi:type="editmodel:MethodEditModel" name="modifyText" id="de.ptb.epics.eve.editor.views.scanview/ScanView$RepeatCountTextModifiedListener#modifyText(Lorg.eclipse.swt.events.ModifyEvent;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+      <children xsi:type="editmodel:ClassEditModel" name="SaveScanDescriptionCheckBoxSelectionListener" size="394,86" id="de.ptb.epics.eve.editor.views.scanview/ScanView$SaveScanDescriptionCheckBoxSelectionListener" runTimeClassModel="widgetDefaultSelected(Lorg.eclipse.swt.events.SelectionEvent;),widgetSelected(Lorg.eclipse.swt.events.SelectionEvent;)">
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="254,36">
+          <children xsi:type="editmodel:MethodEditModel" name="widgetDefaultSelected" id="de.ptb.epics.eve.editor.views.scanview/ScanView$SaveScanDescriptionCheckBoxSelectionListener#widgetDefaultSelected(Lorg.eclipse.swt.events.SelectionEvent;)"/>
+          <children xsi:type="editmodel:MethodEditModel" name="widgetSelected" id="de.ptb.epics.eve.editor.views.scanview/ScanView$SaveScanDescriptionCheckBoxSelectionListener#widgetSelected(Lorg.eclipse.swt.events.SelectionEvent;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+      <children xsi:type="editmodel:ClassEditModel" name="SavingCompositeControlListener" size="282,86" id="de.ptb.epics.eve.editor.views.scanview/ScanView$SavingCompositeControlListener" runTimeClassModel="controlResized(Lorg.eclipse.swt.events.ControlEvent;),controlMoved(Lorg.eclipse.swt.events.ControlEvent;)">
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="199,36">
+          <children xsi:type="editmodel:MethodEditModel" name="controlMoved" id="de.ptb.epics.eve.editor.views.scanview/ScanView$SavingCompositeControlListener#controlMoved(Lorg.eclipse.swt.events.ControlEvent;)"/>
+          <children xsi:type="editmodel:MethodEditModel" name="controlResized" id="de.ptb.epics.eve.editor.views.scanview/ScanView$SavingCompositeControlListener#controlResized(Lorg.eclipse.swt.events.ControlEvent;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+      <children xsi:type="editmodel:ClassEditModel" name="SearchButtonMouseListener" size="248,104" id="de.ptb.epics.eve.editor.views.scanview/ScanView$SearchButtonMouseListener" runTimeClassModel="mouseDown(Lorg.eclipse.swt.events.MouseEvent;),mouseUp(Lorg.eclipse.swt.events.MouseEvent;),mouseDoubleClick(Lorg.eclipse.swt.events.MouseEvent;)">
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="217,54">
+          <children xsi:type="editmodel:MethodEditModel" name="mouseDoubleClick" id="de.ptb.epics.eve.editor.views.scanview/ScanView$SearchButtonMouseListener#mouseDoubleClick(Lorg.eclipse.swt.events.MouseEvent;)"/>
+          <children xsi:type="editmodel:MethodEditModel" name="mouseDown" id="de.ptb.epics.eve.editor.views.scanview/ScanView$SearchButtonMouseListener#mouseDown(Lorg.eclipse.swt.events.MouseEvent;)"/>
+          <children xsi:type="editmodel:MethodEditModel" name="mouseUp" id="de.ptb.epics.eve.editor.views.scanview/ScanView$SearchButtonMouseListener#mouseUp(Lorg.eclipse.swt.events.MouseEvent;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+    </children>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription.updatenotification/IModelUpdateListener&lt;-de.ptb.epics.eve.editor.views.scanview/ScanView" source="//@children.1" target="//@children.0" targetEnd="//@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.1/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="172,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="172,94"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="Chain" location="570,224" size="405,1197" id="de.ptb.epics.eve.data.scandescription/Chain" runTimeClassModel="getStopControlEventManager(),addRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),getModelErrors(),isBreakEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),removeStopEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),saveScanDescription,addPauseEvent(Lde.ptb.epics.eve.data.scandescription.PauseEvent;),saveFilename,getPauseControlEventManager(),removeStartEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),isAEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),addBreakEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),redoControlEventManager,isPauseEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.PauseEvent;),removeRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),getComment(),setId(I),isConfirmSave(),remove(Lde.ptb.epics.eve.data.scandescription.ScanModule;),getScanModulById(I),getSavePluginController(),getStopEventsIterator(),setSaveFilename(Ljava.lang.String;),getId(),getStartEventsIterator(),startEvent,startControlEventManager,getStartControlEventManager(),getPauseEventsIterator(),addStopEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),comment,getBreakControlEventManager(),getSaveFilename(),getBreakEventsIterator(),removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;),breakControlEventManager,scanDescription,isAutoNumber(),confirmSave,updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;),getRedoEventsIterator(),stopControlEventManager,id,setComment(Ljava.lang.String;),setAutoNumber(Z),removePauseEvent(Lde.ptb.epics.eve.data.scandescription.PauseEvent;),autoNumber,setConfirmSave(Z),addModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;),getScanDescription(),add(Lde.ptb.epics.eve.data.scandescription.ScanModule;),addStartEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),pauseControlEventManager,isRedoEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),scanModuls,setStartEvent(Lde.ptb.epics.eve.data.scandescription.StartEvent;),setSaveScanDescription(Z),getRedoControlEventManager(),getStartEvent(),getScanModuls(),isSaveScanDescription(),removeBreakEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),Chain(I)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="304,252">
+      <children xsi:type="editmodel:AttributeEditModel" name="autoNumber" id="de.ptb.epics.eve.data.scandescription/Chain#autoNumber"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="breakControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#breakControlEventManager"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="comment" id="de.ptb.epics.eve.data.scandescription/Chain#comment"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="confirmSave" id="de.ptb.epics.eve.data.scandescription/Chain#confirmSave"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="id" id="de.ptb.epics.eve.data.scandescription/Chain#id"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="pauseControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#pauseControlEventManager"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="redoControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#redoControlEventManager"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="saveFilename" id="de.ptb.epics.eve.data.scandescription/Chain#saveFilename"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="saveScanDescription" id="de.ptb.epics.eve.data.scandescription/Chain#saveScanDescription"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="scanDescription" id="de.ptb.epics.eve.data.scandescription/Chain#scanDescription"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="scanModuls" id="de.ptb.epics.eve.data.scandescription/Chain#scanModuls"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="startControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#startControlEventManager"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="startEvent" id="de.ptb.epics.eve.data.scandescription/Chain#startEvent"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="stopControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#stopControlEventManager"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="382,882">
+      <children xsi:type="editmodel:MethodEditModel" name="Chain" id="de.ptb.epics.eve.data.scandescription/Chain#Chain(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="de.ptb.epics.eve.data.scandescription/Chain#add(Lde.ptb.epics.eve.data.scandescription.ScanModule;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addBreakEvent" id="de.ptb.epics.eve.data.scandescription/Chain#addBreakEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addModelUpdateListener" id="de.ptb.epics.eve.data.scandescription/Chain#addModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addPauseEvent" id="de.ptb.epics.eve.data.scandescription/Chain#addPauseEvent(Lde.ptb.epics.eve.data.scandescription.PauseEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addRedoEvent" id="de.ptb.epics.eve.data.scandescription/Chain#addRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addStartEvent" id="de.ptb.epics.eve.data.scandescription/Chain#addStartEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addStopEvent" id="de.ptb.epics.eve.data.scandescription/Chain#addStopEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getBreakControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#getBreakControlEventManager()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getBreakEventsIterator" id="de.ptb.epics.eve.data.scandescription/Chain#getBreakEventsIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getComment" id="de.ptb.epics.eve.data.scandescription/Chain#getComment()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getId" id="de.ptb.epics.eve.data.scandescription/Chain#getId()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getModelErrors" id="de.ptb.epics.eve.data.scandescription/Chain#getModelErrors()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPauseControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#getPauseControlEventManager()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPauseEventsIterator" id="de.ptb.epics.eve.data.scandescription/Chain#getPauseEventsIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getRedoControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#getRedoControlEventManager()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getRedoEventsIterator" id="de.ptb.epics.eve.data.scandescription/Chain#getRedoEventsIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSaveFilename" id="de.ptb.epics.eve.data.scandescription/Chain#getSaveFilename()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSavePluginController" id="de.ptb.epics.eve.data.scandescription/Chain#getSavePluginController()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getScanDescription" id="de.ptb.epics.eve.data.scandescription/Chain#getScanDescription()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getScanModulById" id="de.ptb.epics.eve.data.scandescription/Chain#getScanModulById(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getScanModuls" id="de.ptb.epics.eve.data.scandescription/Chain#getScanModuls()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStartControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#getStartControlEventManager()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStartEvent" id="de.ptb.epics.eve.data.scandescription/Chain#getStartEvent()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStartEventsIterator" id="de.ptb.epics.eve.data.scandescription/Chain#getStartEventsIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStopControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#getStopControlEventManager()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStopEventsIterator" id="de.ptb.epics.eve.data.scandescription/Chain#getStopEventsIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isAEventOfTheChain" id="de.ptb.epics.eve.data.scandescription/Chain#isAEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isAutoNumber" id="de.ptb.epics.eve.data.scandescription/Chain#isAutoNumber()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isBreakEventOfTheChain" id="de.ptb.epics.eve.data.scandescription/Chain#isBreakEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isConfirmSave" id="de.ptb.epics.eve.data.scandescription/Chain#isConfirmSave()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isPauseEventOfTheChain" id="de.ptb.epics.eve.data.scandescription/Chain#isPauseEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.PauseEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isRedoEventOfTheChain" id="de.ptb.epics.eve.data.scandescription/Chain#isRedoEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isSaveScanDescription" id="de.ptb.epics.eve.data.scandescription/Chain#isSaveScanDescription()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="de.ptb.epics.eve.data.scandescription/Chain#remove(Lde.ptb.epics.eve.data.scandescription.ScanModule;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeBreakEvent" id="de.ptb.epics.eve.data.scandescription/Chain#removeBreakEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeModelUpdateListener" id="de.ptb.epics.eve.data.scandescription/Chain#removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removePauseEvent" id="de.ptb.epics.eve.data.scandescription/Chain#removePauseEvent(Lde.ptb.epics.eve.data.scandescription.PauseEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeRedoEvent" id="de.ptb.epics.eve.data.scandescription/Chain#removeRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeStartEvent" id="de.ptb.epics.eve.data.scandescription/Chain#removeStartEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeStopEvent" id="de.ptb.epics.eve.data.scandescription/Chain#removeStopEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setAutoNumber" id="de.ptb.epics.eve.data.scandescription/Chain#setAutoNumber(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setComment" id="de.ptb.epics.eve.data.scandescription/Chain#setComment(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setConfirmSave" id="de.ptb.epics.eve.data.scandescription/Chain#setConfirmSave(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setId" id="de.ptb.epics.eve.data.scandescription/Chain#setId(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setSaveFilename" id="de.ptb.epics.eve.data.scandescription/Chain#setSaveFilename(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setSaveScanDescription" id="de.ptb.epics.eve.data.scandescription/Chain#setSaveScanDescription(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStartEvent" id="de.ptb.epics.eve.data.scandescription/Chain#setStartEvent(Lde.ptb.epics.eve.data.scandescription.StartEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="updateEvent" id="de.ptb.epics.eve.data.scandescription/Chain#updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription.updatenotification/IModelUpdateProvider&lt;-de.ptb.epics.eve.data.scandescription/Chain" source="//@children.2" target="//@children.3" targetEnd="//@children.2/@sourceConnections.0/@children.1" sourceEnd="//@children.2/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="202,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="202,112"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.0" name="IModelUpdateProvider" location="570,50" size="405,112" id="de.ptb.epics.eve.data.scandescription.updatenotification/IModelUpdateProvider">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="382,36">
+      <children xsi:type="editmodel:MethodEditModel" name="addModelUpdateListener" id="de.ptb.epics.eve.data.scandescription.updatenotification/IModelUpdateProvider#addModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeModelUpdateListener" id="de.ptb.epics.eve.data.scandescription.updatenotification/IModelUpdateProvider#removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=1;Product=eUML2" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>

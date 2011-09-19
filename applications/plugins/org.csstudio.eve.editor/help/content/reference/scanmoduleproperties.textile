@@ -1,0 +1,8 @@
+h1(eveTopic). Scan Module Properties
+
+table(eveRefTable).
+|_. Property |_. Description|_. Domain|
+| __Trigger delay__ | delay time before trigger| float|
+| __Settletime__ | delay time after prescan| float|
+| __Confirm Trigger__ | indicates whether triggering should be confirmed| {true, false}|
+| __Save all motorpositions__ | indicates whether and how motor positions should be saved| {never, before, after, both}|

@@ -1,0 +1,12 @@
+h1(eveTopic). EveDevice Perspective
+
+p. The image below shows an overview of the EveDevice Perspective.
+
+!(eveImage)../../img/concepts/evedeviceperspective-overview.png(EveDevice Perspective Overview)!
+
+table(eveRefTable).
+| 1| Local Devices View| available devices arranged in a tree (by class)|
+| 2| Device Inspector View| allows monitoring and manipulation of devices|
+| 3| Device Options View| shows options of a selected device|
+| 4| Messages View| messages from multiple sources are displayed here|
+

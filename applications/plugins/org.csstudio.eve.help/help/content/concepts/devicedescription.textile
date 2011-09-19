@@ -1,0 +1,27 @@
+h1(eveTopic). Device Description
+
+p. A device description (file) is a collection of devices defined in XML. It is a list of motors and axes, detectors and channels, devices, options, plug ins and events which should be available in the program.
+
+h2(eveTopic). Motors & Motor Axes
+
+p. Motors are devices where you can read from or write to (e.g. a 'real' motor actually moving its axis or a radiator altering temperatures). They contain at least one axis.
+
+h2(eveTopic). Detectors & Detector Channels
+
+p. Detectors are devices to measure something. They have at least one channel. During the main phase they can only be read. Additionally options can be set during pre and postscan phases.
+
+h2(eveTopic). (Pre-/Postscan) Device
+
+p. Pre-/Postscan devices are devices where values could be assigned (as the name suspects) exclusively in pre- and postscan phases (e.g. open/close a beam shutter or switch on/off a fan).
+
+h2(eveTopic). Option
+
+p. Motors & motor axes as well as detectors & detector channels can have several options (e.g. __GoTo Position__ or __Hi Warn Limit__) which like devices could be assigned in pre and postscan phases.
+
+h2(eveTopic). Plug In
+
+p. There are several types of plug ins which allow extension of functionality. Examples are save plug ins (which allow saving measurement data in different formats, e.g. ASCII or HDF) and position plug ins (which define the way devices are positioned, e.g. __GOTO-Peak__).
+
+h2(eveTopic). Event
+
+p. An event can start a scan (special __S-0__ event), pause, cancel a scan or scan module or repeat the last step. Depending on their use, they are assigned to a chain, a scan module or to a detector.

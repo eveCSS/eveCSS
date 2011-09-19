@@ -1,0 +1,48 @@
+
+h3. Noch zu tun
+
+(Hilfe mit F1)
+
+* Hilfe-System: am 20100315 vereinbart, dass
+** die Klassen (z.B. Chain, ScanModule, SmMotors, SMAxis) in der scandescription erhalten eine validate-Methode, die die Klasse verifiziert und einen Fehler-Enum und Fehler-Text erzeugt, sowie einen errorUpdate aufruft. Dieser Fehler kann von den Fehler-Widgets in der GUI abonniert werden.  Die validate-Methoden können auch die im Baum tiefer liegenden validate-Routinen aufrufen. Das betrifft nur Fehler, die in der GUI korrigiert werden können.
+** hierarchie-übergreifende Fehler bei events werden vermieden, indem z.B. beim Löschen eines Events die validate-Methoden der Klassen aufgerufen werden, die das Event verwenden. Die verwendenden Klassen sind im Event gelistet. Gibt es noch andere hierarchie-übergreifende Fehler?
+** Andere Fehler, z.B. doppelte Ids für scanmodule etc., die nicht in der GUI behoben werden können, werden von der XML-Einlese-Routine, bzw später von CutandPaste angezeigt bzw. korrigiert.
+* Die folgenden Zeichen sind in PVs erlaubt und sollten auch im ID-Tag des XML-Files erlaubt sein: a-z A-Z 0-9 _ - : . [ ] < > ;
+* Das Detector-Event bleibt eindeutig, da es im <id>-Tag nur auftaucht im event vom Typ "detector". 
+* Editor erlaubt Auswahl über Rechtsklick nach Klassen in Baumdarstellung, um ewig lange Drop-Down-Listen zu vermeiden (z.B. bei Events oder prescan-Funktionen)
+* Class-Tag auch für Achsen und Kanäle
+* die Device-Perspective soll im Fenster Devices immer die Devices des Messplatzfiles enthalten, während die Engine Perspective die Devices des letzten Engine-Files im Devices Fenster enthält.
+
+h4. außerdem
+ 
+* IDL Einleseroutinen
+* Doku
+* xmlmsi-Tool
+* Konvertierungstool für verschiedene XML (Schema)-Versionen
+
+h3. Seltsames Export Problem:
+
+Der Export-Prozess ist abgebrochen ohne eine ausführbare Datei zu erzeugen. Erst ein Umsortieren des build.properties -File im product-Verzeichnis hat es wieder möglich gemacht. Sonst ist der gesamte Workspace gleich geblieben ausser dem Inhalt des .metadata-Verzeichnisses.
+(Die 3 Export Optionen waren nicht angekreuzt als es ging (export source / metadata repository / binary cycles) 
+Geht:
+bin.includes = .,\
+               plugin.xml,\
+               icons/,\
+               intro/,\
+               plugin_customization.ini,\
+               splash.bmp,\
+               CSS.product,\
+               configs/,\
+               META-INF/
+
+Geht nicht:
+ bin.includes = META-INF/,\
+               .,\
+               plugin.xml,\
+               icons/,\
+               intro/,\
+               plugin_customization.ini,\
+               splash.bmp,\
+               CSS.product,\
+               configs/
+ 
