@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="de.ptb.epics.eve.viewer.views.deviceinspectorview.table-viewer" size="2583,1559" id="de.ptb.epics.eve.viewer.views.deviceinspectorview" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D313030302064652E7074622E65706963732E6576652E7669657765722F6D6D696368616C73">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.30/@sourceConnections.0" name="TableViewer" location="544,480" size="280,207" id="org.eclipse.jface.viewers/TableViewer" runTimeClassModel="setSelection(Lorg.eclipse.jface.viewers.ISelection;Z),getTable(),TableViewer(Lorg.eclipse.swt.widgets.Composite;),refresh(Ljava.lang.Object;ZZ),getControl(),TableViewer(Lorg.eclipse.swt.widgets.Composite;I),table,TableViewer(Lorg.eclipse.swt.widgets.Table;),refresh(ZZ),remove([Ljava.lang.Object;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="84,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="table" id="org.eclipse.jface.viewers/TableViewer#table"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="257,126">
+      <children xsi:type="editmodel:MethodEditModel" name="TableViewer" id="org.eclipse.jface.viewers/TableViewer#TableViewer(Lorg.eclipse.swt.widgets.Composite;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getControl" id="org.eclipse.jface.viewers/TableViewer#getControl()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTable" id="org.eclipse.jface.viewers/TableViewer#getTable()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setSelection" id="org.eclipse.jface.viewers/TableViewer#setSelection(Lorg.eclipse.jface.viewers.ISelection;Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="refresh" id="org.eclipse.jface.viewers/TableViewer#refresh(Ljava.lang.Object;ZZ)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="refresh" id="org.eclipse.jface.viewers/TableViewer#refresh(ZZ)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="org.eclipse.jface.viewers/TableViewer#remove([Ljava.lang.Object;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/AbstractTableViewer&lt;-org.eclipse.jface.viewers/TableViewer" source="//@children.0" target="//@children.1" targetEnd="//@children.0/@sourceConnections.0/@children.1" sourceEnd="//@children.0/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="149,207" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="130,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.0" name="AbstractTableViewer" location="563,719" size="266,279" id="org.eclipse.jface.viewers/AbstractTableViewer" runTimeClassModel="add(Ljava.lang.Object;),setItemCount(I),insert(Ljava.lang.Object;I),clear(I),add([Ljava.lang.Object;),getElementAt(I),reveal(Ljava.lang.Object;),AbstractTableViewer(),getLabelProvider(),replace(Ljava.lang.Object;I),remove([Ljava.lang.Object;),remove(Ljava.lang.Object;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="243,216">
+      <children xsi:type="editmodel:MethodEditModel" name="AbstractTableViewer" id="org.eclipse.jface.viewers/AbstractTableViewer#AbstractTableViewer()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="org.eclipse.jface.viewers/AbstractTableViewer#add([Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="org.eclipse.jface.viewers/AbstractTableViewer#add(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getElementAt" id="org.eclipse.jface.viewers/AbstractTableViewer#getElementAt(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLabelProvider" id="org.eclipse.jface.viewers/AbstractTableViewer#getLabelProvider()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="insert" id="org.eclipse.jface.viewers/AbstractTableViewer#insert(Ljava.lang.Object;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="org.eclipse.jface.viewers/AbstractTableViewer#remove([Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="org.eclipse.jface.viewers/AbstractTableViewer#remove(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="reveal" id="org.eclipse.jface.viewers/AbstractTableViewer#reveal(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setItemCount" id="org.eclipse.jface.viewers/AbstractTableViewer#setItemCount(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="replace" id="org.eclipse.jface.viewers/AbstractTableViewer#replace(Ljava.lang.Object;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clear" id="org.eclipse.jface.viewers/AbstractTableViewer#clear(I)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/ColumnViewer&lt;-org.eclipse.jface.viewers/AbstractTableViewer" source="//@children.1" target="//@children.2" targetEnd="//@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.1/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="133,279" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="157,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.1/@sourceConnections.0" name="ColumnViewer" location="539,1079" size="314,459" id="org.eclipse.jface.viewers/ColumnViewer" runTimeClassModel="internalDisposeLabelProvider(Lorg.eclipse.jface.viewers.IBaseLabelProvider;),refresh(Ljava.lang.Object;),columnProperties,updateCell(Lorg.eclipse.jface.viewers.ViewerRow;ILjava.lang.Object;),getCellModifier(),getCellEditors(),setCellModifier(Lorg.eclipse.jface.viewers.ICellModifier;),getColumnViewerEditor(),isCellEditorActive(),getCell(Lorg.eclipse.swt.graphics.Point;),ColumnViewer(),cellEditors,refresh(Ljava.lang.Object;Z),editElement(Ljava.lang.Object;I),setLabelProvider(Lorg.eclipse.jface.viewers.IBaseLabelProvider;),cancelEditing(),clearLegacyEditingSetup(),cell,update(Ljava.lang.Object;[Ljava.lang.String;),getViewerColumn(I),getLabelProvider(I),cellModifier,setColumnProperties([Ljava.lang.String;),setColumnViewerEditor(Lorg.eclipse.jface.viewers.ColumnViewerEditor;),getColumnProperties(),setCellEditors([Lorg.eclipse.jface.viewers.CellEditor;),isBusy()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="202,72">
+      <children xsi:type="editmodel:AttributeEditModel" name="cellEditors" id="org.eclipse.jface.viewers/ColumnViewer#cellEditors"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="cellModifier" id="org.eclipse.jface.viewers/ColumnViewer#cellModifier"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="columnProperties" id="org.eclipse.jface.viewers/ColumnViewer#columnProperties"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="cell" id="org.eclipse.jface.viewers/ColumnViewer#cell"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="291,324">
+      <children xsi:type="editmodel:MethodEditModel" name="getCell" id="org.eclipse.jface.viewers/ColumnViewer#getCell(Lorg.eclipse.swt.graphics.Point;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setLabelProvider" id="org.eclipse.jface.viewers/ColumnViewer#setLabelProvider(Lorg.eclipse.jface.viewers.IBaseLabelProvider;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="cancelEditing" id="org.eclipse.jface.viewers/ColumnViewer#cancelEditing()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="editElement" id="org.eclipse.jface.viewers/ColumnViewer#editElement(Ljava.lang.Object;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getCellEditors" id="org.eclipse.jface.viewers/ColumnViewer#getCellEditors()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getCellModifier" id="org.eclipse.jface.viewers/ColumnViewer#getCellModifier()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getColumnProperties" id="org.eclipse.jface.viewers/ColumnViewer#getColumnProperties()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isCellEditorActive" id="org.eclipse.jface.viewers/ColumnViewer#isCellEditorActive()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="refresh" id="org.eclipse.jface.viewers/ColumnViewer#refresh(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="refresh" id="org.eclipse.jface.viewers/ColumnViewer#refresh(Ljava.lang.Object;Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="update" id="org.eclipse.jface.viewers/ColumnViewer#update(Ljava.lang.Object;[Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setCellEditors" id="org.eclipse.jface.viewers/ColumnViewer#setCellEditors([Lorg.eclipse.jface.viewers.CellEditor;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setCellModifier" id="org.eclipse.jface.viewers/ColumnViewer#setCellModifier(Lorg.eclipse.jface.viewers.ICellModifier;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setColumnProperties" id="org.eclipse.jface.viewers/ColumnViewer#setColumnProperties([Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLabelProvider" id="org.eclipse.jface.viewers/ColumnViewer#getLabelProvider(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setColumnViewerEditor" id="org.eclipse.jface.viewers/ColumnViewer#setColumnViewerEditor(Lorg.eclipse.jface.viewers.ColumnViewerEditor;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getColumnViewerEditor" id="org.eclipse.jface.viewers/ColumnViewer#getColumnViewerEditor()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isBusy" id="org.eclipse.jface.viewers/ColumnViewer#isBusy()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/StructuredViewer&lt;-org.eclipse.jface.viewers/ColumnViewer" source="//@children.2" target="//@children.3" targetEnd="//@children.2/@sourceConnections.0/@children.1" sourceEnd="//@children.2/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,229" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="435,498"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.2/@sourceConnections.0" name="StructuredViewer" location="45,810" size="435,729" id="org.eclipse.jface.viewers/StructuredViewer" runTimeClassModel="setPreserveSelection(Z),org.eclipse.jface.viewers.StructuredViewer.UpdateItemSafeRunnable,setSorter(Lorg.eclipse.jface.viewers.ViewerSorter;),setAssociateListener(Lorg.eclipse.jface.viewers.StructuredViewerInternals.AssociateListener;),testFindItems(Ljava.lang.Object;),removeOpenListener(Lorg.eclipse.jface.viewers.IOpenListener;),addOpenListener(Lorg.eclipse.jface.viewers.IOpenListener;),update([Ljava.lang.Object;[Ljava.lang.String;),&lt;clinit>(),setInput(Ljava.lang.Object;),refresh(Ljava.lang.Object;),setUseHashlookup(Z),getSorter(),setComparator(Lorg.eclipse.jface.viewers.ViewerComparator;),sorter,addDropSupport(I[Lorg.eclipse.swt.dnd.Transfer;Lorg.eclipse.swt.dnd.DropTargetListener;),resetFilters(),preservingSelection(Ljava.lang.Runnable;Z),buildLabel(Lorg.eclipse.jface.viewers.ViewerLabel;Lorg.eclipse.jface.viewers.TreePath;Lorg.eclipse.jface.viewers.ITreePathLabelProvider;),removePostSelectionChangedListener(Lorg.eclipse.jface.viewers.ISelectionChangedListener;),setSelection(Lorg.eclipse.jface.viewers.ISelection;Z),refresh(Ljava.lang.Object;Z),addFilter(Lorg.eclipse.jface.viewers.ViewerFilter;),buildLabel(Lorg.eclipse.jface.viewers.ViewerLabel;Ljava.lang.Object;Lorg.eclipse.jface.viewers.IViewerLabelProvider;),comparer,setLabelProvider(Lorg.eclipse.jface.viewers.IBaseLabelProvider;),getFilters(),buildLabel(Lorg.eclipse.jface.viewers.ViewerLabel;Ljava.lang.Object;Lorg.eclipse.jface.viewers.ILabelProvider;),reveal(Ljava.lang.Object;),removeDoubleClickListener(Lorg.eclipse.jface.viewers.IDoubleClickListener;),update(Ljava.lang.Object;[Ljava.lang.String;),getPreserveSelection(),getComparer(),refresh(Z),refresh(),addPostSelectionChangedListener(Lorg.eclipse.jface.viewers.ISelectionChangedListener;),newHashtable(I),setComparer(Lorg.eclipse.jface.viewers.IElementComparer;),removeFilter(Lorg.eclipse.jface.viewers.ViewerFilter;),getSelection(),testFindItem(Ljava.lang.Object;),getComparator(),addDoubleClickListener(Lorg.eclipse.jface.viewers.IDoubleClickListener;),setContentProvider(Lorg.eclipse.jface.viewers.IContentProvider;),setFilters([Lorg.eclipse.jface.viewers.ViewerFilter;),filters,addDragSupport(I[Lorg.eclipse.swt.dnd.Transfer;Lorg.eclipse.swt.dnd.DragSourceListener;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="188,54">
+      <children xsi:type="editmodel:AttributeEditModel" name="comparer" id="org.eclipse.jface.viewers/StructuredViewer#comparer"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="sorter" id="org.eclipse.jface.viewers/StructuredViewer#sorter"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="filters" id="org.eclipse.jface.viewers/StructuredViewer#filters"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="412,612">
+      <children xsi:type="editmodel:MethodEditModel" name="addDoubleClickListener" id="org.eclipse.jface.viewers/StructuredViewer#addDoubleClickListener(Lorg.eclipse.jface.viewers.IDoubleClickListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addOpenListener" id="org.eclipse.jface.viewers/StructuredViewer#addOpenListener(Lorg.eclipse.jface.viewers.IOpenListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addPostSelectionChangedListener" id="org.eclipse.jface.viewers/StructuredViewer#addPostSelectionChangedListener(Lorg.eclipse.jface.viewers.ISelectionChangedListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addDragSupport" id="org.eclipse.jface.viewers/StructuredViewer#addDragSupport(I[Lorg.eclipse.swt.dnd.Transfer;Lorg.eclipse.swt.dnd.DragSourceListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addDropSupport" id="org.eclipse.jface.viewers/StructuredViewer#addDropSupport(I[Lorg.eclipse.swt.dnd.Transfer;Lorg.eclipse.swt.dnd.DropTargetListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addFilter" id="org.eclipse.jface.viewers/StructuredViewer#addFilter(Lorg.eclipse.jface.viewers.ViewerFilter;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getComparer" id="org.eclipse.jface.viewers/StructuredViewer#getComparer()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getFilters" id="org.eclipse.jface.viewers/StructuredViewer#getFilters()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSelection" id="org.eclipse.jface.viewers/StructuredViewer#getSelection()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSorter" id="org.eclipse.jface.viewers/StructuredViewer#getSorter()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getComparator" id="org.eclipse.jface.viewers/StructuredViewer#getComparator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="refresh" id="org.eclipse.jface.viewers/StructuredViewer#refresh()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="refresh" id="org.eclipse.jface.viewers/StructuredViewer#refresh(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="refresh" id="org.eclipse.jface.viewers/StructuredViewer#refresh(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="refresh" id="org.eclipse.jface.viewers/StructuredViewer#refresh(Ljava.lang.Object;Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeOpenListener" id="org.eclipse.jface.viewers/StructuredViewer#removeOpenListener(Lorg.eclipse.jface.viewers.IOpenListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removePostSelectionChangedListener" id="org.eclipse.jface.viewers/StructuredViewer#removePostSelectionChangedListener(Lorg.eclipse.jface.viewers.ISelectionChangedListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeDoubleClickListener" id="org.eclipse.jface.viewers/StructuredViewer#removeDoubleClickListener(Lorg.eclipse.jface.viewers.IDoubleClickListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeFilter" id="org.eclipse.jface.viewers/StructuredViewer#removeFilter(Lorg.eclipse.jface.viewers.ViewerFilter;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setFilters" id="org.eclipse.jface.viewers/StructuredViewer#setFilters([Lorg.eclipse.jface.viewers.ViewerFilter;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="resetFilters" id="org.eclipse.jface.viewers/StructuredViewer#resetFilters()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="reveal" id="org.eclipse.jface.viewers/StructuredViewer#reveal(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setContentProvider" id="org.eclipse.jface.viewers/StructuredViewer#setContentProvider(Lorg.eclipse.jface.viewers.IContentProvider;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setInput" id="org.eclipse.jface.viewers/StructuredViewer#setInput(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setSelection" id="org.eclipse.jface.viewers/StructuredViewer#setSelection(Lorg.eclipse.jface.viewers.ISelection;Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setSorter" id="org.eclipse.jface.viewers/StructuredViewer#setSorter(Lorg.eclipse.jface.viewers.ViewerSorter;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setComparator" id="org.eclipse.jface.viewers/StructuredViewer#setComparator(Lorg.eclipse.jface.viewers.ViewerComparator;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setUseHashlookup" id="org.eclipse.jface.viewers/StructuredViewer#setUseHashlookup(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setComparer" id="org.eclipse.jface.viewers/StructuredViewer#setComparer(Lorg.eclipse.jface.viewers.IElementComparer;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="testFindItem" id="org.eclipse.jface.viewers/StructuredViewer#testFindItem(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="testFindItems" id="org.eclipse.jface.viewers/StructuredViewer#testFindItems(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="update" id="org.eclipse.jface.viewers/StructuredViewer#update([Ljava.lang.Object;[Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="update" id="org.eclipse.jface.viewers/StructuredViewer#update(Ljava.lang.Object;[Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setLabelProvider" id="org.eclipse.jface.viewers/StructuredViewer#setLabelProvider(Lorg.eclipse.jface.viewers.IBaseLabelProvider;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/ContentViewer&lt;-org.eclipse.jface.viewers/StructuredViewer" source="//@children.3" target="//@children.4" targetEnd="//@children.3/@sourceConnections.0/@children.1" sourceEnd="//@children.3/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="217,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="136,171"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.3/@sourceConnections.0" name="ContentViewer" location="126,585" size="272,171" id="org.eclipse.jface.viewers/ContentViewer" runTimeClassModel="internalDisposeLabelProvider(Lorg.eclipse.jface.viewers.IBaseLabelProvider;),input,getContentProvider(),setLabelProvider(Lorg.eclipse.jface.viewers.IBaseLabelProvider;),labelProvider,contentProvider,getLabelProvider(),setContentProvider(Lorg.eclipse.jface.viewers.IContentProvider;),setInput(Ljava.lang.Object;),getInput()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="210,54">
+      <children xsi:type="editmodel:AttributeEditModel" name="contentProvider" id="org.eclipse.jface.viewers/ContentViewer#contentProvider"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="input" id="org.eclipse.jface.viewers/ContentViewer#input"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="labelProvider" id="org.eclipse.jface.viewers/ContentViewer#labelProvider"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="249,54">
+      <children xsi:type="editmodel:MethodEditModel" name="setContentProvider" id="org.eclipse.jface.viewers/ContentViewer#setContentProvider(Lorg.eclipse.jface.viewers.IContentProvider;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setInput" id="org.eclipse.jface.viewers/ContentViewer#setInput(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setLabelProvider" id="org.eclipse.jface.viewers/ContentViewer#setLabelProvider(Lorg.eclipse.jface.viewers.IBaseLabelProvider;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/Viewer&lt;-org.eclipse.jface.viewers/ContentViewer" source="//@children.4" target="//@children.5" targetEnd="//@children.4/@sourceConnections.0/@children.1" sourceEnd="//@children.4/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="136,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="205,189"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.4/@sourceConnections.0" name="Viewer" location="57,349" size="410,189" id="org.eclipse.jface.viewers/Viewer" runTimeClassModel="setSelection(Lorg.eclipse.jface.viewers.ISelection;Z),addSelectionChangedListener(Lorg.eclipse.jface.viewers.ISelectionChangedListener;),removeSelectionChangedListener(Lorg.eclipse.jface.viewers.ISelectionChangedListener;),getData(Ljava.lang.String;),getControl(),scrollDown(II),addHelpListener(Lorg.eclipse.swt.events.HelpListener;),scrollUp(II),setInput(Ljava.lang.Object;),setSelection(Lorg.eclipse.jface.viewers.ISelection;),getInput(),removeHelpListener(Lorg.eclipse.swt.events.HelpListener;),refresh(),getSelection(),setData(Ljava.lang.String;Ljava.lang.Object;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="387,126">
+      <children xsi:type="editmodel:MethodEditModel" name="addSelectionChangedListener" id="org.eclipse.jface.viewers/Viewer#addSelectionChangedListener(Lorg.eclipse.jface.viewers.ISelectionChangedListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSelection" id="org.eclipse.jface.viewers/Viewer#getSelection()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="refresh" id="org.eclipse.jface.viewers/Viewer#refresh()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeSelectionChangedListener" id="org.eclipse.jface.viewers/Viewer#removeSelectionChangedListener(Lorg.eclipse.jface.viewers.ISelectionChangedListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setInput" id="org.eclipse.jface.viewers/Viewer#setInput(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setSelection" id="org.eclipse.jface.viewers/Viewer#setSelection(Lorg.eclipse.jface.viewers.ISelection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setSelection" id="org.eclipse.jface.viewers/Viewer#setSelection(Lorg.eclipse.jface.viewers.ISelection;Z)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/IInputSelectionProvider&lt;-org.eclipse.jface.viewers/Viewer" source="//@children.5" target="//@children.6" targetEnd="//@children.5/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="124,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="106,56"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.5/@sourceConnections.0" name="IInputSelectionProvider" location="75,243" size="213,56" id="org.eclipse.jface.viewers/IInputSelectionProvider" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/ISelectionProvider&lt;-org.eclipse.jface.viewers/IInputSelectionProvider" source="//@children.6" target="//@children.7" targetEnd="//@children.6/@sourceConnections.0/@children.1" sourceEnd="//@children.6/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="106,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="124,148"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.6/@sourceConnections.0 //@children.8/@sourceConnections.0" name="ISelectionProvider" location="57,45" size="410,148" id="org.eclipse.jface.viewers/ISelectionProvider" runTimeClassModel="addSelectionChangedListener(Lorg.eclipse.jface.viewers.ISelectionChangedListener;),removeSelectionChangedListener(Lorg.eclipse.jface.viewers.ISelectionChangedListener;),getSelection(),setSelection(Lorg.eclipse.jface.viewers.ISelection;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="387,72">
+      <children xsi:type="editmodel:MethodEditModel" name="addSelectionChangedListener" id="org.eclipse.jface.viewers/ISelectionProvider#addSelectionChangedListener(Lorg.eclipse.jface.viewers.ISelectionChangedListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getSelection" id="org.eclipse.jface.viewers/ISelectionProvider#getSelection()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeSelectionChangedListener" id="org.eclipse.jface.viewers/ISelectionProvider#removeSelectionChangedListener(Lorg.eclipse.jface.viewers.ISelectionChangedListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setSelection" id="org.eclipse.jface.viewers/ISelectionProvider#setSelection(Lorg.eclipse.jface.viewers.ISelection;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:NotepadEditModel" location="495,45" size="209,41" fontInfo="Sans-8-0" note="View registeres its table viewer &#xA;at the global selection service">
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" autoLocated="true" source="//@children.8" target="//@children.7" targetEnd="//@children.8/@sourceConnections.0/@children.1" sourceEnd="//@children.8/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,20" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="410,20"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.11/@sourceConnections.0" name="IContentProvider" location="546,105" size="300,112" id="org.eclipse.jface.viewers/IContentProvider" runTimeClassModel="dispose(),inputChanged(Lorg.eclipse.jface.viewers.Viewer;Ljava.lang.Object;Ljava.lang.Object;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="277,36">
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="org.eclipse.jface.viewers/IContentProvider#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="inputChanged" id="org.eclipse.jface.viewers/IContentProvider#inputChanged(Lorg.eclipse.jface.viewers.Viewer;Ljava.lang.Object;Ljava.lang.Object;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.12/@sourceConnections.0" name="IBaseLabelProvider" location="900,45" size="301,148" id="org.eclipse.jface.viewers/IBaseLabelProvider" runTimeClassModel="dispose(),isLabelProperty(Ljava.lang.Object;Ljava.lang.String;),addListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;),removeListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="278,72">
+      <children xsi:type="editmodel:MethodEditModel" name="addListener" id="org.eclipse.jface.viewers/IBaseLabelProvider#addListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="org.eclipse.jface.viewers/IBaseLabelProvider#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isLabelProperty" id="org.eclipse.jface.viewers/IBaseLabelProvider#isLabelProperty(Ljava.lang.Object;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeListener" id="org.eclipse.jface.viewers/IBaseLabelProvider#removeListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="IStructuredContentProvider" location="601,251" size="244,94" id="org.eclipse.jface.viewers/IStructuredContentProvider" runTimeClassModel="getElements(Ljava.lang.Object;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="204,18">
+      <children xsi:type="editmodel:MethodEditModel" name="getElements" id="org.eclipse.jface.viewers/IStructuredContentProvider#getElements(Ljava.lang.Object;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/IContentProvider&lt;-org.eclipse.jface.viewers/IStructuredContentProvider" source="//@children.11" target="//@children.9" targetEnd="//@children.11/@sourceConnections.0/@children.1" sourceEnd="//@children.11/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="121,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="176,112"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.13/@sourceConnections.0" name="BaseLabelProvider" location="869,243" size="301,135" id="org.eclipse.jface.viewers/BaseLabelProvider" runTimeClassModel="dispose(),isLabelProperty(Ljava.lang.Object;Ljava.lang.String;),BaseLabelProvider(),addListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;),removeListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="278,72">
+      <children xsi:type="editmodel:MethodEditModel" name="addListener" id="org.eclipse.jface.viewers/BaseLabelProvider#addListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="org.eclipse.jface.viewers/BaseLabelProvider#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isLabelProperty" id="org.eclipse.jface.viewers/BaseLabelProvider#isLabelProperty(Ljava.lang.Object;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeListener" id="org.eclipse.jface.viewers/BaseLabelProvider#removeListener(Lorg.eclipse.jface.viewers.ILabelProviderListener;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.24/@sourceConnections.0" autoLocated="true" id="org.eclipse.jface.viewers/IBaseLabelProvider&lt;-org.eclipse.jface.viewers/BaseLabelProvider" source="//@children.12" target="//@children.10" targetEnd="//@children.12/@sourceConnections.0/@children.1" sourceEnd="//@children.12/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="150,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="150,148" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.14/@sourceConnections.0" name="CellLabelProvider" location="871,428" size="297,279" id="org.eclipse.jface.viewers/CellLabelProvider" runTimeClassModel="getToolTipText(Ljava.lang.Object;),getToolTipForegroundColor(Ljava.lang.Object;),getToolTipShift(Ljava.lang.Object;),useNativeToolTip(Ljava.lang.Object;),getToolTipStyle(Ljava.lang.Object;),getToolTipBackgroundColor(Ljava.lang.Object;),CellLabelProvider(),getToolTipDisplayDelayTime(Ljava.lang.Object;),getToolTipTimeDisplayed(Ljava.lang.Object;),getToolTipFont(Ljava.lang.Object;),getToolTipImage(Ljava.lang.Object;),dispose(Lorg.eclipse.jface.viewers.ColumnViewer;Lorg.eclipse.jface.viewers.ViewerColumn;),update(Lorg.eclipse.jface.viewers.ViewerCell;),createViewerLabelProvider(Lorg.eclipse.jface.viewers.ColumnViewer;Lorg.eclipse.jface.viewers.IBaseLabelProvider;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="274,216">
+      <children xsi:type="editmodel:MethodEditModel" name="getToolTipImage" id="org.eclipse.jface.viewers/CellLabelProvider#getToolTipImage(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getToolTipText" id="org.eclipse.jface.viewers/CellLabelProvider#getToolTipText(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getToolTipBackgroundColor" id="org.eclipse.jface.viewers/CellLabelProvider#getToolTipBackgroundColor(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getToolTipForegroundColor" id="org.eclipse.jface.viewers/CellLabelProvider#getToolTipForegroundColor(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getToolTipFont" id="org.eclipse.jface.viewers/CellLabelProvider#getToolTipFont(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getToolTipShift" id="org.eclipse.jface.viewers/CellLabelProvider#getToolTipShift(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="useNativeToolTip" id="org.eclipse.jface.viewers/CellLabelProvider#useNativeToolTip(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getToolTipTimeDisplayed" id="org.eclipse.jface.viewers/CellLabelProvider#getToolTipTimeDisplayed(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getToolTipDisplayDelayTime" id="org.eclipse.jface.viewers/CellLabelProvider#getToolTipDisplayDelayTime(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getToolTipStyle" id="org.eclipse.jface.viewers/CellLabelProvider#getToolTipStyle(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="update" id="org.eclipse.jface.viewers/CellLabelProvider#update(Lorg.eclipse.jface.viewers.ViewerCell;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="org.eclipse.jface.viewers/CellLabelProvider#dispose(Lorg.eclipse.jface.viewers.ColumnViewer;Lorg.eclipse.jface.viewers.ViewerColumn;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/BaseLabelProvider&lt;-org.eclipse.jface.viewers/CellLabelProvider" source="//@children.13" target="//@children.12" targetEnd="//@children.13/@sourceConnections.0/@children.1" sourceEnd="//@children.13/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="148,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="150,135"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ColumnLabelProvider" location="906,757" size="227,171" id="org.eclipse.jface.viewers/ColumnLabelProvider" runTimeClassModel="ColumnLabelProvider(),getBackground(Ljava.lang.Object;),getImage(Ljava.lang.Object;),getText(Ljava.lang.Object;),getFont(Ljava.lang.Object;),update(Lorg.eclipse.jface.viewers.ViewerCell;),getForeground(Ljava.lang.Object;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="204,108">
+      <children xsi:type="editmodel:MethodEditModel" name="update" id="org.eclipse.jface.viewers/ColumnLabelProvider#update(Lorg.eclipse.jface.viewers.ViewerCell;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getFont" id="org.eclipse.jface.viewers/ColumnLabelProvider#getFont(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getBackground" id="org.eclipse.jface.viewers/ColumnLabelProvider#getBackground(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getForeground" id="org.eclipse.jface.viewers/ColumnLabelProvider#getForeground(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getImage" id="org.eclipse.jface.viewers/ColumnLabelProvider#getImage(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getText" id="org.eclipse.jface.viewers/ColumnLabelProvider#getText(Ljava.lang.Object;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/CellLabelProvider&lt;-org.eclipse.jface.viewers/ColumnLabelProvider" source="//@children.14" target="//@children.13" targetEnd="//@children.14/@sourceConnections.0/@children.1" sourceEnd="//@children.14/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="113,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="148,279"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="TableViewerColumn" location="1197,765" size="339,153" id="org.eclipse.jface.viewers/TableViewerColumn" runTimeClassModel="getColumn(),TableViewerColumn(Lorg.eclipse.jface.viewers.TableViewer;I),column,TableViewerColumn(Lorg.eclipse.jface.viewers.TableViewer;II),TableViewerColumn(Lorg.eclipse.jface.viewers.TableViewer;Lorg.eclipse.swt.widgets.TableColumn;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="140,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="column" id="org.eclipse.jface.viewers/TableViewerColumn#column"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="316,72">
+      <children xsi:type="editmodel:MethodEditModel" name="TableViewerColumn" id="org.eclipse.jface.viewers/TableViewerColumn#TableViewerColumn(Lorg.eclipse.jface.viewers.TableViewer;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="TableViewerColumn" id="org.eclipse.jface.viewers/TableViewerColumn#TableViewerColumn(Lorg.eclipse.jface.viewers.TableViewer;II)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="TableViewerColumn" id="org.eclipse.jface.viewers/TableViewerColumn#TableViewerColumn(Lorg.eclipse.jface.viewers.TableViewer;Lorg.eclipse.swt.widgets.TableColumn;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getColumn" id="org.eclipse.jface.viewers/TableViewerColumn#getColumn()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/ViewerColumn&lt;-org.eclipse.jface.viewers/TableViewerColumn" source="//@children.15" target="//@children.26" targetEnd="//@children.15/@sourceConnections.0/@children.1" sourceEnd="//@children.15/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="169,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="163,261"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="EditingSupport" location="1507,272" size="238,189" id="org.eclipse.jface.viewers/EditingSupport" runTimeClassModel="getValue(Ljava.lang.Object;),EditingSupport(Lorg.eclipse.jface.viewers.ColumnViewer;),setValue(Ljava.lang.Object;Ljava.lang.Object;),isLegacySupport(),getCellEditor(Ljava.lang.Object;),viewer,canEdit(Ljava.lang.Object;),getViewer()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="145,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="viewer" id="org.eclipse.jface.viewers/EditingSupport#viewer"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="215,108">
+      <children xsi:type="editmodel:MethodEditModel" name="EditingSupport" id="org.eclipse.jface.viewers/EditingSupport#EditingSupport(Lorg.eclipse.jface.viewers.ColumnViewer;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getCellEditor" id="org.eclipse.jface.viewers/EditingSupport#getCellEditor(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="canEdit" id="org.eclipse.jface.viewers/EditingSupport#canEdit(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getValue" id="org.eclipse.jface.viewers/EditingSupport#getValue(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setValue" id="org.eclipse.jface.viewers/EditingSupport#setValue(Ljava.lang.Object;Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getViewer" id="org.eclipse.jface.viewers/EditingSupport#getViewer()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.18/@sourceConnections.0" name="CellEditor" location="1758,105" size="388,819" id="org.eclipse.jface.viewers/CellEditor" runTimeClassModel="getErrorMessage(),setValue(Ljava.lang.Object;),performCopy(),addPropertyChangeListener(Lorg.eclipse.jface.util.IPropertyChangeListener;),getControl(),isRedoEnabled(),fireEditorValueChanged(ZZ),sELECT_ALL,performSelectAll(),dELETE,focusLost(),setStyle(I),activate(),control,dispose(),isDirty(),pASTE,removePropertyChangeListener(Lorg.eclipse.jface.util.IPropertyChangeListener;),addListener(Lorg.eclipse.jface.viewers.ICellEditorListener;),isFindEnabled(),setFocus(),getLayoutData(),fIND,create(Lorg.eclipse.swt.widgets.Composite;),performFind(),getValue(),deactivate(),performDelete(),performPaste(),isActivated(),performRedo(),getStyle(),org.eclipse.jface.viewers.CellEditor.LayoutData,removeListener(Lorg.eclipse.jface.viewers.ICellEditorListener;),errorMessage,performUndo(),rEDO,isPasteEnabled(),validator,activate(Lorg.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;),cOPY,cUT,fireCancelEditor(),isUndoEnabled(),style,performCut(),isValueValid(),setValidator(Lorg.eclipse.jface.viewers.ICellEditorValidator;),uNDO,isSelectAllEnabled(),getValidator(),fireApplyEditorValue(),isCutEnabled(),isCopyEnabled(),isDeleteEnabled()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="365,756">
+      <children xsi:type="editmodel:MethodEditModel" name="activate" id="org.eclipse.jface.viewers/CellEditor#activate()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addListener" id="org.eclipse.jface.viewers/CellEditor#addListener(Lorg.eclipse.jface.viewers.ICellEditorListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addPropertyChangeListener" id="org.eclipse.jface.viewers/CellEditor#addPropertyChangeListener(Lorg.eclipse.jface.util.IPropertyChangeListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="create" id="org.eclipse.jface.viewers/CellEditor#create(Lorg.eclipse.swt.widgets.Composite;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="deactivate" id="org.eclipse.jface.viewers/CellEditor#deactivate()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="org.eclipse.jface.viewers/CellEditor#dispose()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="fireApplyEditorValue" id="org.eclipse.jface.viewers/CellEditor#fireApplyEditorValue()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="fireCancelEditor" id="org.eclipse.jface.viewers/CellEditor#fireCancelEditor()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="fireEditorValueChanged" id="org.eclipse.jface.viewers/CellEditor#fireEditorValueChanged(ZZ)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStyle" id="org.eclipse.jface.viewers/CellEditor#setStyle(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStyle" id="org.eclipse.jface.viewers/CellEditor#getStyle()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getControl" id="org.eclipse.jface.viewers/CellEditor#getControl()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getErrorMessage" id="org.eclipse.jface.viewers/CellEditor#getErrorMessage()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLayoutData" id="org.eclipse.jface.viewers/CellEditor#getLayoutData()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getValidator" id="org.eclipse.jface.viewers/CellEditor#getValidator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getValue" id="org.eclipse.jface.viewers/CellEditor#getValue()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isActivated" id="org.eclipse.jface.viewers/CellEditor#isActivated()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isCopyEnabled" id="org.eclipse.jface.viewers/CellEditor#isCopyEnabled()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isCutEnabled" id="org.eclipse.jface.viewers/CellEditor#isCutEnabled()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isDeleteEnabled" id="org.eclipse.jface.viewers/CellEditor#isDeleteEnabled()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isDirty" id="org.eclipse.jface.viewers/CellEditor#isDirty()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isFindEnabled" id="org.eclipse.jface.viewers/CellEditor#isFindEnabled()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isPasteEnabled" id="org.eclipse.jface.viewers/CellEditor#isPasteEnabled()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isRedoEnabled" id="org.eclipse.jface.viewers/CellEditor#isRedoEnabled()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isSelectAllEnabled" id="org.eclipse.jface.viewers/CellEditor#isSelectAllEnabled()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isUndoEnabled" id="org.eclipse.jface.viewers/CellEditor#isUndoEnabled()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isValueValid" id="org.eclipse.jface.viewers/CellEditor#isValueValid()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="focusLost" id="org.eclipse.jface.viewers/CellEditor#focusLost()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="performCopy" id="org.eclipse.jface.viewers/CellEditor#performCopy()"/>
+      <children xsi:type="editmodel:MethodEditModel" targetConnections="//@children.33/@sourceConnections.0" name="performCut" id="org.eclipse.jface.viewers/CellEditor#performCut()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="performDelete" id="org.eclipse.jface.viewers/CellEditor#performDelete()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="performFind" id="org.eclipse.jface.viewers/CellEditor#performFind()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="performPaste" id="org.eclipse.jface.viewers/CellEditor#performPaste()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="performRedo" id="org.eclipse.jface.viewers/CellEditor#performRedo()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="performSelectAll" id="org.eclipse.jface.viewers/CellEditor#performSelectAll()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="performUndo" id="org.eclipse.jface.viewers/CellEditor#performUndo()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeListener" id="org.eclipse.jface.viewers/CellEditor#removeListener(Lorg.eclipse.jface.viewers.ICellEditorListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removePropertyChangeListener" id="org.eclipse.jface.viewers/CellEditor#removePropertyChangeListener(Lorg.eclipse.jface.util.IPropertyChangeListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setFocus" id="org.eclipse.jface.viewers/CellEditor#setFocus()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setValidator" id="org.eclipse.jface.viewers/CellEditor#setValidator(Lorg.eclipse.jface.viewers.ICellEditorValidator;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setValue" id="org.eclipse.jface.viewers/CellEditor#setValue(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="activate" id="org.eclipse.jface.viewers/CellEditor#activate(Lorg.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.19/@sourceConnections.0" name="AbstractComboBoxCellEditor" location="1811,974" size="327,225" id="org.eclipse.jface.viewers/AbstractComboBoxCellEditor" runTimeClassModel="AbstractComboBoxCellEditor(Lorg.eclipse.swt.widgets.Composite;I),activationStyle,dROP_DOWN_ON_MOUSE_ACTIVATION,setActivationStyle(I),activate(Lorg.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;),dROP_DOWN_ON_KEY_ACTIVATION,AbstractComboBoxCellEditor(),dROP_DOWN_ON_TRAVERSE_ACTIVATION,dROP_DOWN_ON_PROGRAMMATIC_ACTIVATION">
+    <children xsi:type="editmodel:CompartmentEditModel" size="299,90">
+      <children xsi:type="editmodel:AttributeEditModel" name="activationStyle" id="org.eclipse.jface.viewers/AbstractComboBoxCellEditor#activationStyle"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="dROP_DOWN_ON_KEY_ACTIVATION" id="org.eclipse.jface.viewers/AbstractComboBoxCellEditor#dROP_DOWN_ON_KEY_ACTIVATION"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="dROP_DOWN_ON_MOUSE_ACTIVATION" id="org.eclipse.jface.viewers/AbstractComboBoxCellEditor#dROP_DOWN_ON_MOUSE_ACTIVATION"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="dROP_DOWN_ON_PROGRAMMATIC_ACTIVATION" id="org.eclipse.jface.viewers/AbstractComboBoxCellEditor#dROP_DOWN_ON_PROGRAMMATIC_ACTIVATION"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="dROP_DOWN_ON_TRAVERSE_ACTIVATION" id="org.eclipse.jface.viewers/AbstractComboBoxCellEditor#dROP_DOWN_ON_TRAVERSE_ACTIVATION"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="304,72">
+      <children xsi:type="editmodel:MethodEditModel" name="AbstractComboBoxCellEditor" id="org.eclipse.jface.viewers/AbstractComboBoxCellEditor#AbstractComboBoxCellEditor(Lorg.eclipse.swt.widgets.Composite;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="AbstractComboBoxCellEditor" id="org.eclipse.jface.viewers/AbstractComboBoxCellEditor#AbstractComboBoxCellEditor()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="activate" id="org.eclipse.jface.viewers/AbstractComboBoxCellEditor#activate(Lorg.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setActivationStyle" id="org.eclipse.jface.viewers/AbstractComboBoxCellEditor#setActivationStyle(I)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.20/@sourceConnections.0 //@children.21/@sourceConnections.0 //@children.23/@sourceConnections.0" autoLocated="true" id="org.eclipse.jface.viewers/CellEditor&lt;-org.eclipse.jface.viewers/AbstractComboBoxCellEditor" source="//@children.18" target="//@children.17" targetEnd="//@children.18/@sourceConnections.0/@children.1" sourceEnd="//@children.18/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="163,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="194,819" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ComboBoxCellEditor" location="1455,1273" size="344,243" id="org.eclipse.jface.viewers/ComboBoxCellEditor" runTimeClassModel="setItems([Ljava.lang.String;),ComboBoxCellEditor(Lorg.eclipse.swt.widgets.Composite;[Ljava.lang.String;),items,getLayoutData(),getItems(),ComboBoxCellEditor(Lorg.eclipse.swt.widgets.Composite;[Ljava.lang.String;I),selection,comboBox,applyEditorValueAndDeactivate(),ComboBoxCellEditor()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="134,54">
+      <children xsi:type="editmodel:AttributeEditModel" name="comboBox" id="org.eclipse.jface.viewers/ComboBoxCellEditor#comboBox"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="items" id="org.eclipse.jface.viewers/ComboBoxCellEditor#items"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="selection" id="org.eclipse.jface.viewers/ComboBoxCellEditor#selection"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="321,126">
+      <children xsi:type="editmodel:MethodEditModel" name="ComboBoxCellEditor" id="org.eclipse.jface.viewers/ComboBoxCellEditor#ComboBoxCellEditor(Lorg.eclipse.swt.widgets.Composite;[Ljava.lang.String;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ComboBoxCellEditor" id="org.eclipse.jface.viewers/ComboBoxCellEditor#ComboBoxCellEditor()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ComboBoxCellEditor" id="org.eclipse.jface.viewers/ComboBoxCellEditor#ComboBoxCellEditor(Lorg.eclipse.swt.widgets.Composite;[Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="applyEditorValueAndDeactivate" id="org.eclipse.jface.viewers/ComboBoxCellEditor#applyEditorValueAndDeactivate()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getItems" id="org.eclipse.jface.viewers/ComboBoxCellEditor#getItems()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLayoutData" id="org.eclipse.jface.viewers/ComboBoxCellEditor#getLayoutData()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setItems" id="org.eclipse.jface.viewers/ComboBoxCellEditor#setItems([Ljava.lang.String;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.31/@sourceConnections.0" autoLocated="true" id="org.eclipse.jface.viewers/AbstractComboBoxCellEditor&lt;-org.eclipse.jface.viewers/ComboBoxCellEditor" source="//@children.19" target="//@children.18" targetEnd="//@children.19/@sourceConnections.0/@children.1" sourceEnd="//@children.19/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="172,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="163,225" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="CheckboxCellEditor" location="1440,989" size="311,171" id="org.eclipse.jface.viewers/CheckboxCellEditor" runTimeClassModel="activate(),CheckboxCellEditor(Lorg.eclipse.swt.widgets.Composite;I),value,activate(Lorg.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;),CheckboxCellEditor(),CheckboxCellEditor(Lorg.eclipse.swt.widgets.Composite;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="102,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="value" id="org.eclipse.jface.viewers/CheckboxCellEditor#value"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="288,90">
+      <children xsi:type="editmodel:MethodEditModel" name="CheckboxCellEditor" id="org.eclipse.jface.viewers/CheckboxCellEditor#CheckboxCellEditor()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="CheckboxCellEditor" id="org.eclipse.jface.viewers/CheckboxCellEditor#CheckboxCellEditor(Lorg.eclipse.swt.widgets.Composite;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="CheckboxCellEditor" id="org.eclipse.jface.viewers/CheckboxCellEditor#CheckboxCellEditor(Lorg.eclipse.swt.widgets.Composite;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="activate" id="org.eclipse.jface.viewers/CheckboxCellEditor#activate()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="activate" id="org.eclipse.jface.viewers/CheckboxCellEditor#activate(Lorg.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/CellEditor&lt;-org.eclipse.jface.viewers/CheckboxCellEditor" source="//@children.20" target="//@children.18/@sourceConnections.0" targetEnd="//@children.20/@sourceConnections.0/@children.1" sourceEnd="//@children.20/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="155,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.22/@sourceConnections.0" name="DialogCellEditor" location="1153,973" size="276,153" id="org.eclipse.jface.viewers/DialogCellEditor" runTimeClassModel="deactivate(),DialogCellEditor(),class$0,cELL_EDITOR_IMG_DOTS_BUTTON,&lt;clinit>()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="253,36">
+      <children xsi:type="editmodel:AttributeEditModel" name="cELL_EDITOR_IMG_DOTS_BUTTON" id="org.eclipse.jface.viewers/DialogCellEditor#cELL_EDITOR_IMG_DOTS_BUTTON"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="class$0" id="org.eclipse.jface.viewers/DialogCellEditor#class$0"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="120,54">
+      <children xsi:type="editmodel:MethodEditModel" name="&lt;clinit>" id="org.eclipse.jface.viewers/DialogCellEditor#&lt;clinit>()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="DialogCellEditor" id="org.eclipse.jface.viewers/DialogCellEditor#DialogCellEditor()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="deactivate" id="org.eclipse.jface.viewers/DialogCellEditor#deactivate()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/CellEditor&lt;-org.eclipse.jface.viewers/DialogCellEditor" source="//@children.21" target="//@children.18/@sourceConnections.0" targetEnd="//@children.21/@sourceConnections.0/@children.1" sourceEnd="//@children.21/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="138,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ColorCellEditor" location="1166,1158" size="249,117" id="org.eclipse.jface.viewers/ColorCellEditor" runTimeClassModel="dispose(),ColorCellEditor(Lorg.eclipse.swt.widgets.Composite;I),ColorCellEditor(Lorg.eclipse.swt.widgets.Composite;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="226,54">
+      <children xsi:type="editmodel:MethodEditModel" name="ColorCellEditor" id="org.eclipse.jface.viewers/ColorCellEditor#ColorCellEditor(Lorg.eclipse.swt.widgets.Composite;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ColorCellEditor" id="org.eclipse.jface.viewers/ColorCellEditor#ColorCellEditor(Lorg.eclipse.swt.widgets.Composite;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="dispose" id="org.eclipse.jface.viewers/ColorCellEditor#dispose()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/DialogCellEditor&lt;-org.eclipse.jface.viewers/ColorCellEditor" source="//@children.22" target="//@children.21" targetEnd="//@children.22/@sourceConnections.0/@children.1" sourceEnd="//@children.22/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="124,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="137,153"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="TextCellEditor" location="883,988" size="241,351" id="org.eclipse.jface.viewers/TextCellEditor" runTimeClassModel="isPasteEnabled(),performCopy(),TextCellEditor(Lorg.eclipse.swt.widgets.Composite;),isSelectAllEnabled(),getLayoutData(),performDelete(),class$0,performSelectAll(),performPaste(),TextCellEditor(),isCopyEnabled(),isCutEnabled(),isSaveAllEnabled(),TextCellEditor(Lorg.eclipse.swt.widgets.Composite;I),performCut(),isDeleteEnabled()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="132,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="class$0" id="org.eclipse.jface.viewers/TextCellEditor#class$0"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="218,270">
+      <children xsi:type="editmodel:MethodEditModel" name="TextCellEditor" id="org.eclipse.jface.viewers/TextCellEditor#TextCellEditor()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="TextCellEditor" id="org.eclipse.jface.viewers/TextCellEditor#TextCellEditor(Lorg.eclipse.swt.widgets.Composite;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="TextCellEditor" id="org.eclipse.jface.viewers/TextCellEditor#TextCellEditor(Lorg.eclipse.swt.widgets.Composite;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLayoutData" id="org.eclipse.jface.viewers/TextCellEditor#getLayoutData()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isCopyEnabled" id="org.eclipse.jface.viewers/TextCellEditor#isCopyEnabled()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isCutEnabled" id="org.eclipse.jface.viewers/TextCellEditor#isCutEnabled()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isDeleteEnabled" id="org.eclipse.jface.viewers/TextCellEditor#isDeleteEnabled()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isPasteEnabled" id="org.eclipse.jface.viewers/TextCellEditor#isPasteEnabled()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isSaveAllEnabled" id="org.eclipse.jface.viewers/TextCellEditor#isSaveAllEnabled()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isSelectAllEnabled" id="org.eclipse.jface.viewers/TextCellEditor#isSelectAllEnabled()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="performCopy" id="org.eclipse.jface.viewers/TextCellEditor#performCopy()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="performCut" id="org.eclipse.jface.viewers/TextCellEditor#performCut()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="performDelete" id="org.eclipse.jface.viewers/TextCellEditor#performDelete()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="performPaste" id="org.eclipse.jface.viewers/TextCellEditor#performPaste()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="performSelectAll" id="org.eclipse.jface.viewers/TextCellEditor#performSelectAll()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/CellEditor&lt;-org.eclipse.jface.viewers/TextCellEditor" source="//@children.23" target="//@children.18/@sourceConnections.0" targetEnd="//@children.23/@sourceConnections.0/@children.1" sourceEnd="//@children.23/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="120,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="ITableLabelProvider" location="1200,243" size="279,112" id="org.eclipse.jface.viewers/ITableLabelProvider" runTimeClassModel="getColumnText(Ljava.lang.Object;I),getColumnImage(Ljava.lang.Object;I)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="256,36">
+      <children xsi:type="editmodel:MethodEditModel" name="getColumnImage" id="org.eclipse.jface.viewers/ITableLabelProvider#getColumnImage(Ljava.lang.Object;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getColumnText" id="org.eclipse.jface.viewers/ITableLabelProvider#getColumnText(Ljava.lang.Object;I)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/IBaseLabelProvider&lt;-org.eclipse.jface.viewers/ITableLabelProvider" source="//@children.24" target="//@children.12/@sourceConnections.0" targetEnd="//@children.24/@sourceConnections.0/@children.1" sourceEnd="//@children.24/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="139,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="ITableColorProvider" location="315,225" size="263,112" id="org.eclipse.jface.viewers/ITableColorProvider" runTimeClassModel="getForeground(Ljava.lang.Object;I),getBackground(Ljava.lang.Object;I)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="240,36">
+      <children xsi:type="editmodel:MethodEditModel" name="getBackground" id="org.eclipse.jface.viewers/ITableColorProvider#getBackground(Ljava.lang.Object;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getForeground" id="org.eclipse.jface.viewers/ITableColorProvider#getForeground(Ljava.lang.Object;I)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.15/@sourceConnections.0 //@children.28/@sourceConnections.0" name="ViewerColumn" location="1203,465" size="328,261" id="org.eclipse.jface.viewers/ViewerColumn" runTimeClassModel="cOLUMN_VIEWER_KEY,setLabelProvider(Lorg.eclipse.jface.viewers.CellLabelProvider;),labelProvider,setLabelProvider(Lorg.eclipse.jface.viewers.CellLabelProvider;Z),getEditingSupport(),setEditingSupport(Lorg.eclipse.jface.viewers.EditingSupport;),getLabelProvider(),&lt;clinit>(),editingSupport,refresh(Lorg.eclipse.jface.viewers.ViewerCell;),viewer,getViewer()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="199,54">
+      <children xsi:type="editmodel:AttributeEditModel" name="labelProvider" id="org.eclipse.jface.viewers/ViewerColumn#labelProvider"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="editingSupport" id="org.eclipse.jface.viewers/ViewerColumn#editingSupport"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="viewer" id="org.eclipse.jface.viewers/ViewerColumn#viewer"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="305,144">
+      <children xsi:type="editmodel:MethodEditModel" name="&lt;clinit>" id="org.eclipse.jface.viewers/ViewerColumn#&lt;clinit>()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLabelProvider" id="org.eclipse.jface.viewers/ViewerColumn#getLabelProvider()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setLabelProvider" id="org.eclipse.jface.viewers/ViewerColumn#setLabelProvider(Lorg.eclipse.jface.viewers.CellLabelProvider;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setLabelProvider" id="org.eclipse.jface.viewers/ViewerColumn#setLabelProvider(Lorg.eclipse.jface.viewers.CellLabelProvider;Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getEditingSupport" id="org.eclipse.jface.viewers/ViewerColumn#getEditingSupport()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setEditingSupport" id="org.eclipse.jface.viewers/ViewerColumn#setEditingSupport(Lorg.eclipse.jface.viewers.EditingSupport;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="refresh" id="org.eclipse.jface.viewers/ViewerColumn#refresh(Lorg.eclipse.jface.viewers.ViewerCell;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getViewer" id="org.eclipse.jface.viewers/ViewerColumn#getViewer()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.29/@sourceConnections.0" name="ICellModifier" location="1155,1289" size="269,130" id="org.eclipse.jface.viewers/ICellModifier">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="246,54">
+      <children xsi:type="editmodel:MethodEditModel" name="canModify" id="org.eclipse.jface.viewers/ICellModifier#canModify(Ljava.lang.Object;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getValue" id="org.eclipse.jface.viewers/ICellModifier#getValue(Ljava.lang.Object;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="modify" id="org.eclipse.jface.viewers/ICellModifier#modify(Ljava.lang.Object;Ljava.lang.String;Ljava.lang.Object;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:NotepadEditModel" location="1181,373" size="315,76" fontInfo="Sans-8-0" note="ViewerColumn implementation for TableViewer to &#xA;enable column-specific label providers and editing &#xA;support. ">
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" autoLocated="true" source="//@children.28" target="//@children.26" targetEnd="//@children.28/@sourceConnections.0/@children.1" sourceEnd="//@children.28/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="168,76" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="146,0"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:NotepadEditModel" location="871,1424" size="439,105" fontInfo="Sans-8-0" note="A cell modifier is used to access the data model from a cell editor in an &#xA;abstract way. It offers methods to:&#xA;    * to check if a a model element's property can be edited or not&#xA;    * retrieve a value a model element's property&#xA;    * to store a cell editor's value back into the model element's property&#xA;This interface should be implemented by classes that wish to act as &#xA;cell modifiers. ">
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" autoLocated="true" source="//@children.29" target="//@children.27" targetEnd="//@children.29/@sourceConnections.0/@children.1" sourceEnd="//@children.29/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="361,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="77,130"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:NotepadEditModel" location="494,374" size="351,88" fontInfo="Sans-8-0" note="It is designed to be instantiated with a pre-existing SWT &#xA;table control and configured with a domain-specific &#xA;content provider, table label provider, element filter &#xA;(optional), and element sorter (optional).&#xA;Label providers for table viewers must implement either &#xA;the ITableLabelProvider or the ILabelProvider interface.">
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" autoLocated="true" source="//@children.30" target="//@children.0" targetEnd="//@children.30/@sourceConnections.0/@children.1" sourceEnd="//@children.30/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="189,88" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="139,0"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.32/@sourceConnections.0" name="ComboBoxViewerCellEditor" location="1811,1259" size="327,243" id="org.eclipse.jface.viewers/ComboBoxViewerCellEditor">
+    <children xsi:type="editmodel:CompartmentEditModel" size="142,36">
+      <children xsi:type="editmodel:AttributeEditModel" name="selectedValue" id="org.eclipse.jface.viewers/ComboBoxViewerCellEditor#selectedValue"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="viewer" id="org.eclipse.jface.viewers/ComboBoxViewerCellEditor#viewer"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="304,144">
+      <children xsi:type="editmodel:MethodEditModel" name="ComboBoxViewerCellEditor" id="org.eclipse.jface.viewers/ComboBoxViewerCellEditor#ComboBoxViewerCellEditor(Lorg.eclipse.swt.widgets.Composite;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ComboBoxViewerCellEditor" id="org.eclipse.jface.viewers/ComboBoxViewerCellEditor#ComboBoxViewerCellEditor(Lorg.eclipse.swt.widgets.Composite;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="applyEditorValueAndDeactivate" id="org.eclipse.jface.viewers/ComboBoxViewerCellEditor#applyEditorValueAndDeactivate()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLayoutData" id="org.eclipse.jface.viewers/ComboBoxViewerCellEditor#getLayoutData()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getViewer" id="org.eclipse.jface.viewers/ComboBoxViewerCellEditor#getViewer()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setContenProvider" id="org.eclipse.jface.viewers/ComboBoxViewerCellEditor#setContenProvider(Lorg.eclipse.jface.viewers.IStructuredContentProvider;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setInput" id="org.eclipse.jface.viewers/ComboBoxViewerCellEditor#setInput(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setLabelProvider" id="org.eclipse.jface.viewers/ComboBoxViewerCellEditor#setLabelProvider(Lorg.eclipse.jface.viewers.IBaseLabelProvider;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.eclipse.jface.viewers/AbstractComboBoxCellEditor&lt;-org.eclipse.jface.viewers/ComboBoxViewerCellEditor" source="//@children.31" target="//@children.19/@sourceConnections.0" targetEnd="//@children.31/@sourceConnections.0/@children.1" sourceEnd="//@children.31/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="163,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:NotepadEditModel" location="1439,1199" size="473,36" fontInfo="Sans-8-0" note="A cell editor that presents a list of items in a combo box. In contrast &#xA;to ComboBoxCellEditor it wraps the underlying CCombo using a ComboViewer.">
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" autoLocated="true" source="//@children.32" target="//@children.31" targetEnd="//@children.32/@sourceConnections.0/@children.1" sourceEnd="//@children.32/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="422,36" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="50,32"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:NotepadEditModel" location="1544,671" size="197,256" fontInfo="Sans-8-0" note="Abstract base class for cell &#xA;editors. Implements &#xA;property change listener&#xA; handling, and SWT window &#xA;management.&#xA;Subclasses implement &#xA;particular kinds of cell &#xA;editors.">
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" autoLocated="true" source="//@children.33" target="//@children.17/@children.1/@children.29" targetEnd="//@children.33/@sourceConnections.0/@children.1" sourceEnd="//@children.33/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="119,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,1"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.35/@sourceConnections.0" name="ColumnViewerEditorActivationListener" location="1214,41" size="418,153" id="org.eclipse.jface.viewers/ColumnViewerEditorActivationListener">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="395,90">
+      <children xsi:type="editmodel:MethodEditModel" name="ColumnViewerEditorActivationListener" id="org.eclipse.jface.viewers/ColumnViewerEditorActivationListener#ColumnViewerEditorActivationListener()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="afterEditorActivated" id="org.eclipse.jface.viewers/ColumnViewerEditorActivationListener#afterEditorActivated(Lorg.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="afterEditorDeactivated" id="org.eclipse.jface.viewers/ColumnViewerEditorActivationListener#afterEditorDeactivated(Lorg.eclipse.jface.viewers.ColumnViewerEditorDeactivationEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="beforeEditorActivated" id="org.eclipse.jface.viewers/ColumnViewerEditorActivationListener#beforeEditorActivated(Lorg.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="beforeEditorDeactivated" id="org.eclipse.jface.viewers/ColumnViewerEditorActivationListener#beforeEditorDeactivated(Lorg.eclipse.jface.viewers.ColumnViewerEditorDeactivationEvent;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:NotepadEditModel" location="1641,43" size="496,45" fontInfo="Sans-8-0" note="Parties interested in activation and deactivation of editors extend this class and &#xA;implement any or all of the methods ">
+    <sourceConnections xsi:type="editmodel:IndicationEditModel" autoLocated="true" source="//@children.35" target="//@children.34" targetEnd="//@children.35/@sourceConnections.0/@children.1" sourceEnd="//@children.35/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="42,22" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="418,24"/>
+    </sourceConnections>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=7;Product=eUML2" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>

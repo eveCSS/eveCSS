@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
+    xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <version>0.4.1</version>
+    <repeatcount>0</repeatcount>
+    <chain id="1">
+        <savefilename>/home/scherr/mp_neu/v3_7/de.ptb.epics.eve.testfiles/041/Hartmut/Daten/counter-test.h5</savefilename>
+        <confirmsave>false</confirmsave>
+        <autonumber>true</autonumber>
+        <savescandescription>false</savescandescription>
+        <saveplugin name="HDF5">
+            <parameter name="location">/messung/eve/lib/linux-x86/libhdf5plugin.so</parameter>
+            <parameter name="format">HDF5</parameter>
+            <parameter name="suffix">h5</parameter>
+            <parameter name="extent">0</parameter>
+        </saveplugin>
+        <scanmodules>
+            <scanmodule id="1">
+                <type>classic</type>
+                <name>SM 1</name>
+                <xpos>145</xpos>
+                <ypos>98</ypos>
+                <parent>0</parent>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>Counter-mot</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="int">1</start>
+                    <stop type="int">100</stop>
+                    <stepwidth type="int">1</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent2chan1</channelid>
+                    <maxdeviation>1.0E7</maxdeviation>
+                    <maxattempts>7</maxattempts>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <smchannel>
+                    <channelid>P5000:gw2370700</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <plot id="1">
+                    <xaxis>
+                        <id>Counter-mot</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent2chan1</id>
+                        <mode>linear</mode>
+                        <linestyle>Solid Line</linestyle>
+                        <color>0000ff</color>
+                        <markstyle>None</markstyle>
+                    </yaxis>
+                </plot>
+            </scanmodule>
+        </scanmodules>
+    </chain>
+    <plugins>
+        <plugin type="save">
+            <name>ASCII</name>
+            <location></location>
+            <parameter name="format" datatype="string" default="ASCII" mandatory="false"></parameter>
+            <parameter name="suffix" datatype="string" default="txt" mandatory="false"></parameter>
+            <parameter name="extent" datatype="int" default="0" mandatory="false"></parameter>
+        </plugin>
+        <plugin type="save">
+            <name>HDF5</name>
+            <location>/messung/eve/lib/linux-x86/libhdf5plugin.so</location>
+            <parameter name="format" datatype="string" default="HDF5" mandatory="false"/>
+            <parameter name="suffix" datatype="string" default="h5" mandatory="false"/>
+            <parameter name="extent" datatype="int" default="0" mandatory="false"/>
+        </plugin>
+        <plugin type="position">
+            <name>ReferenceAdd</name>
+            <location>/path/to/referenceadd</location>
+            <parameter name="summand" datatype="double" default="0.0" mandatory="true"></parameter>
+            <parameter name="referenceaxis" datatype="axisid" default="" mandatory="true"></parameter>
+        </plugin>
+        <plugin type="position">
+            <name>ReferenceMultiply</name>
+            <location>/path/to/referenceadd</location>
+            <parameter name="factor" datatype="double" default="0.0" mandatory="true"></parameter>
+            <parameter name="referenceaxis" datatype="axisid" default="" mandatory="true"></parameter>
+        </plugin>
+        <plugin type="postscanpositioning">
+            <name>GOTO-Peak</name>
+            <location>/path/to/plugin3</location>
+            <parameter name="direction" datatype="string"
+                default="positive" mandatory="false">positive,negative</parameter>
+        </plugin>
+        <plugin type="postscanpositioning">
+            <name>GOTO-Center</name>
+            <location>/path/to/plugin3</location>
+            <parameter name="direction" datatype="string"
+                default="positive" mandatory="true">positive,negative</parameter>
+        </plugin>
+    </plugins>
+    <detectors>
+        <detector>
+            <class>Ringstrom</class>
+            <name>Ring_2</name>
+            <id>ringCurrent2basic</id>
+            <channel>
+                <class></class>
+                <name>Ring_2</name>
+                <id>ringCurrent2chan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">ringCurrent2.VAL</access>
+                    <value type="double"></value>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">ringCurrent2.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class></class>
+            <name>Prema5000</name>
+            <id>P5000:gw23707</id>
+            <channel>
+                <class></class>
+                <name>Channel00</name>
+                <id>P5000:gw2370700</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">P5000:gw2370700.VAL</access>
+                    <value type="double"></value>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw2370700.EGU</access>
+                </unit>
+                <option>
+                    <name>Hi Error Limit</name>
+                    <id>P5000:gw2370700.HIHI</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">P5000:gw2370700.HIHI</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Hi Error Severity</name>
+                    <id>P5000:gw2370700.HHSV</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">P5000:gw2370700.HHSV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Hi Warn Limit</name>
+                    <id>P5000:gw2370700.HIGH</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">P5000:gw2370700.HIGH</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Hi Warn Severity</name>
+                    <id>P5000:gw2370700.HSV</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">P5000:gw2370700.HSV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Raw Value</name>
+                    <id>P5000:gw2370700.RVAL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">P5000:gw2370700.RVAL</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Monitor Deadband</name>
+                    <id>P5000:gw2370700.MDEL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">P5000:gw2370700.MDEL</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Low Warn Limit</name>
+                    <id>P5000:gw2370700.LOW</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">P5000:gw2370700.LOW</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Low Warn Severity</name>
+                    <id>P5000:gw2370700.LSV</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">P5000:gw2370700.LSV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Low Error Limit</name>
+                    <id>P5000:gw2370700.LOLO</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">P5000:gw2370700.LOLO</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Low Error Severity</name>
+                    <id>P5000:gw2370700.LLSV</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">P5000:gw2370700.LLSV</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Raw Offset</name>
+                    <id>P5000:gw2370700.ROFF</id>
+                    <value>
+                        <access method="GETPUT" type="int" transport="ca">P5000:gw2370700.ROFF</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Scale</name>
+                    <id>P5000:gw2370700.ASLO</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">P5000:gw2370700.ASLO</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Offset</name>
+                    <id>P5000:gw2370700.AOFF</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">P5000:gw2370700.AOFF</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Smoothing</name>
+                    <id>P5000:gw2370700.SMOO</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">P5000:gw2370700.SMOO</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Hi Full Scale Value</name>
+                    <id>P5000:gw2370700.EGUF</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">P5000:gw2370700.EGUF</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Lo Full Scale Value</name>
+                    <id>P5000:gw2370700.EGUL</id>
+                    <value>
+                        <access method="GETPUT" type="double" transport="ca">P5000:gw2370700.EGUL</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Severity</name>
+                    <id>P5000:gw2370700.SEVR</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">P5000:gw2370700.SEVR</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Status</name>
+                    <id>P5000:gw2370700.STAT</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">P5000:gw2370700.STAT</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+                <option>
+                    <name>Scan</name>
+                    <id>P5000:gw2370700.SCAN</id>
+                    <value>
+                        <access method="GETPUT" type="string" transport="ca">P5000:gw2370700.SCAN</access>
+                    </value>
+                    <displaygroup>detail</displaygroup>
+                </option>
+            </channel>
+        </detector>
+    </detectors>
+    <motors>
+        <motor>
+            <class>Counter</class>
+            <name>Counter1</name>
+            <id>Counter1</id>
+            <axis>
+                <class></class>
+                <name>Counter</name>
+                <id>Counter-mot</id>
+                <goto>
+                    <access method="PUTCB" type="int" transport="local">Counter</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="int" transport="local">Counter</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="local">Counter</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
+    </motors>
+    <devices/>
+    <smselection>
+        <stepfunction>Add,Multiply,File,Plugin,Positionlist</stepfunction>
+        <smtype>classic, advanced</smtype>
+    </smselection>
+</tns:scml>
