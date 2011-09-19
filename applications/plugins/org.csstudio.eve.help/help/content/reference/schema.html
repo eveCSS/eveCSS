@@ -1,0 +1,581 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><pre><code>\n
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;schema xmlns="http://www.w3.org/2001/XMLSchema" 
+  targetNamespace="http://www.ptb.de/epics/SCML" 
+  xmlns:tns="http://www.ptb.de/epics/SCML"&gt;
+\n
+  &lt;!-- schema version 0.4.2
+       please increase version number on every modification
+       If the corresponding xml-file of the previous schema version is still
+       valid with the current schema version, change the minor version number only --&gt;
+  &lt;!-- Note:
+       The default value for both maxOccurs and minOccurs is 1! 
+       Please do not use tabs, use two white spaces instead
+  --&gt;
+\n
+  &lt;element name ="scml"&gt;
+    &lt;complexType&gt;
+      &lt;sequence&gt;
+        &lt;element name="version" type="string"&gt;&lt;/element&gt;
+        &lt;element name="measuringstation" type="string" minOccurs="0"&gt;&lt;/element&gt;
+        &lt;element name="repeatcount" type="tns:repeatcount" default="0"&gt;&lt;/element&gt;
+        &lt;element name="chain" type="tns:chain" maxOccurs="unbounded" minOccurs="0"&gt;&lt;/element&gt;
+        &lt;element name="plugins" minOccurs="0"&gt;
+          &lt;complexType&gt;
+            &lt;sequence&gt;
+              &lt;element name="plugin" type="tns:plugin" maxOccurs="unbounded"&gt;&lt;/element&gt;   
+            &lt;/sequence&gt;
+          &lt;/complexType&gt;
+        &lt;/element&gt;
+        &lt;element name="detectors" type="tns:detectors" minOccurs="0"&gt;&lt;/element&gt;
+        &lt;element name="motors" type="tns:motors" minOccurs="0"&gt;&lt;/element&gt;
+        &lt;element name="devices" minOccurs="0"&gt;
+          &lt;complexType&gt;
+            &lt;sequence&gt;
+              &lt;element name="device" type="tns:device" maxOccurs="unbounded"&gt;&lt;/element&gt;   
+            &lt;/sequence&gt;
+          &lt;/complexType&gt;
+        &lt;/element&gt;
+        &lt;element name="smselection" type="tns:selection" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;/sequence&gt;
+    &lt;/complexType&gt;
+  &lt;/element&gt;
+\n
+  &lt;complexType name="chain"&gt;
+    &lt;sequence&gt;
+      &lt;element name="comment" type="string" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;group ref="tns:fileGroup" minOccurs="0"&gt;&lt;/group&gt;
+      &lt;element name="startevent" type="tns:smevent" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="pauseevent" type="tns:pauseevent" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+      &lt;element name="redoevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+      &lt;element name="breakevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+      &lt;element name="stopevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+      &lt;element name="scanmodules" type="tns:scanmodules"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+  &lt;attribute name="id" type="tns:oneToThousand"&gt;&lt;/attribute&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;group name="fileGroup"&gt;
+    &lt;sequence&gt;
+      &lt;element name="savefilename" type="string"&gt;&lt;/element&gt;
+      &lt;element name="confirmsave" type="boolean" default="false"&gt;&lt;/element&gt;
+      &lt;element name="autonumber" type="boolean" default="true"&gt;&lt;/element&gt;
+      &lt;element name="savescandescription" type="boolean" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="saveplugin" type="tns:controller" minOccurs="0"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+  &lt;/group&gt;
+\n
+  &lt;simpleType name='repeatcount'&gt;
+  	&lt;restriction base='nonNegativeInteger'/&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;simpleType name='oneToThousand'&gt;
+    &lt;restriction base='positiveInteger'&gt;
+      &lt;maxInclusive value='1000'/&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;simpleType name='zeroToThousand'&gt;
+    &lt;restriction base='integer'&gt;
+      &lt;minInclusive value='0'/&gt;
+      &lt;maxInclusive value='1000'/&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;simpleType name='oneToHundredthousand'&gt;
+    &lt;restriction base='positiveInteger'&gt;
+      &lt;maxInclusive value='100000'/&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;simpleType name='zeroToHundredthousand'&gt;
+    &lt;restriction base='integer'&gt;
+      &lt;minInclusive value='0'/&gt;
+      &lt;maxInclusive value='100000'/&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;simpleType name ="identifier" &gt;
+    &lt;restriction base="string"&gt;
+      &lt;pattern value="[a-zA-Z0-9_:/.;-]+"/&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;complexType name="pauseevent"&gt;
+    &lt;sequence&gt;
+      &lt;group ref="tns:smeventGroup"&gt;&lt;/group&gt;
+      &lt;element name="continue_if_false" type="boolean" minOccurs="0"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+    &lt;attribute name="type" type="tns:event" use="required"&gt;&lt;/attribute&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;complexType name="smevent"&gt;
+    &lt;sequence&gt;
+      &lt;group ref="tns:smeventGroup"&gt;&lt;/group&gt;
+    &lt;/sequence&gt;
+    &lt;attribute name="type" type="tns:event" use="required"&gt;&lt;/attribute&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;group name="smeventGroup"&gt;
+    &lt;sequence&gt;
+      &lt;choice&gt;
+        &lt;sequence&gt;
+          &lt;element name="id" type="tns:identifier"&gt;&lt;/element&gt;
+          &lt;element name="limit" type="tns:limit" minOccurs="0"&gt;&lt;/element&gt;
+        &lt;/sequence&gt;
+        &lt;sequence&gt;
+          &lt;element name="incident" type="tns:incident" default="End"&gt;&lt;/element&gt;
+          &lt;element name="chainid" type="tns:zeroToThousand"&gt;&lt;/element&gt;
+          &lt;element name="smid" type="tns:zeroToHundredthousand"&gt;&lt;/element&gt;
+        &lt;/sequence&gt;
+      &lt;/choice&gt;
+    &lt;/sequence&gt;
+  &lt;/group&gt;
+\n
+  &lt;simpleType name="incident"&gt;
+    &lt;restriction base="string"&gt;
+      &lt;enumeration value="Start"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="End"&gt;&lt;/enumeration&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;complexType name="scanmodules"&gt;
+    &lt;sequence&gt;
+      &lt;element name="scanmodule" type="tns:scanmodule" maxOccurs="unbounded"&gt;&lt;/element&gt;   
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;complexType name="scanmodule"&gt;
+    &lt;sequence&gt;
+      &lt;element name="type" type="tns:smtype"&gt;&lt;/element&gt;
+      &lt;element name="name" type="string"&gt;&lt;/element&gt;
+      &lt;element name="xpos" type="nonNegativeInteger"&gt;&lt;/element&gt;
+      &lt;element name="ypos" type="nonNegativeInteger"&gt;&lt;/element&gt;
+      &lt;element name="parent" type="nonNegativeInteger"&gt;&lt;/element&gt;
+      &lt;element name="nested" type="positiveInteger"  minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="appended" type="positiveInteger" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="settletime" type="double" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="triggerdelay" type="double" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="triggerconfirm" type="boolean" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="saveaxispositions" type="tns:saveAxisPositions" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="triggerevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+      &lt;element name="pauseevent" type="tns:pauseevent" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+      &lt;element name="redoevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+      &lt;element name="breakevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+      &lt;element name="prescan" minOccurs="0" maxOccurs="unbounded"&gt;
+        &lt;complexType&gt;
+          &lt;sequence&gt;
+            &lt;element name="id" type="tns:identifier"&gt;&lt;/element&gt;
+            &lt;element name="value" type="tns:typevalue"&gt;&lt;/element&gt;
+          &lt;/sequence&gt;
+        &lt;/complexType&gt;
+      &lt;/element&gt;
+      &lt;element name="smaxis" type="tns:smaxis" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+      &lt;element name="smchannel" type="tns:smchannel" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+      &lt;element name="postscan" minOccurs="0" maxOccurs="unbounded"&gt;
+        &lt;complexType&gt;
+          &lt;sequence&gt;
+            &lt;element name="id" type="tns:identifier"&gt;&lt;/element&gt;
+            &lt;choice&gt;
+              &lt;element name="value" type="tns:typevalue"&gt;&lt;/element&gt;
+              &lt;element name="reset_originalvalue" type="boolean"&gt;&lt;/element&gt;
+            &lt;/choice&gt;
+          &lt;/sequence&gt;
+        &lt;/complexType&gt;
+      &lt;/element&gt;
+      &lt;element name="positioning" type="tns:positioning" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+      &lt;element name="plot" type="tns:plot" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+    &lt;attribute name="id" type="positiveInteger"&gt;&lt;/attribute&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;complexType name="motors"&gt;
+    &lt;sequence&gt;
+      &lt;element name="motor" type="tns:motor" maxOccurs="unbounded"&gt;&lt;/element&gt;   
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;complexType name="motor"&gt;
+    &lt;sequence&gt;
+      &lt;element name="class" type="string"&gt;&lt;/element&gt;
+      &lt;element name="name" type="string"&gt;&lt;/element&gt;
+      &lt;element name="id" type="tns:identifier"&gt;&lt;/element&gt;
+      &lt;element name="trigger" type="tns:access" minOccurs="0"&gt;&lt;/element&gt;   
+      &lt;element name="unit" type="tns:unit" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="axis" type="tns:axis" maxOccurs="unbounded"&gt;&lt;/element&gt;
+      &lt;element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;complexType name="axis"&gt;
+    &lt;sequence&gt;
+      &lt;element name="class" type="string"&gt;&lt;/element&gt;
+      &lt;element name="name" type="string"&gt;&lt;/element&gt;
+      &lt;element name="id" type="tns:identifier"&gt;&lt;/element&gt;
+      &lt;element name="goto" type="tns:access"&gt;&lt;/element&gt;   
+      &lt;element name="position" type="tns:access"&gt;&lt;/element&gt;   
+      &lt;element name="stop" type="tns:access"&gt;&lt;/element&gt;   
+      &lt;element name="status" type="tns:access" minOccurs="0"&gt;&lt;/element&gt;   
+      &lt;element name="trigger" type="tns:access" minOccurs="0"&gt;&lt;/element&gt;   
+      &lt;element name="unit" type="tns:unit" minOccurs="0"&gt;&lt;/element&gt;   
+      &lt;element name="deadband" type="tns:access" minOccurs="0"&gt;&lt;/element&gt;   
+      &lt;element name="offset" type="tns:access" minOccurs="0"&gt;&lt;/element&gt;   
+      &lt;element name="setmode" type="tns:access" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="tweakvalue" type="tns:access" minOccurs="0"&gt;&lt;/element&gt;   
+      &lt;element name="tweakforward" type="tns:access" minOccurs="0"&gt;&lt;/element&gt;   
+      &lt;element name="tweakreverse" type="tns:access" minOccurs="0"&gt;&lt;/element&gt;   
+      &lt;element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;complexType name="smaxis"&gt;
+    &lt;sequence&gt;
+      &lt;element name="axisid" type="string"&gt;&lt;/element&gt;
+      &lt;element name="stepfunction" type="tns:stepfunction"&gt;&lt;/element&gt;
+      &lt;element name="positionmode"&gt;
+        &lt;simpleType&gt;
+          &lt;restriction base="string"&gt;
+            &lt;enumeration value="relative"&gt;&lt;/enumeration&gt;
+            &lt;enumeration value="absolute"&gt;&lt;/enumeration&gt;
+          &lt;/restriction&gt;
+        &lt;/simpleType&gt;
+      &lt;/element&gt;
+      &lt;choice&gt;
+         &lt;sequence&gt;
+          &lt;element name="start" type="tns:typevalue"&gt;&lt;/element&gt;
+          &lt;element name="stop" type="tns:typevalue"&gt;&lt;/element&gt;
+          &lt;element name="stepwidth" type="tns:typevalue"&gt;&lt;/element&gt;
+          &lt;element name="ismainaxis" type="boolean" minOccurs="0"&gt;&lt;/element&gt;
+         &lt;/sequence&gt;
+        &lt;sequence&gt;
+          &lt;element name="stepfilename" type="string"&gt;&lt;/element&gt;
+        &lt;/sequence&gt;
+        &lt;sequence&gt;
+          &lt;element name="plugin" type="tns:controller"&gt;&lt;/element&gt;
+        &lt;/sequence&gt;
+         &lt;sequence&gt;
+          &lt;element name="positionlist" type="string"&gt;&lt;/element&gt;
+        &lt;/sequence&gt;
+      &lt;/choice&gt;
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;complexType name="detectors"&gt;
+    &lt;sequence&gt;
+      &lt;element name="detector" type="tns:detector" maxOccurs="unbounded"&gt;&lt;/element&gt;   
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;complexType name="detector"&gt;
+    &lt;sequence&gt;
+      &lt;element name="class" type="string"&gt;&lt;/element&gt;
+      &lt;element name="name" type="string"&gt;&lt;/element&gt;
+      &lt;element name="id" type="tns:identifier"&gt;&lt;/element&gt;
+      &lt;element name="unit" type="tns:unit" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="trigger" type="tns:access" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="channel" type="tns:channel" maxOccurs="unbounded"&gt;&lt;/element&gt;
+      &lt;element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;complexType name="channel"&gt;
+    &lt;sequence&gt;
+      &lt;element name="class" type="string"&gt;&lt;/element&gt;
+      &lt;element name="name" type="string"&gt;&lt;/element&gt;
+      &lt;element name="id" type="tns:identifier"&gt;&lt;/element&gt;
+      &lt;element name="read" type="tns:access"&gt;&lt;/element&gt;
+      &lt;element name="unit" type="tns:unit" minOccurs="0"&gt;&lt;/element&gt;   
+      &lt;element name="trigger" type="tns:access" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;complexType name="unit"&gt;
+    &lt;sequence&gt;
+      &lt;choice&gt;
+        &lt;group ref="tns:accessGroup"&gt;&lt;/group&gt;
+        &lt;element name="unitstring" type="string"&gt;&lt;/element&gt;   
+      &lt;/choice&gt;
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;complexType name="access"&gt;
+    &lt;sequence&gt;
+      &lt;group ref="tns:accessGroup"&gt;&lt;/group&gt;
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;group name="accessGroup"&gt;
+    &lt;sequence&gt;
+      &lt;element name="access" type="tns:accessProperty"&gt;&lt;/element&gt;   
+      &lt;element name="value" type="tns:typevalue" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;/sequence&gt;
+  &lt;/group&gt;
+\n
+  &lt;complexType name="option"&gt;
+    &lt;sequence&gt;
+      &lt;element name="class" type="string" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;group ref="tns:subdeviceGroup"&gt;&lt;/group&gt;
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n
+   &lt;simpleType name="display"&gt;
+    &lt;restriction base="string"&gt;
+      &lt;enumeration value="summary"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="detail"&gt;&lt;/enumeration&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;complexType name="typevalue"&gt;
+    &lt;simpleContent&gt;
+      &lt;extension base="string"&gt;
+        &lt;attribute name="type" type="tns:data" use="required"&gt;&lt;/attribute&gt;
+      &lt;/extension&gt;
+    &lt;/simpleContent&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;complexType name="smchannel"&gt;
+    &lt;sequence&gt;
+      &lt;element name="channelid" type="string"&gt;&lt;/element&gt;
+      &lt;element name="averagecount" type="nonNegativeInteger" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="maxdeviation" type="double" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="minimum" type="double" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="maxattempts" type="nonNegativeInteger" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="confirmtrigger" type="boolean" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="sendreadyevent" type="boolean" minOccurs="0"&gt;&lt;/element&gt;
+      &lt;element name="redoevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n
+ &lt;complexType name="positioning"&gt;
+    &lt;sequence&gt;
+      &lt;element name="axis_id" type="string"&gt;&lt;/element&gt;
+      &lt;element name="channel_id" type="string"&gt;&lt;/element&gt;
+      &lt;element name="normalize_id" type="string" minOccurs="0"&gt;&lt;/element&gt;   
+      &lt;element name="plugin" type="tns:controller"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;complexType name="controller"&gt;
+    &lt;sequence&gt;
+      &lt;element name="parameter" type="tns:parameter" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+    &lt;attribute name="name" type="string" use="required"&gt;&lt;/attribute&gt;
+   &lt;/complexType&gt;
+\n
+  &lt;complexType name="parameter"&gt;
+    &lt;simpleContent&gt;
+      &lt;extension base="string"&gt;
+      &lt;attribute name="name" type="string" use="required"&gt;&lt;/attribute&gt;
+      &lt;/extension&gt;
+    &lt;/simpleContent&gt;
+   &lt;/complexType&gt;
+\n
+  &lt;complexType name="device"&gt;
+    &lt;sequence&gt;
+      &lt;element name="class" type="string"&gt;&lt;/element&gt;
+      &lt;group ref="tns:subdeviceGroup"&gt;&lt;/group&gt;
+      &lt;element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;group name="subdeviceGroup"&gt;
+    &lt;sequence&gt;
+      &lt;element name="name" type="string"&gt;&lt;/element&gt;
+      &lt;element name="id" type="tns:identifier"&gt;&lt;/element&gt;
+      &lt;element name="value" type="tns:access"&gt;&lt;/element&gt;
+      &lt;element name="unit" type="tns:unit" minOccurs="0"&gt;&lt;/element&gt;   
+      &lt;element name="displaygroup" type="string" minOccurs="0"&gt;&lt;/element&gt;   
+    &lt;/sequence&gt;
+  &lt;/group&gt;
+\n
+  &lt;complexType name="plugin"&gt;
+    &lt;sequence&gt;
+      &lt;element name="name" type="string"&gt;&lt;/element&gt;
+      &lt;element name="location" type="string"&gt;&lt;/element&gt;
+      &lt;element name="parameter" type="tns:pluginParameter" maxOccurs="unbounded" minOccurs="0"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+    &lt;attribute name="type" type="tns:pluginType" use="required"&gt;&lt;/attribute&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;complexType name="pluginParameter"&gt;
+    &lt;simpleContent&gt;
+      &lt;extension base="string"&gt;
+        &lt;attribute name="name" type="string" use="required"&gt;&lt;/attribute&gt;
+        &lt;attribute name="datatype" type="tns:pluginData" use="required"&gt;&lt;/attribute&gt;
+        &lt;attribute name="default" type="string"&gt;&lt;/attribute&gt;
+        &lt;attribute name="mandatory" type="boolean"&gt;&lt;/attribute&gt;
+      &lt;/extension&gt;
+    &lt;/simpleContent&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;simpleType name="pluginType"&gt;
+    &lt;restriction base="string"&gt;
+      &lt;enumeration value="position"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="save"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="display"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="postscanpositioning"&gt;&lt;/enumeration&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;complexType name="limit"&gt;
+    &lt;simpleContent&gt;
+      &lt;extension base="string"&gt;
+        &lt;attribute name="type" type="tns:data" use="required"&gt;&lt;/attribute&gt;
+        &lt;attribute name="comparison" type="tns:comparison" use="required"&gt;&lt;/attribute&gt;
+      &lt;/extension&gt;
+    &lt;/simpleContent&gt;    
+  &lt;/complexType&gt;
+\n
+  &lt;simpleType name="comparison"&gt;
+    &lt;restriction base="string"&gt;
+      &lt;enumeration value="eq"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="ne"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="gt"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="lt"&gt;&lt;/enumeration&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;simpleType name="event"&gt;
+    &lt;restriction base="string"&gt;
+      &lt;enumeration value="schedule"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="monitor"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="detector"&gt;&lt;/enumeration&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;complexType name="accessProperty"&gt;
+    &lt;simpleContent&gt;
+      &lt;extension base="string"&gt;
+        &lt;attribute name="method" type="tns:method" use="required"&gt;&lt;/attribute&gt;
+        &lt;attribute name="type" type="tns:data" use="required"&gt;&lt;/attribute&gt;
+        &lt;attribute name="count" type="positiveInteger"&gt;&lt;/attribute&gt;
+        &lt;attribute name="transport" type="tns:transport" use="required"&gt;&lt;/attribute&gt;
+        &lt;attribute name="timeout" type="double"&gt;&lt;/attribute&gt;
+        &lt;attribute name="monitor" type="boolean" default="false"&gt;&lt;/attribute&gt;
+      &lt;/extension&gt;
+    &lt;/simpleContent&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;simpleType name="data"&gt;
+    &lt;restriction base="string"&gt;
+      &lt;enumeration value="OnOff"&gt;&lt;/enumeration&gt;  &lt;!-- value "1 0": display "On" and send "1", display "Off" send "0" --&gt;
+      &lt;enumeration value="OpenClose"&gt;&lt;/enumeration&gt; &lt;!-- value "0 1": display "Open" and send "0", display "Close" send "1" --&gt;
+      &lt;enumeration value="int"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="double"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="string"&gt;&lt;/enumeration&gt; &lt;!-- contains a string list of possible values --&gt;
+      &lt;enumeration value="datetime"&gt;&lt;/enumeration&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;simpleType name="pluginData"&gt;
+    &lt;restriction base="string"&gt;
+      &lt;enumeration value="OnOff"&gt;&lt;/enumeration&gt;  &lt;!-- value "1 0": display "On" and send "1", display "Off" send "0" --&gt;
+      &lt;enumeration value="OpenClose"&gt;&lt;/enumeration&gt; &lt;!-- value "0 1": display "Open" and send "0", display "Close" send "1" --&gt;
+      &lt;enumeration value="int"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="double"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="string"&gt;&lt;/enumeration&gt; &lt;!-- contains a string list of possible values --&gt;
+      &lt;enumeration value="axisid"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="channelid"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="deviceid"&gt;&lt;/enumeration&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;simpleType name="method"&gt;
+    &lt;restriction base="string"&gt;
+      &lt;enumeration value="PUT"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="PUTCB"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="GET"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="GETCB"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="GETPUT"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="GETPUTCB"&gt;&lt;/enumeration&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;simpleType name="transport"&gt;
+    &lt;restriction base="string"&gt;
+      &lt;enumeration value="ca"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="local"&gt;&lt;/enumeration&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;simpleType name="saveAxisPositions"&gt;
+    &lt;restriction base="string"&gt;
+      &lt;enumeration value="never"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="before"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="after"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="both"&gt;&lt;/enumeration&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;simpleType name="smtype"&gt;
+    &lt;restriction base="string"&gt;
+      &lt;enumeration value="classic"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="advanced"&gt;&lt;/enumeration&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;complexType name="selection"&gt;
+    &lt;sequence&gt;
+      &lt;element name="stepfunction" type="tns:stepfunctionlist"&gt;&lt;/element&gt;
+      &lt;element name="smtype" type="string"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;simpleType name="stepfunctionlist"&gt;
+    &lt;restriction base="string"&gt;
+      &lt;pattern value="Add,Multiply,File,Plugin,Positionlist"/&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;simpleType name="stepfunction"&gt;
+    &lt;restriction base="string"&gt;
+      &lt;enumeration value="Add"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="Multiply"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="File"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="Plugin"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="Positionlist"&gt;&lt;/enumeration&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;complexType name="plot"&gt;
+    &lt;sequence&gt;
+      &lt;element name="xaxis"&gt;
+        &lt;complexType&gt;
+          &lt;sequence&gt;
+            &lt;element name="id" type="tns:identifier"&gt;&lt;/element&gt;
+            &lt;element name="mode" type="tns:plotmode"&gt;&lt;/element&gt;
+          &lt;/sequence&gt;
+        &lt;/complexType&gt;
+      &lt;/element&gt;
+      &lt;element name="init" type="boolean"&gt;&lt;/element&gt;
+      &lt;element name="yaxis" type="tns:plotaxis" maxOccurs="unbounded"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+    &lt;attribute name="id" type="positiveInteger"&gt;&lt;/attribute&gt;
+  &lt;/complexType&gt;
+\n
+  &lt;simpleType name="plotmode"&gt;
+    &lt;restriction base="string"&gt;
+      &lt;enumeration value="linear"&gt;&lt;/enumeration&gt;
+      &lt;enumeration value="log"&gt;&lt;/enumeration&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+\n
+  &lt;complexType name="plotaxis"&gt;
+    &lt;sequence&gt;
+      &lt;element name="id" type="tns:identifier"&gt;&lt;/element&gt;
+      &lt;element name="mode" type="tns:plotmode"&gt;&lt;/element&gt;
+      &lt;element name="normalize_id" type="string" minOccurs="0" &gt;&lt;/element&gt;
+      &lt;element name="linestyle" type="string"&gt;&lt;/element&gt;
+      &lt;element name="color" type="tns:color"&gt;&lt;/element&gt;
+      &lt;element name="markstyle" type="string"&gt;&lt;/element&gt;
+    &lt;/sequence&gt;
+  &lt;/complexType&gt;
+\n 
+  &lt;simpleType name="color"&gt;
+    &lt;restriction base="string"&gt;
+      &lt;pattern value="[a-fA-F0-9]{6}"/&gt;
+    &lt;/restriction&gt;
+  &lt;/simpleType&gt;
+&lt;/schema&gt;
+</code></pre></body></html>
