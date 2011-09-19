@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="generate-html" basedir=".">
+	
+	<description>
+		Ant File for Building help documents
+	</description>
+	
+	<property name="eclipse_dir" location="${user.home}/eclipse_dir" />
+	
+	<path id="wikitext.classpath">
+		<fileset dir="${eclipse_dir}/plugins">
+			<include name="org.eclipse.mylyn.wikitext.*core*.jar"/>
+		</fileset>
+	</path>
+	
+	<taskdef classpathref="wikitext.classpath" 
+	resource="org/eclipse/mylyn/wikitext/core/util/anttask/tasks.properties" />
+  
+	<target name="generate-html" 
+			description="Generate HTML from textile source">
+		<wikitext-to-html markupLanguage="Textile" multipleOutputFiles="true" 
+				overwrite="false">
+			<fileset dir="${basedir}">
+					<include name="**/*.textile"/>
+			</fileset>
+			<stylesheet url="PLUGINS_ROOT/de.ptb.epics.eve.viewer/help/css/viewer.css"/>
+		</wikitext-to-html>
+	</target>
+
+</project>

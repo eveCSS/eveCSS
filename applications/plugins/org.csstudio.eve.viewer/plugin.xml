@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="%perspective.name"
+            class="de.ptb.epics.eve.viewer.EveEnginePerspective"
+          id="EveEnginePerspective">
+      </perspective>
+      <perspective
+            class="de.ptb.epics.eve.viewer.EveDevicePerspective"
+            id="EveDevicePerspective"
+            name="%perspective.name.0"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            name="%view.name"
+            icon="icons/css.gif"
+            class="de.ptb.epics.eve.viewer.views.playlistview.PlayListView"
+            id="PlayListView">
+      </view>
+      <view
+            name="%view.name.0"
+            icon="icons/css.gif"
+            class="de.ptb.epics.eve.viewer.views.engineview.EngineView"
+            id="EngineView">
+      </view>
+      <view
+            allowMultiple="true"
+            class="de.ptb.epics.eve.viewer.views.devicesview.DevicesView"
+            icon="icons/css.gif"
+            id="DevicesView"
+            name="%view.name.1"
+            restorable="true">
+      </view>
+      <view
+            name="%view.name.2"
+            icon="icons/css.gif"
+            class="de.ptb.epics.eve.viewer.views.messagesview.MessagesView"
+            id="MessagesView">
+      </view>
+      <view
+            allowMultiple="true"
+            class="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView"
+            icon="icons/css.gif"
+            id="DeviceInspectorView"
+            name="%view.name.3"/>
+      <view
+            allowMultiple="true"
+            class="de.ptb.epics.eve.viewer.views.deviceoptionsview.DeviceOptionsView"
+            icon="icons/css.gif"
+            id="DeviceOptionsView"
+            name="%view.name.4"/>
+      <view
+            allowMultiple="true"
+            class="de.ptb.epics.eve.viewer.views.plotview.PlotView"
+            icon="icons/css.gif"
+            id="PlotView"
+            name="%view.name.5"/>
+      <view
+            allowMultiple="true"
+            class="de.ptb.epics.eve.viewer.views.devicesview.DevicesView"
+            icon="icons/css.gif"
+            id="LocalDevicesView"
+            name="%view.name.6"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="de.ptb.epics.eve.viewer.handler.Start"
+            id="de.ptb.epics.eve.viewer.start"
+            name="EveViewer">
+      </command>
+      <command
+            defaultHandler="de.ptb.epics.eve.viewer.handler.OpenDeviceInDeviceOptionsView"
+            id="de.ptb.epics.eve.viewer.OpenDeviceInDeviceOptionsView"
+            name="Open Device in Device Options View">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.deviceinspectorview"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.AddDevice"
+            id="de.ptb.epics.eve.viewer.AddDeviceToDeviceInspector"
+            name="Add Device to Device Inspector">
+         <commandParameter
+               id="DeviceInspectorSecondaryId"
+               name="SecondaryId"
+               optional="false">
+         </commandParameter>
+      </command>
+      <category
+            id="de.ptb.epics.eve.viewer.views.deviceinspectorview"
+            name="DeviceInspectorView">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.deviceinspectorview"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.New"
+            description="New Device Inspector"
+            id="de.ptb.epics.eve.viewer.newDeviceInspectorCommand"
+            name="newDeviceInspectorCommand">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.deviceinspectorview"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.Rename"
+            id="de.ptb.epics.eve.viewer.renameDeviceInspectorCommand"
+            name="Rename Device Inspector">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.deviceinspectorview"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.Reset"
+            id="de.ptb.epics.eve.viewer.ResetDeviceInspector"
+            name="Reset Device Inspector">
+      </command>
+      <command
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.AddAllDevices"
+            id="de.ptb.epics.eve.viewer.addAllDevices"
+            name="add all devices">
+      </command>
+      <command
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.AddAllAxes"
+            id="de.ptb.epics.eve.viewer.addAxes"
+            name="add all motor axes">
+      </command>
+      <command
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.AddAllChannels"
+            id="de.ptb.epics.eve.viewer.addChannels"
+            name="add all detector channels">
+      </command>
+      <command
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.AddAllPPDevices"
+            id="de.ptb.epics.eve.viewer.addDevices"
+            name="add all (pre-/postscan) devices">
+      </command>
+      <command
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.ClearAllTables"
+            id="de.ptb.epics.eve.viewer.clearAllTables"
+            name="clear all tables">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.deviceinspectorview"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.ClearMotorAxesTable"
+            id="de.ptb.epics.eve.viewer.clearAxes"
+            name="clear motor axes table">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.deviceinspectorview"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.ClearDetectorChannelsTable"
+            id="de.ptb.epics.eve.viewer.clearChannels"
+            name="clear detector channels table">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.deviceinspectorview"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.deviceinspector.ClearDevicesTable"
+            id="de.ptb.epics.eve.viewer.clearDevices"
+            name="clear devices table">
+      </command>
+      <category
+            id="de.ptb.epics.eve.viewer.views.engineview"
+            name="EngineView">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.deviceinspectorview"
+            description="Connect to Engine"
+            id="de.ptb.epics.eve.viewer.connectCommand"
+            name="connectCommand">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.deviceinspectorview"
+            description="Disconnect from Engine"
+            id="de.ptb.epics.eve.viewer.disconnectCommand"
+            name="disconnect">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.engineview"
+            id="de.ptb.epics.eve.viewer.startCommand"
+            name="startCommand">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="de.ptb.epics.eve.viewer.handler.engine.Connect"
+            commandId="de.ptb.epics.eve.viewer.connectCommand">
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.viewer.handler.engine.Disconnect"
+            commandId="de.ptb.epics.eve.viewer.disconnectCommand">
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.viewer.handler.deviceinspector.New"
+            commandId="de.ptb.epics.eve.viewer.newDeviceInspectorCommand">
+         <activeWhen>
+            <reference
+                  definitionId="DeviceInspectorViewActive">
+            </reference></activeWhen>
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.viewer.handler.deviceinspector.Rename"
+            commandId="de.ptb.epics.eve.viewer.renameDeviceInspectorCommand">
+         <activeWhen>
+            <reference
+                  definitionId="DeviceInspectorViewActive">
+            </reference>
+         </activeWhen>
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.viewer.handler.deviceinspector.Reset"
+            commandId="de.ptb.epics.eve.viewer.ResetDeviceInspector">
+         <activeWhen>
+            <reference
+                  definitionId="DeviceInspectorViewActive">
+            </reference>
+         </activeWhen>
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.viewer.handler.engine.Start"
+            commandId="de.ptb.epics.eve.viewer.startCommand">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:DeviceInspectorView">
+         <command
+               commandId="de.ptb.epics.eve.viewer.newDeviceInspectorCommand"
+               icon="icons/new_fastview.gif"
+               label="newDeviceInspector"
+               style="push"
+               tooltip="create new Device Inspector">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.renameDeviceInspectorCommand"
+               icon="icons/editor_area.gif"
+               label="renameDeviceInspector"
+               style="push"
+               tooltip="rename Device Inspector">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.ResetDeviceInspector"
+               icon="icons/cp_order_obj.gif"
+               label="resetDeviceInspector"
+               style="push"
+               tooltip="Reset Layout">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.addAllDevices"
+               icon="icons/add.gif"
+               id="addAllDevices"
+               label="add all devices"
+               style="pulldown">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.clearAllTables"
+               icon="icons/clear_co.gif"
+               id="clearAllTables"
+               label="clear all tables"
+               style="pulldown">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:addAllDevices">
+         <command
+               commandId="de.ptb.epics.eve.viewer.addAxes"
+               icon="icons/axis_add.gif"
+               label="add all motor axes"
+               style="push">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.addChannels"
+               icon="icons/channel_add.gif"
+               label="add all detector channels"
+               style="push">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.addDevices"
+               icon="icons/device_add.gif"
+               label="add all (pre-/postscan) devices"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:clearAllTables">
+         <command
+               commandId="de.ptb.epics.eve.viewer.clearAxes"
+               icon="icons/axis_clear.gif"
+               label="clear motor axes"
+               style="pulldown">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.clearChannels"
+               icon="icons/channel_clear.gif"
+               label="clear detector channels"
+               style="pulldown">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.clearDevices"
+               icon="icons/device_clear.gif"
+               label="clear devices"
+               style="pulldown">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.viewer.views.deviceinspectorview.axistablepopup">
+         <command
+               commandId="de.ptb.epics.eve.viewer.OpenDeviceInDeviceOptionsView"
+               label="Open in separate options window"
+               style="push"
+               tooltip="Open Device in a new Device Options window">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.viewer.views.deviceinspectorview.channeltablepopup">
+         <command
+               commandId="de.ptb.epics.eve.viewer.OpenDeviceInDeviceOptionsView"
+               label="Open in separate options window"
+               style="push"
+               tooltip="Open Device in a new Device Options window">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.viewer.views.deviceinspectorview.devicetablepopup">
+         <command
+               commandId="de.ptb.epics.eve.viewer.OpenDeviceInDeviceOptionsView"
+               label="Open in separate options window"
+               style="push"
+               tooltip="Open Device in a new Device Options window">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.viewer.views.devicesview.treepopup">
+         <menu
+               label="Add to Device Inspector">
+            <dynamic
+                  class="de.ptb.epics.eve.viewer.views.devicesview.AddToDeviceInspectorSubMenuContribution"
+                  id="de.ptb.epics.eve.viewer.devicesview.AddToDeviceInspectorSubMenuContribution">
+            </dynamic>
+         </menu>
+         <command
+               commandId="de.ptb.epics.eve.viewer.OpenDeviceInDeviceOptionsView"
+               label="Open in separate options window"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="or">
+                     <instanceof
+                           value="de.ptb.epics.eve.data.measuringstation.AbstractDevice">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:display">
+         <command
+               commandId="de.ptb.epics.eve.viewer.start"
+               icon="icons/read_obj.gif"
+               label="EveViewer"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="DeviceInspectorViewActive">
+         <with
+               variable="activePartId">
+            <equals
+                  value="DeviceInspectorView">
+            </equals>
+         </with>
+      </definition>
+   </extension>
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="help/toc.xml"
+            primary="false">
+      </toc>
+      <toc
+            file="help/content/concepts/toc_concepts.xml"
+            primary="false">
+      </toc>
+      <toc
+            file="help/content/reference/toc_reference.xml"
+            primary="false">
+      </toc>
+      <toc
+            file="help/content/tasks/toc_tasks.xml"
+            primary="false">
+      </toc>
+   </extension>
+
+</plugin>

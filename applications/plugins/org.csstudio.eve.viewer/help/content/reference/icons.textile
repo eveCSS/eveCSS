@@ -1,0 +1,14 @@
+h1(eveTopic). Icons
+
+table(eveRefTable).
+| !../../../icons/motor.gif!| Motor|
+| !../../../icons/axis.gif!| Motor Axis|
+| !../../../icons/detector.gif!| Detector|
+| !../../../icons/channel.gif!| Detector Channel|
+| !../../../icons/device.gif!| (Pre-/Postscan)Device|
+| !../../../icons/class_obj.png!| Class of devices|
+| !../../../icons/motorsaxes.gif!| Motors and Motor Axes w/o class|
+| !../../../icons/detectorschannels.gif!| Detectors and Detector Channels w/o class|
+| !../../../icons/devices.gif!| (Pre-/Postscan)Devices w/o Class|
+
+
