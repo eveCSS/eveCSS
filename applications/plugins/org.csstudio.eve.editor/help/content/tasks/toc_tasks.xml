@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Tasks">
+   <topic href="help/content/tasks/createscandescription.html" label="Create a Scan Description">
+   </topic>
+   <topic href="help/content/tasks/addscanmodule.html" label="Add a Scan Module">
+   </topic>
+   <topic href="help/content/tasks/adddevicetoscanmodule.html" label="Add Devices to a Scan Module">
+   </topic>
+   <topic href="help/content/tasks/manipulatepropertiesofdevice.html" label="Manipulate Properties of a Device">
+   </topic>
+   <topic href="help/content/tasks/addplotwindow.html" label="Add a Plot Window">
+   </topic>
+
+</toc>

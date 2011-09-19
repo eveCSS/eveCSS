@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+  targetNamespace="http://www.ptb.de/epics/SCML" 
+  xmlns:tns="http://www.ptb.de/epics/SCML">
+
+  <!-- schema version 0.4.2
+       please increase version number on every modification
+       If the corresponding xml-file of the previous schema version is still
+       valid with the current schema version, change the minor version number only -->
+  <!-- Note:
+       The default value for both maxOccurs and minOccurs is 1! 
+       Please do not use tabs, use two white spaces instead
+  -->
+	
+  <element name ="scml">
+    <complexType>
+      <sequence>
+        <element name="version" type="string"></element>
+        <element name="measuringstation" type="string" minOccurs="0"></element>
+        <element name="repeatcount" type="tns:repeatcount" default="0"></element>
+        <element name="chain" type="tns:chain" maxOccurs="unbounded" minOccurs="0"></element>
+        <element name="plugins" minOccurs="0">
+          <complexType>
+            <sequence>
+              <element name="plugin" type="tns:plugin" maxOccurs="unbounded"></element>   
+            </sequence>
+          </complexType>
+        </element>
+        <element name="detectors" type="tns:detectors" minOccurs="0"></element>
+        <element name="motors" type="tns:motors" minOccurs="0"></element>
+        <element name="devices" minOccurs="0">
+          <complexType>
+            <sequence>
+              <element name="device" type="tns:device" maxOccurs="unbounded"></element>   
+            </sequence>
+          </complexType>
+        </element>
+        <element name="smselection" type="tns:selection" minOccurs="0"></element>
+      </sequence>
+    </complexType>
+  </element>
+
+  <complexType name="chain">
+    <sequence>
+      <element name="comment" type="string" minOccurs="0"></element>
+      <group ref="tns:fileGroup" minOccurs="0"></group>
+      <element name="startevent" type="tns:smevent" minOccurs="0"></element>
+      <element name="pauseevent" type="tns:pauseevent" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="redoevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="breakevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="stopevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="scanmodules" type="tns:scanmodules"></element>
+    </sequence>
+  <attribute name="id" type="tns:oneToThousand"></attribute>
+  </complexType>
+
+  <group name="fileGroup">
+    <sequence>
+      <element name="savefilename" type="string"></element>
+      <element name="confirmsave" type="boolean" default="false"></element>
+      <element name="autonumber" type="boolean" default="true"></element>
+      <element name="savescandescription" type="boolean" minOccurs="0"></element>
+      <element name="saveplugin" type="tns:controller" minOccurs="0"></element>
+    </sequence>
+  </group>
+
+  <simpleType name='repeatcount'>
+  	<restriction base='nonNegativeInteger'/>
+  </simpleType>
+  
+  <simpleType name='oneToThousand'>
+    <restriction base='positiveInteger'>
+      <maxInclusive value='1000'/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name='zeroToThousand'>
+    <restriction base='integer'>
+      <minInclusive value='0'/>
+      <maxInclusive value='1000'/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name='oneToHundredthousand'>
+    <restriction base='positiveInteger'>
+      <maxInclusive value='100000'/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name='zeroToHundredthousand'>
+    <restriction base='integer'>
+      <minInclusive value='0'/>
+      <maxInclusive value='100000'/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name ="identifier" >
+    <restriction base="string">
+      <pattern value="[a-zA-Z0-9_:/.;-]+"/>
+    </restriction>
+  </simpleType>
+
+  <complexType name="pauseevent">
+    <sequence>
+      <group ref="tns:smeventGroup"></group>
+      <element name="continue_if_false" type="boolean" minOccurs="0"></element>
+    </sequence>
+    <attribute name="type" type="tns:event" use="required"></attribute>
+  </complexType>
+
+  <complexType name="smevent">
+    <sequence>
+      <group ref="tns:smeventGroup"></group>
+    </sequence>
+    <attribute name="type" type="tns:event" use="required"></attribute>
+  </complexType>
+  
+  <group name="smeventGroup">
+    <sequence>
+      <choice>
+        <sequence>
+          <element name="id" type="tns:identifier"></element>
+          <element name="limit" type="tns:limit" minOccurs="0"></element>
+        </sequence>
+        <sequence>
+          <element name="incident" type="tns:incident" default="End"></element>
+          <element name="chainid" type="tns:zeroToThousand"></element>
+          <element name="smid" type="tns:zeroToHundredthousand"></element>
+        </sequence>
+      </choice>
+    </sequence>
+  </group>
+
+  <simpleType name="incident">
+    <restriction base="string">
+      <enumeration value="Start"></enumeration>
+      <enumeration value="End"></enumeration>
+    </restriction>
+  </simpleType>
+
+  <complexType name="scanmodules">
+    <sequence>
+      <element name="scanmodule" type="tns:scanmodule" maxOccurs="unbounded"></element>   
+    </sequence>
+  </complexType>
+   
+  <complexType name="scanmodule">
+    <sequence>
+      <element name="type" type="tns:smtype"></element>
+      <element name="name" type="string"></element>
+      <element name="xpos" type="nonNegativeInteger"></element>
+      <element name="ypos" type="nonNegativeInteger"></element>
+      <element name="parent" type="nonNegativeInteger"></element>
+      <element name="nested" type="positiveInteger"  minOccurs="0"></element>
+      <element name="appended" type="positiveInteger" minOccurs="0"></element>
+      <element name="settletime" type="double" minOccurs="0"></element>
+      <element name="triggerdelay" type="double" minOccurs="0"></element>
+      <element name="triggerconfirm" type="boolean" minOccurs="0"></element>
+      <element name="saveaxispositions" type="tns:saveAxisPositions" minOccurs="0"></element>
+      <element name="triggerevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="pauseevent" type="tns:pauseevent" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="redoevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="breakevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="prescan" minOccurs="0" maxOccurs="unbounded">
+        <complexType>
+          <sequence>
+            <element name="id" type="tns:identifier"></element>
+            <element name="value" type="tns:typevalue"></element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="smaxis" type="tns:smaxis" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="smchannel" type="tns:smchannel" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="postscan" minOccurs="0" maxOccurs="unbounded">
+        <complexType>
+          <sequence>
+            <element name="id" type="tns:identifier"></element>
+            <choice>
+              <element name="value" type="tns:typevalue"></element>
+              <element name="reset_originalvalue" type="boolean"></element>
+            </choice>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="positioning" type="tns:positioning" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="plot" type="tns:plot" minOccurs="0" maxOccurs="unbounded"></element>
+    </sequence>
+    <attribute name="id" type="positiveInteger"></attribute>
+  </complexType>
+
+  <complexType name="motors">
+    <sequence>
+      <element name="motor" type="tns:motor" maxOccurs="unbounded"></element>   
+    </sequence>
+  </complexType>
+   
+  <complexType name="motor">
+    <sequence>
+      <element name="class" type="string"></element>
+      <element name="name" type="string"></element>
+      <element name="id" type="tns:identifier"></element>
+      <element name="trigger" type="tns:access" minOccurs="0"></element>   
+      <element name="unit" type="tns:unit" minOccurs="0"></element>
+      <element name="axis" type="tns:axis" maxOccurs="unbounded"></element>
+      <element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"></element>
+    </sequence>
+  </complexType>
+
+  <complexType name="axis">
+    <sequence>
+      <element name="class" type="string"></element>
+      <element name="name" type="string"></element>
+      <element name="id" type="tns:identifier"></element>
+      <element name="goto" type="tns:access"></element>   
+      <element name="position" type="tns:access"></element>   
+      <element name="stop" type="tns:access"></element>   
+      <element name="status" type="tns:access" minOccurs="0"></element>   
+      <element name="trigger" type="tns:access" minOccurs="0"></element>   
+      <element name="unit" type="tns:unit" minOccurs="0"></element>   
+      <element name="deadband" type="tns:access" minOccurs="0"></element>   
+      <element name="offset" type="tns:access" minOccurs="0"></element>   
+      <element name="setmode" type="tns:access" minOccurs="0"></element>
+      <element name="tweakvalue" type="tns:access" minOccurs="0"></element>   
+      <element name="tweakforward" type="tns:access" minOccurs="0"></element>   
+      <element name="tweakreverse" type="tns:access" minOccurs="0"></element>   
+      <element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"></element>
+    </sequence>
+  </complexType>
+
+  <complexType name="smaxis">
+    <sequence>
+      <element name="axisid" type="string"></element>
+      <element name="stepfunction" type="tns:stepfunction"></element>
+      <element name="positionmode">
+        <simpleType>
+          <restriction base="string">
+            <enumeration value="relative"></enumeration>
+            <enumeration value="absolute"></enumeration>
+          </restriction>
+        </simpleType>
+      </element>
+      <choice>
+         <sequence>
+          <element name="start" type="tns:typevalue"></element>
+          <element name="stop" type="tns:typevalue"></element>
+          <element name="stepwidth" type="tns:typevalue"></element>
+          <element name="ismainaxis" type="boolean" minOccurs="0"></element>
+         </sequence>
+        <sequence>
+          <element name="stepfilename" type="string"></element>
+        </sequence>
+        <sequence>
+          <element name="plugin" type="tns:controller"></element>
+        </sequence>
+         <sequence>
+          <element name="positionlist" type="string"></element>
+        </sequence>
+      </choice>
+    </sequence>
+  </complexType>
+
+  <complexType name="detectors">
+    <sequence>
+      <element name="detector" type="tns:detector" maxOccurs="unbounded"></element>   
+    </sequence>
+  </complexType>
+   
+  <complexType name="detector">
+    <sequence>
+      <element name="class" type="string"></element>
+      <element name="name" type="string"></element>
+      <element name="id" type="tns:identifier"></element>
+      <element name="unit" type="tns:unit" minOccurs="0"></element>
+      <element name="trigger" type="tns:access" minOccurs="0"></element>
+      <element name="channel" type="tns:channel" maxOccurs="unbounded"></element>
+      <element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"></element>
+    </sequence>
+  </complexType>
+
+  <complexType name="channel">
+    <sequence>
+      <element name="class" type="string"></element>
+      <element name="name" type="string"></element>
+      <element name="id" type="tns:identifier"></element>
+      <element name="read" type="tns:access"></element>
+      <element name="unit" type="tns:unit" minOccurs="0"></element>   
+      <element name="trigger" type="tns:access" minOccurs="0"></element>
+      <element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"></element>
+    </sequence>
+  </complexType>
+
+  <complexType name="unit">
+    <sequence>
+      <choice>
+        <group ref="tns:accessGroup"></group>
+        <element name="unitstring" type="string"></element>   
+      </choice>
+    </sequence>
+  </complexType>
+
+  <complexType name="access">
+    <sequence>
+      <group ref="tns:accessGroup"></group>
+    </sequence>
+  </complexType>
+
+  <group name="accessGroup">
+    <sequence>
+      <element name="access" type="tns:accessProperty"></element>   
+      <element name="value" type="tns:typevalue" minOccurs="0"></element>
+      </sequence>
+  </group>
+
+  <complexType name="option">
+    <sequence>
+      <element name="class" type="string" minOccurs="0"></element>
+      <group ref="tns:subdeviceGroup"></group>
+    </sequence>
+  </complexType>
+  
+   <simpleType name="display">
+    <restriction base="string">
+      <enumeration value="summary"></enumeration>
+      <enumeration value="detail"></enumeration>
+    </restriction>
+  </simpleType>
+  
+  <complexType name="typevalue">
+    <simpleContent>
+      <extension base="string">
+        <attribute name="type" type="tns:data" use="required"></attribute>
+      </extension>
+    </simpleContent>
+  </complexType>
+
+  <complexType name="smchannel">
+    <sequence>
+      <element name="channelid" type="string"></element>
+      <element name="averagecount" type="nonNegativeInteger" minOccurs="0"></element>
+      <element name="maxdeviation" type="double" minOccurs="0"></element>
+      <element name="minimum" type="double" minOccurs="0"></element>
+      <element name="maxattempts" type="nonNegativeInteger" minOccurs="0"></element>
+      <element name="confirmtrigger" type="boolean" minOccurs="0"></element>
+      <element name="sendreadyevent" type="boolean" minOccurs="0"></element>
+      <element name="redoevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
+    </sequence>
+  </complexType>
+
+ <complexType name="positioning">
+    <sequence>
+      <element name="axis_id" type="string"></element>
+      <element name="channel_id" type="string"></element>
+      <element name="normalize_id" type="string" minOccurs="0"></element>   
+      <element name="plugin" type="tns:controller"></element>
+    </sequence>
+  </complexType>
+  
+  <complexType name="controller">
+    <sequence>
+      <element name="parameter" type="tns:parameter" minOccurs="0" maxOccurs="unbounded"></element>
+    </sequence>
+    <attribute name="name" type="string" use="required"></attribute>
+   </complexType>
+
+  <complexType name="parameter">
+    <simpleContent>
+      <extension base="string">
+      <attribute name="name" type="string" use="required"></attribute>
+      </extension>
+    </simpleContent>
+   </complexType>
+  
+  <complexType name="device">
+    <sequence>
+      <element name="class" type="string"></element>
+      <group ref="tns:subdeviceGroup"></group>
+      <element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"></element>
+    </sequence>
+  </complexType>
+  
+  <group name="subdeviceGroup">
+    <sequence>
+      <element name="name" type="string"></element>
+      <element name="id" type="tns:identifier"></element>
+      <element name="value" type="tns:access"></element>
+      <element name="unit" type="tns:unit" minOccurs="0"></element>   
+      <element name="displaygroup" type="string" minOccurs="0"></element>   
+    </sequence>
+  </group>
+ 
+  <complexType name="plugin">
+    <sequence>
+      <element name="name" type="string"></element>
+      <element name="location" type="string"></element>
+      <element name="parameter" type="tns:pluginParameter" maxOccurs="unbounded" minOccurs="0"></element>
+    </sequence>
+    <attribute name="type" type="tns:pluginType" use="required"></attribute>
+  </complexType>
+
+  <complexType name="pluginParameter">
+    <simpleContent>
+      <extension base="string">
+        <attribute name="name" type="string" use="required"></attribute>
+        <attribute name="datatype" type="tns:pluginData" use="required"></attribute>
+        <attribute name="default" type="string"></attribute>
+        <attribute name="mandatory" type="boolean"></attribute>
+      </extension>
+    </simpleContent>
+  </complexType>
+
+  <simpleType name="pluginType">
+    <restriction base="string">
+      <enumeration value="position"></enumeration>
+      <enumeration value="save"></enumeration>
+      <enumeration value="display"></enumeration>
+      <enumeration value="postscanpositioning"></enumeration>
+    </restriction>
+  </simpleType>
+
+  <complexType name="limit">
+    <simpleContent>
+      <extension base="string">
+        <attribute name="type" type="tns:data" use="required"></attribute>
+        <attribute name="comparison" type="tns:comparison" use="required"></attribute>
+      </extension>
+    </simpleContent>    
+  </complexType>
+
+  <simpleType name="comparison">
+    <restriction base="string">
+      <enumeration value="eq"></enumeration>
+      <enumeration value="ne"></enumeration>
+      <enumeration value="gt"></enumeration>
+      <enumeration value="lt"></enumeration>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="event">
+    <restriction base="string">
+      <enumeration value="schedule"></enumeration>
+      <enumeration value="monitor"></enumeration>
+      <enumeration value="detector"></enumeration>
+    </restriction>
+  </simpleType>
+
+  <complexType name="accessProperty">
+    <simpleContent>
+      <extension base="string">
+        <attribute name="method" type="tns:method" use="required"></attribute>
+        <attribute name="type" type="tns:data" use="required"></attribute>
+        <attribute name="count" type="positiveInteger"></attribute>
+        <attribute name="transport" type="tns:transport" use="required"></attribute>
+        <attribute name="timeout" type="double"></attribute>
+        <attribute name="monitor" type="boolean" default="false"></attribute>
+      </extension>
+    </simpleContent>
+  </complexType>
+ 
+  <simpleType name="data">
+    <restriction base="string">
+      <enumeration value="OnOff"></enumeration>  <!-- value "1 0": display "On" and send "1", display "Off" send "0" -->
+      <enumeration value="OpenClose"></enumeration> <!-- value "0 1": display "Open" and send "0", display "Close" send "1" -->
+      <enumeration value="int"></enumeration>
+      <enumeration value="double"></enumeration>
+      <enumeration value="string"></enumeration> <!-- contains a string list of possible values -->
+      <enumeration value="datetime"></enumeration>
+    </restriction>
+  </simpleType>
+  
+  <simpleType name="pluginData">
+    <restriction base="string">
+      <enumeration value="OnOff"></enumeration>  <!-- value "1 0": display "On" and send "1", display "Off" send "0" -->
+      <enumeration value="OpenClose"></enumeration> <!-- value "0 1": display "Open" and send "0", display "Close" send "1" -->
+      <enumeration value="int"></enumeration>
+      <enumeration value="double"></enumeration>
+      <enumeration value="string"></enumeration> <!-- contains a string list of possible values -->
+      <enumeration value="axisid"></enumeration>
+      <enumeration value="channelid"></enumeration>
+      <enumeration value="deviceid"></enumeration>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="method">
+    <restriction base="string">
+      <enumeration value="PUT"></enumeration>
+      <enumeration value="PUTCB"></enumeration>
+      <enumeration value="GET"></enumeration>
+      <enumeration value="GETCB"></enumeration>
+      <enumeration value="GETPUT"></enumeration>
+      <enumeration value="GETPUTCB"></enumeration>
+    </restriction>
+  </simpleType>
+  
+  <simpleType name="transport">
+    <restriction base="string">
+      <enumeration value="ca"></enumeration>
+      <enumeration value="local"></enumeration>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="saveAxisPositions">
+    <restriction base="string">
+      <enumeration value="never"></enumeration>
+      <enumeration value="before"></enumeration>
+      <enumeration value="after"></enumeration>
+      <enumeration value="both"></enumeration>
+    </restriction>
+  </simpleType>
+  
+  <simpleType name="smtype">
+    <restriction base="string">
+      <enumeration value="classic"></enumeration>
+      <enumeration value="advanced"></enumeration>
+    </restriction>
+  </simpleType>
+  
+  <complexType name="selection">
+    <sequence>
+      <element name="stepfunction" type="tns:stepfunctionlist"></element>
+      <element name="smtype" type="string"></element>
+    </sequence>
+  </complexType>
+
+  <simpleType name="stepfunctionlist">
+    <restriction base="string">
+      <pattern value="Add,Multiply,File,Plugin,Positionlist"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="stepfunction">
+    <restriction base="string">
+      <enumeration value="Add"></enumeration>
+      <enumeration value="Multiply"></enumeration>
+      <enumeration value="File"></enumeration>
+      <enumeration value="Plugin"></enumeration>
+      <enumeration value="Positionlist"></enumeration>
+    </restriction>
+  </simpleType>
+
+  <complexType name="plot">
+    <sequence>
+      <element name="xaxis">
+        <complexType>
+          <sequence>
+            <element name="id" type="tns:identifier"></element>
+            <element name="mode" type="tns:plotmode"></element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="init" type="boolean"></element>
+      <element name="yaxis" type="tns:plotaxis" maxOccurs="unbounded"></element>
+    </sequence>
+    <attribute name="id" type="positiveInteger"></attribute>
+  </complexType>
+
+  <simpleType name="plotmode">
+    <restriction base="string">
+      <enumeration value="linear"></enumeration>
+      <enumeration value="log"></enumeration>
+    </restriction>
+  </simpleType>
+
+  <complexType name="plotaxis">
+    <sequence>
+      <element name="id" type="tns:identifier"></element>
+      <element name="mode" type="tns:plotmode"></element>
+      <element name="normalize_id" type="string" minOccurs="0" ></element>
+      <element name="linestyle" type="string"></element>
+      <element name="color" type="tns:color"></element>
+      <element name="markstyle" type="string"></element>
+    </sequence>
+  </complexType>
+ 
+  <simpleType name="color">
+    <restriction base="string">
+      <pattern value="[a-fA-F0-9]{6}"/>
+    </restriction>
+  </simpleType>
+</schema>

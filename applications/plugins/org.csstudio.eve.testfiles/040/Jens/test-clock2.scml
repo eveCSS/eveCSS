@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
+    xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <version>0.4.0</version>
+    <repeatcount>0</repeatcount>
+    <chain id="1">
+        <comment>kein Kommentar</comment>
+        <savefilename>/home/eden/eclipse/eve/evEngine/testdaten</savefilename>
+        <confirmsave>false</confirmsave>
+        <autonumber>true</autonumber>
+        <savescandescription>true</savescandescription>
+        <saveplugin name="HDF5">
+            <parameter name="location">/home/eden/eclipse/eve/evePlugins/lib/libhdf5plugin.so</parameter>
+            <parameter name="extent">0</parameter>
+            <parameter name="format">HDF5</parameter>
+        </saveplugin>
+        <scanmodules>
+            <scanmodule id="1">
+                <type>classic</type>
+                <name>SM 1</name>
+                <xpos>100</xpos>
+                <ypos>20</ypos>
+                <parent>0</parent>
+                <appended>2</appended>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>Timer01.01</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>relative</positionmode>
+                    <start type="datetime">00:00:00</start>
+                    <stop type="datetime">00:00:30</stop>
+                    <stepwidth type="datetime">5</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <plot id="1">
+                    <xaxis>
+                        <id>Timer01.01</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent1</id>
+                        <mode>linear</mode>
+                        <linestyle>Solid Line</linestyle>
+                        <color>0000ff</color>
+                        <markstyle>None</markstyle>
+                    </yaxis>
+                </plot>
+            </scanmodule>
+            <scanmodule id="2">
+                <type>classic</type>
+                <name>SM 2 append</name>
+                <xpos>228</xpos>
+                <ypos>20</ypos>
+                <parent>1</parent>
+                <settletime>0.0</settletime>
+                <triggerdelay>0.0</triggerdelay>
+                <triggerconfirm>false</triggerconfirm>
+                <saveaxispositions>never</saveaxispositions>
+                <smaxis>
+                    <axisid>Counter01.01</axisid>
+                    <stepfunction>Add</stepfunction>
+                    <positionmode>absolute</positionmode>
+                    <start type="int">0</start>
+                    <stop type="int">10</stop>
+                    <stepwidth type="int">1</stepwidth>
+                    <ismainaxis>false</ismainaxis>
+                </smaxis>
+                <smchannel>
+                    <channelid>ringCurrent1</channelid>
+                    <confirmtrigger>false</confirmtrigger>
+                </smchannel>
+                <plot id="2">
+                    <xaxis>
+                        <id>Counter01.01</id>
+                        <mode>linear</mode>
+                    </xaxis>
+                    <init>false</init>
+                    <yaxis>
+                        <id>ringCurrent1</id>
+                        <mode>linear</mode>
+                        <linestyle>Solid Line</linestyle>
+                        <color>0000ff</color>
+                        <markstyle>None</markstyle>
+                    </yaxis>
+                </plot>
+            </scanmodule>
+        </scanmodules>
+    </chain>
+    <plugins>
+        <plugin type="position">
+            <name>plugin1</name>
+            <location>/path/to/plugin1</location>
+        </plugin>
+        <plugin type="position">
+            <name>ReferenceAdd</name>
+            <location>/path/to/referenceadd</location>
+            <parameter name="summand" datatype="double" default="0.0" mandatory="true"></parameter>
+            <parameter name="referenceaxis" datatype="axisid" default="" mandatory="true"></parameter>
+        </plugin>
+        <plugin type="position">
+            <name>ReferenceMultiply</name>
+            <location>/path/to/referenceadd</location>
+            <parameter name="factor" datatype="double" default="0.0" mandatory="true"></parameter>
+            <parameter name="referenceaxis" datatype="axisid" default="" mandatory="true"></parameter>
+        </plugin>
+        <plugin type="position">
+            <name>plugin2</name>
+            <location>/path/to/plugin2</location>
+        </plugin>
+        <plugin type="save">
+            <name>ASCII</name>
+            <location></location>
+            <parameter name="format" datatype="string" default="ASCII" mandatory="false"></parameter>
+            <parameter name="suffix" datatype="string" default="txt" mandatory="false"></parameter>
+        </plugin>
+        <plugin type="save">
+            <name>HDF5</name>
+            <location>/home/eden/eclipse/eve/evePlugins/lib/libhdf5plugin.so</location>
+            <parameter name="extent" datatype="int" default="0" mandatory="false"/>
+            <parameter name="format" datatype="string" default="HDF5" mandatory="false"/>
+        </plugin>
+        <plugin type="postscanpositioning">
+            <name>GOTO-Peak</name>
+            <location>/path/to/plugin3</location>
+            <parameter name="direction" datatype="string"
+                default="positive" mandatory="false">positive,negative</parameter>
+        </plugin>
+        <plugin type="postscanpositioning">
+            <name>GOTO-Center</name>
+            <location>/path/to/plugin3</location>
+            <parameter name="direction" datatype="string"
+                default="positive" mandatory="true">positive,negative</parameter>
+        </plugin>
+    </plugins>
+    <detectors>
+        <detector>
+            <class>Timer</class>
+            <name>Uhrzeit</name>
+            <id>Timer02</id>
+            <channel>
+                <class>none</class>
+                <name>Wecker</name>
+                <id>Timer02.03</id>
+                <read>
+                    <access method="GETCB" type="datetime" transport="local">Timer</access>
+                </read>
+            </channel>
+        </detector>
+        <detector>
+            <class>Timer</class>
+            <name>Timer03</name>
+            <id>Timer03</id>
+            <channel>
+                <class>none</class>
+                <name>Timer0301</name>
+                <id>Timer03.01</id>
+                <read>
+                    <access method="GETCB" type="int" transport="local">Timer</access>
+                </read>
+            </channel>
+        </detector>
+        <detector>
+            <class>ringCurrent</class>
+            <name>BESSY</name>
+            <id>ringCurrent</id>
+            <unit>
+                <unitstring>Ampere</unitstring>
+            </unit>
+            <channel>
+                <class>any</class>
+                <name>RingStrom</name>
+                <id>ringCurrent1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca">ringCurrent1</access>
+                </read>
+            </channel>
+        </detector>
+    </detectors>
+    <motors>
+        <motor>
+            <class>Timer</class>
+            <name>T1</name>
+            <id>Timer01</id>
+            <axis>
+                <class></class>
+                <name>Wecker</name>
+                <id>Timer01.01</id>
+                <goto>
+                    <access method="PUTCB" type="datetime" transport="local">Timer</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="datetime" transport="local">Timer</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="local">Timer</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
+        <motor>
+            <class>Timer</class>
+            <name></name>
+            <id>Timer02</id>
+            <axis>
+                <class></class>
+                <name>Wecker 2</name>
+                <id>Timer02.01</id>
+                <goto>
+                    <access method="PUTCB" type="datetime" transport="local">Timer</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="datetime" transport="local">Timer</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="local">Timer</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
+        <motor>
+            <class>KlasseC1</class>
+            <name>C1</name>
+            <id>Counter01</id>
+            <axis>
+                <class></class>
+                <name></name>
+                <id>Counter01.01</id>
+                <goto>
+                    <access method="PUTCB" type="int" transport="local">Counter</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="int" transport="local">Counter</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="local">Counter</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
+        <motor>
+            <class></class>
+            <name></name>
+            <id>Counter02</id>
+            <axis>
+                <class></class>
+                <name></name>
+                <id>Counter02.01</id>
+                <goto>
+                    <access method="PUTCB" type="int" transport="local">Counter</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="int" transport="local">Counter</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="local">Counter</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
+        <motor>
+            <class>ServoMotor</class>
+            <name>SX700-</name>
+            <id>OMS58:212000servo</id>
+            <axis>
+                <class></class>
+                <name>Mirror</name>
+                <id>OMS58:21200000servo</id>
+                <goto>
+                    <access method="PUTCB" type="double" transport="ca">OMS58:21200000</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="double" transport="ca">OMS58:21200000.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">OMS58:21200000.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <unit>
+                    <access method="GETCB" type="string" transport="ca">OMS58:21200000.EGU</access>
+                </unit>
+            </axis>
+            <axis>
+                <class></class>
+                <name>Grating</name>
+                <id>OMS58:21200001servo</id>
+                <goto>
+                    <access method="PUTCB" type="double" transport="ca">OMS58:21200001</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="double" transport="ca">OMS58:21200001.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">OMS58:21200001.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <unit>
+                    <access method="GETCB" type="string" transport="ca">OMS58:21200001.EGU</access>
+                </unit>
+            </axis>
+        </motor>
+    </motors>
+    <devices>
+        <device>
+            <class>SMC200</class>
+            <name>Load Motor</name>
+            <id>PPSMC:23715001.SET</id>
+            <value>
+                <access method="GETPUTCB" type="string" transport="ca">PPSMC:23715001.SET</access>
+                <value type="string"></value>
+            </value>
+            <unit>
+                <access method="GETCB" type="string" transport="ca">PPSMC:23715001.EGU</access>
+            </unit>
+        </device>
+        <device>
+            <class></class>
+            <name>Motor-RBV</name>
+            <id>Event-PPSMC:23715001</id>
+            <value>
+                <access method="GETCB" type="double" transport="ca">PPSMC:23715001.RBV</access>
+                <value type="double"></value>
+            </value>
+        </device>
+        <device>
+            <class></class>
+            <name>"Dummy-Topup[]"</name>
+            <id>TOPUP:228</id>
+            <value>
+                <access method="GETCB" type="double" transport="ca" monitor="true">PPSMC:23715001.RBV</access>
+                <value type="double"></value>
+            </value>
+        </device>
+        <device>
+            <class></class>
+            <name>Dummy-Nr.2</name>
+            <id>TOPUP:234</id>
+            <value>
+                <access method="GETCB" type="double" transport="ca" monitor="true">PPSMC:23715001.RBV</access>
+                <value type="double"></value>
+            </value>
+        </device>
+    </devices>
+    <smselection>
+        <stepfunction>Add,Multiply,File,Plugin,Positionlist</stepfunction>
+        <smtype>classic, advanced</smtype>
+    </smselection>
+</tns:scml>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Reference">
+   <topic href="help/content/reference/chainproperties.html" label="Chain Properties">
+   </topic>
+   <topic href="help/content/reference/scanmoduleproperties.html" label="Scan Module Properties">
+   </topic>
+   <topic href="help/content/reference/motoraxisproperties.html" label="Motor Axis Properties">
+   </topic>
+   <topic href="help/content/reference/detectorchannelproperties.html" label="Detector Channel Properties">
+   </topic>
+   <topic href="help/content/reference/plotwindowproperties.html" label="Plot Window Properties">
+   </topic>
+   <topic href="help/content/reference/deviceclasses.html" label="Device Classes">
+   </topic>
+
+</toc>
