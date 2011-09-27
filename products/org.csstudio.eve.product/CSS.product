@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="Css" id="org.csstudio.eve.product.product" application="org.csstudio.eve.product.application" version="2.0.0" useFeatures="true" includeLaunchers="true">
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="org.csstudio.eve.applications.feature" version="1.0.0.qualifier"/>
+      <feature id="org.csstudio.eve.core.feature" version="1.0.0.qualifier"/>
+      <feature id="org.csstudio.eve.eclipse.feature" version="1.0.0.qualifier"/>
+   </features>
+
+
+</product>
