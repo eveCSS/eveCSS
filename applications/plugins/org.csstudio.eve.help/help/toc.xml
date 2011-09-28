@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="EVE" link_to="PLUGINS_ROOT/org.csstudio.platform.ui/tocApps.xml#other">
+<toc label="EVE" link_to="PLUGINS_ROOT/org.csstudio.ui.help/tocApps.xml#other">
    <topic label="EVE">
       <topic label="Concepts">
          <link toc="help/content/concepts/toc_concepts.xml"/>

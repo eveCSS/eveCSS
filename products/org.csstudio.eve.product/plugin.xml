@@ -14,15 +14,6 @@
       </application>
    </extension>
    <extension
-         point="org.csstudio.startup.module">
-      <startupParameters
-            class="org.csstudio.utility.product.StartupParameters">
-      </startupParameters>
-      <workbench
-            class="org.csstudio.utility.product.Workbench">
-      </workbench>
-   </extension>
-   <extension
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
@@ -63,6 +54,18 @@
       </product>
    </extension>
    <extension
+         point="org.eclipse.ui.intro">
+      <intro
+            class="org.eclipse.ui.intro.config.CustomizableIntroPart"
+            icon="icons/css16.gif"
+            id="org.csstudio.eve.product.intro">
+      </intro>
+      <introProductBinding
+            introId="org.csstudio.eve.product.intro"
+            productId="org.csstudio.eve.product">
+      </introProductBinding>
+   </extension>
+   <extension
          point="org.eclipse.ui.intro.config">
       <config
             content="intro/intro.xml"
@@ -75,6 +78,15 @@
             </implementation>
          </presentation>
       </config>
+   </extension>
+   <extension
+         point="org.csstudio.startup.module">
+      <startupParameters
+            class="org.csstudio.utility.product.StartupParameters">
+      </startupParameters>
+      <workbench
+            class="org.csstudio.utility.product.Workbench">
+      </workbench>
    </extension>
 
 </plugin>
