@@ -32,7 +32,49 @@
                name="appName"
                value="Css">
          </property>
+         <property
+               name="aboutImage"
+               value="icons/about.gif">
+         </property>
+         <property
+               name="aboutText"
+               value="Control System Studio (CSS) is a combined&#x0A;effort of several parties, including&#x0A;- DESY (Hamburg, Germany)&#x0A;- SNS (Oak Ridge, TN).&#x0A;&#x0A;It provides a collection of control system&#x0A;tools in a common environment, based&#x0A;on Eclipse.&#x0A;&#x0A;See http://ics-web.sns.ornl.gov/css">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/css16.gif,icons/css32.gif,icons/css48.gif,icons/css64.gif,icons/css128.gif">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="0000FF">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="7,190,445,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,210,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
       </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.intro.config">
+      <config
+            content="intro/intro.xml"
+            id="org.csstudio.eve.product.introConfigId"
+            introId="org.csstudio.eve.product.intro">
+         <presentation
+               home-page-id="root">
+            <implementation
+                  kind="html">
+            </implementation>
+         </presentation>
+      </config>
    </extension>
 
 </plugin>
