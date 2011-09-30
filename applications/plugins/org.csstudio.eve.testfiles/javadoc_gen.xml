@@ -5,24 +5,40 @@
   	Ant File for Building JavaDoc...
   </description>
 
-  <property name="eclipse_dir" location="${user.home}/eclipse_dir" />
+  <property name="home_dir" location="../../../.." />
+  <property name="repo_dir" location="../../../" />
+  <property name="eclipse_dir" location="/opt/eclipse/eclipse-rcp-indigo-SR1/eclipse" />
+  <property name="target_dir" location="${home_dir}/eveCSS2-docs/api/files/eveCSS" />
+  <property name="css_core_dir" location="${repo_dir}/cs-studio-3.0/core/plugins" />
+  <property name="css_app_dir" location="${repo_dir}/cs-studio-3.0/applications/plugins" />
+  <property name="eve1_dir" location="${home_dir}/eveCSS" />
 
   <target name="clean" description="delete (old) javadoc files">
-      <delete dir="docs/api/eveCSS" />
       <echo message="deleting (old) javadoc files" />
+      <delete dir="${target_dir}" />
+      <echo message="old files deleted" />
   </target> 
 
-  <target name="javadoc">
-  	<mkdir dir="docs/api/eveCSS" />
+  <target name="javadoc" depends="clean">
+  	<echo message="creating api doc directory" />
+  	<mkdir dir="${target_dir}" />
+  
+    <echo message="home_dir: ${home_dir}"/>
+    <echo message="repo_dir: ${repo_dir}"/>
+    <echo message="eclipse_dir: ${eclipse_dir}"/>
+    <echo message="target_dir: ${target_dir}"/>
+    <echo message="css_core_dir: ${css_core_dir}"/>
+    <echo message="css_app_dir: ${css_app_dir}"/>
+    <echo message="eve1_dir: ${eve1_dir}"/>
   
     <javadoc
-      destdir="docs/api/eveCSS"
+      destdir="${target_dir}"
       access="public"
       author="true"
       version="true"
       use="true"
       windowtitle="eveCSS API"
-      linksource="yes">
+      linksource="no">
    	
       <classpath>
     	<pathelement path="${classpath}"/>
@@ -30,45 +46,34 @@
     	  <include name="**/*.jar"/>
     	</fileset>
     	
-    	<pathelement location="org.csstudio.apputil/bin" />
-    	<pathelement location="org.csstudio.apputil.ui/bin" />
-    	<pathelement location="org.csstudio.logbook/bin" />
-    	<pathelement location="org.csstudio.platform/classes" />
-    	<pathelement location="org.csstudio.platform.libs.dal/bin" />
-    	<pathelement location="org.csstudio.platform.libs.dal.epics/bin" />
-    	<pathelement location="org.csstudio.platform.libs.epics/bin" />
-    	<pathelement location="org.csstudio.platform.libs.jmock/bin" />
-    	<pathelement location="org.csstudio.platform.libs.jms/bin" />
-    	<pathelement location="org.csstudio.platform.ui/bin" />
-    	<pathelement location="org.csstudio.platform.utility.jms/bin" />
-    	<pathelement location="org.csstudio.platform.workspace/bin" />
-    	<pathelement location="org.csstudio.startup/bin" />
-    	<pathelement location="org.csstudio.startuphelper/bin" />
-    	<pathelement location="org.csstudio.swt.xygraph/bin" />
-    	<pathelement location="org.csstudio.utility.pv/bin" />
-    	<pathelement location="org.csstudio.utility.pv.epics/bin" />
+    	<dirset dir="${css_core_dir}">
+    	  <include name="**/bin"/>
+    	</dirset>
     	
-    	<pathelement location="org.csstudio.platform.libs.epics/lib/caj-1.1.5d.jar" />
-    	<pathelement location="org.csstudio.platform.libs.epics/lib/jca-2.3.3.jar" />
-    	<pathelement location="org.csstudio.platform.libs.dal/lib/java-common-4.0.1-SNAPSHOT.jar" />
-    	<pathelement location="org.csstudio.platform/lib/jdom.jar" />
-    	<pathelement location="org.csstudio.platform.libs.jms/libs/activemq-all-5.1.0.jar" />
+    	<dirset dir="${css_app_dir}">
+    	  <include name="**/bin"/>
+    	</dirset>
     	
-    	<!--<pathelement location="org.csstudio.platform/lib/log4j-1.2.14.jar" />-->
-    	<pathelement location="lib/log4j-1.2.16.jar" />
+    	<pathelement location="${css_core_dir}/org.csstudio.platform.libs.epics/lib/caj-1.1.7.jar" />
+    	<pathelement location="${css_core_dir}/org.csstudio.platform.libs.epics/lib/jca-2.3.5.jar" />
+    	<pathelement location="${css_core_dir}/org.csstudio.platform.libs.dal/lib/java-common-4.0.1-SNAPSHOT.jar" />
+    	<pathelement location="${css_core_dir}/org.csstudio.platform/lib/jdom.jar" />
+    	<pathelement location="${css_core_dir}/org.csstudio.platform.libs.jms/libs/activemq-all-5.1.0.jar" />
+    	
+    	<pathelement location="${css_core_dir}/org.csstudio.platform.libs.dal/lib/log4j-1.2.16.jar" />
       </classpath>
 	
-      <packageset dir="de.ptb.epics.eve.data/src" defaultexcludes="yes" />
-      <packageset dir="de.ptb.epics.eve.ecp1/src" defaultexcludes="yes" />
-      <packageset dir="de.ptb.epics.eve.editor/src" defaultexcludes="yes" />
-      <packageset dir="de.ptb.epics.eve.viewer/src" defaultexcludes="yes" />
-      <packageset dir="de.ptb.epics.eve.preferences/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.eve.data/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.eve.ecp1/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.eve.editor/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.eve.viewer/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.eve.preferences/src" defaultexcludes="yes" />
       
-      <packageset dir="de.ptb.epics.eve.data.tests/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.eve.data.tests/src" defaultexcludes="yes" />
 
-      <doctitle><![CDATA[<h1>eveCSS</h1>]]></doctitle>
+      <doctitle><![CDATA[<h1>eveCSS 2.0</h1>]]></doctitle>
       <bottom>
-        <![CDATA[<i>Copyright &#169; 2000 Dummy Corp. All Rights Reserved.</i>]]>
+        <![CDATA[<i>Copyright &#169; 2011 Physikalisch-Technische Bundesanstalt.</i>]]>
       </bottom>
        
       <tag name="precondition" scope="all" description="Precondition:"/>
@@ -90,21 +95,19 @@
       <group title="SWT" packages="org.eclipse.swt.*" />
     
       <link offline="true" href="http://download.oracle.com/javase/6/docs/api" 
-        packagelistLoc="docs/api/jdk-6u23/docs/api/"/> 
+        packagelistLoc="${eve1_dir}/docs/api/jdk-6u23/docs/api/"/> 
       <link offline="true" href="http://download.oracle.com/javaee/6/api" 
-        packagelistLoc="docs/api/j2ee-6.0.1/" />
+        packagelistLoc="${eve1_dir}/docs/api/j2ee-6.0.1/" />
       <link offline="true" href="http://logging.apache.org/log4j/1.2/apidocs"
-        packagelistLoc="docs/api/log4j/" />
-      <link offline="true" href="http://help.eclipse.org/galileo/index.jsp?topic=/org.eclipse.platform.doc.isv/reference/api/"
-        packagelistLoc="docs/api/eclipse3.5/" />
-      <link offline="true" href="http://www.eclipse.org/pde"
-        packagelistLoc="docs/api/pde/" />
-      <link offline="true" href="http://http://sourceforge.net/apps/trac/cs-studio/"
-        packagelistLoc="docs/api/css/" />
-      <link offline="true" href="http://jca.cosylab.com/apidocs"
-      	packagelistLoc="docs/api/jca-2.3.2/" />
-      <link offline="true" href="docs/api/junit-4.8.2"
-      	packagelistLoc="http://kentbeck.github.com/junit/javadoc/latest/" />
+        packagelistLoc="${eve1_dir}/docs/api/log4j/" />
+      <link offline="true" href="http://kentbeck.github.com/junit/javadoc/latest/"
+      	packagelistLoc="${eve1_dir}/docs/api/junit-4.8.2" />
+        
+      <link offline="true" href="http://help.eclipse.org/indigo/index.jsp?topic=/org.eclipse.platform.doc.isv/reference/api/"
+        packagelistLoc="${home_dir}/eveCSS2-docs/api/files/eclipse/" />
+      <link offline="true" href="http://sourceforge.net/apps/trac/cs-studio/"
+        packagelistLoc="${home_dir}/eveCSS2-docs/api/files/css/" />
+            
     </javadoc>
   </target>
 </project>
