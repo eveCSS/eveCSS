@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="junit" basedir="."> 
+<project default="junit" basedir="../"> 
 
-  <property name="eclipse_dir" location="${user.home}/eclipse_dir" />
+  <property name="eclipse_dir" location="/opt/eclipse/eclipse-rcp-indigo-SR1/eclipse" />
+  <property name="doc_dir" location="../../../../eveCSS2-docs" />
+  <property name="repo_dir" location="../../.." />
+  <property name="css_app_dir" location="${repo_dir}/cs-studio-3.0/applications/plugins" />
+  <property name="css_core_dir" location="${repo_dir}/cs-studio-3.0/core/plugins" />
   
   <target name="junit">
     
-    <mkdir dir="../docs/tests/test-results"/>
+    <echo message="eclipse dir: ${eclipse_dir}" />
+    <echo message="doc dir: ${doc_dir}" />
+    <echo message="repo dir: ${repo_dir}" />
+    <echo message="css app dir: ${css_app_dir}" />
+    <echo message="css core dir: ${css_core_dir}" />
+    
+    <delete dir="${doc_dir}/tests/test-results" />
+    
+    <mkdir dir="${doc_dir}/tests/test-results"/>
     
     <junit fork="true" forkmode="perBatch" haltonfailure="false" 
     	   failureproperty="test.failed">
@@ -16,29 +28,29 @@
           <include name="**/*.jar"/>
         </fileset>
         
-        <pathelement path="${user.home}/eveCSS/de.ptb.epics.eve.data.tests/bin" />
-        <pathelement path="${user.home}/eveCSS/de.ptb.epics.eve.data/bin" />
-        <pathelement path="${user.home}/eveCSS/org.csstudio.swt.xygraph/bin" />
-        <pathelement path="lib/log4j-1.2.16.jar" />
+        <pathelement path="org.csstudio.eve.data.tests/bin" />
+        <pathelement path="org.csstudio.eve.data/bin" />
+        <pathelement path="${css_app_dir}/org.csstudio.swt.xygraph/bin" />
+        <pathelement path="${css_core_dir}/org.csstudio.platform.libs.log4j" />
       </classpath>
     
       <formatter type="brief" usefile="false" />
       <formatter type="xml" />
 
-      <batchtest todir="../docs/tests/test-results">
-        <fileset dir="src">
+      <batchtest todir="${doc_dir}/tests/test-results">
+        <fileset dir="org.csstudio.eve.data.tests/src">
           <include name="**/*Test.java" />
         </fileset>
       </batchtest>
       
     </junit>
     
-    <mkdir dir="../docs/tests/test-report"/>
-    <junitreport todir="../docs/tests/test-report">
-        <fileset dir="../docs/tests/test-results">
+    <mkdir dir="${doc_dir}/tests/test-report"/>
+    <junitreport todir="${doc_dir}/tests/test-report">
+        <fileset dir="${doc_dir}/tests/test-results">
             <include name="TEST-*.xml"/>
         </fileset>
-        <report format="frames" todir="../docs/tests/test-report"/>
+        <report format="frames" todir="${doc_dir}/tests/test-report"/>
     </junitreport>
     
     <fail if="test.failed"/>

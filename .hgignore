@@ -3,3 +3,12 @@ syntax: glob
 bin/**
 CVS/**
 *.class
+
+syntax: regexp
+^applications/plugins/org\.csstudio\.eve\.data\.tests/xml/qnim\.xml$
+syntax: regexp
+^applications/plugins/org\.csstudio\.eve\.data\.tests/xml/sx700\.xml$
+syntax: regexp
+^applications/plugins/org\.csstudio\.eve\.data\.tests/xml/test\.xml$
+syntax: regexp
+^applications/plugins/org\.csstudio\.eve\.data\.tests/log$
