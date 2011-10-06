@@ -51,33 +51,19 @@
                name="preferenceCustomization"
                value="plugin_customization.ini">
          </property>
+         <property
+               name="introBrandingImageText"
+               value="eveCSS">
+         </property>
+         <property
+               name="introBrandingImage"
+               value="product:icons/css64.gif">
+         </property>
+         <property
+               name="introTitle"
+               value="Welcome to Control System Studio (CSS)!">
+         </property>
       </product>
-   </extension>
-   <extension
-         point="org.eclipse.ui.intro">
-      <intro
-            class="org.eclipse.ui.intro.config.CustomizableIntroPart"
-            icon="icons/css16.gif"
-            id="org.csstudio.eve.product.intro">
-      </intro>
-      <introProductBinding
-            introId="org.csstudio.eve.product.intro"
-            productId="org.csstudio.eve.product">
-      </introProductBinding>
-   </extension>
-   <extension
-         point="org.eclipse.ui.intro.config">
-      <config
-            content="intro/intro.xml"
-            id="org.csstudio.eve.product.introConfigId"
-            introId="org.csstudio.eve.product.intro">
-         <presentation
-               home-page-id="root">
-            <implementation
-                  kind="html">
-            </implementation>
-         </presentation>
-      </config>
    </extension>
    <extension
          point="org.csstudio.startup.module">
@@ -87,6 +73,32 @@
       <workbench
             class="org.csstudio.utility.product.Workbench">
       </workbench>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:edit?after=preferences">
+         <command
+               commandId="org.eclipse.ui.window.preferences"
+               label="prefs"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.intro">
+      <introProductBinding
+            introId="org.eclipse.ui.intro.universal"
+            productId="org.csstudio.eve.product.product">
+      </introProductBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.intro.configExtension">
+      <configExtension
+            configId="org.eclipse.ui.intro.universalConfig"
+            content="intro_old/intro.xml">
+      </configExtension>
    </extension>
 
 </plugin>
