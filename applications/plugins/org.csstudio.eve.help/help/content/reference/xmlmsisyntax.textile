@@ -23,8 +23,6 @@ h2(eveTopic). Template File Syntax
 
 p. Template files may have any textual content. The following rules apply:
 
-==<br/>==
-
 * ==&#36;=={} or ==&#36;==() define a macro to be substituted. A macro may have a default value.
 * __include "filename"__ will include another template file.
 * __substitute parameter="value"__ will substitute the macro ==&#36;=={__parameter__} with __value__

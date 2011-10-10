@@ -1,7 +1,7 @@
 h1(eveTopic). Add Devices to a Scan Module
 
-To add a device (e.g. a motor axis) to a scan module follow these steps:
-==<br/>==
+p. To add a device (e.g. a motor axis) to a scan module follow these steps:
+
 # Select the scan module where the device should be added to by (left-)clicking on it. ==<br/>== !(eveImage)../../img/tasks/adddevicetoscanmodule-selectscanmodule.png(select the scan module by clicking on it)!==<br/>== The previously empty scan module view now shows the scan module just selected.==<br/>== !(eveImage)../../img/tasks/adddevicetoscanmodule-selectscanmodule2.png(previously empty scan module view gets filled)!
 # Right click in the white area below the "Motor Axes" tab to open a context menu showing all devices (ordered by classes). Navigate to the axis you want to add and click on it. Note that depending on your current location (test site) and configuration (class names) different devices "will be shown":../reference/deviceclasses.html .==<br/>== !(eveImage)../../img/tasks/adddevicetoscanmodule-rightclickmenu.png(context menu showing available motor axes)!
 # The previously added motor axes is now shown in the table. ==<br/>== !(eveImage)../../img/tasks/adddevicetoscanmodule-done.png(motor axis has been added)!
