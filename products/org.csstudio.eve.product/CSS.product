@@ -51,9 +51,11 @@ See http://ics-web.sns.ornl.gov/css
       </win>
    </launcher>
 
+   <intro introId="org.eclipse.ui.intro.universal"/>
 
    <vm>
    </vm>
+
 
    <plugins>
    </plugins>

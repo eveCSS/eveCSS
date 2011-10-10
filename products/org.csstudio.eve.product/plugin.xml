@@ -85,7 +85,7 @@
          point="org.eclipse.ui.intro.configExtension">
       <configExtension
             configId="org.eclipse.ui.intro.universalConfig"
-            content="intro_old/intro.xml">
+            content="intro/intro_data.xml">
       </configExtension>
    </extension>
 
