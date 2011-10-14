@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.List;
@@ -264,7 +257,6 @@ public class Function {
 	 */
 	@Override
 	public Object clone() {
-		// TODO EXPLAIN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return new Function((Access)
 				(this.access!=null ? this.access.clone() : null), 
 				(TypeValue)(this.value!=null ? this.value.clone() : null));

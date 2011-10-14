@@ -406,5 +406,15 @@
             content="intro/overview.xml">
       </configExtension>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="de.ptb.epics.eve.viewer.views.deviceoptionsview.OptionPV"
+            class="de.ptb.epics.eve.viewer.views.deviceoptionsview.OptionPVAdapterFactory">
+         <adapter
+               type="org.csstudio.csdata.ProcessVariable">
+         </adapter>
+      </factory>
+   </extension>
 
 </plugin>

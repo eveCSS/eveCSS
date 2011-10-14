@@ -23,6 +23,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.epics.pvmanager.PVManager;
+import org.epics.pvmanager.jca.JCADataSource;
 import org.osgi.framework.BundleContext;
 import org.xml.sax.SAXException;
 
@@ -76,6 +78,8 @@ public class Activator extends AbstractUIPlugin {
 		this.xmlFileDispatcher = new XMLFileDispatcher();
 		this.engineErrorReader = new EngineErrorReader();
 		this.chainStatusAnalyzer = new ChainStatusAnalyzer();
+		
+		PVManager.setDefaultDataSource(new JCADataSource());
 	}
 
 	/**
