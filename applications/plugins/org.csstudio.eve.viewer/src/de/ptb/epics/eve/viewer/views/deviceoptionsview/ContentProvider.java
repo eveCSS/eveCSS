@@ -3,6 +3,7 @@ package de.ptb.epics.eve.viewer.views.deviceoptionsview;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -80,6 +81,9 @@ public class ContentProvider implements IStructuredContentProvider, PropertyChan
 	 */
 	@Override
 	public void dispose() {
+		for(OptionPV opv : this.options) {
+			opv.disconnect();
+		}
 	}
 
 	/**

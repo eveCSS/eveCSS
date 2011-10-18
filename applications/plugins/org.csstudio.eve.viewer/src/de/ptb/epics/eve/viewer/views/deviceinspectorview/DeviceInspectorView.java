@@ -449,8 +449,10 @@ public class DeviceInspectorView extends ViewPart {
 		
 		axisTableColumnEditorActivationListener = 
 				new AxisTableColumnEditorActivationListener();
-		axisTableViewer.getColumnViewerEditor().addEditorActivationListener(
+		if(logger.isDebugEnabled()) {
+			axisTableViewer.getColumnViewerEditor().addEditorActivationListener(
 				axisTableColumnEditorActivationListener);
+		}
 		
 		restoreState();
 		
@@ -967,7 +969,7 @@ public class DeviceInspectorView extends ViewPart {
 	 * Resets all layout changes made:
 	 * <ul>
 	 *   <li>resets maximized window (if one)</li>
-	 *   <li>makes all tables heights equal</li>
+	 *   <li>makes all table heights equal</li>
 	 * </ul>
 	 */
 	public void resetLayout() {

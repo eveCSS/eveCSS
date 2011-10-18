@@ -6,6 +6,7 @@ import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.SWT;
 
 /**
  * <code>ValueEditingSupprt</code>
@@ -38,8 +39,15 @@ public class ValueColumnEditingSupport extends EditingSupport {
 		OptionPV opv = (OptionPV)element;
 		
 		if(opv.isDiscrete()) {
-			return new ComboBoxCellEditor(
-					this.viewer.getTable(), opv.getDiscreteValues());
+			return new ComboBoxCellEditor(this.viewer.getTable(), 
+									opv.getDiscreteValues(), SWT.READ_ONLY) {
+				protected void focusLost() {
+					if(isActivated()) {
+						fireCancelEditor();
+					}
+					deactivate();
+				}
+			};
 		} else {
 			return new TextCellEditor(viewer.getTable()) {
 				@Override protected void focusLost() {
@@ -57,7 +65,7 @@ public class ValueColumnEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected boolean canEdit(Object element) {
-		return !((OptionPV)element).isReadOnly();
+		return !(((OptionPV)element).isReadOnly());
 	}
 
 	/**
@@ -80,8 +88,8 @@ public class ValueColumnEditingSupport extends EditingSupport {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.EditingSupport#setValue(java.lang.Object, java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void setValue(Object element, Object value) {

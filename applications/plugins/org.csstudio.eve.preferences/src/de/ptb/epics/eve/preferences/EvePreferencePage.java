@@ -38,12 +38,11 @@ public class EvePreferencePage extends FieldEditorPreferencePage
 				"Engine location:", this.getFieldEditorParent());
 		
 		String rootdir = Activator.getDefault().getRootDirectory();
-		File file = new File(rootdir + "scml/");
+		File file = new File(rootdir + "eve/");
 		if(file.exists()) {
-			// TODO set filter path to "file" (introduced in Eclipse 3.6 - Bug # 184)
-			// with fileFieldEditor.setFilterPath...
+			stationFileFieldEditor.setFilterPath(file);
 		} else {
-			// TODO set filter path to "new File(rootdir)"
+			stationFileFieldEditor.setFilterPath(new File(rootdir));
 		}
 		file = null;
 		

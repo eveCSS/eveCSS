@@ -66,7 +66,14 @@ public class CommonTableEditingSupport extends EditingSupport {
 		if (ctb.getCellEditor(column) == null) {
 			if (ctb.isDiscrete(column)) {
 				ctb.setCellEditor(new ComboBoxCellEditor(viewer.getTable(), 
-						ctb.getSelectStrings(column)), column);
+						ctb.getSelectStrings(column)) {
+					protected void focusLost() {
+						if(isActivated()) {
+							fireCancelEditor();
+						}
+						deactivate();
+					}
+				}, column);
 			} else {
 				TextCellEditor textCellEditor = 
 						new TextCellEditor(viewer.getTable()) {

@@ -23,6 +23,8 @@ public class TableViewerComparator extends ViewerComparator {
 	/** ascending sort order (e.g. A to Z, 0 to 9) */
 	public static final int ASCENDING = 1;
 	
+	public static final int NONE = 0;
+	
 	/** descending sort order (e.g. Z to A, 9 to 0) */
 	public static final int DESCENDING = -1;
 	

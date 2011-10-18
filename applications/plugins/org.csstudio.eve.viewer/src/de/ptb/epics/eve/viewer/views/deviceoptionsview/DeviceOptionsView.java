@@ -40,7 +40,8 @@ import de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement;
  * The view instance is the active one if its secondary id equals the static 
  * property {@link #activeDeviceOptionsView}.
  * <p>
- * The Process Variable Id is saved in the memento for recreation.
+ * The Process Variable Id and sort state are saved in the memento for 
+ * recreation.
  * 
  * @author Marcus Michalsky
  */
@@ -79,6 +80,9 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	private Image ascending;
 	private Image descending;
 	
+	// saves/restores user defined settings
+	private IMemento memento;
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -86,15 +90,18 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	public void init(final IViewSite site, final IMemento memento) 
 													throws PartInitException {
 		super.init(site, memento);
-		if(memento != null) {
-			final String identifier = memento.getString("device");
-			if(identifier != null && !identifier.isEmpty()) {
-				final AbstractDevice savedDevice = 
-					Activator.getDefault().getMeasuringStation().
-					getAbstractDeviceByFullIdentifyer(identifier);
-				if(savedDevice != null) {
-					this.device = savedDevice;
-				}
+		
+		this.memento = memento;
+		
+		if(memento == null) return;
+		
+		final String identifier = memento.getString("device");
+		if(identifier != null && !identifier.isEmpty()) {
+			final AbstractDevice savedDevice = 
+				Activator.getDefault().getMeasuringStation().
+				getAbstractDeviceByFullIdentifyer(identifier);
+			if(savedDevice != null) {
+				this.device = savedDevice;
 			}
 		}
 	}
@@ -112,15 +119,10 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 		createColumns(parent, optionsTable);
 		this.optionsTable.getTable().setHeaderVisible(true);
 		this.optionsTable.getTable().setLinesVisible(true);
-		
 		this.optionsTableContentProvider = new ContentProvider();
 		this.optionsTable.setContentProvider(optionsTableContentProvider);
-		
 		this.optionsTable.setInput(null);
-		
 		this.tableViewerComparator = new TableViewerComparator();
-		
-		tableViewerSortState = TableViewerComparator.NONE; // TODO change to Memento
 		
 		ascending =	 Activator.getDefault().getImageRegistry().get("ASCENDING");
 		descending = Activator.getDefault().getImageRegistry().get("DESCENDING");
@@ -135,7 +137,9 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 			"de.ptb.epics.eve.viewer.views.deviceoptionsview.axistablepopup", 
 			optionsTableMenuManager, optionsTable);
 		
-		// // if no active view is present, this one will set as active
+		restoreState();
+		
+		// // if no active view is present, this one will be set as active
 		IViewReference[] ref = getSite().getPage().getViewReferences();
 		DeviceOptionsView deviceOptionsView = null;
 		for(IViewReference ivr : ref) {
@@ -260,8 +264,6 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 			}
 		}
 		
-		// part.getClass().equals(this.getClass())
-	
 		// if this view instance is not the currently active one 
 		// (the one in front) -> do nothing
 		if (activeDeviceOptionsView == null ||
@@ -303,7 +305,7 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 			} else {
 				this.optionsTable.setInput(null);
 				this.device = null;
-			this.setPartName("nothing selected");
+				this.setPartName("nothing selected");
 			}
 		} else {
 			this.optionsTable.setInput(null);
@@ -320,8 +322,36 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 		if(this.device != null) {
 			memento.putString("device", this.device.getFullIdentifyer());
 		}
+		// save sorting
+		memento.putInteger("tableViewerSortState", tableViewerSortState);
 	}
 	
+	/*
+	 * gets called at the end of createPartControl() to restore the state 
+	 * saved in the memento.
+	 */
+	private void restoreState() {
+		if(memento == null) return; // nothing saved
+		
+		
+		
+		// restore sorting
+		tableViewerSortState = 
+				(memento.getInteger("tableViewerSortState") == null)
+				? TableViewerComparator.NONE
+				: memento.getInteger("tableViewerSortState");
+		if(tableViewerSortState != TableViewerComparator.NONE) {
+			tableViewerComparator.setDirection(
+					tableViewerSortState == 1
+					? TableViewerComparator.ASCENDING
+					: TableViewerComparator.DESCENDING);
+			optionsTable.getTable().getColumn(0).setImage(
+					tableViewerSortState == 1 ? ascending : descending);
+			optionsTable.setComparator(tableViewerComparator);
+			optionsTable.refresh();
+		}
+	}
+
 	/**
 	 * Sets the device of which options should be shown.
 	 * 
@@ -387,7 +417,7 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 			// if it becomes 3 it has to be 0 again
 			// but before the state has to be increased to the new state
 			tableViewerSortState = ++tableViewerSortState % 3;
-			logger.debug("new device table sort state: " + tableViewerSortState);
+			logger.debug("new options table sort state: " + tableViewerSortState);
 		}
 	}
 }

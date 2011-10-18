@@ -415,6 +415,22 @@
                type="org.csstudio.csdata.ProcessVariable">
          </adapter>
       </factory>
+      <factory
+            adaptableType="de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement"
+            class="de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElementAdapterFactory">
+         <adapter
+               type="org.csstudio.csdata.ProcessVariable">
+         </adapter>
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.csstudio.platform.ui.css.applications.display"
+            class="de.ptb.epics.eve.viewer.preferences.EveViewerPreferencePage"
+            id="de.ptb.epics.eve.viewer.PreferencePage"
+            name="EVE Viewer">
+      </page>
    </extension>
 
 </plugin>

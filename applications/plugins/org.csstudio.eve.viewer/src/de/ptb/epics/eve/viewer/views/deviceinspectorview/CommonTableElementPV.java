@@ -1,41 +1,53 @@
 package de.ptb.epics.eve.viewer.views.deviceinspectorview;
 
-import java.util.Locale;
+import static org.csstudio.utility.pvmanager.ui.SWTUtil.swtThread;
+import static org.epics.pvmanager.ExpressionLanguage.channel;
+import static org.epics.pvmanager.util.TimeDuration.ms;
+
+import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.csstudio.data.values.IEnumeratedMetaData;
-import org.csstudio.data.values.IMetaData;
-import org.csstudio.data.values.ValueUtil;
-import org.csstudio.utility.pv.PV;
-import org.csstudio.utility.pv.PVFactory;
-import org.csstudio.utility.pv.PVListener;
+import org.epics.pvmanager.PV;
+import org.epics.pvmanager.PVManager;
+import org.epics.pvmanager.PVReaderListener;
+import org.epics.pvmanager.data.Alarm;
+import org.epics.pvmanager.data.AlarmSeverity;
+import org.epics.pvmanager.data.SimpleValueFormat;
+import org.epics.pvmanager.data.VEnum;
+import org.epics.pvmanager.data.ValueFormat;
+import org.epics.pvmanager.data.ValueUtil;
+
+import de.ptb.epics.eve.viewer.Activator;
+import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
 
 /**
- * <code>CommonTableElementPV</code> wraps a {@link org.csstudio.utility.pv.PV} 
+ * <code>CommonTableElementPV</code> wraps a {@link } 
  * (process variable) and corresponds to a 
  * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement} 
  * (i.e. the row it is contained in).
  * 
- * @author Jens Eden
  * @author Marcus Michalsky
  */
-public class CommonTableElementPV implements PVListener {
+public class CommonTableElementPV {
 
 	private static Logger logger = 
 			Logger.getLogger(CommonTableElementPV.class.getName());
 	
-	private String value;
-	private PV pv;
-	private boolean isConnected = false;
+	private PV<Object,Object> pv;
+	private ReadListener readListener;
+	private CommonTableElement commonTableElement;
 	
-	private boolean isReadOnly = false;
-	private boolean extraReadOnly = false;
-	private String[] discreteValues = null;
-	private boolean isEnum = false;
-	//private String pvname;
-	private CommonTableElement tableElement;
-	private String pvstatus = "";
-	private boolean hasDiscreteValues = false;
+	private ValueFormat valueFormat;
+	
+	private String pvValue;
+	private AlarmSeverity pvStatus;
+	
+	private boolean isConnected;
+	
+	private boolean isDiscrete = false;
+	private List<String> discreteValues;
+
+	private int pvUpdateInterval;
 	
 	/**
 	 * Constructs a <code>CommonTableElementPV</code>.
@@ -46,160 +58,103 @@ public class CommonTableElementPV implements PVListener {
 	 * 		(row) the process variable corresponds to
 	 */
 	public CommonTableElementPV(String pvname, CommonTableElement tableElement) {
-		this.tableElement = tableElement;
-		//this.pvname = pvname;
-		try {
-			pv = PVFactory.createPV("ca://" + pvname);
-			pv.addListener(this);
-			pv.start();
-			this.value = pv.getStateInfo();
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void pvDisconnected(PV pv) {
-		isConnected = false;
-		value = pv.getStateInfo();
-		tableElement.update();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void pvValueUpdate(PV pv) {
-		if(pv.isConnected()) isConnected = true;
-		if(!pv.isWriteAllowed()) isReadOnly = true;
-		pvstatus  = pv.getValue().getSeverity().toString();
 		
-		this.value = ValueUtil.getString(pv.getValue());
+		this.pvValue = "";
 		
-		try {
-			Long.parseLong(this.value);
-		} catch(NumberFormatException e) {
-			try {
-				Double.parseDouble(this.value);
-				this.value = String.format(
-						Locale.US, "%g", ValueUtil.getDouble(pv.getValue()));
-			} catch(NumberFormatException nfe) {
-				
+		pvUpdateInterval = Activator.getDefault().getPreferenceStore().
+				getInt(PreferenceConstants.P_PV_UPDATE_INTERVAL);
+		
+		this.pv = PVManager.readAndWrite(channel(pvname)).notifyOn(swtThread()).
+					asynchWriteAndReadEvery(ms(pvUpdateInterval));
+		this.readListener = new ReadListener();
+		this.pv.addPVReaderListener(readListener);
+		
+		this.valueFormat = new SimpleValueFormat(1);
+		
+		this.isConnected = false;
+		
+		this.pvStatus = AlarmSeverity.UNDEFINED;
+		
+		this.commonTableElement = tableElement;
+	}
+	
+	public AlarmSeverity getStatus() {
+		return this.pvStatus;
+	}
+	
+	public String getValue() {
+		return this.pvValue;
+	}
+	
+	public void setValue(String newValue) {
+		pv.write(newValue);
+	}
+	
+	public boolean isConnected() {
+		return this.isConnected;
+	}
+	
+	public boolean isDiscrete() {
+		return this.isDiscrete;
+	}
+	
+	public String[] getDiscreteValues() {
+		return this.discreteValues.toArray(new String[0]);
+	}
+	
+	public void disconnect() {
+		this.pv.close();
+	}
+	
+	public boolean isReadOnly() {
+		return false;
+	}
+	
+	public void setReadOnly(boolean foo) {
+		// no way
+	}
+	
+	
+	public void setDiscreteValues(String[] bar) {
+		// i don't think so
+	}
+	
+	/* ******************************************************************** */
+	
+	/**
+	 * 
+	 * @author Marcus Michalsky
+	 *
+	 */
+	private class ReadListener implements PVReaderListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void pvChanged() {
+			isConnected = !pv.isClosed();
+			pvValue = valueFormat.format(pv.getValue());
+			pvStatus = ((Alarm)ValueUtil.alarmOf(pv.getValue())).getAlarmSeverity();
+			
+			commonTableElement.update();
+			
+			Exception e = pv.lastException();
+			if(e != null) {
+				logger.warn(e.getMessage(), e);
+			}
+			if(logger.isDebugEnabled()) {
+				logger.debug("new value for '" + pv.getName() + "' : " + 
+							valueFormat.format(pv.getValue()) + 
+							" (" + ValueUtil.timeOf(
+							pv.getValue()).getTimeStamp().asDate().toString() 
+							+ ")");
+			}
+			
+			if(pv.getValue() instanceof VEnum) {
+				discreteValues = ((VEnum)pv.getValue()).getLabels();
+				isDiscrete = true;
 			}
 		}
-		
-		final IMetaData meta = pv.getValue().getMetaData();
-        // enum values override discreteValues
-        if (meta instanceof IEnumeratedMetaData) {
-        	this.discreteValues = ((IEnumeratedMetaData)meta).getStates();
-        	isEnum  = true;
-        }
-        tableElement.update();
-	}
-
-	/**
-	 * Checks whether the process variable is discrete.
-	 * 
-	 * @return <code>true</code> if the process variable is discrete, 
-	 * 			<code>false</code> otherwise
-	 */
-	boolean isDiscrete() {
-		return (isEnum || hasDiscreteValues);
-	}
-	
-	/**
-	 * Checks whether the process variable is read only.
-	 * 
-	 * @return <code>true</code> if the process variable is read only, 
-	 * 			<code>false</code> otherwise
-	 */
-	public boolean isReadOnly() {
-		return isReadOnly | extraReadOnly;
-	}
-	
-	/**
-	 * Returns the discrete values of the process variable or <code>null</code> 
-	 * if {@link #isDiscrete()} == <code>false</code>.
-	 * 
-	 * @return the discrete values of the process variable or <code>null</code> 
-	 * 			if {@link #isDiscrete()} == <code>false</code>
-	 */
-	public String[] getDiscreteValues() {
-		return discreteValues;
-	}
-
-	/**
-	 * 
-	 * @param values
-	 */
-	public void setDiscreteValues(String[] values) {
-		discreteValues = values;
-		hasDiscreteValues = true;
-	}
-
-	/**
-	 *  Dispose-like method. Removes all references 
-	 * (e.g. listeners) from it.
-	 */
-	public void dispose() {
-        if (pv != null) {
-            pv.removeListener(this);
-            pv.stop();
-            pv = null;
-        }
-	}
-
-	/**
-	 * Returns the value of the process variable.
-	 * 
-	 * @return the value of the process variable
-	 */
-	public String getValue() {
-		return value;
-	}
-
-	/**
-	 * Returns the status of the process variable.
-	 * 
-	 * @return the status of the process variable
-	 */
-	public String getStatus() {
-		return pvstatus;
-	}
-	
-	/**
-	 * Checks whether the process variable is connected.
-	 * 
-	 * @return <code>true</code> if the process variable is connected, 
-	 * 			<code>false</code> otherwise
-	 */
-	public boolean isConnected() {
-		return isConnected;
-	}
-
-	/**
-	 * Sets the value of the process variable.
-	 * 
-	 * @precondition {@link #isReadOnly()} == <code>false</code>
-	 * @param newValue the value that should be set
-	 */
-	public void setValue(Object newValue) {
-		if (isReadOnly) return;
-		try {
-			pv.setValue(newValue);
-		} catch (Exception ex) {
-			logger.error("Unable to set " + pv.getName() + " to " + value, ex);
-		}
-	}
-
-	/**
-	 * 
-	 * @param readOnly
-	 */
-	public void setReadOnly(boolean readOnly) {
-		extraReadOnly = readOnly;
 	}
 }

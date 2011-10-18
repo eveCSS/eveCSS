@@ -2,6 +2,7 @@ package de.ptb.epics.eve.viewer.views.deviceoptionsview;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.csstudio.csdata.ProcessVariable;
@@ -11,8 +12,11 @@ import org.epics.pvmanager.PVReaderListener;
 import org.epics.pvmanager.data.SimpleValueFormat;
 import org.epics.pvmanager.data.ValueFormat;
 import org.epics.pvmanager.data.ValueUtil;
+import org.epics.pvmanager.data.VEnum;
 
 import de.ptb.epics.eve.data.measuringstation.Option;
+import de.ptb.epics.eve.viewer.Activator;
+import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
 
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.TimeDuration.*;
@@ -33,32 +37,39 @@ public class OptionPV extends ProcessVariable {
 	private PV<Object,Object> pv;
 	private final Option option;
 	private String value;
+	private boolean isReadonly = false;
+	private boolean isDiscrete = false;
+	private List<String> discreteValues = null;
+	
 	private ReadListener readListener;
-	
 	private PropertyChangeSupport propertyChangeSupport;
-	
 	private ValueFormat valueFormat;
+	
+	private int pvUpdateInterval;
 	
 	/**
 	 * Constructs an <code>OptionPV</code>.
 	 * 
 	 * @param option the option the PV is related to
 	 */
-	public OptionPV(Option option) {
+	public OptionPV(final Option option) {
 		super(option.getValue().getAccess().getVariableID());
 		this.option = option;
 		this.value = "";
 		
 		valueFormat = new SimpleValueFormat(1);
 		
+		pvUpdateInterval = Activator.getDefault().getPreferenceStore().
+				getInt(PreferenceConstants.P_PV_UPDATE_INTERVAL);
+		
 		pv = PVManager.readAndWrite(
 				channel(this.getName())).notifyOn(swtThread()).
-					asynchWriteAndReadEvery(ms(500));
+					asynchWriteAndReadEvery(ms(pvUpdateInterval));
 		
 		readListener = new ReadListener();
 		pv.addPVReaderListener(readListener);
 		
-		if(!logger.isDebugEnabled()) {
+		if(logger.isDebugEnabled()) {
 			logger.debug("OptionPV created for '" + 
 						option.getValue().getAccess().getVariableID() + "'");
 			logger.debug("Option discrete ? " + option.isDiscrete());
@@ -95,7 +106,7 @@ public class OptionPV extends ProcessVariable {
 	 * 			<code>false</code> otherwise
 	 */
 	public boolean isReadOnly() {
-		return this.option.getValue().isReadOnly();
+		return this.isReadonly;
 	}
 	
 	/**
@@ -105,7 +116,7 @@ public class OptionPV extends ProcessVariable {
 	 * 			<code>false</code> otherwise
 	 */
 	public boolean isDiscrete() {
-		return this.option.isDiscrete();
+		return this.isDiscrete;
 	}
 	
 	/**
@@ -116,8 +127,8 @@ public class OptionPV extends ProcessVariable {
 	 * if {@link #isDiscrete()} == <code>false</code>
 	 */
 	public String[] getDiscreteValues() {
-		if(!isDiscrete()) return null;
-		return option.getValue().getDiscreteValues().toArray(new String[0]);
+		if(!this.isDiscrete) return null;
+		return this.discreteValues.toArray(new String[0]);
 	}
 	
 	/**
@@ -126,6 +137,7 @@ public class OptionPV extends ProcessVariable {
 	 * @param value the value that should be set
 	 */
 	public void setValue(String newValue) {
+		pv.write(newValue);
 		propertyChangeSupport.firePropertyChange("value", this.value,
 				this.value = newValue);
 		logger.debug("value set");
@@ -197,6 +209,11 @@ public class OptionPV extends ProcessVariable {
 							" (" + ValueUtil.timeOf(
 							pv.getValue()).getTimeStamp().asDate().toString() 
 							+ ")");
+			}
+			
+			if(pv.getValue() instanceof VEnum) {
+				isDiscrete = true;
+				discreteValues = ((VEnum)pv.getValue()).getLabels();
 			}
 		}
 	}
