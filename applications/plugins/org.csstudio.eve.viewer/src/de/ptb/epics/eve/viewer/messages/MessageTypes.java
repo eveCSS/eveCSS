@@ -33,7 +33,12 @@ public enum MessageTypes {
 	/**
 	 * a fatal level message (highest level)
 	 */
-	FATAL;
+	FATAL,
+	
+	/**
+	 * a system level message
+	 */
+	SYSTEM;
 	
 	/**
 	 * Converts an {@link de.ptb.epics.eve.ecp1.intern.ErrorSeverity} into its 
@@ -63,6 +68,9 @@ public enum MessageTypes {
 				
 			case FATAL:
 				return MessageTypes.FATAL;
+		
+			case SYSTEM:
+				return MessageTypes.SYSTEM;
 		
 		}
 		
