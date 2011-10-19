@@ -67,7 +67,7 @@ public class CommonTableEditingSupport extends EditingSupport {
 			if (ctb.isDiscrete(column)) {
 				ctb.setCellEditor(new ComboBoxCellEditor(viewer.getTable(), 
 						ctb.getSelectStrings(column)) {
-					protected void focusLost() {
+					@Override protected void focusLost() {
 						if(isActivated()) {
 							fireCancelEditor();
 						}

@@ -3,11 +3,11 @@ package de.ptb.epics.eve.viewer.views.deviceoptionsview;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
@@ -93,6 +93,8 @@ public class ContentProvider implements IStructuredContentProvider, PropertyChan
 	public void propertyChange(PropertyChangeEvent evt) {
 		logger.debug("Prop change in " + ((OptionPV)evt.getSource()).getName());
 		if(!evt.getPropertyName().equals("value")) return;
-		viewer.refresh();
+		if(!((TableViewer)viewer).isCellEditorActive()) {
+			viewer.refresh();
+		}
 	}
 }

@@ -41,11 +41,12 @@ public class ValueColumnEditingSupport extends EditingSupport {
 		if(opv.isDiscrete()) {
 			return new ComboBoxCellEditor(this.viewer.getTable(), 
 									opv.getDiscreteValues(), SWT.READ_ONLY) {
-				protected void focusLost() {
+				@Override protected void focusLost() {
 					if(isActivated()) {
 						fireCancelEditor();
 					}
 					deactivate();
+					viewer.refresh();
 				}
 			};
 		} else {
@@ -55,6 +56,7 @@ public class ValueColumnEditingSupport extends EditingSupport {
 						fireCancelEditor();
 					}
 					deactivate();
+					viewer.refresh();
 				}
 			};
 		}

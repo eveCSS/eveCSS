@@ -468,7 +468,7 @@ public class CommonTableElement {
 		else if (property.equals("status") && (statusPv != null)) {
 			String valueString = statusPv.getValue();
 			try {
-				long status = Long.parseLong(valueString);
+				int status = (int) Double.parseDouble(valueString);
 				if((status & 4) > 0) {
 					return "Limit (+)";
 				} else if ((status & 8) > 0 || (status & 128) > 0) {
