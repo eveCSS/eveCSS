@@ -12,7 +12,7 @@ import org.eclipse.swt.SWT;
  * <code>ValueEditingSupprt</code>
  * 
  * @author Marcus Michalsky
- * @since 1.1
+ * @since 
  */
 public class ValueColumnEditingSupport extends EditingSupport {
 
@@ -95,7 +95,7 @@ public class ValueColumnEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected void setValue(Object element, Object value) {
-		((OptionPV)element).getPV().write(value);
+		((OptionPV)element).setValue(value);
 		logger.debug("'" + ((OptionPV)element).getName() + "' set to " + value);
 	}
 }

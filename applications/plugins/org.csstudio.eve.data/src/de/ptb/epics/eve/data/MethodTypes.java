@@ -3,61 +3,42 @@ package de.ptb.epics.eve.data;
 /**
  * This enum defines the possible methods of an access description.
  * @author   Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version   1.3
+ *
  * @see  de.ptb.epics.eve.data.measuringstation.Access
  */
 public enum MethodTypes {
 	
 	/**
 	 * Indicates that a value is be putted in this access.
-	 *
-	 * @uml.property  name="pUT"
-	 * @uml.associationEnd  
 	 */
 	PUT,
 	
 	/**
 	 * Indicates that a value is be putted in this access and
 	 * that a callback will occure after the value hat been putted.
-	 *
-	 * @uml.property  name="pUTCB"
-	 * @uml.associationEnd  
 	 */
 	PUTCB,
 	
 	/**
 	 * Indicates that a value is be read in this access.
-	 *
-	 * @uml.property  name="gET"
-	 * @uml.associationEnd  
 	 */
 	GET,
 	
 	/**
 	 * Indicates that a value is be read in this access and
 	 * that a callback will occure after the value hat been read.
-	 *
-	 * @uml.property  name="gETCB"
-	 * @uml.associationEnd  
 	 */
 	GETCB,
 	
 	/**
 	 * Read and write access, no callback
-	 *
-	 * @uml.property  name="gETPUT"
-	 * @uml.associationEnd  
 	 */
 	GETPUT,
 	
 	/**
 	 * Read and write access, with callback
-	 *
-	 * @uml.property  name="gETPUTCB"
-	 * @uml.associationEnd  
 	 */
 	GETPUTCB;
-	
 	
 	/**
 	 * Converts a <code>String</code> into its corresponding method type 
@@ -75,17 +56,17 @@ public enum MethodTypes {
 					"The parameter 'name' must not be null!");
 		}
 		
-		if( name.equals( "PUT" ) ) {
+		if( name.equals("PUT")) {
 			return MethodTypes.PUT;
-		} else if( name.equals( "PUTCB" ) ) {
+		} else if( name.equals("PUTCB")) {
 			return MethodTypes.PUTCB;
-		} else if( name.equals( "GET" ) ) {
+		} else if( name.equals("GET")) {
 			return MethodTypes.GET;
-		} else if( name.equals( "GETCB" ) ) {
+		} else if( name.equals("GETCB")) {
 			return MethodTypes.GETCB;
-		} else if( name.equals( "GETPUTCB" ) ) {
+		} else if( name.equals("GETPUTCB")) {
 			return MethodTypes.GETPUTCB;
-		} else if( name.equals( "GETPUT" ) ) {
+		} else if( name.equals("GETPUT")) {
 			return MethodTypes.GETPUT;
 		}
 		return null;
@@ -102,7 +83,7 @@ public enum MethodTypes {
 	public static String typeToString(final MethodTypes type) {
 		if(type == null) {
 			throw new IllegalArgumentException(
-					"The parameter 'type' must not be null!");
+					"Parameter 'type' must not be null!");
 		}
 		
 		switch(type) {
@@ -118,7 +99,7 @@ public enum MethodTypes {
 				return "GETPUT";
 			case GETPUTCB:
 				return "GETPUTCB";
-		}		
+		}
 		return null;
 	}
 }

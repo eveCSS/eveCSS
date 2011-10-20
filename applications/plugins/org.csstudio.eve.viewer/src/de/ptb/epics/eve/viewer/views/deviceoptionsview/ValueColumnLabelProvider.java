@@ -30,7 +30,7 @@ public class ValueColumnLabelProvider extends ColumnLabelProvider {
 	@Override
 	public Color getForeground(Object element) {
 		OptionPV opv = (OptionPV) element;
-		if(opv.getPV().isClosed()) {
+		if(!opv.isConnected()) {
 			return Activator.getDefault().getColor("COLOR_PV_ALARM");
 		} else {
 			return Activator.getDefault().getColor("COLOR_PV_OK");
