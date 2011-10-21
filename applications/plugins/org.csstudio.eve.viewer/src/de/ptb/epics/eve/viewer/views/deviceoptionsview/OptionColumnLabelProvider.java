@@ -9,7 +9,7 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
  * {@link de.ptb.epics.eve.viewer.views.deviceoptionsview.DeviceOptionsView}.
  * 
  * @author Marcus Michalsky
- * @since 1.0
+ * @since 1.1
  */
 public class OptionColumnLabelProvider extends ColumnLabelProvider {
 	

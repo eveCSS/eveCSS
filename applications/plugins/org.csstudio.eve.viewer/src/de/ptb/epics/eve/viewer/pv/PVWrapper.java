@@ -27,7 +27,7 @@ import static org.csstudio.utility.pvmanager.ui.SWTUtil.*;
  * {@link #disconnect()} to close the connection. It cannot be reopened.
  * 
  * @author Marcus Michalsky
- * @since
+ * @since 1.1
  */
 public class PVWrapper {
 	
@@ -43,13 +43,17 @@ public class PVWrapper {
 	// the value of the process variable
 	private String pvValue;
 	
-	// the severity of the pv (status)
+	// the severity of the process variable (status)
 	private AlarmSeverity pvStatus;
 	
-	// indicates whether the pv is discrete
+	// indicates whether the process variable is discrete
 	private boolean isDiscrete;
 	
-	// contains the discrete values of the pv (or empty if not discrete)
+	// indicates whether the process variable is readonly
+	protected boolean isReadOnly;
+	
+	// contains the discrete values of the process variable
+	// (or empty if not discrete)
 	private List<String> discreteValues;
 	
 	// the refresh interval
@@ -58,13 +62,16 @@ public class PVWrapper {
 	// helper to format process variable objects
 	private ValueFormat valueFormat;
 	
-	// listener for pv updates
+	// listener for process variable updates
 	private ReadListener readListener;
+	
+	// listener for process variable writes
+	private WriteListener writeListener;
 	
 	// Delegated Observable
 	private PropertyChangeSupport propertyChangeSupport;
 	
-	// indicates whether the enum values are already read (performance)
+	// indicates whether the ENUM values are already read (performance)
 	private boolean isEnumInitialized;
 	
 	/**
@@ -77,6 +84,7 @@ public class PVWrapper {
 		this.pvValue = "";
 		this.pvStatus = AlarmSeverity.UNDEFINED;
 		this.isDiscrete = false;
+		this.isReadOnly = false;
 		this.discreteValues = new ArrayList<String>(0);
 		
 		// fetch the preference entry for the update interval
@@ -91,6 +99,8 @@ public class PVWrapper {
 		// start listening to changes
 		this.readListener = new ReadListener();
 		this.pv.addPVReaderListener(this.readListener);
+		this.writeListener = new WriteListener();
+		this.pv.addPVWriterListener(writeListener);
 		
 		this.valueFormat = new SimpleValueFormat(1);
 		
@@ -164,14 +174,24 @@ public class PVWrapper {
 		this.pv.write(newVal);
 	}
 	
+	/**
+	 * Checks whether the process variable is only readable.
+	 * 
+	 * @return <code>true</code> if the process variable is readonly, 
+	 * 			<code>false</code> otherwise
+	 */
 	public boolean isReadOnly() {
-		// TODO 
-		return false;
+		return this.isReadOnly;
 	}
 	
+	/**
+	 * Checks whether the process variable is connected.
+	 * 
+	 * @return <code>true</code> if the process variable is connected, 
+	 * 			<code>false</code> otherwise
+	 */
 	public boolean isConnected() {
-		// TODO
-		return true;
+		return !this.pv.isClosed();
 	}
 	
 	/**
@@ -200,9 +220,12 @@ public class PVWrapper {
 	/* ********************************************************************* */
 	
 	/**
+	 * <code>ReadListener</code> is the 
+	 * {@link org.epics.pvmanager.PVReaderListener} listening to changes on the 
+	 * wrapped process variable.
 	 * 
 	 * @author Marcus Michalsky
-	 * @since 
+	 * @since 1.1
 	 */
 	private class ReadListener implements PVReaderListener {
 		
@@ -233,6 +256,30 @@ public class PVWrapper {
 				isDiscrete = true;
 				isEnumInitialized = true;
 				discreteValues = ((VEnum)newVal).getLabels();
+			}
+		}
+	}
+	
+	/**
+	 * <code>WriteListener</code> is the 
+	 * {@link org.epics.pvmanager.PVWriterListener} listening to writes on the 
+	 * wrapped process variable. It sets the process variable read only if a 
+	 * write failed.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.1
+	 */
+	private class WriteListener implements PVWriterListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void pvWritten() {
+			Exception lastException = pv.lastWriteException();
+			if (lastException instanceof WriteFailException) {
+				logger.warn("Write to PV failed", lastException);
+				isReadOnly = true;
 			}
 		}
 	}

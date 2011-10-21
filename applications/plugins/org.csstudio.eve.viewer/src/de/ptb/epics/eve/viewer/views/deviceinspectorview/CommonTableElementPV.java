@@ -6,16 +6,17 @@ import java.beans.PropertyChangeListener;
 import de.ptb.epics.eve.viewer.pv.PVWrapper;
 
 /**
- * <code>CommonTableElementPV</code> wraps a {@link } 
+ * <code>CommonTableElementPV</code> wraps a {@link org.epics.pvmanager.PV} 
  * (process variable) and corresponds to a 
  * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement} 
  * (i.e. the row it is contained in).
  * 
  * @author Marcus Michalsky
- * @since 
+ * @since 1.1
  */
 public class CommonTableElementPV extends PVWrapper implements PropertyChangeListener {
 
+	// the table element (row) it belongs to
 	private CommonTableElement commonTableElement;
 	
 	/**
@@ -33,12 +34,21 @@ public class CommonTableElementPV extends PVWrapper implements PropertyChangeLis
 		this.addPropertyChangeListener("value", this);
 	}
 	
-	public void setReadOnly(boolean foo) {
-		// no way TODO remove ?
+	/**
+	 * Sets whether the process variable should be readonly.
+	 * 
+	 * @param readonly <code>true</code> if the process variable should be 
+	 * 					readonly, <code>false</code> otherwise
+	 */
+	protected void setReadOnly(boolean readonly) {
+		isReadOnly = readonly;
 	}
 	
-	public void setDiscreteValues(String[] bar) {
-		// i don't think so TODO remove ?
+	public void setDiscreteValues(String[] foo) {
+		// TODO remove ?
+		// left only to sustain the interface and not break the code
+		// possible discrete values should be read from the device itself via 
+		// channel access.
 	}
 	
 	/**

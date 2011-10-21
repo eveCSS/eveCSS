@@ -9,9 +9,11 @@ import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 
 /**
+ * <code>CommonTableElementAdapterFactory</code> produces adapters of 
+ * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement}s.
  * 
  * @author Marcus Michalsky
- * @since 
+ * @since 1.1
  */
 public class CommonTableElementAdapterFactory implements IAdapterFactory {
 	

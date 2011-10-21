@@ -8,7 +8,7 @@ import org.csstudio.csdata.ProcessVariable;
  * <code>OptionPVAdapterFactory</code>.
  * 
  * @author Marcus Michalsky
- * @since 
+ * @since 1.1
  */
 public class OptionPVAdapterFactory implements IAdapterFactory {
 

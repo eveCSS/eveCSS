@@ -9,10 +9,10 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 
 /**
- * <code>ValueEditingSupprt</code>
+ * <code>ValueColumnEditingSupprt</code>.
  * 
  * @author Marcus Michalsky
- * @since 
+ * @since 1.1
  */
 public class ValueColumnEditingSupport extends EditingSupport {
 

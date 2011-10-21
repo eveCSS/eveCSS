@@ -333,8 +333,6 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	private void restoreState() {
 		if(memento == null) return; // nothing saved
 		
-		
-		
 		// restore sorting
 		tableViewerSortState = 
 				(memento.getInteger("tableViewerSortState") == null)
@@ -376,7 +374,10 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	/* ******************************************************************** */
 	
 	/**
+	 * <code>OptionColumnSelectionListener</code>.
 	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.1
 	 */
 	private class OptionColumnSelectionListener implements SelectionListener {
 		
