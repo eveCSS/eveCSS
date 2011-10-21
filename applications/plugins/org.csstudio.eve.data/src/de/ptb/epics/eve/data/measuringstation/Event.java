@@ -11,6 +11,7 @@ import de.ptb.epics.eve.data.measuringstation.Access;
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 
 public class Event {
@@ -210,7 +211,7 @@ public class Event {
 				incidentTag = "E";
 			else
 				incidentTag = "S";
-			return "Start ( S-" + String.valueOf(chainId) + "-" + 
+			return "Schedule ( S-" + String.valueOf(chainId) + "-" + 
 					String.valueOf(scanModuleId) + "-" + incidentTag + " )";
 		}
 		else if (this.type == EventTypes.DETECTOR) {
@@ -408,7 +409,7 @@ public class Event {
 	 * @param incidentString
 	 */
 	public void setScheduleIncident( final String incidentString ){
-		if( incidentString.equals( "Start" ) ) {
+		if( incidentString.equals( "Schedule" ) ) {
 			incident = ScheduleIncident.START;
 		} else {
 			incident = ScheduleIncident.END;

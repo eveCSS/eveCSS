@@ -28,6 +28,7 @@ import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.TypeValue;
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
+import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.MonitorEvent;
@@ -1211,17 +1212,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_PAUSEEVENT:
 			if (qName.equals("pauseevent")) {
 				boolean idOK = false;
-				if (this.currentControlEvent.getEventType() == EventTypes.DETECTOR ) {
-					String checkNeu = this.currentControlEvent.getId().replace("D-", "");
-					int indexNeu = checkNeu.indexOf('-' , 1);
-					indexNeu = checkNeu.indexOf('-' , indexNeu+1);
-					String checkString = checkNeu.substring(indexNeu+1);
-					if ( this.measuringStation.getDetectorChannelById(checkString) != null ) {
-						// DetektorChannel ist vorhanden, Event hinzufügen
-						this.currentChain.addPauseEvent( (PauseEvent)this.currentControlEvent );
-						idOK = true;
-					}
+
+				idOK = eventIdAvailable(this.currentControlEvent);
+				if (idOK == true) {
+					this.currentChain.addPauseEvent( (PauseEvent)this.currentControlEvent );
 				}
+
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				if (idOK == true) {
@@ -1233,17 +1229,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_REDOEVENT:
 			if (qName.equals("redoevent")) {
 				boolean idOK = false;
-				if (this.currentControlEvent.getEventType() == EventTypes.DETECTOR ) {
-					String checkNeu = this.currentControlEvent.getId().replace("D-", "");
-					int indexNeu = checkNeu.indexOf('-' , 1);
-					indexNeu = checkNeu.indexOf('-' , indexNeu+1);
-					String checkString = checkNeu.substring(indexNeu+1);
-					if ( this.measuringStation.getDetectorChannelById(checkString) != null ) {
-						// DetektorChannel ist vorhanden, Event hinzufügen
-						this.currentChain.addRedoEvent( this.currentControlEvent );
-						idOK = true;
-					}
+
+				idOK = eventIdAvailable(this.currentControlEvent);
+				if (idOK == true) {
+					this.currentChain.addRedoEvent( this.currentControlEvent );
 				}
+
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				if (idOK == true) {
@@ -1255,17 +1246,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_BREAKEVENT:
 			if (qName.equals("breakevent")) {
 				boolean idOK = false;
-				if (this.currentControlEvent.getEventType() == EventTypes.DETECTOR ) {
-					String checkNeu = this.currentControlEvent.getId().replace("D-", "");
-					int indexNeu = checkNeu.indexOf('-' , 1);
-					indexNeu = checkNeu.indexOf('-' , indexNeu+1);
-					String checkString = checkNeu.substring(indexNeu+1);
-					if ( this.measuringStation.getDetectorChannelById(checkString) != null ) {
-						// DetektorChannel ist vorhanden, Event hinzufügen
-						this.currentChain.addBreakEvent( this.currentControlEvent );
-						idOK = true;
-					}
+
+				idOK = eventIdAvailable(this.currentControlEvent);
+				if (idOK == true) {
+					this.currentChain.addBreakEvent( this.currentControlEvent );
 				}
+			
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				if (idOK == true) {
@@ -1277,17 +1263,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_STOPEVENT:
 			if (qName.equals("stopevent")) {
 				boolean idOK = false;
-				if (this.currentControlEvent.getEventType() == EventTypes.DETECTOR ) {
-					String checkNeu = this.currentControlEvent.getId().replace("D-", "");
-					int indexNeu = checkNeu.indexOf('-' , 1);
-					indexNeu = checkNeu.indexOf('-' , indexNeu+1);
-					String checkString = checkNeu.substring(indexNeu+1);
-					if ( this.measuringStation.getDetectorChannelById(checkString) != null ) {
-						// DetektorChannel ist vorhanden, Event hinzufügen
-						this.currentChain.addStopEvent( this.currentControlEvent );
-						idOK = true;
-					}
+
+				idOK = eventIdAvailable(this.currentControlEvent);
+				if (idOK == true) {
+					this.currentChain.addStopEvent( this.currentControlEvent );
 				}
+				
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				if (idOK == true) {
@@ -1375,17 +1356,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_TRIGGEREVENT:
 			if (qName.equals("triggerevent")) {
 				boolean idOK = false;
-				if (this.currentControlEvent.getEventType() == EventTypes.DETECTOR ) {
-					String checkNeu = this.currentControlEvent.getId().replace("D-", "");
-					int indexNeu = checkNeu.indexOf('-' , 1);
-					indexNeu = checkNeu.indexOf('-' , indexNeu+1);
-					String checkString = checkNeu.substring(indexNeu+1);
-					if ( this.measuringStation.getDetectorChannelById(checkString) != null ) {
-						// DetektorChannel ist vorhanden, Event hinzufügen
-						this.currentScanModul.addTriggerEvent( this.currentControlEvent );
-						idOK = true;
-					}
+
+				idOK = eventIdAvailable(this.currentControlEvent);
+				if (idOK == true) {
+					this.currentScanModul.addTriggerEvent( this.currentControlEvent );
 				}
+				
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				if (idOK == true) {
@@ -1397,17 +1373,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_REDOEVENT:
 			if (qName.equals("redoevent")) {
 				boolean idOK = false;
-				if (this.currentControlEvent.getEventType() == EventTypes.DETECTOR ) {
-					String checkNeu = this.currentControlEvent.getId().replace("D-", "");
-					int indexNeu = checkNeu.indexOf('-' , 1);
-					indexNeu = checkNeu.indexOf('-' , indexNeu+1);
-					String checkString = checkNeu.substring(indexNeu+1);
-					if ( this.measuringStation.getDetectorChannelById(checkString) != null ) {
-						// DetektorChannel ist vorhanden, Event hinzufügen
-						this.currentScanModul.addRedoEvent( this.currentControlEvent );
-						idOK = true;
-					}
+
+				idOK = eventIdAvailable(this.currentControlEvent);
+				if (idOK == true) {
+					this.currentScanModul.addRedoEvent( this.currentControlEvent );
 				}
+				
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				if (idOK == true) {
@@ -1419,17 +1390,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_BREAKEVENT:
 			if (qName.equals("breakevent")) {
 				boolean idOK = false;
-				if (this.currentControlEvent.getEventType() == EventTypes.DETECTOR ) {
-					String checkNeu = this.currentControlEvent.getId().replace("D-", "");
-					int indexNeu = checkNeu.indexOf('-' , 1);
-					indexNeu = checkNeu.indexOf('-' , indexNeu+1);
-					String checkString = checkNeu.substring(indexNeu+1);
-					if ( this.measuringStation.getDetectorChannelById(checkString) != null ) {
-						// DetektorChannel ist vorhanden, Event hinzufügen
-						this.currentScanModul.addBreakEvent( this.currentControlEvent );
-						idOK = true;
-					}
+
+				idOK = eventIdAvailable(this.currentControlEvent);
+				if (idOK == true) {
+					this.currentScanModul.addBreakEvent( this.currentControlEvent );
 				}
+
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				if (idOK == true) {
@@ -1441,17 +1407,14 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_PAUSEEVENT:
 			if (qName.equals("pauseevent")) {
 				boolean idOK = false;
-				if (this.currentControlEvent.getEventType() == EventTypes.DETECTOR ) {
-					String checkNeu = this.currentControlEvent.getId().replace("D-", "");
-					int indexNeu = checkNeu.indexOf('-' , 1);
-					indexNeu = checkNeu.indexOf('-' , indexNeu+1);
-					String checkString = checkNeu.substring(indexNeu+1);
-					if ( this.measuringStation.getDetectorChannelById(checkString) != null ) {
-						// DetektorChannel ist vorhanden, Event hinzufügen
-						this.currentScanModul.addPauseEvent( (PauseEvent)this.currentControlEvent );
-						idOK = true;
-					}
+
+//???? Muß das currentControlEvent erst noch gecastet werden in PauseEvent???
+
+				idOK = eventIdAvailable(this.currentControlEvent);
+				if (idOK == true) {
+					this.currentScanModul.addPauseEvent( (PauseEvent)this.currentControlEvent );
 				}
+				
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				if (idOK == true) {
@@ -1720,21 +1683,17 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_DETECTOR_REDOEVENT:
 			if (qName.equals("redoevent")) {
 
-				int beginIndex = this.currentControlEvent.getId().lastIndexOf("-");
-				String subString = null;
-				if (beginIndex > 0) {
-					subString = this.currentControlEvent.getId().substring(beginIndex+1);
-				}
-				
-				if (this.measuringStation.getDetectorChannelById(subString) != null) {
-					// RedoEvent wird nur hinzugefügt, wenn DetectorChannel auch vorhanden
+				boolean idOK = false;
+
+				idOK = eventIdAvailable(this.currentControlEvent);
+				if (idOK == true) {
 					this.currentChannel.addRedoEvent( this.currentControlEvent );
 				}
 
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 
-				if (this.measuringStation.getDetectorChannelById(subString) != null) {
+				if (idOK == true) {
 					// RedoEvent wird nur hinzugefügt, wenn DetectorChannel auch vorhanden
 					controlEventList.add(this.currentControlEvent);
 				}
@@ -2277,5 +2236,62 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			return null;
 	}
 
+	/**
+	 * This method returns true if the eventId is available or false if not.
+	 * 
+	 * @param ControlEvent The current Event which will be checked.
+	 * @return true or false.
+	 */
+	public boolean eventIdAvailable( ControlEvent currentEvent) {
+
+		boolean idOK = false;
+		String checkNeu = null;
+		int indexNeu;
+		String checkString = null;
+		
+		switch (this.currentControlEvent.getEventType() ) {
+		case SCHEDULE:
+			idOK = true;
+			break;
+		case DETECTOR:
+			checkNeu = this.currentControlEvent.getId().replace("D-", "");
+			indexNeu = checkNeu.indexOf('-' , 1);
+			indexNeu = checkNeu.indexOf('-' , indexNeu+1);
+			checkString = checkNeu.substring(indexNeu+1);
+			if ( this.measuringStation.getDetectorChannelById(checkString) != null ) {
+				// DetektorChannel ist vorhanden, Event hinzufügen
+				idOK = true;
+			}
+			break;
+		case MONITOR:
+			checkNeu = this.currentControlEvent.getId();
+			indexNeu = checkNeu.indexOf('.' , 1);
+			if (indexNeu > 0) {
+				checkString = checkNeu.substring(0, indexNeu);
+			}
+			else {
+				checkString = checkNeu;
+			}
+
+			if ( this.measuringStation.getMotorAxisById(checkString) != null ) {
+				// MotorAxis ist vorhanden, Event hinzufügen
+				idOK = true;
+			}
+			else if ( this.measuringStation.getDetectorChannelById(checkString) != null ) {
+				// DetektorChannel ist vorhanden, Event hinzufügen
+				idOK = true;
+			}
+			else {
+				for(Device device : this.measuringStation.getDevices()) {
+					if (device.getID().equals(checkString)) {
+						// Device ist vorhanden, Event hinzufügen
+						idOK = true;
+					}
+				}
+			}
+			break;
+		}
+		return idOK;
+	}
 	
 }
