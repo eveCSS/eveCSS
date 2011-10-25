@@ -122,6 +122,17 @@
 	  </layout>
   </appender>
 
+  <appender name="ScanDescriptionLoaderTestAppender" 
+            class="org.apache.log4j.RollingFileAppender">
+	  <param name="file" value="log/ScanDescriptionLoaderTest.log" />
+	  <param name="Append" value="true" />
+	  <param name="MaxFileSize" value="10MB"/>
+      <param name="MaxBackupIndex" value="2"/>
+	  <layout class="org.apache.log4j.PatternLayout">
+		  <param name="ConversionPattern" value="%-5p %M: %m%n" />
+	  </layout>
+  </appender>
+
   <!-- *****  -->
 
   <logger name="de.ptb.epics.eve.data.tests.TypeValueTest">
@@ -174,8 +185,13 @@
 	  <appender-ref ref="ExcludeFilterTestAppender" />
   </logger>
   
+  <logger name="de.ptb.epics.eve.data.scandescription.processors.tests.ScanDescriptionLoaderTest">
+	  <level value="DEBUG" />
+	  <appender-ref ref="ScanDescriptionLoaderTestAppender" />
+  </logger>
+  
   <logger name="de.ptb.epics.eve.data.tests.internal">
-      <level value="WARN" />
+      <level value="DEBUG" />
       <appender-ref ref="ConsoleAppender" />
   </logger>
   
