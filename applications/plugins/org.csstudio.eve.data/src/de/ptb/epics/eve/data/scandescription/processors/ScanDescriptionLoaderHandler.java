@@ -221,6 +221,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	@Override
 	public void startElement( final String namespaceURI, final String localName, final String qName, final Attributes atts ) throws SAXException {
 
+		textBuffer = new StringBuffer();
+		
 		switch (this.state) {
 		case ROOT:
 			if (qName.equals("version")) {
@@ -513,7 +515,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		}
 
 		switch (this.subState) {
-
+		
 		case MONITOREVENT_LOADING:
 			if (qName.equals("id")) {
 				this.subState = ScanDescriptionLoaderSubStates.EVENT_ID_NEXT;
@@ -596,30 +598,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	@Override
 	public void characters( final char[] ch, final int start, final int length ) {
 
-		String s;
-		
-		if ((start > 0) && (trim) ) {
-			s = new String(ch, start, length).trim();
-		}
-		else {
-			// Wenn das characters beginnend von Vorne, also start = 0, gelesen werden,
-			// werden die vor und hinter dem String liegenden nicht mit trim entfernt.
-			// Gleiches gilt auch für den ersten String der dann noch angehangen wird
-			// also wenn trim = 0 ist und start größer als 0
-			s = new String(ch, start, length);
-			if (start > 0) {
-				trim = true;
-			}
-			else {
-				trim = false;
-			}
-		}
-		
+		String s = new String(ch, start, length);
 		if (textBuffer == null) {
 		    textBuffer = new StringBuffer(s);
 		} else {
 			  textBuffer.append(s);
 		} 
+		
 	}
 
 	/*
@@ -628,6 +613,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	 */
 	@Override
 	public void endElement( final String uri, final String localName, final String qName ) throws SAXException {
+
+		String temp = textBuffer.toString().trim();
+		textBuffer = new StringBuffer(temp);
 
 		switch (this.state) {
 		case VERSION_NEXT:

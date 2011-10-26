@@ -41,7 +41,8 @@ public class ControlEventCellModifyer implements ICellModifier {
 	@Override
 	public boolean canModify(final Object element, final String property) {
 		
-		if( property.equals( "source" ) || ((ControlEvent)element).getEvent().getType() == EventTypes.SCHEDULE ) {
+		if( property.equals( "source" ) || ((ControlEvent)element).getEvent().getType() == EventTypes.SCHEDULE 
+										|| ((ControlEvent)element).getEvent().getType() == EventTypes.DETECTOR ) {
 			return false;
 		}
 		if( property.equals( "operator" ) ) {

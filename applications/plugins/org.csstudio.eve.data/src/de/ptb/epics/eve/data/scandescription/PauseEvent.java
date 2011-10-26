@@ -17,6 +17,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class PauseEvent extends ControlEvent {
 
@@ -32,6 +33,7 @@ public class PauseEvent extends ControlEvent {
 	 */
 	public PauseEvent(final EventTypes type) {
 		super(type);
+		this.continueIfFalse = false;
 	}
 
 	/**
