@@ -256,12 +256,13 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		this.filenameLabel.setText("Filename:");
 		this.filenameInput = new Text(this.saveOptionsComposite, SWT.BORDER);
 		String tooltip = "The file name where the data should be saved.\n " +
-						"Use wild cards as followed:\n" + 
+						"Use following macro expansion:\n" + 
 						"${WEEK} : calendar week\n" + 
 						"${DATE} : date as yyyyMMdd (e.g., 20111231)\n" + 
 						"${DATE-} : date as yyyy-MM-dd (e.g., 2011-12-31)\n" + 
 						"${TIME} : time as HHmmss\n" +
-						"${TIME-} : time as HH-mm-ss";
+						"${TIME-} : time as HH-mm-ss\n" +
+						"${PV:<pvname>} : replace with value of pvname";
 		this.filenameInput.setToolTipText(tooltip);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;

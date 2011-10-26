@@ -6,16 +6,21 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 
-
 /**
- * <code>CommonTableEditingSupport</code>.
+ * <code>CommonTableEditingSupport</code> is the 
+ * {@link org.eclipse.jface.viewers.EditingSupport} for the table viewers 
+ * defined in 
+ * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView}.
  * 
  * @author ?
  * @author Marcus Michalsky
  */
 public class CommonTableEditingSupport extends EditingSupport {
 	
+	// the table viewer the editing support belongs to
 	private TableViewer viewer;
+	
+	// the column name
 	private String column;
 	
 	/**
@@ -35,19 +40,17 @@ public class CommonTableEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected boolean canEdit(Object element) {
+		// TODO do not execute stuff in here
+		// this function should only determine if a column is editable
 		if (column.equals("remove")) {
 			((CommonTableContentProvider)viewer.getInput()).removeElement(element);
-		}
-		else if (column.equals("trigger")) {
+		} else if (column.equals("trigger")) {
 			((CommonTableElement) element).trigger();
-		}
-		else if (column.equals("stop")) {
+		} else if (column.equals("stop")) {
 			((CommonTableElement) element).stop();
-		}
-		else if (column.equals("tweakforward")) {
+		} else if (column.equals("tweakforward")) {
 			((CommonTableElement) element).tweak(true);
-		}
-		else if (column.equals("tweakreverse")) {
+		} else if (column.equals("tweakreverse")) {
 			((CommonTableElement) element).tweak(false);
 		} else {
 			CommonTableElement ctb = (CommonTableElement) element;
@@ -66,7 +69,14 @@ public class CommonTableEditingSupport extends EditingSupport {
 		if (ctb.getCellEditor(column) == null) {
 			if (ctb.isDiscrete(column)) {
 				ctb.setCellEditor(new ComboBoxCellEditor(viewer.getTable(), 
-						ctb.getSelectStrings(column)), column);
+						ctb.getSelectStrings(column)) {
+					@Override protected void focusLost() {
+						if(isActivated()) {
+							fireCancelEditor();
+						}
+						deactivate();
+					}
+				}, column);
 			} else {
 				TextCellEditor textCellEditor = 
 						new TextCellEditor(viewer.getTable()) {

@@ -8,7 +8,7 @@ import org.eclipse.ui.IWorkbenchPartReference;
  * <code>DeviceOptionsViewPartListener</code> listens to changes in parts.
  * <p>
  *  Used to update the currently active 
- * and {@link de.ptb.epics.eve.viewer.views.deviceoptionsview.DeviceOptionsView}.
+ * {@link de.ptb.epics.eve.viewer.views.deviceoptionsview.DeviceOptionsView}.
  * If such a part is made visible, it is set as the current one.
  * 
  * @author Marcus Michalsky

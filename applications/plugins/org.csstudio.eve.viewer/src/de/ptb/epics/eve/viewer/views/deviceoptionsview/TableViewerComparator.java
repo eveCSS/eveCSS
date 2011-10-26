@@ -1,18 +1,16 @@
-package de.ptb.epics.eve.viewer.views.deviceinspectorview;
+package de.ptb.epics.eve.viewer.views.deviceoptionsview;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 
-import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
-
 /**
  * <code>TableViewerComparator</code> is the comparator used by the table 
- * viewers of the 
- * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView}.
+ * viewer of the 
+ * {@link de.ptb.epics.eve.viewer.views.deviceoptionsview.DeviceOptionsView}.
  * It allows sorting by name in ascending and descending order.
  * 
  * @author Marcus Michalsky
- * @since 0.4.2
+ * @since 1.1
  */
 public class TableViewerComparator extends ViewerComparator {
 	/*
@@ -67,8 +65,8 @@ public class TableViewerComparator extends ViewerComparator {
 	 */
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
-		AbstractDevice dev1 = ((CommonTableElement)e1).getAbstractDevice();
-		AbstractDevice dev2 = ((CommonTableElement)e2).getAbstractDevice();
-		return direction * dev1.getName().compareTo(dev2.getName());
+		OptionPV o1 = (OptionPV)e1;
+		OptionPV o2 = (OptionPV)e2;
+		return direction * o1.getOption().getName().compareTo(o2.getOption().getName());
 	}
 }

@@ -25,4 +25,21 @@
 		<nature>org.eclipse.pde.PluginNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>scml/qnim</name>
+			<type>2</type>
+			<location>/messung/qnim/scan</location>
+		</link>
+		<link>
+			<name>scml/sx700</name>
+			<type>2</type>
+			<location>/messung/sx700/scan</location>
+		</link>
+		<link>
+			<name>scml/test</name>
+			<type>2</type>
+			<location>/messung/test/scan</location>
+		</link>
+	</linkedResources>
 </projectDescription>

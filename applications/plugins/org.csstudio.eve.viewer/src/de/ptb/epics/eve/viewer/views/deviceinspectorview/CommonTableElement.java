@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.graphics.Color;
+import org.epics.pvmanager.data.AlarmSeverity;
 
 import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
@@ -24,7 +25,7 @@ import de.ptb.epics.eve.viewer.Activator;
  * @author Marcus Michalsky
  */
 public class CommonTableElement {
-	
+
 	private AbstractDevice device;
 	private TableViewer viewer;
 	private String name;
@@ -52,7 +53,7 @@ public class CommonTableElement {
 	 * @param viewer the viewer the element is contained in
 	 */
 	public CommonTableElement(AbstractDevice abstractdevice, TableViewer viewer) {
-		
+
 		this.device = abstractdevice;
 		this.viewer = viewer;
 		name = abstractdevice.getName();
@@ -183,16 +184,16 @@ public class CommonTableElement {
 	 * 
 	 */
 	public void dispose() {
-		if (valuePv != null) valuePv.dispose();
-		if (gotoPv != null) gotoPv.dispose();
-		if (unitPv != null) unitPv.dispose();
-		if (setPv != null) setPv.dispose();
-		if (statusPv != null) statusPv.dispose();
-		if (stopPv != null) stopPv.dispose();
-		if (triggerPv != null) triggerPv.dispose();
-		if (tweakvaluePv != null) tweakvaluePv.dispose();
-		if (tweakforwardPv != null) tweakforwardPv.dispose();
-		if (tweakreversePv != null) tweakreversePv.dispose();
+		if (valuePv != null) valuePv.disconnect();
+		if (gotoPv != null) gotoPv.disconnect();
+		if (unitPv != null) unitPv.disconnect();
+		if (setPv != null) setPv.disconnect();
+		if (statusPv != null) statusPv.disconnect();
+		if (stopPv != null) stopPv.disconnect();
+		if (triggerPv != null) triggerPv.disconnect();
+		if (tweakvaluePv != null) tweakvaluePv.disconnect();
+		if (tweakforwardPv != null) tweakforwardPv.disconnect();
+		if (tweakreversePv != null) tweakreversePv.disconnect();
 		cellEditorHash.clear();
 	}
 	
@@ -343,7 +344,7 @@ public class CommonTableElement {
 	 * @return
 	 */
 	public Color getSeverityColor(String property) {
-		String status = ""; 
+		AlarmSeverity status = AlarmSeverity.UNDEFINED; 
 		if (property.equals("value")) {
 			if (valuePv != null) status = valuePv.getStatus();
 		}
@@ -370,16 +371,17 @@ public class CommonTableElement {
 			return Activator.getDefault().getColor("COLOR_PV_OK");
 		}
 
-		if(status.equals("OK"))
-			return Activator.getDefault().getColor("COLOR_PV_OK");
-		else if(status.equals("MINOR"))
-			return Activator.getDefault().getColor("COLOR_PV_MINOR");
-		else if(status.equals("MAJOR"))
-			return Activator.getDefault().getColor("COLOR_PV_MAJOR");
-		else if(status.equals("INVALID"))
-			return Activator.getDefault().getColor("COLOR_PV_INVALID");
-
-		return Activator.getDefault().getColor("COLOR_PV_INITIAL");
+		String color = "COLOR_PV_INITIAL";
+		
+		switch(status) {
+			case INVALID: color = "COLOR_PV_INVALID"; break;
+			case MAJOR: color = "COLOR_PV_MAJOR"; break;
+			case MINOR: color = "COLOR_PV_MINOR"; break;
+			case NONE: color = "COLOR_PV_OK"; break;
+			case UNDEFINED: color = "COLOR_PV_INITIAL"; break;
+		}
+		
+		return Activator.getDefault().getColor(color);
 	}
 
 	/**
@@ -466,7 +468,7 @@ public class CommonTableElement {
 		else if (property.equals("status") && (statusPv != null)) {
 			String valueString = statusPv.getValue();
 			try {
-				long status = Long.parseLong(valueString);
+				int status = (int) Double.parseDouble(valueString);
 				if((status & 4) > 0) {
 					return "Limit (+)";
 				} else if ((status & 8) > 0 || (status & 128) > 0) {
