@@ -42,6 +42,7 @@ import de.ptb.epics.eve.editor.Activator;
  * 
  * @author ?
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class EventComposite extends Composite implements IModelUpdateListener {
 
@@ -68,7 +69,7 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 	 * @param parent the parent composite
 	 * @param style the style
 	 */
-	public EventComposite(final Composite parent, final int style) {
+	public EventComposite(final Composite parent, final int style, final ControlEventTypes eventType) {
 		super(parent, style);
 
 		// the composite gets a 2 column grid
@@ -92,18 +93,31 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 		TableColumn column = new TableColumn(
 				this.tableViewer.getTable(), SWT.LEFT, 0);
 	    column.setText("Source");
-	    column.setWidth(200);
+	    column.setWidth(280);
 
 	    // column 2: Operator
 	    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 1);
 	    column.setText("Operator");
 	    column.setWidth(80);
 
-	    // column 3: Limit
-	    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 2);
-	    column.setText("Limit");
-	    column.setWidth(100);
+	    switch (eventType) {
+	    case CONTROL_EVENT:
+		    // column 3: Limit
+		    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 2);
+		    column.setText("Limit");
+		    column.setWidth(100);
+	    	break;
+	    case PAUSE_EVENT:
+		    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 2);
+		    column.setText("Limit");
+		    column.setWidth(60);
 	    
+		    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 3);
+		    column.setText("CIF");
+		    column.setWidth(40);
+	    	break;
+	    }
+
 	    this.tableViewer.getTable().setHeaderVisible(true);
 	    this.tableViewer.getTable().setLinesVisible(true);
 	    
@@ -112,20 +126,34 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 	    this.tableViewer.setLabelProvider(new ControlEventLabelProvider());
 	    
 	    // cell modifier
-	    final CellEditor[] editors = new CellEditor[3];
+	    final CellEditor[] editors;
 	    final String[] operators = {"eq", "ne", "gt", "lt"};
-	    final String[] props = {"source", "operator", "limit"};
+	    final String[] props = {"source", "operator", "limit", "cif"};
 	    
-	    editors[0] = new TextCellEditor(this.tableViewer.getTable());
-	    editors[1] = new ComboBoxCellEditor( 
-	    		this.tableViewer.getTable(), operators, SWT.READ_ONLY);
-	    editors[2] = new TextCellEditor(this.tableViewer.getTable());
+	    switch (eventType) {
+	    case CONTROL_EVENT:
+		    editors = new CellEditor[3];
+		    editors[0] = new TextCellEditor(this.tableViewer.getTable());
+		    editors[1] = new ComboBoxCellEditor(this.tableViewer.getTable(), 
+		    									operators, SWT.READ_ONLY);
+		    editors[2] = new TextCellEditor(this.tableViewer.getTable());
+		    this.tableViewer.setCellEditors(editors);
+	    	break;
+
+	    case PAUSE_EVENT:
+		    editors = new CellEditor[4];
+		    editors[0] = new TextCellEditor(this.tableViewer.getTable());
+		    editors[1] = new ComboBoxCellEditor(this.tableViewer.getTable(), 
+		    									operators, SWT.READ_ONLY);
+		    editors[2] = new TextCellEditor(this.tableViewer.getTable());
+		    editors[3] = new CheckboxCellEditor(this.tableViewer.getTable());
+		    this.tableViewer.setCellEditors(editors);
+	    	break;
+	    }
 	    
-	    this.tableViewer.setCellEditors(editors);
 	    this.tableViewer.setCellModifier(
 	    		new ControlEventCellModifyer(this.tableViewer));
 	    this.tableViewer.setColumnProperties(props);
-	    // /cell modifier
 	    
 	    // delete action as context menu
 	    Action deleteAction = new DeleteAction();
@@ -224,7 +252,7 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 	 */
 	public void setControlEventManager(
 			final ControlEventManager controlEventManager) {
-		
+
 		if(controlEventManager != null)
 			logger.debug("set control event manager (" +
 						 controlEventManager.hashCode() + ")");
@@ -239,86 +267,7 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 		
 		if(this.controlEventManager != null) {
 			this.controlEventManager.addModelUpdateListener(this);
-			
-			if((controlEventManager.getControlEventType() == 
-			    ControlEventTypes.CONTROL_EVENT) && 
-			    this.tableViewer.getTable().getColumns().length != 3) {
-				
-				TableColumn[] columns = this.tableViewer.getTable().getColumns();
-				for(int i = 0; i < columns.length; ++i) {
-					columns[i].dispose();
-				}
-				
-				TableColumn column =
-					new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 0);
-			    column.setText("SourceA");
-			    column.setWidth(200);
-			    
-			    column = 
-			    	new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 1);
-			    column.setText("OperatorB");
-			    column.setWidth(60);
 
-			    column = 
-			    	new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 2);
-			    column.setText("LimitC");
-			    column.setWidth(50);
-			    
-			    final CellEditor[] editors = new CellEditor[3];
-			    final String[] operators = {"eq", "ne", "gt", "lt"};
-			    editors[0] = new TextCellEditor(this.tableViewer.getTable());
-			    editors[1] = new ComboBoxCellEditor(
-			    		this.tableViewer.getTable(), operators, SWT.READ_ONLY);
-			    editors[2] = new TextCellEditor(this.tableViewer.getTable());
-			    
-			    this.tableViewer.setCellEditors(editors);
-			    
-			    final String[] props = {"source", "operator", "limit"};
-			    this.tableViewer.setColumnProperties(props);
-				
-			} 
-			else if((controlEventManager.getControlEventType() == 
-				    ControlEventTypes.PAUSE_EVENT) && 
-				    this.tableViewer.getTable().getColumns().length != 4) {
-
-				TableColumn[] columns = this.tableViewer.getTable().getColumns();
-				for(int i = 0; i < columns.length; ++i) {
-					columns[i].dispose();
-				}
-				
-				TableColumn column = 
-					new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 0);
-			    column.setText("Source");
-			    column.setWidth( 200 );
-			    
-			    column = 
-			    	new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 1);
-			    column.setText("Operator");
-			    column.setWidth(80);
-
-			    column = 
-			    	new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 2);
-			    column.setText("Limit");
-			    column.setWidth(50);
-			    
-			    column = 
-			    	new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 3);
-			    column.setText("CIF");
-			    column.setWidth(40);
-			    
-			    final CellEditor[] editors = new CellEditor[4];
-			    final String[] operators = {"eq", "ne", "gt", "lt"};
-			    editors[0] = new TextCellEditor(this.tableViewer.getTable());
-			    editors[1] = new ComboBoxCellEditor(this.tableViewer.getTable(), 
-			    									operators, SWT.READ_ONLY);
-			    editors[2] = new TextCellEditor(this.tableViewer.getTable());
-			    editors[3] = new CheckboxCellEditor(this.tableViewer.getTable());
-
-			    this.tableViewer.setCellEditors(editors);
-			    
-			    final String[] props = {"source", "operator", "limit", "cif"};
-			    this.tableViewer.setColumnProperties(props);
-			}  
 		} else { // controlEventManager == null
 			this.tableViewer.getTable().clearAll();
 			this.tableViewer.getTable().setEnabled(false);

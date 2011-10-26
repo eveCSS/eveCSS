@@ -170,12 +170,19 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 	@Override
 	public List<IModelError> getModelErrors() {
 		final List<IModelError> errorList = new ArrayList<IModelError>();
-		if(this.event.getType() == EventTypes.MONITOR && 
-		   this.event.getMonitor().getAccess() != null && 
-		   !this.event.getMonitor().getAccess().
-		   		isValuePossible(this.limit.getValue())) {
-			errorList.add(new ControlEventError(
+		
+		if(this.event.getType() == EventTypes.MONITOR) {
+			// limit 
+			if (this.limit.getValue() == null || this.limit.getValue().isEmpty()) {
+				errorList.add(new ControlEventError(
+					this, ControlEventErrorTypes.MONITOR_LIMIT_NOT_SET));
+			}
+			else if(this.event.getMonitor().getAccess() != null && 
+					!this.event.getMonitor().getAccess().
+					isValuePossible(this.limit.getValue())) {
+				errorList.add(new ControlEventError(
 					this, ControlEventErrorTypes.VALUE_NOT_POSSIBLE));
+			}
 		}
 		return errorList;
 	}

@@ -65,6 +65,7 @@ public enum DataTypes {
 	 */
 	public static boolean isValuePossible(final DataTypes type, 
 											final String value) {
+
 		if(type == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'type' must not be null!");

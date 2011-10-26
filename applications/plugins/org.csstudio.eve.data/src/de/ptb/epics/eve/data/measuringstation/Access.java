@@ -228,6 +228,12 @@ public class Access {
 	 * 			<code>false</code> otherwise
 	 */
 	public boolean isValuePossible(final String value) {
+// die ganze if Schleife ist neu! Darf es values geben die possible
+// sind obwohl sie leer sind?
+		if(value == null) {
+			throw new IllegalArgumentException(
+					"The parameter'value' must not be null!");
+		}
 		return DataTypes.isValuePossible(this.type, value);
 	}
 

@@ -40,6 +40,7 @@ import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.errors.ChainError;
 import de.ptb.epics.eve.data.scandescription.errors.ChainErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
@@ -424,10 +425,11 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		eventsTabFolder.addSelectionListener(
 				new EventsTabFolderSelectionListener());
 								
-		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
-		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
-		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
-		stopEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
+		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, ControlEventTypes.PAUSE_EVENT);
+		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, ControlEventTypes.CONTROL_EVENT);
+		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, ControlEventTypes.CONTROL_EVENT);
+		stopEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, ControlEventTypes.CONTROL_EVENT);
+
 		this.pauseTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
 		this.pauseTabItem.setText("Pause");
 		this.pauseTabItem.setControl(pauseEventComposite);

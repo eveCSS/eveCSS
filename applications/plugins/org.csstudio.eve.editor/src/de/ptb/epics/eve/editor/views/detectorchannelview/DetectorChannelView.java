@@ -34,6 +34,7 @@ import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
@@ -289,7 +290,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		eventsTabFolderSelectionListener = new EventsTabFolderSelectionListener();
 		eventsTabFolder.addSelectionListener(eventsTabFolderSelectionListener);
 		
-		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE);
+		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, ControlEventTypes.CONTROL_EVENT);
 		 
 		this.redoEventTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
 		this.redoEventTabItem.setText("Redo");
