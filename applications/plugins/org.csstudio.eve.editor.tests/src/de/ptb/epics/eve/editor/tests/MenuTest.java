@@ -2,15 +2,17 @@ package de.ptb.epics.eve.editor.tests;
 
 import static de.ptb.epics.eve.editor.tests.internal.Helper.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
+import static org.junit.Assert.*;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
-import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,18 +27,17 @@ import org.junit.runner.RunWith;
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class MenuTest {
 	
+	private static Logger logger = Logger.getLogger(MenuTest.class.getName());
+	
 	private static SWTWorkbenchBot bot;
 	
 	/**
+	 * Tries to create a new scan description via the file menu.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	public void canCreateANewJavaProject() throws Exception {
-		
-		// slow down tests
-		SWTBotPreferences.PLAYBACK_DELAY = 1000;
-	
+	public void testCreateNewScanDescription() throws Exception {
 		bot.menu("File").menu("New").click();
 		
 		SWTBotShell shell = bot.shell("New");
@@ -51,17 +52,22 @@ public class MenuTest {
 		
 		bot.button("Finish").click();
 		
-		SWTBotEditor editor = bot.activeEditor();
+		try {
+			bot.waitUntil(shellCloses(shell));
+		} catch(TimeoutException e) {
+			logger.error(e.getMessage(), e);
+			fail(e.getMessage());
+		}
+		
+		SWTBotEditor editor = bot.editorByTitle("eveTest" + time + ".scml");
 		
 		assertEquals(editor.getTitle(), "eveTest" + time + ".scml");
-		
-		// set to the default speed
-				SWTBotPreferences.PLAYBACK_DELAY = 0;
 	}
 	
 	/* ******************************************************************** */
 	
 	/**
+	 * Class-Wide setup method. Tries to start the Eve Editor plugin.
 	 * 
 	 * @throws Exception
 	 */
@@ -69,15 +75,18 @@ public class MenuTest {
 	public static void beforeClass() throws Exception {
 		bot = new SWTWorkbenchBot();
 		bot.viewByTitle("Welcome").close();
+		bot.menu("CSS").menu("Editors").menu("EveEditor").click();
+		bot.sleep(1000);
 	}
-
+	
 	/**
-	 * 
+	 * Test-Wide setup method. Sets an initial (defined) state of the 
+	 * application.
 	 */
 	@Before
 	public void beforeEachTest() {
 		UIThreadRunnable.syncExec(new VoidResult() {
-			public void run() {
+			@Override public void run() {
 				resetWorkbench();
 			}
 		});
