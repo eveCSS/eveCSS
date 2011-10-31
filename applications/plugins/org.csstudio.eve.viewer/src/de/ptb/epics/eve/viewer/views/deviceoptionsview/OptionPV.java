@@ -21,8 +21,6 @@ public class OptionPV extends PVWrapper {
 	public OptionPV(final Option option) {
 		super(option.getValue().getAccess().getVariableID());
 		this.option = option;
-		
-		this.isReadOnly = option.getValue().getAccess().isReadOnly();
 	}
 	
 	/**

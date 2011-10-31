@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.csstudio.utility.pv.PV;
+import org.csstudio.utility.pv.PVFactory;
 import org.epics.pvmanager.*;
 import org.epics.pvmanager.data.Alarm;
 import org.epics.pvmanager.data.AlarmSeverity;
@@ -35,7 +37,13 @@ public class PVWrapper {
 	private static Logger logger = Logger.getLogger(PVWrapper.class.getName());
 	
 	// the wrapped process variable
-	private PV<Object,Object> pv;
+	private org.epics.pvmanager.PV<Object,Object> pv;
+	
+	// workaround (pvmanager does not support a readonly check)
+	// using the old pv lib to connect during object initialization
+	// when the first value change is triggered (PVListener) the 
+	// isWriteAllowed status is saved and the pv is disconnected.
+	private org.csstudio.utility.pv.PV pv2;
 	
 	// the name of the process variable
 	private String pvName;
@@ -50,7 +58,7 @@ public class PVWrapper {
 	private boolean isDiscrete;
 	
 	// indicates whether the process variable is readonly
-	protected boolean isReadOnly;
+	private boolean isReadOnly;
 	
 	// contains the discrete values of the process variable
 	// (or empty if not discrete)
@@ -77,22 +85,32 @@ public class PVWrapper {
 	/**
 	 * Constructs a <code>PVWrapper</code>.
 	 * 
-	 * @param pv the name (id) of the process variable
+	 * @param pvname the name (id) of the process variable
 	 */
-	public PVWrapper(String pv) {
-		this.pvName = pv;
+	public PVWrapper(String pvname) {
+		this.pvName = pvname;
 		this.pvValue = "";
 		this.pvStatus = AlarmSeverity.UNDEFINED;
 		this.isDiscrete = false;
-		this.isReadOnly = false;
 		this.discreteValues = new ArrayList<String>(0);
+		
+		// workaround start (pvmanager does not support readonly check)
+		try {
+			pv2 = PVFactory.createPV("ca://" + pvname);
+			pv2.start();
+			pv2.addListener(new PVListener());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			this.isReadOnly = true;
+		}
+		// workaround end
 		
 		// fetch the preference entry for the update interval
 		this.pvUpdateInterval = Activator.getDefault().getPreferenceStore().
 							getInt(PreferenceConstants.P_PV_UPDATE_INTERVAL);
 		
 		// get a pv instance from the factory
-		this.pv = PVManager.readAndWrite(channel(pv)).
+		this.pv = PVManager.readAndWrite(channel(pvname)).
 							notifyOn(swtThread()).
 							asynchWriteAndReadEvery(ms(pvUpdateInterval));
 		
@@ -113,6 +131,7 @@ public class PVWrapper {
 	public void disconnect() {
 		this.pv.removePVReaderListener(this.readListener);
 		this.pv.close();
+		this.pv2.stop();
 	}
 	
 	/**
@@ -265,6 +284,7 @@ public class PVWrapper {
 	 * {@link org.epics.pvmanager.PVWriterListener} listening to writes on the 
 	 * wrapped process variable. It sets the process variable read only if a 
 	 * write failed.
+	 * XXX Failsafe for write status. Still necessary ?
 	 * 
 	 * @author Marcus Michalsky
 	 * @since 1.1
@@ -281,6 +301,32 @@ public class PVWrapper {
 				logger.warn("Write to PV failed", lastException);
 				isReadOnly = true;
 			}
+		}
+	}
+	
+	/**
+	 * Part of the workaround.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.1
+	 */
+	private class PVListener implements org.csstudio.utility.pv.PVListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void pvValueUpdate(PV pv) {
+			isReadOnly = !pv.isWriteAllowed();
+			pv.removeListener(this);
+			pv.stop();
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void pvDisconnected(PV pv) {
 		}
 	}
 }
