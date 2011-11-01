@@ -5,28 +5,35 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.custom.CCombo;
 
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
+import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
@@ -88,6 +95,16 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 		// initialize the table viewer
 		this.tableViewer = new TableViewer(this, SWT.NONE);
 		this.tableViewer.getControl().setLayoutData(gridData);
+
+/**** Änderungen für Montag:
+ * 
+ * hier wird der CellEditor genauso erzeugt wie im Viewer und zwar nur an
+ * einer Stelle. Es wird dann unterschieden für welche Spalte es gesetzt ist.
+ * Damit vereinfacht sich dann die Anzahl der Aufrufe weil es nur noch an
+ * einer Stelle geschieht.
+ * 
+		tableViewer.getTable().setE
+********/
 		
 		// column 1: Source
 		TableColumn column = new TableColumn(
@@ -143,11 +160,90 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 	    case PAUSE_EVENT:
 		    editors = new CellEditor[4];
 		    editors[0] = new TextCellEditor(this.tableViewer.getTable());
-		    editors[1] = new ComboBoxCellEditor(this.tableViewer.getTable(), 
-		    									operators, SWT.READ_ONLY);
-		    editors[2] = new TextCellEditor(this.tableViewer.getTable());
-		    editors[3] = new CheckboxCellEditor(this.tableViewer.getTable());
-		    this.tableViewer.setCellEditors(editors);
+
+		    final ComboBoxCellEditor comboEditor = new ComboBoxCellEditor(this.tableViewer.getTable(), 
+					operators, SWT.READ_ONLY | SWT.SELECTED){
+
+				@Override protected void focusLost() {
+					fireCancelEditor();
+					if (isDirty() == true) {
+						System.out.println("Operator Wert wurde geändert, muß aktualisiert werden");
+					}
+
+					if(isActivated()) {
+						System.out.println("Operator Cell ist aktiviert, CancelEditor");
+						fireCancelEditor();
+					}
+					deactivate();
+				}};
+
+				((CCombo)comboEditor.getControl()).addSelectionListener(new SelectionListener() {
+					
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						System.out.println("widgetSelected");
+						// nachsehen ob neuer Wert = vorhandener Wert
+						// JA: nichts tun
+						// NEIN: neuen Wert setzten.
+						// TODO Auto-generated method stub
+
+// Test ausprobieren hier an dieser Stelle ob das so geht.
+						// Wenn ja, übernehmen in die allgemeine Funktion!
+						System.out.println("   Wert auslesen");
+						System.out.println("   comboEditor: " + comboEditor.toString());
+						System.out.println("   Wert: " + ((CCombo)comboEditor.getControl()).getText());
+
+						// new selected value
+						String newValue = ((CCombo)comboEditor.getControl()).getText();
+						// index of new selected value
+						int newPoint = ((CCombo)comboEditor.getControl()).getSelectionIndex();
+						
+						// PauseEvent Object of selected row
+						Object o = ((IStructuredSelection)tableViewer.getSelection()).toList().get(0);
+						if (o instanceof PauseEvent) {
+							PauseEvent pause = (PauseEvent)o;
+
+							System.out.println(" Comparison: " + pause.getLimit().getComparison().toString());
+							System.out.println(" equals: " + pause.getLimit().getComparison().equals(ComparisonTypes.stringToType(newValue)));
+
+							// if actual value of pauseEvent equals new value, value not changed
+							// -> deactivate and close menu
+							if (pause.getLimit().getComparison().equals(ComparisonTypes.stringToType(newValue))) {
+								comboEditor.deactivate();
+								return;
+							}
+						}
+						
+						// value changed, call modify event
+						tableViewer.getCellModifier().modify(o, "operator", newPoint);
+
+						// deactivate ComboBox
+						comboEditor.deactivate();
+						
+					}
+					
+					@Override
+					public void widgetDefaultSelected(SelectionEvent e) {
+						System.out.println("widgetDefaultSelected");
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				
+				editors[1] = comboEditor;
+				editors[2] = new TextCellEditor(this.tableViewer.getTable()) {
+					@Override protected void focusLost() {
+						if (isDirty() == true) {
+							logger.info("...f");
+						}
+						// if value not changed cancel focusLost callback
+						if(isActivated() && !isDirty()) {
+							fireCancelEditor();
+						}
+						deactivate();
+					}};
+				editors[3] = new CheckboxCellEditor(this.tableViewer.getTable());
+				this.tableViewer.setCellEditors(editors);
 	    	break;
 	    }
 	    
@@ -325,12 +421,13 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 	 * <code>FocusListener</code> of <code>eventsCombo</code>.
 	 */
 	class EventsComboFocusListener implements FocusListener {
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void focusGained(FocusEvent e) {
+			System.out.println("\nFocus Gained von EventComposite aufgerufen");
 			final String currentTextBuffer = eventsCombo.getText();
 			setEventChoice();
 			eventsCombo.setText(currentTextBuffer);
@@ -340,7 +437,8 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void focusLost(FocusEvent e) {
+		public void focusLost (FocusEvent e) {
+			System.out.println("\nFocus Lost von EventComposite aufgerufen");
 		}
 	}
 	
