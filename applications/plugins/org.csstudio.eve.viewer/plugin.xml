@@ -17,19 +17,22 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            name="%view.name"
-            icon="icons/css.gif"
+            category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.playlistview.PlayListView"
-            id="PlayListView">
+            icon="icons/css.gif"
+            id="PlayListView"
+            name="%view.name">
       </view>
       <view
-            name="%view.name.0"
-            icon="icons/css.gif"
+            category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.engineview.EngineView"
-            id="EngineView">
+            icon="icons/css.gif"
+            id="EngineView"
+            name="%view.name.0">
       </view>
       <view
             allowMultiple="true"
+            category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.devicesview.DevicesView"
             icon="icons/css.gif"
             id="DevicesView"
@@ -37,37 +40,46 @@
             restorable="true">
       </view>
       <view
-            name="%view.name.2"
-            icon="icons/css.gif"
+            category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.messagesview.MessagesView"
-            id="MessagesView">
+            icon="icons/css.gif"
+            id="MessagesView"
+            name="%view.name.2">
       </view>
       <view
             allowMultiple="true"
+            category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView"
             icon="icons/css.gif"
             id="DeviceInspectorView"
             name="%view.name.3"/>
       <view
             allowMultiple="true"
+            category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.deviceoptionsview.DeviceOptionsView"
             icon="icons/css.gif"
             id="DeviceOptionsView"
             name="%view.name.4"/>
       <view
             allowMultiple="true"
+            category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.plotview.PlotView"
             icon="icons/css.gif"
             id="PlotView"
             name="%view.name.5"/>
       <view
             allowMultiple="true"
+            category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.devicesview.DevicesView"
             icon="icons/css.gif"
             id="LocalDevicesView"
             name="%view.name.6"
             restorable="true">
       </view>
+      <category
+            id="eveViewerCategory"
+            name="EVE Viewer">
+      </category>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
