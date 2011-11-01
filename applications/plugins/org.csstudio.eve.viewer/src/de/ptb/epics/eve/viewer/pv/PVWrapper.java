@@ -40,7 +40,7 @@ public class PVWrapper {
 	private org.epics.pvmanager.PV<Object,Object> pv;
 	
 	// workaround (pvmanager does not support a readonly check)
-	// using the old pv lib to connect during object initialization
+	// using the "old" pv lib to connect during object initialization
 	// when the first value change is triggered (PVListener) the 
 	// isWriteAllowed status is saved and the pv is disconnected.
 	private org.csstudio.utility.pv.PV pv2;
@@ -60,6 +60,10 @@ public class PVWrapper {
 	// indicates whether the process variable is readonly
 	private boolean isReadOnly;
 	
+	// a pv is connected after its first subscription update
+	// until it is disconnected via the corresponding method
+	private boolean isConnected;
+	
 	// contains the discrete values of the process variable
 	// (or empty if not discrete)
 	private List<String> discreteValues;
@@ -76,6 +80,9 @@ public class PVWrapper {
 	// listener for process variable writes
 	private WriteListener writeListener;
 	
+	// workaround listener
+	private PVListener pvListener;
+	
 	// Delegated Observable
 	private PropertyChangeSupport propertyChangeSupport;
 	
@@ -91,6 +98,7 @@ public class PVWrapper {
 		this.pvName = pvname;
 		this.pvValue = "";
 		this.pvStatus = AlarmSeverity.UNDEFINED;
+		this.isConnected = false;
 		this.isDiscrete = false;
 		this.discreteValues = new ArrayList<String>(0);
 		
@@ -98,7 +106,8 @@ public class PVWrapper {
 		try {
 			pv2 = PVFactory.createPV("ca://" + pvname);
 			pv2.start();
-			pv2.addListener(new PVListener());
+			pvListener = new PVListener();
+			pv2.addListener(pvListener);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			this.isReadOnly = true;
@@ -129,9 +138,11 @@ public class PVWrapper {
 	 * Disconnects the process variable.
 	 */
 	public void disconnect() {
+		this.pv2.removeListener(pvListener);
+		this.pv2.stop();
 		this.pv.removePVReaderListener(this.readListener);
 		this.pv.close();
-		this.pv2.stop();
+		this.isConnected = false;
 	}
 	
 	/**
@@ -210,7 +221,7 @@ public class PVWrapper {
 	 * 			<code>false</code> otherwise
 	 */
 	public boolean isConnected() {
-		return !this.pv.isClosed();
+		return this.isConnected;
 	}
 	
 	/**
@@ -253,6 +264,8 @@ public class PVWrapper {
 		 */
 		@Override
 		public void pvChanged() {
+			isConnected = true;
+			
 			Object newVal = pv.getValue();
 			
 			propertyChangeSupport.firePropertyChange("value", pvValue,
@@ -318,6 +331,9 @@ public class PVWrapper {
 		@Override
 		public void pvValueUpdate(PV pv) {
 			isReadOnly = !pv.isWriteAllowed();
+			logger.debug("got read only status (" + 
+					!pv.isWriteAllowed() + ") of " + 
+					pv.getName());
 			pv.removeListener(this);
 			pv.stop();
 		}
