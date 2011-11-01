@@ -18,7 +18,7 @@ h2(eveTopic). Option
 
 p. Motors & motor axes as well as detectors & detector channels can have several options (e.g. __GoTo Position__ or __Hi Warn Limit__) which like devices could be assigned in pre and postscan phases.
 
-h2(eveTopic). Plug In
+h2(eveTopic). Plugin
 
 p. There are several types of plug ins which allow extension of functionality. Examples are save plug ins (which allow saving measurement data in different formats, e.g. ASCII or HDF) and position plug ins (which define the way devices are positioned, e.g. __GOTO-Peak__).
 
