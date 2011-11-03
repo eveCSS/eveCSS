@@ -12,3 +12,7 @@ syntax: regexp
 ^applications/plugins/org\.csstudio\.eve\.data\.tests/xml/test\.xml$
 syntax: regexp
 ^applications/plugins/org\.csstudio\.eve\.data\.tests/log$
+syntax: regexp
+^applications/plugins/org\.csstudio\.eve\.editor\.tests/screenshots$
+syntax: regexp
+^applications/plugins/org\.csstudio\.eve\.editor\.tests/log$
