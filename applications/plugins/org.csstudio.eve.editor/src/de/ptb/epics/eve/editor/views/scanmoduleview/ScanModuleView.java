@@ -41,7 +41,6 @@ import org.eclipse.swt.graphics.RGB;
 
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
-import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilter;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;

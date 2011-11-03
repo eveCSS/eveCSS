@@ -104,6 +104,7 @@ public class ControlEventCellModifyer implements ICellModifier {
 	 */
 	@Override
 	public void modify( final Object element, final String property, final Object value ) {
+		System.out.println("\nModify von ControlEventCellModifyer aufgerufen, property: " + property);
 		final ControlEvent controlEvent = (element instanceof Item)?(ControlEvent)((Item)element).getData():(ControlEvent)element;
 		if( property.equals( "operator" ) ) {
 			controlEvent.getLimit().setComparison( ComparisonTypes.stringToType( ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).getItems()[ (Integer)value ] ) );
