@@ -70,6 +70,7 @@
       <packageset dir="org.csstudio.eve.preferences/src" defaultexcludes="yes" />
       
       <packageset dir="org.csstudio.eve.data.tests/src" defaultexcludes="yes" />
+      <packageset dir="org.csstudio.eve.editor.tests/src" defaultexcludes="yes" />
 
       <doctitle><![CDATA[<h1>eveCSS 2.0</h1>]]></doctitle>
       <bottom>
@@ -88,7 +89,7 @@
       <group title="EVE Viewer" packages="de.ptb.epics.eve.viewer*"/>
 
       <group title="Tests" 
-      		 packages="de.ptb.epics.eve.data.measuringstation.filter.tests*,de.ptb.epics.eve.data.measuringstation.tests*,de.ptb.epics.eve.data.tests*,de.ptb.epics.eve.data.tests.internal.*,de.ptb.epics.eve.data.scandescription.tests*,de.ptb.epics.eve.data.measuringstation.processors.tests*" />
+      		 packages="de.ptb.epics.eve.data.measuringstation.filter.tests*,de.ptb.epics.eve.data.measuringstation.tests*,de.ptb.epics.eve.data.tests*,de.ptb.epics.eve.data.tests.internal.*,de.ptb.epics.eve.data.scandescription.tests*,de.ptb.epics.eve.data.measuringstation.processors.tests*,de.ptb.epics.eve.data.scandescription.processors.tests*,de.ptb.epics.eve.editor.tests*" />
 
       <group title="apache" packages="org.apache.*" />
       

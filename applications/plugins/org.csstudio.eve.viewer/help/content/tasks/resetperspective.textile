@@ -1,0 +1,5 @@
+h1(eveTopic). Reset Perspective
+
+p. In order to reset the (currently active) perspective follow the menu "Window->Reset Perspective" and click on it. The active perspective now is in the state it was after starting the application for the first time.
+
+p. *Please note:* Use with caution ! After the reset all changes made are gone. These include adjustments to the layout, devices added to the device inspector, additionally added device inspectors...

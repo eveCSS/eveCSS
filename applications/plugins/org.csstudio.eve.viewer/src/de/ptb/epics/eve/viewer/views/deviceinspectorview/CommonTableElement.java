@@ -70,18 +70,11 @@ public class CommonTableElement {
 				(motorAxis.getPosition().getAccess().getTransport() == TransportTypes.CA)) {
 				valuePv = new CommonTableElementPV(motorAxis.getPosition().
 						getAccess().getVariableID(), this);
-				valuePv.setReadOnly(motorAxis.getPosition().getAccess().
-						isReadOnly());
 			}
 			if ((motorAxis.getGoto().getAccess() != null) &&
 				(motorAxis.getGoto().getAccess().getTransport() == TransportTypes.CA)) {
 				gotoPv = new CommonTableElementPV(motorAxis.getGoto().
 						getAccess().getVariableID(), this);
-				gotoPv.setReadOnly(motorAxis.getGoto().getAccess().isReadOnly());
-				if (motorAxis.getGoto().isDiscrete()) {
-					gotoPv.setDiscreteValues(motorAxis.getGoto().
-							getDiscreteValues().toArray(new String[0]));
-				}
 			}
 			if ((motorAxis.getSet() != null) &&
 				(motorAxis.getSet().getAccess().getTransport() == TransportTypes.CA)) {
@@ -122,12 +115,6 @@ public class CommonTableElement {
 				(motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.CA)) {
 					tweakvaluePv = new CommonTableElementPV(motorAxis.
 							getTweakValue().getAccess().getVariableID(), this);
-					tweakvaluePv.setReadOnly(motorAxis.getTweakValue().
-							getAccess().isReadOnly());
-				if (motorAxis.getTweakValue().isDiscrete()) {
-					tweakvaluePv.setDiscreteValues(motorAxis.getTweakValue().
-							getDiscreteValues().toArray(new String[0]));
-				}
 			}
 		}
 		if(device instanceof DetectorChannel) {
@@ -137,7 +124,6 @@ public class CommonTableElement {
 				(channel.getRead().getAccess().getTransport() == TransportTypes.CA)) {
 				valuePv = new CommonTableElementPV(channel.getRead().
 						getAccess().getVariableID(), this);
-				valuePv.setReadOnly(channel.getRead().getAccess().isReadOnly());
 			}
 			if (channel.getUnit() != null){
 				if (channel.getUnit().getAccess() != null) {
@@ -160,7 +146,6 @@ public class CommonTableElement {
 			if ((realDevice.getValue() != null) && 
 					(realDevice.getValue().getAccess().getTransport() == TransportTypes.CA)) {
 				valuePv = new CommonTableElementPV( realDevice.getValue().getAccess().getVariableID(), this);
-				valuePv.setReadOnly(realDevice.getValue().getAccess().isReadOnly());
 			}
 			if (realDevice.getUnit() != null){
 				if (realDevice.getUnit().getAccess() != null) {

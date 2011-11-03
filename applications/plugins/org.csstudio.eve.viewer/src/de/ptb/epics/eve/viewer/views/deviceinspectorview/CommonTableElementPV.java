@@ -35,23 +35,6 @@ public class CommonTableElementPV extends PVWrapper implements PropertyChangeLis
 	}
 	
 	/**
-	 * Sets whether the process variable should be readonly.
-	 * 
-	 * @param readonly <code>true</code> if the process variable should be 
-	 * 					readonly, <code>false</code> otherwise
-	 */
-	protected void setReadOnly(boolean readonly) {
-		isReadOnly = readonly;
-	}
-	
-	public void setDiscreteValues(String[] foo) {
-		// TODO remove ?
-		// left only to sustain the interface and not break the code
-		// possible discrete values should be read from the device itself via 
-		// channel access.
-	}
-	
-	/**
 	 * {@inheritDoc}
 	 */
 	@Override

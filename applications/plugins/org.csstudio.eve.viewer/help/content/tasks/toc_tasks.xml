@@ -4,5 +4,9 @@
 <toc label="Tasks">
    <topic href="help/content/tasks/adddevicetodeviceinspector.html" label="Add a Device to the Device Inspector">
    </topic>
+   <topic href="help/content/tasks/copypvtoclipboard.html" label="Copy PV Name to Clipboard">
+   </topic>
+   <topic href="help/content/tasks/resetperspective.html" label="Reset Perspective">
+   </topic>
 
 </toc>
