@@ -191,6 +191,45 @@
             id="de.ptb.epics.eve.viewer.startCommand"
             name="startCommand">
       </command>
+      <category
+            id="de.ptb.epics.eve.viewer.filter"
+            name="Filter">
+      </category>
+      <command
+            defaultHandler="de.ptb.epics.eve.viewer.handler.devices.Filter"
+            id="de.ptb.epics.eve.viewer.Filter"
+            name="Filter">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.filter"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.devices.FilterToggle"
+            id="de.ptb.epics.eve.viewer.FilterMotorsAxes"
+            name="Motors and Axes">
+         <state
+               class="org.eclipse.ui.handlers.RegistryToggleState:false"
+               id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.filter"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.devices.FilterToggle"
+            id="de.ptb.epics.eve.viewer.FilterDetectorsChannels"
+            name="Detectors and Channels">
+         <state
+               class="org.eclipse.ui.handlers.RegistryToggleState:false"
+               id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.filter"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.devices.FilterToggle"
+            id="de.ptb.epics.eve.viewer.FilterDevices"
+            name="Devices">
+         <state
+               class="org.eclipse.ui.handlers.RegistryToggleState:false"
+               id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -380,12 +419,41 @@
          </command>
       </menuContribution>
       <menuContribution
-            allPopups="false"
             locationURI="menu:window?after=additions">
          <command
                commandId="org.eclipse.ui.window.resetPerspective"
                label="Reset Perspective"
                style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:LocalDevicesView">
+         <command
+               commandId="de.ptb.epics.eve.viewer.Filter"
+               icon="icons/filter_tsk.gif"
+               id="LocalDevicesViewFilter"
+               style="pulldown">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:LocalDevicesViewFilter">
+         <command
+               commandId="de.ptb.epics.eve.viewer.FilterMotorsAxes"
+               icon="icons/motorsaxes.gif"
+               label="Motors and Axes"
+               style="toggle">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.FilterDetectorsChannels"
+               icon="icons/detectorschannels.gif"
+               label="Detectors and Channels"
+               style="toggle">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.FilterDevices"
+               icon="icons/devices.gif"
+               label="Devices"
+               style="toggle">
          </command>
       </menuContribution>
    </extension>

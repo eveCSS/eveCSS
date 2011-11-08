@@ -1,13 +1,18 @@
 package de.ptb.epics.eve.viewer.views.devicesview;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.HandlerEvent;
+import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
@@ -23,6 +28,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
@@ -52,25 +58,39 @@ public final class DevicesView extends ViewPart {
 
 	/** the unique identifier of this view */
 	public static final String ID = "DevicesView";
-
+	
+	// logging
 	private static Logger logger = Logger.getLogger(DevicesView.class.getName());
 	
+	// the model visualized by the tree
 	private IMeasuringStation measuringStation;
 	
+	// the tree viewer visualizing the model
 	private TreeViewer treeViewer;
+	
+	// listener (for focus lost deselection)
 	private TreeViewerFocusListener treeViewerFocusListener;
 	
+	// the tree viewer acts as a drag source
 	private DragSource source;
-
+	
+	// flag indicating if a drag is in progress
+	// (necessary to "block" the focus lost effect when dragging)
 	private boolean dragInProgress;
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setFocus() {
-	}
-
+	// flags indicating the toggle state of the toolbar menu (true=filter active)
+	private boolean motorsAxesToggleState;
+	private boolean detectorsChannelsToggleState;
+	private boolean devicesToggleState;
+	
+	// filter classes
+	private ViewerFilter motorsAxesFilter;
+	private ViewerFilter detectorsChannelsFilter;
+	private ViewerFilter devicesFilter;
+	
+	private ToggleHandlerListener toggleHandlerListener;
+	private ICommandService cmdService;
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -84,7 +104,7 @@ public final class DevicesView extends ViewPart {
 					"Please check Preferences!");
 			return;
 		}
-				
+		
 		final FillLayout fillLayout = new FillLayout();
 		parent.setLayout(fillLayout);
 		
@@ -118,18 +138,35 @@ public final class DevicesView extends ViewPart {
 		source.setTransfer(types);
 		source.addDragListener(new DragSourceDragListener());
 		
-		// Filtering
-		
-		
-		// Filter test
-		//ViewerFilter[] filters = new ViewerFilter[] {new TreeViewerFilter()};
-		//treeViewer.setFilters(filters);
 		
 		setMeasuringStation(measuringStation);
 		
 		getSite().setSelectionProvider(treeViewer);
 		
 		dragInProgress = false;
+		
+		// Filtering
+		motorsAxesFilter = new TreeViewerFilterMotorsAxes();
+		detectorsChannelsFilter = new TreeViewerFilterDetectorsChannels();
+		devicesFilter = new TreeViewerFilterDevices();
+		toggleHandlerListener = new ToggleHandlerListener();
+		cmdService = (ICommandService) getSite().getService(
+				ICommandService.class);
+		cmdService.getCommand("de.ptb.epics.eve.viewer.FilterMotorsAxes").
+				getHandler().addHandlerListener(toggleHandlerListener);
+		cmdService.getCommand("de.ptb.epics.eve.viewer.FilterDetectorsChannels").
+				getHandler().addHandlerListener(toggleHandlerListener);
+		cmdService.getCommand("de.ptb.epics.eve.viewer.FilterDevices").
+				getHandler().addHandlerListener(toggleHandlerListener);
+		readToggleStates();
+		setTreeFilters();
+	} // end of: createPartControl()
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setFocus() {
 	}
 
 	/**
@@ -143,6 +180,64 @@ public final class DevicesView extends ViewPart {
 		this.measuringStation = measuringStation;
 		this.treeViewer.setInput(this.measuringStation);
 		this.treeViewer.getTree().setEnabled(this.measuringStation != null);
+	}
+	
+	/*
+	 * 
+	 */
+	private void readToggleStates() {
+		Command motorsAxesCommand = cmdService.
+				getCommand("de.ptb.epics.eve.viewer.FilterMotorsAxes");
+		if(motorsAxesCommand.isDefined()) {
+			motorsAxesToggleState = (Boolean) motorsAxesCommand.
+					getState("org.eclipse.ui.commands.toggleState").getValue();
+		} else {
+			motorsAxesToggleState = false;
+		}
+		Command detectorsChannelsCommand = cmdService.
+				getCommand("de.ptb.epics.eve.viewer.FilterDetectorsChannels");
+		if(detectorsChannelsCommand.isDefined()) {
+			detectorsChannelsToggleState = (Boolean) detectorsChannelsCommand.
+					getState("org.eclipse.ui.commands.toggleState").getValue();
+		} else {
+			detectorsChannelsToggleState = false;
+		}
+		Command devicesCommand = cmdService.
+				getCommand("de.ptb.epics.eve.viewer.FilterDevices");
+		if(devicesCommand.isDefined()) {
+			devicesToggleState = (Boolean) devicesCommand.
+					getState("org.eclipse.ui.commands.toggleState").getValue();
+		} else {
+			devicesToggleState = false;
+		}
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug(
+				"Toggle States: MotorsAxes (" + 
+						motorsAxesToggleState + "), " +
+				"Toggle States: DetectorsChannels (" + 
+						detectorsChannelsToggleState + "), " +
+				"Toggle States: Devices (" + devicesToggleState + ")");
+		}
+	}
+	
+	/*
+	 * 
+	 */
+	private void setTreeFilters() {
+		List<ViewerFilter> filters = new LinkedList<ViewerFilter>();
+		if(motorsAxesToggleState) {
+			filters.add(motorsAxesFilter);
+		}
+		if(detectorsChannelsToggleState) {
+			filters.add(detectorsChannelsFilter);
+		}
+		if(devicesToggleState) {
+			filters.add(devicesFilter);
+		}
+		filters.add(new TreeViewerFilterClasses(motorsAxesToggleState, 
+				detectorsChannelsToggleState, devicesToggleState));
+		treeViewer.setFilters(filters.toArray(new ViewerFilter[0]));
 	}
 	
 	// ***********************************************************************
@@ -205,8 +300,9 @@ public final class DevicesView extends ViewPart {
 	
 	/**
 	 * 
+	 * @author Marcus Michalsky
 	 */
-	class DragSourceDragListener implements DragSourceListener {
+	private class DragSourceDragListener implements DragSourceListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -319,8 +415,9 @@ public final class DevicesView extends ViewPart {
 	
 	/**
 	 * 
+	 * @author Marcus Michalsky
 	 */
-	class TreeViewerFocusListener implements FocusListener {
+	private class TreeViewerFocusListener implements FocusListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -336,6 +433,28 @@ public final class DevicesView extends ViewPart {
 		public void focusLost(FocusEvent e) {
 			if(!dragInProgress) {
 				treeViewer.getTree().deselectAll();
+			}
+		}
+	}
+	
+	/**
+	 * <code>ToggleHandlerListener</code>.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.1
+	 */
+	private class ToggleHandlerListener implements IHandlerListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void handlerChanged(HandlerEvent handlerEvent) {
+			readToggleStates();
+			setTreeFilters();
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("Filter State changed (toggle).");
 			}
 		}
 	}

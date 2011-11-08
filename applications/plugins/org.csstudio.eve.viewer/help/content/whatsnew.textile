@@ -7,3 +7,4 @@ h2(eveTopic). Version 1.1
 * [Feature] Added CSS Context Menu allowing "copy pv name to clipboard". "Read more...":/help/topic/de.ptb.epics.eve.viewer/help/content/tasks/copypvtoclipboard.html
 * [Feature] Process Variables now have configurable (GUI) update intervals. "Read more...":/help/topic/de.ptb.epics.eve.viewer/help/content/concepts/pvupdateinterval.html
 * [Feature] Added menu entry "Window->Reset Perspective" to reset the active perspective. "Read more...":/help/topic/de.ptb.epics.eve.viewer/help/content/tasks/resetperspective.html
+* [Feature] Added Filtering to the Local Devices View. "Read more...":/help/topic/de.ptb.epics.eve.viewer/help/content/tasks/filterdevices.html
