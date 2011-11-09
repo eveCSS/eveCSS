@@ -138,12 +138,13 @@ public final class DevicesView extends ViewPart {
 		source.setTransfer(types);
 		source.addDragListener(new DragSourceDragListener());
 		
+		dragInProgress = false;
 		
-		setMeasuringStation(measuringStation);
+		if(this.getPartName().equals("Local Devices")) {
+			setMeasuringStation(measuringStation);
+		}
 		
 		getSite().setSelectionProvider(treeViewer);
-		
-		dragInProgress = false;
 		
 		// Filtering
 		motorsAxesFilter = new TreeViewerFilterMotorsAxes();
@@ -183,7 +184,9 @@ public final class DevicesView extends ViewPart {
 	}
 	
 	/*
-	 * 
+	 * checks whether the filters are selected (toolbar toggle items) and saves 
+	 * the state in the local variables. Should be called before calling 
+	 * setTreeFilters().
 	 */
 	private void readToggleStates() {
 		Command motorsAxesCommand = cmdService.
@@ -222,7 +225,7 @@ public final class DevicesView extends ViewPart {
 	}
 	
 	/*
-	 * 
+	 * checks which of the filters are selected and sets them in the tree viewer
 	 */
 	private void setTreeFilters() {
 		List<ViewerFilter> filters = new LinkedList<ViewerFilter>();
@@ -238,62 +241,6 @@ public final class DevicesView extends ViewPart {
 		filters.add(new TreeViewerFilterClasses(motorsAxesToggleState, 
 				detectorsChannelsToggleState, devicesToggleState));
 		treeViewer.setFilters(filters.toArray(new ViewerFilter[0]));
-	}
-	
-	// ***********************************************************************
-	// **************************** Listener *********************************
-	// ***********************************************************************
-	
-	/**
-	 * 
-	 */
-	class TreeViewerDoubleClickListener implements IDoubleClickListener {
-	
-		/**
-		 * {@inheritDoc}
-	 	 */
-		@SuppressWarnings("unchecked")
-		@Override
-		public void doubleClick(DoubleClickEvent event) {
-			
-			if(logger.isDebugEnabled()) {
-				logger.debug("Double Click: " + event.getSelection());
-			}
-			
-			// get all views
-			IViewReference[] ref = getSite().getPage().getViewReferences();
-			
-			DeviceInspectorView deviceInspectorView = null;
-			for(IViewReference ivr : ref) {
-				if(ivr.getId().equals(DeviceInspectorView.ID)) {
-					if(DeviceInspectorView.activeDeviceInspectorView.equals(ivr.getSecondaryId())) {
-						deviceInspectorView = (DeviceInspectorView)ivr.getPart(false);
-					}
-				}
-			}
-			
-			if(deviceInspectorView != null) {
-				Object selection = 
-					treeViewer.getTree().getSelection()[0].getData();
-				
-				if(selection instanceof AbstractDevice) {
-					deviceInspectorView.addAbstractDevice((AbstractDevice)
-							treeViewer.getTree().getSelection()[0].getData());
-				} else if(selection instanceof List<?>) {
-					for(Object o : (List<Object>)selection) {
-						deviceInspectorView.addAbstractDevice((AbstractDevice)o);
-					}
-				} else if(selection instanceof String) {
-					IMeasuringStation measuringstation = 
-						Activator.getDefault().getMeasuringStation();
-					List<AbstractDevice> devices = 
-						measuringstation.getDeviceList((String)selection);
-					for(AbstractDevice d : devices) {
-						deviceInspectorView.addAbstractDevice(d);
-					}
-				}
-			}
-		}
 	}
 	
 	// ************************* DnD *****************************************
@@ -409,10 +356,62 @@ public final class DevicesView extends ViewPart {
 		}
 	}
 	
-	// ************************************************************************
-	// ************************* Listeners ************************************
-	// ************************************************************************
+	// ***********************************************************************
+	// **************************** Listener *********************************
+	// ***********************************************************************
 	
+	/**
+	 * 
+	 */
+	private class TreeViewerDoubleClickListener implements IDoubleClickListener {
+	
+		/**
+		 * {@inheritDoc}
+	 	 */
+		@SuppressWarnings("unchecked")
+		@Override
+		public void doubleClick(DoubleClickEvent event) {
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("Double Click: " + event.getSelection());
+			}
+			
+			// get all views
+			IViewReference[] ref = getSite().getPage().getViewReferences();
+			
+			DeviceInspectorView deviceInspectorView = null;
+			for(IViewReference ivr : ref) {
+				if(ivr.getId().equals(DeviceInspectorView.ID)) {
+					if(DeviceInspectorView.activeDeviceInspectorView.equals(ivr.getSecondaryId())) {
+						deviceInspectorView = (DeviceInspectorView)ivr.getPart(false);
+					}
+				}
+			}
+			
+			if(deviceInspectorView != null) {
+				Object selection = 
+					treeViewer.getTree().getSelection()[0].getData();
+				
+				if(selection instanceof AbstractDevice) {
+					deviceInspectorView.addAbstractDevice((AbstractDevice)
+							treeViewer.getTree().getSelection()[0].getData());
+				} else if(selection instanceof List<?>) {
+					for(Object o : (List<Object>)selection) {
+						deviceInspectorView.addAbstractDevice((AbstractDevice)o);
+					}
+				} else if(selection instanceof String) {
+					IMeasuringStation measuringstation = 
+						Activator.getDefault().getMeasuringStation();
+					List<AbstractDevice> devices = 
+						measuringstation.getDeviceList((String)selection);
+					for(AbstractDevice d : devices) {
+						deviceInspectorView.addAbstractDevice(d);
+					}
+				}
+			}
+		}
+	}
+
 	/**
 	 * 
 	 * @author Marcus Michalsky

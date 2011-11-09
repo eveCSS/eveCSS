@@ -38,44 +38,28 @@ public class ScanDescription implements IModelUpdateProvider,
 	 */
 	public static final String outputVersion = "0.4.2";
 	
-	/*
-	 * version of the scan description.
-	 */
+	// version of the scan description.
 	private int inputVersion;
 	
-	/*
-	 * The input revision.
-	 */
+	// the input revision.
 	private int inputRevision;
 	
-	/*
-	 * The input modification.
-	 */
+	// the input modification.
 	private int inputModification;
 	
-	/*
-	 * The number of times the scan is repeated.
-	 */
+	// the number of times the scan is repeated.
 	private int repeatCount;
 	
-	/*
-	 * the chains of the scan description.
-	 */
+	// the chains of the scan description.
 	private List<Chain> chains;
 	
-	/*
-	 * the events of the scan description.
-	 */
+	// the events of the scan description.
 	private Map<String, Event> eventsMap;
 	
-	/*
-	 * The listeners that will be notified if something changed.
-	 */
+	// the listeners that will be notified if something changed.
 	private List<IModelUpdateListener> modelUpdateListener;
 	
-	/*
-	 * The measuring station used by this scan description.
-	 */
+	// the measuring station used by this scan description.
 	private final IMeasuringStation measuringStation;
 	
 	/**
@@ -89,13 +73,13 @@ public class ScanDescription implements IModelUpdateProvider,
 		super();
 		this.chains = new ArrayList<Chain>();
 		//this.events = new ArrayList<Event>();
-		this.eventsMap = new HashMap< String, Event >();
-		this.modelUpdateListener = new ArrayList< IModelUpdateListener >();
+		this.eventsMap = new HashMap<String, Event>();
+		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
 		// default start event
 		Event s0 = new Event(EventTypes.SCHEDULE);
 		s0.setName("Start");
-		this.add( s0 );
-		this.measuringStation = measuringStation;	
+		this.add(s0);
+		this.measuringStation = measuringStation;
 	}
 
 	/**
@@ -337,7 +321,7 @@ public class ScanDescription implements IModelUpdateProvider,
 	}
 
 	/**
-	 * {@inheritDoc}	 
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean addModelUpdateListener(
@@ -346,7 +330,7 @@ public class ScanDescription implements IModelUpdateProvider,
 	}
 
 	/**
-	 * {@inheritDoc} 
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean removeModelUpdateListener(
