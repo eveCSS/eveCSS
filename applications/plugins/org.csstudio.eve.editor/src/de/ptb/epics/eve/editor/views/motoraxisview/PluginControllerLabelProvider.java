@@ -79,7 +79,16 @@ public class PluginControllerLabelProvider implements ITableLabelProvider {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addListener(final ILabelProviderListener arg0) {
+	public boolean isLabelProperty(final Object arg0, final String arg1) {
+		return false;
+	}
+
+	/**
+	 * 
+	 * @param pluginController
+	 */
+	public void setPluginController(final PluginController pluginController) {
+		this.pluginController = pluginController;
 	}
 
 	/**
@@ -93,8 +102,7 @@ public class PluginControllerLabelProvider implements ITableLabelProvider {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isLabelProperty(final Object arg0, final String arg1) {
-		return false;
+	public void addListener(final ILabelProviderListener arg0) {
 	}
 
 	/**
@@ -102,13 +110,5 @@ public class PluginControllerLabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public void removeListener(final ILabelProviderListener arg0) {
-	}
-
-	/**
-	 * 
-	 * @param pluginController
-	 */
-	public void setPluginController(final PluginController pluginController) {
-		this.pluginController = pluginController;
 	}
 }

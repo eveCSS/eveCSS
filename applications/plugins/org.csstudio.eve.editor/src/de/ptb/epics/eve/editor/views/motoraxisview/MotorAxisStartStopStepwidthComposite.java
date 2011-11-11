@@ -41,14 +41,15 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelError;
  * @author Marcus Michalsky
  */
 public class MotorAxisStartStopStepwidthComposite extends Composite {
-
+	
 	// logging
 	private static Logger logger = 
 		Logger.getLogger(MotorAxisStartStopStepwidthComposite.class.getName());	
-
+	
 	// the underlying model the composite takes the data from
 	private Axis currentAxis;
-
+	
+	// reference to the view this composite is embedded in
 	private MotorAxisView motorAxisView;
 	
 	// start elements
@@ -118,7 +119,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
 		this.setLayout(gridLayout);
-
+		
 		// initialize start elements
 		this.autoFillStartRadioButton = new Button(this, SWT.RADIO);
 		this.autoFillStartRadioButton.setText("Start:");
@@ -128,7 +129,7 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 				new AutoFillStartRadioButtonSelectionListener();
 		this.autoFillStartRadioButton.addSelectionListener(
 				autoFillStartRadioButtonSelectionListener);
-
+		
 		this.startCombo = new CCombo(this, SWT.BORDER);
 		this.startComboVerifyListener = new ComboVerifyListener();
 		this.startCombo.addVerifyListener(startComboVerifyListener);
@@ -258,20 +259,18 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 	 * 		  should be set
 	 * @param stepcount the step count (generally the step count of the axis, 
 	 * 		  except when a main axis is set which is then used instead)
-	 * @param stepcount the step count of the main axis 
 	 */
-    public void setCurrentAxis(final Axis axis, final double stepcount) {
-
-    	
-    	if(axis != null)
-    		logger.debug("set axis to: " + axis.getMotorAxis().getID());
-    	else
-    		logger.debug("set axis to: null");
-    		
-    	removeListeners();
-    	
-    	this.currentAxis = axis;
-    	
+	public void setCurrentAxis(final Axis axis, final double stepcount) {
+		
+		if(axis != null)
+			logger.debug("set axis to: " + axis.getMotorAxis().getID());
+		else
+			logger.debug("set axis to: null");
+		
+		removeListeners();
+		
+		this.currentAxis = axis;
+		
 		if(this.currentAxis != null) {
 			
 			if(this.currentAxis.getMotorAxis().getGoto().isDiscrete()) {
@@ -364,9 +363,8 @@ public class MotorAxisStartStopStepwidthComposite extends Composite {
 				this.mainAxisCheckBox.setEnabled(true);
 			}
 			checkForErrors();
+			addListeners();
 		}
-		
-		addListeners();
 	}
 	
     /*

@@ -1,17 +1,17 @@
 package de.ptb.epics.eve.editor.views.motoraxisview;
 
-import java.util.Iterator;
-
+import org.apache.log4j.Logger;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
@@ -19,20 +19,33 @@ import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 
 /**
- * <code>MotorAxisPositionlistComposite</code> is a composite to input a list
- * of positions for the motor axis.
+ * <code>MotorAxisPositionlistComposite</code> is a 
+ * {@link org.eclipse.swt.widgets.Composite} contained in the 
+ * <code>MotorAxisView</code>. It allows entering position lists for 
+ * motor axes using a position list as step function.
  * 
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
 public class MotorAxisPositionlistComposite extends Composite {
 	
+	private static Logger logger = 
+			Logger.getLogger(MotorAxisPositionlistComposite.class.getName());
+	
+	// position list Label
 	private Label positionlistLabel;
+	private ControlDecoration positionlistLabelDecoration;
+	
+	// position list Text
 	private Text positionlistText;
 	private PositionlistTextModifyListener positionlistTextModifyListener;
-	private Label positionlistErrorLabel;
-	private Label amountLabel;
-	private Label amountLabelCount;
+	private ControlDecoration positionlistTextDecoration;
+	
+	// position count Label
+	private Label positionCountLabel;
+	
+	private Image infoImage;
+	private Image errorImage;
 	
 	private Axis axis;
 	
@@ -49,24 +62,30 @@ public class MotorAxisPositionlistComposite extends Composite {
 										  final int style, 
 										  MotorAxisView parentView) {
 		super(parent, style);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		this.setLayout(gridLayout);
 		
 		motorAxisView = parentView;
 		
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 2;
-		this.setLayout(gridLayout);
+		this.infoImage = FieldDecorationRegistry.getDefault().getFieldDecoration(
+				FieldDecorationRegistry.DEC_INFORMATION).getImage();
+		this.errorImage = FieldDecorationRegistry.getDefault().getFieldDecoration(
+				FieldDecorationRegistry.DEC_ERROR).getImage();
 		
+		// position list Label
 		this.positionlistLabel = new Label(this, SWT.NONE);
-		this.positionlistLabel.setText("Positionlist:   ( Sign between positions is ; )");
-		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalAlignment = GridData.FILL;
-		this.positionlistLabel.setLayoutData(gridData);
+		this.positionlistLabel.setText("Positionlist:");
+		this.positionlistLabelDecoration = new ControlDecoration(
+				positionlistLabel, SWT.TOP | SWT.RIGHT);
+		this.positionlistLabelDecoration.setImage(infoImage);
+		this.positionlistLabelDecoration.setDescriptionText(
+				"use ; (semicolon) as delimiter");
+		this.positionlistLabelDecoration.show();
 		
-		this.positionlistErrorLabel = new Label(this, SWT.NONE);
-		
+		// position list Text field 
 		this.positionlistText = new Text(this, SWT.BORDER | SWT.V_SCROLL);
-		gridData = new GridData();
+		GridData gridData = new GridData();
 		gridData.horizontalSpan = 2;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
@@ -75,89 +94,91 @@ public class MotorAxisPositionlistComposite extends Composite {
 		this.positionlistText.setLayoutData(gridData);
 		this.positionlistTextModifyListener = new PositionlistTextModifyListener();
 		this.positionlistText.addModifyListener(positionlistTextModifyListener);
+		this.positionlistTextDecoration = new ControlDecoration(
+				positionlistText, SWT.TOP | SWT.RIGHT);
 		
-		this.amountLabel = new Label(this, SWT.NONE);
-		this.amountLabel.setText("Amount of positions:");
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		this.amountLabel.setLayoutData(gridData);
-		
-		this.amountLabelCount = new Label(this, SWT.BORDER);
-		this.amountLabelCount.setText("?");
-		gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalAlignment = GridData.FILL;
-		this.amountLabelCount.setLayoutData(gridData);
-
-		this.positionlistLabel.setEnabled(false);
-	}
+		// position count label
+		this.positionCountLabel = new Label(this, SWT.NONE);
+		this.positionCountLabel.setText("0 positions");
+	} // end of: Constructor
 
 	/**
-	 * calculate the height to see all entries of this composite
+	 * Calculates the height to see all entries of this composite
+	 * 
 	 * @return the needed height of Composite to see all entries
 	 */
 	public int getTargetHeight() {
-		return (amountLabel.getBounds().y + amountLabel.getBounds().height + 5);
+		return (positionCountLabel.getBounds().y + 
+				positionCountLabel.getBounds().height + 5);
 	}
 
 	/**
-	 * calculate the width to see all entries of this composite
+	 * Calculates the width to see all entries of this composite
+	 * 
 	 * @return the needed width of Composite to see all entries
 	 */
 	public int getTargetWidth() {
-		return (amountLabel.getBounds().x + amountLabel.getBounds().width + 5);
+		return (positionCountLabel.getBounds().x + 
+				positionCountLabel.getBounds().width + 5);
 	}
 
 	/**
 	 * Sets the {@link de.ptb.epics.eve.data.scandescription.Axis}.
 	 * 
-	 * @param axis the the {@link de.ptb.epics.eve.data.scandescription.Axis}
+	 * @param axis the {@link de.ptb.epics.eve.data.scandescription.Axis}
 	 * 		  that should be set
 	 */
 	public void setAxis(final Axis axis) {
-		
 		removeListeners();
 		
 		this.axis = axis;
 		
 		if(this.axis != null) {
 			if(this.axis.getPositionlist() != null) { 
-				this.positionlistText.setText(axis.getPositionlist()); 
-				this.amountLabelCount.setText(Integer.toString(
-					       this.positionlistText.getText().split(";").length));
+				this.positionlistText.setText(axis.getPositionlist());
+				countPositions();
 			}
-			
 			checkForErrors();
-			
-			this.positionlistLabel.setEnabled(true);
 		} else {
 			this.positionlistText.setText("");
-			this.positionlistLabel.setEnabled(false);
 		}
-		
 		addListeners();
 	}
 	
 	/*
 	 * 
 	 */
-	private void checkForErrors()
-	{
-		this.positionlistErrorLabel.setImage(null);
-		this.positionlistErrorLabel.setToolTipText("");
+	private void countPositions() {
+		if(positionlistText.getText().isEmpty()) {
+			this.positionCountLabel.setText("0 positions");
+		} else {
+			int count = positionlistText.getText().split(";").length;
+			if(count == 1) {
+				this.positionCountLabel.setText("1 position");
+				logger.debug("1 position");
+			} else {
+				this.positionCountLabel.setText(count + " positions");
+				if(logger.isDebugEnabled()) {
+					logger.debug(count + " positions");
+				}
+			}
+		}
+	}
+	
+	/*
+	 * 
+	 */
+	private void checkForErrors() {
+		this.positionlistTextDecoration.hide();
 		
-		final Iterator<IModelError> it = this.axis.getModelErrors().iterator();
-		
-		while(it.hasNext()) {
-			final IModelError modelError = it.next();
-			if(modelError instanceof AxisError) {
-				final AxisError axisError = (AxisError)modelError;
+		for(IModelError error : this.axis.getModelErrors()) {
+			if(error instanceof AxisError) {
+				final AxisError axisError = (AxisError)error;
 				if(axisError.getErrorType() == AxisErrorTypes.POSITIONLIST_NOT_SET) {
-					this.positionlistErrorLabel.setImage(PlatformUI.
-							getWorkbench().getSharedImages().getImage(
-							ISharedImages.IMG_OBJS_ERROR_TSK));
-					this.positionlistErrorLabel.setToolTipText("Positionlist has no position!");
-					this.positionlistErrorLabel.getParent().layout();
+					this.positionlistTextDecoration.setImage(errorImage);
+					this.positionlistTextDecoration.setDescriptionText(
+							"Please provide at least one position!");
+					this.positionlistTextDecoration.show();
 					break;
 				}
 			}
@@ -167,47 +188,40 @@ public class MotorAxisPositionlistComposite extends Composite {
 	/*
 	 * 
 	 */
-	private void addListeners()
-	{
+	private void addListeners() {
 		positionlistText.addModifyListener(positionlistTextModifyListener);
 	}
 	
 	/*
 	 * 
 	 */
-	private void removeListeners()
-	{
+	private void removeListeners() {
 		positionlistText.removeModifyListener(positionlistTextModifyListener);
 	}
 	
-	///////////////////////////////////////////////////////////
-	// Hier kommen jetzt die verschiedenen Listener Klassen
-	///////////////////////////////////////////////////////////
+	/* ********************************************************************* */
+	/* ************************** Listeners ******************************** */
+	/* ********************************************************************* */
+	
 	/**
-	 * <code>ModifyListener</code> of PositionlistInput Text from
-	 * <code>MotorAxisPositionlistComposite</code>
+	 * {@link org.eclipse.swt.events.ModifyListener} of 
+	 * <code>positionlistText</code>.
 	 */
-	class PositionlistTextModifyListener implements ModifyListener {
-
+	private class PositionlistTextModifyListener implements ModifyListener {
+		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void modifyText(ModifyEvent e) {
 			motorAxisView.suspendModelUpdateListener();
-
+			
 			if(axis != null) {
 				axis.setPositionlist(positionlistText.getText());
-
-				if (positionlistText.getText().equals("")) {
-					amountLabelCount.setText("0");
-				} else {
-					amountLabelCount.setText(Integer.toString(
-						       positionlistText.getText().split(";").length));
-				}	
+				countPositions();
 			}
 			checkForErrors();
 			motorAxisView.resumeModelUpdateListener();
-		}	
+		}
 	}
 }
