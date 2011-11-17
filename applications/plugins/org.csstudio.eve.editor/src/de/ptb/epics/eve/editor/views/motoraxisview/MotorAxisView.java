@@ -1,5 +1,8 @@
 package de.ptb.epics.eve.editor.views.motoraxisview;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -76,15 +79,16 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 	private PositionModeComboSelectionListener positionModeComboSelectionListener;
 	
 	private Composite emptyComposite;
-	private MotorAxisStartStopStepwidthComposite motorAxisStartStopStepwidthComposite;
-	private MotorAxisFileComposite motorAxisFileComposite;
-	private MotorAxisPluginComposite motorAxisPluginComposite;
-	private MotorAxisPositionlistComposite motorAxisPositionlistComposite;
+	private StartStopStepwidthComposite startStopStepwidthComposite;
+	private DateTimeComposite dateTimeComposite;
+	private FileComposite fileComposite;
+	private PluginComposite pluginComposite;
+	private PositionlistComposite positionlistComposite;
 	
 	private SashForm sashForm;
 	
-	private double stepcount;
 	private String[] stepfunctions;
+	private List<String> discreteStepfunctions;
 	
 	/**
 	 * {@inheritDoc}
@@ -123,6 +127,13 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 		// step function elements
 		this.stepfunctions = Activator.getDefault().getMeasuringStation().
 				getSelections().getStepfunctions();
+		
+		this.discreteStepfunctions = new LinkedList<String>();
+		for(String s : this.stepfunctions) {
+			if(!(s.equals("Add") || s.equals("Multiply") || s.equals("Plugin"))) {
+				this.discreteStepfunctions.add(s);
+			}
+		}
 		
 		this.stepfunctionLabel = new Label(this.top, SWT.NONE);
 		this.stepfunctionLabel.setText("Step function: ");
@@ -183,78 +194,58 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 		sashForm.setLayoutData(gridData);
 		
 		this.emptyComposite = new Composite(sashForm, SWT.NONE);
-		this.motorAxisStartStopStepwidthComposite = 
-				new MotorAxisStartStopStepwidthComposite(sashForm, SWT.NONE, this);
-		this.motorAxisFileComposite = 
-				new MotorAxisFileComposite(sashForm, SWT.NONE, this);
-		this.motorAxisPluginComposite = 
-				new MotorAxisPluginComposite(sashForm, SWT.NONE, this);
-		this.motorAxisPositionlistComposite = 
-				new MotorAxisPositionlistComposite(sashForm, SWT.NONE, this);
+		this.startStopStepwidthComposite = 
+				new StartStopStepwidthComposite(sashForm, SWT.NONE, this);
+		this.dateTimeComposite = new DateTimeComposite(sashForm, SWT.NONE, this);
+		this.fileComposite = 
+				new FileComposite(sashForm, SWT.NONE, this);
+		this.pluginComposite = 
+				new PluginComposite(sashForm, SWT.NONE, this);
+		this.positionlistComposite = 
+				new PositionlistComposite(sashForm, SWT.NONE, this);
 		
 		sashForm.setMaximizedControl(this.emptyComposite);
 		
 		// content not visible after creation of the view
 		top.setVisible(false);
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void setFocus() {
 	}
-
+	
 	/**
 	 * Sets the {@link de.ptb.epics.eve.data.scandescription.Axis}
 	 * (the underlying model whose contents is presented by this view).
 	 *  
 	 * @param axis the {@link de.ptb.epics.eve.data.scandescription.Axis} that 
 	 * 		  should be set
-	 * @param stepcount the step count (generally the step count of the axis, 
-	 * 		  except when a main axis is set which is then used instead)
 	 */
-	public void setCurrentAxis(final Axis axis, final double stepcount) {
-		
+	public void setCurrentAxis(final Axis axis) {
 		if(axis != null) {
 			logger.debug("axis set to: " + axis.getMotorAxis().getID());
 		} else {
 			logger.debug("axis set to: null");
 		}
-		
 		// if a current axis is set, stop listening to it
 		if(this.currentAxis != null) {
 			this.currentAxis.removeModelUpdateListener(this);
 		}
 		// set the new axis as current axis
 		this.currentAxis = axis;
-		this.stepcount = stepcount;
+		this.scanModule = null;
 		
 		if(this.currentAxis != null) {
+			this.scanModule = axis.getScanModule();
 			// current axis not null -> listen to updates on it
 			this.currentAxis.addModelUpdateListener(this);
-		} 
-		
+		}
 		// update elements (calls the inherited method from the UpdateListener 
 		// with argument null indicating an internal call)
 		updateEvent(null);
-	}
-	
-	/**
-	 * Sets the {@link de.ptb.epics.eve.data.scandescription.Axis}. Has to be 
-	 * used instead of {@link #setCurrentAxis(Axis, double)} if ...
-	 * 
-	 * @param axis the {@link de.ptb.epics.eve.data.scandescription.Axis} that 
-	 * 	      should be set
-	 * @param stepamount the step amount 
-	 * @param scanModule the 
-	 * 		  {@link de.ptb.epics.eve.data.scandescription.ScanModule} (to get 
-	 * 		  available plug ins)
-	 */
-	public void setCurrentAxis(final Axis axis, final double stepamount, 
-							   final ScanModule scanModule) {
-		this.scanModule = scanModule;
-		setCurrentAxis(axis, stepamount);
 	}
 	
 	/*
@@ -269,30 +260,36 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 		
 		if (currentAxis.getStepfunctionString().equals("Add") ||
 			currentAxis.getStepfunctionString().equals("Multiply")) {
+				// use code block in future implementations that use the 
+				// DateTimeComposite...
+				/*if(currentAxis.getMotorAxis().getPosition().getType().equals(
+						de.ptb.epics.eve.data.DataTypes.DATETIME)) {
+					this.sashForm.setMaximizedControl(dateTimeComposite);
+				} else {*/
 				this.sashForm.setMaximizedControl(
-						motorAxisStartStopStepwidthComposite);
-				this.motorAxisStartStopStepwidthComposite.setCurrentAxis(
-						currentAxis, stepcount);
-				targetWidth = motorAxisStartStopStepwidthComposite.
+						startStopStepwidthComposite);
+				this.startStopStepwidthComposite.setCurrentAxis(currentAxis);
+				targetWidth = startStopStepwidthComposite.
 						getTargetWidth() + sashX;
-				targetHeight = motorAxisStartStopStepwidthComposite.
+				targetHeight = startStopStepwidthComposite.
 						getTargetHeight() + sashY;
+				/*}*/
 		} else if(currentAxis.getStepfunctionString().equals("File")) {
-			this.sashForm.setMaximizedControl(motorAxisFileComposite);
-			this.motorAxisFileComposite.setAxis(currentAxis);
-			targetWidth = motorAxisFileComposite.getTargetWidth() + sashX;
-			targetHeight = motorAxisFileComposite.getTargetHeight() + sashY;
+			this.sashForm.setMaximizedControl(fileComposite);
+			this.fileComposite.setAxis(currentAxis);
+			targetWidth = fileComposite.getTargetWidth() + sashX;
+			targetHeight = fileComposite.getTargetHeight() + sashY;
 		} else if(currentAxis.getStepfunctionString().equals("Plugin")) {
-			this.sashForm.setMaximizedControl(motorAxisPluginComposite);
-			this.motorAxisPluginComposite.setAxis(currentAxis, scanModule);
-			targetWidth = motorAxisPluginComposite.getTargetWidth() + sashX;
-			targetHeight = motorAxisPluginComposite.getTargetHeight() + sashY;
+			this.sashForm.setMaximizedControl(pluginComposite);
+			this.pluginComposite.setAxis(currentAxis, scanModule);
+			targetWidth = pluginComposite.getTargetWidth() + sashX;
+			targetHeight = pluginComposite.getTargetHeight() + sashY;
 		} else if(currentAxis.getStepfunctionString().equals("Positionlist")) {
-			this.sashForm.setMaximizedControl(motorAxisPositionlistComposite);
-			this.motorAxisPositionlistComposite.setAxis(currentAxis);
-			targetWidth = motorAxisPositionlistComposite.getTargetWidth() 
+			this.sashForm.setMaximizedControl(positionlistComposite);
+			this.positionlistComposite.setAxis(currentAxis);
+			targetWidth = positionlistComposite.getTargetWidth() 
 							+ sashX;
-			targetHeight = motorAxisPositionlistComposite.getTargetHeight() 
+			targetHeight = positionlistComposite.getTargetHeight() 
 							+ sashY;
 		} else {
 			this.sashForm.setMaximizedControl(emptyComposite);
@@ -316,18 +313,29 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 		removeListeners();
 		
 		if(this.currentAxis != null) {
-			this.setPartName(this.currentAxis.getMotorAxis().getFullIdentifyer());
-			this.stepFunctionCombo.setText(this.currentAxis.getStepfunctionString());
+			this.setPartName(
+					this.currentAxis.getMotorAxis().getFullIdentifyer());
 			this.positionModeCombo.setText(PositionMode.typeToString(
 					this.currentAxis.getPositionMode()));
-			
+			if(this.currentAxis.getMotorAxis().getGoto().isDiscrete()) {
+				this.stepFunctionCombo.setItems(
+						this.discreteStepfunctions.toArray(new String[0]));
+				this.positionModeLabel.setVisible(false);
+				this.positionModeCombo.setVisible(false);
+			} else {
+				this.stepFunctionCombo.setItems(stepfunctions);
+				this.positionModeLabel.setVisible(true);
+				this.positionModeCombo.setVisible(true);
+			}
+			this.stepFunctionCombo.setText(
+					this.currentAxis.getStepfunctionString());
 			this.stepFunctionCombo.setEnabled(true);
 			this.positionModeCombo.setEnabled(true);
 			
-			/* this.motorAxisStartStopStepwidthComposite.setCurrentAxis(null, 0);
-			this.motorAxisFileComposite.setAxis(null);
-			this.motorAxisPluginComposite.setAxis(null, null);
-			this.motorAxisPositionlistComposite.setAxis(null); */
+			this.startStopStepwidthComposite.setCurrentAxis(null);
+			this.fileComposite.setAxis(null);
+			this.pluginComposite.setAxis(null, null);
+			this.positionlistComposite.setAxis(null);
 			
 			setComposite();
 			

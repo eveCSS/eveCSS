@@ -30,6 +30,7 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView;
 
 /**
@@ -142,35 +143,14 @@ public class MotorAxisComposite extends Composite {
 	 * 		  that should be set
 	 */
 	public void setMotorAxisView(Axis motorAxis) {
-		
 		// try to find the motor axis view
 		IViewPart motorAxisView = PlatformUI.getWorkbench()
-											.getActiveWorkbenchWindow().
-		  									 getActivePage().
-		  									 findView(MotorAxisView.ID);
-		
-		if(motorAxisView != null)
-		{
+											.getActiveWorkbenchWindow()
+											.getActivePage()
+											.findView(MotorAxisView.ID);
+		if(motorAxisView != null) {
 			// view found -> tell it about the current motor axis
-			
-			if(motorAxis != null)
-			{
-				// the step amount will be adjusted if one of the axes is defined 
-				// as main axis
-				Axis[] axis = scanModule.getAxes();
-				double stepamount = -1.0;
-				for(int j = 0; j < axis.length; ++j) {
-					if(axis[j].isMainAxis()) {
-						stepamount = axis[j].getStepCount();
-						break;
-					}
-				}
-			
-				((MotorAxisView)motorAxisView).setCurrentAxis(
-						motorAxis, stepamount, scanModule);
-			} else {
-				((MotorAxisView)motorAxisView).setCurrentAxis(null, -1);
-			}
+			((MotorAxisView)motorAxisView).setCurrentAxis(motorAxis);
 		}
 	}
 	
@@ -358,7 +338,7 @@ public class MotorAxisComposite extends Composite {
 									currentClassMenu.add(setAxisAction);
 								}
 							}
-						}					
+						}
 					} else if(device instanceof MotorAxis) {
 						final SetAxisAction setAxisAction = 
 							new SetAxisAction((MotorAxis)device);
@@ -454,7 +434,16 @@ public class MotorAxisComposite extends Composite {
 			if (ma.getName().equals("TimerInt")) {
 				a.setPositionMode(PositionMode.RELATIVE);
 			}
-
+			if(a.getMotorAxis().getGoto().isDiscrete()) {
+				a.setStepfunction(Stepfunctions.stepfunctionToString(
+						Stepfunctions.POSITIONLIST));
+				StringBuffer sb = new StringBuffer();
+				for(String s : a.getMotorAxis().getGoto().getDiscreteValues()) {
+					sb.append(s + ",");
+				}
+				a.setPositionlist(sb.substring(0, sb.length() - 1));
+			}
+			
 			setMotorAxisView(a);
 			// if only one axis available, set this axis for the Plot
 			setPlotMotorAxis();

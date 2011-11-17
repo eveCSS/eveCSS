@@ -1,9 +1,13 @@
 package de.ptb.epics.eve.data.scandescription;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
@@ -14,24 +18,25 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateList
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
 /**
- * This class describes a behavior of an axis during a main phase of a
- * Scan Modul.
+ * This class describes the behavior of an axis during the main phase of a
+ * scan module.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
  * @author Hartmut Scherr
  */
 public class Axis extends AbstractMainPhaseBehavior {
-
 	
-	/*
-	 * The step function of this axis
-	 */
+	// logging
+	private static Logger logger = Logger.getLogger(Axis.class.getName());
+	
+	// delegated observable
+	private PropertyChangeSupport propertyChangeSupport;
+	
+	// The step function of this axis
 	private Stepfunctions stepfunction;
 
-	/*
-	 * the file path of the position file
-	 */
+	// the file path of the position file
 	private String positionfile;
 	
 	/*
@@ -52,34 +57,22 @@ public class Axis extends AbstractMainPhaseBehavior {
 	 */
 	private String stepwidth;
 	
-	/*
-	 * the step count
-	 */
+	// the step count
 	private double stepcount;
 	
-	/*
-	 * default position mode is absolute
-	 */
+	// default position mode is absolute
 	private PositionMode positionMode = PositionMode.ABSOLUTE;
 	
-	/*
-	 * the position list
-	 */
+	// the position list (position values divided by semicolon)
 	private String positionlist;
 	
-	/*
-	 * indicates whether the axis is the main axis of the scan module
-	 */
+	// indicates whether the axis is the main axis of the scan module
 	private boolean isMainAxis = false;
 	
-	/*
-	 * the scan module the axis corresponds to
-	 */
+	/// the scan module the axis corresponds to
 	private ScanModule scanModule;
 	
-	/*
-	 * the plug in controller
-	 */
+	// the plug in controller
 	private PluginController positionPluginController;
 	
 	/**
@@ -94,6 +87,7 @@ public class Axis extends AbstractMainPhaseBehavior {
 					"The parameter 'scanModule' must not be null!");
 		}
 		this.scanModule = scanModule;
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 	
 	/**
@@ -280,7 +274,8 @@ public class Axis extends AbstractMainPhaseBehavior {
 	 * @param stepcount the step count that should be set
 	 */
 	public void setStepCount(final double stepcount) {
-		this.stepcount = stepcount;
+		propertyChangeSupport.firePropertyChange(
+				"stepcount", this.stepcount, this.stepcount = stepcount);
 		updateListeners();
 	}
 	
@@ -320,7 +315,8 @@ public class Axis extends AbstractMainPhaseBehavior {
 	 * 		  <code>false</code> otherwise
 	 */
 	public void setMainAxis(final boolean isMainAxis) {
-		this.isMainAxis = isMainAxis;
+		this.propertyChangeSupport.firePropertyChange(
+				"mainAxis", this.isMainAxis, this.isMainAxis = isMainAxis);
 		updateListeners();
 	}
 
@@ -457,5 +453,96 @@ public class Axis extends AbstractMainPhaseBehavior {
 		while(it.hasNext()) {
 			it.next().updateEvent(new ModelUpdateEvent(this, null));
 		}
-	}	
+	}
+	
+	/**
+	 * Adjusts the stepwidth according to the stepcount of the given axis, 
+	 * which is the main axis.
+	 * 
+	 * @param mainAxis the main axis
+	 */
+	public void adjustStepwidth(Axis mainAxis) {
+		if(logger.isDebugEnabled()) {
+			logger.debug("Adjusting stepwidth of '" + 
+						this.getMotorAxis().getName() + "'");
+			logger.debug("Stepcount: " + this.getStepCount() + " -> " + 
+						mainAxis.getStepCount());
+		}
+		if (!(this.stepfunction.equals(Stepfunctions.ADD) ||
+			this.stepfunction.equals(Stepfunctions.MULTIPLY))) {
+				return;
+		}
+		this.stepcount = mainAxis.stepcount;
+		String oldStepwidth = this.stepwidth;
+
+		if(this.getMotorAxis().getGoto().isDiscrete()) {
+			List<String> values = 
+					this.getMotorAxis().getGoto().getDiscreteValues();
+			int sStart = values.indexOf(this.start);
+			int sStop = values.indexOf(this.start);
+			try {
+				int sStepwidth = (int)((sStop - sStart) / this.stepcount);
+				this.stepwidth = Integer.toString(sStepwidth);
+			} catch (ArithmeticException e) {
+				// division by zero
+				this.stepwidth = "0";
+				return;
+			}
+		} else {
+			switch(this.getMotorAxis().getPosition().getType()) {
+				case DATETIME: 
+					// TODO
+					break;
+				case INT:
+					int iStart = Integer.parseInt(this.start);
+					int iStop = Integer.parseInt(this.stop);
+					try {
+						this.stepwidth = Integer.toString(
+								(int)((iStop - iStart) / this.stepcount)); 
+					} catch(ArithmeticException e) {
+						// division by zero
+						this.stepwidth = "0";
+						return;
+					}
+					break;
+				case DOUBLE: 
+					double dStart = Double.parseDouble(this.start);
+					double dStop = Double.parseDouble(this.stop);
+					try {
+						this.stepwidth = Double.toString(
+								(dStop - dStart) / this.stepcount);
+					} catch(ArithmeticException e) {
+						// division by zero
+						this.stepwidth = "0";
+						return;
+					}
+					break;
+			}
+		}
+		if(logger.isDebugEnabled()) {
+			logger.debug("Stepwidth: " + oldStepwidth + " -> " + this.stepwidth);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param propertyName
+	 * @param listener
+	 */
+	public void addPropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		this.propertyChangeSupport.addPropertyChangeListener(
+				propertyName, listener);
+	}
+	
+	/**
+	 * 
+	 * @param propertyName
+	 * @param listener
+	 */
+	public void removePropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		this.propertyChangeSupport.removePropertyChangeListener(
+				propertyName, listener);
+	}
 }

@@ -27,10 +27,10 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelError;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class MotorAxisPositionlistComposite extends Composite {
+public class PositionlistComposite extends Composite {
 	
 	private static Logger logger = 
-			Logger.getLogger(MotorAxisPositionlistComposite.class.getName());
+			Logger.getLogger(PositionlistComposite.class.getName());
 	
 	// position list Label
 	private Label positionlistLabel;
@@ -58,12 +58,13 @@ public class MotorAxisPositionlistComposite extends Composite {
 	 * @param style the style
 	 * @param parentView the view the composite is contained in
 	 */
-	public MotorAxisPositionlistComposite(final Composite parent, 
+	public PositionlistComposite(final Composite parent, 
 										  final int style, 
 										  MotorAxisView parentView) {
 		super(parent, style);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
+		gridLayout.marginRight = 12;
 		this.setLayout(gridLayout);
 		
 		motorAxisView = parentView;
@@ -80,7 +81,7 @@ public class MotorAxisPositionlistComposite extends Composite {
 				positionlistLabel, SWT.TOP | SWT.RIGHT);
 		this.positionlistLabelDecoration.setImage(infoImage);
 		this.positionlistLabelDecoration.setDescriptionText(
-				"use ; (semicolon) as delimiter");
+				"use , (comma) as delimiter");
 		this.positionlistLabelDecoration.show();
 		
 		// position list Text field 
@@ -141,9 +142,11 @@ public class MotorAxisPositionlistComposite extends Composite {
 			checkForErrors();
 		} else {
 			this.positionlistText.setText("");
+			this.positionCountLabel.setText("0 positions");
 		}
 		addListeners();
 	}
+
 	
 	/*
 	 * 
@@ -152,7 +155,7 @@ public class MotorAxisPositionlistComposite extends Composite {
 		if(positionlistText.getText().isEmpty()) {
 			this.positionCountLabel.setText("0 positions");
 		} else {
-			int count = positionlistText.getText().split(";").length;
+			int count = positionlistText.getText().split(",").length;
 			if(count == 1) {
 				this.positionCountLabel.setText("1 position");
 				logger.debug("1 position");
@@ -163,6 +166,7 @@ public class MotorAxisPositionlistComposite extends Composite {
 				}
 			}
 		}
+		this.positionCountLabel.getParent().layout();
 	}
 	
 	/*

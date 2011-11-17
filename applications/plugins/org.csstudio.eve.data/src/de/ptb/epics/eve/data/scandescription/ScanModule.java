@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.data.scandescription;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,7 +27,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author Marcus Michalsky
  */
 public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, 
-														IModelErrorProvider {
+														IModelErrorProvider, 
+														PropertyChangeListener {
 	
 	private static Logger logger = Logger.getLogger(ScanModule.class.getName());
 	
@@ -275,7 +278,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public void add(final Axis axis) {
 		axis.addModelUpdateListener(this);
-		this.axes.add(axis);	
+		axis.addPropertyChangeListener("mainAxis", this);
+		axis.addPropertyChangeListener("stepcount", this);
+		this.axes.add(axis);
 		updateListeners();
 	}
 	
@@ -412,6 +417,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		}
 		this.axes.remove( axis );
 		axis.removeModelUpdateListener( this );
+		axis.removePropertyChangeListener("mainAxis", this);
+		axis.removePropertyChangeListener("stepcount", this);
 		updateListeners();
 	}
 	
@@ -1040,6 +1047,29 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		
 		while(it.hasNext()) {
 			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		Axis source = (Axis)e.getSource();
+		if(logger.isDebugEnabled()) {
+			logger.debug("Property: '" + e.getPropertyName() + "' " + 
+						"of '" + source.getMotorAxis().getName() + 
+						"' changed from '" + e.getOldValue().toString() + 
+						"' to '" + e.getNewValue().toString() + "'");
+		}
+		if(!source.isMainAxis()) {
+			// continue only if main axis was checked, not if unchecked !
+			return;
+		}
+		for(Axis axis : this.getAxes()) {
+			if(!axis.equals(source)) {
+				axis.adjustStepwidth(source);
+			}
 		}
 	}
 }

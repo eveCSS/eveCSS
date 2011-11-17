@@ -1,7 +1,6 @@
 package de.ptb.epics.eve.editor.views.motoraxisview;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -33,18 +32,19 @@ import de.ptb.epics.eve.editor.Activator;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class MotorAxisPluginComposite extends Composite {
+public class PluginComposite extends Composite {
 	
 	// logging 
 	private static Logger logger = 
-		Logger.getLogger(MotorAxisPluginComposite.class.getName());
+		Logger.getLogger(PluginComposite.class.getName());
 	
 	private Label pluginLabel;
 	private Combo pluginCombo;
 	private PluginComboSelectionListener pluginComboSelectionListener;
 	private Label pluginErrorLabel;
-	private Label parameterLabel;
 	private PluginControllerComposite pluginControllerComposite;
+	
+	
 	private Axis axis;
 	private ScanModule scanModule;
 	
@@ -57,7 +57,7 @@ public class MotorAxisPluginComposite extends Composite {
 	 * @param style the style
 	 * @param parentView the view the composite is contained in
 	 */
-	public MotorAxisPluginComposite(final Composite parent, final int style,
+	public PluginComposite(final Composite parent, final int style,
 									final MotorAxisView parentView) {
 		super(parent, style);
 				
@@ -81,7 +81,7 @@ public class MotorAxisPluginComposite extends Composite {
 				pluginNames.add(plugins[i].getName());
 			}
 		}
-		this.pluginCombo.setItems(pluginNames.toArray( new String[0]));
+		this.pluginCombo.setItems(pluginNames.toArray(new String[0]));
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
@@ -94,15 +94,8 @@ public class MotorAxisPluginComposite extends Composite {
 							  getSharedImages().getImage(
 							  ISharedImages.IMG_OBJS_ERROR_TSK));
 		
-		this.parameterLabel = new Label(this, SWT.NONE);
-		this.parameterLabel.setText("Parameter:");
-		gridData = new GridData();
-		gridData.horizontalSpan = 3;
-		gridData.horizontalAlignment = GridData.FILL;
-		this.parameterLabel.setLayoutData(gridData);
-		
 		this.pluginControllerComposite = 
-				new PluginControllerComposite(this, SWT.None, motorAxisView);
+				new PluginControllerComposite(this, SWT.NONE, motorAxisView);
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		gridData.horizontalAlignment = GridData.FILL;
@@ -168,7 +161,6 @@ public class MotorAxisPluginComposite extends Composite {
 			this.pluginCombo.setEnabled(false);
 			this.pluginControllerComposite.setEnabled(false);
 		}
-		
 		addListeners();
 	}
 	
@@ -180,13 +172,10 @@ public class MotorAxisPluginComposite extends Composite {
 		this.pluginErrorLabel.setImage(null);
 		this.pluginErrorLabel.setToolTipText("");
 		
-		final Iterator<IModelError> it = this.axis.getModelErrors().iterator();
-
-		while(it.hasNext()) {
-			final IModelError modelError = it.next();
-			if(modelError instanceof AxisError) {
-				final AxisError axisError = (AxisError)modelError;
-
+		for(IModelError error : axis.getModelErrors()) {
+			if(error instanceof AxisError) {
+				final AxisError axisError = (AxisError)error;
+				
 				switch(axisError.getErrorType()) {
 					case PLUGIN_NOT_SET:
 						this.pluginErrorLabel.setImage(PlatformUI.
@@ -203,7 +192,6 @@ public class MotorAxisPluginComposite extends Composite {
 						this.pluginErrorLabel.getParent().layout();
 						break;
 				}
-				
 			}
 		}
 	}
@@ -211,26 +199,24 @@ public class MotorAxisPluginComposite extends Composite {
 	/*
 	 * 
 	 */
-	private void addListeners()
-	{
+	private void addListeners() {
 		pluginCombo.addSelectionListener(pluginComboSelectionListener);
 	}
 	
 	/*
 	 * 
 	 */
-	private void removeListeners()
-	{
+	private void removeListeners() {
 		pluginCombo.removeSelectionListener(pluginComboSelectionListener);
 	}
 	
-	///////////////////////////////////////////////////////////
-	// Hier kommen jetzt die verschiedenen Listener Klassen
-	///////////////////////////////////////////////////////////
+	/* ********************************************************************* */
+	/* **************************** Listeners ****************************** */
+	/* ********************************************************************* */
 
 	/**
-	 * <code>ModifyListener</code> of PluginCombo from
-	 * <code>MotorAxisPluginComposite</code>
+	 * {@link org.eclipse.swt.events.SelectionListener}<code> of 
+	 * <code>pluginCombo</code>.
 	 */
 	class PluginComboSelectionListener implements SelectionListener {
 
@@ -238,7 +224,7 @@ public class MotorAxisPluginComposite extends Composite {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {	
+		public void widgetDefaultSelected(SelectionEvent e) {
 		}
 		
 		/**
@@ -273,9 +259,8 @@ public class MotorAxisPluginComposite extends Composite {
 							axis.getPositionPluginController());
 					pluginControllerComposite.setScanModule(scanModule);
 			}
-			
 			checkForErrors();
 			motorAxisView.resumeModelUpdateListener();
 		}
-	}	
+	}
 }

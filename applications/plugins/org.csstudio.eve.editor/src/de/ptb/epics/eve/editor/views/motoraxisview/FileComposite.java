@@ -31,7 +31,7 @@ import de.ptb.epics.eve.editor.Activator;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class MotorAxisFileComposite extends Composite {
+public class FileComposite extends Composite {
 
 	private Label filenameLabel;
 	
@@ -56,7 +56,7 @@ public class MotorAxisFileComposite extends Composite {
 	 * @param style the style
 	 * @param parentView the view the composite is contained in
 	 */
-	public MotorAxisFileComposite(Composite parent, int style, MotorAxisView parentView) {
+	public FileComposite(Composite parent, int style, MotorAxisView parentView) {
 		super(parent, style);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
