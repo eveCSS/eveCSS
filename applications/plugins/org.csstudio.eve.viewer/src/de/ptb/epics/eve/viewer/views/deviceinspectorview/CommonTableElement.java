@@ -535,7 +535,7 @@ public class CommonTableElement {
 	 * Tweaks the device in the given direction with the amount of the tweak 
 	 * value.
 	 * 
-	 * @precondition Depending on the direction (<code>forward</code parameter) 
+	 * @precondition Depending on the direction (<code>forward</code> parameter) 
 	 * 				either the tweak forward process variable or the tweak 
 	 * 				reverse process variable must exist (usually the case for 
 	 * 				motor axes)
