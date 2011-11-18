@@ -228,6 +228,11 @@ public final class DevicesView extends ViewPart {
 	 * checks which of the filters are selected and sets them in the tree viewer
 	 */
 	private void setTreeFilters() {
+		if(this.getPartName().equals("Devices")) {
+			// do not filter the tree contained in the Devices View
+			// (EveEngine Perspective)
+			return;
+		}
 		List<ViewerFilter> filters = new LinkedList<ViewerFilter>();
 		if(motorsAxesToggleState) {
 			filters.add(motorsAxesFilter);
@@ -241,6 +246,20 @@ public final class DevicesView extends ViewPart {
 		filters.add(new TreeViewerFilterClasses(motorsAxesToggleState, 
 				detectorsChannelsToggleState, devicesToggleState));
 		treeViewer.setFilters(filters.toArray(new ViewerFilter[0]));
+	}
+	
+	/**
+	 * @since 1.1
+	 */
+	public void expandAll() {
+		this.treeViewer.expandAll();
+	}
+	
+	/**
+	 * @since 1.1
+	 */
+	public void collapseAll() {
+		this.treeViewer.collapseAll();
 	}
 	
 	// ************************* DnD *****************************************

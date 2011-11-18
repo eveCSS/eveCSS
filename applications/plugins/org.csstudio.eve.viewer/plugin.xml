@@ -230,6 +230,16 @@
                id="org.eclipse.ui.commands.toggleState">
          </state>
       </command>
+      <command
+            defaultHandler="de.ptb.epics.eve.viewer.handler.devices.Expand"
+            id="de.ptb.epics.eve.viewer.devicesview.Expand"
+            name="Expand">
+      </command>
+      <command
+            defaultHandler="de.ptb.epics.eve.viewer.handler.devices.Collapse"
+            id="de.ptb.epics.eve.viewer.devicesview.Collapse"
+            name="Collapse">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -429,6 +439,20 @@
       <menuContribution
             locationURI="toolbar:LocalDevicesView">
          <command
+               commandId="de.ptb.epics.eve.viewer.devicesview.Expand"
+               icon="icons/expandall.gif"
+               label="Expand All"
+               style="push"
+               tooltip="Expand All">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.devicesview.Collapse"
+               icon="icons/collapseall.gif"
+               label="Collapse All"
+               style="push"
+               tooltip="Collapse All">
+         </command>
+         <command
                commandId="de.ptb.epics.eve.viewer.Filter"
                icon="icons/filter_tsk.gif"
                id="LocalDevicesViewFilter"
@@ -454,6 +478,23 @@
                icon="icons/devices.gif"
                label="Devices"
                style="toggle">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:DevicesView">
+         <command
+               commandId="de.ptb.epics.eve.viewer.devicesview.Expand"
+               icon="icons/expandall.gif"
+               label="Expand All"
+               style="push"
+               tooltip="Expand All">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.devicesview.Collapse"
+               icon="icons/collapseall.gif"
+               label="Collapse All"
+               style="push"
+               tooltip="Collapse All">
          </command>
       </menuContribution>
    </extension>

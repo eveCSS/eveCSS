@@ -165,6 +165,17 @@
       <menuContribution
             locationURI="toolbar:file">
          <command
+               commandId="org.eclipse.ui.file.saveAll"
+               icon="icons/saveall_edit.gif"
+               label="Save All"
+               style="push">
+            <visibleWhen>
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
                commandId="org.eclipse.ui.file.saveAs"
                icon="icons/saveas_edit.gif"
                label="Save &amp;As..."
@@ -174,12 +185,6 @@
                      definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
                </reference>
             </visibleWhen>
-         </command>
-         <command
-               commandId="org.eclipse.ui.file.saveAll"
-               icon="icons/saveall_edit.gif"
-               label="Save All"
-               style="push">
          </command>
       </menuContribution>
    </extension>
