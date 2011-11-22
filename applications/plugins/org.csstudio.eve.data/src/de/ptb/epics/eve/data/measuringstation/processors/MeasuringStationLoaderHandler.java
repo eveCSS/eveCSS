@@ -298,6 +298,10 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 					this.currentFunction = new Function();
 					this.state = MeasuringStationLoaderStates.MOTOR_AXIS_STATUS_LOADING;
 					this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
+				} else if(qName.equals("movedone")) {
+					this.currentFunction = new Function();
+					this.state = MeasuringStationLoaderStates.MOTOR_AXIS_MOVEDONE_LOADING;
+					this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 				} else if( qName.equals( "position" ) ) {
 					this.currentFunction = new Function();
 					this.state = MeasuringStationLoaderStates.MOTOR_AXIS_POSITION_LOADING;
@@ -910,6 +914,14 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			case MOTOR_AXIS_STATUS_LOADING:
 				if( qName.equals( "status" ) ) {
 					this.currentMotorAxis.setStatus( this.currentFunction );
+					this.subState = MeasuringStationLoaderSubStates.NONE;
+					this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
+				}
+				break;
+				
+			case MOTOR_AXIS_MOVEDONE_LOADING:
+				if(qName.equals("movedone")) {
+					this.currentMotorAxis.setMoveDone(this.currentFunction);
 					this.subState = MeasuringStationLoaderSubStates.NONE;
 					this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
 				}

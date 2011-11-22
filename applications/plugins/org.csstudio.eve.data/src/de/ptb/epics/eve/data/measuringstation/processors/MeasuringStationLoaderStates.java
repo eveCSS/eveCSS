@@ -298,6 +298,12 @@ public enum MeasuringStationLoaderStates {
 	MOTOR_AXIS_STATUS_LOADING,
 	
 	/**
+	 * The moveDone flag of the motor axis is loading. Processing is done in 
+	 * sub states.
+	 */
+	MOTOR_AXIS_MOVEDONE_LOADING,
+	
+	/**
 	 * The position of a motor axis is loading. Processing is done in sub 
 	 * states.
 	 */

@@ -17,6 +17,9 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	// the status
 	private Function status;
 	
+	// move done flag
+	private Function moveDone;
+	
 	// the goto of the motor axis
 	private Function gotoAdvisor;
 	
@@ -45,7 +48,7 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	 * Constructor.
 	 */
 	public MotorAxis() {
-		this(new Function(), null, new Function(), new Function());
+		this(new Function(), null, null, new Function(), new Function());
 	}
 	
 	/** 
@@ -59,6 +62,7 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	 * 			<code>null</code>
 	 */
 	public MotorAxis(final Function position, final Function status, 
+					  final Function moveDone,
 					  final Function gotoAdvisor, final Function stop) {
 		if(position == null) {
 			throw new IllegalArgumentException(
@@ -74,6 +78,7 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 		}
 		this.position = position;
 		this.status = status;
+		this.moveDone = moveDone;
 		this.gotoAdvisor = gotoAdvisor;
 		this.stop = stop;	
 	}
@@ -95,6 +100,17 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	 */
 	public Function getStatus() {
 		return this.status;
+	}
+	
+	/**
+	 * Returns the moveDone 
+	 * {@link de.ptb.epics.eve.data.measuringstation.Function}.
+	 * 
+	 * @return the moveDone 
+	 * 			{@link de.ptb.epics.eve.data.measuringstation.Function}
+	 */
+	public Function getMoveDone() {
+		return this.moveDone;
 	}
 	
 	/**
@@ -176,6 +192,18 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 		this.status = status;
 	}
 
+	/**
+	 * Sets the moveDone 
+	 * {@link de.ptb.epics.eve.data.measuringstation.Function}.
+	 * 
+	 * @param moveDone the moveDone 
+	 * 			{@link de.ptb.epics.eve.data.measuringstation.Function}
+	 * 			that should be set
+	 */
+	public void setMoveDone(final Function moveDone) {
+		this.moveDone = moveDone;
+	}
+	
 	/**
 	 * Sets the stop <code>Function</code> of the motor axis.
 	 * 

@@ -34,6 +34,7 @@ public class CommonTableElement {
 	private CommonTableElementPV unitPv = null;
 	private CommonTableElementPV setPv = null;
 	private CommonTableElementPV statusPv = null;
+	private CommonTableElementPV movedonePv = null;
 	private CommonTableElementPV stopPv = null;
 	private CommonTableElementPV triggerPv = null;
 	private CommonTableElementPV tweakvaluePv = null;
@@ -94,6 +95,11 @@ public class CommonTableElement {
 			if ((motorAxis.getStatus() != null && motorAxis.getStatus().getAccess() != null) &&
 				(motorAxis.getStatus().getAccess().getTransport() == TransportTypes.CA)) {
 					statusPv = new CommonTableElementPV(motorAxis.getStatus().
+							getAccess().getVariableID(), this);
+			}
+			if ((motorAxis.getMoveDone() != null && motorAxis.getMoveDone().getAccess() != null) &&
+				(motorAxis.getMoveDone().getAccess().getTransport() == TransportTypes.CA)) {
+					movedonePv = new CommonTableElementPV(motorAxis.getMoveDone().
 							getAccess().getVariableID(), this);
 			}
 			if ((motorAxis.getStop() != null && motorAxis.getStop().getAccess() != null) &&
@@ -174,6 +180,7 @@ public class CommonTableElement {
 		if (unitPv != null) unitPv.disconnect();
 		if (setPv != null) setPv.disconnect();
 		if (statusPv != null) statusPv.disconnect();
+		if (movedonePv != null) movedonePv.disconnect();
 		if (stopPv != null) stopPv.disconnect();
 		if (triggerPv != null) triggerPv.disconnect();
 		if (tweakvaluePv != null) tweakvaluePv.disconnect();
@@ -451,6 +458,9 @@ public class CommonTableElement {
 			return valuePv.getValue();
 		}
 		else if (property.equals("status") && (statusPv != null)) {
+			if(movedonePv != null && movedonePv.getValue().equals("0")) {
+				return "Moving";
+			}
 			String valueString = statusPv.getValue();
 			try {
 				int status = (int) Double.parseDouble(valueString);
@@ -458,6 +468,8 @@ public class CommonTableElement {
 					return "Limit (+)";
 				} else if ((status & 8) > 0 || (status & 128) > 0) {
 					return "Home";
+				} else if ((status & 512) > 0) {
+					return "Problem";
 				} else if ((status & 1024) > 0) {
 					return "Moving";
 				} else if ((status & 8192) > 0) {
@@ -475,9 +487,9 @@ public class CommonTableElement {
 			}
 			return unit;
 		}
-		else if (property.equals("tweakvalue") && (tweakvaluePv != null))
+		else if (property.equals("tweakvalue") && (tweakvaluePv != null)) {
 			return tweakvaluePv.getValue();
-
+		}
 		return "";
 	}
 
