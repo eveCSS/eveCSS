@@ -9,8 +9,15 @@ import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * 
+ * 
+ * @author Marcus Michalsky
+ * @since 1.1
+ */
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class MotorAxisViewTest {
 
@@ -19,7 +26,13 @@ public class MotorAxisViewTest {
 	
 	private static SWTWorkbenchBot bot;
 	
-	
+	/**
+	 * 
+	 */
+	@Test
+	public void test() {
+		
+	}
 	
 	/* ********************************************************************* */
 	
@@ -49,5 +62,7 @@ public class MotorAxisViewTest {
 				resetWorkbench();
 			}
 		});
+		
+		
 	}
 }

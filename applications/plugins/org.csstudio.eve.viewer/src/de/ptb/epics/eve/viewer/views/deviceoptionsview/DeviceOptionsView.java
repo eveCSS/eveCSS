@@ -275,9 +275,9 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 		}
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).size() == 0) {
-				this.optionsTable.setInput(null);
+				/*this.optionsTable.setInput(null);
 				this.device = null;
-				this.setPartName("nothing selected");
+				this.setPartName("nothing selected");*/
 				return;
 			}
 			// since at any given time this view can only display options of 
@@ -303,9 +303,9 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 				this.optionsTable.setInput(device);
 				this.setPartName(device.getFullIdentifyer());
 			} else {
-				this.optionsTable.setInput(null);
+				/*this.optionsTable.setInput(null);
 				this.device = null;
-				this.setPartName("nothing selected");
+				this.setPartName("nothing selected");*/
 			}
 		} else {
 			this.optionsTable.setInput(null);

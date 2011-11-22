@@ -74,29 +74,19 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	// the connector to the parent element
 	private Connector parent;
 	
-	/**
-	 * A list of ControlEvents for the trigger events.
-	 */
-	private List< ControlEvent > triggerEvents;
+	// list of ControlEvents for the trigger events
+	private List<ControlEvent> triggerEvents;
 	
-	/**
-	 * A list of ControlEvents for the redo events.
-	 */
-	private List< ControlEvent > redoEvents;
+	// list of ControlEvents for the redo events
+	private List<ControlEvent> redoEvents;
 	
-	/**
-	 * A list of ControlEvents for the break events.
-	 */
-	private List< ControlEvent > breakEvents;
+	// list of ControlEvents for the break events
+	private List<ControlEvent> breakEvents;
 	
-	/**
-	 * A list of PauseEvents for the pause events.
-	 */
-	private List< PauseEvent > pauseEvents;
+	// list of PauseEvents for the pause events
+	private List<PauseEvent> pauseEvents;
 	
-	/**
-	 * The chain of the scan modul.
-	 */
+	// The chain of the scan module
 	private Chain chain;
 	
 	// the x position of the scan module in the graphical editor
@@ -105,46 +95,33 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	// the y position of the scan module in the graphical editor
 	private int y;
 	
-	/**
-	 * This enum contains the event when all motor axes gets saved.
-	 */
+	// contains the event when all motor axes gets saved
 	private SaveAxisPositionsTypes saveAxisPositions;
 	
-	/**
-	 * The control event manager that controls the break events of this scan module.
-	 */
+	// the control event manager that controls the break events
 	private ControlEventManager breakControlEventManager;
 	
-	/**
-	 * The control event manager that controls the redo events of this scan module.
-	 */
+	// the control event manager that controls the redo events
 	private ControlEventManager redoControlEventManager;
 	
-	/**
-	 * The control event manager that controls the trigger events of this scan module.
-	 */
+	// the control event manager that controls the trigger events
 	private ControlEventManager triggerControlEventManager;
 	
-	/**
-	 * The control event manager that controls the pause events of this scan module.
-	 */
+	// the control event manager that controls the pause events
 	private ControlEventManager pauseControlEventManager;
 	
-	/**
-	 * A List that is holding all object that needs to get an update message if this object was updated.
-	 */
-	private List< IModelUpdateListener > updateListener;
+	// List that is holding all objects that need to get an update message 
+	// if this object was updated.
+	private List<IModelUpdateListener> updateListener;
 		
-	/**
-	 * A list that holds all Positionings.
-	 */
-	private List< Positioning > positionings;
+	// list that holds all Positionings
+	private List<Positioning> positionings;
 	
 	/**
 	 * Constructs a <code>ScanModule</code> with the given id.
 	 * 
 	 * @param id the id that should be set
-	 * @throws IllegalArgumentException if the argument is less than 1
+	 * @throws IllegalArgumentException if <code>id</code> is less than 1
 	 */
 	public ScanModule(final int id) {
 		if(id < 1) {
@@ -159,29 +136,32 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.plotWindows = new ArrayList<PlotWindow>();
 		this.settletime = Double.NEGATIVE_INFINITY;
 		this.triggerdelay = 0.0;
-		this.triggerEvents = new ArrayList< ControlEvent >();
-		this.redoEvents = new ArrayList< ControlEvent >();
-		this.breakEvents = new ArrayList< ControlEvent >();
-		this.pauseEvents = new ArrayList< PauseEvent >();
+		this.triggerEvents = new ArrayList<ControlEvent>();
+		this.redoEvents = new ArrayList<ControlEvent>();
+		this.breakEvents = new ArrayList<ControlEvent>();
+		this.pauseEvents = new ArrayList<PauseEvent>();
 		this.type = "classic";
 		this.name = "";
-	
+		
 		this.saveAxisPositions = SaveAxisPositionsTypes.NEVER;
 		
-		this.breakControlEventManager = new ControlEventManager( this, this.breakEvents, ControlEventTypes.CONTROL_EVENT );
-		this.redoControlEventManager = new ControlEventManager( this, this.redoEvents, ControlEventTypes.CONTROL_EVENT );
-		this.pauseControlEventManager = new ControlEventManager( this, this.pauseEvents, ControlEventTypes.PAUSE_EVENT );
-		this.triggerControlEventManager = new ControlEventManager( this, this.triggerEvents, ControlEventTypes.CONTROL_EVENT );
+		this.breakControlEventManager = new ControlEventManager(
+				this, this.breakEvents, ControlEventTypes.CONTROL_EVENT);
+		this.redoControlEventManager = new ControlEventManager(
+				this, this.redoEvents, ControlEventTypes.CONTROL_EVENT);
+		this.pauseControlEventManager = new ControlEventManager(
+				this, this.pauseEvents, ControlEventTypes.PAUSE_EVENT);
+		this.triggerControlEventManager = new ControlEventManager(
+				this, this.triggerEvents, ControlEventTypes.CONTROL_EVENT);
 		
-		this.breakControlEventManager.addModelUpdateListener( this );
-		this.redoControlEventManager.addModelUpdateListener( this );
-		this.pauseControlEventManager.addModelUpdateListener( this );
-		this.triggerControlEventManager.addModelUpdateListener( this );
+		this.breakControlEventManager.addModelUpdateListener(this);
+		this.redoControlEventManager.addModelUpdateListener(this);
+		this.pauseControlEventManager.addModelUpdateListener(this);
+		this.triggerControlEventManager.addModelUpdateListener(this);
 		
-		this.updateListener = new ArrayList< IModelUpdateListener >();
+		this.updateListener = new ArrayList<IModelUpdateListener>();
 		
-		this.positionings = new ArrayList< Positioning >();
-		
+		this.positionings = new ArrayList<Positioning>();
 	}
 
 	/**
@@ -939,10 +919,31 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public ControlEventManager getTriggerControlEventManager() {
 		return triggerControlEventManager;
 	}
-
+	
+	/**
+	 * Returns the types axis positions are saved on.
+	 * 
+	 * @return the types axis positions are saved on
+	 */
+	public SaveAxisPositionsTypes getSaveAxisPositions() {
+		return saveAxisPositions;
+	}
+	
+	/**
+	 * Sets the types axis positons are saved on.
+	 * 
+	 * @param saveAxisPositions the types axis positions are saved on
+	 */
+	public void setSaveAxisPositions(
+			final SaveAxisPositionsTypes saveAxisPositions) {
+		this.saveAxisPositions = saveAxisPositions;
+		updateListeners();
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
 		if(logger.isDebugEnabled()) {
 			if(modelUpdateEvent != null) {
@@ -956,6 +957,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean addModelUpdateListener(
 			final IModelUpdateListener modelUpdateListener) {
 		return this.updateListener.add(modelUpdateListener);
@@ -964,74 +966,42 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	/**
 	 * {@inheritDoc} 
 	 */
+	@Override
 	public boolean removeModelUpdateListener(
 			final IModelUpdateListener modelUpdateListener) {
 		return this.updateListener.remove(modelUpdateListener);
 	}
 	
 	/**
-	 * Returns the types axis positions are saved on.
-	 * 
-	 * @return the types axis positions are saved on
-	 */
-	public SaveAxisPositionsTypes getSaveAxisPositions() {
-		return saveAxisPositions;
-	}
-
-	/**
-	 * Sets the types axis positons are saved on.
-	 * 
-	 * @param saveAxisPositions the types axis positions are saved on
-	 */
-	public void setSaveAxisPositions(
-			final SaveAxisPositionsTypes saveAxisPositions) {
-		this.saveAxisPositions = saveAxisPositions;
-		updateListeners();
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public List<IModelError> getModelErrors() {
 		final List<IModelError> errorList = new ArrayList<IModelError>();
+		
 		errorList.addAll(this.pauseControlEventManager.getModelErrors());
 		errorList.addAll(this.breakControlEventManager.getModelErrors());
 		errorList.addAll(this.redoControlEventManager.getModelErrors());
 		errorList.addAll(this.triggerControlEventManager.getModelErrors());
 		
-		final Iterator<Axis> axisIterator = this.axes.iterator();
-		while(axisIterator.hasNext()) {
-			errorList.addAll(axisIterator.next().getModelErrors());
+		for(Axis axis : this.axes) {
+			errorList.addAll(axis.getModelErrors());
 		}
-		
-		final Iterator<Channel> channelIterator = this.channels.iterator();
-		while(channelIterator.hasNext()) {
-			errorList.addAll(channelIterator.next().getModelErrors());
+		for(Channel channel : this.channels) {
+			errorList.addAll(channel.getModelErrors());
 		}
-		
-		final Iterator<Prescan> prescanIterator = this.prescans.iterator();
-		while(prescanIterator.hasNext()) {
-			errorList.addAll(prescanIterator.next().getModelErrors());
+		for(Prescan prescan : this.prescans) {
+			errorList.addAll(prescan.getModelErrors());
 		}
-		
-		final Iterator<Postscan> postscanIterator = this.postscans.iterator();
-		while(postscanIterator.hasNext()) {
-			errorList.addAll(postscanIterator.next().getModelErrors());
+		for(Postscan postscan : this.postscans) {
+			errorList.addAll(postscan.getModelErrors());
 		}
-		
-		final Iterator<Positioning> positioningIterator = 
-				this.positionings.iterator();
-		while(positioningIterator.hasNext()) {
-			errorList.addAll(positioningIterator.next().getModelErrors());
+		for(Positioning positioning : this.positionings) {
+			errorList.addAll(positioning.getModelErrors());
 		}
-
-		final Iterator<PlotWindow> plotWindowIterator = 
-				this.plotWindows.iterator();
-		while(plotWindowIterator.hasNext()) {
-			errorList.addAll(plotWindowIterator.next().getModelErrors());
+		for(PlotWindow plotwindow : this.plotWindows) {
+			errorList.addAll(plotwindow.getModelErrors());
 		}
-
 		return errorList;
 	}
 	
@@ -1049,7 +1019,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			it.next().updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
