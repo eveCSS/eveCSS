@@ -68,10 +68,10 @@
    <extension
          point="org.csstudio.startup.module">
       <startupParameters
-            class="org.csstudio.utility.product.StartupParameters">
+            class="org.csstudio.eve.product.StartupParameters">
       </startupParameters>
       <workbench
-            class="org.csstudio.utility.product.Workbench">
+            class="org.csstudio.eve.product.Workbench">
       </workbench>
    </extension>
    <extension
@@ -87,6 +87,56 @@
             configId="org.eclipse.ui.intro.universalConfig"
             content="intro/intro_data.xml">
       </configExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.csstudio.eve.product.EvePerspective"
+            id="org.csstudio.eve.product.perspective.eve"
+            name="EVE">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="file"
+               label="File">
+            <visibleWhen>
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+               </reference>
+            </visibleWhen>
+         </menu>
+         <menu
+               id="edit"
+               label="Edit">
+         </menu>
+         <separator
+               name="additions">
+         </separator>
+         <menu
+               id="window"
+               label="Window">
+         </menu>
+         <menu
+               id="help"
+               label="Help">
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+         <with
+               variable="activeWorkbenchWindow.activePerspective">
+            <equals
+                  value="EveEditorPerpective">
+            </equals>
+         </with>
+      </definition>
    </extension>
 
 </plugin>

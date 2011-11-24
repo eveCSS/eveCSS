@@ -136,24 +136,6 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="menu:file/new">
-         <command
-               commandId="org.eclipse.ui.newWizard"
-               icon="icons/sample.gif"
-               label="Scan Description"
-               style="push">
-            <parameter
-                  name="newWizardId"
-                  value="de.ptb.epics.eve.editor.wizards.NewScanDescriptionWizard">
-            </parameter>
-            <visibleWhen>
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
-               </reference>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-      <menuContribution
             locationURI="menu:editors">
          <command
                commandId="de.ptb.epics.eve.editor.start"
@@ -163,29 +145,74 @@
          </command>
       </menuContribution>
       <menuContribution
-            locationURI="toolbar:file">
-         <command
-               commandId="org.eclipse.ui.file.saveAll"
-               icon="icons/saveall_edit.gif"
-               label="Save All"
-               style="push">
-            <visibleWhen>
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
-               </reference>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="org.eclipse.ui.file.saveAs"
-               icon="icons/saveas_edit.gif"
-               label="Save &amp;As..."
-               style="push">
-            <visibleWhen>
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
-               </reference>
-            </visibleWhen>
-         </command>
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="de.ptb.epics.eve.editor.toolbar.save">
+            <command
+                  commandId="org.eclipse.ui.file.save"
+                  icon="icons/save_edit.gif"
+                  label="Save"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.saveAll"
+                  icon="icons/saveall_edit.gif"
+                  label="Save All"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.saveAs"
+                  icon="icons/saveas_edit.gif"
+                  label="Save &amp;As..."
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </visibleWhen>
+            </command>
+         </toolbar>
+         <toolbar
+               id="de.ptb.epics.eve.editor.toolbar.handover">
+            <command
+                  commandId="de.ptb.epics.eve.editor.command.handover"
+                  icon="icons/run.gif"
+                  style="push">
+               <parameter
+                     name="switchPerspective"
+                     value="true">
+               </parameter>
+               <visibleWhen>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="de.ptb.epics.eve.editor.command.handover"
+                  icon="icons/profile_exc.gif"
+                  style="push">
+               <parameter
+                     name="switchPerspective"
+                     value="false">
+               </parameter>
+               <visibleWhen>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </visibleWhen>
+            </command>
+         </toolbar>
       </menuContribution>
    </extension>
    <extension
@@ -206,6 +233,16 @@
             defaultHandler="de.ptb.epics.eve.editor.handler.EveEditorStartCommandHandler"
             id="de.ptb.epics.eve.editor.start"
             name="EveEditor">
+      </command>
+      <command
+            defaultHandler="de.ptb.epics.eve.editor.handler.HandOver"
+            id="de.ptb.epics.eve.editor.command.handover"
+            name="Handover">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.handover.switchPerspective"
+               name="switchPerspective"
+               optional="false">
+         </commandParameter>
       </command>
    </extension>
    <extension
