@@ -6,8 +6,19 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
+/**
+ * <code>ApplicationWorkbenchWindowAdvisor</code>.
+ * 
+ * @author Marcus Michalsky
+ * @since 1.1
+ */
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param configurer
+	 */
 	public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		super(configurer);
 	}
