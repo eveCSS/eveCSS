@@ -11,6 +11,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -80,6 +81,7 @@ public class Activator extends AbstractUIPlugin {
 		}
 		configureLogging();
 		loadMeasuringStation();
+		loadColorsAndFonts();
 		startupReport();
 
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
@@ -286,5 +288,23 @@ public class Activator extends AbstractUIPlugin {
 			logger.info("workspace: " + workspace.getRoot().getLocation().
 					toFile().getAbsolutePath());
 		}
+	}
+	
+	private void loadColorsAndFonts() {
+		ImageRegistry imagereg = getImageRegistry();
+		imagereg.put("MOTOR", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/devices/motor.gif").createImage());
+		imagereg.put("AXIS", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/devices/axis.gif").createImage());
+		imagereg.put("DETECTOR", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/devices/detector.gif").createImage());
+		imagereg.put("CHANNEL", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/devices/channel.gif").createImage());
+		imagereg.put("CLASS", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/devices/class.png").createImage());
+		imagereg.put("DEVICE", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/devices/device.gif").createImage());
+		imagereg.put("OPTION", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/devices/option.gif").createImage());
 	}
 }

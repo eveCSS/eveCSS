@@ -47,7 +47,5 @@ public class EveEditorPerspective implements IPerspectiveFactory {
 		layout.addView(PlotWindowView.ID, 
 				IPageLayout.BOTTOM, 0.40f, DetectorChannelView.ID);
 		layout.getViewLayout(PlotWindowView.ID).setCloseable(false);
-		
-		layout.addActionSet("de.ptb.epics.eve.editor.handOverActionSet");
 	}
 }

@@ -29,6 +29,7 @@ import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.editor.Activator;
 
 /**
  * <code>PrescanComposite</code> is part of the 
@@ -149,25 +150,25 @@ public class PrescanComposite extends Composite {
 	class MenuManagerMenuListener implements IMenuListener {
 		
 		final ImageDescriptor classImage = ImageDescriptor.createFromImage(
-				de.ptb.epics.eve.viewer.Activator.getDefault().
+				Activator.getDefault().
 				getImageRegistry().get("CLASS"));
 		final ImageDescriptor motorImage = ImageDescriptor.createFromImage(
-				de.ptb.epics.eve.viewer.Activator.getDefault().
+				Activator.getDefault().
 				getImageRegistry().get("MOTOR"));
 		final ImageDescriptor axisImage = ImageDescriptor.createFromImage(
-				de.ptb.epics.eve.viewer.Activator.getDefault().
+				Activator.getDefault().
 				getImageRegistry().get("AXIS"));
 		final ImageDescriptor detectorImage = ImageDescriptor.createFromImage(
-				de.ptb.epics.eve.viewer.Activator.getDefault().
+				Activator.getDefault().
 				getImageRegistry().get("DETECTOR"));
 		final ImageDescriptor channelImage = ImageDescriptor.createFromImage(
-				de.ptb.epics.eve.viewer.Activator.getDefault().
+				Activator.getDefault().
 				getImageRegistry().get("CHANNEL"));
 		final ImageDescriptor deviceImage = ImageDescriptor.createFromImage(
-				de.ptb.epics.eve.viewer.Activator.getDefault().
+				Activator.getDefault().
 				getImageRegistry().get("DEVICE"));
 		final ImageDescriptor optionImage = ImageDescriptor.createFromImage(
-				de.ptb.epics.eve.viewer.Activator.getDefault().
+				Activator.getDefault().
 				getImageRegistry().get("OPTION"));
 		
 		/**

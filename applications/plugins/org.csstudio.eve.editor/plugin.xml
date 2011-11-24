@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="de.ptb.epics.eve.editor.dispatcher" name="ScanDescriptionDispatcher" schema="schema/de.ptb.epics.eve.editor.dispatcher.exsd"/>
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
@@ -88,41 +89,6 @@
       </primaryWizard>
    </extension>
    <extension
-         point="org.eclipse.ui.actionSets">
-      <actionSet
-            id="de.ptb.epics.eve.editor.handOverActionSet"
-            label="%actionSet.label"
-            visible="false">
-         <menu
-               id="handOverMenu"
-               label="%menu.label">
-            <separator
-                  name="handOverGroup">
-            </separator>
-         </menu>
-         <action
-               class="de.ptb.epics.eve.editor.actions.HandOverAction"
-               icon="icons/profile_exc.gif"
-               id="de.ptb.epics.eve.editor.actions.HandOverSilentAction"
-               label="%action.label"
-               menubarPath="handOverMenu/handOverGroup"
-               style="push"
-               toolbarPath="handOverGroup"
-               tooltip="Add to Play List">
-         </action>
-         <action
-               class="de.ptb.epics.eve.editor.actions.HandOverAction"
-               icon="icons/run.gif"
-               id="de.ptb.epics.eve.editor.actions.HandOverAction"
-               label="%action.label.0"
-               menubarPath="handOverMenu/handOverGroup"
-               style="push"
-               toolbarPath="handOverGroup"
-               tooltip="Add to Play List and switch to Engine Perspective">
-         </action>
-      </actionSet>
-   </extension>
-   <extension
          id="de.ptb.epics.eve.editor.PerspectiveExtension"
          name="PerspectiveExtension"
          point="org.eclipse.ui.perspectiveExtensions">
@@ -187,30 +153,32 @@
             <command
                   commandId="de.ptb.epics.eve.editor.command.handover"
                   icon="icons/run.gif"
-                  style="push">
-               <parameter
-                     name="switchPerspective"
-                     value="true">
-               </parameter>
+                  style="push"
+                  tooltip="Add to Playlist and switch to Engine Perspective">
                <visibleWhen>
                   <reference
                         definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
                   </reference>
                </visibleWhen>
+               <parameter
+                     name="de.ptb.epics.eve.editor.command.handover.switchPerspective"
+                     value="true">
+               </parameter>
             </command>
             <command
                   commandId="de.ptb.epics.eve.editor.command.handover"
                   icon="icons/profile_exc.gif"
-                  style="push">
-               <parameter
-                     name="switchPerspective"
-                     value="false">
-               </parameter>
+                  style="push"
+                  tooltip="Add to Playlist">
                <visibleWhen>
                   <reference
                         definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
                   </reference>
                </visibleWhen>
+               <parameter
+                     name="de.ptb.epics.eve.editor.command.handover.switchPerspective"
+                     value="false">
+               </parameter>
             </command>
          </toolbar>
       </menuContribution>

@@ -168,7 +168,7 @@ public class PositioningComposite extends Composite {
 	class MenuManagerMenuListener implements IMenuListener {
 		
 		final ImageDescriptor axisImage = ImageDescriptor.createFromImage(
-				de.ptb.epics.eve.viewer.Activator.getDefault().
+				Activator.getDefault().
 				getImageRegistry().get("AXIS"));
 		
 		/**

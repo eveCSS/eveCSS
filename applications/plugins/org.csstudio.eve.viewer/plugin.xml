@@ -562,5 +562,11 @@
             name="EVE Viewer">
       </page>
    </extension>
+   <extension
+         point="de.ptb.epics.eve.editor.dispatcher">
+      <client
+            class="de.ptb.epics.eve.viewer.ScanDescriptionReceiver">
+      </client>
+   </extension>
 
 </plugin>

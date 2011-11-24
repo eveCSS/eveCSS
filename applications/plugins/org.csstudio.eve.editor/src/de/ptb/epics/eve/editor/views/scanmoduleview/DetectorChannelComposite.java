@@ -35,6 +35,7 @@ import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.YAxis;
+import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.MotorAxisComposite.SetAxisAction;
 
@@ -266,13 +267,13 @@ public class DetectorChannelComposite extends Composite {
 		public void menuAboutToShow(IMenuManager manager) {
 			
 			final ImageDescriptor classImage = ImageDescriptor.createFromImage(
-					de.ptb.epics.eve.viewer.Activator.getDefault().
+					Activator.getDefault().
 					getImageRegistry().get("CLASS"));
 			final ImageDescriptor detectorImage = ImageDescriptor.createFromImage(
-					de.ptb.epics.eve.viewer.Activator.getDefault().
+					Activator.getDefault().
 					getImageRegistry().get("DETECTOR"));
 			final ImageDescriptor channelImage = ImageDescriptor.createFromImage(
-					de.ptb.epics.eve.viewer.Activator.getDefault().
+					Activator.getDefault().
 					getImageRegistry().get("CHANNEL"));
 
 			((ExcludeDevicesOfScanModuleFilterManualUpdate)measuringStation).update();

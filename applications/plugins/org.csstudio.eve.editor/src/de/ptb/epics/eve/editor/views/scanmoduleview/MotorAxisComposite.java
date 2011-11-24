@@ -31,6 +31,7 @@ import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
+import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView;
 
 /**
@@ -292,13 +293,13 @@ public class MotorAxisComposite extends Composite {
 		public void menuAboutToShow(IMenuManager manager) {
 			
 			final ImageDescriptor classImage = ImageDescriptor.createFromImage(
-					de.ptb.epics.eve.viewer.Activator.getDefault().
+					Activator.getDefault().
 					getImageRegistry().get("CLASS"));
 			final ImageDescriptor motorImage = ImageDescriptor.createFromImage(
-					de.ptb.epics.eve.viewer.Activator.getDefault().
+					Activator.getDefault().
 					getImageRegistry().get("MOTOR"));
 			final ImageDescriptor axisImage = ImageDescriptor.createFromImage(
-					de.ptb.epics.eve.viewer.Activator.getDefault().
+					Activator.getDefault().
 					getImageRegistry().get("AXIS"));
 			
 			((ExcludeDevicesOfScanModuleFilterManualUpdate)measuringStation).update();
