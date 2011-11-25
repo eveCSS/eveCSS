@@ -7,13 +7,15 @@ import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 
 /**
- * @author mmichals
- *
+ * <code>AbstractDeviceAdapterFactory</code>.
+ * 
+ * @author Marcus Michalsky
+ * @since 1.1
  */
 public class AbstractDeviceAdapterFactory implements IAdapterFactory {
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapter(java.lang.Object, java.lang.Class)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
@@ -27,12 +29,11 @@ public class AbstractDeviceAdapterFactory implements IAdapterFactory {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapterList()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Class[] getAdapterList() {
 		return new Class[] {ProcessVariable.class};
 	}
-
 }
