@@ -552,6 +552,13 @@
                type="org.csstudio.csdata.ProcessVariable">
          </adapter>
       </factory>
+      <factory
+            adaptableType="de.ptb.epics.eve.data.measuringstation.AbstractDevice"
+            class="de.ptb.epics.eve.viewer.views.devicesview.AbstractDeviceAdapterFactory">
+         <adapter
+               type="org.csstudio.csdata.ProcessVariable">
+         </adapter>
+      </factory>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
