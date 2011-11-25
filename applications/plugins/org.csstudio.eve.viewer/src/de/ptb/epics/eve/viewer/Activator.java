@@ -23,8 +23,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.epics.pvmanager.CompositeDataSource;
 import org.epics.pvmanager.PVManager;
 import org.epics.pvmanager.jca.JCADataSource;
+import org.epics.pvmanager.sim.SimulationDataSource;
 import org.osgi.framework.BundleContext;
 import org.xml.sax.SAXException;
 
@@ -79,7 +81,18 @@ public class Activator extends AbstractUIPlugin {
 		this.engineErrorReader = new EngineErrorReader();
 		this.chainStatusAnalyzer = new ChainStatusAnalyzer();
 		
-		PVManager.setDefaultDataSource(new JCADataSource());
+		// Create a multiple data source, and add different data sources
+		CompositeDataSource composite = new CompositeDataSource();
+		composite.putDataSource("ca", new JCADataSource());
+		composite.putDataSource("sim", new SimulationDataSource());
+		
+		// If no prefix is given to a channel, use JCA as default
+		composite.setDefaultDataSource("ca");
+		
+		// Set the composite as the default
+		PVManager.setDefaultDataSource(composite);
+		
+		// PVManager.setDefaultDataSource(new JCADataSource());
 	}
 
 	/**
