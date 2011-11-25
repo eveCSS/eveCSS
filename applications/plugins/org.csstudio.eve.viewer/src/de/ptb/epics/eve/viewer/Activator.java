@@ -85,14 +85,10 @@ public class Activator extends AbstractUIPlugin {
 		CompositeDataSource composite = new CompositeDataSource();
 		composite.putDataSource("ca", new JCADataSource());
 		composite.putDataSource("sim", new SimulationDataSource());
-		
 		// If no prefix is given to a channel, use JCA as default
 		composite.setDefaultDataSource("ca");
-		
 		// Set the composite as the default
 		PVManager.setDefaultDataSource(composite);
-		
-		// PVManager.setDefaultDataSource(new JCADataSource());
 	}
 
 	/**

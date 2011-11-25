@@ -1097,9 +1097,11 @@ public class DeviceInspectorView extends ViewPart {
 	private void addMotorAxisEntry(final AbstractDevice device) {
 		CommonTableElement cte = 
 				new CommonTableElement(device, axisTableViewer);
-		axisTableContentProvider.addElement(cte);
-		cte.init();
-		this.devices.add(device);
+		if(axisTableContentProvider.addElement(cte)) {
+			cte.init();
+			this.devices.add(device);
+		}
+
 	}
 	
 	/*
@@ -1108,9 +1110,10 @@ public class DeviceInspectorView extends ViewPart {
 	private void addDetectorChannelEntry(final AbstractDevice device) {
 		CommonTableElement cte = 
 				new CommonTableElement(device, channelTableViewer);
-		channelTableContentProvider.addElement(cte);
-		cte.init();
-		this.devices.add(device);
+		if(channelTableContentProvider.addElement(cte)) {
+			cte.init();
+			this.devices.add(device);
+		}
 	}
 
 	/*
@@ -1119,9 +1122,10 @@ public class DeviceInspectorView extends ViewPart {
 	private void addDeviceEntry(final AbstractDevice device) {
 		CommonTableElement cte = 
 				new CommonTableElement(device, deviceTableViewer);
-		deviceTableContentProvider.addElement(cte);
-		cte.init();
-		this.devices.add(device);
+		if(deviceTableContentProvider.addElement(cte)) {
+			cte.init();
+			this.devices.add(device);
+		}
 	}
 	
 	/**
@@ -1522,7 +1526,7 @@ public class DeviceInspectorView extends ViewPart {
 		@Override
 		public void dragOver(DropTargetEvent event) {
 			event.detail = DND.DROP_COPY;
-			event.feedback = DND.FEEDBACK_SCROLL;
+			event.feedback = DND.FEEDBACK_SCROLL | DND.FEEDBACK_INSERT_AFTER;
 		}
 		
 		/** 

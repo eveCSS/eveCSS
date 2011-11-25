@@ -72,7 +72,8 @@ public class CommonTableContentProvider implements IStructuredContentProvider {
 	public boolean addElement(CommonTableElement element) {
 		if (element == null) return false;
 		for (CommonTableElement cte : elements) {
-			if (cte.getAbstractDevice() == element.getAbstractDevice()) {
+			if (cte.getAbstractDevice().equals(element.getAbstractDevice())) {
+				element.dispose();
 				return false;
 			}
 		}
