@@ -538,8 +538,10 @@ public class CommonTableElement {
 	public void stop() {
 		if (stopPv != null && stopPv.isConnected()) {
 			MotorAxis axis = (MotorAxis)device;
-			if (axis.getStop().getValue() != null)
-				stopPv.setValue(axis.getStop().getValue().getDefaultValue());
+			if (axis.getStop().getValue() != null) {
+				stopPv.setValue(Integer.parseInt(
+						axis.getStop().getValue().getDefaultValue()));
+			}
 		}
 	}
 

@@ -202,6 +202,9 @@ public class PVWrapper {
 	 */
 	public void setValue(Object newVal) {
 		this.pv.write(newVal);
+		if(logger.isDebugEnabled()) {
+			logger.debug("Wrote " + this.getName() + ": " + newVal);
+		}
 	}
 	
 	/**
