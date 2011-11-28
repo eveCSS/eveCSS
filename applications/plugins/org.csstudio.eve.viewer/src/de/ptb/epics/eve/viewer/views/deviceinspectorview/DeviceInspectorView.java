@@ -1526,7 +1526,7 @@ public class DeviceInspectorView extends ViewPart {
 		@Override
 		public void dragOver(DropTargetEvent event) {
 			event.detail = DND.DROP_COPY;
-			event.feedback = DND.FEEDBACK_SCROLL | DND.FEEDBACK_INSERT_AFTER;
+			event.feedback = DND.FEEDBACK_SCROLL; // | DND.FEEDBACK_INSERT_AFTER;
 		}
 		
 		/** 
