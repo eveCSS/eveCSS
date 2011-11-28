@@ -102,7 +102,8 @@
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
                id="file"
-               label="File">
+               label="File"
+               mnemonic="F">
             <visibleWhen>
                <reference
                      definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
@@ -110,19 +111,40 @@
             </visibleWhen>
          </menu>
          <menu
+               id="secondfilemenu"
+               label="File"
+               mnemonic="F">
+            <command
+                  commandId="org.eclipse.ui.file.exit"
+                  label="Exit"
+                  mnemonic="x"
+                  style="push">
+            </command>
+            <visibleWhen>
+               <not>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </not>
+            </visibleWhen>
+         </menu>
+         <menu
                id="edit"
-               label="Edit">
+               label="Edit"
+               mnemonic="E">
          </menu>
          <separator
                name="additions">
          </separator>
          <menu
                id="window"
-               label="Window">
+               label="Window"
+               mnemonic="W">
          </menu>
          <menu
                id="help"
-               label="Help">
+               label="Help"
+               mnemonic="H">
          </menu>
       </menuContribution>
    </extension>
