@@ -339,6 +339,11 @@ public class CommonTableElement {
 		AlarmSeverity status = AlarmSeverity.UNDEFINED; 
 		if (property.equals("value")) {
 			if (valuePv != null) status = valuePv.getStatus();
+			/* */
+			String statusVal = getValue("status");
+			if (statusVal.equals("Moving")) {
+				return Activator.getDefault().getColor("COLOR_PV_MOVING");
+			}
 		}
 		else if (property.equals("unit")) {
 			if (unitPv != null) status = unitPv.getStatus();
@@ -357,6 +362,9 @@ public class CommonTableElement {
 		}
 		else if ((property.equals("status")) && (statusPv != null)) {
 			String statusVal = getValue("status");
+			if (statusVal.equals("Moving")) {
+				return Activator.getDefault().getColor("COLOR_PV_MOVING");
+			}
 			if (statusVal.equals("Limit")) {
 				return Activator.getDefault().getColor("COLOR_PV_MAJOR");
 			}
