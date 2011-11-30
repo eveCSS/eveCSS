@@ -67,12 +67,12 @@
    </extension>
    <extension
          point="org.csstudio.startup.module">
-      <startupParameters
-            class="org.csstudio.eve.product.StartupParameters">
-      </startupParameters>
       <workbench
             class="org.csstudio.eve.product.Workbench">
       </workbench>
+      <startupParameters
+            class="org.csstudio.eve.product.StartupParameters">
+      </startupParameters>
    </extension>
    <extension
          point="org.eclipse.ui.intro">
