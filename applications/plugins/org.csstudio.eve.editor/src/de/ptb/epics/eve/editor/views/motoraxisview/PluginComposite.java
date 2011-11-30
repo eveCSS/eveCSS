@@ -145,7 +145,7 @@ public class PluginComposite extends Composite {
 					this.axis.getPositionPluginController().getPlugin().getName());
 				checkForErrors();
 			} else {
-				this.pluginCombo.setText("");
+				this.pluginCombo.deselectAll();
 			}
 			this.pluginControllerComposite.setPluginController(
 					axis.getPositionPluginController());
@@ -156,7 +156,7 @@ public class PluginComposite extends Composite {
 			this.pluginCombo.setEnabled(true);
 			this.pluginControllerComposite.setEnabled(true);
 		} else { // axis == null -> reset all
-			this.pluginCombo.setText("");
+			this.pluginCombo.deselectAll();
 			this.pluginControllerComposite.setPluginController(null);
 			this.pluginCombo.setEnabled(false);
 			this.pluginControllerComposite.setEnabled(false);
