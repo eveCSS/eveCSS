@@ -130,7 +130,7 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 		
 		this.discreteStepfunctions = new LinkedList<String>();
 		for(String s : this.stepfunctions) {
-			if(!(s.equals("Add") || s.equals("Multiply") || s.equals("Plugin"))) {
+			if(!(s.equals("Add") || s.equals("Multiply"))) {
 				this.discreteStepfunctions.add(s);
 			}
 		}
