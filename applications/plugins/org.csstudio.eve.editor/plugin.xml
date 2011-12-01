@@ -26,6 +26,7 @@
       <view
             category="eveEditorCategory"
             class="de.ptb.epics.eve.editor.views.scanview.ScanView"
+            icon="icons/devices/chain.gif"
             id="de.ptb.epics.eve.editor.views.ScanView"
             name="%view.name"
             restorable="true">
@@ -33,6 +34,7 @@
       <view
             category="eveEditorCategory"
             class="de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView"
+            icon="icons/devices/scanmodule.gif"
             id="de.ptb.epics.eve.editor.views.ScanModulView"
             name="%view.name.0"
             restorable="true">
@@ -40,6 +42,7 @@
       <view
             category="eveEditorCategory"
             class="de.ptb.epics.eve.editor.views.ErrorView"
+            icon="icons/errorwarning_tab.gif"
             id="de.ptb.epics.eve.editor.views.ErrorView"
             name="%view.name.1"
             restorable="true">
@@ -47,6 +50,7 @@
       <view
             category="eveEditorCategory"
             class="de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView"
+            icon="icons/devices/axis.gif"
             id="de.ptb.epics.eve.editor.views.MotorAxisView"
             name="%view.name.2"
             restorable="true">
@@ -54,6 +58,7 @@
       <view
             category="eveEditorCategory"
             class="de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView"
+            icon="icons/devices/channel.gif"
             id="de.ptb.epics.eve.editor.views.DetectorChannelView"
             name="%view.name.3"
             restorable="true">
@@ -61,6 +66,7 @@
       <view
             category="eveEditorCategory"
             class="de.ptb.epics.eve.editor.views.plotwindowview.PlotWindowView"
+            icon="icons/devices/plot.gif"
             id="de.ptb.epics.eve.editor.views.PlotWindowView"
             name="%view.name.4"
             restorable="true">
@@ -69,6 +75,13 @@
             id="eveEditorCategory"
             name="EVE Editor">
       </category>
+      <view
+            class="org.eclipse.ui.ExtensionFactory:progressView"
+            icon="icons/pview.gif"
+            id="org.eclipse.ui.views.ProgressView"
+            name="Progress"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
