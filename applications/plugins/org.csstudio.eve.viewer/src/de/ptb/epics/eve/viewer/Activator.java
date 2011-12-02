@@ -420,7 +420,6 @@ public class Activator extends AbstractUIPlugin {
 			if (fontData[i].getHeight() > 11) fontData[i].setHeight(11);
 		}
 		fontreg.put("VIEWERFONT", fontData);
-		
 		colorreg.put("COLOR_PV_INITIAL", 
 			Display.getCurrent().getSystemColor(SWT.COLOR_BLACK).getRGB());
 		colorreg.put("COLOR_PV_CONNECTED", 
@@ -441,7 +440,7 @@ public class Activator extends AbstractUIPlugin {
 		colorreg.put("COLOR_PV_UNKNOWN", 
 			Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY).getRGB());
 		colorreg.put("COLOR_PV_MOVING", 
-				Display.getCurrent().getSystemColor(SWT.COLOR_DARK_MAGENTA).getRGB());
+				Display.getCurrent().getSystemColor(SWT.COLOR_MAGENTA).getRGB());
 		
 		ImageRegistry imagereg = getImageRegistry();
 		imagereg.put("GREENPLUS12", imageDescriptorFromPlugin(
