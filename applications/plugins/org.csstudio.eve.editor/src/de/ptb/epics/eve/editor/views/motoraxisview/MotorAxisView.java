@@ -262,10 +262,10 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 			currentAxis.getStepfunctionString().equals("Multiply")) {
 				// use code block in future implementations that use the 
 				// DateTimeComposite...
-				/*if(currentAxis.getMotorAxis().getPosition().getType().equals(
+				if(currentAxis.getMotorAxis().getPosition().getType().equals(
 						de.ptb.epics.eve.data.DataTypes.DATETIME)) {
 					this.sashForm.setMaximizedControl(dateTimeComposite);
-				} else {*/
+				} else {
 				this.sashForm.setMaximizedControl(
 						startStopStepwidthComposite);
 				this.startStopStepwidthComposite.setCurrentAxis(currentAxis);
@@ -273,7 +273,7 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 						getTargetWidth() + sashX;
 				targetHeight = startStopStepwidthComposite.
 						getTargetHeight() + sashY;
-				/*}*/
+				}
 		} else if(currentAxis.getStepfunctionString().equals("File")) {
 			this.sashForm.setMaximizedControl(fileComposite);
 			this.fileComposite.setAxis(currentAxis);
