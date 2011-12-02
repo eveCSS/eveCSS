@@ -1004,9 +1004,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		public void modifyText(ModifyEvent e) {
 			
 			modelUpdateListenerSuspended = true;
-			
-			currentChain.setSaveFilename(filenameInput.getText());
-
+			currentChain.setSaveFilename(filenameInput.getText().trim());
 			modelUpdateListenerSuspended = false;
 		}
 	}
