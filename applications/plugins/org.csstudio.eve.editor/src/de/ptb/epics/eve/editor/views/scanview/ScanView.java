@@ -378,7 +378,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		
 		// Comment Input
 		this.commentInput = new Text(this.commentComposite, 
-									 SWT.BORDER | SWT.V_SCROLL);
+									 SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
@@ -1084,7 +1084,9 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		 */
 		@Override
 		public void modifyText(ModifyEvent e) {
+			modelUpdateListenerSuspended = true;
 			currentChain.setComment(commentInput.getText());
+			modelUpdateListenerSuspended = false;
 		}
 	}
 	
