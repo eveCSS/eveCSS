@@ -15,7 +15,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author ?
  * @author Marcus Michalsky
  */
-public class PositioningInputWrapper implements IModelUpdateListener,
+public class PositioningContentProvider implements IModelUpdateListener,
 												IStructuredContentProvider {
 
 	private Viewer currentViewer;

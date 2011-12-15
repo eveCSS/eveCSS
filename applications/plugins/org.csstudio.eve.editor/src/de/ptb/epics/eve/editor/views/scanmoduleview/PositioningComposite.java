@@ -91,7 +91,7 @@ public class PositioningComposite extends Composite {
 	    this.tableViewer.getTable().setHeaderVisible(true);
 	    this.tableViewer.getTable().setLinesVisible(true);
 	    
-	    this.tableViewer.setContentProvider(new PositioningInputWrapper());
+	    this.tableViewer.setContentProvider(new PositioningContentProvider());
 	    this.tableViewer.setLabelProvider(new PositioningLabelProvider());
 	    
 	    final CellEditor[] editors = new CellEditor[5];

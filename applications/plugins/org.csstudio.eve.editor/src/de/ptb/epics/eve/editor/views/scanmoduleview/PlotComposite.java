@@ -95,7 +95,7 @@ public class PlotComposite extends Composite {
 	    this.tableViewer.getTable().setHeaderVisible(true);
 	    this.tableViewer.getTable().setLinesVisible(true);
 	    
-	    this.tableViewer.setContentProvider(new PlotInputWrapper());
+	    this.tableViewer.setContentProvider(new PlotContentProvider());
 	    this.tableViewer.setLabelProvider(new PlotLabelProvider());
 	    
 	    final CellEditor[] editors = new CellEditor[1];

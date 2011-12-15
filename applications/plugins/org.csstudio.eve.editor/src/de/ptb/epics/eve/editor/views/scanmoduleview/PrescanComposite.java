@@ -85,7 +85,7 @@ public class PrescanComposite extends Composite {
 	    this.tableViewer.getTable().setHeaderVisible(true);
 	    this.tableViewer.getTable().setLinesVisible(true);
 	    
-	    this.tableViewer.setContentProvider(new PrescanInputWrapper());
+	    this.tableViewer.setContentProvider(new PrescanContentProvider());
 	    this.tableViewer.setLabelProvider(new PrescanLabelProvider());
 	    
 	    final CellEditor[] editors = new CellEditor[2];

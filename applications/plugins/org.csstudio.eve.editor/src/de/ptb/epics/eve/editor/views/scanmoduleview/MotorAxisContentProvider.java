@@ -15,7 +15,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author ?
  * @author Marcus Michalsky
  */
-public class MotorAxisInputWrapper implements IModelUpdateListener,
+public class MotorAxisContentProvider implements IModelUpdateListener,
 												IStructuredContentProvider {
 
 	private Viewer currentViewer;

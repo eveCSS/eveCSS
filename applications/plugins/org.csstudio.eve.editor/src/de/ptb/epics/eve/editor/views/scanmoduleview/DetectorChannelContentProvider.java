@@ -8,15 +8,15 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateList
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
 /**
- * <code>PostscanInputWrapper</code> is the content provider for the table 
+ * <code>DetectorChannelInputWrapper</code> is the content provider of the table 
  * viewer defined in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PostscanComposite}.
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.DetectorChannelComposite}.
  * 
  * @author ?
  * @author Marcus Michalsky
  */
-public class PostscanInputWrapper implements IModelUpdateListener,
-											IStructuredContentProvider {
+public class DetectorChannelContentProvider implements IModelUpdateListener,
+		IStructuredContentProvider {
 
 	private Viewer currentViewer;
 	
@@ -33,7 +33,7 @@ public class PostscanInputWrapper implements IModelUpdateListener,
 	 */
 	@Override
 	public Object[] getElements(final Object inputElement) {
-		return ((ScanModule)inputElement).getPostscans();
+		return ((ScanModule)inputElement).getChannels();
 	}
 
 	/**
@@ -55,7 +55,6 @@ public class PostscanInputWrapper implements IModelUpdateListener,
 		if(newInput != null) {
 			((ScanModule)newInput).addModelUpdateListener(this);
 		}
-		
 		this.currentViewer = viewer;
 	}
 }

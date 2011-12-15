@@ -92,7 +92,7 @@ public class DetectorChannelComposite extends Composite {
 	    this.tableViewer.getTable().setHeaderVisible(true);
 	    this.tableViewer.getTable().setLinesVisible(true);
 	    
-	    this.tableViewer.setContentProvider(new DetectorChannelInputWrapper());
+	    this.tableViewer.setContentProvider(new DetectorChannelContentProvider());
 	    this.tableViewer.setLabelProvider(new DetectorChannelLabelProvider());
 	    
 	    final CellEditor[] editors = new CellEditor[2];

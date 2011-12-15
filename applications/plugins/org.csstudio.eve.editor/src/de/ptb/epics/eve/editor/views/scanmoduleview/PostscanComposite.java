@@ -95,7 +95,7 @@ public class PostscanComposite extends Composite {
 	    this.tableViewer.getTable().setLinesVisible(true);
 	    
 	    // hier wird eine Liste der vorhandenen Postscans des Scan Moduls erstellt
-	    this.tableViewer.setContentProvider(new PostscanInputWrapper());
+	    this.tableViewer.setContentProvider(new PostscanContentProvider());
 	    this.tableViewer.setLabelProvider(new PostscanLabelProvider());
 	    
 	    final CellEditor[] editors = new CellEditor[3];

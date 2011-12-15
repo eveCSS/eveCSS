@@ -106,7 +106,7 @@ public class MotorAxisComposite extends Composite {
 	    this.tableViewer.getTable().setHeaderVisible(true);
 	    this.tableViewer.getTable().setLinesVisible(true);
 	    
-	    this.tableViewer.setContentProvider(new MotorAxisInputWrapper());
+	    this.tableViewer.setContentProvider(new MotorAxisContentProvider());
 	    this.tableViewer.setLabelProvider(new MotorAxisLabelProvider());
 	    
 	    final CellEditor[] editors = new CellEditor[2];

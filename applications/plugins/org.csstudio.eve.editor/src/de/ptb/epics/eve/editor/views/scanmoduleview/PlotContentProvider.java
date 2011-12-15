@@ -14,7 +14,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * 
  * @author Hartmut Scherr
  */
-public class PlotInputWrapper implements IModelUpdateListener,
+public class PlotContentProvider implements IModelUpdateListener,
 										IStructuredContentProvider {
 
 	private Viewer currentViewer;

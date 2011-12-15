@@ -15,7 +15,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author ?
  * @author Marcus Michalsky
  */
-public class PrescanInputWrapper implements IModelUpdateListener,
+public class PrescanContentProvider implements IModelUpdateListener,
 		IStructuredContentProvider {
 
 	private Viewer currentViewer;
