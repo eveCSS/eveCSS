@@ -1,17 +1,9 @@
 package de.ptb.epics.eve.editor.graphical;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -47,17 +39,16 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.progress.IProgressService;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
-import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
-import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionSaverToXMLusingXerces;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
@@ -65,6 +56,7 @@ import de.ptb.epics.eve.editor.dialogs.LostDevicesDialog;
 import de.ptb.epics.eve.editor.graphical.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.EventEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
+import de.ptb.epics.eve.editor.jobs.file.Save;
 import de.ptb.epics.eve.editor.jobs.filloptions.SaveAllDetectorValues;
 import de.ptb.epics.eve.editor.jobs.filloptions.SaveAllMotorPositions;
 import de.ptb.epics.eve.editor.views.ErrorView;
@@ -161,8 +153,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	/*
 	 * 
 	 */
-	private Menu createContextMenu()
-	{
+	private Menu createContextMenu() {
 		menu = new Menu(this.viewer.getControl());
 		this.addAppendedScanModulMenuItem = new MenuItem(menu, SWT.NONE);
 		this.addAppendedScanModulMenuItem.setText("Add appended Scan Module");
@@ -279,8 +270,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	/*
 	 * wrapper to update all views
 	 */
-	private void updateViews()
-	{
+	private void updateViews() {
 		updateErrorView();
 		updateScanView();
 		updateScanModuleView();
@@ -293,15 +283,13 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 * @param part the corresponding edit part of the scan module that should
 	 * 		  be selected
 	 */
-	private void selectScanModule(ScanModuleEditPart part)
-	{
+	private void selectScanModule(ScanModuleEditPart part) {
 		// if a scan module was previously selected -> deselect it
 		if(selectedEditPart instanceof ScanModuleEditPart) {
 			((ScanModuleEditPart)selectedEditPart).setFocus(false);
 		}
 		
-		if(part != null)
-		{
+		if(part != null) {
 			// remember the selected scan module
 			selectedEditPart = part;
 		
@@ -338,8 +326,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	}
 
 	@SuppressWarnings("unchecked")
-	private void refreshAllEditParts(EditPart part)
-	{
+	private void refreshAllEditParts(EditPart part) {
 		scanDescription.removeModelUpdateListener(this);
 		
 		part.refresh();
@@ -394,8 +381,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				// file exists but is empty -> do not read
 				return;
 			}
-		}
-		else {
+		} else {
 			// file does not exist -> do not read
 			return;
 		}
@@ -434,102 +420,24 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 */
 	@Override
 	public void doSave(final IProgressMonitor monitor) {
-		
-		// check for errors in the model
-		// if present -> inform the user and cancel save
-		if(scanDescription.getModelErrors().size() > 0)
-		{
-			MessageDialog.openError(
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
-				"Save Error", 
-				"Scandescription could not be saved! " +
-				"Consult the Errors View for more Information.");
-			
+		if(!isSaveAllowed()) {
 			return;
 		}
-		
-		// no errors present -> save
-		
-		// tell the progress monitor the name of the task and the number of 
-		// subtasks it depends on
-		monitor.beginTask("save scandescription", 4);
-		// 1: create files
-		// 2: save whole file
-		// 3: save filtered file
-		// 4: calculate and log difference
-		
-		final FileStoreEditorInput fileStoreEditorInput = 
-				(FileStoreEditorInput)this.getEditorInput();
-		final File scanDescriptionFile = new File(fileStoreEditorInput.getURI());
-		File tempFile = null;
 		try {
-			tempFile = new File(new URL(fileStoreEditorInput.getURI().
-					toString() + ".temp").toURI());
-		} catch (MalformedURLException e1) {
-			logger.error(e1.getMessage(), e1);
-		} catch (URISyntaxException e1) {
-			logger.error(e1.getMessage(), e1);
+			monitor.beginTask("Saving Scan Description", 3);
+			monitor.subTask("determine file name");
+			String saveFileName = ((FileStoreEditorInput)this.getEditorInput()).
+				getURI().getPath().toString();
+			monitor.worked(1);
+			monitor.subTask("creating save routine");
+			Job saveJob = new Save("Save", saveFileName, this.scanDescription, this);
+			monitor.worked(1);
+			monitor.subTask("running save routine");
+			saveJob.schedule();
+			monitor.worked(1);
+		} finally {
+			monitor.done();
 		}
-		
-		monitor.worked(1);
-		
-		try {
-			final FileOutputStream os = new FileOutputStream(scanDescriptionFile);	
-			final FileOutputStream os_temp = new FileOutputStream(tempFile);
-			
-			// save the whole file without filtering first
-			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaverFull = 
-				new ScanDescriptionSaverToXMLusingXerces(os_temp, 
-					scanDescription.getMeasuringStation(), this.scanDescription);
-			scanDescriptionSaverFull.save();
-			
-			// get the size of the unfiltered file
-			long full = tempFile.length();
-			
-			monitor.worked(1);
-	
-			// do the filtering
-			ExcludeFilter measuringStation = new ExcludeFilter();
-			measuringStation.setSource(scanDescription.getMeasuringStation());
-			// comment out following line to deactivate filtering
-			measuringStation.excludeUnusedDevices(scanDescription);
-			
-			// now save the "real" / filtered file
-			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = 
-					new ScanDescriptionSaverToXMLusingXerces(
-							os, measuringStation, this.scanDescription);
-			scanDescriptionSaver.save();
-			
-			// determine filtered file size
-			long filtered = scanDescriptionFile.length();
-			
-			monitor.worked(1);
-
-			// format to percent
-			NumberFormat form = 
-				NumberFormat.getPercentInstance(new Locale("de-DE"));
-			
-			// log the result
-			logger.info("File size reduced due to filtering: " + 
-				(form.format(new Double(((double)(full - filtered))/full))) + 
-				" (" + new DecimalFormat("#.##").format((float)filtered/1024) + 
-				"kB of " + new DecimalFormat("#.##").format((float)full/1024) + 
-				"kB remain)");
-			
-			// delete the temp file
-			tempFile.delete();
-			
-			monitor.worked(1);
-			
-			this.dirty = false;
-			this.firePropertyChange(PROP_DIRTY);
-			
-		} catch(final FileNotFoundException e) {
-			logger.error(e.getMessage(), e);
-		}
-		
-		// tell the progress monitor that the task is finished
-		monitor.done();
 	}
 	
 	/**
@@ -537,67 +445,83 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 */
 	@Override
 	public void doSaveAs() {
-		// als filePath wird das Verzeichnis des aktuellen Scans gesetzt
-		final FileStoreEditorInput fileStoreEditorInput2 = 
-					(FileStoreEditorInput)this.getEditorInput();
-		
-		// does this work under windows ? "/" vs "\" ???
-		int lastSeperatorIndex = 
-			fileStoreEditorInput2.getURI().getRawPath().lastIndexOf("/");
-		final String filePath = fileStoreEditorInput2.getURI().getRawPath().
-										substring(0, lastSeperatorIndex + 1);
-		
-		final FileDialog dialog = 
+		if(!isSaveAllowed()) {
+			return;
+		}
+		// show dialog preconfigured with path of "last" file name
+		final FileDialog fileDialog = 
 				new FileDialog(this.getEditorSite().getShell(), SWT.SAVE);
-		dialog.setFilterPath(filePath);
-		final String fileName = dialog.open();
-
-		String fileNameLang = fileName;
+		fileDialog.setFilterPath(new File(((FileStoreEditorInput)
+				this.getEditorInput()).getURI()).getParent());
+		final String dialogName = fileDialog.open();
 		
-		if(fileName != null) {
-			// eventuel vorhandener Datentyp wird weggenommen
-			final int lastPoint = fileName.lastIndexOf(".");
-			final int lastSep = fileName.lastIndexOf("/");
-			
-			if ((lastPoint > 0) && (lastPoint > lastSep))
-				fileNameLang = fileName.substring(0, lastPoint) + ".scml";
-			else
-				fileNameLang = fileName + ".scml";
+		// file path where the file will be saved
+		String saveFileName;
+		
+		// check dialog result
+		if(dialogName != null) {
+			// adjust filename to ".scml"
+			final int lastPoint = dialogName.lastIndexOf(".");
+			final int lastSep = dialogName.lastIndexOf("/");
+			if ((lastPoint > 0) && (lastPoint > lastSep)) {
+				saveFileName = dialogName.substring(0, lastPoint) + ".scml";
+			} else {
+				saveFileName = dialogName + ".scml";
+			}
 		} else {
 			// user pressed "cancel" -> do nothing
 			return;
 		}
 		
-		final File scanDescriptionFile = new File(fileNameLang);
+		// create the save job
+		Job saveJob = new Save(
+				"Save As", saveFileName, this.scanDescription, this);
 		
-		try {
-			final FileOutputStream os = 
-					new FileOutputStream(scanDescriptionFile);	
+		// run the save job with a progress dialog
+		IProgressService service = (IProgressService) getSite().getService(
+				IProgressService.class);
+		service.showInDialog(getSite().getShell(), saveJob);
+		saveJob.schedule();
+	}
+	
+	/**
+	 * Called by the save as job to update the input.
+	 * 
+	 * @param filename the new file name
+	 */
+	public void resetEditorState(String filename) {
+		logger.debug("reset editor state");
+		
+		final IFileStore fileStore = 
+			EFS.getLocalFileSystem().getStore(new Path(filename));
+		final FileStoreEditorInput fileStoreEditorInput = 
+			new FileStoreEditorInput(fileStore);
+		this.setInput(fileStoreEditorInput);
+		this.firePropertyChange(PROP_INPUT);
+		
+		this.setPartName(fileStoreEditorInput.getName());
+		this.firePropertyChange(PROP_TITLE);
+		
+		this.dirty = false;
+		this.firePropertyChange(PROP_DIRTY);
+	}
 
-			ExcludeFilter measuringStation = new ExcludeFilter();
-			measuringStation.setSource(scanDescription.getMeasuringStation());
-			// comment out following line to deactivate filtering
-			measuringStation.excludeUnusedDevices(scanDescription);
-			
-			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = 
-					new ScanDescriptionSaverToXMLusingXerces(os, 
-														measuringStation, 
-														this.scanDescription);
-			scanDescriptionSaver.save();
-			
-			final IFileStore fileStore = 
-				EFS.getLocalFileSystem().getStore(new Path(fileNameLang));
-			final FileStoreEditorInput fileStoreEditorInput = 
-				new FileStoreEditorInput(fileStore);
-			this.setInput(fileStoreEditorInput);
-			
-			this.dirty = false;
-			this.firePropertyChange(PROP_DIRTY);
-			
-			this.setPartName(fileStoreEditorInput.getName());
-		} catch(final FileNotFoundException e) {
-			logger.error(e.getMessage(), e);
+	/*
+	 * helper for save and save as to determine whether saving is allowed.
+	 * returns true if saving is allowed, false otherwise
+	 */
+	private boolean isSaveAllowed() {
+		// check for errors in the model
+		// if present -> inform the user
+		if(scanDescription.getModelErrors().size() > 0)	{
+			MessageDialog.openError(
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+				"Save Error", 
+				"Scandescription could not be saved! " +
+				"Consult the Error View for more Information.");
+			return false;
 		}
+		return true;
 	}
 	
 	/**
@@ -730,9 +654,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				// user clicked on a scan module
 				
 				selectScanModule((ScanModuleEditPart)part);
-			}
-			else
-			{
+			} else {
 				// user clicked anywhere else -> deselect scan module
 				selectScanModule(null);
 			}
@@ -890,7 +812,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					if(part instanceof ScanModuleEditPart)
 						selectScanModule((ScanModuleEditPart)part);
 				}
-				
 			} catch(Exception ex) {
 				logger.error(ex.getMessage(), ex);
 			}
@@ -990,7 +911,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			// get the scan module the user right-clicked
 			ScanModuleEditPart scanModuleEditPart = 
 					(ScanModuleEditPart)rightClickEditPart;
-
+			
 			// deselect currently selected scan module (if existing)
 			if(selectedEditPart instanceof ScanModuleEditPart) {
 				((ScanModuleEditPart)selectedEditPart).setFocus(false);
@@ -1063,6 +984,10 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		}
 	}
 	
+	/**
+	 * @author Marcus Michalsky
+	 * @since 1.1
+	 */
 	private class SaveAllAxisPositionsSelectionListener implements SelectionListener {
 		
 		/**
@@ -1085,6 +1010,10 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		}
 	}
 	
+	/**
+	 * @author Marcus Michalsky
+	 * @since 1.1
+	 */
 	private class SaveAllDetectorValuesSelectionListener implements SelectionListener {
 		
 		/**

@@ -109,6 +109,9 @@ public class SaveAllMotorPositions extends Job {
 	
 	/**
 	 * deletes all axes present in the scan module
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.1
 	 */
 	private class DeletePresentAxes extends UIJob {
 		
