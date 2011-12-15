@@ -7,6 +7,8 @@ import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -14,7 +16,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.events.SelectionEvent;
@@ -45,7 +49,7 @@ import de.ptb.epics.eve.editor.Activator;
  * @author ?
  * @author Marcus Michalsky
  */
-public class PlotWindowView extends ViewPart implements IModelUpdateListener {
+public class PlotWindowView extends ViewPart implements IModelUpdateListener, ISelectionListener {
 
 	/**
 	 * The unique identifier of <code>PlotWindowView</code>.
@@ -715,11 +719,16 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 		top.setVisible(false);
 		
 		// no model set at program start -> set null
-		setPlotWindow(null, null);
+		setPlotWindow(null);
 		
 		this.setPartName("Plot Window View");
+
+		// listen to selection changes (the selected device's options are 
+		// displayed)
+		getSite().getWorkbenchWindow().getSelectionService().
+				addSelectionListener(this);
+
 	} 
-	
 	// ************************************************************************
 	// ********************** end of createPartControl ************************
 	// ************************************************************************
@@ -753,16 +762,7 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 	 * @throws IllegalArgumentException if neither both arguments are 
 	 * 		   <code>null</code> nor both aren't
 	 */
-	public void setPlotWindow(final PlotWindow plotWindow, 
-							  final ScanModule scanModule) {
-		
-		// method makes only sense if both are set or null
-		if(! ((plotWindow == null && scanModule == null) ||
-			  (plotWindow != null && scanModule != null)) )
-		{
-			throw new IllegalArgumentException("both arguments must either be " +
-					"set or null (no mixes allowed)");
-		}
+	private void setPlotWindow(final PlotWindow plotWindow) {
 		
 		if(plotWindow != null)
 			logger.debug("set plot window (" + plotWindow.getId() + ")");
@@ -771,19 +771,21 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 		
 		// if there was already a model registered with this view stop 
 		// listening to changes
-		if(this.scanModule != null && this.plotWindow != null)
+		if(this.plotWindow != null)
 		{
-			this.scanModule.removeModelUpdateListener(this);
 			this.plotWindow.removeModelUpdateListener(this);
 		}
 		
 		// update the underlying model to the new one
 		this.plotWindow = plotWindow;
-		this.scanModule = scanModule;
+		this.scanModule = null;
 		
 		// if a model is set (not null) -> add listeners
-		if(this.scanModule != null && this.plotWindow != null)
+		if( this.plotWindow != null)
 		{
+			this.scanModule = plotWindow.getScanModule();
+				
+// wird noch ein Listener für das ScanModule benötigt?
 			this.scanModule.addModelUpdateListener(this);
 			this.plotWindow.addModelUpdateListener(this);
 		}
@@ -814,6 +816,11 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 			this.setPartName("Plot Window: " + this.plotWindow.getId());
 			
 			// General
+
+			if (this.scanModule == null) {
+				System.out.println("Es kann nichts gesetzt werden, ScanModule ist null");
+				return;
+			}
 			
 			// determine available motor axes (as choices in select box)
 			availableMotorAxes = scanModule.getAxes();
@@ -1253,6 +1260,70 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 				yAxis2ScaleTypeComboBoxSelectionListener);
 	}
 	
+	@Override
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+
+		logger.debug("selectionChanged in PlotWindowView");	
+		if(selection instanceof IStructuredSelection) {
+			if(((IStructuredSelection) selection).size() == 0) {
+				if (this.scanModule != null) {
+					if (scanModule.getPlotWindows().length == 0)
+					    clearView();
+				}
+				return;
+			}
+			// since at any given time this view can only display options of 
+			// one device we take the first element of the selection
+			Object o = ((IStructuredSelection) selection).toList().get(0);
+			if (o instanceof PlotWindow) {
+				// set new PlotWindow
+				setPlotWindow((PlotWindow)o);
+			}
+			else {
+				System.out.println(   "Instance: " + o);
+//				setChannel(null);
+//				updateEvent(null);
+			}
+		}
+		
+	}
+
+	/**
+	 *  @author scherr
+	 *  
+	 */
+	private void clearView() {
+
+		this.setPartName("No Plot Window selected");
+		// plot window is null -> reset axes
+		this.yAxis1 = null;
+		this.yAxis2 = null;
+		this.scanModule = null;
+
+		this.motorAxisComboBox.setEnabled(false);
+		this.preInitWindowCheckBox.setSelection(false);
+		this.preInitWindowCheckBox.setEnabled(false);
+		this.scaleTypeComboBox.setEnabled(false);
+		
+		this.yAxis1DetectorChannelComboBox.setEnabled(false);
+		this.yAxis1NormalizeChannelComboBox.setEnabled(false);
+		this.yAxis1ColorComboBox.setEnabled(false);
+		this.yAxis1ColorFieldEditor.getColorSelector().setEnabled(false);
+		this.yAxis1LinestyleComboBox.setEnabled(false);
+		this.yAxis1MarkstyleComboBox.setEnabled(false);
+		this.yAxis1ScaletypeComboBox.setEnabled(false);
+		this.yAxis2DetectorChannelComboBox.setEnabled(false);
+		this.yAxis2NormalizeChannelComboBox.setEnabled(false);
+		this.yAxis2ColorComboBox.setEnabled(false);
+		this.yAxis2ColorFieldEditor.getColorSelector().setEnabled(false);
+		this.yAxis2LinestyleComboBox.setEnabled(false);
+		this.yAxis2MarkstyleComboBox.setEnabled(false);
+		this.yAxis2ScaletypeComboBox.setEnabled(false);
+
+		top.setVisible(false);			
+	}
+	
+
 	/*
 	 * Suspends (removes) all model update listeners of the view
 	 */
@@ -2004,6 +2075,7 @@ public class PlotWindowView extends ViewPart implements IModelUpdateListener {
 			plotWindow.addModelUpdateListener(plotWindowView);
 			scanModule.addModelUpdateListener(plotWindowView);
 		}
+
 	}
 	
 	/**

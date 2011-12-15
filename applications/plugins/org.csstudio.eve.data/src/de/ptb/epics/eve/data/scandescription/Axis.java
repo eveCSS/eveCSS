@@ -69,7 +69,7 @@ public class Axis extends AbstractMainPhaseBehavior {
 	// indicates whether the axis is the main axis of the scan module
 	private boolean isMainAxis = false;
 	
-	/// the scan module the axis corresponds to
+	// the scan module the axis corresponds to
 	private ScanModule scanModule;
 	
 	// the plug in controller
@@ -98,6 +98,7 @@ public class Axis extends AbstractMainPhaseBehavior {
 	public ScanModule getScanModule() {
 		return this.scanModule;
 	}
+	
 	/**
 	 * Returns the path of the position file.
 	 * 

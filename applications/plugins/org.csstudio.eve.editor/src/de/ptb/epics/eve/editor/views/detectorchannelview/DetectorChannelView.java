@@ -3,11 +3,15 @@ package de.ptb.epics.eve.editor.views.detectorchannelview;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.custom.CTabFolder;
@@ -31,6 +35,7 @@ import org.eclipse.swt.layout.GridData;
 
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
@@ -46,7 +51,7 @@ import de.ptb.epics.eve.editor.views.EventComposite;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class DetectorChannelView extends ViewPart implements IModelUpdateListener {
+public class DetectorChannelView extends ViewPart implements IModelUpdateListener, ISelectionListener {
 
 	/**
 	 * the unique identifier of the view.
@@ -66,6 +71,8 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 	// the detector channel containing the information that is shown and 
 	// allowed for editing.
 	private Channel currentChannel;
+
+	private ScanModule scanModule;
 	
 	// *******************************************************************
 	// ****************** end of: underlying model ***********************
@@ -306,7 +313,16 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		this.eventsTabFolder.setEnabled(false);
 
 		top.setVisible(false);
+
+		// listen to selection changes (the selected device's options are 
+		// displayed)
+		getSite().getWorkbenchWindow().getSelectionService().
+				addSelectionListener(this);
+
 	}
+	// ************************************************************************
+	// ********************** end of createPartControl ************************
+	// ************************************************************************
 
 	/**
 	 * {@inheritDoc}
@@ -319,7 +335,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 	 * 
 	 * @param channel
 	 */
-	public void setChannel(final Channel channel) {
+	private void setChannel(final Channel channel) {
 		
 		if(channel != null)
 			logger.debug("set channel (" + 
@@ -327,12 +343,24 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		else
 			logger.debug("set channel (null)");
 		
+		// if a current Channel is set, stop listening to it
+		// TODO: Die Listener können wahrscheinlich sowieso weg,
+		// weil die View auf alle Änderungen hört die die DetectorEinstellungen
+		// betreffen und in der scanModuleView vorgenommen werden
+		// Für Änderungen die in der DetectorChannelView gemacht werden,
+		// wird der Listener sowieso ausgeschaltet, weil auf gewollte Änderungen
+		// im Schema keine Listener benötigt werden (=> Endlosschleife)
+		// Die Listener könnten nur benötigt werden, wenn an anderer / von anderer
+		// Stelle Änderungen an den Channel-Einstellungen vorgenommen werden
+		// könnten. Dies sehe ich aber erstmal nicht. (Hartmut 13.12.11)
 		if(this.currentChannel != null) {
 			this.currentChannel.removeModelUpdateListener(this);
 		}
 		this.currentChannel = channel;
+		this.scanModule = null;
 		
 		if(this.currentChannel != null) {
+			this.scanModule = channel.getScanModul();
 			this.currentChannel.addModelUpdateListener(this);
 		}
 		
@@ -423,6 +451,8 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			
 		} else {
 			// currentChannel is null
+			System.out.println("\n   Kommt dieser Aufruf überhaupt noch?");
+			System.out.println("   wenn ja, clearView() aufrufen!");
 			this.averageText.setText("");
 			this.maxDeviationText.setText("");
 			this.minimumText.setText("");
@@ -452,6 +482,76 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		addListeners();
 	}
 
+	@Override
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+		
+		System.out.println("selectionChanged in DetectorChannelView: " + selection);
+		if(selection instanceof IStructuredSelection) {
+			System.out.println("   IStructuredSelection");
+			if(((IStructuredSelection) selection).size() == 0) {
+				System.out.println("      Size = null");
+
+				if (this.scanModule != null) {
+					if (scanModule.getChannels().length == 0)
+						clearView();
+				}
+				return;
+			}
+			// since at any given time this view can only display options of 
+			// one device we take the first element of the selection
+			Object o = ((IStructuredSelection) selection).toList().get(0);
+			if (o instanceof Channel) {
+				System.out.println("   Channel: " + ((Channel)o).getDetectorChannel().getFullIdentifyer());
+				// Display Channel Settings in DetectorChannelView
+				// Hier müssen jetzt die ganzen Detektoreinstellungen angezeigt werden
+				// Das soll nicht mehr über einen anderen Modus erfolgen
+				// Änderungen in der ScanModulView sollen keinen direkten
+				// Aufruf mehr in die DetectorChannelView haben.
+				// 1. Aufruf wegnehmen
+				// 2. Hier neue Aktualisierung einfügen
+				// Dann gibt es zwischendurch keine Aktualisierung!
+				setChannel((Channel)o);
+			}
+			else {
+				System.out.println(   "Instance: " + o);
+//				setChannel(null);
+//				updateEvent(null);
+			}
+		}
+	}
+
+	/**
+	 *  @author scherr
+	 *  
+	 */
+	private void clearView() {
+
+		// currentChannel is null
+		this.setPartName("No Detector Channel selected");
+		this.averageText.setText("");
+		this.maxDeviationText.setText("");
+		this.minimumText.setText("");
+		this.maxAttemptsText.setText("");
+		this.confirmTriggerManualCheckBox.setSelection(false);
+		this.detectorReadyEventCheckBox.setSelection(false);
+		this.eventsTabFolder.setEnabled(false);
+		
+		this.averageText.setEnabled(false);
+		this.maxDeviationText.setEnabled(false);
+		this.minimumText.setEnabled(false);
+		this.maxAttemptsText.setEnabled(false);
+		this.confirmTriggerManualCheckBox.setEnabled(false);
+		this.detectorReadyEventCheckBox.setEnabled(false);
+		
+		this.averageErrorLabel.setImage(null);
+		this.maxDeviationErrorLabel.setImage(null);
+		this.minimumErrorLabel.setImage(null);
+		this.maxAttemptsErrorLabel.setImage(null);
+		
+		this.redoEventComposite.setControlEventManager(null);		
+		top.setVisible(false);
+	}
+	
 	/*
 	 * 
 	 */
@@ -733,15 +833,15 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 					currentChannel.getAbstractDevice().getID(), 
 					currentChannel.getAbstractDevice().getParent().getName(), 
 					currentChannel.getAbstractDevice().getName(), 
-					currentChannel.getParentScanModul().getChain().getId(), 
-					currentChannel.getParentScanModul().getId());
+					currentChannel.getScanModul().getChain().getId(), 
+					currentChannel.getScanModul().getId());
 
 			if(detectorReadyEventCheckBox.getSelection()) {
-				currentChannel.getParentScanModul().getChain().
+				currentChannel.getScanModul().getChain().
 							   getScanDescription().add(detReadyEvent);
 				currentChannel.setDetectorReadyEvent(detReadyEvent);
 			} else {
-				currentChannel.getParentScanModul().getChain().
+				currentChannel.getScanModul().getChain().
 							   getScanDescription().removeEventById(
 									   detReadyEvent.getID());
 				currentChannel.setDetectorReadyEvent(null);
@@ -912,4 +1012,5 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		}
 	}
 
+	
 }

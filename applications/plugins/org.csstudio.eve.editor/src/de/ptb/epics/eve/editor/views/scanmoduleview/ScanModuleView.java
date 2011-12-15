@@ -3,16 +3,14 @@ package de.ptb.epics.eve.editor.views.scanmoduleview;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
-import org.csstudio.swt.xygraph.figures.Trace.TraceType;
-import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.widgets.Label;
@@ -22,12 +20,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.ControlEvent;
@@ -36,17 +28,11 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.RGB;
 
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
-import de.ptb.epics.eve.data.scandescription.Axis;
-import de.ptb.epics.eve.data.scandescription.Channel;
-import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -58,16 +44,17 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventType
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.SelectionProviderWrapper;
 import de.ptb.epics.eve.editor.views.EventComposite;
-import de.ptb.epics.eve.editor.views.plotwindowview.PlotWindowView;
 
 /**
  * <code>ScanModulView</code> shows the currently selected scan module.
  * 
  * @author ?
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
-public class ScanModuleView extends ViewPart implements IModelUpdateListener {
+public class ScanModuleView extends ViewPart implements IModelUpdateListener, ISelectionListener {
 	
 	/**
 	 * the id of the <code>ScanModulView</code>.
@@ -88,9 +75,6 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 	
 	private Composite actionsComposite = null;
 	private ActionsCompositeControlListener actionsCompositeControlListener;
-	
-	private Composite plotComposite = null;
-	private PlotCompositeControlListener plotCompositeControlListener;
 	
 	private Composite eventsComposite = null;
 	private EventsCompositeControlListener eventsCompositeControlListener;
@@ -116,13 +100,6 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 	private SaveMotorpositionsComboModifiedListener 
 			saveMotorpositionsComboModifiedListener;
 	
-	private Table plotWindowsTable = null;	
-	private PlotWindowsTableSelectionListener plotWindowsTableSelectionListener;
-	
-	private Button addPlotWindowButton = null;
-	private AddPlotWindowButtonSelectionListener 
-			addPlotWindowButtonSelectionListener;
-	
 	private CTabFolder eventsTabFolder = null;
 	private EventsTabFolderSelectionListener eventsTabFolderSelectionListener;
 	
@@ -138,31 +115,24 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 	private Composite prescanComposite = null;
 	private Composite postscanComposite = null;
 	private Composite positioningComposite = null;
+	private Composite plotComposite = null;
 
 	private Button appendScheduleEventCheckBox = null;
 	private AppendScheduleEventCheckBoxSelectionListener
 			appendScheduleEventCheckBoxSelectionListener;
-
-	private MenuItem plotWindowRemoveMenuItem;
-	private PlotWindowRemoveMenuItemSelectionListener
-			plotWindowRemoveMenuItemSelectionListener;
-
-	private MenuItem plotWindowChangeIDMenuItem;
-	private PlotWindowChangeIDMenuItemSelectionListener
-			plotWindowChangeIDMenuItemSelectionListener;
 
 	private String[] eventIDs;
 
 	private ExpandItem item0;
 	private ExpandItem item1;
 	private ExpandItem item2;
-	private ExpandItem item3;
 
 	private CTabItem motorAxisTab;
 	private CTabItem detectorChannelTab;
 	private CTabItem prescanTab;
 	private CTabItem postscanTab;
 	private CTabItem positioningTab;
+	private CTabItem plotTab;
 	
 	private CTabItem pauseEventsTabItem;
 	private CTabItem redoEventsTabItem;
@@ -172,7 +142,13 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 	private ExcludeDevicesOfScanModuleFilterManualUpdate measuringStation;
 	private ExcludeDevicesOfScanModuleFilterManualUpdate measuringStationPrescan;
 	private ExcludeDevicesOfScanModuleFilterManualUpdate measuringStationPostscan;
-	
+
+	// the selection service only accepts one selection provider per view,
+	// since we have three tables capable of providing selections a wrapper 
+	// handles them and registers the active one with the global selection 
+	// service
+	protected SelectionProviderWrapper selectionProviderWrapper;
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -207,8 +183,6 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 			return;
 		}
 		
-		// ***
-		
 		final java.util.List<Event> events = Activator.getDefault()
 				.getMeasuringStation().getEvents();
 		this.eventIDs = new String[events.size()];
@@ -235,16 +209,22 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 		// Actions Section
 		createActionsTabFolder();
 
-		// Plot Section
-		createPlotTabFolder();
-
 		// Event Section
 		createEventsTabFolder();
 
 		this.setEnabledForAll(false);
 		
 		top.setVisible(false);
-	}
+
+		// listen to selection changes (the selected device's options are 
+		// displayed)
+		getSite().getWorkbenchWindow().getSelectionService().
+				addSelectionListener(this);
+		
+		selectionProviderWrapper = new SelectionProviderWrapper();
+		getSite().setSelectionProvider(selectionProviderWrapper);
+
+	} // end of: createPartControl()
 
 	/*
 	 * called by CreatePartControl to create the contents of the first 
@@ -373,9 +353,9 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 		this.behaviorTabFolder = new CTabFolder(this.actionsComposite, SWT.FLAT);
 		this.behaviorTabFolder.setLayoutData(gridData);
 		
-		motorAxisComposite = new MotorAxisComposite(
+		motorAxisComposite = new MotorAxisComposite(this, 
 				behaviorTabFolder, SWT.NONE, this.measuringStation);
-		detectorChannelComposite = new DetectorChannelComposite(
+		detectorChannelComposite = new DetectorChannelComposite(this, 
 				behaviorTabFolder, SWT.NONE, this.measuringStation);
 		prescanComposite = new PrescanComposite(
 				behaviorTabFolder, SWT.NONE, this.measuringStationPrescan);
@@ -383,6 +363,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 				behaviorTabFolder, SWT.NONE, this.measuringStationPostscan);
 		positioningComposite = new PositioningComposite(
 				behaviorTabFolder, SWT.NONE);
+		plotComposite = new PlotComposite(this, behaviorTabFolder, SWT.NONE);
 		
 		this.motorAxisTab = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
 		this.motorAxisTab.setText(" Motor Axes ");
@@ -412,76 +393,15 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 		this.positioningTab.setToolTipText(
 				"Move motor to calculated position after scan module is done");
 		this.positioningTab.setControl(this.positioningComposite);
-		
+
+		this.plotTab = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
+		this.plotTab.setText(" Plot ");
+		this.plotTab.setToolTipText("Plot settings for this scan module");
+		this.plotTab.setControl(this.plotComposite);
+
 		this.item1 = new ExpandItem(this.bar, SWT.NONE, 0);
 		item1.setText("Actions");
 		item1.setControl(this.actionsComposite);
-	}
-	
-	/*
-	 * called by CreatePartControl to create the contents of the third 
-	 * expand item (Plot Tab)
-	 */
-	private void createPlotTabFolder()
-	{
-		GridLayout gridLayout = new GridLayout();
-		this.plotComposite = new Composite(this.bar, SWT.NONE);
-		this.plotComposite.setLayout(gridLayout);
-		this.plotCompositeControlListener = 
-				new PlotCompositeControlListener();	
-		this.plotComposite.addControlListener(
-				plotCompositeControlListener);
-		
-		plotWindowsTable = new Table(this.plotComposite, SWT.FULL_SELECTION);
-		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		plotWindowsTable.setLayoutData(gridData);
-		this.plotWindowsTableSelectionListener = 
-				new PlotWindowsTableSelectionListener();
-		this.plotWindowsTable.addSelectionListener(
-				plotWindowsTableSelectionListener);
-		
-		Menu menu = new Menu(plotWindowsTable);
-		plotWindowRemoveMenuItem = new MenuItem(menu, SWT.MENU);
-		plotWindowRemoveMenuItem.setText("Remove Plot Window");
-		plotWindowRemoveMenuItem.setEnabled(false);
-		this.plotWindowRemoveMenuItemSelectionListener = 
-				new PlotWindowRemoveMenuItemSelectionListener();
-		this.plotWindowRemoveMenuItem.addSelectionListener(
-				plotWindowRemoveMenuItemSelectionListener);
-		
-		plotWindowChangeIDMenuItem = new MenuItem(menu, SWT.MENU);
-		plotWindowChangeIDMenuItem.setText("Change ID");
-		plotWindowChangeIDMenuItem.setEnabled(false);
-		this.plotWindowChangeIDMenuItemSelectionListener = 
-				new PlotWindowChangeIDMenuItemSelectionListener();	
-		this.plotWindowChangeIDMenuItem.addSelectionListener(
-				plotWindowChangeIDMenuItemSelectionListener);
-		
-		plotWindowsTable.setMenu(menu);
-						
-		addPlotWindowButton = new Button(this.plotComposite, SWT.NONE);
-		addPlotWindowButton.setText("Add Plot Window");
-		this.addPlotWindowButtonSelectionListener = 
-				new AddPlotWindowButtonSelectionListener();
-		this.addPlotWindowButton.addSelectionListener(
-				addPlotWindowButtonSelectionListener);
-		
-		plotWindowsTable.setHeaderVisible(true);
-		plotWindowsTable.setLinesVisible(true);
-
-		TableColumn tableColumn1 = new TableColumn(plotWindowsTable, SWT.NONE);
-		tableColumn1.setWidth(260);
-		tableColumn1.setText("Plot Window");
-		//tableColumn1.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
-	
-		this.item2 = new ExpandItem(this.bar, SWT.NONE, 0);
-		item2.setText("Plot");
-		item2.setHeight(this.plotComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		item2.setControl(this.plotComposite);
 	}
 	
 	/*
@@ -544,10 +464,10 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 		this.appendScheduleEventCheckBox.addSelectionListener(
 				appendScheduleEventCheckBoxSelectionListener);
 		
-		this.item3 = new ExpandItem(this.bar, SWT.NONE, 0);
-		item3.setText("Event options");
-		item3.setHeight(this.eventsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		item3.setControl(this.eventsComposite);
+		this.item2 = new ExpandItem(this.bar, SWT.NONE, 0);
+		item2.setText("Event options");
+		item2.setHeight(this.eventsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		item2.setControl(this.eventsComposite);
 	}	
 	
 	// ***********************************************************************
@@ -590,7 +510,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 		this.measuringStationPrescan.setScanModule(this.currentScanModule);
 		this.measuringStationPostscan.setScanModule(this.currentScanModule);
 		//this.measuringStationPositioning.setScanModule(this.currentScanModule);
-			
+
 		updateEvent(null);
 	}
 
@@ -601,9 +521,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 		this.behaviorTabFolder.setEnabled(enabled);
 		this.motorAxisComposite.setEnabled(enabled);
 		this.detectorChannelComposite.setEnabled(enabled);
-		// pre, post, positioning ???
-		this.plotWindowsTable.setEnabled(enabled);
-		this.addPlotWindowButton.setEnabled(enabled);
+		// pre, post, positioning, plot ???
 		this.eventsTabFolder.setEnabled(enabled);
 		this.saveMotorpositionsCombo.setEnabled(enabled);
 
@@ -621,12 +539,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 		this.prescanTab.setImage(null);
 		this.postscanTab.setImage(null);
 		this.positioningTab.setImage(null);
-		
-		TableItem[] items = this.plotWindowsTable.getItems();
-		for(TableItem ti : items)
-		{
-			ti.setImage((Image)null);
-		}
+		this.plotTab.setImage(null);
 		
 		boolean motorAxisErrors = false;
 		boolean detectorChannelErrors = false;
@@ -680,28 +593,9 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 										ISharedImages.IMG_OBJS_ERROR_TSK));
 		}
 		if(plotWindowErrors) {
-			
-			
-			PlotWindow[] plotWindows = this.currentScanModule.getPlotWindows();
-			TableItem[] tableItems = this.plotWindowsTable.getItems();
-			
-			for(int i = 0; i < Math.min(plotWindows.length, tableItems.length); 
-			    ++i) {
-
-				//tableItems[i].setImage((Image)null);
-
-				final Iterator<IModelError> iter = 
-					plotWindows[i].getModelErrors().iterator();
-				while(iter.hasNext()) {
-					final IModelError modelError = iter.next();
-					if(modelError instanceof PlotWindowError) {
-						tableItems[i].setImage(PlatformUI.getWorkbench().
-											 getSharedImages().getImage(
-											 ISharedImages.IMG_OBJS_ERROR_TSK));
-					} 
-				}
-			}
-			
+			this.plotTab.setImage(PlatformUI.getWorkbench().
+					getSharedImages().getImage(
+					ISharedImages.IMG_OBJS_ERROR_TSK));
 		}
 		
 		
@@ -805,76 +699,17 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 			
 			((MotorAxisComposite) this.motorAxisComposite).setScanModule(
 					this.currentScanModule);
-			((DetectorChannelComposite) this.detectorChannelComposite).
-				setScanModule(this.currentScanModule);
+			((DetectorChannelComposite) this.detectorChannelComposite).setScanModule(
+					this.currentScanModule);
 			((PrescanComposite) this.prescanComposite).setScanModule(
 					this.currentScanModule);
 			((PostscanComposite) this.postscanComposite).setScanModule(
 					this.currentScanModule);
 			((PositioningComposite) this.positioningComposite).setScanModule(
 					this.currentScanModule);
+			((PlotComposite) this.plotComposite).setScanModule(
+					this.currentScanModule);
 
-			// try to find the plot window view
-			IViewPart plotWindowView = PlatformUI.getWorkbench().
-			  									 getActiveWorkbenchWindow().
-			  									 getActivePage().
-			  									 findView(PlotWindowView.ID);
-			
-			// plot related issues
-			this.plotWindowsTable.removeAll();
-			
-			// for each plot window in the scan module ...
-			PlotWindow[] plotWindows = this.currentScanModule.getPlotWindows();
-			for (int i = 0; i < plotWindows.length; ++i) {
-				// ... create a table item with id
-				TableItem item = new TableItem(this.plotWindowsTable, SWT.NONE);
-				item.setText(Integer.toString(plotWindows[i].getId()));
-				item.setData(plotWindows[i]);
-				
-				// if the plot contains errors, append an error symbol
-				final Iterator<IModelError> it = 
-						plotWindows[i].getModelErrors().iterator();
-				while(it.hasNext()) {
-					final IModelError modelError = it.next();
-					if(modelError instanceof PlotWindowError) {
-						item.setImage(PlatformUI.getWorkbench().
-									  getSharedImages().getImage(
-									  ISharedImages.IMG_OBJS_ERROR_TSK));
-					} 
-				}
-			}
-		
-			if (this.plotWindowsTable.getItems().length == 0) {
-				// there are no items in the table -> disable menu options
-				this.plotWindowRemoveMenuItem.setEnabled(false);
-				this.plotWindowChangeIDMenuItem.setEnabled(false);
-				if(plotWindowView != null)
-				{
-					((PlotWindowView)plotWindowView).setPlotWindow(null, null);
-				}
-			} else {
-				// table is not empty -> allow menu items
-				this.plotWindowRemoveMenuItem.setEnabled(true);
-				this.plotWindowChangeIDMenuItem.setEnabled(true);
-				
-				if(modelUpdateEvent == null)
-				{
-					// update called by the view itself (no event from another)
-					// (= setPlotWindow called updateEvent)
-					// -> select first item
-					plotWindowsTable.select(0);
-					// tell the plot window view about the selected item
-					
-					if(plotWindowView != null)
-					{
-						((PlotWindowView)plotWindowView).setPlotWindow(
-							(PlotWindow)plotWindowsTable.getItem(0).getData(), 
-							currentScanModule);
-					}
-				}
-			}
-			// end of: plot related issues
-			
 			this.triggerEventComposite.setControlEventManager(
 					this.currentScanModule.getTriggerControlEventManager());
 			this.breakEventComposite.setControlEventManager(
@@ -899,7 +734,6 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 			
 			// expand items
 			item1.setExpanded(true);
-			item2.setExpanded(true);
 			
 		} else { // currentScanModule == null
 			// no scan module selected -> reset contents
@@ -918,16 +752,8 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 			((PostscanComposite) this.postscanComposite).setScanModule(null);
 			((PositioningComposite) this.positioningComposite)
 					.setScanModule(null);
-			
-			// try to find the plot window view
-			IViewPart plotWindowView = PlatformUI.getWorkbench().
-			  									 getActiveWorkbenchWindow().
-			  									 getActivePage().
-			  									 findView(PlotWindowView.ID);
-			if(plotWindowView != null)
-			{
-				((PlotWindowView)plotWindowView).setPlotWindow(null, null);
-			}
+
+// TODO: Hartmut, hier muß noch das PlotComposite zurückgesetzt werden			
 			
 			triggerEventComposite.setControlEventManager(null);
 			breakEventComposite.setControlEventManager(null);
@@ -957,17 +783,6 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 				confirmTriggerCheckBoxSelectionListener);
 		this.saveMotorpositionsCombo.addModifyListener(
 				saveMotorpositionsComboModifiedListener);
-		
-		this.plotComposite.addControlListener(plotCompositeControlListener);
-		this.plotWindowsTable.addSelectionListener(
-				plotWindowsTableSelectionListener);
-		this.plotWindowRemoveMenuItem.addSelectionListener(
-				plotWindowRemoveMenuItemSelectionListener);
-		this.plotWindowChangeIDMenuItem.addSelectionListener(
-				plotWindowChangeIDMenuItemSelectionListener);
-		this.addPlotWindowButton.addSelectionListener(
-				addPlotWindowButtonSelectionListener);
-		
 		this.eventsTabFolder.addSelectionListener(
 				eventsTabFolderSelectionListener);
 		this.eventsComposite.addControlListener(eventsCompositeControlListener);
@@ -990,17 +805,6 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 				confirmTriggerCheckBoxSelectionListener);
 		this.saveMotorpositionsCombo.removeModifyListener(
 				saveMotorpositionsComboModifiedListener);
-		
-		this.plotComposite.removeControlListener(plotCompositeControlListener);
-		this.plotWindowsTable.removeSelectionListener(
-				plotWindowsTableSelectionListener);
-		this.plotWindowRemoveMenuItem.removeSelectionListener(
-				plotWindowRemoveMenuItemSelectionListener);
-		this.plotWindowChangeIDMenuItem.removeSelectionListener(
-				plotWindowChangeIDMenuItemSelectionListener);
-		this.addPlotWindowButton.removeSelectionListener(
-				addPlotWindowButtonSelectionListener);
-		
 		this.eventsTabFolder.removeSelectionListener(
 				eventsTabFolderSelectionListener);
 		this.eventsComposite.removeControlListener(
@@ -1030,9 +834,6 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 		if (item2.getExpanded()) {
 			amount++;
 		}
-		if (item3.getExpanded()) {
-			amount++;
-		}
 
 		if (amount > 0) {
 			height /= amount;
@@ -1042,10 +843,14 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 			if(item2.getExpanded()) {
 				item2.setHeight(height < 150 ? 150 : height);
 			}
-			if(item3.getExpanded()) {
-				item3.setHeight(height < 150 ? 150 : height);
-			}
 		}
+	}
+
+	@Override
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+		// TODO Auto-generated method stub
+		System.out.println("selectionChangedListener von ScanModulView");
+		
 	}
 	
 	// ************************************************************************
@@ -1053,43 +858,6 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 	// ************************************************************************
 	
 	// ************************ Selection Listener ****************************
-	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>plotWindowsTable</code>.
-	 */
-	class PlotWindowsTableSelectionListener implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-		
-		/** 
-		 * {@inheritDoc}<br><br>
-		 * Updates the contents of the plot window view.
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			
-			// search for the plot window view
-			IViewReference[] ref = getSite().getPage().getViewReferences();
-			PlotWindowView plotWindowView = null;
-			for (int i = 0; i < ref.length; ++i) {
-				if (ref[i].getId().equals(PlotWindowView.ID)) {
-					plotWindowView = (PlotWindowView) ref[i].getPart(false);
-				}
-			}
-			// if found -> update data
-			if(plotWindowView != null) {
-				final PlotWindow plotWindow = 
-					(PlotWindow)plotWindowsTable.getSelection()[0].getData();
-				plotWindowView.setPlotWindow(plotWindow, currentScanModule);
-			}
-		}
-	}
 	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
@@ -1113,144 +881,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 					confirmTriggerCheckBox.getSelection());		
 		}
 	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>plotWindowRemoveMenuItem</code>.
-	 */
-	class PlotWindowRemoveMenuItemSelectionListener implements SelectionListener {
 		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			TableItem[] selectedItems = plotWindowsTable.getSelection();
-			for (int i = 0; i < selectedItems.length; ++i) {
-				currentScanModule.remove((PlotWindow) 
-						selectedItems[i].getData());
-			}
-		}
-	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>plotWindowChangeIDMenuItem</code>.
-	 */
-	class PlotWindowChangeIDMenuItemSelectionListener 
-												implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			Shell shell = getSite().getShell();
-			TableItem[] selectedItems = plotWindowsTable.getSelection();
-			for (int i = 0; i < selectedItems.length; ++i) {
-				PlotWindow plotWindow = (PlotWindow) selectedItems[i].getData();
-				InputDialog dialog = new InputDialog(shell,
-						"Change ID for Plot Window",
-						"Please enter the new ID", "" + plotWindow.getId(), null);
-				if (InputDialog.OK == dialog.open()) {
-					// Id wird nur gesetzt, wenn es sie noch nicht gibt
-					int newId = Integer.parseInt(dialog.getValue());
-
-					PlotWindow[] plotWindows = currentScanModule.getPlotWindows();
-					boolean setId = true;
-					for (int j = 0; j < plotWindows.length; ++j) {
-						if (newId == plotWindows[j].getId()) {
-							// Id wird nicht gesetzt, da schon vorhanden
-							setId = false;
-						}
-					}
-					if (setId) {
-						plotWindow.setId(newId);
-					}
-				}
-			}
-		}
-	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>addPlotWindowButton</code>.
-	 */
-	class AddPlotWindowButtonSelectionListener implements SelectionListener {
-		
-		private Axis[] availableMotorAxes;
-		private Channel[] availableDetectorChannels;
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-
-		public void widgetSelected(SelectionEvent e) {
-			int newID = 1;
-			PlotWindow[] plotWindows = currentScanModule.getPlotWindows();
-			do {
-				boolean repeat = false;
-				for (int i = 0; i < plotWindows.length; ++i) {
-					if (plotWindows[i].getId() == newID) {
-						newID++;
-						repeat = true;
-						break;
-					}
-				}
-				if (!repeat) break;
-			} while(true);
-			PlotWindow plotWindow = new PlotWindow();
-			plotWindow.setId(newID);
-
-			// if only one axis available, set this axis as default
-			availableMotorAxes = currentScanModule.getAxes();
-			if (availableMotorAxes.length == 1) {
-				plotWindow.setXAxis(availableMotorAxes[0].getMotorAxis());
-			}
-
-			// if only one channel available, create a yAxis and set 
-			// this channel as default
-			availableDetectorChannels = currentScanModule.getChannels();
-			if (availableDetectorChannels.length == 1) {
-
-				YAxis yAxis1 = new YAxis();
-				// default values for color, line style and mark style
-				yAxis1.setColor(new RGB(0,0,255));
-				yAxis1.setLinestyle(TraceType.SOLID_LINE);
-				yAxis1.setMarkstyle(PointStyle.NONE);
-
-				yAxis1.setDetectorChannel(availableDetectorChannels[0].getDetectorChannel());
-				plotWindow.addYAxis(yAxis1);
-			}
-
-			currentScanModule.add(plotWindow);
-			logger.debug("plot window added");
-			logger.debug("plot window count: " + currentScanModule.getPlotWindows().length);
-		}
-	}
-	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of
 	 * <code>eventsTabFolder</code>.
@@ -1326,12 +957,13 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 	 * <code>triggerDelayText</code>.
 	 */
 	class TriggerDelayTextModifiedListener implements ModifyListener {
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void modifyText(ModifyEvent e) {
+			System.out.println("TriggerDelayTextModifiedListener aufgerufen, warum?");
 			if (triggerDelayText.getText().equals("")) {
 				currentScanModule
 							.setTriggerdelay(Double.NEGATIVE_INFINITY);
@@ -1481,27 +1113,5 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener {
 			resize();
 		}
 	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.ControlListener} of
-	 * <code>plottingComposite</code>.
-	 */
-	class PlotCompositeControlListener implements ControlListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlMoved(ControlEvent e) {
-			resize();
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlResized(ControlEvent e) {
-			resize();
-		}
-	}
+
 }

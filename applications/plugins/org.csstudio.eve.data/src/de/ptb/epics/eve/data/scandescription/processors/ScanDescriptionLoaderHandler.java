@@ -395,7 +395,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentPositioning = new Positioning();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_LOADING;
 			} else if (qName.equals("plot")) {
-				this.currentPlotWindow = new PlotWindow();
+				this.currentPlotWindow = new PlotWindow(this.currentScanModul);
 				this.currentPlotWindow.setId(Integer.parseInt(atts
 						.getValue("id")));
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_LOADING;

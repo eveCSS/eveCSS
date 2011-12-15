@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionEvent;
@@ -12,6 +14,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Label;
@@ -32,7 +36,7 @@ import de.ptb.epics.eve.editor.Activator;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class MotorAxisView extends ViewPart implements IModelUpdateListener {
+public class MotorAxisView extends ViewPart implements IModelUpdateListener, ISelectionListener {
 
 	/**
 	 * the unique identifier of the view.
@@ -208,6 +212,12 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 		
 		// content not visible after creation of the view
 		top.setVisible(false);
+		
+		// listen to selection changes (the selected device's options are 
+		// displayed)
+		getSite().getWorkbenchWindow().getSelectionService().
+				addSelectionListener(this);
+
 	}
 	
 	/**
@@ -224,7 +234,7 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 	 * @param axis the {@link de.ptb.epics.eve.data.scandescription.Axis} that 
 	 * 		  should be set
 	 */
-	public void setCurrentAxis(final Axis axis) {
+	private void setAxis(final Axis axis) {
 		if(axis != null) {
 			logger.debug("axis set to: " + axis.getMotorAxis().getID());
 		} else {
@@ -352,6 +362,65 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 		addListeners();
 	}
 	
+	@Override
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+
+		System.out.println("selectionChanged in MotorAxisView: " + selection);
+		if(selection instanceof IStructuredSelection) {
+			System.out.println("   IStructuredSelection");
+			if(((IStructuredSelection) selection).size() == 0) {
+				System.out.println("      Size = null");
+// Nur wenn keine Achsen mehr da sind, soll die View wirklich gelöscht werden!
+//				if (scanModule.getChannels())
+				System.out.println("   this.scanModule: " + this.scanModule);
+				System.out.println("   scanModule: " + this.scanModule);
+				System.out.println("   currentAxis: " + currentAxis);
+				if (this.scanModule != null) {
+					System.out.println("   Axes: " + scanModule.getAxes().length);
+					if (scanModule.getAxes().length == 0)
+						clearView();
+				}
+				return;
+			}
+			// since at any given time this view can only display options of 
+			// one device we take the first element of the selection
+			Object o = ((IStructuredSelection) selection).toList().get(0);
+			if (o instanceof Axis) {
+				System.out.println("   Achse: " + ((Axis)o).getMotorAxis().getFullIdentifyer());
+				// Display Channel Settings in DetectorChannelView
+				// Hier müssen jetzt die ganzen Detektoreinstellungen angezeigt werden
+				// Das soll nicht mehr über einen anderen Modus erfolgen
+				// Änderungen in der ScanModulView sollen keinen direkten
+				// Aufruf mehr in die DetectorChannelView haben.
+				// 1. Aufruf wegnehmen
+				// 2. Hier neue Aktualisierung einfügen
+				// Dann gibt es zwischendurch keine Aktualisierung!
+				setAxis((Axis)o);
+			}
+			else {
+				System.out.println(   "Instance: " + o);
+//				setChannel(null);
+//				updateEvent(null);
+			}
+		}
+		
+	}
+	/**
+	 *  @author scherr
+	 *  
+	 */
+	private void clearView() {
+
+		// currentAxis is null
+		this.setPartName("No Motor Axis selected");
+		this.stepFunctionCombo.setText("");
+		this.positionModeCombo.setText("");
+		this.stepFunctionCombo.setEnabled(false);
+		this.positionModeCombo.setEnabled(false);
+		top.setVisible(false);
+	}
+
+	
 	/**
 	 * 
 	 */
@@ -443,4 +512,7 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener {
 			}
 		}
 	}
+
+
+
 }

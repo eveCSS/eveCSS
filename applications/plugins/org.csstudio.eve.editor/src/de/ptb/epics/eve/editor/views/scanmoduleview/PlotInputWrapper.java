@@ -8,15 +8,14 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateList
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
 /**
- * <code>MotorAxisInputWrapper</code> is the content provider of the table 
+ * <code>PlotInputWrapper</code> is the content provider of the table 
  * viewer defined in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.MotorAxisComposite}.
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PlotComposite}.
  * 
- * @author ?
- * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
-public class MotorAxisInputWrapper implements IModelUpdateListener,
-												IStructuredContentProvider {
+public class PlotInputWrapper implements IModelUpdateListener,
+										IStructuredContentProvider {
 
 	private Viewer currentViewer;
 	
@@ -33,8 +32,7 @@ public class MotorAxisInputWrapper implements IModelUpdateListener,
 	 */
 	@Override
 	public Object[] getElements(final Object inputElement) {
-		System.out.println("\nGetElements von MotorAxisInputWrapper aufgerufen");
-		return ((ScanModule)inputElement).getAxes();
+		return ((ScanModule)inputElement).getPlotWindows();
 	}
 
 	/**

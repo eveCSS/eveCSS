@@ -12,8 +12,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -21,23 +21,19 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
-import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
-import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
-import de.ptb.epics.eve.editor.views.scanmoduleview.MotorAxisComposite.SetAxisAction;
 
 /**
  * <code>DetectorChannelComposite</code>. is part of the
@@ -53,6 +49,7 @@ public class DetectorChannelComposite extends Composite {
 	private ScanModule scanModule;
 	private MenuManager menuManager;
 	private final IMeasuringStation measuringStation;
+	private ViewPart parentView;
 	
 	/**
 	 * Constructs a <code>DetectorChannelComposite</code>.
@@ -62,9 +59,10 @@ public class DetectorChannelComposite extends Composite {
 	 * @param measuringStation the measuring station (containing available 
 	 * 		  detector channels)
 	 */
-	public DetectorChannelComposite(final Composite parent, final int style, 
+	public DetectorChannelComposite(final ViewPart parentView, final Composite parent, final int style, 
 									final IMeasuringStation measuringStation) {
 		super(parent, style);
+		this.parentView = parentView;
 		this.measuringStation = measuringStation;
 
 		final GridLayout gridLayout = new GridLayout();
@@ -107,10 +105,9 @@ public class DetectorChannelComposite extends Composite {
 	    final String[] props = {"device", "value"};
 	    
 	    this.tableViewer.setColumnProperties(props);
-
-		this.tableViewer.getTable().addSelectionListener(
-				new TableViewerSelectionListener());
 	    
+		this.tableViewer.getTable().addFocusListener(new TableViewerFocusListener());
+
 		menuManager = new MenuManager("#PopupMenu");
 		
 		menuManager.setRemoveAllWhenShown(true);
@@ -119,27 +116,9 @@ public class DetectorChannelComposite extends Composite {
 		final Menu contextMenu = 
 			menuManager.createContextMenu(this.tableViewer.getTable());
 		this.tableViewer.getControl().setMenu(contextMenu);
+
 	}
 
-	/**
-	 * Sets the {@link de.ptb.epics.eve.data.scandescription.Channel} of the 
-	 * {@link de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView}.
-	 *
-	 * @param ch the {@link de.ptb.epics.eve.data.scandescription.Channel} 
-	 * 		  that should be set
-	 */
-	public void setDetectorChannelView(Channel ch) {
-
-		// try to find the detector channel view
-		IViewPart detectorChannelView = PlatformUI.getWorkbench().
-		  									 getActiveWorkbenchWindow().
-		  									 getActivePage().
-		  									 findView(DetectorChannelView.ID);
-		if(detectorChannelView != null) {
-			((DetectorChannelView)detectorChannelView).setChannel(ch);
-		}
-	}
-	
 	/**
 	 * Returns the currently set 
 	 * {@link de.ptb.epics.eve.data.scandescription.ScanModule}.
@@ -160,6 +139,8 @@ public class DetectorChannelComposite extends Composite {
 	 */
 	public void setScanModule(final ScanModule scanModule) {
 
+		System.out.println("\nsetScanModule von DetectorChannelComposite aufgerufen");
+		
 		if(scanModule != null) {
 			this.tableViewer.getTable().setEnabled(true);
 		} else {
@@ -167,26 +148,17 @@ public class DetectorChannelComposite extends Composite {
 		}
 		this.scanModule = scanModule;
 		this.tableViewer.setInput(scanModule);
-		
-		// if there are motor axis present... 
+
+		// if there are detector channels present... 
 		if(tableViewer.getTable().getItems().length > 0)
-		{
-			// ... and none is selected ...
+		{	// ... and none is selected ...
 			if(tableViewer.getTable().getSelectionCount() == 0)
-			{
-				// ... select the first one and set the motor axis view
+			{	// ... select the first one and set the detector channel view
+				((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(null);
 				tableViewer.getTable().select(0);
-				setDetectorChannelView((Channel)tableViewer.getTable().getItem(0).getData());
-			} else {
-				// .. set the motor axis view
-				setDetectorChannelView((Channel)tableViewer.getTable().getSelection()[0].getData());
+				((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
 			}
-		} else {
-			setDetectorChannelView(null);
-		}
-		
-		if(scanModule == null || tableViewer.getTable().getSelectionCount() == 0)
-			setDetectorChannelView(null);
+		} 
 	}
 	
 	/*
@@ -219,7 +191,6 @@ public class DetectorChannelComposite extends Composite {
 				plotWindows[i].addYAxis(yAxis1);
 			}
 		}
-	
 	}
 
 	// ************************************************************************
@@ -229,29 +200,16 @@ public class DetectorChannelComposite extends Composite {
 	/**
 	 * 
 	 */
-	class TableViewerSelectionListener implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
+	class TableViewerFocusListener implements FocusListener {
+
 		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
+		public void focusGained(FocusEvent e) {
+			((ScanModuleView)parentView).selectionProviderWrapper.
+								setSelectionProvider(tableViewer);
 		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
+
 		@Override
-		public void widgetSelected(SelectionEvent e) {
-			final String channelName = 
-				tableViewer.getTable().getSelection()[0].getText(0);
-			Channel[] channels = scanModule.getChannels();
-			for(int i = 0; i < channels.length; ++i) {
-				if(channels[i].getDetectorChannel().
-						getFullIdentifyer().equals(channelName)) {
-					setDetectorChannelView(channels[i]);
-				}
-			}
+		public void focusLost(FocusEvent e) {
 		}
 	}
 	
@@ -398,7 +356,13 @@ public class DetectorChannelComposite extends Composite {
 			Channel c = new Channel(scanModule);
 			c.setDetectorChannel(ch);
 			scanModule.add(c);
-			setDetectorChannelView(c);
+			
+			// the new channel (the last itemCount) will be selected in the table and 
+			// displayed in the detectorChannelView
+			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(null);
+			tableViewer.getTable().select(tableViewer.getTable().getItemCount()-1);
+			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
+
 			tableViewer.refresh();
 		}
 	}

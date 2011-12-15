@@ -19,6 +19,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider {
 
@@ -38,6 +39,11 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider {
 	private int id;
 	
 	/**
+	 * The scan module the plot corresponds to
+	 */
+	private ScanModule scanModule;
+
+	/**
 	 * The plot mode of the plot window.
 	 */
 	private PlotModes mode;
@@ -55,7 +61,13 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider {
 	/**
 	 * Constructs a new plot window.
 	 */
-	public PlotWindow() {
+//	public PlotWindow() {
+	public PlotWindow(final ScanModule scanModule) {
+		if(scanModule == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'scanModule' must not be null!");
+		}
+		this.scanModule = scanModule;
 		this.updateListener = new ArrayList< IModelUpdateListener >();
 		this.yAxis = new ArrayList< YAxis >();
 		this.mode = PlotModes.LINEAR;
@@ -70,6 +82,15 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider {
 		return this.id;
 	}
 	
+	/**
+	 * Returns the scan module the plot is corresponding to.
+	 * 
+	 * @return the corresponding scan module
+	 */
+	public ScanModule getScanModule() {
+		return this.scanModule;
+	}
+
 	/**
 	 * Sets the id of the plot window.
 	 * 

@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -10,16 +11,16 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
@@ -32,7 +33,6 @@ import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView;
 
 /**
  * <code>MotorAxisComposite</code> is part of the 
@@ -44,11 +44,12 @@ import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView;
  */
 public class MotorAxisComposite extends Composite {
 	
+	private static Logger logger = Logger.getLogger(MotorAxisComposite.class);
 	/*
 	 * the table showing the selected motor axes
 	 */
 	private TableViewer tableViewer;
-	private TableViewerSelectionListener tableViewerSelectionListener;
+	private ViewPart parentView;
 	
 	/*
 	 * the scan module the selected motor axes correspond to
@@ -72,9 +73,10 @@ public class MotorAxisComposite extends Composite {
 	 * @param style the style
 	 * @param measuringStation the measuring station the motor axis belongs to
 	 */
-	public MotorAxisComposite(final Composite parent, final int style, 
+	public MotorAxisComposite(final ViewPart parentView, final Composite parent, final int style, 
 							  final IMeasuringStation measuringStation) {
 		super(parent, style);
+		this.parentView = parentView;
 		this.measuringStation = measuringStation;
 
 		final GridLayout gridLayout = new GridLayout();
@@ -118,9 +120,7 @@ public class MotorAxisComposite extends Composite {
 	    
 	    this.tableViewer.setColumnProperties(props);
 
-	    tableViewerSelectionListener = new TableViewerSelectionListener();
-		this.tableViewer.getTable().addSelectionListener(
-				tableViewerSelectionListener);
+		this.tableViewer.getTable().addFocusListener(new TableViewerFocusListener());
 	     
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -134,25 +134,6 @@ public class MotorAxisComposite extends Composite {
 		final Menu contextMenu = menuManager.createContextMenu(
 				this.tableViewer.getTable());
 		this.tableViewer.getControl().setMenu(contextMenu);	
-	}
-	
-	/**
-	 * Sets the {@link de.ptb.epics.eve.data.scandescription.Axis} of the 
-	 * {@link de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView}.
-	 *
-	 * @param motorAxis the {@link de.ptb.epics.eve.data.scandescription.Axis} 
-	 * 		  that should be set
-	 */
-	public void setMotorAxisView(Axis motorAxis) {
-		// try to find the motor axis view
-		IViewPart motorAxisView = PlatformUI.getWorkbench()
-											.getActiveWorkbenchWindow()
-											.getActivePage()
-											.findView(MotorAxisView.ID);
-		if(motorAxisView != null) {
-			// view found -> tell it about the current motor axis
-			((MotorAxisView)motorAxisView).setCurrentAxis(motorAxis);
-		}
 	}
 	
 	/**
@@ -175,7 +156,7 @@ public class MotorAxisComposite extends Composite {
 	 */
 	public void setScanModule(final ScanModule scanModule) {
 
-		removeListeners();
+		logger.debug("setScanModule");
 		
 		if(scanModule != null) {
 			this.tableViewer.getTable().setEnabled(true);
@@ -191,46 +172,21 @@ public class MotorAxisComposite extends Composite {
 			// ... and none is selected ...
 			if(tableViewer.getTable().getSelectionCount() == 0)
 			{
+				((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(null);
 				// ... select the first one and set the motor axis view
 				tableViewer.getTable().select(0);
-				setMotorAxisView((Axis)tableViewer.getTable().getItem(0).getData());
-			} else {
-				// .. set the motor axis view
-				setMotorAxisView((Axis)tableViewer.getTable().getSelection()[0].getData());
+				((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
 			}		
-		} else {
-			setMotorAxisView(null);
 		}
-		
-		if(scanModule == null || tableViewer.getTable().getSelectionCount() == 0)
-			setMotorAxisView(null);
-		
-		addListeners();
 	}	
 	
-	/*
-	 * 
-	 */
-	private void addListeners()
-	{
-		tableViewer.getTable().addSelectionListener(
-				tableViewerSelectionListener);
-	}
-	
-	/*
-	 * 
-	 */
-	private void removeListeners()
-	{
-		tableViewer.getTable().removeSelectionListener(
-				tableViewerSelectionListener);
-	}
-
 	/*
 	 * Sets the Plot Motor Axis if only one axis is available 
 	 */
 	private void setPlotMotorAxis()
 	{
+		logger.debug("setPlotMotorAxis");
+
 		final Axis[] availableMotorAxes;
 
 		availableMotorAxes = scanModule.getAxes();
@@ -254,32 +210,23 @@ public class MotorAxisComposite extends Composite {
 	// ************************************************************************
 	
 	/**
-	 * <code>SelectionListener</code> of <code>tableViewer</code>.
+	 * 
 	 */
-	class TableViewerSelectionListener implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
+	class TableViewerFocusListener implements FocusListener {
+
 		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
+		public void focusGained(FocusEvent e) {
+			logger.debug("focusGained");
+			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
 		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
+
 		@Override
-		public void widgetSelected(SelectionEvent e) {
-			final String axisName = 
-					tableViewer.getTable().getSelection()[0].getText(0);
-			Axis[] axis = scanModule.getAxes();
-			for(int i = 0; i < axis.length; ++i) {
-				if(axis[i].getMotorAxis().getFullIdentifyer().equals(axisName)) {
-					setMotorAxisView(axis[i]);
-				}
-			}
+		public void focusLost(FocusEvent e) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
+
 	
 	/**
 	 * <code>IMenuListener</code> of <code>menuManager</code>.
@@ -444,14 +391,17 @@ public class MotorAxisComposite extends Composite {
 				}
 				a.setPositionlist(sb.substring(0, sb.length() - 1));
 			}
-			
-			setMotorAxisView(a);
+
+			// the new axis (the last itemCount) will be selected in the table and 
+			// displayed in the motorAxisView
+			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(null);
+			tableViewer.getTable().select(tableViewer.getTable().getItemCount()-1);
+			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
+
 			// if only one axis available, set this axis for the Plot
 			setPlotMotorAxis();
 
 			tableViewer.refresh();
-			tableViewer.getTable().setSelection(
-					tableViewer.getTable().getItemCount()-1);
 		}	
 	}
 	
