@@ -33,7 +33,6 @@ public class MotorAxisContentProvider implements IModelUpdateListener,
 	 */
 	@Override
 	public Object[] getElements(final Object inputElement) {
-		System.out.println("\nGetElements von MotorAxisInputWrapper aufgerufen");
 		return ((ScanModule)inputElement).getAxes();
 	}
 

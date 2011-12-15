@@ -144,9 +144,9 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 	private ExcludeDevicesOfScanModuleFilterManualUpdate measuringStationPostscan;
 
 	// the selection service only accepts one selection provider per view,
-	// since we have three tables capable of providing selections a wrapper 
-	// handles them and registers the active one with the global selection 
-	// service
+	// since we have multiple tabs with tables capable of providing selections 
+	// a wrapper handles them and registers the active one with the global 
+	// selection service
 	protected SelectionProviderWrapper selectionProviderWrapper;
 
 	/**
@@ -162,19 +162,19 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 				true, true, false, false, false);
 		this.measuringStation.setSource(
 				Activator.getDefault().getMeasuringStation());
-		this.measuringStation.addModelUpdateListener(this);
+		// this.measuringStation.addModelUpdateListener(this);
 
 		this.measuringStationPrescan = new ExcludeDevicesOfScanModuleFilterManualUpdate(
 				false, false, true, false, false);
 		this.measuringStationPrescan.setSource(
 				Activator.getDefault().getMeasuringStation());
-		this.measuringStationPrescan.addModelUpdateListener(this);
+		// this.measuringStationPrescan.addModelUpdateListener(this);
 
 		this.measuringStationPostscan = new ExcludeDevicesOfScanModuleFilterManualUpdate( 
 				false, false, false, true, false);
 		this.measuringStationPostscan.setSource(
 				Activator.getDefault().getMeasuringStation());
-		this.measuringStationPostscan.addModelUpdateListener(this);
+		// this.measuringStationPostscan.addModelUpdateListener(this);
 
 		if(Activator.getDefault().getMeasuringStation() == null) {
 			final Label errorLabel = new Label(parent, SWT.NONE);
@@ -191,10 +191,10 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 		while (it.hasNext()) {
 			this.eventIDs[i++] = it.next().getID();
 		}
-
+		
 		this.top = new Composite(parent, SWT.NONE);
 		this.top.setLayout(new GridLayout());
-
+		
 		this.bar = new ExpandBar(this.top, SWT.V_SCROLL);
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
@@ -202,28 +202,24 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		this.bar.setLayoutData(gridData);
-
+		
 		// General Section
 		createGeneralTabFolder();
-
 		// Actions Section
 		createActionsTabFolder();
-
 		// Event Section
 		createEventsTabFolder();
-
-		this.setEnabledForAll(false);
 		
+		this.setEnabledForAll(false);
 		top.setVisible(false);
-
-		// listen to selection changes (the selected device's options are 
-		// displayed)
+		
+		// listen to selection changes (if a scan module is selected, its 
+		// attributes are made available for editing)
 		getSite().getWorkbenchWindow().getSelectionService().
 				addSelectionListener(this);
 		
 		selectionProviderWrapper = new SelectionProviderWrapper();
 		getSite().setSelectionProvider(selectionProviderWrapper);
-
 	} // end of: createPartControl()
 
 	/*
@@ -428,10 +424,14 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 				new EventsTabFolderSelectionListener();	
 		eventsTabFolder.addSelectionListener(eventsTabFolderSelectionListener);
 
-		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, ControlEventTypes.PAUSE_EVENT);
-		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, ControlEventTypes.CONTROL_EVENT);
-		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, ControlEventTypes.CONTROL_EVENT);
-		triggerEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, ControlEventTypes.CONTROL_EVENT);
+		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
+				ControlEventTypes.PAUSE_EVENT);
+		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
+				ControlEventTypes.CONTROL_EVENT);
+		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
+				ControlEventTypes.CONTROL_EVENT);
+		triggerEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
+				ControlEventTypes.CONTROL_EVENT);
 		
 		this.pauseEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
 		this.pauseEventsTabItem.setText(" Pause ");
@@ -846,11 +846,12 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		// TODO Auto-generated method stub
-		System.out.println("selectionChangedListener von ScanModulView");
-		
+		logger.debug("selection changed");
 	}
 	
 	// ************************************************************************
@@ -863,7 +864,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>confirmTriggerCheckBox</code>.
 	 */
-	class ConfirmTriggerCheckBoxSelectionListener implements SelectionListener {
+	private class ConfirmTriggerCheckBoxSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -886,7 +887,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 	 * {@link org.eclipse.swt.events.SelectionListener} of
 	 * <code>eventsTabFolder</code>.
 	 */
-	class EventsTabFolderSelectionListener implements SelectionListener {
+	private class EventsTabFolderSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -911,7 +912,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 	 * {@link org.eclipse.swt.events.SelectionListener} of
 	 * <code> appendScheduleEventCheckBox</code>.
 	 */
-	class AppendScheduleEventCheckBoxSelectionListener 
+	private class AppendScheduleEventCheckBoxSelectionListener 
 												implements SelectionListener {
 		
 		/**
@@ -956,7 +957,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 	 * {@link org.eclipse.swt.events.ModifyListener} of
 	 * <code>triggerDelayText</code>.
 	 */
-	class TriggerDelayTextModifiedListener implements ModifyListener {
+	private class TriggerDelayTextModifiedListener implements ModifyListener {
 
 		/**
 		 * {@inheritDoc}
@@ -993,7 +994,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 	 * {@link org.eclipse.swt.events.ModifyListener} of 
 	 * <code>settleTimeText</code>.
 	 */
-	class SettleTimeTextModifiedListener implements ModifyListener {
+	private class SettleTimeTextModifiedListener implements ModifyListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1029,7 +1030,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 	 * {@link org.eclipse.swt.events.ModifyListener} of 
 	 * <code>saveMotorpositionsCombo</code>.
 	 */
-	class SaveMotorpositionsComboModifiedListener implements ModifyListener {
+	private class SaveMotorpositionsComboModifiedListener implements ModifyListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1047,7 +1048,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 	 * {@link org.eclipse.swt.events.ControlListener} of
 	 * <code>actionsComposite</code>.
 	 */
-	class ActionsCompositeControlListener implements ControlListener {
+	private class ActionsCompositeControlListener implements ControlListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1071,7 +1072,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 	 * {@link org.eclipse.swt.events.ControlListener} of
 	 * <code>eventsComposite</code>.
 	 */
-	class EventsCompositeControlListener implements ControlListener {
+	private class EventsCompositeControlListener implements ControlListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1095,7 +1096,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 	 * {@link org.eclipse.swt.events.ControlListener} of
 	 * <code>generalComposite</code>.
 	 */
-	class GeneralCompositeControlListener implements ControlListener {
+	private class GeneralCompositeControlListener implements ControlListener {
 		
 		/**
 		 * {@inheritDoc}
