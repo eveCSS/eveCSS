@@ -359,7 +359,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 
 		// falls es DetektorReadyEvents zu dem Channel gibt, werden diese entfernt
 		if (channel.getDetectorReadyEvent() != null) {
-			channel.getScanModul().getChain().getScanDescription().removeEventById( channel.getDetectorReadyEvent().getID() );
+			channel.getScanModule().getChain().getScanDescription().removeEventById( channel.getDetectorReadyEvent().getID() );
 			channel.setDetectorReadyEvent(null);
 		};
 

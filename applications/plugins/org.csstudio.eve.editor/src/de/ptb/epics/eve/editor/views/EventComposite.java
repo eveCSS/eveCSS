@@ -251,7 +251,7 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 										getEvents().toArray(new Event[0]);
 		} else if(controlEventManager.getParentChannel() != null) {
 			scanDescriptionEvents = controlEventManager.getParentChannel().
-										getScanModul().getChain().
+										getScanModule().getChain().
 										getScanDescription().getEvents().
 										toArray(new Event[0]);
 		}
@@ -426,7 +426,7 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 											getEventById(addEvent);
 					} else if(controlEventManager.getParentChannel() != null) {
 						event = controlEventManager.getParentChannel().
-											getScanModul().getChain().
+											getScanModule().getChain().
 											getScanDescription().
 											getEventById(addEvent);
 					}

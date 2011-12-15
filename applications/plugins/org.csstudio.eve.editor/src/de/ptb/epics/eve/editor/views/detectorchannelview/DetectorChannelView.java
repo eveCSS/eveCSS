@@ -45,13 +45,15 @@ import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.EventComposite;
 
 /**
- * <code>DetectorChannelView</code> is a composite to input the parameters
- * of a detector channel from a scanModul.
+ * <code>DetectorChannelView</code> shows attributes of a 
+ * {@link de.ptb.epics.eve.data.measuringstation.DetectorChannel} and allows 
+ * modification.
  * 
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class DetectorChannelView extends ViewPart implements IModelUpdateListener, ISelectionListener {
+public class DetectorChannelView extends ViewPart 
+						implements IModelUpdateListener, ISelectionListener {
 
 	/**
 	 * the unique identifier of the view.
@@ -296,7 +298,8 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		eventsTabFolderSelectionListener = new EventsTabFolderSelectionListener();
 		eventsTabFolder.addSelectionListener(eventsTabFolderSelectionListener);
 		
-		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, ControlEventTypes.CONTROL_EVENT);
+		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
+				ControlEventTypes.CONTROL_EVENT);
 		 
 		this.redoEventTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
 		this.redoEventTabItem.setText("Redo");
@@ -314,8 +317,8 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 
 		top.setVisible(false);
 
-		// listen to selection changes (the selected device's options are 
-		// displayed)
+		// listen to selection changes (if a detector channel is selected, its 
+		// attributes are made available for editing)
 		getSite().getWorkbenchWindow().getSelectionService().
 				addSelectionListener(this);
 
@@ -336,13 +339,6 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 	 * @param channel
 	 */
 	private void setChannel(final Channel channel) {
-		
-		if(channel != null)
-			logger.debug("set channel (" + 
-						 channel.getDetectorChannel().getID() + ")");
-		else
-			logger.debug("set channel (null)");
-		
 		// if a current Channel is set, stop listening to it
 		// TODO: Die Listener können wahrscheinlich sowieso weg,
 		// weil die View auf alle Änderungen hört die die DetectorEinstellungen
@@ -360,10 +356,9 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		this.scanModule = null;
 		
 		if(this.currentChannel != null) {
-			this.scanModule = channel.getScanModul();
+			this.scanModule = channel.getScanModule();
 			this.currentChannel.addModelUpdateListener(this);
 		}
-		
 		updateEvent(null);
 	}
 
@@ -441,12 +436,10 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 							 itemEventOptions.getHeight() + 
 							 itemEventOptions.getHeaderHeight() + 5;
 // TODO: Höhe und Breite muß noch besser berechnet werden (Hartmut 22.6.11)
-//				int width = bar.getBounds().x + bar.getBounds().width - 25;
 				int width = bar.getBounds().x + bar.getBounds().width -25;
 				sc.setMinSize(this.top.computeSize(width, height));
 			}
-		
-			checkForErrors();			
+			checkForErrors();
 			top.setVisible(true);
 			
 		} else {
@@ -478,30 +471,32 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			
 			top.setVisible(false);
 		}
-		
 		addListeners();
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		
-		System.out.println("selectionChanged in DetectorChannelView: " + selection);
 		if(selection instanceof IStructuredSelection) {
-			System.out.println("   IStructuredSelection");
 			if(((IStructuredSelection) selection).size() == 0) {
-				System.out.println("      Size = null");
-
 				if (this.scanModule != null) {
 					if (scanModule.getChannels().length == 0)
 						clearView();
 				}
 				return;
 			}
-			// since at any given time this view can only display options of 
-			// one device we take the first element of the selection
+			// since at any given time this view can only display the attributes 
+			// of one detector channel we take the first element of the selection
 			Object o = ((IStructuredSelection) selection).toList().get(0);
 			if (o instanceof Channel) {
-				System.out.println("   Channel: " + ((Channel)o).getDetectorChannel().getFullIdentifyer());
+				if(logger.isDebugEnabled()) {
+					logger.debug("Channel: " + ((Channel)o).
+								getDetectorChannel().getFullIdentifyer() + 
+								" selected.");
+				}
 				// Display Channel Settings in DetectorChannelView
 				// Hier müssen jetzt die ganzen Detektoreinstellungen angezeigt werden
 				// Das soll nicht mehr über einen anderen Modus erfolgen
@@ -511,11 +506,8 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 				// 2. Hier neue Aktualisierung einfügen
 				// Dann gibt es zwischendurch keine Aktualisierung!
 				setChannel((Channel)o);
-			}
-			else {
-				System.out.println(   "Instance: " + o);
-//				setChannel(null);
-//				updateEvent(null);
+			} else {
+				// there is something selected, but not a detector channel
 			}
 		}
 	}
@@ -548,7 +540,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		this.minimumErrorLabel.setImage(null);
 		this.maxAttemptsErrorLabel.setImage(null);
 		
-		this.redoEventComposite.setControlEventManager(null);		
+		this.redoEventComposite.setControlEventManager(null);
 		top.setVisible(false);
 	}
 	
@@ -605,14 +597,12 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		}
 	}
 	
-	protected void suspendModelUpdateListener()
-	{
+	protected void suspendModelUpdateListener() {
 		currentChannel.removeModelUpdateListener(this);
 		modelUpdateListenerSuspended = true;
 	}
 	
-	protected void resumeModelUpdateListener()
-	{
+	protected void resumeModelUpdateListener() {
 		currentChannel.addModelUpdateListener(this);
 		modelUpdateListenerSuspended = false;
 	}
@@ -620,8 +610,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 	/*
 	 * 
 	 */
-	private void addListeners()
-	{
+	private void addListeners() {
 		averageText.addModifyListener(averageTextModifyListener);
 		averageText.addVerifyListener(averageTextVerifyListener);
 		maxDeviationText.addModifyListener(maxDeviationTextModifyListener);
@@ -644,8 +633,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 	/*
 	 * 
 	 */
-	private void removeListeners()
-	{
+	private void removeListeners() {
 		averageText.removeModifyListener(averageTextModifyListener);
 		averageText.removeVerifyListener(averageTextVerifyListener);
 		maxDeviationText.removeModifyListener(maxDeviationTextModifyListener);
@@ -665,12 +653,13 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		eventComposite.removeControlListener(eventCompositeControlListener);
 	}
 	
-	///////////////////////////////////////////////////////////
-	// Hier kommen jetzt die verschiedenen Listener Klassen
-	///////////////////////////////////////////////////////////
-
+	/* ********************************************************************* */
+	/* ******************************* Listeners *************************** */
+	/* ********************************************************************* */
+	
 	/**
-	 * <code>ModifyListener</code> of <code>AverageText</code>.
+	 * {@link org.eclipse.swt.events.ModifyListener} of 
+	 * <code>averageText</code>.
 	 */
 	class AverageTextModifyListener implements ModifyListener {
 
@@ -682,7 +671,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			logger.debug("average text modified");
 			
 			suspendModelUpdateListener();
-
+			
 			if(currentChannel != null) {
 				try {
 					currentChannel.setAverageCount(Integer.parseInt(averageText.getText()));
@@ -698,7 +687,8 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 	}
 
 	/**
-	 * <code>ModifyListener</code> of <code>MaxDeviationText</code>.
+	 * {@link org.eclipse.swt.events.ModifyListener} of 
+	 * <code>maxDeviationText</code>.
 	 */
 	class MaxDeviationTextModifyListener implements ModifyListener {
 
@@ -725,9 +715,10 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			resumeModelUpdateListener();
 		}
 	}
-
+	
 	/**
-	 * <code>ModifyListener</code> of <code>MinimumText</code>.
+	 * {@link org.eclipse.swt.events.ModifyListener} of 
+	 * <code>minimumText</code>.
 	 */
 	class MinimumTextModifyListener implements ModifyListener {
 
@@ -736,9 +727,9 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		 */
 		@Override
 		public void modifyText(final ModifyEvent e) {
-
+			
 			suspendModelUpdateListener();
-
+			
 			if(currentChannel != null) {
 				if(minimumText.getText().equals("")) {
 					currentChannel.setMinumum(Double.NEGATIVE_INFINITY);
@@ -756,7 +747,8 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 	}
 
 	/**
-	 * <code>ModifyListener</code> of <code>MaxAttemptsText</code>.
+	 * {@link org.eclipse.swt.events.ModifyListener} of 
+	 * <code>maxAttemptsText</code>.
 	 */
 	class MaxAttemptsTextModifyListener implements ModifyListener {
 
@@ -785,7 +777,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 	}
 
 	/**
-	 * <code>SelectionListener</code> of 
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>confirmTriggerManualCheckBox</code>.
 	 */
 	class ConfirmTriggerManualCheckBoxSelectionListener implements SelectionListener {
@@ -810,7 +802,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 	}
 
 	/**
-	 * <code>SelectionListener</code> of 
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>detectorReadyEventCheckBox</code>.
 	 */
 	class DetectorReadyEventCheckBoxSelectionListener implements SelectionListener {
@@ -821,7 +813,7 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		@Override
 		public void widgetDefaultSelected(final SelectionEvent e) {
 		}
-
+		
 		/**
 		 * {@inheritDoc}
 		 */
@@ -833,15 +825,15 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 					currentChannel.getAbstractDevice().getID(), 
 					currentChannel.getAbstractDevice().getParent().getName(), 
 					currentChannel.getAbstractDevice().getName(), 
-					currentChannel.getScanModul().getChain().getId(), 
-					currentChannel.getScanModul().getId());
-
+					currentChannel.getScanModule().getChain().getId(), 
+					currentChannel.getScanModule().getId());
+			
 			if(detectorReadyEventCheckBox.getSelection()) {
-				currentChannel.getScanModul().getChain().
+				currentChannel.getScanModule().getChain().
 							   getScanDescription().add(detReadyEvent);
 				currentChannel.setDetectorReadyEvent(detReadyEvent);
 			} else {
-				currentChannel.getScanModul().getChain().
+				currentChannel.getScanModule().getChain().
 							   getScanDescription().removeEventById(
 									   detReadyEvent.getID());
 				currentChannel.setDetectorReadyEvent(null);
@@ -850,17 +842,17 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 	}
 	
 	/**
-	 * <code>ControlListener</code> of <code>bar</code>.
+	 * {@link org.eclipse.swt.events.ControlListener} of <code>bar</code>.
 	 */
 	class BarControlListener implements ControlListener {
-
+		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void controlMoved(final ControlEvent e) {
 		}
-
+		
 		/**
 		 * {@inheritDoc}
 		 */
@@ -870,19 +862,20 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			itemEventOptions.setHeight(height < 200 ? 200 : height);
 		}
 	}
-
+	
 	/**
-	 * <code>SelectionListener</code> of <code>eventsTabFolder</code>.
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
+	 * <code>eventsTabFolder</code>.
 	 */
 	class EventsTabFolderSelectionListener implements SelectionListener {
-
+		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
-
+		
 		/**
 		 * {@inheritDoc}
 		 */
@@ -894,12 +887,12 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 			wahlComposite.setEventChoice();
 		}
 	}
-
+	
 	/**
-	 * <code>ControlListener</code> of <code>eventComposite</code>.
+	 * {@link org.eclipse.swt.events.ControlListener}.
 	 */
 	class EventCompositeControlListener implements ControlListener {
-
+		
 		/**
 		 * {@inheritDoc}
 		 */
@@ -914,47 +907,45 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 				}
 			}
 		}
-
+		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void controlResized(ControlEvent e) {
-		}	
+		}
 	}
-
+	
 	/**
-	 * <code>VerifyListener</code> of Text Widget from
-	 * <code>DetectorChannelView</code>
+	 * {@link org.eclipse.swt.events.VerifyListener}.
 	 */
 	class TextNumberVerifyListener implements VerifyListener {
-
+		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void verifyText(VerifyEvent e) {
 
-			switch (e.keyCode) {  
-            	case SWT.BS:           // Backspace  
-            	case SWT.DEL:          // Delete  
-			    case SWT.HOME:         // Home  
-			    case SWT.END:          // End  
-			    case SWT.ARROW_LEFT:   // Left arrow  
-			    case SWT.ARROW_RIGHT:  // Right arrow  
-			    	return;  
-			}  
+			switch (e.keyCode) {
+            	case SWT.BS:           // Backspace
+            	case SWT.DEL:          // Delete
+			    case SWT.HOME:         // Home
+			    case SWT.END:          // End
+			    case SWT.ARROW_LEFT:   // Left arrow
+			    case SWT.ARROW_RIGHT:  // Right arrow
+			    	return;
+			}
 
-			if (!Character.isDigit(e.character)) {  
-					e.doit = false;  // disallow the action  
-		    }  			
+			if (!Character.isDigit(e.character)) {
+					e.doit = false;  // disallow the action
+			}
 		}
 
 	}
 
 	/**
-	 * <code>VerifyListener</code> of Text Widget from
-	 * <code>MotorAxisStartStopStepwidthComposite</code>
+	 * {@link org.eclipse.swt.events.VerifyListener}.
 	 */
 	class TextDoubleVerifyListener implements VerifyListener {
 
@@ -964,53 +955,51 @@ public class DetectorChannelView extends ViewPart implements IModelUpdateListene
 		@Override
 		public void verifyText(VerifyEvent e) {
 
-			switch (e.keyCode) {  
-            	case SWT.BS:           // Backspace  
-            	case SWT.DEL:          // Delete  
-			    case SWT.HOME:         // Home  
-			    case SWT.END:          // End  
-			    case SWT.ARROW_LEFT:   // Left arrow  
-			    case SWT.ARROW_RIGHT:  // Right arrow  
+			switch (e.keyCode) {
+            	case SWT.BS:           // Backspace
+            	case SWT.DEL:          // Delete
+			    case SWT.HOME:         // Home
+			    case SWT.END:          // End
+			    case SWT.ARROW_LEFT:   // Left arrow
+			    case SWT.ARROW_RIGHT:  // Right arrow
 			    	return;  
-			}  
+			}
 
 			String oldText = ((Text)(e.widget)).getText();
 
-			if (!Character.isDigit(e.character)) {  
+			if (!Character.isDigit(e.character)) {
 				if (e.character == '.') {
-					// character . is a valid character, if he is not in the old string
+					// character . is a valid character, if he is not in the 
+					// old string
 					if (oldText.contains("."))
 						e.doit = false;
-				} 
+				}
 				else if (e.character == '-') {
-					// character - is a valid character as first sign and after an e
+					// character - is a valid character as first sign and after 
+					// an e
 					if (oldText.isEmpty()) {
 						// oldText is emtpy, - is valid
-					}
-					else if ((((Text)e.widget).getSelection().x) == 0) {
+					} else if ((((Text)e.widget).getSelection().x) == 0) {
 						// - is the first sign an valid
-					}
-					else {
-						// wenn das letzte Zeichen von oldText ein e ist, ist das minus auch erlaubt
+					} else {
+						// wenn das letzte Zeichen von oldText ein e ist, 
+						// ist das minus auch erlaubt
 						int index = oldText.length();
 						if (oldText.substring(index-1).equals("e")) {
 							// letzte Zeichen ist ein e und damit erlaubt
-						}
-						else
+						} else {
 							e.doit = false;
+						}
 					}
-				} 
-				else if (e.character == 'e') {
-					// character e is a valid character, if he is not in the old string
+				} else if (e.character == 'e') {
+					// character e is a valid character, if he is not in the 
+					// old string
 					if (oldText.contains("e"))
 						e.doit = false;
-				} 
-				else {
-					e.doit = false;  // disallow the action  
-		        }
-		    }  			
+				} else {
+					e.doit = false;  // disallow the action
+				}
+			}
 		}
 	}
-
-	
 }

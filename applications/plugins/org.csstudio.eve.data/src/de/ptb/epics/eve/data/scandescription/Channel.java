@@ -179,7 +179,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * 
 	 * @return the parent scan module
 	 */
-	public ScanModule getScanModul() {
+	public ScanModule getScanModule() {
 		return this.scanModule;
 	}
 
