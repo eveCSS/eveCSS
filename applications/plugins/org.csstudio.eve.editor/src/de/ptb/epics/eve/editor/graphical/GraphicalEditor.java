@@ -20,6 +20,7 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Point;
@@ -64,6 +65,8 @@ import de.ptb.epics.eve.editor.dialogs.LostDevicesDialog;
 import de.ptb.epics.eve.editor.graphical.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.EventEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
+import de.ptb.epics.eve.editor.jobs.filloptions.SaveAllDetectorValues;
+import de.ptb.epics.eve.editor.jobs.filloptions.SaveAllMotorPositions;
 import de.ptb.epics.eve.editor.views.ErrorView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 import de.ptb.epics.eve.editor.views.scanview.ScanView;
@@ -115,6 +118,11 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	private MenuItem addNestedScanModulMenuItem;
 	private MenuItem deleteScanModulMenuItem;
 	private MenuItem renameScanModulMenuItem;
+	private MenuItem separator;
+	private MenuItem fillMenuItem;
+	private Menu fillMenu;
+	private MenuItem saveAllAxisPositionsMenuItem;
+	private MenuItem saveAllDetectorValuesMenuItem;
 	
 	// indicates whether the editor has unsaved changes
 	private boolean dirty;
@@ -172,6 +180,23 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		this.renameScanModulMenuItem.setText("Rename Scan Module");
 		this.renameScanModulMenuItem.addSelectionListener(
 				new RenameScanModuleMenuItemSelectionListener());
+		
+		this.separator = new MenuItem(menu, SWT.SEPARATOR);
+		this.separator.setText("");
+		this.fillMenu = new Menu(this.menu);
+		this.fillMenuItem = new MenuItem(menu, SWT.CASCADE);
+		this.fillMenuItem.setText("Fill Options");
+		this.fillMenuItem.setMenu(fillMenu);
+		
+		this.saveAllAxisPositionsMenuItem = new MenuItem(fillMenu, SWT.NONE);
+		this.saveAllAxisPositionsMenuItem.setText("Save all Axis Positions");
+		this.saveAllAxisPositionsMenuItem.addSelectionListener(
+				new SaveAllAxisPositionsSelectionListener());
+		this.saveAllDetectorValuesMenuItem = new MenuItem(fillMenu, SWT.NONE);
+		this.saveAllDetectorValuesMenuItem.setText("Save all Detector Values");
+		this.saveAllDetectorValuesMenuItem.addSelectionListener(
+				new SaveAllDetectorValuesSelectionListener());
+		
 		this.viewer.getControl().setMenu(menu);
 		
 		return menu;
@@ -180,8 +205,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	/*
 	 * 
 	 */
-	private void updateErrorView()
-	{
+	private void updateErrorView() {
 		// get all views
 		IViewReference[] ref = getSite().getPage().getViewReferences();
 		
@@ -190,10 +214,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		for(int i = 0; i < ref.length; ++i) {
 			if(ref[i].getId().equals(ErrorView.ID)) {
 				errorView = (ErrorView)ref[i].getPart(false);
-				
 			}
 		}
-		
 		if(errorView != null) {
 			errorView.setCurrentScanDescription(this.scanDescription);
 		}
@@ -202,8 +224,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	/*
 	 * 
 	 */
-	private void updateScanView()
-	{
+	private void updateScanView() {
 		// get all views
 		IViewReference[] ref = getSite().getPage().getViewReferences();
 		
@@ -223,8 +244,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			{
 				scanView.setCurrentChain(selectedScanModule.getChain());
 				logger.debug("currentChain: " + selectedScanModule.getChain());
-			}
-			else {
+			} else {
 				scanView.setCurrentChain(null);
 				logger.debug("currentChain: " + null);
 			}
@@ -234,8 +254,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	/*
 	 * 
 	 */
-	private void updateScanModuleView()
-	{
+	private void updateScanModuleView() {
 		// get all views
 		IViewReference[] ref = getSite().getPage().getViewReferences();
 		
@@ -252,7 +271,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			// tell the view about the currently selected scan module
 			scanModuleView.setCurrentScanModule(selectedScanModule);
 		}
-		
 		refreshAllEditParts(viewer.getRootEditPart());
 		
 		logger.debug("selectedScanModule: " + selectedScanModule);
@@ -614,7 +632,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	/**
 	 * <code>MouseListener</code> of viewer.
 	 */
-	class ViewerMouseListener implements MouseListener {
+	private class ViewerMouseListener implements MouseListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -664,6 +682,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				deleteScanModulMenuItem.setEnabled(true);
 				renameScanModulMenuItem.setEnabled(true);
 				
+				fillMenuItem.setEnabled(true);
 			} else if(part instanceof EventEditPart) {
 				
 				// user clicked on an event
@@ -678,7 +697,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				// add nested and delete module never allowed for events
 				addNestedScanModulMenuItem.setEnabled(false);
 				deleteScanModulMenuItem.setEnabled(false);
-				
 			} else {
 				
 				// user clicked anywhere else -> disable all actions
@@ -686,6 +704,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				addNestedScanModulMenuItem.setEnabled(false);
 				deleteScanModulMenuItem.setEnabled(false);
 				renameScanModulMenuItem.setEnabled(false);
+				fillMenuItem.setEnabled(false);
 			}
 			
 			// save the edit part the user recently (right-)clicked on
@@ -726,7 +745,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 * <code>SelectionListener</code> of 
 	 * <code>addAppendedScanModulMenuItem</code>.
 	 */
-	class AddAppendedScanModuleMenuItemSelectionListener 
+	private class AddAppendedScanModuleMenuItemSelectionListener 
 												implements SelectionListener {
 		/**
 		 * {@inheritDoc}
@@ -881,7 +900,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	/**
 	 * <code>SelectionListener</code> of <code>addNestedScanModulMenuItem</code>.
 	 */
-	class AddNestedScanModuleMenuItemSelectionListener implements SelectionListener {
+	private class AddNestedScanModuleMenuItemSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -953,7 +972,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	/**
 	 * <code>SelectionListener</code> of <code>deleteScanModulMenuItem</code>.
 	 */
-	class DeleteScanModuleMenuItemSelectionListener implements SelectionListener {
+	private class DeleteScanModuleMenuItemSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1006,7 +1025,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	/**
 	 * <code>SelectionListener</code> of <code>renameScanModuleMenuItem</code>.
 	 */
-	class RenameScanModuleMenuItemSelectionListener implements SelectionListener {
+	private class RenameScanModuleMenuItemSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1041,6 +1060,50 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				scanModuleEditPart.refresh();
 				scanModuleEditPart.getFigure().repaint();
 			}	
+		}
+	}
+	
+	private class SaveAllAxisPositionsSelectionListener implements SelectionListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			ScanModule scanModule = (ScanModule)rightClickEditPart.getModel();
+			Job saveAllMotorPositions = new SaveAllMotorPositions(
+					"Save all Axis Positions", scanModule);
+			saveAllMotorPositions.setUser(true);
+			saveAllMotorPositions.schedule();
+		}
+	}
+	
+	private class SaveAllDetectorValuesSelectionListener implements SelectionListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			ScanModule scanModule = (ScanModule)rightClickEditPart.getModel();
+			Job saveAllDetectorValues = new SaveAllDetectorValues(
+					"Save all Detector Values", scanModule);
+			saveAllDetectorValues.setUser(true);
+			saveAllDetectorValues.schedule();
 		}
 	}
 }

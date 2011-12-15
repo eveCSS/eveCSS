@@ -512,7 +512,4 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener, ISe
 			}
 		}
 	}
-
-
-
 }

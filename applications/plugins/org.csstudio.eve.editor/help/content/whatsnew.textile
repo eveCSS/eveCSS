@@ -1,0 +1,5 @@
+h1(eveTopic). What's New ?
+
+h2(eveTopic). Version 1.1
+
+* [Feature] Fill options "Save all Motor Positions" and "Save all Detector Values"

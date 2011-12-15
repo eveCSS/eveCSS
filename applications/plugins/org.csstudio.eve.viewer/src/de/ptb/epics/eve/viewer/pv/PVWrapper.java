@@ -127,7 +127,7 @@ public class PVWrapper {
 		this.readListener = new ReadListener();
 		this.pv.addPVReaderListener(this.readListener);
 		this.writeListener = new WriteListener();
-		this.pv.addPVWriterListener(writeListener);
+		this.pv.addPVWriterListener(this.writeListener);
 		
 		this.valueFormat = new SimpleValueFormat(1);
 		
@@ -141,6 +141,7 @@ public class PVWrapper {
 		this.pv2.removeListener(pvListener);
 		this.pv2.stop();
 		this.pv.removePVReaderListener(this.readListener);
+		this.pv.removePVWriterListener(this.writeListener);
 		this.pv.close();
 		this.isConnected = false;
 	}
