@@ -42,6 +42,8 @@ public abstract class AbstractBehavior implements IModelUpdateListener,
 	 */
 	protected AbstractDevice abstractDevice;
 
+	protected ScanModule scanModule;
+
 	/**
 	 * Returns the abstract device of this behavior
 	 * 
@@ -92,5 +94,14 @@ public abstract class AbstractBehavior implements IModelUpdateListener,
 		while(it.hasNext()) {
 			it.next().updateEvent(new ModelUpdateEvent(this, null));
 		}
+	}
+
+	/**
+	 * Returns the scan module the axis is corresponding to.
+	 * 
+	 * @return the corresponding scan module
+	 */
+	public ScanModule getScanModule() {
+		return this.scanModule;
 	}
 }

@@ -33,9 +33,6 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 */
 	private int averageCount = 1;
 	
-	// the scan module the channel corresponds to
-	private ScanModule scanModule;
-	
 	/*
 	 * The max deviation of this channel.
 	 * Double.NaN = value is invalid
@@ -172,15 +169,6 @@ public class Channel extends AbstractMainPhaseBehavior {
 		}
 		this.averageCount = averageCount;
 		updateListeners();
-	}
-
-	/**
-	 * Returns the parent scan module of the channel.
-	 * 
-	 * @return the parent scan module
-	 */
-	public ScanModule getScanModule() {
-		return this.scanModule;
 	}
 
 	/**
