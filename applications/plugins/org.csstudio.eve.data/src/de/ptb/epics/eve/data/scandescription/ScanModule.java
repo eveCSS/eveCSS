@@ -25,10 +25,10 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class ScanModule implements IModelUpdateListener, IModelUpdateProvider, 
-														IModelErrorProvider, 
-														PropertyChangeListener {
+								IModelErrorProvider, PropertyChangeListener {
 	
 	private static Logger logger = Logger.getLogger(ScanModule.class.getName());
 	
@@ -230,7 +230,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	}
 	
 	/**
-	 * Adds a pstscan to the Scan Modul.
+	 * Adds a postscan to the Scan Modul.
 	 * 
 	 * @param postscan The postscan that should be added to the Scan Modul.
 	 */
@@ -243,7 +243,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	/**
 	 * Adds a channel behavior to the Scan Modul.
 	 * 
-	 * @param channel The channel behavior that should be added to the Scan Modul.
+	 * @param channel The channel behavior that should be added to the Scan 
+	 * Modul.
 	 */
 	public void add( final Channel channel ) {
 		this.channels.add( channel );
@@ -319,30 +320,37 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		for( int i = 0; i < positionings.length; ++i ) {
 			// Wenn positioning Channel oder Normalize = remove Channel, 
 			// channel entfernen und Fehlermeldung ausgeben.
-			if (channel.getDetectorChannel().equals(positionings[i].getDetectorChannel())) {
+			if (channel.getDetectorChannel().equals(
+					positionings[i].getDetectorChannel())) {
 				// DetectorChannel gibt es nicht mehr.
 				positionings[i].setDetectorChannel(null);
 			}
-			if (channel.getDetectorChannel().equals(positionings[i].getNormalization())) {
+			if (channel.getDetectorChannel().equals(
+					positionings[i].getNormalization())) {
 				positionings[i].setNormalization(null);
 			}
 		}
 
-		// Wenn die Achse in einem Plot verwendet wird, muß die Achse entfernt werden
-		for ( Iterator< PlotWindow > it = this.plotWindows.iterator(); it.hasNext(); ) {
+		// Wenn die Achse in einem Plot verwendet wird, muß die Achse entfernt 
+		// werden
+		for ( Iterator< PlotWindow > it = this.plotWindows.iterator(); 
+				it.hasNext(); ) {
 			PlotWindow aktPlotWindow = it.next();
 
 			YAxis wegAxis1 = null;
 			YAxis wegAxis2 = null;
-			for( Iterator< YAxis > ityAxis = aktPlotWindow.getYAxisIterator(); ityAxis.hasNext();) {
+			for( Iterator< YAxis > ityAxis = aktPlotWindow.getYAxisIterator(); 
+					ityAxis.hasNext();) {
 				YAxis yAxis = ityAxis.next();
 				if (yAxis.getNormalizeChannel() != null) {
-					if (yAxis.getNormalizeChannel().equals(channel.getDetectorChannel())) {
+					if (yAxis.getNormalizeChannel().equals(
+							channel.getDetectorChannel())) {
 						yAxis.setNormalizeChannel(null);
 					}
 				}
 				if (yAxis.getDetectorChannel() != null) {
-					if (yAxis.getDetectorChannel().equals(channel.getDetectorChannel())) {
+					if (yAxis.getDetectorChannel().equals(
+							channel.getDetectorChannel())) {
 						yAxis.setDetectorChannel(null);
 						if (wegAxis1 == null)
 							wegAxis1 = yAxis;
@@ -357,9 +365,11 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 				aktPlotWindow.removeYAxis(wegAxis2);
 		}
 
-		// falls es DetektorReadyEvents zu dem Channel gibt, werden diese entfernt
+		// falls es DetektorReadyEvents zu dem Channel gibt, werden diese 
+		// entfernt
 		if (channel.getDetectorReadyEvent() != null) {
-			channel.getScanModule().getChain().getScanDescription().removeEventById( channel.getDetectorReadyEvent().getID() );
+			channel.getScanModule().getChain().getScanDescription().
+					removeEventById( channel.getDetectorReadyEvent().getID() );
 			channel.setDetectorReadyEvent(null);
 		};
 
@@ -384,8 +394,10 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			}
 		}
 
-		// Wenn die Achse in einem Plot verwendet wird, muß die Achse entfernt werden
-		for ( Iterator< PlotWindow > it = this.plotWindows.iterator(); it.hasNext(); ) {
+		// Wenn die Achse in einem Plot verwendet wird, muß die Achse entfernt 
+		// werden
+		for ( Iterator< PlotWindow > it = this.plotWindows.iterator(); 
+				it.hasNext(); ) {
 			PlotWindow aktPlotWindow = it.next();
 			if (aktPlotWindow.getXAxis() != null) {
 				// nur wenn die aktuelle Anzeige der X-Achse nicht leer ist,
@@ -427,7 +439,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	/**
 	 * Gives back the connector, that brings you to the appended scan modul.
 	 * 
-	 * @return The connector to the appended scan modul or null if it's not setted.
+	 * @return The connector to the appended scan modul or null if it's not 
+	 * setted.
 	 */
 	public Connector getAppended() {
 		return appended;
@@ -460,7 +473,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public void setId( final int id) {
 		if( id < 1 ) {
-			throw new IllegalArgumentException( "The parameter 'id' must be larger than 0!" );
+			throw new IllegalArgumentException( 
+					"The parameter 'id' must be larger than 0!" );
 		}
 		this.id = id;
 		updateListeners();
@@ -603,14 +617,16 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	/**
 	 * Gives back the Chain, where this scan modul is in.
 	 * 
-	 * @return The Chain where the scan modul is in or null if it is in no chain.
+	 * @return The Chain where the scan modul is in or null if it is in no 
+	 * chain.
 	 */
 	public Chain getChain() {
 		return chain;
 	}
 
 	/**
-	 * Sets the chain, where this scan modul is in. This method gets called by the add and remove method of Chain.
+	 * Sets the chain, where this scan modul is in. This method gets called by 
+	 * the add and remove method of Chain.
 	 * 
 	 * @param chain The Chain where the scan modul is in.
 	 */
@@ -665,7 +681,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public boolean addPauseEvent( final PauseEvent pauseEvent ) {
 		if( this.pauseEvents.add( pauseEvent ) ) {
 			pauseEvent.addModelUpdateListener( this.pauseControlEventManager );
-			this.pauseControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( pauseEvent, ControlEventMessageEnum.ADDED ) ) );
+			this.pauseControlEventManager.updateEvent( new ModelUpdateEvent( 
+					this, new ControlEventMessage( pauseEvent, 
+					ControlEventMessageEnum.ADDED ) ) );
 			updateListeners();
 			return true;
 		} 
@@ -675,13 +693,16 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	/**
 	 * Removes a pause event from the scan modul.
 	 * 
-	 * @param pauseEvent The pause event that should be removed from the scan modul.
+	 * @param pauseEvent The pause event that should be removed from the scan 
+	 * modul.
 	 * @return Gives back 'true' if the event has been removed and false if not.
 	 */
 	public boolean removePauseEvent( final PauseEvent pauseEvent ) {
 		if( this.pauseEvents.remove( pauseEvent ) ) {
-			pauseEvent.removeModelUpdateListener( this.pauseControlEventManager );
-			this.pauseControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( pauseEvent, ControlEventMessageEnum.REMOVED ) ) );
+			pauseEvent.removeModelUpdateListener(this.pauseControlEventManager);
+			this.pauseControlEventManager.updateEvent( new ModelUpdateEvent( 
+					this, new ControlEventMessage( pauseEvent, 
+					ControlEventMessageEnum.REMOVED ) ) );
 			updateListeners();
 			return true;
 		} 
@@ -698,7 +719,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		if( this.breakEvents.add( breakEvent ) ) {
 			updateListeners();
 			breakEvent.addModelUpdateListener( this.breakControlEventManager );
-			this.breakControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( breakEvent, ControlEventMessageEnum.ADDED ) ) );
+			this.breakControlEventManager.updateEvent( new ModelUpdateEvent( 
+					this, new ControlEventMessage( breakEvent, 
+					ControlEventMessageEnum.ADDED ) ) );
 			return true;
 		} 
 		return false;
@@ -707,14 +730,17 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	/**
 	 * Removes a break event from the scan modul.
 	 * 
-	 * @param breakEvent The break event that should be removed from the scan modul.
+	 * @param breakEvent The break event that should be removed from the scan 
+	 * modul.
 	 * @return Gives back 'true' if the event has been removed and false if not.
 	 */
 	public boolean removeBreakEvent( final ControlEvent breakEvent ) {
 		if( this.breakEvents.remove( breakEvent ) ) {
 			updateListeners();
-			breakEvent.removeModelUpdateListener( this.breakControlEventManager );
-			this.breakControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( breakEvent, ControlEventMessageEnum.REMOVED ) ) );
+			breakEvent.removeModelUpdateListener(this.breakControlEventManager);
+			this.breakControlEventManager.updateEvent( new ModelUpdateEvent( 
+					this, new ControlEventMessage( breakEvent, 
+					ControlEventMessageEnum.REMOVED ) ) );
 			return true;
 		} 
 		return false;
@@ -729,7 +755,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public boolean addRedoEvent( final ControlEvent redoEvent ) {
 		if( this.redoEvents.add( redoEvent ) ) {
 			updateListeners();
-			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( redoEvent, ControlEventMessageEnum.ADDED ) ) );
+			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( 
+					this, new ControlEventMessage( redoEvent, 
+					ControlEventMessageEnum.ADDED ) ) );
 			redoEvent.addModelUpdateListener( this.redoControlEventManager );
 			return true;
 		} 
@@ -739,13 +767,16 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	/**
 	 * Removes a redo event from the scan modul.
 	 * 
-	 * @param redoEvent The redo event that should be removed from the scan modul.
+	 * @param redoEvent The redo event that should be removed from the scan 
+	 * modul.
 	 * @return Gives back 'true' if the event has been removed and false if not.
 	 */
 	public boolean removeRedoEvent( final ControlEvent redoEvent ) {
 		if( this.redoEvents.remove( redoEvent ) ) {
 			updateListeners();
-			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( redoEvent, ControlEventMessageEnum.REMOVED ) ) );
+			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( 
+					this, new ControlEventMessage( redoEvent, 
+					ControlEventMessageEnum.REMOVED ) ) );
 			redoEvent.removeModelUpdateListener( this.redoControlEventManager );
 			return true;
 		} 
@@ -755,14 +786,18 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	/**
 	 * Adds a trigger event to the scan modul.
 	 * 
-	 * @param triggerEvent The trigger event that should be added to the scan modul.
+	 * @param triggerEvent The trigger event that should be added to the scan 
+	 * modul.
 	 * @return Gives back 'true' if the event has been added and false if not.
 	 */
 	public boolean addTriggerEvent( final ControlEvent triggerEvent ) {
 		if( this.triggerEvents.add( triggerEvent ) ) {
 			updateListeners();
-			this.triggerControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( triggerEvent, ControlEventMessageEnum.ADDED ) ) );
-			triggerEvent.addModelUpdateListener( this.triggerControlEventManager );
+			this.triggerControlEventManager.updateEvent( new ModelUpdateEvent( 
+					this, new ControlEventMessage( triggerEvent, 
+					ControlEventMessageEnum.ADDED ) ) );
+			triggerEvent.addModelUpdateListener(
+					this.triggerControlEventManager);
 			return true;
 		} 
 		return false;
@@ -771,14 +806,18 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	/**
 	 * Removes a trigger event from the scan modul.
 	 * 
-	 * @param triggerEvent The trigger event that should be removed from the scan modul.
+	 * @param triggerEvent The trigger event that should be removed from the 
+	 * scan modul.
 	 * @return Gives back 'true' if the event has been removed and false if not.
 	 */
 	public boolean removeTriggerEvent( final ControlEvent triggerEvent ) {
 		if( this.triggerEvents.remove( triggerEvent ) ) {
 			updateListeners();
-			this.triggerControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( triggerEvent, ControlEventMessageEnum.REMOVED ) ) );
-			triggerEvent.removeModelUpdateListener( this.triggerControlEventManager );
+			this.triggerControlEventManager.updateEvent( new ModelUpdateEvent( 
+					this, new ControlEventMessage( triggerEvent, 
+					ControlEventMessageEnum.REMOVED ) ) );
+			triggerEvent.removeModelUpdateListener( 
+					this.triggerControlEventManager );
 			return true;
 		} 
 		return false;
