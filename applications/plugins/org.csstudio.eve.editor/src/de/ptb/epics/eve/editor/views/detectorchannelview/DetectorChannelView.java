@@ -39,8 +39,6 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
-import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.EventComposite;
 
@@ -53,7 +51,7 @@ import de.ptb.epics.eve.editor.views.EventComposite;
  * @author Marcus Michalsky
  */
 public class DetectorChannelView extends ViewPart 
-						implements IModelUpdateListener, ISelectionListener {
+								implements ISelectionListener {
 
 	/**
 	 * the unique identifier of the view.
@@ -187,7 +185,8 @@ public class DetectorChannelView extends ViewPart
 		this.maxDeviationText.setLayoutData(gridData);
 		this.maxDeviationTextVerifyListener = new TextDoubleVerifyListener();
 		this.maxDeviationText.addVerifyListener(maxDeviationTextVerifyListener);
-		this.maxDeviationTextModifyListener = new MaxDeviationTextModifyListener();
+		this.maxDeviationTextModifyListener = new 
+				MaxDeviationTextModifyListener();
 		this.maxDeviationText.addModifyListener(maxDeviationTextModifyListener);
 		this.maxDeviationErrorLabel = new Label(this.top, SWT.NONE);
 		
@@ -227,7 +226,8 @@ public class DetectorChannelView extends ViewPart
 		this.maxAttemptsText.setLayoutData(gridData);
 		this.maxAttemptsTextVerifyListener = new TextNumberVerifyListener();
 		this.maxAttemptsText.addVerifyListener(maxAttemptsTextVerifyListener);
-		this.maxAttemptsTextModifyListener = new MaxAttemptsTextModifyListener();
+		this.maxAttemptsTextModifyListener = new 
+				MaxAttemptsTextModifyListener();
 		this.maxAttemptsText.addModifyListener(maxAttemptsTextModifyListener);
 		this.maxAttemptsErrorLabel = new Label(this.top, SWT.NONE);
 		
@@ -263,7 +263,8 @@ public class DetectorChannelView extends ViewPart
 		gridLayout = new GridLayout();
 		this.eventComposite = new Composite(this.bar, SWT.NONE);
 		this.eventComposite.setLayout(gridLayout);
-		this.eventCompositeControlListener = new EventCompositeControlListener();
+		this.eventCompositeControlListener = new 
+				EventCompositeControlListener();
 		this.eventComposite.addControlListener(eventCompositeControlListener);
 
 		// first expand item (Events)
@@ -295,7 +296,8 @@ public class DetectorChannelView extends ViewPart
 		// Event Options Tab
 		eventsTabFolder = new CTabFolder(this.eventComposite, SWT.FLAT );
 		eventsTabFolder.setLayoutData(gridData);
-		eventsTabFolderSelectionListener = new EventsTabFolderSelectionListener();
+		eventsTabFolderSelectionListener = new 
+				EventsTabFolderSelectionListener();
 		eventsTabFolder.addSelectionListener(eventsTabFolderSelectionListener);
 		
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
@@ -307,16 +309,8 @@ public class DetectorChannelView extends ViewPart
 				"of the channel, if redo event occurs");
 		this.redoEventTabItem.setControl(redoEventComposite);
 		
-		this.averageText.setEnabled(false);
-		this.maxDeviationText.setEnabled(false);
-		this.minimumText.setEnabled(false);
-		this.maxAttemptsText.setEnabled(false);
-		this.confirmTriggerManualCheckBox.setEnabled(false);
-		this.detectorReadyEventCheckBox.setEnabled(false);
-		this.eventsTabFolder.setEnabled(false);
-
 		top.setVisible(false);
-
+		
 		// listen to selection changes (if a detector channel is selected, its 
 		// attributes are made available for editing)
 		getSite().getWorkbenchWindow().getSelectionService().
@@ -344,34 +338,26 @@ public class DetectorChannelView extends ViewPart
 		// weil die View auf alle Änderungen hört die die DetectorEinstellungen
 		// betreffen und in der scanModuleView vorgenommen werden
 		// Für Änderungen die in der DetectorChannelView gemacht werden,
-		// wird der Listener sowieso ausgeschaltet, weil auf gewollte Änderungen
+		// wird der Listener sowieso abgeschaltet, weil auf gewollte Änderungen
 		// im Schema keine Listener benötigt werden (=> Endlosschleife)
-		// Die Listener könnten nur benötigt werden, wenn an anderer / von anderer
+		// Die Listener könnten nur benötigt werden, wenn an anderer 
 		// Stelle Änderungen an den Channel-Einstellungen vorgenommen werden
 		// könnten. Dies sehe ich aber erstmal nicht. (Hartmut 13.12.11)
+
 		if(this.currentChannel != null) {
-			this.currentChannel.removeModelUpdateListener(this);
+			logger.debug("set channel (" + channel.getAbstractDevice().
+					getFullIdentifyer() + ")");
+		} else {
+			logger.debug("set channel (null)");
 		}
+
+		// update the underlying model to the new one
 		this.currentChannel = channel;
 		this.scanModule = null;
 		
 		if(this.currentChannel != null) {
 			this.scanModule = channel.getScanModule();
-			this.currentChannel.addModelUpdateListener(this);
 		}
-		updateEvent(null);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
-		
-		if(modelUpdateEvent != null) 
-			logger.debug(modelUpdateEvent.getSender().getClass().getName());
-
-		if(modelUpdateListenerSuspended) return;
 
 		removeListeners();
 		
@@ -383,10 +369,11 @@ public class DetectorChannelView extends ViewPart
 					currentChannel.getAbstractDevice().getFullIdentifyer());
 			
 			// set average text
-			this.averageText.setText("" + this.currentChannel.getAverageCount());
+			this.averageText.setText("" +this.currentChannel.getAverageCount());
 
 			// set max deviation
-			if(this.currentChannel.getMaxDeviation() != Double.NEGATIVE_INFINITY) {
+			if(this.currentChannel.getMaxDeviation() != 
+					Double.NEGATIVE_INFINITY) {
 				this.maxDeviationText.setText(
 						"" + this.currentChannel.getMaxDeviation());
 			} else {
@@ -416,14 +403,6 @@ public class DetectorChannelView extends ViewPart
 			this.detectorReadyEventCheckBox.setSelection(
 					this.currentChannel.getDetectorReadyEvent() != null);
 			
-			this.averageText.setEnabled(true);
-			this.maxDeviationText.setEnabled(true);
-			this.minimumText.setEnabled(true);
-			this.maxAttemptsText.setEnabled(true);
-			this.confirmTriggerManualCheckBox.setEnabled(true);
-			this.detectorReadyEventCheckBox.setEnabled(true);
-			this.eventsTabFolder.setEnabled(true);
-			
 			this.redoEventComposite.setControlEventManager(
 					this.currentChannel.getRedoControlEventManager());
 			
@@ -443,24 +422,15 @@ public class DetectorChannelView extends ViewPart
 			top.setVisible(true);
 			
 		} else {
-			// currentChannel is null
-			System.out.println("\n   Kommt dieser Aufruf überhaupt noch?");
-			System.out.println("   wenn ja, clearView() aufrufen!");
+			// this.currentChannel == null (no channel selected)
+			this.setPartName("No Detector Channel selected");
+
 			this.averageText.setText("");
 			this.maxDeviationText.setText("");
 			this.minimumText.setText("");
 			this.maxAttemptsText.setText("");
 			this.confirmTriggerManualCheckBox.setSelection(false);
 			this.detectorReadyEventCheckBox.setSelection(false);
-			this.eventsTabFolder.setEnabled(false);
-			
-			this.averageText.setEnabled(false);
-			this.maxDeviationText.setEnabled(false);
-			this.minimumText.setEnabled(false);
-			this.maxAttemptsText.setEnabled(false);
-			this.confirmTriggerManualCheckBox.setEnabled(false);
-			this.detectorReadyEventCheckBox.setEnabled(false);
-			this.setPartName("No Detector Channel selected");
 			
 			this.averageErrorLabel.setImage(null);
 			this.maxDeviationErrorLabel.setImage(null);
@@ -471,9 +441,11 @@ public class DetectorChannelView extends ViewPart
 			
 			top.setVisible(false);
 		}
+
+		// re-enable listeners
 		addListeners();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -483,67 +455,37 @@ public class DetectorChannelView extends ViewPart
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).size() == 0) {
 				if (this.scanModule != null) {
-					if (scanModule.getChannels().length == 0)
-						clearView();
+					if (scanModule.getChannels().length == 0) {
+						if(logger.isDebugEnabled()) {
+							logger.debug("selection is empty, scanModule: " + 
+									this.scanModule.getId() + "-> ignore"); 
+						}
+						setChannel(null);
+					} 
+				} else {
+					logger.debug(
+					  "selection ist empty, no scanModule available -> ignore");
 				}
 				return;
 			}
 			// since at any given time this view can only display the attributes 
-			// of one detector channel we take the first element of the selection
+			// of one detector channel, we take the first element of the 
+			// selection
 			Object o = ((IStructuredSelection) selection).toList().get(0);
 			if (o instanceof Channel) {
+				// set new Channel
 				if(logger.isDebugEnabled()) {
 					logger.debug("Channel: " + ((Channel)o).
 								getDetectorChannel().getFullIdentifyer() + 
 								" selected.");
 				}
-				// Display Channel Settings in DetectorChannelView
-				// Hier müssen jetzt die ganzen Detektoreinstellungen angezeigt werden
-				// Das soll nicht mehr über einen anderen Modus erfolgen
-				// Änderungen in der ScanModulView sollen keinen direkten
-				// Aufruf mehr in die DetectorChannelView haben.
-				// 1. Aufruf wegnehmen
-				// 2. Hier neue Aktualisierung einfügen
-				// Dann gibt es zwischendurch keine Aktualisierung!
 				setChannel((Channel)o);
 			} else {
-				// there is something selected, but not a detector channel
+				logger.debug("selection other than Channel -> ignore");
 			}
 		}
 	}
 
-	/**
-	 *  @author scherr
-	 *  
-	 */
-	private void clearView() {
-
-		// currentChannel is null
-		this.setPartName("No Detector Channel selected");
-		this.averageText.setText("");
-		this.maxDeviationText.setText("");
-		this.minimumText.setText("");
-		this.maxAttemptsText.setText("");
-		this.confirmTriggerManualCheckBox.setSelection(false);
-		this.detectorReadyEventCheckBox.setSelection(false);
-		this.eventsTabFolder.setEnabled(false);
-		
-		this.averageText.setEnabled(false);
-		this.maxDeviationText.setEnabled(false);
-		this.minimumText.setEnabled(false);
-		this.maxAttemptsText.setEnabled(false);
-		this.confirmTriggerManualCheckBox.setEnabled(false);
-		this.detectorReadyEventCheckBox.setEnabled(false);
-		
-		this.averageErrorLabel.setImage(null);
-		this.maxDeviationErrorLabel.setImage(null);
-		this.minimumErrorLabel.setImage(null);
-		this.maxAttemptsErrorLabel.setImage(null);
-		
-		this.redoEventComposite.setControlEventManager(null);
-		top.setVisible(false);
-	}
-	
 	/*
 	 * 
 	 */
@@ -572,7 +514,8 @@ public class DetectorChannelView extends ViewPart
 						this.maxDeviationErrorLabel.setImage(
 								PlatformUI.getWorkbench().getSharedImages().
 								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-						this.maxDeviationErrorLabel.setToolTipText("Max Deviation value not possible");
+						this.maxDeviationErrorLabel.setToolTipText(
+								"Max Deviation value not possible");
 						// update and resize View with getParent().layout()
 						this.maxDeviationErrorLabel.getParent().layout();
 						break;
@@ -580,7 +523,8 @@ public class DetectorChannelView extends ViewPart
 						this.minimumErrorLabel.setImage(
 								PlatformUI.getWorkbench().getSharedImages().
 								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-						this.minimumErrorLabel.setToolTipText("Minimum value not possible");
+						this.minimumErrorLabel.setToolTipText(
+								"Minimum value not possible");
 						this.minimumErrorLabel.getParent().layout();
 						break;
 				}
@@ -597,16 +541,6 @@ public class DetectorChannelView extends ViewPart
 		}
 	}
 	
-	protected void suspendModelUpdateListener() {
-		currentChannel.removeModelUpdateListener(this);
-		modelUpdateListenerSuspended = true;
-	}
-	
-	protected void resumeModelUpdateListener() {
-		currentChannel.addModelUpdateListener(this);
-		modelUpdateListenerSuspended = false;
-	}
-
 	/*
 	 * 
 	 */
@@ -645,7 +579,8 @@ public class DetectorChannelView extends ViewPart
 		
 		confirmTriggerManualCheckBox.removeSelectionListener(
 				confirmTriggerManualCheckBoxSelectionListener);
-		eventsTabFolder.removeSelectionListener(eventsTabFolderSelectionListener);
+		eventsTabFolder.removeSelectionListener(
+				eventsTabFolderSelectionListener);
 		detectorReadyEventCheckBox.removeSelectionListener(
 				detectorReadyEventCheckBoxSelectionListener);
 		
@@ -670,19 +605,18 @@ public class DetectorChannelView extends ViewPart
 		public void modifyText(final ModifyEvent e) {
 			logger.debug("average text modified");
 			
-			suspendModelUpdateListener();
-			
 			if(currentChannel != null) {
 				try {
-					currentChannel.setAverageCount(Integer.parseInt(averageText.getText()));
-					logger.debug("set average text to: " + Integer.parseInt(averageText.getText()));
+					currentChannel.setAverageCount(Integer.parseInt(
+							averageText.getText()));
+					logger.debug("set average text to: " + Integer.parseInt(
+							averageText.getText()));
 				} catch(final NumberFormatException ex) {
 					// set default value (1)
 					currentChannel.setAverageCount(1);
 				}
 			}
 			checkForErrors();
-			resumeModelUpdateListener();
 		}
 	}
 
@@ -698,21 +632,19 @@ public class DetectorChannelView extends ViewPart
 		@Override
 		public void modifyText(final ModifyEvent e) {
 
-			suspendModelUpdateListener();
-			
 			if(currentChannel != null) {
 				if(maxDeviationText.getText().equals("")) {
 					currentChannel.setMaxDeviation(Double.NEGATIVE_INFINITY);
 				} else {
 					try {
-						currentChannel.setMaxDeviation(Double.parseDouble(maxDeviationText.getText()));
+						currentChannel.setMaxDeviation(Double.parseDouble(
+								maxDeviationText.getText()));
 					} catch(final NumberFormatException ex) {
 						currentChannel.setMaxDeviation(Double.NaN);
 					}
 				}
 			}
 			checkForErrors();
-			resumeModelUpdateListener();
 		}
 	}
 	
@@ -728,21 +660,19 @@ public class DetectorChannelView extends ViewPart
 		@Override
 		public void modifyText(final ModifyEvent e) {
 			
-			suspendModelUpdateListener();
-			
 			if(currentChannel != null) {
 				if(minimumText.getText().equals("")) {
 					currentChannel.setMinumum(Double.NEGATIVE_INFINITY);
 				} else {
 					try {
-						currentChannel.setMinumum(Double.parseDouble( minimumText.getText()));
+						currentChannel.setMinumum(Double.parseDouble(
+								minimumText.getText()));
 					} catch(final NumberFormatException ex) {
 						currentChannel.setMinumum(Double.NaN);
 					}
 				}
 			}
 			checkForErrors();
-			resumeModelUpdateListener();
 		}
 	}
 
@@ -758,21 +688,19 @@ public class DetectorChannelView extends ViewPart
 		@Override
 		public void modifyText(final ModifyEvent e) {
 
-			suspendModelUpdateListener();
-
 			if(currentChannel != null) {
 				if(maxAttemptsText.getText().equals("")) {
 					currentChannel.setMaxAttempts(Integer.MIN_VALUE);
 				} else {
 					try {
-						currentChannel.setMaxAttempts(Integer.parseInt(maxAttemptsText.getText()));
+						currentChannel.setMaxAttempts(Integer.parseInt(
+								maxAttemptsText.getText()));
 					} catch(final NumberFormatException ex) {
 						currentChannel.setMaxAttempts(-1);
 					}
 				}
 			}
 			checkForErrors();
-			resumeModelUpdateListener();
 		}
 	}
 
@@ -780,7 +708,8 @@ public class DetectorChannelView extends ViewPart
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>confirmTriggerManualCheckBox</code>.
 	 */
-	class ConfirmTriggerManualCheckBoxSelectionListener implements SelectionListener {
+	class ConfirmTriggerManualCheckBoxSelectionListener implements 
+			SelectionListener {
 
 		/**
 		 * {@inheritDoc}
@@ -805,7 +734,8 @@ public class DetectorChannelView extends ViewPart
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>detectorReadyEventCheckBox</code>.
 	 */
-	class DetectorReadyEventCheckBoxSelectionListener implements SelectionListener {
+	class DetectorReadyEventCheckBoxSelectionListener implements 
+			SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -858,7 +788,8 @@ public class DetectorChannelView extends ViewPart
 		 */
 		@Override
 		public void controlResized(final ControlEvent e) {
-			int height = bar.getSize().y - itemEventOptions.getHeaderHeight() - 20;
+			int height = bar.getSize().y - itemEventOptions.getHeaderHeight() -
+					20;
 			itemEventOptions.setHeight(height < 200 ? 200 : height);
 		}
 	}
