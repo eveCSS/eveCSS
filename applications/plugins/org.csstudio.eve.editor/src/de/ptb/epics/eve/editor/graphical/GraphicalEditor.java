@@ -433,6 +433,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			Job saveJob = new Save("Save", saveFileName, this.scanDescription, this);
 			monitor.worked(1);
 			monitor.subTask("running save routine");
+			saveJob.setUser(true);
 			saveJob.schedule();
 			monitor.worked(1);
 		} finally {
@@ -481,6 +482,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		IProgressService service = (IProgressService) getSite().getService(
 				IProgressService.class);
 		service.showInDialog(getSite().getShell(), saveJob);
+		saveJob.setUser(true);
 		saveJob.schedule();
 	}
 	
