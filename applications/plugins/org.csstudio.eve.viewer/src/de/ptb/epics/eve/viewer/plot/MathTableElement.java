@@ -1,14 +1,12 @@
 package de.ptb.epics.eve.viewer.plot;
 
+import java.util.Formatter;
 import java.util.Locale;
 
 import org.eclipse.jface.viewers.TableViewer;
 
-import com.cosylab.util.PrintfFormat;
-
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
-import de.ptb.epics.eve.ecp1.intern.DataModifier;
 import de.ptb.epics.eve.ecp1.intern.DataType;
 import de.ptb.epics.eve.viewer.Activator;
 
@@ -72,28 +70,26 @@ public class MathTableElement implements IMeasurementDataListener {
 		
 		// are we still in the same chain and scan module ?
 		if (measurementData.getChainId() == chid && 
-			measurementData.getScanModuleId() == smid)
-		{
+			measurementData.getScanModuleId() == smid) {
 			if(detectorId.equals(measurementData.getName()) && 
-			 measurementData.getDataModifier() == mathFunction.toDataModifier())
-			{
-				if ((mathFunction == MathFunction.UNMODIFIED) || (mathFunction == MathFunction.NORMALIZED)){
-					value = convert(measurementData, 0);
-				}
-				else {
+			 measurementData.getDataModifier() == mathFunction.toDataModifier()) {
+				if ((mathFunction == MathFunction.UNMODIFIED) || 
+					(mathFunction == MathFunction.NORMALIZED)) {
+						value = convert(measurementData, 0);
+				} else {
 					position = convert(measurementData, 0);
 					value = convert(measurementData, 1);
 				}
 				doUpdate();
 			}
-			else if(motorId.equals(measurementData.getName()))
-			{
-				if ((mathFunction == MathFunction.UNMODIFIED) || (mathFunction == MathFunction.NORMALIZED)){
-					position = convert(measurementData, 0);
-					doUpdate();
+			else if(motorId.equals(measurementData.getName())) {
+				if ((mathFunction == MathFunction.UNMODIFIED) || 
+					(mathFunction == MathFunction.NORMALIZED)){
+						position = convert(measurementData, 0);
+						doUpdate();
 				}
 			}
-		}	
+		}
 	}
 	
 	/*
@@ -104,29 +100,29 @@ public class MathTableElement implements IMeasurementDataListener {
 		if (mData.getValues().size() <= element) return "error";
 
 		if (mData.getDataType() == DataType.DOUBLE || 
-			mData.getDataType() == DataType.FLOAT) 
-		{
-			Double data = (Double) mData.getValues().get(element);
-			if (data.isNaN())
-				return " ";
-			else 
-				return new PrintfFormat(Locale.ENGLISH, "%12.4g").sprintf(data).trim();
+			mData.getDataType() == DataType.FLOAT) {
+				Double data = (Double) mData.getValues().get(element);
+				if (data.isNaN()) {
+					return " ";
+				} else {
+					Formatter formatter = new Formatter(
+							new Locale(Locale.ENGLISH.getCountry()));
+					return formatter.format("%12.4g", data).out().
+							toString().trim();
+				}
+		} else {
+			return mData.getValues().get(element).toString();
 		}
-		else
-			return mData.getValues().get(element).toString();		
 	}
 	
 	/*
 	 * called by measurementDataTransmitted to update the table contents
 	 */
 	private void doUpdate() {
-		if (!viewer.getControl().isDisposed())
-		{
+		if (!viewer.getControl().isDisposed()) {
 			final MathTableElement thisMathTableElement = this;
 			viewer.getControl().getDisplay().asyncExec(new Runnable() {
-				
-				@Override
-				public void run() {
+				@Override public void run() {
 					if (!viewer.getControl().isDisposed()) {
 						viewer.update(thisMathTableElement, null);
 					}
@@ -177,7 +173,7 @@ public class MathTableElement implements IMeasurementDataListener {
 	/**
 	 * Returns the value of the element.
 	 * 
-	 * @return the value of the elemetn
+	 * @return the value of the element
 	 */
 	public String getValue() {
 		return value;
@@ -189,9 +185,10 @@ public class MathTableElement implements IMeasurementDataListener {
 	 * @return the position of the motor where the value was measured
 	 */
 	public String getPosition() {
-		if ((mathFunction == MathFunction.UNMODIFIED) || drawIcon())
+		if ((mathFunction == MathFunction.UNMODIFIED) || drawIcon()) {
 			return position;
-		else
+		} else {
 			return null;
+		}
 	}
 }

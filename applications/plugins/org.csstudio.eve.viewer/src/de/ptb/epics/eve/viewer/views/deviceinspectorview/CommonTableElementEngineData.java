@@ -1,8 +1,7 @@
 package de.ptb.epics.eve.viewer.views.deviceinspectorview;
 
+import java.util.Formatter;
 import java.util.Locale;
-
-import com.cosylab.util.PrintfFormat;
 
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
@@ -14,10 +13,10 @@ import de.ptb.epics.eve.viewer.Activator;
  * <code>CommonTableElementEngineData</code>.
  * 
  * @author Jens Eden
- *
+ * @author Marcus Michalsky
  */
 public class CommonTableElementEngineData implements IMeasurementDataListener {
-
+	
 	private String dataId;
 	private DataModifier datamodifier;
 	private Boolean isActive;
@@ -55,8 +54,10 @@ public class CommonTableElementEngineData implements IMeasurementDataListener {
 			if ((measurementData.getDataType() == DataType.DOUBLE) || 
 				(measurementData.getDataType() == DataType.FLOAT)) {
 					Double value = (Double) measurementData.getValues().get(0);
-					textvalue = new PrintfFormat(
-							Locale.ENGLISH, "%12.4g").sprintf(value);
+					Formatter formatter = new Formatter(
+							new Locale(Locale.ENGLISH.getCountry()));
+					textvalue = formatter.format("%12.4g", value).out().
+							toString();
 			} else {
 				textvalue = measurementData.getValues().get( 0 ).toString();
 			}
