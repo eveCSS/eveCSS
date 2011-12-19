@@ -21,9 +21,11 @@ public class AbstractDeviceAdapterFactory implements IAdapterFactory {
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
 		if(adapterType == ProcessVariable.class) {
 			if(adaptableObject instanceof MotorAxis) {
-				return new ProcessVariable(((MotorAxis)adaptableObject).getPosition().getAccess().getVariableID());
+				return new ProcessVariable(((MotorAxis)adaptableObject).
+						getPosition().getAccess().getVariableID());
 			} else if(adaptableObject instanceof DetectorChannel) {
-				return new ProcessVariable(((DetectorChannel)adaptableObject).getRead().getAccess().getVariableID());
+				return new ProcessVariable(((DetectorChannel)adaptableObject).
+						getRead().getAccess().getVariableID());
 			}
 		}
 		return null;
