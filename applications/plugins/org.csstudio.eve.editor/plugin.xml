@@ -126,6 +126,14 @@
       <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar">
          <toolbar
+               id="de.ptb.epics.eve.editor.toolbar.file">
+            <command
+                  commandId="org.eclipse.ui.newWizard"
+                  label="New"
+                  style="push">
+            </command>
+         </toolbar>
+         <toolbar
                id="de.ptb.epics.eve.editor.toolbar.save">
             <command
                   commandId="org.eclipse.ui.file.save"
