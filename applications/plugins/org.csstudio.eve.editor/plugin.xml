@@ -131,6 +131,11 @@
                   commandId="org.eclipse.ui.newWizard"
                   label="New"
                   style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </visibleWhen>
             </command>
          </toolbar>
          <toolbar
