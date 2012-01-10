@@ -29,6 +29,8 @@ public class SaveAllDetectorValues extends Job {
 	private static final Logger logger = 
 			Logger.getLogger(SaveAllDetectorValues.class.getName());
 	
+	private String family = "filloptions";
+	
 	// the scan module the detectors are added to
 	private ScanModule scanModule;
 	
@@ -102,6 +104,14 @@ public class SaveAllDetectorValues extends Job {
 		logger.debug("job finished");
 		monitor.done();
 		return Status.OK_STATUS;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean belongsTo(Object family) {
+		return family.equals(this.family);
 	}
 	
 	/* ********************************************************************* */

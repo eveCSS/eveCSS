@@ -31,6 +31,8 @@ public class SaveAllMotorPositions extends Job {
 	private static final Logger logger = 
 			Logger.getLogger(SaveAllMotorPositions.class.getName());
 	
+	private String family = "filloptions";
+	
 	// the scan module the axes are added to
 	private ScanModule scanModule;
 	
@@ -103,6 +105,14 @@ public class SaveAllMotorPositions extends Job {
 		logger.debug("job finished");
 		monitor.done();
 		return Status.OK_STATUS;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean belongsTo(Object family) {
+		return family.equals(this.family);
 	}
 	
 	/* ********************************************************************* */
