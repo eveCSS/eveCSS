@@ -31,6 +31,8 @@ public class Save extends Job {
 	
 	private final static Logger logger = Logger.getLogger(Save.class.getName());
 	
+	private String family = "file";
+	
 	private String filename;
 	private ScanDescription scanDescription;
 	private EditorPart editor;
@@ -107,6 +109,14 @@ public class Save extends Job {
 		refreshEditorState.schedule();
 		
 		return Status.OK_STATUS;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean belongsTo(Object family) {
+		return family.equals(this.family);
 	}
 	
 	/*

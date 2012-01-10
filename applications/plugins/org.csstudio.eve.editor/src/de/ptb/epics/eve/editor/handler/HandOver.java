@@ -10,8 +10,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
+import org.eclipse.core.runtime.jobs.IJobManager;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -42,7 +45,7 @@ public class HandOver extends AbstractHandler {
 		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		
 		if(window.getActivePage().getActiveEditor() == null) {
-			logger.warn("No Editor found. Dispatch Scan Description canceled.");
+			logger.warn("No Editor found. Dispatch of Scan Description canceled.");
 			return null;
 		}
 		
@@ -70,6 +73,16 @@ public class HandOver extends AbstractHandler {
 				// abort = do nothing
 				return null;
 			}
+		}
+		
+		// Obtain the Platform job manager to sync with save job
+		IJobManager manager = Job.getJobManager();
+		try {
+			manager.join("file", new NullProgressMonitor());
+		} catch (OperationCanceledException e1) {
+			logger.warn(e1.getMessage(), e1);
+		} catch (InterruptedException e1) {
+			logger.warn(e1.getMessage(), e1);
 		}
 		
 		// if it is still dirty (save unsuccessful) don't switch perspective
