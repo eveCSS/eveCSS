@@ -8,8 +8,7 @@ import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
- * <code>EveEditorStartCommandHandler</code> is the default command handler of 
- * the start command.
+ * <code>Start</code> is the default command handler of the start command.
  * <p>
  * It tries to show the perspective "EveEditorPerspective" in the active 
  * workbench window.
@@ -17,7 +16,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
  * @author Marcus Michalsky
  * @since 0.4.1
  */
-public class EveEditorStartCommandHandler implements IHandler {
+public class Start implements IHandler {
 
 	/**
 	 * {@inheritDoc}

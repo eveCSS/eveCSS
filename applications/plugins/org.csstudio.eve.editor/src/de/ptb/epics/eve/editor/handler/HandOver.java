@@ -23,7 +23,6 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
 import de.ptb.epics.eve.editor.IScanDescriptionReceiver;
 import de.ptb.epics.eve.editor.graphical.GraphicalEditor;
 
-
 /**
  * <code>HandOver</code>.
  * 

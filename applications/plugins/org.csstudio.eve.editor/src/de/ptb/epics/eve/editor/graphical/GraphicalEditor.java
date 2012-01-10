@@ -546,6 +546,14 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 * {@inheritDoc}
 	 */
 	@Override
+	public boolean isSaveOnCloseNeeded() {
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void dispose() {
 		getSite().setSelectionProvider(null);
 		super.dispose();

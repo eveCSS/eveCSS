@@ -224,7 +224,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="de.ptb.epics.eve.editor.handler.EveEditorStartCommandHandler"
+            defaultHandler="de.ptb.epics.eve.editor.handler.Start"
             id="de.ptb.epics.eve.editor.start"
             name="EveEditor">
       </command>
