@@ -52,6 +52,7 @@ import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.SelectionProviderWrapper;
 import de.ptb.epics.eve.editor.dialogs.LostDevicesDialog;
 import de.ptb.epics.eve.editor.graphical.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.EventEditPart;
@@ -116,6 +117,12 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	private MenuItem saveAllAxisPositionsMenuItem;
 	private MenuItem saveAllDetectorValuesMenuItem;
 	
+	// the selection service only accepts one selection provider per view,
+	// since we have multiple tabs with tables capable of providing selections 
+	// a wrapper handles them and registers the active one with the global 
+	// selection service
+	protected SelectionProviderWrapper selectionProviderWrapper;
+
 	// indicates whether the editor has unsaved changes
 	private boolean dirty;
 	
@@ -146,6 +153,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		menu = createContextMenu();
 		
 		getSite().setSelectionProvider(viewer);
+//		selectionProviderWrapper = new SelectionProviderWrapper();
+//		getSite().setSelectionProvider(selectionProviderWrapper);
 		
 		updateViews();
 	}
@@ -233,10 +242,10 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			
 			if(selectedScanModule != null)
 			{
-				scanView.setCurrentChain(selectedScanModule.getChain());
+//				scanView.setCurrentChain(selectedScanModule.getChain());
 				logger.debug("currentChain: " + selectedScanModule.getChain());
 			} else {
-				scanView.setCurrentChain(null);
+//				scanView.setCurrentChain(null);
 				logger.debug("currentChain: " + null);
 			}
 		} 
@@ -260,7 +269,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		// scan module view found ?
 		if(scanModuleView != null) {
 			// tell the view about the currently selected scan module
-			scanModuleView.setCurrentScanModule(selectedScanModule);
+//			scanModuleView.setCurrentScanModule(selectedScanModule);
 		}
 		refreshAllEditParts(viewer.getRootEditPart());
 		
@@ -298,6 +307,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 						
 			// set the focus (to select/color it)
 			((ScanModuleEditPart)selectedEditPart).setFocus(true);
+
 		} else {
 			// reset selection
 			selectedEditPart = null;
@@ -652,7 +662,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 
 			if(part instanceof ScanModuleEditPart) {
 				// user clicked on a scan module
-				
 				selectScanModule((ScanModuleEditPart)part);
 			} else {
 				// user clicked anywhere else -> deselect scan module

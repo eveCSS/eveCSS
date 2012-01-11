@@ -30,3 +30,4 @@ Export-Package: de.ptb.epics.eve.viewer,
  de.ptb.epics.eve.viewer.actions,
  de.ptb.epics.eve.viewer.dialogs
 Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.ui.views.properties

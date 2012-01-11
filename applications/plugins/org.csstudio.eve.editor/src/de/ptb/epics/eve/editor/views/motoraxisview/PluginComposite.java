@@ -232,7 +232,6 @@ public class PluginComposite extends Composite {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			motorAxisView.suspendModelUpdateListener();
 			
 			if(axis != null) { 
 				PlugIn plugin = Activator.getDefault().getMeasuringStation().
@@ -260,7 +259,6 @@ public class PluginComposite extends Composite {
 					pluginControllerComposite.setScanModule(scanModule);
 			}
 			checkForErrors();
-			motorAxisView.resumeModelUpdateListener();
 		}
 	}
 }

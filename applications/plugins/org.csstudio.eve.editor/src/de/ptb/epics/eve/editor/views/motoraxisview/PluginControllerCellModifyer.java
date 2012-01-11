@@ -150,8 +150,6 @@ public class PluginControllerCellModifyer implements ICellModifier {
 	@Override
 	public void modify( final Object element, final String property, final Object value ) {
 		
-		if(motorAxisView != null) motorAxisView.suspendModelUpdateListener();
-		
 		if( property.equals( "value" ) ) {
 			Map.Entry<String, String> entry = ((Map.Entry< String, String >)((Item)element).getData());
 			final PluginController pluginController = (PluginController)this.tableViewer.getInput();
@@ -163,7 +161,5 @@ public class PluginControllerCellModifyer implements ICellModifier {
 			
 			//this.tableViewer.refresh();
 		}
-		
-		if(motorAxisView != null) motorAxisView.resumeModelUpdateListener();
 	}
 }

@@ -1443,7 +1443,6 @@ public class StartStopStepwidthComposite extends Composite {
 		@Override
 		public void modifyText(ModifyEvent e) {
 
-			motorAxisView.suspendModelUpdateListener();
 			removeListeners();
 			
 			if( currentAxis != null ) {
@@ -1474,7 +1473,6 @@ public class StartStopStepwidthComposite extends Composite {
 			}
 			checkForErrors();
 			addListeners();
-			motorAxisView.resumeModelUpdateListener();
 		}
 	}
 
@@ -1497,7 +1495,6 @@ public class StartStopStepwidthComposite extends Composite {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			motorAxisView.suspendModelUpdateListener();
 			removeListeners();
 			
 			if( currentAxis != null ) {
@@ -1508,7 +1505,6 @@ public class StartStopStepwidthComposite extends Composite {
 
 			checkForErrors();
 			addListeners();
-			motorAxisView.resumeModelUpdateListener();
 		}
 	}
 	
@@ -1549,7 +1545,6 @@ public class StartStopStepwidthComposite extends Composite {
 		 */
 		@Override
 		public void modifyText(ModifyEvent e) {
-			motorAxisView.suspendModelUpdateListener();
 			removeListeners();
 			if( currentAxis != null ) {
 				switch (	currentAxis.getMotorAxis().getPosition().getType()) {
@@ -1576,7 +1571,6 @@ public class StartStopStepwidthComposite extends Composite {
 				}
 				checkForErrors();
 				addListeners();
-				motorAxisView.resumeModelUpdateListener();
 			}
 		}
 	}
@@ -1599,7 +1593,6 @@ public class StartStopStepwidthComposite extends Composite {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			motorAxisView.suspendModelUpdateListener();
 			removeListeners();
 
 			if( currentAxis != null ) {
@@ -1610,7 +1603,6 @@ public class StartStopStepwidthComposite extends Composite {
 
 			checkForErrors();
 			addListeners();
-			motorAxisView.resumeModelUpdateListener();
 		}
 	}
 
@@ -1652,7 +1644,6 @@ public class StartStopStepwidthComposite extends Composite {
 		 */
 		@Override
 		public void modifyText( final ModifyEvent e ) {
-			motorAxisView.suspendModelUpdateListener();
 			removeListeners();
 			
 			// if Text is empty, do nothing
@@ -1720,7 +1711,6 @@ public class StartStopStepwidthComposite extends Composite {
 			}
 			checkForErrors();
 			addListeners();
-			motorAxisView.resumeModelUpdateListener();
 		}
 	}
 
@@ -1766,7 +1756,6 @@ public class StartStopStepwidthComposite extends Composite {
 		 */
 		@Override
 		public void modifyText(final ModifyEvent e) {
-			motorAxisView.suspendModelUpdateListener();
 			removeListeners();
 			
 			if( currentAxis != null) {
@@ -1795,7 +1784,6 @@ public class StartStopStepwidthComposite extends Composite {
 			}
 			checkForErrors();
 			addListeners();
-			motorAxisView.resumeModelUpdateListener();
 		}
 	}
 
@@ -1816,13 +1804,10 @@ public class StartStopStepwidthComposite extends Composite {
 		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
-			motorAxisView.suspendModelUpdateListener();
 			
 			if(currentAxis != null) {
 				currentAxis.setMainAxis(mainAxisCheckBox.getSelection());
 			}
-			
-			motorAxisView.resumeModelUpdateListener();
 		}
 	}
 

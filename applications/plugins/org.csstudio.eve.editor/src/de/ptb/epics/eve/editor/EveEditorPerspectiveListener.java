@@ -96,7 +96,7 @@ public class EveEditorPerspectiveListener implements IPerspectiveListener {
 			// scan module view found ?
 			if(scanModuleView != null) {
 				// reset view
-				scanModuleView.setCurrentScanModule(null);
+//				scanModuleView.setCurrentScanModule(null);
 			}
 			
 			// try to get the error view

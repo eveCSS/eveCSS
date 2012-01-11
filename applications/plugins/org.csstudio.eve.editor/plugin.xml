@@ -258,4 +258,14 @@
             content="intro/overview.xml">
       </configExtension>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="de.ptb.epics.eve.data.scandescription.ScanModule"
+            class="de.ptb.epics.eve.editor.graphical.editparts.ScanModuleAdapterFactory">
+         <adapter
+               type="org.eclipse.jface.viewers.StructuredSelection">
+         </adapter>
+      </factory>
+   </extension>
 </plugin>

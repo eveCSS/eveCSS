@@ -37,6 +37,8 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
+import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
 
 /**
  * <code>PlotWindowView</code> contains all configuration parts, corresponding 
@@ -46,6 +48,7 @@ import de.ptb.epics.eve.editor.Activator;
  * 
  * @author ?
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class PlotWindowView extends ViewPart implements ISelectionListener {
 
@@ -1163,6 +1166,33 @@ public class PlotWindowView extends ViewPart implements ISelectionListener {
 								getId() + " selected."); 
 				}
 				setPlotWindow((PlotWindow)o);
+			} else if (o instanceof ScanModuleEditPart) {
+				logger.debug("selection is ScanModuleEditPart: " + o);
+				System.out.println("\n\n\tACHTUNG ScanModuel wurde geändert!!!");
+				// ScanModule was selected
+				if(logger.isDebugEnabled()) {
+					logger.debug("ScanModule: " + ((ScanModule)
+							((ScanModuleEditPart)o).getModel()).getId() + 
+							" selected."); 
+				}
+				ScanModule newModule = (ScanModule)((ScanModuleEditPart)o).getModel();
+				System.out.println("\tnewModule: " + newModule.getId());
+//				System.out.println("\toldModule: " + this.scanModule.getId());
+
+//				if (newModule.getId() != this.scanModule.getId()){
+
+				// set first channel of new ScanModule
+				PlotWindow[] plotWindow = newModule.getPlotWindows();
+				if (plotWindow.length > 0) {
+					setPlotWindow(plotWindow[0]);
+				}
+				else {
+					setPlotWindow(null);
+				}
+			} else if (o instanceof ScanDescriptionEditPart) {
+				logger.debug("selection is ScanDescriptionEditPart: " + o);
+				System.out.println("\n\nNEU: Hier wurde eine ScanDescription selektiert");
+				setPlotWindow(null);
 			} else {
 				logger.debug("selection other than PlotWindow -> ignore");
 			}
