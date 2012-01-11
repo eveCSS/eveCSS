@@ -111,8 +111,6 @@ public class SelectionProviderWrapper implements ISelectionProvider {
 				setSelection(emptySelection);
 			}
 		}
-		else
-			System.out.println("\nsetSelectionProvider tut nichts, weil die Selection sich nicht geändert hat!");
 	}
 	
 	/**

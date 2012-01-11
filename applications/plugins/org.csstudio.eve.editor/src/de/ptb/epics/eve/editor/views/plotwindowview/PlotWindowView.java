@@ -57,14 +57,10 @@ public class PlotWindowView extends ViewPart implements ISelectionListener {
 	 */
 	public static final String ID = 
 			"de.ptb.epics.eve.editor.views.PlotWindowView";
-
+	
 	// logging 
 	private static final Logger logger = 
 		Logger.getLogger(PlotWindowView.class.getName());
-	
-	// a reference to the view itself, so it can be referenced by the 
-	// inner classes (listeners)
-	private PlotWindowView plotWindowView;
 	
 	// *******************************************************************
 	// ********************** underlying model ***************************
@@ -232,10 +228,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener {
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		
-		// set the reference on the view itself
-		plotWindowView = this;
-		
 		parent.setLayout(new FillLayout());
 		
 		// if there is no measuring station loaded, show error message
@@ -1139,7 +1131,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener {
 	
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-
+		logger.debug("selection changed");
+		
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).isEmpty()) {
 				if (this.scanModule != null) {
@@ -1168,7 +1161,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener {
 				setPlotWindow((PlotWindow)o);
 			} else if (o instanceof ScanModuleEditPart) {
 				logger.debug("selection is ScanModuleEditPart: " + o);
-				System.out.println("\n\n\tACHTUNG ScanModuel wurde geändert!!!");
 				// ScanModule was selected
 				if(logger.isDebugEnabled()) {
 					logger.debug("ScanModule: " + ((ScanModule)
@@ -1176,22 +1168,16 @@ public class PlotWindowView extends ViewPart implements ISelectionListener {
 							" selected."); 
 				}
 				ScanModule newModule = (ScanModule)((ScanModuleEditPart)o).getModel();
-				System.out.println("\tnewModule: " + newModule.getId());
-//				System.out.println("\toldModule: " + this.scanModule.getId());
-
-//				if (newModule.getId() != this.scanModule.getId()){
-
+				
 				// set first channel of new ScanModule
 				PlotWindow[] plotWindow = newModule.getPlotWindows();
 				if (plotWindow.length > 0) {
 					setPlotWindow(plotWindow[0]);
-				}
-				else {
+				} else {
 					setPlotWindow(null);
 				}
 			} else if (o instanceof ScanDescriptionEditPart) {
 				logger.debug("selection is ScanDescriptionEditPart: " + o);
-				System.out.println("\n\nNEU: Hier wurde eine ScanDescription selektiert");
 				setPlotWindow(null);
 			} else {
 				logger.debug("selection other than PlotWindow -> ignore");

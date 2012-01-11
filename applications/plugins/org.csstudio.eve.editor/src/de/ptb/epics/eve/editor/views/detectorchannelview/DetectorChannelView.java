@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.GridData;
 
 import de.ptb.epics.eve.data.measuringstation.Event;
-import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
@@ -455,8 +454,8 @@ public class DetectorChannelView extends ViewPart
 	 */
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+		logger.debug("selection changed");
 		
-		System.out.println("\n\nSelectionChanged von DetectorChannelView aufgerufen!");
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).size() == 0) {
 				if (this.scanModule != null) {

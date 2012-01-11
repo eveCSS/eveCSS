@@ -38,9 +38,7 @@ import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
  */
 public class MotorAxisView extends ViewPart implements ISelectionListener {
 
-	/**
-	 * the unique identifier of the view.
-	 */
+	/** the unique identifier of the view. */
 	public static final String ID = 
 		"de.ptb.epics.eve.editor.views.MotorAxisView";
 
@@ -195,8 +193,8 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 		
 		this.emptyComposite = new Composite(sashForm, SWT.NONE);
 		this.startStopStepwidthComposite = 
-				new StartStopStepwidthComposite(sashForm, SWT.NONE, this);
-		this.dateTimeComposite = new DateTimeComposite(sashForm, SWT.NONE, this);
+				new StartStopStepwidthComposite(sashForm, SWT.NONE);
+		this.dateTimeComposite = new DateTimeComposite(sashForm, SWT.NONE);
 		this.fileComposite = 
 				new FileComposite(sashForm, SWT.NONE, this);
 		this.pluginComposite = 
@@ -209,11 +207,10 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 		// content not visible after creation of the view
 		top.setVisible(false);
 		
-		// listen to selection changes (the selected device's options are 
-		// displayed)
+		// listen to selection changes (the selected axis' properties are 
+		// displayed for editing)
 		getSite().getWorkbenchWindow().getSelectionService().
 				addSelectionListener(this);
-
 	}
 	// ************************************************************************
 	// ********************** end of createPartControl ************************
@@ -234,14 +231,13 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 	 * 		  should be set
 	 */
 	private void setAxis(final Axis axis) {
-
 		if(axis != null) {
 			logger.debug("set axis (" + axis.getAbstractDevice().
 					getFullIdentifyer() + ")");
 		} else {
 			logger.debug("set axis (null)");
 		}
-
+		
 		// set the new axis as current axis
 		this.currentAxis = axis;
 		this.scanModule = null;
@@ -249,11 +245,11 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 		if(this.currentAxis != null) {
 			this.scanModule = axis.getScanModule();
 		}
-
+		
 		if(this.currentAxis != null) {
 			this.setPartName(
 					this.currentAxis.getMotorAxis().getFullIdentifyer());
-
+			
 			this.positionModeCombo.setText(PositionMode.typeToString(
 					this.currentAxis.getPositionMode()));
 			if(this.currentAxis.getMotorAxis().getGoto().isDiscrete()) {
@@ -332,10 +328,13 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 		sc.setMinSize(targetWidth, targetHeight);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-
-		System.out.println("selectionChanged in MotorAxisView: " + selection);
+		logger.debug("selection changed");
+		
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).size() == 0) {
 /*				if (this.scanModule != null) {
@@ -362,46 +361,27 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 							getFullIdentifyer() + " selected.");
 				}
 				setAxis((Axis)o);
-			}
-			else if (o instanceof ScanModuleEditPart) {
-				logger.debug("selection is ScanModuleEditPart: " + o);
-				System.out.println("\n\n\tACHTUNG ScanModuel wurde geändert!!!");
+			} else if (o instanceof ScanModuleEditPart) {
 				// ScanModule was selected
 				if(logger.isDebugEnabled()) {
+					logger.debug("selection is ScanModuleEditPart: " + o);
 					logger.debug("ScanModule: " + ((ScanModule)
 							((ScanModuleEditPart)o).getModel()).getId() + 
 							" selected."); 
 				}
-				ScanModule newModule = (ScanModule)((ScanModuleEditPart)o).getModel();
-				System.out.println("\tnewModule: " + newModule.getId());
-//				System.out.println("\toldModule: " + this.scanModule.getId());
-
-	
-				if (this.scanModule != null && newModule.getId() != this.scanModule.getId()){
-
-					// set first axis of new ScanModule
-//					Axis[] axis = newModule.getAxes();
-//					if (axis.length > 0) {
-//						setAxis(axis[0]);
-//					}
-//					else {
-						System.out.println("\t\t\tsetAxis(null) aufgerufen");
+				if (this.scanModule != null && !(this.scanModule.equals(
+					(ScanModule)((ScanModuleEditPart)o).getModel()))) {
 						setAxis(null);
-//					}
 				}
-			}
-			else if (o instanceof ScanDescriptionEditPart) {
+			} else if (o instanceof ScanDescriptionEditPart) {
 				logger.debug("selection is ScanDescriptionEditPart: " + o);
-				System.out.println("\n\nNEU: Hier wurde eine ScanDescription selektiert");
 				setAxis(null);
-			}
-			else {
-				logger.debug("selection other than Axis or ScanModuleEditPart -> ignore: " + o);
+			} else {
+				logger.debug("unknown selection -> ignore: " + o);
 			}
 		}
-		
 	}
-		
+	
 	// ************************************************************************
 	// **************************** Listeners *********************************
 	// ************************************************************************

@@ -44,21 +44,20 @@ import de.ptb.epics.eve.editor.Activator;
  */
 public class MotorAxisComposite extends Composite {
 	
+	// logging
 	private static Logger logger = Logger.getLogger(MotorAxisComposite.class);
-	/*
-	 * the table showing the selected motor axes
-	 */
-	private TableViewer tableViewer;
-	private ViewPart parentView;
 	
-	/*
-	 * the scan module the selected motor axes correspond to
-	 */
+	// the scan module the selected motor axes correspond to
 	private ScanModule scanModule;
 	
-	/*
-	 * the right-click menu to add new motors
-	 */
+	// showing the selected motor axes
+	private TableViewer tableViewer;
+	
+	// reference to the scan module view
+	// (used to update the SelectionProviderWrapper)
+	private ViewPart parentView;
+	
+	// context menu
 	private MenuManager menuManager;
 	
 	/*
@@ -184,7 +183,7 @@ public class MotorAxisComposite extends Composite {
 //				focusStat = tableViewer.getTable().forceFocus();
 				System.out.println("\t\tFocus bekommen?: " + focusStat);
 
-				//				tableViewer.getTable().forceFocus();
+				//tableViewer.getTable().forceFocus();
 				((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
 //				tableViewer.getTable().setSelection(0);
 				System.out.println("\tSelection: " + tableViewer.getTable().getSelectionIndex());
@@ -206,7 +205,7 @@ public class MotorAxisComposite extends Composite {
 		for (int i = 0; i < availableMotorAxes.length; ++i) {
 			axisItems[i] = 
 				availableMotorAxes[i].getMotorAxis().getFullIdentifyer();
-		}		
+		}
 		
 		// if only one axis available, set this axis as default in all Plot Windows
 		if (availableMotorAxes.length == 1) {
@@ -222,20 +221,25 @@ public class MotorAxisComposite extends Composite {
 	// ************************************************************************
 	
 	/**
-	 * 
+	 * {@link org.eclipse.swt.events.FocusListener} of <code>tableViewer</code>.
 	 */
 	class TableViewerFocusListener implements FocusListener {
-
+		
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public void focusGained(FocusEvent e) {
 			logger.debug("focusGained");
-			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
+			((ScanModuleView)parentView).selectionProviderWrapper.
+					setSelectionProvider(tableViewer);
 		}
-
+		
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public void focusLost(FocusEvent e) {
-			// TODO Auto-generated method stub
-			
 		}
 	}
 
@@ -367,7 +371,7 @@ public class MotorAxisComposite extends Composite {
 		 */
 		SetAxisAction(MotorAxis ma) {
 			this.ma = ma;
-			this.setText("".equals(ma.getName())
+			this.setText(ma.getName().isEmpty()
 						 ? ma.getID()
 						 : ma.getName());
 		}
@@ -382,7 +386,7 @@ public class MotorAxisComposite extends Composite {
 				if(a.getAbstractDevice() == ma) {
 					return;
 				}
-			}		
+			}
 			super.run();
 			Axis a = new Axis(scanModule);
 			a.setMotorAxis(ma);
@@ -406,16 +410,14 @@ public class MotorAxisComposite extends Composite {
 
 			// the new axis (the last itemCount) will be selected in the table and 
 			// displayed in the motorAxisView
-//			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(null);
-//			tableViewer.getTable().setFocus();
+		//	tableViewer.getControl().setFocus();
 			tableViewer.getTable().select(tableViewer.getTable().getItemCount()-1);
-//			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
-
+			
 			// if only one axis available, set this axis for the Plot
 			setPlotMotorAxis();
-
+			
 			tableViewer.refresh();
-		}	
+		}
 	}
 	
 	/**
@@ -428,17 +430,19 @@ public class MotorAxisComposite extends Composite {
 		 */
 		@Override
 		public void run() {
-	    		
 			Axis removeAxis = (Axis)((IStructuredSelection)
 					tableViewer.getSelection()).getFirstElement();
 			
-			// MotorAxis wird aus scanModul ausgetragen
 			scanModule.remove(removeAxis);
-
+			
 			// if only one axis available, set this axis as for the Plot
 			setPlotMotorAxis();
-
+			
+			if(tableViewer.getTable().getItems().length != 0)
+				tableViewer.getTable().select(0);
+			tableViewer.getControl().setFocus();
+			
 			tableViewer.refresh();
-	   }
+		}
 	}
 }

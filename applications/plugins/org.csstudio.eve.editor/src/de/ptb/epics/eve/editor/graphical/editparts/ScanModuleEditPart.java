@@ -13,8 +13,6 @@ import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.graphical.editparts.figures.ScanModuleFigure;
@@ -44,7 +42,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 	}
 
 	/**
-	 * 
+	 * TODO remove: Redmine #168
 	 */
 	public void removeYourSelf() {
 		this.getFigure().removeCoordinateListener(scanModuleFigureCoordinateListener);
@@ -203,25 +201,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 					getFigure().getClientArea().y);
 
 		if (focus) {
-			System.out.println("\nset Focus im Graphical Editor auf: " + this);
-			System.out.println("\tgetModel: " + this.getModel());
-			ScanModule testModule = (ScanModule)this.getModel();
-			System.out.println("\tscan Module: " + testModule);
-			//			System.out.println("ISelection (ScanModule): " + (ISelection)this.getModel());
-// TODO: Testweise die ISelection des ScanModuls ausgeben.
-// Wenn das klappt, kann Sie auch an den Viewer übergeben werden
-//			this.getViewer().setSelection((ISelection) this.getModel());
-
-//			this.getViewer().setSelection(new StructuredSelection(this.getModel()));
-			
-//			this.getViewer().setSelection((ISelection)testModule);
-
-			// das klappt, allerdings muß hier im selectionChanged von den als
-			// Listenern angemeldeten Views der typ korrekt erzeugt werden!
 			this.getViewer().select(this);
-
-		} else {
-//			this.getViewer().deselect(this);
 		}
 		super.setFocus(true);
 	}

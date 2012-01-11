@@ -24,7 +24,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
@@ -47,9 +46,6 @@ public class StartStopStepwidthComposite extends Composite {
 	
 	// the underlying model the composite takes the data from
 	private Axis currentAxis;
-	
-	// reference to the view this composite is embedded in
-	private MotorAxisView motorAxisView;
 	
 	// indicates whether an axis in the scan module containing 
 	// the current axis is set as main axis
@@ -112,12 +108,9 @@ public class StartStopStepwidthComposite extends Composite {
 	 * @param parentView the view this composite is contained in
 	 */
 	public StartStopStepwidthComposite(final Composite parent, 
-										final int style, 
-										final ViewPart parentView) {
+										final int style) {
 		super(parent, style);
-		
-		this.motorAxisView = (MotorAxisView) parentView;
-		
+
 		this.mainAxisSet = false;
 		
 		// the composite gets a 3 column grid

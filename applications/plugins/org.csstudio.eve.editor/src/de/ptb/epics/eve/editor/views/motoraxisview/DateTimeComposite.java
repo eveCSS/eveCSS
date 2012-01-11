@@ -8,7 +8,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 
@@ -28,9 +27,6 @@ public class DateTimeComposite extends Composite {
 	
 	// the underlying model the composite takes the data from
 	private Axis currentAxis;
-		
-	// reference to the view this composite is embedded in
-	private MotorAxisView motorAxisView;
 	
 	// start row (declaration)
 	private Button startRadioButton;
@@ -70,7 +66,7 @@ public class DateTimeComposite extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public DateTimeComposite(Composite parent, int style, ViewPart parentView) {
+	public DateTimeComposite(Composite parent, int style) {
 		super(parent, style);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 5;
@@ -145,8 +141,6 @@ public class DateTimeComposite extends Composite {
 		
 		this.mainAxisCheckButton = new Button(this, SWT.CHECK);
 		this.mainAxisCheckButton.setText("main axis");
-		
-		this.motorAxisView = (MotorAxisView) parentView;
 		
 		this.currentAxis = null;
 	}

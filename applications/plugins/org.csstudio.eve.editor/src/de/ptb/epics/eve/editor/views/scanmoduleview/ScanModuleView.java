@@ -33,7 +33,6 @@ import org.eclipse.swt.events.SelectionListener;
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
-import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
@@ -43,8 +42,6 @@ import de.ptb.epics.eve.data.scandescription.errors.PositioningError;
 import de.ptb.epics.eve.data.scandescription.errors.PostscanError;
 import de.ptb.epics.eve.data.scandescription.errors.PrescanError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
-import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.SelectionProviderWrapper;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
@@ -112,7 +109,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 	private EventComposite breakEventComposite = null;
 	private EventComposite triggerEventComposite = null;
 
-	private CTabFolder behaviorTabFolder = null;
+	private CTabFolder actionsTabFolder = null;
 
 	private Composite motorAxisComposite = null;
 	private Composite detectorChannelComposite = null;
@@ -127,9 +124,9 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 
 	private String[] eventIDs;
 
-	private ExpandItem item0;
-	private ExpandItem item1;
-	private ExpandItem item2;
+	private ExpandItem itemGeneral;
+	private ExpandItem itemActions;
+	private ExpandItem itemEvents;
 
 	private CTabItem motorAxisTab;
 	private CTabItem detectorChannelTab;
@@ -148,7 +145,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 	private ExcludeDevicesOfScanModuleFilterManualUpdate measuringStationPostscan;
 
 	// the selection service only accepts one selection provider per view,
-	// since we have multiple tabs with tables capable of providing selections 
+	// since we have multiple tabs with tables capable of providing selections, 
 	// a wrapper handles them and registers the active one with the global 
 	// selection service
 	protected SelectionProviderWrapper selectionProviderWrapper;
@@ -162,30 +159,27 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		
 		parent.setLayout(new FillLayout());
 		
-		this.measuringStation = new ExcludeDevicesOfScanModuleFilterManualUpdate(
-				true, true, false, false, false);
-		this.measuringStation.setSource(
-				Activator.getDefault().getMeasuringStation());
-		// this.measuringStation.addModelUpdateListener(this);
-
-		this.measuringStationPrescan = new ExcludeDevicesOfScanModuleFilterManualUpdate(
-				false, false, true, false, false);
-		this.measuringStationPrescan.setSource(
-				Activator.getDefault().getMeasuringStation());
-		// this.measuringStationPrescan.addModelUpdateListener(this);
-
-		this.measuringStationPostscan = new ExcludeDevicesOfScanModuleFilterManualUpdate( 
-				false, false, false, true, false);
-		this.measuringStationPostscan.setSource(
-				Activator.getDefault().getMeasuringStation());
-		// this.measuringStationPostscan.addModelUpdateListener(this);
-
 		if(Activator.getDefault().getMeasuringStation() == null) {
 			final Label errorLabel = new Label(parent, SWT.NONE);
 			errorLabel.setText("No Measuring Station has been loaded. " +
 					"Please check Preferences!");
 			return;
 		}
+		
+		this.measuringStation = new ExcludeDevicesOfScanModuleFilterManualUpdate(
+				true, true, false, false, false);
+		this.measuringStation.setSource(
+				Activator.getDefault().getMeasuringStation());
+
+		this.measuringStationPrescan = new ExcludeDevicesOfScanModuleFilterManualUpdate(
+				false, false, true, false, false);
+		this.measuringStationPrescan.setSource(
+				Activator.getDefault().getMeasuringStation());
+
+		this.measuringStationPostscan = new ExcludeDevicesOfScanModuleFilterManualUpdate( 
+				false, false, false, true, false);
+		this.measuringStationPostscan.setSource(
+				Activator.getDefault().getMeasuringStation());
 		
 		final java.util.List<Event> events = Activator.getDefault()
 				.getMeasuringStation().getEvents();
@@ -208,13 +202,12 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		this.bar.setLayoutData(gridData);
 		
 		// General Section
-		createGeneralTabFolder();
+		createGeneralExpandItem();
 		// Actions Section
-		createActionsTabFolder();
+		createActionsExpandItem();
 		// Event Section
-		createEventsTabFolder();
+		createEventsExpandItem();
 		
-		this.setEnabledForAll(false);
 		top.setVisible(false);
 		
 		// listen to selection changes (if a scan module is selected, its 
@@ -228,16 +221,15 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 
 	/*
 	 * called by CreatePartControl to create the contents of the first 
-	 * expand item (General Tab)
+	 * expand item (General)
 	 */
-	private void createGeneralTabFolder()
-	{
+	private void createGeneralExpandItem() {
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 4;
 		this.generalComposite = new Composite(this.bar, SWT.NONE);
-		this.generalComposite.setLayout(gridLayout);		
+		this.generalComposite.setLayout(gridLayout);
 		this.generalCompositeControlListener = 
-				new GeneralCompositeControlListener();	
+				new GeneralCompositeControlListener();
 		this.generalComposite.addControlListener(
 				generalCompositeControlListener);
 		
@@ -251,7 +243,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
 		gridData.grabExcessHorizontalSpace = true;
-		this.triggerDelayText.setLayoutData(gridData);		
+		this.triggerDelayText.setLayoutData(gridData);
 		this.triggerDelayTextModifiedListener = 
 				new TriggerDelayTextModifiedListener();
 		this.triggerDelayText.addModifyListener(
@@ -288,7 +280,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
 		this.settleTimeErrorLabel.setLayoutData(gridData);
-		//this.settleTimeErrorLabel.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK ) );
 		this.settleTimeUnitLabel = new Label(this.generalComposite, SWT.NONE);
 		this.settleTimeUnitLabel.setText("s");
 
@@ -323,21 +314,20 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		this.saveMotorpositionsCombo.addModifyListener(
 				saveMotorpositionsComboModifiedListener);
 		
-		this.item0 = new ExpandItem(this.bar, SWT.NONE, 0);
-		item0.setText("General");
-		item0.setHeight(this.generalComposite.computeSize(
+		this.itemGeneral = new ExpandItem(this.bar, SWT.NONE, 0);
+		itemGeneral.setText("General");
+		itemGeneral.setHeight(this.generalComposite.computeSize(
 				SWT.DEFAULT, SWT.DEFAULT).y);
-		item0.setControl(this.generalComposite);
+		itemGeneral.setControl(this.generalComposite);
 	}
 	
 	/*
 	 * called by CreatePartControl to create the contents of the second 
-	 * expand item (Actions Tab)
+	 * expand item (Actions)
 	 */
-	private void createActionsTabFolder() {
-
+	private void createActionsExpandItem() {
 		GridLayout gridLayout = new GridLayout();
-
+		
 		this.actionsComposite = new Composite(this.bar, SWT.NONE);
 		this.actionsComposite.setLayout(gridLayout);
 		this.actionsCompositeControlListener = 
@@ -350,71 +340,72 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
-		this.behaviorTabFolder = new CTabFolder(this.actionsComposite, SWT.FLAT);
-		this.behaviorTabFolder.setLayoutData(gridData);
+		this.actionsTabFolder = new CTabFolder(this.actionsComposite, SWT.FLAT);
+		this.actionsTabFolder.setLayoutData(gridData);
 		
 		motorAxisComposite = new MotorAxisComposite(this, 
-				behaviorTabFolder, SWT.NONE, this.measuringStation);
+				actionsTabFolder, SWT.NONE, this.measuringStation);
 		detectorChannelComposite = new DetectorChannelComposite(this, 
-				behaviorTabFolder, SWT.NONE, this.measuringStation);
+				actionsTabFolder, SWT.NONE, this.measuringStation);
 		prescanComposite = new PrescanComposite(
-				behaviorTabFolder, SWT.NONE, this.measuringStationPrescan);
+				actionsTabFolder, SWT.NONE, this.measuringStationPrescan);
 		postscanComposite = new PostscanComposite(
-				behaviorTabFolder, SWT.NONE, this.measuringStationPostscan);
+				actionsTabFolder, SWT.NONE, this.measuringStationPostscan);
 		positioningComposite = new PositioningComposite(
-				behaviorTabFolder, SWT.NONE);
-		plotComposite = new PlotComposite(this, behaviorTabFolder, SWT.NONE);
+				actionsTabFolder, SWT.NONE);
+		plotComposite = new PlotComposite(this, actionsTabFolder, SWT.NONE);
 		
-		this.motorAxisTab = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
+		this.motorAxisTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.motorAxisTab.setText(" Motor Axes ");
 		this.motorAxisTab.setToolTipText(
 				"Select motor axes to be used in this scan module");
 		this.motorAxisTab.setControl(this.motorAxisComposite);
 		
-		this.detectorChannelTab = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
+		this.detectorChannelTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.detectorChannelTab.setText(" Detector Channels ");
 		this.detectorChannelTab.setToolTipText(
 				"Select detector channels to be used in this scan module");
 		this.detectorChannelTab.setControl(this.detectorChannelComposite);
 		
-		this.prescanTab = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
+		this.prescanTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.prescanTab.setText(" Prescan ");
 		this.prescanTab.setToolTipText(
 				"Action to do before scan module is started");
 		this.prescanTab.setControl(this.prescanComposite);
 		
-		this.postscanTab = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
+		this.postscanTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.postscanTab.setText(" Postscan ");
 		this.postscanTab.setToolTipText("Action to do if scan module is done");
 		this.postscanTab.setControl(this.postscanComposite);
 		
-		this.positioningTab = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
+		this.positioningTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.positioningTab.setText(" Positioning ");
 		this.positioningTab.setToolTipText(
 				"Move motor to calculated position after scan module is done");
 		this.positioningTab.setControl(this.positioningComposite);
 
-		this.plotTab = new CTabItem(this.behaviorTabFolder, SWT.FLAT);
+		this.plotTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.plotTab.setText(" Plot ");
 		this.plotTab.setToolTipText("Plot settings for this scan module");
 		this.plotTab.setControl(this.plotComposite);
 
-		this.item1 = new ExpandItem(this.bar, SWT.NONE, 0);
-		item1.setText("Actions");
-		item1.setControl(this.actionsComposite);
+		this.itemActions = new ExpandItem(this.bar, SWT.NONE, 0);
+		itemActions.setText("Actions");
+		itemActions.setControl(this.actionsComposite);
 	}
 	
 	/*
-	 * Initializes eventsTabFolder
+	 * called by CreatePartControl to create the contents of the third 
+	 * expand item (Events)
 	 */
-	private void createEventsTabFolder() {
+	private void createEventsExpandItem() {
 
 		GridLayout gridLayout = new GridLayout();
 
 		this.eventsComposite = new Composite(this.bar, SWT.NONE);
 		this.eventsComposite.setLayout(gridLayout);
 		this.eventsCompositeControlListener = 
-			new EventsCompositeControlListener();	
+			new EventsCompositeControlListener();
 		this.eventsComposite.addControlListener(eventsCompositeControlListener);
 		
 		GridData gridData = new GridData();
@@ -468,10 +459,10 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		this.appendScheduleEventCheckBox.addSelectionListener(
 				appendScheduleEventCheckBoxSelectionListener);
 		
-		this.item2 = new ExpandItem(this.bar, SWT.NONE, 0);
-		item2.setText("Event options");
-		item2.setHeight(this.eventsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		item2.setControl(this.eventsComposite);
+		this.itemEvents = new ExpandItem(this.bar, SWT.NONE, 0);
+		itemEvents.setText("Events");
+		itemEvents.setHeight(this.eventsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		itemEvents.setControl(this.eventsComposite);
 	}	
 	
 	// ***********************************************************************
@@ -501,45 +492,44 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 	 */
 	private void setCurrentScanModule(ScanModule currentScanModule) {
 		logger.debug("setCurrentScanModule");
+		
+		removeListeners();
+		
 		// if there was already a scan module -> update it
 		this.currentScanModule = currentScanModule;
-
+		
 		this.measuringStation.setScanModule(this.currentScanModule);
 		this.measuringStationPrescan.setScanModule(this.currentScanModule);
 		this.measuringStationPostscan.setScanModule(this.currentScanModule);
-		//this.measuringStationPositioning.setScanModule(this.currentScanModule);
-
-//		updateEvent(null);
-
-		// is there a scan module selected (in the editor) ?
+		
 		if(this.currentScanModule != null) {
+			top.setVisible(true);
 			
-			this.setEnabledForAll(true);
 			this.setPartName(this.currentScanModule.getName() + ":"
 							 + this.currentScanModule.getId());	
 			
 			// set trigger delay text
 			this.triggerDelayText.setText((this.currentScanModule.
 					getTriggerdelay() != Double.NEGATIVE_INFINITY) 
-					? "" + this.currentScanModule.getTriggerdelay() 
+					? String.valueOf(this.currentScanModule.getTriggerdelay()) 
 					: "");
 			
 			// set settle time text
 			this.settleTimeText.setText((this.currentScanModule
 					.getSettletime() != Double.NEGATIVE_INFINITY) 
-					? "" + this.currentScanModule.getSettletime() 
+					? String.valueOf(this.currentScanModule.getSettletime()) 
 					: "");
 					
 			// set the check box for confirm trigger
 			this.confirmTriggerCheckBox.setSelection(
 					this.currentScanModule.isTriggerconfirm());
-
+			
 			// select content from combo box for save all motor positions
-//			this.saveMotorpositionsCombo.setText(
-//					this.currentScanModule.getSaveAxisPositions().name());
-
-			if(behaviorTabFolder.getSelection() == null)
-				behaviorTabFolder.setSelection(0);
+			this.saveMotorpositionsCombo.setText(
+					this.currentScanModule.getSaveAxisPositions().name());
+			
+			if(actionsTabFolder.getSelection() == null)
+				actionsTabFolder.setSelection(0);
 			
 			((MotorAxisComposite) this.motorAxisComposite).setScanModule(
 					this.currentScanModule);
@@ -571,23 +561,15 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 					this.currentScanModule.getChain().getScanDescription().
 					getEventById(testEvent.getID()) != null);
 			
-			
 			checkForErrors();
 			
 			top.setVisible(true);
 			
-			// expand items
-			item1.setExpanded(true);
-			
+			itemActions.setExpanded(true);
 		} else { // currentScanModule == null
 			// no scan module selected -> reset contents
 			
-//			this.setEnabledForAll(false);
 			this.setPartName("No Scan Module selected");
-			
-//			this.triggerDelayText.setText("");
-//			this.settleTimeText.setText("");
-//			this.confirmTriggerCheckBox.setSelection(false);
 			
 			((MotorAxisComposite) this.motorAxisComposite).setScanModule(null);
 			((DetectorChannelComposite) this.detectorChannelComposite).
@@ -603,32 +585,13 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 			redoEventComposite.setControlEventManager(null);
 			pauseEventComposite.setControlEventManager(null);
 			
-			appendScheduleEventCheckBox.setSelection(false);
-
 			selectionProviderWrapper.setSelectionProvider(null);
-
+			
 			top.setVisible(false);
 		}
-		
-
-		
+		addListeners();
 	}
-
-	private void setEnabledForAll(final boolean enabled) {
-		this.triggerDelayText.setEnabled(enabled);
-		this.settleTimeText.setEnabled(enabled);
-		this.confirmTriggerCheckBox.setEnabled(enabled);
-		this.behaviorTabFolder.setEnabled(enabled);
-		this.motorAxisComposite.setEnabled(enabled);
-		this.detectorChannelComposite.setEnabled(enabled);
-		// pre, post, positioning, plot ???
-		this.eventsTabFolder.setEnabled(enabled);
-		this.saveMotorpositionsCombo.setEnabled(enabled);
-
-		this.appendScheduleEventCheckBox.setEnabled(enabled);
-
-	}
-
+	
 	/*
 	 * 
 	 */
@@ -808,25 +771,25 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		
 		int height = bar.getSize().y - 6 * 25;
 
-		if (item0.getExpanded()) {
-			height -= item0.getHeight();
+		if (itemGeneral.getExpanded()) {
+			height -= itemGeneral.getHeight();
 		}
 
 		int amount = 0;
-		if (item1.getExpanded()) {
+		if (itemActions.getExpanded()) {
 			amount++;
 		}
-		if (item2.getExpanded()) {
+		if (itemEvents.getExpanded()) {
 			amount++;
 		}
 
 		if (amount > 0) {
 			height /= amount;
-			if(item1.getExpanded()) {
-				item1.setHeight(height < 200 ? 200 : height);
+			if(itemActions.getExpanded()) {
+				itemActions.setHeight(height < 200 ? 200 : height);
 			}
-			if(item2.getExpanded()) {
-				item2.setHeight(height < 150 ? 150 : height);
+			if(itemEvents.getExpanded()) {
+				itemEvents.setHeight(height < 150 ? 150 : height);
 			}
 		}
 	}
@@ -838,8 +801,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		logger.debug("selection changed");
 		
-//		logger.debug(selection);
-
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).size() == 0) {
 
@@ -863,14 +824,14 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 			if (o instanceof ScanModuleEditPart) {
 				// set new ScanModule
 				if(logger.isDebugEnabled()) {
-					logger.debug("ScanModule: " + ((ScanModule)((ScanModuleEditPart)o).getModel()).getId() + 
+					logger.debug("ScanModule: " + ((ScanModule)(
+							(ScanModuleEditPart)o).getModel()).getId() + 
 							" selected."); 
 				}
 				setCurrentScanModule((ScanModule)((ScanModuleEditPart)o).getModel());
 
 			} else if (o instanceof ScanDescriptionEditPart) {
 					logger.debug("selection is ScanDescriptionEditPart: " + o);
-					System.out.println("\n\nNEU: Hier wurde eine ScanDescription selektiert");
 					setCurrentScanModule(null);
 			} else {
 				logger.debug("selection other than ScanModule -> ignore: " + o);
@@ -970,8 +931,8 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 					// and notify them, that we remove the event
 					currentScanModule.getChain().getScanDescription().
 									  remove(event);
-				} 
-			}		
+				}
+			}
 		}
 	}
 	
