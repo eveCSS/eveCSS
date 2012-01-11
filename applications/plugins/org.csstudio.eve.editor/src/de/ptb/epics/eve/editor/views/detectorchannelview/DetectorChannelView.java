@@ -34,12 +34,15 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.GridData;
 
 import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
+import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EventComposite;
 
 /**
@@ -77,8 +80,6 @@ public class DetectorChannelView extends ViewPart
 	// *******************************************************************
 	// ****************** end of: underlying model ***********************
 	// *******************************************************************
-	
-	private boolean modelUpdateListenerSuspended;
 
 	private Composite top = null;
 	private ScrolledComposite sc = null;
@@ -329,8 +330,11 @@ public class DetectorChannelView extends ViewPart
 	}
 
 	/**
-	 * 
-	 * @param channel
+	 * Sets the {@link de.ptb.epics.eve.data.scandescription.Channel}
+	 * (the underlying model whose contents is presented by this view).
+	 *  
+	 * @param channel the {@link de.ptb.epics.eve.data.scandescription.Channel} 
+	 * 		  that should be set
 	 */
 	private void setChannel(final Channel channel) {
 		// if a current Channel is set, stop listening to it
@@ -344,7 +348,7 @@ public class DetectorChannelView extends ViewPart
 		// Stelle Änderungen an den Channel-Einstellungen vorgenommen werden
 		// könnten. Dies sehe ich aber erstmal nicht. (Hartmut 13.12.11)
 
-		if(this.currentChannel != null) {
+		if(channel != null) {
 			logger.debug("set channel (" + channel.getAbstractDevice().
 					getFullIdentifyer() + ")");
 		} else {
@@ -452,6 +456,7 @@ public class DetectorChannelView extends ViewPart
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		
+		System.out.println("\n\nSelectionChanged von DetectorChannelView aufgerufen!");
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).size() == 0) {
 				if (this.scanModule != null) {
@@ -480,7 +485,36 @@ public class DetectorChannelView extends ViewPart
 								" selected.");
 				}
 				setChannel((Channel)o);
-			} else {
+			} else if (o instanceof ScanModuleEditPart) {
+				logger.debug("selection is ScanModuleEditPart: " + o);
+				// ScanModule was selected
+				if(logger.isDebugEnabled()) {
+					logger.debug("ScanModule: " + ((ScanModule)
+							((ScanModuleEditPart)o).getModel()).getId() + 
+							" selected."); 
+				}
+				ScanModule newModule = (ScanModule)((ScanModuleEditPart)o).getModel();
+				System.out.println("\tnewModule: " + newModule.getId());
+//				System.out.println("\toldModule: " + this.scanModule.getId());
+
+//				if (newModule.getId() != this.scanModule.getId()){
+
+				// set first channel of new ScanModule
+				Channel[] channel = newModule.getChannels();
+				if (channel.length > 0) {
+					setChannel(channel[0]);
+				}
+				else {
+					setChannel(null);
+				}
+			} else if (o instanceof ScanDescriptionEditPart) {
+				logger.debug("selection is ScanDescriptionEditPart: " + o);
+				System.out.println("\n\nNEU: Hier wurde eine ScanDescription selektiert");
+				setChannel(null);
+			}
+
+			
+			else {
 				logger.debug("selection other than Channel -> ignore");
 			}
 		}

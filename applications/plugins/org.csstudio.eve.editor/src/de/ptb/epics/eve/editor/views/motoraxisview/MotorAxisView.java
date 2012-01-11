@@ -24,9 +24,9 @@ import org.eclipse.swt.widgets.Combo;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
+import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
 
 /**
  * <code>MotorAxisView</code> shows the attributes of a 
@@ -36,7 +36,7 @@ import de.ptb.epics.eve.editor.Activator;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class MotorAxisView extends ViewPart implements IModelUpdateListener, ISelectionListener {
+public class MotorAxisView extends ViewPart implements ISelectionListener {
 
 	/**
 	 * the unique identifier of the view.
@@ -60,8 +60,6 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener, ISe
 	// *******************************************************************
 	// ****************** end of: underlying model ***********************
 	// *******************************************************************
-
-	private boolean modelUpdateListenerSuspended;
 	
 	// the utmost composite
 	private Composite top = null;
@@ -73,14 +71,16 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener, ISe
 	private Combo stepFunctionCombo;
 	private Label stepfunctionErrorLabel;
 	
-	private StepFunctionComboSelectionListener stepFunctionComboSelectionListener;
+	private StepFunctionComboSelectionListener 
+			stepFunctionComboSelectionListener;
 	
 	// GUI: "Position mode: <combo> x"
 	private Label positionModeLabel;
 	private Combo positionModeCombo;
 	private Label positionModeErrorLabel;
 	
-	private PositionModeComboSelectionListener positionModeComboSelectionListener;
+	private PositionModeComboSelectionListener 
+			positionModeComboSelectionListener;
 	
 	private Composite emptyComposite;
 	private StartStopStepwidthComposite startStopStepwidthComposite;
@@ -99,8 +99,6 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener, ISe
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		
-		modelUpdateListenerSuspended = false;
 		
 		// simple fill layout
 		parent.setLayout(new FillLayout());
@@ -151,7 +149,6 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener, ISe
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.stepFunctionCombo.setLayoutData(gridData);
-		this.stepFunctionCombo.setEnabled(false);
 		this.stepFunctionComboSelectionListener = 
 				new StepFunctionComboSelectionListener();
 		this.stepFunctionCombo.addSelectionListener(
@@ -176,7 +173,6 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener, ISe
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.positionModeCombo.setLayoutData(gridData);
-		this.positionModeCombo.setEnabled(false);
 		this.positionModeComboSelectionListener = 
 				new PositionModeComboSelectionListener();
 		this.positionModeCombo.addSelectionListener(
@@ -219,6 +215,9 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener, ISe
 				addSelectionListener(this);
 
 	}
+	// ************************************************************************
+	// ********************** end of createPartControl ************************
+	// ************************************************************************
 	
 	/**
 	 * {@inheritDoc}
@@ -235,27 +234,53 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener, ISe
 	 * 		  should be set
 	 */
 	private void setAxis(final Axis axis) {
+
 		if(axis != null) {
-			logger.debug("axis set to: " + axis.getMotorAxis().getID());
+			logger.debug("set axis (" + axis.getAbstractDevice().
+					getFullIdentifyer() + ")");
 		} else {
-			logger.debug("axis set to: null");
+			logger.debug("set axis (null)");
 		}
-		// if a current axis is set, stop listening to it
-		if(this.currentAxis != null) {
-			this.currentAxis.removeModelUpdateListener(this);
-		}
+
 		// set the new axis as current axis
 		this.currentAxis = axis;
 		this.scanModule = null;
 		
 		if(this.currentAxis != null) {
 			this.scanModule = axis.getScanModule();
-			// current axis not null -> listen to updates on it
-			this.currentAxis.addModelUpdateListener(this);
 		}
-		// update elements (calls the inherited method from the UpdateListener 
-		// with argument null indicating an internal call)
-		updateEvent(null);
+
+		if(this.currentAxis != null) {
+			this.setPartName(
+					this.currentAxis.getMotorAxis().getFullIdentifyer());
+
+			this.positionModeCombo.setText(PositionMode.typeToString(
+					this.currentAxis.getPositionMode()));
+			if(this.currentAxis.getMotorAxis().getGoto().isDiscrete()) {
+				this.stepFunctionCombo.setItems(
+						this.discreteStepfunctions.toArray(new String[0]));
+				this.positionModeLabel.setVisible(false);
+				this.positionModeCombo.setVisible(false);
+			} else {
+				this.stepFunctionCombo.setItems(stepfunctions);
+				this.positionModeLabel.setVisible(true);
+				this.positionModeCombo.setVisible(true);
+			}
+			this.stepFunctionCombo.setText(
+					this.currentAxis.getStepfunctionString());
+			this.startStopStepwidthComposite.setCurrentAxis(null);
+			this.fileComposite.setAxis(null);
+			this.pluginComposite.setAxis(null, null);
+			this.positionlistComposite.setAxis(null);
+			
+			setComposite();
+			
+			top.layout();
+			top.setVisible(true);
+		} else {
+			this.setPartName("No Motor Axis selected");
+			top.setVisible(false);
+		}
 	}
 	
 	/*
@@ -307,156 +332,76 @@ public class MotorAxisView extends ViewPart implements IModelUpdateListener, ISe
 		sc.setMinSize(targetWidth, targetHeight);
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
-
-		if(modelUpdateEvent != null) {
-			logger.debug(modelUpdateEvent.getSender());
-			logger.debug(modelUpdateEvent.getMessage());
-		}
-		
-		if(modelUpdateListenerSuspended) return;
-		
-		removeListeners();
-		
-		if(this.currentAxis != null) {
-			this.setPartName(
-					this.currentAxis.getMotorAxis().getFullIdentifyer());
-			this.positionModeCombo.setText(PositionMode.typeToString(
-					this.currentAxis.getPositionMode()));
-			if(this.currentAxis.getMotorAxis().getGoto().isDiscrete()) {
-				this.stepFunctionCombo.setItems(
-						this.discreteStepfunctions.toArray(new String[0]));
-				this.positionModeLabel.setVisible(false);
-				this.positionModeCombo.setVisible(false);
-			} else {
-				this.stepFunctionCombo.setItems(stepfunctions);
-				this.positionModeLabel.setVisible(true);
-				this.positionModeCombo.setVisible(true);
-			}
-			this.stepFunctionCombo.setText(
-					this.currentAxis.getStepfunctionString());
-			this.stepFunctionCombo.setEnabled(true);
-			this.positionModeCombo.setEnabled(true);
-			
-			this.startStopStepwidthComposite.setCurrentAxis(null);
-			this.fileComposite.setAxis(null);
-			this.pluginComposite.setAxis(null, null);
-			this.positionlistComposite.setAxis(null);
-			
-			setComposite();
-			
-			top.layout();
-			top.setVisible(true);
-		} else {
-			this.setPartName("No Motor Axis selected");
-			this.stepFunctionCombo.setText("");
-			this.positionModeCombo.setText("");
-			this.stepFunctionCombo.setEnabled(false);
-			this.positionModeCombo.setEnabled(false);
-			top.setVisible(false);
-		}
-		addListeners();
-	}
-	
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 
 		System.out.println("selectionChanged in MotorAxisView: " + selection);
 		if(selection instanceof IStructuredSelection) {
-			System.out.println("   IStructuredSelection");
 			if(((IStructuredSelection) selection).size() == 0) {
-				System.out.println("      Size = null");
-// Nur wenn keine Achsen mehr da sind, soll die View wirklich gelöscht werden!
-//				if (scanModule.getChannels())
-				System.out.println("   this.scanModule: " + this.scanModule);
-				System.out.println("   scanModule: " + this.scanModule);
-				System.out.println("   currentAxis: " + currentAxis);
-				if (this.scanModule != null) {
-					System.out.println("   Axes: " + scanModule.getAxes().length);
-					if (scanModule.getAxes().length == 0)
-						clearView();
-				}
+/*				if (this.scanModule != null) {
+					if (scanModule.getAxes().length == 0) {
+						if(logger.isDebugEnabled()) {
+							logger.debug("selection is empty, scanModule: " + 
+									this.scanModule.getId() + "-> ignore"); 
+						}
+						setAxis(null);
+					}
+				} else {
+					logger.debug(
+					  "selection ist empty, no scanModule available -> ignore");
+				}*/
 				return;
 			}
 			// since at any given time this view can only display options of 
-			// one device we take the first element of the selection
+			// one motor axis, we take the first element of the selection
 			Object o = ((IStructuredSelection) selection).toList().get(0);
 			if (o instanceof Axis) {
-				System.out.println("   Achse: " + ((Axis)o).getMotorAxis().getFullIdentifyer());
-				// Display Channel Settings in DetectorChannelView
-				// Hier müssen jetzt die ganzen Detektoreinstellungen angezeigt werden
-				// Das soll nicht mehr über einen anderen Modus erfolgen
-				// Änderungen in der ScanModulView sollen keinen direkten
-				// Aufruf mehr in die DetectorChannelView haben.
-				// 1. Aufruf wegnehmen
-				// 2. Hier neue Aktualisierung einfügen
-				// Dann gibt es zwischendurch keine Aktualisierung!
+				// set new Axis
+				if(logger.isDebugEnabled()) {
+					logger.debug("Axis: " + ((Axis)o).getMotorAxis().
+							getFullIdentifyer() + " selected.");
+				}
 				setAxis((Axis)o);
 			}
+			else if (o instanceof ScanModuleEditPart) {
+				logger.debug("selection is ScanModuleEditPart: " + o);
+				System.out.println("\n\n\tACHTUNG ScanModuel wurde geändert!!!");
+				// ScanModule was selected
+				if(logger.isDebugEnabled()) {
+					logger.debug("ScanModule: " + ((ScanModule)
+							((ScanModuleEditPart)o).getModel()).getId() + 
+							" selected."); 
+				}
+				ScanModule newModule = (ScanModule)((ScanModuleEditPart)o).getModel();
+				System.out.println("\tnewModule: " + newModule.getId());
+//				System.out.println("\toldModule: " + this.scanModule.getId());
+
+	
+				if (this.scanModule != null && newModule.getId() != this.scanModule.getId()){
+
+					// set first axis of new ScanModule
+//					Axis[] axis = newModule.getAxes();
+//					if (axis.length > 0) {
+//						setAxis(axis[0]);
+//					}
+//					else {
+						System.out.println("\t\t\tsetAxis(null) aufgerufen");
+						setAxis(null);
+//					}
+				}
+			}
+			else if (o instanceof ScanDescriptionEditPart) {
+				logger.debug("selection is ScanDescriptionEditPart: " + o);
+				System.out.println("\n\nNEU: Hier wurde eine ScanDescription selektiert");
+				setAxis(null);
+			}
 			else {
-				System.out.println(   "Instance: " + o);
-//				setChannel(null);
-//				updateEvent(null);
+				logger.debug("selection other than Axis or ScanModuleEditPart -> ignore: " + o);
 			}
 		}
 		
 	}
-	/**
-	 *  @author scherr
-	 *  
-	 */
-	private void clearView() {
-
-		// currentAxis is null
-		this.setPartName("No Motor Axis selected");
-		this.stepFunctionCombo.setText("");
-		this.positionModeCombo.setText("");
-		this.stepFunctionCombo.setEnabled(false);
-		this.positionModeCombo.setEnabled(false);
-		top.setVisible(false);
-	}
-
-	
-	/**
-	 * 
-	 */
-	protected void suspendModelUpdateListener() {
-		currentAxis.removeModelUpdateListener(this);
-		modelUpdateListenerSuspended = true;
-	}
-	
-	/**
-	 * 
-	 */
-	protected void resumeModelUpdateListener() {
-		currentAxis.addModelUpdateListener(this);
-		modelUpdateListenerSuspended = false;
-	}
-	
-	/*
-	 * 
-	 */
-	private void addListeners() {
-		this.stepFunctionCombo.
-				addSelectionListener(stepFunctionComboSelectionListener);
-		this.positionModeCombo.
-				addSelectionListener(positionModeComboSelectionListener);
-	}
-	
-	/*
-	 * 
-	 */
-	private void removeListeners() {
-		this.stepFunctionCombo.
-				removeSelectionListener(stepFunctionComboSelectionListener);
-		this.positionModeCombo.
-				removeSelectionListener(positionModeComboSelectionListener);
-	}
-	
+		
 	// ************************************************************************
 	// **************************** Listeners *********************************
 	// ************************************************************************

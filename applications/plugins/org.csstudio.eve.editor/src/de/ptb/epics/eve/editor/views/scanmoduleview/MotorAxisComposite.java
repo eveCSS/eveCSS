@@ -158,25 +158,37 @@ public class MotorAxisComposite extends Composite {
 
 		logger.debug("setScanModule");
 		
-		if(scanModule != null) {
-			this.tableViewer.getTable().setEnabled(true);
-		} else {
-			this.tableViewer.getTable().setEnabled(false);
-		}
 		this.scanModule = scanModule;
 		this.tableViewer.setInput(scanModule);
-		
+
+		if(scanModule == null) {
+			return;
+		}
+
 		// if there are motor axis present... 
 		if(tableViewer.getTable().getItems().length > 0)
 		{
 			// ... and none is selected ...
 			if(tableViewer.getTable().getSelectionCount() == 0)
 			{
-				((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(null);
+//				((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
+
 				// ... select the first one and set the motor axis view
+
 				tableViewer.getTable().select(0);
+
+				boolean focusStat;
+				focusStat = tableViewer.getControl().setFocus();
+//				focusStat = tableViewer.getControl().forceFocus();
+//				focusStat = tableViewer.getTable().setFocus();
+//				focusStat = tableViewer.getTable().forceFocus();
+				System.out.println("\t\tFocus bekommen?: " + focusStat);
+
+				//				tableViewer.getTable().forceFocus();
 				((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
-			}		
+//				tableViewer.getTable().setSelection(0);
+				System.out.println("\tSelection: " + tableViewer.getTable().getSelectionIndex());
+			}	
 		}
 	}	
 	
@@ -394,9 +406,10 @@ public class MotorAxisComposite extends Composite {
 
 			// the new axis (the last itemCount) will be selected in the table and 
 			// displayed in the motorAxisView
-			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(null);
+//			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(null);
+//			tableViewer.getTable().setFocus();
 			tableViewer.getTable().select(tableViewer.getTable().getItemCount()-1);
-			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
+//			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
 
 			// if only one axis available, set this axis for the Plot
 			setPlotMotorAxis();

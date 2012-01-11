@@ -213,12 +213,10 @@ public class FileComposite extends Composite {
 		 */
 		@Override
 		public void modifyText(ModifyEvent e) {
-			motorAxisView.suspendModelUpdateListener();
 			if(axis != null) {
 				axis.setPositionfile(filenameText.getText());
 			}
 			checkForErrors();
-			motorAxisView.resumeModelUpdateListener();
 		}
 	}
 	
@@ -262,11 +260,9 @@ public class FileComposite extends Composite {
 				return;
 			}
 			
-			motorAxisView.suspendModelUpdateListener();
 			filenameText.setText(name);
 			axis.setPositionfile(name);
 			checkForErrors();
-			motorAxisView.resumeModelUpdateListener();
 		}
 	}
 }

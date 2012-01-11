@@ -218,14 +218,12 @@ public class PositionlistComposite extends Composite {
 		 */
 		@Override
 		public void modifyText(ModifyEvent e) {
-			motorAxisView.suspendModelUpdateListener();
 			
 			if(axis != null) {
 				axis.setPositionlist(positionlistText.getText());
 				countPositions();
 			}
 			checkForErrors();
-			motorAxisView.resumeModelUpdateListener();
 		}
 	}
 }

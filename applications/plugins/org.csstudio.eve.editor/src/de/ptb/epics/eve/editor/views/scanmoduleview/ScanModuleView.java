@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
@@ -32,6 +33,7 @@ import org.eclipse.swt.events.SelectionListener;
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
+import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
@@ -45,6 +47,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateList
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.SelectionProviderWrapper;
+import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
+import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EventComposite;
 
 /**
@@ -54,7 +58,7 @@ import de.ptb.epics.eve.editor.views.EventComposite;
  * @author Marcus Michalsky
  * @author Hartmut Scherr
  */
-public class ScanModuleView extends ViewPart implements IModelUpdateListener, ISelectionListener {
+public class ScanModuleView extends ViewPart implements ISelectionListener {
 	
 	/**
 	 * the id of the <code>ScanModulView</code>.
@@ -495,23 +499,119 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 	 * 
 	 * @param currentScanModule the scan module that should be set
 	 */
-	public void setCurrentScanModule(ScanModule currentScanModule) {
+	private void setCurrentScanModule(ScanModule currentScanModule) {
 		logger.debug("setCurrentScanModule");
 		// if there was already a scan module -> update it
-		if(this.currentScanModule != null) {
-			this.currentScanModule.removeModelUpdateListener(this);
-		}
 		this.currentScanModule = currentScanModule;
 
-		if(this.currentScanModule != null) {
-			this.currentScanModule.addModelUpdateListener(this);
-		}
 		this.measuringStation.setScanModule(this.currentScanModule);
 		this.measuringStationPrescan.setScanModule(this.currentScanModule);
 		this.measuringStationPostscan.setScanModule(this.currentScanModule);
 		//this.measuringStationPositioning.setScanModule(this.currentScanModule);
 
-		updateEvent(null);
+//		updateEvent(null);
+
+		// is there a scan module selected (in the editor) ?
+		if(this.currentScanModule != null) {
+			
+			this.setEnabledForAll(true);
+			this.setPartName(this.currentScanModule.getName() + ":"
+							 + this.currentScanModule.getId());	
+			
+			// set trigger delay text
+			this.triggerDelayText.setText((this.currentScanModule.
+					getTriggerdelay() != Double.NEGATIVE_INFINITY) 
+					? "" + this.currentScanModule.getTriggerdelay() 
+					: "");
+			
+			// set settle time text
+			this.settleTimeText.setText((this.currentScanModule
+					.getSettletime() != Double.NEGATIVE_INFINITY) 
+					? "" + this.currentScanModule.getSettletime() 
+					: "");
+					
+			// set the check box for confirm trigger
+			this.confirmTriggerCheckBox.setSelection(
+					this.currentScanModule.isTriggerconfirm());
+
+			// select content from combo box for save all motor positions
+//			this.saveMotorpositionsCombo.setText(
+//					this.currentScanModule.getSaveAxisPositions().name());
+
+			if(behaviorTabFolder.getSelection() == null)
+				behaviorTabFolder.setSelection(0);
+			
+			((MotorAxisComposite) this.motorAxisComposite).setScanModule(
+					this.currentScanModule);
+			((DetectorChannelComposite) this.detectorChannelComposite).setScanModule(
+					this.currentScanModule);
+			((PrescanComposite) this.prescanComposite).setScanModule(
+					this.currentScanModule);
+			((PostscanComposite) this.postscanComposite).setScanModule(
+					this.currentScanModule);
+			((PositioningComposite) this.positioningComposite).setScanModule(
+					this.currentScanModule);
+			((PlotComposite) this.plotComposite).setScanModule(
+					this.currentScanModule);
+
+			this.triggerEventComposite.setControlEventManager(
+					this.currentScanModule.getTriggerControlEventManager());
+			this.breakEventComposite.setControlEventManager(
+					this.currentScanModule.getBreakControlEventManager());
+			this.redoEventComposite.setControlEventManager(
+					this.currentScanModule.getRedoControlEventManager());
+			this.pauseEventComposite.setControlEventManager(
+					this.currentScanModule.getPauseControlEventManager());
+			
+			// TODO CheckBox for ScheduleIncident Start or End
+			Event testEvent = new Event(currentScanModule.getChain().getId(), 
+										currentScanModule.getId(), 
+										Event.ScheduleIncident.END);
+			this.appendScheduleEventCheckBox.setSelection(
+					this.currentScanModule.getChain().getScanDescription().
+					getEventById(testEvent.getID()) != null);
+			
+			
+			checkForErrors();
+			
+			top.setVisible(true);
+			
+			// expand items
+			item1.setExpanded(true);
+			
+		} else { // currentScanModule == null
+			// no scan module selected -> reset contents
+			
+//			this.setEnabledForAll(false);
+			this.setPartName("No Scan Module selected");
+			
+//			this.triggerDelayText.setText("");
+//			this.settleTimeText.setText("");
+//			this.confirmTriggerCheckBox.setSelection(false);
+			
+			((MotorAxisComposite) this.motorAxisComposite).setScanModule(null);
+			((DetectorChannelComposite) this.detectorChannelComposite).
+					setScanModule(null);
+			((PrescanComposite) this.prescanComposite).setScanModule(null);
+			((PostscanComposite) this.postscanComposite).setScanModule(null);
+			((PositioningComposite) this.positioningComposite)
+					.setScanModule(null);
+			((PlotComposite) this.plotComposite).setScanModule(null);
+			
+			triggerEventComposite.setControlEventManager(null);
+			breakEventComposite.setControlEventManager(null);
+			redoEventComposite.setControlEventManager(null);
+			pauseEventComposite.setControlEventManager(null);
+			
+			appendScheduleEventCheckBox.setSelection(false);
+
+			selectionProviderWrapper.setSelectionProvider(null);
+
+			top.setVisible(false);
+		}
+		
+
+		
 	}
 
 	private void setEnabledForAll(final boolean enabled) {
@@ -653,122 +753,7 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 			settleTimeErrorLabel.setToolTipText(null);
 		}
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
 		
-		if(logger.isDebugEnabled() && modelUpdateEvent != null)
-		logger.debug("update event: " + 
-				     modelUpdateEvent.getSender().getClass().getName());
-		
-		// temporarily disable listeners
-		removeListeners();
-
-		// is there a scan module selected (in the editor) ?
-		if(this.currentScanModule != null) {
-			
-			this.setEnabledForAll(true);
-			this.setPartName(this.currentScanModule.getName() + ":"
-							 + this.currentScanModule.getId());	
-			
-			// set trigger delay text
-			this.triggerDelayText.setText((this.currentScanModule.
-					getTriggerdelay() != Double.NEGATIVE_INFINITY) 
-					? "" + this.currentScanModule.getTriggerdelay() 
-					: "");
-			
-			// set settle time text
-			this.settleTimeText.setText((this.currentScanModule
-					.getSettletime() != Double.NEGATIVE_INFINITY) 
-					? "" + this.currentScanModule.getSettletime() 
-					: "");
-					
-			// set the check box for confirm trigger
-			this.confirmTriggerCheckBox.setSelection(
-					this.currentScanModule.isTriggerconfirm());
-
-			// select content from combo box for save all motor positions
-			this.saveMotorpositionsCombo.setText(
-					this.currentScanModule.getSaveAxisPositions().name());
-
-			if(behaviorTabFolder.getSelection() == null)
-				behaviorTabFolder.setSelection(0);
-			
-			((MotorAxisComposite) this.motorAxisComposite).setScanModule(
-					this.currentScanModule);
-			((DetectorChannelComposite) this.detectorChannelComposite).setScanModule(
-					this.currentScanModule);
-			((PrescanComposite) this.prescanComposite).setScanModule(
-					this.currentScanModule);
-			((PostscanComposite) this.postscanComposite).setScanModule(
-					this.currentScanModule);
-			((PositioningComposite) this.positioningComposite).setScanModule(
-					this.currentScanModule);
-			((PlotComposite) this.plotComposite).setScanModule(
-					this.currentScanModule);
-
-			this.triggerEventComposite.setControlEventManager(
-					this.currentScanModule.getTriggerControlEventManager());
-			this.breakEventComposite.setControlEventManager(
-					this.currentScanModule.getBreakControlEventManager());
-			this.redoEventComposite.setControlEventManager(
-					this.currentScanModule.getRedoControlEventManager());
-			this.pauseEventComposite.setControlEventManager(
-					this.currentScanModule.getPauseControlEventManager());
-			
-			// TODO CheckBox for ScheduleIncident Start or End
-			Event testEvent = new Event(currentScanModule.getChain().getId(), 
-										currentScanModule.getId(), 
-										Event.ScheduleIncident.END);
-			this.appendScheduleEventCheckBox.setSelection(
-					this.currentScanModule.getChain().getScanDescription().
-					getEventById(testEvent.getID()) != null);
-			
-			
-			checkForErrors();
-			
-			top.setVisible(true);
-			
-			// expand items
-			item1.setExpanded(true);
-			
-		} else { // currentScanModule == null
-			// no scan module selected -> reset contents
-			
-			this.setEnabledForAll(false);
-			this.setPartName("No Scan Module selected");
-			
-			this.triggerDelayText.setText("");
-			this.settleTimeText.setText("");
-			this.confirmTriggerCheckBox.setSelection(false);
-			
-			((MotorAxisComposite) this.motorAxisComposite).setScanModule(null);
-			((DetectorChannelComposite) this.detectorChannelComposite).
-					setScanModule(null);
-			((PrescanComposite) this.prescanComposite).setScanModule(null);
-			((PostscanComposite) this.postscanComposite).setScanModule(null);
-			((PositioningComposite) this.positioningComposite)
-					.setScanModule(null);
-
-// TODO: Hartmut, hier muß noch das PlotComposite zurückgesetzt werden			
-			
-			triggerEventComposite.setControlEventManager(null);
-			breakEventComposite.setControlEventManager(null);
-			redoEventComposite.setControlEventManager(null);
-			pauseEventComposite.setControlEventManager(null);
-			
-			appendScheduleEventCheckBox.setSelection(false);
-			
-			top.setVisible(false);
-		}
-		
-		// re-enable listeners
-		addListeners();	
-	}
-	
 	/*
 	 * used by updateEvent() to re-enable listeners
 	 */
@@ -852,6 +837,45 @@ public class ScanModuleView extends ViewPart implements IModelUpdateListener, IS
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		logger.debug("selection changed");
+		
+//		logger.debug(selection);
+
+		if(selection instanceof IStructuredSelection) {
+			if(((IStructuredSelection) selection).size() == 0) {
+
+/*				if (this.currentScanModule != null) {
+					if (this.currentScanModule.getAxes().length == 0) {
+						if(logger.isDebugEnabled()) {
+							logger.debug("selection is empty, scanModule: " + 
+								this.currentScanModule.getId() + "-> ignore"); 
+						}
+						setCurrentScanModule(null);
+					}
+				} else {
+					logger.debug(
+					  "selection ist empty, no scanModule available -> ignore");
+				}*/
+				return;
+			}
+			// since at any given time this view can only display options of 
+			// one device we take the first element of the selection
+			Object o = ((IStructuredSelection) selection).toList().get(0);
+			if (o instanceof ScanModuleEditPart) {
+				// set new ScanModule
+				if(logger.isDebugEnabled()) {
+					logger.debug("ScanModule: " + ((ScanModule)((ScanModuleEditPart)o).getModel()).getId() + 
+							" selected."); 
+				}
+				setCurrentScanModule((ScanModule)((ScanModuleEditPart)o).getModel());
+
+			} else if (o instanceof ScanDescriptionEditPart) {
+					logger.debug("selection is ScanDescriptionEditPart: " + o);
+					System.out.println("\n\nNEU: Hier wurde eine ScanDescription selektiert");
+					setCurrentScanModule(null);
+			} else {
+				logger.debug("selection other than ScanModule -> ignore: " + o);
+			}
+		}
 	}
 	
 	// ************************************************************************

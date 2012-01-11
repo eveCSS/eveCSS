@@ -154,9 +154,7 @@ public class DetectorChannelComposite extends Composite {
 		{	// ... and none is selected ...
 			if(tableViewer.getTable().getSelectionCount() == 0)
 			{	// ... select the first one and set the detector channel view
-				((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(null);
 				tableViewer.getTable().select(0);
-				((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
 			}
 		} 
 	}
@@ -359,9 +357,7 @@ public class DetectorChannelComposite extends Composite {
 			
 			// the new channel (the last itemCount) will be selected in the table and 
 			// displayed in the detectorChannelView
-			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(null);
 			tableViewer.getTable().select(tableViewer.getTable().getItemCount()-1);
-			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
 
 			tableViewer.refresh();
 		}

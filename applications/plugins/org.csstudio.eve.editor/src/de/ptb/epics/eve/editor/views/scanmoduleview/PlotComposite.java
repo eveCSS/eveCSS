@@ -128,11 +128,6 @@ public class PlotComposite extends Composite {
 	 */
 	public void setScanModule(final ScanModule scanModule) {
 
-		if(scanModule != null) {
-			this.tableViewer.getTable().setEnabled(true);
-		} else {
-			this.tableViewer.getTable().setEnabled(false);
-		}
 		this.scanModule = scanModule;
 		this.tableViewer.setInput(scanModule);
 
@@ -143,9 +138,7 @@ public class PlotComposite extends Composite {
 			if(tableViewer.getTable().getSelectionCount() == 0)
 			{	// ... select the first one
 				// der richtige Plot selektiert und gezeigt!
-				((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(null);
 				tableViewer.getTable().select(0);
-				((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
 			}
 		}
 	}
@@ -172,14 +165,14 @@ public class PlotComposite extends Composite {
 			addAction.setImageDescriptor(Activator.getDefault().getImageRegistry().getDescriptor("PLOT"));
 			manager.add(addAction);
 
-			Action changeAction = new ChangeAction();
-			changeAction.setEnabled(true);
-			changeAction.setText("Change Id");
-			changeAction.setToolTipText("Changes Id of Plot");
-			changeAction.setImageDescriptor(Activator.getDefault().getImageRegistry().getDescriptor("RENAME"));
-			manager.add(changeAction);
-			
 			if(scanModule.getPlotWindows().length > 0) {
+				Action changeAction = new ChangeAction();
+				changeAction.setEnabled(true);
+				changeAction.setText("Change Id");
+				changeAction.setToolTipText("Changes Id of Plot");
+				changeAction.setImageDescriptor(Activator.getDefault().getImageRegistry().getDescriptor("RENAME"));
+				manager.add(changeAction);
+				
 				Action deleteAction = new DeleteAction();
 				deleteAction.setEnabled(true);
 				deleteAction.setText("Delete Plot");
@@ -247,9 +240,7 @@ public class PlotComposite extends Composite {
 
 			// the new plot (the last itemCount) will be selected in the table and 
 			// displayed in the plotWindow
-			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(null);
 			tableViewer.getTable().select(tableViewer.getTable().getItemCount()-1);
-			((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
 
 			tableViewer.refresh();
     	}

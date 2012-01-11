@@ -260,7 +260,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		// scan module view found ?
 		if(scanModuleView != null) {
 			// tell the view about the currently selected scan module
-			scanModuleView.setCurrentScanModule(selectedScanModule);
+//			scanModuleView.setCurrentScanModule(selectedScanModule);
 		}
 		refreshAllEditParts(viewer.getRootEditPart());
 		
