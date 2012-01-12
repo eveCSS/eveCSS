@@ -10,11 +10,7 @@ import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.ILogListener;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.jobs.IJobManager;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -60,7 +56,11 @@ public class Activator extends AbstractUIPlugin {
 	
 	private final String defaultWindowTitle = "Control System Studio";
 	
+	// used to catch the event that the last editor was closed to reset views
 	private EveEditorPerspectiveListener eveEditorPerspectiveListener;
+	
+	// used to handle save on close
+	private WorkbenchListener workbenchListener;
 	
 	/**
 	 * The constructor
@@ -68,6 +68,7 @@ public class Activator extends AbstractUIPlugin {
 	public Activator() {
 		plugin = this;
 		eveEditorPerspectiveListener = new EveEditorPerspectiveListener();
+		workbenchListener = new WorkbenchListener();
 	}
 
 	/**
@@ -90,6 +91,8 @@ public class Activator extends AbstractUIPlugin {
 
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
 				addPerspectiveListener(eveEditorPerspectiveListener);
+		
+		PlatformUI.getWorkbench().addWorkbenchListener(workbenchListener);
 	}
 
 	/**
@@ -101,15 +104,6 @@ public class Activator extends AbstractUIPlugin {
 		logListener = null;
 		plugin = null;
 		
-		// Obtain the Platform job manager to sync with all jobs
-		IJobManager manager = Job.getJobManager();
-		try {
-			manager.join(null, new NullProgressMonitor());
-		} catch (OperationCanceledException e1) {
-			logger.warn(e1.getMessage(), e1);
-		} catch (InterruptedException e1) {
-			logger.warn(e1.getMessage(), e1);
-		}
 		super.stop(context);
 	}
 	
