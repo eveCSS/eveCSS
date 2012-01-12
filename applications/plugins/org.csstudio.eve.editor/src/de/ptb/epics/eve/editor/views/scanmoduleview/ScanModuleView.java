@@ -96,11 +96,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 	private ConfirmTriggerCheckBoxSelectionListener 
 			confirmTriggerCheckBoxSelectionListener;
 	
-	private Label saveMotorpositionsLabel = null;
-	private Combo saveMotorpositionsCombo = null;
-	private SaveMotorpositionsComboModifiedListener 
-			saveMotorpositionsComboModifiedListener;
-	
 	private CTabFolder eventsTabFolder = null;
 	private EventsTabFolderSelectionListener eventsTabFolderSelectionListener;
 	
@@ -296,24 +291,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		this.confirmTriggerCheckBox.addSelectionListener(
 				confirmTriggerCheckBoxSelectionListener);
 		
-		// Save Motor Positions
-		this.saveMotorpositionsLabel = new Label(this.generalComposite, SWT.NONE);
-		this.saveMotorpositionsLabel.setText("Save all motorpositions");
-		gridData = new GridData();
-		gridData.horizontalSpan = 1;
-		this.saveMotorpositionsLabel.setLayoutData(gridData);
-		
-		this.saveMotorpositionsCombo = new Combo(this.generalComposite, SWT.NONE);
-		this.saveMotorpositionsCombo.setItems(new String[] { 
-				"never", "before", "after", "both" });
-		gridData = new GridData();
-		gridData.horizontalSpan = 3;
-		this.saveMotorpositionsCombo.setLayoutData(gridData);
-		this.saveMotorpositionsComboModifiedListener = 
-				new SaveMotorpositionsComboModifiedListener();
-		this.saveMotorpositionsCombo.addModifyListener(
-				saveMotorpositionsComboModifiedListener);
-		
 		this.itemGeneral = new ExpandItem(this.bar, SWT.NONE, 0);
 		itemGeneral.setText("General");
 		itemGeneral.setHeight(this.generalComposite.computeSize(
@@ -504,7 +481,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		
 		if(this.currentScanModule != null) {
 			top.setVisible(true);
-			
+			System.out.println("setCurrentScanModule: top Visible: " + top.getVisible());
 			this.setPartName(this.currentScanModule.getName() + ":"
 							 + this.currentScanModule.getId());	
 			
@@ -523,10 +500,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 			// set the check box for confirm trigger
 			this.confirmTriggerCheckBox.setSelection(
 					this.currentScanModule.isTriggerconfirm());
-			
-			// select content from combo box for save all motor positions
-			this.saveMotorpositionsCombo.setText(
-					this.currentScanModule.getSaveAxisPositions().name());
 			
 			if(actionsTabFolder.getSelection() == null)
 				actionsTabFolder.setSelection(0);
@@ -564,6 +537,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 			checkForErrors();
 			
 			top.setVisible(true);
+			System.out.println("setCurrentScanModule: top Visible: " + top.getVisible());
 			
 			itemActions.setExpanded(true);
 		} else { // currentScanModule == null
@@ -588,6 +562,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 			selectionProviderWrapper.setSelectionProvider(null);
 			
 			top.setVisible(false);
+			System.out.println("setCurrentScanModule: top Visible: " + top.getVisible());
 		}
 		addListeners();
 	}
@@ -729,8 +704,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		this.settleTimeText.addModifyListener(settleTimeTextModifiedListener);
 		this.confirmTriggerCheckBox.addSelectionListener(
 				confirmTriggerCheckBoxSelectionListener);
-		this.saveMotorpositionsCombo.addModifyListener(
-				saveMotorpositionsComboModifiedListener);
 		this.eventsTabFolder.addSelectionListener(
 				eventsTabFolderSelectionListener);
 		this.eventsComposite.addControlListener(eventsCompositeControlListener);
@@ -751,8 +724,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		this.settleTimeText.removeModifyListener(settleTimeTextModifiedListener);
 		this.confirmTriggerCheckBox.removeSelectionListener(
 				confirmTriggerCheckBoxSelectionListener);
-		this.saveMotorpositionsCombo.removeModifyListener(
-				saveMotorpositionsComboModifiedListener);
 		this.eventsTabFolder.removeSelectionListener(
 				eventsTabFolderSelectionListener);
 		this.eventsComposite.removeControlListener(
@@ -1010,23 +981,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 			}	
 		}
 	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of 
-	 * <code>saveMotorpositionsCombo</code>.
-	 */
-	private class SaveMotorpositionsComboModifiedListener implements ModifyListener {
 		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modifyText(ModifyEvent e) {
-			currentScanModule.setSaveAxisPositions(SaveAxisPositionsTypes.
-					stringToType(saveMotorpositionsCombo.getText()));		
-		}
-	}
-	
 	// ************************ Control Listener ****************************
 	
 	/**

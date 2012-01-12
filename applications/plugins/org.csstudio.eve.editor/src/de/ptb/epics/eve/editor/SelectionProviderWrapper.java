@@ -110,6 +110,12 @@ public class SelectionProviderWrapper implements ISelectionProvider {
 			} else {
 				setSelection(emptySelection);
 			}
+		} else {
+			if(this.selectionProvider != null) {
+				setSelection(selectionProvider.getSelection());
+			} else {
+				setSelection(emptySelection);
+			}
 		}
 	}
 	

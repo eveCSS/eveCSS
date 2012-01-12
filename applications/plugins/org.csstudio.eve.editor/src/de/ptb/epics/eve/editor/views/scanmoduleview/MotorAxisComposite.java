@@ -170,23 +170,9 @@ public class MotorAxisComposite extends Composite {
 			// ... and none is selected ...
 			if(tableViewer.getTable().getSelectionCount() == 0)
 			{
-//				((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
-
 				// ... select the first one and set the motor axis view
-
 				tableViewer.getTable().select(0);
-
-				boolean focusStat;
-				focusStat = tableViewer.getControl().setFocus();
-//				focusStat = tableViewer.getControl().forceFocus();
-//				focusStat = tableViewer.getTable().setFocus();
-//				focusStat = tableViewer.getTable().forceFocus();
-				System.out.println("\t\tFocus bekommen?: " + focusStat);
-
-				//tableViewer.getTable().forceFocus();
-				((ScanModuleView)parentView).selectionProviderWrapper.setSelectionProvider(tableViewer);
-//				tableViewer.getTable().setSelection(0);
-				System.out.println("\tSelection: " + tableViewer.getTable().getSelectionIndex());
+				tableViewer.getControl().setFocus();
 			}	
 		}
 	}	
@@ -391,10 +377,11 @@ public class MotorAxisComposite extends Composite {
 			Axis a = new Axis(scanModule);
 			a.setMotorAxis(ma);
 			scanModule.add(a);
-			// TODO: Wenn der MotorName TimerInt ist, wird der PositionMode auf relativ
-			// voreingestellt. Vorschlag: Den Wunsch nach relativer Schrittweite in das
-			// xsubst File eintragen und von dort übernehmen! Dann ist die Einstellung
-			// unabhängig vom Gerätenamen! (Hartmut 23.8.11)
+			// TODO: Wenn der MotorName TimerInt ist, wird der PositionMode auf 
+			// relativ voreingestellt. Vorschlag: Den Wunsch nach relativer 
+			// Schrittweite in das xsubst File eintragen und von dort 
+			// übernehmen! Dann ist die Einstellung unabhängig vom Gerätenamen! 
+			// (Hartmut 23.8.11)
 			if (ma.getName().equals("TimerInt")) {
 				a.setPositionMode(PositionMode.RELATIVE);
 			}
@@ -408,11 +395,13 @@ public class MotorAxisComposite extends Composite {
 				a.setPositionlist(sb.substring(0, sb.length() - 1));
 			}
 
-			// the new axis (the last itemCount) will be selected in the table and 
-			// displayed in the motorAxisView
-		//	tableViewer.getControl().setFocus();
-			tableViewer.getTable().select(tableViewer.getTable().getItemCount()-1);
-			
+			// the new axis (the last itemCount) will be selected in the table 
+			// and displayed in the motorAxisView
+
+			tableViewer.getTable().select(
+					tableViewer.getTable().getItemCount()-1);
+			tableViewer.getControl().setFocus();
+
 			// if only one axis available, set this axis for the Plot
 			setPlotMotorAxis();
 			
@@ -431,17 +420,18 @@ public class MotorAxisComposite extends Composite {
 		@Override
 		public void run() {
 			Axis removeAxis = (Axis)((IStructuredSelection)
-					tableViewer.getSelection()).getFirstElement();
-			
+					tableViewer.getSelection()).getFirstElement();			
 			scanModule.remove(removeAxis);
 			
+			// if another axis is available, select the first axis
+			if(tableViewer.getTable().getItems().length != 0) {
+				tableViewer.getTable().select(0);
+			}
+			tableViewer.getControl().setFocus();
+
 			// if only one axis available, set this axis as for the Plot
 			setPlotMotorAxis();
-			
-			if(tableViewer.getTable().getItems().length != 0)
-				tableViewer.getTable().select(0);
-			tableViewer.getControl().setFocus();
-			
+
 			tableViewer.refresh();
 		}
 	}
