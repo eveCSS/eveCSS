@@ -48,8 +48,6 @@ public class PluginComposite extends Composite {
 	private Axis axis;
 	private ScanModule scanModule;
 	
-	private MotorAxisView motorAxisView;
-	
 	/**
 	 * Constructs a <code>MotorAxisPluginComposite</code>.
 	 * 
@@ -57,11 +55,8 @@ public class PluginComposite extends Composite {
 	 * @param style the style
 	 * @param parentView the view the composite is contained in
 	 */
-	public PluginComposite(final Composite parent, final int style,
-									final MotorAxisView parentView) {
+	public PluginComposite(final Composite parent, final int style) {
 		super(parent, style);
-				
-		motorAxisView = parentView;
 		
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
@@ -95,7 +90,7 @@ public class PluginComposite extends Composite {
 							  ISharedImages.IMG_OBJS_ERROR_TSK));
 		
 		this.pluginControllerComposite = 
-				new PluginControllerComposite(this, SWT.NONE, motorAxisView);
+				new PluginControllerComposite(this, SWT.NONE);
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		gridData.horizontalAlignment = GridData.FILL;

@@ -47,8 +47,6 @@ public class FileComposite extends Composite {
 	
 	private Axis axis;
 	
-	private MotorAxisView motorAxisView;
-	
 	/**
 	 * Constructs a <code>MotorAxisFileComposite</code>.
 	 * 
@@ -56,14 +54,12 @@ public class FileComposite extends Composite {
 	 * @param style the style
 	 * @param parentView the view the composite is contained in
 	 */
-	public FileComposite(Composite parent, int style, MotorAxisView parentView) {
+	public FileComposite(Composite parent, int style) {
 		super(parent, style);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
 		gridLayout.horizontalSpacing = 12;
 		this.setLayout(gridLayout);
-		
-		this.motorAxisView = parentView;
 		
 		// "Filename:"
 		this.filenameLabel = new Label(this, SWT.NONE);

@@ -18,11 +18,6 @@ public class ControlEventInputWrapper implements IModelUpdateListener,
 	/*
 	 * 
 	 */
-	private ControlEventManager currentControlEventManager;
-	
-	/*
-	 * 
-	 */
 	private Viewer currentViewer;
 	
 	/**
@@ -61,7 +56,6 @@ public class ControlEventInputWrapper implements IModelUpdateListener,
 		if(newInput != null) {
 			((ControlEventManager)newInput).addModelUpdateListener(this);
 		}
-		this.currentControlEventManager = (ControlEventManager) newInput;
 		this.currentViewer = viewer;
 	}
 }

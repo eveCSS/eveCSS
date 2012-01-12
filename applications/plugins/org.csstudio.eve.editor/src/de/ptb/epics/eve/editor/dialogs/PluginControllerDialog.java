@@ -34,19 +34,19 @@ public class PluginControllerDialog extends TitleAreaDialog {
 	}
 	
 	protected Control createDialogArea(final Composite parent) {
-        Composite area = (Composite) super.createDialogArea( parent );
-        
-        this.pluginControllerComposite = 
-        		new PluginControllerComposite(area, SWT.NONE, null);
-        this.pluginControllerComposite.setLayoutData(
-        		new GridData(GridData.FILL_BOTH));
-        
-        this.pluginControllerComposite.setPluginController(
-        		this.pluginController);
-        
-        this.setTitle("Plugin Options");
-        this.setMessage("");
-        
-        return area;
-    }	
+		Composite area = (Composite) super.createDialogArea(parent);
+		
+		this.pluginControllerComposite = 
+			new PluginControllerComposite(area, SWT.NONE);
+		this.pluginControllerComposite.setLayoutData(
+			new GridData(GridData.FILL_BOTH));
+		
+		this.pluginControllerComposite.setPluginController(
+			this.pluginController);
+		
+		this.setTitle("Plugin Options");
+		this.setMessage("");
+		
+		return area;
+	}
 }
