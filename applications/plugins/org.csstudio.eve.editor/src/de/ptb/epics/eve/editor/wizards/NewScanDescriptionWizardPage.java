@@ -23,28 +23,26 @@ import de.ptb.epics.eve.editor.Activator;
  * as the file name. The page will only accept file name without the extension
  * OR with the extension that matches the expected one (scml).
  */
-
 public class NewScanDescriptionWizardPage extends WizardPage {
 	
 	// the filename / path for the new file
 	private Text fileText;
-
+	
 	/**
 	 * Constructor for SampleNewWizardPage.
-
+	
 	 */
 	public NewScanDescriptionWizardPage() {
 		super("wizardPage");
 		setTitle("New Scan Description");
 		setDescription("This wizard creates a new Scan Description.");
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void createControl(final Composite parent) {
-		
 		Composite container = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
 		container.setLayout(layout);
@@ -53,7 +51,7 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 		
 		Label label = new Label(container, SWT.NULL);
 		label.setText("File name:");
-
+		
 		fileText = new Text(container, SWT.BORDER | SWT.SINGLE);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		fileText.setLayoutData(gd);
@@ -71,25 +69,37 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 			fileText.insert(rootdir);
 		}
 		file = null;
+		
 		setErrorMessage("File name must be \"/path/to/file/filename.scml\"");
 		setPageComplete(false);
 		setControl(container);
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		if(visible) {
+			fileText.setSelection(fileText.getText().length());
+			fileText.setFocus();
+		}
+	};
+	
 	/**
 	 * Returns the file name set by the user
 	 * 
 	 * @return the user selected file name
 	 */
-	public String getFileName()
-	{
+	public String getFileName() {
 		return fileText.getText();
 	}
 	
 	// ********************** Listeners *******************************
 	
 	/**
-	 * <code>ModifyListener</code> of <code>fileText</code>.
+	 * {@link org.eclipse.swt.events.ModifyListener} of <code>fileText</code>.
 	 */
 	class FileTextModifiedListener implements ModifyListener {
 		
@@ -125,7 +135,6 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 				setPageComplete(false);
 				return;
 			}
-			
 			// if none of the above events occurred everything is ok:
 			setErrorMessage(null);
 			setPageComplete(true);
@@ -133,7 +142,7 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 	}
 	
 	/**
-	 * <code>SelectionListener</code> of <code>button</code>.
+	 * {@link org.eclipse.swt.events.SelectionListener} of <code>button</code>.
 	 */
 	class ButtonSelectionListener implements SelectionListener {
 		
@@ -158,7 +167,7 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 				filePath = rootdir;
 			}
 			file = null;
-
+			
 			// show a file dialog
 			final FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
 			dialog.setFilterPath(filePath);
