@@ -2,6 +2,7 @@ package de.ptb.epics.eve.viewer.pv;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,6 +131,8 @@ public class PVWrapper {
 		this.pv.addPVWriterListener(this.writeListener);
 		
 		this.valueFormat = new SimpleValueFormat(1);
+		// Engineering Notation
+		this.valueFormat.setNumberFormat(new DecimalFormat("##0.#####E00"));
 		
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
@@ -161,6 +164,9 @@ public class PVWrapper {
 	 * @return the value of the process variable
 	 */
 	public String getValue() {
+		if(this.pvValue.endsWith("E00")) {
+			return this.pvValue.substring(0, this.pvValue.length()-3);
+		}
 		return this.pvValue;
 	}
 	

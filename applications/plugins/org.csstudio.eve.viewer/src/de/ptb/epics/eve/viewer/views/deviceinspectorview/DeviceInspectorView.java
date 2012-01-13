@@ -799,22 +799,25 @@ public class DeviceInspectorView extends ViewPart {
 			}
 		});
 		valueColumn.getColumn().setWidth(100);
-
-		TableViewerColumn engineColumn = 
+		
+		// Engine Column should only be visible in the Engine Perspective
+		if(getSite().getPage().getPerspective().getId().equals("EveEnginePerspective")) {
+			TableViewerColumn engineColumn = 
 				new TableViewerColumn(channelTableViewer, SWT.NONE);
-		engineColumn.getColumn().setText("Engine");
-		engineColumn.setEditingSupport(
+			engineColumn.getColumn().setText("Engine");
+			engineColumn.setEditingSupport(
 				new CommonTableEditingSupport(channelTableViewer, "engine"));
-		engineColumn.setLabelProvider(new ColumnLabelProvider() {
-			@Override public String getText(Object element) {
-				return ((CommonTableElement) element).getValue("engine");
-			}
-			@Override public Color getForeground(Object element) {
-				return ((CommonTableElement) element).getSeverityColor("value");
-			}
-		});
-		engineColumn.getColumn().setWidth(100);
-
+			engineColumn.setLabelProvider(new ColumnLabelProvider() {
+				@Override public String getText(Object element) {
+					return ((CommonTableElement) element).getValue("engine");
+				}
+				@Override public Color getForeground(Object element) {
+					return ((CommonTableElement) element).getSeverityColor("value");
+				}
+			});
+			engineColumn.getColumn().setWidth(100);
+		}
+		
 		TableViewerColumn unitColumn = 
 				new TableViewerColumn(channelTableViewer, SWT.NONE);
 		unitColumn.getColumn().setText("Unit");
