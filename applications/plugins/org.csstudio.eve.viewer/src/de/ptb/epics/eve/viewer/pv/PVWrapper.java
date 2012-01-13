@@ -136,7 +136,7 @@ public class PVWrapper {
 		// Engineering Notation
 		Locale locale = new Locale("en");
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
-		this.valueFormat.setNumberFormat(new DecimalFormat("##0.#####E00", symbols));
+		this.valueFormat.setNumberFormat(new DecimalFormat("##0.00000E00", symbols));
 		
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
