@@ -474,8 +474,7 @@ public class DeviceInspectorView extends ViewPart {
 	/*
 	 * 
 	 */
-	private void createAxisTableColumns()
-	{
+	private void createAxisTableColumns() {
 		ColumnViewerToolTipSupport.enableFor(
 				axisTableViewer, ToolTip.NO_RECREATE);
 		
@@ -534,17 +533,20 @@ public class DeviceInspectorView extends ViewPart {
 		});
 		valueColumn.getColumn().setWidth(100);
 		
-		TableViewerColumn engineColumn = 
+		// Engine Column should only be visible in the Engine Perspective
+		if(getSite().getPage().getPerspective().getId().equals("EveEnginePerspective")) {
+			TableViewerColumn engineColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
-		engineColumn.getColumn().setText("Engine");
-		engineColumn.setEditingSupport(
+			engineColumn.getColumn().setText("Engine");
+			engineColumn.setEditingSupport(
 				new CommonTableEditingSupport(axisTableViewer, "engine"));
-		engineColumn.setLabelProvider(new ColumnLabelProvider() {
-			@Override public String getText(Object element) {
-				return ((CommonTableElement) element).getValue("engine");
-			}
-		});
-		engineColumn.getColumn().setWidth(100);
+			engineColumn.setLabelProvider(new ColumnLabelProvider() {
+				@Override public String getText(Object element) {
+					return ((CommonTableElement) element).getValue("engine");
+				}
+			});
+			engineColumn.getColumn().setWidth(100);
+		}
 		
 		TableViewerColumn unitColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
