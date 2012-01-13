@@ -3,8 +3,10 @@ package de.ptb.epics.eve.viewer.pv;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.csstudio.utility.pv.PV;
@@ -132,7 +134,9 @@ public class PVWrapper {
 		
 		this.valueFormat = new SimpleValueFormat(1);
 		// Engineering Notation
-		this.valueFormat.setNumberFormat(new DecimalFormat("##0.#####E00"));
+		Locale locale = new Locale("en");
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+		this.valueFormat.setNumberFormat(new DecimalFormat("##0.#####E00", symbols));
 		
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}

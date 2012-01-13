@@ -706,7 +706,7 @@ public class DeviceInspectorView extends ViewPart {
 				return null;
 			}
 		});
-		tweakValueColumn.getColumn().setWidth(70);
+		tweakValueColumn.getColumn().setWidth(90);
 		
 		TableViewerColumn tweakFColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
@@ -800,7 +800,7 @@ public class DeviceInspectorView extends ViewPart {
 				return null;
 			}
 		});
-		valueColumn.getColumn().setWidth(100);
+		valueColumn.getColumn().setWidth(120);
 		
 		// Engine Column should only be visible in the Engine Perspective
 		if(getSite().getPage().getPerspective().getId().equals("EveEnginePerspective")) {
