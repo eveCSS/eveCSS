@@ -304,14 +304,12 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 			this.controlEventManager.removeModelUpdateListener(this);
 		}
 		this.controlEventManager = controlEventManager;
-		this.tableViewer.getTable().setEnabled(true);
 		
 		if(this.controlEventManager != null) {
 			this.controlEventManager.addModelUpdateListener(this);
 
 		} else { // controlEventManager == null
 			this.tableViewer.getTable().clearAll();
-			this.tableViewer.getTable().setEnabled(false);
 		}
 		this.tableViewer.setInput(controlEventManager);
 	}
@@ -372,7 +370,6 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 		 */
 		@Override
 		public void focusGained(FocusEvent e) {
-			System.out.println("\nFocus Gained von EventComposite aufgerufen");
 			final String currentTextBuffer = eventsCombo.getText();
 			setEventChoice();
 			eventsCombo.setText(currentTextBuffer);
@@ -383,7 +380,6 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 		 */
 		@Override
 		public void focusLost (FocusEvent e) {
-			System.out.println("\nFocus Lost von EventComposite aufgerufen");
 		}
 	}
 	

@@ -6,11 +6,17 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.widgets.Label;
@@ -27,25 +33,26 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
 
 import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.measuringstation.PluginParameter;
 import de.ptb.epics.eve.data.scandescription.Chain;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.ChainError;
 import de.ptb.epics.eve.data.scandescription.errors.ChainErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
-import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.Helper;
 import de.ptb.epics.eve.editor.dialogs.PluginControllerDialog;
+import de.ptb.epics.eve.editor.graphical.editparts.ChainEditPart;
+import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
+import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EventComposite;
 
 /**
@@ -59,7 +66,7 @@ import de.ptb.epics.eve.editor.views.EventComposite;
  * @author Marcus Michalsky
  * @author Hartmut Scherr
  */
-public class ScanView extends ViewPart implements IModelUpdateListener {
+public class ScanView extends ViewPart implements ISelectionListener {
 
 	/**
 	 * the unique identifier of the view
@@ -79,8 +86,6 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 	// *******************************************************************
 	// ******************* end of: underlying model **********************
 	// *******************************************************************
-
-	private boolean modelUpdateListenerSuspended;
 	
 	// the utmost composite (which contains all elements)
 	private Composite top = null;
@@ -90,150 +95,147 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 	
 	// (1st) Save Options Expand Item & contained composite
 	private ExpandItem saveOptionsExpandItem;
-	private Composite saveOptionsComposite = null;
+	private Composite saveOptionsComposite;
 	
 	// (2nd) Comment Expand Item & contained composite
 	private ExpandItem commentExpandItem;
-	private Composite commentComposite = null;
+	private Composite commentComposite;
 	
 	// (3rd) Events Expand Item & contained Composite
 	private ExpandItem eventsExpandItem;
-	private Composite eventsComposite = null;
+	private Composite eventsComposite;
 	
-	// ******** Widgets of Save Options *************
-	private Label fileFormatLabel = null;
-	private Combo fileFormatCombo = null;
-	private Label fileFormatComboErrorLabel = null;
-	private Button fileFormatOptionsButton = null;
+	// ******** Save Options Widgets *************
+	private Label fileFormatLabel;
 	
+	private Combo fileFormatCombo;
+	private ControlDecoration fileFormatComboControlDecoration;
 	private FileFormatComboSelectionListener fileFormatComboSelectionListener;
+	
+	private Button fileFormatOptionsButton;
 	private FileFormatOptionsButtonSelectionListener 
 			fileFormatOptionsButtonSelectionListener;
 	
-	private Label filenameLabel = null;
-	private Text filenameInput = null;
-	private Label filenameErrorLabel = null;
-	private Button filenameBrowseButton = null;
-
+	private Label filenameLabel;
+	
+	private Text filenameInput;
+	private ControlDecoration fileNameInputControlDecoration;
 	private FileNameInputModifiedListener fileNameInputModifiedListener;
 	
-	private Button saveScanDescriptionCheckBox = null;
+	private Button filenameBrowseButton;
+	
+	private Button saveScanDescriptionCheckBox;
 	private SaveScanDescriptionCheckBoxSelectionListener 
 			saveScanDescriptionCheckBoxSelectionListener;
 	
-	private Button confirmSaveCheckBox = null;
+	private Button confirmSaveCheckBox;
 	private ConfirmSaveCheckBoxSelectionListener 
 			confirmSaveCheckBoxSelectionListener;
 	
-	private Button autoIncrementCheckBox = null;
+	private Button autoIncrementCheckBox;
 	private AutoIncrementCheckBoxSelectionListener 
 			autoIncrementCheckBoxSelectionListener;
 	
-	private Label repeatCountLabel = null;
-	private Text repeatCountText = null;
-	
+	private Label repeatCountLabel;
+	private Text repeatCountText;
 	private RepeatCountTextModifiedListener repeatCountTextModifiedListener;
 	// ***** end of: Widgets of Save Options ********
 	
 	
 	// ***** Widgets of Comment *******	
-	private Text commentInput = null;
-
+	private Text commentInput;
 	private CommentInputModifiedListener commentInputModifiedListener;
 	// *** end of: Widgets of Comment *****
 	
 	
 	// ***** Widgets of Events *******	
-	private CTabFolder eventsTabFolder = null;
+	private CTabFolder eventsTabFolder;
 
 	private CTabItem pauseTabItem;
-	private EventComposite pauseEventComposite = null;
+	private EventComposite pauseEventComposite;
 	
 	private CTabItem redoTabItem;
-	private EventComposite redoEventComposite = null;
+	private EventComposite redoEventComposite;
 	
 	private CTabItem breakTabItem;
-	private EventComposite breakEventComposite = null;
+	private EventComposite breakEventComposite;
 	
 	private CTabItem stopTabItem;
-	private EventComposite stopEventComposite = null;	
+	private EventComposite stopEventComposite;
 	// ***** end of: Widgets of Events *******
 	
+	private Image warnImage;
+	private Image errorImage;
+	private Image eventErrorImage;
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-	    logger.debug("createPartControl");
+		logger.debug("createPartControl");
 		
-		modelUpdateListenerSuspended = false;
-
 		parent.setLayout(new FillLayout());
 		
 		// if no measuring station is loaded -> show error and do nothing
 		if(Activator.getDefault().getMeasuringStation() == null) {
 			final Label errorLabel = new Label(parent, SWT.NONE);
 			errorLabel.setText("No Measuring Station has been loaded. " +
-							   "Please check Preferences!");
+								"Please check Preferences!");
 			return;
 		}
-
-		// the top composite
+		
+		this.warnImage = FieldDecorationRegistry.getDefault().getFieldDecoration(
+				FieldDecorationRegistry.DEC_WARNING).getImage();
+		this.errorImage = FieldDecorationRegistry.getDefault().getFieldDecoration(
+				FieldDecorationRegistry.DEC_ERROR).getImage();
+		this.eventErrorImage = PlatformUI.getWorkbench().
+				getSharedImages().getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+		
+		// top composite
 		this.top = new Composite(parent, SWT.NONE);
-		this.top.setLayout(new GridLayout());
+		this.top.setLayout(new FillLayout());
 		
 		// expand bar for Save Options, Comment & Events
 		this.bar = new ExpandBar(this.top, SWT.V_SCROLL);
-		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		this.bar.setLayoutData(gridData);
 		
 		// **************************************
 		// ************ Save Expander ***********
 		// **************************************
 
-		// save composite gets a 4 column grid
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 4;
+		// save composite gets a 3 column grid
 		this.saveOptionsComposite = new Composite(this.bar, SWT.NONE);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 3;
+		gridLayout.horizontalSpacing = 12;
 		this.saveOptionsComposite.setLayout(gridLayout);
 
 		// GUI: "File Format: <Combo Box>"
 		this.fileFormatLabel = new Label(this.saveOptionsComposite, SWT.NONE);
 		this.fileFormatLabel.setText("File format:");
-		this.fileFormatCombo = new Combo(this.saveOptionsComposite, SWT.READ_ONLY);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		this.fileFormatCombo.setLayoutData(gridData);
 		
+		this.fileFormatCombo = new Combo(this.saveOptionsComposite, SWT.READ_ONLY);
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		this.fileFormatCombo.setLayoutData(gridData);
 		// insert all available SAVE plug ins in the combo box
 		List<String> pluginNames = new ArrayList<String>();
 		PlugIn[] plugins = Activator.getDefault().getMeasuringStation().
-									 getPlugins().toArray(new PlugIn[0]);	
+									 getPlugins().toArray(new PlugIn[0]);
 		for(int i = 0; i < plugins.length; ++i) {
 			if(plugins[i].getType() == PluginTypes.SAVE) {
 				pluginNames.add(plugins[i].getName());
 			}
 		}
 		this.fileFormatCombo.setItems(pluginNames.toArray(new String[0]));
-		
-		// initialize & register the modify listener to the combo box
+		this.fileFormatComboControlDecoration = new ControlDecoration(
+				fileFormatCombo, SWT.RIGHT);
+		this.fileFormatComboControlDecoration.setImage(errorImage);
+		this.fileFormatComboControlDecoration.setDescriptionText(
+				"The File Format is mandatory!");
+		this.fileFormatComboControlDecoration.hide();
 		fileFormatComboSelectionListener = new FileFormatComboSelectionListener();
 		this.fileFormatCombo.addSelectionListener(fileFormatComboSelectionListener);
-		
-		// Save Plug in Error Label
-		this.fileFormatComboErrorLabel = 
-				new Label(this.saveOptionsComposite, SWT.NONE);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		gridData.horizontalSpan = 1;
-		this.fileFormatComboErrorLabel.setLayoutData(gridData);
 		
 		// Save Plug in Options button
 		this.fileFormatOptionsButton = 
@@ -242,21 +244,19 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
-		gridData.horizontalSpan = 1;
 		this.fileFormatOptionsButton.setLayoutData(gridData);
-
-		// initialize & register the selection listener to the button
 		fileFormatOptionsButtonSelectionListener = 
 				new FileFormatOptionsButtonSelectionListener();
 		this.fileFormatOptionsButton.addSelectionListener(
 				fileFormatOptionsButtonSelectionListener);
+		// end of: GUI: "File Format: <Combo Box>"
 		
 		// GUI: "Filename: <Textfield>"
 		this.filenameLabel = new Label(this.saveOptionsComposite, SWT.NONE);
 		this.filenameLabel.setText("Filename:");
 		this.filenameInput = new Text(this.saveOptionsComposite, SWT.BORDER);
 		String tooltip = "The file name where the data should be saved.\n " +
-						"Use following macro expansion:\n" + 
+						"The following macros can be used:\n" + 
 						"${WEEK} : calendar week\n" + 
 						"${DATE} : date as yyyyMMdd (e.g., 20111231)\n" + 
 						"${DATE-} : date as yyyy-MM-dd (e.g., 2011-12-31)\n" + 
@@ -269,31 +269,22 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		gridData.verticalAlignment = GridData.CENTER;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.filenameInput.setLayoutData(gridData);
-		
-		// initialize & register the modify listener to the input field
+		this.fileNameInputControlDecoration = new ControlDecoration(
+				filenameInput, SWT.RIGHT);
+		this.fileNameInputControlDecoration.setImage(errorImage);
+		this.fileNameInputControlDecoration.hide();
 		fileNameInputModifiedListener = new FileNameInputModifiedListener();
 		this.filenameInput.addModifyListener(fileNameInputModifiedListener);
 		
-		// File name error label
-		this.filenameErrorLabel = new Label(this.saveOptionsComposite, SWT.NONE);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		this.filenameErrorLabel.setLayoutData(gridData);
-		this.filenameErrorLabel.setImage(PlatformUI.getWorkbench().
-				getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK));
-		
 		// Browse Button
-		GridData gridData11 = new GridData();
-		gridData11.horizontalAlignment = GridData.END;
-		gridData11.verticalAlignment = GridData.CENTER;
 		this.filenameBrowseButton = new Button(this.saveOptionsComposite, SWT.NONE);
 		this.filenameBrowseButton.setText("Browse...");
-		this.filenameBrowseButton.setLayoutData(gridData11);
-		this.filenameBrowseButton.setToolTipText("Browse for a file");
-		// (click)Listener for the button
-		this.filenameBrowseButton.addMouseListener(new SearchButtonMouseListener()); 
-				
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.END;
+		gridData.verticalAlignment = GridData.CENTER;
+		this.filenameBrowseButton.setLayoutData(gridData);
+		this.filenameBrowseButton.addMouseListener(new SearchButtonMouseListener());
+		
 		// Save Scan Description check box
 		this.saveScanDescriptionCheckBox = 
 				new Button(this.saveOptionsComposite, SWT.CHECK);
@@ -301,10 +292,8 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		this.saveScanDescriptionCheckBox.setToolTipText(
 				"Check to save the scan description into the datafile.");
 		gridData = new GridData();
-		gridData.horizontalSpan = 3;
+		gridData.horizontalSpan = 4;
 		this.saveScanDescriptionCheckBox.setLayoutData(gridData);
-		
-		// initialize & register the selection listener to the check box
 		saveScanDescriptionCheckBoxSelectionListener = 
 				new SaveScanDescriptionCheckBoxSelectionListener();
 		this.saveScanDescriptionCheckBox.addSelectionListener(
@@ -316,10 +305,8 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		this.confirmSaveCheckBox.setToolTipText(
 				"Check if saving the datafile should be confirmed");
 		gridData = new GridData();
-		gridData.horizontalSpan = 3;
+		gridData.horizontalSpan = 4;
 		this.confirmSaveCheckBox.setLayoutData(gridData);
-
-		// initialize & register the selection listener to the check box
 		confirmSaveCheckBoxSelectionListener = 
 				new ConfirmSaveCheckBoxSelectionListener();
 		this.confirmSaveCheckBox.addSelectionListener(
@@ -332,8 +319,6 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		gridData = new GridData();
 		gridData.horizontalSpan = 4;
 		this.autoIncrementCheckBox.setLayoutData(gridData);
-		
-		// initialize & register selection listener to the check box
 		autoIncrementCheckBoxSelectionListener = 
 				new AutoIncrementCheckBoxSelectionListener();
 		this.autoIncrementCheckBox.addSelectionListener(
@@ -348,11 +333,9 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		this.repeatCountText.setLayoutData(gridData);
-
-		// initialize & register the modify listener to the text field
 		repeatCountTextModifiedListener = new RepeatCountTextModifiedListener();
 		this.repeatCountText.addModifyListener(repeatCountTextModifiedListener);
-				
+		
 		// add expand item to the expander
 		this.saveOptionsExpandItem = new ExpandItem(this.bar, SWT.NONE, 0);
 		saveOptionsExpandItem.setText("Save Options");
@@ -360,8 +343,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 				this.saveOptionsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		saveOptionsExpandItem.setControl(this.saveOptionsComposite);
 		
-		this.saveOptionsComposite.addControlListener(
-				new SavingCompositeControlListener());
+		this.saveOptionsExpandItem.setExpanded(true);
 		
 		// **************************************
 		// ******** end of Save Expander ********
@@ -371,22 +353,14 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		// ********** Comment Expander **********
 		// **************************************
 		
-		gridLayout = new GridLayout();
-		gridLayout.numColumns = 1;
 		this.commentComposite = new Composite(this.bar, SWT.NONE);
-		this.commentComposite.setLayout(gridLayout);
+		FillLayout fillLayout = new FillLayout();
+		fillLayout.marginWidth = 5;
+		this.commentComposite.setLayout(fillLayout);
 		
 		// Comment Input
 		this.commentInput = new Text(this.commentComposite, 
-									 SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-		gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		this.commentInput.setLayoutData(gridData);
-		
-		// initialize & register modify listener to comment input
+				SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 		commentInputModifiedListener = new CommentInputModifiedListener();
 		this.commentInput.addModifyListener(commentInputModifiedListener);
 		
@@ -395,7 +369,8 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		commentExpandItem.setText("Comment");
 		commentExpandItem.setHeight(100);
 		commentExpandItem.setControl(this.commentComposite);
-
+		this.commentExpandItem.setExpanded(true);
+		
 		// **************************************
 		// ****** end of Comment Expander *******
 		// **************************************
@@ -404,33 +379,23 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		// ********** Events Expander ***********
 		// **************************************
 		
-		gridLayout = new GridLayout();
 		this.eventsComposite = new Composite(this.bar, SWT.NONE);
-		this.eventsComposite.setLayout(gridLayout);
-
-		gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.horizontalAlignment = GridData.FILL;
-		this.eventsComposite.setLayoutData(gridData);
+		this.eventsComposite.setLayout(new FillLayout());
 		
 		// events tab folder contains the tabs pause, redo, break & stop
 		eventsTabFolder = new CTabFolder(this.eventsComposite, SWT.FLAT);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		this.eventsTabFolder.setLayoutData(gridData);
 		eventsTabFolder.addSelectionListener(
 				new EventsTabFolderSelectionListener());
 								
-		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, ControlEventTypes.PAUSE_EVENT);
-		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, ControlEventTypes.CONTROL_EVENT);
-		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, ControlEventTypes.CONTROL_EVENT);
-		stopEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, ControlEventTypes.CONTROL_EVENT);
-
+		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
+				ControlEventTypes.PAUSE_EVENT);
+		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
+				ControlEventTypes.CONTROL_EVENT);
+		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
+				ControlEventTypes.CONTROL_EVENT);
+		stopEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
+				ControlEventTypes.CONTROL_EVENT);
+		
 		this.pauseTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
 		this.pauseTabItem.setText("Pause");
 		this.pauseTabItem.setControl(pauseEventComposite);
@@ -457,18 +422,16 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 				this.eventsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		this.eventsExpandItem.setControl(this.eventsComposite);
 		
-		this.eventsComposite.addControlListener(
-				new EventsCompositeControlListener());
-		
 		// **************************************
 		// ******* end of Events Expander *******
 		// **************************************
 		
-		this.bar.addControlListener(new BarControlListener());
-		
 		top.setVisible(false);
-				
-		this.setEnabledForAll(false);
+		
+		// listen to selection changes (if a chain (or one of its scan modules) 
+		// is selected, its attributes are made available for editing)
+		getSite().getWorkbenchWindow().getSelectionService().
+				addSelectionListener(this);
 	}
 	
 	// ************************************************************************
@@ -480,6 +443,8 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 	 */
 	@Override
 	public void setFocus() {
+		logger.debug("Focus gained -> forward to top composite");
+		this.top.setFocus();
 	}
 	
 	/**
@@ -491,66 +456,25 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 	 * 		  be set current. Use <code>null</code> to present an empty view.
 	 */
 	public void setCurrentChain(final Chain currentChain) {
-		
-		if(currentChain != null)
-			logger.debug("chain set to: " + currentChain.getId());
-		else
-			logger.debug("chain set to: null");
-		
-		// if a current chain is set, stop listening to it
-		if(this.currentChain != null) {
-			this.currentChain.removeModelUpdateListener(this);
-		}
 		// set the new chain as current chain
 		this.currentChain = currentChain;
 		
-		if(this.currentChain != null) {
-			// current chain not null -> listen to updates on it
-			this.currentChain.addModelUpdateListener(this);		
-		} 
-		
-		// update elements (calls the inherited method from the UpdateListener 
-		// with argument null indicating an internal call)
-		updateEvent(null);
-	}	
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		
-		if(modelUpdateEvent == null) 
-			logger.debug("update event (null)");
-		else 
-			logger.debug("update event (" + 
-				modelUpdateEvent.getSender().getClass().getName() + ")");
-		
-		if(modelUpdateListenerSuspended) return;
-
-		// temporarily remove listeners to prevent event loops
 		removeListeners();
 		
 		if(this.currentChain != null) {
-			// current chain is not null -> get elements and fill fields
+			this.top.setVisible(true);
+			this.setPartName("Chain: " + this.currentChain.getId());
 			
-			this.fileFormatCombo.setText(
-			  (this.currentChain.getSavePluginController().getPlugin() != null)
-			  ? this.currentChain.getSavePluginController().getPlugin().getName()
-			  : "");
-			
-			if(this.currentChain.getSavePluginController().getPlugin() == null) {
-				this.fileFormatCombo.deselectAll();
+			if(this.currentChain.getSavePluginController().getPlugin() != null) {
+				this.fileFormatCombo.setText(this.currentChain.
+						getSavePluginController().getPlugin().getName());
 			}
 			
-			this.filenameInput.setText(
-					(this.currentChain.getSaveFilename() != null)
-					? this.currentChain.getSaveFilename()
-					: "");
-			this.filenameInput.setSelection(this.filenameInput.getText().length());
-			
-			this.filenameErrorLabel.setImage(null);
-			this.filenameErrorLabel.setToolTipText("");
+			if(this.currentChain.getSaveFilename() != null) {
+				this.filenameInput.setText(this.currentChain.getSaveFilename());
+				this.filenameInput.setSelection(
+						this.filenameInput.getText().length());
+			}
 			
 			this.saveScanDescriptionCheckBox.setSelection(
 					this.currentChain.isSaveScanDescription());
@@ -558,7 +482,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 					this.currentChain.isConfirmSave());
 			this.autoIncrementCheckBox.setSelection(
 					this.currentChain.isAutoNumber());
-
+			
 			this.repeatCountText.setText(Integer.toString(
 					this.currentChain.getScanDescription().getRepeatCount()));
 			
@@ -566,236 +490,248 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			this.commentInput.setSelection(
 					this.currentChain.getComment().length());
 			
-			// updating event composites -> set their control event managers
-			
-			if(this.pauseEventComposite.getControlEventManager() != 
-			   this.currentChain.getPauseControlEventManager()) 
-			{
-				this.pauseEventComposite.setControlEventManager(
+			if (this.pauseEventComposite.getControlEventManager() != 
+				this.currentChain.getPauseControlEventManager()) {
+					this.pauseEventComposite.setControlEventManager(
 						this.currentChain.getPauseControlEventManager());
 			}
-			if(this.redoEventComposite.getControlEventManager() != 
-			   this.currentChain.getRedoControlEventManager()) 
-			{
-				this.redoEventComposite.setControlEventManager(
+			if (this.redoEventComposite.getControlEventManager() != 
+				this.currentChain.getRedoControlEventManager()) {
+					this.redoEventComposite.setControlEventManager(
 						this.currentChain.getRedoControlEventManager());
 			}
-			if(this.breakEventComposite.getControlEventManager() != 
-			   this.currentChain.getRedoControlEventManager()) 
-			{
-				this.breakEventComposite.setControlEventManager(
+			if (this.breakEventComposite.getControlEventManager() != 
+				this.currentChain.getRedoControlEventManager()) {
+					this.breakEventComposite.setControlEventManager(
 						this.currentChain.getBreakControlEventManager());
 			}
-			if(this.stopEventComposite.getControlEventManager() != 
-			   this.currentChain.getStopControlEventManager()) 
-			{
-				this.stopEventComposite.setControlEventManager(
+			if (this.stopEventComposite.getControlEventManager() != 
+				this.currentChain.getStopControlEventManager()) {
+					this.stopEventComposite.setControlEventManager(
 						this.currentChain.getStopControlEventManager());
-			}		
-			
-			// enable items and set title
-			this.setEnabledForAll(true);
-			this.setPartName("Chain: " + this.currentChain.getId());
-			saveOptionsExpandItem.setExpanded(true);
-			
-			// check if there are errors in the model
-			// and notify the user of them
+			}
 			checkForErrors();
-			
-			top.setVisible(true);
-			top.layout();
-			
-		} else {
-			// current chain is null -> clear (no model is represented)
-			//this.fileFormatCombo.setText("");
+		} else { // currentChain == null
 			this.fileFormatCombo.deselectAll();
-			this.fileFormatComboErrorLabel.setImage(null);		
 			this.filenameInput.setText("");
 			this.saveScanDescriptionCheckBox.setSelection(false);
 			this.confirmSaveCheckBox.setSelection(false);
 			this.autoIncrementCheckBox.setSelection(false);
 			this.repeatCountText.setText("");
 			this.commentInput.setText("");
-		
+			
 			this.pauseEventComposite.setControlEventManager(null);
 			this.redoEventComposite.setControlEventManager(null);
 			this.breakEventComposite.setControlEventManager(null);
 			this.stopEventComposite.setControlEventManager(null);
 			
-			// disable items & reset title
-			this.setEnabledForAll(false);
 			this.setPartName("No Chain selected");
-			saveOptionsExpandItem.setExpanded(false);
-			top.setVisible(false);
-		}	
-		
-		// re-enable listeners
+			this.top.setVisible(false);
+		}
 		addListeners();
 	}
 	
 	/*
-	 * enables/disables all editable widget elements
+	 * called by setCurrentChain() to check for errors in user input and show 
+	 * error decorators.
 	 */
-	private void setEnabledForAll(final boolean enabled) {
-		this.fileFormatCombo.setEnabled(enabled);
-		this.filenameInput.setEnabled(enabled);
-		this.filenameBrowseButton.setEnabled(enabled);
-		this.saveScanDescriptionCheckBox.setEnabled(enabled);
-		this.confirmSaveCheckBox.setEnabled(enabled);
-		this.autoIncrementCheckBox.setEnabled(enabled);
-		this.repeatCountText.setEnabled(enabled);
+	private void checkForErrors() {
+		// reset all
 		
-		this.commentInput.setEnabled(enabled);
-		this.eventsTabFolder.setEnabled(enabled);
+		this.fileFormatComboControlDecoration.hide();
+		this.fileNameInputControlDecoration.hide();
 		
-		if(enabled) {
-			if(this.currentChain.getSavePluginController().getPlugin() != null && 
-			   this.currentChain.getSavePluginController().getPlugin().
-			                     getParameters().size() > 0) {
-				this.fileFormatOptionsButton.setEnabled(true);
-			} else {
-				this.fileFormatOptionsButton.setEnabled(false);
-			}
-		} else {
-			this.fileFormatOptionsButton.setEnabled(false);
-		}	
-	}
-	
-	/*
-	 * called by setCurrentChain() and updateEvent() to check for errors in 
-	 * user input and show error labels
-	 */
-	private void checkForErrors()
-	{
-		if(this.currentChain.getSavePluginController().
-							 getModelErrors().size() > 0) 
-		{
-			this.fileFormatComboErrorLabel.setImage(PlatformUI.getWorkbench().
-				getSharedImages().getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-			this.fileFormatComboErrorLabel.setToolTipText(
-				"There is at least one error in the plug in configuration!");
+		this.pauseTabItem.setImage(null);
+		this.breakTabItem.setImage(null);
+		this.redoTabItem.setImage(null);
+		this.stopTabItem.setImage(null);
+		
+		
+		if (this.currentChain.getSavePluginController().
+							 getModelErrors().size() > 0) {
+			this.fileFormatComboControlDecoration.show();
 			this.fileFormatCombo.deselectAll();
-		} else {
-			this.fileFormatComboErrorLabel.setImage(null);
-			this.fileFormatComboErrorLabel.setToolTipText("");	
-		}		
+		}
 		
-		final List<IModelError> errorList = this.currentChain.getModelErrors();
-		final Iterator<IModelError> it = errorList.iterator();
-	
-		while(it.hasNext()) {
-			final IModelError modelError = it.next();
-			if(modelError instanceof ChainError) {
-				final ChainError chainError = (ChainError)modelError;
-				this.filenameErrorLabel.setImage(PlatformUI.getWorkbench().
-					getSharedImages().getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+		for(IModelError error : this.currentChain.getModelErrors()) {
+			if (error instanceof ChainError) {
+				final ChainError chainError = (ChainError)error;
+				this.fileNameInputControlDecoration.show();
 				if(chainError.getErrorType() == ChainErrorTypes.FILENAME_EMPTY) {
-					this.filenameErrorLabel.setToolTipText(
+					this.fileNameInputControlDecoration.setDescriptionText(
 							"Filename must not be empty!");
-				} else if(chainError.getErrorType() == 
-						  ChainErrorTypes.FILENAME_ILLEGAL_CHARACTER) {
-					this.filenameErrorLabel.setToolTipText(
+				} else if (chainError.getErrorType() == 
+							ChainErrorTypes.FILENAME_ILLEGAL_CHARACTER) {
+					this.fileNameInputControlDecoration.setDescriptionText(
 							"Filename contains illegal characters!");
 				}
 			}
-		}			
-
+		}
+		
 		if(this.currentChain.getPauseControlEventManager().
-							 getModelErrors().size() > 0) 
-		{
-			this.pauseTabItem.setImage(PlatformUI.getWorkbench().
-				getSharedImages().getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-		} else {
-			this.pauseTabItem.setImage(null);
+							 getModelErrors().size() > 0) {
+			this.pauseTabItem.setImage(eventErrorImage);
 		}
 		if(this.currentChain.getBreakControlEventManager().
 				getModelErrors().size() > 0) {
-			this.breakTabItem.setImage(PlatformUI.getWorkbench().
-				getSharedImages().getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-		} else {
-			this.breakTabItem.setImage(null);
+			this.breakTabItem.setImage(eventErrorImage);
 		}
 		if(this.currentChain.getRedoControlEventManager().
 							 getModelErrors().size() > 0) {
-			this.redoTabItem.setImage(PlatformUI.getWorkbench().
-				getSharedImages().getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-		} else {
-			this.redoTabItem.setImage(null);
+			this.redoTabItem.setImage(eventErrorImage);
 		}
 		if(this.currentChain.getStopControlEventManager().
-							 getModelErrors().size() > 0) 
-		{
-			this.stopTabItem.setImage(PlatformUI.getWorkbench().
-				getSharedImages().getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-		} else {
-			this.stopTabItem.setImage(null);
+							 getModelErrors().size() > 0) {
+			this.stopTabItem.setImage(eventErrorImage);
 		}
 	}
-
+	
 	/*
-	 * used by updateEvent() to re-enable listeners
+	 * used by setCurrentChain() to re-enable listeners
 	 */
-	private void addListeners()
-	{
+	private void addListeners() {
+		this.fileFormatCombo.addSelectionListener(fileFormatComboSelectionListener);
 		this.filenameInput.addModifyListener(fileNameInputModifiedListener);
 		this.repeatCountText.addModifyListener(repeatCountTextModifiedListener);
-		this.fileFormatCombo.addSelectionListener(fileFormatComboSelectionListener);
 		this.commentInput.addModifyListener(commentInputModifiedListener);
 		
+		this.saveScanDescriptionCheckBox.addSelectionListener(
+				saveScanDescriptionCheckBoxSelectionListener);
 		this.confirmSaveCheckBox.addSelectionListener(
 				confirmSaveCheckBoxSelectionListener);
 		this.autoIncrementCheckBox.addSelectionListener(
 				autoIncrementCheckBoxSelectionListener);
-		this.saveScanDescriptionCheckBox.addSelectionListener(
-				saveScanDescriptionCheckBoxSelectionListener);
-		this.fileFormatOptionsButton.addSelectionListener(
-				fileFormatOptionsButtonSelectionListener);
 	}
 	
 	/*
-	 * used by updateEvent() to temporarily disable listeners (preventing 
-	 * event loops)
+	 * used by setCurrentChain() to temporarily disable listeners
 	 */
-	private void removeListeners()
-	{
+	private void removeListeners() {
+		this.fileFormatCombo.removeSelectionListener(
+				fileFormatComboSelectionListener);
 		this.filenameInput.removeModifyListener(fileNameInputModifiedListener);
 		this.repeatCountText.removeModifyListener(
 				repeatCountTextModifiedListener);
-		this.fileFormatCombo.removeSelectionListener(
-				fileFormatComboSelectionListener);
 		this.commentInput.removeModifyListener(commentInputModifiedListener);
 		
+		this.saveScanDescriptionCheckBox.removeSelectionListener(
+				saveScanDescriptionCheckBoxSelectionListener);
 		this.confirmSaveCheckBox.removeSelectionListener(
 				confirmSaveCheckBoxSelectionListener);
 		this.autoIncrementCheckBox.removeSelectionListener(
 				autoIncrementCheckBoxSelectionListener);
-		this.saveScanDescriptionCheckBox.removeSelectionListener(
-				saveScanDescriptionCheckBoxSelectionListener);
-		this.fileFormatOptionsButton.removeSelectionListener(
-				fileFormatOptionsButtonSelectionListener);
 	}
 	
-	/*
-	 * used by several listeners to adjust the height
+	/**
+	 * {@inheritDoc}
 	 */
-	private void setHeight()
-	{
-		int height = bar.getSize().y - saveOptionsExpandItem.getHeaderHeight() - 
-					 (saveOptionsExpandItem.getExpanded() 
-					  ? saveOptionsExpandItem.getHeight() 
-					  : 0) - 
-					 commentExpandItem.getHeaderHeight() - 
-					 (commentExpandItem.getExpanded() 
-					  ? commentExpandItem.getHeight() 
-					  : 0) - 
-					 eventsExpandItem.getHeaderHeight() - 20;
-		eventsExpandItem.setHeight(height < 150 ? 150 : height);
+	@Override
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+		logger.debug("selection changed");
+		
+		if(selection instanceof IStructuredSelection) {
+			if(((IStructuredSelection) selection).size() == 0) {
+				return;
+			}
+		}
+
+	// since at any given time this view can only display options of 
+	// one device we take the first element of the selection
+	Object o = ((IStructuredSelection) selection).toList().get(0);
+		if (o instanceof ChainEditPart) {
+			// set new Chain
+			if(logger.isDebugEnabled()) {
+				logger.debug("Chain: " + ((Chain)((ChainEditPart)o).
+						getModel()).getId() + " selected."); 
+			}
+			setCurrentChain((Chain)((ChainEditPart)o).getModel());
+
+		} else if (o instanceof ScanModuleEditPart) {
+			// a scan module belongs to a chain -> show chain
+			if(logger.isDebugEnabled()) {
+				logger.debug("ScanModule " + (ScanModule)
+						((ScanModuleEditPart)o).getModel() + " selected.");
+				setCurrentChain(((ScanModule)((ScanModuleEditPart)o).
+						getModel()).getChain());
+			}
+		} else if (o instanceof ScanDescriptionEditPart) {
+				logger.debug("selection is ScanDescriptionEditPart: " + o);
+				setCurrentChain(null);
+		} else {
+			logger.debug("selection other than Chain -> ignore: " + o);
+		}
 	}
 	
 	// ************************************************************************
 	// *************************** Listener ***********************************
 	// ************************************************************************
 	
+	/**
+	 * {@link org.eclipse.swt.events.ModifyListener} of
+	 * <code>savePluginCombo</code>.
+	 */
+	class FileFormatComboSelectionListener implements SelectionListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+				currentChain.getSavePluginController().setPlugin(
+						Activator.getDefault().getMeasuringStation().
+								  getPluginByName(fileFormatCombo.getText()));
+				checkForErrors();
+		}
+	}
+
+	/**
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
+	 * <code>savePluginOptionsButton</code>.
+	 */
+	class FileFormatOptionsButtonSelectionListener implements SelectionListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			PluginControllerDialog dialog = new PluginControllerDialog( 
+								null, currentChain.getSavePluginController());
+			dialog.setBlockOnOpen(true);
+			dialog.open();
+		}
+	}
+	
+	/**
+	 * {@link org.eclipse.swt.events.ModifyListener} of
+	 * <code>fileNameInput</code>.
+	 */
+	class FileNameInputModifiedListener implements ModifyListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void modifyText(ModifyEvent e) {
+			currentChain.setSaveFilename(filenameInput.getText().trim());
+			checkForErrors();
+		}
+	}
+
 	/**
 	 * {@link org.eclipse.swt.events.MouseListener} of 
 	 * <code>searchButton</code>.
@@ -829,30 +765,27 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 			} else {
 				// no filename -> set path to <rootDir>/daten/ or <rootDir>
 				String rootdir = Activator.getDefault().getRootDirectory();
-				File file = new File(rootdir + "daten/");
+				File file = new File(rootdir + "data/");
 				if(file.exists()) {
-					filePath = rootdir + "daten/";
+					filePath = rootdir + "data/";
 				} else {
 					filePath = rootdir;
 				}
 				file = null;
 			}
 			
-			logger.debug(filePath);
+			logger.debug("FileDialog path: " + filePath);
 			
-			Shell shell = getSite().getShell();
-
-			FileDialog fileWindow = new FileDialog(shell, SWT.SAVE);
+			FileDialog fileWindow = new FileDialog(getSite().getShell(), SWT.SAVE);
 			fileWindow.setFilterPath(filePath);
 			String name = fileWindow.open();
-
+			
 			if(name != null) {
-
 				// try to get suffix parameter of the selected plug in
 				final Iterator<PluginParameter> it = 
 						currentChain.getSavePluginController().getPlugin().
 									 getParameters().iterator();
-
+				
 				PluginParameter pluginParameter = null;
 				while(it.hasNext()) {
 					pluginParameter = it.next();
@@ -861,7 +794,7 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 					}
 					pluginParameter = null;
 				}
-
+				
 				if(pluginParameter != null) {
 					// suffix found -> replace
 					String suffix = currentChain.getSavePluginController().
@@ -890,251 +823,6 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		@Override
 		public void mouseUp(MouseEvent e) {
 		}
-	}	
-	
-	// ******************* Control Listener *******************
-	
-	/**
-	 * {@link org.eclipse.swt.events.ControlListener} of 
-	 * <code>savingsComposite</code>.
-	 */
-	class SavingCompositeControlListener implements ControlListener {
-		
-		/**
-		 * {@inheritDoc}<br><br>
-		 * Ensures a minimum height of 150px.
-		 */
-		@Override
-		public void controlMoved(final ControlEvent e) {
-			setHeight();
-		}
-
-		/**
-		 * {@inheritDoc}<br><br>
-		 * Ensures a minimum height of 150px.
-		 */
-		@Override
-		public void controlResized(final ControlEvent e) {
-			setHeight();
-		}
-	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.ControlListener} of 
-	 * <code>eventsComposite</code>.
-	 */
-	class EventsCompositeControlListener implements ControlListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlMoved(ControlEvent e) {
-			eventsComposite.setFocus();
-			setHeight();
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlResized(ControlEvent e) {
-			setHeight();
-		}
-	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>eventsTabFolder</code>.
-	 */
-	class EventsTabFolderSelectionListener implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			// update entries in selection list
-			((EventComposite)eventsTabFolder.
-					getSelection().getControl()).setEventChoice();
-		}
-	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.ControlListener} of 
-	 * (expand-)<code>bar</code>.
-	 */
-	class BarControlListener implements ControlListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlMoved(ControlEvent e) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlResized(ControlEvent e) {
-			setHeight();			
-		}
-	}
-	
-	// ******************* Modify Listener *******************
-	
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of
-	 * <code>fileNameInput</code>.
-	 */
-	class FileNameInputModifiedListener implements ModifyListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modifyText(ModifyEvent e) {
-			
-			modelUpdateListenerSuspended = true;
-			currentChain.setSaveFilename(filenameInput.getText().trim());
-			modelUpdateListenerSuspended = false;
-		}
-	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of
-	 * <code>repeatCountText</code>.
-	 */
-	class RepeatCountTextModifiedListener implements ModifyListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modifyText(ModifyEvent e) {
-			repeatCountText.removeModifyListener(repeatCountTextModifiedListener);
-			try {
-				currentChain.getScanDescription().setRepeatCount(
-						Integer.parseInt(repeatCountText.getText()));
-			} catch(final NumberFormatException ex) {
-				repeatCountText.setText("");
-			}
-			repeatCountText.addModifyListener(repeatCountTextModifiedListener);
-		}
-	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of
-	 * <code>savePluginCombo</code>.
-	 */
-	class FileFormatComboSelectionListener implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			if( fileFormatCombo.getText().equals("") || 
-				Helper.contains(fileFormatCombo.getItems(), 
-								fileFormatCombo.getText())) 
-			{
-				currentChain.getSavePluginController().setPlugin(
-						Activator.getDefault().getMeasuringStation().
-								  getPluginByName(fileFormatCombo.getText()));
-				fileFormatComboErrorLabel.setImage(null);	
-				fileFormatComboErrorLabel.setToolTipText("");
-			} else {
-				currentChain.getSavePluginController().setPlugin(null);
-				fileFormatComboErrorLabel.setImage(PlatformUI.getWorkbench().
-											getSharedImages().getImage(
-											ISharedImages.IMG_OBJS_ERROR_TSK));	
-				fileFormatComboErrorLabel.setToolTipText(
-						"The Plug-In cannot be found");
-			}
-			fileFormatOptionsButton.setEnabled(
-					currentChain.getSavePluginController().getPlugin() != null && 
-					currentChain.getSavePluginController().getPlugin().
-								 getParameters().size() > 0 );
-		}
-	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of
-	 * <code>commentInput</code>.
-	 */
-	class CommentInputModifiedListener implements ModifyListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modifyText(ModifyEvent e) {
-			modelUpdateListenerSuspended = true;
-			currentChain.setComment(commentInput.getText());
-			modelUpdateListenerSuspended = false;
-		}
-	}
-	
-	
-	// ******************* Selection Listener *******************
-	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>manualSaveCheckBox</code>.
-	 */
-	class ConfirmSaveCheckBoxSelectionListener implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			currentChain.setConfirmSave(confirmSaveCheckBox.getSelection());
-		}
-	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>autoNumberCheckBox</code>.<br><br>
-	 */
-	class AutoIncrementCheckBoxSelectionListener implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			currentChain.setAutoNumber(autoIncrementCheckBox.getSelection());
-		}
 	}
 	
 	/**
@@ -1160,12 +848,14 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 					saveScanDescriptionCheckBox.getSelection());
 		}
 	}
+
+	// ******************* Selection Listener *******************
 	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>savePluginOptionsButton</code>.
+	 * <code>manualSaveCheckBox</code>.
 	 */
-	class FileFormatOptionsButtonSelectionListener implements SelectionListener {
+	class ConfirmSaveCheckBoxSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1179,10 +869,90 @@ public class ScanView extends ViewPart implements IModelUpdateListener {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			PluginControllerDialog dialog = new PluginControllerDialog( 
-								null, currentChain.getSavePluginController());
-			dialog.setBlockOnOpen(true);
-			dialog.open();
+			currentChain.setConfirmSave(confirmSaveCheckBox.getSelection());
+		}
+	}
+
+	// ******************* Selection Listener *******************
+	
+	/**
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
+	 * <code>autoNumberCheckBox</code>.<br><br>
+	 */
+	class AutoIncrementCheckBoxSelectionListener implements SelectionListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			currentChain.setAutoNumber(autoIncrementCheckBox.getSelection());
+		}
+	}
+	
+	/**
+	 * {@link org.eclipse.swt.events.ModifyListener} of
+	 * <code>repeatCountText</code>.
+	 */
+	class RepeatCountTextModifiedListener implements ModifyListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void modifyText(ModifyEvent e) {
+			try {
+				currentChain.getScanDescription().setRepeatCount(
+						Integer.parseInt(repeatCountText.getText()));
+			} catch(final NumberFormatException ex) {
+				repeatCountText.setText("");
+			}
+		}
+	}
+	
+	/**
+	 * {@link org.eclipse.swt.events.ModifyListener} of
+	 * <code>commentInput</code>.
+	 */
+	class CommentInputModifiedListener implements ModifyListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void modifyText(ModifyEvent e) {
+			currentChain.setComment(commentInput.getText());
+		}
+	}
+	
+	/**
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
+	 * <code>eventsTabFolder</code>.
+	 */
+	class EventsTabFolderSelectionListener implements SelectionListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			// update entries in selection list
+			((EventComposite)eventsTabFolder.
+					getSelection().getControl()).setEventChoice();
 		}
 	}
 }

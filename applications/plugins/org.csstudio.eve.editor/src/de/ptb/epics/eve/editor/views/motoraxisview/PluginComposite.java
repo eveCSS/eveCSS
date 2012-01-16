@@ -24,6 +24,7 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.views.PluginControllerComposite;
 
 /**
  * <code>MotorAxisPluginComposite</code> is a composite to input plug in values
