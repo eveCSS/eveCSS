@@ -196,11 +196,11 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 				new StartStopStepwidthComposite(sashForm, SWT.NONE);
 		this.dateTimeComposite = new DateTimeComposite(sashForm, SWT.NONE);
 		this.fileComposite = 
-				new FileComposite(sashForm, SWT.NONE, this);
+				new FileComposite(sashForm, SWT.NONE);
 		this.pluginComposite = 
-				new PluginComposite(sashForm, SWT.NONE, this);
+				new PluginComposite(sashForm, SWT.NONE);
 		this.positionlistComposite = 
-				new PositionlistComposite(sashForm, SWT.NONE, this);
+				new PositionlistComposite(sashForm, SWT.NONE);
 		
 		sashForm.setMaximizedControl(this.emptyComposite);
 		

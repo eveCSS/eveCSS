@@ -49,8 +49,6 @@ public class PositionlistComposite extends Composite {
 	
 	private Axis axis;
 	
-	private MotorAxisView motorAxisView;
-	
 	/**
 	 * Constructs a <code>MotorAxisPositionlistComposite</code>.
 	 * 
@@ -58,16 +56,12 @@ public class PositionlistComposite extends Composite {
 	 * @param style the style
 	 * @param parentView the view the composite is contained in
 	 */
-	public PositionlistComposite(final Composite parent, 
-										  final int style, 
-										  MotorAxisView parentView) {
+	public PositionlistComposite(final Composite parent, final int style) {
 		super(parent, style);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
 		gridLayout.marginRight = 12;
 		this.setLayout(gridLayout);
-		
-		motorAxisView = parentView;
 		
 		this.infoImage = FieldDecorationRegistry.getDefault().getFieldDecoration(
 				FieldDecorationRegistry.DEC_INFORMATION).getImage();

@@ -85,7 +85,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 	private Label triggerDelayErrorLabel = null;
 	private Label triggerDelayUnitLabel = null;
 	private TriggerDelayTextModifiedListener triggerDelayTextModifiedListener;
-
+	
 	private Label settleTimeLabel = null;
 	private Text settleTimeText = null;
 	private Label settleTimeErrorLabel = null;
@@ -103,26 +103,26 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 	private EventComposite redoEventComposite = null;
 	private EventComposite breakEventComposite = null;
 	private EventComposite triggerEventComposite = null;
-
+	
 	private CTabFolder actionsTabFolder = null;
-
+	
 	private Composite motorAxisComposite = null;
 	private Composite detectorChannelComposite = null;
 	private Composite prescanComposite = null;
 	private Composite postscanComposite = null;
 	private Composite positioningComposite = null;
 	private Composite plotComposite = null;
-
+	
 	private Button appendScheduleEventCheckBox = null;
 	private AppendScheduleEventCheckBoxSelectionListener
 			appendScheduleEventCheckBoxSelectionListener;
-
+	
 	private String[] eventIDs;
-
+	
 	private ExpandItem itemGeneral;
 	private ExpandItem itemActions;
 	private ExpandItem itemEvents;
-
+	
 	private CTabItem motorAxisTab;
 	private CTabItem detectorChannelTab;
 	private CTabItem prescanTab;
@@ -138,13 +138,13 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 	private ExcludeDevicesOfScanModuleFilterManualUpdate measuringStation;
 	private ExcludeDevicesOfScanModuleFilterManualUpdate measuringStationPrescan;
 	private ExcludeDevicesOfScanModuleFilterManualUpdate measuringStationPostscan;
-
+	
 	// the selection service only accepts one selection provider per view,
 	// since we have multiple tabs with tables capable of providing selections, 
 	// a wrapper handles them and registers the active one with the global 
 	// selection service
 	protected SelectionProviderWrapper selectionProviderWrapper;
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -165,12 +165,12 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 				true, true, false, false, false);
 		this.measuringStation.setSource(
 				Activator.getDefault().getMeasuringStation());
-
+		
 		this.measuringStationPrescan = new ExcludeDevicesOfScanModuleFilterManualUpdate(
 				false, false, true, false, false);
 		this.measuringStationPrescan.setSource(
 				Activator.getDefault().getMeasuringStation());
-
+		
 		this.measuringStationPostscan = new ExcludeDevicesOfScanModuleFilterManualUpdate( 
 				false, false, false, true, false);
 		this.measuringStationPostscan.setSource(
@@ -213,7 +213,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		selectionProviderWrapper = new SelectionProviderWrapper();
 		getSite().setSelectionProvider(selectionProviderWrapper);
 	} // end of: createPartControl()
-
+	
 	/*
 	 * called by CreatePartControl to create the contents of the first 
 	 * expand item (General)
@@ -243,7 +243,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 				new TriggerDelayTextModifiedListener();
 		this.triggerDelayText.addModifyListener(
 				triggerDelayTextModifiedListener);
-
+		
 		this.triggerDelayErrorLabel = new Label(this.generalComposite, SWT.NONE);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -253,7 +253,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 				getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK));
 		this.triggerDelayUnitLabel = new Label(this.generalComposite, SWT.NONE);
 		this.triggerDelayUnitLabel.setText("s");
-
+		
 		// Settle Time
 		this.settleTimeLabel = new Label(this.generalComposite, SWT.NONE);
 		this.settleTimeLabel.setText("Settletime:");
@@ -277,11 +277,11 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		this.settleTimeErrorLabel.setLayoutData(gridData);
 		this.settleTimeUnitLabel = new Label(this.generalComposite, SWT.NONE);
 		this.settleTimeUnitLabel.setText("s");
-
+		
 		// Trigger Confirm 
 		gridData = new GridData();
 		gridData.horizontalSpan = 4;
-
+		
 		this.confirmTriggerCheckBox = new Button(this.generalComposite, SWT.CHECK);
 		this.confirmTriggerCheckBox.setText("Confirm Trigger");
 		this.confirmTriggerCheckBox.setToolTipText("Mark to ask before trigger");
@@ -360,12 +360,12 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		this.positioningTab.setToolTipText(
 				"Move motor to calculated position after scan module is done");
 		this.positioningTab.setControl(this.positioningComposite);
-
+		
 		this.plotTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.plotTab.setText(" Plot ");
 		this.plotTab.setToolTipText("Plot settings for this scan module");
 		this.plotTab.setControl(this.plotComposite);
-
+		
 		this.itemActions = new ExpandItem(this.bar, SWT.NONE, 0);
 		itemActions.setText("Actions");
 		itemActions.setControl(this.actionsComposite);
@@ -376,9 +376,9 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 	 * expand item (Events)
 	 */
 	private void createEventsExpandItem() {
-
+		
 		GridLayout gridLayout = new GridLayout();
-
+		
 		this.eventsComposite = new Composite(this.bar, SWT.NONE);
 		this.eventsComposite.setLayout(gridLayout);
 		this.eventsCompositeControlListener = 
@@ -395,7 +395,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		this.eventsTabFolderSelectionListener = 
 				new EventsTabFolderSelectionListener();	
 		eventsTabFolder.addSelectionListener(eventsTabFolderSelectionListener);
-
+		
 		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
 				ControlEventTypes.PAUSE_EVENT);
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
@@ -440,7 +440,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		itemEvents.setText("Events");
 		itemEvents.setHeight(this.eventsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		itemEvents.setControl(this.eventsComposite);
-	}	
+	}
 	
 	// ***********************************************************************
 	// ********************** end of create part control *********************
@@ -453,7 +453,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 	public void setFocus() {
 		this.top.setFocus();
 	}
-
+	
 	/**
 	 * Returns the currently active scan module.
 	 * 
@@ -462,7 +462,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 	public ScanModule getCurrentScanModule() {
 		return currentScanModule;
 	}
-
+	
 	/**
 	 * Sets the currently active scan module.
 	 * 
@@ -515,7 +515,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 					this.currentScanModule);
 			((PositioningComposite) this.positioningComposite).setScanModule(
 					this.currentScanModule);
-
+			
 			switch (actionsTabFolder.getSelectionIndex()) {
 			case 0:
 				((DetectorChannelComposite) this.detectorChannelComposite).setScanModule(
@@ -765,11 +765,11 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		// which puts us into an endless loop
 		
 		int height = bar.getSize().y - 6 * 25;
-
+		
 		if (itemGeneral.getExpanded()) {
 			height -= itemGeneral.getHeight();
 		}
-
+		
 		int amount = 0;
 		if (itemActions.getExpanded()) {
 			amount++;
@@ -777,7 +777,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		if (itemEvents.getExpanded()) {
 			amount++;
 		}
-
+		
 		if (amount > 0) {
 			height /= amount;
 			if(itemActions.getExpanded()) {
@@ -788,7 +788,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 			}
 		}
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */

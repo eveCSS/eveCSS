@@ -26,22 +26,18 @@ public class PluginControllerCellModifyer implements ICellModifier {
 
 	private TableViewer tableViewer;
 	
-	private MotorAxisView motorAxisView;
-	
 	/**
 	 * 
 	 * @param tableViewer
 	 * @param parentView
 	 * @throws IllegalArgumentException
 	 */
-	public PluginControllerCellModifyer(final TableViewer tableViewer, 
-										MotorAxisView parentView) {
+	public PluginControllerCellModifyer(final TableViewer tableViewer) {
 		if( tableViewer == null ) {
 			throw new IllegalArgumentException(
 					"The parameter 'tableViewer' must not be null!");
 		}
 		this.tableViewer = tableViewer;
-		motorAxisView = parentView;
 	}
 	
 	/**
@@ -104,8 +100,6 @@ public class PluginControllerCellModifyer implements ICellModifier {
 				} else if( pluginParameter.isDiscrete() ) {
 					this.tableViewer.getCellEditors()[1].dispose();
 					this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor( this.tableViewer.getTable(), pluginParameter.getDiscreteValues().toArray( new String[0] ), SWT.READ_ONLY );
-					//System.out.print( pluginParameter.getDiscreteValues().toArray( new String[0] ).length );
-					
 				} else {
 					this.tableViewer.getCellEditors()[1].dispose();
 					this.tableViewer.getCellEditors()[1] = new TextCellEditor( this.tableViewer.getTable() );
@@ -123,23 +117,22 @@ public class PluginControllerCellModifyer implements ICellModifier {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object getValue( final Object element, final String property ) {
-		if( property.equals( "value" ) ) {
-			Map.Entry<String, String> entry = ((Map.Entry< String, String >)element);
-			if( this.tableViewer.getCellEditors()[1] instanceof TextCellEditor ) {
-				return (entry.getValue() == null)?"":entry.getValue();
-			} else if( this.tableViewer.getCellEditors()[1] instanceof ComboBoxCellEditor ) {
+	public Object getValue(final Object element, final String property) {
+		if (property.equals("value")) {
+			Map.Entry<String, String> entry = 
+					((Map.Entry<String, String>)element);
+			if(this.tableViewer.getCellEditors()[1] instanceof TextCellEditor) {
+				return (entry.getValue() == null) ? "" : entry.getValue();
+			} else if(this.tableViewer.getCellEditors()[1] instanceof ComboBoxCellEditor) {
 				String[] items = ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).getItems();
-				for( int i = 0; i < items.length; ++i ) {
-					if( items[i].equals( entry.getValue() ) ) {
+				for(int i = 0; i < items.length; ++i) {
+					if(items[i].equals(entry.getValue())) {
 						return i;
 					}
 				}
 				return 0;
 			}
 		}
-		
-		
 		return "";
 	}
 
@@ -148,18 +141,19 @@ public class PluginControllerCellModifyer implements ICellModifier {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void modify( final Object element, final String property, final Object value ) {
-		
-		if( property.equals( "value" ) ) {
-			Map.Entry<String, String> entry = ((Map.Entry< String, String >)((Item)element).getData());
-			final PluginController pluginController = (PluginController)this.tableViewer.getInput();
-			if( value instanceof String ) {
+	public void modify(final Object element, final String property, final Object value) {
+		if (property.equals("value")) {
+			Map.Entry<String, String> entry = 
+					((Map.Entry<String, String>)((Item)element).getData());
+			final PluginController pluginController = 
+					(PluginController)this.tableViewer.getInput();
+			if (value instanceof String) {
 				pluginController.set( entry.getKey(), (String)value );
-			} else if( value instanceof Integer ) {
-				pluginController.set( entry.getKey(), ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).getItems()[(Integer)value] );
+			} else if (value instanceof Integer) {
+				pluginController.set(entry.getKey(), ((ComboBoxCellEditor)
+						this.tableViewer.getCellEditors()[1]).
+						getItems()[(Integer)value]);
 			}
-			
-			//this.tableViewer.refresh();
 		}
 	}
 }

@@ -25,8 +25,6 @@ public class PluginControllerComposite extends Composite {
 	private ScanModule scanModule;
 	private PluginControllerLabelProvider pluginControllerLabelProvider;
 	
-	private MotorAxisView motorAxisView;
-	
 	/**
 	 * Constructs a <code>PluginControllerComposite</code>.
 	 * 
@@ -34,11 +32,8 @@ public class PluginControllerComposite extends Composite {
 	 * @param style the style
 	 * @param parentView the view the composite is contained in
 	 */
-	public PluginControllerComposite(final Composite parent, final int style, 
-									 MotorAxisView parentView) {
+	public PluginControllerComposite(final Composite parent, final int style) {
 		super(parent, style);
-		
-		motorAxisView = parentView;
 		
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
@@ -83,9 +78,8 @@ public class PluginControllerComposite extends Composite {
 	    
 	    this.tableViewer.setCellEditors(editors);
 	    this.tableViewer.setCellModifier(
-	    		new PluginControllerCellModifyer(this.tableViewer, motorAxisView));
+	    		new PluginControllerCellModifyer(this.tableViewer));
 	    this.tableViewer.setColumnProperties(props);
-		
 	}
 	
 	/**
