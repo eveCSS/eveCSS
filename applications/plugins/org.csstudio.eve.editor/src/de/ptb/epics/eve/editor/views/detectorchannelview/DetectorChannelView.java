@@ -458,7 +458,7 @@ public class DetectorChannelView extends ViewPart
 		
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).size() == 0) {
-				if (this.scanModule != null) {
+/*				if (this.scanModule != null) {
 					if (scanModule.getChannels().length == 0) {
 						if(logger.isDebugEnabled()) {
 							logger.debug("selection is empty, scanModule: " + 
@@ -468,8 +468,8 @@ public class DetectorChannelView extends ViewPart
 					} 
 				} else {
 					logger.debug(
-					  "selection ist empty, no scanModule available -> ignore");
-				}
+					  "selection is empty, no scanModule available -> ignore");
+				}*/
 				return;
 			}
 			// since at any given time this view can only display the attributes 
@@ -485,36 +485,23 @@ public class DetectorChannelView extends ViewPart
 				}
 				setChannel((Channel)o);
 			} else if (o instanceof ScanModuleEditPart) {
-				logger.debug("selection is ScanModuleEditPart: " + o);
 				// ScanModule was selected
 				if(logger.isDebugEnabled()) {
+					logger.debug("selection is ScanModuleEditPart: " + o);
 					logger.debug("ScanModule: " + ((ScanModule)
 							((ScanModuleEditPart)o).getModel()).getId() + 
 							" selected."); 
 				}
-				ScanModule newModule = (ScanModule)((ScanModuleEditPart)o).getModel();
-				System.out.println("\tnewModule: " + newModule.getId());
-//				System.out.println("\toldModule: " + this.scanModule.getId());
 
-//				if (newModule.getId() != this.scanModule.getId()){
-
-				// set first channel of new ScanModule
-				Channel[] channel = newModule.getChannels();
-				if (channel.length > 0) {
-					setChannel(channel[0]);
-				}
-				else {
-					setChannel(null);
+				if (this.scanModule != null && !(this.scanModule.equals(
+						(ScanModule)((ScanModuleEditPart)o).getModel()))) {
+							setChannel(null);
 				}
 			} else if (o instanceof ScanDescriptionEditPart) {
 				logger.debug("selection is ScanDescriptionEditPart: " + o);
-				System.out.println("\n\nNEU: Hier wurde eine ScanDescription selektiert");
 				setChannel(null);
-			}
-
-			
-			else {
-				logger.debug("selection other than Channel -> ignore");
+			} else {
+				logger.debug("unknown selection -> ignore");
 			}
 		}
 	}

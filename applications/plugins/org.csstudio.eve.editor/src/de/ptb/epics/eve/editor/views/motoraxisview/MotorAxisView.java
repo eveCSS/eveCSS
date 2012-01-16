@@ -347,7 +347,7 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 					}
 				} else {
 					logger.debug(
-					  "selection ist empty, no scanModule available -> ignore");
+					  "selection is empty, no scanModule available -> ignore");
 				}*/
 				return;
 			}

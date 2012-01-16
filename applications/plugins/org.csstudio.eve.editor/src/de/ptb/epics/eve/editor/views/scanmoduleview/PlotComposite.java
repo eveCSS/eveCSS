@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
+import org.apache.log4j.Logger;
 import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
 import org.csstudio.swt.xygraph.figures.Trace.TraceType;
 import org.eclipse.jface.action.Action;
@@ -40,6 +41,9 @@ import de.ptb.epics.eve.editor.Activator;
  * @author Hartmut Scherr
  */
 public class PlotComposite extends Composite {
+
+	// logging
+	private static Logger logger = Logger.getLogger(PlotComposite.class);
 
 	private TableViewer tableViewer;
 	private ScanModule scanModule;
@@ -128,9 +132,14 @@ public class PlotComposite extends Composite {
 	 */
 	public void setScanModule(final ScanModule scanModule) {
 
+		logger.debug("setScanModule");
+
 		this.scanModule = scanModule;
 		this.tableViewer.setInput(scanModule);
 
+		if(scanModule == null) {
+			return;
+		}
 		// if there are plots present... 
 		if(tableViewer.getTable().getItems().length > 0)
 		{
@@ -139,8 +148,11 @@ public class PlotComposite extends Composite {
 			{	// ... select the first one
 				// der richtige Plot selektiert und gezeigt!
 				tableViewer.getTable().select(0);
+				tableViewer.getTable().setFocus();
 			}
 		}
+		((ScanModuleView)parentView).selectionProviderWrapper.
+		setSelectionProvider(this.tableViewer);
 	}
 	
 	/**
@@ -241,6 +253,7 @@ public class PlotComposite extends Composite {
 			// the new plot (the last itemCount) will be selected in the table and 
 			// displayed in the plotWindow
 			tableViewer.getTable().select(tableViewer.getTable().getItemCount()-1);
+			tableViewer.getControl().setFocus();
 
 			tableViewer.refresh();
     	}
@@ -312,6 +325,7 @@ public class PlotComposite extends Composite {
 
 		@Override
 		public void focusGained(FocusEvent e) {
+			logger.debug("focusGained");
 			((ScanModuleView)parentView).selectionProviderWrapper.
 								setSelectionProvider(tableViewer);
 		}

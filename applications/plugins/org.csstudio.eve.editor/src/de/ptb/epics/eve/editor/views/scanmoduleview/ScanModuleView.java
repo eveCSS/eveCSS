@@ -451,6 +451,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 	 */
 	@Override
 	public void setFocus() {
+		this.top.setFocus();
 	}
 
 	/**
@@ -481,6 +482,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 		
 		if(this.currentScanModule != null) {
 			top.setVisible(true);
+			top.setFocus();
 			System.out.println("setCurrentScanModule: top Visible: " + top.getVisible());
 			this.setPartName(this.currentScanModule.getName() + ":"
 							 + this.currentScanModule.getId());	
@@ -503,20 +505,45 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 			
 			if(actionsTabFolder.getSelection() == null)
 				actionsTabFolder.setSelection(0);
-			
-			((MotorAxisComposite) this.motorAxisComposite).setScanModule(
-					this.currentScanModule);
-			((DetectorChannelComposite) this.detectorChannelComposite).setScanModule(
-					this.currentScanModule);
+
+			// setScanModule muß in der Reihenfolge aufgerufen werden, dass
+			// das gerade selekierte Composite als letztes gesetzt wird,
+			// damit der SelectionProvider richtig gesetzt ist.
 			((PrescanComposite) this.prescanComposite).setScanModule(
 					this.currentScanModule);
 			((PostscanComposite) this.postscanComposite).setScanModule(
 					this.currentScanModule);
 			((PositioningComposite) this.positioningComposite).setScanModule(
 					this.currentScanModule);
-			((PlotComposite) this.plotComposite).setScanModule(
-					this.currentScanModule);
 
+			switch (actionsTabFolder.getSelectionIndex()) {
+			case 0:
+				((DetectorChannelComposite) this.detectorChannelComposite).setScanModule(
+						this.currentScanModule);
+				((PlotComposite) this.plotComposite).setScanModule(
+						this.currentScanModule);
+				((MotorAxisComposite) this.motorAxisComposite).setScanModule(
+						this.currentScanModule);
+				break;
+			case 1:
+				((MotorAxisComposite) this.motorAxisComposite).setScanModule(
+						this.currentScanModule);
+				((PlotComposite) this.plotComposite).setScanModule(
+						this.currentScanModule);
+				((DetectorChannelComposite) this.detectorChannelComposite).setScanModule(
+						this.currentScanModule);
+				break;
+			case 4:
+				((MotorAxisComposite) this.motorAxisComposite).setScanModule(
+						this.currentScanModule);
+				((DetectorChannelComposite) this.detectorChannelComposite).setScanModule(
+						this.currentScanModule);
+				((PlotComposite) this.plotComposite).setScanModule(
+						this.currentScanModule);
+				break;
+			}
+			
+			
 			this.triggerEventComposite.setControlEventManager(
 					this.currentScanModule.getTriggerControlEventManager());
 			this.breakEventComposite.setControlEventManager(
@@ -535,9 +562,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 					getEventById(testEvent.getID()) != null);
 			
 			checkForErrors();
-			
-			top.setVisible(true);
-			System.out.println("setCurrentScanModule: top Visible: " + top.getVisible());
 			
 			itemActions.setExpanded(true);
 		} else { // currentScanModule == null

@@ -1135,7 +1135,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener {
 		
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).isEmpty()) {
-				if (this.scanModule != null) {
+			/*	if (this.scanModule != null) {
 					if (scanModule.getPlotWindows().length == 0) {
 						if(logger.isDebugEnabled()) {
 							logger.debug("selection is empty, scanModule: " + 
@@ -1146,7 +1146,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener {
 				} else {
 					logger.debug(
 					  "selection ist empty, no scanModule available -> ignore");
-				}
+				}*/
 				return;
 			}
 			// since at any given time this view can only display options of 
@@ -1160,14 +1160,18 @@ public class PlotWindowView extends ViewPart implements ISelectionListener {
 				}
 				setPlotWindow((PlotWindow)o);
 			} else if (o instanceof ScanModuleEditPart) {
-				logger.debug("selection is ScanModuleEditPart: " + o);
 				// ScanModule was selected
 				if(logger.isDebugEnabled()) {
+					logger.debug("selection is ScanModuleEditPart: " + o);
 					logger.debug("ScanModule: " + ((ScanModule)
 							((ScanModuleEditPart)o).getModel()).getId() + 
 							" selected."); 
 				}
-				ScanModule newModule = (ScanModule)((ScanModuleEditPart)o).getModel();
+				if (this.scanModule != null && !(this.scanModule.equals(
+						(ScanModule)((ScanModuleEditPart)o).getModel()))) {
+							setPlotWindow(null);
+				}
+/*				ScanModule newModule = (ScanModule)((ScanModuleEditPart)o).getModel();
 				
 				// set first channel of new ScanModule
 				PlotWindow[] plotWindow = newModule.getPlotWindows();
@@ -1175,12 +1179,12 @@ public class PlotWindowView extends ViewPart implements ISelectionListener {
 					setPlotWindow(plotWindow[0]);
 				} else {
 					setPlotWindow(null);
-				}
+				}*/
 			} else if (o instanceof ScanDescriptionEditPart) {
 				logger.debug("selection is ScanDescriptionEditPart: " + o);
 				setPlotWindow(null);
 			} else {
-				logger.debug("selection other than PlotWindow -> ignore");
+				logger.debug("unknown selection -> ignore");
 			}
 		}
 	}

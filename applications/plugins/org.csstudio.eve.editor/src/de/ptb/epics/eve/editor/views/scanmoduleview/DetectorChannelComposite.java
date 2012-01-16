@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
+import org.apache.log4j.Logger;
 import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
 import org.csstudio.swt.xygraph.figures.Trace.TraceType;
 import org.eclipse.jface.action.Action;
@@ -44,6 +45,10 @@ import de.ptb.epics.eve.editor.Activator;
  * @author Hartmut Scherr
  */
 public class DetectorChannelComposite extends Composite {
+
+	// logging
+	private static Logger logger = Logger.getLogger(
+			DetectorChannelComposite.class);
 
 	private TableViewer tableViewer;
 	private ScanModule scanModule;
@@ -139,15 +144,14 @@ public class DetectorChannelComposite extends Composite {
 	 */
 	public void setScanModule(final ScanModule scanModule) {
 
-		System.out.println("\nsetScanModule von DetectorChannelComposite aufgerufen");
+		logger.debug("setScanModule");
 		
-		if(scanModule != null) {
-			this.tableViewer.getTable().setEnabled(true);
-		} else {
-			this.tableViewer.getTable().setEnabled(false);
-		}
 		this.scanModule = scanModule;
 		this.tableViewer.setInput(scanModule);
+
+		if(scanModule == null) {
+			return;
+		}
 
 		// if there are detector channels present... 
 		if(tableViewer.getTable().getItems().length > 0)
@@ -155,8 +159,11 @@ public class DetectorChannelComposite extends Composite {
 			if(tableViewer.getTable().getSelectionCount() == 0)
 			{	// ... select the first one and set the detector channel view
 				tableViewer.getTable().select(0);
+				tableViewer.getControl().setFocus();
 			}
 		} 
+		((ScanModuleView)parentView).selectionProviderWrapper.
+		setSelectionProvider(this.tableViewer);
 	}
 	
 	/*
@@ -358,6 +365,7 @@ public class DetectorChannelComposite extends Composite {
 			// the new channel (the last itemCount) will be selected in the table and 
 			// displayed in the detectorChannelView
 			tableViewer.getTable().select(tableViewer.getTable().getItemCount()-1);
+			tableViewer.getControl().setFocus();
 
 			tableViewer.refresh();
 		}
@@ -376,6 +384,12 @@ public class DetectorChannelComposite extends Composite {
     		
     		scanModule.remove((Channel)((IStructuredSelection)
     				tableViewer.getSelection()).getFirstElement());
+
+			// if another channel is available, select the first channel
+			if(tableViewer.getTable().getItems().length != 0) {
+				tableViewer.getTable().select(0);
+			} 
+			tableViewer.getControl().setFocus();
 
 			// if only one channel available, set this channel as for the Plot
 			setPlotDetectorChannel();

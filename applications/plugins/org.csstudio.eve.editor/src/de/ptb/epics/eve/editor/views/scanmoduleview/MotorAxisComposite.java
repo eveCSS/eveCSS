@@ -72,15 +72,15 @@ public class MotorAxisComposite extends Composite {
 	 * @param style the style
 	 * @param measuringStation the measuring station the motor axis belongs to
 	 */
-	public MotorAxisComposite(final ViewPart parentView, final Composite parent, final int style, 
-							  final IMeasuringStation measuringStation) {
+	public MotorAxisComposite(final ViewPart parentView, final Composite parent, 
+			final int style, final IMeasuringStation measuringStation) {
 		super(parent, style);
 		this.parentView = parentView;
 		this.measuringStation = measuringStation;
 
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
-		
+
 		this.setLayout(gridLayout);
 		
 		GridData gridData = new GridData();
@@ -163,18 +163,31 @@ public class MotorAxisComposite extends Composite {
 		if(scanModule == null) {
 			return;
 		}
-
+		
 		// if there are motor axis present... 
 		if(tableViewer.getTable().getItems().length > 0)
-		{
-			// ... and none is selected ...
+		{	// ... and none is selected ...
 			if(tableViewer.getTable().getSelectionCount() == 0)
-			{
-				// ... select the first one and set the motor axis view
+			{	// ... select the first one and set the motor axis view
 				tableViewer.getTable().select(0);
 				tableViewer.getControl().setFocus();
-			}	
+			}
+			else {
+//				System.out.println("\tEs gibt Motore, aber es ist schon einer selektiert");
+//				tableViewer.getTable().select(tableViewer.getTable().getSelectionCount());
+			}
 		}
+		// Frage: Muss das hier passieren oder kann das innerhalb der obigen
+		// Klammer geschehen, weil es ja eigentlich nur Sinn macht,
+		// wenn es auch Items in der Tabelle gibt.
+		// Frage: Gibt es auch eine Einstellung die besagt
+		// tableViewer.getTable().select(none) ? damit könnte vielleicht das
+		// Problem gelöst werden wie nichts ausgewählt wird.
+		// Zumindest die Version für tableViewer.setSelection(null) gibt es!!!
+		// Montag ausprobieren ob das geht, wenn man alle vorhandenen Einträge
+		// mit delete wegnimmt!
+		((ScanModuleView)parentView).selectionProviderWrapper.
+			setSelectionProvider(this.tableViewer);
 	}	
 	
 	/*
@@ -426,9 +439,9 @@ public class MotorAxisComposite extends Composite {
 			// if another axis is available, select the first axis
 			if(tableViewer.getTable().getItems().length != 0) {
 				tableViewer.getTable().select(0);
-			}
+			} 
 			tableViewer.getControl().setFocus();
-
+			
 			// if only one axis available, set this axis as for the Plot
 			setPlotMotorAxis();
 
