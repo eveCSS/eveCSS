@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.motoraxisview;
+package de.ptb.epics.eve.editor.views;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.TableViewer;
@@ -65,7 +65,7 @@ public class PluginControllerComposite extends Composite {
 	    this.tableViewer.getTable().setHeaderVisible(true);
 	    this.tableViewer.getTable().setLinesVisible(true);
 	    
-	    this.tableViewer.setContentProvider(new PluginControllerInputWrapper());
+	    this.tableViewer.setContentProvider(new PluginControllerContentProvider());
 	    this.pluginControllerLabelProvider = new PluginControllerLabelProvider(); 
 	    this.tableViewer.setLabelProvider(this.pluginControllerLabelProvider);
 	    

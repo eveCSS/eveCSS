@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.motoraxisview;
+package de.ptb.epics.eve.editor.views;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -12,7 +12,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * 
  * @author ?
  */
-public class PluginControllerInputWrapper implements IModelUpdateListener,
+public class PluginControllerContentProvider implements IModelUpdateListener,
 													IStructuredContentProvider {
 
 	private Viewer currentViewer;

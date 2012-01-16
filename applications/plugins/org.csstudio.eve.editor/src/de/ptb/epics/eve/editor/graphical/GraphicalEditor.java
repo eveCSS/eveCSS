@@ -60,8 +60,6 @@ import de.ptb.epics.eve.editor.jobs.file.Save;
 import de.ptb.epics.eve.editor.jobs.filloptions.SaveAllDetectorValues;
 import de.ptb.epics.eve.editor.jobs.filloptions.SaveAllMotorPositions;
 import de.ptb.epics.eve.editor.views.ErrorView;
-import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
-import de.ptb.epics.eve.editor.views.scanview.ScanView;
 
 /**
  * <code>GraphicalEditor</code> is the central element of the EveEditor Plug In.
@@ -215,55 +213,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	/*
 	 * 
 	 */
-	private void updateScanView() {
-		// get all views
-		IViewReference[] ref = getSite().getPage().getViewReferences();
-		
-		// try to get the scan view
-		ScanView scanView = null;
-		for(int i = 0; i < ref.length; ++i) {
-			if(ref[i].getId().equals(ScanView.ID)) {
-				scanView = (ScanView)ref[i].getPart(false);
-			}
-		}
-		
-		// scan view found ?
-		if(scanView != null) {
-			// tell the view about the currently selected scan module
-			
-			if(selectedScanModule != null)
-			{
-				scanView.setCurrentChain(selectedScanModule.getChain());
-				logger.debug("currentChain: " + selectedScanModule.getChain());
-			} else {
-				scanView.setCurrentChain(null);
-				logger.debug("currentChain: " + null);
-			}
-		} 
-	}
-	
-	/*
-	 * 
-	 */
 	private void updateScanModuleView() {
-		// get all views
-		IViewReference[] ref = getSite().getPage().getViewReferences();
-		
-		// try to get the scan module view
-		ScanModuleView scanModuleView = null;
-		for(int i = 0; i < ref.length; ++i) {
-			if(ref[i].getId().equals(ScanModuleView.ID)) {
-				scanModuleView = (ScanModuleView)ref[i].getPart(false);
-			}
-		}
-		
-		// scan module view found ?
-		if(scanModuleView != null) {
-			// tell the view about the currently selected scan module
-//			scanModuleView.setCurrentScanModule(selectedScanModule);
-		}
 		refreshAllEditParts(viewer.getRootEditPart());
-		
 		logger.debug("selectedScanModule: " + selectedScanModule);
 	}
 	
@@ -272,7 +223,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 */
 	private void updateViews() {
 		updateErrorView();
-		updateScanView();
 		updateScanModuleView();
 	}
 	

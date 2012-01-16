@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import de.ptb.epics.eve.data.scandescription.PluginController;
-import de.ptb.epics.eve.editor.views.motoraxisview.PluginControllerComposite;
+import de.ptb.epics.eve.editor.views.PluginControllerComposite;
 
 /**
  * 

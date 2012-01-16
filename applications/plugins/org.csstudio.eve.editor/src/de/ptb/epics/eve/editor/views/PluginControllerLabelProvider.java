@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.motoraxisview;
+package de.ptb.epics.eve.editor.views;
 
 import java.util.Iterator;
 import java.util.List;

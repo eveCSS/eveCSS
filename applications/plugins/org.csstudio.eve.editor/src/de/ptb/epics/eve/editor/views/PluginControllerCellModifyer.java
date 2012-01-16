@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.motoraxisview;
+package de.ptb.epics.eve.editor.views;
 
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
