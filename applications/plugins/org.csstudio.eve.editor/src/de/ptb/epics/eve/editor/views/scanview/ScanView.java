@@ -551,9 +551,19 @@ public class ScanView extends ViewPart implements ISelectionListener {
 			this.fileFormatCombo.deselectAll();
 		}
 		
+		File file = new File(this.currentChain.getSaveFilename());
+		if(file.isFile() && file.exists()) {
+			this.fileNameInputControlDecoration.setImage(warnImage);
+			this.fileNameInputControlDecoration.setDescriptionText(
+					"File already exists!");
+			this.fileNameInputControlDecoration.show();
+		}
+		file = null;
+		
 		for(IModelError error : this.currentChain.getModelErrors()) {
 			if (error instanceof ChainError) {
 				final ChainError chainError = (ChainError)error;
+				this.fileNameInputControlDecoration.setImage(errorImage);
 				this.fileNameInputControlDecoration.show();
 				if(chainError.getErrorType() == ChainErrorTypes.FILENAME_EMPTY) {
 					this.fileNameInputControlDecoration.setDescriptionText(
@@ -565,15 +575,6 @@ public class ScanView extends ViewPart implements ISelectionListener {
 				}
 			}
 		}
-		
-		File file = new File(this.currentChain.getSaveFilename());
-		if(file.isFile() && file.exists()) {
-			this.fileNameInputControlDecoration.setImage(warnImage);
-			this.fileNameInputControlDecoration.setDescriptionText(
-					"File already exists!");
-			this.fileNameInputControlDecoration.show();
-		}
-		file = null;
 		
 		if(this.currentChain.getPauseControlEventManager().
 							 getModelErrors().size() > 0) {
