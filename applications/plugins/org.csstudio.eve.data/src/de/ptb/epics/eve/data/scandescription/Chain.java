@@ -31,130 +31,88 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	
 	private static Logger logger = Logger.getLogger(Chain.class.getName());
 	
-	/**
-	 * The unique id of the chain.
-	 */
+	// unique id of the chain
 	private int id;
 	
-	/**
-	 * The location and the filename, where the results should be saved.
-	 */
+	// filename where the results should be saved
 	private String saveFilename;
 	
-	/**
-	 * A boolean field that indicates if the save should be manually confirmed by the user.
-	 */
+	// indicates if the save should be manually confirmed by the user
 	private boolean confirmSave;
 	
-	/**
-	 * A boolean field that indicates if the datafile name should be extended by an automatic incremented number.
-	 */
+	// indicates if the datafile name should be extended by an autoincrement #
 	private boolean autoNumber;
 	
-	/**
-	 * The PluginController for the Save Plugin.
-	 */
+	// The PluginController for the Save Plugin
 	private final PluginController savePlugInController;
 	
-	
-	/**
-	 * A list of the ControlEvents, that holds the configuration for the redo events.
-	 */
+	// holds the configuration for the redo events
 	private List<ControlEvent> redoEvents;
 	
-	/**
-	 * A list of  the ControlEvents, that holds the configuration for the break events.
-	 */
+	// holds the configuration for the break events
 	private List<ControlEvent> breakEvents;
 	
-	/**
-	 * A list of  the PauseEvents, that holds the configuration for the pause events.
-	 */
+	// holds the configuration for the pause events
 	private List<PauseEvent> pauseEvents;
 	
-	/**
-	 * A list of  the ControlEvents, that holds the configuration for the break events.
-	 */
+	// holds the configuration for the break events
 	private List<ControlEvent> stopEvents;
 	
 	// TODO Caution, we have a list of ControlEvents called startEvents and 
 	// one StartEvent called startEvent, tidy up this
 	// For now just the first ControlEvent from startEvents is used as the event
 	// part for startEvent
-	/**
-	 * A list of  the ControlEvents, that holds the configuration for the break events.
-	 */
+
+	// the configuration for the break events
 	private List<ControlEvent> startEvents;
 	
-	/**
-	 * A reference to the event, that will start the chain.
-	 */
+	// the event, that will start the chain
 	private StartEvent startEvent;
 	
-	/**
-	 * A list that holds all the scan moduls inside of the chain.
-	 */
+	// holds all the scan modules
 	private List<ScanModule> scanModules;
 	
-	/**
-	 * A refrence to the scan description, that is the parent of this chain.
-	 */
+	// the scan description, that is the parent of this chain
 	private ScanDescription scanDescription;
 	
-	/**
-	 * A map that is mapping the id of a scan modul to the scan modul it self.
-	 */
-	private Map< Integer, ScanModule > scanModuleMap;
+	// A map for id <-> scan module
+	private Map<Integer, ScanModule> scanModuleMap;
 	
-	/**
-	 * A List that is holding all object that needs to get an update message if this object was updated.
-	 */
+	// holds all objects that need to get an update message
 	private List<IModelUpdateListener> updateListener;
 	
-	/**
-	 * The control event manager for the break events.
-	 */
+	// control event manager for break events
 	private ControlEventManager breakControlEventManager;
 	
-	/**
-	 * The control event manager for the start events. 
-	 */
+	// control event manager for start events
 	private ControlEventManager startControlEventManager;
 	
-	/**
-	 * The control event manager for the stop events.
-	 */
+	// control event manager for stop events
 	private ControlEventManager stopControlEventManager;
 	
-	/**
-	 * The control event manager for the redo events.
-	 */
+	// control event manager for redo events
 	private ControlEventManager redoControlEventManager;
 	
-	/**
-	 * The control event manager for the pause events.
-	 */
+	// control event manager for pause events
 	private ControlEventManager pauseControlEventManager;
 	
-	/**
-	 * The comment for this chain.
-	 */
+	// chain comment
 	private String comment;
 	
-	/**
-	 * This attribute indicates if the scan description should be saved in the result file.
-	 */
+	// indicates whether the scan description should be saved in the result file
 	private boolean saveScanDescription;
 	
 	/**
-	 * This constructor constructs a new Chain with a given id.
+	 * Constructs a <code>ScanDescription</code> with the given id.
 	 * 
-	 * @param id The id of the chain. It must be a positive Integer, so at least 1.
+	 * @param id the id of the chain
+	 * @throws IllegalArgumentException if <code>id</code> < 1
 	 */
-	public Chain( final int id ) {
+	public Chain(final int id) {
 		super();
-		if( id < 1 ) {
-			throw new IllegalArgumentException( "The parameter 'id' must be at least 1!" );
+		if(id < 1) {
+			throw new IllegalArgumentException(
+					"The parameter 'id' must be at least 1!");
 		}
 		this.id = id;
 		this.scanModules = new ArrayList<ScanModule>();
@@ -168,133 +126,224 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.updateListener = new ArrayList<IModelUpdateListener>();
 		
 		this.savePlugInController = new PluginController();
-		this.savePlugInController.addModelUpdateListener( this );
+		this.savePlugInController.addModelUpdateListener(this);
 		// TODO make start event a regular event
 		this.startEvent = null;
-		this.breakControlEventManager = new ControlEventManager( this, this.breakEvents, ControlEventTypes.CONTROL_EVENT );
-		this.startControlEventManager = new ControlEventManager( this, this.startEvents, ControlEventTypes.CONTROL_EVENT );
-		this.stopControlEventManager = new ControlEventManager( this, this.stopEvents, ControlEventTypes.CONTROL_EVENT );
-		this.redoControlEventManager = new ControlEventManager( this, this.redoEvents, ControlEventTypes.CONTROL_EVENT );
-		this.pauseControlEventManager = new ControlEventManager( this, this.pauseEvents, ControlEventTypes.PAUSE_EVENT );
+		this.breakControlEventManager = new ControlEventManager(
+				this, this.breakEvents, ControlEventTypes.CONTROL_EVENT);
+		this.startControlEventManager = new ControlEventManager(
+				this, this.startEvents, ControlEventTypes.CONTROL_EVENT);
+		this.stopControlEventManager = new ControlEventManager(
+				this, this.stopEvents, ControlEventTypes.CONTROL_EVENT);
+		this.redoControlEventManager = new ControlEventManager(
+				this, this.redoEvents, ControlEventTypes.CONTROL_EVENT);
+		this.pauseControlEventManager = new ControlEventManager(
+				this, this.pauseEvents, ControlEventTypes.PAUSE_EVENT);
 		
-		this.breakControlEventManager.addModelUpdateListener( this );
-		this.startControlEventManager.addModelUpdateListener( this );
-		this.stopControlEventManager.addModelUpdateListener( this );
-		this.redoControlEventManager.addModelUpdateListener( this );
-		this.pauseControlEventManager.addModelUpdateListener( this );
-			
+		this.breakControlEventManager.addModelUpdateListener(this);
+		this.startControlEventManager.addModelUpdateListener(this);
+		this.stopControlEventManager.addModelUpdateListener(this);
+		this.redoControlEventManager.addModelUpdateListener(this);
+		this.pauseControlEventManager.addModelUpdateListener(this);
+		
 		this.comment = "";
 		this.saveScanDescription = false;
-		
 	}
 	
 	/**
-	 * Gives back the location and the filename where the results should be saved.
+	 * Returns the id.
 	 * 
-	 * @return The location and the filename where the results should be saved. Never returns null.
+	 * @return the id
+	 */
+	public int getId() {
+		return this.id;
+	}
+	
+	/**
+	 * Sets the id.
+	 * 
+	 * @param id the id that should be set
+	 * @throws IllegalArgumentException if <code>id</code> < 1
+	 */
+	public void setId(final int id) {
+		if(id < 1) {
+			throw new IllegalArgumentException(
+					"The parameter 'id' must be at least 1!");
+		}
+		this.id = id;
+		updateListeners();
+	}
+	
+	/**
+	 * Returns the {@link de.ptb.epics.eve.data.scandescription.ScanDescription} 
+	 * the chain belongs to.
+	 * 
+	 * @return the {@link de.ptb.epics.eve.data.scandescription.ScanDescription} 
+	 * 			belongs to
+	 */
+	public ScanDescription getScanDescription() {
+		return this.scanDescription;
+	}
+	
+	/**
+	 * Sets the {@link de.ptb.epics.eve.data.scandescription.ScanDescription} 
+	 * the chain should belong to.
+	 * 
+	 * @param scanDescription the 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.ScanDescription} the 
+	 * 		chain should belong to
+	 */
+	protected void setScanDescription(final ScanDescription scanDescription) {
+		this.scanDescription = scanDescription;
+		updateListeners();
+	}
+	
+	/**
+	 * Adds a {@link de.ptb.epics.eve.data.scandescription.ScanModule}.
+	 * 
+	 * @param scanModule the 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.ScanModule} that 
+	 * 		should be added
+	 * @throws IllegalArgumentException if <code>scanModule</code> is 
+	 * 		<code>null</code>
+	 */
+	public void add(final ScanModule scanModule) {
+		if(scanModule == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'scanModule' must not be null!");
+		}
+		this.scanModuleMap.put(scanModule.getId(), scanModule);
+		this.scanModules.add(scanModule);
+		scanModule.setChain(this);
+		scanModule.addModelUpdateListener(this);
+		updateListeners();
+	}
+	
+	/**
+	 * Removes the given 
+	 * {@link de.ptb.epics.eve.data.scandescription.ScanModule}.
+	 * 
+	 * @param scanModule The 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.ScanModule} that 
+	 * 		should be removed
+	 */
+	public void remove(final ScanModule scanModule) {
+		if(scanModule == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'scanModul' must not be null!");
+		}
+		this.scanModules.remove(scanModule);
+		this.scanModuleMap.remove(scanModule.getId());
+		scanModule.removeModelUpdateListener(this);
+		scanModule.setChain(null);
+		updateListeners();
+	}
+	
+	/**
+	 * Returns the {@link de.ptb.epics.eve.data.scandescription.ScanModule} with 
+	 * the given id.
+	 * 
+	 * @param id the id of the The id of the 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.ScanModule} that should 
+	 * 		be returned.
+	 * @return the {@link de.ptb.epics.eve.data.scandescription.ScanModule} with 
+	 * 			the given id <b>or</b> <code>null</code> if none
+	 */
+	public ScanModule getScanModulById(final int id) {
+		return this.scanModuleMap.get(id);
+	}
+	
+	/**
+	 * Returns a new {@link java.util.List} of all scan modules.
+	 * 
+	 * @return a new {@link java.util.List} of all scan modules
+	 */
+	public List<ScanModule> getScanModules() {
+		return new ArrayList<ScanModule>(this.scanModules);
+	}
+	
+	/**
+	 * Returns the filename where the results should be saved.
+	 * 
+	 * @return the filename where the results should be saved
 	 */
 	public String getSaveFilename() {
 		return saveFilename;
 	}
-
+	
 	/**
-	 * Sets the location and the filename where the results should be save.
+	 * Sets the filename where the results should be saved.
 	 *
-	 * @param saveFilename The location and the filename where the results should be saved. Must not be null!
+	 * @param saveFilename the filename where the results should be saved.
+	 * @throws IllegalArgumentException if <code>saveFilename</code> is 
+	 * 			<code>null</code>
 	 */
-	public void setSaveFilename( final String saveFilename ) {
-		if( saveFilename == null ) {
-			throw new IllegalArgumentException( "The parameter 'saveFilename' must not be null!" );
+	public void setSaveFilename(final String saveFilename) {
+		if(saveFilename == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'saveFilename' must not be null!");
 		}
 		this.saveFilename = saveFilename;
 		updateListeners();
-		this.checkFileNameConstraints();
-	}
-
-	/**
-	 * Gives back a copy of the internal list, that is holding all scan modules.
-	 * 
-	 * @return A copy of the internal list, that is holding all scan modules. Never returns null.
-	 */
-	public List< ScanModule > getScanModules() {
-		return new ArrayList< ScanModule >( this.scanModules );
 	}
 	
 	/**
-	 * Adds a Scan Modul to the chain.
+	 * Checks whether the scan description should be saved in the results file.
 	 * 
-	 * @param scanModul The Scan Modul that should be added to the chain. Must not be null!
+	 * @return <code>true</code> if the scan description should be saved in the 
+	 * 			results, <code>false</code> otherwise
 	 */
-	public void add( final ScanModule scanModul ) {
-		if( scanModul == null ) {
-			throw new IllegalArgumentException( "The parameter 'scanModul' must not be null!" );
-		}
-		this.scanModuleMap.put( scanModul.getId(), scanModul );
-		this.scanModules.add( scanModul );
-		scanModul.setChain( this );
-		scanModul.addModelUpdateListener( this );
+	public boolean isSaveScanDescription() {
+		return this.saveScanDescription;
+	}
+	
+	/**
+	 * Sets whether the scan description should be saved in the results file.
+	 * 
+	 * @param saveScanDescription <code>true</code> if the scan description 
+	 * 		should be saved in the results file, <code>false</code> otherwise
+	 */
+	public void setSaveScanDescription(final boolean saveScanDescription) {
+		this.saveScanDescription = saveScanDescription;
 		updateListeners();
 	}
 	
 	/**
-	 * Removes a Scan Modul from the chain.
+	 * Checks whether saving of the results has to be confirmed manually.
 	 * 
-	 * @param scanModul The scan modul that should be removed from the chain. Must not be null!
-	 */
-	public void remove( final ScanModule scanModul ) {
-		if( scanModul == null ) {
-			throw new IllegalArgumentException( "The parameter 'scanModul' must not be null!" );
-		}
-		this.scanModules.remove( scanModul );
-		this.scanModuleMap.remove( scanModul.getId() );
-		scanModul.removeModelUpdateListener( this );
-		scanModul.setChain( null );
-		updateListeners();
-	}
-	
-	/**
-	 * Gives back the ControlEvent for the break event.
-	 * 
-	 * @return The ControlEvent for the breakevent.
-	 */
-/***
-	public List<ControlEvent> getBreakEvents() {
-		return new ArrayList<ControlEvent>( this.breakEvents );
-	}
-***/
-	
-	/**
-	 * Gives back if the saveing of the results have to be confirmed manually.
-	 * 
-	 * @return True or false.
+	 * @return <code>true</code> if saving has to be confirmed, 
+	 * 			<code>false</code> otherwise
 	 */
 	public boolean isConfirmSave() {
-		return confirmSave;
+		return this.confirmSave;
 	}
 	
 	/**
-	 * Sets if the saving of results have to be confirmed manually.
+	 * Sets whether saving of results has to be confirmed manually.
 	 * 
-	 * @param confirmSave True or false.
+	 * @param confirmSave <code>true</code> if saving should be confirmed, 
+	 * 						<code>false</code> otherwise
 	 */
-	public void setConfirmSave( final boolean confirmSave ) {
+	public void setConfirmSave(final boolean confirmSave) {
 		this.confirmSave = confirmSave;
 		updateListeners();
 	}
 	
 	/**
+	 * Checks whether auto incremented file names are enabled.
 	 * 
-	 * if enabled the datafile name will be extended by an automatic incremented number.
-	 * 
-	 * @return true if autonumbering is enabled 
+	 * @return <code>true</code> if auto increment is enabled, 
+	 * 			<code>false</code> otherwise
 	 */
 	public boolean isAutoNumber() {
-		return autoNumber;
+		return this.autoNumber;
 	}
 	
 	/**
+	 * Sets whether auto incremented file names should be used.
 	 * 
-	 * @param autoNumber
+	 * @param autoNumber <code>true</code> if auto incremented file names 
+	 * 					should be used, <code>false</code> otherwise
 	 */
 	public void setAutoNumber(final boolean autoNumber) {
 		this.autoNumber = autoNumber;
@@ -302,284 +351,320 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	}
 	
 	/**
-	 * Gives back the id of the Chain.
+	 * Returns the comment.
 	 * 
-	 * @return The id of the chain, that will be at least 1.
+	 * @return the comment
 	 */
-	public int getId() {
-		return this.id;
+	public String getComment() {
+		return this.comment;
 	}
 	
 	/**
-	 * Sets the id of the chain.
+	 * Sets the comment.
 	 * 
-	 * @param id The id of the chain. Have to be at least 1.
+	 * @param comment the comment that should be set
+	 * @throws IllegalArgumentException if <code>comment</code> is 
+	 * 			<code>null</code>
 	 */
-	public void setId( final int id ) {
-		if( id < 1 ) {
-			throw new IllegalArgumentException( "The parameter 'id' must be at least 1!" );
+	public void setComment(final String comment) {
+		if(comment == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'comment' must not be null!");
 		}
-		this.id = id;
+		this.comment = comment;
 		updateListeners();
 	}
 	
-
 	/**
-	 * Gives back the PluginController of the object, where you can set the PlugIn an the parameters.
+	 * Returns the {@link de.ptb.epics.eve.data.scandescription.PluginController}.
 	 * 
-	 * @return Gives back the PluginController of this object. Never returns null.
+	 * @return the {@link de.ptb.epics.eve.data.scandescription.PluginController}
 	 */
 	public PluginController getSavePluginController() {
 		return this.savePlugInController;
 	}
 	
 	/**
-	 * Gives back the start event. The start event starts the chain.
+	 * Returns the {@link de.ptb.epics.eve.data.scandescription.StartEvent}.
 	 * 
-	 * @return Gives back the StartEvent of the chain.
+	 * @return the {@link de.ptb.epics.eve.data.scandescription.StartEvent}
 	 */
 	public StartEvent getStartEvent() {
 		return this.startEvent;
 	}
 	
 	/**
-	 *	Sets the StartEvent that will start the Chain.
+	 *	Sets the {@link de.ptb.epics.eve.data.scandescription.StartEvent}.
 	 * 
-	 * @param startEvent The Event that will start the Chain.
+	 * @param startEvent the 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.StartEvent} that 
+	 * 		should be set
 	 */
-	public void setStartEvent( final StartEvent startEvent ) {
+	public void setStartEvent(final StartEvent startEvent) {
 		this.startEvent = startEvent;
 		updateListeners();
 	}
 	
 	/**
-	 * Gives back the correpondenting ScanModul for a id.
+	 * Adds the given {@link de.ptb.epics.eve.data.scandescription.PauseEvent}.
 	 * 
-	 * @param id The id of the Scan Modul that should be given back.
-	 * @return The ScanModul or 'null' if it's not found.
+	 * @param pauseEvent the 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.PauseEvent} that 
+	 * 		should be added
+	 * @return <code>true</code> if successful, <code>false</code> otherwise
 	 */
-	public ScanModule getScanModulById( final int id ) {
-		return this.scanModuleMap.get( id );
-	}
-	
-	/**
-	 * Sets the scan description where this chain is in.
-	 * 
-	 * @param scanDescription The scan description where this chain is in.
-	 */
-	protected void setScanDescription( final ScanDescription scanDescription ) {
-		this.scanDescription = scanDescription;
-		this.checkAllConstraints();
-		updateListeners();
-	}
-	
-	/**
-	 * Returns the scan description where the Chain is in.
-	 * 
-	 * @return The scan description where the Chain is in.
-	 */
-	public ScanDescription getScanDescription() {
-		return this.scanDescription;
-	}
-	
-	/**
-	 * Adds a pause event to the chain.
-	 * 
-	 * @param pauseEvent The pause event that should be added to the chain.
-	 * @return Gives back 'true' if the event has been added and false if not.
-	 */
-	public boolean addPauseEvent( final PauseEvent pauseEvent ) {
-		if( this.pauseEvents.add( pauseEvent ) ) {
+	public boolean addPauseEvent(final PauseEvent pauseEvent) {
+		if(this.pauseEvents.add(pauseEvent)) {
 			updateListeners();
-			pauseEvent.addModelUpdateListener( this.pauseControlEventManager );
-			this.pauseControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( pauseEvent, ControlEventMessageEnum.ADDED ) ) );
+			pauseEvent.addModelUpdateListener(this.pauseControlEventManager);
+			this.pauseControlEventManager.updateEvent(new ModelUpdateEvent(
+					this, new ControlEventMessage(pauseEvent, 
+							ControlEventMessageEnum.ADDED)));
 			return true;
 		} 
 		return false;
 	}
 	
 	/**
-	 * Removes a pause event from the chain.
+	 * Removes the given 
+	 * {@link de.ptb.epics.eve.data.scandescription.PauseEvent}.
 	 * 
-	 * @param pauseEvent The pause event that should be removed from the chain.
-	 * @return Gives back 'true' if the event has been removed and false if not.
+	 * @param pauseEvent the 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.PauseEvent} that 
+	 * 		should be removed
+	 * @return <code>true</code> if successful, <code>false</code> otherwise
 	 */
-	public boolean removePauseEvent( final PauseEvent pauseEvent ) {
-		if( this.pauseEvents.remove( pauseEvent ) ) {
+	public boolean removePauseEvent(final PauseEvent pauseEvent) {
+		if(this.pauseEvents.remove(pauseEvent)) {
 			updateListeners();
-			pauseEvent.removeModelUpdateListener( this.pauseControlEventManager );
-			this.pauseControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( pauseEvent, ControlEventMessageEnum.REMOVED ) ) );
+			pauseEvent.removeModelUpdateListener(this.pauseControlEventManager);
+			this.pauseControlEventManager.updateEvent(new ModelUpdateEvent(this, 
+					new ControlEventMessage(pauseEvent, 
+							ControlEventMessageEnum.REMOVED)));
 			return true;
 		} 
 		return false;
 	}
 	
 	/**
-	 * Adds a break event to the chain.
+	 * Adds the given {@link de.ptb.epics.eve.data.scandescription.ControlEvent} 
+	 * as a break event.
 	 * 
-	 * @param breakEvent The break event that should be added to the chain.
-	 * @return Gives back 'true' if the event has been added and false if not.
+	 * @param breakEvent the 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.ControlEvent} that 
+	 * 		should be added as a break event
+	 * @return <code>true</code> if successful, <code>false</code> otherwise
 	 */
-	public boolean addBreakEvent( final ControlEvent breakEvent ) {
-		if( this.breakEvents.add( breakEvent ) ) {
+	public boolean addBreakEvent(final ControlEvent breakEvent) {
+		if(this.breakEvents.add(breakEvent)) {
 			updateListeners();
-			breakEvent.addModelUpdateListener( this.breakControlEventManager );
-			this.breakControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( breakEvent, ControlEventMessageEnum.ADDED ) ) );
+			breakEvent.addModelUpdateListener(this.breakControlEventManager);
+			this.breakControlEventManager.updateEvent(new ModelUpdateEvent(this, 
+					new ControlEventMessage(breakEvent, 
+							ControlEventMessageEnum.ADDED)));
 			return true;
 		} 
 		return false;
 	}
 	
 	/**
-	 * Removes a break event from the chain.
+	 * Removes the given break event.
 	 * 
-	 * @param breakEvent The break event that should be removed from the chain.
-	 * @return Gives back 'true' if the event has been removed and false if not.
+	 * @param breakEvent the break event that should be removed
+	 * @return <code>true</code> if successfull, </code> otherwise
 	 */
-	public boolean removeBreakEvent( final ControlEvent breakEvent ) {
-		if( this.breakEvents.remove( breakEvent ) ) {
+	public boolean removeBreakEvent(final ControlEvent breakEvent) {
+		if(this.breakEvents.remove(breakEvent)) {
 			updateListeners();
-			breakEvent.removeModelUpdateListener( this.breakControlEventManager );
-			this.breakControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( breakEvent, ControlEventMessageEnum.REMOVED ) ) );
+			breakEvent.removeModelUpdateListener(this.breakControlEventManager);
+			this.breakControlEventManager.updateEvent(new ModelUpdateEvent(this, 
+					new ControlEventMessage(breakEvent, 
+							ControlEventMessageEnum.REMOVED)));
 			return true;
 		} 
 		return false;
 	}
 	
 	/**
-	 * Adds a start event to the chain.
+	 * Adds the given {@link de.ptb.epics.eve.data.scandescription.ControlEvent} 
+	 * as a start event.
 	 * 
-	 * @param startEvent The start event that should be added to the chain.
-	 * @return Gives back 'true' if the event has been added and false if not.
+	 * @param startEvent the 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.ControlEvent} that 
+	 * 		should be added as a start event
+	 * @return <code>true</code> if successful, <code>false</code> otherwise
 	 */
-	public boolean addStartEvent( final ControlEvent startEvent ) {
-		if( this.startEvents.add( startEvent ) ) {
+	public boolean addStartEvent(final ControlEvent startEvent) {
+		if(this.startEvents.add(startEvent)) {
 			updateListeners();
-			startEvent.addModelUpdateListener( this.startControlEventManager );
-			this.startControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( startEvent, ControlEventMessageEnum.ADDED ) ) );
+			startEvent.addModelUpdateListener(this.startControlEventManager);
+			this.startControlEventManager.updateEvent(new ModelUpdateEvent(this, 
+					new ControlEventMessage(startEvent, 
+							ControlEventMessageEnum.ADDED)));
 			return true;
 		} 
 		return false;
 	}
 	
 	/**
-	 * Removes a start event from the chain.
+	 * Removes the given start event.
 	 * 
-	 * @param startEvent The start event that should be removed from the chain.
-	 * @return Gives back 'true' if the event has been removed and false if not.
+	 * @param startEvent the start event that should be removed
+	 * @return <code>true</code> if successful, <code>false</code> otherwise
 	 */
-	public boolean removeStartEvent( final ControlEvent startEvent ) {
-		if( this.startEvents.remove( startEvent ) ) {
+	public boolean removeStartEvent(final ControlEvent startEvent) {
+		if(this.startEvents.remove(startEvent)) {
 			updateListeners();
-			startEvent.removeModelUpdateListener( this.startControlEventManager );
-			this.startControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( startEvent, ControlEventMessageEnum.REMOVED ) ) );
-			return true;
-		} 
-		return false;
-	}
-
-	/**
-	 * Adds a stop event to the chain.
-	 * 
-	 * @param stopEvent The stop event that should be added to the chain.
-	 * @return Gives back 'true' if the event has been added and false if not.
-	 */
-	public boolean addStopEvent( final ControlEvent stopEvent ) {
-		if( this.stopEvents.add( stopEvent ) ) {
-			updateListeners();
-			stopEvent.addModelUpdateListener( this.stopControlEventManager );
-			this.stopControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( stopEvent, ControlEventMessageEnum.ADDED ) ) );
+			startEvent.removeModelUpdateListener(this.startControlEventManager);
+			this.startControlEventManager.updateEvent(new ModelUpdateEvent(this, 
+					new ControlEventMessage(startEvent, 
+							ControlEventMessageEnum.REMOVED)));
 			return true;
 		} 
 		return false;
 	}
 	
 	/**
-	 * Removes a stop event from the chain.
+	 * Adds the given {@link de.ptb.epics.eve.data.scandescription.ControlEvent} 
+	 * as a stop event.
 	 * 
-	 * @param stopEvent The stop event that should be removed from the chain.
-	 * @return Gives back 'true' if the event has been removed and false if not.
+	 * @param stopEvent the 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.ControlEvent} that 
+	 * 		should be added as a stop event
+	 * @return <code>true</code> if successful, <code>false</code> otherwise
 	 */
-	public boolean removeStopEvent( final ControlEvent stopEvent ) {
-		if( this.stopEvents.remove( stopEvent ) ) {
+	public boolean addStopEvent(final ControlEvent stopEvent) {
+		if(this.stopEvents.add(stopEvent)) {
 			updateListeners();
-			stopEvent.removeModelUpdateListener( this.stopControlEventManager );
-			this.stopControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( stopEvent, ControlEventMessageEnum.REMOVED ) ) );
-			return true;
-		} 
-		return false;
-	}
-
-	/**
-	 * Adds a redo event to the chain.
-	 * 
-	 * @param redoEvent The redo event that should be added to the chain.
-	 * @return Gives back 'true' if the event has been added and false if not.
-	 */
-	public boolean addRedoEvent( final ControlEvent redoEvent ) {
-		if( this.redoEvents.add( redoEvent ) ) {
-			updateListeners();
-			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( redoEvent, ControlEventMessageEnum.ADDED ) ) );
-			redoEvent.addModelUpdateListener( this.redoControlEventManager );
+			stopEvent.addModelUpdateListener(this.stopControlEventManager);
+			this.stopControlEventManager.updateEvent(new ModelUpdateEvent(this, 
+					new ControlEventMessage(stopEvent, 
+							ControlEventMessageEnum.ADDED)));
 			return true;
 		} 
 		return false;
 	}
 	
 	/**
-	 * Removes a redo event from the chain.
+	 * Removes the given stop event.
 	 * 
-	 * @param redoEvent The redo event that should be removed from the chain.
-	 * @return Gives back 'true' if the event has been removed and false if not.
+	 * @param stopEvent the stop event that should be removed
+	 * @return <code>true</code> if successful, <code>false</code> otherwise
 	 */
-	public boolean removeRedoEvent( final ControlEvent redoEvent ) {
-		if( this.redoEvents.remove( redoEvent ) ) {
+	public boolean removeStopEvent(final ControlEvent stopEvent) {
+		if(this.stopEvents.remove( stopEvent)) {
 			updateListeners();
-			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( this, new ControlEventMessage( redoEvent, ControlEventMessageEnum.REMOVED ) ) );
-			redoEvent.removeModelUpdateListener( this.redoControlEventManager );
+			stopEvent.removeModelUpdateListener(this.stopControlEventManager);
+			this.stopControlEventManager.updateEvent(new ModelUpdateEvent(this, 
+					new ControlEventMessage(stopEvent, 
+							ControlEventMessageEnum.REMOVED)));
 			return true;
 		} 
 		return false;
 	}
 	
 	/**
-	 * Gives back if the pause event is one of the pause events of this chain.
+	 * Adds the given {@link de.ptb.epics.eve.data.scandescription.ControlEvent} 
+	 * as a redo event.
 	 * 
-	 * @param pauseEvent The pause Event that should be checked.
-	 * @return Gives back 'true' if the event is one of the pause events.
+	 * @param redoEvent the 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.ControlEvent} that 
+	 * 		should be added as a redo event
+	 * @return <code>true</code> if successful, <code>false</code> otherwise
 	 */
-	public boolean isPauseEventOfTheChain( final PauseEvent pauseEvent ) {
-		return this.pauseEvents.contains( pauseEvent );
+	public boolean addRedoEvent(final ControlEvent redoEvent) {
+		if( this.redoEvents.add(redoEvent)) {
+			updateListeners();
+			this.redoControlEventManager.updateEvent(new ModelUpdateEvent(this, 
+					new ControlEventMessage(redoEvent, 
+							ControlEventMessageEnum.ADDED)));
+			redoEvent.addModelUpdateListener(this.redoControlEventManager);
+			return true;
+		} 
+		return false;
 	}
 	
 	/**
-	 * Gives back if the control event is one of the redo events of this chain.
+	 * Removes the given redo event.
 	 * 
-	 * @param redoEvent The control Event that should be checked.
-	 * @return Gives back 'true' if the event is one of the redo events.
+	 * @param redoEvent the redo event that should be removed
+	 * @return <code>true</code> if successful, <code>false</code> otherwise
 	 */
-	public boolean isRedoEventOfTheChain( final ControlEvent redoEvent ) {
-		return this.redoEvents.contains( redoEvent );
+	public boolean removeRedoEvent(final ControlEvent redoEvent) {
+		if( this.redoEvents.remove(redoEvent)) {
+			updateListeners();
+			this.redoControlEventManager.updateEvent(new ModelUpdateEvent(this, 
+					new ControlEventMessage(redoEvent, 
+							ControlEventMessageEnum.REMOVED)));
+			redoEvent.removeModelUpdateListener(this.redoControlEventManager);
+			return true;
+		} 
+		return false;
 	}
 	
 	/**
-	 * Gives back if the control event is one of the break events of this chain.
+	 * Checks whether the given 
+	 * {@link de.ptb.epics.eve.data.scandescription.PauseEvent} exists.
 	 * 
-	 * @param breakEvent The control Event that should be checked.
-	 * @return Gives back 'true' if the event is one of the redo events.
+	 * @param pauseEvent the 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.PauseEvent} that 
+	 * 		should be checked
+	 * @return <code>true</code> if the given 
+	 * 			{@link de.ptb.epics.eve.data.scandescription.PauseEvent} exists,
+	 * 			<code>false</code> otherwise
 	 */
-	public boolean isBreakEventOfTheChain( final ControlEvent breakEvent ) {
-		return this.breakEvents.contains( breakEvent );
+	public boolean isPauseEventOfTheChain(final PauseEvent pauseEvent) {
+		return this.pauseEvents.contains(pauseEvent);
 	}
 	
 	/**
-	 * This methods checks if the given control event is a pause event, redo event or break event of this chain.
+	 * Checks whether the given 
+	 * {@link de.ptb.epics.eve.data.scandescription.ControlEvent} exists as 
+	 * as a redo event.
 	 * 
-	 * @param controlEvent The control Event that should be checked.
-	 * @return Gives back 'true' if the event is one of the event types of this chain.
+	 * @param redoEvent the 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.ControlEvent} that
+	 * 		should be checked
+	 * @return <code>true</code> if the given 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.ControlEvent} exists 
+	 * 		as a redo event, <code>false</code> otherwise
 	 */
-	public boolean isAEventOfTheChain( final ControlEvent controlEvent ) {
-		return ( controlEvent instanceof PauseEvent && this.isPauseEventOfTheChain( (PauseEvent)controlEvent ) ) || this.isBreakEventOfTheChain( controlEvent ) || this.isRedoEventOfTheChain( controlEvent );
+	public boolean isRedoEventOfTheChain(final ControlEvent redoEvent) {
+		return this.redoEvents.contains(redoEvent);
+	}
+	
+	/**
+	 * Checks whether the given 
+	 * {@link de.ptb.epics.eve.data.scandescription.ControlEvent} exists as 
+	 * a break event.
+	 * 
+	 * @param breakEvent the 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.ControlEvent} that 
+	 * 		should be checked
+	 * @return <code>true</code> if the given 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.ControlEvent} exists 
+	 * 		as a break event, <code>false</code> otherwise
+	 */
+	public boolean isBreakEventOfTheChain(final ControlEvent breakEvent) {
+		return this.breakEvents.contains(breakEvent);
+	}
+	
+	/**
+	 * Checks whether the given 
+	 * {@link de.ptb.epics.eve.data.scandescription.ControlEvent} exists.
+	 * 
+	 * @param controlEvent the 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.ControlEvent} that 
+	 * 		should be checked
+	 * @return <code>true</code> if the given 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.ControlEvent} exists, 
+	 * 		<code>false</code> otherwise
+	 */
+	public boolean isAEventOfTheChain(final ControlEvent controlEvent) {
+		return (controlEvent instanceof PauseEvent && 
+				this.isPauseEventOfTheChain((PauseEvent)controlEvent)) || 
+				this.isBreakEventOfTheChain(controlEvent) || 
+				this.isRedoEventOfTheChain(controlEvent);
 	}
 	
 	/**
@@ -587,23 +672,23 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * 
 	 * @return An iterator over all pause events. Never returns 'null'.
 	 */
-	public Iterator< PauseEvent > getPauseEventsIterator() {
+	public Iterator<PauseEvent> getPauseEventsIterator() {
 		return this.pauseEvents.iterator();
 	}
 	
 	/**
 	 * This method returns an iterator over all start events.
 	 * 
-	 * @return An iterator over all start events. Never returns 'null'.
+	 * @return an iterator over all start events
 	 */
 	public Iterator<ControlEvent> getStartEventsIterator() {
 		return this.startEvents.iterator();
 	}
-
+	
 	/**
 	 * This method returns an iterator over all stop events.
 	 * 
-	 * @return An iterator over all stop events. Never returns 'null'.
+	 * @return an iterator over all stop events
 	 */
 	public Iterator<ControlEvent> getStopEventsIterator() {
 		return this.stopEvents.iterator();
@@ -612,7 +697,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	/**
 	 * This method returns an iterator over all break events.
 	 * 
-	 * @return An iterator over all break events. Never returns 'null'.
+	 * @return an iterator over all break events
 	 */
 	public Iterator<ControlEvent> getBreakEventsIterator() {
 		return this.breakEvents.iterator();
@@ -621,175 +706,130 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	/**
 	 * This method returns an iterator over all redo events.
 	 * 
-	 * @return An iterator over all redo events. Never returns 'null'.
+	 * @return an iterator over all redo events
 	 */
 	public Iterator<ControlEvent> getRedoEventsIterator() {
 		return this.redoEvents.iterator();
 	}
-
+	
 	/**
-	 * This method returns the control event manager of the break events.
+	 * Returns the {@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager} 
+	 * for break events.
 	 * 
-	 * @return The control event manager of the break events. Never returns null.
+	 * @return the 
+	 * 	{@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager}
+	 * 		for break events
 	 */
 	public ControlEventManager getBreakControlEventManager() {
-		return breakControlEventManager;
+		return this.breakControlEventManager;
 	}
-
+	
 	/**
-	 * This method returns the control event manager of the start events.
+	 * Returns the {@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager} 
+	 * for start events.
 	 * 
-	 * @return The control event manager of the start events. Never returns null.
+	 * @return the 
+	 * {@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager}
+	 * 		for start events
 	 */
 	public ControlEventManager getStartControlEventManager() {
-		return startControlEventManager;
+		return this.startControlEventManager;
 	}
-
+	
 	/**
-	 * This method returns the control event manager of the stop events.
+	 * Returns the {@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager} 
+	 * for stop events.
 	 * 
-	 * @return The control event manager of the stop events. Never returns null.
+	 * @return the 
+	 * {@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager}
+	 * 		for stop events
 	 */
 	public ControlEventManager getStopControlEventManager() {
-		return stopControlEventManager;
+		return this.stopControlEventManager;
 	}
-
+	
 	/**
-	 * This method returns the control event manager of the stop events.
+	 * Returns the {@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager} 
+	 * for pause events.
 	 * 
-	 * @return The control event manager of the stop events. Never returns null.
+	 * @return the 
+	 * {@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager}
+	 * 		for pause events
 	 */
 	public ControlEventManager getPauseControlEventManager() {
-		return pauseControlEventManager;
+		return this.pauseControlEventManager;
 	}
-
+	
 	/**
-	 * This method returns the control event manager of the redo events.
+	 * Returns the {@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager} 
+	 * for redo events.
 	 * 
-	 * @return The control event manager of the redo events. Never returns null.
+	 * @return the 
+	 * {@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager}
+	 * 		for redo events
 	 */
 	public ControlEventManager getRedoControlEventManager() {
-		return redoControlEventManager;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider#addModelUpdateListener(de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener)
-	 */
-	public boolean addModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return this.updateListener.add( modelUpdateListener );
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider#removeModelUpdateListener(de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener)
-	 */
-	public boolean removeModelUpdateListener( final IModelUpdateListener modelUpdateListener ) {
-		return this.updateListener.remove( modelUpdateListener );
+		return this.redoControlEventManager;
 	}
 	
 	/**
-	 * By calling this methods all constraints of the objects are checked. Model errors are produced
-	 * if the object does not fit the constrains.
+	 * {@inheritDoc}
 	 */
-	private void checkAllConstraints() {
-		this.checkFileNameConstraints();
-	}
-	
-	/**
-	 * This method checks the constraints of the filename.
-	 */
-	private void checkFileNameConstraints() {
-		
-	}
-
-	/**
-	 * This method returns the comment.
-	 * 
-	 * @return The comment of the Chain. Never returns 'null'.
-	 */
-	public String getComment() {
-		return this.comment;
-	}
-
-	/**
-	 * This method sets the comment of the Chain.
-	 * 
-	 * @param comment The new comment for the Chain. Must not be 'null'.
-	 */
-	public void setComment( final String comment ) {
-		if( comment == null ) {
-			throw new IllegalArgumentException( "The parameter 'comment' must not be null!" );
+	@Override
+	public List<IModelError> getModelErrors() {
+		final List<IModelError> errorList = new ArrayList<IModelError>();
+		if(this.saveFilename.isEmpty()) {
+			errorList.add(new ChainError(this, ChainErrorTypes.FILENAME_EMPTY));
 		}
-		this.comment = comment;
-		updateListeners();
+		errorList.addAll(this.savePlugInController.getModelErrors());
+		errorList.addAll(this.pauseControlEventManager.getModelErrors());
+		errorList.addAll(this.breakControlEventManager.getModelErrors());
+		errorList.addAll(this.redoControlEventManager.getModelErrors());
+		errorList.addAll(this.stopControlEventManager.getModelErrors());
+		errorList.addAll(this.startControlEventManager.getModelErrors());
+		
+		for(ScanModule sm : this.scanModules) {
+			errorList.addAll(sm.getModelErrors());
+		}
+		return errorList;
 	}
-
-	/**
-	 * This method returns if the scan description should be saved in the results file.
+	
+	/*
 	 * 
-	 * @return Returns 'true' if the scan description should be saved in the scan description.
 	 */
-	public boolean isSaveScanDescription() {
-		return saveScanDescription;
+	private void updateListeners() {
+		final CopyOnWriteArrayList<IModelUpdateListener> list = 
+			new CopyOnWriteArrayList<IModelUpdateListener>(this.updateListener);
+		
+		for(IModelUpdateListener imul : list) {
+			imul.updateEvent(new ModelUpdateEvent(this, null));
+		}
 	}
-
-	/**
-	 * This method sets if the scan description should be saved in the results file.
-	 * 
-	 * @param saveScanDescription Pass 'true' if the scan description should be saved in the results file.
-	 */
-	public void setSaveScanDescription( final boolean saveScanDescription ) {
-		this.saveScanDescription = saveScanDescription;
-		updateListeners();
-	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		if(logger.isDebugEnabled()) {
-			if(modelUpdateEvent != null) {
-				logger.debug(modelUpdateEvent.getSender());
-			}
-			logger.debug("null");
-		}
+		logger.debug("update event");
 		updateListeners();
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider#getModelErrors()
+	
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
-	public List< IModelError > getModelErrors() {
-		final List< IModelError > errorList = new ArrayList< IModelError >();
-		if( this.saveFilename.equals( "" ) ) {
-			errorList.add( new ChainError( this, ChainErrorTypes.FILENAME_EMPTY ) );
-		}
-		errorList.addAll( this.savePlugInController.getModelErrors() );
-		errorList.addAll( this.pauseControlEventManager.getModelErrors() );
-		errorList.addAll( this.breakControlEventManager.getModelErrors() );
-		errorList.addAll( this.redoControlEventManager.getModelErrors() );
-		errorList.addAll( this.stopControlEventManager.getModelErrors() );
-		errorList.addAll( this.startControlEventManager.getModelErrors() );
-		final Iterator< ScanModule > it = this.scanModules.iterator();
-		while( it.hasNext() ) {
-			errorList.addAll( it.next().getModelErrors() );
-		}
-		return errorList;
+	public boolean addModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.updateListener.add(modelUpdateListener);
 	}
 	
-	private void updateListeners()
-	{
-		final CopyOnWriteArrayList<IModelUpdateListener> list = 
-			new CopyOnWriteArrayList<IModelUpdateListener>(this.updateListener);
-		
-		Iterator<IModelUpdateListener> it = list.iterator();
-		
-		while(it.hasNext()) {
-			it.next().updateEvent(new ModelUpdateEvent(this, null));
-		}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean removeModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener) {
+		return this.updateListener.remove(modelUpdateListener);
 	}
 }
