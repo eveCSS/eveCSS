@@ -31,6 +31,8 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.ExpandBar;
@@ -136,6 +138,7 @@ public class ScanView extends ViewPart implements ISelectionListener {
 	
 	private Label repeatCountLabel;
 	private Text repeatCountText;
+	private RepeatCountTextVerifyListener repeatCountTextVerifyListener;
 	private RepeatCountTextModifiedListener repeatCountTextModifiedListener;
 	// ***** end of: Widgets of Save Options ********
 	
@@ -331,6 +334,8 @@ public class ScanView extends ViewPart implements ISelectionListener {
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		this.repeatCountText.setLayoutData(gridData);
+		repeatCountTextVerifyListener = new RepeatCountTextVerifyListener();
+		this.repeatCountText.addVerifyListener(repeatCountTextVerifyListener);
 		repeatCountTextModifiedListener = new RepeatCountTextModifiedListener();
 		this.repeatCountText.addModifyListener(repeatCountTextModifiedListener);
 		
@@ -600,6 +605,7 @@ public class ScanView extends ViewPart implements ISelectionListener {
 	private void addListeners() {
 		this.fileFormatCombo.addSelectionListener(fileFormatComboSelectionListener);
 		this.filenameInput.addModifyListener(fileNameInputModifiedListener);
+		this.repeatCountText.addVerifyListener(repeatCountTextVerifyListener);
 		this.repeatCountText.addModifyListener(repeatCountTextModifiedListener);
 		this.commentInput.addModifyListener(commentInputModifiedListener);
 		
@@ -618,6 +624,7 @@ public class ScanView extends ViewPart implements ISelectionListener {
 		this.fileFormatCombo.removeSelectionListener(
 				fileFormatComboSelectionListener);
 		this.filenameInput.removeModifyListener(fileNameInputModifiedListener);
+		this.repeatCountText.removeVerifyListener(repeatCountTextVerifyListener);
 		this.repeatCountText.removeModifyListener(
 				repeatCountTextModifiedListener);
 		this.commentInput.removeModifyListener(commentInputModifiedListener);
@@ -642,10 +649,10 @@ public class ScanView extends ViewPart implements ISelectionListener {
 				return;
 			}
 		}
-
-	// since at any given time this view can only display options of 
-	// one device we take the first element of the selection
-	Object o = ((IStructuredSelection) selection).toList().get(0);
+		
+		// since at any given time this view can only display options of 
+		// one device we take the first element of the selection
+		Object o = ((IStructuredSelection) selection).toList().get(0);
 		if (o instanceof ChainEditPart) {
 			// set new Chain
 			if(logger.isDebugEnabled()) {
@@ -653,7 +660,6 @@ public class ScanView extends ViewPart implements ISelectionListener {
 						getModel()).getId() + " selected."); 
 			}
 			setCurrentChain((Chain)((ChainEditPart)o).getModel());
-
 		} else if (o instanceof ScanModuleEditPart) {
 			// a scan module belongs to a chain -> show chain
 			if(logger.isDebugEnabled()) {
@@ -678,7 +684,7 @@ public class ScanView extends ViewPart implements ISelectionListener {
 	 * {@link org.eclipse.swt.events.ModifyListener} of
 	 * <code>savePluginCombo</code>.
 	 */
-	class FileFormatComboSelectionListener implements SelectionListener {
+	private class FileFormatComboSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -703,7 +709,7 @@ public class ScanView extends ViewPart implements ISelectionListener {
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>savePluginOptionsButton</code>.
 	 */
-	class FileFormatOptionsButtonSelectionListener implements SelectionListener {
+	private class FileFormatOptionsButtonSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -728,7 +734,7 @@ public class ScanView extends ViewPart implements ISelectionListener {
 	 * {@link org.eclipse.swt.events.ModifyListener} of
 	 * <code>fileNameInput</code>.
 	 */
-	class FileNameInputModifiedListener implements ModifyListener {
+	private class FileNameInputModifiedListener implements ModifyListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -744,7 +750,7 @@ public class ScanView extends ViewPart implements ISelectionListener {
 	 * {@link org.eclipse.swt.events.MouseListener} of 
 	 * <code>searchButton</code>.
 	 */
-	class SearchButtonMouseListener implements MouseListener {
+	private class SearchButtonMouseListener implements MouseListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -811,7 +817,7 @@ public class ScanView extends ViewPart implements ISelectionListener {
 					// remove old suffix
 					final int lastPoint = name.lastIndexOf(".");
 					final int lastSep = name.lastIndexOf("/");
-
+					
 					if ((lastPoint > 0) && (lastPoint > lastSep)) { 
 						filenameInput.setText(name.substring(0, lastPoint) + "." + suffix);
 					} else {
@@ -837,7 +843,7 @@ public class ScanView extends ViewPart implements ISelectionListener {
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>saveScanDescriptionCheckBox</code>.
 	 */
-	class SaveScanDescriptionCheckBoxSelectionListener 
+	private class SaveScanDescriptionCheckBoxSelectionListener 
 												implements SelectionListener {
 		
 		/**
@@ -863,7 +869,7 @@ public class ScanView extends ViewPart implements ISelectionListener {
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>manualSaveCheckBox</code>.
 	 */
-	class ConfirmSaveCheckBoxSelectionListener implements SelectionListener {
+	private class ConfirmSaveCheckBoxSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -887,7 +893,7 @@ public class ScanView extends ViewPart implements ISelectionListener {
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>autoNumberCheckBox</code>.<br><br>
 	 */
-	class AutoIncrementCheckBoxSelectionListener implements SelectionListener {
+	private class AutoIncrementCheckBoxSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -906,10 +912,38 @@ public class ScanView extends ViewPart implements ISelectionListener {
 	}
 	
 	/**
+	 * {@link org.eclipse.swt.events.VerifyListener} of 
+	 * <code>repeatCountText</code>.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.1
+	 */
+	private class RepeatCountTextVerifyListener implements VerifyListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void verifyText(VerifyEvent e) {
+			switch (e.keyCode) {
+				case SWT.BS:			// Backspace
+				case SWT.DEL:			// Delete
+				case SWT.HOME:			// Home
+				case SWT.END:			// End
+				case SWT.ARROW_LEFT:	// Left arrow
+				case SWT.ARROW_RIGHT:	// Right arrow
+				return;
+			}
+			
+			e.doit = e.text.matches("[0-9]+");
+		}
+	}
+	
+	/**
 	 * {@link org.eclipse.swt.events.ModifyListener} of
 	 * <code>repeatCountText</code>.
 	 */
-	class RepeatCountTextModifiedListener implements ModifyListener {
+	private class RepeatCountTextModifiedListener implements ModifyListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -920,7 +954,8 @@ public class ScanView extends ViewPart implements ISelectionListener {
 				currentChain.getScanDescription().setRepeatCount(
 						Integer.parseInt(repeatCountText.getText()));
 			} catch(final NumberFormatException ex) {
-				repeatCountText.setText("");
+				currentChain.getScanDescription().setRepeatCount(0);
+				repeatCountText.setText("0");
 			}
 		}
 	}
@@ -929,7 +964,7 @@ public class ScanView extends ViewPart implements ISelectionListener {
 	 * {@link org.eclipse.swt.events.ModifyListener} of
 	 * <code>commentInput</code>.
 	 */
-	class CommentInputModifiedListener implements ModifyListener {
+	private class CommentInputModifiedListener implements ModifyListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -944,7 +979,7 @@ public class ScanView extends ViewPart implements ISelectionListener {
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>eventsTabFolder</code>.
 	 */
-	class EventsTabFolderSelectionListener implements SelectionListener {
+	private class EventsTabFolderSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
