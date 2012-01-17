@@ -200,14 +200,14 @@ public class ScanView extends ViewPart implements ISelectionListener {
 		// **************************************
 		// ************ Save Expander ***********
 		// **************************************
-
+		
 		// save composite gets a 3 column grid
 		this.saveOptionsComposite = new Composite(this.bar, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
 		gridLayout.horizontalSpacing = 12;
 		this.saveOptionsComposite.setLayout(gridLayout);
-
+		
 		// GUI: "File Format: <Combo Box>"
 		this.fileFormatLabel = new Label(this.saveOptionsComposite, SWT.NONE);
 		this.fileFormatLabel.setText("File format:");
@@ -565,6 +565,15 @@ public class ScanView extends ViewPart implements ISelectionListener {
 				}
 			}
 		}
+		
+		File file = new File(this.currentChain.getSaveFilename());
+		if(file.isFile() && file.exists()) {
+			this.fileNameInputControlDecoration.setImage(warnImage);
+			this.fileNameInputControlDecoration.setDescriptionText(
+					"File already exists!");
+			this.fileNameInputControlDecoration.show();
+		}
+		file = null;
 		
 		if(this.currentChain.getPauseControlEventManager().
 							 getModelErrors().size() > 0) {

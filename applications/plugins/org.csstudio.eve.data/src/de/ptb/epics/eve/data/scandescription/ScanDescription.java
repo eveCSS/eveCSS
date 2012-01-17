@@ -10,8 +10,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.EventTypes;
+import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
@@ -92,6 +94,12 @@ public class ScanDescription implements IModelUpdateProvider,
 	public boolean add(final Chain chain) {
 		chain.setScanDescription(this);
 		boolean returnValue = chains.add(chain);
+		// set a save plugin as default
+		for(PlugIn p : this.getMeasuringStation().getPlugins()) {
+			if(p.getType().equals(PluginTypes.SAVE)) {
+				chain.getSavePluginController().setPlugin(p);
+			}
+		}
 		chain.addModelUpdateListener(this);
 		updateListeners();
 		return returnValue;
