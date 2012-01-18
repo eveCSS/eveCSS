@@ -1,42 +1,47 @@
 package de.ptb.epics.eve.editor.views.errorview;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IPartService;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 
-import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
-import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
 
 /**
+ * <code>ErrorView</code> shows 
+ * {@link de.ptb.epics.eve.data.scandescription.errors.IModelError}s of a 
+ * {@link de.ptb.epics.eve.data.scandescription.ScanDescription}.
+ * <p>
+ * The view clears itself when the last editor is closed and updates itself 
+ * when a {@link de.ptb.epics.eve.editor.graphical.GraphicalEditor} is 
+ * activated.
  * 
- * @author ?
  * @author Marcus Michalsky
+ * @since 1.1
  */
-public class ErrorView extends ViewPart implements IEditorView, IModelUpdateListener {
+public class ErrorView extends ViewPart implements IEditorView {
 
 	/** the unique identifier of <code>ErrorView</code>. */
 	public static final String ID = "de.ptb.epics.eve.editor.views.ErrorView";
 
 	private static Logger logger = Logger.getLogger(ErrorView.class);
-	
+
 	private Composite top = null;
 
-	private Table errorTable = null;
-	
 	private ScanDescription currentScanDescription;
+
+	private TableViewer viewer;
 	
 	// delegation
 	private PartListener partListener;
@@ -59,19 +64,34 @@ public class ErrorView extends ViewPart implements IEditorView, IModelUpdateList
 			return;
 		}
 		top = new Composite(parent, SWT.NONE);
-		top.setLayout(new FillLayout());
-		errorTable = new Table(top, SWT.H_SCROLL | SWT.V_SCROLL);
-		errorTable.setHeaderVisible(true);
-		errorTable.setLinesVisible(true);
-		TableColumn levelColumn = new TableColumn(errorTable, SWT.NONE);
-		levelColumn.setWidth(60);
-		levelColumn.setText("Level");
-		TableColumn typeColumn = new TableColumn(errorTable, SWT.NONE);
-		typeColumn.setWidth(80);
-		typeColumn.setText("Type");
-		TableColumn descriptionColumn = new TableColumn(errorTable, SWT.NONE);
-		descriptionColumn.setWidth(150);
-		descriptionColumn.setText("Description");
+		GridLayout layout = new GridLayout(2, false);
+		top.setLayout(layout);
+		
+		viewer = new TableViewer(top, SWT.V_SCROLL | SWT.H_SCROLL);
+		GridData gridData = new GridData();
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 2;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		viewer.getControl().setLayoutData(gridData);
+		viewer.getTable().setHeaderVisible(true);
+		viewer.getTable().setLinesVisible(true);
+		TableViewerColumn typeColumn = new TableViewerColumn(viewer, SWT.NONE);
+		typeColumn.getColumn().setText("Type");
+		typeColumn.getColumn().setWidth(120);
+		typeColumn.getColumn().setResizable(true);
+		TableViewerColumn messageColumn = new TableViewerColumn(viewer, SWT.NONE);
+		messageColumn.getColumn().setText("Description");
+		messageColumn.getColumn().setWidth(90);
+		messageColumn.getColumn().setResizable(true);
+		TableViewerColumn emptyColumn = new TableViewerColumn(viewer, SWT.NONE);
+		emptyColumn.getColumn().setText("");
+		emptyColumn.getColumn().setWidth(1);
+		viewer.setContentProvider(new ContentProvider());
+		viewer.setLabelProvider(new LabelProvider());
+		viewer.setInput(null);
+		
 		top.setVisible(false);
 		
 		partListener = new PartListener(this);
@@ -98,20 +118,14 @@ public class ErrorView extends ViewPart implements IEditorView, IModelUpdateList
 	 * @param scanDescription the scan description
 	 */
 	protected void setCurrentScanDescription(final ScanDescription scanDescription) {
-		
-		// if there was already a scan description saved -> remove it
-		if(currentScanDescription != null) {
-			this.currentScanDescription.removeModelUpdateListener(this);
-		}
 		this.currentScanDescription = scanDescription;
 		if(currentScanDescription != null) {
-			this.currentScanDescription.addModelUpdateListener(this);
 			this.top.setVisible(true);
+			this.viewer.setInput(this.currentScanDescription);
 		} else {
+			this.viewer.setInput(null);
 			this.top.setVisible(false);
 		}
-		// update table with errors present in the new scan description
-		this.updateEvent(null);
 	}
 	
 	/**
@@ -120,24 +134,5 @@ public class ErrorView extends ViewPart implements IEditorView, IModelUpdateList
 	@Override
 	public void reset() {
 		setCurrentScanDescription(null);
-	}
-	
-	/**
-	 * Gets all currently present errors of the model and displays them 
-	 * in the table.<br><br>
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		this.errorTable.removeAll();
-		if(currentScanDescription != null) {
-			for(IModelError error : this.currentScanDescription.getModelErrors()) {
-				TableItem tableItem = new TableItem(this.errorTable, 0);
-				tableItem.setData(error);
-				tableItem.setText(0, "");
-				tableItem.setText(1, error.getErrorName());
-				tableItem.setText(2, error.getErrorMessage());
-			}
-		}
 	}
 }
