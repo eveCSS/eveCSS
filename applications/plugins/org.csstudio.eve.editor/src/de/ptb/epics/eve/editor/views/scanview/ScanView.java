@@ -53,7 +53,9 @@ import de.ptb.epics.eve.editor.dialogs.PluginControllerDialog;
 import de.ptb.epics.eve.editor.graphical.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
+import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.EventComposite;
+import de.ptb.epics.eve.editor.views.IEditorView;
 
 /**
  * <code>ScanView</code> is the graphical representation of a 
@@ -66,7 +68,7 @@ import de.ptb.epics.eve.editor.views.EventComposite;
  * @author Marcus Michalsky
  * @author Hartmut Scherr
  */
-public class ScanView extends ViewPart implements ISelectionListener {
+public class ScanView extends ViewPart implements IEditorView, ISelectionListener {
 
 	/**
 	 * the unique identifier of the view
@@ -168,6 +170,9 @@ public class ScanView extends ViewPart implements ISelectionListener {
 	private Image warnImage;
 	private Image errorImage;
 	private Image eventErrorImage;
+	
+	// Delegates
+	private EditorViewPerspectiveListener perspectiveListener;
 	
 	/**
 	 * {@inheritDoc}
@@ -435,6 +440,11 @@ public class ScanView extends ViewPart implements ISelectionListener {
 		// is selected, its attributes are made available for editing)
 		getSite().getWorkbenchWindow().getSelectionService().
 				addSelectionListener(this);
+		
+		// listen to "last editor closed" to reset the view.
+		perspectiveListener = new EditorViewPerspectiveListener(this);
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
+				addPerspectiveListener(perspectiveListener);
 	}
 	
 	// ************************************************************************
@@ -458,7 +468,7 @@ public class ScanView extends ViewPart implements ISelectionListener {
 	 * 		  {@link de.ptb.epics.eve.data.scandescription.Chain} that should 
 	 * 		  be set current. Use <code>null</code> to present an empty view.
 	 */
-	public void setCurrentChain(final Chain currentChain) {
+	private void setCurrentChain(final Chain currentChain) {
 		// set the new chain as current chain
 		this.currentChain = currentChain;
 		
@@ -534,6 +544,14 @@ public class ScanView extends ViewPart implements ISelectionListener {
 		addListeners();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void reset() {
+		this.setCurrentChain(null);
+	}
+
 	/*
 	 * called by setCurrentChain() to check for errors in user input and show 
 	 * error decorators.

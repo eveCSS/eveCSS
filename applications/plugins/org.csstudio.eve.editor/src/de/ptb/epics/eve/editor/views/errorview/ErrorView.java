@@ -1,12 +1,12 @@
-package de.ptb.epics.eve.editor.views;
-
-import java.util.Iterator;
+package de.ptb.epics.eve.editor.views.errorview;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.ui.IPartService;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.layout.FillLayout;
@@ -17,17 +17,17 @@ import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
+import de.ptb.epics.eve.editor.views.IEditorView;
 
 /**
  * 
  * @author ?
  * @author Marcus Michalsky
  */
-public class ErrorView extends ViewPart implements IModelUpdateListener {
+public class ErrorView extends ViewPart implements IEditorView, IModelUpdateListener {
 
-	/**
-	 * the unique identifier of <code>ErrorView</code>. 
-	 */
+	/** the unique identifier of <code>ErrorView</code>. */
 	public static final String ID = "de.ptb.epics.eve.editor.views.ErrorView";
 
 	private static Logger logger = Logger.getLogger(ErrorView.class);
@@ -37,7 +37,11 @@ public class ErrorView extends ViewPart implements IModelUpdateListener {
 	private Table errorTable = null;
 	
 	private ScanDescription currentScanDescription;
-
+	
+	// delegation
+	private PartListener partListener;
+	private EditorViewPerspectiveListener perspectiveListener;
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -48,7 +52,7 @@ public class ErrorView extends ViewPart implements IModelUpdateListener {
 		parent.setLayout(new FillLayout());
 		
 		// if no measuring station was loaded -> show error and return
-		if( Activator.getDefault().getMeasuringStation() == null ) {
+		if(Activator.getDefault().getMeasuringStation() == null) {
 			final Label errorLabel = new Label(parent, SWT.NONE);
 			errorLabel.setText("No Measuring Station has been loaded. " 
 					+ "Please check Preferences!");
@@ -56,18 +60,27 @@ public class ErrorView extends ViewPart implements IModelUpdateListener {
 		}
 		top = new Composite(parent, SWT.NONE);
 		top.setLayout(new FillLayout());
-		errorTable = new Table(top, SWT.NONE);
+		errorTable = new Table(top, SWT.H_SCROLL | SWT.V_SCROLL);
 		errorTable.setHeaderVisible(true);
 		errorTable.setLinesVisible(true);
-		TableColumn tableColumn = new TableColumn(errorTable, SWT.NONE);
-		tableColumn.setWidth(60);
-		tableColumn.setText("Level");
-		TableColumn tableColumn1 = new TableColumn(errorTable, SWT.NONE);
-		tableColumn1.setWidth(60);
-		tableColumn1.setText("Type");
-		TableColumn tableColumn2 = new TableColumn(errorTable, SWT.NONE);
-		tableColumn2.setWidth(60);
-		tableColumn2.setText("Description");
+		TableColumn levelColumn = new TableColumn(errorTable, SWT.NONE);
+		levelColumn.setWidth(60);
+		levelColumn.setText("Level");
+		TableColumn typeColumn = new TableColumn(errorTable, SWT.NONE);
+		typeColumn.setWidth(80);
+		typeColumn.setText("Type");
+		TableColumn descriptionColumn = new TableColumn(errorTable, SWT.NONE);
+		descriptionColumn.setWidth(150);
+		descriptionColumn.setText("Description");
+		top.setVisible(false);
+		
+		partListener = new PartListener(this);
+		IPartService service = (IPartService) getSite().
+				getService(IPartService.class);
+		service.addPartListener(partListener);
+		perspectiveListener = new EditorViewPerspectiveListener(this);
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
+				addPerspectiveListener(perspectiveListener);
 	}
 
 	/**
@@ -75,6 +88,8 @@ public class ErrorView extends ViewPart implements IModelUpdateListener {
 	 */
 	@Override
 	public void setFocus() {
+		logger.debug("set Focus -> forward to top composite");
+		this.top.setFocus();
 	}
 	
 	/**
@@ -82,22 +97,31 @@ public class ErrorView extends ViewPart implements IModelUpdateListener {
 	 * 
 	 * @param scanDescription the scan description
 	 */
-	public void setCurrentScanDescription(final ScanDescription scanDescription) {
-		logger.debug("setScanDescription");
+	protected void setCurrentScanDescription(final ScanDescription scanDescription) {
 		
 		// if there was already a scan description saved -> remove it
 		if(currentScanDescription != null) {
 			this.currentScanDescription.removeModelUpdateListener(this);
 		}
 		this.currentScanDescription = scanDescription;
-		if(currentScanDescription != null)
-		{
+		if(currentScanDescription != null) {
 			this.currentScanDescription.addModelUpdateListener(this);
+			this.top.setVisible(true);
+		} else {
+			this.top.setVisible(false);
 		}
 		// update table with errors present in the new scan description
 		this.updateEvent(null);
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void reset() {
+		setCurrentScanDescription(null);
+	}
+	
 	/**
 	 * Gets all currently present errors of the model and displays them 
 	 * in the table.<br><br>
@@ -105,22 +129,14 @@ public class ErrorView extends ViewPart implements IModelUpdateListener {
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		if(modelUpdateEvent == null) logger.debug("update event (null)");
-		else logger.debug("update event (" + 
-				modelUpdateEvent.getSender().getClass().getName() + ")");
-		
 		this.errorTable.removeAll();
-		
 		if(currentScanDescription != null) {
-			final Iterator<IModelError> it = 
-				this.currentScanDescription.getModelErrors().iterator();
-			while(it.hasNext()) {
-				final IModelError modelError = it.next();
+			for(IModelError error : this.currentScanDescription.getModelErrors()) {
 				TableItem tableItem = new TableItem(this.errorTable, 0);
-				tableItem.setData(modelError);
+				tableItem.setData(error);
 				tableItem.setText(0, "");
-				tableItem.setText(1, modelError.getErrorName());
-				tableItem.setText(2, modelError.getErrorMessage());
+				tableItem.setText(1, error.getErrorName());
+				tableItem.setText(2, error.getErrorMessage());
 			}
 		}
 	}

@@ -3,8 +3,8 @@ package de.ptb.epics.eve.editor;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import de.ptb.epics.eve.editor.views.ErrorView;
 import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
+import de.ptb.epics.eve.editor.views.errorview.ErrorView;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView;
 import de.ptb.epics.eve.editor.views.plotwindowview.PlotWindowView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;

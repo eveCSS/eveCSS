@@ -41,7 +41,7 @@
       </view>
       <view
             category="eveEditorCategory"
-            class="de.ptb.epics.eve.editor.views.ErrorView"
+            class="de.ptb.epics.eve.editor.views.errorview.ErrorView"
             icon="icons/errorwarning_tab.gif"
             id="de.ptb.epics.eve.editor.views.ErrorView"
             name="%view.name.1"

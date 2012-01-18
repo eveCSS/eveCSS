@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.FileStoreEditorInput;
@@ -59,7 +58,6 @@ import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.jobs.file.Save;
 import de.ptb.epics.eve.editor.jobs.filloptions.SaveAllDetectorValues;
 import de.ptb.epics.eve.editor.jobs.filloptions.SaveAllMotorPositions;
-import de.ptb.epics.eve.editor.views.ErrorView;
 
 /**
  * <code>GraphicalEditor</code> is the central element of the EveEditor Plug In.
@@ -194,25 +192,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	/*
 	 * 
 	 */
-	private void updateErrorView() {
-		// get all views
-		IViewReference[] ref = getSite().getPage().getViewReferences();
-		
-		// inform the error view about the current scan description
-		ErrorView errorView = null;
-		for(int i = 0; i < ref.length; ++i) {
-			if(ref[i].getId().equals(ErrorView.ID)) {
-				errorView = (ErrorView)ref[i].getPart(false);
-			}
-		}
-		if(errorView != null) {
-			errorView.setCurrentScanDescription(this.scanDescription);
-		}
-	}
-	
-	/*
-	 * 
-	 */
 	private void updateScanModuleView() {
 		refreshAllEditParts(viewer.getRootEditPart());
 		logger.debug("selectedScanModule: " + selectedScanModule);
@@ -222,7 +201,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 * wrapper to update all views
 	 */
 	private void updateViews() {
-		updateErrorView();
 		updateScanModuleView();
 	}
 	
@@ -242,10 +220,10 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		if(part != null) {
 			// remember the selected scan module
 			selectedEditPart = part;
-		
+			
 			// update the model to the currently selected module 
 			selectedScanModule = (ScanModule)selectedEditPart.getModel();
-						
+			
 			// set the focus (to select/color it)
 			((ScanModuleEditPart)selectedEditPart).setFocus(true);
 		} else {
@@ -257,6 +235,14 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		
 		// tell the views about the changes
 		updateViews();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ScanDescription getContent() {
+		return this.scanDescription;
 	}
 	
 	// ***********************************************************************
