@@ -235,7 +235,7 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		}
 		this.fileFormatCombo.setItems(pluginNames.toArray(new String[0]));
 		this.fileFormatComboControlDecoration = new ControlDecoration(
-				fileFormatCombo, SWT.RIGHT);
+				fileFormatCombo, SWT.LEFT);
 		this.fileFormatComboControlDecoration.setImage(errorImage);
 		this.fileFormatComboControlDecoration.setDescriptionText(
 				"The File Format is mandatory!");
@@ -276,7 +276,7 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		gridData.horizontalAlignment = GridData.FILL;
 		this.filenameInput.setLayoutData(gridData);
 		this.fileNameInputControlDecoration = new ControlDecoration(
-				filenameInput, SWT.RIGHT);
+				filenameInput, SWT.LEFT);
 		this.fileNameInputControlDecoration.setImage(errorImage);
 		this.fileNameInputControlDecoration.hide();
 		fileNameInputModifiedListener = new FileNameInputModifiedListener();

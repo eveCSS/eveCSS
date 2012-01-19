@@ -1,6 +1,5 @@
 package de.ptb.epics.eve.editor.views.errorview;
 
-import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -20,9 +19,6 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @since 1.1
  */
 public class ContentProvider implements IStructuredContentProvider, IModelUpdateListener {
-
-	private static Logger logger = 
-			Logger.getLogger(ContentProvider.class.getName());
 	
 	private Viewer viewer;
 	private ScanDescription scanDescription;
@@ -77,9 +73,7 @@ public class ContentProvider implements IStructuredContentProvider, IModelUpdate
 		GC gc = new GC(((TableViewer)viewer).getTable());
 		FontMetrics fm = gc.getFontMetrics();
 		int charWidth = fm.getAverageCharWidth();
-		logger.debug("char width: " + charWidth);
 		for(IModelError ime : this.scanDescription.getModelErrors()) {
-			logger.debug(ime.getErrorMessage().length());
 			if(max_width < ime.getErrorMessage().length() * charWidth + 8) {
 				max_width = ime.getErrorMessage().length() * charWidth + 8;
 			}
