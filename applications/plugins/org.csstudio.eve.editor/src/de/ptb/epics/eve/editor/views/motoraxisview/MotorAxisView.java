@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.motoraxisview;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,7 +38,8 @@ import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class MotorAxisView extends ViewPart implements ISelectionListener {
+public class MotorAxisView extends ViewPart implements ISelectionListener, 
+					PropertyChangeListener  {
 
 	/** the unique identifier of the view. */
 	public static final String ID = 
@@ -238,15 +241,19 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 			logger.debug("set axis (null)");
 		}
 		
+		if (this.currentAxis != null) {
+			this.scanModule.removePropertyChangeListener("removeAxis", this);
+		}
+		
 		// set the new axis as current axis
 		this.currentAxis = axis;
 		this.scanModule = null;
 		
 		if(this.currentAxis != null) {
 			this.scanModule = axis.getScanModule();
-		}
-		
-		if(this.currentAxis != null) {
+
+			this.scanModule.addPropertyChangeListener("removeAxis", this);
+			
 			this.setPartName(
 					this.currentAxis.getMotorAxis().getFullIdentifyer());
 			
@@ -403,6 +410,7 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
+			logger.debug("step function modified");
 			if(currentAxis != null) {
 				if(currentAxis.getStepfunctionString().equals(
 						stepFunctionCombo.getText())) {
@@ -431,10 +439,25 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
+			logger.debug("position mode modified");
 			if(currentAxis != null) {
 				currentAxis.setPositionMode(
 						PositionMode.stringToType(positionModeCombo.getText()));
 			}
 		}
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+
+		if (e.getOldValue().equals(currentAxis)) {
+			// current Axis will be removed
+			setAxis(null);
+		}
+	}
+
+
 }

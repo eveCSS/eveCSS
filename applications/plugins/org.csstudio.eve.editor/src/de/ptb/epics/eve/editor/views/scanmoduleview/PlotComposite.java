@@ -148,7 +148,7 @@ public class PlotComposite extends Composite {
 			{	// ... select the first one
 				// der richtige Plot selektiert und gezeigt!
 				tableViewer.getTable().select(0);
-				tableViewer.getTable().setFocus();
+//				tableViewer.getTable().setFocus();
 			}
 		}
 		((ScanModuleView)parentView).selectionProviderWrapper.
@@ -309,6 +309,12 @@ public class PlotComposite extends Composite {
     		
 			scanModule.remove((PlotWindow)((IStructuredSelection)
 					tableViewer.getSelection()).getFirstElement());
+
+			// if another plot is available, select the first plot
+			if(tableViewer.getTable().getItems().length != 0) {
+				tableViewer.getTable().select(0);
+			} 
+			tableViewer.getControl().setFocus();
 			
 			tableViewer.refresh();
     	}

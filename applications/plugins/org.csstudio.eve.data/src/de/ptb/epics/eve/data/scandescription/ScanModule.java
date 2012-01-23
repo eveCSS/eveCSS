@@ -2,6 +2,7 @@ package de.ptb.epics.eve.data.scandescription;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +33,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	
 	private static Logger logger = Logger.getLogger(ScanModule.class.getName());
 	
+	// delegated observable
+	private PropertyChangeSupport propertyChangeSupport;
+
 	// the id of the scan module
 	private int id;
 	
@@ -162,6 +166,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.updateListener = new ArrayList<IModelUpdateListener>();
 		
 		this.positionings = new ArrayList<Positioning>();
+
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
 	/**
@@ -247,8 +253,14 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * Modul.
 	 */
 	public void add( final Channel channel ) {
+/*** TODO: Originalreihenfolge von vor dem 20.1.12:
 		this.channels.add( channel );
 		channel.addModelUpdateListener( this );
+		updateListeners();
+***/
+		channel.addModelUpdateListener( this );
+		this.channels.add( channel );
+		propertyChangeSupport.firePropertyChange("addChannel", channel, null);
 		updateListeners();
 	}
 	
@@ -262,6 +274,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		axis.addPropertyChangeListener("mainAxis", this);
 		axis.addPropertyChangeListener("stepcount", this);
 		this.axes.add(axis);
+		propertyChangeSupport.firePropertyChange("addAxis", axis, null);
 		updateListeners();
 	}
 	
@@ -331,40 +344,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			}
 		}
 
-		// Wenn die Achse in einem Plot verwendet wird, muß die Achse entfernt 
-		// werden
-		for ( Iterator< PlotWindow > it = this.plotWindows.iterator(); 
-				it.hasNext(); ) {
-			PlotWindow aktPlotWindow = it.next();
-
-			YAxis wegAxis1 = null;
-			YAxis wegAxis2 = null;
-			for( Iterator< YAxis > ityAxis = aktPlotWindow.getYAxisIterator(); 
-					ityAxis.hasNext();) {
-				YAxis yAxis = ityAxis.next();
-				if (yAxis.getNormalizeChannel() != null) {
-					if (yAxis.getNormalizeChannel().equals(
-							channel.getDetectorChannel())) {
-						yAxis.setNormalizeChannel(null);
-					}
-				}
-				if (yAxis.getDetectorChannel() != null) {
-					if (yAxis.getDetectorChannel().equals(
-							channel.getDetectorChannel())) {
-						yAxis.setDetectorChannel(null);
-						if (wegAxis1 == null)
-							wegAxis1 = yAxis;
-						else
-							wegAxis2 = yAxis;
-					}
-				}
-			}
-			if (wegAxis1 != null)
-				aktPlotWindow.removeYAxis(wegAxis1);
-			if (wegAxis2 != null)
-				aktPlotWindow.removeYAxis(wegAxis2);
-		}
-
 		// falls es DetektorReadyEvents zu dem Channel gibt, werden diese 
 		// entfernt
 		if (channel.getDetectorReadyEvent() != null) {
@@ -373,8 +352,12 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			channel.setDetectorReadyEvent(null);
 		};
 
-		this.channels.remove( channel );
+		// 1. log off listener
 		channel.removeModelUpdateListener( this );
+		// 2. remove channel
+		this.channels.remove( channel );
+		// 3. tell that channel was removed
+		propertyChangeSupport.firePropertyChange("removeChannel", channel, null);
 		updateListeners();
 	}
 	
@@ -394,23 +377,13 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			}
 		}
 
-		// Wenn die Achse in einem Plot verwendet wird, muß die Achse entfernt 
-		// werden
-		for ( Iterator< PlotWindow > it = this.plotWindows.iterator(); 
-				it.hasNext(); ) {
-			PlotWindow aktPlotWindow = it.next();
-			if (aktPlotWindow.getXAxis() != null) {
-				// nur wenn die aktuelle Anzeige der X-Achse nicht leer ist,
-				// wird ein neuer Wert gesetzt
-				if (aktPlotWindow.getXAxis().equals(axis.getMotorAxis())) {
-					aktPlotWindow.setXAxis(null);
-				}
-			}
-		}
-		this.axes.remove( axis );
 		axis.removeModelUpdateListener( this );
 		axis.removePropertyChangeListener("mainAxis", this);
 		axis.removePropertyChangeListener("stepcount", this);
+
+		this.axes.remove( axis );
+		
+		propertyChangeSupport.firePropertyChange("removeAxis", axis, null);
 		updateListeners();
 	}
 	
@@ -420,6 +393,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param plotWindow The plot window that should be removed.
 	 */
 	public void remove( final PlotWindow plotWindow ) {
+
+		propertyChangeSupport.firePropertyChange("removePlot", plotWindow, null);
+
 		this.plotWindows.remove( plotWindow );
 		plotWindow.removeModelUpdateListener( this );
 		updateListeners();
@@ -1064,6 +1040,10 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
+
+		System.out.println("property Name: " + e.getPropertyName());
+		System.out.println("e: " + e);
+		
 		Axis source = (Axis)e.getSource();
 		if(logger.isDebugEnabled()) {
 			logger.debug("Property: '" + e.getPropertyName() + "' " + 
@@ -1081,4 +1061,30 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			}
 		}
 	}
+	
+// Neu von Hartmut: ScanModule soll ein PropertyChangeListener erzeugen,
+// wenn die Anzahl von Axis sich ändert!
+	/**
+	 * 
+	 * @param propertyName
+	 * @param listener
+	 */
+	public void addPropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		this.propertyChangeSupport.addPropertyChangeListener(
+				propertyName, listener);
+	}
+	
+	/**
+	 * 
+	 * @param propertyName
+	 * @param listener
+	 */
+	public void removePropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		this.propertyChangeSupport.removePropertyChangeListener(
+				propertyName, listener);
+	}
+
+	
 }

@@ -11,6 +11,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
@@ -47,6 +48,7 @@ import de.ptb.epics.eve.editor.SelectionProviderWrapper;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EventComposite;
+import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
 
 /**
  * <code>ScanModulView</code> shows the currently selected scan module.
@@ -503,8 +505,15 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 			this.confirmTriggerCheckBox.setSelection(
 					this.currentScanModule.isTriggerconfirm());
 			
-			if(actionsTabFolder.getSelection() == null)
+			if(actionsTabFolder.getSelection() == null) {
+				// TODO: Es gibt noch das Problem, das bei der ersten Auswahl
+				// eines ScanModuls nur die MotorAxisView und nicht auch die
+				// DetectorChannelView und die PlotWindowView angezeigt wird.
+				// Wenn man hier die setSelection(0) wegnimmt, erscheinen in der
+				// scanModuleView die TabFolder mit leeren Einträgen.
 				actionsTabFolder.setSelection(0);
+//				actionsTabFolder.setSelection(1);
+			}
 
 			// setScanModule muß in der Reihenfolge aufgerufen werden, dass
 			// das gerade selekierte Composite als letztes gesetzt wird,
@@ -533,7 +542,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 				((DetectorChannelComposite) this.detectorChannelComposite).setScanModule(
 						this.currentScanModule);
 				break;
-			case 4:
+			case 5:
 				((MotorAxisComposite) this.motorAxisComposite).setScanModule(
 						this.currentScanModule);
 				((DetectorChannelComposite) this.detectorChannelComposite).setScanModule(
@@ -542,7 +551,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener {
 						this.currentScanModule);
 				break;
 			}
-			
 			
 			this.triggerEventComposite.setControlEventManager(
 					this.currentScanModule.getTriggerControlEventManager());

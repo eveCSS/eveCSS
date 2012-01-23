@@ -170,11 +170,7 @@ public class MotorAxisComposite extends Composite {
 			if(tableViewer.getTable().getSelectionCount() == 0)
 			{	// ... select the first one and set the motor axis view
 				tableViewer.getTable().select(0);
-				tableViewer.getControl().setFocus();
-			}
-			else {
-//				System.out.println("\tEs gibt Motore, aber es ist schon einer selektiert");
-//				tableViewer.getTable().select(tableViewer.getTable().getSelectionCount());
+//				tableViewer.getControl().setFocus();
 			}
 		}
 		// Frage: Muss das hier passieren oder kann das innerhalb der obigen
@@ -415,9 +411,6 @@ public class MotorAxisComposite extends Composite {
 					tableViewer.getTable().getItemCount()-1);
 			tableViewer.getControl().setFocus();
 
-			// if only one axis available, set this axis for the Plot
-			setPlotMotorAxis();
-			
 			tableViewer.refresh();
 		}
 	}
@@ -442,9 +435,6 @@ public class MotorAxisComposite extends Composite {
 			} 
 			tableViewer.getControl().setFocus();
 			
-			// if only one axis available, set this axis as for the Plot
-			setPlotMotorAxis();
-
 			tableViewer.refresh();
 		}
 	}
