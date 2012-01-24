@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="ControlEventManager" size="2408,3085" id="" metadata="uml2-1.0" initialized="true" scrolledX="2" scrolledY="296" tag="1000" key="32303037303533312D313030302064652E7074622E65706963732E6576652E646174612F6D6D696368616C73">
+  <children xsi:type="editmodel:ClassEditModel" name="Chain" location="404,475" size="357,711" id="de.ptb.epics.eve.data.scandescription/Chain" runTimeClassModel="getStopControlEventManager(),addRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),getModelErrors(),isBreakEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),removeStopEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),saveScanDescription,addPauseEvent(Lde.ptb.epics.eve.data.scandescription.PauseEvent;),saveFilename,scanModules,getPauseControlEventManager(),removeStartEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),isAEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),addBreakEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),redoControlEventManager,removeRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),isPauseEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.PauseEvent;),setId(I),getComment(),isConfirmSave(),getScanModulById(I),remove(Lde.ptb.epics.eve.data.scandescription.ScanModule;),getSavePluginController(),getStopEventsIterator(),setSaveFilename(Ljava.lang.String;),getId(),startEvent,getStartEventsIterator(),startControlEventManager,addStopEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),getPauseEventsIterator(),getStartControlEventManager(),getBreakControlEventManager(),comment,getBreakEventsIterator(),getSaveFilename(),removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;),breakControlEventManager,scanDescription,isAutoNumber(),confirmSave,getScanModules(),updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;),getRedoEventsIterator(),stopControlEventManager,stopEvents,id,setComment(Ljava.lang.String;),pauseEvents,redoEvents,setAutoNumber(Z),removePauseEvent(Lde.ptb.epics.eve.data.scandescription.PauseEvent;),autoNumber,setConfirmSave(Z),addModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;),getScanDescription(),add(Lde.ptb.epics.eve.data.scandescription.ScanModule;),addStartEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),breakEvents,pauseControlEventManager,isRedoEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),setStartEvent(Lde.ptb.epics.eve.data.scandescription.StartEvent;),setSaveScanDescription(Z),getRedoControlEventManager(),getStartEvent(),isSaveScanDescription(),removeBreakEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),Chain(I)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="304,180">
+      <children xsi:type="editmodel:AttributeEditModel" name="redoEvents" id="de.ptb.epics.eve.data.scandescription/Chain#redoEvents"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="breakEvents" id="de.ptb.epics.eve.data.scandescription/Chain#breakEvents"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="pauseEvents" id="de.ptb.epics.eve.data.scandescription/Chain#pauseEvents"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="stopEvents" id="de.ptb.epics.eve.data.scandescription/Chain#stopEvents"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="startEvent" id="de.ptb.epics.eve.data.scandescription/Chain#startEvent"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="breakControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#breakControlEventManager"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="startControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#startControlEventManager"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="stopControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#stopControlEventManager"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="redoControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#redoControlEventManager"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="pauseControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#pauseControlEventManager"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="334,468">
+      <children xsi:type="editmodel:MethodEditModel" name="getStartEvent" id="de.ptb.epics.eve.data.scandescription/Chain#getStartEvent()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStartEvent" id="de.ptb.epics.eve.data.scandescription/Chain#setStartEvent(Lde.ptb.epics.eve.data.scandescription.StartEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addPauseEvent" id="de.ptb.epics.eve.data.scandescription/Chain#addPauseEvent(Lde.ptb.epics.eve.data.scandescription.PauseEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removePauseEvent" id="de.ptb.epics.eve.data.scandescription/Chain#removePauseEvent(Lde.ptb.epics.eve.data.scandescription.PauseEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addBreakEvent" id="de.ptb.epics.eve.data.scandescription/Chain#addBreakEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeBreakEvent" id="de.ptb.epics.eve.data.scandescription/Chain#removeBreakEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addStartEvent" id="de.ptb.epics.eve.data.scandescription/Chain#addStartEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeStartEvent" id="de.ptb.epics.eve.data.scandescription/Chain#removeStartEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addStopEvent" id="de.ptb.epics.eve.data.scandescription/Chain#addStopEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeStopEvent" id="de.ptb.epics.eve.data.scandescription/Chain#removeStopEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addRedoEvent" id="de.ptb.epics.eve.data.scandescription/Chain#addRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeRedoEvent" id="de.ptb.epics.eve.data.scandescription/Chain#removeRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isPauseEventOfTheChain" id="de.ptb.epics.eve.data.scandescription/Chain#isPauseEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.PauseEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isRedoEventOfTheChain" id="de.ptb.epics.eve.data.scandescription/Chain#isRedoEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isBreakEventOfTheChain" id="de.ptb.epics.eve.data.scandescription/Chain#isBreakEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isAEventOfTheChain" id="de.ptb.epics.eve.data.scandescription/Chain#isAEventOfTheChain(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPauseEventsIterator" id="de.ptb.epics.eve.data.scandescription/Chain#getPauseEventsIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStartEventsIterator" id="de.ptb.epics.eve.data.scandescription/Chain#getStartEventsIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStopEventsIterator" id="de.ptb.epics.eve.data.scandescription/Chain#getStopEventsIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getBreakEventsIterator" id="de.ptb.epics.eve.data.scandescription/Chain#getBreakEventsIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getRedoEventsIterator" id="de.ptb.epics.eve.data.scandescription/Chain#getRedoEventsIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getBreakControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#getBreakControlEventManager()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStartControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#getStartControlEventManager()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStopControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#getStopControlEventManager()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPauseControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#getPauseControlEventManager()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getRedoControlEventManager" id="de.ptb.epics.eve.data.scandescription/Chain#getRedoControlEventManager()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/Chain-Standard::Call->de.ptb.epics.eve.data.scandescription/ControlEvent*de.ptb.epics.eve.data.scandescription/Chain-Soyatec::Import->de.ptb.epics.eve.data.scandescription/ControlEvent" source="//@children.0" target="//@children.8" targetEnd="//@children.0/@sourceConnections.0/@children.2" label="//@children.0/@sourceConnections.0/@children.0" sourceEnd="//@children.0/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Call, Import»" size="80,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="351,55" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="5,333"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/Chain-Soyatec::Import->de.ptb.epics.eve.data.scandescription/StartEvent" source="//@children.0" target="//@children.3" targetEnd="//@children.0/@sourceConnections.1/@children.2" label="//@children.0/@sourceConnections.1/@children.0" sourceEnd="//@children.0/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="141,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="141,387"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/Chain-Standard::Call->de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager*de.ptb.epics.eve.data.scandescription/Chain-Standard::Instantiate->de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager*de.ptb.epics.eve.data.scandescription/Chain-Soyatec::Import->de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager" source="//@children.0" target="//@children.6" targetEnd="//@children.0/@sourceConnections.2/@children.2" label="//@children.0/@sourceConnections.2/@children.0" sourceEnd="//@children.0/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Call, Instantiate, Import»" size="148,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="357,15" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,443"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/Chain-Standard::Call->de.ptb.epics.eve.data.scandescription/PauseEvent*de.ptb.epics.eve.data.scandescription/Chain-Soyatec::Import->de.ptb.epics.eve.data.scandescription/PauseEvent" source="//@children.0" target="//@children.9" targetEnd="//@children.0/@sourceConnections.3/@children.2" label="//@children.0/@sourceConnections.3/@children.0" sourceEnd="//@children.0/@sourceConnections.3/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Call, Import»" size="80,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="357,131" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="19,67"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="Channel" location="840,855" size="350,189" id="de.ptb.epics.eve.data.scandescription/Channel" runTimeClassModel="confirmTrigger,Channel(Lde.ptb.epics.eve.data.scandescription.ScanModule;),setConfirmTrigger(Z),getRedoEventsIterator(),setRepeatOnRedo(Z),addRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),getModelErrors(),getDetectorReadyEvent(),getMaxDeviation(),setAverageCount(I),redoEvents,maxDeviation,averageCount,setMaxDeviation(D),isRepeatOnRedo(),getDetectorChannel(),setDetectorReadyEvent(Lde.ptb.epics.eve.data.measuringstation.Event;),setMinumum(D),redoControlEventManager,isConfirmTrigger(),hasReadyEvent(),maxAttempts,removeRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),detectorReadyEvent,getMaxAttempts(),getRedoControlEventManager(),setDetectorChannel(Lde.ptb.epics.eve.data.measuringstation.DetectorChannel;),repeatOnRedo,getMinumum(),getAverageCount(),setMaxAttempts(I)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="295,36">
+      <children xsi:type="editmodel:AttributeEditModel" name="redoEvents" id="de.ptb.epics.eve.data.scandescription/Channel#redoEvents"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="redoControlEventManager" id="de.ptb.epics.eve.data.scandescription/Channel#redoControlEventManager"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="327,90">
+      <children xsi:type="editmodel:MethodEditModel" name="addRedoEvent" id="de.ptb.epics.eve.data.scandescription/Channel#addRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeRedoEvent" id="de.ptb.epics.eve.data.scandescription/Channel#removeRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getRedoEventsIterator" id="de.ptb.epics.eve.data.scandescription/Channel#getRedoEventsIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setDetectorReadyEvent" id="de.ptb.epics.eve.data.scandescription/Channel#setDetectorReadyEvent(Lde.ptb.epics.eve.data.measuringstation.Event;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getRedoControlEventManager" id="de.ptb.epics.eve.data.scandescription/Channel#getRedoControlEventManager()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/Channel-Standard::Call->de.ptb.epics.eve.data.scandescription/ControlEvent*de.ptb.epics.eve.data.scandescription/Channel-Soyatec::Import->de.ptb.epics.eve.data.scandescription/ControlEvent" source="//@children.1" target="//@children.8" targetEnd="//@children.1/@sourceConnections.0/@children.2" label="//@children.1/@sourceConnections.0/@children.0" sourceEnd="//@children.1/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Call, Import»" size="80,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="157,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="247,333"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/Channel-Standard::Call->de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager*de.ptb.epics.eve.data.scandescription/Channel-Standard::Instantiate->de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager*de.ptb.epics.eve.data.scandescription/Channel-Soyatec::Import->de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager" source="//@children.1" target="//@children.6" targetEnd="//@children.1/@sourceConnections.1/@children.2" label="//@children.1/@sourceConnections.1/@children.0" sourceEnd="//@children.1/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Call, Instantiate, Import»" size="148,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="245,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="116,459"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/Channel-Soyatec::Import->de.ptb.epics.eve.data.measuringstation/Event" source="//@children.1" target="//@children.5" targetEnd="//@children.1/@sourceConnections.2/@children.2" label="//@children.1/@sourceConnections.2/@children.0" sourceEnd="//@children.1/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,18" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="328,648"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:EnumerationEditModel" name="ControlEventTypes" location="44,45" size="345,102" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventTypes" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel" size="115,36">
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="CONTROL_EVENT" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventTypes#CONTROL_EVENT%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="PAUSE_EVENT" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventTypes#PAUSE_EVENT%"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" enumerationClassMode="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.1" name="StartEvent" location="404,48" size="284,387" id="de.ptb.epics.eve.data.scandescription/StartEvent">
+    <children xsi:type="editmodel:CompartmentEditModel" size="141,90">
+      <children xsi:type="editmodel:AttributeEditModel" name="chain" id="de.ptb.epics.eve.data.scandescription/StartEvent#chain"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="connector" id="de.ptb.epics.eve.data.scandescription/StartEvent#connector"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="event" id="de.ptb.epics.eve.data.scandescription/StartEvent#event"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="x" id="de.ptb.epics.eve.data.scandescription/StartEvent#x"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="y" id="de.ptb.epics.eve.data.scandescription/StartEvent#y"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="261,234">
+      <children xsi:type="editmodel:MethodEditModel" name="StartEvent" id="de.ptb.epics.eve.data.scandescription/StartEvent#StartEvent()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="StartEvent" id="de.ptb.epics.eve.data.scandescription/StartEvent#StartEvent(Lde.ptb.epics.eve.data.measuringstation.Event;Lde.ptb.epics.eve.data.scandescription.Chain;II)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="StartEvent" id="de.ptb.epics.eve.data.scandescription/StartEvent#StartEvent(Lde.ptb.epics.eve.data.measuringstation.Event;Lde.ptb.epics.eve.data.scandescription.Chain;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getChain" id="de.ptb.epics.eve.data.scandescription/StartEvent#getChain()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getConnector" id="de.ptb.epics.eve.data.scandescription/StartEvent#getConnector()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getEvent" id="de.ptb.epics.eve.data.scandescription/StartEvent#getEvent()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getX" id="de.ptb.epics.eve.data.scandescription/StartEvent#getX()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getY" id="de.ptb.epics.eve.data.scandescription/StartEvent#getY()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setChain" id="de.ptb.epics.eve.data.scandescription/StartEvent#setChain(Lde.ptb.epics.eve.data.scandescription.Chain;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setConnector" id="de.ptb.epics.eve.data.scandescription/StartEvent#setConnector(Lde.ptb.epics.eve.data.scandescription.Connector;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setEvent" id="de.ptb.epics.eve.data.scandescription/StartEvent#setEvent(Lde.ptb.epics.eve.data.measuringstation.Event;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setX" id="de.ptb.epics.eve.data.scandescription/StartEvent#setX(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setY" id="de.ptb.epics.eve.data.scandescription/StartEvent#setY(I)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ScanModule" location="1394,554" size="405,603" id="de.ptb.epics.eve.data.scandescription/ScanModule" runTimeClassModel="setNested(Lde.ptb.epics.eve.data.scandescription.Connector;),nested,getTriggerControlEventManager(),remove(Lde.ptb.epics.eve.data.scandescription.Positioning;),add(Lde.ptb.epics.eve.data.scandescription.Prescan;),getPrescans(),isRedoEventOfScanModule(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),addPauseEvent(Lde.ptb.epics.eve.data.scandescription.PauseEvent;),getPauseControlEventManager(),remove(Lde.ptb.epics.eve.data.scandescription.Postscan;),redoControlEventManager,getTriggerdelay(),parent,channels,triggerconfirm,getPositionings(),isTriggerconfirm(),removeRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),getNested(),remove(Lde.ptb.epics.eve.data.scandescription.Channel;),getAppended(),getBreakEventsIterator(),propertyChange(Ljava.beans.PropertyChangeEvent;),removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;),settletime,getRedoEventsIterator(),setAppended(Lde.ptb.epics.eve.data.scandescription.Connector;),getPlotWindows(),add(Lde.ptb.epics.eve.data.scandescription.Positioning;),saveAxisPositions,getSaveAxisPositions(),isBreakEventOfScanModule(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),redoEvents,pauseEvents,remove(Lde.ptb.epics.eve.data.scandescription.PlotWindow;),getChain(),addModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;),add(Lde.ptb.epics.eve.data.scandescription.PlotWindow;),getSettletime(),getChannels(),axes,setY(I),getX(),chain,getY(),y,removeBreakEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),x,add(Lde.ptb.epics.eve.data.scandescription.Axis;),appended,getType(),addRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),getModelErrors(),positionings,type,addTriggerEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),getName(),isAEventOfTheScanModul(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),plotWindows,setSaveAxisPositions(Lde.ptb.epics.eve.data.SaveAxisPositionsTypes;),setTriggerconfirm(Z),addBreakEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),setX(I),triggerdelay,setName(Ljava.lang.String;),setId(I),setTriggerdelay(D),setType(Ljava.lang.String;),ScanModule(I),getId(),getTriggerEventsIterator(),getPauseEventsIterator(),triggerEvents,getBreakControlEventManager(),breakControlEventManager,triggerControlEventManager,getAxes(),updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;),add(Lde.ptb.epics.eve.data.scandescription.Channel;),id,isTriggerEventOfScanModule(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),postscans,name,removePauseEvent(Lde.ptb.epics.eve.data.scandescription.PauseEvent;),setSettletime(D),add(Lde.ptb.epics.eve.data.scandescription.Postscan;),breakEvents,pauseControlEventManager,remove(Lde.ptb.epics.eve.data.scandescription.Axis;),setParent(Lde.ptb.epics.eve.data.scandescription.Connector;),getPostscans(),isPauseEventOfScanModule(Lde.ptb.epics.eve.data.scandescription.PauseEvent;),getRedoControlEventManager(),getParent(),removeTriggerEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),remove(Lde.ptb.epics.eve.data.scandescription.Prescan;),prescans">
+    <children xsi:type="editmodel:CompartmentEditModel" size="307,144">
+      <children xsi:type="editmodel:AttributeEditModel" name="triggerEvents" id="de.ptb.epics.eve.data.scandescription/ScanModule#triggerEvents"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="redoEvents" id="de.ptb.epics.eve.data.scandescription/ScanModule#redoEvents"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="breakEvents" id="de.ptb.epics.eve.data.scandescription/ScanModule#breakEvents"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="pauseEvents" id="de.ptb.epics.eve.data.scandescription/ScanModule#pauseEvents"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="breakControlEventManager" id="de.ptb.epics.eve.data.scandescription/ScanModule#breakControlEventManager"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="redoControlEventManager" id="de.ptb.epics.eve.data.scandescription/ScanModule#redoControlEventManager"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="triggerControlEventManager" id="de.ptb.epics.eve.data.scandescription/ScanModule#triggerControlEventManager"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="pauseControlEventManager" id="de.ptb.epics.eve.data.scandescription/ScanModule#pauseControlEventManager"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="382,396">
+      <children xsi:type="editmodel:MethodEditModel" name="addPauseEvent" id="de.ptb.epics.eve.data.scandescription/ScanModule#addPauseEvent(Lde.ptb.epics.eve.data.scandescription.PauseEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removePauseEvent" id="de.ptb.epics.eve.data.scandescription/ScanModule#removePauseEvent(Lde.ptb.epics.eve.data.scandescription.PauseEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addBreakEvent" id="de.ptb.epics.eve.data.scandescription/ScanModule#addBreakEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeBreakEvent" id="de.ptb.epics.eve.data.scandescription/ScanModule#removeBreakEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addRedoEvent" id="de.ptb.epics.eve.data.scandescription/ScanModule#addRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeRedoEvent" id="de.ptb.epics.eve.data.scandescription/ScanModule#removeRedoEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addTriggerEvent" id="de.ptb.epics.eve.data.scandescription/ScanModule#addTriggerEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeTriggerEvent" id="de.ptb.epics.eve.data.scandescription/ScanModule#removeTriggerEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isPauseEventOfScanModule" id="de.ptb.epics.eve.data.scandescription/ScanModule#isPauseEventOfScanModule(Lde.ptb.epics.eve.data.scandescription.PauseEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isRedoEventOfScanModule" id="de.ptb.epics.eve.data.scandescription/ScanModule#isRedoEventOfScanModule(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isBreakEventOfScanModule" id="de.ptb.epics.eve.data.scandescription/ScanModule#isBreakEventOfScanModule(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isTriggerEventOfScanModule" id="de.ptb.epics.eve.data.scandescription/ScanModule#isTriggerEventOfScanModule(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isAEventOfTheScanModul" id="de.ptb.epics.eve.data.scandescription/ScanModule#isAEventOfTheScanModul(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPauseEventsIterator" id="de.ptb.epics.eve.data.scandescription/ScanModule#getPauseEventsIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getBreakEventsIterator" id="de.ptb.epics.eve.data.scandescription/ScanModule#getBreakEventsIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getRedoEventsIterator" id="de.ptb.epics.eve.data.scandescription/ScanModule#getRedoEventsIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTriggerEventsIterator" id="de.ptb.epics.eve.data.scandescription/ScanModule#getTriggerEventsIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getBreakControlEventManager" id="de.ptb.epics.eve.data.scandescription/ScanModule#getBreakControlEventManager()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPauseControlEventManager" id="de.ptb.epics.eve.data.scandescription/ScanModule#getPauseControlEventManager()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getRedoControlEventManager" id="de.ptb.epics.eve.data.scandescription/ScanModule#getRedoControlEventManager()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTriggerControlEventManager" id="de.ptb.epics.eve.data.scandescription/ScanModule#getTriggerControlEventManager()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeModelUpdateListener" id="de.ptb.epics.eve.data.scandescription/ScanModule#removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/ScanModule-Standard::Call->de.ptb.epics.eve.data.scandescription/ControlEvent*de.ptb.epics.eve.data.scandescription/ScanModule-Soyatec::Import->de.ptb.epics.eve.data.scandescription/ControlEvent" source="//@children.4" target="//@children.8" targetEnd="//@children.4/@sourceConnections.0/@children.2" label="//@children.4/@sourceConnections.0/@children.0" sourceEnd="//@children.4/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Call, Import»" size="80,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,99" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="369,333"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/ScanModule-Standard::Call->de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager*de.ptb.epics.eve.data.scandescription/ScanModule-Standard::Instantiate->de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager*de.ptb.epics.eve.data.scandescription/ScanModule-Soyatec::Import->de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager" source="//@children.4" target="//@children.6" targetEnd="//@children.4/@sourceConnections.1/@children.2" label="//@children.4/@sourceConnections.1/@children.0" sourceEnd="//@children.4/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Call, Instantiate, Import»" size="148,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="202,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="367,459"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/ScanModule-Standard::Call->de.ptb.epics.eve.data.measuringstation/Event" source="//@children.4" target="//@children.5" targetEnd="//@children.4/@sourceConnections.2/@children.2" label="//@children.4/@sourceConnections.2/@children.0" sourceEnd="//@children.4/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Call»" size="35,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,169" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="328,498"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/ScanModule-Standard::Call->de.ptb.epics.eve.data.scandescription/PauseEvent*de.ptb.epics.eve.data.scandescription/ScanModule-Soyatec::Import->de.ptb.epics.eve.data.scandescription/PauseEvent" source="//@children.4" target="//@children.9" targetEnd="//@children.4/@sourceConnections.3/@children.2" label="//@children.4/@sourceConnections.3/@children.0" sourceEnd="//@children.4/@sourceConnections.3/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Call, Import»" size="80,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,59" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="240,74"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.4/@sourceConnections.2 //@children.1/@sourceConnections.2" name="Event" location="52,225" size="328,668" id="de.ptb.epics.eve.data.measuringstation/Event">
+    <children xsi:type="editmodel:CompartmentEditModel" size="144,90">
+      <children xsi:type="editmodel:AttributeEditModel" name="chainId" id="de.ptb.epics.eve.data.measuringstation/Event#chainId"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="monitor" id="de.ptb.epics.eve.data.measuringstation/Event#monitor"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="de.ptb.epics.eve.data.measuringstation/Event#name"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="scanModuleId" location="-58,81" id="de.ptb.epics.eve.data.measuringstation/Event#scanModuleId"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="type" id="de.ptb.epics.eve.data.measuringstation/Event#type"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="305,414">
+      <children xsi:type="editmodel:MethodEditModel" name="Event" id="de.ptb.epics.eve.data.measuringstation/Event#Event()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Event" id="de.ptb.epics.eve.data.measuringstation/Event#Event(IILde.ptb.epics.eve.data.measuringstation.Event.ScheduleIncident;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Event" id="de.ptb.epics.eve.data.measuringstation/Event#Event(Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;II)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Event" id="de.ptb.epics.eve.data.measuringstation/Event#Event(Lde.ptb.epics.eve.data.EventTypes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Event" id="de.ptb.epics.eve.data.measuringstation/Event#Event(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="Event" id="de.ptb.epics.eve.data.measuringstation/Event#Event(Lde.ptb.epics.eve.data.measuringstation.Access;Lde.ptb.epics.eve.data.TypeValue;Ljava.lang.String;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="de.ptb.epics.eve.data.measuringstation/Event#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getChainId" id="de.ptb.epics.eve.data.measuringstation/Event#getChainId()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getID" id="de.ptb.epics.eve.data.measuringstation/Event#getID()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMonitor" id="de.ptb.epics.eve.data.measuringstation/Event#getMonitor()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getName" id="de.ptb.epics.eve.data.measuringstation/Event#getName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getNameID" id="de.ptb.epics.eve.data.measuringstation/Event#getNameID()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getScanModuleId" id="de.ptb.epics.eve.data.measuringstation/Event#getScanModuleId()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getScheduleIncident" id="de.ptb.epics.eve.data.measuringstation/Event#getScheduleIncident()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getType" id="de.ptb.epics.eve.data.measuringstation/Event#getType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="de.ptb.epics.eve.data.measuringstation/Event#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setAccess" id="de.ptb.epics.eve.data.measuringstation/Event#setAccess(Lde.ptb.epics.eve.data.measuringstation.Access;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setChainId" id="de.ptb.epics.eve.data.measuringstation/Event#setChainId(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setId" id="de.ptb.epics.eve.data.measuringstation/Event#setId(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setName" id="de.ptb.epics.eve.data.measuringstation/Event#setName(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setScanModuleId" id="de.ptb.epics.eve.data.measuringstation/Event#setScanModuleId(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setScheduleIncident" id="de.ptb.epics.eve.data.measuringstation/Event#setScheduleIncident(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setType" id="de.ptb.epics.eve.data.measuringstation/Event#setType(Lde.ptb.epics.eve.data.EventTypes;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="168,91">
+      <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.5/@sourceConnections.0" name="ScheduleIncident" location="9514,11704" size="168,89" id="de.ptb.epics.eve.data.measuringstation/Event$ScheduleIncident">
+        <children xsi:type="editmodel:CompartmentEditModel" size="53,36">
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="END" id="de.ptb.epics.eve.data.measuringstation/Event$ScheduleIncident#END%"/>
+          <children xsi:type="editmodel:EnumerationLiteralEditModel" name="START" id="de.ptb.epics.eve.data.measuringstation/Event$ScheduleIncident#START%"/>
+        </children>
+      </children>
+    </children>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.measuringstation/Event-Soyatec::Import->de.ptb.epics.eve.data.measuringstation/Event$ScheduleIncident" source="//@children.5" target="//@children.5/@children.2/@children.0" targetEnd="//@children.5/@sourceConnections.0/@children.2" label="//@children.5/@sourceConnections.0/@children.0" sourceEnd="//@children.5/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="328,532" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="48,0"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.measuringstation/Event-Standard::Call->de.ptb.epics.eve.data/EventTypes*de.ptb.epics.eve.data.measuringstation/Event-Soyatec::Access->de.ptb.epics.eve.data/EventTypes*de.ptb.epics.eve.data.measuringstation/Event-Soyatec::Import->de.ptb.epics.eve.data/EventTypes" source="//@children.5" target="//@children.7" targetEnd="//@children.5/@sourceConnections.1/@children.2" label="//@children.5/@sourceConnections.1/@children.0" sourceEnd="//@children.5/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Access, Call, Import»" size="128,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="72,668" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="72,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.2 //@children.4/@sourceConnections.1 //@children.1/@sourceConnections.1" name="ControlEventManager" location="1229,47" size="574,459" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager" runTimeClassModel="ControlEventManager(Lde.ptb.epics.eve.data.scandescription.Channel;Ljava.util.List;Lde.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;),modelUpdateListener,updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;),getModelErrors(),controlEventList,parentChannel,ControlEventManager(Lde.ptb.epics.eve.data.scandescription.ScanModule;Ljava.util.List;Lde.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;),ControlEventManager(Lde.ptb.epics.eve.data.scandescription.Chain;Ljava.util.List;Lde.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;),updateListeners(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;),parentChain,getParentScanModul(),addControlEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),getControlEventType(),ControlEventManager(Ljava.util.List;),getParentChannel(),removeControlEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;),getControlEventsList(),parentScanModule,controlEventType,addModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;),getParentChain(),removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="308,108">
+      <children xsi:type="editmodel:AttributeEditModel" name="controlEventList" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#controlEventList"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="modelUpdateListener" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#modelUpdateListener"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="parentChain" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#parentChain"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="parentScanModule" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#parentScanModule"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="parentChannel" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#parentChannel"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="controlEventType" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#controlEventType"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="551,288">
+      <children xsi:type="editmodel:MethodEditModel" name="ControlEventManager" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#ControlEventManager(Ljava.util.List;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ControlEventManager" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#ControlEventManager(Lde.ptb.epics.eve.data.scandescription.Chain;Ljava.util.List;Lde.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ControlEventManager" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#ControlEventManager(Lde.ptb.epics.eve.data.scandescription.ScanModule;Ljava.util.List;Lde.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ControlEventManager" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#ControlEventManager(Lde.ptb.epics.eve.data.scandescription.Channel;Ljava.util.List;Lde.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getControlEventsList" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#getControlEventsList()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addControlEvent" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#addControlEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeControlEvent" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#removeControlEvent(Lde.ptb.epics.eve.data.scandescription.ControlEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addModelUpdateListener" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#addModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeModelUpdateListener" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="updateEvent" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getParentChain" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#getParentChain()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getParentScanModul" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#getParentScanModul()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getControlEventType" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#getControlEventType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getParentChannel" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#getParentChannel()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getModelErrors" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#getModelErrors()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="updateListeners" id="de.ptb.epics.eve.data.scandescription.updatenotification/ControlEventManager#updateListeners(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.5/@sourceConnections.1" name="EventTypes" location="52,944" size="146,120" id="de.ptb.epics.eve.data/EventTypes">
+    <children xsi:type="editmodel:CompartmentEditModel" size="79,54">
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="DETECTOR" id="de.ptb.epics.eve.data/EventTypes#DETECTOR%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MONITOR" id="de.ptb.epics.eve.data/EventTypes#MONITOR%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="SCHEDULE" id="de.ptb.epics.eve.data/EventTypes#SCHEDULE%"/>
+    </children>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.9/@sourceConnections.0 //@children.0/@sourceConnections.0 //@children.4/@sourceConnections.0 //@children.1/@sourceConnections.0" name="ControlEvent" location="750,44" size="405,333" id="de.ptb.epics.eve.data.scandescription/ControlEvent">
+    <children xsi:type="editmodel:CompartmentEditModel" size="146,54">
+      <children xsi:type="editmodel:AttributeEditModel" name="event" id="de.ptb.epics.eve.data.scandescription/ControlEvent#event"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="eventType" id="de.ptb.epics.eve.data.scandescription/ControlEvent#eventType"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="limit" id="de.ptb.epics.eve.data.scandescription/ControlEvent#limit"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="382,216">
+      <children xsi:type="editmodel:MethodEditModel" name="ControlEvent" id="de.ptb.epics.eve.data.scandescription/ControlEvent#ControlEvent(Lde.ptb.epics.eve.data.EventTypes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addModelUpdateListener" id="de.ptb.epics.eve.data.scandescription/ControlEvent#addModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDeviceId" id="de.ptb.epics.eve.data.scandescription/ControlEvent#getDeviceId()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getEvent" id="de.ptb.epics.eve.data.scandescription/ControlEvent#getEvent()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getEventType" id="de.ptb.epics.eve.data.scandescription/ControlEvent#getEventType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getId" id="de.ptb.epics.eve.data.scandescription/ControlEvent#getId()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLimit" id="de.ptb.epics.eve.data.scandescription/ControlEvent#getLimit()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getModelErrors" id="de.ptb.epics.eve.data.scandescription/ControlEvent#getModelErrors()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeModelUpdateListener" id="de.ptb.epics.eve.data.scandescription/ControlEvent#removeModelUpdateListener(Lde.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setEvent" id="de.ptb.epics.eve.data.scandescription/ControlEvent#setEvent(Lde.ptb.epics.eve.data.measuringstation.Event;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setId" id="de.ptb.epics.eve.data.scandescription/ControlEvent#setId(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="updateEvent" id="de.ptb.epics.eve.data.scandescription/ControlEvent#updateEvent(Lde.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.3 //@children.4/@sourceConnections.3" name="PauseEvent" location="795,539" size="240,135" id="de.ptb.epics.eve.data.scandescription/PauseEvent">
+    <children xsi:type="editmodel:CompartmentEditModel" size="156,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="continueIfFalse" id="de.ptb.epics.eve.data.scandescription/PauseEvent#continueIfFalse"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="194,54">
+      <children xsi:type="editmodel:MethodEditModel" name="PauseEvent" location="1780,610" id="de.ptb.epics.eve.data.scandescription/PauseEvent#PauseEvent(Lde.ptb.epics.eve.data.EventTypes;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isContinueIfFalse" id="de.ptb.epics.eve.data.scandescription/PauseEvent#isContinueIfFalse()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setContinueIfFalse" id="de.ptb.epics.eve.data.scandescription/PauseEvent#setContinueIfFalse(Z)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription/ControlEvent&lt;-de.ptb.epics.eve.data.scandescription/PauseEvent" source="//@children.9" target="//@children.8" targetEnd="//@children.9/@sourceConnections.0/@children.1" sourceEnd="//@children.9/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="119,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="164,333"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=7;Product=eUML2" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>

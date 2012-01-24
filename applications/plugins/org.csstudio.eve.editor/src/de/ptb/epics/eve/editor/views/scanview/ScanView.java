@@ -70,9 +70,7 @@ import de.ptb.epics.eve.editor.views.IEditorView;
  */
 public class ScanView extends ViewPart implements IEditorView, ISelectionListener {
 
-	/**
-	 * the unique identifier of the view
-	 */
+	/** the unique identifier of the view */
 	public static final String ID = "de.ptb.epics.eve.editor.views.ScanView";
 
 	// logging
@@ -82,7 +80,6 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 	// ********************** underlying model ***************************
 	// *******************************************************************
 	
-	// the chain that should be presented
 	private Chain currentChain;
 	
 	// *******************************************************************
@@ -90,10 +87,10 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 	// *******************************************************************
 	
 	// the utmost composite (which contains all elements)
-	private Composite top = null;
+	private Composite top;
 	
 	// the expand bar
-	private ExpandBar bar = null;
+	private ExpandBar bar;
 	
 	// (1st) Save Options Expand Item & contained composite
 	private ExpandItem saveOptionsExpandItem;
@@ -200,10 +197,17 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		
 		// top composite
 		this.top = new Composite(parent, SWT.NONE);
-		this.top.setLayout(new FillLayout());
+		this.top.setLayout(new GridLayout());
 		
 		// expand bar for Save Options, Comment & Events
 		this.bar = new ExpandBar(this.top, SWT.V_SCROLL);
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		this.bar.setLayoutData(gridData);
+		// TODO TODO TODO ---------
 		
 		// **************************************
 		// ************ Save Expander ***********
@@ -221,7 +225,7 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		this.fileFormatLabel.setText("File format:");
 		
 		this.fileFormatCombo = new Combo(this.saveOptionsComposite, SWT.READ_ONLY);
-		GridData gridData = new GridData();
+		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.fileFormatCombo.setLayoutData(gridData);
 		// insert all available SAVE plug ins in the combo box
@@ -388,13 +392,15 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		// **************************************
 		
 		this.eventsComposite = new Composite(this.bar, SWT.NONE);
-		this.eventsComposite.setLayout(new FillLayout());
+		fillLayout = new FillLayout();
+		fillLayout.marginWidth = 5;
+		this.eventsComposite.setLayout(fillLayout);
 		
 		// events tab folder contains the tabs pause, redo, break & stop
 		eventsTabFolder = new CTabFolder(this.eventsComposite, SWT.FLAT);
 		eventsTabFolder.addSelectionListener(
 				new EventsTabFolderSelectionListener());
-								
+		
 		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
 				ControlEventTypes.PAUSE_EVENT);
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
@@ -429,6 +435,12 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		this.eventsExpandItem.setHeight(
 				this.eventsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		this.eventsExpandItem.setControl(this.eventsComposite);
+		this.eventsExpandItem.setExpanded(true);
+		
+		//this.eventsTabFolder.setTabHeight(50);
+		
+		this.eventsTabFolder.showItem(pauseTabItem);
+		//this.eventsTabFolder.getClientArea().height = this.eventsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
 		
 		// **************************************
 		// ******* end of Events Expander *******
@@ -503,11 +515,10 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 			this.commentInput.setSelection(
 					this.currentChain.getComment().length());
 			
-			if (this.pauseEventComposite.getControlEventManager() != 
-				this.currentChain.getPauseControlEventManager()) {
+
 					this.pauseEventComposite.setControlEventManager(
 						this.currentChain.getPauseControlEventManager());
-			}
+			
 			if (this.redoEventComposite.getControlEventManager() != 
 				this.currentChain.getRedoControlEventManager()) {
 					this.redoEventComposite.setControlEventManager(
