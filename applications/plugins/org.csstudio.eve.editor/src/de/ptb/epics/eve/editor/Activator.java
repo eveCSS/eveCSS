@@ -93,6 +93,7 @@ public class Activator extends AbstractUIPlugin {
 				addPerspectiveListener(eveEditorPerspectiveListener);
 		
 		PlatformUI.getWorkbench().addWorkbenchListener(workbenchListener);
+
 	}
 
 	/**

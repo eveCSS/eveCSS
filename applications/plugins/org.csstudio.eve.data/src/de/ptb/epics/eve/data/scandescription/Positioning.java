@@ -1,9 +1,13 @@
 package de.ptb.epics.eve.data.scandescription;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
@@ -22,8 +26,14 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
-public class Positioning extends AbstractBehavior {
+public class Positioning extends AbstractBehavior implements 
+				PropertyChangeListener {
+
+	// logging 
+	private static final Logger logger = 
+		Logger.getLogger(Positioning.class.getName());
 
 	/*
 	 * The detector channel that delivers data to calculate the position of 
@@ -43,10 +53,15 @@ public class Positioning extends AbstractBehavior {
 	private PluginController pluginController;
 	
 	/**
+	 * The scan module the positioning corresponds to
+	 */
+	private ScanModule scanModule;
+
+	/**
 	 * Constructs a(n) (empty) <code>Positioning</code>.
 	 */
-	public Positioning() {
-		this( null );
+	public Positioning(final ScanModule scanModule) {
+		this(scanModule, null );
 	}
 
 	/**
@@ -54,8 +69,8 @@ public class Positioning extends AbstractBehavior {
 	 * 
 	 * @param motorAxis the motor axis whose position is modified
 	 */
-	public Positioning(final MotorAxis motorAxis) {
-		this(motorAxis, null);
+	public Positioning(final ScanModule scanModule, final MotorAxis motorAxis) {
+		this(scanModule, motorAxis, null);
 	}
 	
 	/**
@@ -66,9 +81,10 @@ public class Positioning extends AbstractBehavior {
 	 * @param detectorChannel the detector channel used to calculate the new 
 	 * 		  position.
 	 */
-	public Positioning(final MotorAxis motorAxis, 
+	public Positioning(final ScanModule scanModule,
+					   final MotorAxis motorAxis, 
 					   final DetectorChannel detectorChannel) {
-		this(motorAxis, detectorChannel, null);
+		this(scanModule, motorAxis, detectorChannel, null);
 	}
 	
 	/**
@@ -81,10 +97,11 @@ public class Positioning extends AbstractBehavior {
 	 * @param normalization the detector channel used to normalize the values 
 	 * 		  of the other detector channel.
 	 */
-	public Positioning(final MotorAxis motorAxis, 
+	public Positioning(final ScanModule scanModule,
+					   final MotorAxis motorAxis, 
 					   final DetectorChannel detectorChannel, 
 					   final DetectorChannel normalization) {
-		this(motorAxis, detectorChannel, normalization, null);
+		this(scanModule, motorAxis, detectorChannel, normalization, null);
 	}
 	
 	/**
@@ -99,10 +116,20 @@ public class Positioning extends AbstractBehavior {
 	 * @param plugin the plug in that calculates the new position for the motor
 	 * 		  axis.
 	 */
-	public Positioning(final MotorAxis motorAxis, 
+	public Positioning(final ScanModule scanModule,
+					   final MotorAxis motorAxis, 
 					   final DetectorChannel detectorChannel, 
 					   final DetectorChannel normalization, 
 					   final PlugIn plugin) {
+
+		if(scanModule == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'scanModule' must not be null!");
+		}
+		this.scanModule = scanModule;
+		this.scanModule.addPropertyChangeListener("removePosAxis", this);
+		this.scanModule.addPropertyChangeListener("removePosChannel", this);
+
 		this.abstractDevice = motorAxis;
 		this.detectorChannel = detectorChannel;
 		this.normalization = normalization;
@@ -211,6 +238,53 @@ public class Positioning extends AbstractBehavior {
 		
 		while(it.hasNext()) {
 			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		logger.debug("PropertyChange: " + e.getPropertyName());
+
+		if (e.getPropertyName().equals("removePosAxis")) {
+			
+			System.out.println("\tproperty Change (remove Pos Axis) von Positioning");
+			System.out.println("\tthis.scanModule: " + this.scanModule);
+			
+			// if MotorAxis is filled, check if entry has to delete
+			if (this.getMotorAxis() != null) {
+				MotorAxis deletedAxis = ((Axis)e.getOldValue()).getMotorAxis();
+				if (this.getMotorAxis().equals(deletedAxis)) {
+					System.out.println("\t\tPositioning wird entfernt!");
+					this.scanModule.removePropertyChangeListener(
+							"removePosAxis", this);
+					this.scanModule.removePropertyChangeListener(
+							"removePosChannel", this);
+					this.scanModule.remove(this);
+					updateListeners();
+				}
+			}
+		} else if (e.getPropertyName().equals("removePosChannel")) {
+			System.out.println("\tproperty Change (remove Pos Channel) von Positioning");
+			System.out.println("\tthis.scanModule: " + this.scanModule);
+			// if DetectorChannel is filled, check if entry has to delete
+			if (this.getDetectorChannel() != null) {
+				DetectorChannel deletedChannel = ((Channel)e.getOldValue()).
+						getDetectorChannel();
+				if (this.getDetectorChannel().equals(deletedChannel)) {
+					System.out.println("\t\tChannel wird entfernt!");
+					this.setDetectorChannel(null);
+				}
+			}
+			// if NormalizeChannel is filled, check if entry has to delete
+			if (this.getNormalization() != null) {
+				DetectorChannel deletedChannel = ((Channel)e.getOldValue()).
+						getDetectorChannel();
+				if (this.getNormalization().equals(deletedChannel)) {
+					System.out.println("\t\tNormalize wird entfernt!");
+					this.setNormalization(null);
+				}
+			}
+			updateListeners();
 		}
 	}
 }

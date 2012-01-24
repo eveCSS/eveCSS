@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.detectorchannelview;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
@@ -53,7 +55,7 @@ import de.ptb.epics.eve.editor.views.EventComposite;
  * @author Marcus Michalsky
  */
 public class DetectorChannelView extends ViewPart 
-								implements ISelectionListener {
+						implements ISelectionListener, PropertyChangeListener  {
 
 	/**
 	 * the unique identifier of the view.
@@ -336,17 +338,6 @@ public class DetectorChannelView extends ViewPart
 	 * 		  that should be set
 	 */
 	private void setChannel(final Channel channel) {
-		// if a current Channel is set, stop listening to it
-		// TODO: Die Listener können wahrscheinlich sowieso weg,
-		// weil die View auf alle Änderungen hört die die DetectorEinstellungen
-		// betreffen und in der scanModuleView vorgenommen werden
-		// Für Änderungen die in der DetectorChannelView gemacht werden,
-		// wird der Listener sowieso abgeschaltet, weil auf gewollte Änderungen
-		// im Schema keine Listener benötigt werden (=> Endlosschleife)
-		// Die Listener könnten nur benötigt werden, wenn an anderer 
-		// Stelle Änderungen an den Channel-Einstellungen vorgenommen werden
-		// könnten. Dies sehe ich aber erstmal nicht. (Hartmut 13.12.11)
-
 		if(channel != null) {
 			logger.debug("set channel (" + channel.getAbstractDevice().
 					getFullIdentifyer() + ")");
@@ -354,6 +345,10 @@ public class DetectorChannelView extends ViewPart
 			logger.debug("set channel (null)");
 		}
 
+		if (this.currentChannel != null) {
+			this.scanModule.removePropertyChangeListener("removeChannel", this);
+		}
+		
 		// update the underlying model to the new one
 		this.currentChannel = channel;
 		this.scanModule = null;
@@ -367,6 +362,8 @@ public class DetectorChannelView extends ViewPart
 		if(this.currentChannel != null) {
 			// current channel set -> update widgets
 			
+			this.scanModule.addPropertyChangeListener("removeChannel", this);
+
 			// set the view title
 			this.setPartName(
 					currentChannel.getAbstractDevice().getFullIdentifyer());
@@ -651,6 +648,7 @@ public class DetectorChannelView extends ViewPart
 		 */
 		@Override
 		public void modifyText(final ModifyEvent e) {
+			logger.debug("max deviation text modified");
 
 			if(currentChannel != null) {
 				if(maxDeviationText.getText().equals("")) {
@@ -679,6 +677,7 @@ public class DetectorChannelView extends ViewPart
 		 */
 		@Override
 		public void modifyText(final ModifyEvent e) {
+			logger.debug("minimum text modified");
 			
 			if(currentChannel != null) {
 				if(minimumText.getText().equals("")) {
@@ -707,6 +706,7 @@ public class DetectorChannelView extends ViewPart
 		 */
 		@Override
 		public void modifyText(final ModifyEvent e) {
+			logger.debug("max attempts text modified");
 
 			if(currentChannel != null) {
 				if(maxAttemptsText.getText().equals("")) {
@@ -743,6 +743,7 @@ public class DetectorChannelView extends ViewPart
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
+			logger.debug("confirm trigger manual modified");
 			if(currentChannel != null) {
 				currentChannel.setConfirmTrigger(
 						confirmTriggerManualCheckBox.getSelection());
@@ -769,6 +770,7 @@ public class DetectorChannelView extends ViewPart
 		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
+			logger.debug("send detector ready event modified");
 			// we create an event and add it to the list if selected 
 			// or remove the event with same id from the list if deselected
 			Event detReadyEvent = new Event(
@@ -951,6 +953,18 @@ public class DetectorChannelView extends ViewPart
 					e.doit = false;  // disallow the action
 				}
 			}
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+
+		if (e.getOldValue().equals(currentChannel)) {
+			// current Axis will be removed
+			setChannel(null);
 		}
 	}
 }

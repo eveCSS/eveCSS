@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.motoraxisview;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,7 +38,8 @@ import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class MotorAxisView extends ViewPart implements ISelectionListener {
+public class MotorAxisView extends ViewPart implements ISelectionListener, 
+					PropertyChangeListener  {
 
 	/** the unique identifier of the view. */
 	public static final String ID = 
@@ -238,15 +241,21 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 			logger.debug("set axis (null)");
 		}
 		
+		if (this.currentAxis != null) {
+			this.scanModule.removePropertyChangeListener("removeAxis", this);
+		}
+		
 		// set the new axis as current axis
 		this.currentAxis = axis;
 		this.scanModule = null;
 		
 		if(this.currentAxis != null) {
 			this.scanModule = axis.getScanModule();
-		}
-		
-		if(this.currentAxis != null) {
+
+			this.scanModule.addPropertyChangeListener("removeAxis", this);
+
+			removeListeners();
+			
 			this.setPartName(
 					this.currentAxis.getMotorAxis().getFullIdentifyer());
 			
@@ -273,6 +282,8 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 			
 			top.layout();
 			top.setVisible(true);
+			
+			addListeners();
 		} else {
 			this.setPartName("No Motor Axis selected");
 			top.setVisible(false);
@@ -327,28 +338,16 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 		}
 		sc.setMinSize(targetWidth, targetHeight);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		logger.debug("selection changed");
-		
+			logger.debug("selection changed");
+			
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).size() == 0) {
-/*				if (this.scanModule != null) {
-					if (scanModule.getAxes().length == 0) {
-						if(logger.isDebugEnabled()) {
-							logger.debug("selection is empty, scanModule: " + 
-									this.scanModule.getId() + "-> ignore"); 
-						}
-						setAxis(null);
-					}
-				} else {
-					logger.debug(
-					  "selection is empty, no scanModule available -> ignore");
-				}*/
 				return;
 			}
 			// since at any given time this view can only display options of 
@@ -381,6 +380,26 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 			}
 		}
 	}
+
+	/*
+	 * 
+	 */
+	private void addListeners() {
+		stepFunctionCombo.addSelectionListener(
+				stepFunctionComboSelectionListener);
+		positionModeCombo.addSelectionListener(
+				positionModeComboSelectionListener);
+	}
+
+	/*
+	 * 
+	 */
+	private void removeListeners() {
+		stepFunctionCombo.removeSelectionListener(
+				stepFunctionComboSelectionListener);
+		positionModeCombo.removeSelectionListener(
+				positionModeComboSelectionListener);
+	}	
 	
 	// ************************************************************************
 	// **************************** Listeners *********************************
@@ -389,7 +408,8 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of StepFunctionCombo.
 	 */
-	private class StepFunctionComboSelectionListener implements SelectionListener {
+	private class StepFunctionComboSelectionListener implements 
+					SelectionListener {
 
 		/**
 		 * {@inheritDoc}
@@ -403,6 +423,7 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
+			logger.debug("step function modified");
 			if(currentAxis != null) {
 				if(currentAxis.getStepfunctionString().equals(
 						stepFunctionCombo.getText())) {
@@ -417,7 +438,8 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of StepFunctionCombo.
 	 */
-	private class PositionModeComboSelectionListener implements SelectionListener {
+	private class PositionModeComboSelectionListener implements 
+					SelectionListener {
 
 		/**
 		 * {@inheritDoc}
@@ -431,10 +453,24 @@ public class MotorAxisView extends ViewPart implements ISelectionListener {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
+			logger.debug("position mode modified");
 			if(currentAxis != null) {
 				currentAxis.setPositionMode(
 						PositionMode.stringToType(positionModeCombo.getText()));
 			}
 		}
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+
+		if (e.getOldValue().equals(currentAxis)) {
+			// current Axis will be removed
+			setAxis(null);
+		}
+	}
+
 }

@@ -170,50 +170,11 @@ public class MotorAxisComposite extends Composite {
 			if(tableViewer.getTable().getSelectionCount() == 0)
 			{	// ... select the first one and set the motor axis view
 				tableViewer.getTable().select(0);
-				tableViewer.getControl().setFocus();
-			}
-			else {
-//				System.out.println("\tEs gibt Motore, aber es ist schon einer selektiert");
-//				tableViewer.getTable().select(tableViewer.getTable().getSelectionCount());
 			}
 		}
-		// Frage: Muss das hier passieren oder kann das innerhalb der obigen
-		// Klammer geschehen, weil es ja eigentlich nur Sinn macht,
-		// wenn es auch Items in der Tabelle gibt.
-		// Frage: Gibt es auch eine Einstellung die besagt
-		// tableViewer.getTable().select(none) ? damit könnte vielleicht das
-		// Problem gelöst werden wie nichts ausgewählt wird.
-		// Zumindest die Version für tableViewer.setSelection(null) gibt es!!!
-		// Montag ausprobieren ob das geht, wenn man alle vorhandenen Einträge
-		// mit delete wegnimmt!
 		((ScanModuleView)parentView).selectionProviderWrapper.
 			setSelectionProvider(this.tableViewer);
 	}	
-	
-	/*
-	 * Sets the Plot Motor Axis if only one axis is available 
-	 */
-	private void setPlotMotorAxis()
-	{
-		logger.debug("setPlotMotorAxis");
-
-		final Axis[] availableMotorAxes;
-
-		availableMotorAxes = scanModule.getAxes();
-		String[] axisItems = new String[availableMotorAxes.length];
-		for (int i = 0; i < availableMotorAxes.length; ++i) {
-			axisItems[i] = 
-				availableMotorAxes[i].getMotorAxis().getFullIdentifyer();
-		}
-		
-		// if only one axis available, set this axis as default in all Plot Windows
-		if (availableMotorAxes.length == 1) {
-			PlotWindow[] plotWindows = scanModule.getPlotWindows();
-			for (int i = 0; i < plotWindows.length; ++i) {
-				plotWindows[i].setXAxis(availableMotorAxes[0].getMotorAxis());
-			}
-		}
-	}
 	
 	// ************************************************************************
 	// **************************** Listener **********************************
@@ -255,16 +216,14 @@ public class MotorAxisComposite extends Composite {
 		public void menuAboutToShow(IMenuManager manager) {
 			
 			final ImageDescriptor classImage = ImageDescriptor.createFromImage(
-					Activator.getDefault().
-					getImageRegistry().get("CLASS"));
+					Activator.getDefault().getImageRegistry().get("CLASS"));
 			final ImageDescriptor motorImage = ImageDescriptor.createFromImage(
-					Activator.getDefault().
-					getImageRegistry().get("MOTOR"));
+					Activator.getDefault().getImageRegistry().get("MOTOR"));
 			final ImageDescriptor axisImage = ImageDescriptor.createFromImage(
-					Activator.getDefault().
-					getImageRegistry().get("AXIS"));
+					Activator.getDefault().getImageRegistry().get("AXIS"));
 			
-			((ExcludeDevicesOfScanModuleFilterManualUpdate)measuringStation).update();
+			((ExcludeDevicesOfScanModuleFilterManualUpdate)measuringStation).
+					update();
 			
 			for(final String className : measuringStation.getClassNameList()) {
 				
@@ -277,26 +236,30 @@ public class MotorAxisComposite extends Composite {
 					if(device instanceof Motor) {
 						final Motor motor = (Motor)device;
 						final MenuManager currentMotorMenu = 
-							new MenuManager(motor.getName(), motorImage, motor.getName());
+							new MenuManager(motor.getName(), motorImage, 
+									motor.getName());
 						currentClassMenu.add(currentMotorMenu);
 						
 						// iterate for each axis of the motor
 						for(final MotorAxis axis : motor.getAxes()) {
 							if (axis.getClassName().isEmpty()) {
 								// add only axis which have no className
-								final SetAxisAction setAxisAction = new SetAxisAction(axis);
+								final SetAxisAction setAxisAction = new 
+										SetAxisAction(axis);
 								setAxisAction.setImageDescriptor(axisImage);
 								currentMotorMenu.add(setAxisAction);
 							}
 						}
-						// if only one axis in MotorMenu, switch axis from MotorMenu into ClassMenu
+						// if only one axis in MotorMenu, switch axis from 
+						// MotorMenu into ClassMenu
 						if (currentMotorMenu.getSize() == 1) {
 							currentMotorMenu.removeAll();
 							// Eintrag muß zur Class hinzugefügt werden.
 							for(final MotorAxis axis : motor.getAxes()) {
 								if (axis.getClassName().isEmpty()) {
 									// add only axis which have no className
-									final SetAxisAction setAxisAction = new SetAxisAction(axis);
+									final SetAxisAction setAxisAction = new 
+											SetAxisAction(axis);
 									setAxisAction.setImageDescriptor(axisImage);
 									currentClassMenu.add(setAxisAction);
 								}
@@ -313,24 +276,30 @@ public class MotorAxisComposite extends Composite {
 			}
 				
 			for(final Motor motor : measuringStation.getMotors()) {
-				if("".equals(motor.getClassName()) || motor.getClassName() == null) {
+				if("".equals(motor.getClassName()) || motor.getClassName() == 
+						null) {
 					final MenuManager currentMotorMenu = 
-							new MenuManager(motor.getName(), motorImage, motor.getName());
+							new MenuManager(motor.getName(), motorImage, 
+									motor.getName());
 					for(final MotorAxis axis : motor.getAxes()) {
-						if("".equals(axis.getClassName()) || axis.getClassName() == null) {
-							final SetAxisAction setAxisAction = new SetAxisAction(axis);
+						if("".equals(axis.getClassName()) || 
+								axis.getClassName() == null) {
+							final SetAxisAction setAxisAction = new 
+									SetAxisAction(axis);
 							setAxisAction.setImageDescriptor(axisImage);
 							currentMotorMenu.add(setAxisAction);
 						}
 					}
-					// if only one axis in MotorMenu, switch axis from MotorMenu into ClassMenu
+					// if only one axis in MotorMenu, switch axis from 
+					// MotorMenu into ClassMenu
 					if (currentMotorMenu.getSize() == 1) {
 						currentMotorMenu.removeAll();
 						// Eintrag muß zur Class hinzugefügt werden.
 						for(final MotorAxis axis : motor.getAxes()) {
 							if (axis.getClassName().isEmpty()) {
 								// add only axis which have no className
-								final SetAxisAction setAxisAction = new SetAxisAction(axis);
+								final SetAxisAction setAxisAction = new 
+										SetAxisAction(axis);
 								setAxisAction.setImageDescriptor(axisImage);
 								manager.add(setAxisAction);
 							}
@@ -415,9 +384,6 @@ public class MotorAxisComposite extends Composite {
 					tableViewer.getTable().getItemCount()-1);
 			tableViewer.getControl().setFocus();
 
-			// if only one axis available, set this axis for the Plot
-			setPlotMotorAxis();
-			
 			tableViewer.refresh();
 		}
 	}
@@ -442,9 +408,6 @@ public class MotorAxisComposite extends Composite {
 			} 
 			tableViewer.getControl().setFocus();
 			
-			// if only one axis available, set this axis as for the Plot
-			setPlotMotorAxis();
-
 			tableViewer.refresh();
 		}
 	}

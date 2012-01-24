@@ -392,7 +392,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentChannel = new Channel( this.currentScanModul );
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 			} else if( qName.equals( "positioning" ) ) {
-				this.currentPositioning = new Positioning();
+				this.currentPositioning = new Positioning( this.currentScanModul);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_LOADING;
 			} else if (qName.equals("plot")) {
 				this.currentPlotWindow = new PlotWindow(this.currentScanModul);

@@ -122,6 +122,7 @@ public class DetectorChannelComposite extends Composite {
 			menuManager.createContextMenu(this.tableViewer.getTable());
 		this.tableViewer.getControl().setMenu(contextMenu);
 
+		this.tableViewer.setInput(null);
 	}
 
 	/**
@@ -159,11 +160,13 @@ public class DetectorChannelComposite extends Composite {
 			if(tableViewer.getTable().getSelectionCount() == 0)
 			{	// ... select the first one and set the detector channel view
 				tableViewer.getTable().select(0);
-				tableViewer.getControl().setFocus();
+//				tableViewer.getControl().setFocus();
 			}
 		} 
 		((ScanModuleView)parentView).selectionProviderWrapper.
 		setSelectionProvider(this.tableViewer);
+		
+		this.tableViewer.refresh();
 	}
 	
 	/*
@@ -390,9 +393,6 @@ public class DetectorChannelComposite extends Composite {
 				tableViewer.getTable().select(0);
 			} 
 			tableViewer.getControl().setFocus();
-
-			// if only one channel available, set this channel as for the Plot
-			setPlotDetectorChannel();
 
 			tableViewer.refresh();
     	}
