@@ -388,36 +388,46 @@ public class Axis extends AbstractMainPhaseBehavior {
 	@Override
 	public List<IModelError> getModelErrors() {
 		final List< IModelError > errorList = new ArrayList< IModelError >();
-		if( this.stepfunction == Stepfunctions.ADD || this.stepfunction == Stepfunctions.MULTIPLY ) {
+		if( this.stepfunction == Stepfunctions.ADD || 
+				this.stepfunction == Stepfunctions.MULTIPLY ) {
 
 			if( this.start == null || this.start.equals( "" ) ) {
-				errorList.add( new AxisError( this, AxisErrorTypes.START_NOT_SET ) );
+				errorList.add( new AxisError( this, 
+									AxisErrorTypes.START_NOT_SET ) );
 			} else if( !this.getMotorAxis().isValuePossible( this.start ) ) {
-				errorList.add( new AxisError( this, AxisErrorTypes.START_VALUE_NOT_POSSIBLE ) );
+				errorList.add( new AxisError( this, 
+									AxisErrorTypes.START_VALUE_NOT_POSSIBLE ) );
 			}
 			if( this.stop == null || this.stop.equals( "" ) ) {
-				errorList.add( new AxisError( this, AxisErrorTypes.STOP_NOT_SET ) );
+				errorList.add( new AxisError( this, 
+									AxisErrorTypes.STOP_NOT_SET ) );
 			} else if( !this.getMotorAxis().isValuePossible( this.stop ) ) {
-				errorList.add( new AxisError( this, AxisErrorTypes.STOP_VALUE_NOT_POSSIBLE ) );
+				errorList.add( new AxisError( this, 
+									AxisErrorTypes.STOP_VALUE_NOT_POSSIBLE ) );
 			}
 			if( this.stepwidth == null || this.stepwidth.equals( "" ) ) {
-				errorList.add( new AxisError( this, AxisErrorTypes.STEPWIDTH_NOT_SET ) );
+				errorList.add( new AxisError( this, 
+									AxisErrorTypes.STEPWIDTH_NOT_SET ) );
 			}
 			if( this.stepcount == -1.0) {
-				errorList.add( new AxisError( this, AxisErrorTypes.STEPCOUNT_NOT_SET ) );
+				errorList.add( new AxisError( this, 
+									AxisErrorTypes.STEPCOUNT_NOT_SET ) );
 			}
 			
 		} else if( this.stepfunction == Stepfunctions.FILE ) {
 			if( this.positionfile == null || this.positionfile.equals( "" ) ) {
-				errorList.add( new AxisError( this, AxisErrorTypes.FILENAME_NOT_SET ) );
+				errorList.add( new AxisError( this, 
+									AxisErrorTypes.FILENAME_NOT_SET ) );
 			}
 		} else if( this.stepfunction == Stepfunctions.POSITIONLIST ) {
 			if( this.positionlist == null || this.positionlist.equals( "" ) ) {
-				errorList.add( new AxisError( this, AxisErrorTypes.POSITIONLIST_NOT_SET ) );
+				errorList.add( new AxisError( this, 
+									AxisErrorTypes.POSITIONLIST_NOT_SET ) );
 			}
 		} else if( this.stepfunction == Stepfunctions.PLUGIN ) {
 			if (this.positionPluginController == null) {
-				errorList.add( new AxisError( this, AxisErrorTypes.PLUGIN_NOT_SET ) );
+				errorList.add( new AxisError( this, 
+									AxisErrorTypes.PLUGIN_NOT_SET ) );
 			} else {
 				// TODO: Austesten ob Fehler wirklich erkannt werden
 				errorList.addAll( this.positionPluginController.getModelErrors() );

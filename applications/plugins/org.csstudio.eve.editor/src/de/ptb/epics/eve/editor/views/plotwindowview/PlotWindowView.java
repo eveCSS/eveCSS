@@ -1,8 +1,6 @@
 package de.ptb.epics.eve.editor.views.plotwindowview;
 
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.csstudio.swt.xygraph.figures.Trace.TraceType;
@@ -230,10 +228,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	// end of: elements for the second y axis composite	
 	// *********************************************
 	
-	// List that is holding all objects that need to get an update message 
-	// if this object was updated.
-	private List<IModelUpdateListener> updateListener;
-	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -294,8 +288,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		this.motorAxisErrorLabel = new Label(this.xAxisComposite, SWT.NONE);
 		this.motorAxisErrorLabel.setImage(PlatformUI.getWorkbench().
 													 getSharedImages().
-													 getImage( 
-											ISharedImages.IMG_OBJS_WARN_TSK));
+									getImage(ISharedImages.IMG_OBJS_WARN_TSK));
 
 		// check box for pre initialization
 		this.preInitWindowCheckBox = new Button(this.xAxisComposite, SWT.CHECK);
@@ -586,7 +579,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		colorLabel.setText("Color:");
 		
 		// color selection stuff in a wrapper to repair layout problems
-		Composite yAxis2ColorBoxesWrapper = new Composite(yAxis2Composite, SWT.NONE);
+		Composite yAxis2ColorBoxesWrapper = new Composite(yAxis2Composite, 
+														  SWT.NONE);
 		
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.grabExcessHorizontalSpace = true;
@@ -596,7 +590,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		yAxis2ColorBoxesWrapperGridLayout.numColumns = 2;
 		yAxis2ColorBoxesWrapper.setLayout(yAxis2ColorBoxesWrapperGridLayout);
 		
-		this.yAxis2ColorComboBox = new Combo(yAxis2ColorBoxesWrapper, SWT.READ_ONLY);
+		this.yAxis2ColorComboBox = new Combo(yAxis2ColorBoxesWrapper, 
+											 SWT.READ_ONLY);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
@@ -611,7 +606,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				yAxis2ColorComboBoxSelectionListener);
 
 		// wrapper to get rid of the grid
-		Composite colorFieldWrapper = new Composite(yAxis2ColorBoxesWrapper, SWT.NONE);
+		Composite colorFieldWrapper = new Composite(yAxis2ColorBoxesWrapper, 
+													SWT.NONE);
 			
 		GridLayout colorFieldWrapperGridLayout = new GridLayout();
 		colorFieldWrapperGridLayout.numColumns = 2;
@@ -719,8 +715,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		
 		top.setVisible(false);
 
-		this.updateListener = new ArrayList<IModelUpdateListener>();
-	
 		// listen to selection changes (the selected device's options are 
 		// displayed)
 		getSite().getWorkbenchWindow().getSelectionService().
@@ -775,9 +769,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			this.scanModule.addModelUpdateListener(this);
 			this.scanModule.addPropertyChangeListener("removePlot", this);
 		}
-
 		updateEvent(null);
-
 	}
 	
 	/*
@@ -923,7 +915,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	 */
 	private void addListeners()
 	{
-		motorAxisComboBox.addSelectionListener(motorAxisComboBoxSelectionListener);
+		motorAxisComboBox.addSelectionListener(
+				motorAxisComboBoxSelectionListener);
 		preInitWindowCheckBox.addSelectionListener(
 				preInitWindowCheckBoxSelectionListener);
 		scaleTypeComboBox.addSelectionListener(
@@ -965,7 +958,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	 */
 	private void removeListeners()
 	{
-		motorAxisComboBox.removeSelectionListener(motorAxisComboBoxSelectionListener);
+		motorAxisComboBox.removeSelectionListener(
+				motorAxisComboBoxSelectionListener);
 		preInitWindowCheckBox.removeSelectionListener(
 				preInitWindowCheckBoxSelectionListener);
 		scaleTypeComboBox.removeSelectionListener(
@@ -1006,18 +1000,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).isEmpty()) {
-			/*	if (this.scanModule != null) {
-					if (scanModule.getPlotWindows().length == 0) {
-						if(logger.isDebugEnabled()) {
-							logger.debug("selection is empty, scanModule: " + 
-									this.scanModule.getId() + "-> ignore"); 
-						}
-						setPlotWindow(null);
-					}
-				} else {
-					logger.debug(
-					  "selection ist empty, no scanModule available -> ignore");
-				}*/
 				return;
 			}
 			// since at any given time this view can only display options of 
@@ -1042,15 +1024,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 						(ScanModule)((ScanModuleEditPart)o).getModel()))) {
 							setPlotWindow(null);
 				}
-/*				ScanModule newModule = (ScanModule)((ScanModuleEditPart)o).getModel();
-				
-				// set first channel of new ScanModule
-				PlotWindow[] plotWindow = newModule.getPlotWindows();
-				if (plotWindow.length > 0) {
-					setPlotWindow(plotWindow[0]);
-				} else {
-					setPlotWindow(null);
-				}*/
 			} else if (o instanceof ScanDescriptionEditPart) {
 				logger.debug("selection is ScanDescriptionEditPart: " + o);
 				setPlotWindow(null);
@@ -1092,13 +1065,11 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		// (and unnecessary duplicate calls)
 		removeListeners();
 
-		System.out.println("\tUPDATE EVENT");
-		
 		if (this.plotWindow != null) {
 			// set view title
 			this.setPartName("Plot Window: " + this.plotWindow.getId());
 			
-			// determine the number of yaxis of the plot
+			// determine the number of yAxis of the plot
 			int axes_count = plotWindow.getYAxisAmount();
 			
 			// General
@@ -1117,23 +1088,18 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			}	
 			// determine available motor axes (as choices in select box)
 			setAvailableMotorAxes();
-			// add "none" as additional choice
-			this.motorAxisComboBox.add("none", 0);	
 			// set the content of the select box according to the given model
-			this.motorAxisComboBox.setText(
-					this.plotWindow.getXAxis() != null
-					? plotWindow.getXAxis().getFullIdentifyer()
-					: "none");
-			this.motorAxisComboBox.setEnabled(true);
+			if (this.plotWindow.getXAxis() != null) {
+				this.motorAxisComboBox.setText(
+							plotWindow.getXAxis().getFullIdentifyer());
+			}
 			
 			// set the selection of the check box according to the given model
 			this.preInitWindowCheckBox.setSelection(this.plotWindow.isInit());
-			this.preInitWindowCheckBox.setEnabled(true);
 			
 			// set the plot mode according to the given model
 			this.scaleTypeComboBox.setText(
 					PlotModes.modeToString(this.plotWindow.getMode()));
-			this.scaleTypeComboBox.setEnabled(true);
 			
 			// determine available channels (as choices in detector & normalize
 			// select boxes), add "none" as additional choice
@@ -1173,7 +1139,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				updateColorsAxis(1);
 				yAxis1LinestyleComboBox.setText(yAxis1.getLinestyle().toString());
 				yAxis1MarkstyleComboBox.setText(yAxis1.getMarkstyle().toString());
-				yAxis1ScaletypeComboBox.setText(PlotModes.modeToString(yAxis1.getMode()));
+				yAxis1ScaletypeComboBox.setText(
+									PlotModes.modeToString(yAxis1.getMode()));
 			} else {
 				// no y axis 1->disable fields
 				this.yAxis1DetectorChannelComboBox.setText("none");
@@ -1204,7 +1171,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				updateColorsAxis(2);
 				yAxis2LinestyleComboBox.setText(yAxis2.getLinestyle().toString());
 				yAxis2MarkstyleComboBox.setText(yAxis2.getMarkstyle().toString());
-				yAxis2ScaletypeComboBox.setText(PlotModes.modeToString(yAxis2.getMode()));
+				yAxis2ScaletypeComboBox.setText(
+								PlotModes.modeToString(yAxis2.getMode()));
 			}  else {
 				// no y axis 2->disable fields
 				itemYAxis2.setExpanded(false);
@@ -1234,7 +1202,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			this.yAxis2 = null;
 
 		}
-		
 		addListeners();
 	}
 
@@ -1374,7 +1341,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				
 			} else {
 				// first y axis is NOT "" or "none":
-				
 				// if y axis doesn't exist, create it
 				if(yAxis1 == null) {
 					yAxis1 = new YAxis();

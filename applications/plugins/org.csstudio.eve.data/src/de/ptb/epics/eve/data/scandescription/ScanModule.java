@@ -328,22 +328,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param channel The channel behavior that should be removed.
 	 */
 	public void remove( final Channel channel ) {
-		Positioning[] positionings = getPositionings();
-		
-		for( int i = 0; i < positionings.length; ++i ) {
-			// Wenn positioning Channel oder Normalize = remove Channel, 
-			// channel entfernen und Fehlermeldung ausgeben.
-			if (channel.getDetectorChannel().equals(
-					positionings[i].getDetectorChannel())) {
-				// DetectorChannel gibt es nicht mehr.
-				positionings[i].setDetectorChannel(null);
-			}
-			if (channel.getDetectorChannel().equals(
-					positionings[i].getNormalization())) {
-				positionings[i].setNormalization(null);
-			}
-		}
-
 		// falls es DetektorReadyEvents zu dem Channel gibt, werden diese 
 		// entfernt
 		if (channel.getDetectorReadyEvent() != null) {
@@ -358,6 +342,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.channels.remove( channel );
 		// 3. tell that channel was removed
 		propertyChangeSupport.firePropertyChange("removeChannel", channel, null);
+		propertyChangeSupport.firePropertyChange("removePosChannel", channel, null);
 		updateListeners();
 	}
 	
@@ -367,16 +352,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param axis The axis behavior that should be removed.
 	 */
 	public void remove( final Axis axis ) {
-		// wenn es für die Achse ein Positioning gibt, muß es entfernt werden
-		Positioning[] positionings = getPositionings();
-
-		for( int i = 0; i < positionings.length; ++i ) {
-			// Wenn positioning Achse = remove Achse, Positioning entfernen
-			if (axis.getMotorAxis().equals(positionings[i].getMotorAxis())) {
-				remove(positionings[i]);
-			}
-		}
-
 		axis.removeModelUpdateListener( this );
 		axis.removePropertyChangeListener("mainAxis", this);
 		axis.removePropertyChangeListener("stepcount", this);
@@ -384,6 +359,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.axes.remove( axis );
 		
 		propertyChangeSupport.firePropertyChange("removeAxis", axis, null);
+		propertyChangeSupport.firePropertyChange("removePosAxis", axis, null);
 		updateListeners();
 	}
 	
@@ -393,7 +369,11 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param plotWindow The plot window that should be removed.
 	 */
 	public void remove( final PlotWindow plotWindow ) {
-
+		// remove property Listener of plotWindow
+		this.removePropertyChangeListener("removeAxis", plotWindow);
+		this.removePropertyChangeListener("removeChannel", plotWindow);
+		this.removePropertyChangeListener("addAxis", plotWindow);
+		
 		propertyChangeSupport.firePropertyChange("removePlot", plotWindow, null);
 
 		this.plotWindows.remove( plotWindow );
@@ -1062,8 +1042,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		}
 	}
 	
-// Neu von Hartmut: ScanModule soll ein PropertyChangeListener erzeugen,
-// wenn die Anzahl von Axis sich ändert!
 	/**
 	 * 
 	 * @param propertyName

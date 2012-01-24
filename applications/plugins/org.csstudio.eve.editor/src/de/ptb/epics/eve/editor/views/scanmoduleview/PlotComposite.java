@@ -76,13 +76,10 @@ public class PlotComposite extends Composite {
 		this.tableViewer = new TableViewer(this, SWT.NONE);
 		this.tableViewer.getControl().setLayoutData(gridData);
 		
-		TableColumn column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 0);
+		TableColumn column = new TableColumn(this.tableViewer.getTable(), 
+												SWT.LEFT, 0);
 	    column.setText("Id");
 	    column.setWidth(50);
-
-//		column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 1);
-//	    column.setText("Name");
-//	    column.setWidth(80);
 
 	    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 1);
 	    column.setText("x Axis");
@@ -112,7 +109,8 @@ public class PlotComposite extends Composite {
 	    
 	    this.tableViewer.setColumnProperties(props);
 	    
-		this.tableViewer.getTable().addFocusListener(new TableViewerFocusListener());
+		this.tableViewer.getTable().addFocusListener(new 
+										TableViewerFocusListener());
 
 	    menuManager = new MenuManager("#PopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
@@ -131,7 +129,6 @@ public class PlotComposite extends Composite {
 	 * 		should be set
 	 */
 	public void setScanModule(final ScanModule scanModule) {
-
 		logger.debug("setScanModule");
 
 		this.scanModule = scanModule;
@@ -146,9 +143,7 @@ public class PlotComposite extends Composite {
 			// ... and none is selected ...
 			if(tableViewer.getTable().getSelectionCount() == 0)
 			{	// ... select the first one
-				// der richtige Plot selektiert und gezeigt!
 				tableViewer.getTable().select(0);
-//				tableViewer.getTable().setFocus();
 			}
 		}
 		((ScanModuleView)parentView).selectionProviderWrapper.
@@ -161,8 +156,7 @@ public class PlotComposite extends Composite {
 	class MenuManagerMenuListener implements IMenuListener {
 		
 		final ImageDescriptor axisImage = ImageDescriptor.createFromImage(
-				Activator.getDefault().
-				getImageRegistry().get("AXIS"));
+				Activator.getDefault().getImageRegistry().get("AXIS"));
 		
 		/**
 		 * {@inheritDoc}
@@ -174,7 +168,8 @@ public class PlotComposite extends Composite {
 			addAction.setEnabled(true);
 			addAction.setText("Add Plot Window");
 			addAction.setToolTipText("Adds Plot Window");
-			addAction.setImageDescriptor(Activator.getDefault().getImageRegistry().getDescriptor("PLOT"));
+			addAction.setImageDescriptor(Activator.getDefault().
+						getImageRegistry().getDescriptor("PLOT"));
 			manager.add(addAction);
 
 			if(scanModule.getPlotWindows().length > 0) {
@@ -182,7 +177,8 @@ public class PlotComposite extends Composite {
 				changeAction.setEnabled(true);
 				changeAction.setText("Change Id");
 				changeAction.setToolTipText("Changes Id of Plot");
-				changeAction.setImageDescriptor(Activator.getDefault().getImageRegistry().getDescriptor("RENAME"));
+				changeAction.setImageDescriptor(Activator.getDefault().
+						getImageRegistry().getDescriptor("RENAME"));
 				manager.add(changeAction);
 				
 				Action deleteAction = new DeleteAction();
@@ -244,7 +240,8 @@ public class PlotComposite extends Composite {
 				yAxis1.setLinestyle(TraceType.SOLID_LINE);
 				yAxis1.setMarkstyle(PointStyle.NONE);
 
-				yAxis1.setDetectorChannel(availableDetectorChannels[0].getDetectorChannel());
+				yAxis1.setDetectorChannel(availableDetectorChannels[0].
+						getDetectorChannel());
 				plotWindow.addYAxis(yAxis1);
 			}
 
@@ -252,9 +249,9 @@ public class PlotComposite extends Composite {
 
 			// the new plot (the last itemCount) will be selected in the table and 
 			// displayed in the plotWindow
-			tableViewer.getTable().select(tableViewer.getTable().getItemCount()-1);
+			tableViewer.getTable().select(tableViewer.getTable().
+											getItemCount()-1);
 			tableViewer.getControl().setFocus();
-
 			tableViewer.refresh();
     	}
 	}
@@ -270,7 +267,8 @@ public class PlotComposite extends Composite {
 		@Override
 		public void run() {
 
-			Shell shell = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
+			Shell shell = Activator.getDefault().getWorkbench().
+								getActiveWorkbenchWindow().getShell();
 			PlotWindow plotWindow = (PlotWindow)((IStructuredSelection)
 							tableViewer.getSelection()).getFirstElement();
 

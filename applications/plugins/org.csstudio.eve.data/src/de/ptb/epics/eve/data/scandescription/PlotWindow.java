@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.apache.log4j.Logger;
+
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
@@ -26,6 +28,10 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 				PropertyChangeListener {
+
+	// logging 
+	private static final Logger logger = 
+		Logger.getLogger(PlotWindow.class.getName());
 
 	/**
 	 * The motor axis that used as the x axis.
@@ -65,7 +71,6 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	/**
 	 * Constructs a new plot window.
 	 */
-//	public PlotWindow() {
 	public PlotWindow(final ScanModule scanModule) {
 		if(scanModule == null) {
 			throw new IllegalArgumentException(
@@ -77,9 +82,6 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 
 		this.scanModule.addPropertyChangeListener("addAxis", this);
 
-		// TODO: Die Listener müssen auch noch entfernt werden,
-		// wenn der Plot gelöscht wird!
-		
 		this.updateListener = new ArrayList< IModelUpdateListener >();
 		this.yAxis = new ArrayList< YAxis >();
 		this.mode = PlotModes.LINEAR;
@@ -262,6 +264,73 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 		updateListeners();
 	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		logger.debug("PropertyChange: " + evt.getPropertyName());
+		
+		if (evt.getPropertyName().equals("removeAxis")) {
+			// if x Axis is selected, check if entry has to delete
+			if (this.xAxis != null) {
+				MotorAxis deletedAxis = ((Axis)evt.getOldValue()).getMotorAxis();
+				if (this.xAxis.equals(deletedAxis)) {
+					this.setXAxis(null);
+				}
+			}
+			// if only one axis is present, set this axis for the plot
+			final Axis[] presentAxes = scanModule.getAxes();
+			if (presentAxes.length == 1) {
+				this.setXAxis((presentAxes[0]).getMotorAxis());
+			}
+			updateListeners();
+		} else if (evt.getPropertyName().equals("addAxis")) {
+			// if no xAxis selected, set the new axis
+			if (this.xAxis == null) {
+				MotorAxis addAxis = ((Axis)evt.getOldValue()).getMotorAxis();
+				this.setXAxis(addAxis);
+			}
+		} else if (evt.getPropertyName().equals("removeChannel")) {
+			DetectorChannel deletedChannel = ((Channel)evt.getOldValue()).
+														getDetectorChannel();
+			YAxis wegAxis1 = null;
+			YAxis wegAxis2 = null;
+			for( Iterator< YAxis > ityAxis = this.getYAxisIterator(); 
+					ityAxis.hasNext();) {
+				YAxis yAxis = ityAxis.next();
+				if (yAxis.getNormalizeChannel() != null) {
+					if (yAxis.getNormalizeChannel().equals(deletedChannel)) {
+						yAxis.setNormalizeChannel(null);
+					}
+				}
+				if (yAxis.getDetectorChannel() != null) {
+					if (yAxis.getDetectorChannel().equals(deletedChannel)) {
+						yAxis.setDetectorChannel(null);
+						// Wenn es nur noch einen vorhandenen Channel gibt, 
+						// diese als Plot setzen!
+						final Channel[] presentChannels = scanModule.
+															getChannels();
+						if (presentChannels.length == 1) {
+							yAxis.setDetectorChannel(presentChannels[0].
+														getDetectorChannel());
+							yAxis.setNormalizeChannel(null);
+						} else {
+							yAxis.setDetectorChannel(null);
+							if (wegAxis1 == null)
+								wegAxis1 = yAxis;
+							else
+								wegAxis2 = yAxis;
+						}
+					}
+				}
+			}
+			if (wegAxis1 != null)
+				this.removeYAxis(wegAxis1);
+			if (wegAxis2 != null)
+				this.removeYAxis(wegAxis2);
+			
+			updateListeners();
+		}
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -309,87 +378,5 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 		while(it.hasNext()) {
 			it.next().updateEvent(new ModelUpdateEvent(this, null));
 		}
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		
-		if (evt.getPropertyName().equals("removeAxis")) {
-
-			System.out.println("\tproperty Change (remove Axis) von PlotWIndow");
-			System.out.println("\tthis.xAxis: " + this.xAxis);
-			
-			// if x Axis is selected, check if entry has to delete
-			if (this.xAxis != null) {
-				MotorAxis deletedAxis = ((Axis)evt.getOldValue()).getMotorAxis();
-				if (this.xAxis.equals(deletedAxis)) {
-					this.setXAxis(null);
-				}
-			}
-			// Wenn es nur noch eine vorhanden Achse gibt, diese als Plot
-			// setzen!
-			final Axis[] presentAxes = scanModule.getAxes();
-			if (presentAxes.length == 1) {
-				this.setXAxis((presentAxes[0]).getMotorAxis());
-			}
-			updateListeners();
-		} else if (evt.getPropertyName().equals("addAxis")) {
-			System.out.println("\tproperty Change (add Axis) von PlotWIndow");
-			System.out.println("\tthis.xAxis: " + this.xAxis);
-			
-			// if no xAxis selected, set the new axis
-			if (this.xAxis == null) {
-				MotorAxis addAxis = ((Axis)evt.getOldValue()).getMotorAxis();
-				this.setXAxis(addAxis);
-			}
-			
-			
-		} else if (evt.getPropertyName().equals("removeChannel")) {
-			System.out.println("\tproperty Change (remove Channel) von PlotWIndow");
-			System.out.println("\tthis.yAxis: " + this.yAxis);
-
-			System.out.println("\n\tDAS Programm kommt hier wirklich hin");
-			
-			DetectorChannel deletedChannel = ((Channel)evt.getOldValue()).getDetectorChannel();
-
-			YAxis wegAxis1 = null;
-			YAxis wegAxis2 = null;
-			for( Iterator< YAxis > ityAxis = this.getYAxisIterator(); 
-					ityAxis.hasNext();) {
-				YAxis yAxis = ityAxis.next();
-				if (yAxis.getNormalizeChannel() != null) {
-					if (yAxis.getNormalizeChannel().equals(deletedChannel)) {
-						yAxis.setNormalizeChannel(null);
-					}
-				}
-				if (yAxis.getDetectorChannel() != null) {
-					if (yAxis.getDetectorChannel().equals(deletedChannel)) {
-						yAxis.setDetectorChannel(null);
-						// Wenn es nur noch einen vorhandenen Channel gibt, 
-						// diese als Plot setzen!
-						final Channel[] presentChannels = scanModule.getChannels();
-						System.out.println("\tAnzahl der Channels: " + presentChannels.length);
-						if (presentChannels.length == 1) {
-							yAxis.setDetectorChannel(presentChannels[0].getDetectorChannel());
-							yAxis.setNormalizeChannel(null);
-						} else {
-							yAxis.setDetectorChannel(null);
-							if (wegAxis1 == null)
-								wegAxis1 = yAxis;
-							else
-								wegAxis2 = yAxis;
-						}
-					}
-				}
-			}
-			if (wegAxis1 != null)
-				this.removeYAxis(wegAxis1);
-			if (wegAxis2 != null)
-				this.removeYAxis(wegAxis2);
-			
-			updateListeners();
-
-		}
-		
 	}
 }

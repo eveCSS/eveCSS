@@ -253,6 +253,8 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 			this.scanModule = axis.getScanModule();
 
 			this.scanModule.addPropertyChangeListener("removeAxis", this);
+
+			removeListeners();
 			
 			this.setPartName(
 					this.currentAxis.getMotorAxis().getFullIdentifyer());
@@ -280,6 +282,8 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 			
 			top.layout();
 			top.setVisible(true);
+			
+			addListeners();
 		} else {
 			this.setPartName("No Motor Axis selected");
 			top.setVisible(false);
@@ -334,28 +338,16 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 		}
 		sc.setMinSize(targetWidth, targetHeight);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		logger.debug("selection changed");
-		
+			logger.debug("selection changed");
+			
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).size() == 0) {
-/*				if (this.scanModule != null) {
-					if (scanModule.getAxes().length == 0) {
-						if(logger.isDebugEnabled()) {
-							logger.debug("selection is empty, scanModule: " + 
-									this.scanModule.getId() + "-> ignore"); 
-						}
-						setAxis(null);
-					}
-				} else {
-					logger.debug(
-					  "selection is empty, no scanModule available -> ignore");
-				}*/
 				return;
 			}
 			// since at any given time this view can only display options of 
@@ -388,6 +380,26 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 			}
 		}
 	}
+
+	/*
+	 * 
+	 */
+	private void addListeners() {
+		stepFunctionCombo.addSelectionListener(
+				stepFunctionComboSelectionListener);
+		positionModeCombo.addSelectionListener(
+				positionModeComboSelectionListener);
+	}
+
+	/*
+	 * 
+	 */
+	private void removeListeners() {
+		stepFunctionCombo.removeSelectionListener(
+				stepFunctionComboSelectionListener);
+		positionModeCombo.removeSelectionListener(
+				positionModeComboSelectionListener);
+	}	
 	
 	// ************************************************************************
 	// **************************** Listeners *********************************
@@ -396,7 +408,8 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of StepFunctionCombo.
 	 */
-	private class StepFunctionComboSelectionListener implements SelectionListener {
+	private class StepFunctionComboSelectionListener implements 
+					SelectionListener {
 
 		/**
 		 * {@inheritDoc}
@@ -425,7 +438,8 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of StepFunctionCombo.
 	 */
-	private class PositionModeComboSelectionListener implements SelectionListener {
+	private class PositionModeComboSelectionListener implements 
+					SelectionListener {
 
 		/**
 		 * {@inheritDoc}
@@ -458,6 +472,5 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 			setAxis(null);
 		}
 	}
-
 
 }

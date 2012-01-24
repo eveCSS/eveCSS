@@ -201,7 +201,7 @@ public class PositioningComposite extends Composite {
 							}
 						}
 						super.run();
-						final Positioning p = new Positioning();
+						final Positioning p = new Positioning(scanModule);
 						p.setMotorAxis(ax);
 						scanModule.add(p);
 						tableViewer.refresh();
