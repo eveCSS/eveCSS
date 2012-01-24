@@ -10,6 +10,7 @@ import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.custom.CCombo;
 
@@ -17,6 +18,7 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -50,81 +52,40 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 
 	private static Logger logger = 
 		Logger.getLogger(EventComposite.class.getName());
-	
+
 	private String[] eventIDs;
+
+	private ControlEventTypes eventType;
 	
 	private ControlEventManager controlEventManager;
-	
+
 	private TableViewer tableViewer;
-	
+
 	private Combo eventsCombo;
-	
 	private EventsComboFocusListener eventsComboFocusListener;
-	
+
 	private Button addButton;
-	
 	private AddButtonSelectionListener addbuttonSelectionListener;
-	
+
 	/**
 	 * Constructs an <code>EventComposite</code>.
 	 * 
 	 * @param parent the parent composite
 	 * @param style the style
 	 */
-	public EventComposite(final Composite parent, final int style, final ControlEventTypes eventType) {
+	public EventComposite(final Composite parent, final int style, 
+							final ControlEventTypes eventType) {
 		super(parent, style);
-
-		// the composite gets a 2 column grid
-		final GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 2;
 		
-		this.setLayout(gridLayout);
+		this.setLayout(new GridLayout());
 		
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 2;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
+		this.eventType = eventType;
 		
-		// initialize the table viewer
-		this.tableViewer = new TableViewer(this, SWT.NONE);
-		this.tableViewer.getControl().setLayoutData(gridData);
-
-		// column 1: Source
-		TableColumn column = new TableColumn(
-				this.tableViewer.getTable(), SWT.LEFT, 0);
-	    column.setText("Source");
-	    column.setWidth(280);
-
-	    // column 2: Operator
-	    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 1);
-	    column.setText("Operator");
-	    column.setWidth(80);
-
-	    // column 3: Limit
-	    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 2);
-	    column.setText("Limit");
-	    switch (eventType) {
-	    case CONTROL_EVENT:
-		    column.setWidth(100);
-	    	break;
-	    case PAUSE_EVENT:
-		    column.setWidth(60);
-		    // column 4: CIF (Continue if false), only for Pause Events
-		    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 3);
-		    column.setText("CIF");
-		    column.setWidth(40);
-	    	break;
-	    }
-
-	    this.tableViewer.getTable().setHeaderVisible(true);
-	    this.tableViewer.getTable().setLinesVisible(true);
-	    
-	    // set the content & label provider
-	    this.tableViewer.setContentProvider(new ControlEventInputWrapper());
-	    this.tableViewer.setLabelProvider(new ControlEventLabelProvider());
-	    
+		createViewer(parent);
+		
+		
+		/*
+		
 	    // cell modifier
 	    final CellEditor[] editors;
 	    final String[] operators = {"eq", "ne", "gt", "lt"};
@@ -171,7 +132,6 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 				
 				@Override
 				public void widgetDefaultSelected(SelectionEvent e) {
-					// TODO Auto-generated method stub
 				}
 			});
 			editors[1] = comboEditor;
@@ -212,7 +172,7 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 	    
 	    // combo box and add button to add new events
 		this.eventsCombo = new Combo(this, SWT.READ_ONLY);		
-		gridData = new GridData();
+		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
 		gridData.grabExcessHorizontalSpace = true;
@@ -230,6 +190,52 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 		
 		this.addbuttonSelectionListener = new AddButtonSelectionListener();
 		this.addButton.addSelectionListener(addbuttonSelectionListener);
+		
+		*/
+	} // end of: Constructor
+
+	private void createViewer(Composite parent) {
+		this.tableViewer = new TableViewer(this, SWT.V_SCROLL | SWT.H_SCROLL);
+		GridData gridData = new GridData();
+		gridData.minimumHeight = 120;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		this.tableViewer.getTable().setLayoutData(gridData);
+		createColumns(this.tableViewer);
+		this.tableViewer.getTable().setHeaderVisible(true);
+		this.tableViewer.getTable().setLinesVisible(true);
+		this.tableViewer.setContentProvider(new ControlEventInputWrapper());
+		this.tableViewer.setLabelProvider(new ControlEventLabelProvider());
+	}
+
+	private void createColumns(TableViewer viewer) {
+		// column 1: Source
+		TableViewerColumn sourceCol = new TableViewerColumn(viewer, SWT.LEFT);
+		sourceCol.getColumn().setText("Source");
+		sourceCol.getColumn().setWidth(280);
+		
+		// column 2: Operator
+		TableViewerColumn operatorCol = new TableViewerColumn(viewer, SWT.LEFT);
+		operatorCol.getColumn().setText("Operator");
+		operatorCol.getColumn().setWidth(80);
+		
+		// column 3: Limit
+		TableViewerColumn limitCol = new TableViewerColumn(viewer, SWT.LEFT);
+		limitCol.getColumn().setText("Limit");
+		switch (this.eventType) {
+		case CONTROL_EVENT:
+			limitCol.getColumn().setWidth(100);
+			break;
+		case PAUSE_EVENT:
+			limitCol.getColumn().setWidth(60);
+			// column 4: CIF (Continue if false), only for Pause Events
+			TableViewerColumn cifCol = new TableViewerColumn(viewer, SWT.LEFT);
+			cifCol.getColumn().setText("CIF");
+			cifCol.getColumn().setWidth(40);
+			break;
+		}
 	}
 
 	/**
@@ -269,7 +275,7 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 			eventIDs[i] = 
 				scanDescriptionEvents[i-measuringStationEvents.length].getName();
 		}
-		eventsCombo.setItems(eventIDs);
+		//eventsCombo.setItems(eventIDs);
 
 		// durchlaufen durch die vorhandenen Events,
 		// alle Namen die schon gesetzt sind mit remove wieder entfernen.
