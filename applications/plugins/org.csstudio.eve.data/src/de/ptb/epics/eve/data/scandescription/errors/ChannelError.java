@@ -29,7 +29,8 @@ public class ChannelError implements IModelError {
 	 * 			  <li>if <code>errorType</code> is <code>null</code></li»
 	 * 			</ul>
 	 */
-	public ChannelError(final Channel channel, final ChannelErrorTypes errorType) {
+	public ChannelError(final Channel channel, final 
+			ChannelErrorTypes errorType) {
 		if(channel == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'channel' must not be null!");

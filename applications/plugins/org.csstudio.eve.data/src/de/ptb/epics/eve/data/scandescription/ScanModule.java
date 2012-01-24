@@ -253,11 +253,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * Modul.
 	 */
 	public void add( final Channel channel ) {
-/*** TODO: Originalreihenfolge von vor dem 20.1.12:
-		this.channels.add( channel );
-		channel.addModelUpdateListener( this );
-		updateListeners();
-***/
 		channel.addModelUpdateListener( this );
 		this.channels.add( channel );
 		propertyChangeSupport.firePropertyChange("addChannel", channel, null);
@@ -1020,10 +1015,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
-
-		System.out.println("property Name: " + e.getPropertyName());
-		System.out.println("e: " + e);
-		
 		Axis source = (Axis)e.getSource();
 		if(logger.isDebugEnabled()) {
 			logger.debug("Property: '" + e.getPropertyName() + "' " + 

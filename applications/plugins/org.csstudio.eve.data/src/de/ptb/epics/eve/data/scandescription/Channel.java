@@ -70,7 +70,8 @@ public class Channel extends AbstractMainPhaseBehavior {
 	private Event detectorReadyEvent;
 
 	/*
-	 * A list of the ControlEvents, that holds the configuration for the redo events.
+	 * A list of the ControlEvents, that holds the configuration for the redo 
+	 * events.
 	 */
 	private List< ControlEvent > redoEvents;
 	
@@ -111,7 +112,8 @@ public class Channel extends AbstractMainPhaseBehavior {
 			updateListeners();
 			redoEvent.addModelUpdateListener(this.redoControlEventManager);
 			this.redoControlEventManager.updateEvent(new ModelUpdateEvent(this, 
-				new ControlEventMessage(redoEvent, ControlEventMessageEnum.ADDED)));
+					new ControlEventMessage(redoEvent, 
+					ControlEventMessageEnum.ADDED)));
 			return true;
 		} 
 		return false;
@@ -128,7 +130,8 @@ public class Channel extends AbstractMainPhaseBehavior {
 		if( this.redoEvents.remove(redoEvent)) {
 			updateListeners();
 			this.redoControlEventManager.updateEvent(new ModelUpdateEvent(this, 
-				new ControlEventMessage(redoEvent, ControlEventMessageEnum.REMOVED)));
+					new ControlEventMessage(redoEvent, 
+					ControlEventMessageEnum.REMOVED)));
 			redoEvent.removeModelUpdateListener(this.redoControlEventManager);
 			return true;
 		} 
@@ -258,9 +261,11 @@ public class Channel extends AbstractMainPhaseBehavior {
 	}
 
 	/**
-	 * This methods sets if the read of the detector should be repeated on a redo event.
+	 * This methods sets if the read of the detector should be repeated on a 
+	 * redo event.
 	 * 
-	 * @param repeatOnRedo Pass 'true' if the detector read should be repeated on a redo event.
+	 * @param repeatOnRedo Pass 'true' if the detector read should be repeated 
+	 * on a redo event.
 	 */
 	public void setRepeatOnRedo(final boolean repeatOnRedo) {
 		this.repeatOnRedo = repeatOnRedo;
@@ -332,16 +337,19 @@ public class Channel extends AbstractMainPhaseBehavior {
 		final List<IModelError> modelErrors = new ArrayList<IModelError>();
 
 		if(Double.compare(this.maxDeviation, Double.NaN) == 0) {
-			modelErrors.add(new ChannelError(this, ChannelErrorTypes.MAX_DEVIATION_NOT_POSSIBLE));
+			modelErrors.add(new ChannelError(this, 
+					ChannelErrorTypes.MAX_DEVIATION_NOT_POSSIBLE));
 		}
 
 		if( Double.compare(this.minimum, Double.NaN) == 0 ) {
-			modelErrors.add(new ChannelError(this, ChannelErrorTypes.MINIMUM_NOT_POSSIBLE));
+			modelErrors.add(new ChannelError(this, 
+					ChannelErrorTypes.MINIMUM_NOT_POSSIBLE));
 		}
 
 		if(this.redoControlEventManager.getModelErrors().size() > 0) {
 			modelErrors.addAll(this.redoControlEventManager.getModelErrors());
-			modelErrors.add(new ChannelError(this, ChannelErrorTypes.PLUGIN_ERROR));
+			modelErrors.add(new ChannelError(this, 
+					ChannelErrorTypes.PLUGIN_ERROR));
 		}
 		return modelErrors;
 	}

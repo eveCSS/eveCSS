@@ -28,7 +28,6 @@ import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.Axis;
-import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
@@ -119,7 +118,8 @@ public class MotorAxisComposite extends Composite {
 	    
 	    this.tableViewer.setColumnProperties(props);
 
-		this.tableViewer.getTable().addFocusListener(new TableViewerFocusListener());
+		this.tableViewer.getTable().addFocusListener(new 
+				TableViewerFocusListener());
 	     
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -173,7 +173,7 @@ public class MotorAxisComposite extends Composite {
 			}
 		}
 		((ScanModuleView)parentView).selectionProviderWrapper.
-			setSelectionProvider(this.tableViewer);
+				setSelectionProvider(this.tableViewer);
 	}	
 	
 	// ************************************************************************
@@ -379,9 +379,8 @@ public class MotorAxisComposite extends Composite {
 
 			// the new axis (the last itemCount) will be selected in the table 
 			// and displayed in the motorAxisView
-
-			tableViewer.getTable().select(
-					tableViewer.getTable().getItemCount()-1);
+			tableViewer.getTable().select(tableViewer.getTable().
+										  getItemCount()-1);
 			tableViewer.getControl().setFocus();
 
 			tableViewer.refresh();

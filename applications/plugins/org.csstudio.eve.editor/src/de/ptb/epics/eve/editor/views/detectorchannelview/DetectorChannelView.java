@@ -455,18 +455,6 @@ public class DetectorChannelView extends ViewPart
 		
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).size() == 0) {
-/*				if (this.scanModule != null) {
-					if (scanModule.getChannels().length == 0) {
-						if(logger.isDebugEnabled()) {
-							logger.debug("selection is empty, scanModule: " + 
-									this.scanModule.getId() + "-> ignore"); 
-						}
-						setChannel(null);
-					} 
-				} else {
-					logger.debug(
-					  "selection is empty, no scanModule available -> ignore");
-				}*/
 				return;
 			}
 			// since at any given time this view can only display the attributes 
@@ -500,6 +488,18 @@ public class DetectorChannelView extends ViewPart
 			} else {
 				logger.debug("unknown selection -> ignore");
 			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+	
+		if (e.getOldValue().equals(currentChannel)) {
+			// current Axis will be removed
+			setChannel(null);
 		}
 	}
 
@@ -953,18 +953,6 @@ public class DetectorChannelView extends ViewPart
 					e.doit = false;  // disallow the action
 				}
 			}
-		}
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void propertyChange(PropertyChangeEvent e) {
-
-		if (e.getOldValue().equals(currentChannel)) {
-			// current Axis will be removed
-			setChannel(null);
 		}
 	}
 }

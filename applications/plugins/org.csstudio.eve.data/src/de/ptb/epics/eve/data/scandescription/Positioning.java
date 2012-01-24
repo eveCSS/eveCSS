@@ -232,7 +232,8 @@ public class Positioning extends AbstractBehavior implements
 	private void updateListeners()
 	{
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
-			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
+				new CopyOnWriteArrayList<IModelUpdateListener>(this.
+				modelUpdateListener);
 		
 		Iterator<IModelUpdateListener> it = list.iterator();
 		
@@ -246,15 +247,10 @@ public class Positioning extends AbstractBehavior implements
 		logger.debug("PropertyChange: " + e.getPropertyName());
 
 		if (e.getPropertyName().equals("removePosAxis")) {
-			
-			System.out.println("\tproperty Change (remove Pos Axis) von Positioning");
-			System.out.println("\tthis.scanModule: " + this.scanModule);
-			
 			// if MotorAxis is filled, check if entry has to delete
 			if (this.getMotorAxis() != null) {
 				MotorAxis deletedAxis = ((Axis)e.getOldValue()).getMotorAxis();
 				if (this.getMotorAxis().equals(deletedAxis)) {
-					System.out.println("\t\tPositioning wird entfernt!");
 					this.scanModule.removePropertyChangeListener(
 							"removePosAxis", this);
 					this.scanModule.removePropertyChangeListener(
@@ -264,14 +260,11 @@ public class Positioning extends AbstractBehavior implements
 				}
 			}
 		} else if (e.getPropertyName().equals("removePosChannel")) {
-			System.out.println("\tproperty Change (remove Pos Channel) von Positioning");
-			System.out.println("\tthis.scanModule: " + this.scanModule);
 			// if DetectorChannel is filled, check if entry has to delete
 			if (this.getDetectorChannel() != null) {
 				DetectorChannel deletedChannel = ((Channel)e.getOldValue()).
 						getDetectorChannel();
 				if (this.getDetectorChannel().equals(deletedChannel)) {
-					System.out.println("\t\tChannel wird entfernt!");
 					this.setDetectorChannel(null);
 				}
 			}
@@ -280,7 +273,6 @@ public class Positioning extends AbstractBehavior implements
 				DetectorChannel deletedChannel = ((Channel)e.getOldValue()).
 						getDetectorChannel();
 				if (this.getNormalization().equals(deletedChannel)) {
-					System.out.println("\t\tNormalize wird entfernt!");
 					this.setNormalization(null);
 				}
 			}
