@@ -81,7 +81,7 @@ public class PVWrapper {
 	private ReadListener readListener;
 	
 	// listener for process variable writes
-	private WriteListener writeListener;
+	//private WriteListener writeListener;
 	
 	// workaround listener
 	private PVListener pvListener;
@@ -129,8 +129,8 @@ public class PVWrapper {
 		// start listening to changes
 		this.readListener = new ReadListener();
 		this.pv.addPVReaderListener(this.readListener);
-		this.writeListener = new WriteListener();
-		this.pv.addPVWriterListener(this.writeListener);
+		//this.writeListener = new WriteListener();
+		//this.pv.addPVWriterListener(this.writeListener);
 		
 		this.valueFormat = new SimpleValueFormat(1);
 		// Engineering Notation
@@ -148,7 +148,7 @@ public class PVWrapper {
 		this.pv2.removeListener(pvListener);
 		this.pv2.stop();
 		this.pv.removePVReaderListener(this.readListener);
-		this.pv.removePVWriterListener(this.writeListener);
+		//this.pv.removePVWriterListener(this.writeListener);
 		this.pv.close();
 		this.isConnected = false;
 	}
@@ -212,7 +212,12 @@ public class PVWrapper {
 	 * @param newVal the value that should be set
 	 */
 	public void setValue(Object newVal) {
-		this.pv.write(newVal);
+		//this.pv.write(newVal);
+		try {
+			this.pv2.setValue(newVal);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
 		if(logger.isDebugEnabled()) {
 			logger.debug("Wrote " + this.getName() + ": " + newVal);
 		}
@@ -349,7 +354,7 @@ public class PVWrapper {
 					!pv.isWriteAllowed() + ") of " + 
 					pv.getName());
 			pv.removeListener(this);
-			pv.stop();
+			//pv.stop();
 		}
 		
 		/**
