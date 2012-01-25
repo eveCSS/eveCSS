@@ -124,6 +124,7 @@ public final class DevicesView extends ViewPart {
 		// create context menu
 		MenuManager menuManager = new MenuManager();
 		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		menuManager.setRemoveAllWhenShown(true);
 		treeViewer.getTree().setMenu(
 				menuManager.createContextMenu(treeViewer.getTree()));
 		// register menu

@@ -60,4 +60,12 @@ public class AddToDeviceInspectorSubMenuContribution extends
 		}
 		return result.toArray(new IContributionItem[0]);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isDynamic() {
+		return true;
+	}
 }
