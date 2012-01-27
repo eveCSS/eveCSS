@@ -11,7 +11,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
@@ -384,7 +383,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 * expand item (Events)
 	 */
 	private void createEventsExpandItem() {
-		
 		GridLayout gridLayout = new GridLayout();
 		
 		this.eventsComposite = new Composite(this.bar, SWT.NONE);
@@ -461,6 +459,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 */
 	@Override
 	public void setFocus() {
+		logger.debug("focus gained -> forward to top composite");
 		this.top.setFocus();
 	}
 	
@@ -495,15 +494,13 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		if (this.currentScanModule != null) {
 			this.currentScanModule.addModelUpdateListener(this);
 		}
-		
 		updateEvent(null);
 	}
 	
 	/*
 	 * 
 	 */
-	private void checkForErrors()
-	{
+	private void checkForErrors() {
 		this.motorAxisTab.setImage(null);
 		this.detectorChannelTab.setImage(null);
 		this.prescanTab.setImage(null);
@@ -623,46 +620,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 			settleTimeErrorLabel.setToolTipText(null);
 		}
 	}
-		
-	/*
-	 * used by updateEvent() to re-enable listeners
-	 */
-	private void addListeners()
-	{
-		this.generalComposite.addControlListener(
-				generalCompositeControlListener);
-		this.triggerDelayText.addModifyListener(
-				triggerDelayTextModifiedListener);
-		this.settleTimeText.addModifyListener(settleTimeTextModifiedListener);
-		this.confirmTriggerCheckBox.addSelectionListener(
-				confirmTriggerCheckBoxSelectionListener);
-		this.eventsTabFolder.addSelectionListener(
-				eventsTabFolderSelectionListener);
-		this.eventsComposite.addControlListener(eventsCompositeControlListener);
-		this.appendScheduleEventCheckBox.addSelectionListener(
-				appendScheduleEventCheckBoxSelectionListener);
-	}
-	
-	/*
-	 * used by updateEvent() to temporarily disable listeners (preventing 
-	 * event loops)
-	 */
-	private void removeListeners()
-	{
-		this.generalComposite.removeControlListener(
-				generalCompositeControlListener);
-		this.triggerDelayText.removeModifyListener(
-				triggerDelayTextModifiedListener);
-		this.settleTimeText.removeModifyListener(settleTimeTextModifiedListener);
-		this.confirmTriggerCheckBox.removeSelectionListener(
-				confirmTriggerCheckBoxSelectionListener);
-		this.eventsTabFolder.removeSelectionListener(
-				eventsTabFolderSelectionListener);
-		this.eventsComposite.removeControlListener(
-				eventsCompositeControlListener);
-		this.appendScheduleEventCheckBox.removeSelectionListener(
-				appendScheduleEventCheckBoxSelectionListener);
-	}
 	
 	/*
 	 * used by several control listeners
@@ -718,6 +675,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 							(ScanModuleEditPart)o).getModel()).getId() + 
 							" selected."); 
 				}
+				getSite().getPage().activate(this);
 				setCurrentScanModule(
 						(ScanModule)((ScanModuleEditPart)o).getModel());
 
@@ -730,12 +688,47 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		}
 	}
 	
-	// ************************************************************************
-	// ******************** Listener ******************************************
-	// ************************************************************************
+	/*
+	 * used by updateEvent() to re-enable listeners
+	 */
+	private void addListeners() {
+		this.generalComposite.addControlListener(
+				generalCompositeControlListener);
+		this.triggerDelayText.addModifyListener(
+				triggerDelayTextModifiedListener);
+		this.settleTimeText.addModifyListener(settleTimeTextModifiedListener);
+		this.confirmTriggerCheckBox.addSelectionListener(
+				confirmTriggerCheckBoxSelectionListener);
+		this.eventsTabFolder.addSelectionListener(
+				eventsTabFolderSelectionListener);
+		this.eventsComposite.addControlListener(eventsCompositeControlListener);
+		this.appendScheduleEventCheckBox.addSelectionListener(
+				appendScheduleEventCheckBoxSelectionListener);
+	}
 	
-	// ************************ Selection Listener ****************************
+	/*
+	 * used by updateEvent() to temporarily disable listeners (preventing 
+	 * event loops)
+	 */
+	private void removeListeners() {
+		this.generalComposite.removeControlListener(
+				generalCompositeControlListener);
+		this.triggerDelayText.removeModifyListener(
+				triggerDelayTextModifiedListener);
+		this.settleTimeText.removeModifyListener(settleTimeTextModifiedListener);
+		this.confirmTriggerCheckBox.removeSelectionListener(
+				confirmTriggerCheckBoxSelectionListener);
+		this.eventsTabFolder.removeSelectionListener(
+				eventsTabFolderSelectionListener);
+		this.eventsComposite.removeControlListener(
+				eventsCompositeControlListener);
+		this.appendScheduleEventCheckBox.removeSelectionListener(
+				appendScheduleEventCheckBoxSelectionListener);
+	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
 
@@ -919,6 +912,10 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		addListeners();
 	}
 
+	// ************************************************************************
+	// ******************** Listener ******************************************
+	// ************************************************************************
+	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>confirmTriggerCheckBox</code>.
@@ -941,10 +938,12 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 
 			System.out.println("\tConfirm Trigger wurde gedrückt");
 			System.out.println("\tWelche ViewPart ist Aktiv? " +
-			Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart());
+			Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().
+					getActivePage().getActivePart());
 			
 			System.out.println("\tWelche ViewPart ist Aktiv? " +
-			 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart());
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().
+					getPartService().getActivePart());
 			System.out.println("\tWelche ViewPart ist Aktiv? " +
 					 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage());
 
@@ -973,10 +972,20 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			// update select box entries
-			CTabItem wahlItem = eventsTabFolder.getSelection();
-			EventComposite wahlComposite = (EventComposite)wahlItem.getControl();
-			wahlComposite.setEventChoice();
+			switch(eventsTabFolder.getSelectionIndex()) {
+				case 0: selectionProviderWrapper.setSelectionProvider(
+							pauseEventComposite.getTableViewer());
+						break;
+				case 1: selectionProviderWrapper.setSelectionProvider(
+							redoEventComposite.getTableViewer());
+						break;
+				case 2: selectionProviderWrapper.setSelectionProvider(
+							breakEventComposite.getTableViewer());
+						break;
+				case 3: selectionProviderWrapper.setSelectionProvider(
+							triggerEventComposite.getTableViewer());
+						break;
+			}
 		}
 	}
 	

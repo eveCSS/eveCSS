@@ -224,6 +224,8 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 	 */
 	@Override
 	public void setFocus() {
+		logger.debug("got focus -> forward to top composite");
+		this.top.setFocus();
 	}
 	
 	/**
@@ -250,11 +252,11 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 		this.scanModule = null;
 		
 		if(this.currentAxis != null) {
-			this.scanModule = axis.getScanModule();
-
-			this.scanModule.addPropertyChangeListener("removeAxis", this);
-
+			top.setVisible(true);
 			removeListeners();
+			
+			this.scanModule = axis.getScanModule();
+			this.scanModule.addPropertyChangeListener("removeAxis", this);
 			
 			this.setPartName(
 					this.currentAxis.getMotorAxis().getFullIdentifyer());
@@ -281,7 +283,6 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 			setComposite();
 			
 			top.layout();
-			top.setVisible(true);
 			
 			addListeners();
 		} else {
@@ -381,6 +382,17 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getOldValue().equals(currentAxis)) {
+			// current Axis will be removed
+			setAxis(null);
+		}
+	}
+	
 	/*
 	 * 
 	 */
@@ -460,17 +472,4 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 			}
 		}
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void propertyChange(PropertyChangeEvent e) {
-
-		if (e.getOldValue().equals(currentAxis)) {
-			// current Axis will be removed
-			setAxis(null);
-		}
-	}
-
 }

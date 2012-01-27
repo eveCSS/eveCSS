@@ -89,6 +89,11 @@ public class Activator extends AbstractUIPlugin {
 		loadColorsAndFonts();
 		startupReport();
 
+		if(logger.isDebugEnabled()) {
+			getWorkbench().getActiveWorkbenchWindow().getSelectionService().
+				addSelectionListener(new SelectionTracker());
+		}
+		
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
 				addPerspectiveListener(eveEditorPerspectiveListener);
 		

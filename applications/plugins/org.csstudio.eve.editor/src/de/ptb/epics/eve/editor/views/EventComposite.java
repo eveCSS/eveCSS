@@ -193,7 +193,7 @@ public class EventComposite extends Composite {
 	/**
 	 * TODO
 	 */
-	public void setEventChoice() {
+	private void setEventChoice() {
 		Event[] measuringStationEvents = Activator.getDefault().
 											getMeasuringStation().getEvents().
 											toArray(new Event[0]);

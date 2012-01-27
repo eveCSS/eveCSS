@@ -117,7 +117,6 @@ public class DetectorChannelView extends ViewPart
 	private BarControlListener barControlListener;
 	private ExpandItem itemEventOptions;
 	public CTabFolder eventsTabFolder = null;
-	private EventsTabFolderSelectionListener eventsTabFolderSelectionListener;
 	private EventComposite redoEventComposite = null;
 	private EventCompositeControlListener eventCompositeControlListener;
 	private Composite eventComposite = null;
@@ -246,14 +245,11 @@ public class DetectorChannelView extends ViewPart
 		this.confirmTriggerManualCheckBox.addSelectionListener( 
 				confirmTriggerManualCheckBoxSelectionListener);
 
-		top.layout();
 		// Expand Bar
 		this.bar = new ExpandBar(this.top, SWT.V_SCROLL);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
-// TODO: Warum wird bei GridData.FILL die Breite des Fensters zu groß angelegt?
-// 		Woher wird bestimmt wie breit FILL gesetzt wird? (Hartmut 23.6.11)
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;
@@ -298,9 +294,6 @@ public class DetectorChannelView extends ViewPart
 		// Event Options Tab
 		eventsTabFolder = new CTabFolder(this.eventComposite, SWT.FLAT);
 		eventsTabFolder.setLayoutData(gridData);
-		eventsTabFolderSelectionListener = new 
-				EventsTabFolderSelectionListener();
-		eventsTabFolder.addSelectionListener(eventsTabFolderSelectionListener);
 		
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
 				ControlEventTypes.CONTROL_EVENT, this);
@@ -313,11 +306,15 @@ public class DetectorChannelView extends ViewPart
 		
 		top.setVisible(false);
 		
+		// set the table viewer of the event composite as selection provider
+		// (used by add/delete event commands)
+		this.getSite().setSelectionProvider(
+				this.redoEventComposite.getTableViewer());
+		
 		// listen to selection changes (if a detector channel is selected, its 
 		// attributes are made available for editing)
 		getSite().getWorkbenchWindow().getSelectionService().
 				addSelectionListener(this);
-
 	}
 	// ************************************************************************
 	// ********************** end of createPartControl ************************
@@ -328,8 +325,17 @@ public class DetectorChannelView extends ViewPart
 	 */
 	@Override
 	public void setFocus() {
+		logger.debug("got focus -> forward to top composite");
+		this.top.setFocus();
 	}
 
+	/**
+	 * Returns the {@link de.ptb.epics.eve.data.scandescription.Channel} 
+	 * currently shown by this view.
+	 * 
+	 * @return the {@link de.ptb.epics.eve.data.scandescription.Channel} 
+	 * 		currently shown
+	 */
 	public Channel getCurrentChannel() {
 		return this.currentChannel;
 	}
@@ -348,7 +354,7 @@ public class DetectorChannelView extends ViewPart
 		} else {
 			logger.debug("set channel (null)");
 		}
-
+		
 		if (this.currentChannel != null) {
 			this.scanModule.removePropertyChangeListener("removeChannel", this);
 		}
@@ -360,34 +366,37 @@ public class DetectorChannelView extends ViewPart
 		if(this.currentChannel != null) {
 			this.scanModule = channel.getScanModule();
 		}
-
+		
 		removeListeners();
 		
 		if(this.currentChannel != null) {
 			// current channel set -> update widgets
 			top.setVisible(true);
 			
+			// used to notice if the channel is being deleted
 			this.scanModule.addPropertyChangeListener("removeChannel", this);
-
+			
 			// set the view title
 			this.setPartName(
 					currentChannel.getAbstractDevice().getFullIdentifyer());
 			
 			// set average text
-			this.averageText.setText("" +this.currentChannel.getAverageCount());
+			this.averageText.setText(Integer.toString(
+					this.currentChannel.getAverageCount()));
 
 			// set max deviation
 			if(this.currentChannel.getMaxDeviation() != 
 					Double.NEGATIVE_INFINITY) {
 				this.maxDeviationText.setText(
-						"" + this.currentChannel.getMaxDeviation());
+						Double.toString(this.currentChannel.getMaxDeviation()));
 			} else {
 				this.maxDeviationText.setText("");
 			}
 			
 			// set minimum
 			if(this.currentChannel.getMinumum() != Double.NEGATIVE_INFINITY) {
-				this.minimumText.setText("" + this.currentChannel.getMinumum());
+				this.minimumText.setText(Double.toString(
+						this.currentChannel.getMinumum()));
 			} else {
 				this.minimumText.setText("");
 			}
@@ -395,7 +404,7 @@ public class DetectorChannelView extends ViewPart
 			// set max attempts
 			if(this.currentChannel.getMaxAttempts() != Integer.MIN_VALUE) {
 				this.maxAttemptsText.setText(
-						"" + this.currentChannel.getMaxAttempts());
+						Integer.toString(this.currentChannel.getMaxAttempts()));
 			} else {
 				this.maxAttemptsText.setText("");
 			}
@@ -480,7 +489,7 @@ public class DetectorChannelView extends ViewPart
 							((ScanModuleEditPart)o).getModel()).getId() + 
 							" selected."); 
 				}
-
+				
 				if (this.scanModule != null && !(this.scanModule.equals(
 						(ScanModule)((ScanModuleEditPart)o).getModel()))) {
 							setChannel(null);
@@ -576,7 +585,6 @@ public class DetectorChannelView extends ViewPart
 		
 		confirmTriggerManualCheckBox.addSelectionListener(
 				confirmTriggerManualCheckBoxSelectionListener);
-		eventsTabFolder.addSelectionListener(eventsTabFolderSelectionListener);
 		detectorReadyEventCheckBox.addSelectionListener(
 				detectorReadyEventCheckBoxSelectionListener);
 		
@@ -599,8 +607,6 @@ public class DetectorChannelView extends ViewPart
 		
 		confirmTriggerManualCheckBox.removeSelectionListener(
 				confirmTriggerManualCheckBoxSelectionListener);
-		eventsTabFolder.removeSelectionListener(
-				eventsTabFolderSelectionListener);
 		detectorReadyEventCheckBox.removeSelectionListener(
 				detectorReadyEventCheckBoxSelectionListener);
 		
@@ -816,31 +822,6 @@ public class DetectorChannelView extends ViewPart
 			int height = bar.getSize().y - itemEventOptions.getHeaderHeight() -
 					20;
 			itemEventOptions.setHeight(height < 200 ? 200 : height);
-		}
-	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>eventsTabFolder</code>.
-	 */
-	class EventsTabFolderSelectionListener implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			// Einträge in der Auswahlliste werden aktualisiert
-			CTabItem wahlItem = eventsTabFolder.getSelection();
-			EventComposite wahlComposite = (EventComposite)wahlItem.getControl();
-			wahlComposite.setEventChoice();
 		}
 	}
 	

@@ -730,6 +730,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	 */
 	@Override
 	public void setFocus() {
+		logger.debug("focus gained -> forward to top composite");
+		this.top.setFocus();
 	}
 	
 	/**
@@ -747,10 +749,11 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	 */
 	private void setPlotWindow(final PlotWindow plotWindow) {
 		
-		if(plotWindow != null)
+		if(plotWindow != null) {
 			logger.debug("set plot window (" + plotWindow.getId() + ")");
-		else
+		} else {
 			logger.debug("set plot window (null)");
+		}
 		
 		if (this.plotWindow != null) {
 			this.plotWindow.removeModelUpdateListener(this);
@@ -994,6 +997,9 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				yAxis2ScaleTypeComboBoxSelectionListener);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		logger.debug("selection changed");
@@ -1033,49 +1039,41 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		}
 	}
 	
-	// ************************************************************************
-	// ************************************************************************
-	// ********************** inner classes for listeners *********************
-	// ************************************************************************
-	// ************************************************************************
-	
-	// Listeners are attached to the widgets. They save changes made by the 
-	// user in the model.
-	
 	/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void propertyChange(java.beans.PropertyChangeEvent evt) {
-			logger.debug("PropertyChange: " + evt.getPropertyName());
-
-			if (evt.getPropertyName().equals("removePlot")) {
-				if (evt.getOldValue().equals(plotWindow)) {
-					// Plot Window will be removed
-					setPlotWindow(null);
-				}
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(java.beans.PropertyChangeEvent evt) {
+		logger.debug("PropertyChange: " + evt.getPropertyName());
+		if (evt.getPropertyName().equals("removePlot")) {
+			if (evt.getOldValue().equals(plotWindow)) {
+				// Plot Window will be removed
+				setPlotWindow(null);
 			}
 		}
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
-
 		// widgets will be updated according to set / changed model
 		// -> temporarily disable listeners to prevent Event Loops
 		// (and unnecessary duplicate calls)
 		removeListeners();
-
+		
 		if (this.plotWindow != null) {
+			// show controls
+			top.setVisible(true);
 			// set view title
 			this.setPartName("Plot Window: " + this.plotWindow.getId());
-			
 			// determine the number of yAxis of the plot
 			int axes_count = plotWindow.getYAxisAmount();
 			
 			// General
 			// depending on the axes count -> set reference(s) to the axis/axes
-			switch(axes_count)
-			{
+			switch(axes_count) {
 				case 0: yAxis1 = null;
 						yAxis2 = null;
 						break;
@@ -1123,14 +1121,14 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			// ***************************************************************
 			if(this.yAxis1 != null) {
 				// y axis 1 is set -> insert values and enable fields
-				if(yAxis1.getDetectorChannel() != null)
-				{	this.yAxis1DetectorChannelComboBox.setText(
+				if(yAxis1.getDetectorChannel() != null) {
+					this.yAxis1DetectorChannelComboBox.setText(
 							yAxis1.getDetectorChannel().getFullIdentifyer());
 				} else {
 					yAxis1DetectorChannelComboBox.setText("none");
 				}
-				if (yAxis1.getNormalizeChannel() != null)
-				{	this.yAxis1NormalizeChannelComboBox.setText( 
+				if (yAxis1.getNormalizeChannel() != null) {
+					this.yAxis1NormalizeChannelComboBox.setText( 
 							yAxis1.getNormalizeChannel().getFullIdentifyer());
 				} else { 
 					this.yAxis1NormalizeChannelComboBox.setText("none");
@@ -1155,14 +1153,14 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			if(this.yAxis2 != null) {
 				// y axis 2 is present->insert values and enable fields
 				itemYAxis2.setExpanded(true);
-				if(yAxis2.getDetectorChannel() != null)
-				{	this.yAxis2DetectorChannelComboBox.setText(
+				if(yAxis2.getDetectorChannel() != null) {
+					this.yAxis2DetectorChannelComboBox.setText(
 							yAxis2.getDetectorChannel().getFullIdentifyer());
 				} else {
 					yAxis2DetectorChannelComboBox.setText("none");
 				}
-				if (yAxis2.getNormalizeChannel() != null)
-				{	this.yAxis2NormalizeChannelComboBox.setText(
+				if (yAxis2.getNormalizeChannel() != null) {
+					this.yAxis2NormalizeChannelComboBox.setText(
 							yAxis2.getNormalizeChannel().getFullIdentifyer());
 				} else {
 					this.yAxis2NormalizeChannelComboBox.setText("none");
@@ -1173,7 +1171,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				yAxis2MarkstyleComboBox.setText(yAxis2.getMarkstyle().toString());
 				yAxis2ScaletypeComboBox.setText(
 								PlotModes.modeToString(yAxis2.getMode()));
-			}  else {
+			} else {
 				// no y axis 2->disable fields
 				itemYAxis2.setExpanded(false);
 				this.yAxis2DetectorChannelComboBox.setText("none");
@@ -1181,20 +1179,16 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			// ***************************************************************
 			// *********************** end of: yAxis2 ************************
 			// ***************************************************************
-
+			
 			checkForErrors();
 			
-			// show controls
-			top.setVisible(true);
 			// for some reason without the next line of code the expanded items
 			// are not shown
 			top.layout();
-
 		} else {
 			// this.plotWindow == null (no plot selected)
 			// hide controls
-			top.setVisible(false);			
-			
+			top.setVisible(false);
 			this.setPartName("No Plot Window selected");
 			
 			// plot window is null -> reset axes
@@ -1205,6 +1199,9 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		addListeners();
 	}
 
+	/*
+	 * 
+	 */
 	private void setAvailableMotorAxes() {
 		availableMotorAxes = scanModule.getAxes();
 		String[] axisItems = new String[availableMotorAxes.length];
@@ -1215,6 +1212,10 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		// set available axes as choices in the select box
 		this.motorAxisComboBox.setItems(axisItems);
 	}
+
+	// ************************************************************************
+	// ******************************* listeners ******************************
+	// ************************************************************************
 
 	/**
 	 * <code>ModifyListener</code> of <code>motorAxisComboBox</code>.
@@ -1791,5 +1792,4 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			}
 		}
 	}
-
 }

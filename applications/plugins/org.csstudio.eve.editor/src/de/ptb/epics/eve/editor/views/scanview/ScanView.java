@@ -648,44 +648,6 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		}
 	}
 	
-	/*
-	 * used by setCurrentChain() to re-enable listeners
-	 */
-	private void addListeners() {
-		this.fileFormatCombo.addSelectionListener(fileFormatComboSelectionListener);
-		this.filenameInput.addModifyListener(fileNameInputModifiedListener);
-		this.repeatCountText.addVerifyListener(repeatCountTextVerifyListener);
-		this.repeatCountText.addModifyListener(repeatCountTextModifiedListener);
-		this.commentInput.addModifyListener(commentInputModifiedListener);
-		
-		this.saveScanDescriptionCheckBox.addSelectionListener(
-				saveScanDescriptionCheckBoxSelectionListener);
-		this.confirmSaveCheckBox.addSelectionListener(
-				confirmSaveCheckBoxSelectionListener);
-		this.autoIncrementCheckBox.addSelectionListener(
-				autoIncrementCheckBoxSelectionListener);
-	}
-	
-	/*
-	 * used by setCurrentChain() to temporarily disable listeners
-	 */
-	private void removeListeners() {
-		this.fileFormatCombo.removeSelectionListener(
-				fileFormatComboSelectionListener);
-		this.filenameInput.removeModifyListener(fileNameInputModifiedListener);
-		this.repeatCountText.removeVerifyListener(repeatCountTextVerifyListener);
-		this.repeatCountText.removeModifyListener(
-				repeatCountTextModifiedListener);
-		this.commentInput.removeModifyListener(commentInputModifiedListener);
-		
-		this.saveScanDescriptionCheckBox.removeSelectionListener(
-				saveScanDescriptionCheckBoxSelectionListener);
-		this.confirmSaveCheckBox.removeSelectionListener(
-				confirmSaveCheckBoxSelectionListener);
-		this.autoIncrementCheckBox.removeSelectionListener(
-				autoIncrementCheckBoxSelectionListener);
-	}
-	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -723,6 +685,44 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		} else {
 			logger.debug("selection other than Chain -> ignore: " + o);
 		}
+	}
+
+	/*
+	 * used by setCurrentChain() to re-enable listeners
+	 */
+	private void addListeners() {
+		this.fileFormatCombo.addSelectionListener(fileFormatComboSelectionListener);
+		this.filenameInput.addModifyListener(fileNameInputModifiedListener);
+		this.repeatCountText.addVerifyListener(repeatCountTextVerifyListener);
+		this.repeatCountText.addModifyListener(repeatCountTextModifiedListener);
+		this.commentInput.addModifyListener(commentInputModifiedListener);
+		
+		this.saveScanDescriptionCheckBox.addSelectionListener(
+				saveScanDescriptionCheckBoxSelectionListener);
+		this.confirmSaveCheckBox.addSelectionListener(
+				confirmSaveCheckBoxSelectionListener);
+		this.autoIncrementCheckBox.addSelectionListener(
+				autoIncrementCheckBoxSelectionListener);
+	}
+	
+	/*
+	 * used by setCurrentChain() to temporarily disable listeners
+	 */
+	private void removeListeners() {
+		this.fileFormatCombo.removeSelectionListener(
+				fileFormatComboSelectionListener);
+		this.filenameInput.removeModifyListener(fileNameInputModifiedListener);
+		this.repeatCountText.removeVerifyListener(repeatCountTextVerifyListener);
+		this.repeatCountText.removeModifyListener(
+				repeatCountTextModifiedListener);
+		this.commentInput.removeModifyListener(commentInputModifiedListener);
+		
+		this.saveScanDescriptionCheckBox.removeSelectionListener(
+				saveScanDescriptionCheckBoxSelectionListener);
+		this.confirmSaveCheckBox.removeSelectionListener(
+				confirmSaveCheckBoxSelectionListener);
+		this.autoIncrementCheckBox.removeSelectionListener(
+				autoIncrementCheckBoxSelectionListener);
 	}
 	
 	// ************************************************************************
