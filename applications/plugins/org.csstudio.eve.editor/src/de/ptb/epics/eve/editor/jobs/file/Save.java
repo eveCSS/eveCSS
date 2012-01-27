@@ -182,5 +182,13 @@ public class Save extends Job {
 			((GraphicalEditor)this.editor).resetEditorState(filename);
 			return Status.OK_STATUS;
 		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean belongsTo(Object family) {
+			return family.equals(family);
+		}
 	}
 }
