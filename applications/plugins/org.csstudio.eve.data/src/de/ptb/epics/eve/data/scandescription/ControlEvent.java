@@ -27,29 +27,19 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider, 
 														IModelErrorProvider {
 
-	/*
-	 * The event.
-	 */
+	// the event
 	private Event event;
 	
-	/*
-	 * The conditions.
-	 */
+	// the conditions
 	private Limit limit;
 	
-	/*
-	 * The event type.
-	 */
+	// the event type
 	private EventTypes eventType;
 	
-	/*
-	 * The event id.
-	 */
+	// the event id
 	private String eventId;
 	
-	/**
-	 * A list of model update listener.
-	 */
+	/** A list of model update listener. */
 	protected List<IModelUpdateListener> modelUpdateListener;
 	
 	/**
@@ -65,6 +55,19 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 		if((type != EventTypes.MONITOR) && (type != EventTypes.DETECTOR)) {
 			event = new Event(type); 
 		}
+	}
+	
+	/**
+	 * Better Constructor.
+	 * 
+	 * @param type see {@link de.ptb.epics.eve.data.EventTypes}
+	 * @param event the event
+	 * @param id the id
+	 */
+	public ControlEvent(final EventTypes type, final Event event, final String id) {
+		this(type);
+		this.setEvent(event);
+		this.setId(id);
 	}
 	
 	/**
@@ -141,7 +144,7 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		if( modelUpdateEvent.getSender() == this.limit ) {	
+		if(modelUpdateEvent.getSender() == this.limit) {
 			updateListeners();
 		}
 	}

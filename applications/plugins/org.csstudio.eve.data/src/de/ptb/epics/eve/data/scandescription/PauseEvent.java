@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.ptb.epics.eve.data.EventTypes;
+import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessage;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessageEnum;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
@@ -36,6 +37,19 @@ public class PauseEvent extends ControlEvent {
 		this.continueIfFalse = false;
 	}
 
+	/**
+	 * Better Constructor.
+	 * 
+	 * @param type see {@link de.ptb.epics.eve.data.EventTypes}
+	 * @param event the event
+	 * @param id the id
+	 * @since 1.1
+	 */
+	public PauseEvent(final EventTypes type, Event event, String id) {
+		super(type, event, id);
+		this.continueIfFalse = false;
+	}
+	
 	/**
 	 * Checks whether the attribute is set.
 	 * 

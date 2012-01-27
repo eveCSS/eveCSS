@@ -49,6 +49,7 @@ import de.ptb.epics.eve.data.scandescription.errors.ChainErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.SelectionProviderWrapper;
 import de.ptb.epics.eve.editor.dialogs.PluginControllerDialog;
 import de.ptb.epics.eve.editor.graphical.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
@@ -149,7 +150,7 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 	
 	
 	// ***** Widgets of Events *******	
-	private CTabFolder eventsTabFolder;
+	public CTabFolder eventsTabFolder;
 
 	private CTabItem pauseTabItem;
 	private EventComposite pauseEventComposite;
@@ -170,6 +171,7 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 	
 	// Delegates
 	private EditorViewPerspectiveListener perspectiveListener;
+	private SelectionProviderWrapper selectionProviderWrapper;
 	
 	/**
 	 * {@inheritDoc}
@@ -402,13 +404,13 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 				new EventsTabFolderSelectionListener());
 		
 		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
-				ControlEventTypes.PAUSE_EVENT);
+				ControlEventTypes.PAUSE_EVENT, this);
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
-				ControlEventTypes.CONTROL_EVENT);
+				ControlEventTypes.CONTROL_EVENT, this);
 		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
-				ControlEventTypes.CONTROL_EVENT);
+				ControlEventTypes.CONTROL_EVENT, this);
 		stopEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
-				ControlEventTypes.CONTROL_EVENT);
+				ControlEventTypes.CONTROL_EVENT, this);
 		
 		this.pauseTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
 		this.pauseTabItem.setText("Pause");
@@ -439,7 +441,7 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		
 		//this.eventsTabFolder.setTabHeight(50);
 		
-		this.eventsTabFolder.showItem(pauseTabItem);
+		this.eventsTabFolder.showItem(this.pauseTabItem);
 		//this.eventsTabFolder.getClientArea().height = this.eventsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
 		
 		// **************************************
@@ -447,6 +449,13 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		// **************************************
 		
 		top.setVisible(false);
+		
+		// the selection service only accepts one selection provider per view,
+		// since we have four tables capable of providing selections a wrapper 
+		// handles them and registers the active one with the global selection 
+		// service
+		selectionProviderWrapper = new SelectionProviderWrapper();
+		getSite().setSelectionProvider(selectionProviderWrapper);
 		
 		// listen to selection changes (if a chain (or one of its scan modules) 
 		// is selected, its attributes are made available for editing)
@@ -488,6 +497,9 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		
 		if(this.currentChain != null) {
 			this.top.setVisible(true);
+			if(this.eventsTabFolder.getSelection() == null) {
+				this.eventsTabFolder.setSelection(this.pauseTabItem);
+			}
 			this.setPartName("Chain: " + this.currentChain.getId());
 			
 			if(this.currentChain.getSavePluginController().getPlugin() != null) {
@@ -563,6 +575,14 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		this.setCurrentChain(null);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public Chain getCurrentChain() {
+		return this.currentChain;
+	}
+	
 	/*
 	 * called by setCurrentChain() to check for errors in user input and show 
 	 * error decorators.
@@ -892,8 +912,6 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		}
 	}
 
-	// ******************* Selection Listener *******************
-	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>manualSaveCheckBox</code>.
@@ -916,8 +934,6 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		}
 	}
 
-	// ******************* Selection Listener *******************
-	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>autoNumberCheckBox</code>.<br><br>
@@ -1007,6 +1023,9 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>eventsTabFolder</code>.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.1
 	 */
 	private class EventsTabFolderSelectionListener implements SelectionListener {
 		
@@ -1022,9 +1041,8 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			// update entries in selection list
-			((EventComposite)eventsTabFolder.
-					getSelection().getControl()).setEventChoice();
+			selectionProviderWrapper.setSelectionProvider(((EventComposite)
+				eventsTabFolder.getSelection().getControl()).getTableViewer());
 		}
 	}
 }

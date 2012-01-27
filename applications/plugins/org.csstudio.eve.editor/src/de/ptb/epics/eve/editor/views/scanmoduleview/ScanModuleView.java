@@ -97,7 +97,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	private ConfirmTriggerCheckBoxSelectionListener 
 			confirmTriggerCheckBoxSelectionListener;
 	
-	private CTabFolder eventsTabFolder = null;
+	public CTabFolder eventsTabFolder = null;
 	private EventsTabFolderSelectionListener eventsTabFolderSelectionListener;
 	
 	private EventComposite pauseEventComposite = null;
@@ -404,13 +404,13 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		eventsTabFolder.addSelectionListener(eventsTabFolderSelectionListener);
 		
 		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
-				ControlEventTypes.PAUSE_EVENT);
+				ControlEventTypes.PAUSE_EVENT, this);
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
-				ControlEventTypes.CONTROL_EVENT);
+				ControlEventTypes.CONTROL_EVENT, this);
 		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
-				ControlEventTypes.CONTROL_EVENT);
+				ControlEventTypes.CONTROL_EVENT, this);
 		triggerEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
-				ControlEventTypes.CONTROL_EVENT);
+				ControlEventTypes.CONTROL_EVENT, this);
 		
 		this.pauseEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
 		this.pauseEventsTabItem.setText(" Pause ");
@@ -878,10 +878,10 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			currentScanModule.setTriggerconfirm(
-					confirmTriggerCheckBox.getSelection());		
+					confirmTriggerCheckBox.getSelection());
 		}
 	}
-		
+	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of
 	 * <code>eventsTabFolder</code>.
@@ -904,7 +904,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 			// update select box entries
 			CTabItem wahlItem = eventsTabFolder.getSelection();
 			EventComposite wahlComposite = (EventComposite)wahlItem.getControl();
-			wahlComposite.setEventChoice();		
+			wahlComposite.setEventChoice();
 		}
 	}
 	
@@ -1038,7 +1038,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		 */
 		@Override
 		public void controlMoved(ControlEvent e) {
-			actionsComposite.setFocus();	
+			actionsComposite.setFocus();
 			resize();
 		}
 		
@@ -1097,5 +1097,4 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 			resize();
 		}
 	}
-
 }

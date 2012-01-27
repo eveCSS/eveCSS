@@ -208,6 +208,49 @@
             </command>
          </toolbar>
       </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.eventcomposite.tablepopup">
+         <menu
+               icon="icons/devices/detector.gif"
+               label="Detector">
+            <dynamic
+                  class="de.ptb.epics.eve.editor.views.EventMenuContributionDetector"
+                  id="de.ptb.epics.eve.editor.views.eventcomposite.tablepopup.detectormenucontribution">
+            </dynamic>
+         </menu>
+         <menu
+               icon="icons/monitor_obj.gif"
+               label="Monitor">
+            <dynamic
+                  class="de.ptb.epics.eve.editor.views.EventMenuContributionMonitor"
+                  id="de.ptb.epics.eve.editor.views.eventcomposite.tablepopup.monitormenucontribution">
+            </dynamic>
+         </menu>
+         <menu
+               icon="icons/waiting.gif"
+               label="Schedule">
+            <dynamic
+                  class="de.ptb.epics.eve.editor.views.EventMenuContributionSchedule"
+                  id="de.ptb.epics.eve.editor.views.eventcomposite.tablepopup.schedulemenucontribution">
+            </dynamic>
+         </menu>
+         <separator
+               name="de.ptb.epics.eve.editor.views.eventcomposite.tablepopup.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removeevent"
+               icon="icons/rem_co.gif"
+               label="Remove Event"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.core.expressions.definitions">
@@ -218,6 +261,15 @@
             <equals
                   value="EveEditorPerpective">
             </equals>
+         </with>
+      </definition>
+      <definition
+            id="de.ptb.epics.eve.editor.expressions.emptyselection">
+         <with
+               variable="selection">
+            <count
+                  value="1">
+            </count>
          </with>
       </definition>
    </extension>
@@ -237,6 +289,36 @@
                name="switchPerspective"
                optional="false">
          </commandParameter>
+      </command>
+      <command
+            defaultHandler="de.ptb.epics.eve.editor.handler.AddEvent"
+            id="de.ptb.epics.eve.editor.command.addevent"
+            name="AddEvent">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddEvent.EventId"
+               name="EventId"
+               optional="false">
+         </commandParameter>
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddEvent.EventType"
+               name="EventType"
+               optional="false">
+         </commandParameter>
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddEvent.EventImpact"
+               name="Impact"
+               optional="false">
+         </commandParameter>
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddEvent.ActivePart"
+               name="ActivePart"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            defaultHandler="de.ptb.epics.eve.editor.handler.RemoveEvent"
+            id="de.ptb.epics.eve.editor.command.removeevent"
+            name="RemoveEvent">
       </command>
    </extension>
    <extension

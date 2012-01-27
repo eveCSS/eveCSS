@@ -24,12 +24,10 @@ public class ControlEventLabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public Image getColumnImage(Object controlEvent, int colIndex) {
-		
 		switch(colIndex) {
-			
 			// limit column...
-			case 2:	if(((ControlEvent)controlEvent).getModelErrors().size() > 0) 
-					{
+			case 2:	
+				if(((ControlEvent)controlEvent).getModelErrors().size() > 0) {
 						// errors present -> return error image
 						return PlatformUI.getWorkbench().getSharedImages().
 									getImage( ISharedImages.IMG_OBJS_ERROR_TSK);
@@ -44,41 +42,28 @@ public class ControlEventLabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public String getColumnText(Object controlEvent, int colIndex) {
-		
 		String returnValue = "";
-		
 		switch(colIndex) {
-		
-			// Source column
-			case 0:
+			case 0: // Source column
 				returnValue = ((ControlEvent)controlEvent).getEvent().getName();
 				break;
-				
-			// Operator column
-			case 1:
-				if(((ControlEvent)controlEvent).getEvent().getType() 
-				   == EventTypes.MONITOR) 
-				{
+			case 1: // Operator column
+				if (((ControlEvent)controlEvent).getEvent().getType() 
+					== EventTypes.MONITOR) {
 					returnValue = ComparisonTypes.typeToString(
 						((ControlEvent)controlEvent).getLimit().getComparison());
 				}
 				break;
-				
-			// Limit column
-			case 2:
-				if(((ControlEvent)controlEvent).getEvent().getType() 
-				   == EventTypes.MONITOR) 
-				{
+			case 2: // Limit column
+				if (((ControlEvent)controlEvent).getEvent().getType() 
+					== EventTypes.MONITOR) {
 					returnValue = 
 						((ControlEvent)controlEvent).getLimit().getValue();
 				}
 				break;
-				
-			// CIF column
-			case 3:
-				if(((ControlEvent)controlEvent).getEvent().getType() 
-				   == EventTypes.MONITOR) 
-				{
+			case 3: // CIF column
+				if (((ControlEvent)controlEvent).getEvent().getType() 
+					== EventTypes.MONITOR) {
 					returnValue = 
 						"" + ((PauseEvent)controlEvent).isContinueIfFalse();
 				}

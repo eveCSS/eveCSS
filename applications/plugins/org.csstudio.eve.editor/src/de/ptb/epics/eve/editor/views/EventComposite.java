@@ -3,42 +3,22 @@ package de.ptb.epics.eve.editor.views;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.CheckboxCellEditor;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
-import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.swt.custom.CCombo;
 
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.SWT;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchActionConstants;
 
-import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
-import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessage;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
-import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 
 /**
@@ -48,11 +28,13 @@ import de.ptb.epics.eve.editor.Activator;
  * @author Marcus Michalsky
  * @author Hartmut Scherr
  */
-public class EventComposite extends Composite implements IModelUpdateListener {
+public class EventComposite extends Composite {
 
 	private static Logger logger = 
 		Logger.getLogger(EventComposite.class.getName());
 
+	private IViewPart parentView;
+	
 	private String[] eventIDs;
 
 	private ControlEventTypes eventType;
@@ -61,12 +43,6 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 
 	private TableViewer tableViewer;
 
-	private Combo eventsCombo;
-	private EventsComboFocusListener eventsComboFocusListener;
-
-	private Button addButton;
-	private AddButtonSelectionListener addbuttonSelectionListener;
-
 	/**
 	 * Constructs an <code>EventComposite</code>.
 	 * 
@@ -74,15 +50,15 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 	 * @param style the style
 	 */
 	public EventComposite(final Composite parent, final int style, 
-							final ControlEventTypes eventType) {
+			final ControlEventTypes eventType, final IViewPart parentView) {
 		super(parent, style);
 		
 		this.setLayout(new GridLayout());
 		
-		this.eventType = eventType;
+		this.eventType = eventType;	
+		this.parentView = parentView;
 		
 		createViewer(parent);
-		
 		
 		/*
 		
@@ -155,42 +131,6 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 	    this.tableViewer.setCellModifier(
 	    		new ControlEventCellModifyer(this.tableViewer));
 	    this.tableViewer.setColumnProperties(props);
-	    
-	    // delete action as context menu
-	    Action deleteAction = new DeleteAction();
-	    deleteAction.setEnabled(true);
-	    deleteAction.setText("Delete Control Event");
-	    deleteAction.setToolTipText("Deletes the Control Event");
-	    deleteAction.setImageDescriptor(PlatformUI.getWorkbench().
-	    								getSharedImages().getImageDescriptor( 
-	    								ISharedImages.IMG_TOOL_DELETE));
-	    
-	    MenuManager manager = new MenuManager();
-	    Menu menu = manager.createContextMenu(this.tableViewer.getControl());
-	    this.tableViewer.getControl().setMenu(menu);
-	    manager.add(deleteAction);
-	    
-	    // combo box and add button to add new events
-		this.eventsCombo = new Combo(this, SWT.READ_ONLY);		
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		gridData.grabExcessHorizontalSpace = true;
-		this.eventsCombo.setLayoutData(gridData);
-		
-		this.eventsComboFocusListener = new EventsComboFocusListener();
-		this.eventsCombo.addFocusListener(eventsComboFocusListener);
-		
-		this.addButton = new Button(this, SWT.NONE);
-		this.addButton.setText("Add");
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.END;
-		gridData.verticalAlignment = GridData.CENTER;
-		this.addButton.setLayoutData(gridData);
-		
-		this.addbuttonSelectionListener = new AddButtonSelectionListener();
-		this.addButton.addSelectionListener(addbuttonSelectionListener);
-		
 		*/
 	} // end of: Constructor
 
@@ -206,8 +146,20 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 		createColumns(this.tableViewer);
 		this.tableViewer.getTable().setHeaderVisible(true);
 		this.tableViewer.getTable().setLinesVisible(true);
-		this.tableViewer.setContentProvider(new ControlEventInputWrapper());
+		this.tableViewer.setContentProvider(new ControlEventContentProvider());
 		this.tableViewer.setLabelProvider(new ControlEventLabelProvider());
+		this.tableViewer.setInput(null);
+		
+		// create context menu
+		MenuManager menuManager = new MenuManager();
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		menuManager.setRemoveAllWhenShown(true);
+		this.tableViewer.getTable().setMenu(
+				menuManager.createContextMenu(this.tableViewer.getTable()));
+		// register menu
+		parentView.getSite().registerContextMenu(
+				"de.ptb.epics.eve.editor.views.eventcomposite.tablepopup", 
+				menuManager, this.tableViewer);
 	}
 
 	private void createColumns(TableViewer viewer) {
@@ -251,8 +203,8 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 			scanDescriptionEvents = controlEventManager.getParentChain().
 										getScanDescription().getEvents().
 										toArray(new Event[0]);
-		} else if(controlEventManager.getParentScanModul() != null) {
-			scanDescriptionEvents = controlEventManager.getParentScanModul().
+		} else if(controlEventManager.getParentScanModule() != null) {
+			scanDescriptionEvents = controlEventManager.getParentScanModule().
 										getChain().getScanDescription().
 										getEvents().toArray(new Event[0]);
 		} else if(controlEventManager.getParentChannel() != null) {
@@ -284,8 +236,8 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 				if(cevent.getId() != null) {
 					if(cevent.getId().equals(scanDescriptionEvents[
 					               i-measuringStationEvents.length].getID())) {
-						eventsCombo.remove(scanDescriptionEvents[
-						       i-measuringStationEvents.length].getNameID());
+						//eventsCombo.remove(scanDescriptionEvents[
+					//	       i-measuringStationEvents.length].getNameID());
 					}
 				}
 			}
@@ -306,17 +258,8 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 		else
 			logger.debug("set control event manager (null)");
 		
-		if(this.controlEventManager != null) {
-			this.controlEventManager.removeModelUpdateListener(this);
-		}
 		this.controlEventManager = controlEventManager;
 		
-		if(this.controlEventManager != null) {
-			this.controlEventManager.addModelUpdateListener(this);
-
-		} else { // controlEventManager == null
-			this.tableViewer.getTable().clearAll();
-		}
 		this.tableViewer.setInput(controlEventManager);
 	}
 	
@@ -331,142 +274,9 @@ public class EventComposite extends Composite implements IModelUpdateListener {
 	
 	/**
 	 * {@inheritDoc}
+	 * @return
 	 */
-	@Override
-	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		// TODO was soll die Methode ?
-		removeListeners();
-		
-		if(modelUpdateEvent.getMessage() instanceof ControlEventMessage) {
-			
-		}
-		
-		addListeners();
-	}
-	
-	/*
-	 * 
-	 */
-	private void addListeners()
-	{
-		this.eventsCombo.addFocusListener(eventsComboFocusListener);
-		this.addButton.addSelectionListener(addbuttonSelectionListener);
-	}
-	
-	/*
-	 * 
-	 */
-	private void removeListeners()
-	{
-		this.eventsCombo.removeFocusListener(eventsComboFocusListener);
-		this.addButton.removeSelectionListener(addbuttonSelectionListener);
-	}
-	
-	// ************************************************************************
-	// ****************************** Listeners *******************************
-	// ************************************************************************
-	
-	/**
-	 * <code>FocusListener</code> of <code>eventsCombo</code>.
-	 */
-	class EventsComboFocusListener implements FocusListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void focusGained(FocusEvent e) {
-			final String currentTextBuffer = eventsCombo.getText();
-			setEventChoice();
-			eventsCombo.setText(currentTextBuffer);
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void focusLost (FocusEvent e) {
-		}
-	}
-	
-	/**
-	 * <code>SelectionListener</code> of <code>addButton</code>.
-	 */
-	class AddButtonSelectionListener implements SelectionListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			if(!eventsCombo.getText().equals("")) {
-				// Wenn Klammern vorhanden, wird nur der Text innerhalb der 
-				// Klammern verwendet. Die ID der Events steht innerhalb.
-				
-				int stelleAnfang = eventsCombo.getText().indexOf("(");
-				int stelleEnde = eventsCombo.getText().indexOf(")");
-				String addEvent = eventsCombo.getText().substring(
-						stelleAnfang + 2, stelleEnde - 1);
-					
-				Event event = Activator.getDefault().getMeasuringStation().
-										getEventById(addEvent);
-				
-				if(event == null) {
-					if(controlEventManager.getParentChain() != null) {
-						event = controlEventManager.getParentChain().
-									getScanDescription().getEventById(addEvent);
-					} else if(controlEventManager.getParentScanModul() != null) {
-						event = controlEventManager.getParentScanModul().
-											getChain().getScanDescription().
-											getEventById(addEvent);
-					} else if(controlEventManager.getParentChannel() != null) {
-						event = controlEventManager.getParentChannel().
-											getScanModule().getChain().
-											getScanDescription().
-											getEventById(addEvent);
-					}
-				}
-				ControlEvent newEvent;
-				if(controlEventManager.getControlEventType() == 
-				   ControlEventTypes.CONTROL_EVENT) {
-					newEvent = new ControlEvent(event.getType());
-				} else {
-					newEvent = new PauseEvent(event.getType());
-				}
-				newEvent.setEvent(event);
-				// Id des neuen Events wird gesetzt
-				newEvent.setId(addEvent);
-				controlEventManager.addControlEvent(newEvent);
-				
-				// Auswahl der Events wird aktualisiert
-				setEventChoice();
-			}
-		}
-	}
-	
-	// ****************************** Actions *********************************
-	
-	/**
-	 * 
-	 */
-	class DeleteAction extends Action {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void run() {
-			controlEventManager.removeControlEvent((ControlEvent)
-					((IStructuredSelection)
-							tableViewer.getSelection()).getFirstElement());
-			setEventChoice();
-		}
+	public TableViewer getTableViewer() {
+		return this.tableViewer;
 	}
 }

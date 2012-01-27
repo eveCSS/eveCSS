@@ -111,63 +111,67 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 		return new ArrayList<ControlEvent>(this.controlEventList);
 	}
 
-	public void addControlEvent( final ControlEvent controlEvent ) {
-		if( this.parentChain != null ) {
-			if( this.parentChain.getBreakControlEventManager() == this ) {
-				this.parentChain.addBreakEvent( controlEvent );
-				
-			} else if( this.parentChain.getRedoControlEventManager() == this ) {
-				this.parentChain.addRedoEvent( controlEvent );
-				
-			} else if( this.parentChain.getStopControlEventManager() == this ) {
-				this.parentChain.addStopEvent( controlEvent );
-				
-			} else if( this.parentChain.getStartControlEventManager() == this ) {
-				this.parentChain.addStartEvent( controlEvent );
-				
-			} else if( this.parentChain.getPauseControlEventManager() == this ) {
-				this.parentChain.addPauseEvent( (PauseEvent)controlEvent );
+	/**
+	 * 
+	 * @param controlEvent
+	 */
+	public void addControlEvent(final ControlEvent controlEvent) {
+		if(this.parentChain != null) {
+			if (this.parentChain.getBreakControlEventManager() == this) {
+				this.parentChain.addBreakEvent(controlEvent);
+			} else if (this.parentChain.getRedoControlEventManager() == this) {
+				this.parentChain.addRedoEvent(controlEvent);
+			} else if (this.parentChain.getStopControlEventManager() == this) {
+				this.parentChain.addStopEvent(controlEvent);
+			} else if (this.parentChain.getStartControlEventManager() == this) {
+				this.parentChain.addStartEvent(controlEvent);
+			} else if (this.parentChain.getPauseControlEventManager() == this) {
+				this.parentChain.addPauseEvent((PauseEvent)controlEvent);
 			}
-		} else if( this.parentScanModule != null ) {
-			if( this.parentScanModule.getBreakControlEventManager() == this ) {
-				this.parentScanModule.addBreakEvent( controlEvent );
-			} else if( this.parentScanModule.getRedoControlEventManager() == this ) {
-				this.parentScanModule.addRedoEvent( controlEvent );
-			} else if( this.parentScanModule.getPauseControlEventManager() == this ) {
+		} else if (this.parentScanModule != null) {
+			if (this.parentScanModule.getBreakControlEventManager() == this) {
+				this.parentScanModule.addBreakEvent(controlEvent);
+			} else if (this.parentScanModule.getRedoControlEventManager() == this) {
+				this.parentScanModule.addRedoEvent(controlEvent);
+			} else if (this.parentScanModule.getPauseControlEventManager() == this) {
 				this.parentScanModule.addPauseEvent( (PauseEvent)controlEvent );
-			} else if( this.parentScanModule.getTriggerControlEventManager() == this ) {
-				this.parentScanModule.addTriggerEvent( controlEvent );
+			} else if (this.parentScanModule.getTriggerControlEventManager() == this) {
+				this.parentScanModule.addTriggerEvent(controlEvent);
 			}
-		} else if( this.parentChannel != null ) {
-			this.parentChannel.addRedoEvent( controlEvent );
+		} else if(this.parentChannel != null) {
+			this.parentChannel.addRedoEvent(controlEvent);
 		}
 	}
 	
-	public void removeControlEvent( final ControlEvent controlEvent ) {
-		if( this.parentChain != null ) {
-			if( this.parentChain.getBreakControlEventManager() == this ) {
-				this.parentChain.removeBreakEvent( controlEvent );
-			} else if( this.parentChain.getRedoControlEventManager() == this ) {
-				this.parentChain.removeRedoEvent( controlEvent );
-			} else if( this.parentChain.getStartControlEventManager() == this ) {
-				this.parentChain.removeStartEvent( controlEvent );
-			} else if( this.parentChain.getStopControlEventManager() == this ) {
+	/**
+	 * 
+	 * @param controlEvent
+	 */
+	public void removeControlEvent(final ControlEvent controlEvent) {
+		if (this.parentChain != null) {
+			if (this.parentChain.getBreakControlEventManager() == this) {
+				this.parentChain.removeBreakEvent(controlEvent);
+			} else if (this.parentChain.getRedoControlEventManager() == this) {
+				this.parentChain.removeRedoEvent(controlEvent);
+			} else if (this.parentChain.getStartControlEventManager() == this) {
+				this.parentChain.removeStartEvent(controlEvent);
+			} else if (this.parentChain.getStopControlEventManager() == this) {
 				this.parentChain.removeStopEvent( controlEvent );
-			} else if( this.parentChain.getPauseControlEventManager() == this ) {
-				this.parentChain.removePauseEvent( (PauseEvent)controlEvent );
+			} else if (this.parentChain.getPauseControlEventManager() == this) {
+				this.parentChain.removePauseEvent((PauseEvent)controlEvent);
 			}
-		} else if( this.parentScanModule != null ) {
-			if( this.parentScanModule.getBreakControlEventManager() == this ) {
-				this.parentScanModule.removeBreakEvent( controlEvent );
-			} else if( this.parentScanModule.getRedoControlEventManager() == this ) {
-				this.parentScanModule.removeRedoEvent( controlEvent );
-			} else if( this.parentScanModule.getPauseControlEventManager() == this ) {
-				this.parentScanModule.removePauseEvent( (PauseEvent)controlEvent );
-			} else if( this.parentScanModule.getTriggerControlEventManager() == this ) {
-				this.parentScanModule.removeTriggerEvent( controlEvent );
+		} else if (this.parentScanModule != null) {
+			if (this.parentScanModule.getBreakControlEventManager() == this) {
+				this.parentScanModule.removeBreakEvent(controlEvent);
+			} else if (this.parentScanModule.getRedoControlEventManager() == this) {
+				this.parentScanModule.removeRedoEvent(controlEvent);
+			} else if (this.parentScanModule.getPauseControlEventManager() == this) {
+				this.parentScanModule.removePauseEvent((PauseEvent)controlEvent);
+			} else if (this.parentScanModule.getTriggerControlEventManager() == this) {
+				this.parentScanModule.removeTriggerEvent(controlEvent);
 			}
-		} else if( this.parentChannel != null ) {
-			this.parentChannel.removeRedoEvent( controlEvent );
+		} else if (this.parentChannel != null) {
+			this.parentChannel.removeRedoEvent(controlEvent);
 		}
 	}
 	
@@ -197,18 +201,34 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 		updateListeners(modelUpdateEvent);
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public Chain getParentChain() {
 		return this.parentChain;
 	}
 
-	public ScanModule getParentScanModul() {
+	/**
+	 * 
+	 * @return
+	 */
+	public ScanModule getParentScanModule() {
 		return this.parentScanModule;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public ControlEventTypes getControlEventType() {
 		return this.controlEventType;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Channel getParentChannel() {
 		return this.parentChannel;
 	}

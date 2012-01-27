@@ -12,7 +12,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author ?
  * @author Marcus Michalsky
  */
-public class ControlEventInputWrapper implements IModelUpdateListener, 
+public class ControlEventContentProvider implements IModelUpdateListener, 
 												IStructuredContentProvider {
 
 	/*

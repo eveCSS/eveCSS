@@ -116,7 +116,7 @@ public class DetectorChannelView extends ViewPart
 	private ExpandBar bar = null;
 	private BarControlListener barControlListener;
 	private ExpandItem itemEventOptions;
-	private CTabFolder eventsTabFolder = null;
+	public CTabFolder eventsTabFolder = null;
 	private EventsTabFolderSelectionListener eventsTabFolderSelectionListener;
 	private EventComposite redoEventComposite = null;
 	private EventCompositeControlListener eventCompositeControlListener;
@@ -296,14 +296,14 @@ public class DetectorChannelView extends ViewPart
 		gridData.horizontalAlignment = GridData.FILL;
 		
 		// Event Options Tab
-		eventsTabFolder = new CTabFolder(this.eventComposite, SWT.FLAT );
+		eventsTabFolder = new CTabFolder(this.eventComposite, SWT.FLAT);
 		eventsTabFolder.setLayoutData(gridData);
 		eventsTabFolderSelectionListener = new 
 				EventsTabFolderSelectionListener();
 		eventsTabFolder.addSelectionListener(eventsTabFolderSelectionListener);
 		
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
-				ControlEventTypes.CONTROL_EVENT);
+				ControlEventTypes.CONTROL_EVENT, this);
 		 
 		this.redoEventTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
 		this.redoEventTabItem.setText("Redo");
@@ -330,6 +330,10 @@ public class DetectorChannelView extends ViewPart
 	public void setFocus() {
 	}
 
+	public Channel getCurrentChannel() {
+		return this.currentChannel;
+	}
+	
 	/**
 	 * Sets the {@link de.ptb.epics.eve.data.scandescription.Channel}
 	 * (the underlying model whose contents is presented by this view).

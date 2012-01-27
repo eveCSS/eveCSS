@@ -119,13 +119,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 							  final String localName, 
 							  final String qName, 
 							  final Attributes atts) throws SAXException {
-		
-		/*System.err.println( qName + " open: " + this.state + " / " + this.subState);
-		System.err.println( qName );
-		System.err.println( this.state );
-		System.err.println( this.subState );
-		System.err.println( "----------------------\n" );*/
-		
+
 		switch(this.state) {
 		
 			case ROOT:
@@ -661,8 +655,6 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 	/* ******************************************************************/
 	/* ******************************************************************/
 	
-//	System.err.println( qName + " close: " + this.state + " / " + this.subState + "\n");
-		
 		switch( this.state ) {
 			case VERSION_READ:
 				if( qName.equals( "version" ) ) {
@@ -1137,117 +1129,88 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		// loop through axes and create events for every 
 		// position and status access if monitor equals true
 		// Create events for options if monitor equals true.
-		for (Motor loopMotor : this.measuringStation.getMotors()) {
-			for (MotorAxis loopAxis : loopMotor.getAxes()){
-				String id = loopAxis.getID();
-				if (loopAxis.getPosition().getAccess().getMonitor()){
-					String name = loopAxis.getName() + ".Position";
-					this.measuringStation.add(new Event(loopAxis.getPosition().getAccess(), loopAxis.getPosition().getValue(), name, id));
+		for (Motor m : this.measuringStation.getMotors()) {
+			for (MotorAxis ma : m.getAxes()) {
+				if (ma.getPosition().getAccess().getMonitor()) {
+					this.measuringStation.add(new Event(
+							ma.getPosition().getAccess(), 
+							ma.getPosition().getValue(), 
+							ma.getName() + ".Position", 
+							ma.getID()));
 				}
-				if ((loopAxis.getStatus() != null) && (loopAxis.getStatus().getAccess().getMonitor())){
-					String name = loopAxis.getName() + ".Status";
-					this.measuringStation.add(new Event(loopAxis.getStatus().getAccess(), loopAxis.getStatus().getValue(), name, id));
+				if ((ma.getStatus() != null) && 
+					(ma.getStatus().getAccess().getMonitor())) {
+						this.measuringStation.add(new Event(
+								ma.getStatus().getAccess(), 
+								ma.getStatus().getValue(), 
+								ma.getName() + ".Status", 
+								ma.getID()));
 				}
-				for (Option loopOption : loopAxis.getOptions()){
-					if (loopOption.getValue().getAccess().getMonitor()){
-						String name =  loopAxis.getName() + "." + loopOption.getName();
-						id = loopOption.getID();
-						this.measuringStation.add(new Event(loopOption.getValue().getAccess(), loopOption.getValue().getValue(), name, id));
-					}				
+				for (Option o : ma.getOptions()) {
+					if (o.getValue().getAccess().getMonitor()) {
+						this.measuringStation.add(new Event(
+								o.getValue().getAccess(), 
+								o.getValue().getValue(), 
+								ma.getName() + "." + o.getName(), 
+								o.getID()));
+					}
 				}
 			}
-			for (Option loopOption : loopMotor.getOptions()){
-				if (loopOption.getValue().getAccess().getMonitor()){
-					String name =  loopMotor.getName() + "." + loopOption.getName();
-					String id = loopOption.getID();
-					this.measuringStation.add(new Event(loopOption.getValue().getAccess(), loopOption.getValue().getValue(), name, id));
-				}				
+			for (Option o : m.getOptions()) {
+				if (o.getValue().getAccess().getMonitor()) {
+					this.measuringStation.add(new Event(
+							o.getValue().getAccess(), 
+							o.getValue().getValue(), 
+							m.getName() + "." + o.getName(), 
+							o.getID()));
+				}
 			}
 		}
 
 		// loop through detector channels and create events for every 
 		// read access with monitor equals true
 		// Create events for options if monitor equals true.
-		for (Detector loopDetector : this.measuringStation.getDetectors()){
-			for (DetectorChannel loopChannel : loopDetector.getChannels()){
-				String name = loopChannel.getName();
-				String id = loopChannel.getID();
-				if (loopChannel.getRead().getAccess().getMonitor()){
-					this.measuringStation.add(new Event(loopChannel.getRead().getAccess(), loopChannel.getRead().getValue(), name, id));
+		for (Detector det : this.measuringStation.getDetectors()) {
+			for (DetectorChannel ch : det.getChannels()) {
+				if (ch.getRead().getAccess().getMonitor()) {
+					this.measuringStation.add(new Event(
+							ch.getRead().getAccess(), 
+							ch.getRead().getValue(), 
+							ch.getName(), 
+							ch.getID()));
 				}
-				for (Option loopOption : loopChannel.getOptions()){
-					if (loopOption.getValue().getAccess().getMonitor()){
-						name =  loopChannel.getName() + "." + loopOption.getName();
-						id = loopOption.getID();
-						this.measuringStation.add(new Event(loopOption.getValue().getAccess(), loopOption.getValue().getValue(), name, id));
-					}				
+				for (Option o : ch.getOptions()) {
+					if (o.getValue().getAccess().getMonitor()) {
+						this.measuringStation.add(new Event(
+								o.getValue().getAccess(), 
+								o.getValue().getValue(), 
+								ch.getName() + "." + o.getName(), 
+								o.getID()));
+					}
 				}
 			}
-			for (Option loopOption : loopDetector.getOptions()){
-				if (loopOption.getValue().getAccess().getMonitor()){
-					String name =  loopDetector.getName() + "." + loopOption.getName();
-					String id = loopOption.getID();
-					this.measuringStation.add(new Event(loopOption.getValue().getAccess(), loopOption.getValue().getValue(), name, id));
-				}				
+			for (Option o : det.getOptions()) {
+				if (o.getValue().getAccess().getMonitor()) {
+					this.measuringStation.add(new Event(
+							o.getValue().getAccess(), 
+							o.getValue().getValue(), 
+							det.getName() + "." + o.getName(), 
+							o.getID()));
+				}
 			}
 		}
 
 		// loop through devices and create events for every 
 		// value access with monitor equals true
-		for (Device loopDevice : this.measuringStation.getDevices()){
-			String name = loopDevice.getName();
-			String id = loopDevice.getID();
-			if (loopDevice.getValue().getAccess().getMonitor()){
-				this.measuringStation.add(new Event(loopDevice.getValue().getAccess(), loopDevice.getValue().getValue(), name, id));
+		for (Device dev : this.measuringStation.getDevices()) {
+			if (dev.getValue().getAccess().getMonitor()) {
+				this.measuringStation.add(new Event(
+						dev.getValue().getAccess(), 
+						dev.getValue().getValue(), 
+						dev.getName(), 
+						dev.getID()));
 			}
 		}
-		
-/*		// debug only
-		System.err.println( "***** Motors *****" );
-		Iterator< Motor > it = this.measuringStation.getMotors().iterator();
-		while( it.hasNext() ) {
-			Motor motor = it.next();
-			Iterator< MotorAxis > it2 = motor.getAxis().iterator();
-			while( it2.hasNext() ) {
-				MotorAxis motorAxis = it2.next();
-				System.err.println( "axis: " + motorAxis.getID() );
-				Iterator<Option> optionIterator = motorAxis.getOptions().iterator();
-				while( optionIterator.hasNext() ) {
-					Option option = optionIterator.next();
-					System.err.println("axis option: " + option.getID());
-				}			
-			}
-			Iterator<Option> optionIterator = motor.getOptions().iterator();
-			while( optionIterator.hasNext() ) {
-				Option option = optionIterator.next();
-				System.err.println("motor option: " + option.getID());
-			}			
-		}
-
-		// debug only
-		System.err.println( "***** Detectors *****" );
-		Iterator<Detector> detectors = this.measuringStation.getDetectors().iterator();
-		while( detectors.hasNext() ) {
-			Detector detector = detectors.next();
-			System.err.println( detector.getID() );
-			Iterator< DetectorChannel > it2 = detector.getChannels().iterator();
-			while( it2.hasNext() ) {
-				DetectorChannel channel = it2.next();
-				System.err.println( "channel: " + channel.getID() );
-				Iterator<Option> optionIterator = channel.getOptions().iterator();
-				while( optionIterator.hasNext() ) {
-					Option option = optionIterator.next();
-					System.err.println("channel option: " + option.getID());
-				}			
-			}
-			Iterator<Option> optionIterator = detector.getOptions().iterator();
-			while( optionIterator.hasNext() ) {
-				Option option = optionIterator.next();
-				System.err.println("detector option: " + option.getID());
-			}			
-		}
-*/		
-
 	}
 
 	/**
@@ -1257,5 +1220,5 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 	 */
 	public MeasuringStation getMeasuringStation() {
 		return this.measuringStation;
-	}	
+	}
 }

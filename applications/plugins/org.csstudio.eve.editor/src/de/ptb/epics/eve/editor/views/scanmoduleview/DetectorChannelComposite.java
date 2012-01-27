@@ -114,10 +114,8 @@ public class DetectorChannelComposite extends Composite {
 		this.tableViewer.getTable().addFocusListener(new TableViewerFocusListener());
 
 		menuManager = new MenuManager("#PopupMenu");
-		
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new MenuManagerMenuListener());
-				    
 		final Menu contextMenu = 
 			menuManager.createContextMenu(this.tableViewer.getTable());
 		this.tableViewer.getControl().setMenu(contextMenu);
