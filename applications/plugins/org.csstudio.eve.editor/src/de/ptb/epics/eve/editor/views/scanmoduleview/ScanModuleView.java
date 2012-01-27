@@ -481,10 +481,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	private void setCurrentScanModule(ScanModule currentScanModule) {
 		logger.debug("setCurrentScanModule");
 
-//		System.out.println("\tsetCurrentScanModule, top visible? " + this.top.getVisible());
-//		this.top.setVisible(true);
-//		System.out.println("\t\tjetzt true ? setCurrentScanModule, top visible? " + this.top.getVisible());
-		
 		if (this.currentScanModule != null) {
 			this.currentScanModule.removeModelUpdateListener(this);
 		}
