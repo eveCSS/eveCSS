@@ -365,6 +365,7 @@ public class DetectorChannelView extends ViewPart
 		
 		if(this.currentChannel != null) {
 			// current channel set -> update widgets
+			top.setVisible(true);
 			
 			this.scanModule.addPropertyChangeListener("removeChannel", this);
 
@@ -423,8 +424,6 @@ public class DetectorChannelView extends ViewPart
 				sc.setMinSize(this.top.computeSize(width, height));
 			}
 			checkForErrors();
-			top.setVisible(true);
-			
 		} else {
 			// this.currentChannel == null (no channel selected)
 			this.setPartName("No Detector Channel selected");

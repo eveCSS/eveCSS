@@ -154,7 +154,6 @@ public class MotorAxisComposite extends Composite {
 	 * 		  should be set
 	 */
 	public void setScanModule(final ScanModule scanModule) {
-
 		logger.debug("setScanModule");
 		
 		this.scanModule = scanModule;
@@ -163,7 +162,10 @@ public class MotorAxisComposite extends Composite {
 		if(scanModule == null) {
 			return;
 		}
-		
+
+		System.out.println("\tMotorAxis ViewPart: " +
+				Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart());
+
 		// if there are motor axis present... 
 		if(tableViewer.getTable().getItems().length > 0)
 		{	// ... and none is selected ...

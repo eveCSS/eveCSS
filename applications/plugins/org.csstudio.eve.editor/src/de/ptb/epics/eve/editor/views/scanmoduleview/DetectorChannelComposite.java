@@ -1,8 +1,6 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
 import org.apache.log4j.Logger;
-import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
-import org.csstudio.swt.xygraph.figures.Trace.TraceType;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -15,7 +13,6 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -31,9 +28,7 @@ import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.Channel;
-import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.editor.Activator;
 
 /**
@@ -114,8 +109,10 @@ public class DetectorChannelComposite extends Composite {
 		this.tableViewer.getTable().addFocusListener(new TableViewerFocusListener());
 
 		menuManager = new MenuManager("#PopupMenu");
+		
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new MenuManagerMenuListener());
+				    
 		final Menu contextMenu = 
 			menuManager.createContextMenu(this.tableViewer.getTable());
 		this.tableViewer.getControl().setMenu(contextMenu);
@@ -152,53 +149,27 @@ public class DetectorChannelComposite extends Composite {
 			return;
 		}
 
+		System.out.println("\tDetectorChannel ViewPart: " +
+				Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart());
+
 		// if there are detector channels present... 
 		if(tableViewer.getTable().getItems().length > 0)
 		{	// ... and none is selected ...
 			if(tableViewer.getTable().getSelectionCount() == 0)
 			{	// ... select the first one and set the detector channel view
 				tableViewer.getTable().select(0);
+// TODO 26.1.12: setFocus erzeugt folgenden Fehler, wenn man zwischen den scml-Files
+// hin und her schaltet
+// WARNING: Prevented recursive attempt to activate part de.ptb.epics.eve.editor.views.ScanModulView while still in the middle of activating part de.ptb.epics.eve.editor.graphical.GraphicalEditor
 //				tableViewer.getControl().setFocus();
 			}
 		} 
 		((ScanModuleView)parentView).selectionProviderWrapper.
-		setSelectionProvider(this.tableViewer);
+				setSelectionProvider(this.tableViewer);
+
 		
-		this.tableViewer.refresh();
 	}
 	
-	/*
-	 * Sets the Plot Detector Channel if only one channel is available 
-	 */
-	private void setPlotDetectorChannel()
-	{
-		final Channel[] availableDetectorChannels;
-
-		availableDetectorChannels = scanModule.getChannels();
-		String[] channelItems = new String[availableDetectorChannels.length];
-		for (int i = 0; i < availableDetectorChannels.length; ++i) {
-			channelItems[i] = 
-				availableDetectorChannels[i].getDetectorChannel().getFullIdentifyer();
-		}		
-		
-		// if only one channel available, create a yAxis and set 
-		// this channel as default
-		if (availableDetectorChannels.length == 1) {
-
-			YAxis yAxis1 = new YAxis();
-			// default values for color, line style and mark style
-			yAxis1.setColor(new RGB(0,0,255));
-			yAxis1.setLinestyle(TraceType.SOLID_LINE);
-			yAxis1.setMarkstyle(PointStyle.NONE);
-
-			yAxis1.setDetectorChannel(availableDetectorChannels[0].getDetectorChannel());
-			PlotWindow[] plotWindows = scanModule.getPlotWindows();
-			for (int i = 0; i < plotWindows.length; ++i) {
-				plotWindows[i].addYAxis(yAxis1);
-			}
-		}
-	}
-
 	// ************************************************************************
 	// **************************** Listeners *********************************
 	// ************************************************************************
