@@ -137,6 +137,10 @@ public class PlotComposite extends Composite {
 		if(scanModule == null) {
 			return;
 		}
+
+		System.out.println("\tPlot ViewPart: " +
+				Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart());
+
 		// if there are plots present... 
 		if(tableViewer.getTable().getItems().length > 0)
 		{
@@ -147,7 +151,7 @@ public class PlotComposite extends Composite {
 			}
 		}
 		((ScanModuleView)parentView).selectionProviderWrapper.
-		setSelectionProvider(this.tableViewer);
+				setSelectionProvider(this.tableViewer);
 	}
 	
 	/**

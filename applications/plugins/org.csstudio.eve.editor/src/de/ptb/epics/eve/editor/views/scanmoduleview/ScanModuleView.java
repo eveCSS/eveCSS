@@ -11,6 +11,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
@@ -480,6 +481,10 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	private void setCurrentScanModule(ScanModule currentScanModule) {
 		logger.debug("setCurrentScanModule");
 
+//		System.out.println("\tsetCurrentScanModule, top visible? " + this.top.getVisible());
+//		this.top.setVisible(true);
+//		System.out.println("\t\tjetzt true ? setCurrentScanModule, top visible? " + this.top.getVisible());
+		
 		if (this.currentScanModule != null) {
 			this.currentScanModule.removeModelUpdateListener(this);
 		}
@@ -745,7 +750,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 
 		if(this.currentScanModule != null) {
 			top.setVisible(true);
-			top.setFocus();
 			this.setPartName(this.currentScanModule.getName() + ":"
 							 + this.currentScanModule.getId());	
 			
@@ -784,24 +788,82 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 			((PositioningComposite) this.positioningComposite).setScanModule(
 					this.currentScanModule);
 			
+			System.out.println("\tScanModule ViewPart: " + 
+					Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart());
+
+			// View Part der ScanModuleView: 
+			System.out.println("\tthis: " + this);
+			System.out.println("\tthis.getSite().getPart(): " + this.getSite().getPart());
+			System.out.println("\tthis.getPartName(): " + this.getPartName());
+
 			switch (actionsTabFolder.getSelectionIndex()) {
 			case 0:
+// TODO 26.1.12: setSelection erzeugt einen Fehler, wenn man vom 1. zum 2.
+// ScanModule schaltet in File 3er-sccan.scml
+// Direkt nach dem Programmstart wurde nur das SM1 selektiert. Dort wurde nur
+// die MotorAxisView korrekt angezeigt.
+// Nach der Auswahl von SM2 wurden trotz Fehlermeldung alle 3 Views korrekt 
+// angezeigt
+// WARNING: Prevented recursive attempt to activate part de.ptb.epics.eve.editor.views.ScanModulView while still in the middle of activating part de.ptb.epics.eve.editor.graphical.GraphicalEditor
+
+// Hinweis: es gibt allerdings noch einen setFocus() Aufruf im 
+// DetectorChannelComposite at line 164
+// "tableViewer.getControl().setFocus();"
+// ohne den setFocus() Aufruf kommt der setSelection Fehler weiterhin, es wird
+// dann aber beim Wechsel in das SM2 keine View mehr angezeigt. Alle 3 sind leer.
+
+				
+// 2. Hinweis: ohne actionsTabFolder.setSelection(x) Aufrufe kommt beim ersten
+// SM weiterhin nur die MotorAxisView. Wenn man dann aber auf das 2. SM klickt
+// sind alle 3 views leer. Auch beim hin- und herklicken bleiben alle views leer
+
+// Außerdem gibt es den Effekt, das man auch nicht mehr die einzelnen Tabs
+// sehen kann. Es wird nur die View aktualisiert, die zum gerade gedrückten
+// Tab gehört. Durch wechsel von den SMs wird dann zwar eine andere View
+// gezeigt, aber immer nur eine!
+				
+				System.out.println("\tSelections für MotorAxes Tab werden gesetzt.");
+//				actionsTabFolder.setSelection(1);
 				((DetectorChannelComposite) this.detectorChannelComposite).
 						setScanModule(this.currentScanModule);
+//				actionsTabFolder.setSelection(5);
 				((PlotComposite) this.plotComposite).setScanModule(
 						this.currentScanModule);
+//				actionsTabFolder.setSelection(0);
 				((MotorAxisComposite) this.motorAxisComposite).setScanModule(
 						this.currentScanModule);
 				break;
 			case 1:
+// 3. Hinweis: Habe jetzt nochmal ein bischen rumgeklickt. Der Fehler tritt nur
+// dann auf, wenn eine oder mehrere View von Motor, Detector oder Plot auch
+// wirklich offen sind. Ist nichts offen gibt es auch keinen Fehler.
+// Bei 3 offenen Views tritt der Fehler manchmal auf
+// Bei 2 offenen Views immer
+// Bei 1 offenen View selten
+				
+// 4. Hinweis: Gerade nachdem ich den 3. Hinweis geschrieben habe und dann das
+// ganze Verhalten nochmal getestet habe ist mir jetzt klar geworden, dass der
+// Fehler sehr zufällig auftritt.
+// Ich habe jetzt das Programm einmal gestartet und es gab nie Fehler, egal
+// welches Tab angeklickt wurde und welche Views vorher schon sichtbar waren.
+
+// Beim nächsten Start des Programms gab es die Fehler wieder wie unter 3
+// beschrieben und zusätzlich das Verhalten, dass man zwischen den Tabs hin- 
+// und her geklickt hat und garkeine Views aufgemacht wurden.
+		
+				System.out.println("\tSelections für DetectorChannels Tab werden gesetzt.");
+				actionsTabFolder.setSelection(0);
 				((MotorAxisComposite) this.motorAxisComposite).setScanModule(
 						this.currentScanModule);
+				actionsTabFolder.setSelection(5);
 				((PlotComposite) this.plotComposite).setScanModule(
 						this.currentScanModule);
+				actionsTabFolder.setSelection(1);
 				((DetectorChannelComposite) this.detectorChannelComposite).
 						setScanModule(this.currentScanModule);
 				break;
 			case 5:
+				System.out.println("\tSelections für Plot Tab werden gesetzt.");
 			default:
 				((MotorAxisComposite) this.motorAxisComposite).setScanModule(
 						this.currentScanModule);
@@ -852,7 +914,10 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 			pauseEventComposite.setControlEventManager(null);
 			
 			selectionProviderWrapper.setSelectionProvider(null);
-			
+
+// TODO 26.1.12: setVisible erzeugt folgenden Fehler, wenn man zwischen den scml-Files
+// hin und her schaltet und die MotorAxis, DetectoChannel und PlotWindow View
+// schon gefüllt war. Ansonsten tritt der Fehler nicht auf.
 			top.setVisible(false);
 		}
 		addListeners();
@@ -877,6 +942,17 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
+
+			System.out.println("\tConfirm Trigger wurde gedrückt");
+			System.out.println("\tWelche ViewPart ist Aktiv? " +
+			Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart());
+			
+			System.out.println("\tWelche ViewPart ist Aktiv? " +
+			 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart());
+			System.out.println("\tWelche ViewPart ist Aktiv? " +
+					 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage());
+
+			
 			currentScanModule.setTriggerconfirm(
 					confirmTriggerCheckBox.getSelection());		
 		}
