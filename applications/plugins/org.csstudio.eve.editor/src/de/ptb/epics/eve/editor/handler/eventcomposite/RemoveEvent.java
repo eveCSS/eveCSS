@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.handler;
+package de.ptb.epics.eve.editor.handler.eventcomposite;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionEvent;

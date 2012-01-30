@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -303,6 +304,28 @@ public class ScanDescription implements IModelUpdateProvider,
 	 */
 	public List<Event> getEvents() {
 		return new ArrayList<Event>(this.eventsMap.values());
+	}
+	
+	/**
+	 * Returns a valid id for a plot.
+	 * 
+	 * @return a valid id for a plot
+	 */
+	public int getAvailablePlotId() {
+		List<Integer> plotIds = new ArrayList<Integer>();
+		for(Chain ch : this.chains) {
+			for(ScanModule sm : ch.getScanModules()) {
+				for(PlotWindow pw : sm.getPlotWindows()) {
+					plotIds.add(pw.getId());
+				}
+			}
+		}
+		Collections.sort(plotIds);
+		int i=1;
+		while(plotIds.contains(i)) {
+			i++;
+		}
+		return i;
 	}
 	
 	/**

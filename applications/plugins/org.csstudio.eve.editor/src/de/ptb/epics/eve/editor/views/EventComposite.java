@@ -58,7 +58,7 @@ public class EventComposite extends Composite {
 		this.eventType = eventType;	
 		this.parentView = parentView;
 		
-		createViewer(parent);
+		createViewer();
 		
 		/*
 		
@@ -134,7 +134,7 @@ public class EventComposite extends Composite {
 		*/
 	} // end of: Constructor
 
-	private void createViewer(Composite parent) {
+	private void createViewer() {
 		this.tableViewer = new TableViewer(this, SWT.V_SCROLL | SWT.H_SCROLL);
 		GridData gridData = new GridData();
 		gridData.minimumHeight = 120;

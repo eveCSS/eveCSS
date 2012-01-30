@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Logger;
+import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
+import org.csstudio.swt.xygraph.figures.Trace.TraceType;
+import org.eclipse.swt.graphics.RGB;
 
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
@@ -32,44 +35,35 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	// logging 
 	private static final Logger logger = 
 		Logger.getLogger(PlotWindow.class.getName());
-
-	/**
-	 * The motor axis that used as the x axis.
-	 */
-	private MotorAxis xAxis;
 	
-	/**
-	 * A List containing all y axes.
-	 */
-	private List<YAxis> yAxis;
-	
-	/**
-	 * The id of the plot window.
-	 */
+	// the id 
 	private int id;
 	
-	/**
-	 * The scan module the plot corresponds to
-	 */
+	// the scan module the plot belongs to
 	private ScanModule scanModule;
 
-	/**
-	 * The plot mode of the plot window.
-	 */
+	// the plot mode
 	private PlotModes mode;
 	
-	/**
-	 * Indicates whether the plot window should be initialized.
-	 */
+	// indicates whether the plot window should be initialized
 	private boolean init;
 	
-	/**
-	 * A List of objects that need to be informed if the plot window is updated.
-	 */
+	// the motor axis that used as the x axis
+	private MotorAxis xAxis;
+	
+	// contains all y axes
+	private List<YAxis> yAxis;
+	
+	// parties interested in updates of the plot window
 	private List<IModelUpdateListener> updateListener;
 	
 	/**
-	 * Constructs a new plot window.
+	 * Constructs a new plot window. Notice that an id has to be set via 
+	 * {@link #setId(int)} afterwards.
+	 * 
+	 * @param scanModule the scanModule the plot window will be added to
+	 * @throws IllegalArgumentException if <code>scanModule</code> is 
+	 * 		<code>null</code>
 	 */
 	public PlotWindow(final ScanModule scanModule) {
 		if(scanModule == null) {
@@ -82,9 +76,44 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 
 		this.scanModule.addPropertyChangeListener("addAxis", this);
 
-		this.updateListener = new ArrayList< IModelUpdateListener >();
-		this.yAxis = new ArrayList< YAxis >();
+		this.updateListener = new ArrayList<IModelUpdateListener>();
+		this.yAxis = new ArrayList<YAxis>();
 		this.mode = PlotModes.LINEAR;
+	}
+	
+	/**
+	 * Constructs a <code>PlotWindow</code>. If <code>generateId</code> is 
+	 * <code>true</code> an available id is automatically assigned, otherwise 
+	 * {@link #PlotWindow(ScanModule)} is called.<br>
+	 * It also sets an x and y axis if only one of each is available.
+	 * 
+	 * @param scanModule the scan module the plot window will be added to
+	 * @param generateId <code>true</code> if an id should be generated, 
+	 * 					<code>false</code> otherwise
+	 * @throws IllegalArgumentException if <code>scanModule</code> is 
+	 * 		<code>null</code>
+	 * @author Marcus Michalsky
+	 * @since 1.1
+	 */
+	public PlotWindow(final ScanModule scanModule, final boolean generateId) {
+		this(scanModule);
+		if(generateId) {
+			this.id = this.getScanModule().getChain().getScanDescription().
+				getAvailablePlotId();
+		}
+		if(scanModule.getAxes().length == 1) {
+			this.xAxis = scanModule.getAxes()[0].getMotorAxis();
+		}
+		if(scanModule.getChannels().length == 1) {
+			YAxis yAxis = new YAxis();
+			// default values for color, line style and mark style
+			yAxis.setColor(new RGB(0,0,255));
+			yAxis.setLinestyle(TraceType.SOLID_LINE);
+			yAxis.setMarkstyle(PointStyle.NONE);
+			yAxis.setDetectorChannel(scanModule.getChannels()[0].
+					getDetectorChannel());
+			this.yAxis.add(yAxis);
+		}
 	}
 	
 	/**
@@ -264,6 +293,9 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 		updateListeners();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		logger.debug("PropertyChange: " + evt.getPropertyName());
@@ -368,8 +400,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	/*
 	 * 
 	 */
-	private void updateListeners()
-	{
+	private void updateListeners() {
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
 			new CopyOnWriteArrayList<IModelUpdateListener>(this.updateListener);
 		

@@ -246,7 +246,44 @@
             <visibleWhen
                   checkEnabled="false">
                <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.emptyselection">
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.popup">
+         <command
+               commandId="de.ptb.epics.eve.editor.command.addplotwindow"
+               icon="icons/devices/plot.gif"
+               label="Add Plot Window"
+               style="push">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.changeplotid"
+               icon="icons/rename.gif"
+               label="Change Plot Id"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+         <separator
+               name="popup:de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.popup.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removeplotwindow"
+               icon="icons/rem_co.gif"
+               label="Remove Plot Window"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
                </reference>
             </visibleWhen>
          </command>
@@ -265,6 +302,15 @@
       </definition>
       <definition
             id="de.ptb.epics.eve.editor.expressions.emptyselection">
+         <with
+               variable="selection">
+            <count
+                  value="0">
+            </count>
+         </with>
+      </definition>
+      <definition
+            id="de.ptb.epics.eve.editor.expressions.oneitemselected">
          <with
                variable="selection">
             <count
@@ -290,8 +336,13 @@
                optional="false">
          </commandParameter>
       </command>
+      <category
+            id="de.ptb.epics.eve.editor.views.eventcomposite.commands"
+            name="Event Composite">
+      </category>
       <command
-            defaultHandler="de.ptb.epics.eve.editor.handler.AddEvent"
+            categoryId="de.ptb.epics.eve.editor.views.eventcomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.eventcomposite.AddEvent"
             id="de.ptb.epics.eve.editor.command.addevent"
             name="AddEvent">
          <commandParameter
@@ -316,9 +367,32 @@
          </commandParameter>
       </command>
       <command
-            defaultHandler="de.ptb.epics.eve.editor.handler.RemoveEvent"
+            categoryId="de.ptb.epics.eve.editor.views.eventcomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.eventcomposite.RemoveEvent"
             id="de.ptb.epics.eve.editor.command.removeevent"
             name="RemoveEvent">
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.commands"
+            name="Plot Composite">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.category"
+            defaultHandler="de.ptb.epics.eve.editor.handler.plotcomposite.AddPlotWindow"
+            id="de.ptb.epics.eve.editor.command.addplotwindow"
+            name="Add Plot Window">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.plotcomposite.ChangePlotId"
+            id="de.ptb.epics.eve.editor.command.changeplotid"
+            name="Change Plot Id">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.plotcomposite.RemovePlotWindow"
+            id="de.ptb.epics.eve.editor.command.removeplotwindow"
+            name="Remove Plot Window">
       </command>
    </extension>
    <extension

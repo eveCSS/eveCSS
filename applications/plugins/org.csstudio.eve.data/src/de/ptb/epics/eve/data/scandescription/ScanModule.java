@@ -278,9 +278,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param plotWindow The plot window that should be added to the Scan Modul.
 	 */
-	public void add( final PlotWindow plotWindow ) {
-		this.plotWindows.add( plotWindow );
-		plotWindow.addModelUpdateListener( this );
+	public void add(final PlotWindow plotWindow) {
+		this.plotWindows.add(plotWindow);
+		plotWindow.addModelUpdateListener(this);
 		updateListeners();
 	}
 	
@@ -585,6 +585,19 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.chain = chain;
 	}
 
+	/**
+	 * Returns all used plot window Ids.
+	 * 
+	 * @return all used plot wind Ids
+	 */
+	public List<Integer> getPlotIds() {
+		List<Integer> list = new ArrayList<Integer>();
+		for(PlotWindow pw : this.plotWindows) {
+			list.add(pw.getId());
+		}
+		return list;
+	}
+	
 	/**
 	 * Gives back the x-position of the scan modul in the graphic diagramm.
 	 * 

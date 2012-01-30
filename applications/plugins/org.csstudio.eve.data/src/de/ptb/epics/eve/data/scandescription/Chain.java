@@ -671,6 +671,10 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * This method returns an iterator over all pause events.
 	 * 
 	 * @return An iterator over all pause events. Never returns 'null'.
+	 * @deprecated use {@link #getPauseControlEventManager()} and 
+	 * 	{@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager#getControlEventsList()} 
+	 * in conjunction with the for-each-loop
+	 * @see <a href="http://docs.oracle.com/javase/1.5.0/docs/guide/language/foreach.html">oracle documentation</a>
 	 */
 	public Iterator<PauseEvent> getPauseEventsIterator() {
 		return this.pauseEvents.iterator();
@@ -680,6 +684,10 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * This method returns an iterator over all start events.
 	 * 
 	 * @return an iterator over all start events
+	 * @deprecated use {@link #getStartControlEventManager()} and 
+	 * 	{@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager#getControlEventsList()} 
+	 * in conjunction with the for-each-loop
+	 * @see <a href="http://docs.oracle.com/javase/1.5.0/docs/guide/language/foreach.html">oracle documentation</a>
 	 */
 	public Iterator<ControlEvent> getStartEventsIterator() {
 		return this.startEvents.iterator();
@@ -689,6 +697,10 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * This method returns an iterator over all stop events.
 	 * 
 	 * @return an iterator over all stop events
+	 * @deprecated use {@link #getStopControlEventManager()} and 
+	 * 	{@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager#getControlEventsList()} 
+	 * in conjunction with the for-each-loop
+	 * @see <a href="http://docs.oracle.com/javase/1.5.0/docs/guide/language/foreach.html">oracle documentation</a>
 	 */
 	public Iterator<ControlEvent> getStopEventsIterator() {
 		return this.stopEvents.iterator();
@@ -698,6 +710,10 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * This method returns an iterator over all break events.
 	 * 
 	 * @return an iterator over all break events
+	 * @deprecated use {@link #getBreakControlEventManager()} and 
+	 * 	{@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager#getControlEventsList()} 
+	 * in conjunction with the for-each-loop
+	 * @see <a href="http://docs.oracle.com/javase/1.5.0/docs/guide/language/foreach.html">oracle documentation</a>
 	 */
 	public Iterator<ControlEvent> getBreakEventsIterator() {
 		return this.breakEvents.iterator();
@@ -707,6 +723,10 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * This method returns an iterator over all redo events.
 	 * 
 	 * @return an iterator over all redo events
+	 * @deprecated use {@link #getRedoControlEventManager()} and 
+	 * 	{@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager#getControlEventsList()} 
+	 * in conjunction with the for-each-loop
+	 * @see <a href="http://docs.oracle.com/javase/1.5.0/docs/guide/language/foreach.html">oracle documentation</a>
 	 */
 	public Iterator<ControlEvent> getRedoEventsIterator() {
 		return this.redoEvents.iterator();

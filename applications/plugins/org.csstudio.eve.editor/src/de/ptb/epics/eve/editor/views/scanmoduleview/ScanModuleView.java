@@ -68,53 +68,53 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 
 	private ScanModule currentScanModule;
 
-	private Composite top = null;
+	private Composite top;
 
-	private ExpandBar bar = null;
+	private ExpandBar bar;
 
-	private Composite generalComposite = null;	
+	private Composite generalComposite;
 	private GeneralCompositeControlListener generalCompositeControlListener;
 	
-	private Composite actionsComposite = null;
+	private Composite actionsComposite;
 	private ActionsCompositeControlListener actionsCompositeControlListener;
 	
-	private Composite eventsComposite = null;
+	private Composite eventsComposite;
 	private EventsCompositeControlListener eventsCompositeControlListener;
 
-	private Label triggerDelayLabel = null;
-	private Text triggerDelayText = null;
-	private Label triggerDelayErrorLabel = null;
-	private Label triggerDelayUnitLabel = null;
+	private Label triggerDelayLabel;
+	private Text triggerDelayText;
+	private Label triggerDelayErrorLabel;
+	private Label triggerDelayUnitLabel;
 	private TriggerDelayTextModifiedListener triggerDelayTextModifiedListener;
 	
-	private Label settleTimeLabel = null;
-	private Text settleTimeText = null;
-	private Label settleTimeErrorLabel = null;
-	private Label settleTimeUnitLabel = null;
+	private Label settleTimeLabel;
+	private Text settleTimeText;
+	private Label settleTimeErrorLabel;
+	private Label settleTimeUnitLabel;
 	private SettleTimeTextModifiedListener settleTimeTextModifiedListener;
 	
-	private Button confirmTriggerCheckBox = null;
+	private Button confirmTriggerCheckBox;
 	private ConfirmTriggerCheckBoxSelectionListener 
 			confirmTriggerCheckBoxSelectionListener;
 	
-	public CTabFolder eventsTabFolder = null;
+	public CTabFolder eventsTabFolder;
 	private EventsTabFolderSelectionListener eventsTabFolderSelectionListener;
 	
-	private EventComposite pauseEventComposite = null;
-	private EventComposite redoEventComposite = null;
-	private EventComposite breakEventComposite = null;
-	private EventComposite triggerEventComposite = null;
+	private EventComposite pauseEventComposite;
+	private EventComposite redoEventComposite;
+	private EventComposite breakEventComposite;
+	private EventComposite triggerEventComposite;
 	
-	private CTabFolder actionsTabFolder = null;
+	private CTabFolder actionsTabFolder;
 	
-	private Composite motorAxisComposite = null;
-	private Composite detectorChannelComposite = null;
-	private Composite prescanComposite = null;
-	private Composite postscanComposite = null;
-	private Composite positioningComposite = null;
-	private Composite plotComposite = null;
+	private Composite motorAxisComposite;
+	private Composite detectorChannelComposite;
+	private Composite prescanComposite;
+	private Composite postscanComposite;
+	private Composite positioningComposite;
+	private Composite plotComposite;
 	
-	private Button appendScheduleEventCheckBox = null;
+	private Button appendScheduleEventCheckBox;
 	private AppendScheduleEventCheckBoxSelectionListener
 			appendScheduleEventCheckBoxSelectionListener;
 	
@@ -153,7 +153,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		logger.debug("createPartControl");	
+		logger.debug("createPartControl");
 		
 		parent.setLayout(new FillLayout());
 		
@@ -164,6 +164,8 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 			return;
 		}
 		
+		// TODO push into the composites !!!
+		// TODO
 		this.measuringStation = new 
 				ExcludeDevicesOfScanModuleFilterManualUpdate(
 				true, true, false, false, false);
@@ -731,7 +733,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 */
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
-
+		
 		// widgets will be updated according to set / changed model
 		// -> temporarily disable listeners to prevent Event Loops
 		// (and unnecessary duplicate calls)
