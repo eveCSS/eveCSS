@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview;
+package de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite;
 
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -13,12 +13,12 @@ import de.ptb.epics.eve.data.scandescription.Postscan;
 /**
  * <code>PostscanCellModifyer</code> is the cell modifier for the table 
  * viewer defined in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PostscanComposite}.
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.PostscanComposite}.
  * 
  * @author ?
  * @author Marcus Michalsky
  */
-public class PostscanCellModifyer implements ICellModifier {
+public class CellModifyer implements ICellModifier {
 
 	private final TableViewer tableViewer;
 	
@@ -27,7 +27,7 @@ public class PostscanCellModifyer implements ICellModifier {
 	 * 
 	 * @param tableViewer the table viewer the cell modifier should be added to
 	 */
-	public PostscanCellModifyer(final TableViewer tableViewer) {
+	public CellModifyer(final TableViewer tableViewer) {
 		this.tableViewer = tableViewer;
 	}
 	

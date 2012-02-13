@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview;
+package de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite;
 
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -13,12 +13,12 @@ import de.ptb.epics.eve.data.scandescription.Prescan;
 /**
  * <code>PrescanCellModifyer</code> is the cell modifier of the table viewer 
  * defined in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PrescanComposite}.
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.PrescanComposite}.
  * 
  * @author ?
  * @author Marcus Michalsky
  */
-public class PrescanCellModifyer implements ICellModifier {
+public class CellModifyer implements ICellModifier {
 
 	private final TableViewer tableViewer;
 	
@@ -27,7 +27,7 @@ public class PrescanCellModifyer implements ICellModifier {
 	 * 
 	 * @param tableViewer the table viewer the cell modifier is appended to
 	 */
-	public PrescanCellModifyer(final TableViewer tableViewer) {
+	public CellModifyer(final TableViewer tableViewer) {
 		this.tableViewer = tableViewer;
 	}
 	

@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview;
+package de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite;
 
 import java.util.Iterator;
 
@@ -18,11 +18,11 @@ import de.ptb.epics.eve.data.scandescription.errors.PostscanError;
 /**
  * <code>PostscanLabelProvider</code> is the label provider for the table 
  * viewer defined in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PostscanComposite}.
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.PostscanComposite}.
  * 
  * @author ?
  */
-public class PostscanLabelProvider implements ITableLabelProvider {
+public class LabelProvider implements ITableLabelProvider {
 
 	/**
 	 *  Name of images used to represent checkboxes

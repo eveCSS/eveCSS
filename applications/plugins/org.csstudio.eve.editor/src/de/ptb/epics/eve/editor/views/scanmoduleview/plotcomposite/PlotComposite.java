@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview;
+package de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.MenuManager;
@@ -11,9 +11,9 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**
  * <code>PlotComposite</code> is part of the 
@@ -29,7 +29,7 @@ public class PlotComposite extends Composite {
 			Logger.getLogger(PlotComposite.class.getName());
 
 	private TableViewer tableViewer;
-	private ViewPart parentView;
+	private ScanModuleView parentView;
 
 	/**
 	 * Constructor.
@@ -37,7 +37,7 @@ public class PlotComposite extends Composite {
 	 * @param parent the parent
 	 * @param style the style
 	 */
-	public PlotComposite(final ViewPart parentView, final Composite parent, 
+	public PlotComposite(final ScanModuleView parentView, final Composite parent, 
 						 final int style) {
 		super(parent, style);
 		this.parentView = parentView;
@@ -59,8 +59,8 @@ public class PlotComposite extends Composite {
 		createColumns(this.tableViewer);
 		this.tableViewer.getTable().setHeaderVisible(true);
 		this.tableViewer.getTable().setLinesVisible(true);
-		this.tableViewer.setContentProvider(new PlotContentProvider());
-		this.tableViewer.setLabelProvider(new PlotLabelProvider());
+		this.tableViewer.setContentProvider(new ContentProvider());
+		this.tableViewer.setLabelProvider(new LabelProvider());
 		
 		// create context menu
 		MenuManager menuManager = new MenuManager();
@@ -124,14 +124,13 @@ public class PlotComposite extends Composite {
 				tableViewer.getTable().select(0);
 			}
 		}
-		((ScanModuleView)parentView).selectionProviderWrapper.
-				setSelectionProvider(this.tableViewer);
+		parentView.setSelectionProvider(this.tableViewer);
 	}
 
 	// ************************************************************************
 	// **************************** Listeners *********************************
 	// ************************************************************************
-	
+
 	/**
 	 * {@link org.eclipse.swt.events.FocusListener} of <code>tableViewer</code>.
 	 */
@@ -143,8 +142,7 @@ public class PlotComposite extends Composite {
 		@Override
 		public void focusGained(FocusEvent e) {
 			logger.debug("focusGained");
-			((ScanModuleView)parentView).selectionProviderWrapper.
-								setSelectionProvider(tableViewer);
+			parentView.setSelectionProvider(tableViewer);
 		}
 		
 		/**

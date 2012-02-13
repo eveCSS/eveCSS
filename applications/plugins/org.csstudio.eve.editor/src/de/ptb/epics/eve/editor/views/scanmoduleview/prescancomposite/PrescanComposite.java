@@ -1,127 +1,123 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview;
+package de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
-import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
-import de.ptb.epics.eve.data.scandescription.Postscan;
+import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**
- * <code>PostscanComposite</code> is part of the 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView}.
+ * <code>PrescanComposite</code> is part of the 
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView}. 
  * 
  * @author ?
  * @author Marcus Michalsky
  * @author Hartmut Scherr
  */
-public class PostscanComposite extends Composite {
+public class PrescanComposite extends Composite {
 
 	private TableViewer tableViewer;
 	private ScanModule scanModule;
-	private final IMeasuringStation measuringStation;
+	private ScanModuleView parentView;
+	private ExcludeDevicesOfScanModuleFilterManualUpdate measuringStation;
 	
 	/**
-	 * Constructs a <code>PostscanComposite</code>.
+	 * Constructs a <code>PrescanComposite</code>.
 	 * 
-	 * @param parent the parent
+	 * @param parent the parent composite
 	 * @param style the style
 	 * @param measuringStation the measuring station the menu options should be 
 	 * 		  taken from
 	 */
-	public PostscanComposite(final Composite parent, final int style, 
-							final IMeasuringStation measuringStation) {
+	public PrescanComposite(final ScanModuleView parentView, 
+							final Composite parent, final int style) {
 		super(parent, style);
-		this.measuringStation = measuringStation;
+		this.parentView = parentView;
+		this.measuringStation = new ExcludeDevicesOfScanModuleFilterManualUpdate(
+				false, false, true, false, false);
+		this.measuringStation.setSource(Activator.getDefault().
+				getMeasuringStation());
 
-		final GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 2;
+		FillLayout fillLayout = new FillLayout();
+		this.setLayout(fillLayout);
 		
-		this.setLayout(gridLayout);
+		createViewer();
 		
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 2;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
 		
-		this.tableViewer = new TableViewer(this, SWT.NONE);
-		this.tableViewer.getControl().setLayoutData(gridData);
-		
-		TableColumn column = 
-			new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 0);
-	    column.setText("Device");
-	    column.setWidth(300);
-
-	    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 1);
-	    column.setText("Value");
-	    column.setWidth(100);
-
-	    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 2);
-	    column.setText("Reset Original");
-	    column.setWidth(100);
-
-	    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 3);
-	    column.setText(" ");
-	    column.setWidth(10);
-
-	    this.tableViewer.getTable().setHeaderVisible(true);
-	    this.tableViewer.getTable().setLinesVisible(true);
+/*
 	    
-	    // hier wird eine Liste der vorhandenen Postscans des Scan Moduls erstellt
-	    this.tableViewer.setContentProvider(new PostscanContentProvider());
-	    this.tableViewer.setLabelProvider(new PostscanLabelProvider());
 	    
-	    final CellEditor[] editors = new CellEditor[3];
+	    final CellEditor[] editors = new CellEditor[2];
 	    
-	    final String[] yesNo = {"yes","no"};
-
 	    editors[0] = new TextCellEditor(this.tableViewer.getTable());
 	    editors[1] = new TextCellEditor(this.tableViewer.getTable());
-	    editors[2] = new ComboBoxCellEditor(
-	    		this.tableViewer.getTable(), yesNo, SWT.READ_ONLY);
 	    
 	    this.tableViewer.setCellModifier(
-	    		new PostscanCellModifyer(this.tableViewer));
+	    		new PrescanCellModifyer(this.tableViewer));
 	    this.tableViewer.setCellEditors(editors);
 	    
-	    final String[] props = {"device", "value", "reset"};
+	    final String[] props = {"device", "value"};
 	    
-	    this.tableViewer.setColumnProperties(props);
+	    this.tableViewer.setColumnProperties(props);*/
 	    
-	    final MenuManager menuManager = new MenuManager("#PopupMenu");
+		final MenuManager menuManager = new MenuManager("#PopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new MenuManagerMenuListener());
 		
-		final Menu contextMenu = 
-			menuManager.createContextMenu(this.tableViewer.getControl());
-		this.tableViewer.getControl().setMenu(contextMenu);
+		final Menu contextMenu = menuManager.createContextMenu(
+				this.tableViewer.getControl());
+		this.tableViewer.getControl().setMenu( contextMenu );
+	}
+
+	/*
+	 * 
+	 */
+	private void createViewer() {
+		this.tableViewer = new TableViewer(this, SWT.NONE);
+		createColumns();
+		this.tableViewer.getTable().setHeaderVisible(true);
+		this.tableViewer.getTable().setLinesVisible(true);
+		this.tableViewer.setContentProvider(new ContentProvider());
+		this.tableViewer.setLabelProvider(new LabelProvider());
+	}
+	
+	/*
+	 * 
+	 */
+	private void createColumns() {
+		TableViewerColumn deviceColumn = new TableViewerColumn(
+				this.tableViewer, SWT.LEFT);
+		deviceColumn.getColumn().setText("Device");
+		deviceColumn.getColumn().setWidth(300);
+		
+		TableViewerColumn valueColumn = new TableViewerColumn(
+				this.tableViewer, SWT.LEFT);
+		valueColumn.getColumn().setText("Value");
+		valueColumn.getColumn().setWidth(80);
 	}
 	
 	/**
@@ -134,15 +130,11 @@ public class PostscanComposite extends Composite {
 	 */
 	public void setScanModule(final ScanModule scanModule) {
 
-		if(scanModule != null) {
-			this.tableViewer.getTable().setEnabled(true);
-		} else {
-			this.tableViewer.getTable().setEnabled(false);
-		}
 		this.scanModule = scanModule;
 		this.tableViewer.setInput(scanModule);
+		this.measuringStation.setScanModule(scanModule);
 
-		// if there are postcans present... 
+		// if there are prescans present... 
 		if(tableViewer.getTable().getItems().length > 0)
 		{
 			// ... and none is selected ...
@@ -154,7 +146,7 @@ public class PostscanComposite extends Composite {
 	}
 	
 	// ***********************************************************************
-	// ****************************** Listener *******************************
+	// *************************** Listener **********************************
 	// ***********************************************************************
 	
 	/**
@@ -190,7 +182,8 @@ public class PostscanComposite extends Composite {
 		@Override
 		public void menuAboutToShow(IMenuManager manager) {
 			
-			((ExcludeDevicesOfScanModuleFilterManualUpdate)measuringStation).update();
+			((ExcludeDevicesOfScanModuleFilterManualUpdate)measuringStation).
+					update();
 			
 			// *************************************************
 			// **** Menu Entries for Devices with Class Names **
@@ -198,14 +191,14 @@ public class PostscanComposite extends Composite {
 			
 			// iterate over all classes of devices
 			for(final String className : measuringStation.getClassNameList()) {
-				
+
 				// create a menu entry for each class name
 				final MenuManager currentClassMenu = new MenuManager(
 						className, classImage, className);
 				
 				// iterate over each device in that class
 				for(final AbstractDevice device : 
-						measuringStation.getDeviceList(className)) {
+					measuringStation.getDeviceList(className)) {
 					
 					// *********************************
 					// *********** Motor Start *********
@@ -213,14 +206,12 @@ public class PostscanComposite extends Composite {
 					
 					if(device instanceof Motor) {
 						// device is a motor
-						
 						final Motor motor = (Motor)device;
 						
 						// create a menu entry for that motor and label it
 						final MenuManager currentMotorMenu = 
-							new MenuManager(motor.getName(), 
-											motorImage, 
-											motor.getName());
+							new MenuManager(motor.getName(), motorImage, 
+									motor.getName());
 						currentClassMenu.add(currentMotorMenu);
 						
 						// iterate over the axes of that motor
@@ -235,32 +226,43 @@ public class PostscanComposite extends Composite {
 												motorAxis.getName());
 							
 								// iterate over the options of that axis
-								for(final Option option : motorAxis.getOptions()) {
-									// option Severity and Status not inserted in the menu
-									if ((!option.getName().equals("Severity")) &&
+								for(final Option option : motorAxis.
+										getOptions()) {
+									// option Severity and Status not inserted 
+									// in the menu
+									if ((!option.getName().equals("Severity"))&&
 										(!option.getName().equals("Status"))) {
 
-										SetOptionAction setOptionAction = 
-											new SetOptionAction(option, option.getName());
-										setOptionAction.setImageDescriptor(optionImage);
-										currentMotorAxisMenu.add(setOptionAction);
+										SetOptionAction 
+												motorAxisSetOptionAction = 
+												new SetOptionAction(option, 
+												option.getName());
+										motorAxisSetOptionAction.
+												setImageDescriptor(optionImage);
+										currentMotorAxisMenu.add(
+												motorAxisSetOptionAction);
 									}
 								}
-								// add the motor axis menu to the motor menu entry
+							
+								// add the motor axis menu to motor menu entry
 								currentMotorMenu.add(currentMotorAxisMenu);
 							}
 						}
+						
 						for(final Option option : motor.getOptions()) {
-							// option Severity and Status not inserted in the menu
+							// option Severity and Status not inserted in menu
 							if ((!option.getName().equals("Severity")) &&
 								(!option.getName().equals("Status"))) {
 							
-								SetOptionAction setOptionAction = 
-										new SetOptionAction(option, option.getName());
-								setOptionAction.setImageDescriptor(optionImage);
-								currentMotorMenu.add(setOptionAction);
+								SetOptionAction motorSetOptionAction = 
+										new SetOptionAction(option, 
+										option.getName());
+								motorSetOptionAction.setImageDescriptor(
+										optionImage);
+								currentMotorMenu.add(motorSetOptionAction);
 							}
 						}
+						
 						// *********************************
 						// *********** Motor End ***********
 						// *********************************
@@ -275,22 +277,26 @@ public class PostscanComposite extends Composite {
 						
 						// create menu entry for the motor axis
 						final MenuManager currentMotorAxisMenu = 
-							new MenuManager(motorAxis.getName(), 
-											axisImage, 
-											motorAxis.getName());
+								new MenuManager(motorAxis.getName(), 
+												axisImage, 
+												motorAxis.getName());
 						
 						// iterate over options of the axis
 						for(final Option option : motorAxis.getOptions()) {
-							// option Severity and Status not inserted in the menu
+							// option Severity and Status not inserted in menu
 							if ((!option.getName().equals("Severity")) &&
 								(!option.getName().equals("Status"))) {
-						
-								SetOptionAction setOptionAction = 
-										new SetOptionAction(option, option.getName());
-								setOptionAction.setImageDescriptor(optionImage);
-								currentMotorAxisMenu.add(setOptionAction);
+							
+								SetOptionAction motorAxisSetOptionAction = 
+										new SetOptionAction(option, 
+										option.getName());
+								motorAxisSetOptionAction.setImageDescriptor(
+										optionImage);
+								currentMotorAxisMenu.add(
+										motorAxisSetOptionAction);
 							}
 						}
+						
 						// add motor axis menu to the motor menu entry
 						currentClassMenu.add(currentMotorAxisMenu);
 						
@@ -310,36 +316,49 @@ public class PostscanComposite extends Composite {
 								new MenuManager(detector.getName(), 
 												detectorImage, 
 												detector.getName());
-						for(final DetectorChannel detectorChannel : detector.getChannels()) {
+						
+						for(final DetectorChannel detectorChannel : 
+													detector.getChannels()) {
 							if (detectorChannel.getClassName().isEmpty()) {
 								// add only channels which have no className
+							
 								final MenuManager currentDetectorChannelMenu = 
-									new MenuManager(detectorChannel.getName(), 
+									  new MenuManager(detectorChannel.getName(), 
 													channelImage, 
 													detectorChannel.getName());
-								for(final Option option : detectorChannel.getOptions()) {
-									// option Severity and Status not inserted in the menu
-									if ((!option.getName().equals("Severity")) &&
+							
+								for(final Option option : detectorChannel.
+										getOptions()) {
+									// option Severity and Status not inserted 
+									// in the menu
+									if ((!option.getName().equals("Severity"))&&
 										(!option.getName().equals("Status"))) {
 
-										SetOptionAction setOptionAction = 
-											new SetOptionAction(option, option.getName());
-										setOptionAction.setImageDescriptor(optionImage);
-										currentDetectorChannelMenu.add(setOptionAction);
+										SetOptionAction channelSetOptionAction = 
+												new SetOptionAction(option, 
+												option.getName());
+										channelSetOptionAction.
+												setImageDescriptor(optionImage);
+										currentDetectorChannelMenu.add(
+												channelSetOptionAction);
 									}
 								}
-								currentDetectorMenu.add(currentDetectorChannelMenu);
+								currentDetectorMenu.add(
+										currentDetectorChannelMenu);
 							}
 						}
+						
 						for(final Option option : detector.getOptions()) {
-							// option Severity and Status not inserted in the menu
+							// option Severity and Status not inserted in menu
 							if ((!option.getName().equals("Severity")) &&
 								(!option.getName().equals("Status"))) {
 							
-								SetOptionAction setOptionAction = 
-										new SetOptionAction(option, option.getName());
-								setOptionAction.setImageDescriptor(optionImage);
-								currentDetectorMenu.add(setOptionAction);
+								SetOptionAction detectorSetOptionAction = 
+										new SetOptionAction(option, 
+										option.getName());
+								detectorSetOptionAction.setImageDescriptor(
+										optionImage);
+								currentDetectorMenu.add(detectorSetOptionAction);
 							}
 						}
 						currentClassMenu.add(currentDetectorMenu);
@@ -353,22 +372,27 @@ public class PostscanComposite extends Composite {
 						// *********************************
 						
 					} else if(device instanceof DetectorChannel) {
+						
 						final DetectorChannel detectorChannel = 
 								(DetectorChannel)device;
+						
 						final MenuManager currentDetectorChannelMenu = 
 								new MenuManager(detectorChannel.getName(), 
 												channelImage, 
 												detectorChannel.getName());
 						
 						for(final Option option : detectorChannel.getOptions()) {
-							// option Severity and Status not inserted in the menu
+							// option Severity and Status not inserted in menu
 							if ((!option.getName().equals("Severity")) &&
 								(!option.getName().equals("Status"))) {
 							
-								SetOptionAction setOptionAction = 
-										new SetOptionAction(option, option.getName());
-								setOptionAction.setImageDescriptor(optionImage);
-								currentDetectorChannelMenu.add(setOptionAction);
+								SetOptionAction channelSetOptionAction = 
+										new SetOptionAction(option, 
+										option.getName());
+								channelSetOptionAction.setImageDescriptor(
+										optionImage);
+								currentDetectorChannelMenu.add(
+										channelSetOptionAction);
 							}
 						}
 						currentClassMenu.add(currentDetectorChannelMenu);
@@ -384,8 +408,8 @@ public class PostscanComposite extends Composite {
 					} else if(device instanceof Device) {
 						
 						SetDeviceAction setDeviceAction = 
-								new SetDeviceAction(
-										(Device)device, device.getName());
+								new SetDeviceAction((Device)device, 
+													device.getName());
 						setDeviceAction.setImageDescriptor(deviceImage);
 						currentClassMenu.add(setDeviceAction);
 						
@@ -408,78 +432,111 @@ public class PostscanComposite extends Composite {
 			for(final Motor motor : measuringStation.getMotors()) {
 				
 				// add only entries for motors without class names
-				if(motor.getClassName() == null || 
-				   motor.getClassName().isEmpty()) {
-					
-						final MenuManager currentMotorMenu = 
+				if("".equals( motor.getClassName()) || 
+				   motor.getClassName() == null) {
+
+					final MenuManager currentMotorMenu = 
 							new MenuManager(motor.getName(), 
-											motorImage, 
+											motorImage,
 											motor.getName());
-						
+					
 					for(final MotorAxis motorAxis : motor.getAxes()) {
 						
-						if(motorAxis.getClassName() == null ||
-						   motorAxis.getClassName().isEmpty()) {
+						if("".equals( motorAxis.getClassName()) || 
+						   motorAxis.getClassName() == null) {
 							
-								final MenuManager currentMotorAxisMenu = 
+							final MenuManager currentMotorAxisMenu = 
 									new MenuManager(motorAxis.getName(), 
-													axisImage, 
+													axisImage,
 													motorAxis.getName());
-								
+							
 							for(final Option option : motorAxis.getOptions()) {
+								// option Severity and Status not inserted in 
+								// the menu
+								if ((!option.getName().equals("Severity")) &&
+									(!option.getName().equals("Status"))) {
 								
-								SetOptionAction setOptionAction = 
-									new SetOptionAction(option, option.getName());
-								setOptionAction.setImageDescriptor(optionImage);
-								currentMotorAxisMenu.add(setOptionAction);
+									SetOptionAction axisSetOptionAction = 
+											new SetOptionAction(option, 
+											option.getName());
+									axisSetOptionAction.setImageDescriptor(
+											optionImage);
+									currentMotorAxisMenu.add(
+											axisSetOptionAction);
+								}
 							}
 							currentMotorMenu.add(currentMotorAxisMenu);
 						}
 					}
+					
 					for(final Option option : motor.getOptions()) {
+						// option Severity and Status not inserted in the menu
+						if ((!option.getName().equals("Severity")) &&
+							(!option.getName().equals("Status"))) {
 						
-						SetOptionAction setOptionAction = 
-								new SetOptionAction(option, option.getName());
-						setOptionAction.setImageDescriptor(optionImage);
-						currentMotorMenu.add(setOptionAction);
+							SetOptionAction motorSetOptionAction = 
+								  new SetOptionAction(option, option.getName());
+							motorSetOptionAction.setImageDescriptor(optionImage);
+							currentMotorMenu.add(motorSetOptionAction);
+						}
 					}
-				manager.add(currentMotorMenu);
+					manager.add(currentMotorMenu);
 				}
 			}
 			
 			for(final Detector detector : measuringStation.getDetectors()) {
 				
 				// add only menu entries for detectors without class names
-				if(detector.getClassName() == null || 
-				   detector.getClassName().isEmpty()) {
-						final MenuManager currentDetectorMenu = 
+				if("".equals( detector.getClassName()) || 
+				   detector.getClassName() == null) {
+					
+					final MenuManager currentDetectorMenu = 
 							new MenuManager(detector.getName(), 
-											detectorImage, 
+											detectorImage,
 											detector.getName());
+					
 					for(final DetectorChannel detectorChannel : 
-						detector.getChannels()) {
-						if(detectorChannel.getClassName() == null ||
-						   detectorChannel.getClassName().isEmpty()) {
+													detector.getChannels()) {
+						
+						if("".equals(detectorChannel.getClassName()) || 
+						   detectorChannel.getClassName() == null) {
+							
 							final MenuManager currentDetectorChannelMenu = 
-								new MenuManager(detectorChannel.getName(), 
-												channelImage, 
-												detector.getName());
-							for(final Option option : detectorChannel.getOptions()) {
-								
-								SetOptionAction setOptionAction = 
-									new SetOptionAction(option, option.getName());
-								setOptionAction.setImageDescriptor(optionImage);
-								currentDetectorChannelMenu.add(setOptionAction);
+									new MenuManager(detectorChannel.getName(), 
+													channelImage,
+													detectorChannel.getName());
+							
+							for(final Option option : detectorChannel.
+									getOptions()) {
+								// option Severity and Status not inserted in 
+								// the menu
+								if ((!option.getName().equals("Severity")) &&
+									(!option.getName().equals("Status"))) {
+
+									SetOptionAction channelSetOptionAction = 
+											new SetOptionAction(option, 
+											option.getName());
+									channelSetOptionAction.setImageDescriptor(
+											optionImage);
+									currentDetectorChannelMenu.add(
+											channelSetOptionAction);
+								}
 							}
 							currentDetectorMenu.add(currentDetectorChannelMenu);
 						}
 					}
+					
 					for(final Option option : detector.getOptions()) {
+						// option Severity and Status not inserted in the menu
+						if ((!option.getName().equals("Severity")) &&
+							(!option.getName().equals("Status"))) {
 						
-						SetOptionAction setOptionAction = 
-							new SetOptionAction(option, option.getName());
-						setOptionAction.setImageDescriptor(optionImage);
-						currentDetectorMenu.add(setOptionAction);
+							SetOptionAction detectorSetOptionAction = 
+									new SetOptionAction(option,option.getName());
+							detectorSetOptionAction.setImageDescriptor(
+									optionImage);
+							currentDetectorMenu.add(detectorSetOptionAction);
+						}
 					}
 					manager.add(currentDetectorMenu);
 				}
@@ -488,8 +545,8 @@ public class PostscanComposite extends Composite {
 			for(final Device device : measuringStation.getDevices()) {
 				
 				// add only entries for devices without class names
-				if(device.getClassName() == null || 
-				   device.getClassName().isEmpty()) {
+				if("".equals(device.getClassName()) || 
+				   device.getClassName() == null) {
 					
 					SetDeviceAction setDeviceAction = 
 						new SetDeviceAction(device, device.getName());
@@ -502,33 +559,22 @@ public class PostscanComposite extends Composite {
 			// * end of: Menu Entries for Devices without Class Names *
 			// ********************************************************
 			
-			if (scanModule.getPostscans().length > 0) {
-				Action deleteAction = new Action(){
-					
-					@Override
-			    	public void run() {
-			    		
-			    		scanModule.remove((Postscan)((IStructuredSelection)
-			    				tableViewer.getSelection()).getFirstElement());
-			    		
-			    		tableViewer.refresh();
-			    	}
-			    };
-			    
+			if (scanModule.getPrescans().length > 0) {
+				Action deleteAction = new DeleteAction();
 			    deleteAction.setEnabled(true);
-			    deleteAction.setText("Delete Postscan");
-			    deleteAction.setToolTipText("Deletes Postscan");
+			    deleteAction.setText("Delete Prescan");
+			    deleteAction.setToolTipText("Deletes Prescan");
 			    deleteAction.setImageDescriptor(PlatformUI.getWorkbench().
-			    							getSharedImages().getImageDescriptor(
-			    							ISharedImages.IMG_TOOL_DELETE));
-			   
+			    		getSharedImages().getImageDescriptor(
+			    		ISharedImages.IMG_TOOL_DELETE));
+
 			    manager.add(deleteAction);
 			}
 		}
 	}
 	
 	// ***********************************************************************
-	// ****************************** Actions ********************************
+	// *************************** Actions ***********************************
 	// ***********************************************************************
 	
 	/**
@@ -536,7 +582,7 @@ public class PostscanComposite extends Composite {
 	 */
 	class SetOptionAction extends Action {
 		
-		private Option option;
+		private final Option option;
 		
 		/**
 		 * Constructs a <code>SetOptionAction</code>.
@@ -546,8 +592,7 @@ public class PostscanComposite extends Composite {
 		 * 		  should be set
 		 * @param text the text that appears in the menu entry
 		 */
-		public SetOptionAction(Option option, String text)
-		{
+		public SetOptionAction(Option option, String text) {
 			this.option = option;
 			this.setText(text);
 		}
@@ -558,15 +603,14 @@ public class PostscanComposite extends Composite {
 		@Override
 		public void run() {
 			super.run();
-			for(final Postscan p : scanModule.getPostscans()) {
+			for(final Prescan p : scanModule.getPrescans()) {
 				if(p.getAbstractDevice() == option) {
 					return;
 				}
 			}
-			final Postscan p = new Postscan();
+			final Prescan p = new Prescan();
 			p.setAbstractPrePostscanDevice(option);
 			scanModule.add(p);
-			
 			tableViewer.refresh();
 		}
 	}
@@ -576,15 +620,15 @@ public class PostscanComposite extends Composite {
 	 */
 	class SetDeviceAction extends Action {
 		
-		private Device device;
+		private final Device device;
 		
 		/**
 		 * Constructs a <code>SetDeviceAction</code>.
 		 * 
 		 * @param device the 
-		 * 		{@link de.ptb.epics.eve.data.measuringstation.Device} that 
-		 * 		should be set
-		 * @param text the text that appears in the menu entry
+		 * 		  {@link de.ptb.epics.eve.data.measuringstation.Device} that 
+		 * 		  should be set
+		 * @param text the text that appears in the menu
 		 */
 		public SetDeviceAction(Device device, String text)
 		{
@@ -598,16 +642,33 @@ public class PostscanComposite extends Composite {
 		@Override
 		public void run() {
 			super.run();
-			for(final Postscan p : scanModule.getPostscans()) {
+			for(final Prescan p : scanModule.getPrescans()) {
 				if(p.getAbstractDevice() == device) {
 					return;
 				}
 			}
-			final Postscan p = new Postscan();
+			final Prescan p = new Prescan();
 			p.setAbstractPrePostscanDevice(device);
 			scanModule.add(p);
-			
 			tableViewer.refresh();
 		}
+	}
+
+	/**
+	 * 
+	 */
+	class DeleteAction extends Action {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void run() {
+    		
+    		scanModule.remove((Prescan)((IStructuredSelection)
+    				tableViewer.getSelection()).getFirstElement());
+
+    		tableViewer.refresh();
+    	}
 	}
 }

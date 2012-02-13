@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview;
+package de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -10,7 +10,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 /**
  * <code>DetectorChannelInputWrapper</code> is the content provider of the table 
  * viewer defined in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.DetectorChannelComposite}.
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.DetectorChannelComposite}.
  * 
  * @author ?
  * @author Marcus Michalsky

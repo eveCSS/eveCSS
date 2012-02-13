@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview;
+package de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite;
 
 import java.util.Iterator;
 
@@ -18,12 +18,12 @@ import de.ptb.epics.eve.data.scandescription.errors.PositioningErrorTypes;
 /**
  * <code>PositioningLabelProvider</code> is the label provider for the table 
  * viewer in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PositioningComposite}.
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.PositioningComposite}.
  * 
  * @author ?
  * @author Marcus Michalsky
  */
-public class PositioningLabelProvider implements ITableLabelProvider {
+public class LabelProvider implements ITableLabelProvider {
 
 	/**
 	 * {@inheritDoc}

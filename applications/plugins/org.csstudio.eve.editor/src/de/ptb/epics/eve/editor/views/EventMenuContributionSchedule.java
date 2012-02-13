@@ -48,7 +48,7 @@ public class EventMenuContributionSchedule extends CompoundContributionItem {
 					determineEventImpact().toString());
 				params.put("de.ptb.epics.eve.editor.command.AddEvent.ActivePart", 
 					getActiveViewPart().getViewSite().getId());
-					
+				
 				CommandContributionItemParameter p = 
 					new CommandContributionItemParameter(
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow(), 

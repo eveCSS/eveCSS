@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview;
+package de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite;
 
 import java.util.Iterator;
 
@@ -8,33 +8,35 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
-import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
-import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 
 /**
- * <code>DetectorChannelLabelProvider</code> is the label provider of the table 
+ * <code>MotorAxisLabelProvider</code> is the label provider of the table 
  * viewer defined in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.DetectorChannelComposite}.
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.MotorAxisComposite}. 
  * 
  * @author ?
  * @author Marcus Michalsky
  */
-public class DetectorChannelLabelProvider implements ITableLabelProvider {
+public class MotorAxisLabelProvider implements ITableLabelProvider {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Image getColumnImage(final Object channel, final int colIndex) {
-		final Channel pos = (Channel)channel;
+	public Image getColumnImage(final Object axis, final int colIndex) {
+		
+		final Axis pos = (Axis)axis;
+		
 		if(colIndex == 1) {
 			final Iterator<IModelError> it = pos.getModelErrors().iterator();
 			while(it.hasNext()) {
 				final IModelError modelError = it.next();
-				if(modelError instanceof ChannelError) {
+				if(modelError instanceof AxisError) {
 					return PlatformUI.getWorkbench().getSharedImages().
-								getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+									  getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
 				}
 			}
 		}
@@ -45,25 +47,19 @@ public class DetectorChannelLabelProvider implements ITableLabelProvider {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getColumnText(final Object channel, final int colIndex) {
-		final Channel pos = (Channel)channel;
+	public String getColumnText(final Object axis, final int colIndex) {
+		
+		final Axis pos = (Axis) axis;
+		
 		switch(colIndex) {
 			case 0:
 				return (pos.getAbstractDevice()!=null)
 					   ? pos.getAbstractDevice().getFullIdentifyer()
 					   : "";
 			case 1:
-				int av = pos.getAverageCount();
-				return Integer.toString(av);
+				return pos.getStepfunctionString();
 		}
 		return "";
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void addListener(final ILabelProviderListener arg0) {
 	}
 
 	/**
@@ -77,10 +73,17 @@ public class DetectorChannelLabelProvider implements ITableLabelProvider {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isLabelProperty( final Object arg0, String arg1 ) {
+	public boolean isLabelProperty(final Object arg0, String arg1) {
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void addListener(final ILabelProviderListener arg0) {
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

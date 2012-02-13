@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview;
+package de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite;
 
 import java.util.Iterator;
 
@@ -16,12 +16,12 @@ import de.ptb.epics.eve.data.scandescription.errors.PrescanError;
 /**
  * <code>PrescanLabelProvider</code> is the label provider of the table viewer 
  * defined in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PrescanComposite}.
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.PrescanComposite}.
  * 
  * @author ?
  * @author Marcus Michalsky
  */
-public class PrescanLabelProvider implements ITableLabelProvider {
+public class LabelProvider implements ITableLabelProvider {
 
 	/**
 	 * {@inheritDoc}

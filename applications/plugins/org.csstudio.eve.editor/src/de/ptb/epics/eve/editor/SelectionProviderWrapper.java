@@ -52,14 +52,9 @@ public class SelectionProviderWrapper implements ISelectionProvider {
 	 */
 	@Override
 	public void setSelection(ISelection selection) {
-		System.out.println("\n\tsetSelection of SelectionProviderWrapper");
-		System.out.println("\tselection: " + selection.toString());
-		System.out.println("\tselectionProvider: " + selectionProvider);
 		if(selectionProvider != null) {
 			selectionProvider.setSelection(selection);
-			System.out.println("\tgetSelectionProvider: " + getSelectionProvider().toString());
 		} else {
-			System.out.println("empty Selection");
 			this.emptySelection = selection;
 			SelectionChangedEvent selectionChangedEvent = 
 					new SelectionChangedEvent(this, selection);

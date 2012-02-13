@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview;
+package de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite;
 
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -18,7 +18,7 @@ import de.ptb.epics.eve.editor.Activator;
  * @author ?
  * @author Marcus Michalsky
  */
-public class PositioningCellModifyer implements ICellModifier {
+public class CellModifyer implements ICellModifier {
 
 	private final TableViewer tableViewer;
 	
@@ -27,7 +27,7 @@ public class PositioningCellModifyer implements ICellModifier {
 	 * 
 	 * @param tableViewer the table viewer the modifier should be set to
 	 */
-	public PositioningCellModifyer(final TableViewer tableViewer) {
+	public CellModifyer(final TableViewer tableViewer) {
 		this.tableViewer = tableViewer;
 	}
 	

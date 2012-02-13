@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview;
+package de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -10,12 +10,12 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 /**
  * <code>PositioningInputWrapper</code> is the content provider for the table 
  * viewer in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.PositioningComposite}.
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.PositioningComposite}.
  * 
  * @author ?
  * @author Marcus Michalsky
  */
-public class PositioningContentProvider implements IModelUpdateListener,
+public class ContentProvider implements IModelUpdateListener,
 												IStructuredContentProvider {
 
 	private Viewer currentViewer;

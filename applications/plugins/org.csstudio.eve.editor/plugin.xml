@@ -252,6 +252,32 @@
          </command>
       </menuContribution>
       <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.popup">
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.popup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.MenuContribution"
+               id="popup:de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.popup.menucontribution">
+         </dynamic>
+         <separator
+               name="popup:de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.popup.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removepositioning"
+               icon="icons/rem_co.gif"
+               label="Remove Positioning"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.popup">
          <command
                commandId="de.ptb.epics.eve.editor.command.addplotwindow"
@@ -373,11 +399,32 @@
             name="RemoveEvent">
       </command>
       <category
+            id="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.commands"
+            name="Positioning Composite">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.positioningcomposite.AddPositioning"
+            id="de.ptb.epics.eve.editor.command.addpositioning"
+            name="Add Positioning">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.addpositioning.motoraxisid"
+               name="MotorAxisId"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.positioningcomposite.RemovePositioning"
+            id="de.ptb.epics.eve.editor.command.removepositioning"
+            name="Remove Positioning">
+      </command>
+      <category
             id="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.commands"
             name="Plot Composite">
       </category>
       <command
-            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.category"
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.commands"
             defaultHandler="de.ptb.epics.eve.editor.handler.plotcomposite.AddPlotWindow"
             id="de.ptb.epics.eve.editor.command.addplotwindow"
             name="Add Plot Window">

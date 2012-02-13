@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview;
+package de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.Action;
@@ -6,24 +6,19 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
-import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
@@ -32,6 +27,7 @@ import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**
  * <code>MotorAxisComposite</code> is part of the 
@@ -54,7 +50,7 @@ public class MotorAxisComposite extends Composite {
 	
 	// reference to the scan module view
 	// (used to update the SelectionProviderWrapper)
-	private ViewPart parentView;
+	private ScanModuleView parentView;
 	
 	// context menu
 	private MenuManager menuManager;
@@ -62,7 +58,7 @@ public class MotorAxisComposite extends Composite {
 	/*
 	 * the measuring station the available motors are taken from
 	 */
-	private final IMeasuringStation measuringStation;
+	private ExcludeDevicesOfScanModuleFilterManualUpdate measuringStation;
 	
 	/**
 	 * Constructs a <code>MotorAxisComposite</code>.
@@ -71,41 +67,24 @@ public class MotorAxisComposite extends Composite {
 	 * @param style the style
 	 * @param measuringStation the measuring station the motor axis belongs to
 	 */
-	public MotorAxisComposite(final ViewPart parentView, final Composite parent, 
-			final int style, final IMeasuringStation measuringStation) {
+	public MotorAxisComposite(final ScanModuleView parentView, 
+							final Composite parent, final int style) {
 		super(parent, style);
 		this.parentView = parentView;
-		this.measuringStation = measuringStation;
-
-		final GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 2;
-
-		this.setLayout(gridLayout);
 		
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 2;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
+		this.measuringStation = new ExcludeDevicesOfScanModuleFilterManualUpdate(
+				true, false, false, false, false);
+		this.measuringStation.setSource(Activator.getDefault().
+				getMeasuringStation());
 		
-		this.tableViewer = new TableViewer(this, SWT.NONE);
-		this.tableViewer.getControl().setLayoutData(gridData);
+		FillLayout fillLayout = new FillLayout();
+		this.setLayout(fillLayout);
 		
-		TableColumn column = new TableColumn(
-				this.tableViewer.getTable(), SWT.LEFT, 0);
-	    column.setText("Motor Axis");
-	    column.setWidth(250);
-
-	    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 1);
-	    column.setText("Stepfunction");
-	    column.setWidth(80);
-
-	    this.tableViewer.getTable().setHeaderVisible(true);
-	    this.tableViewer.getTable().setLinesVisible(true);
-	    
-	    this.tableViewer.setContentProvider(new MotorAxisContentProvider());
-	    this.tableViewer.setLabelProvider(new MotorAxisLabelProvider());
+		createViewer();
+		
+		
+/*
+	   
 	    
 	    final CellEditor[] editors = new CellEditor[2];
 	    
@@ -117,14 +96,10 @@ public class MotorAxisComposite extends Composite {
 	    final String[] props = {"device", "value"};
 	    
 	    this.tableViewer.setColumnProperties(props);
-
+*/
+		
 		this.tableViewer.getTable().addFocusListener(new 
 				TableViewerFocusListener());
-	     
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		gridData.grabExcessHorizontalSpace = true;
 		
 		menuManager = new MenuManager("#PopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
@@ -133,6 +108,32 @@ public class MotorAxisComposite extends Composite {
 		final Menu contextMenu = menuManager.createContextMenu(
 				this.tableViewer.getTable());
 		this.tableViewer.getControl().setMenu(contextMenu);	
+	}
+	
+	/*
+	 * 
+	 */
+	private void createViewer() {
+		this.tableViewer = new TableViewer(this, SWT.NONE);
+		this.createColumns();
+		this.tableViewer.getTable().setHeaderVisible(true);
+		this.tableViewer.getTable().setLinesVisible(true);
+		this.tableViewer.setContentProvider(new MotorAxisContentProvider());
+		this.tableViewer.setLabelProvider(new MotorAxisLabelProvider());
+	}
+	
+	/*
+	 * 
+	 */
+	private void createColumns() {
+		TableColumn column = new TableColumn(
+				this.tableViewer.getTable(), SWT.LEFT, 0);
+	    column.setText("Motor Axis");
+	    column.setWidth(250);
+
+	    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 1);
+	    column.setText("Stepfunction");
+	    column.setWidth(80);
 	}
 	
 	/**
@@ -158,25 +159,21 @@ public class MotorAxisComposite extends Composite {
 		
 		this.scanModule = scanModule;
 		this.tableViewer.setInput(scanModule);
-
+		
 		if(scanModule == null) {
 			return;
 		}
-
-		System.out.println("\tMotorAxis ViewPart: " +
-				Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart());
-
+		
 		// if there are motor axis present... 
-		if(tableViewer.getTable().getItems().length > 0)
-		{	// ... and none is selected ...
-			if(tableViewer.getTable().getSelectionCount() == 0)
-			{	// ... select the first one and set the motor axis view
+		if(tableViewer.getTable().getItems().length > 0) {
+			// ... and none is selected ...
+			if(tableViewer.getTable().getSelectionCount() == 0) {
+				// ... select the first one and set the motor axis view
 				tableViewer.getTable().select(0);
 			}
 		}
-		((ScanModuleView)parentView).selectionProviderWrapper.
-				setSelectionProvider(this.tableViewer);
-	}	
+		parentView.setSelectionProvider(this.tableViewer);
+	}
 	
 	// ************************************************************************
 	// **************************** Listener **********************************
@@ -185,7 +182,7 @@ public class MotorAxisComposite extends Composite {
 	/**
 	 * {@link org.eclipse.swt.events.FocusListener} of <code>tableViewer</code>.
 	 */
-	class TableViewerFocusListener implements FocusListener {
+	private class TableViewerFocusListener implements FocusListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -193,8 +190,7 @@ public class MotorAxisComposite extends Composite {
 		@Override
 		public void focusGained(FocusEvent e) {
 			logger.debug("focusGained");
-			((ScanModuleView)parentView).selectionProviderWrapper.
-					setSelectionProvider(tableViewer);
+			parentView.setSelectionProvider(tableViewer);
 		}
 		
 		/**
@@ -209,7 +205,7 @@ public class MotorAxisComposite extends Composite {
 	/**
 	 * <code>IMenuListener</code> of <code>menuManager</code>.
 	 */
-	class MenuManagerMenuListener implements IMenuListener {
+	private class MenuManagerMenuListener implements IMenuListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -330,7 +326,7 @@ public class MotorAxisComposite extends Composite {
 	/**
 	 * <code>SetAxisAction</code>.
 	 */
-	class SetAxisAction extends Action {
+	private class SetAxisAction extends Action {
 		
 		final MotorAxis ma;
 		
@@ -392,7 +388,7 @@ public class MotorAxisComposite extends Composite {
 	/**
 	 * <code>DeleteAction</code>.
 	 */
-	class DeleteAction extends Action {
+	private class DeleteAction extends Action {
 		
 		/**
 		 * {@inheritDoc}
