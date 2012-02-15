@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views;
+package de.ptb.epics.eve.editor.views.eventcomposite;
 
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;

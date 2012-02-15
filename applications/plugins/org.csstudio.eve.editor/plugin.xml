@@ -214,7 +214,7 @@
                icon="icons/devices/detector.gif"
                label="Detector">
             <dynamic
-                  class="de.ptb.epics.eve.editor.views.EventMenuContributionDetector"
+                  class="de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContributionDetector"
                   id="de.ptb.epics.eve.editor.views.eventcomposite.tablepopup.detectormenucontribution">
             </dynamic>
          </menu>
@@ -222,7 +222,7 @@
                icon="icons/monitor_obj.gif"
                label="Monitor">
             <dynamic
-                  class="de.ptb.epics.eve.editor.views.EventMenuContributionMonitor"
+                  class="de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContributionMonitor"
                   id="de.ptb.epics.eve.editor.views.eventcomposite.tablepopup.monitormenucontribution">
             </dynamic>
          </menu>
@@ -230,7 +230,7 @@
                icon="icons/waiting.gif"
                label="Schedule">
             <dynamic
-                  class="de.ptb.epics.eve.editor.views.EventMenuContributionSchedule"
+                  class="de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContributionSchedule"
                   id="de.ptb.epics.eve.editor.views.eventcomposite.tablepopup.schedulemenucontribution">
             </dynamic>
          </menu>

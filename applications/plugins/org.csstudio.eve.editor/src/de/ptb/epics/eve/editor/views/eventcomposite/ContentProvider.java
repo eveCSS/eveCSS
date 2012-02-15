@@ -1,23 +1,23 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite;
+package de.ptb.epics.eve.editor.views.eventcomposite;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
 /**
- * <code>DetectorChannelInputWrapper</code> is the content provider of the table 
- * viewer defined in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.DetectorChannelComposite}.
  * 
  * @author ?
  * @author Marcus Michalsky
  */
-public class DetectorChannelContentProvider implements IModelUpdateListener,
-		IStructuredContentProvider {
+public class ContentProvider implements IModelUpdateListener, 
+												IStructuredContentProvider {
 
+	/*
+	 * 
+	 */
 	private Viewer currentViewer;
 	
 	/**
@@ -33,7 +33,8 @@ public class DetectorChannelContentProvider implements IModelUpdateListener,
 	 */
 	@Override
 	public Object[] getElements(final Object inputElement) {
-		return ((ScanModule)inputElement).getChannels();
+		ControlEventManager input = (ControlEventManager)inputElement;
+		return input.getControlEventsList().toArray();	
 	}
 
 	/**
@@ -48,12 +49,12 @@ public class DetectorChannelContentProvider implements IModelUpdateListener,
 	 */
 	@Override
 	public void inputChanged(final Viewer viewer, final Object oldInput, 
-							final Object newInput) {
+							 final Object newInput) {
 		if(oldInput != null) {
-			((ScanModule)oldInput).removeModelUpdateListener(this);
+			((ControlEventManager)oldInput).removeModelUpdateListener(this);
 		}
 		if(newInput != null) {
-			((ScanModule)newInput).addModelUpdateListener(this);
+			((ControlEventManager)newInput).addModelUpdateListener(this);
 		}
 		this.currentViewer = viewer;
 	}

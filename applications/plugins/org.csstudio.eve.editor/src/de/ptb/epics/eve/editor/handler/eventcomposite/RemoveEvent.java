@@ -19,7 +19,7 @@ import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 import de.ptb.epics.eve.editor.views.scanview.ScanView;
 
-import static de.ptb.epics.eve.editor.views.EventMenuContributionHelper.*;
+import static de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContributionHelper.*;
 
 /**
  * <code>RemoveEvent</code>.

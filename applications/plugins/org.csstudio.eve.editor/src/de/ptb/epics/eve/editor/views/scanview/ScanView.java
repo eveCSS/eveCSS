@@ -55,8 +55,8 @@ import de.ptb.epics.eve.editor.graphical.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
-import de.ptb.epics.eve.editor.views.EventComposite;
 import de.ptb.epics.eve.editor.views.IEditorView;
+import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
 
 /**
  * <code>ScanView</code> is the graphical representation of a 
@@ -676,12 +676,23 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 			if(logger.isDebugEnabled()) {
 				logger.debug("ScanModule " + (ScanModule)
 						((ScanModuleEditPart)o).getModel() + " selected.");
-				setCurrentChain(((ScanModule)((ScanModuleEditPart)o).
-						getModel()).getChain());
+				/*if (this.currentChain != null) {
+					Chain newChain = ((ScanModule)((ScanModuleEditPart)o).
+							getModel()).getChain();
+					if(!this.currentChain.equals(newChain)) {
+						setCurrentChain(((ScanModule)((ScanModuleEditPart)o).
+								getModel()).getChain());
+					}
+				} else {*/
+					setCurrentChain(((ScanModule)((ScanModuleEditPart)o).
+							getModel()).getChain());
+				/*}*/
 			}
 		} else if (o instanceof ScanDescriptionEditPart) {
 				logger.debug("selection is ScanDescriptionEditPart: " + o);
-				setCurrentChain(null);
+				/*if (this.currentChain != null) {*/
+					setCurrentChain(null);
+				/*}*/
 		} else {
 			logger.debug("selection other than Chain -> ignore: " + o);
 		}

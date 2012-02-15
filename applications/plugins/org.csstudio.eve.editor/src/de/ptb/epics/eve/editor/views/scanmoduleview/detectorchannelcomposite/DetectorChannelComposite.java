@@ -88,8 +88,8 @@ public class DetectorChannelComposite extends Composite {
 		createColumns();
 		this.tableViewer.getTable().setHeaderVisible(true);
 		this.tableViewer.getTable().setLinesVisible(true);
-		this.tableViewer.setContentProvider(new DetectorChannelContentProvider());
-		this.tableViewer.setLabelProvider(new DetectorChannelLabelProvider());
+		this.tableViewer.setContentProvider(new ContentProvider());
+		this.tableViewer.setLabelProvider(new LabelProvider());
 		
 		
 		this.menuManager = new MenuManager("#PopupMenu");

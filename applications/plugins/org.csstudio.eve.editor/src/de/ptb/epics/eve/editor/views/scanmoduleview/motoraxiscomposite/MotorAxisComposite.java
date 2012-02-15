@@ -125,8 +125,8 @@ public class MotorAxisComposite extends Composite {
 		this.createColumns();
 		this.tableViewer.getTable().setHeaderVisible(true);
 		this.tableViewer.getTable().setLinesVisible(true);
-		this.tableViewer.setContentProvider(new MotorAxisContentProvider());
-		this.tableViewer.setLabelProvider(new MotorAxisLabelProvider());
+		this.tableViewer.setContentProvider(new ContentProvider());
+		this.tableViewer.setLabelProvider(new LabelProvider());
 	}
 	
 	/*

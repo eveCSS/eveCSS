@@ -44,7 +44,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventType
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
-import de.ptb.epics.eve.editor.views.EventComposite;
+import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
 
 /**
  * <code>DetectorChannelView</code> shows attributes of a 

@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views;
+package de.ptb.epics.eve.editor.views.eventcomposite;
 
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -17,7 +17,7 @@ import de.ptb.epics.eve.data.scandescription.PauseEvent;
  * @author ?
  * @author Marcus Michalsky
  */
-public class ControlEventLabelProvider implements ITableLabelProvider {
+public class LabelProvider implements ITableLabelProvider {
 	
 	/**
 	 * {@inheritDoc}

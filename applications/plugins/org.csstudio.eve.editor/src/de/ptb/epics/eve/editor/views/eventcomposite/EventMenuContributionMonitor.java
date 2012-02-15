@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views;
+package de.ptb.epics.eve.editor.views.eventcomposite;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.editor.Activator;
 
-import static de.ptb.epics.eve.editor.views.EventMenuContributionHelper.*;
+import static de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContributionHelper.*;
 
 /**
  * <code>EventMenuContributionMonitor</code>.

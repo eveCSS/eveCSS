@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views;
+package de.ptb.epics.eve.editor.views.eventcomposite;
 
 import java.util.List;
 
@@ -38,7 +38,6 @@ public class EventComposite extends Composite {
 	private String[] eventIDs;
 
 	private ControlEventTypes eventType;
-	
 	private ControlEventManager controlEventManager;
 
 	private TableViewer tableViewer;
@@ -61,56 +60,6 @@ public class EventComposite extends Composite {
 		createViewer();
 		
 		/*
-		
-	    // cell modifier
-	    final CellEditor[] editors;
-	    final String[] operators = {"eq", "ne", "gt", "lt"};
-	    final String[] props = {"source", "operator", "limit", "cif"};
-	    
-	    editors = new CellEditor[4];
-	    editors[0] = new TextCellEditor(this.tableViewer.getTable());
-
-	    final ComboBoxCellEditor comboEditor = new ComboBoxCellEditor(this.tableViewer.getTable(), 
-				operators, SWT.READ_ONLY | SWT.SELECTED) {
-
-			@Override protected void focusLost() {
-				fireCancelEditor();
-				deactivate();
-			}};
-
-			((CCombo)comboEditor.getControl()).addSelectionListener(new SelectionListener() {
-				@Override public void widgetSelected(SelectionEvent e) {
-					// new selected value
-					String newValue = ((CCombo)comboEditor.getControl()).getText();
-					// index of new selected value
-					int newPoint = ((CCombo)comboEditor.getControl()).getSelectionIndex();
-					
-					// ControlEvent Object of selected row
-					Object o = ((IStructuredSelection)tableViewer.getSelection()).toList().get(0);
-					if (o instanceof ControlEvent) {
-						ControlEvent control = (ControlEvent)o;
-						// if actual value of pauseEvent equals new value, value not changed
-						// -> deactivate and close menu
-						if (control.getLimit().getComparison().equals(ComparisonTypes.stringToType(newValue))) {
-							comboEditor.deactivate();
-							return;
-						}
-					}
-					
-					// value changed, call modify event
-					removeListeners();
-					tableViewer.getCellModifier().modify(o, "operator", newPoint);
-					addListeners();
-
-					// deactivate ComboBox
-					comboEditor.deactivate();
-				}
-				
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
-				}
-			});
-			editors[1] = comboEditor;
 			editors[2] = new TextCellEditor(this.tableViewer.getTable()) {
 				@Override protected void focusLost() {
 					// if value not changed, cancel focusLost callback
@@ -120,17 +69,6 @@ public class EventComposite extends Composite {
 					deactivate();
 				}};
 
-	    switch (eventType) {
-	    case PAUSE_EVENT:
-				editors[3] = new CheckboxCellEditor(this.tableViewer.getTable());
-	    	break;
-	    }
-
-	    this.tableViewer.setCellEditors(editors);
-	    
-	    this.tableViewer.setCellModifier(
-	    		new ControlEventCellModifyer(this.tableViewer));
-	    this.tableViewer.setColumnProperties(props);
 		*/
 	} // end of: Constructor
 
@@ -146,8 +84,8 @@ public class EventComposite extends Composite {
 		createColumns(this.tableViewer);
 		this.tableViewer.getTable().setHeaderVisible(true);
 		this.tableViewer.getTable().setLinesVisible(true);
-		this.tableViewer.setContentProvider(new ControlEventContentProvider());
-		this.tableViewer.setLabelProvider(new ControlEventLabelProvider());
+		this.tableViewer.setContentProvider(new ContentProvider());
+		this.tableViewer.setLabelProvider(new LabelProvider());
 		this.tableViewer.setInput(null);
 		
 		// create context menu
@@ -172,10 +110,13 @@ public class EventComposite extends Composite {
 		TableViewerColumn operatorCol = new TableViewerColumn(viewer, SWT.LEFT);
 		operatorCol.getColumn().setText("Operator");
 		operatorCol.getColumn().setWidth(80);
+		operatorCol.setEditingSupport(
+				new OperatorEditingSupport(this.tableViewer));
 		
 		// column 3: Limit
 		TableViewerColumn limitCol = new TableViewerColumn(viewer, SWT.LEFT);
 		limitCol.getColumn().setText("Limit");
+		limitCol.setEditingSupport(new LimitEditingSupport(this.tableViewer));
 		switch (this.eventType) {
 		case CONTROL_EVENT:
 			limitCol.getColumn().setWidth(100);
@@ -186,6 +127,7 @@ public class EventComposite extends Composite {
 			TableViewerColumn cifCol = new TableViewerColumn(viewer, SWT.LEFT);
 			cifCol.getColumn().setText("CIF");
 			cifCol.getColumn().setWidth(40);
+			cifCol.setEditingSupport(new CifEditingSupport(this.tableViewer));
 			break;
 		}
 	}
@@ -273,7 +215,7 @@ public class EventComposite extends Composite {
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * 
 	 * @return
 	 */
 	public TableViewer getTableViewer() {
