@@ -4,7 +4,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
@@ -13,11 +12,11 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
@@ -65,15 +64,12 @@ public class PostscanComposite extends Composite {
 		this.measuringStation.setSource(Activator.getDefault().
 				getMeasuringStation());
 
-		FillLayout fillLayout = new FillLayout();
-		this.setLayout(fillLayout);
+		this.setLayout(new GridLayout());
 		
 		createViewer();
 		
 		
-/*
-	    
-	    
+		// TODO convert to EditingSupport
 	    final CellEditor[] editors = new CellEditor[3];
 	    
 	    final String[] yesNo = {"yes","no"};
@@ -84,12 +80,15 @@ public class PostscanComposite extends Composite {
 	    		this.tableViewer.getTable(), yesNo, SWT.READ_ONLY);
 	    
 	    this.tableViewer.setCellModifier(
-	    		new PostscanCellModifyer(this.tableViewer));
+	    		new CellModifyer(this.tableViewer));
 	    this.tableViewer.setCellEditors(editors);
 	    
 	    final String[] props = {"device", "value", "reset"};
 	    
-	    this.tableViewer.setColumnProperties(props);*/
+	    this.tableViewer.setColumnProperties(props);
+	    
+	    // end of to do
+	
 	    
 	    final MenuManager menuManager = new MenuManager("#PopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
@@ -105,13 +104,20 @@ public class PostscanComposite extends Composite {
 	 */
 	private void createViewer() {
 		this.tableViewer = new TableViewer(this, SWT.NONE);
+		GridData gridData = new GridData();
+		gridData.minimumHeight = 120;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		this.tableViewer.getTable().setLayoutData(gridData);
 		createColumns();
 		this.tableViewer.getTable().setHeaderVisible(true);
 		this.tableViewer.getTable().setLinesVisible(true);
 		this.tableViewer.setContentProvider(new ContentProvider());
 		this.tableViewer.setLabelProvider(new LabelProvider());
 		
-		// create context menu
+		// create context menu // TODO
 		/*MenuManager menuManager = new MenuManager();
 		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		menuManager.setRemoveAllWhenShown(true);

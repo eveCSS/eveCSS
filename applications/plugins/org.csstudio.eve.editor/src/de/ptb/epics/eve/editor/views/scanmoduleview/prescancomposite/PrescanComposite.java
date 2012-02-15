@@ -10,7 +10,8 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.ISharedImages;
@@ -62,27 +63,26 @@ public class PrescanComposite extends Composite {
 		this.measuringStation.setSource(Activator.getDefault().
 				getMeasuringStation());
 
-		FillLayout fillLayout = new FillLayout();
-		this.setLayout(fillLayout);
+		this.setLayout(new GridLayout());
 		
 		createViewer();
 		
 		
-/*
-	    
-	    
+		// TODO change into EditingSupport
 	    final CellEditor[] editors = new CellEditor[2];
 	    
 	    editors[0] = new TextCellEditor(this.tableViewer.getTable());
 	    editors[1] = new TextCellEditor(this.tableViewer.getTable());
 	    
 	    this.tableViewer.setCellModifier(
-	    		new PrescanCellModifyer(this.tableViewer));
+	    		new CellModifyer(this.tableViewer));
 	    this.tableViewer.setCellEditors(editors);
 	    
 	    final String[] props = {"device", "value"};
 	    
-	    this.tableViewer.setColumnProperties(props);*/
+	    this.tableViewer.setColumnProperties(props);
+	    // end of to do
+	    
 	    
 		final MenuManager menuManager = new MenuManager("#PopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
@@ -90,7 +90,7 @@ public class PrescanComposite extends Composite {
 		
 		final Menu contextMenu = menuManager.createContextMenu(
 				this.tableViewer.getControl());
-		this.tableViewer.getControl().setMenu( contextMenu );
+		this.tableViewer.getControl().setMenu(contextMenu);
 	}
 
 	/*
@@ -98,6 +98,13 @@ public class PrescanComposite extends Composite {
 	 */
 	private void createViewer() {
 		this.tableViewer = new TableViewer(this, SWT.NONE);
+		GridData gridData = new GridData();
+		gridData.minimumHeight = 120;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		this.tableViewer.getTable().setLayoutData(gridData);
 		createColumns();
 		this.tableViewer.getTable().setHeaderVisible(true);
 		this.tableViewer.getTable().setLinesVisible(true);

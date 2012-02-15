@@ -11,7 +11,8 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableColumn;
@@ -77,8 +78,7 @@ public class MotorAxisComposite extends Composite {
 		this.measuringStation.setSource(Activator.getDefault().
 				getMeasuringStation());
 		
-		FillLayout fillLayout = new FillLayout();
-		this.setLayout(fillLayout);
+		this.setLayout(new GridLayout());
 		
 		createViewer();
 		
@@ -115,6 +115,13 @@ public class MotorAxisComposite extends Composite {
 	 */
 	private void createViewer() {
 		this.tableViewer = new TableViewer(this, SWT.NONE);
+		GridData gridData = new GridData();
+		gridData.minimumHeight = 120;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		this.tableViewer.getTable().setLayoutData(gridData);
 		this.createColumns();
 		this.tableViewer.getTable().setHeaderVisible(true);
 		this.tableViewer.getTable().setLinesVisible(true);

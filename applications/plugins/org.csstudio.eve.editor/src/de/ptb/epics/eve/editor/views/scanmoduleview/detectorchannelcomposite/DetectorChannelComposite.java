@@ -12,7 +12,8 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.ISharedImages;
@@ -64,8 +65,7 @@ public class DetectorChannelComposite extends Composite {
 		this.measuringStation.setSource(Activator.getDefault().
 				getMeasuringStation());
 
-		FillLayout fillLayout = new FillLayout();
-		this.setLayout(fillLayout);
+		this.setLayout(new GridLayout());
 		
 		createViewer();
 		
@@ -78,11 +78,19 @@ public class DetectorChannelComposite extends Composite {
 	 */
 	private void createViewer() {
 		this.tableViewer = new TableViewer(this, SWT.NONE);
+		GridData gridData = new GridData();
+		gridData.minimumHeight = 120;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		this.tableViewer.getTable().setLayoutData(gridData);
 		createColumns();
 		this.tableViewer.getTable().setHeaderVisible(true);
 		this.tableViewer.getTable().setLinesVisible(true);
 		this.tableViewer.setContentProvider(new DetectorChannelContentProvider());
 		this.tableViewer.setLabelProvider(new DetectorChannelLabelProvider());
+		
 		
 		this.menuManager = new MenuManager("#PopupMenu");
 		this.menuManager.setRemoveAllWhenShown(true);
@@ -90,6 +98,20 @@ public class DetectorChannelComposite extends Composite {
 		final Menu contextMenu = 
 			menuManager.createContextMenu(this.tableViewer.getTable());
 		this.tableViewer.getControl().setMenu(contextMenu);
+		
+		
+		/*
+		// create context menu
+		MenuManager menuManager = new MenuManager();
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		menuManager.setRemoveAllWhenShown(true);
+		this.tableViewer.getTable().setMenu(
+				menuManager.createContextMenu(this.tableViewer.getTable()));
+		// register menu
+		parentView.getSite().registerContextMenu(
+			"de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup", 
+			menuManager, this.tableViewer);
+			*/
 	}
 	
 	/*

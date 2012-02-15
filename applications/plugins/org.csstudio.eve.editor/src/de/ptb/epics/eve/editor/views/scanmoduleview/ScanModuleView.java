@@ -10,9 +10,12 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.widgets.Label;
@@ -31,7 +34,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 
 import de.ptb.epics.eve.data.measuringstation.Event;
-import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
@@ -80,13 +82,13 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	private ExpandBar bar;
 
 	private Composite generalComposite;
-	private GeneralCompositeControlListener generalCompositeControlListener;
+	//private GeneralCompositeControlListener generalCompositeControlListener;
 	
 	private Composite actionsComposite;
-	private ActionsCompositeControlListener actionsCompositeControlListener;
+	//private ActionsCompositeControlListener actionsCompositeControlListener;
 	
 	private Composite eventsComposite;
-	private EventsCompositeControlListener eventsCompositeControlListener;
+	//private EventsCompositeControlListener eventsCompositeControlListener;
 
 	private Label triggerDelayLabel;
 	private Text triggerDelayText;
@@ -147,6 +149,17 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	// selection service
 	protected SelectionProviderWrapper selectionProviderWrapper;
 	
+	private IMemento memento;
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		init(site);
+		this.memento = memento;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -175,6 +188,8 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		// Event Section
 		createEventsExpandItem();
 		
+		restoreState();
+		
 		top.setVisible(false);
 		
 		// listen to selection changes (if a scan module is selected, its 
@@ -187,6 +202,27 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	} // end of: createPartControl()
 	
 	/*
+	 * 
+	 */
+	private void restoreState() {
+		if (memento == null) {
+			return;
+		}
+		boolean general = memento.getBoolean("expandGeneral") != null 
+						? memento.getBoolean("expandGeneral")
+						: true;
+		this.itemGeneral.setExpanded(general);
+		boolean actions = memento.getBoolean("expandActions") != null 
+						? memento.getBoolean("expandActions")
+						: true;
+		this.itemActions.setExpanded(actions);
+		boolean events = memento.getBoolean("expandEvents") != null 
+						? memento.getBoolean("expandEvents")
+						: true;
+		this.itemEvents.setExpanded(events);
+	}
+	
+	/*
 	 * called by CreatePartControl to create the contents of the first 
 	 * expand item (General)
 	 */
@@ -195,10 +231,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		gridLayout.numColumns = 4;
 		this.generalComposite = new Composite(this.bar, SWT.NONE);
 		this.generalComposite.setLayout(gridLayout);
-		this.generalCompositeControlListener = 
-				new GeneralCompositeControlListener();
-		//this.generalComposite.addControlListener(
-		//		generalCompositeControlListener);
 		
 		// Trigger Delay
 		this.triggerDelayLabel = new Label(this.generalComposite, SWT.NONE);
@@ -276,22 +308,10 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 * expand item (Actions)
 	 */
 	private void createActionsExpandItem() {
-		GridLayout gridLayout = new GridLayout();
-		
 		this.actionsComposite = new Composite(this.bar, SWT.NONE);
-		this.actionsComposite.setLayout(gridLayout);
-		this.actionsCompositeControlListener = 
-				new ActionsCompositeControlListener();
-		//this.actionsComposite.addControlListener(
-		//		actionsCompositeControlListener);
+		this.actionsComposite.setLayout(new FillLayout());
 		
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
 		this.actionsTabFolder = new CTabFolder(this.actionsComposite, SWT.FLAT);
-		this.actionsTabFolder.setLayoutData(gridData);
 		
 		motorAxisComposite = new MotorAxisComposite(this, 
 				actionsTabFolder, SWT.NONE);
@@ -341,6 +361,8 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		
 		this.itemActions = new ExpandItem(this.bar, SWT.NONE, 0);
 		itemActions.setText("Actions");
+		itemActions.setHeight(this.actionsComposite.computeSize(
+				SWT.DEFAULT, SWT.DEFAULT).y);
 		itemActions.setControl(this.actionsComposite);
 	}
 	
@@ -349,21 +371,10 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 * expand item (Events)
 	 */
 	private void createEventsExpandItem() {
-		GridLayout gridLayout = new GridLayout();
-		
 		this.eventsComposite = new Composite(this.bar, SWT.NONE);
-		this.eventsComposite.setLayout(gridLayout);
-		this.eventsCompositeControlListener = 
-			new EventsCompositeControlListener();
-		//this.eventsComposite.addControlListener(eventsCompositeControlListener);
+		this.eventsComposite.setLayout(new FillLayout(SWT.VERTICAL));
 		
-		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.horizontalAlignment = GridData.FILL;
 		eventsTabFolder = new CTabFolder(this.eventsComposite, SWT.NONE);
-		eventsTabFolder.setLayoutData(gridData);	
 		this.eventsTabFolderSelectionListener = 
 				new EventsTabFolderSelectionListener();	
 		eventsTabFolder.addSelectionListener(eventsTabFolderSelectionListener);
@@ -398,12 +409,10 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 				"Wait for trigger event before moving to next position");
 		this.triggerEventsTabItem.setControl(triggerEventComposite);
 		
-		gridData = new GridData();
-		gridData.horizontalSpan = 2;
 		appendScheduleEventCheckBox = new Button(this.eventsComposite, 
 												SWT.CHECK);
 		appendScheduleEventCheckBox.setText("Append Schedule Event");
-		appendScheduleEventCheckBox.setLayoutData(gridData);
+		
 		this.appendScheduleEventCheckBoxSelectionListener = 
 				new AppendScheduleEventCheckBoxSelectionListener();
 		this.appendScheduleEventCheckBox.addSelectionListener(
@@ -591,39 +600,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		}
 	}
 	
-	/*
-	 * used by several control listeners
-	 */
-	private void resize() {
-		// Caution: do not use getHeaderHeight() here
-		// height values vary without changing the layout
-		// which puts us into an endless loop
-		
-		int height = bar.getSize().y - 6 * 25;
-		
-		if (itemGeneral.getExpanded()) {
-			height -= itemGeneral.getHeight();
-		}
-		
-		int amount = 0;
-		if (itemActions.getExpanded()) {
-			amount++;
-		}
-		if (itemEvents.getExpanded()) {
-			amount++;
-		}
-		
-		if (amount > 0) {
-			height /= amount;
-			if(itemActions.getExpanded()) {
-				itemActions.setHeight(height < 200 ? 200 : height);
-			}
-			if(itemEvents.getExpanded()) {
-				itemEvents.setHeight(height < 150 ? 150 : height);
-			}
-		}
-	}
-	
 	/**
 	 * Sets the selection provider.
 	 * 
@@ -654,11 +630,22 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 							(ScanModuleEditPart)o).getModel()).getId() + 
 							" selected."); 
 				}
-				setCurrentScanModule(
+				if (this.currentScanModule != null) {
+					ScanModule newScanModule = (ScanModule)
+							((ScanModuleEditPart)o).getModel();
+					if(!this.currentScanModule.equals(newScanModule)) {
+						setCurrentScanModule(
+								(ScanModule)((ScanModuleEditPart)o).getModel());
+					}
+				} else {
+					setCurrentScanModule(
 						(ScanModule)((ScanModuleEditPart)o).getModel());
+				}
 			} else if (o instanceof ScanDescriptionEditPart) {
 					logger.debug("selection is ScanDescriptionEditPart: " + o);
-					setCurrentScanModule(null);
+					if(this.currentScanModule !=  null) {
+						setCurrentScanModule(null);
+					}
 			} else {
 				logger.debug("selection other than ScanModule -> ignore: " + o);
 			}
@@ -669,8 +656,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 * used by updateEvent() to re-enable listeners
 	 */
 	private void addListeners() {
-		this.generalComposite.addControlListener(
-				generalCompositeControlListener);
 		this.triggerDelayText.addModifyListener(
 				triggerDelayTextModifiedListener);
 		this.settleTimeText.addModifyListener(settleTimeTextModifiedListener);
@@ -678,7 +663,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 				confirmTriggerCheckBoxSelectionListener);
 		this.eventsTabFolder.addSelectionListener(
 				eventsTabFolderSelectionListener);
-		this.eventsComposite.addControlListener(eventsCompositeControlListener);
 		this.appendScheduleEventCheckBox.addSelectionListener(
 				appendScheduleEventCheckBoxSelectionListener);
 	}
@@ -688,8 +672,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 * event loops)
 	 */
 	private void removeListeners() {
-		this.generalComposite.removeControlListener(
-				generalCompositeControlListener);
 		this.triggerDelayText.removeModifyListener(
 				triggerDelayTextModifiedListener);
 		this.settleTimeText.removeModifyListener(settleTimeTextModifiedListener);
@@ -697,8 +679,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 				confirmTriggerCheckBoxSelectionListener);
 		this.eventsTabFolder.removeSelectionListener(
 				eventsTabFolderSelectionListener);
-		this.eventsComposite.removeControlListener(
-				eventsCompositeControlListener);
 		this.appendScheduleEventCheckBox.removeSelectionListener(
 				appendScheduleEventCheckBoxSelectionListener);
 	}
@@ -829,6 +809,16 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 			top.setVisible(false);
 		}
 		addListeners();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void saveState(IMemento memento) {
+		memento.putBoolean("expandGeneral", itemGeneral.getExpanded());
+		memento.putBoolean("expandActions", itemActions.getExpanded());
+		memento.putBoolean("expandEvents", itemEvents.getExpanded());
 	}
 
 	// ************************************************************************
@@ -1009,79 +999,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 							"The settletime must be an floating point value!");
 				}
 			}	
-		}
-	}
-		
-	// ************************ Control Listener ****************************
-	
-	/**
-	 * {@link org.eclipse.swt.events.ControlListener} of
-	 * <code>actionsComposite</code>.
-	 */
-	private class ActionsCompositeControlListener implements ControlListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlMoved(ControlEvent e) {
-			actionsComposite.setFocus();
-			resize();
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlResized(ControlEvent e) {
-			resize();
-		}
-	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.ControlListener} of
-	 * <code>eventsComposite</code>.
-	 */
-	private class EventsCompositeControlListener implements ControlListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlMoved(ControlEvent e) {
-			eventsComposite.setFocus();
-			resize();
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlResized(ControlEvent e) {
-			resize();
-		}
-	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.ControlListener} of
-	 * <code>generalComposite</code>.
-	 */
-	private class GeneralCompositeControlListener implements ControlListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlMoved(ControlEvent e) {
-			resize();
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlResized(ControlEvent e) {
-			resize();
 		}
 	}
 }

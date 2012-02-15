@@ -252,16 +252,38 @@
          </command>
       </menuContribution>
       <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.MenuContribution"
+               id="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.dynamic">
+         </dynamic>
+         <separator
+               name="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.spearator">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removechannel"
+               icon="icons/rem_co.gif"
+               label="Remove Channel"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.popup">
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.popup">
          <dynamic
                class="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.MenuContribution"
-               id="popup:de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.popup.menucontribution">
+               id="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.popup.menucontribution">
          </dynamic>
          <separator
-               name="popup:de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.popup.separator"
+               name="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.popup.separator"
                visible="true">
          </separator>
          <command
@@ -298,7 +320,7 @@
             </visibleWhen>
          </command>
          <separator
-               name="popup:de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.popup.separator"
+               name="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.popup.separator"
                visible="true">
          </separator>
          <command
@@ -397,6 +419,22 @@
             defaultHandler="de.ptb.epics.eve.editor.handler.eventcomposite.RemoveEvent"
             id="de.ptb.epics.eve.editor.command.removeevent"
             name="RemoveEvent">
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.commands"
+            name="DetectorChannel Composite">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.detectorchannelcomposite.AddChannel"
+            id="de.ptb.epics.eve.editor.command.addchannel"
+            name="Add Channel">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.detectorchannelcomposite.RemoveChannel"
+            id="de.ptb.epics.eve.editor.command.removechannel"
+            name="Remove Channel">
       </command>
       <category
             id="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.commands"
