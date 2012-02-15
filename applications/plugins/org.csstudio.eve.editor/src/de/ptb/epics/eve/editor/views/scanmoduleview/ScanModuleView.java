@@ -8,6 +8,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
@@ -26,8 +27,6 @@ import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -372,12 +371,19 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 */
 	private void createEventsExpandItem() {
 		this.eventsComposite = new Composite(this.bar, SWT.NONE);
-		this.eventsComposite.setLayout(new FillLayout(SWT.VERTICAL));
+		GridLayout gridLayout = new GridLayout();
+		this.eventsComposite.setLayout(gridLayout);
 		
 		eventsTabFolder = new CTabFolder(this.eventsComposite, SWT.NONE);
 		this.eventsTabFolderSelectionListener = 
 				new EventsTabFolderSelectionListener();	
 		eventsTabFolder.addSelectionListener(eventsTabFolderSelectionListener);
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		eventsTabFolder.setLayoutData(gridData);
 		
 		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
 				ControlEventTypes.PAUSE_EVENT, this);
