@@ -676,23 +676,12 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 			if(logger.isDebugEnabled()) {
 				logger.debug("ScanModule " + (ScanModule)
 						((ScanModuleEditPart)o).getModel() + " selected.");
-				/*if (this.currentChain != null) {
-					Chain newChain = ((ScanModule)((ScanModuleEditPart)o).
-							getModel()).getChain();
-					if(!this.currentChain.equals(newChain)) {
-						setCurrentChain(((ScanModule)((ScanModuleEditPart)o).
-								getModel()).getChain());
-					}
-				} else {*/
-					setCurrentChain(((ScanModule)((ScanModuleEditPart)o).
-							getModel()).getChain());
-				/*}*/
+				setCurrentChain(((ScanModule)((ScanModuleEditPart)o).
+						getModel()).getChain());
 			}
 		} else if (o instanceof ScanDescriptionEditPart) {
 				logger.debug("selection is ScanDescriptionEditPart: " + o);
-				/*if (this.currentChain != null) {*/
-					setCurrentChain(null);
-				/*}*/
+				setCurrentChain(null);
 		} else {
 			logger.debug("selection other than Chain -> ignore: " + o);
 		}

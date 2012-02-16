@@ -18,6 +18,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
@@ -462,8 +463,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		
 		// save the currently active part
 		IWorkbenchPart activePart = getSite().getPage().getActivePart();
-		// activate the scan module view (to assure propagation of selections)
-		this.getSite().getPage().activate(this);
 		
 		if (this.currentScanModule != null) {
 			this.currentScanModule.removeModelUpdateListener(this);
@@ -474,11 +473,16 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		
 		if (this.currentScanModule != null) {
 			this.currentScanModule.addModelUpdateListener(this);
+			
+			// activate the scan module view (to assure propagation of selections)
+			this.getSite().getPage().activate(this);
 		}
 		updateEvent(null);
 		
-		// switch back to previously active part
-		this.getSite().getPage().activate(activePart);
+		if (this.currentScanModule != null) {
+			// switch back to previously active part
+			this.getSite().getPage().activate(activePart);
+		}
 	}
 	
 	/*
@@ -635,22 +639,38 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 							(ScanModuleEditPart)o).getModel()).getId() + 
 							" selected."); 
 				}
+				// copy into final var so it can be used in runnable
+				final ScanModuleEditPart smep = (ScanModuleEditPart)o;
 				if (this.currentScanModule != null) {
 					ScanModule newScanModule = (ScanModule)
 							((ScanModuleEditPart)o).getModel();
 					if(!this.currentScanModule.equals(newScanModule)) {
-						setCurrentScanModule(
-								(ScanModule)((ScanModuleEditPart)o).getModel());
+						// to get rid of preventing recursive attempt to 
+						// activate part, use asynchronous execution
+						Display.getCurrent().asyncExec(new Runnable() {
+							@Override public void run() {
+								setCurrentScanModule((ScanModule)
+										((ScanModuleEditPart)smep).getModel());
+							}
+						});
 					}
 				} else {
-					setCurrentScanModule(
-						(ScanModule)((ScanModuleEditPart)o).getModel());
+					Display.getCurrent().asyncExec(new Runnable() {
+						@Override public void run() {
+							setCurrentScanModule((ScanModule)
+									((ScanModuleEditPart)smep).getModel());
+						}
+					});
 				}
 			} else if (o instanceof ScanDescriptionEditPart) {
-					logger.debug("selection is ScanDescriptionEditPart: " + o);
-					if(this.currentScanModule !=  null) {
-						setCurrentScanModule(null);
-					}
+				logger.debug("selection is ScanDescriptionEditPart: " + o);
+				if(this.currentScanModule !=  null) {
+					Display.getCurrent().asyncExec(new Runnable() {
+						@Override public void run() {} {
+							setCurrentScanModule(null);
+						}
+					});
+				}
 			} else {
 				logger.debug("selection other than ScanModule -> ignore: " + o);
 			}

@@ -58,20 +58,11 @@ public class EventComposite extends Composite {
 		this.parentView = parentView;
 		
 		createViewer();
-		
-		/*
-			editors[2] = new TextCellEditor(this.tableViewer.getTable()) {
-				@Override protected void focusLost() {
-					// if value not changed, cancel focusLost callback
-					if(isActivated() && !isDirty()) {
-						fireCancelEditor();
-					}
-					deactivate();
-				}};
-
-		*/
 	} // end of: Constructor
 
+	/*
+	 * 
+	 */
 	private void createViewer() {
 		this.tableViewer = new TableViewer(this, SWT.V_SCROLL | SWT.H_SCROLL);
 		GridData gridData = new GridData();
@@ -100,6 +91,9 @@ public class EventComposite extends Composite {
 				menuManager, this.tableViewer);
 	}
 
+	/*
+	 * 
+	 */
 	private void createColumns(TableViewer viewer) {
 		// column 1: Source
 		TableViewerColumn sourceCol = new TableViewerColumn(viewer, SWT.LEFT);
@@ -193,7 +187,6 @@ public class EventComposite extends Composite {
 	 */
 	public void setControlEventManager(
 			final ControlEventManager controlEventManager) {
-
 		if(controlEventManager != null)
 			logger.debug("set control event manager (" +
 						 controlEventManager.hashCode() + ")");
