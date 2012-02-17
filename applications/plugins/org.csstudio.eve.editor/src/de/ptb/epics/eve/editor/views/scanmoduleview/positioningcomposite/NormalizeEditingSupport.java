@@ -16,7 +16,7 @@ import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 
 /**
- * 
+ * {@link org.eclipse.jface.viewers.EditingSupport} for the normalize column.
  * 
  * @author Marcus Michalsky
  * @since 1.1
@@ -79,7 +79,7 @@ public class NormalizeEditingSupport extends EditingSupport {
 	protected Object getValue(Object element) {
 		final Positioning positioning = (Positioning)element;
 		if(positioning.getNormalization() != null) {
-			return positioning.getNormalization().getFullIdentifyer();
+			return channels.indexOf(positioning.getNormalization());
 		}
 		return 0;
 	}

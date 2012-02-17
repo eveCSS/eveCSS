@@ -400,6 +400,8 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		
 		// events tab folder contains the tabs pause, redo, break & stop
 		eventsTabFolder = new CTabFolder(this.eventsComposite, SWT.FLAT);
+		this.eventsTabFolder.setSimple(false);
+		this.eventsTabFolder.setBorderVisible(true);
 		eventsTabFolder.addSelectionListener(
 				new EventsTabFolderSelectionListener());
 		
@@ -439,10 +441,7 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 		this.eventsExpandItem.setControl(this.eventsComposite);
 		this.eventsExpandItem.setExpanded(true);
 		
-		//this.eventsTabFolder.setTabHeight(50);
-		
 		this.eventsTabFolder.showItem(this.pauseTabItem);
-		//this.eventsTabFolder.getClientArea().height = this.eventsComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
 		
 		// **************************************
 		// ******* end of Events Expander *******
@@ -527,7 +526,7 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 			this.commentInput.setSelection(
 					this.currentChain.getComment().length());
 			
-
+			
 					this.pauseEventComposite.setControlEventManager(
 						this.currentChain.getPauseControlEventManager());
 			

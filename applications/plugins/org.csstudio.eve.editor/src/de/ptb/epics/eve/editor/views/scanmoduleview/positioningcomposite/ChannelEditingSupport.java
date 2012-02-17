@@ -79,7 +79,7 @@ public class ChannelEditingSupport extends EditingSupport {
 	protected Object getValue(Object element) {
 		final Positioning positioning = (Positioning)element;
 		if(positioning.getDetectorChannel() != null) {
-			positioning.getDetectorChannel().getFullIdentifyer();
+			return channels.indexOf(positioning.getDetectorChannel());
 		}
 		return 0;
 	}

@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.DialogCellEditor;
@@ -9,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.FontDialog;
 
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.Positioning;
@@ -20,8 +22,11 @@ import de.ptb.epics.eve.editor.dialogs.PluginControllerDialog;
  * @author Marcus Michalsky
  * @since 1.1
  */
-public class paramEditingSupport extends EditingSupport {
+public class ParamEditingSupport extends EditingSupport {
 
+	private static Logger logger = 
+			Logger.getLogger(ParamEditingSupport.class.getName());
+	
 	private TableViewer viewer;
 	
 	/**
@@ -29,7 +34,7 @@ public class paramEditingSupport extends EditingSupport {
 	 * 
 	 * @param viewer
 	 */
-	public paramEditingSupport(TableViewer viewer) {
+	public ParamEditingSupport(TableViewer viewer) {
 		super(viewer);
 		this.viewer = viewer;
 	}
@@ -39,19 +44,23 @@ public class paramEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected CellEditor getCellEditor(Object element) {
+		logger.debug("get cell editor");
 		return new DialogCellEditor() {
 			@Override protected Button createButton(Composite parent) {
+				logger.debug("create buttion");
 				final Button button = new Button(parent, SWT.PUSH);
 				button.setText("Edit");
 				return button; 
 			}
 			
 			@Override protected Object openDialogBox(Control cellEditorWindow) {
+				logger.debug("open dialog");
 				PluginControllerDialog dialog = new PluginControllerDialog(
-						null, (PluginController)this.getValue());
-				dialog.setBlockOnOpen(true);
-				dialog.open();
-				return null;
+						cellEditorWindow.getShell(), 
+						(PluginController)this.getValue());
+				// dialog.setBlockOnOpen(true);
+				
+				return dialog.open();
 			}
 		};
 	}
@@ -61,6 +70,7 @@ public class paramEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected boolean canEdit(Object element) {
+		logger.debug("can edit");
 		return true;
 	}
 
@@ -69,6 +79,7 @@ public class paramEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected Object getValue(Object element) {
+		logger.debug("get element");
 		final Positioning positioning = (Positioning)element;
 		return positioning.getPluginController();
 	}

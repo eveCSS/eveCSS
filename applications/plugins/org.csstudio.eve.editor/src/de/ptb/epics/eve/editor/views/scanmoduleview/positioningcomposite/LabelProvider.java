@@ -1,7 +1,5 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite;
 
-import java.util.Iterator;
-
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -25,44 +23,45 @@ import de.ptb.epics.eve.data.scandescription.errors.PositioningErrorTypes;
  */
 public class LabelProvider implements ITableLabelProvider {
 
+	private Image errorImage = PlatformUI.getWorkbench().getSharedImages().
+			getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public Image getColumnImage(final Object positioning, final int colIndex) {
 		final Positioning pos = (Positioning)positioning;
-		if( colIndex == 1 ) {
-			final Iterator< IModelError > it = pos.getModelErrors().iterator();
-			while( it.hasNext() )  {
-				final IModelError modelError = it.next();
-				if( modelError instanceof PluginError ) {
-					final PluginError pluginError = (PluginError)modelError;
-					if( pluginError.getPluginErrorType() == PluginErrorTypes.PLUING_NOT_SET ) {
-						return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
+		if (colIndex == 1) { // Plugin column
+			for(IModelError error : pos.getModelErrors()) {
+				if (error instanceof PluginError) {
+					final PluginError pluginError = (PluginError)error;
+					if (pluginError.getPluginErrorType() == 
+							PluginErrorTypes.PLUING_NOT_SET) {
+						return errorImage;
 					}
 				}
 			}
-		} else if( colIndex == 2 ) {
-			final Iterator< IModelError > it = pos.getModelErrors().iterator();
-			while( it.hasNext() )  {
-				final IModelError modelError = it.next();
-				if( modelError instanceof PositioningError ) {
-					final PositioningError positioningError = (PositioningError)modelError;
-					if( positioningError.getErrorType() == PositioningErrorTypes.NO_DETECTOR_CHANNEL_SET ) {
-						return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
+		} else if (colIndex == 2) { // Detector Channel column
+			for(IModelError error : pos.getModelErrors()) {
+				if (error instanceof PositioningError) {
+					final PositioningError posError = (PositioningError)error;
+					if (posError.getErrorType() == 
+							PositioningErrorTypes.NO_DETECTOR_CHANNEL_SET) {
+						return errorImage;
 					}
 				}
 			}
-		} else if( colIndex == 4 ) {
-			final Iterator< IModelError > it = pos.getModelErrors().iterator();
-			while( it.hasNext() )  {
-				final IModelError modelError = it.next();
-				if( modelError instanceof PluginError ) {
-					final PluginError pluginError = (PluginError)modelError;
-					if( pluginError.getPluginErrorType() == PluginErrorTypes.MISSING_MANDATORY_PARAMETER ) {
-						return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
-					} else if( pluginError.getPluginErrorType() == PluginErrorTypes.WRONG_VALUE ) {
-						return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_ERROR_TSK );
+		} else if (colIndex == 4) { // Parameters column
+			for(IModelError error : pos.getModelErrors()) {
+				if (error instanceof PluginError) {
+					final PluginError pluginError = (PluginError)error;
+					if (pluginError.getPluginErrorType() == 
+							PluginErrorTypes.MISSING_MANDATORY_PARAMETER) {
+						return errorImage;
+					} else if (pluginError.getPluginErrorType() == 
+							PluginErrorTypes.WRONG_VALUE) {
+						return errorImage;
 					}
 				}
 			}
@@ -76,26 +75,32 @@ public class LabelProvider implements ITableLabelProvider {
 	@Override
 	public String getColumnText(final Object positioning, final int colIndex) {
 		final Positioning pos = (Positioning)positioning;
-		switch( colIndex ) {
-			case 0:
-				return (pos.getMotorAxis()!=null)?pos.getMotorAxis().getFullIdentifyer():"";
-			case 1:
-				return (pos.getPluginController().getPlugin()!=null)?pos.getPluginController().getPlugin().getName():"";
-			case 2:
-				return (pos.getDetectorChannel()!=null)?pos.getDetectorChannel().getFullIdentifyer():"";
-			case 3:
-				return (pos.getNormalization()!=null)?pos.getNormalization().getFullIdentifyer():"";
-			case 4:
-				return (pos.getPluginController().getPlugin()!=null)?pos.getPluginController().toString():"Choose a plugin to see options";
+		switch(colIndex) {
+			case 0: return (pos.getMotorAxis() != null)
+					? pos.getMotorAxis().getFullIdentifyer()
+					: null;
+			case 1: return (pos.getPluginController().getPlugin() != null)
+					? pos.getPluginController().getPlugin().getName()
+					: null;
+			case 2: return (pos.getDetectorChannel() != null)
+					? pos.getDetectorChannel().getFullIdentifyer()
+					: null;
+			case 3: return (pos.getNormalization() != null)
+					? pos.getNormalization().getFullIdentifyer()
+					: null;
+			case 4: return (pos.getPluginController().getPlugin() != null)
+					? pos.getPluginController().toString()
+					: "Choose a plugin to see options";
 		}
-		return "";
+		return null;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addListener(final ILabelProviderListener arg0) {
+	public boolean isLabelProperty(final Object arg0, String arg1) {
+		return false;
 	}
 
 	/**
@@ -109,8 +114,7 @@ public class LabelProvider implements ITableLabelProvider {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isLabelProperty(final Object arg0, String arg1) {
-		return false;
+	public void addListener(final ILabelProviderListener arg0) {
 	}
 
 	/**

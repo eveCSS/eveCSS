@@ -81,13 +81,10 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	private ExpandBar bar;
 
 	private Composite generalComposite;
-	//private GeneralCompositeControlListener generalCompositeControlListener;
-	
+
 	private Composite actionsComposite;
-	//private ActionsCompositeControlListener actionsCompositeControlListener;
-	
+
 	private Composite eventsComposite;
-	//private EventsCompositeControlListener eventsCompositeControlListener;
 
 	private Label triggerDelayLabel;
 	private Text triggerDelayText;
@@ -308,9 +305,17 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 */
 	private void createActionsExpandItem() {
 		this.actionsComposite = new Composite(this.bar, SWT.NONE);
-		this.actionsComposite.setLayout(new FillLayout());
+		this.actionsComposite.setLayout(new GridLayout());
 		
 		this.actionsTabFolder = new CTabFolder(this.actionsComposite, SWT.FLAT);
+		this.actionsTabFolder.setSimple(false);
+		this.actionsTabFolder.setBorderVisible(true);
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		this.actionsTabFolder.setLayoutData(gridData);
 		
 		motorAxisComposite = new MotorAxisComposite(this, 
 				actionsTabFolder, SWT.NONE);
@@ -375,6 +380,8 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		this.eventsComposite.setLayout(gridLayout);
 		
 		eventsTabFolder = new CTabFolder(this.eventsComposite, SWT.NONE);
+		this.eventsTabFolder.setSimple(false);
+		this.eventsTabFolder.setBorderVisible(true);
 		this.eventsTabFolderSelectionListener = 
 				new EventsTabFolderSelectionListener();	
 		eventsTabFolder.addSelectionListener(eventsTabFolderSelectionListener);
@@ -745,6 +752,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 				actionsTabFolder.setSelection(0);
 			}
 			
+			// TODO
 			// setScanModule muß in der Reihenfolge aufgerufen werden, dass
 			// das gerade selekierte Composite als letztes gesetzt wird,
 			// damit der SelectionProvider richtig gesetzt ist.
@@ -779,7 +787,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 						setScanModule(this.currentScanModule);
 				break;
 			case 5:
-				System.out.println("\tSelections für Plot Tab werden gesetzt.");
 			default:
 				((MotorAxisComposite) this.motorAxisComposite).setScanModule(
 						this.currentScanModule);
@@ -788,6 +795,10 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 				((PlotComposite) this.plotComposite).setScanModule(
 						this.currentScanModule);
 				break;
+			}
+			
+			if (this.eventsTabFolder.getSelection() == null) {
+				this.eventsTabFolder.setSelection(0);
 			}
 			
 			this.triggerEventComposite.setControlEventManager(
@@ -808,8 +819,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 					getEventById(testEvent.getID()) != null);
 			
 			checkForErrors();
-			
-			//itemActions.setExpanded(true);
 		} else { // currentScanModule == null
 			// no scan module selected -> reset contents
 			
@@ -932,7 +941,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 			Event scheduleEvent = new Event(currentScanModule.getChain().getId(), 
 											currentScanModule.getId(), 
 											Event.ScheduleIncident.END);
-
+			
 			if (appendScheduleEventCheckBox.getSelection()) {
 				if (currentScanModule.getChain().getScanDescription().
 						getEventById(scheduleEvent.getID()) == null) {
@@ -960,7 +969,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 * <code>triggerDelayText</code>.
 	 */
 	private class TriggerDelayTextModifiedListener implements ModifyListener {
-
+		
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1023,7 +1032,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 					settleTimeErrorLabel.setToolTipText(
 							"The settletime must be an floating point value!");
 				}
-			}	
+			}
 		}
 	}
 }

@@ -142,6 +142,7 @@ public class PostscanComposite extends Composite {
 				this.tableViewer, SWT.LEFT);
 		valueColumn.getColumn().setText("Value");
 		valueColumn.getColumn().setWidth(100);
+		// valueColumn.setEditingSupport(new ValueEditingSupport(this.tableViewer));
 		
 		TableViewerColumn resetColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);

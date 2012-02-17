@@ -113,9 +113,9 @@ public class PositioningComposite extends Composite {
 		TableViewerColumn paramColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);
 		paramColumn.getColumn().setText("Parameters");
-		paramColumn.getColumn().setWidth(50);
+		paramColumn.getColumn().setWidth(100);
 		paramColumn.setEditingSupport(
-				new paramEditingSupport(this.tableViewer));
+				new ParamEditingSupport(this.tableViewer));
 	}
 	
 	/**

@@ -284,15 +284,16 @@ public class DetectorChannelView extends ViewPart
 				new DetectorReadyEventCheckBoxSelectionListener();
 		this.detectorReadyEventCheckBox.addSelectionListener(
 				detectorReadyEventCheckBoxSelectionListener);
-
+		
+		// Event Options Tab
+		eventsTabFolder = new CTabFolder(this.eventComposite, SWT.FLAT);
+		this.eventsTabFolder.setSimple(false);
+		this.eventsTabFolder.setBorderVisible(true);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.horizontalAlignment = GridData.FILL;
-		
-		// Event Options Tab
-		eventsTabFolder = new CTabFolder(this.eventComposite, SWT.FLAT);
 		eventsTabFolder.setLayoutData(gridData);
 		
 		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 

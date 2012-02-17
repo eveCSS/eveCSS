@@ -58,7 +58,16 @@ public class LimitEditingSupport extends EditingSupport {
 				}
 			};
 		} else {
-			return new TextCellEditor(this.viewer.getTable());
+			TextCellEditor editor = new TextCellEditor(this.viewer.getTable()) {
+				@Override protected void focusLost() {
+					if(isActivated()) {
+						fireCancelEditor();
+					}
+					deactivate();
+				}
+			};
+			editor.setValidator(new LimitValidator(ce));
+			return editor;
 		}
 	}
 

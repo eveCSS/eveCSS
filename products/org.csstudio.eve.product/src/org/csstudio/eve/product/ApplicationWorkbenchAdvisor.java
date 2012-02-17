@@ -1,5 +1,7 @@
 package org.csstudio.eve.product;
 
+import org.eclipse.ui.IWorkbenchPreferenceConstants;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
@@ -38,6 +40,9 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	 */
 	@Override
 	public void initialize(IWorkbenchConfigurer configurer) {
+		super.initialize(configurer);
+		PlatformUI.getPreferenceStore().setValue(IWorkbenchPreferenceConstants.
+				SHOW_TRADITIONAL_STYLE_TABS, false);
 		configurer.setSaveAndRestore(true);
 	}
 }
