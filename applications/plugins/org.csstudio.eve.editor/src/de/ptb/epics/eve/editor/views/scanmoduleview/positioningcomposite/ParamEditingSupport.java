@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FontDialog;
+import org.eclipse.swt.widgets.Text;
 
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.Positioning;
@@ -45,21 +46,19 @@ public class ParamEditingSupport extends EditingSupport {
 	@Override
 	protected CellEditor getCellEditor(Object element) {
 		logger.debug("get cell editor");
-		return new DialogCellEditor() {
+		return new DialogCellEditor(this.viewer.getTable()) {
 			@Override protected Button createButton(Composite parent) {
-				logger.debug("create buttion");
 				final Button button = new Button(parent, SWT.PUSH);
 				button.setText("Edit");
-				return button; 
+				return button;
 			}
 			
 			@Override protected Object openDialogBox(Control cellEditorWindow) {
 				logger.debug("open dialog");
 				PluginControllerDialog dialog = new PluginControllerDialog(
-						cellEditorWindow.getShell(), 
-						(PluginController)this.getValue());
-				// dialog.setBlockOnOpen(true);
-				
+						null, 
+						(PluginController)getValue());
+				dialog.setBlockOnOpen(true);
 				return dialog.open();
 			}
 		};
