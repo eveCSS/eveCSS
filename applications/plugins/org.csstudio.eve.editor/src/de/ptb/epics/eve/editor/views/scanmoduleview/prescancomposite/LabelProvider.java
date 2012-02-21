@@ -51,7 +51,6 @@ public class LabelProvider implements ITableLabelProvider {
 		final Prescan pos = (Prescan)prescan;
 		
 		switch(colIndex) {
-			
 			case 0:
 				return (pos.getAbstractPrePostscanDevice() != null)
 						? pos.getAbstractPrePostscanDevice().getFullIdentifyer()

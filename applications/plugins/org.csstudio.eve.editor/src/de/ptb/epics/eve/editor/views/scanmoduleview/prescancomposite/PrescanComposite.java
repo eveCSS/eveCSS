@@ -4,11 +4,9 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -62,28 +60,11 @@ public class PrescanComposite extends Composite {
 				false, false, true, false, false);
 		this.measuringStation.setSource(Activator.getDefault().
 				getMeasuringStation());
-
+		
 		this.setLayout(new GridLayout());
 		
 		createViewer();
 		
-		
-		// TODO change into EditingSupport
-	    final CellEditor[] editors = new CellEditor[2];
-	    
-	    editors[0] = new TextCellEditor(this.tableViewer.getTable());
-	    editors[1] = new TextCellEditor(this.tableViewer.getTable());
-	    
-	    this.tableViewer.setCellModifier(
-	    		new CellModifyer(this.tableViewer));
-	    this.tableViewer.setCellEditors(editors);
-	    
-	    final String[] props = {"device", "value"};
-	    
-	    this.tableViewer.setColumnProperties(props);
-	    // end of to do
-	    
-	    
 		final MenuManager menuManager = new MenuManager("#PopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new MenuManagerMenuListener());
@@ -119,12 +100,13 @@ public class PrescanComposite extends Composite {
 		TableViewerColumn deviceColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);
 		deviceColumn.getColumn().setText("Device");
-		deviceColumn.getColumn().setWidth(300);
+		deviceColumn.getColumn().setWidth(400);
 		
 		TableViewerColumn valueColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);
 		valueColumn.getColumn().setText("Value");
 		valueColumn.getColumn().setWidth(80);
+		valueColumn.setEditingSupport(new ValueEditingSupport(this.tableViewer));
 	}
 	
 	/**
@@ -142,11 +124,10 @@ public class PrescanComposite extends Composite {
 		this.measuringStation.setScanModule(scanModule);
 
 		// if there are prescans present... 
-		if(tableViewer.getTable().getItems().length > 0)
-		{
+		if(tableViewer.getTable().getItems().length > 0) {
 			// ... and none is selected ...
-			if(tableViewer.getTable().getSelectionCount() == 0)
-			{	// ... select the first one
+			if(tableViewer.getTable().getSelectionCount() == 0) {
+				// ... select the first one
 				tableViewer.getTable().select(0);
 			}
 		}

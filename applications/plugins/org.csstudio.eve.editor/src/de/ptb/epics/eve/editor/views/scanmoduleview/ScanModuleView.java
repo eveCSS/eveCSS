@@ -1,7 +1,5 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -510,23 +508,20 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		boolean positioningErrors = false;
 		boolean plotWindowErrors = false;
 		
-		final Iterator<IModelError> it = 
-				this.currentScanModule.getModelErrors().iterator();
-		while(it.hasNext()) {
-			final IModelError modelError = it.next();
-			if(modelError instanceof AxisError) {
+		for(IModelError error : this.currentScanModule.getModelErrors()) {
+			if(error instanceof AxisError) {
 				motorAxisErrors = true;
-			} else if(modelError instanceof ChannelError) {
+			} else if(error instanceof ChannelError) {
 				detectorChannelErrors = true;
-			} else if(modelError instanceof PrescanError) {
+			} else if(error instanceof PrescanError) {
 				prescanErrors = true;
-			} else if(modelError instanceof PostscanError) {
+			} else if(error instanceof PostscanError) {
 				postscanErrors = true;
-			} else if(modelError instanceof PositioningError) {
+			} else if(error instanceof PositioningError) {
 				positioningErrors = true;
-			} else if(modelError instanceof PlotWindowError) {
+			} else if(error instanceof PlotWindowError) {
 				plotWindowErrors = true;
-			} 
+			}
 		}
 		
 		if(motorAxisErrors) {

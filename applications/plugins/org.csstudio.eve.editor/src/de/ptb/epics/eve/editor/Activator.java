@@ -323,5 +323,9 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, "icons/devices/plot.gif").createImage());
 		imagereg.put("RENAME", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/rename.gif").createImage());
+		imagereg.put("CHECKED", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/checked.gif").createImage());
+		imagereg.put("UNCHECKED", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/unchecked.gif").createImage());
 	}
 }

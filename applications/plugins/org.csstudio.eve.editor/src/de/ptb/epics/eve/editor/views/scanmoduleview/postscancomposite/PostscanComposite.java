@@ -5,12 +5,9 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -68,32 +65,9 @@ public class PostscanComposite extends Composite {
 		
 		createViewer();
 		
-		
-		// TODO convert to EditingSupport
-	    final CellEditor[] editors = new CellEditor[3];
-	    
-	    final String[] yesNo = {"yes","no"};
-
-	    editors[0] = new TextCellEditor(this.tableViewer.getTable());
-	    editors[1] = new TextCellEditor(this.tableViewer.getTable());
-	    editors[2] = new ComboBoxCellEditor(
-	    		this.tableViewer.getTable(), yesNo, SWT.READ_ONLY);
-	    
-	    this.tableViewer.setCellModifier(
-	    		new CellModifyer(this.tableViewer));
-	    this.tableViewer.setCellEditors(editors);
-	    
-	    final String[] props = {"device", "value", "reset"};
-	    
-	    this.tableViewer.setColumnProperties(props);
-	    
-	    // end of to do
-	
-	    
-	    final MenuManager menuManager = new MenuManager("#PopupMenu");
+		final MenuManager menuManager = new MenuManager("#PopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new MenuManagerMenuListener());
-		
 		final Menu contextMenu = 
 			menuManager.createContextMenu(this.tableViewer.getControl());
 		this.tableViewer.getControl().setMenu(contextMenu);
@@ -136,18 +110,19 @@ public class PostscanComposite extends Composite {
 		TableViewerColumn deviceColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);
 		deviceColumn.getColumn().setText("Device");
-		deviceColumn.getColumn().setWidth(300);
+		deviceColumn.getColumn().setWidth(400);
 		
 		TableViewerColumn valueColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);
 		valueColumn.getColumn().setText("Value");
 		valueColumn.getColumn().setWidth(100);
-		// valueColumn.setEditingSupport(new ValueEditingSupport(this.tableViewer));
+		valueColumn.setEditingSupport(new ValueEditingSupport(this.tableViewer));
 		
 		TableViewerColumn resetColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);
 		resetColumn.getColumn().setText("Reset Original");
 		resetColumn.getColumn().setWidth(100);
+		resetColumn.setEditingSupport(new ResetEditingSupport(this.tableViewer));
 		
 		TableViewerColumn emptyColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);

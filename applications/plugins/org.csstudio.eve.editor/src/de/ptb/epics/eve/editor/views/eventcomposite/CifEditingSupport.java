@@ -11,7 +11,7 @@ import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
 
 /**
- * 
+ * {@link org.eclipse.jface.viewers.EditingSupport} for the cif column.
  * 
  * @author Marcus Michalsky
  * @since 1.1

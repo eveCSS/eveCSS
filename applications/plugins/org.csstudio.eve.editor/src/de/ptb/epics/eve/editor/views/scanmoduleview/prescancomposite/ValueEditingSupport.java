@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite;
+package de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,10 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 
 import de.ptb.epics.eve.data.DataTypes;
-import de.ptb.epics.eve.data.scandescription.Postscan;
+import de.ptb.epics.eve.data.scandescription.Prescan;
 
 /**
- * {@link org.eclipse.jface.viewers.EditingSupport} for the value column.
+ * {@link org.eclipse.jface.viewers.EditingSupport} of the value column.
  * 
  * @author Marcus Michalsky
  * @since 1.1
@@ -38,19 +38,19 @@ public class ValueEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected CellEditor getCellEditor(Object element) {
-		final Postscan postscan = (Postscan)element;
-		if(postscan.getAbstractPrePostscanDevice().isDiscrete()) {
+		final Prescan prescan = (Prescan)element;
+		if(prescan.getAbstractPrePostscanDevice().isDiscrete()) {
 			List<String> discreteValues = new ArrayList<String>();
-			if (postscan.getAbstractPrePostscanDevice().getValue().
+			if (prescan.getAbstractPrePostscanDevice().getValue().
 					getType().equals(DataTypes.ONOFF)) {
 				discreteValues.add("On");
 				discreteValues.add("Off");
-			} else if (postscan.getAbstractPrePostscanDevice().getValue().
+			} else if (prescan.getAbstractPrePostscanDevice().getValue().
 					getType().equals(DataTypes.OPENCLOSE)) {
 				discreteValues.add("Open");
 				discreteValues.add("Close");
 			} else {
-				discreteValues.addAll(postscan.getAbstractPrePostscanDevice().
+				discreteValues.addAll(prescan.getAbstractPrePostscanDevice().
 						getValue().getDiscreteValues());
 			}
 			return new ComboBoxCellEditor(this.viewer.getTable(), 
@@ -79,10 +79,6 @@ public class ValueEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected boolean canEdit(Object element) {
-		final Postscan postscan = (Postscan)element;
-		if (postscan.isReset()) {
-			return false;
-		}
 		return true;
 	}
 
@@ -91,32 +87,32 @@ public class ValueEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected Object getValue(Object element) {
-		final Postscan postscan = (Postscan)element;
-		if(postscan.getAbstractPrePostscanDevice().isDiscrete()) {
-			if (postscan.getAbstractPrePostscanDevice().getValue().
+		final Prescan prescan = (Prescan)element;
+		if(prescan.getAbstractPrePostscanDevice().isDiscrete()) {
+			if (prescan.getAbstractPrePostscanDevice().getValue().
 					getType().equals(DataTypes.ONOFF)) {
-				if (postscan.getValue().equals("On")) {
+				if (prescan.getValue().equals("On")) {
 					return 0;
-				} else if (postscan.getValue().equals("Off")) {
+				} else if (prescan.getValue().equals("Off")) {
 					return 1;
 				} else {
 					return "";
 				}
-			} else if (postscan.getAbstractPrePostscanDevice().getValue().
+			} else if (prescan.getAbstractPrePostscanDevice().getValue().
 					getType().equals(DataTypes.OPENCLOSE)) {
-				if (postscan.getValue().equals("Open")) {
+				if (prescan.getValue().equals("Open")) {
 					return 0;
-				} else if (postscan.getValue().equals("Close")) {
+				} else if (prescan.getValue().equals("Close")) {
 					return 1;
 				} else {
 					return "";
 				}
 			} else {
-				return postscan.getAbstractPrePostscanDevice().getValue().
+				return prescan.getAbstractPrePostscanDevice().getValue().
 					getDiscreteValues().indexOf(element);
 			}
 		} else {
-			return postscan.getValue();
+			return prescan.getValue();
 		}
 	}
 
@@ -125,28 +121,28 @@ public class ValueEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected void setValue(Object element, Object value) {
-		final Postscan postscan = (Postscan)element;
-		if(postscan.getAbstractPrePostscanDevice().isDiscrete()) {
-			if (postscan.getAbstractPrePostscanDevice().getValue().
+		final Prescan prescan = (Prescan)element;
+		if(prescan.getAbstractPrePostscanDevice().isDiscrete()) {
+			if (prescan.getAbstractPrePostscanDevice().getValue().
 					getType().equals(DataTypes.ONOFF)) {
 				if (((Integer)value) == 0) {
-					postscan.setValue("On");
+					prescan.setValue("On");
 				} else {
-					postscan.setValue("Off");
+					prescan.setValue("Off");
 				}
-			} else if (postscan.getAbstractPrePostscanDevice().getValue().
+			} else if (prescan.getAbstractPrePostscanDevice().getValue().
 					getType().equals(DataTypes.OPENCLOSE)) {
 				if (((Integer)value) == 0) {
-					postscan.setValue("Open");
+					prescan.setValue("Open");
 				} else {
-					postscan.setValue("Close");
+					prescan.setValue("Close");
 				}
 			} else {
-				postscan.setValue(postscan.getAbstractPrePostscanDevice().
+				prescan.setValue(prescan.getAbstractPrePostscanDevice().
 					getValue().getDiscreteValues().get((Integer)value));
 			}
 		} else {
-			postscan.setValue((String)value);
+			prescan.setValue((String)value);
 		}
 	}
 }
