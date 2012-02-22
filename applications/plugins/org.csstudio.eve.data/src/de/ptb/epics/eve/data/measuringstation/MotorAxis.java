@@ -8,6 +8,7 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class MotorAxis extends AbstractMainPhaseDevice {
 
@@ -216,6 +217,15 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 					"The parameter 'stop' must not be null!");
 		}
 		this.stop = stop;
+	}
+
+	/**
+	 * Returns the parent as motor.
+	 * 
+	 * @return a Motor or null.
+	 */
+	public Motor getMotor() {
+		return (Motor)this.getParent();
 	}
 
 	/**

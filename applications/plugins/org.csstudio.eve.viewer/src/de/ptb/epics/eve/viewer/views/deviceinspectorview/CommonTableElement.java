@@ -11,8 +11,10 @@ import org.epics.pvmanager.data.AlarmSeverity;
 
 import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
+import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
+import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.viewer.Activator;
 
@@ -23,6 +25,7 @@ import de.ptb.epics.eve.viewer.Activator;
  * 
  * @author ?
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class CommonTableElement {
 
@@ -66,25 +69,44 @@ public class CommonTableElement {
 
 		if(device instanceof MotorAxis) {
 			MotorAxis motorAxis = (MotorAxis)device;
-			engine = new CommonTableElementEngineData(abstractdevice.getID(), this);
+			engine = new CommonTableElementEngineData(abstractdevice.getID(), 
+					this);
 			if ((motorAxis.getPosition() != null) && 
-				(motorAxis.getPosition().getAccess().getTransport() == TransportTypes.CA)) {
+					(motorAxis.getPosition().getAccess().getTransport() == 
+					TransportTypes.CA)) {
 				valuePv = new CommonTableElementPV(motorAxis.getPosition().
 						getAccess().getVariableID(), this);
 			}
 			if ((motorAxis.getGoto().getAccess() != null) &&
-				(motorAxis.getGoto().getAccess().getTransport() == TransportTypes.CA)) {
+					(motorAxis.getGoto().getAccess().getTransport() == 
+					TransportTypes.CA)) {
 				gotoPv = new CommonTableElementPV(motorAxis.getGoto().
 						getAccess().getVariableID(), this);
 			}
+			if (motorAxis.getTrigger() != null &&
+					motorAxis.getTrigger().getAccess().getTransport() == 
+					TransportTypes.CA) {
+				triggerPv = new CommonTableElementPV(motorAxis.getTrigger().
+							getAccess().getVariableID(), this);
+			} else if (motorAxis.getParent() != null) {
+				Motor parent = motorAxis.getMotor();
+				if (parent.getTrigger() != null &&
+						parent.getTrigger().getAccess().getTransport() == 
+						TransportTypes.CA) {
+					triggerPv = new CommonTableElementPV(parent.getTrigger().
+								getAccess().getVariableID(), this);
+				}
+			}
 			if ((motorAxis.getSet() != null) &&
-				(motorAxis.getSet().getAccess().getTransport() == TransportTypes.CA)) {
+					(motorAxis.getSet().getAccess().getTransport() == 
+					TransportTypes.CA)) {
 				setPv = new CommonTableElementPV(motorAxis.getSet().
 						getAccess().getVariableID(), this);
 			}
 			if (motorAxis.getUnit() != null) {
 				if (motorAxis.getUnit().getAccess() != null) {
-					if (motorAxis.getUnit().getAccess().getTransport() == TransportTypes.CA){
+					if (motorAxis.getUnit().getAccess().getTransport() == 
+							TransportTypes.CA){
 						unitPv = new CommonTableElementPV( motorAxis.getUnit().
 								getAccess().getVariableID(), this);
 					}
@@ -92,48 +114,63 @@ public class CommonTableElement {
 					unit = motorAxis.getUnit().getValue();
 				}
 			}
-			if ((motorAxis.getStatus() != null && motorAxis.getStatus().getAccess() != null) &&
-				(motorAxis.getStatus().getAccess().getTransport() == TransportTypes.CA)) {
-					statusPv = new CommonTableElementPV(motorAxis.getStatus().
+			if ((motorAxis.getStatus() != null && 
+					motorAxis.getStatus().getAccess() != null) &&
+					(motorAxis.getStatus().getAccess().getTransport() == 
+					TransportTypes.CA)) {
+				statusPv = new CommonTableElementPV(motorAxis.getStatus().
 							getAccess().getVariableID(), this);
 			}
-			if ((motorAxis.getMoveDone() != null && motorAxis.getMoveDone().getAccess() != null) &&
-				(motorAxis.getMoveDone().getAccess().getTransport() == TransportTypes.CA)) {
-					movedonePv = new CommonTableElementPV(motorAxis.getMoveDone().
+			if ((motorAxis.getMoveDone() != null && 
+					motorAxis.getMoveDone().getAccess() != null) &&
+					(motorAxis.getMoveDone().getAccess().getTransport() == 
+					TransportTypes.CA)) {
+				movedonePv = new CommonTableElementPV(motorAxis.getMoveDone().
 							getAccess().getVariableID(), this);
 			}
-			if ((motorAxis.getStop() != null && motorAxis.getStop().getAccess() != null) &&
-				(motorAxis.getStop().getAccess().getTransport() == TransportTypes.CA)) {
-					stopPv = new CommonTableElementPV(motorAxis.getStop().
+			if ((motorAxis.getStop() != null && 
+					motorAxis.getStop().getAccess() != null) &&	
+					(motorAxis.getStop().getAccess().getTransport() == 
+					TransportTypes.CA)) {
+				stopPv = new CommonTableElementPV(motorAxis.getStop().
 							getAccess().getVariableID(), this);
 			}
-			if ((motorAxis.getTweakForward() != null && motorAxis.getTweakForward().getAccess() != null) &&
-				(motorAxis.getTweakForward().getAccess().getTransport() == TransportTypes.CA)) {
-					tweakforwardPv = new CommonTableElementPV(motorAxis.
+			if ((motorAxis.getTweakForward() != null && 
+					motorAxis.getTweakForward().getAccess() != null) &&
+					(motorAxis.getTweakForward().getAccess().getTransport() == 
+					TransportTypes.CA)) {
+				tweakforwardPv = new CommonTableElementPV(motorAxis.
 							getTweakForward().getAccess().getVariableID(), this);
 			}
-			if ((motorAxis.getTweakReverse() != null && motorAxis.getTweakReverse().getAccess() != null) &&
-				(motorAxis.getTweakReverse().getAccess().getTransport() == TransportTypes.CA)) {
-					tweakreversePv = new CommonTableElementPV(motorAxis.
+			if ((motorAxis.getTweakReverse() != null && 
+					motorAxis.getTweakReverse().getAccess() != null) &&
+					(motorAxis.getTweakReverse().getAccess().getTransport() == 
+					TransportTypes.CA)) {
+				tweakreversePv = new CommonTableElementPV(motorAxis.
 							getTweakReverse().getAccess().getVariableID(), this);
 			}
-			if ((motorAxis.getTweakValue() != null && motorAxis.getTweakValue().getAccess() != null) &&
-				(motorAxis.getTweakValue().getAccess().getTransport() == TransportTypes.CA)) {
-					tweakvaluePv = new CommonTableElementPV(motorAxis.
+			if ((motorAxis.getTweakValue() != null && 
+					motorAxis.getTweakValue().getAccess() != null) &&
+					(motorAxis.getTweakValue().getAccess().getTransport() == 
+					TransportTypes.CA)) {
+				tweakvaluePv = new CommonTableElementPV(motorAxis.
 							getTweakValue().getAccess().getVariableID(), this);
 			}
 		}
 		if(device instanceof DetectorChannel) {
 			DetectorChannel channel = (DetectorChannel)device;
-			engine = new CommonTableElementEngineData(abstractdevice.getID(), this);
+			engine = new CommonTableElementEngineData(abstractdevice.getID(), 
+					this);
 			if ((channel.getRead() != null) && 
-				(channel.getRead().getAccess().getTransport() == TransportTypes.CA)) {
+					(channel.getRead().getAccess().getTransport() == 
+					TransportTypes.CA)) {
 				valuePv = new CommonTableElementPV(channel.getRead().
 						getAccess().getVariableID(), this);
 			}
 			if (channel.getUnit() != null){
 				if (channel.getUnit().getAccess() != null) {
-					if (channel.getUnit().getAccess().getTransport() == TransportTypes.CA) {
+					if (channel.getUnit().getAccess().getTransport() == 
+							TransportTypes.CA) {
 						unitPv = new CommonTableElementPV( channel.getUnit().
 								getAccess().getVariableID(), this);
 					}
@@ -142,21 +179,34 @@ public class CommonTableElement {
 				}
 			}
 			if (channel.getTrigger() != null &&
-				channel.getTrigger().getAccess().getTransport() == TransportTypes.CA) {
-					triggerPv = new CommonTableElementPV(channel.getTrigger().
+					channel.getTrigger().getAccess().getTransport() == 
+					TransportTypes.CA) {
+				triggerPv = new CommonTableElementPV(channel.getTrigger().
 						getAccess().getVariableID(), this);
+			} else if (channel.getParent() != null) {
+				Detector parent = channel.getDetector();
+				if (parent.getTrigger() != null &&
+						parent.getTrigger().getAccess().getTransport() == 
+						TransportTypes.CA) {
+					triggerPv = new CommonTableElementPV(parent.getTrigger().
+								getAccess().getVariableID(), this);
+				}
 			}
 		}
 		if(device instanceof Device) {
 			Device realDevice = (Device)device;
 			if ((realDevice.getValue() != null) && 
-					(realDevice.getValue().getAccess().getTransport() == TransportTypes.CA)) {
-				valuePv = new CommonTableElementPV( realDevice.getValue().getAccess().getVariableID(), this);
+					(realDevice.getValue().getAccess().getTransport() == 
+					TransportTypes.CA)) {
+				valuePv = new CommonTableElementPV(
+						realDevice.getValue().getAccess().getVariableID(), this);
 			}
 			if (realDevice.getUnit() != null){
 				if (realDevice.getUnit().getAccess() != null) {
-					if (realDevice.getUnit().getAccess().getTransport() == TransportTypes.CA)
-						unitPv = new CommonTableElementPV(realDevice.getUnit().getAccess().getVariableID(), this);
+					if (realDevice.getUnit().getAccess().getTransport() == 
+							TransportTypes.CA)
+						unitPv = new CommonTableElementPV(realDevice.getUnit().
+								getAccess().getVariableID(), this);
 				} else {
 					unit = realDevice.getUnit().getValue();
 				}
@@ -509,7 +559,8 @@ public class CommonTableElement {
 		String newValue = "";
 		if (getCellEditor(column) instanceof ComboBoxCellEditor){
 			int index = 0;
-			String[] items = ((ComboBoxCellEditor)getCellEditor(column)).getItems();
+			String[] items = ((ComboBoxCellEditor)getCellEditor(column)).
+					getItems();
 			if (value instanceof Integer) index = ((Integer)value).intValue();
 			if (items.length > index) newValue = items[index];
 		}
@@ -518,8 +569,11 @@ public class CommonTableElement {
 
 		if (column.equals("set") && (setPv != null))
 			setPv.setValue(newValue);
-		else if (column.equals("goto") && (gotoPv != null))
+		else if (column.equals("goto") && (gotoPv != null)) {
 			gotoPv.setValue(newValue);
+			// some Motor or MotorAxis needs a trigger to start
+			trigger();
+		}
 		else if (column.equals("value") && (valuePv != null))
 			valuePv.setValue(newValue);
 		else if (column.equals("unit") && (unitPv != null))
@@ -533,9 +587,37 @@ public class CommonTableElement {
 	 */
 	public void trigger() {
 		if (triggerPv != null && triggerPv.isConnected()) {
-			DetectorChannel channel = (DetectorChannel)device;
-			if (channel.getTrigger().getValue() != null)
-				triggerPv.setValue(channel.getTrigger().getValue().getDefaultValue());
+
+			if (device.getClass().getSimpleName().equals("DetectorChannel")) {
+				// device is a DetectorChannel
+				DetectorChannel channel = (DetectorChannel)device;
+				if (channel.getTrigger() != null) {
+					if (channel.getTrigger().getValue() != null)
+						triggerPv.setValue(channel.getTrigger().getValue().
+								getDefaultValue());
+				} else {
+					// triggerPv is the detector of the channel
+					Detector detector = channel.getDetector();
+					if (detector.getTrigger().getValue() != null)
+						triggerPv.setValue(detector.getTrigger().getValue().
+								getDefaultValue());
+				}
+			
+			} else if (device.getClass().getSimpleName().equals("MotorAxis")) {
+				// device is a MotorAxis
+				MotorAxis axis = (MotorAxis)device;
+				if (axis.getTrigger() != null) {
+					if (axis.getTrigger().getValue() != null)
+						triggerPv.setValue(axis.getTrigger().getValue().
+								getDefaultValue());
+				} else {
+					// triggerPv is the motor of the axis
+					Motor motor = axis.getMotor();
+					if (motor.getTrigger().getValue() != null)
+						triggerPv.setValue(motor.getTrigger().getValue().
+								getDefaultValue());
+				}
+			}
 		}
 	}
 
