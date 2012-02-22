@@ -856,8 +856,16 @@ public class DeviceInspectorView extends ViewPart {
 			@Override public String getToolTipText(Object element) {
 				DetectorChannel channel = (DetectorChannel) 
 						((CommonTableElement)element).getAbstractDevice();
-				if(channel.getTrigger() != null && channel.getTrigger().getAccess() != null) {
+				if(channel.getTrigger() != null && 
+						channel.getTrigger().getAccess() != null) {
 					return channel.getTrigger().getAccess().getVariableID();
+				} else {
+					// triggerPv is the detector of the channel
+					Detector detector = channel.getDetector();
+					if(detector.getTrigger() != null && 
+							detector.getTrigger().getAccess() != null) {
+						return detector.getTrigger().getAccess().getVariableID();
+					}
 				}
 				return null;
 			}
