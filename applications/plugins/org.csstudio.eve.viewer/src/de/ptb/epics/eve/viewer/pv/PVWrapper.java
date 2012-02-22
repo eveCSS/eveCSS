@@ -162,11 +162,13 @@ public class PVWrapper {
 		this(pvName);
 		if (triggerName == null) {
 			this.triggerPV = null;
+			logger.debug("trigger is null.");
 			return;
 		}
 		try {
 			this.triggerPV = PVFactory.createPV("ca://" + triggerName);
 			this.triggerPV.start();
+			logger.debug("set trigger to " + this.triggerPV);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -178,7 +180,9 @@ public class PVWrapper {
 	public void disconnect() {
 		this.pv2.removeListener(pvListener);
 		this.pv2.stop();
-		this.triggerPV.stop();
+		if (this.triggerPV != null) {
+			this.triggerPV.stop();
+		}
 		this.pv.removePVReaderListener(this.readListener);
 		//this.pv.removePVWriterListener(this.writeListener);
 		this.pv.close();
@@ -251,7 +255,6 @@ public class PVWrapper {
 		try {
 			this.pv2.setValue(newVal);
 			if (this.triggerPV != null) {
-				Thread.sleep(200);
 				this.triggerPV.setValue(1);
 			}
 		} catch (Exception e) {
@@ -285,6 +288,16 @@ public class PVWrapper {
 	 */
 	public boolean isConnected() {
 		return this.isConnected;
+	}
+	
+	/**
+	 * Temporary. 
+	 * Stays until PVManager can write...
+	 * 
+	 * @return
+	 */
+	public boolean isConnected2() {
+		return this.pv2.isConnected();
 	}
 	
 	/**

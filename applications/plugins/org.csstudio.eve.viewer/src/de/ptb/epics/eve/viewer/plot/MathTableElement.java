@@ -3,8 +3,11 @@ package de.ptb.epics.eve.viewer.plot;
 import java.util.Formatter;
 import java.util.Locale;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.TableViewer;
 
+import de.ptb.epics.eve.data.measuringstation.Motor;
+import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 import de.ptb.epics.eve.ecp1.intern.DataType;
@@ -20,6 +23,9 @@ import de.ptb.epics.eve.viewer.Activator;
  */
 public class MathTableElement implements IMeasurementDataListener {
 	
+	private static Logger logger = Logger.getLogger(
+			MathTableElement.class.getName());
+	
 	private String value;
 	private MathFunction mathFunction;
 	private String motorPv;
@@ -28,6 +34,7 @@ public class MathTableElement implements IMeasurementDataListener {
 	private int smid;
 	private TableViewer viewer;
 	private String position;
+	private Object rawPosition;
 	private String motorId;
 
 	/**
@@ -96,12 +103,15 @@ public class MathTableElement implements IMeasurementDataListener {
 	 * called by measurementDataTransmitted to convert the data
 	 */
 	private String convert(MeasurementData mData, int element) {
-				
+		
 		if (mData.getValues().size() <= element) return "error";
-
+		
 		if (mData.getDataType() == DataType.DOUBLE || 
 			mData.getDataType() == DataType.FLOAT) {
 				Double data = (Double) mData.getValues().get(element);
+				if (element == 0) {
+					rawPosition = data;
+				}
 				if (data.isNaN()) {
 					return " ";
 				} else {
@@ -111,6 +121,9 @@ public class MathTableElement implements IMeasurementDataListener {
 							toString().trim();
 				}
 		} else {
+			if (element == 0) {
+				rawPosition = mData.getValues().get(element).toString();
+			}
 			return mData.getValues().get(element).toString();
 		}
 	}
@@ -132,12 +145,22 @@ public class MathTableElement implements IMeasurementDataListener {
 	}
 	
 	/**
-	 * &lt;not implemented yet&gt;
+	 * 
 	 */
 	public void gotoPos() {
 		if (motorPv == null) return;
-		// TODO IMPLEMENT
-		return;
+		MotorAxis ma = Activator.getDefault().getMeasuringStation().
+				getMotorAxisById(motorId);
+		String triggerPv = null;
+		if (ma.getTrigger() != null) {
+			triggerPv = ma.getTrigger().getAccess().getVariableID();
+		} else if (((Motor)ma.getParent()).getTrigger() != null) {
+			triggerPv = ((Motor)ma.getParent()).getTrigger().getAccess().
+					getVariableID();
+		}
+		GotoJob gotoJob = new GotoJob("Goto", motorPv, triggerPv, rawPosition);
+		gotoJob.schedule();
+		logger.debug("goto job scheduled");
 	}
 
 	/**
