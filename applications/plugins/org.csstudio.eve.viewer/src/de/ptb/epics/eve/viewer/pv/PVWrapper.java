@@ -48,6 +48,9 @@ public class PVWrapper {
 	// isWriteAllowed status is saved and the pv is disconnected.
 	private org.csstudio.utility.pv.PV pv2;
 	
+	// the trigger pv (if a "goto" pv has to be triggered)
+	private org.csstudio.utility.pv.PV triggerPV;
+	
 	// the name of the process variable
 	private String pvName;
 	
@@ -94,6 +97,10 @@ public class PVWrapper {
 	
 	/**
 	 * Constructs a <code>PVWrapper</code>.
+	 * <p>
+	 * Automatically connects the pv with the given name (if possible).
+	 * Notice that it is not connected immediately (due to threading). 
+	 * Its connection status is indicated by {@link #isConnected()}.
 	 * 
 	 * @param pvname the name (id) of the process variable
 	 */
@@ -142,11 +149,36 @@ public class PVWrapper {
 	}
 	
 	/**
+	 * Constructor that calls {@link #PVWrapper(String)}. 
+	 * <p>
+	 * Pass a non-<code>null</code> value for <code>triggerName</code> to append 
+	 * a trigger after {@link #setValue(Object)}.
+	 * 
+	 * @param pvName the pv string
+	 * @param triggerName the pv string of the trigger pv or <code>null</code> 
+	 * 						if none
+	 */
+	public PVWrapper(String pvName, String triggerName) {
+		this(pvName);
+		if (triggerName == null) {
+			this.triggerPV = null;
+			return;
+		}
+		try {
+			this.triggerPV = PVFactory.createPV("ca://" + triggerName);
+			this.triggerPV.start();
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
+	
+	/**
 	 * Disconnects the process variable.
 	 */
 	public void disconnect() {
 		this.pv2.removeListener(pvListener);
 		this.pv2.stop();
+		this.triggerPV.stop();
 		this.pv.removePVReaderListener(this.readListener);
 		//this.pv.removePVWriterListener(this.writeListener);
 		this.pv.close();
@@ -208,6 +240,9 @@ public class PVWrapper {
 	
 	/**
 	 * Sets a new value for the process variable.
+	 * <p>
+	 * <b>Remember</b> that PVs are threaded. Do not call {@link #setValue(Object)} 
+	 * immediately after connecting without checking {@link #isConnected()}.
 	 * 
 	 * @param newVal the value that should be set
 	 */
@@ -215,11 +250,20 @@ public class PVWrapper {
 		//this.pv.write(newVal);
 		try {
 			this.pv2.setValue(newVal);
+			if (this.triggerPV != null) {
+				Thread.sleep(200);
+				this.triggerPV.setValue(1);
+			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
+			return;
 		}
 		if(logger.isDebugEnabled()) {
 			logger.debug("Wrote " + this.getName() + ": " + newVal);
+			if(this.triggerPV != null) {
+				logger.debug("Additionally send Trigger " + 
+						this.triggerPV.getName());
+			}
 		}
 	}
 	
@@ -290,7 +334,8 @@ public class PVWrapper {
 			propertyChangeSupport.firePropertyChange("value", pvValue,
 					pvValue = valueFormat.format(newVal));
 			propertyChangeSupport.firePropertyChange("status", pvStatus, 
-					pvStatus = ((Alarm)ValueUtil.alarmOf(pv.getValue())).getAlarmSeverity());
+					pvStatus = ((Alarm)ValueUtil.alarmOf(pv.getValue())).
+									getAlarmSeverity());
 			Exception e = pv.lastException();
 			if(e != null) {
 				logger.warn(e.getMessage(), e);
