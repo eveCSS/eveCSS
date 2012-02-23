@@ -35,6 +35,22 @@ public class CommonTableElementPV extends PVWrapper implements PropertyChangeLis
 	}
 	
 	/**
+	 * Constructs a <code>CommonTableElementPV</code>.
+	 * 
+	 * @param pvname the name of the process variable
+	 * @param triggerPv the name of the associated trigger process variable
+	 * @param tableElement the 
+	 * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement}
+	 * 		(row) the process variable corresponds to
+	 */
+	public CommonTableElementPV(String pvname, String triggerPv, CommonTableElement tableElement) {
+		super(pvname, triggerPv);
+		this.commonTableElement = tableElement;
+		
+		this.addPropertyChangeListener("value", this);
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
