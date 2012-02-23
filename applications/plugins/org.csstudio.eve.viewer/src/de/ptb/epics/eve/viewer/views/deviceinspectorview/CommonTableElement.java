@@ -80,22 +80,24 @@ public class CommonTableElement {
 			if ((motorAxis.getGoto().getAccess() != null) &&
 					(motorAxis.getGoto().getAccess().getTransport() == 
 					TransportTypes.CA)) {
-				gotoPv = new CommonTableElementPV(motorAxis.getGoto().
-						getAccess().getVariableID(), this);
-			}
-			if (motorAxis.getTrigger() != null &&
-					motorAxis.getTrigger().getAccess().getTransport() == 
-					TransportTypes.CA) {
-				triggerPv = new CommonTableElementPV(motorAxis.getTrigger().
-							getAccess().getVariableID(), this);
-			} else if (motorAxis.getParent() != null) {
-				Motor parent = motorAxis.getMotor();
-				if (parent.getTrigger() != null &&
-						parent.getTrigger().getAccess().getTransport() == 
+				// getMotorTrigger
+				String motorTrigger = null;
+				if (motorAxis.getTrigger() != null &&
+						motorAxis.getTrigger().getAccess().getTransport() == 
 						TransportTypes.CA) {
-					triggerPv = new CommonTableElementPV(parent.getTrigger().
-								getAccess().getVariableID(), this);
+					motorTrigger = motorAxis.getTrigger().getAccess().
+							getVariableID();
+				} else if (motorAxis.getParent() != null) {
+					Motor parent = motorAxis.getMotor();
+					if (parent.getTrigger() != null &&
+							parent.getTrigger().getAccess().getTransport() == 
+							TransportTypes.CA) {
+						motorTrigger = parent.getTrigger().getAccess().
+								getVariableID();
+					}
 				}
+				gotoPv = new CommonTableElementPV(motorAxis.getGoto().
+						getAccess().getVariableID(), motorTrigger, this );
 			}
 			if ((motorAxis.getSet() != null) &&
 					(motorAxis.getSet().getAccess().getTransport() == 
