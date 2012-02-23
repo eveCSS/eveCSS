@@ -46,11 +46,13 @@ public class GotoJob extends Job {
 	protected IStatus run(IProgressMonitor monitor) {
 		try {
 			// 4 steps: create object, connect pv, set value, disconnect pv
-			monitor.beginTask("Goto", 4);
+			monitor.beginTask(this.getName(), 4);
 			// Step 1: create object
+			monitor.subTask("Creating PV");
 			PVWrapper pv = new PVWrapper(motorPv, triggerPv);
 			monitor.worked(1);
 			// Step 2: (wait for) connect pv (10 tries)
+			monitor.subTask("Connecting PV");
 			int i = 0;
 			while(!pv.isConnected() && ! pv.isConnected2() && i++ < 10) {
 				try {
@@ -64,6 +66,7 @@ public class GotoJob extends Job {
 				return Status.CANCEL_STATUS;
 			}
 			// Step 3: set value
+			monitor.subTask("Set value of " + motorPv + " to " + rawValue);
 			pv.setValue(rawValue);
 			try {
 				Thread.sleep(1000);
@@ -73,6 +76,7 @@ public class GotoJob extends Job {
 			monitor.worked(1);
 			logger.debug("send goto " + this.rawValue + " to " + this.motorPv);
 			// Step 4: disconnect pv
+			monitor.subTask("Disconnecting PV");
 			pv.disconnect();
 			monitor.worked(1);
 		} finally {

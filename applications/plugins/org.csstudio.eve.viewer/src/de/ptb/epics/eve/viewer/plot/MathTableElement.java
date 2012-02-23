@@ -158,7 +158,9 @@ public class MathTableElement implements IMeasurementDataListener {
 			triggerPv = ((Motor)ma.getParent()).getTrigger().getAccess().
 					getVariableID();
 		}
-		GotoJob gotoJob = new GotoJob("Goto", motorPv, triggerPv, rawPosition);
+		GotoJob gotoJob = new GotoJob("Goto " + this.mathFunction, motorPv, 
+				triggerPv, rawPosition);
+		gotoJob.setUser(true);
 		gotoJob.schedule();
 		logger.debug("goto job scheduled");
 	}
