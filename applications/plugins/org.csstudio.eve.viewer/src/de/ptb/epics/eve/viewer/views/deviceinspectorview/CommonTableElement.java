@@ -389,12 +389,12 @@ public class CommonTableElement {
 	 */
 	public Color getSeverityColor(String property) {
 		AlarmSeverity status = AlarmSeverity.UNDEFINED; 
-		if (property.equals("value")) {
-			if (valuePv != null) status = valuePv.getStatus();
+		if ((property.equals("value")) && (valuePv != null)) {
 			String statusVal = getValue("status");
 			if (statusVal.equals("Moving")) {
 				return Activator.getDefault().getColor("COLOR_PV_MOVING");
 			}
+			status = valuePv.getStatus();
 		}
 		else if (property.equals("unit")) {
 			if (unitPv != null) status = unitPv.getStatus();
@@ -403,9 +403,6 @@ public class CommonTableElement {
 			if (gotoPv != null) status = gotoPv.getStatus();
 		}
 		else if (property.equals("set")) {
-			if (gotoPv != null) status = gotoPv.getStatus();
-		}
-		else if (property.equals("goto")) {
 			if (gotoPv != null) status = gotoPv.getStatus();
 		}
 		else if (property.equals("tweakvalue")) {
@@ -418,8 +415,11 @@ public class CommonTableElement {
 			}
 			if (statusVal.equals("Limit")) {
 				status = AlarmSeverity.MAJOR;
+			} else {
+				status = AlarmSeverity.NONE;
+// TODO: Marcus Fragen, warum statusPv kein getStatus machen soll?
+//				status = statusPv.getStatus();
 			}
-			status = AlarmSeverity.NONE;
 		}
 
 		String color = "COLOR_PV_INITIAL";
@@ -517,10 +517,24 @@ public class CommonTableElement {
 			return valuePv.getValue();
 		}
 		else if (property.equals("status") && (statusPv != null)) {
+			System.out.println("\n\tMotor liefert Status");
+			if(movedonePv != null) {
+				System.out.println("\tmovedonePv: " + movedonePv.getValue());
+				String moveStatus = movedonePv.getValue();
+				System.out.println("\tmovedonePv als string: " + moveStatus);
+				if (moveStatus != null && moveStatus != ""){
+					int moveStatusInt = (int) Double.parseDouble(moveStatus);
+					System.out.println("\tmovedonePv als int: " + moveStatusInt);
+					if (moveStatusInt == 0)
+						return "Moving";
+				}
+			}
+
 			if(movedonePv != null && movedonePv.getValue().equals("0")) {
 				return "Moving";
 			}
 			String valueString = statusPv.getValue();
+			System.out.println("\tstatusPv als string: " + valueString);
 			try {
 				int status = (int) Double.parseDouble(valueString);
 				if((status & 4) > 0) {
