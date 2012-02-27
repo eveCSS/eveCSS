@@ -11,8 +11,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
+import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
+import de.ptb.epics.eve.data.scandescription.errors.ChannelErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
+import de.ptb.epics.eve.data.scandescription.errors.ScanModuleError;
+import de.ptb.epics.eve.data.scandescription.errors.ScanModuleErrorTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessage;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessageEnum;
@@ -138,7 +142,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.channels = new ArrayList<Channel>();
 		this.axes = new ArrayList<Axis>();
 		this.plotWindows = new ArrayList<PlotWindow>();
-		this.settletime = Double.NEGATIVE_INFINITY;
+		this.settletime = 0.0;
 		this.triggerdelay = 0.0;
 		this.triggerEvents = new ArrayList<ControlEvent>();
 		this.redoEvents = new ArrayList<ControlEvent>();
@@ -1005,6 +1009,16 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		for(PlotWindow plotwindow : this.plotWindows) {
 			errorList.addAll(plotwindow.getModelErrors());
 		}
+
+		if(Double.compare(this.triggerdelay, Double.NaN) == 0) {
+			errorList.add(new ScanModuleError(this, 
+					ScanModuleErrorTypes.TRIGGER_DELAY_NOT_POSSIBLE));
+		}
+		if(Double.compare(this.settletime, Double.NaN) == 0) {
+			errorList.add(new ScanModuleError(this, 
+					ScanModuleErrorTypes.SETTLE_TIME_NOT_POSSIBLE));
+		}
+		
 		return errorList;
 	}
 	

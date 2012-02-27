@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
+import java.util.Iterator;
+
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -29,6 +31,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
@@ -39,6 +43,7 @@ import de.ptb.epics.eve.data.scandescription.errors.PlotWindowError;
 import de.ptb.epics.eve.data.scandescription.errors.PositioningError;
 import de.ptb.epics.eve.data.scandescription.errors.PostscanError;
 import de.ptb.epics.eve.data.scandescription.errors.PrescanError;
+import de.ptb.epics.eve.data.scandescription.errors.ScanModuleError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -88,6 +93,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	private Text triggerDelayText;
 	private Label triggerDelayErrorLabel;
 	private Label triggerDelayUnitLabel;
+	private TextDoubleVerifyListener triggerDelayTextVerifyListener;
 	private TriggerDelayTextModifiedListener triggerDelayTextModifiedListener;
 	
 	private Label settleTimeLabel;
@@ -237,6 +243,8 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		gridData.verticalAlignment = GridData.CENTER;
 		gridData.grabExcessHorizontalSpace = true;
 		this.triggerDelayText.setLayoutData(gridData);
+		this.triggerDelayTextVerifyListener = new TextDoubleVerifyListener();
+		this.triggerDelayText.addVerifyListener(triggerDelayTextVerifyListener);
 		this.triggerDelayTextModifiedListener = 
 				new TriggerDelayTextModifiedListener();
 		this.triggerDelayText.addModifyListener(
@@ -254,7 +262,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		
 		// Settle Time
 		this.settleTimeLabel = new Label(this.generalComposite, SWT.NONE);
-		this.settleTimeLabel.setText("Settletime:");
+		this.settleTimeLabel.setText("Settle time:");
 		this.settleTimeLabel.setToolTipText(
 				"Delay time after first positioning in the scan module");
 		
@@ -469,15 +477,15 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		// save the currently active part
 		IWorkbenchPart activePart = getSite().getPage().getActivePart();
 		
-		if (this.currentScanModule != null) {
-			this.currentScanModule.removeModelUpdateListener(this);
-		}
+//		if (this.currentScanModule != null) {
+//			this.currentScanModule.removeModelUpdateListener(this);
+//		}
 		
 		// if there was already a scan module -> update it
 		this.currentScanModule = currentScanModule;
-		
+
 		if (this.currentScanModule != null) {
-			this.currentScanModule.addModelUpdateListener(this);
+//			this.currentScanModule.addModelUpdateListener(this);
 			
 			// activate the scan module view (to assure propagation of selections)
 			this.getSite().getPage().activate(this);
@@ -494,13 +502,49 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 * 
 	 */
 	private void checkForErrors() {
+    	// reset errors
+		this.triggerDelayErrorLabel.setImage(null);
+		this.settleTimeErrorLabel.setImage(null);
 		this.motorAxisTab.setImage(null);
 		this.detectorChannelTab.setImage(null);
 		this.prescanTab.setImage(null);
 		this.postscanTab.setImage(null);
 		this.positioningTab.setImage(null);
 		this.plotTab.setImage(null);
+
+		// check errors in General Tab
+		final Iterator<IModelError> it = 
+				this.currentScanModule.getModelErrors().iterator();
+
+		while(it.hasNext()) {
+			final IModelError modelError = it.next();
+			if(modelError instanceof ScanModuleError) {
+				final ScanModuleError scanModuleError = 
+						(ScanModuleError) modelError;
+				
+				switch(scanModuleError.getErrorType()) {
+					case TRIGGER_DELAY_NOT_POSSIBLE:
+						this.triggerDelayErrorLabel.setImage(
+								PlatformUI.getWorkbench().getSharedImages().
+								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+						this.triggerDelayErrorLabel.setToolTipText(
+								"Trigger Delay value not possible");
+						// update and resize View with getParent().layout()
+						this.triggerDelayErrorLabel.getParent().layout();
+						break;
+					case SETTLE_TIME_NOT_POSSIBLE:
+						this.settleTimeErrorLabel.setImage(
+								PlatformUI.getWorkbench().getSharedImages().
+								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+						this.settleTimeErrorLabel.setToolTipText(
+								"Settle Time value not possible");
+						this.settleTimeErrorLabel.getParent().layout();
+						break;
+				}
+			}
+		}
 		
+		// check errors in Actions Tab
 		boolean motorAxisErrors = false;
 		boolean detectorChannelErrors = false;
 		boolean prescanErrors = false;
@@ -553,9 +597,9 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 			this.plotTab.setImage(PlatformUI.getWorkbench().
 									getSharedImages().getImage(
 									ISharedImages.IMG_OBJS_ERROR_TSK));
-		}
+		}		
 		
-		
+		// check errors in Events Tab
 		if(this.currentScanModule.getPauseControlEventManager().
 								  	getModelErrors().size() > 0) {
 			this.pauseEventsTabItem.setImage(PlatformUI.getWorkbench().
@@ -587,27 +631,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 									ISharedImages.IMG_OBJS_ERROR_TSK));
 		} else {
 			this.triggerEventsTabItem.setImage(null);
-		}
-		
-		if(this.triggerDelayText.getText().equals("")) {
-			triggerDelayErrorLabel.setImage(PlatformUI.getWorkbench().
-								   	getSharedImages().getImage(
-								   	ISharedImages.IMG_OBJS_ERROR_TSK));
-			triggerDelayErrorLabel.setToolTipText(
-					"The trigger delay must not be empty!");
-		} else {
-			triggerDelayErrorLabel.setImage(null);
-			triggerDelayErrorLabel.setToolTipText(null);
-		}
-		if( this.settleTimeText.getText().equals("")) {
-			settleTimeErrorLabel.setImage(PlatformUI.getWorkbench().
-									getSharedImages().getImage(
-									ISharedImages.IMG_OBJS_ERROR_TSK));
-			settleTimeErrorLabel.setToolTipText(
-					"The settletime must not be empty!");
-		} else {
-			settleTimeErrorLabel.setImage(null);
-			settleTimeErrorLabel.setToolTipText(null);
 		}
 	}
 	
@@ -685,6 +708,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	private void addListeners() {
 		this.triggerDelayText.addModifyListener(
 				triggerDelayTextModifiedListener);
+		this.triggerDelayText.addVerifyListener(triggerDelayTextVerifyListener);
 		this.settleTimeText.addModifyListener(settleTimeTextModifiedListener);
 		this.confirmTriggerCheckBox.addSelectionListener(
 				confirmTriggerCheckBoxSelectionListener);
@@ -699,6 +723,8 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 * event loops)
 	 */
 	private void removeListeners() {
+		this.triggerDelayText.removeVerifyListener(
+				triggerDelayTextVerifyListener);
 		this.triggerDelayText.removeModifyListener(
 				triggerDelayTextModifiedListener);
 		this.settleTimeText.removeModifyListener(settleTimeTextModifiedListener);
@@ -709,7 +735,15 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		this.appendScheduleEventCheckBox.removeSelectionListener(
 				appendScheduleEventCheckBoxSelectionListener);
 	}
+
+	private void suspendModelUpdateListener () {
+		this.currentScanModule.removeModelUpdateListener(this);
+	}
 	
+	private void resumeModelUpdateListener () {
+		this.currentScanModule.addModelUpdateListener(this);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -719,6 +753,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		// widgets will be updated according to set / changed model
 		// -> temporarily disable listeners to prevent Event Loops
 		// (and unnecessary duplicate calls)
+
 		removeListeners();
 
 		if(this.currentScanModule != null) {
@@ -837,6 +872,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 			
 			top.setVisible(false);
 		}
+
 		addListeners();
 	}
 	
@@ -956,7 +992,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 			}
 		}
 	}
-	
+
 	// ************************ Modify Listener ****************************
 	
 	/**
@@ -970,28 +1006,21 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		 */
 		@Override
 		public void modifyText(ModifyEvent e) {
+
+			suspendModelUpdateListener();
+			
 			if (triggerDelayText.getText().equals("")) {
-				currentScanModule
-							.setTriggerdelay(Double.NEGATIVE_INFINITY);
-				triggerDelayErrorLabel.setImage(PlatformUI.getWorkbench().
-									   getSharedImages().getImage( 
-									   ISharedImages.IMG_OBJS_ERROR_TSK));
-				triggerDelayErrorLabel.setToolTipText(
-						"The trigger delay must not be empty!");
+				currentScanModule.setTriggerdelay(Double.NEGATIVE_INFINITY);
 			} else {
 				try {
 					currentScanModule.setTriggerdelay(Double.parseDouble(
 							triggerDelayText.getText()));
-						triggerDelayErrorLabel.setImage(null);
-						triggerDelayErrorLabel.setToolTipText(null);
 				} catch (NumberFormatException ex) {
-						triggerDelayErrorLabel.setImage(PlatformUI.
-								getWorkbench().getSharedImages().getImage(
-								ISharedImages.IMG_OBJS_ERROR_TSK));
-						triggerDelayErrorLabel.setToolTipText(
-						  "The trigger delay must be an floating point value!");
+					currentScanModule.setTriggerdelay(Double.NaN);
 				}
 			}	
+			checkForErrors();
+			resumeModelUpdateListener();
 		}
 	}
 	
@@ -1006,26 +1035,81 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		 */
 		@Override
 		public void modifyText(ModifyEvent e) {
+
+			suspendModelUpdateListener();
+
 			if (settleTimeText.getText().equals("")) {
 				currentScanModule.setSettletime(Double.NEGATIVE_INFINITY);
-				settleTimeErrorLabel.setImage(PlatformUI.getWorkbench().
-											 getSharedImages().getImage(
-											 ISharedImages.IMG_OBJS_ERROR_TSK));
-				settleTimeErrorLabel.setToolTipText(
-						"The settletime must not be empty!");
 			} else {
 				try {
 					currentScanModule.setSettletime(
 							Double.parseDouble(settleTimeText.getText()));
-					settleTimeErrorLabel.setImage(null);
-					settleTimeErrorLabel.setToolTipText(null);
 				} catch (Exception ex) {
-					currentScanModule.setSettletime(Double.NEGATIVE_INFINITY);
-					settleTimeErrorLabel.setImage(PlatformUI.getWorkbench().
-									getSharedImages().getImage(
-									ISharedImages.IMG_OBJS_ERROR_TSK));
-					settleTimeErrorLabel.setToolTipText(
-							"The settletime must be an floating point value!");
+					currentScanModule.setSettletime(Double.NaN);
+				}
+			}
+			checkForErrors();
+			resumeModelUpdateListener();
+		}
+	}
+	// ************************ Verify Listener ****************************
+
+	/**
+	 * <code>VerifyListener</code> of Text Widget from
+	 * <code>generalComposite</code>
+	 */
+	class TextDoubleVerifyListener implements VerifyListener {
+		// this is a copy from DetectorChannelView
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void verifyText(VerifyEvent e) {
+
+			switch (e.keyCode) {
+            	case SWT.BS:           // Backspace
+            	case SWT.DEL:          // Delete
+			    case SWT.HOME:         // Home
+			    case SWT.END:          // End
+			    case SWT.ARROW_LEFT:   // Left arrow
+			    case SWT.ARROW_RIGHT:  // Right arrow
+			    	return;  
+			}
+
+			String oldText = ((Text)(e.widget)).getText();
+
+			if (!Character.isDigit(e.character)) {
+				if (e.character == '.') {
+					// character . is a valid character, if he is not in the 
+					// old string
+					if (oldText.contains("."))
+						e.doit = false;
+				}
+				else if (e.character == '-') {
+					// character - is a valid character as first sign and after 
+					// an e
+					if (oldText.isEmpty()) {
+						// oldText is emtpy, - is valid
+					} else if ((((Text)e.widget).getSelection().x) == 0) {
+						// - is the first sign an valid
+					} else {
+						// wenn das letzte Zeichen von oldText ein e ist, 
+						// ist das minus auch erlaubt
+						int index = oldText.length();
+						if (oldText.substring(index-1).equals("e")) {
+							// letzte Zeichen ist ein e und damit erlaubt
+						} else {
+							e.doit = false;
+						}
+					}
+				} else if (e.character == 'e') {
+					// character e is a valid character, if he is not in the 
+					// old string
+					if (oldText.contains("e"))
+						e.doit = false;
+				} else {
+					e.doit = false;  // disallow the action
 				}
 			}
 		}

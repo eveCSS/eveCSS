@@ -517,24 +517,16 @@ public class CommonTableElement {
 			return valuePv.getValue();
 		}
 		else if (property.equals("status") && (statusPv != null)) {
-			System.out.println("\n\tMotor liefert Status");
 			if(movedonePv != null) {
-				System.out.println("\tmovedonePv: " + movedonePv.getValue());
 				String moveStatus = movedonePv.getValue();
-				System.out.println("\tmovedonePv als string: " + moveStatus);
-				if (moveStatus != null && moveStatus != ""){
+				if ((moveStatus != null) && (moveStatus != "")) {
 					int moveStatusInt = (int) Double.parseDouble(moveStatus);
-					System.out.println("\tmovedonePv als int: " + moveStatusInt);
 					if (moveStatusInt == 0)
 						return "Moving";
 				}
 			}
 
-			if(movedonePv != null && movedonePv.getValue().equals("0")) {
-				return "Moving";
-			}
 			String valueString = statusPv.getValue();
-			System.out.println("\tstatusPv als string: " + valueString);
 			try {
 				int status = (int) Double.parseDouble(valueString);
 				if((status & 4) > 0) {
