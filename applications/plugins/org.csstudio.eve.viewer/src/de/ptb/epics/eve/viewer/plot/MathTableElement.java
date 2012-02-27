@@ -177,6 +177,7 @@ public class MathTableElement implements IMeasurementDataListener {
 		// -> no GoTo icon is shown for them
 		switch (mathFunction) {
 		case UNMODIFIED:
+		case NORMALIZED:
 		case AVERAGE:
 		case DEVIATION:
 		case FWHM:
