@@ -57,6 +57,9 @@ public class PVWrapper {
 	// the value of the process variable
 	private String pvValue;
 	
+	// TODO testing
+	private Object pvRawValue;
+	
 	// the severity of the process variable (status)
 	private AlarmSeverity pvStatus;
 	
@@ -143,7 +146,8 @@ public class PVWrapper {
 		// Engineering Notation
 		Locale locale = new Locale("en");
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
-		this.valueFormat.setNumberFormat(new DecimalFormat("##0.00000E00", symbols));
+		this.valueFormat.setNumberFormat(new PVNumberFormat("##0.00000E00"));
+				//new DecimalFormat("##0.00000E00", symbols));
 		
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
@@ -343,6 +347,7 @@ public class PVWrapper {
 			isConnected = true;
 			
 			Object newVal = pv.getValue();
+			pvRawValue = newVal;
 			
 			propertyChangeSupport.firePropertyChange("value", pvValue,
 					pvValue = valueFormat.format(newVal));
