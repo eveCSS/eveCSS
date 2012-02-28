@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="pv" size="1864,1279" id="de.ptb.epics.eve.viewer.pv" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D313030302064652E7074622E65706963732E6576652E7669657765722F6D6D696368616C73">
+  <children xsi:type="editmodel:ClassEditModel" name="PVWrapper" location="37,885" size="419,374" id="de.ptb.epics.eve.viewer.pv/PVWrapper" runTimeClassModel="getDiscreteValues(),isDiscrete,setValue(Ljava.lang.Object;),isConnected(),addPropertyChangeListener(Ljava.lang.String;Ljava.beans.PropertyChangeListener;),removePropertyChangeListener(Ljava.beans.PropertyChangeListener;),isDiscrete(),getValue(),getName(),isConnected,isReadOnly,getStatus(),PVWrapper(Ljava.lang.String;Ljava.lang.String;),discreteValues,isReadOnly(),PVWrapper(Ljava.lang.String;),disconnect(),isConnected2()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="182,72">
+      <children xsi:type="editmodel:AttributeEditModel" name="discreteValues" id="de.ptb.epics.eve.viewer.pv/PVWrapper#discreteValues"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="isConnected" id="de.ptb.epics.eve.viewer.pv/PVWrapper#isConnected"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="isDiscrete" id="de.ptb.epics.eve.viewer.pv/PVWrapper#isDiscrete"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="isReadOnly" id="de.ptb.epics.eve.viewer.pv/PVWrapper#isReadOnly"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="396,252">
+      <children xsi:type="editmodel:MethodEditModel" name="PVWrapper" id="de.ptb.epics.eve.viewer.pv/PVWrapper#PVWrapper(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="PVWrapper" id="de.ptb.epics.eve.viewer.pv/PVWrapper#PVWrapper(Ljava.lang.String;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addPropertyChangeListener" id="de.ptb.epics.eve.viewer.pv/PVWrapper#addPropertyChangeListener(Ljava.lang.String;Ljava.beans.PropertyChangeListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="disconnect" id="de.ptb.epics.eve.viewer.pv/PVWrapper#disconnect()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDiscreteValues" id="de.ptb.epics.eve.viewer.pv/PVWrapper#getDiscreteValues()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getName" id="de.ptb.epics.eve.viewer.pv/PVWrapper#getName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStatus" id="de.ptb.epics.eve.viewer.pv/PVWrapper#getStatus()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getValue" id="de.ptb.epics.eve.viewer.pv/PVWrapper#getValue()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isConnected" id="de.ptb.epics.eve.viewer.pv/PVWrapper#isConnected()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isConnected2" id="de.ptb.epics.eve.viewer.pv/PVWrapper#isConnected2()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isDiscrete" id="de.ptb.epics.eve.viewer.pv/PVWrapper#isDiscrete()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isReadOnly" id="de.ptb.epics.eve.viewer.pv/PVWrapper#isReadOnly()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removePropertyChangeListener" id="de.ptb.epics.eve.viewer.pv/PVWrapper#removePropertyChangeListener(Ljava.beans.PropertyChangeListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setValue" id="de.ptb.epics.eve.viewer.pv/PVWrapper#setValue(Ljava.lang.Object;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.pv/PVWrapper-Standard::Call->org.epics.pvmanager.data/ValueFormat*de.ptb.epics.eve.viewer.pv/PVWrapper-Soyatec::Import->org.epics.pvmanager.data/ValueFormat" source="//@children.0" target="//@children.2" targetEnd="//@children.0/@sourceConnections.0/@children.2" label="//@children.0/@sourceConnections.0/@children.0" sourceEnd="//@children.0/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="209,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="212,212"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.pv/PVWrapper-Standard::Instantiate->org.epics.pvmanager.data/SimpleValueFormat" source="//@children.0" target="//@children.3" targetEnd="//@children.0/@sourceConnections.1/@children.2" label="//@children.0/@sourceConnections.1/@children.0" sourceEnd="//@children.0/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Instantiate»" size="74,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="209,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="212,122"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.pv/PVWrapper-Standard::Instantiate->de.ptb.epics.eve.viewer.pv/PVNumberFormat" source="//@children.0" target="//@children.1" targetEnd="//@children.0/@sourceConnections.2/@children.2" label="//@children.0/@sourceConnections.2/@children.0" sourceEnd="//@children.0/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Instantiate»" size="74,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="419,49" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="82,158"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.2" name="PVNumberFormat" location="1440,75" size="404,158" id="de.ptb.epics.eve.viewer.pv/PVNumberFormat" runTimeClassModel="format(DLjava.lang.StringBuffer;Ljava.text.FieldPosition;),format(JLjava.lang.StringBuffer;Ljava.text.FieldPosition;),PVNumberFormat(Ljava.lang.String;),parse(Ljava.lang.String;Ljava.text.ParsePosition;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="196,36">
+      <children xsi:type="editmodel:AttributeEditModel" name="decimalFormat" id="de.ptb.epics.eve.viewer.pv/PVNumberFormat#decimalFormat"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="formatter" id="de.ptb.epics.eve.viewer.pv/PVNumberFormat#formatter"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="381,72">
+      <children xsi:type="editmodel:MethodEditModel" name="parse" id="de.ptb.epics.eve.viewer.pv/PVNumberFormat#parse(Ljava.lang.String;Ljava.text.ParsePosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="de.ptb.epics.eve.viewer.pv/PVNumberFormat#format(JLjava.lang.StringBuffer;Ljava.text.FieldPosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="de.ptb.epics.eve.viewer.pv/PVNumberFormat#format(DLjava.lang.StringBuffer;Ljava.text.FieldPosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="PVNumberFormat" id="de.ptb.epics.eve.viewer.pv/PVNumberFormat#PVNumberFormat(Ljava.lang.String;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="java.text/DecimalFormat&lt;-de.ptb.epics.eve.viewer.pv/PVNumberFormat" source="//@children.1" target="//@children.4" targetEnd="//@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.1/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="129,78" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="413,78"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.pv/PVNumberFormat-Standard::Call->java.text/DecimalFormat*de.ptb.epics.eve.viewer.pv/PVNumberFormat-Standard::Derive->java.text/DecimalFormat*de.ptb.epics.eve.viewer.pv/PVNumberFormat-Standard::Instantiate->java.text/DecimalFormat*de.ptb.epics.eve.viewer.pv/PVNumberFormat-Soyatec::Import->java.text/DecimalFormat" source="//@children.1" target="//@children.4" targetEnd="//@children.1/@sourceConnections.1/@children.2" label="//@children.1/@sourceConnections.1/@children.0" sourceEnd="//@children.1/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Derive, Call, Instantiate»" size="192,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="129,82" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="413,98"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Visibility" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.3/@sourceConnections.0 //@children.0/@sourceConnections.0" name="ValueFormat" location="34,465" size="426,212" id="org.epics.pvmanager.data/ValueFormat" runTimeClassModel="setNumberFormat(Ljava.text.NumberFormat;),getNumberFormat(),numberFormat,format(Lorg.epics.pvmanager.data.Scalar;Ljava.lang.StringBuffer;Ljava.text.FieldPosition;),format(Lorg.epics.pvmanager.data.Array;),format(Lorg.epics.pvmanager.data.Scalar;),format(Lorg.epics.pvmanager.data.Array;Ljava.lang.StringBuffer;Ljava.text.FieldPosition;),format(Ljava.lang.Object;Ljava.lang.StringBuffer;Ljava.text.FieldPosition;),parseObject(Ljava.lang.String;Ljava.text.ParsePosition;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="196,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="numberFormat" id="org.epics.pvmanager.data/ValueFormat#numberFormat"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="403,144">
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="org.epics.pvmanager.data/ValueFormat#format(Ljava.lang.Object;Ljava.lang.StringBuffer;Ljava.text.FieldPosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="org.epics.pvmanager.data/ValueFormat#format(Lorg.epics.pvmanager.data.Scalar;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="org.epics.pvmanager.data/ValueFormat#format(Lorg.epics.pvmanager.data.Array;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="org.epics.pvmanager.data/ValueFormat#format(Lorg.epics.pvmanager.data.Scalar;Ljava.lang.StringBuffer;Ljava.text.FieldPosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="org.epics.pvmanager.data/ValueFormat#format(Lorg.epics.pvmanager.data.Array;Ljava.lang.StringBuffer;Ljava.text.FieldPosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getNumberFormat" id="org.epics.pvmanager.data/ValueFormat#getNumberFormat()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setNumberFormat" id="org.epics.pvmanager.data/ValueFormat#setNumberFormat(Ljava.text.NumberFormat;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="parseObject" id="org.epics.pvmanager.data/ValueFormat#parseObject(Ljava.lang.String;Ljava.text.ParsePosition;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="org.epics.pvmanager.data/ValueFormat-Soyatec::Import->java.text/NumberFormat" source="//@children.2" target="//@children.5" targetEnd="//@children.2/@sourceConnections.0/@children.2" label="//@children.2/@sourceConnections.0/@children.0" sourceEnd="//@children.2/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="426,105" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,495"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="java.text/Format&lt;-org.epics.pvmanager.data/ValueFormat" source="//@children.2" target="//@children.6" targetEnd="//@children.2/@sourceConnections.1/@children.1" sourceEnd="//@children.2/@sourceConnections.1/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="207,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="220,346"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.1" name="SimpleValueFormat" location="34,720" size="426,122" id="org.epics.pvmanager.data/SimpleValueFormat" runTimeClassModel="SimpleValueFormat(I)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="118,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="maxElements" id="org.epics.pvmanager.data/SimpleValueFormat#maxElements"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="403,54">
+      <children xsi:type="editmodel:MethodEditModel" name="SimpleValueFormat" id="org.epics.pvmanager.data/SimpleValueFormat#SimpleValueFormat(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="org.epics.pvmanager.data/SimpleValueFormat#format(Lorg.epics.pvmanager.data.Array;Ljava.lang.StringBuffer;Ljava.text.FieldPosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="org.epics.pvmanager.data/SimpleValueFormat#format(Lorg.epics.pvmanager.data.Scalar;Ljava.lang.StringBuffer;Ljava.text.FieldPosition;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.epics.pvmanager.data/ValueFormat&lt;-org.epics.pvmanager.data/SimpleValueFormat" source="//@children.3" target="//@children.2" targetEnd="//@children.3/@sourceConnections.0/@children.1" sourceEnd="//@children.3/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="213,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="213,212"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="org.epics.pvmanager.data/SimpleValueFormat-Standard::Call->java.text/NumberFormat*org.epics.pvmanager.data/SimpleValueFormat-Soyatec::Import->java.text/NumberFormat" source="//@children.3" target="//@children.5" targetEnd="//@children.3/@sourceConnections.1/@children.2" label="//@children.3/@sourceConnections.1/@children.0" sourceEnd="//@children.3/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="400,60" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,705"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Visibility" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.1/@sourceConnections.0 //@children.1/@sourceConnections.1" name="DecimalFormat" location="960,75" size="413,1184" id="java.text/DecimalFormat" runTimeClassModel="isParseBigDecimal(),setCurrency(Ljava.util.Currency;),roundingMode,$assertionsDisabled,setPositiveSuffix(Ljava.lang.String;),parse(Ljava.lang.String;Ljava.text.ParsePosition;),adjustForCurrencyDefaultFractionDigits(),parseBigDecimal,setNegativePrefix(Ljava.lang.String;),currentSerialVersion,formatToCharacterIterator(Ljava.lang.Object;),getMaximumFractionDigits(),setGroupingSize(I),mAXIMUM_INTEGER_DIGITS,toPattern(),isDecimalSeparatorAlwaysShown(),getGroupingSize(),setMinimumIntegerDigits(I),serialVersionUID,DecimalFormat(Ljava.lang.String;),minimumIntegerDigits,setNegativeSuffix(Ljava.lang.String;),mAXIMUM_FRACTION_DIGITS,positiveSuffix,negativePrefix,getMinimumFractionDigits(),setDecimalFormatSymbols(Ljava.text.DecimalFormatSymbols;),decimalSeparatorAlwaysShown,applyPattern(Ljava.lang.String;),positivePrefix,setRoundingMode(Ljava.math.RoundingMode;),maximumFractionDigits,format(DLjava.lang.StringBuffer;Ljava.text.FieldPosition;),getPositiveSuffix(),setParseBigDecimal(Z),getRoundingMode(),getMultiplier(),format(Ljava.lang.Object;Ljava.lang.StringBuffer;Ljava.text.FieldPosition;),getCurrency(),getPositivePrefix(),toLocalizedPattern(),setMaximumFractionDigits(I),negativeSuffix,setDecimalSeparatorAlwaysShown(Z),&lt;clinit>(),getNegativeSuffix(),setPositivePrefix(Ljava.lang.String;),getNegativePrefix(),equals(Ljava.lang.Object;),applyLocalizedPattern(Ljava.lang.String;),dOUBLE_INTEGER_DIGITS,dOUBLE_FRACTION_DIGITS,setMinimumFractionDigits(I),format(JLjava.lang.StringBuffer;Ljava.text.FieldPosition;),getMinimumIntegerDigits(),groupingSize,minimumFractionDigits,setMultiplier(I),getDecimalFormatSymbols(),DecimalFormat(),getMaximumIntegerDigits(),multiplier,DecimalFormat(Ljava.lang.String;Ljava.text.DecimalFormatSymbols;),clone(),maximumIntegerDigits,setMaximumIntegerDigits(I),hashCode()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="250,324">
+      <children xsi:type="editmodel:AttributeEditModel" name="$assertionsDisabled" id="java.text/DecimalFormat#$assertionsDisabled"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="dOUBLE_FRACTION_DIGITS" id="java.text/DecimalFormat#dOUBLE_FRACTION_DIGITS"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="dOUBLE_INTEGER_DIGITS" id="java.text/DecimalFormat#dOUBLE_INTEGER_DIGITS"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="decimalSeparatorAlwaysShown" id="java.text/DecimalFormat#decimalSeparatorAlwaysShown"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="groupingSize" id="java.text/DecimalFormat#groupingSize"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="mAXIMUM_FRACTION_DIGITS" id="java.text/DecimalFormat#mAXIMUM_FRACTION_DIGITS"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="mAXIMUM_INTEGER_DIGITS" id="java.text/DecimalFormat#mAXIMUM_INTEGER_DIGITS"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="maximumFractionDigits" id="java.text/DecimalFormat#maximumFractionDigits"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="maximumIntegerDigits" id="java.text/DecimalFormat#maximumIntegerDigits"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="minimumFractionDigits" id="java.text/DecimalFormat#minimumFractionDigits"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="minimumIntegerDigits" id="java.text/DecimalFormat#minimumIntegerDigits"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="multiplier" id="java.text/DecimalFormat#multiplier"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="negativePrefix" id="java.text/DecimalFormat#negativePrefix"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="negativeSuffix" id="java.text/DecimalFormat#negativeSuffix"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="parseBigDecimal" id="java.text/DecimalFormat#parseBigDecimal"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="positivePrefix" id="java.text/DecimalFormat#positivePrefix"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="positiveSuffix" id="java.text/DecimalFormat#positiveSuffix"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="roundingMode" id="java.text/DecimalFormat#roundingMode"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="390,810">
+      <children xsi:type="editmodel:MethodEditModel" name="DecimalFormat" id="java.text/DecimalFormat#DecimalFormat()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="DecimalFormat" id="java.text/DecimalFormat#DecimalFormat(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="DecimalFormat" id="java.text/DecimalFormat#DecimalFormat(Ljava.lang.String;Ljava.text.DecimalFormatSymbols;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="applyLocalizedPattern" id="java.text/DecimalFormat#applyLocalizedPattern(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="applyPattern" id="java.text/DecimalFormat#applyPattern(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="java.text/DecimalFormat#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="java.text/DecimalFormat#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="java.text/DecimalFormat#format(Ljava.lang.Object;Ljava.lang.StringBuffer;Ljava.text.FieldPosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="java.text/DecimalFormat#format(JLjava.lang.StringBuffer;Ljava.text.FieldPosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="java.text/DecimalFormat#format(DLjava.lang.StringBuffer;Ljava.text.FieldPosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="formatToCharacterIterator" id="java.text/DecimalFormat#formatToCharacterIterator(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getCurrency" id="java.text/DecimalFormat#getCurrency()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDecimalFormatSymbols" id="java.text/DecimalFormat#getDecimalFormatSymbols()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getGroupingSize" id="java.text/DecimalFormat#getGroupingSize()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMaximumFractionDigits" id="java.text/DecimalFormat#getMaximumFractionDigits()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMaximumIntegerDigits" id="java.text/DecimalFormat#getMaximumIntegerDigits()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMinimumFractionDigits" id="java.text/DecimalFormat#getMinimumFractionDigits()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMinimumIntegerDigits" id="java.text/DecimalFormat#getMinimumIntegerDigits()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMultiplier" id="java.text/DecimalFormat#getMultiplier()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getNegativePrefix" id="java.text/DecimalFormat#getNegativePrefix()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getNegativeSuffix" id="java.text/DecimalFormat#getNegativeSuffix()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPositivePrefix" id="java.text/DecimalFormat#getPositivePrefix()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPositiveSuffix" id="java.text/DecimalFormat#getPositiveSuffix()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getRoundingMode" id="java.text/DecimalFormat#getRoundingMode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="java.text/DecimalFormat#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isDecimalSeparatorAlwaysShown" id="java.text/DecimalFormat#isDecimalSeparatorAlwaysShown()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isParseBigDecimal" id="java.text/DecimalFormat#isParseBigDecimal()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="parse" id="java.text/DecimalFormat#parse(Ljava.lang.String;Ljava.text.ParsePosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setCurrency" id="java.text/DecimalFormat#setCurrency(Ljava.util.Currency;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setDecimalFormatSymbols" id="java.text/DecimalFormat#setDecimalFormatSymbols(Ljava.text.DecimalFormatSymbols;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setDecimalSeparatorAlwaysShown" id="java.text/DecimalFormat#setDecimalSeparatorAlwaysShown(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setGroupingSize" id="java.text/DecimalFormat#setGroupingSize(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMaximumFractionDigits" id="java.text/DecimalFormat#setMaximumFractionDigits(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMaximumIntegerDigits" id="java.text/DecimalFormat#setMaximumIntegerDigits(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMinimumFractionDigits" id="java.text/DecimalFormat#setMinimumFractionDigits(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMinimumIntegerDigits" id="java.text/DecimalFormat#setMinimumIntegerDigits(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMultiplier" id="java.text/DecimalFormat#setMultiplier(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setNegativePrefix" id="java.text/DecimalFormat#setNegativePrefix(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setNegativeSuffix" id="java.text/DecimalFormat#setNegativeSuffix(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setParseBigDecimal" id="java.text/DecimalFormat#setParseBigDecimal(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setPositivePrefix" id="java.text/DecimalFormat#setPositivePrefix(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setPositiveSuffix" id="java.text/DecimalFormat#setPositiveSuffix(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setRoundingMode" id="java.text/DecimalFormat#setRoundingMode(Ljava.math.RoundingMode;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toLocalizedPattern" id="java.text/DecimalFormat#toLocalizedPattern()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toPattern" id="java.text/DecimalFormat#toPattern()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="java.text/NumberFormat&lt;-java.text/DecimalFormat" source="//@children.4" target="//@children.5" targetEnd="//@children.4/@sourceConnections.0/@children.1" sourceEnd="//@children.4/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,563" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="404,563"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Visibility" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.4/@sourceConnections.0 //@children.2/@sourceConnections.0 //@children.3/@sourceConnections.1" name="NumberFormat" location="480,75" size="404,1128" id="java.text/NumberFormat" runTimeClassModel="setCurrency(Ljava.util.Currency;),getNumberInstance(),parse(Ljava.lang.String;Ljava.text.ParsePosition;),getAvailableLocales(),currentSerialVersion,getMaximumFractionDigits(),setMinimumIntegerDigits(I),serialVersionUID,format(D),setGroupingUsed(Z),minimumIntegerDigits,getScientificInstance(),getMinimumFractionDigits(),setRoundingMode(Ljava.math.RoundingMode;),isGroupingUsed(),getCurrencyInstance(Ljava.util.Locale;),getNumberInstance(Ljava.util.Locale;),isParseIntegerOnly(),maximumFractionDigits,groupingUsed,format(DLjava.lang.StringBuffer;Ljava.text.FieldPosition;),getIntegerInstance(Ljava.util.Locale;),getRoundingMode(),format(Ljava.lang.Object;Ljava.lang.StringBuffer;Ljava.text.FieldPosition;),parseObject(Ljava.lang.String;Ljava.text.ParsePosition;),setParseIntegerOnly(Z),getCurrency(),setMaximumFractionDigits(I),getInstance(Ljava.util.Locale;),&lt;clinit>(),getCurrencyInstance(),iNTEGER_FIELD,java.text.NumberFormat.Field,format(J),equals(Ljava.lang.Object;),getPercentInstance(Ljava.util.Locale;),parse(Ljava.lang.String;),setMinimumFractionDigits(I),format(JLjava.lang.StringBuffer;Ljava.text.FieldPosition;),getIntegerInstance(),getMinimumIntegerDigits(),getInstance(),parseIntegerOnly,minimumFractionDigits,getMaximumIntegerDigits(),getScientificInstance(Ljava.util.Locale;),getPercentInstance(),maximumIntegerDigits,clone(),setMaximumIntegerDigits(I),hashCode(),fRACTION_FIELD">
+    <children xsi:type="editmodel:CompartmentEditModel" size="173,144">
+      <children xsi:type="editmodel:AttributeEditModel" name="maximumFractionDigits" id="java.text/NumberFormat#maximumFractionDigits"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="parseIntegerOnly" id="java.text/NumberFormat#parseIntegerOnly"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="minimumFractionDigits" id="java.text/NumberFormat#minimumFractionDigits"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="groupingUsed" id="java.text/NumberFormat#groupingUsed"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="minimumIntegerDigits" id="java.text/NumberFormat#minimumIntegerDigits"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="maximumIntegerDigits" id="java.text/NumberFormat#maximumIntegerDigits"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="iNTEGER_FIELD" id="java.text/NumberFormat#iNTEGER_FIELD"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="fRACTION_FIELD" id="java.text/NumberFormat#fRACTION_FIELD"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="381,684">
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="java.text/NumberFormat#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="java.text/NumberFormat#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="java.text/NumberFormat#format(J)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="java.text/NumberFormat#format(DLjava.lang.StringBuffer;Ljava.text.FieldPosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="java.text/NumberFormat#format(JLjava.lang.StringBuffer;Ljava.text.FieldPosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="java.text/NumberFormat#format(Ljava.lang.Object;Ljava.lang.StringBuffer;Ljava.text.FieldPosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="java.text/NumberFormat#format(D)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAvailableLocales" id="java.text/NumberFormat#getAvailableLocales()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getCurrency" id="java.text/NumberFormat#getCurrency()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getCurrencyInstance" id="java.text/NumberFormat#getCurrencyInstance(Ljava.util.Locale;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getCurrencyInstance" id="java.text/NumberFormat#getCurrencyInstance()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getInstance" id="java.text/NumberFormat#getInstance()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getInstance" id="java.text/NumberFormat#getInstance(Ljava.util.Locale;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getIntegerInstance" id="java.text/NumberFormat#getIntegerInstance(Ljava.util.Locale;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getIntegerInstance" id="java.text/NumberFormat#getIntegerInstance()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMaximumFractionDigits" id="java.text/NumberFormat#getMaximumFractionDigits()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMaximumIntegerDigits" id="java.text/NumberFormat#getMaximumIntegerDigits()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMinimumFractionDigits" id="java.text/NumberFormat#getMinimumFractionDigits()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMinimumIntegerDigits" id="java.text/NumberFormat#getMinimumIntegerDigits()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getNumberInstance" id="java.text/NumberFormat#getNumberInstance(Ljava.util.Locale;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getNumberInstance" id="java.text/NumberFormat#getNumberInstance()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPercentInstance" id="java.text/NumberFormat#getPercentInstance(Ljava.util.Locale;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPercentInstance" id="java.text/NumberFormat#getPercentInstance()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getRoundingMode" id="java.text/NumberFormat#getRoundingMode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="java.text/NumberFormat#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isGroupingUsed" id="java.text/NumberFormat#isGroupingUsed()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isParseIntegerOnly" id="java.text/NumberFormat#isParseIntegerOnly()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="parse" id="java.text/NumberFormat#parse(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="parse" id="java.text/NumberFormat#parse(Ljava.lang.String;Ljava.text.ParsePosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="parseObject" id="java.text/NumberFormat#parseObject(Ljava.lang.String;Ljava.text.ParsePosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setCurrency" id="java.text/NumberFormat#setCurrency(Ljava.util.Currency;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setGroupingUsed" id="java.text/NumberFormat#setGroupingUsed(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMaximumFractionDigits" id="java.text/NumberFormat#setMaximumFractionDigits(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMaximumIntegerDigits" id="java.text/NumberFormat#setMaximumIntegerDigits(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMinimumFractionDigits" id="java.text/NumberFormat#setMinimumFractionDigits(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMinimumIntegerDigits" id="java.text/NumberFormat#setMinimumIntegerDigits(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setParseIntegerOnly" id="java.text/NumberFormat#setParseIntegerOnly(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setRoundingMode" id="java.text/NumberFormat#setRoundingMode(Ljava.math.RoundingMode;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="205,240">
+      <children xsi:type="editmodel:ClassEditModel" name="Field" size="205,238" id="java.text/NumberFormat$Field" runTimeClassModel="pERCENT,sIGN,eXPONENT_SYMBOL,&lt;clinit>(),dECIMAL_SEPARATOR,eXPONENT_SIGN,pERMILLE,cURRENCY,iNTEGER,eXPONENT,fRACTION,gROUPING_SEPARATOR">
+        <children xsi:type="editmodel:CompartmentEditModel" size="182,198">
+          <children xsi:type="editmodel:AttributeEditModel" name="cURRENCY" id="java.text/NumberFormat$Field#cURRENCY"/>
+          <children xsi:type="editmodel:AttributeEditModel" name="dECIMAL_SEPARATOR" id="java.text/NumberFormat$Field#dECIMAL_SEPARATOR"/>
+          <children xsi:type="editmodel:AttributeEditModel" name="eXPONENT" id="java.text/NumberFormat$Field#eXPONENT"/>
+          <children xsi:type="editmodel:AttributeEditModel" name="eXPONENT_SIGN" id="java.text/NumberFormat$Field#eXPONENT_SIGN"/>
+          <children xsi:type="editmodel:AttributeEditModel" name="eXPONENT_SYMBOL" id="java.text/NumberFormat$Field#eXPONENT_SYMBOL"/>
+          <children xsi:type="editmodel:AttributeEditModel" name="fRACTION" id="java.text/NumberFormat$Field#fRACTION"/>
+          <children xsi:type="editmodel:AttributeEditModel" name="gROUPING_SEPARATOR" id="java.text/NumberFormat$Field#gROUPING_SEPARATOR"/>
+          <children xsi:type="editmodel:AttributeEditModel" name="iNTEGER" id="java.text/NumberFormat$Field#iNTEGER"/>
+          <children xsi:type="editmodel:AttributeEditModel" name="pERCENT" id="java.text/NumberFormat$Field#pERCENT"/>
+          <children xsi:type="editmodel:AttributeEditModel" name="pERMILLE" id="java.text/NumberFormat$Field#pERMILLE"/>
+          <children xsi:type="editmodel:AttributeEditModel" name="sIGN" id="java.text/NumberFormat$Field#sIGN"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+    </children>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Visibility" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.2/@sourceConnections.1" name="Format" location="21,70" size="429,346" id="java.text/Format" runTimeClassModel="formatToCharacterIterator(Ljava.lang.Object;),java.text.Format.Field,clone(),java.text.Format.FieldDelegate,parseObject(Ljava.lang.String;),format(Ljava.lang.Object;Ljava.lang.StringBuffer;Ljava.text.FieldPosition;),parseObject(Ljava.lang.String;Ljava.text.ParsePosition;),format(Ljava.lang.Object;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="390,108">
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="java.text/Format#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="java.text/Format#format(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="format" id="java.text/Format#format(Ljava.lang.Object;Ljava.lang.StringBuffer;Ljava.text.FieldPosition;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="formatToCharacterIterator" id="java.text/Format#formatToCharacterIterator(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="parseObject" id="java.text/Format#parseObject(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="parseObject" id="java.text/Format#parseObject(Ljava.lang.String;Ljava.text.ParsePosition;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="406,133">
+      <children xsi:type="editmodel:ClassEditModel" name="Field" size="127,68" id="java.text/Format$Field" runTimeClassModel="Field(Ljava.lang.String;)">
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="104,18">
+          <children xsi:type="editmodel:MethodEditModel" name="Field" id="java.text/Format$Field#Field(Ljava.lang.String;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="2" showAttributeProperty="true"/>
+      </children>
+      <children xsi:type="editmodel:InterfaceEditModel" name="FieldDelegate" size="406,99" id="java.text/Format$FieldDelegate" runTimeClassModel="formatted(ILjava.text.Format.Field;Ljava.lang.Object;IILjava.lang.StringBuffer;),formatted(Ljava.text.Format.Field;Ljava.lang.Object;IILjava.lang.StringBuffer;)">
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="383,36">
+          <children xsi:type="editmodel:MethodEditModel" name="formatted" id="java.text/Format$FieldDelegate#formatted(Ljava.text.Format.Field;Ljava.lang.Object;IILjava.lang.StringBuffer;)"/>
+          <children xsi:type="editmodel:MethodEditModel" name="formatted" id="java.text/Format$FieldDelegate#formatted(ILjava.text.Format.Field;Ljava.lang.Object;IILjava.lang.StringBuffer;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="2" showAttributeProperty="true"/>
+      </children>
+    </children>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="2" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" interactive="false" level="-1" showScope="InPackage" properties="wireOptions=7;Product=eUML2"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="2" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>
