@@ -28,9 +28,9 @@ public class CommonTableElementAdapterFactory implements IAdapterFactory {
 			if(device instanceof MotorAxis) {
 				return new ProcessVariable(((MotorAxis)device).
 						getPosition().getAccess().getVariableID());
-//			} else if(device instanceof DetectorChannel) {
-//				return new ProcessVariable(((DetectorChannel)device).
-//						getRead().getAccess().getVariableID());
+			} else if(device instanceof DetectorChannel) {
+				return new ProcessVariable(((DetectorChannel)device).
+						getRead().getAccess().getVariableID());
 			} else if(device instanceof Device) {
 				return new ProcessVariable(((Device)device).
 						getValue().getAccess().getVariableID());
