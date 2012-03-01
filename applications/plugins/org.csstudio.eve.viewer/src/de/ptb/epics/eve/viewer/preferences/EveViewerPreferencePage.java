@@ -17,6 +17,9 @@ import de.ptb.epics.eve.viewer.Activator;
 public class EveViewerPreferencePage extends FieldEditorPreferencePage
 		implements IWorkbenchPreferencePage {
 
+	/**
+	 * 
+	 */
 	public EveViewerPreferencePage() {
 		super(GRID);
 		this.setPreferenceStore(Activator.getDefault().getPreferenceStore());
@@ -28,12 +31,18 @@ public class EveViewerPreferencePage extends FieldEditorPreferencePage
 	 */
 	@Override
 	protected void createFieldEditors() {
-		IntegerFieldEditor integerFieldEditor = new IntegerFieldEditor(
+		IntegerFieldEditor pvIntegerFieldEditor = new IntegerFieldEditor(
 				PreferenceConstants.P_PV_UPDATE_INTERVAL, 
 				"PV Update Interval (in ms):", 
 				this.getFieldEditorParent()); 
-		integerFieldEditor.setValidRange(250, 60000);
-		addField(integerFieldEditor);
+		pvIntegerFieldEditor.setValidRange(250, 60000);
+		addField(pvIntegerFieldEditor);
+		IntegerFieldEditor plotIntegerFieldEditor = new IntegerFieldEditor(
+				PreferenceConstants.P_PLOT_BUFFER_SIZE, 
+				"Plot Buffer Size (in # points):", 
+				this.getFieldEditorParent());
+		plotIntegerFieldEditor.setValidRange(10, 2000);
+		addField(plotIntegerFieldEditor);
 	}
 
 	/**

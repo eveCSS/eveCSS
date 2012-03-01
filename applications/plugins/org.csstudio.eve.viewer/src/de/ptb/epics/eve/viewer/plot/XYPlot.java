@@ -21,6 +21,7 @@ import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.viewer.Activator;
+import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
 
 /**
  * <code>XYPlot</code> is a plot based on 
@@ -105,8 +106,10 @@ public class XYPlot extends Figure {
 		// if the data is chronological (see CSS)
 		CircularBufferDataProvider dataProvider = 
 			new CircularBufferDataProvider(timedata_x); 
-	    // the size of the buffer // TODO maybe increase
-		dataProvider.setBufferSize(200);
+		int bufferSize = Activator.getDefault().getPreferenceStore().
+				getInt(PreferenceConstants.P_PLOT_BUFFER_SIZE);
+		logger.debug("Buffer Size is " + bufferSize);
+		dataProvider.setBufferSize(bufferSize);
 			
 		// if the plot currently has no trace, we take the primary y axis
 		// as y axis of our new trace

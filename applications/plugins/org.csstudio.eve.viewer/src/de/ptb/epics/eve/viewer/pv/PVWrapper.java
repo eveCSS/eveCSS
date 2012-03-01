@@ -140,10 +140,11 @@ public class PVWrapper {
 		//this.pv.addPVWriterListener(this.writeListener);
 		
 		this.valueFormat = new SimpleValueFormat(1);
-		// Engineering Notation
-		Locale locale = new Locale("en");
-		DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
-		this.valueFormat.setNumberFormat(new DecimalFormat("##0.00000E00", symbols));
+		// Engineering Notation (next 2 lines and the DecimalFormat Argument)
+		// Locale locale = new Locale("en");
+		// DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
+		this.valueFormat.setNumberFormat(new PVNumberFormat("##0.00000E00"));
+				//new DecimalFormat("##0.00000E00", symbols));
 		
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
