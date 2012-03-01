@@ -48,6 +48,8 @@ import de.ptb.epics.eve.data.scandescription.errors.ChainError;
 import de.ptb.epics.eve.data.scandescription.errors.ChainErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
+import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.SelectionProviderWrapper;
 import de.ptb.epics.eve.editor.dialogs.PluginControllerDialog;
@@ -69,7 +71,8 @@ import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
  * @author Marcus Michalsky
  * @author Hartmut Scherr
  */
-public class ScanView extends ViewPart implements IEditorView, ISelectionListener {
+public class ScanView extends ViewPart implements IEditorView, 
+					ISelectionListener, IModelUpdateListener {
 
 	/** the unique identifier of the view */
 	public static final String ID = "de.ptb.epics.eve.editor.views.ScanView";
@@ -489,81 +492,21 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 	 * 		  be set current. Use <code>null</code> to present an empty view.
 	 */
 	private void setCurrentChain(final Chain currentChain) {
+		logger.debug("setCurrentChain");
+		
+		if (this.currentChain != null) {
+			this.currentChain.removeModelUpdateListener(this);
+		}
+
 		// set the new chain as current chain
 		this.currentChain = currentChain;
-		
-		removeListeners();
-		
-		if(this.currentChain != null) {
-			this.top.setVisible(true);
-			if(this.eventsTabFolder.getSelection() == null) {
-				this.eventsTabFolder.setSelection(this.pauseTabItem);
-			}
-			this.setPartName("Chain: " + this.currentChain.getId());
-			
-			if(this.currentChain.getSavePluginController().getPlugin() != null) {
-				this.fileFormatCombo.setText(this.currentChain.
-						getSavePluginController().getPlugin().getName());
-			}
-			
-			if(this.currentChain.getSaveFilename() != null) {
-				this.filenameInput.setText(this.currentChain.getSaveFilename());
-				this.filenameInput.setSelection(
-						this.filenameInput.getText().length());
-			}
-			
-			this.saveScanDescriptionCheckBox.setSelection(
-					this.currentChain.isSaveScanDescription());
-			this.confirmSaveCheckBox.setSelection(
-					this.currentChain.isConfirmSave());
-			this.autoIncrementCheckBox.setSelection(
-					this.currentChain.isAutoNumber());
-			
-			this.repeatCountText.setText(Integer.toString(
-					this.currentChain.getScanDescription().getRepeatCount()));
-			
-			this.commentInput.setText(this.currentChain.getComment());
-			this.commentInput.setSelection(
-					this.currentChain.getComment().length());
-			
-			
-					this.pauseEventComposite.setControlEventManager(
-						this.currentChain.getPauseControlEventManager());
-			
-			if (this.redoEventComposite.getControlEventManager() != 
-				this.currentChain.getRedoControlEventManager()) {
-					this.redoEventComposite.setControlEventManager(
-						this.currentChain.getRedoControlEventManager());
-			}
-			if (this.breakEventComposite.getControlEventManager() != 
-				this.currentChain.getRedoControlEventManager()) {
-					this.breakEventComposite.setControlEventManager(
-						this.currentChain.getBreakControlEventManager());
-			}
-			if (this.stopEventComposite.getControlEventManager() != 
-				this.currentChain.getStopControlEventManager()) {
-					this.stopEventComposite.setControlEventManager(
-						this.currentChain.getStopControlEventManager());
-			}
-			checkForErrors();
-		} else { // currentChain == null
-			this.fileFormatCombo.deselectAll();
-			this.filenameInput.setText("");
-			this.saveScanDescriptionCheckBox.setSelection(false);
-			this.confirmSaveCheckBox.setSelection(false);
-			this.autoIncrementCheckBox.setSelection(false);
-			this.repeatCountText.setText("");
-			this.commentInput.setText("");
-			
-			this.pauseEventComposite.setControlEventManager(null);
-			this.redoEventComposite.setControlEventManager(null);
-			this.breakEventComposite.setControlEventManager(null);
-			this.stopEventComposite.setControlEventManager(null);
-			
-			this.setPartName("No Chain selected");
-			this.top.setVisible(false);
+
+		if (this.currentChain != null) {
+			this.currentChain.addModelUpdateListener(this);
 		}
-		addListeners();
+		
+		updateEvent(null);
+		
 	}
 	
 	/**
@@ -588,7 +531,6 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 	 */
 	private void checkForErrors() {
 		// reset all
-		
 		this.fileFormatComboControlDecoration.hide();
 		this.fileNameInputControlDecoration.hide();
 		
@@ -728,6 +670,83 @@ public class ScanView extends ViewPart implements IEditorView, ISelectionListene
 	// *************************** Listener ***********************************
 	// ************************************************************************
 	
+	@Override
+	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
+		removeListeners();
+		
+		if(this.currentChain != null) {
+			this.top.setVisible(true);
+			if(this.eventsTabFolder.getSelection() == null) {
+				this.eventsTabFolder.setSelection(this.pauseTabItem);
+			}
+			this.setPartName("Chain: " + this.currentChain.getId());
+			
+			if(this.currentChain.getSavePluginController().getPlugin() != null) {
+				this.fileFormatCombo.setText(this.currentChain.
+						getSavePluginController().getPlugin().getName());
+			}
+			
+			if(this.currentChain.getSaveFilename() != null) {
+				this.filenameInput.setText(this.currentChain.getSaveFilename());
+				this.filenameInput.setSelection(
+						this.filenameInput.getText().length());
+			}
+			
+			this.saveScanDescriptionCheckBox.setSelection(
+					this.currentChain.isSaveScanDescription());
+			this.confirmSaveCheckBox.setSelection(
+					this.currentChain.isConfirmSave());
+			this.autoIncrementCheckBox.setSelection(
+					this.currentChain.isAutoNumber());
+			
+			this.repeatCountText.setText(Integer.toString(
+					this.currentChain.getScanDescription().getRepeatCount()));
+			
+			this.commentInput.setText(this.currentChain.getComment());
+			this.commentInput.setSelection(
+					this.currentChain.getComment().length());
+			
+			
+					this.pauseEventComposite.setControlEventManager(
+						this.currentChain.getPauseControlEventManager());
+			
+			if (this.redoEventComposite.getControlEventManager() != 
+				this.currentChain.getRedoControlEventManager()) {
+					this.redoEventComposite.setControlEventManager(
+						this.currentChain.getRedoControlEventManager());
+			}
+			if (this.breakEventComposite.getControlEventManager() != 
+				this.currentChain.getRedoControlEventManager()) {
+					this.breakEventComposite.setControlEventManager(
+						this.currentChain.getBreakControlEventManager());
+			}
+			if (this.stopEventComposite.getControlEventManager() != 
+				this.currentChain.getStopControlEventManager()) {
+					this.stopEventComposite.setControlEventManager(
+						this.currentChain.getStopControlEventManager());
+			}
+			checkForErrors();
+		} else { // currentChain == null
+			this.fileFormatCombo.deselectAll();
+			this.filenameInput.setText("");
+			this.saveScanDescriptionCheckBox.setSelection(false);
+			this.confirmSaveCheckBox.setSelection(false);
+			this.autoIncrementCheckBox.setSelection(false);
+			this.repeatCountText.setText("");
+			this.commentInput.setText("");
+			
+			this.pauseEventComposite.setControlEventManager(null);
+			this.redoEventComposite.setControlEventManager(null);
+			this.breakEventComposite.setControlEventManager(null);
+			this.stopEventComposite.setControlEventManager(null);
+			
+			this.setPartName("No Chain selected");
+			this.top.setVisible(false);
+		}
+		addListeners();
+		
+	}
+
 	/**
 	 * {@link org.eclipse.swt.events.ModifyListener} of
 	 * <code>savePluginCombo</code>.

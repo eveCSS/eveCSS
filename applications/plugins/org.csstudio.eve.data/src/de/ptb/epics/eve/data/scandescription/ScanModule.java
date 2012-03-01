@@ -722,11 +722,12 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public boolean addRedoEvent( final ControlEvent redoEvent ) {
 		if( this.redoEvents.add( redoEvent ) ) {
-			updateListeners();
+//			updateListeners();
 			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( 
 					this, new ControlEventMessage( redoEvent, 
 					ControlEventMessageEnum.ADDED ) ) );
 			redoEvent.addModelUpdateListener( this.redoControlEventManager );
+			updateListeners();
 			return true;
 		} 
 		return false;

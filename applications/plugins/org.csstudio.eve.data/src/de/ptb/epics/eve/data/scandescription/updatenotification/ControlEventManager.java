@@ -141,6 +141,7 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 		} else if(this.parentChannel != null) {
 			this.parentChannel.addRedoEvent(controlEvent);
 		}
+		updateListeners(new ModelUpdateEvent(this, null));
 	}
 	
 	/**
@@ -173,6 +174,7 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 		} else if (this.parentChannel != null) {
 			this.parentChannel.removeRedoEvent(controlEvent);
 		}
+		updateListeners(new ModelUpdateEvent(this, null));
 	}
 	
 	/**
@@ -239,9 +241,8 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 	@Override
 	public List<IModelError> getModelErrors() {
 		final List<IModelError> errorList = new ArrayList<IModelError>();
-		final Iterator<? extends ControlEvent> it = this.controlEventList.iterator();
-		while(it.hasNext()) {
-			errorList.addAll(it.next().getModelErrors());
+		for (ControlEvent event: this.controlEventList) {
+			errorList.addAll(event.getModelErrors());
 		}
 		return errorList;
 	}

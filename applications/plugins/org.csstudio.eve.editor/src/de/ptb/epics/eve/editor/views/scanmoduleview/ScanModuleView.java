@@ -477,15 +477,15 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		// save the currently active part
 		IWorkbenchPart activePart = getSite().getPage().getActivePart();
 		
-//		if (this.currentScanModule != null) {
-//			this.currentScanModule.removeModelUpdateListener(this);
-//		}
+		if (this.currentScanModule != null) {
+			this.currentScanModule.removeModelUpdateListener(this);
+		}
 		
 		// if there was already a scan module -> update it
 		this.currentScanModule = currentScanModule;
 
 		if (this.currentScanModule != null) {
-//			this.currentScanModule.addModelUpdateListener(this);
+			this.currentScanModule.addModelUpdateListener(this);
 			
 			// activate the scan module view (to assure propagation of selections)
 			this.getSite().getPage().activate(this);

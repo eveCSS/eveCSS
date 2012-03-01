@@ -41,6 +41,8 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
+import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
@@ -55,7 +57,8 @@ import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
  * @author Marcus Michalsky
  */
 public class DetectorChannelView extends ViewPart 
-						implements ISelectionListener, PropertyChangeListener  {
+						implements ISelectionListener, PropertyChangeListener,
+						IModelUpdateListener {
 
 	/**
 	 * the unique identifier of the view.
@@ -357,6 +360,7 @@ public class DetectorChannelView extends ViewPart
 		}
 		
 		if (this.currentChannel != null) {
+			this.currentChannel.removeModelUpdateListener(this);
 			this.scanModule.removePropertyChangeListener("removeChannel", this);
 		}
 		
@@ -365,98 +369,12 @@ public class DetectorChannelView extends ViewPart
 		this.scanModule = null;
 		
 		if(this.currentChannel != null) {
+			this.currentChannel.addModelUpdateListener(this);
 			this.scanModule = channel.getScanModule();
 		}
+
+		updateEvent(null);
 		
-		removeListeners();
-		
-		if(this.currentChannel != null) {
-			// current channel set -> update widgets
-			top.setVisible(true);
-			
-			// used to notice if the channel is being deleted
-			this.scanModule.addPropertyChangeListener("removeChannel", this);
-			
-			// set the view title
-			this.setPartName(
-					currentChannel.getAbstractDevice().getFullIdentifyer());
-			
-			// set average text
-			this.averageText.setText(Integer.toString(
-					this.currentChannel.getAverageCount()));
-
-			// set max deviation
-			if(this.currentChannel.getMaxDeviation() != 
-					Double.NEGATIVE_INFINITY) {
-				this.maxDeviationText.setText(
-						Double.toString(this.currentChannel.getMaxDeviation()));
-			} else {
-				this.maxDeviationText.setText("");
-			}
-			
-			// set minimum
-			if(this.currentChannel.getMinumum() != Double.NEGATIVE_INFINITY) {
-				this.minimumText.setText(Double.toString(
-						this.currentChannel.getMinumum()));
-			} else {
-				this.minimumText.setText("");
-			}
-			
-			// set max attempts
-			if(this.currentChannel.getMaxAttempts() != Integer.MIN_VALUE) {
-				this.maxAttemptsText.setText(
-						Integer.toString(this.currentChannel.getMaxAttempts()));
-			} else {
-				this.maxAttemptsText.setText("");
-			}
-			
-			// set confirm trigger check box
-			this.confirmTriggerManualCheckBox.setSelection(
-					this.currentChannel.isConfirmTrigger());
-			
-			// set detector ready event check box
-			this.detectorReadyEventCheckBox.setSelection(
-					this.currentChannel.getDetectorReadyEvent() != null);
-			
-			this.redoEventComposite.setControlEventManager(
-					this.currentChannel.getRedoControlEventManager());
-			
-			if (sc.getMinHeight() == 0) {
-				// Wenn das erste Mal die DetectorChannelView für einen Channel 
-				// aufgerufen wird, gibt es noch keine Mindesthöhe für die 
-				// Scrollbar. Die wird hier dann gesetzt.
-
-				int height = bar.getBounds().y + 
-							 itemEventOptions.getHeight() + 
-							 itemEventOptions.getHeaderHeight() + 5;
-// TODO: Höhe und Breite muß noch besser berechnet werden (Hartmut 22.6.11)
-				int width = bar.getBounds().x + bar.getBounds().width -25;
-				sc.setMinSize(this.top.computeSize(width, height));
-			}
-			checkForErrors();
-		} else {
-			// this.currentChannel == null (no channel selected)
-			this.setPartName("No Detector Channel selected");
-
-			this.averageText.setText("");
-			this.maxDeviationText.setText("");
-			this.minimumText.setText("");
-			this.maxAttemptsText.setText("");
-			this.confirmTriggerManualCheckBox.setSelection(false);
-			this.detectorReadyEventCheckBox.setSelection(false);
-			
-			this.averageErrorLabel.setImage(null);
-			this.maxDeviationErrorLabel.setImage(null);
-			this.minimumErrorLabel.setImage(null);
-			this.maxAttemptsErrorLabel.setImage(null);
-			
-			this.redoEventComposite.setControlEventManager(null);
-			
-			top.setVisible(false);
-		}
-
-		// re-enable listeners
-		addListeners();
 	}
 
 	/**
@@ -615,6 +533,109 @@ public class DetectorChannelView extends ViewPart
 		eventComposite.removeControlListener(eventCompositeControlListener);
 	}
 	
+	private void suspendModelUpdateListener () {
+		this.currentChannel.removeModelUpdateListener(this);
+	}
+	
+	private void resumeModelUpdateListener () {
+		this.currentChannel.addModelUpdateListener(this);
+	}
+
+	@Override
+	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
+		// TODO Auto-generated method stub
+		removeListeners();
+		
+		if(this.currentChannel != null) {
+			// current channel set -> update widgets
+			top.setVisible(true);
+			
+			// used to notice if the channel is being deleted
+			this.scanModule.addPropertyChangeListener("removeChannel", this);
+			
+			// set the view title
+			this.setPartName(
+					currentChannel.getAbstractDevice().getFullIdentifyer());
+			
+			// set average text
+			this.averageText.setText(Integer.toString(
+					this.currentChannel.getAverageCount()));
+
+			// set max deviation
+			if(this.currentChannel.getMaxDeviation() != 
+					Double.NEGATIVE_INFINITY) {
+				this.maxDeviationText.setText(
+						Double.toString(this.currentChannel.getMaxDeviation()));
+			} else {
+				this.maxDeviationText.setText("");
+			}
+			
+			// set minimum
+			if(this.currentChannel.getMinumum() != Double.NEGATIVE_INFINITY) {
+				this.minimumText.setText(Double.toString(
+						this.currentChannel.getMinumum()));
+			} else {
+				this.minimumText.setText("");
+			}
+			
+			// set max attempts
+			if(this.currentChannel.getMaxAttempts() != Integer.MIN_VALUE) {
+				this.maxAttemptsText.setText(
+						Integer.toString(this.currentChannel.getMaxAttempts()));
+			} else {
+				this.maxAttemptsText.setText("");
+			}
+			
+			// set confirm trigger check box
+			this.confirmTriggerManualCheckBox.setSelection(
+					this.currentChannel.isConfirmTrigger());
+			
+			// set detector ready event check box
+			this.detectorReadyEventCheckBox.setSelection(
+					this.currentChannel.getDetectorReadyEvent() != null);
+			
+			this.redoEventComposite.setControlEventManager(
+					this.currentChannel.getRedoControlEventManager());
+			
+			if (sc.getMinHeight() == 0) {
+				// Wenn das erste Mal die DetectorChannelView für einen Channel 
+				// aufgerufen wird, gibt es noch keine Mindesthöhe für die 
+				// Scrollbar. Die wird hier dann gesetzt.
+
+				int height = bar.getBounds().y + 
+							 itemEventOptions.getHeight() + 
+							 itemEventOptions.getHeaderHeight() + 5;
+// TODO: Höhe und Breite muß noch besser berechnet werden (Hartmut 22.6.11)
+				int width = bar.getBounds().x + bar.getBounds().width -25;
+				sc.setMinSize(this.top.computeSize(width, height));
+			}
+			checkForErrors();
+		} else {
+			// this.currentChannel == null (no channel selected)
+			this.setPartName("No Detector Channel selected");
+
+			this.averageText.setText("");
+			this.maxDeviationText.setText("");
+			this.minimumText.setText("");
+			this.maxAttemptsText.setText("");
+			this.confirmTriggerManualCheckBox.setSelection(false);
+			this.detectorReadyEventCheckBox.setSelection(false);
+			
+			this.averageErrorLabel.setImage(null);
+			this.maxDeviationErrorLabel.setImage(null);
+			this.minimumErrorLabel.setImage(null);
+			this.maxAttemptsErrorLabel.setImage(null);
+			
+			this.redoEventComposite.setControlEventManager(null);
+			
+			top.setVisible(false);
+		}
+
+		// re-enable listeners
+		addListeners();
+		
+	}
+
 	/* ********************************************************************* */
 	/* ******************************* Listeners *************************** */
 	/* ********************************************************************* */
@@ -688,7 +709,9 @@ public class DetectorChannelView extends ViewPart
 		@Override
 		public void modifyText(final ModifyEvent e) {
 			logger.debug("minimum text modified");
-			
+
+			suspendModelUpdateListener();
+
 			if(currentChannel != null) {
 				if(minimumText.getText().equals("")) {
 					currentChannel.setMinumum(Double.NEGATIVE_INFINITY);
@@ -702,6 +725,7 @@ public class DetectorChannelView extends ViewPart
 				}
 			}
 			checkForErrors();
+			resumeModelUpdateListener();
 		}
 	}
 
