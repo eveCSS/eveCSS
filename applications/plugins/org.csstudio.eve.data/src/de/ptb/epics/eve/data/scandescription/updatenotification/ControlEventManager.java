@@ -141,7 +141,7 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 		} else if(this.parentChannel != null) {
 			this.parentChannel.addRedoEvent(controlEvent);
 		}
-		updateListeners(new ModelUpdateEvent(this, null));
+//		updateListeners(new ModelUpdateEvent(this, null));
 	}
 	
 	/**
@@ -174,7 +174,7 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 		} else if (this.parentChannel != null) {
 			this.parentChannel.removeRedoEvent(controlEvent);
 		}
-		updateListeners(new ModelUpdateEvent(this, null));
+//		updateListeners(new ModelUpdateEvent(this, null));
 	}
 	
 	/**

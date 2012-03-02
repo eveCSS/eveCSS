@@ -652,7 +652,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			this.pauseControlEventManager.updateEvent( new ModelUpdateEvent( 
 					this, new ControlEventMessage( pauseEvent, 
 					ControlEventMessageEnum.ADDED ) ) );
-			updateListeners();
+//			updateListeners();
 			return true;
 		} 
 		return false;
@@ -671,7 +671,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			this.pauseControlEventManager.updateEvent( new ModelUpdateEvent( 
 					this, new ControlEventMessage( pauseEvent, 
 					ControlEventMessageEnum.REMOVED ) ) );
-			updateListeners();
+//			updateListeners();
 			return true;
 		} 
 		return false;
@@ -685,7 +685,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public boolean addBreakEvent( final ControlEvent breakEvent ) {
 		if( this.breakEvents.add( breakEvent ) ) {
-			updateListeners();
+//			updateListeners();
 			breakEvent.addModelUpdateListener( this.breakControlEventManager );
 			this.breakControlEventManager.updateEvent( new ModelUpdateEvent( 
 					this, new ControlEventMessage( breakEvent, 
@@ -704,7 +704,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public boolean removeBreakEvent( final ControlEvent breakEvent ) {
 		if( this.breakEvents.remove( breakEvent ) ) {
-			updateListeners();
+//			updateListeners();
 			breakEvent.removeModelUpdateListener(this.breakControlEventManager);
 			this.breakControlEventManager.updateEvent( new ModelUpdateEvent( 
 					this, new ControlEventMessage( breakEvent, 
@@ -722,12 +722,17 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public boolean addRedoEvent( final ControlEvent redoEvent ) {
 		if( this.redoEvents.add( redoEvent ) ) {
+// Die wesentlichen Aufgaben soll der EventManager übernehmen
+// 1.) Hinzufügen und entfernen eines Events
+// 2.) Listener im Model an und abmelden
+// Vom Prinzip her bleibt nur sowas wie diese Zeile übrig:
+//			this.redoControlEventManager.addControlEvent(redoEvent);
 //			updateListeners();
 			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( 
 					this, new ControlEventMessage( redoEvent, 
 					ControlEventMessageEnum.ADDED ) ) );
+// auch in den eventManager:
 			redoEvent.addModelUpdateListener( this.redoControlEventManager );
-			updateListeners();
 			return true;
 		} 
 		return false;
@@ -742,7 +747,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public boolean removeRedoEvent( final ControlEvent redoEvent ) {
 		if( this.redoEvents.remove( redoEvent ) ) {
-			updateListeners();
+//			updateListeners();
 			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( 
 					this, new ControlEventMessage( redoEvent, 
 					ControlEventMessageEnum.REMOVED ) ) );
@@ -761,7 +766,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public boolean addTriggerEvent( final ControlEvent triggerEvent ) {
 		if( this.triggerEvents.add( triggerEvent ) ) {
-			updateListeners();
+//			updateListeners();
 			this.triggerControlEventManager.updateEvent( new ModelUpdateEvent( 
 					this, new ControlEventMessage( triggerEvent, 
 					ControlEventMessageEnum.ADDED ) ) );
@@ -781,7 +786,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public boolean removeTriggerEvent( final ControlEvent triggerEvent ) {
 		if( this.triggerEvents.remove( triggerEvent ) ) {
-			updateListeners();
+//			updateListeners();
 			this.triggerControlEventManager.updateEvent( new ModelUpdateEvent( 
 					this, new ControlEventMessage( triggerEvent, 
 					ControlEventMessageEnum.REMOVED ) ) );
