@@ -617,9 +617,9 @@ public class ScanView extends ViewPart implements IEditorView,
 			if(logger.isDebugEnabled()) {
 				logger.debug("ScanModule " + (ScanModule)
 						((ScanModuleEditPart)o).getModel() + " selected.");
-				setCurrentChain(((ScanModule)((ScanModuleEditPart)o).
-						getModel()).getChain());
 			}
+			setCurrentChain(((ScanModule)((ScanModuleEditPart)o).
+					getModel()).getChain());
 		} else if (o instanceof ScanDescriptionEditPart) {
 				logger.debug("selection is ScanDescriptionEditPart: " + o);
 				setCurrentChain(null);
@@ -670,6 +670,9 @@ public class ScanView extends ViewPart implements IEditorView,
 	// *************************** Listener ***********************************
 	// ************************************************************************
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
 		removeListeners();
