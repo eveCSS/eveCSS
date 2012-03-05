@@ -344,7 +344,7 @@ public final class EngineView extends ViewPart
 	 */
 	@Override
 	public void setFocus() {
-		
+		this.top.setFocus();
 	}
 
 	/**
@@ -361,8 +361,8 @@ public final class EngineView extends ViewPart
 	@Override
 	public void clearStatusTable() {
 		// die Tabelle mit den Statusanzeigen wird geleert
-		this.statusTable.getDisplay().syncExec( new Runnable() {
-			public void run() {
+		this.statusTable.getDisplay().syncExec(new Runnable() {
+			@Override public void run() {
 				statusTable.removeAll();
 			}
 		});

@@ -169,6 +169,7 @@ public final class DevicesView extends ViewPart {
 	 */
 	@Override
 	public void setFocus() {
+		this.treeViewer.getTree().setFocus();
 	}
 
 	/**

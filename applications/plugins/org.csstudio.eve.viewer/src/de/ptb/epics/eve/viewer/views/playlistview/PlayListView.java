@@ -158,6 +158,7 @@ public final class PlayListView extends ViewPart
 	 */
 	@Override
 	public void setFocus() {
+		this.tableViewer.getTable().setFocus();
 	}
 
 	/**
