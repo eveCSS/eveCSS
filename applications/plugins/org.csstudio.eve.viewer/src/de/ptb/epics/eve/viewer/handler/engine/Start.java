@@ -77,7 +77,7 @@ public class Start extends AbstractHandler {
 						new ViewerMessage(MessageTypes.INFO, message));
 			}
 			
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 			
 			IHandlerService handlerService = (IHandlerService) 
 					PlatformUI.getWorkbench().getService(IHandlerService.class);
