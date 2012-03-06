@@ -111,22 +111,22 @@ public final class EngineView extends ViewPart
 			Activator.getDefault().getImageRegistry().get("HALT16");
 		final Image autoPlayIcon = 
 			Activator.getDefault().getImageRegistry().get("PLAYALL16");
-
+		
 		parent.setLayout(new FillLayout());
-
+		
 		GridLayout gridLayout;
 		GridData gridData;
-
+		
 		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
 		
 		this.top = new Composite(sc, SWT.NONE);
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 4;
 		this.top.setLayout(gridLayout);
-
+		
 		sc.setContent(this.top);
-        sc.setExpandHorizontal(true);
-        sc.setExpandVertical(true);
+		sc.setExpandHorizontal(true);
+		sc.setExpandVertical(true);
 		
 		this.engineLabel = new Label(this.top, SWT.NONE);
 		this.engineLabel.setText("ENGINE:");
@@ -140,144 +140,149 @@ public final class EngineView extends ViewPart
 		gridData.horizontalSpan = 3;
 		this.engineComposite.setLayoutData(gridData);
 		
-		this.startButton = new Button( this.engineComposite, SWT.PUSH );
+		this.startButton = new Button(this.engineComposite, SWT.PUSH);
 		this.startButton.setText("start");
-		this.startButton.setToolTipText( "Start engine" );
-		this.startButton.addSelectionListener( new StartButtonSelectionListener());
+		this.startButton.setToolTipText("Start engine");
+		this.startButton.addSelectionListener(new StartButtonSelectionListener());
 
-		this.killButton = new Button( this.engineComposite, SWT.PUSH );
+		this.killButton = new Button(this.engineComposite, SWT.PUSH);
 		this.killButton.setText("kill");
-		this.killButton.setToolTipText( "Kill engine" );
-		this.killButton.addSelectionListener( new KillButtonSelectionListener());
+		this.killButton.setToolTipText("Kill engine");
+		this.killButton.addSelectionListener(new KillButtonSelectionListener());
 
-		this.connectButton = new Button( this.engineComposite, SWT.PUSH );
+		this.connectButton = new Button(this.engineComposite, SWT.PUSH);
 		this.connectButton.setText("connect");
-		this.connectButton.setToolTipText( "Connect to Engine" );
-		this.connectButton.addSelectionListener( new ConnectButtonSelectionListener());
+		this.connectButton.setToolTipText("Connect to Engine");
+		this.connectButton.addSelectionListener(
+				new ConnectButtonSelectionListener());
 		
-		this.disconnectButton = new Button( this.engineComposite, SWT.PUSH );
+		this.disconnectButton = new Button(this.engineComposite, SWT.PUSH);
 		this.disconnectButton.setText("disconnect");
 		this.disconnectButton.setToolTipText( "Disconnect Engine" );
-		this.disconnectButton.addSelectionListener( new DisconnectButtonSelectionListener());
+		this.disconnectButton.addSelectionListener(
+				new DisconnectButtonSelectionListener());
 		
-		this.statusLabel = new Label( this.engineComposite, SWT.NONE );
+		this.statusLabel = new Label(this.engineComposite, SWT.NONE);
 		this.statusLabel.setText("not connected");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 4;
 		this.statusLabel.setLayoutData( gridData );
 
-		this.scanLabel = new Label( this.top, SWT.NONE );
+		this.scanLabel = new Label(this.top, SWT.NONE);
 		this.scanLabel.setText("SCAN:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 1;
-		this.scanLabel.setLayoutData( gridData );
+		this.scanLabel.setLayoutData(gridData);
 		
-		this.scanComposite = new Composite( this.top, SWT.NONE );
+		this.scanComposite = new Composite(this.top, SWT.NONE);
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 9;
 		this.scanComposite.setLayout(gridLayout);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;
-		this.scanComposite.setLayoutData( gridData );
+		this.scanComposite.setLayoutData(gridData);
 
-		this.playButton = new Button( this.scanComposite, SWT.PUSH );
+		this.playButton = new Button(this.scanComposite, SWT.PUSH);
 		this.playButton.setImage(playIcon);
-		this.playButton.setToolTipText( "Play" );
-		this.playButton.addSelectionListener( new PlayButtonSelectionListener());
+		this.playButton.setToolTipText("Play");
+		this.playButton.addSelectionListener(new PlayButtonSelectionListener());
 
-		this.pauseButton = new Button( this.scanComposite, SWT.PUSH );
+		this.pauseButton = new Button(this.scanComposite, SWT.PUSH);
 		this.pauseButton.setImage(pauseIcon);
-		this.pauseButton.setToolTipText( "Pause" );
-		this.pauseButton.addSelectionListener( new PauseButtonSelectionListener());
+		this.pauseButton.setToolTipText("Pause");
+		this.pauseButton.addSelectionListener(new PauseButtonSelectionListener());
 
-		this.stopButton = new Button( this.scanComposite, SWT.PUSH );
+		this.stopButton = new Button(this.scanComposite, SWT.PUSH );
 		this.stopButton.setImage(stopIcon);
-		this.stopButton.setToolTipText( "Stop" );
-		this.stopButton.addSelectionListener( new StopButtonSelectionListener());
+		this.stopButton.setToolTipText("Stop");
+		this.stopButton.addSelectionListener(new StopButtonSelectionListener());
 
-		this.skipButton = new Button( this.scanComposite, SWT.PUSH );
+		this.skipButton = new Button(this.scanComposite, SWT.PUSH);
 		this.skipButton.setImage(skipIcon);
-		this.skipButton.setToolTipText( "Skip" );
-		this.skipButton.addSelectionListener( new SkipButtonSelectionListener());
+		this.skipButton.setToolTipText("Skip");
+		this.skipButton.addSelectionListener(new SkipButtonSelectionListener());
 
-		this.haltButton = new Button( this.scanComposite, SWT.PUSH );
+		this.haltButton = new Button(this.scanComposite, SWT.PUSH);
 		this.haltButton.setImage(haltIcon);
-		this.haltButton.setToolTipText( "Halt" );
-		this.haltButton.addSelectionListener( new HaltButtonSelectionListener());
+		this.haltButton.setToolTipText("Halt");
+		this.haltButton.addSelectionListener(new HaltButtonSelectionListener());
 
-		this.autoPlayOnButton = new Button( this.scanComposite, SWT.TOGGLE );
+		this.autoPlayOnButton = new Button(this.scanComposite, SWT.TOGGLE);
 		this.autoPlayOnButton.setImage(autoPlayIcon);
-		this.autoPlayOnButton.setToolTipText( "AutoPlayOn" );
-		this.autoPlayOnButton.addSelectionListener( new AutoPlayOnButtonSelectionListener());
+		this.autoPlayOnButton.setToolTipText("AutoPlayOn");
+		this.autoPlayOnButton.addSelectionListener(
+				new AutoPlayOnButtonSelectionListener());
 
-		this.autoPlayOffButton = new Button( this.scanComposite, SWT.TOGGLE );
+		this.autoPlayOffButton = new Button(this.scanComposite, SWT.TOGGLE);
 		this.autoPlayOffButton.setImage(autoPlayIcon);
-		this.autoPlayOffButton.setToolTipText( "AutoPlayOff" );
-		this.autoPlayOffButton.addSelectionListener( new AutoPlayOffButtonSelectionListener());
+		this.autoPlayOffButton.setToolTipText("AutoPlayOff");
+		this.autoPlayOffButton.addSelectionListener(
+				new AutoPlayOffButtonSelectionListener());
 
-		this.repeatCountLabel = new Label( this.scanComposite, SWT.NONE );
+		this.repeatCountLabel = new Label(this.scanComposite, SWT.NONE);
 		this.repeatCountLabel.setText("repeat count:");
-		this.repeatCountText = new Text( this.scanComposite, SWT.BORDER );
+		this.repeatCountText = new Text(this.scanComposite, SWT.BORDER);
 		repeatCount = 0;
 		repeatCountText.setText("000000");
 		// TODO: Wenn repeatCount während der Laufzeit des Scans verändert werden 
 		// darf, muß die nächste Zeile entfernt werden
 		this.repeatCountText.setEditable(false);
 		
-		this.loadedScmlLabel = new Label( this.top, SWT.NONE );
+		this.loadedScmlLabel = new Label(this.top, SWT.NONE);
 		this.loadedScmlLabel.setText("loaded File:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
 		this.loadedScmlLabel.setLayoutData( gridData );
 
-		this.loadedScmlText = new Text( this.top, SWT.BORDER );
-		this.loadedScmlText.setEditable( false );
+		this.loadedScmlText = new Text(this.top, SWT.BORDER);
+		this.loadedScmlText.setEditable(false);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
-		this.loadedScmlText.setLayoutData( gridData );
+		this.loadedScmlText.setLayoutData(gridData);
 
-		this.chainFilenameLabel = new Label( this.top, SWT.NONE );
+		this.chainFilenameLabel = new Label(this.top, SWT.NONE);
 		this.chainFilenameLabel.setText("Filename:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
-		this.chainFilenameLabel.setLayoutData( gridData );
+		this.chainFilenameLabel.setLayoutData(gridData);
 
-		this.filenameText = new Text( this.top, SWT.BORDER | SWT.TRAIL);
-		this.filenameText.setEditable( false );
+		this.filenameText = new Text(this.top, SWT.BORDER | SWT.TRAIL);
+		this.filenameText.setEditable(false);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
-		this.filenameText.setLayoutData( gridData );
+		this.filenameText.setLayoutData(gridData);
 				
-		this.commentLabel = new Label( this.top, SWT.NONE );
+		this.commentLabel = new Label(this.top, SWT.NONE);
 		this.commentLabel.setText("live Comment:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
-		this.commentLabel.setLayoutData( gridData );
+		this.commentLabel.setLayoutData(gridData);
 
 		this.commentText = new Text( this.top, SWT.BORDER);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 1;
-		this.commentText.setLayoutData( gridData );
+		this.commentText.setLayoutData(gridData);
 		
-		this.commentSendButton = new Button( this.top, SWT.NONE);
-		this.commentSendButton.setText( "Send to File" );
+		this.commentSendButton = new Button(this.top, SWT.NONE);
+		this.commentSendButton.setText("Send to File");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.commentSendButton.setEnabled(false);
-		this.commentSendButton.setLayoutData( gridData );
-		this.commentSendButton.addSelectionListener(new CommentSendButtonSelectionListener()); 
+		this.commentSendButton.setLayoutData(gridData);
+		this.commentSendButton.addSelectionListener(
+				new CommentSendButtonSelectionListener());
 		
 		// Tabelle für die Statuswerte erzeugen
 		gridData = new GridData();
@@ -307,10 +312,10 @@ public final class EngineView extends ViewPart
 		// SelectionListener um zu erkennen, wann eine Zeile selektiert wird
 		this.statusTable.addSelectionListener(new StatusTableSelectionListener());
 
-		Activator.getDefault().getChainStatusAnalyzer().addUpdateListener( this );
+		Activator.getDefault().getChainStatusAnalyzer().addUpdateListener(this);
 		Activator.getDefault().getEcp1Client().addErrorListener(this);
 		this.rebuildText(0);
-		Activator.getDefault().getEcp1Client().addConnectionStateListener( this );
+		Activator.getDefault().getEcp1Client().addConnectionStateListener(this);
 
 		final String engineString = de.ptb.epics.eve.preferences.Activator.
 				getDefault().getPreferenceStore().getString(

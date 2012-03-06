@@ -1,17 +1,16 @@
 package de.ptb.epics.eve.viewer.views.playlistview;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -58,92 +57,25 @@ public final class PlayListView extends ViewPart
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
+		createViewer(parent);
+		buildActions();
 		
-		// Add file to play list - Action
-		this.addAction = new AddFileToPlayListAction();
-		this.addAction.setText("Add a file to the play list.");
-		this.addAction.setImageDescriptor(PlatformUI.getWorkbench().
-			getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_FILE));
-		this.getViewSite().getActionBars().getToolBarManager().add(this.addAction);
+		MenuManager manager = new MenuManager();
+		Menu menu = manager.createContextMenu(this.tableViewer.getControl());
+		this.tableViewer.getControl().setMenu(menu);
+		manager.add(this.moveUpAction);
+		manager.add(this.moveDownAction);
+		manager.add(this.removeAction);
 		
-		//
-		this.moveUpAction = new MoveFileUpInPlayListAction(this);
-		this.moveUpAction.setText("Move up");
-		//this.moveUpAction.setImageDescriptor(PlatformUI.getWorkbench().
-			//getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD));
-		this.moveUpAction.setImageDescriptor(new ImageDescriptor() {
-			
-			@Override
-			public ImageData getImageData() {
-				return Activator.getDefault().getImageRegistry().get("MOVEUP").getImageData();
-			}
-		});
-		this.getViewSite().getActionBars().getToolBarManager().add(this.moveUpAction);
-		
-		// 
-		this.moveDownAction = new MoveFileDownInPlayListAction(this);
-		this.moveDownAction.setText("Move down");
-		//this.moveDownAction.setImageDescriptor( PlatformUI.getWorkbench().
-		//	getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_BACK));
-		this.moveDownAction.setImageDescriptor(new ImageDescriptor() {
-			
-			@Override
-			public ImageData getImageData() {
-				return Activator.getDefault().getImageRegistry().get("MOVEDOWN").getImageData();
-			}
-		});
-		this.getViewSite().getActionBars().getToolBarManager().add(this.moveDownAction);
-
-		// Remove file from play list - Action
-		this.removeAction = new RemoveFileFromPlayListAction(this);
-		this.removeAction.setText("Remove");
-		this.removeAction.setImageDescriptor(PlatformUI.getWorkbench().
-			getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
-		this.getViewSite().getActionBars().getToolBarManager().add(this.removeAction);
-		
-		// table viewer
-		this.tableViewer = new TableViewer(parent, SWT.MULTI);
-		
-		// File column
-		TableColumn column = 
-			new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 0);
-	    column.setText("File");
-	    column.setWidth(200);
-
-	    // Author column
-	    column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 1);
-	    column.setText("Author");
-	    column.setWidth(60);
-	    
-	    this.tableViewer.getTable().setHeaderVisible(true);
-	    this.tableViewer.getTable().setLinesVisible(true);
-	    
-	    this.tableViewer.setContentProvider(new PlayListTableContentProvider());
-	    this.tableViewer.setLabelProvider(new PlayListTableLabelProvider());
-		
-	    MenuManager manager = new MenuManager();
-	    Menu menu = manager.createContextMenu(this.tableViewer.getControl());
-	    this.tableViewer.getControl().setMenu(menu);
-	    manager.add(this.moveUpAction);
-	    manager.add(this.moveDownAction);
-	    manager.add(this.removeAction);
-
-	    // connect Engine to see all Playlist entries
-	    Activator.getDefault().connectEngine();
-	    
 		if(Activator.getDefault().getEcp1Client().isRunning()) {
-			this.addAction.setEnabled(true);
-			this.removeAction.setEnabled(true);
-			this.moveUpAction.setEnabled(true);
-			this.moveDownAction.setEnabled(true);
+			actionsEnabled(true);
 			this.tableViewer.getTable().setEnabled(true);
 		} else {
-			this.addAction.setEnabled(false);
-			this.removeAction.setEnabled(false);
-			this.moveUpAction.setEnabled(false);
-			this.moveDownAction.setEnabled(false);
+			actionsEnabled(false);
 			this.tableViewer.getTable().setEnabled(false);
 		}
+		
+		// event handling
 		Activator.getDefault().getEcp1Client().addConnectionStateListener(this);
 		Activator.getDefault().getEcp1Client().getPlayListController().
 				addPlayListListener(this);
@@ -153,6 +85,93 @@ public final class PlayListView extends ViewPart
 		getSite().setSelectionProvider(tableViewer);
 	}
 
+	/*
+	 * 
+	 */
+	private void createViewer(Composite parent) {
+		this.tableViewer = new TableViewer(parent, SWT.MULTI);
+		
+		createColumns();
+		
+		this.tableViewer.getTable().setHeaderVisible(true);
+		this.tableViewer.getTable().setLinesVisible(true);
+		
+		this.tableViewer.setContentProvider(new PlayListTableContentProvider());
+		this.tableViewer.setLabelProvider(new PlayListTableLabelProvider());
+	}
+
+	/*
+	 * 
+	 */
+	private void createColumns() {
+		// file column
+		TableViewerColumn fileColumn = new TableViewerColumn(
+				this.tableViewer, SWT.LEFT);
+		fileColumn.getColumn().setText("File");
+		fileColumn.getColumn().setWidth(200);
+		
+		// author column
+		TableViewerColumn authorColumn = new TableViewerColumn(
+				this.tableViewer, SWT.LEFT);
+		authorColumn.getColumn().setText("Author");
+		authorColumn.getColumn().setWidth(60);
+	}
+	
+	/*
+	 * // TODO convert to commands
+	 */
+	private void buildActions() {
+		// Add
+		this.addAction = new AddFileToPlayListAction();
+		this.addAction.setText("Add a file to the play list.");
+		this.addAction.setImageDescriptor(PlatformUI.getWorkbench().
+			getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_FILE));
+		this.getViewSite().getActionBars().getToolBarManager().add(
+				this.addAction);
+		
+		// Move Up
+		this.moveUpAction = new MoveFileUpInPlayListAction(this);
+		this.moveUpAction.setText("Move up");
+		this.moveUpAction.setImageDescriptor(new ImageDescriptor() {
+			@Override public ImageData getImageData() {
+				return Activator.getDefault().getImageRegistry().get("MOVEUP").
+						getImageData();
+			}
+		});
+		this.getViewSite().getActionBars().getToolBarManager().add(
+				this.moveUpAction);
+		
+		// Move down
+		this.moveDownAction = new MoveFileDownInPlayListAction(this);
+		this.moveDownAction.setText("Move down");
+		this.moveDownAction.setImageDescriptor(new ImageDescriptor() {
+			@Override public ImageData getImageData() {
+				return Activator.getDefault().getImageRegistry().get("MOVEDOWN").
+						getImageData();
+			}
+		});
+		this.getViewSite().getActionBars().getToolBarManager().add(
+				this.moveDownAction);
+
+		// Remove
+		this.removeAction = new RemoveFileFromPlayListAction(this);
+		this.removeAction.setText("Remove");
+		this.removeAction.setImageDescriptor(PlatformUI.getWorkbench().
+			getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
+		this.getViewSite().getActionBars().getToolBarManager().add(
+				this.removeAction);
+	}
+	
+	/*
+	 * 
+	 */
+	private void actionsEnabled(boolean enabled) {
+		this.addAction.setEnabled(enabled);
+		this.removeAction.setEnabled(enabled);
+		this.moveUpAction.setEnabled(enabled);
+		this.moveDownAction.setEnabled(enabled);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -175,18 +194,11 @@ public final class PlayListView extends ViewPart
 	 */
 	@Override
 	public void stackConnected() {
-		
-		this.addAction.setEnabled(true);
-		this.removeAction.setEnabled(true);
-		this.moveUpAction.setEnabled(true);
-		this.moveDownAction.setEnabled(true);
+		actionsEnabled(true);
 		this.tableViewer.getTable().getDisplay().syncExec(new Runnable() {
-
-			@Override
-			public void run() {
+			@Override public void run() {
 				tableViewer.getTable().setEnabled(true);
 			}
-			
 		});
 	}
 
@@ -195,20 +207,13 @@ public final class PlayListView extends ViewPart
 	 */
 	@Override
 	public void stackDisconnected() {
-		this.addAction.setEnabled(false);
-		this.removeAction.setEnabled(false);
-		this.moveUpAction.setEnabled(false);
-		this.moveDownAction.setEnabled(false);
+		actionsEnabled(false);
 		this.tableViewer.getTable().getDisplay().syncExec(new Runnable() {
-
-			@Override
-			public void run() {
+			@Override public void run() {
 				tableViewer.setInput(null);
 				tableViewer.getTable().setEnabled(false);
 			}
-			
 		});
-		
 	}
 
 	/**
@@ -216,13 +221,8 @@ public final class PlayListView extends ViewPart
 	 */
 	@Override
 	public void autoPlayHasChanged(final IPlayListController playListController) {
-		
-		// TODO: die Methode autoPlayHasChanged wird aufgerufen, wenn
-		// sich der auroPlay Wert geändert hat.
-		// Bisher wurde bei reportAutoplay playListHasChanged aufgerufen. Was dort gemacht wird,
-		// rufe ich hier erstmal nicht auf, da sich meiner Meinung nach an der playList ja nichts
-		// geändert hat. Überprüfen, ob das so stimmt. (16.12.10)
-		Activator.getDefault().getChainStatusAnalyzer().setAutoPlayStatus(playListController.isAutoplay());
+		Activator.getDefault().getChainStatusAnalyzer().
+				setAutoPlayStatus(playListController.isAutoplay());
 	}
 
 	/**
@@ -230,43 +230,46 @@ public final class PlayListView extends ViewPart
 	 */
 	@Override
 	public void playListHasChanged(final IPlayListController playListController) {
-		
-		Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.VIEWER, MessageTypes.INFO, "Got new play list with " + playListController.getEntries().size() + " entries." ) );
-		final Iterator< PlayListEntry > it = playListController.getEntries().iterator();
-		while( it.hasNext() ) {
-			final PlayListEntry entry = it.next();
-			Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageSource.VIEWER, MessageTypes.DEBUG, "PlayListEntry: id = " + entry.getId() + " name = " + entry.getName() + " author " + entry.getAuthor() + "." ) );
+		// Message View
+		Activator.getDefault().getMessagesContainer().addMessage(
+				new ViewerMessage(MessageSource.VIEWER, MessageTypes.INFO, 
+						"Got new play list with " + 
+						playListController.getEntries().size() + 
+						" entries."));
+		for(PlayListEntry entry : playListController.getEntries()) {
+			Activator.getDefault().getMessagesContainer().addMessage(
+					new ViewerMessage(MessageSource.VIEWER, MessageTypes.DEBUG, 
+							"PlayListEntry: id = " + entry.getId() + 
+							" name = " + entry.getName() + 
+							" author " + entry.getAuthor() + "."));
 		}
-
-		if (!this.tableViewer.getTable().isDisposed()) this.tableViewer.getTable().getDisplay().syncExec( new Runnable() {
-
-			@Override
-			public void run() {
-				final TableItem[] selected = tableViewer.getTable().getSelection();
-				final List< Integer > ids = new ArrayList< Integer >();
-				for( int i = 0; i < selected.length; ++i ) {
-					ids.add( ((PlayListEntry)selected[i].getData()).getId() );
-				}
-				
-				tableViewer.setInput( playListController.getEntries() );
-				
-				final List< Integer > indexes = new ArrayList< Integer >();
-				final TableItem[] items = tableViewer.getTable().getItems();
-				for( int i = 0; i < items.length; ++i ) {
-					if( ids.contains( ((PlayListEntry)items[ i ].getData()).getId() ) ) {
-						indexes.add( i );
-					}
-				}
-				int[] vals = new int[ indexes.size() ];
-				for( int i = 0; i < vals.length; ++i ) {
-					vals[ i ] = indexes.get( i );
-				}
-				tableViewer.getTable().setSelection( vals );
-			}
-			
-		});
-	
 		
+		if (!this.tableViewer.getTable().isDisposed()) {
+			this.tableViewer.getTable().getDisplay().syncExec(new Runnable() {
+				@Override public void run() {
+					final TableItem[] selected = tableViewer.getTable().
+							getSelection();
+					final List<Integer> ids = new ArrayList<Integer>();
+					for(int i = 0; i < selected.length; ++i) {
+						ids.add(((PlayListEntry)selected[i].getData()).getId());
+					}
+					tableViewer.setInput(playListController.getEntries());
+					final List<Integer> indexes = new ArrayList<Integer>();
+					final TableItem[] items = tableViewer.getTable().getItems();
+					for(int i = 0; i < items.length; ++i) {
+						if (ids.contains(((PlayListEntry)items[i].getData()).
+								getId())) {
+							indexes.add(i);
+						}
+					}
+					int[] vals = new int[indexes.size()];
+					for(int i = 0; i < vals.length; ++i) {
+						vals[i] = indexes.get(i);
+					}
+					tableViewer.getTable().setSelection(vals);
+				}
+			});
+		}
 	}
 
 	/**
