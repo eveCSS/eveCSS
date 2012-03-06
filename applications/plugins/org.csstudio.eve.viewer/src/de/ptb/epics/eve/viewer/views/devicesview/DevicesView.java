@@ -141,6 +141,8 @@ public final class DevicesView extends ViewPart {
 		
 		dragInProgress = false;
 		
+		// the DevicesView of the Device Perspective always holds the whole 
+		// measuring station
 		if(this.getPartName().equals("Local Devices")) {
 			setMeasuringStation(measuringStation);
 		}
