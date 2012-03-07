@@ -14,7 +14,7 @@ import de.ptb.epics.eve.data.measuringstation.Access;
  * @author Hartmut Scherr
  */
 
-public class Event {
+public class Event implements Comparable<Event> {
 
 	/**
 	 * 
@@ -512,5 +512,13 @@ public class Event {
 			return false;
 		}
 		return true;
-	}	
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int compareTo(Event o) {
+		return this.getName().compareTo(o.getName());
+	}
 }
