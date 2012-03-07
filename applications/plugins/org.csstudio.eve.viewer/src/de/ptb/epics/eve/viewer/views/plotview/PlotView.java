@@ -86,7 +86,9 @@ public class PlotView extends ViewPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setFocus() { }
+	public void setFocus() {
+		this.top.setFocus();
+	}
 	
 	/**
 	 * Getter for id.
