@@ -254,7 +254,9 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		
-		logger.debug(selection.toString());
+		if(logger.isDebugEnabled() && selection != null) {
+			logger.debug(selection.toString());
+		}
 		
 		if (logger.isDebugEnabled() && 
 			selection instanceof IStructuredSelection && !selection.isEmpty()) {
@@ -268,11 +270,10 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 		// (the one in front) -> do nothing
 		if (activeDeviceOptionsView == null ||
 			!(activeDeviceOptionsView.equals(this.getViewSite().getSecondaryId()))) {
-			return;
+				logger.debug("Secondary Id different -> do nothing");
+				return;
 		}
-		if(logger.isDebugEnabled() && selection != null) {
-			logger.debug(selection.toString());
-		}
+		
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).size() == 0) {
 				/*this.optionsTable.setInput(null);

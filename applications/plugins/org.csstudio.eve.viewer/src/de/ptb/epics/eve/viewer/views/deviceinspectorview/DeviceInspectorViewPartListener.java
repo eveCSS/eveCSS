@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.viewer.views.deviceinspectorview;
 
+import org.apache.log4j.Logger;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPartReference;
@@ -16,6 +17,9 @@ import org.eclipse.ui.IWorkbenchPartReference;
  */
 public class DeviceInspectorViewPartListener implements IPartListener2 {
 
+	private static Logger logger = 
+			Logger.getLogger(DeviceInspectorViewPartListener.class.getName());
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -74,5 +78,7 @@ public class DeviceInspectorViewPartListener implements IPartListener2 {
 		DeviceInspectorView.activeDeviceInspectorView = 
 			((IViewReference)partRef).getView(false).
 			getViewSite().getSecondaryId();
+		
+		logger.debug("Part " + partRef.getPartName() + " became visible");
 	}
 }

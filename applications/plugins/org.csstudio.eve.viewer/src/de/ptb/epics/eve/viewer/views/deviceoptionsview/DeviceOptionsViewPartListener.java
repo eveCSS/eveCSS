@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.viewer.views.deviceoptionsview;
 
+import org.apache.log4j.Logger;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPartReference;
@@ -16,6 +17,9 @@ import org.eclipse.ui.IWorkbenchPartReference;
  */
 public class DeviceOptionsViewPartListener implements IPartListener2 {
 
+	private static Logger logger = 
+			Logger.getLogger(DeviceOptionsViewPartListener.class.getName());
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -74,5 +78,7 @@ public class DeviceOptionsViewPartListener implements IPartListener2 {
 		DeviceOptionsView.activeDeviceOptionsView = 
 			((IViewReference)partRef).getView(false).
 			getViewSite().getSecondaryId();
+		
+		logger.debug("Part " + partRef.getPartName() + " became visible");
 	}
 }
