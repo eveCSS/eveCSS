@@ -198,6 +198,14 @@ public class Activator extends AbstractUIPlugin {
 	}
 	
 	/**
+	 * 
+	 * @return
+	 */
+	public XMLFileDispatcher getXMLFileDispatcher() {
+		return this.xmlFileDispatcher;
+	}
+	
+	/**
 	 * Returns the {@link de.ptb.epics.eve.viewer.messages.MessagesContainer} 
 	 * used to collect messages of several types from different sources.
 	 * 

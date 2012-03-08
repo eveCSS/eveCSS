@@ -2,6 +2,8 @@ package de.ptb.epics.eve.viewer.views.devicesview;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.Command;
@@ -54,7 +56,7 @@ import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
  * @author ?
  * @author Marcus Michalsky
  */
-public final class DevicesView extends ViewPart {
+public final class DevicesView extends ViewPart implements Observer {
 
 	/** the unique identifier of this view */
 	public static final String ID = "DevicesView";
@@ -145,8 +147,14 @@ public final class DevicesView extends ViewPart {
 		// measuring station
 		if(this.getPartName().equals("Local Devices")) {
 			setMeasuringStation(measuringStation);
+		} else {
+			// the DevicesView of the Engine Perspective holds the the 
+			// measuringStation currently active in the engine...
+			Activator.getDefault().getXMLFileDispatcher().addObserver(this);
+			logger.debug("observer added");
 		}
 		
+		// Selection Service
 		getSite().setSelectionProvider(treeViewer);
 		
 		// Filtering
@@ -266,8 +274,19 @@ public final class DevicesView extends ViewPart {
 		this.treeViewer.collapseAll();
 	}
 	
-	// ************************* DnD *****************************************
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 1.1
+	 */
+	@Override
+	public void update(Observable o, Object arg) {
+		this.setMeasuringStation((IMeasuringStation)arg);
+		logger.debug("new measuring station set");
+	}
 	
+	// ************************* DnD *****************************************
+
 	/**
 	 * 
 	 * @author Marcus Michalsky
