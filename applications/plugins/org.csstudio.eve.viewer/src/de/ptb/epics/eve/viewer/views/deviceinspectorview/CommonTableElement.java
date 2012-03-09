@@ -515,8 +515,7 @@ public class CommonTableElement {
 			return name;
 		else if (property.equals("value") && (valuePv != null)) {
 			return valuePv.getValue();
-		}
-		else if (property.equals("status") && (statusPv != null)) {
+		} else if (property.equals("status")) {  
 			if(movedonePv != null) {
 				String moveStatus = movedonePv.getValue();
 				if ((moveStatus != null) && (moveStatus != "")) {
@@ -525,25 +524,26 @@ public class CommonTableElement {
 						return "Moving";
 				}
 			}
-
-			String valueString = statusPv.getValue();
-			try {
-				int status = (int) Double.parseDouble(valueString);
-				if((status & 4) > 0) {
-					return "Limit (+)";
-				} else if ((status & 8) > 0 || (status & 128) > 0) {
-					return "Home";
-				} else if ((status & 512) > 0) {
-					return "Problem";
-				} else if ((status & 1024) > 0) {
-					return "Moving";
-				} else if ((status & 8192) > 0) {
-					return "Limit (-)";
-				} else {
-					return "Idle";
+			if(statusPv != null) {
+				String valueString = statusPv.getValue();
+				try {
+					int status = (int) Double.parseDouble(valueString);
+					if((status & 4) > 0) {
+						return "Limit (+)";
+					} else if ((status & 8) > 0 || (status & 128) > 0) {
+						return "Home";
+					} else if ((status & 512) > 0) {
+						return "Problem";
+					} else if ((status & 1024) > 0) {
+						return "Moving";
+					} else if ((status & 8192) > 0) {
+						return "Limit (-)";
+					} else {
+						return "Idle";
+					}
+				} catch (Exception e) {
+					return valueString;
 				}
-			} catch (Exception e) {
-				return valueString;
 			}
 		}
 		else if (property.equals("unit")) {
