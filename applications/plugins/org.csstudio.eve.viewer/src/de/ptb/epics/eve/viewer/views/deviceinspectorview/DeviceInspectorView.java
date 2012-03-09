@@ -566,7 +566,7 @@ public class DeviceInspectorView extends ViewPart {
 				return null;
 			}
 		});
-		unitColumn.getColumn().setWidth(35);
+		unitColumn.getColumn().setWidth(40);
 		
 		TableViewerColumn gotoColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
@@ -838,7 +838,7 @@ public class DeviceInspectorView extends ViewPart {
 				return null;
 			}
 		});
-		unitColumn.getColumn().setWidth(35);
+		unitColumn.getColumn().setWidth(50);
 
 		TableViewerColumn triggerColumn = 
 				new TableViewerColumn(channelTableViewer, SWT.NONE);

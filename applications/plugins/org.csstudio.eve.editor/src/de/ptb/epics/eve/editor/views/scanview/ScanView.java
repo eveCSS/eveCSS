@@ -665,7 +665,15 @@ public class ScanView extends ViewPart implements IEditorView,
 		this.autoIncrementCheckBox.removeSelectionListener(
 				autoIncrementCheckBoxSelectionListener);
 	}
+
+	private void suspendModelUpdateListener () {
+		this.currentChain.removeModelUpdateListener(this);
+	}
 	
+	private void resumeModelUpdateListener () {
+		this.currentChain.addModelUpdateListener(this);
+	}
+
 	// ************************************************************************
 	// *************************** Listener ***********************************
 	// ************************************************************************
@@ -811,8 +819,10 @@ public class ScanView extends ViewPart implements IEditorView,
 		 */
 		@Override
 		public void modifyText(ModifyEvent e) {
+			suspendModelUpdateListener();
 			currentChain.setSaveFilename(filenameInput.getText().trim());
 			checkForErrors();
+			resumeModelUpdateListener();
 		}
 	}
 
@@ -1037,7 +1047,10 @@ public class ScanView extends ViewPart implements IEditorView,
 		 */
 		@Override
 		public void modifyText(ModifyEvent e) {
+
+			suspendModelUpdateListener();
 			currentChain.setComment(commentInput.getText());
+			resumeModelUpdateListener();
 		}
 	}
 	
