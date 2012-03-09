@@ -82,22 +82,6 @@ public class MotorAxisComposite extends Composite {
 		
 		createViewer();
 		
-		
-/*
-	   
-	    
-	    final CellEditor[] editors = new CellEditor[2];
-	    
-	    editors[0] = new TextCellEditor(this.tableViewer.getTable());
-	    editors[1] = new TextCellEditor(this.tableViewer.getTable());
-	    
-	    this.tableViewer.setCellEditors(editors);
-	    
-	    final String[] props = {"device", "value"};
-	    
-	    this.tableViewer.setColumnProperties(props);
-*/
-		
 		this.tableViewer.getTable().addFocusListener(new 
 				TableViewerFocusListener());
 		
