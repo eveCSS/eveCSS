@@ -12,6 +12,7 @@ import org.eclipse.ui.IPerspectiveFactory;
  * 
  * @author ?
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class EveDevicePerspective implements IPerspectiveFactory {
 
@@ -26,16 +27,20 @@ public class EveDevicePerspective implements IPerspectiveFactory {
 		
 		IFolderLayout deviceInspectorFolder = 
 				layout.createFolder("DeviceInspectorFolder", 
-				IPageLayout.TOP, 0.00f, IPageLayout.ID_EDITOR_AREA);
+				IPageLayout.RIGHT, 1.00f, IPageLayout.ID_EDITOR_AREA);
 		deviceInspectorFolder.addPlaceholder("DeviceInspectorView:*");	
 		deviceInspectorFolder.addView("DeviceInspectorView:" + sec_id);
-		
-		layout.addView("LocalDevicesView", 
-				IPageLayout.LEFT, 0.25f, "DeviceInspectorView:" + sec_id);
 		
 		IFolderLayout deviceOptionsFolder = 
 				layout.createFolder("DeviceOptionsFolder", 
 				IPageLayout.RIGHT, 0.66f, "DeviceInspectorView:" + sec_id);
 		deviceOptionsFolder.addView("DeviceOptionsView:" + sec_id);
+
+		layout.addView("MessagesView", 
+				IPageLayout.BOTTOM, 0.85f, "DeviceInspectorView:" + sec_id);
+
+		layout.addView("LocalDevicesView", 
+				IPageLayout.LEFT, 0.25f, "DeviceInspectorView:" + sec_id);
+		
 	}
 }

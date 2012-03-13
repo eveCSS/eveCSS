@@ -17,6 +17,9 @@ import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.viewer.Activator;
+import de.ptb.epics.eve.viewer.MessageSource;
+import de.ptb.epics.eve.viewer.messages.MessageTypes;
+import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 
 /**
  * <code>CommonTableElement</code> is an element (row entry) of the tables 
@@ -417,8 +420,6 @@ public class CommonTableElement {
 				status = AlarmSeverity.MAJOR;
 			} else {
 				status = AlarmSeverity.NONE;
-// TODO: Marcus Fragen, warum statusPv kein getStatus machen soll?
-//				status = statusPv.getStatus();
 			}
 		}
 
@@ -578,9 +579,16 @@ public class CommonTableElement {
 		if (column.equals("set") && (setPv != null))
 			setPv.setValue(newValue);
 		else if (column.equals("goto") && (gotoPv != null)) {
+			// if PositionMode is on Set, this is a define of the motor position
+			if (setPv.getValue().equals("Set")) {
+				MotorAxis motorAxis = (MotorAxis)device;
+				Activator.getDefault().getMessagesContainer().addMessage(
+						new ViewerMessage(MessageSource.VIEWER, 
+								MessageTypes.INFO, "Define " + 
+								motorAxis.getFullIdentifyer() + " from " +
+								gotoPv.getValue() + " to " + newValue));
+			}
 			gotoPv.setValue(newValue);
-			// some Motor or MotorAxis needs a trigger to start
-			trigger();
 		}
 		else if (column.equals("value") && (valuePv != null))
 			valuePv.setValue(newValue);
@@ -610,22 +618,7 @@ public class CommonTableElement {
 						triggerPv.setValue(detector.getTrigger().getValue().
 								getDefaultValue());
 				}
-			
-			} else if (device.getClass().getSimpleName().equals("MotorAxis")) {
-				// device is a MotorAxis
-				MotorAxis axis = (MotorAxis)device;
-				if (axis.getTrigger() != null) {
-					if (axis.getTrigger().getValue() != null)
-						triggerPv.setValue(axis.getTrigger().getValue().
-								getDefaultValue());
-				} else {
-					// triggerPv is the motor of the axis
-					Motor motor = axis.getMotor();
-					if (motor.getTrigger().getValue() != null)
-						triggerPv.setValue(motor.getTrigger().getValue().
-								getDefaultValue());
-				}
-			}
+			} 
 		}
 	}
 
