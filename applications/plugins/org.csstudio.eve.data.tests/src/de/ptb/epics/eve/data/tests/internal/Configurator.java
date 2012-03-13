@@ -13,7 +13,9 @@ import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
+import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
 
 /**
@@ -113,7 +115,7 @@ public class Configurator {
 		
 		File test = new File("xml/test.xml");
 		File qnim = new File("xml/qnim.xml");
-		File sx700 = new File("xml/sx700.xml");
+		//File sx700 = new File("xml/sx700.xml");
 		
 		try {
 			logger.debug("loading test station");
@@ -157,7 +159,6 @@ public class Configurator {
 			/* *** */
 			
 			// measuringStationLoader.load(sx700);
-
 		} catch (ParserConfigurationException e) {
 			logger.error(e.getMessage(), e);
 		} catch (SAXException e) {
@@ -170,7 +171,6 @@ public class Configurator {
 			logger.debug("MeasuringStation: " + p.getFirstValue().getName());
 			logger.debug("Scan Descriptions: " + p.getSecondValue().toString());
 		}
-		
 		return pairs;
 	}
 	
@@ -185,11 +185,9 @@ public class Configurator {
 	 * @deprecated uses {@link #getMeasuringStation()} - should 
 	 * 				be replaced in the future by a station depended getter
 	 */
-	public static ScanDescription getScanDescription()
-	{
+	public static ScanDescription getScanDescription() {
 		ScanDescriptionLoader loader = new ScanDescriptionLoader(
 				getMeasuringStation(), schemaFile);
-		
 		try {
 			loader.load(scan);
 		} catch (ParserConfigurationException e) {
@@ -202,17 +200,24 @@ public class Configurator {
 			logger.error(e.getMessage(), e);
 			e.printStackTrace();
 		}
-
 		return loader.getScanDescription();
+	}
+	
+	public static ScanDescription getBasicScanDescription(IMeasuringStation ims) {
+		ScanDescription sd = new ScanDescription(ims);
+		
+		Chain ch = new Chain(1);
+		ScanModule sm = new ScanModule(1);
+		ch.add(sm);
+		sd.add(ch);
+		return sd;
 	}
 	
 	/**
 	 * Loads the Log4j configuration.
 	 */
-	public static void configureLogging()
-	{
-		if(!configured)
-		{
+	public static void configureLogging() {
+		if(!configured) {
 			DOMConfigurator.configure("log4j-conf.xml");
 			configured = true;
 		}
@@ -223,8 +228,7 @@ public class Configurator {
 	 * 
 	 * @return the schema file
 	 */
-	public static File getSchemaFile()
-	{
+	public static File getSchemaFile() {
 		return schemaFile;
 	}
 	

@@ -24,12 +24,11 @@ public class Option extends AbstractPrePostscanDevice {
 		option.setDisplaygroup(this.getDisplaygroup());
 		option.setValue((Function)
 				(this.getValue()!=null?this.getValue().clone():null));
-		
+		this.setName(this.getName());
 		option.setName(this.getName());
 		option.setId(this.getID());
 		option.setUnit((Unit)
 				(this.getUnit()!=null?this.getUnit().clone():null));
-
 		return option;
 	}
 

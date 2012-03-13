@@ -3,7 +3,7 @@
   targetNamespace="http://www.ptb.de/epics/SCML" 
   xmlns:tns="http://www.ptb.de/epics/SCML">
 
-  <!-- schema version 0.4.2
+  <!-- schema version 0.4.3
        please increase version number on every modification
        If the corresponding xml-file of the previous schema version is still
        valid with the current schema version, change the minor version number only -->
@@ -190,7 +190,7 @@
 
   <complexType name="motors">
     <sequence>
-      <element name="motor" type="tns:motor" maxOccurs="unbounded"></element>   
+      <element name="motor" type="tns:motor" maxOccurs="unbounded"></element>
     </sequence>
   </complexType>
    
@@ -199,7 +199,7 @@
       <element name="class" type="string"></element>
       <element name="name" type="string"></element>
       <element name="id" type="tns:identifier"></element>
-      <element name="trigger" type="tns:access" minOccurs="0"></element>   
+      <element name="trigger" type="tns:access" minOccurs="0"></element>
       <element name="unit" type="tns:unit" minOccurs="0"></element>
       <element name="axis" type="tns:axis" maxOccurs="unbounded"></element>
       <element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"></element>
@@ -211,18 +211,19 @@
       <element name="class" type="string"></element>
       <element name="name" type="string"></element>
       <element name="id" type="tns:identifier"></element>
-      <element name="goto" type="tns:access"></element>   
-      <element name="position" type="tns:access"></element>   
-      <element name="stop" type="tns:access"></element>   
-      <element name="status" type="tns:access" minOccurs="0"></element>   
-      <element name="trigger" type="tns:access" minOccurs="0"></element>   
-      <element name="unit" type="tns:unit" minOccurs="0"></element>   
-      <element name="deadband" type="tns:access" minOccurs="0"></element>   
-      <element name="offset" type="tns:access" minOccurs="0"></element>   
+      <element name="goto" type="tns:access"></element>
+      <element name="position" type="tns:access"></element>
+      <element name="stop" type="tns:access"></element>
+      <element name="status" type="tns:access" minOccurs="0"></element>
+      <element name="movedone" type="tns:access" minOccurs="0"></element>
+      <element name="trigger" type="tns:access" minOccurs="0"></element>
+      <element name="unit" type="tns:unit" minOccurs="0"></element>
+      <element name="deadband" type="tns:access" minOccurs="0"></element>
+      <element name="offset" type="tns:access" minOccurs="0"></element>
       <element name="setmode" type="tns:access" minOccurs="0"></element>
-      <element name="tweakvalue" type="tns:access" minOccurs="0"></element>   
-      <element name="tweakforward" type="tns:access" minOccurs="0"></element>   
-      <element name="tweakreverse" type="tns:access" minOccurs="0"></element>   
+      <element name="tweakvalue" type="tns:access" minOccurs="0"></element>
+      <element name="tweakforward" type="tns:access" minOccurs="0"></element>
+      <element name="tweakreverse" type="tns:access" minOccurs="0"></element>
       <element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"></element>
     </sequence>
   </complexType>

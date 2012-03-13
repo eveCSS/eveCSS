@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.ArrayList;
@@ -19,7 +12,7 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  * channels a detector can have.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.4
+ * @author Marcus Michalsky
  */
 public class Detector extends AbstractMainPhaseDevice {
 
@@ -49,6 +42,7 @@ public class Detector extends AbstractMainPhaseDevice {
 	 * Returns an Iterator over the List of Detector Channels.
 	 * 
 	 * @return An Iterator<DetectorChannel> object.
+	 * @deprecated use {@link #getChannels()} with Java 5 for each instead
 	 */
 	public Iterator<DetectorChannel> channelIterator() {
 		return this.channels.iterator();
@@ -102,8 +96,7 @@ public class Detector extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * 
-	 * @return a hash
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
@@ -111,10 +104,7 @@ public class Detector extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * Checks whether the argument and calling object are equal.
-	 * 
-	 * @return <code>true</code> if objects are equal,
-	 * 			<code>false</code> otherwise
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -127,14 +117,11 @@ public class Detector extends AbstractMainPhaseDevice {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		
 		return true;
 	}
-		
+
 	/**
-	 * Clones the current Detector.
-	 * 
-	 * @return a clone of the calling <code>Detector</code>
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Object clone() {
@@ -145,13 +132,12 @@ public class Detector extends AbstractMainPhaseDevice {
 		detector.setClassName(this.getClassName());
 		detector.setTrigger((Function)
 				(this.getTrigger()!=null?this.getTrigger().clone():null));
+		this.setName(this.getName());
 		detector.setName(this.getName());
 		detector.setId(this.getID());
 		detector.setUnit((Unit)
 				(this.getUnit()!=null?this.getUnit().clone():null));
-		
 		for(final Option option : this.getOptions()) {
-//	TODO, wegnehmen:		this.add( (Option)option.clone() );
 			detector.add((Option)option.clone());
 		}
 		return detector;
