@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
@@ -627,7 +628,15 @@ public class ScanView extends ViewPart implements IEditorView,
 			logger.debug("selection other than Chain -> ignore: " + o);
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param selectionProvider
+	 */
+	public void setSelectionProvider(ISelectionProvider selectionProvider) {
+		this.selectionProviderWrapper.setSelectionProvider(selectionProvider);
+	}
+	
 	/*
 	 * used by setCurrentChain() to re-enable listeners
 	 */

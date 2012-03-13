@@ -35,7 +35,7 @@ public class PVNumberFormat extends DecimalFormat {
 		StringBuffer sb = new StringBuffer();
 		Formatter formatter = new Formatter(
 				new Locale(Locale.ENGLISH.getCountry()));
-		sb.append(formatter.format("%12.7g", number).out().toString().trim());
+		sb.append(formatter.format("%14.6g", number).out().toString().trim());
 		return sb;
 	}
 

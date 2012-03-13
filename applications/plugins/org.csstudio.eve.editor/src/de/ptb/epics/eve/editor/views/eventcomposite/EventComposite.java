@@ -8,6 +8,8 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -20,6 +22,8 @@ import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
+import de.ptb.epics.eve.editor.views.scanview.ScanView;
 
 /**
  * <code>EventComposite</code>.
@@ -41,6 +45,8 @@ public class EventComposite extends Composite {
 	private ControlEventManager controlEventManager;
 
 	private TableViewer tableViewer;
+	
+	private TableViewerFocusListener tableViewerFocusListener;
 
 	/**
 	 * Constructs an <code>EventComposite</code>.
@@ -78,6 +84,9 @@ public class EventComposite extends Composite {
 		this.tableViewer.setContentProvider(new ContentProvider());
 		this.tableViewer.setLabelProvider(new LabelProvider());
 		this.tableViewer.setInput(null);
+		
+		this.tableViewerFocusListener = new TableViewerFocusListener();
+		this.tableViewer.getTable().addFocusListener(tableViewerFocusListener);
 		
 		// create context menu
 		MenuManager menuManager = new MenuManager();
@@ -196,6 +205,10 @@ public class EventComposite extends Composite {
 		this.controlEventManager = controlEventManager;
 		
 		this.tableViewer.setInput(controlEventManager);
+		
+		if (this.isVisible() && this.parentView instanceof ScanModuleView) {
+			((ScanModuleView)parentView).setSelectionProvider(tableViewer);
+		}
 	}
 	
 	/**
@@ -213,5 +226,34 @@ public class EventComposite extends Composite {
 	 */
 	public TableViewer getTableViewer() {
 		return this.tableViewer;
+	}
+	
+	/* ********************************************************************* */
+	
+	/**
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.1
+	 */
+	private class TableViewerFocusListener implements FocusListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void focusGained(FocusEvent e) {
+			if (parentView instanceof ScanModuleView) {
+				((ScanModuleView)parentView).setSelectionProvider(tableViewer);
+			} else if (parentView instanceof ScanView) {
+				((ScanView)parentView).setSelectionProvider(tableViewer);
+			}
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void focusLost(FocusEvent e) {
+		}
 	}
 }
