@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.measuringstation;
 
 import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedException;
@@ -12,9 +5,8 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
 /**
  * This class represents a detector channel.
  *
- * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.3
+ * @author Marcus Michalsky
  */
 public class DetectorChannel extends AbstractMainPhaseDevice {
 	
@@ -41,7 +33,7 @@ public class DetectorChannel extends AbstractMainPhaseDevice {
 			throw new IllegalArgumentException(
 					"The parameter 'read' must not be null!");
 		}
-		this.read = read;	
+		this.read = read;
 	}
 	
 	/**
@@ -77,11 +69,7 @@ public class DetectorChannel extends AbstractMainPhaseDevice {
 	}
 	
 	/**
-	 * Checks if this class can really be the parent of this device. 
-	 * 
-	 * @param parent The parent that should be set. In this case only a 
-	 * 		   Detector will fit.
-	 * @throws ParentNotAllowedException if parent not a Detector
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void setParent(final AbstractDevice parent) 
@@ -100,8 +88,7 @@ public class DetectorChannel extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * 
-	 * @return a hash
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
@@ -109,11 +96,7 @@ public class DetectorChannel extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * Checks whether argument and calling object are equal.
-	 * 
-	 * @param obj the <code>Object</code> that should be checked
-	 * @return <code>true</code> if objects are equal,
-	 * 			<code>false</code> otherwise
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -126,14 +109,11 @@ public class DetectorChannel extends AbstractMainPhaseDevice {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-
 		return true;
 	}
 	
 	/**
-	 * Clones the current detector channel.
-	 * 
-	 * @return a clone of the calling <code>DetectorChannel</code> 
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Object clone() {
@@ -145,15 +125,15 @@ public class DetectorChannel extends AbstractMainPhaseDevice {
 		detectorChannel.setClassName(this.getClassName());
 		detectorChannel.setTrigger((Function)
 				(this.getTrigger()!=null?this.getTrigger().clone():null));
+		this.setName(this.getName());
 		detectorChannel.setName(this.getName());
 		detectorChannel.setId(this.getID());
 		detectorChannel.setUnit((Unit)
 				(this.getUnit()!=null?this.getUnit().clone():null));
 		
 		for(final Option option : this.getOptions()) {
-//	TODO, wegnehmen:		this.add( (Option)option.clone() );
 			detectorChannel.add((Option)option.clone());
-		}	
+		}
 		return detectorChannel;
 	}
 }

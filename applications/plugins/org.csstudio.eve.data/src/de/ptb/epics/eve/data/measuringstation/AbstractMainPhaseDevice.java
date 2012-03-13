@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 2001, 2007 Physikalisch-Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- */
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.List;
@@ -16,7 +9,6 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  * module like motor axis and detector channels.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.3
  */
 public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	
@@ -92,18 +84,15 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	}
 	
 	/**
-	 * Checks if this class can be the parent of the device. 
-	 * .
-	 * @param parent The parent that should be set.
-	 * @throws ParentNotAllowedException 
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void setParent(final AbstractDevice parent) 
 								throws ParentNotAllowedException {
 		// TODO describe/explain exception thrown super doesn't throw anything!
 		// It will throw a ParentNotAllowedException
-		// if there was passes a wrong device type
-		super.setParent( parent );
+		// if there is passed a wrong device type
+		super.setParent(parent);
 	}
 	
 	/**
@@ -131,13 +120,10 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	}
 
 	/**
-	 * Mystical Math
-	 * 
-	 * @return a fancy number yet has to be explained
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
-		// TODO Explain !
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((className == null) ? 0 : className.hashCode());
@@ -145,10 +131,7 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	}
 
 	/**
-	 * Checks whether the argument and the calling object are equal.
-	 * 
-	 * @param obj the <code>Object</code> that should be checked
-	 * @return <code>true</code> if equal, <code>false</code> otherwise
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(final Object obj) {

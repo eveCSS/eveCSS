@@ -12,7 +12,6 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  * 
  * @see de.ptb.epics.eve.data.measuringstation.MotorAxis
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.3
  */
 public class Motor extends AbstractMainPhaseDevice {
 
@@ -96,8 +95,7 @@ public class Motor extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * 
-	 * @return a hash 
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
@@ -105,10 +103,7 @@ public class Motor extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * Checks if argument and calling object are equal.
-	 * 
-	 * @return <code>true</code> if objects are equal, 
-	 * 			</code>false</code> otherwise
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -125,13 +120,10 @@ public class Motor extends AbstractMainPhaseDevice {
 	}
 	
 	/**
-	 * Clones the current Motor.
-	 * 
-	 * @return a clone of the calling Motor
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Object clone() {
-		
 		final Motor motor = new Motor();
 		for(final MotorAxis axis : this.axis) {
 			motor.add((MotorAxis)axis.clone());
@@ -144,9 +136,7 @@ public class Motor extends AbstractMainPhaseDevice {
 		motor.setId(this.getID());
 		motor.setUnit((Unit)
 				(this.getUnit()!=null?this.getUnit().clone():null));
-		
 		for(final Option option : this.getOptions()) {
-//	TODO, wegnehmen: 	this.add( (Option)option.clone() );
 			motor.add((Option)option.clone());
 		}
 		return motor;

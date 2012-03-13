@@ -424,8 +424,7 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * 
-	 * @return some fancy hash
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
@@ -433,11 +432,7 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	}
 
 	/**
-	 * Checks if the argument and calling object are equal.
-	 * 
-	 * @param obj the <code>Object</code> that should be checked
-	 * @return <code>true</code> if objects are equal, 
-	 * 			<code>false</code> otherwise
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -450,19 +445,15 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-
 		return true;
 	}
-	
+
 	/**
-	 * Clones the current MotorAxis.
-	 * 
-	 * @return a clone of the calling MotorAxis.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Object clone() {
 		final MotorAxis motorAxis = new MotorAxis();
-		
 		motorAxis.position = (Function)
 			(this.position!=null?this.position.clone():null);
 		motorAxis.gotoAdvisor = (Function)
@@ -480,7 +471,6 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 			(this.tweakReverse!=null?this.tweakReverse.clone():null);
 		motorAxis.position = (Function)
 			(this.position!=null?this.position.clone():null);
-		
 		motorAxis.setClassName(this.getClassName());
 		motorAxis.setTrigger((Function)
 				(this.getTrigger()!=null?this.getTrigger().clone():null));
@@ -488,9 +478,7 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 		motorAxis.setId( this.getID() );
 		motorAxis.setUnit((Unit)
 				(this.getUnit()!=null?this.getUnit().clone():null));
-		
 		for( final Option option : this.getOptions() ) {
-//	TODO, wegnehmen:		this.add( (Option)option.clone() );
 			motorAxis.add( (Option)option.clone() );
 		}	
 		return motorAxis;
