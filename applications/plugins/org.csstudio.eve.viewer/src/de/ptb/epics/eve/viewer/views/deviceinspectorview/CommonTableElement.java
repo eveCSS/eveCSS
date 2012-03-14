@@ -16,6 +16,7 @@ import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.MessageSource;
 import de.ptb.epics.eve.viewer.messages.MessageTypes;
@@ -38,7 +39,6 @@ public class CommonTableElement {
 	private CommonTableElementPV valuePv = null;
 	private CommonTableElementPV gotoPv = null;
 	private CommonTableElementPV unitPv = null;
-	private CommonTableElementPV setPv = null;
 	private CommonTableElementPV statusPv = null;
 	private CommonTableElementPV movedonePv = null;
 	private CommonTableElementPV stopPv = null;
@@ -46,6 +46,9 @@ public class CommonTableElement {
 	private CommonTableElementPV tweakvaluePv = null;
 	private CommonTableElementPV tweakforwardPv = null;
 	private CommonTableElementPV tweakreversePv = null;
+	private CommonTableElementPV offsetPv = null;
+	private CommonTableElementPV softHighLimitPv = null;
+	private CommonTableElementPV softLowLimitPv = null;
 	private String unit;
 	private CommonTableElementEngineData engine;
 	private boolean initialized = false;
@@ -102,12 +105,6 @@ public class CommonTableElement {
 				gotoPv = new CommonTableElementPV(motorAxis.getGoto().
 						getAccess().getVariableID(), motorTrigger, this );
 			}
-			if ((motorAxis.getSet() != null) &&
-					(motorAxis.getSet().getAccess().getTransport() == 
-					TransportTypes.CA)) {
-				setPv = new CommonTableElementPV(motorAxis.getSet().
-						getAccess().getVariableID(), this);
-			}
 			if (motorAxis.getUnit() != null) {
 				if (motorAxis.getUnit().getAccess() != null) {
 					if (motorAxis.getUnit().getAccess().getTransport() == 
@@ -160,6 +157,24 @@ public class CommonTableElement {
 					TransportTypes.CA)) {
 				tweakvaluePv = new CommonTableElementPV(motorAxis.
 							getTweakValue().getAccess().getVariableID(), this);
+			}
+			if ((motorAxis.getOffset() != null && 
+					motorAxis.getOffset().getAccess() != null) &&
+					(motorAxis.getOffset().getAccess().getTransport() == 
+					TransportTypes.CA)) {
+				offsetPv = new CommonTableElementPV(motorAxis.
+							getOffset().getAccess().getVariableID(), this);
+				// set Pv's for Soft High and Low Limit
+				for(final Option option : motorAxis.getOptions()) {
+					if (option.getName().equals("Soft High Limit")) {
+						softHighLimitPv = new CommonTableElementPV(option.
+								getValue().getAccess().getVariableID(), this);
+					}
+					if (option.getName().equals("Soft Low Limit")) {
+						softLowLimitPv = new CommonTableElementPV(option.
+								getValue().getAccess().getVariableID(), this);
+					}
+				}
 			}
 		}
 		if(device instanceof DetectorChannel) {
@@ -233,7 +248,6 @@ public class CommonTableElement {
 		if (valuePv != null) valuePv.disconnect();
 		if (gotoPv != null) gotoPv.disconnect();
 		if (unitPv != null) unitPv.disconnect();
-		if (setPv != null) setPv.disconnect();
 		if (statusPv != null) statusPv.disconnect();
 		if (movedonePv != null) movedonePv.disconnect();
 		if (stopPv != null) stopPv.disconnect();
@@ -241,6 +255,9 @@ public class CommonTableElement {
 		if (tweakvaluePv != null) tweakvaluePv.disconnect();
 		if (tweakforwardPv != null) tweakforwardPv.disconnect();
 		if (tweakreversePv != null) tweakreversePv.disconnect();
+		if (offsetPv != null) offsetPv.disconnect();
+		if (softHighLimitPv != null) softHighLimitPv.disconnect();
+		if (softLowLimitPv != null) softLowLimitPv.disconnect();
 		cellEditorHash.clear();
 	}
 	
@@ -262,9 +279,6 @@ public class CommonTableElement {
 		else if (property.equals("unit") && (unitPv != null)) {
 			return unitPv.isReadOnly();
 		}
-		else if (property.equals("set") && (setPv != null)) {
-			return setPv.isReadOnly();
-		}
 		else if (property.equals("status") && (statusPv != null)) {
 			return statusPv.isReadOnly();
 		}
@@ -282,6 +296,9 @@ public class CommonTableElement {
 		}
 		else if (property.equals("tweakreverse") && (tweakreversePv != null)) {
 			return tweakreversePv.isReadOnly();
+		}
+		else if (property.equals("define") && (offsetPv != null)) {
+			return offsetPv.isReadOnly();
 		}
 		return true;
 	}
@@ -304,9 +321,6 @@ public class CommonTableElement {
 		else if (property.equals("unit") && unitPv != null) {
 			return unitPv.isDiscrete();
 		}
-		else if (property.equals("set") && setPv != null) {
-			return setPv.isDiscrete();
-		}
 		else if (property.equals("status") && statusPv != null) {
 			return statusPv.isDiscrete();
 		}
@@ -324,6 +338,9 @@ public class CommonTableElement {
 		}
 		else if (property.equals("tweakreverse") && tweakreversePv != null) {
 			return tweakreversePv.isDiscrete();
+		}
+		else if (property.equals("define") && offsetPv != null) {
+			return offsetPv.isDiscrete();
 		}
 		return false;
 	}
@@ -349,9 +366,6 @@ public class CommonTableElement {
 		else if (property.equals("unit") && unitPv != null) {
 			return unitPv.isConnected();
 		}
-		else if (property.equals("set") && setPv != null) {
-			return setPv.isConnected();
-		}
 		else if (property.equals("status") && statusPv != null) {
 			return statusPv.isConnected();
 		}
@@ -369,6 +383,9 @@ public class CommonTableElement {
 		}
 		else if (property.equals("tweakreverse") && tweakreversePv != null) {
 			return tweakreversePv.isConnected();
+		}
+		else if (property.equals("define") && offsetPv != null) {
+			return offsetPv.isConnected();
 		}
 		return false;
 	}
@@ -403,9 +420,6 @@ public class CommonTableElement {
 			if (unitPv != null) status = unitPv.getStatus();
 		}
 		else if (property.equals("goto")) {
-			if (gotoPv != null) status = gotoPv.getStatus();
-		}
-		else if (property.equals("set")) {
 			if (gotoPv != null) status = gotoPv.getStatus();
 		}
 		else if (property.equals("tweakvalue")) {
@@ -450,10 +464,6 @@ public class CommonTableElement {
 			else if (property.equals("goto")){
 				if ((gotoPv != null) && gotoPv.isDiscrete()) 
 					return gotoPv.getDiscreteValues();
-			}
-			else if (property.equals("set")){
-				if ((setPv != null) && setPv.isDiscrete())
-					return setPv.getDiscreteValues();
 			}
 		}
 		return new ArrayList<String>().toArray(new String[0]);
@@ -506,9 +516,7 @@ public class CommonTableElement {
 	 * @return
 	 */
 	public String getValue(String property) {
-		if (property.equals("set") && (setPv != null))
-			return setPv.getValue();
-		else if (property.equals("goto") && (gotoPv != null))
+		if (property.equals("goto") && (gotoPv != null))
 			return gotoPv.getValue();
 		else if (property.equals("engine") && (engine != null))
 			return engine.getValue();
@@ -556,6 +564,8 @@ public class CommonTableElement {
 		else if (property.equals("tweakvalue") && (tweakvaluePv != null)) {
 			return tweakvaluePv.getValue();
 		}
+		else if (property.equals("define") && (offsetPv != null))
+			return "";
 		return "";
 	}
 
@@ -576,18 +586,7 @@ public class CommonTableElement {
 		else if (value instanceof String)
 			newValue = (String) value;
 
-		if (column.equals("set") && (setPv != null))
-			setPv.setValue(newValue);
-		else if (column.equals("goto") && (gotoPv != null)) {
-			// if PositionMode is on Set, this is a define of the motor position
-			if (setPv.getValue().equals("Set")) {
-				MotorAxis motorAxis = (MotorAxis)device;
-				Activator.getDefault().getMessagesContainer().addMessage(
-						new ViewerMessage(MessageSource.VIEWER, 
-								MessageTypes.INFO, "Define " + 
-								motorAxis.getFullIdentifyer() + " from " +
-								gotoPv.getValue() + " to " + newValue));
-			}
+		if (column.equals("goto") && (gotoPv != null)) {
 			gotoPv.setValue(newValue);
 		}
 		else if (column.equals("value") && (valuePv != null))
@@ -596,6 +595,27 @@ public class CommonTableElement {
 			unitPv.setValue(newValue);
 		else if (column.equals("tweakvalue") && (tweakvaluePv != null))
 			tweakvaluePv.setValue(newValue);
+		else if (column.equals("define") && (offsetPv != null)) {
+			// this is a define of the motor position
+			// first, remember softHighLimit and softLowLimit
+			String softHighLimit = softHighLimitPv.getValue();
+			String softLowLimit = softLowLimitPv.getValue();
+			// second, calculate new offset value
+			// offset = newValue + offset - position
+			Double newOffset = Double.parseDouble(newValue) + 
+					Double.parseDouble(offsetPv.getValue()) - 
+					Double.parseDouble(valuePv.getValue());
+			MotorAxis motorAxis = (MotorAxis)device;
+			Activator.getDefault().getMessagesContainer().addMessage(
+					new ViewerMessage(MessageSource.VIEWER, 
+							MessageTypes.INFO, "Define " + 
+							motorAxis.getFullIdentifyer() + " from " +
+							gotoPv.getValue() + " to " + newValue));
+			offsetPv.setValue(newOffset.toString());
+			// third, set old softHighLimit and softLowLimit
+			softHighLimitPv.setValue(softHighLimit);
+			softLowLimitPv.setValue(softLowLimit);
+		}
 	}
 
 	/**

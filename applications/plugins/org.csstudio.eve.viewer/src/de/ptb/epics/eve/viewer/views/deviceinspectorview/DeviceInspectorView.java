@@ -62,6 +62,7 @@ import de.ptb.epics.eve.viewer.SelectionProviderWrapper;
  * 
  * @author Stephan Rehfeld <stephan.rehfeld@ptb.de>
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class DeviceInspectorView extends ViewPart {
 
@@ -638,29 +639,6 @@ public class DeviceInspectorView extends ViewPart {
 		});
 		statusColumn.getColumn().setWidth(70);
 		
-		TableViewerColumn setColumn = 
-				new TableViewerColumn(axisTableViewer, SWT.NONE);
-		setColumn.getColumn().setText("Set/Use");
-		setColumn.setEditingSupport(
-				new CommonTableEditingSupport(axisTableViewer, "set"));
-		setColumn.setLabelProvider(new ColumnLabelProvider() {
-			@Override public String getText(Object element) {
-				return ((CommonTableElement) element).getValue("set");
-			}
-			@Override public Color getForeground(Object element) {
-				return ((CommonTableElement) element).getSeverityColor("set");
-			}
-			@Override public String getToolTipText(Object element) {
-				MotorAxis axis = (MotorAxis)
-						((CommonTableElement)element).getAbstractDevice();
-				if(axis.getSet() != null && axis.getSet().getAccess() != null) {
-					return axis.getSet().getAccess().getVariableID();
-				}
-				return null;
-			}
-		});
-		setColumn.getColumn().setWidth(60);
-		
 		TableViewerColumn tweakRColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);
 		tweakRColumn.setEditingSupport(
@@ -730,6 +708,30 @@ public class DeviceInspectorView extends ViewPart {
 			}
 		});
 		tweakFColumn.getColumn().setWidth(22);
+
+		TableViewerColumn defineValueColumn = 
+				new TableViewerColumn(axisTableViewer, SWT.NONE);
+		defineValueColumn.getColumn().setText("Define");
+		defineValueColumn.setEditingSupport(
+				new CommonTableEditingSupport(axisTableViewer, "define"));
+		defineValueColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override public String getText(Object element) {
+				return ((CommonTableElement) element).getValue("define");
+			}
+			@Override public Color getForeground(Object element) {
+				return ((CommonTableElement) element).getSeverityColor("define");
+			}
+			@Override public String getToolTipText(Object element) {
+				MotorAxis axis = (MotorAxis) 
+						((CommonTableElement)element).getAbstractDevice();
+				if(axis.getOffset() != null && 
+				   axis.getOffset().getAccess() != null) {
+					return axis.getOffset().getAccess().getVariableID();
+				}
+				return null;
+			}
+		});
+		defineValueColumn.getColumn().setWidth(90);
 		
 		TableViewerColumn emptyColumn = 
 				new TableViewerColumn(axisTableViewer, SWT.NONE);

@@ -256,7 +256,9 @@ public class PVWrapper {
 		try {
 			this.pv2.setValue(newVal);
 			if (this.triggerPV != null) {
-				this.triggerPV.setValue(1);
+				// TODO: Die trigger PV soll nicht mit 2 oder 1 gesetzt werden
+				// sondern mit dem Wert der im XML-File steht!
+				this.triggerPV.setValue(2);
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
