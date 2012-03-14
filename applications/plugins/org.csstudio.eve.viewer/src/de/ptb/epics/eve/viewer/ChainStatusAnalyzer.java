@@ -47,10 +47,12 @@ public class ChainStatusAnalyzer implements IEngineStatusListener, IChainStatusL
 			engineStatus == EngineStatus.IDLE_XML_LOADED) {
 			// Es wird gerade ein neues XML-File geladen, ChainStatusListe löschen
 			this.resetChainList();
-
-			final Iterator< IUpdateListener > it = this.updateListener.iterator();
-			while( it.hasNext() ) {
-				it.next().setLoadedScmlFile(xmlName);
+			
+			for(IUpdateListener iul : this.updateListener) {
+				iul.setLoadedScmlFile(xmlName);
+				if(engineStatus == EngineStatus.IDLE_XML_LOADED) {
+					iul.fillEngineStatus(engineStatus, repeatCount);
+				}
 			}
 		}
 		else {
