@@ -130,7 +130,7 @@ public final class EngineView extends ViewPart
 		
 		this.engineLabel = new Label(this.top, SWT.NONE);
 		this.engineLabel.setText("ENGINE:");
-
+	
 		this.engineComposite = new Composite(this.top, SWT.NONE);
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 4;
@@ -144,12 +144,12 @@ public final class EngineView extends ViewPart
 		this.startButton.setText("start");
 		this.startButton.setToolTipText("Start engine");
 		this.startButton.addSelectionListener(new StartButtonSelectionListener());
-
+	
 		this.killButton = new Button(this.engineComposite, SWT.PUSH);
 		this.killButton.setText("kill");
 		this.killButton.setToolTipText("Kill engine");
 		this.killButton.addSelectionListener(new KillButtonSelectionListener());
-
+	
 		this.connectButton = new Button(this.engineComposite, SWT.PUSH);
 		this.connectButton.setText("connect");
 		this.connectButton.setToolTipText("Connect to Engine");
@@ -168,12 +168,11 @@ public final class EngineView extends ViewPart
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 4;
 		this.statusLabel.setLayoutData( gridData );
-
+	
 		this.scanLabel = new Label(this.top, SWT.NONE);
 		this.scanLabel.setText("SCAN:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 1;
 		this.scanLabel.setLayoutData(gridData);
 		
 		this.scanComposite = new Composite(this.top, SWT.NONE);
@@ -184,51 +183,49 @@ public final class EngineView extends ViewPart
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;
 		this.scanComposite.setLayoutData(gridData);
-
+	
 		this.playButton = new Button(this.scanComposite, SWT.PUSH);
 		this.playButton.setImage(playIcon);
 		this.playButton.setToolTipText("Play");
 		this.playButton.addSelectionListener(new PlayButtonSelectionListener());
-
+	
 		this.pauseButton = new Button(this.scanComposite, SWT.PUSH);
 		this.pauseButton.setImage(pauseIcon);
 		this.pauseButton.setToolTipText("Pause");
 		this.pauseButton.addSelectionListener(new PauseButtonSelectionListener());
-
+	
 		this.stopButton = new Button(this.scanComposite, SWT.PUSH );
 		this.stopButton.setImage(stopIcon);
 		this.stopButton.setToolTipText("Stop");
 		this.stopButton.addSelectionListener(new StopButtonSelectionListener());
-
+	
 		this.skipButton = new Button(this.scanComposite, SWT.PUSH);
 		this.skipButton.setImage(skipIcon);
 		this.skipButton.setToolTipText("Skip");
 		this.skipButton.addSelectionListener(new SkipButtonSelectionListener());
-
+	
 		this.haltButton = new Button(this.scanComposite, SWT.PUSH);
 		this.haltButton.setImage(haltIcon);
 		this.haltButton.setToolTipText("Halt");
 		this.haltButton.addSelectionListener(new HaltButtonSelectionListener());
-
+	
 		this.autoPlayOnButton = new Button(this.scanComposite, SWT.TOGGLE);
 		this.autoPlayOnButton.setImage(autoPlayIcon);
 		this.autoPlayOnButton.setToolTipText("AutoPlayOn");
 		this.autoPlayOnButton.addSelectionListener(
 				new AutoPlayOnButtonSelectionListener());
-
+	
 		this.autoPlayOffButton = new Button(this.scanComposite, SWT.TOGGLE);
 		this.autoPlayOffButton.setImage(autoPlayIcon);
 		this.autoPlayOffButton.setToolTipText("AutoPlayOff");
 		this.autoPlayOffButton.addSelectionListener(
 				new AutoPlayOffButtonSelectionListener());
-
+	
 		this.repeatCountLabel = new Label(this.scanComposite, SWT.NONE);
 		this.repeatCountLabel.setText("repeat count:");
 		this.repeatCountText = new Text(this.scanComposite, SWT.BORDER);
 		repeatCount = 0;
 		repeatCountText.setText("000000");
-		// TODO: Wenn repeatCount während der Laufzeit des Scans verändert werden 
-		// darf, muß die nächste Zeile entfernt werden
 		this.repeatCountText.setEditable(false);
 		
 		this.loadedScmlLabel = new Label(this.top, SWT.NONE);
@@ -236,8 +233,8 @@ public final class EngineView extends ViewPart
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
-		this.loadedScmlLabel.setLayoutData( gridData );
-
+		this.loadedScmlLabel.setLayoutData(gridData);
+	
 		this.loadedScmlText = new Text(this.top, SWT.BORDER);
 		this.loadedScmlText.setEditable(false);
 		gridData = new GridData();
@@ -245,14 +242,14 @@ public final class EngineView extends ViewPart
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
 		this.loadedScmlText.setLayoutData(gridData);
-
+	
 		this.chainFilenameLabel = new Label(this.top, SWT.NONE);
 		this.chainFilenameLabel.setText("Filename:");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
 		this.chainFilenameLabel.setLayoutData(gridData);
-
+	
 		this.filenameText = new Text(this.top, SWT.BORDER | SWT.TRAIL);
 		this.filenameText.setEditable(false);
 		gridData = new GridData();
@@ -267,12 +264,11 @@ public final class EngineView extends ViewPart
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
 		this.commentLabel.setLayoutData(gridData);
-
+	
 		this.commentText = new Text( this.top, SWT.BORDER);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 1;
 		this.commentText.setLayoutData(gridData);
 		
 		this.commentSendButton = new Button(this.top, SWT.NONE);
@@ -288,7 +284,7 @@ public final class EngineView extends ViewPart
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 10;
+		gridData.horizontalSpan = 4;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 	    
@@ -308,15 +304,15 @@ public final class EngineView extends ViewPart
 		TableColumn tableColumn3 = new TableColumn(this.statusTable, SWT.NONE);
 		tableColumn3.setWidth(120);
 		tableColumn3.setText("remaining Time");
-
+	
 		// SelectionListener um zu erkennen, wann eine Zeile selektiert wird
 		this.statusTable.addSelectionListener(new StatusTableSelectionListener());
-
+	
 		Activator.getDefault().getChainStatusAnalyzer().addUpdateListener(this);
 		Activator.getDefault().getEcp1Client().addErrorListener(this);
 		this.rebuildText(0);
 		Activator.getDefault().getEcp1Client().addConnectionStateListener(this);
-
+	
 		final String engineString = de.ptb.epics.eve.preferences.Activator.
 				getDefault().getPreferenceStore().getString(
 				PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
@@ -353,6 +349,97 @@ public final class EngineView extends ViewPart
 	}
 
 	/**
+	 * 
+	 * @param filename
+	 */
+	public void setActualFilename(final String filename) {
+		// der Name des geladenen scml-Files wird angezeigt
+		this.filenameText.getDisplay().syncExec(new Runnable() {
+			@Override public void run() {
+				filenameText.setText(filename);
+				int lastSign = filename.length();
+				filenameText.setSelection(lastSign);
+			}
+		});
+	}
+
+	private void rebuildText(int remainTime) {
+	
+		if( Activator.getDefault().getCurrentScanDescription() != null ) {
+			final Iterator< Chain > it = Activator.getDefault().getCurrentScanDescription().getChains().iterator();
+	
+			while( it.hasNext() ) {
+				final Chain currentChain = it.next();
+	
+				if( Activator.getDefault().getChainStatusAnalyzer().getRunningChains().contains( currentChain ) ) {
+					fillStatusTable(currentChain.getId(), -1, "running", remainTime);
+	
+				} else if( Activator.getDefault().getChainStatusAnalyzer().getExitedChains().contains( currentChain ) ) {
+					fillStatusTable(currentChain.getId(), -1, "exited", remainTime);
+	
+				} else {
+					fillStatusTable(currentChain.getId(), -1, "idle", remainTime);
+	
+				}
+				final List< ScanModule > scanModules = currentChain.getScanModules();
+				
+				final List< ScanModule > running = Activator.getDefault().getChainStatusAnalyzer().getExecutingScanModules();
+				for( final ScanModule scanModule : running ) {
+					if( scanModules.contains( scanModule ) ) {
+						fillStatusTable(currentChain.getId(), scanModule.getId(), "running", remainTime);
+					}
+				}
+				
+				final List< ScanModule > exited = Activator.getDefault().getChainStatusAnalyzer().getExitingScanModules();
+				for( final ScanModule scanModule : exited ) {
+					if( scanModules.contains( scanModule ) ) {
+						fillStatusTable(currentChain.getId(), scanModule.getId(), "exited", remainTime);
+					}
+				}
+	
+				final List< ScanModule > initialized = Activator.getDefault().getChainStatusAnalyzer().getInitializingScanModules();
+				for( final ScanModule scanModule : initialized ) {
+					if( scanModules.contains( scanModule ) ) {
+						fillStatusTable(currentChain.getId(), scanModule.getId(), "initialized", remainTime);
+					}
+				}
+			
+				final List< ScanModule > paused = Activator.getDefault().getChainStatusAnalyzer().getPausedScanModules();
+				for( final ScanModule scanModule : paused ) {
+					if( scanModules.contains( scanModule ) ) {
+						fillStatusTable(currentChain.getId(), scanModule.getId(), "paused", remainTime);
+					}
+				}
+	
+				final List< ScanModule > waiting = Activator.getDefault().getChainStatusAnalyzer().getWaitingScanModules();
+				for( final ScanModule scanModule : waiting ) {
+					if( scanModules.contains( scanModule ) ) {
+						fillStatusTable(currentChain.getId(), scanModule.getId(), "waiting for trigger", remainTime);
+					}
+				}
+			}
+		}
+	}
+
+	/*
+	 * 
+	 */
+	private void setCurrentRepeatCount(final int repeatCount) {
+		if (this.repeatCount != repeatCount) {
+			this.repeatCount = repeatCount;
+			this.repeatCountText.getDisplay().syncExec(new Runnable() {
+				@Override public void run() {
+					repeatCountText.setText(String.valueOf(repeatCount));
+				}
+			});
+		}
+	}
+
+	/* ******************************************************************** */
+	/* ************************* IUpdateListener ************************** */
+	/* ******************************************************************** */
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -377,22 +464,9 @@ public final class EngineView extends ViewPart
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void disableSendToFile() {
-		// send to File wird verboten
-		this.commentSendButton.getDisplay().syncExec( new Runnable() {
-			public void run() {
-				commentSendButton.setEnabled(false);
-			}
-		});
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public void fillStatusTable(final int chainId, final int scanModuleId, final String statString, final int remainTime) {
 		// Wenn die scanModuleId -1 ist, wird eine Zeile geändert in der nur die chainId eingetragen ist
-
+	
 		this.statusTable.getDisplay().syncExec( new Runnable() {
 			@Override public void run() {
 				// Die sichtbare Höhe wird auf 3 Zeilen eingestellt
@@ -407,7 +481,7 @@ public final class EngineView extends ViewPart
 					String text1 = rows[i].getText(1).toString().trim();
 					int cell0 = Integer.parseInt(text0);
 					int cell1;
-
+	
 					if (text1.equals("")) {
 						// smid-Feld ist leer, cell1 wird auf -1 gesetzt
 						cell1 = -1;
@@ -429,7 +503,7 @@ public final class EngineView extends ViewPart
 				if (neu) {
 					// neuer Tabelleneintrag muß gemacht werden
 					TableItem tableItem = new TableItem( statusTable, 0 );
-
+	
 					tableItem.setText( 0, " "+chainId);
 					if (scanModuleId == -1) {
 						tableItem.setText( 1, " ");
@@ -439,112 +513,6 @@ public final class EngineView extends ViewPart
 						tableItem.setText( 1, " "+scanModuleId);
 					}
 					tableItem.setText( 2, statString);
-				}
-			}
-		});
-	}
-	
-	private void rebuildText(int remainTime) {
-
-		if( Activator.getDefault().getCurrentScanDescription() != null ) {
-			final Iterator< Chain > it = Activator.getDefault().getCurrentScanDescription().getChains().iterator();
-
-			while( it.hasNext() ) {
-				final Chain currentChain = it.next();
-
-				if( Activator.getDefault().getChainStatusAnalyzer().getRunningChains().contains( currentChain ) ) {
-					fillStatusTable(currentChain.getId(), -1, "running", remainTime);
-
-				} else if( Activator.getDefault().getChainStatusAnalyzer().getExitedChains().contains( currentChain ) ) {
-					fillStatusTable(currentChain.getId(), -1, "exited", remainTime);
-
-				} else {
-					fillStatusTable(currentChain.getId(), -1, "idle", remainTime);
-
-				}
-				final List< ScanModule > scanModules = currentChain.getScanModules();
-				
-				final List< ScanModule > running = Activator.getDefault().getChainStatusAnalyzer().getExecutingScanModules();
-				for( final ScanModule scanModule : running ) {
-					if( scanModules.contains( scanModule ) ) {
-						fillStatusTable(currentChain.getId(), scanModule.getId(), "running", remainTime);
-					}
-				}
-				
-				final List< ScanModule > exited = Activator.getDefault().getChainStatusAnalyzer().getExitingScanModules();
-				for( final ScanModule scanModule : exited ) {
-					if( scanModules.contains( scanModule ) ) {
-						fillStatusTable(currentChain.getId(), scanModule.getId(), "exited", remainTime);
-					}
-				}
-
-				final List< ScanModule > initialized = Activator.getDefault().getChainStatusAnalyzer().getInitializingScanModules();
-				for( final ScanModule scanModule : initialized ) {
-					if( scanModules.contains( scanModule ) ) {
-						fillStatusTable(currentChain.getId(), scanModule.getId(), "initialized", remainTime);
-					}
-				}
-			
-				final List< ScanModule > paused = Activator.getDefault().getChainStatusAnalyzer().getPausedScanModules();
-				for( final ScanModule scanModule : paused ) {
-					if( scanModules.contains( scanModule ) ) {
-						fillStatusTable(currentChain.getId(), scanModule.getId(), "paused", remainTime);
-					}
-				}
-
-				final List< ScanModule > waiting = Activator.getDefault().getChainStatusAnalyzer().getWaitingScanModules();
-				for( final ScanModule scanModule : waiting ) {
-					if( scanModules.contains( scanModule ) ) {
-						fillStatusTable(currentChain.getId(), scanModule.getId(), "waiting for trigger", remainTime);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void stackConnected() {
-		this.connectButton.setEnabled(false);
-		this.startButton.setEnabled(false);
-		this.disconnectButton.setEnabled(true);
-		this.killButton.setEnabled(true);
-
-		// Output connected to host.
-		final String engineString = de.ptb.epics.eve.preferences.Activator.getDefault().getPreferenceStore().getString( PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS );
-		this.statusLabel.getDisplay().syncExec( new Runnable() {
-			@Override public void run() {
-				statusLabel.setText("connected to " + engineString);
-			}
-		});
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void stackDisconnected() {
-
-		if (!this.loadedScmlText.isDisposed()) this.loadedScmlText.getDisplay().syncExec( new Runnable() {
-
-			@Override public void run() {
-				if (!loadedScmlText.isDisposed()) {
-
-					disconnectButton.setEnabled(false);
-					connectButton.setEnabled(true);
-					killButton.setEnabled(false);
-					startButton.setEnabled(true);
-					statusLabel.setText("not connected");
-
-					// disable scan buttons if engine disconnected
-					playButton.setEnabled(false);
-					pauseButton.setEnabled(false);
-					stopButton.setEnabled(false);
-					skipButton.setEnabled(false);
-					haltButton.setEnabled(false);
 				}
 			}
 		});
@@ -563,28 +531,13 @@ public final class EngineView extends ViewPart
 	}
 
 	/**
-	 * 
-	 * @param filename
-	 */
-	public void setActualFilename(final String filename) {
-		// der Name des geladenen scml-Files wird angezeigt
-		this.filenameText.getDisplay().syncExec(new Runnable() {
-			@Override public void run() {
-				filenameText.setText(filename);
-				int lastSign = filename.length();
-				filenameText.setSelection(lastSign);
-			}
-		});
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void fillEngineStatus(EngineStatus engineStatus, int repeatCount) {
-
+	
 		setCurrentRepeatCount(repeatCount);
-
+	
 		switch(engineStatus) {
 			case IDLE_NO_XML_LOADED:
 				this.playButton.getDisplay().syncExec( new Runnable() {
@@ -667,7 +620,7 @@ public final class EngineView extends ViewPart
 	 */
 	@Override
 	public void setAutoPlayStatus(final boolean autoPlayStatus) {
-		this.autoPlayOnButton.getDisplay().syncExec( new Runnable() {
+		this.autoPlayOnButton.getDisplay().syncExec(new Runnable() {
 			@Override public void run() {
 				if (autoPlayStatus == true) {
 					autoPlayOnButton.setEnabled(false);
@@ -678,54 +631,106 @@ public final class EngineView extends ViewPart
 				}
 			}
 		});
-		
 	}
 
-	/*
-	 * 
+	/**
+	 * {@inheritDoc}
 	 */
-	private void setCurrentRepeatCount(final int repeatCount) {
-		if (this.repeatCount != repeatCount){
-			this.repeatCount = repeatCount;
-			this.repeatCountText.getDisplay().syncExec(new Runnable() {
-				@Override public void run() {
-					repeatCountText.setText(String.valueOf(repeatCount));
-				}
-			});
-		}
+	@Override
+	public void disableSendToFile() {
+		this.commentSendButton.getDisplay().syncExec(new Runnable() {
+			@Override public void run() {
+				commentSendButton.setEnabled(false);
+			}
+		});
 	}
 	
+	/* ******************************************************************** */
+	/* ******************** IConnectionStateListener ********************** */
+	/* ******************************************************************** */
+
 	/**
-	 * {@inheritDoc}}
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void stackConnected() {
+		this.connectButton.setEnabled(false);
+		this.startButton.setEnabled(false);
+		this.disconnectButton.setEnabled(true);
+		this.killButton.setEnabled(true);
+		
+		final String engineString = de.ptb.epics.eve.preferences.Activator.
+				getDefault().getPreferenceStore().getString(
+						PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
+		this.statusLabel.getDisplay().syncExec(new Runnable() {
+			@Override public void run() {
+				statusLabel.setText("connected to " + engineString);
+			}
+		});
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void stackDisconnected() {
+		if (this.loadedScmlText.isDisposed()) {
+			return;
+		}
+		
+		this.loadedScmlText.getDisplay().syncExec(new Runnable() {
+			@Override public void run() {
+				if (!loadedScmlText.isDisposed()) {
+					disconnectButton.setEnabled(false);
+					connectButton.setEnabled(true);
+					killButton.setEnabled(false);
+					startButton.setEnabled(true);
+					statusLabel.setText("not connected");
+					
+					// disable scan buttons if engine disconnected
+					playButton.setEnabled(false);
+					pauseButton.setEnabled(false);
+					stopButton.setEnabled(false);
+					skipButton.setEnabled(false);
+					haltButton.setEnabled(false);
+				}
+			}
+		});
+	}
+
+	/* ******************************************************************** */
+	/* ************************* IErrorListener *************************** */
+	/* ******************************************************************** */
+
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void errorOccured(Error error) {
 		if (error.getErrorType() == ErrorType.FILENAME) {
-			// Aktueller Filename wird gesetzt
 			setActualFilename(error.getText());
 			// send to File wird erlaubt
 			this.commentSendButton.getDisplay().syncExec( new Runnable() {
-				public void run() {
+				@Override public void run() {
 					commentSendButton.setEnabled(true);
 				}
 			});
 		}
 	}
 
-	///////////////////////////////////////////////////////////
-	// Hier kommen jetzt die verschiedenen Listener Klassen
-	///////////////////////////////////////////////////////////
-	
-	// Wenn eine Zeile in der Tabelle der Chains und ScanModule angeklickt wird,
-	// öffnet sich ein separates Fenster in dem die Detail der Chain/SM zu sehen sind
-	// Beim nochmaligen anklicken wird das Fenster wieder entfernt.
-	
+	/* ********************************************************************* */
+	/* *************************** Listeners ******************************* */
+	/* ********************************************************************* */
 	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener}
-	 * 
+	 * <p>
+	 * Wenn eine Zeile in der Tabelle der Chains und ScanModule angeklickt 
+	 * wird, öffnet sich ein separates Fenster in dem die Detail der Chain/SM 
+	 * zu sehen sind. Beim nochmaligen anklicken wird das Fenster wieder 
+	 * entfernt.
 	 */
-	class StatusTableSelectionListener implements SelectionListener {
+	private class StatusTableSelectionListener implements SelectionListener {
 
 		/**
 		 * {@inheritDoc}
@@ -1013,13 +1018,14 @@ public final class EngineView extends ViewPart
 	 * {@link org.eclipse.swt.events.SelectionListener} of Play Button from
 	 * <code>EngineView</code>.
 	 */
-	class PlayButtonSelectionListener implements SelectionListener {
+	private class PlayButtonSelectionListener implements SelectionListener {
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected( final SelectionEvent e ) {
 		}
+		
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1033,13 +1039,14 @@ public final class EngineView extends ViewPart
 	 * {@link org.eclipse.swt.events.SelectionListener} of Pause Button from
 	 * <code>EngineView</code>.
 	 */
-	class PauseButtonSelectionListener implements SelectionListener {
+	private class PauseButtonSelectionListener implements SelectionListener {
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
+		
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1053,13 +1060,14 @@ public final class EngineView extends ViewPart
 	 * {@link org.eclipse.swt.events.SelectionListener} of Stop Button from
 	 * <code>EngineView</code>.
 	 */
-	class StopButtonSelectionListener implements SelectionListener {
+	private class StopButtonSelectionListener implements SelectionListener {
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
+		
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1073,19 +1081,21 @@ public final class EngineView extends ViewPart
 	 * {@link org.eclipse.swt.events.SelectionListener} of Skip Button from
 	 * <code>EngineView</code>.
 	 */
-	class SkipButtonSelectionListener implements SelectionListener {
+	private class SkipButtonSelectionListener implements SelectionListener {
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
+		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			Activator.getDefault().getEcp1Client().getPlayController().breakExecution();
+			Activator.getDefault().getEcp1Client().getPlayController().
+					breakExecution();
 		}
 	}
 
@@ -1093,13 +1103,14 @@ public final class EngineView extends ViewPart
 	 * {@link org.eclipse.swt.events.SelectionListener} of Halt Button from
 	 * <code>EngineView</code>.
 	 */
-	class HaltButtonSelectionListener implements SelectionListener {
+	private class HaltButtonSelectionListener implements SelectionListener {
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
+		
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1113,7 +1124,7 @@ public final class EngineView extends ViewPart
 	 * {@link org.eclipse.swt.events.SelectionListener} of Start Button from
 	 * <code>EngineView</code>.
 	 */
-	class StartButtonSelectionListener implements SelectionListener {
+	private class StartButtonSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1142,7 +1153,7 @@ public final class EngineView extends ViewPart
 	 * {@link org.eclipse.swt.events.SelectionListener} of Kill Button from
 	 * <code>EngineView</code>.
 	 */
-	class KillButtonSelectionListener implements SelectionListener {
+	private class KillButtonSelectionListener implements SelectionListener {
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1154,7 +1165,8 @@ public final class EngineView extends ViewPart
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			Activator.getDefault().getEcp1Client().getPlayController().shutdownEngine();
+			Activator.getDefault().getEcp1Client().getPlayController().
+					shutdownEngine();
 		}
 	}
 
@@ -1162,13 +1174,14 @@ public final class EngineView extends ViewPart
 	 * {@link org.eclipse.swt.events.SelectionListener} of Connect Button from
 	 * <code>EngineView</code>.
 	 */
-	class ConnectButtonSelectionListener implements SelectionListener {
+	private class ConnectButtonSelectionListener implements SelectionListener {
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
+		
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1176,9 +1189,11 @@ public final class EngineView extends ViewPart
 		public void widgetSelected(SelectionEvent e) {
 			if( !Activator.getDefault().getEcp1Client().isRunning()) {
 				// start ecp1Client
-				IHandlerService handlerService = (IHandlerService) PlatformUI.getWorkbench().getService(IHandlerService.class);
+				IHandlerService handlerService = (IHandlerService) PlatformUI.
+						getWorkbench().getService(IHandlerService.class);
 				try {
-					handlerService.executeCommand("de.ptb.epics.eve.viewer.connectCommand", null);
+					handlerService.executeCommand(
+						"de.ptb.epics.eve.viewer.connectCommand", null);
 				} catch (Exception e2) {
 					logger.error(e2.getMessage(), e2);
 				}
@@ -1190,13 +1205,14 @@ public final class EngineView extends ViewPart
 	 * {@link org.eclipse.swt.events.SelectionListener} of Disconnect Button 
 	 * from <code>EngineView</code>.
 	 */
-	class DisconnectButtonSelectionListener implements SelectionListener {
+	private class DisconnectButtonSelectionListener implements SelectionListener {
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
+		
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1204,9 +1220,11 @@ public final class EngineView extends ViewPart
 		public void widgetSelected(SelectionEvent e) {
 			if( Activator.getDefault().getEcp1Client().isRunning()) {
 				// start ecp1Client
-				IHandlerService handlerService = (IHandlerService) PlatformUI.getWorkbench().getService(IHandlerService.class);
+				IHandlerService handlerService = (IHandlerService) PlatformUI.
+						getWorkbench().getService(IHandlerService.class);
 				try {
-					handlerService.executeCommand("de.ptb.epics.eve.viewer.disconnectCommand", null);
+					handlerService.executeCommand(
+						"de.ptb.epics.eve.viewer.disconnectCommand", null);
 				} catch (Exception e2) {
 					logger.error(e2.getMessage(), e2);
 				}
@@ -1218,7 +1236,7 @@ public final class EngineView extends ViewPart
 	 * {@link org.eclipse.swt.events.SelectionListener} of AutoPlayOn Button 
 	 * from <code>EngineView</code>.
 	 */
-	class AutoPlayOnButtonSelectionListener implements SelectionListener {
+	private class AutoPlayOnButtonSelectionListener implements SelectionListener {
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1239,7 +1257,8 @@ public final class EngineView extends ViewPart
 	 * {@link org.eclipse.swt.events.SelectionListener} of AutoPlayOff Button 
 	 * from <code>EngineView</code>.
 	 */
-	class AutoPlayOffButtonSelectionListener implements SelectionListener {
+	private class AutoPlayOffButtonSelectionListener 
+			implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1262,7 +1281,8 @@ public final class EngineView extends ViewPart
 	 * {@link org.eclipse.swt.events.SelectionListener}
 	 *  of SendtoFile Button from <code>EngineView</code>.
 	 */
-	class CommentSendButtonSelectionListener implements SelectionListener {
+	private class CommentSendButtonSelectionListener 
+			implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
