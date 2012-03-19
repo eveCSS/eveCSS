@@ -1127,30 +1127,27 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 	public void endDocument() throws SAXException { 
 		
 		// loop through axes and create events for every 
-		// position and status access if monitor equals true
+		// position access if monitor equals true
 		// Create events for options if monitor equals true.
+
 		for (Motor m : this.measuringStation.getMotors()) {
 			for (MotorAxis ma : m.getAxes()) {
 				if (ma.getPosition().getAccess().getMonitor()) {
 					this.measuringStation.add(new Event(
 							ma.getPosition().getAccess(), 
-							ma.getPosition().getValue(), 
+//							ma.getPosition().getValue(), 
+// TODO: der Type kann auch innerhalb des Events im Konstruktor gesetzt werden, da Access
+// übergeben wird!
+							new TypeValue(ma.getPosition().getAccess().getType()),
 							ma.getName() + ".Position", 
 							ma.getID()));
-				}
-				if ((ma.getStatus() != null) && 
-					(ma.getStatus().getAccess().getMonitor())) {
-						this.measuringStation.add(new Event(
-								ma.getStatus().getAccess(), 
-								ma.getStatus().getValue(), 
-								ma.getName() + ".Status", 
-								ma.getID()));
 				}
 				for (Option o : ma.getOptions()) {
 					if (o.getValue().getAccess().getMonitor()) {
 						this.measuringStation.add(new Event(
 								o.getValue().getAccess(), 
-								o.getValue().getValue(), 
+//								o.getValue().getValue(), 
+								new TypeValue(o.getValue().getAccess().getType()),
 								ma.getName() + "." + o.getName(), 
 								o.getID()));
 					}
@@ -1160,7 +1157,8 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				if (o.getValue().getAccess().getMonitor()) {
 					this.measuringStation.add(new Event(
 							o.getValue().getAccess(), 
-							o.getValue().getValue(), 
+//							o.getValue().getValue(),
+							new TypeValue(o.getValue().getAccess().getType()),
 							m.getName() + "." + o.getName(), 
 							o.getID()));
 				}
@@ -1175,7 +1173,8 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				if (ch.getRead().getAccess().getMonitor()) {
 					this.measuringStation.add(new Event(
 							ch.getRead().getAccess(), 
-							ch.getRead().getValue(), 
+//							ch.getRead().getValue(), 
+							new TypeValue(ch.getRead().getAccess().getType()),
 							ch.getName(), 
 							ch.getID()));
 				}
@@ -1183,7 +1182,8 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 					if (o.getValue().getAccess().getMonitor()) {
 						this.measuringStation.add(new Event(
 								o.getValue().getAccess(), 
-								o.getValue().getValue(), 
+//								o.getValue().getValue(), 
+								new TypeValue(o.getValue().getAccess().getType()),
 								ch.getName() + "." + o.getName(), 
 								o.getID()));
 					}
@@ -1193,7 +1193,8 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				if (o.getValue().getAccess().getMonitor()) {
 					this.measuringStation.add(new Event(
 							o.getValue().getAccess(), 
-							o.getValue().getValue(), 
+//							o.getValue().getValue(), 
+							new TypeValue(o.getValue().getAccess().getType()),
 							det.getName() + "." + o.getName(), 
 							o.getID()));
 				}
@@ -1206,7 +1207,8 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			if (dev.getValue().getAccess().getMonitor()) {
 				this.measuringStation.add(new Event(
 						dev.getValue().getAccess(), 
-						dev.getValue().getValue(), 
+//						dev.getValue().getValue(),
+						new TypeValue(dev.getValue().getAccess().getType()),
 						dev.getName(), 
 						dev.getID()));
 			}

@@ -68,6 +68,14 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 		this(type);
 		this.setEvent(event);
 		this.setId(id);
+
+		switch (this.eventType) {
+			case MONITOR:
+				System.out.println("\tControlEvent Konstruktor, event Type: " + event.getType());
+				System.out.println("\t\tgetMonitor().getDataType.getType: " + event.getMonitor().getDataType().getType());
+				this.limit.setType(event.getMonitor().getDataType().getType());
+				break;
+		}
 	}
 	
 	/**
