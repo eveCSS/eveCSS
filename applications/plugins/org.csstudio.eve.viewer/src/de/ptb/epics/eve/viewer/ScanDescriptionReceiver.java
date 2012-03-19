@@ -34,5 +34,6 @@ public class ScanDescriptionReceiver implements IScanDescriptionReceiver {
 				logger.error(e.getMessage(), e);
 			}
 		}
+		logger.debug("scan description received.");
 	}
 }
