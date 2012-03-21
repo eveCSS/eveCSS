@@ -28,9 +28,12 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
 import de.ptb.epics.eve.ecp1.client.model.Error;
+import de.ptb.epics.eve.ecp1.intern.ChainStatus;
+import de.ptb.epics.eve.ecp1.intern.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.intern.EngineStatus;
 import de.ptb.epics.eve.ecp1.intern.ErrorType;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
@@ -43,8 +46,8 @@ import de.ptb.epics.eve.viewer.IUpdateListener;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public final class EngineView extends ViewPart 
-		implements IUpdateListener, IConnectionStateListener, IErrorListener {
+public final class EngineView extends ViewPart implements IUpdateListener, 
+		IConnectionStateListener, IErrorListener, IChainStatusListener {
 
 	/** the public identifier of the view */
 	public static final String id = "EngineView";
@@ -313,6 +316,8 @@ public final class EngineView extends ViewPart
 		this.rebuildText(0);
 		Activator.getDefault().getEcp1Client().addConnectionStateListener(this);
 		
+		Activator.getDefault().getEcp1Client().addChainStatusListener(this);
+		
 		// test whether the engine is already running (button enablement)
 		if (Activator.getDefault().getEcp1Client().isRunning()) {
 			this.setConnectionStatus(ConnectionStatus.CONNECTED);
@@ -492,6 +497,37 @@ public final class EngineView extends ViewPart
 		}
 	}
 	
+	/*
+	 * 
+	 */
+	private void setChainStatus(ChainStatus status) {
+		switch(status) {
+			case SM_PAUSED:	this.playButton.setEnabled(true);
+							this.pauseButton.setEnabled(false);
+							this.stopButton.setEnabled(true);
+							this.skipButton.setEnabled(true);
+							this.haltButton.setEnabled(true);
+							break;
+		}
+	}
+	
+	/* ******************************************************************** */
+	/* ********************** IChainStatusListener ************************ */
+	/* ******************************************************************** */
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void chainStatusChanged(ChainStatusCommand chainStatusCommand) {
+		final ChainStatus status = chainStatusCommand.getChainStatus();
+		Display.getDefault().syncExec(new Runnable() {
+				@Override public void run() {
+					setChainStatus(status);
+				}
+			});
+	}
+	
 	/* ******************************************************************** */
 	/* ************************* IUpdateListener ************************** */
 	/* ******************************************************************** */
@@ -593,7 +629,6 @@ public final class EngineView extends ViewPart
 	 */
 	@Override
 	public void fillEngineStatus(EngineStatus engineStatus, int repeatCount) {
-	
 		logger.debug(engineStatus);
 		
 		setCurrentRepeatCount(repeatCount);
@@ -1315,6 +1350,9 @@ public final class EngineView extends ViewPart
 		}
 	}
 	
+	/*
+	 * 
+	 */
 	private enum ConnectionStatus {
 		CONNECTED,
 		DISCONNECTED
