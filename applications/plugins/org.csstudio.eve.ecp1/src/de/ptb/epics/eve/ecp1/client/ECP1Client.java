@@ -197,9 +197,9 @@ public class ECP1Client {
 		this.inThread.start();
 		this.outThread.start();
 		this.dispatchThread.start();
-		Iterator< IConnectionStateListener > it = this.connectionStateListener.iterator();
-		while( it.hasNext() ) {
-			it.next().stackConnected();
+		
+		for(IConnectionStateListener icsl : this.connectionStateListener) {
+			icsl.stackConnected();
 		}
 	}
 

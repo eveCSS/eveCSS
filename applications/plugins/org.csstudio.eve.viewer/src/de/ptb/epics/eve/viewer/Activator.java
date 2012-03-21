@@ -477,6 +477,10 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, "icons/trigger.gif").createImage());
 		imagereg.put("PLAYALL16", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/playAll2.gif").createImage());
+		imagereg.put("AUTOPLAY_ON", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/stckframe_running_obj.gif"));
+		imagereg.put("AUTOPLAY_OFF", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/stckframe_obj.gif"));
 		
 		imagereg.put("MOTOR", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/motor.gif").createImage());
