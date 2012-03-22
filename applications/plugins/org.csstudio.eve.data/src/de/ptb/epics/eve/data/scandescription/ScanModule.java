@@ -1102,21 +1102,75 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @since 1.1
 	 */
 	public void removeAll() {
+		this.removeAllAxes();
+		this.removeAllChannels();
+		this.removeAllPrescans();
+		this.removeAllPostscans();
+		this.removeAllPositionings();
+		this.removeAllPlotWindows();
+	}
+	
+	/**
+	 * Removes all axes.
+	 * 
+	 * @since 1.1
+	 */
+	public void removeAllAxes() {
 		for(Axis a : this.getAxes()) {
 			this.remove(a);
 		}
+	}
+	
+	/**
+	 * Removes all channels.
+	 * 
+	 * @since 1.1
+	 */
+	public void removeAllChannels() {
 		for(Channel ch : this.getChannels()) {
 			this.remove(ch);
 		}
+	}
+	
+	/**
+	 * Removes all prescans.
+	 * 
+	 * @since 1.1
+	 */
+	public void removeAllPrescans() {
 		for(Prescan pre : this.getPrescans()) {
 			this.remove(pre);
 		}
+	}
+	
+	/**
+	 * Removes all postscans.
+	 * 
+	 * @since 1.1
+	 */
+	public void removeAllPostscans() {
 		for(Postscan post : this.getPostscans()) {
 			this.remove(post);
 		}
+	}
+	
+	/**
+	 * Removes all positionings.
+	 * 
+	 * @since 1.1
+	 */
+	public void removeAllPositionings() {
 		for(Positioning pos : this.getPositionings()) {
 			this.remove(pos);
 		}
+	}
+	
+	/**
+	 * Removes all plot windows.
+	 * 
+	 * @since 1.1
+	 */
+	public void removeAllPlotWindows() {
 		for(PlotWindow plot : this.getPlotWindows()) {
 			this.remove(plot);
 		}
