@@ -66,14 +66,22 @@ public class SaveAllMotorPositions extends Job {
 		}
 		
 		monitor.beginTask(this.getName(), 
-				scanModule.getAxes().length + motorAxes.size()*2);
+				scanModule.getDeviceCount() + motorAxes.size()*2);
 		
-		// delete present axes
-		monitor.subTask("deleting present axes");
-		UIJob deletePresentAxes = new DeletePresentAxes();
-		deletePresentAxes.setUser(true);
-		deletePresentAxes.schedule();
-		monitor.worked(scanModule.getAxes().length);
+		// delete present devices
+		monitor.subTask("removing present devices");
+		UIJob removeAllDevices = new RemoveAllDevices("Remove present Devices", 
+				this.scanModule);
+		removeAllDevices.setUser(true);
+		removeAllDevices.schedule();
+		
+		try {
+			removeAllDevices.join();
+		} catch (InterruptedException e1) {
+			logger.error(e1);
+		}
+		
+		monitor.worked(scanModule.getDeviceCount());
 		
 		// create axes
 		final List<Axis> axes = new ArrayList<Axis>();
@@ -116,39 +124,6 @@ public class SaveAllMotorPositions extends Job {
 	}
 	
 	/* ********************************************************************* */
-	
-	/**
-	 * deletes all axes present in the scan module
-	 * 
-	 * @author Marcus Michalsky
-	 * @since 1.1
-	 */
-	private class DeletePresentAxes extends UIJob {
-		
-		/**
-		 * Constructor.
-		 * 
-		 * @param name the name of the job
-		 */
-		public DeletePresentAxes() {
-			super("deleting present axes");
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public IStatus runInUIThread(IProgressMonitor monitor) {
-			final Axis[] presentAxes = scanModule.getAxes();
-			monitor.beginTask(this.getName(), presentAxes.length);
-			for(Axis a : presentAxes) {
-				monitor.subTask("removing axis " + a.getMotorAxis().getName());
-				scanModule.remove(a);
-				monitor.worked(1);
-			}
-			return Status.OK_STATUS;
-		}
-	}
 	
 	/**
 	 * adds all axes (with MotionDisabled plugin)

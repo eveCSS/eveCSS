@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.apache.log4j.Logger;
-
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
@@ -22,9 +20,6 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 public abstract class AbstractBehavior implements IModelUpdateListener, 
 		IModelUpdateProvider, IModelErrorProvider {
 
-	private static Logger logger = 
-			Logger.getLogger(AbstractBehavior.class.getName());
-	
 	/**
 	 * This list contains all listener for update of this model object.
 	 */
@@ -58,12 +53,6 @@ public abstract class AbstractBehavior implements IModelUpdateListener,
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		if(logger.isDebugEnabled()) {
-			if(modelUpdateEvent != null) {
-				logger.debug(modelUpdateEvent.getSender());
-			}
-			logger.debug("null");
-		}
 		updateListeners();
 	}
 

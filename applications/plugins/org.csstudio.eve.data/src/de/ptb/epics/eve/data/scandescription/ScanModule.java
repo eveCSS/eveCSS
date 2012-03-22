@@ -11,8 +11,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
-import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
-import de.ptb.epics.eve.data.scandescription.errors.ChannelErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.errors.ScanModuleError;
@@ -180,7 +178,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @return An Array, that contains all Prescans.
 	 */
 	public Prescan[] getPrescans() {
-		return this.prescans.toArray( new Prescan[0]);
+		return this.prescans.toArray(new Prescan[0]);
 	}
 	
 	/**
@@ -189,7 +187,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @return An Array, that contains all Postscans.
 	 */
 	public Postscan[] getPostscans() {
-		return this.postscans.toArray( new Postscan[0] );
+		return this.postscans.toArray(new Postscan[0]);
 	}
 	
 	/**
@@ -198,7 +196,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @return An Array, that contains all channel behaviors.
 	 */
 	public Channel[] getChannels() {
-		return this.channels.toArray( new Channel[0]);
+		return this.channels.toArray(new Channel[0]);
 	}
 	
 	/**
@@ -207,7 +205,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @return An Array, that contains all axes behaviors.
 	 */
 	public Axis[] getAxes() {
-		return this.axes.toArray( new Axis[0] );
+		return this.axes.toArray(new Axis[0]);
 	}
 	
 	/**
@@ -216,7 +214,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @return An Array, that contains all plot windows.
 	 */
 	public PlotWindow[] getPlotWindows() {
-		return this.plotWindows.toArray( new PlotWindow[0] );
+		return this.plotWindows.toArray(new PlotWindow[0]);
 	}
 	
 	/**
@@ -225,7 +223,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @return An array of all positionings.
 	 */
 	public Positioning[] getPositionings() {
-		return this.positionings.toArray( new Positioning[0] );
+		return this.positionings.toArray(new Positioning[0]);
 	}
 	
 	/**
@@ -233,9 +231,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param prescan The prescan that should be added to the Scan Modul.
 	 */
-	public void add( final Prescan prescan ) {
-		this.prescans.add( prescan );
-		prescan.addModelUpdateListener( this );
+	public void add(final Prescan prescan) {
+		this.prescans.add(prescan);
+		prescan.addModelUpdateListener(this);
 		updateListeners();
 	}
 	
@@ -244,9 +242,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param postscan The postscan that should be added to the Scan Modul.
 	 */
-	public void add( final Postscan postscan ) {
-		this.postscans.add( postscan );
-		postscan.addModelUpdateListener( this );
+	public void add(final Postscan postscan) {
+		this.postscans.add(postscan);
+		postscan.addModelUpdateListener(this);
 		updateListeners();
 	}
 	
@@ -256,9 +254,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param channel The channel behavior that should be added to the Scan 
 	 * Modul.
 	 */
-	public void add( final Channel channel ) {
-		channel.addModelUpdateListener( this );
-		this.channels.add( channel );
+	public void add(final Channel channel) {
+		channel.addModelUpdateListener(this);
+		this.channels.add(channel);
 		propertyChangeSupport.firePropertyChange("addChannel", channel, null);
 		updateListeners();
 	}
@@ -293,9 +291,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param positioning The positioning to add.
 	 */
-	public void add( final Positioning positioning ) {
-		this.positionings.add( positioning );
-		positioning.addModelUpdateListener( this );
+	public void add(final Positioning positioning) {
+		this.positionings.add(positioning);
+		positioning.addModelUpdateListener(this);
 		updateListeners();
 	}
 	
@@ -304,9 +302,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param prescan The prescan that should be removed.
 	 */
-	public void remove( final Prescan prescan ) {
-		this.prescans.remove( prescan );
-		prescan.removeModelUpdateListener( this );
+	public void remove(final Prescan prescan) {
+		this.prescans.remove(prescan);
+		prescan.removeModelUpdateListener(this);
 		updateListeners();
 	}
 	
@@ -315,9 +313,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param postscan The postscan that should be removed.
 	 */
-	public void remove( final Postscan postscan ) {
-		this.postscans.remove( postscan );
-		postscan.removeModelUpdateListener( this );
+	public void remove(final Postscan postscan) {
+		this.postscans.remove(postscan);
+		postscan.removeModelUpdateListener(this);
 		updateListeners();
 	}
 	
@@ -326,19 +324,19 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param channel The channel behavior that should be removed.
 	 */
-	public void remove( final Channel channel ) {
+	public void remove(final Channel channel) {
 		// falls es DetektorReadyEvents zu dem Channel gibt, werden diese 
 		// entfernt
 		if (channel.getDetectorReadyEvent() != null) {
 			channel.getScanModule().getChain().getScanDescription().
-					removeEventById( channel.getDetectorReadyEvent().getID() );
+					removeEventById(channel.getDetectorReadyEvent().getID());
 			channel.setDetectorReadyEvent(null);
 		};
 
 		// 1. log off listener
-		channel.removeModelUpdateListener( this );
+		channel.removeModelUpdateListener(this);
 		// 2. remove channel
-		this.channels.remove( channel );
+		this.channels.remove(channel);
 		// 3. tell that channel was removed
 		propertyChangeSupport.firePropertyChange("removeChannel", channel, null);
 		propertyChangeSupport.firePropertyChange("removePosChannel", channel, null);
@@ -350,12 +348,12 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param axis The axis behavior that should be removed.
 	 */
-	public void remove( final Axis axis ) {
-		axis.removeModelUpdateListener( this );
+	public void remove(final Axis axis) {
+		axis.removeModelUpdateListener(this);
 		axis.removePropertyChangeListener("mainAxis", this);
 		axis.removePropertyChangeListener("stepcount", this);
 
-		this.axes.remove( axis );
+		this.axes.remove(axis);
 		
 		propertyChangeSupport.firePropertyChange("removeAxis", axis, null);
 		propertyChangeSupport.firePropertyChange("removePosAxis", axis, null);
@@ -367,7 +365,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param plotWindow The plot window that should be removed.
 	 */
-	public void remove( final PlotWindow plotWindow ) {
+	public void remove(final PlotWindow plotWindow) {
 		// remove property Listener of plotWindow
 		this.removePropertyChangeListener("removeAxis", plotWindow);
 		this.removePropertyChangeListener("removeChannel", plotWindow);
@@ -375,8 +373,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		
 		propertyChangeSupport.firePropertyChange("removePlot", plotWindow, null);
 
-		this.plotWindows.remove( plotWindow );
-		plotWindow.removeModelUpdateListener( this );
+		this.plotWindows.remove(plotWindow);
+		plotWindow.removeModelUpdateListener(this);
 		updateListeners();
 	}
 	
@@ -385,9 +383,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param positioning The positioning to remove.
 	 */
-	public void remove( final Positioning positioning ) {
-		this.positionings.remove( positioning );
-		positioning.removeModelUpdateListener( this );
+	public void remove(final Positioning positioning) {
+		this.positionings.remove(positioning);
+		positioning.removeModelUpdateListener(this);
 		updateListeners();
 	}
 	
@@ -407,7 +405,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param appended The connector that brings you to the appended scan modul.
 	 */
-	public void setAppended( final Connector appended ) {
+	public void setAppended(final Connector appended) {
 		this.appended = appended;
 		updateListeners();
 	}
@@ -426,10 +424,10 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param id The new id of the scan modul.
 	 */
-	public void setId( final int id) {
-		if( id < 1 ) {
-			throw new IllegalArgumentException( 
-					"The parameter 'id' must be larger than 0!" );
+	public void setId(final int id) {
+		if(id < 1) {
+			throw new IllegalArgumentException(
+					"The parameter 'id' must be larger than 0!");
 		}
 		this.id = id;
 		updateListeners();
@@ -449,7 +447,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param name The name of the scan modul. Must not be null!
 	 */
-	public void setName( final String name ) {
+	public void setName(final String name) {
 		this.name = name;
 		updateListeners();
 	}
@@ -468,7 +466,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param nested The Connector to the nested scan module.
 	 */
-	public void setNested( final Connector nested ) {
+	public void setNested(final Connector nested) {
 		this.nested = nested;
 	}
 
@@ -486,7 +484,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param parent The Connector to the parent element.
 	 */
-	public void setParent( final Connector parent ) {
+	public void setParent(final Connector parent) {
 		this.parent = parent;
 	}
 
@@ -506,7 +504,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param settletime The settle time.
 	 */
-	public void setSettletime( final double settletime ) {
+	public void setSettletime(final double settletime) {
 		this.settletime = settletime;
 		updateListeners();
 	}
@@ -525,7 +523,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param triggerconfirm
 	 */
-	public void setTriggerconfirm( final boolean triggerconfirm ) {
+	public void setTriggerconfirm(final boolean triggerconfirm) {
 		this.triggerconfirm = triggerconfirm;
 		updateListeners();
 	}
@@ -544,7 +542,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param triggerdelay The trigger delay
 	 */
-	public void setTriggerdelay( final double triggerdelay ) {
+	public void setTriggerdelay(final double triggerdelay) {
 		this.triggerdelay = triggerdelay;
 		updateListeners();
 	}
@@ -564,7 +562,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param type The type of the scan modul.
 	 */
-	public void setType( final String type ) {
+	public void setType(final String type) {
 		this.type = type;
 		updateListeners();
 	}
@@ -585,7 +583,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param chain The Chain where the scan modul is in.
 	 */
-	protected void setChain( final Chain chain) {
+	protected void setChain(final Chain chain) {
 		this.chain = chain;
 	}
 
@@ -616,7 +614,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param x The x-position in the graphical diagramm.
 	 */
-	public void setX( final int x) {
+	public void setX(final int x) {
 		this.x = x;
 		updateListeners();
 	}
@@ -646,13 +644,12 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param pauseEvent The pause event that should be added to the scan modul.
 	 * @return Gives back 'true' if the event has been added and false if not.
 	 */
-	public boolean addPauseEvent( final PauseEvent pauseEvent ) {
-		if( this.pauseEvents.add( pauseEvent ) ) {
-			pauseEvent.addModelUpdateListener( this.pauseControlEventManager );
-			this.pauseControlEventManager.updateEvent( new ModelUpdateEvent( 
-					this, new ControlEventMessage( pauseEvent, 
-					ControlEventMessageEnum.ADDED ) ) );
-//			updateListeners();
+	public boolean addPauseEvent(final PauseEvent pauseEvent) {
+		if (this.pauseEvents.add(pauseEvent)) {
+			pauseEvent.addModelUpdateListener(this.pauseControlEventManager);
+			this.pauseControlEventManager.updateEvent(new ModelUpdateEvent(
+					this, new ControlEventMessage(pauseEvent, 
+					ControlEventMessageEnum.ADDED)));
 			return true;
 		} 
 		return false;
@@ -665,13 +662,12 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * modul.
 	 * @return Gives back 'true' if the event has been removed and false if not.
 	 */
-	public boolean removePauseEvent( final PauseEvent pauseEvent ) {
-		if( this.pauseEvents.remove( pauseEvent ) ) {
+	public boolean removePauseEvent(final PauseEvent pauseEvent) {
+		if (this.pauseEvents.remove(pauseEvent)) {
 			pauseEvent.removeModelUpdateListener(this.pauseControlEventManager);
-			this.pauseControlEventManager.updateEvent( new ModelUpdateEvent( 
-					this, new ControlEventMessage( pauseEvent, 
-					ControlEventMessageEnum.REMOVED ) ) );
-//			updateListeners();
+			this.pauseControlEventManager.updateEvent(new ModelUpdateEvent( 
+					this, new ControlEventMessage(pauseEvent, 
+					ControlEventMessageEnum.REMOVED)));
 			return true;
 		} 
 		return false;
@@ -683,13 +679,12 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param breakEvent The break event that should be added to the scan modul.
 	 * @return Gives back 'true' if the event has been added and false if not.
 	 */
-	public boolean addBreakEvent( final ControlEvent breakEvent ) {
-		if( this.breakEvents.add( breakEvent ) ) {
-//			updateListeners();
-			breakEvent.addModelUpdateListener( this.breakControlEventManager );
-			this.breakControlEventManager.updateEvent( new ModelUpdateEvent( 
-					this, new ControlEventMessage( breakEvent, 
-					ControlEventMessageEnum.ADDED ) ) );
+	public boolean addBreakEvent(final ControlEvent breakEvent) {
+		if (this.breakEvents.add(breakEvent)) {
+			breakEvent.addModelUpdateListener(this.breakControlEventManager);
+			this.breakControlEventManager.updateEvent(new ModelUpdateEvent(
+					this, new ControlEventMessage(breakEvent, 
+					ControlEventMessageEnum.ADDED)));
 			return true;
 		} 
 		return false;
@@ -702,13 +697,12 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * modul.
 	 * @return Gives back 'true' if the event has been removed and false if not.
 	 */
-	public boolean removeBreakEvent( final ControlEvent breakEvent ) {
-		if( this.breakEvents.remove( breakEvent ) ) {
-//			updateListeners();
+	public boolean removeBreakEvent(final ControlEvent breakEvent) {
+		if (this.breakEvents.remove(breakEvent)) {
 			breakEvent.removeModelUpdateListener(this.breakControlEventManager);
-			this.breakControlEventManager.updateEvent( new ModelUpdateEvent( 
-					this, new ControlEventMessage( breakEvent, 
-					ControlEventMessageEnum.REMOVED ) ) );
+			this.breakControlEventManager.updateEvent(new ModelUpdateEvent(
+					this, new ControlEventMessage(breakEvent, 
+					ControlEventMessageEnum.REMOVED)));
 			return true;
 		} 
 		return false;
@@ -720,19 +714,19 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param redoEvent The redo event that should be added to the scan modul.
 	 * @return Gives back 'true' if the event has been added and false if not.
 	 */
-	public boolean addRedoEvent( final ControlEvent redoEvent ) {
-		if( this.redoEvents.add( redoEvent ) ) {
+	public boolean addRedoEvent(final ControlEvent redoEvent) {
+		if (this.redoEvents.add(redoEvent)) {
 // Die wesentlichen Aufgaben soll der EventManager übernehmen
 // 1.) Hinzufügen und entfernen eines Events
 // 2.) Listener im Model an und abmelden
 // Vom Prinzip her bleibt nur sowas wie diese Zeile übrig:
 //			this.redoControlEventManager.addControlEvent(redoEvent);
 //			updateListeners();
-			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( 
-					this, new ControlEventMessage( redoEvent, 
-					ControlEventMessageEnum.ADDED ) ) );
+			this.redoControlEventManager.updateEvent(new ModelUpdateEvent(
+					this, new ControlEventMessage(redoEvent, 
+					ControlEventMessageEnum.ADDED)));
 // auch in den eventManager:
-			redoEvent.addModelUpdateListener( this.redoControlEventManager );
+			redoEvent.addModelUpdateListener(this.redoControlEventManager);
 			return true;
 		} 
 		return false;
@@ -745,15 +739,14 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * modul.
 	 * @return Gives back 'true' if the event has been removed and false if not.
 	 */
-	public boolean removeRedoEvent( final ControlEvent redoEvent ) {
-		if( this.redoEvents.remove( redoEvent ) ) {
-//			updateListeners();
-			this.redoControlEventManager.updateEvent( new ModelUpdateEvent( 
-					this, new ControlEventMessage( redoEvent, 
-					ControlEventMessageEnum.REMOVED ) ) );
-			redoEvent.removeModelUpdateListener( this.redoControlEventManager );
+	public boolean removeRedoEvent(final ControlEvent redoEvent) {
+		if (this.redoEvents.remove(redoEvent)) {
+			this.redoControlEventManager.updateEvent(new ModelUpdateEvent(
+					this, new ControlEventMessage(redoEvent, 
+					ControlEventMessageEnum.REMOVED)));
+			redoEvent.removeModelUpdateListener(this.redoControlEventManager);
 			return true;
-		} 
+		}
 		return false;
 	}
 	
@@ -764,12 +757,11 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * modul.
 	 * @return Gives back 'true' if the event has been added and false if not.
 	 */
-	public boolean addTriggerEvent( final ControlEvent triggerEvent ) {
-		if( this.triggerEvents.add( triggerEvent ) ) {
-//			updateListeners();
-			this.triggerControlEventManager.updateEvent( new ModelUpdateEvent( 
-					this, new ControlEventMessage( triggerEvent, 
-					ControlEventMessageEnum.ADDED ) ) );
+	public boolean addTriggerEvent(final ControlEvent triggerEvent) {
+		if (this.triggerEvents.add(triggerEvent)) {
+			this.triggerControlEventManager.updateEvent(new ModelUpdateEvent(
+					this, new ControlEventMessage(triggerEvent, 
+					ControlEventMessageEnum.ADDED)));
 			triggerEvent.addModelUpdateListener(
 					this.triggerControlEventManager);
 			return true;
@@ -784,14 +776,13 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * scan modul.
 	 * @return Gives back 'true' if the event has been removed and false if not.
 	 */
-	public boolean removeTriggerEvent( final ControlEvent triggerEvent ) {
-		if( this.triggerEvents.remove( triggerEvent ) ) {
-//			updateListeners();
-			this.triggerControlEventManager.updateEvent( new ModelUpdateEvent( 
-					this, new ControlEventMessage( triggerEvent, 
-					ControlEventMessageEnum.REMOVED ) ) );
-			triggerEvent.removeModelUpdateListener( 
-					this.triggerControlEventManager );
+	public boolean removeTriggerEvent(final ControlEvent triggerEvent) {
+		if (this.triggerEvents.remove(triggerEvent)) {
+			this.triggerControlEventManager.updateEvent(new ModelUpdateEvent(
+					this, new ControlEventMessage(triggerEvent, 
+					ControlEventMessageEnum.REMOVED)));
+			triggerEvent.removeModelUpdateListener(
+					this.triggerControlEventManager);
 			return true;
 		} 
 		return false;
@@ -866,6 +857,10 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * Returns an {@link java.util.Iterator} ofthe pause events.
 	 * 
 	 * @return an {@link java.util.Iterator} of the pause events
+	 * @deprecated use {@link #getPauseControlEventManager()} and 
+	 * 	{@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager#getControlEventsList()}
+	 * in conjunction with the for each loop
+	 * @see <a href="http://docs.oracle.com/javase/1.5.0/docs/guide/language/foreach.html">oracle documentation</a>
 	 */
 	public Iterator<PauseEvent> getPauseEventsIterator() {
 		return this.pauseEvents.iterator();
@@ -875,6 +870,10 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * Returns an {@link java.util.Iterator} of the break events.
 	 * 
 	 * @return an {@link java.util.Iterator} of the break events
+	 * @deprecated use {@link #getBreakControlEventManager()} and 
+	 * 	{@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager#getControlEventsList()}
+	 * in conjunction with the for each loop
+	 * @see <a href="http://docs.oracle.com/javase/1.5.0/docs/guide/language/foreach.html">oracle documentation</a>
 	 */
 	public Iterator<ControlEvent> getBreakEventsIterator() {
 		return this.breakEvents.iterator();
@@ -884,6 +883,10 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * Returns an {@link java.util.Iterator} of the redo events.
 	 * 
 	 * @return an {@link java.util.Iterator} of the redo events
+	 * @deprecated use {@link #getRedoControlEventManager()} and 
+	 * 	{@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager#getControlEventsList()}
+	 * in conjunction with the for each loop
+	 * @see <a href="http://docs.oracle.com/javase/1.5.0/docs/guide/language/foreach.html">oracle documentation</a>
 	 */
 	public Iterator<ControlEvent> getRedoEventsIterator() {
 		return this.redoEvents.iterator();
@@ -892,6 +895,10 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * Returns an {@link java.util.Iterator} of the trigger events.
 	 * 
 	 * @return an {@link java.util.Iterator} of the trigger events
+	 * @deprecated use {@link #getTriggerControlEventManager()} and 
+	 * 	{@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager#getControlEventsList()}
+	 * in conjunction with the for each loop
+	 * @see <a href="http://docs.oracle.com/javase/1.5.0/docs/guide/language/foreach.html">oracle documentation</a>
 	 */
 	public Iterator<ControlEvent> getTriggerEventsIterator() {
 		return this.triggerEvents.iterator();
@@ -1087,6 +1094,50 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.propertyChangeSupport.removePropertyChangeListener(
 				propertyName, listener);
 	}
-
 	
+	/**
+	 * Removes all axes, channels, prescans, postscans, positiongs and 
+	 * plot windows.
+	 * 
+	 * @since 1.1
+	 */
+	public void removeAll() {
+		for(Axis a : this.getAxes()) {
+			this.remove(a);
+		}
+		for(Channel ch : this.getChannels()) {
+			this.remove(ch);
+		}
+		for(Prescan pre : this.getPrescans()) {
+			this.remove(pre);
+		}
+		for(Postscan post : this.getPostscans()) {
+			this.remove(post);
+		}
+		for(Positioning pos : this.getPositionings()) {
+			this.remove(pos);
+		}
+		for(PlotWindow plot : this.getPlotWindows()) {
+			this.remove(plot);
+		}
+	}
+	
+	/**
+	 * Returns the number of devices.
+	 * 
+	 * @return the number of devices
+	 * @since 1.1
+	 */
+	public int getDeviceCount() {
+		int count = 0;
+		
+		count += this.axes.size();
+		count += this.channels.size();
+		count += this.prescans.size();
+		count += this.postscans.size();
+		count += this.positionings.size();
+		count += this.plotWindows.size();
+		
+		return count;
+	}
 }

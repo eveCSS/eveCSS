@@ -64,14 +64,22 @@ public class SaveAllDetectorValues extends Job {
 		}
 		
 		monitor.beginTask(this.getName(), scanModule.getAxes().length + 
-				scanModule.getChannels().length + detectorChannels.size()*2);
+				scanModule.getDeviceCount() + detectorChannels.size()*2);
 		
-		// delete present axes and channels
-		monitor.subTask("deleting present axes and channels");
-		UIJob deletePresentAxesAndChannels = new DeletePresentAxesAndChannels();
-		deletePresentAxesAndChannels.setUser(true);
-		deletePresentAxesAndChannels.schedule();
-		monitor.worked(scanModule.getAxes().length + scanModule.getChannels().length);
+		// delete present devices
+		monitor.subTask("removing present devices");
+		UIJob removeAllDevices = new RemoveAllDevices("Remove present Devices", 
+				this.scanModule);
+		removeAllDevices.setUser(true);
+		removeAllDevices.schedule();
+		
+		try {
+			removeAllDevices.join();
+		} catch (InterruptedException e1) {
+			logger.error(e1);
+		}
+		
+		monitor.worked(scanModule.getDeviceCount());
 		
 		// creating channels
 		final List<Channel> channels = new ArrayList<Channel>();
@@ -115,48 +123,6 @@ public class SaveAllDetectorValues extends Job {
 	}
 	
 	/* ********************************************************************* */
-	
-	/**
-	 * deletes all axes and channels present in the scan module
-	 * 
-	 * @author Marcus Michalsky
-	 * @since 1.1
-	 */
-	private class DeletePresentAxesAndChannels extends UIJob {
-		
-		/**
-		 * Constructor.
-		 * 
-		 * @param name the name of the job
-		 */
-		public DeletePresentAxesAndChannels() {
-			super("deleting present axes and channels");
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public IStatus runInUIThread(IProgressMonitor monitor) {
-			final Axis[] presentAxes = scanModule.getAxes();
-			final Channel[] presentChannels = scanModule.getChannels();
-			monitor.beginTask(this.getName(), 
-					presentAxes.length + presentChannels.length);
-			for(Axis a : presentAxes) {
-				monitor.subTask("removing axis " + a.getMotorAxis().getName());
-				scanModule.remove(a);
-				monitor.worked(1);
-			}
-			for(Channel ch : presentChannels) {
-				monitor.subTask("removing channel " + 
-						ch.getDetectorChannel().getName());
-				scanModule.remove(ch);
-				monitor.worked(1);
-			}
-			monitor.done();
-			return Status.OK_STATUS;
-		}
-	}
 	
 	/**
 	 * adds all channels (with average 1) and a counter (Start 0, Stop 0)
