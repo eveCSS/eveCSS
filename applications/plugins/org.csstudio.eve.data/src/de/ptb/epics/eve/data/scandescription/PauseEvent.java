@@ -47,8 +47,6 @@ public class PauseEvent extends ControlEvent {
 	 */
 	public PauseEvent(final EventTypes type, Event event, String id) {
 		super(type, event, id);
-System.out.println("\tPauseEvent wird angelegt, event: " + event.getName());
-System.out.println("\t\tgetMonitor().getDataType.getType: " + event.getMonitor().getDataType().getType());
 		this.continueIfFalse = false;
 	}
 	
