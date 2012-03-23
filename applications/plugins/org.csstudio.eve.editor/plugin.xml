@@ -298,6 +298,18 @@
                </reference>
             </visibleWhen>
          </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removeallpositionings"
+               icon="icons/progress_remall.gif"
+               label="Remove All Positionings"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.popup">
@@ -327,6 +339,18 @@
                commandId="de.ptb.epics.eve.editor.command.removeplotwindow"
                icon="icons/rem_co.gif"
                label="Remove Plot Window"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removeallplotwindows"
+               icon="icons/progress_remall.gif"
+               label="Remove All Plot Windows"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -457,6 +481,12 @@
             id="de.ptb.epics.eve.editor.command.removepositioning"
             name="Remove Positioning">
       </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.positioningcomposite.RemoveAllPositionings"
+            id="de.ptb.epics.eve.editor.command.removeallpositionings"
+            name="Remove All Positionings">
+      </command>
       <category
             id="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.commands"
             name="Plot Composite">
@@ -478,6 +508,12 @@
             defaultHandler="de.ptb.epics.eve.editor.handler.plotcomposite.RemovePlotWindow"
             id="de.ptb.epics.eve.editor.command.removeplotwindow"
             name="Remove Plot Window">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.plotcomposite.RemoveAllPlotWindows"
+            id="de.ptb.epics.eve.editor.command.removeallplotwindows"
+            name="Remove All Plot Windows">
       </command>
    </extension>
    <extension
