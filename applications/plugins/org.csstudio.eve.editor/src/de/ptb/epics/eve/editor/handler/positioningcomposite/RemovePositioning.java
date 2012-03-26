@@ -15,6 +15,8 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**
+ * Default handler of the remove positioning command.
+ * 
  * @author Marcus Michalsky
  * @since 1.1
  */
@@ -44,6 +46,9 @@ public class RemovePositioning implements IHandler {
 					}
 				}
 			}
+		} else {
+			logger.warn("Positioning could not be removed!");
+			throw new ExecutionException("ScanModulView is not the active part!");
 		}
 		return null;
 	}

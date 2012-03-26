@@ -14,7 +14,7 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**
- * 
+ * Default handler of the add positioning command.
  * 
  * @author Marcus Michalsky
  * @since 1.1

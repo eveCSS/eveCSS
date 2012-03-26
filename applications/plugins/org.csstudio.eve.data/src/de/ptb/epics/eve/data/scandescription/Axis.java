@@ -88,6 +88,29 @@ public class Axis extends AbstractMainPhaseBehavior {
 	}
 	
 	/**
+	 * Better Constructor.
+	 * 
+	 * @param scanModule the scan module the axis corresponds to
+	 * @param axis the device for this behavior
+	 * @since 1.2
+	 * @throws IllegalArgumentException if <code>scanModule</code> is 
+	 * 			<code>null</code>
+	 */
+	public Axis(final ScanModule scanModule, MotorAxis axis) {
+		this(scanModule);
+		this.setMotorAxis(axis);
+		if(axis.getGoto().isDiscrete()) {
+			this.setStepfunction(Stepfunctions.stepfunctionToString(
+					Stepfunctions.POSITIONLIST));
+			StringBuffer sb = new StringBuffer();
+			for(String s : axis.getGoto().getDiscreteValues()) {
+				sb.append(s + ",");
+			}
+			this.setPositionlist(sb.substring(0, sb.length() - 1));
+		}
+	}
+	
+	/**
 	 * Returns the path of the position file.
 	 * 
 	 * @return the path of the position file or <code>null</code> if none is set

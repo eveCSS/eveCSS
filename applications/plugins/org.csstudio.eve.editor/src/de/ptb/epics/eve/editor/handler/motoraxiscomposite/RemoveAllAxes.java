@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.handler.positioningcomposite;
+package de.ptb.epics.eve.editor.handler.motoraxiscomposite;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -12,15 +12,15 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**
- * Default Handler of the remove all positionings command.
+ * Default handler of the remove all axes command.
  * 
  * @author Marcus Michalsky
- * @since 1.1
+ * @since 1.2
  */
-public class RemoveAllPositionings implements IHandler {
+public class RemoveAllAxes implements IHandler {
 
-	private static Logger logger = 
-			Logger.getLogger(RemoveAllPositionings.class.getName());
+	private static Logger logger = Logger.getLogger(
+			RemoveAllAxes.class.getName());
 	
 	/**
 	 * {@inheritDoc}
@@ -32,7 +32,7 @@ public class RemoveAllPositionings implements IHandler {
 				"de.ptb.epics.eve.editor.views.ScanModulView")) {
 			ScanModule sm = ((ScanModuleView)activePart).
 					getCurrentScanModule();
-			sm.removeAllPositionings();
+			sm.removeAllAxes();
 		} else {
 			logger.warn("Positionings could not be removed!");
 			throw new ExecutionException("ScanModulView is not the active part!");

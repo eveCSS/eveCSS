@@ -252,6 +252,41 @@
          </command>
       </menuContribution>
       <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.MenuContribution"
+               id="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup.dynamic">
+         </dynamic>
+         <separator
+               name="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removeaxis"
+               icon="icons/rem_co.gif"
+               label="Remove Axis"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removeallaxis"
+               icon="icons/progress_remall.gif"
+               label="Remove All Axes"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup">
          <dynamic
                class="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.MenuContribution"
@@ -275,6 +310,14 @@
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.popup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.MenuContribution"
+               id="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.popup.menucontribution">
+         </dynamic>
+         <separator
+               name="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.popup.separator"
+               visible="true">
+         </separator>
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.popup">
@@ -443,6 +486,33 @@
             defaultHandler="de.ptb.epics.eve.editor.handler.eventcomposite.RemoveEvent"
             id="de.ptb.epics.eve.editor.command.removeevent"
             name="RemoveEvent">
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.commands"
+            name="Motor Axis Composite">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.motoraxiscomposite.AddAxis"
+            id="de.ptb.epics.eve.editor.command.addaxis"
+            name="Add Axis">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.addaxis.motoraxisid"
+               name="Motor Axis Id"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.motoraxiscomposite.RemoveAxis"
+            id="de.ptb.epics.eve.editor.command.removeaxis"
+            name="Remove Axis">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.motoraxiscomposite.RemoveAllAxes"
+            id="de.ptb.epics.eve.editor.command.removeallaxis"
+            name="Remove All Axis">
       </command>
       <category
             id="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.commands"
