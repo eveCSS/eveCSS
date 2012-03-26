@@ -12,8 +12,14 @@ import de.ptb.epics.eve.data.DataTypes;
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
  */
-public class MonitorEvent extends AbstractNothingNullTypeValueAccessContainer {
+public class MonitorEvent {
 
+	// the Access object
+	private Access access;
+	
+	// the type value 
+	private TypeValue dataType;
+	
 	// the name
 	private String name;
 	
@@ -72,16 +78,58 @@ public class MonitorEvent extends AbstractNothingNullTypeValueAccessContainer {
 	 */
 	public MonitorEvent(final Access access, final TypeValue dataType, 
 						 final String name, final String id) {
-		super(access, dataType);
+
+		this.access = access;
+
+		if (dataType == null) {
+			this.dataType = new TypeValue(access.getType(), null);
+		} else {
+			this.dataType = dataType;
+		}
+		
 		if(id == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'id' must not be null!");
 		}
+
 		this.name = name;
 		this.id = id;
 		
 	}
+
+	/**
+	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.Access}.
+	 * 
+	 * @return the {@link de.ptb.epics.eve.data.measuringstation.Access}
+	 */
+	public Access getAccess() {
+		return this.access;
+	}
 	
+	/**
+	 * Sets the {@link de.ptb.epics.eve.data.measuringstation.Access}.
+	 * 
+	 * @param access the {@link de.ptb.epics.eve.data.measuringstation.Access} 
+	 * 			that should be set
+	 * @throws IllegalArgumentException if the argument is <code>null</code>
+	 */
+	public void setAccess(final Access access) {
+		if(access == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'access' must not be null");
+		}
+		this.access = access;
+	}
+
+	/**
+	 * Returns the {@link de.ptb.epics.eve.data.TypeValue}.
+	 * 
+	 * @return the {@link de.ptb.epics.eve.data.TypeValue}
+	 */
+	public TypeValue getDataType() {
+		return this.dataType;
+	}
+
 	/**
 	 * Returns the name.
 	 * 
@@ -135,9 +183,11 @@ public class MonitorEvent extends AbstractNothingNullTypeValueAccessContainer {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		int result = 1;
+		result = prime * result + ((access == null) ? 0 : access.hashCode());
+		result = prime * result + ((dataType == null) ? 0 : dataType.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -153,18 +203,25 @@ public class MonitorEvent extends AbstractNothingNullTypeValueAccessContainer {
 		if (this == obj) {
 			return true;
 		}
-		if (!super.equals(obj)) {
+		if(obj == null) {
 			return false;
 		}
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
 		MonitorEvent other = (MonitorEvent) obj;
-		if (id == null) {
-			if (other.id != null) {
+		if (access == null) {
+			if (other.access != null) {
 				return false;
 			}
-		} else if (!id.equals(other.id)) {
+		} else if (!access.equals(other.access)) {
+			return false;
+		}
+		if (dataType == null) {
+			if (other.dataType != null) {
+				return false;
+			}
+		} else if (!dataType.equals(other.dataType)) {
 			return false;
 		}
 		if (name == null) {
@@ -172,6 +229,13 @@ public class MonitorEvent extends AbstractNothingNullTypeValueAccessContainer {
 				return false;
 			}
 		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
 		}
 		return true;

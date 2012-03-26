@@ -1135,10 +1135,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				if (ma.getPosition().getAccess().getMonitor()) {
 					this.measuringStation.add(new Event(
 							ma.getPosition().getAccess(), 
-//							ma.getPosition().getValue(), 
-// TODO: der Type kann auch innerhalb des Events im Konstruktor gesetzt werden, da Access
-// übergeben wird!
-							new TypeValue(ma.getPosition().getAccess().getType()),
+							ma.getPosition().getValue(), 
 							ma.getName() + ".Position", 
 							ma.getID()));
 				}
@@ -1146,8 +1143,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 					if (o.getValue().getAccess().getMonitor()) {
 						this.measuringStation.add(new Event(
 								o.getValue().getAccess(), 
-//								o.getValue().getValue(), 
-								new TypeValue(o.getValue().getAccess().getType()),
+								o.getValue().getValue(), 
 								ma.getName() + "." + o.getName(), 
 								o.getID()));
 					}
@@ -1157,8 +1153,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				if (o.getValue().getAccess().getMonitor()) {
 					this.measuringStation.add(new Event(
 							o.getValue().getAccess(), 
-//							o.getValue().getValue(),
-							new TypeValue(o.getValue().getAccess().getType()),
+							o.getValue().getValue(),
 							m.getName() + "." + o.getName(), 
 							o.getID()));
 				}
@@ -1173,8 +1168,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				if (ch.getRead().getAccess().getMonitor()) {
 					this.measuringStation.add(new Event(
 							ch.getRead().getAccess(), 
-//							ch.getRead().getValue(), 
-							new TypeValue(ch.getRead().getAccess().getType()),
+							ch.getRead().getValue(), 
 							ch.getName(), 
 							ch.getID()));
 				}
@@ -1182,8 +1176,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 					if (o.getValue().getAccess().getMonitor()) {
 						this.measuringStation.add(new Event(
 								o.getValue().getAccess(), 
-//								o.getValue().getValue(), 
-								new TypeValue(o.getValue().getAccess().getType()),
+								o.getValue().getValue(), 
 								ch.getName() + "." + o.getName(), 
 								o.getID()));
 					}
@@ -1193,8 +1186,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				if (o.getValue().getAccess().getMonitor()) {
 					this.measuringStation.add(new Event(
 							o.getValue().getAccess(), 
-//							o.getValue().getValue(), 
-							new TypeValue(o.getValue().getAccess().getType()),
+							o.getValue().getValue(), 
 							det.getName() + "." + o.getName(), 
 							o.getID()));
 				}
@@ -1207,8 +1199,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			if (dev.getValue().getAccess().getMonitor()) {
 				this.measuringStation.add(new Event(
 						dev.getValue().getAccess(), 
-//						dev.getValue().getValue(),
-						new TypeValue(dev.getValue().getAccess().getType()),
+						dev.getValue().getValue(),
 						dev.getName(), 
 						dev.getID()));
 			}
