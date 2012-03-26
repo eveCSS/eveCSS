@@ -39,6 +39,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.progress.IProgressService;
+import org.eclipse.ui.progress.UIJob;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
@@ -56,8 +57,9 @@ import de.ptb.epics.eve.editor.graphical.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.EventEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.jobs.file.Save;
-import de.ptb.epics.eve.editor.jobs.filloptions.SaveAllDetectorValues;
-import de.ptb.epics.eve.editor.jobs.filloptions.SaveAllMotorPositions;
+import de.ptb.epics.eve.editor.jobs.filloptions.RemoveAllDevices;
+import de.ptb.epics.eve.editor.jobs.filloptions.SaveAllChannelValues;
+import de.ptb.epics.eve.editor.jobs.filloptions.SaveAllAxisPositions;
 
 /**
  * <code>GraphicalEditor</code> is the central element of the EveEditor Plug In.
@@ -111,6 +113,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	private Menu fillMenu;
 	private MenuItem saveAllAxisPositionsMenuItem;
 	private MenuItem saveAllDetectorValuesMenuItem;
+	private MenuItem removeAllMenuItem;
 	
 	// indicates whether the editor has unsaved changes
 	private boolean dirty;
@@ -180,9 +183,13 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		this.saveAllAxisPositionsMenuItem.addSelectionListener(
 				new SaveAllAxisPositionsSelectionListener());
 		this.saveAllDetectorValuesMenuItem = new MenuItem(fillMenu, SWT.NONE);
-		this.saveAllDetectorValuesMenuItem.setText("Save all Detector Values");
+		this.saveAllDetectorValuesMenuItem.setText("Save all Channel Values");
 		this.saveAllDetectorValuesMenuItem.addSelectionListener(
-				new SaveAllDetectorValuesSelectionListener());
+				new SaveAllChannelValuesSelectionListener());
+		this.removeAllMenuItem = new MenuItem(fillMenu, SWT.NONE);
+		this.removeAllMenuItem.setText("Clear All");
+		this.removeAllMenuItem.addSelectionListener(
+				new RemoveAllSelectionListener());
 		
 		this.viewer.getControl().setMenu(menu);
 		
@@ -949,10 +956,10 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			ScanModule scanModule = (ScanModule)rightClickEditPart.getModel();
-			Job saveAllMotorPositions = new SaveAllMotorPositions(
+			Job saveAllAxisPositions = new SaveAllAxisPositions(
 					"Save all Axis Positions", scanModule);
-			saveAllMotorPositions.setUser(true);
-			saveAllMotorPositions.schedule();
+			saveAllAxisPositions.setUser(true);
+			saveAllAxisPositions.schedule();
 		}
 	}
 	
@@ -960,7 +967,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 * @author Marcus Michalsky
 	 * @since 1.1
 	 */
-	private class SaveAllDetectorValuesSelectionListener implements SelectionListener {
+	private class SaveAllChannelValuesSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -975,10 +982,36 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			ScanModule scanModule = (ScanModule)rightClickEditPart.getModel();
-			Job saveAllDetectorValues = new SaveAllDetectorValues(
-					"Save all Detector Values", scanModule);
-			saveAllDetectorValues.setUser(true);
-			saveAllDetectorValues.schedule();
+			Job saveAllChannelValues = new SaveAllChannelValues(
+					"Save all Channel Values", scanModule);
+			saveAllChannelValues.setUser(true);
+			saveAllChannelValues.schedule();
 		}
+	}
+	
+	/**
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.2
+	 */
+	private class RemoveAllSelectionListener implements SelectionListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		public void widgetSelected(SelectionEvent e) {
+			ScanModule scanModule = (ScanModule)rightClickEditPart.getModel();
+			UIJob removeAllDevices = new RemoveAllDevices(
+					"Remove present Devices", scanModule);
+			removeAllDevices.setUser(true);
+			removeAllDevices.schedule();
+		};
 	}
 }

@@ -12,7 +12,7 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**
- * 
+ * Default handler for remove all plot windows command.
  * 
  * @author Marcus Michalsky
  * @since 1.1

@@ -1031,22 +1031,18 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			errorList.add(new ScanModuleError(this, 
 					ScanModuleErrorTypes.SETTLE_TIME_NOT_POSSIBLE));
 		}
-		
 		return errorList;
 	}
 	
 	/*
 	 * 
 	 */
-	private void updateListeners()
-	{
+	private void updateListeners() {
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
 			new CopyOnWriteArrayList<IModelUpdateListener>(this.updateListener);
 		
-		Iterator<IModelUpdateListener> it = list.iterator();
-		
-		while(it.hasNext()) {
-			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		for(IModelUpdateListener imul : list) {
+			imul.updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
 	

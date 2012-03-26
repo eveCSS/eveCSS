@@ -26,10 +26,10 @@ import de.ptb.epics.eve.data.scandescription.Stepfunctions;
  * @author Marcus Michalsky
  * @since 1.1
  */
-public class SaveAllMotorPositions extends Job {
+public class SaveAllAxisPositions extends Job {
 
 	private static final Logger logger = 
-			Logger.getLogger(SaveAllMotorPositions.class.getName());
+			Logger.getLogger(SaveAllAxisPositions.class.getName());
 	
 	private String family = "filloptions";
 	
@@ -44,7 +44,7 @@ public class SaveAllMotorPositions extends Job {
 	 * 		{@link de.ptb.epics.eve.data.scandescription.ScanModule} the axes 
 	 * 		positions should be saved in
 	 */
-	public SaveAllMotorPositions(String name, ScanModule scanModule) {
+	public SaveAllAxisPositions(String name, ScanModule scanModule) {
 		super(name);
 		this.scanModule = scanModule;
 	}
@@ -75,10 +75,12 @@ public class SaveAllMotorPositions extends Job {
 		removeAllDevices.setUser(true);
 		removeAllDevices.schedule();
 		
+		// wait for removal thread
 		try {
 			removeAllDevices.join();
 		} catch (InterruptedException e1) {
 			logger.error(e1);
+			return Status.CANCEL_STATUS;
 		}
 		
 		monitor.worked(scanModule.getDeviceCount());
@@ -157,7 +159,7 @@ public class SaveAllMotorPositions extends Job {
 				scanModule.add(axis);
 				monitor.worked(1);
 			}
-			scanModule.setName("S MPOS");
+			scanModule.setName("S APOS");
 			monitor.done();
 			return Status.OK_STATUS;
 		}

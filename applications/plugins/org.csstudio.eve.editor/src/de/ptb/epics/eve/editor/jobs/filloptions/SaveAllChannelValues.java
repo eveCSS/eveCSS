@@ -12,8 +12,6 @@ import org.eclipse.ui.progress.UIJob;
 
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
-import de.ptb.epics.eve.data.measuringstation.MotorAxis;
-import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 
@@ -24,10 +22,10 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
  * @author Marcus Michalsky
  * @since 1.1
  */
-public class SaveAllDetectorValues extends Job {
+public class SaveAllChannelValues extends Job {
 
 	private static final Logger logger = 
-			Logger.getLogger(SaveAllDetectorValues.class.getName());
+			Logger.getLogger(SaveAllChannelValues.class.getName());
 	
 	private String family = "filloptions";
 	
@@ -42,7 +40,7 @@ public class SaveAllDetectorValues extends Job {
 	 * 		{@link de.ptb.epics.eve.data.scandescription.ScanModule} the 
 	 * 		detector values should be saved in
 	 */
-	public SaveAllDetectorValues(String name, ScanModule scanModule) {
+	public SaveAllChannelValues(String name, ScanModule scanModule) {
 		super(name);
 		this.scanModule = scanModule;
 	}
@@ -73,10 +71,12 @@ public class SaveAllDetectorValues extends Job {
 		removeAllDevices.setUser(true);
 		removeAllDevices.schedule();
 		
+		// wait for removal Thread
 		try {
 			removeAllDevices.join();
 		} catch (InterruptedException e1) {
 			logger.error(e1);
+			return Status.CANCEL_STATUS;
 		}
 		
 		monitor.worked(scanModule.getDeviceCount());
@@ -98,13 +98,7 @@ public class SaveAllDetectorValues extends Job {
 		
 		// adding counter and channels
 		monitor.subTask("adding channels");
-		MotorAxis counter = scanModule.getChain().getScanDescription().
-				getMeasuringStation().getMotorAxisById("Counter-mot");
-		final Axis axis = new Axis(scanModule);
-		axis.setMotorAxis(counter);
-		axis.setStart("0");
-		axis.setStop("0");
-		UIJob addAllChannels = new AddAllChannels(channels, axis);
+		UIJob addAllChannels = new AddAllChannels(channels);
 		addAllChannels.setUser(true);
 		addAllChannels.schedule();
 		monitor.worked(detectorChannels.size());
@@ -133,7 +127,6 @@ public class SaveAllDetectorValues extends Job {
 	private class AddAllChannels extends UIJob {
 		
 		private final List<Channel> channels;
-		private final Axis counter;
 		
 		/**
 		 * Constructor.
@@ -141,10 +134,9 @@ public class SaveAllDetectorValues extends Job {
 		 * @param channels the channels that should be added
 		 * @param counter the counter (axis) that should be added
 		 */
-		public AddAllChannels(List<Channel> channels, Axis counter) {
+		public AddAllChannels(List<Channel> channels) {
 			super("adding channels");
 			this.channels = channels;
-			this.counter = counter;
 		}
 		
 		/**
@@ -152,17 +144,14 @@ public class SaveAllDetectorValues extends Job {
 		 */
 		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) {
-			monitor.beginTask("adding channels", channels.size() + 1);
-			monitor.subTask("adding counter");
-			scanModule.add(counter);
-			monitor.worked(1);
+			monitor.beginTask("adding channels", channels.size());
 			for(Channel ch : channels) {
 				monitor.subTask("adding channel " + 
 						ch.getDetectorChannel().getName());
 				scanModule.add(ch);
 				monitor.worked(1);
 			}
-			scanModule.setName("S DVAL");
+			scanModule.setName("S CVAL");
 			monitor.done();
 			return Status.OK_STATUS;
 		}
