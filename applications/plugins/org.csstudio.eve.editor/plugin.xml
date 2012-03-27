@@ -293,12 +293,25 @@
                id="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.dynamic">
          </dynamic>
          <separator
-               name="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.spearator">
+               name="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.popup.spearator"
+               visible="true">
          </separator>
          <command
                commandId="de.ptb.epics.eve.editor.command.removechannel"
                icon="icons/rem_co.gif"
                label="Remove Channel"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removeallchannels"
+               icon="icons/progress_remall.gif"
+               label="Remove All Channels"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -512,7 +525,7 @@
             categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.commands"
             defaultHandler="de.ptb.epics.eve.editor.handler.motoraxiscomposite.RemoveAllAxes"
             id="de.ptb.epics.eve.editor.command.removeallaxis"
-            name="Remove All Axis">
+            name="Remove All Axes">
       </command>
       <category
             id="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.commands"
@@ -523,12 +536,23 @@
             defaultHandler="de.ptb.epics.eve.editor.handler.detectorchannelcomposite.AddChannel"
             id="de.ptb.epics.eve.editor.command.addchannel"
             name="Add Channel">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.addchannel.detectorchannelid"
+               name="Detector Channel Id"
+               optional="false">
+         </commandParameter>
       </command>
       <command
             categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.commands"
             defaultHandler="de.ptb.epics.eve.editor.handler.detectorchannelcomposite.RemoveChannel"
             id="de.ptb.epics.eve.editor.command.removechannel"
             name="Remove Channel">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.detectorchannelcomposite.RemoveAllChannels"
+            id="de.ptb.epics.eve.editor.command.removeallchannels"
+            name="Remove All Channels">
       </command>
       <category
             id="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.commands"

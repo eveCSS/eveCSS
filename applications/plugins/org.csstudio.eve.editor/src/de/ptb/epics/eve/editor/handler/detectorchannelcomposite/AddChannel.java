@@ -1,71 +1,87 @@
-/**
- * 
- */
 package de.ptb.epics.eve.editor.handler.detectorchannelcomposite;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.handlers.HandlerUtil;
+
+import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**
- * @author mmichals
- *
+ * Default handler of the add channel command.
+ * 
+ * @author Marcus Michalsky
+ * @since 1.2
  */
 public class AddChannel implements IHandler {
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.commands.IHandler#addHandlerListener(org.eclipse.core.commands.IHandlerListener)
-	 */
-	@Override
-	public void addHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.commands.IHandler#dispose()
-	 */
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
+	private static Logger logger = Logger.getLogger(AddChannel.class.getName());
+	
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		// TODO Auto-generated method stub
+		String channelId = event.getParameter(
+				"de.ptb.epics.eve.editor.command.addchannel.detectorchannelid");
+		IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
+		if (activePart.getSite().getId().equals(
+			"de.ptb.epics.eve.editor.views.ScanModulView")) {
+				ScanModule sm = ((ScanModuleView)activePart).
+						getCurrentScanModule();
+				DetectorChannel ch = sm.getChain().getScanDescription().
+						getMeasuringStation().getDetectorChannelById(channelId);
+				sm.add(new Channel(sm, ch));
+				if(logger.isDebugEnabled()) {
+					logger.debug("Detector Channel " + ch.getName() + " added.");
+				}
+		} else {
+			logger.warn("Detector Channel was not added!");
+			throw new ExecutionException("ScanModulView is not the active part!");
+		}
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.commands.IHandler#isEnabled()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.commands.IHandler#isHandled()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean isHandled() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.commands.IHandler#removeHandlerListener(org.eclipse.core.commands.IHandlerListener)
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void addHandlerListener(IHandlerListener handlerListener) {
+	}
+
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void removeHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-
 	}
-
 }

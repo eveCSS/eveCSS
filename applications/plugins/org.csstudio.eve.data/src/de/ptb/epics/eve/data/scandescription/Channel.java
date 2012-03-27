@@ -99,6 +99,17 @@ public class Channel extends AbstractMainPhaseBehavior {
 				this, this.redoEvents, ControlEventTypes.CONTROL_EVENT);
 		this.redoControlEventManager.addModelUpdateListener(this);
 	}
+	
+	/**
+	 * Better Constructor.
+	 * 
+	 * @param scanModule the scan module the channel corresponds to
+	 * @param channel the corresponding device
+	 */
+	public Channel(final ScanModule scanModule, final DetectorChannel channel) {
+		this(scanModule);
+		this.setDetectorChannel(channel);
+	}
 
 	/**
 	 * Adds a redo event. 

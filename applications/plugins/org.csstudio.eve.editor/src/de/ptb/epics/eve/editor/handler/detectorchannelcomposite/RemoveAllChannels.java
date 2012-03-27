@@ -5,25 +5,22 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**
- * Default handler of the remove channel command.
+ * Default handler of the remove all channels command.
  * 
  * @author Marcus Michalsky
  * @since 1.2
  */
-public class RemoveChannel implements IHandler {
+public class RemoveAllChannels implements IHandler {
 
 	private static Logger logger = 
-			Logger.getLogger(RemoveChannel.class.getName());
+			Logger.getLogger(RemoveAllChannels.class.getName());
 
 	/**
 	 * {@inheritDoc}
@@ -35,20 +32,10 @@ public class RemoveChannel implements IHandler {
 				"de.ptb.epics.eve.editor.views.ScanModulView")) {
 			ScanModule sm = ((ScanModuleView)activePart).
 					getCurrentScanModule();
-			ISelection selection = HandlerUtil.getCurrentSelection(event);
-			if(selection instanceof IStructuredSelection) {
-				Object o = ((IStructuredSelection)selection).getFirstElement();
-				if(o instanceof Channel) {
-					sm.remove((Channel)o);
-					if(logger.isDebugEnabled()) {
-						logger.debug("Channel " + ((Channel)o).getDetectorChannel().
-							getName() + "removed");
-					}
-				}
-			}
+			sm.removeAllChannels();
 		} else {
-			logger.warn("Channel could not be removed!");
-			throw new ExecutionException("ScanModulView is not the active Part");
+			logger.warn("Channels could not be removed!");
+			throw new ExecutionException("ScanModulView is not the active part!");
 		}
 		return null;
 	}

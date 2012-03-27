@@ -37,8 +37,7 @@ public class AddAxis implements IHandler {
 						getCurrentScanModule();
 				MotorAxis ma = sm.getChain().getScanDescription().
 						getMeasuringStation().getMotorAxisById(axisId);
-				Axis a = new Axis(sm, ma);
-				sm.add(a);
+				sm.add(new Axis(sm, ma));
 				if(logger.isDebugEnabled()) {
 					logger.debug("MotorAxis " + ma.getName() + " added.");
 				}

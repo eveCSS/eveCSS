@@ -34,7 +34,7 @@ public class RemoveAllAxes implements IHandler {
 					getCurrentScanModule();
 			sm.removeAllAxes();
 		} else {
-			logger.warn("Positionings could not be removed!");
+			logger.warn("Axes could not be removed!");
 			throw new ExecutionException("ScanModulView is not the active part!");
 		}
 		return null;
