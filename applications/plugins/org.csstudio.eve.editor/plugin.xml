@@ -322,6 +322,41 @@
          </command>
       </menuContribution>
       <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.popup">
+         <dynamic
+               class="de.ptb.epics.eve.editor.handler.prescancomposite.MenuContribution"
+               id="de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.popup.menucontribution">
+         </dynamic>
+         <separator
+               name="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.popup.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removeprescan"
+               icon="icons/rem_co.gif"
+               label="Remove Prescan"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removeallprescans"
+               icon="icons/progress_remall.gif"
+               label="Remove All Prescans"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.popup">
          <dynamic
                class="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.MenuContribution"
@@ -553,6 +588,33 @@
             defaultHandler="de.ptb.epics.eve.editor.handler.detectorchannelcomposite.RemoveAllChannels"
             id="de.ptb.epics.eve.editor.command.removeallchannels"
             name="Remove All Channels">
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.commands"
+            name="Prescan Composite">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prescancomposite.AddPrescan"
+            id="de.ptb.epics.eve.editor.command.addprescan"
+            name="Add Prescan">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.addprescan.prescanid"
+               name="Prescan Id"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prescancomposite.RemovePrescan"
+            id="de.ptb.epics.eve.editor.command.removeprescan"
+            name="Remove Prescan">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.prescancomposite.RemoveAllPrescans"
+            id="de.ptb.epics.eve.editor.command.removeallprescans"
+            name="Remove All Prescans">
       </command>
       <category
             id="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.commands"

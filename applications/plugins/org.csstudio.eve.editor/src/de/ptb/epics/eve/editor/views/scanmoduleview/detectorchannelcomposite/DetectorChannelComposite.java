@@ -13,9 +13,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
-import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**
@@ -33,8 +31,6 @@ public class DetectorChannelComposite extends Composite {
 			DetectorChannelComposite.class);
 	
 	private TableViewer tableViewer;
-	private ScanModule scanModule;
-	ExcludeDevicesOfScanModuleFilterManualUpdate measuringStation;
 	private ScanModuleView parentView;
 	
 	/**
@@ -49,17 +45,8 @@ public class DetectorChannelComposite extends Composite {
 									final Composite parent, final int style) {
 		super(parent, style);
 		this.parentView = parentView;
-		this.measuringStation = new ExcludeDevicesOfScanModuleFilterManualUpdate(
-				false, true, false, false, false);
-		this.measuringStation.setSource(Activator.getDefault().
-				getMeasuringStation());
-		
 		this.setLayout(new GridLayout());
-		
 		createViewer();
-		
-		this.tableViewer.getTable().addFocusListener(
-				new TableViewerFocusListener());
 	}
 
 	/*
@@ -79,6 +66,8 @@ public class DetectorChannelComposite extends Composite {
 		this.tableViewer.getTable().setLinesVisible(true);
 		this.tableViewer.setContentProvider(new ContentProvider());
 		this.tableViewer.setLabelProvider(new LabelProvider());
+		this.tableViewer.getTable().addFocusListener(
+				new TableViewerFocusListener());
 		
 		// create context menu
 		MenuManager menuManager = new MenuManager();
@@ -108,17 +97,6 @@ public class DetectorChannelComposite extends Composite {
 	}
 	
 	/**
-	 * Returns the currently set 
-	 * {@link de.ptb.epics.eve.data.scandescription.ScanModule}.
-	 * 
-	 * @return the currently set 
-	 * 		   {@link de.ptb.epics.eve.data.scandescription.ScanModule}
-	 */
-	public ScanModule getScanModule() {
-		return this.scanModule;
-	}
-	
-	/**
 	 * Sets the {@link de.ptb.epics.eve.data.scandescription.ScanModule}.
 	 * 
 	 * @param scanModule the 
@@ -128,13 +106,7 @@ public class DetectorChannelComposite extends Composite {
 	public void setScanModule(final ScanModule scanModule) {
 		logger.debug("setScanModule");
 		
-		this.scanModule = scanModule;
 		this.tableViewer.setInput(scanModule);
-		this.measuringStation.setScanModule(scanModule);
-		
-		if(scanModule == null) {
-			return;
-		}
 		
 		// if there are detector channels present... 
 		if(tableViewer.getTable().getItems().length > 0) {

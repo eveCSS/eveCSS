@@ -13,9 +13,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
-import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**
@@ -41,11 +39,6 @@ public class MotorAxisComposite extends Composite {
 	// (used to update the SelectionProviderWrapper)
 	private ScanModuleView parentView;
 	
-	/*
-	 * the measuring station the available motors are taken from
-	 */
-	private ExcludeDevicesOfScanModuleFilterManualUpdate measuringStation;
-	
 	/**
 	 * Constructs a <code>MotorAxisComposite</code>.
 	 * 
@@ -57,29 +50,8 @@ public class MotorAxisComposite extends Composite {
 							final Composite parent, final int style) {
 		super(parent, style);
 		this.parentView = parentView;
-		
-		this.measuringStation = new ExcludeDevicesOfScanModuleFilterManualUpdate(
-				true, false, false, false, false);
-		this.measuringStation.setSource(Activator.getDefault().
-				getMeasuringStation());
-		
 		this.setLayout(new GridLayout());
-		
 		createViewer();
-		
-		this.tableViewer.getTable().addFocusListener(new 
-				TableViewerFocusListener());
-		
-		// create context menu
-		MenuManager menuManager = new MenuManager();
-		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		menuManager.setRemoveAllWhenShown(true);
-		this.tableViewer.getTable().setMenu(
-				menuManager.createContextMenu(this.tableViewer.getTable()));
-		// register menu
-		parentView.getSite().registerContextMenu(
-			"de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup", 
-			menuManager, this.tableViewer);
 	}
 	
 	/*
@@ -99,6 +71,19 @@ public class MotorAxisComposite extends Composite {
 		this.tableViewer.getTable().setLinesVisible(true);
 		this.tableViewer.setContentProvider(new ContentProvider());
 		this.tableViewer.setLabelProvider(new LabelProvider());
+		this.tableViewer.getTable().addFocusListener(new 
+				TableViewerFocusListener());
+		
+		// create context menu
+		MenuManager menuManager = new MenuManager();
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		menuManager.setRemoveAllWhenShown(true);
+		this.tableViewer.getTable().setMenu(
+				menuManager.createContextMenu(this.tableViewer.getTable()));
+		// register menu
+		parentView.getSite().registerContextMenu(
+			"de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup", 
+			menuManager, this.tableViewer);
 	}
 	
 	/*
@@ -136,12 +121,7 @@ public class MotorAxisComposite extends Composite {
 	public void setScanModule(final ScanModule scanModule) {
 		logger.debug("setScanModule");
 		
-		this.scanModule = scanModule;
 		this.tableViewer.setInput(scanModule);
-		
-		if(scanModule == null) {
-			return;
-		}
 		
 		// if there are motor axis present... 
 		if(tableViewer.getTable().getItems().length > 0) {

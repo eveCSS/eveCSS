@@ -42,13 +42,8 @@ public class PlotComposite extends Composite {
 						 final int style) {
 		super(parent, style);
 		this.parentView = parentView;
-		
 		this.setLayout(new GridLayout());
-		
 		createViewer();
-		
-		this.tableViewer.getTable().addFocusListener(new 
-										TableViewerFocusListener());
 	}
 	
 	/*
@@ -68,6 +63,8 @@ public class PlotComposite extends Composite {
 		this.tableViewer.getTable().setLinesVisible(true);
 		this.tableViewer.setContentProvider(new ContentProvider());
 		this.tableViewer.setLabelProvider(new LabelProvider());
+		this.tableViewer.getTable().addFocusListener(
+				new TableViewerFocusListener());
 		
 		// create context menu
 		MenuManager menuManager = new MenuManager();
@@ -118,10 +115,6 @@ public class PlotComposite extends Composite {
 		logger.debug("setScanModule");
 		
 		this.tableViewer.setInput(scanModule);
-		
-		if(scanModule == null) {
-			return;
-		}
 		
 		// if there are plots present... 
 		if(tableViewer.getTable().getItems().length > 0) {

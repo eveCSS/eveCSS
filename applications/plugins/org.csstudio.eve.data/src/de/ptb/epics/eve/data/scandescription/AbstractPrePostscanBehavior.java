@@ -1,6 +1,5 @@
 package de.ptb.epics.eve.data.scandescription;
 
-import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
@@ -55,11 +54,9 @@ public abstract class AbstractPrePostscanBehavior extends AbstractBehavior {
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
 			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
 		
-		Iterator<IModelUpdateListener> it = list.iterator();
-		
-		while(it.hasNext()) {
-			it.next().updateEvent(new ModelUpdateEvent(this, null));
-		}	
+		for(IModelUpdateListener imul : list) {
+			imul.updateEvent(new ModelUpdateEvent(this,null));
+		}
 	}
 	
 	/**

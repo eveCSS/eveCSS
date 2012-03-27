@@ -41,13 +41,8 @@ public class PositioningComposite extends Composite {
 								final Composite parent, final int style) {
 		super(parent, style);
 		this.parentView = parentView;
-		
 		this.setLayout(new GridLayout());
-		
 		createViewer();
-		
-		this.tableViewer.getTable().addFocusListener(
-				new TableViewerFocusListener());
 	}
 	
 	/*
@@ -67,6 +62,8 @@ public class PositioningComposite extends Composite {
 		this.tableViewer.getTable().setLinesVisible(true);
 		this.tableViewer.setContentProvider(new ContentProvider());
 		this.tableViewer.setLabelProvider(new LabelProvider());
+		this.tableViewer.getTable().addFocusListener(
+				new TableViewerFocusListener());
 		
 		// create context menu
 		MenuManager menuManager = new MenuManager();
@@ -132,7 +129,6 @@ public class PositioningComposite extends Composite {
 	 * 		should be set
 	 */
 	public void setScanModule(final ScanModule scanModule) {
-		
 		this.tableViewer.setInput(scanModule);
 		
 		// if there are positionings present... 

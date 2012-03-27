@@ -80,7 +80,7 @@ public class MenuContribution extends CompoundContributionItem {
 						new MenuManager(detector.getName(), detectorImage, 
 								detector.getName());
 					currentClassMenu.add(currentDetectorMenu);
-
+					
 					// iterate for each channel of the detector
 					for(final DetectorChannel channel : detector.getChannels()) {
 						if (channel.getClassName().isEmpty()) {
@@ -107,29 +107,8 @@ public class MenuContribution extends CompoundContributionItem {
 					// if only one channel in DetectorMenu, switch channel from 
 					// DetectorMenu into ClassMenu
 					if (currentDetectorMenu.getSize() == 1) {
+						currentClassMenu.add(currentDetectorMenu.getItems()[0]);
 						currentDetectorMenu.removeAll();
-						for(final DetectorChannel channel : detector.getChannels()) {
-							if (channel.getClassName().isEmpty()) {
-								// add only channels which have no className
-								Map<String,String> params = new HashMap<String,String>();
-								params.put("de.ptb.epics.eve.editor.command.addchannel.detectorchannelid", 
-										channel.getID());
-								CommandContributionItemParameter p = 
-									new CommandContributionItemParameter(
-										PlatformUI.getWorkbench().getActiveWorkbenchWindow(), 
-										"", 
-										"de.ptb.epics.eve.editor.command.addchannel", 
-										SWT.PUSH);
-								p.label = channel.getName();
-								p.icon = channelImage;
-								p.parameters = params;
-								
-								CommandContributionItem item = 
-									new CommandContributionItem(p);
-								item.setVisible(true);
-								currentClassMenu.add(item);
-							}
-						}
 					}
 				} else if(device instanceof DetectorChannel) {
 					DetectorChannel channel = (DetectorChannel)device;
@@ -157,8 +136,8 @@ public class MenuContribution extends CompoundContributionItem {
 			
 		for(final Detector detector : measuringStation.getDetectors()) {
 			if(detector.getClassName().isEmpty() || detector.getClassName() == null) {
-				final MenuManager currentDetectorMenu = 
-						new MenuManager(detector.getName(), detectorImage, detector.getName());
+				final MenuManager currentDetectorMenu = new MenuManager(
+						detector.getName(), detectorImage, detector.getName());
 				for(final DetectorChannel channel : detector.getChannels()) {
 					if(channel.getClassName().isEmpty() || channel.getClassName() == null) {
 						Map<String,String> params = new HashMap<String,String>();
@@ -180,31 +159,11 @@ public class MenuContribution extends CompoundContributionItem {
 						currentDetectorMenu.add(item);
 					}
 				}
-				// if only one channel in DetectorMenu, switch channel from DetectorMenu into ClassMenu
+				// if only one channel in DetectorMenu, switch channel from 
+				// DetectorMenu into ClassMenu
 				if (currentDetectorMenu.getSize() == 1) {
+					result.add(currentDetectorMenu.getItems()[0]);
 					currentDetectorMenu.removeAll();
-					for(final DetectorChannel channel : detector.getChannels()) {
-						if (channel.getClassName().isEmpty()) {
-							// add only channels which have no className
-							Map<String,String> params = new HashMap<String,String>();
-							params.put("de.ptb.epics.eve.editor.command.addchannel.detectorchannelid", 
-									channel.getID());
-							CommandContributionItemParameter p = 
-								new CommandContributionItemParameter(
-									PlatformUI.getWorkbench().getActiveWorkbenchWindow(), 
-									"", 
-									"de.ptb.epics.eve.editor.command.addchannel", 
-									SWT.PUSH);
-							p.label = channel.getName();
-							p.icon = channelImage;
-							p.parameters = params;
-							
-							CommandContributionItem item = 
-								new CommandContributionItem(p);
-							item.setVisible(true);
-							currentDetectorMenu.add(item);
-						}
-					}
 				}
 				result.add(currentDetectorMenu);
 			}

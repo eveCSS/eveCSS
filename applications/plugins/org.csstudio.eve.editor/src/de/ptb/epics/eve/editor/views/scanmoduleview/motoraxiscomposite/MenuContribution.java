@@ -104,29 +104,8 @@ public class MenuContribution extends CompoundContributionItem {
 					// if only one axis in MotorMenu, switch axis from 
 					// MotorMenu into ClassMenu
 					if (currentMotorMenu.getSize() == 1) {
+						currentClassMenu.add(currentMotorMenu.getItems()[0]);
 						currentMotorMenu.removeAll();
-						for(final MotorAxis axis : motor.getAxes()) {
-							if (axis.getClassName().isEmpty()) {
-								// add only axis which have no className
-								Map<String,String> params = new HashMap<String,String>();
-								params.put("de.ptb.epics.eve.editor.command.addaxis.motoraxisid", 
-										axis.getID());
-								CommandContributionItemParameter p = 
-									new CommandContributionItemParameter(
-										PlatformUI.getWorkbench().getActiveWorkbenchWindow(), 
-										"", 
-										"de.ptb.epics.eve.editor.command.addaxis", 
-										SWT.PUSH);
-								p.label = axis.getName();
-								p.icon = axisImage;
-								p.parameters = params;
-								
-								CommandContributionItem item = 
-									new CommandContributionItem(p);
-								item.setVisible(true);
-								currentClassMenu.add(item);
-							}
-						}
 					}
 				} else if(device instanceof MotorAxis) {
 					MotorAxis axis = (MotorAxis)device;
@@ -182,34 +161,12 @@ public class MenuContribution extends CompoundContributionItem {
 				// if only one axis in MotorMenu, switch axis from 
 				// MotorMenu into ClassMenu
 				if (currentMotorMenu.getSize() == 1) {
+					result.add(currentMotorMenu.getItems()[0]);
 					currentMotorMenu.removeAll();
-					for(final MotorAxis axis : motor.getAxes()) {
-						if (axis.getClassName().isEmpty()) {
-							// add only axis which have no className
-							Map<String,String> params = new HashMap<String,String>();
-							params.put("de.ptb.epics.eve.editor.command.addaxis.motoraxisid", 
-									axis.getID());
-							CommandContributionItemParameter p = 
-								new CommandContributionItemParameter(
-									PlatformUI.getWorkbench().getActiveWorkbenchWindow(), 
-									"", 
-									"de.ptb.epics.eve.editor.command.addaxis", 
-									SWT.PUSH);
-							p.label = axis.getName();
-							p.icon = axisImage;
-							p.parameters = params;
-							
-							CommandContributionItem item = 
-								new CommandContributionItem(p);
-							item.setVisible(true);
-							currentMotorMenu.add(item);
-						}
-					}
 				}
 				result.add(currentMotorMenu);
 			}
 		}
-		
 		return result.toArray(new IContributionItem[0]);
 	}
 

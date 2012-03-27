@@ -14,23 +14,20 @@ import de.ptb.epics.eve.data.scandescription.errors.PrescanErrorTypes;
  * or option.
  * 
  * @author Hartmut Scherr <hartmut.scherr( -at -) ptb.de>
- * @version 1.1
  */
 public abstract class AbstractPrescanBehavior extends AbstractPrePostscanBehavior {
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider#getModelErrors()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
-	public List< IModelError> getModelErrors() {
-		final List< IModelError > modelErrors = new ArrayList< IModelError >();
-
-		if( !this.isValuePossible( this.getValue() ) ) {
-			modelErrors.add( new PrescanError( this, PrescanErrorTypes.VALUE_NOT_POSSIBLE ) );
-		}
+	public List<IModelError> getModelErrors() {
+		final List<IModelError> modelErrors = new ArrayList<IModelError>();
 		
+		if(!this.isValuePossible(this.getValue())) {
+			modelErrors.add(new PrescanError(
+					this, PrescanErrorTypes.VALUE_NOT_POSSIBLE));
+		}
 		return modelErrors;
 	}
-
 }
