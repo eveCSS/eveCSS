@@ -29,9 +29,6 @@ public class MotorAxisComposite extends Composite {
 	// logging
 	private static Logger logger = Logger.getLogger(MotorAxisComposite.class);
 	
-	// the scan module the selected motor axes correspond to
-	private ScanModule scanModule;
-	
 	// showing the selected motor axes
 	private TableViewer tableViewer;
 	
@@ -98,17 +95,6 @@ public class MotorAxisComposite extends Composite {
 		column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 1);
 		column.setText("Stepfunction");
 		column.setWidth(80);
-	}
-	
-	/**
-	 * Returns the currently set 
-	 * {@link de.ptb.epics.eve.data.scandescription.ScanModule}.
-	 * 
-	 * @return the currently set 
-	 * 		   {@link de.ptb.epics.eve.data.scandescription.ScanModule}
-	 */
-	public ScanModule getScanModule() {
-		return this.scanModule;
 	}
 	
 	/**
