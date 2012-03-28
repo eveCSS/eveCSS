@@ -324,7 +324,7 @@
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.popup">
          <dynamic
-               class="de.ptb.epics.eve.editor.handler.prescancomposite.MenuContribution"
+               class="de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.MenuContribution"
                id="de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.popup.menucontribution">
          </dynamic>
          <separator

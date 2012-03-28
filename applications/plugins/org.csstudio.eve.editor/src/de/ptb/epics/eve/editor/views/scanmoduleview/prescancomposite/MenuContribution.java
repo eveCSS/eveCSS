@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.handler.prescancomposite;
+package de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite;
 
 import java.util.ArrayList;
 import java.util.HashMap;
