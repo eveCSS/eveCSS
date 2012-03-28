@@ -46,8 +46,6 @@ public class PrescanComposite extends Composite {
 		this.parentView = parentView;
 		this.setLayout(new GridLayout());
 		createViewer();
-		this.tableViewer.getTable().addFocusListener(new 
-				TableViewerFocusListener());
 	}
 
 	/*
@@ -67,6 +65,8 @@ public class PrescanComposite extends Composite {
 		this.tableViewer.getTable().setLinesVisible(true);
 		this.tableViewer.setContentProvider(new ContentProvider());
 		this.tableViewer.setLabelProvider(new LabelProvider());
+		this.tableViewer.getTable().addFocusListener(new 
+				TableViewerFocusListener());
 		
 		// create context menu
 		MenuManager menuManager = new MenuManager();

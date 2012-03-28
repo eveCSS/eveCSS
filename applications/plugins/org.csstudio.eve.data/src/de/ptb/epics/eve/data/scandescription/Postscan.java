@@ -1,10 +1,10 @@
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -17,6 +17,20 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class Postscan extends AbstractPostscanBehavior {
 
+	public Postscan() {
+		super();
+	}
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param dev the corresponding device
+	 */
+	public Postscan(AbstractPrePostscanDevice dev) {
+		super();
+		this.setAbstractPrePostscanDevice(dev);
+	}
+	
 	/*
 	 * indicates whether the value should be reset to the value it had when
 	 * the scan module started.
@@ -70,22 +84,19 @@ public class Postscan extends AbstractPostscanBehavior {
 	 * {@inheritDoc} 
 	 */
 	@Override
-	public List< IModelError> getModelErrors() {
-		return this.reset?new ArrayList< IModelError >():super.getModelErrors();
+	public List<IModelError> getModelErrors() {
+		return this.reset?new ArrayList<IModelError>():super.getModelErrors();
 	}
 	
 	/*
 	 * 
 	 */
-	private void updateListeners()
-	{
+	private void updateListeners() {
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
 			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
 		
-		Iterator<IModelUpdateListener> it = list.iterator();
-		
-		while(it.hasNext()) {
-			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		for(IModelUpdateListener imul : list) {
+			imul.updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
 }

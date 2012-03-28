@@ -366,6 +366,30 @@
                name="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.popup.separator"
                visible="true">
          </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removepostscan"
+               icon="icons/rem_co.gif"
+               label="Remove Postscan"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removeallpostscans"
+               icon="icons/progress_remall.gif"
+               label="Remove All Postscans"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.popup">
@@ -615,6 +639,33 @@
             defaultHandler="de.ptb.epics.eve.editor.handler.prescancomposite.RemoveAllPrescans"
             id="de.ptb.epics.eve.editor.command.removeallprescans"
             name="Remove All Prescans">
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.commands"
+            name="Postscan Composite">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.postscancomposite.AddPostscan"
+            id="de.ptb.epics.eve.editor.command.addpostscan"
+            name="Add Postscan">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.addpostscan.postscanid"
+               name="Postscan Id"
+               optional="false">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.postscancomposite.RemovePostscan"
+            id="de.ptb.epics.eve.editor.command.removepostscan"
+            name="Remove Postscan">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.postscancomposite.RemoveAllPostscans"
+            id="de.ptb.epics.eve.editor.command.removeallpostscans"
+            name="Remove all Postscans">
       </command>
       <category
             id="de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.commands"
