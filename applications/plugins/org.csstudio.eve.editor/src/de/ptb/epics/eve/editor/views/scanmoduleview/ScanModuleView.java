@@ -1,6 +1,8 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -31,6 +33,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.Image;
 
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
@@ -75,30 +78,28 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	
 	private static Logger logger = Logger.getLogger(ScanModuleView.class);
 
+	// the scan module currently represented by this view
 	private ScanModule currentScanModule;
 
 	private Composite top;
-
 	private ExpandBar bar;
-
 	private Composite generalComposite;
-
 	private Composite actionsComposite;
-
 	private Composite eventsComposite;
 
 	private Label triggerDelayLabel;
 	private Text triggerDelayText;
-	private Label triggerDelayErrorLabel;
-	private Label triggerDelayUnitLabel;
+	private ControlDecoration triggerDelayTextControlDecoration;
 	private TextDoubleVerifyListener triggerDelayTextVerifyListener;
 	private TriggerDelayTextModifiedListener triggerDelayTextModifiedListener;
+	private Label triggerDelayUnitLabel;
 	
 	private Label settleTimeLabel;
 	private Text settleTimeText;
-	private Label settleTimeErrorLabel;
-	private Label settleTimeUnitLabel;
+	private ControlDecoration settleTimeTextControlDecoration;
+	private TextDoubleVerifyListener settleTimeTextVerifyListener;
 	private SettleTimeTextModifiedListener settleTimeTextModifiedListener;
+	private Label settleTimeUnitLabel;
 	
 	private Button confirmTriggerCheckBox;
 	private ConfirmTriggerCheckBoxSelectionListener 
@@ -141,6 +142,8 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	private CTabItem breakEventsTabItem;
 	private CTabItem triggerEventsTabItem;
 	
+	private Image errorImage;
+	
 	// the selection service only accepts one selection provider per view,
 	// since we have multiple tabs with tables capable of providing selections, 
 	// a wrapper handles them and registers the active one with the global 
@@ -178,6 +181,9 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		this.top.setLayout(new FillLayout());
 		
 		this.bar = new ExpandBar(this.top, SWT.V_SCROLL);
+		
+		this.errorImage = FieldDecorationRegistry.getDefault().getFieldDecoration(
+				FieldDecorationRegistry.DEC_ERROR).getImage();
 		
 		// General Section
 		createGeneralExpandItem();
@@ -226,7 +232,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 */
 	private void createGeneralExpandItem() {
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 4;
+		gridLayout.numColumns = 3;
 		this.generalComposite = new Composite(this.bar, SWT.NONE);
 		this.generalComposite.setLayout(gridLayout);
 		
@@ -239,6 +245,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
+		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.triggerDelayText.setLayoutData(gridData);
 		this.triggerDelayTextVerifyListener = new TextDoubleVerifyListener();
@@ -247,14 +254,12 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 				new TriggerDelayTextModifiedListener();
 		this.triggerDelayText.addModifyListener(
 				triggerDelayTextModifiedListener);
-		
-		this.triggerDelayErrorLabel = new Label(this.generalComposite, SWT.NONE);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		this.triggerDelayErrorLabel.setLayoutData(gridData);
-		this.triggerDelayErrorLabel.setImage(PlatformUI.getWorkbench().
-				getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK));
+		this.triggerDelayTextControlDecoration = new ControlDecoration(
+				triggerDelayText, SWT.LEFT);
+		this.triggerDelayTextControlDecoration.setImage(errorImage);
+		this.triggerDelayTextControlDecoration.setDescriptionText(
+				"Trigger Delay value not possible");
+		this.triggerDelayTextControlDecoration.hide();
 		this.triggerDelayUnitLabel = new Label(this.generalComposite, SWT.NONE);
 		this.triggerDelayUnitLabel.setText("s");
 		
@@ -268,23 +273,25 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
+		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.settleTimeText.setLayoutData(gridData);
+		this.settleTimeTextVerifyListener = new TextDoubleVerifyListener();
 		this.settleTimeTextModifiedListener = 
 				new SettleTimeTextModifiedListener();
 		this.settleTimeText.addModifyListener(settleTimeTextModifiedListener);
-		
-		this.settleTimeErrorLabel = new Label(this.generalComposite, SWT.NONE);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.CENTER;
-		this.settleTimeErrorLabel.setLayoutData(gridData);
+		this.settleTimeTextControlDecoration = new ControlDecoration(
+				settleTimeText, SWT.LEFT);
+		this.settleTimeTextControlDecoration.setImage(errorImage);
+		this.settleTimeTextControlDecoration.setDescriptionText(
+				"Settle Time value not possible");
+		this.settleTimeTextControlDecoration.hide();
 		this.settleTimeUnitLabel = new Label(this.generalComposite, SWT.NONE);
 		this.settleTimeUnitLabel.setText("s");
 		
 		// Trigger Confirm 
 		gridData = new GridData();
-		gridData.horizontalSpan = 4;
+		gridData.horizontalSpan = 3;
 		
 		this.confirmTriggerCheckBox = new Button(this.generalComposite, 
 												SWT.CHECK);
@@ -545,8 +552,8 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 */
 	private void checkForErrors() {
 		// reset errors
-		this.triggerDelayErrorLabel.setImage(null);
-		this.settleTimeErrorLabel.setImage(null);
+		this.triggerDelayTextControlDecoration.hide();
+		this.settleTimeTextControlDecoration.hide();
 		this.motorAxisTab.setImage(null);
 		this.detectorChannelTab.setImage(null);
 		this.prescanTab.setImage(null);
@@ -560,24 +567,12 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 			if(modelError instanceof ScanModuleError) {
 				final ScanModuleError scanModuleError = 
 						(ScanModuleError) modelError;
-				
 				switch(scanModuleError.getErrorType()) {
 					case TRIGGER_DELAY_NOT_POSSIBLE:
-						this.triggerDelayErrorLabel.setImage(
-								PlatformUI.getWorkbench().getSharedImages().
-								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-						this.triggerDelayErrorLabel.setToolTipText(
-								"Trigger Delay value not possible");
-						// update and resize View with getParent().layout()
-						this.triggerDelayErrorLabel.getParent().layout();
+						this.triggerDelayTextControlDecoration.show();
 						break;
 					case SETTLE_TIME_NOT_POSSIBLE:
-						this.settleTimeErrorLabel.setImage(
-								PlatformUI.getWorkbench().getSharedImages().
-								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-						this.settleTimeErrorLabel.setToolTipText(
-								"Settle Time value not possible");
-						this.settleTimeErrorLabel.getParent().layout();
+						this.settleTimeTextControlDecoration.show();
 						break;
 				}
 			}
@@ -750,6 +745,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 				triggerDelayTextModifiedListener);
 		this.triggerDelayText.addVerifyListener(triggerDelayTextVerifyListener);
 		this.settleTimeText.addModifyListener(settleTimeTextModifiedListener);
+		this.settleTimeText.addVerifyListener(settleTimeTextVerifyListener);
 		this.confirmTriggerCheckBox.addSelectionListener(
 				confirmTriggerCheckBoxSelectionListener);
 		this.eventsTabFolder.addSelectionListener(
@@ -768,6 +764,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		this.triggerDelayText.removeModifyListener(
 				triggerDelayTextModifiedListener);
 		this.settleTimeText.removeModifyListener(settleTimeTextModifiedListener);
+		this.settleTimeText.removeVerifyListener(settleTimeTextVerifyListener);
 		this.confirmTriggerCheckBox.removeSelectionListener(
 				confirmTriggerCheckBoxSelectionListener);
 		this.eventsTabFolder.removeSelectionListener(

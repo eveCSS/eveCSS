@@ -72,7 +72,7 @@
       <packageset dir="org.csstudio.eve.data.tests/src" defaultexcludes="yes" />
       <packageset dir="org.csstudio.eve.editor.tests/src" defaultexcludes="yes" />
 
-      <doctitle><![CDATA[<h1>eveCSS 1.1</h1>]]></doctitle>
+      <doctitle><![CDATA[<h1>eveCSS 1.2</h1>]]></doctitle>
       <bottom>
         <![CDATA[<i>Copyright &#169; 2011 Physikalisch-Technische Bundesanstalt.</i>]]>
       </bottom>
