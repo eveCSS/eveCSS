@@ -63,7 +63,7 @@ public class CifEditingSupport extends EditingSupport {
 		ce.setContinueIfFalse((Boolean)value);
 		if (logger.isDebugEnabled()) {
 			logger.debug("set CIF of PauseEvent " + ce.getEvent().getName() +
-						" to " + (Boolean)value);
+						" to " + value);
 		}
 	}
 }

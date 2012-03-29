@@ -489,17 +489,33 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		// set the new scan module as the current one
 		this.currentScanModule = currentScanModule;
 		
+		// activate the scan module view (to assure propagation of selections)
+		this.getSite().getPage().activate(this);
+		
+		// get the selected tab
+		int selection_index = this.actionsTabFolder.getSelectionIndex();
+		
 		// tell the action composites about the change
+		this.actionsTabFolder.setSelection(0);
 		this.motorAxisComposite.setScanModule(this.currentScanModule);
+		this.actionsTabFolder.setSelection(1);
 		this.detectorChannelComposite.setScanModule(this.currentScanModule);
+		this.actionsTabFolder.setSelection(2);
 		this.prescanComposite.setScanModule(this.currentScanModule);
+		this.actionsTabFolder.setSelection(3);
 		this.postscanComposite.setScanModule(this.currentScanModule);
+		this.actionsTabFolder.setSelection(4);
 		this.positioningComposite.setScanModule(this.currentScanModule);
+		this.actionsTabFolder.setSelection(5);
 		this.plotComposite.setScanModule(this.currentScanModule);
 		
-		// select the first tab if none is selected
-		if(actionsTabFolder.getSelection() == null) {
-				actionsTabFolder.setSelection(0);
+		if(selection_index != -1) {
+			actionsTabFolder.setSelection(selection_index);
+			((ActionComposite)actionsTabFolder.getTabList()[selection_index]).
+					setScanModule(currentScanModule);
+		} else {
+			// select the first tab if none is selected
+			actionsTabFolder.setSelection(0);
 		}
 		
 		if (this.currentScanModule != null) {
@@ -522,9 +538,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 					this.currentScanModule.getRedoControlEventManager());
 			this.pauseEventComposite.setControlEventManager(
 					this.currentScanModule.getPauseControlEventManager());
-			
-			// activate the scan module view (to assure propagation of selections)
-			this.getSite().getPage().activate(this);
 		} else {
 			// no scan module selected -> reset contents
 			selectionProviderWrapper.setSelectionProvider(null);
@@ -551,17 +564,10 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 * 
 	 */
 	private void checkForErrors() {
-		// reset errors
+		// check errors in General Tab
 		this.triggerDelayTextControlDecoration.hide();
 		this.settleTimeTextControlDecoration.hide();
-		this.motorAxisTab.setImage(null);
-		this.detectorChannelTab.setImage(null);
-		this.prescanTab.setImage(null);
-		this.postscanTab.setImage(null);
-		this.positioningTab.setImage(null);
-		this.plotTab.setImage(null);
-
-		// check errors in General Tab
+		
 		for(IModelError error : this.currentScanModule.getModelErrors()) {
 			final IModelError modelError = error;
 			if(modelError instanceof ScanModuleError) {
@@ -579,6 +585,12 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		}
 		
 		// check errors in Actions Tab
+		this.motorAxisTab.setImage(null);
+		this.detectorChannelTab.setImage(null);
+		this.prescanTab.setImage(null);
+		this.postscanTab.setImage(null);
+		this.positioningTab.setImage(null);
+		this.plotTab.setImage(null);
 		boolean motorAxisErrors = false;
 		boolean detectorChannelErrors = false;
 		boolean prescanErrors = false;
@@ -634,37 +646,34 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		}		
 		
 		// check errors in Events Tab
-		if(this.currentScanModule.getPauseControlEventManager().
-								  	getModelErrors().size() > 0) {
+		this.pauseEventsTabItem.setImage(null);
+		this.redoEventsTabItem.setImage(null);
+		this.breakEventsTabItem.setImage(null);
+		this.triggerEventsTabItem.setImage(null);
+		
+		if (this.currentScanModule.getPauseControlEventManager().
+				getModelErrors().size() > 0) {
 			this.pauseEventsTabItem.setImage(PlatformUI.getWorkbench().
 									getSharedImages().getImage( 
 									ISharedImages.IMG_OBJS_ERROR_TSK));
-		} else {
-			this.pauseEventsTabItem.setImage(null);
 		}
-		if(this.currentScanModule.getRedoControlEventManager().
-								  	getModelErrors().size() > 0) {
+		if (this.currentScanModule.getRedoControlEventManager().
+				getModelErrors().size() > 0) {
 			this.redoEventsTabItem.setImage(PlatformUI.getWorkbench().
 									getSharedImages().getImage(
 									ISharedImages.IMG_OBJS_ERROR_TSK));
-		} else {
-			this.redoEventsTabItem.setImage(null);
 		}
-		if( this.currentScanModule.getBreakControlEventManager().
-								   	getModelErrors().size() > 0) {
+		if (this.currentScanModule.getBreakControlEventManager().
+				getModelErrors().size() > 0) {
 			this.breakEventsTabItem.setImage(PlatformUI.getWorkbench().
 									getSharedImages().getImage(
 									ISharedImages.IMG_OBJS_ERROR_TSK));
-		} else {
-			this.breakEventsTabItem.setImage(null);
 		}
-		if(this.currentScanModule.getTriggerControlEventManager().
-								  	getModelErrors().size() > 0) {
+		if (this.currentScanModule.getTriggerControlEventManager().
+				getModelErrors().size() > 0) {
 			this.triggerEventsTabItem.setImage(PlatformUI.getWorkbench().
 									getSharedImages().getImage(
 									ISharedImages.IMG_OBJS_ERROR_TSK));
-		} else {
-			this.triggerEventsTabItem.setImage(null);
 		}
 	}
 	
