@@ -42,7 +42,7 @@ public class RemovePrescan implements IHandler {
 					sm.remove(((Prescan)o));
 					if(logger.isDebugEnabled()) {
 						logger.debug("Prescan " + ((Prescan)o).
-								getAbstractDevice().getName() + "removed");
+								getAbstractDevice().getName() + " removed");
 					}
 				}
 			}

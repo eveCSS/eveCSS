@@ -464,10 +464,9 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		return currentScanModule;
 	}
 	
-	/**
-	 * Sets the currently active scan module.
-	 * 
-	 * @param currentScanModule the scan module that should be set
+	/*
+	 * Sets the currently active scan module. Called by selectionChanged if 
+	 * the current selection is of interest.
 	 */
 	private void setCurrentScanModule(ScanModule currentScanModule) {
 		logger.debug("setCurrentScanModule");
@@ -475,19 +474,64 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		// save the currently active part
 		IWorkbenchPart activePart = getSite().getPage().getActivePart();
 		
+		// if there was a scan module shown before, stop listening to changes
 		if (this.currentScanModule != null) {
 			this.currentScanModule.removeModelUpdateListener(this);
 		}
 		
-		// if there was already a scan module -> update it
+		// set the new scan module as the current one
 		this.currentScanModule = currentScanModule;
-
+		
+		// tell the action composites about the change
+		this.motorAxisComposite.setScanModule(this.currentScanModule);
+		this.detectorChannelComposite.setScanModule(this.currentScanModule);
+		this.prescanComposite.setScanModule(this.currentScanModule);
+		this.postscanComposite.setScanModule(this.currentScanModule);
+		this.positioningComposite.setScanModule(this.currentScanModule);
+		this.plotComposite.setScanModule(this.currentScanModule);
+		
+		// select the first tab if none is selected
+		if(actionsTabFolder.getSelection() == null) {
+				actionsTabFolder.setSelection(0);
+		}
+		
 		if (this.currentScanModule != null) {
+			// new scan module
 			this.currentScanModule.addModelUpdateListener(this);
+			
+			top.setVisible(true);
+			this.setPartName(this.currentScanModule.getName() + ":"
+							 + this.currentScanModule.getId());
+			
+			if (this.eventsTabFolder.getSelection() == null) {
+				this.eventsTabFolder.setSelection(0);
+			}
+			
+			this.triggerEventComposite.setControlEventManager(
+					this.currentScanModule.getTriggerControlEventManager());
+			this.breakEventComposite.setControlEventManager(
+					this.currentScanModule.getBreakControlEventManager());
+			this.redoEventComposite.setControlEventManager(
+					this.currentScanModule.getRedoControlEventManager());
+			this.pauseEventComposite.setControlEventManager(
+					this.currentScanModule.getPauseControlEventManager());
 			
 			// activate the scan module view (to assure propagation of selections)
 			this.getSite().getPage().activate(this);
+		} else {
+			// no scan module selected -> reset contents
+			selectionProviderWrapper.setSelectionProvider(null);
+			
+			this.setPartName("No Scan Module selected");
+			
+			triggerEventComposite.setControlEventManager(null);
+			breakEventComposite.setControlEventManager(null);
+			redoEventComposite.setControlEventManager(null);
+			pauseEventComposite.setControlEventManager(null);
+			
+			top.setVisible(false);
 		}
+		
 		updateEvent(null);
 		
 		if (this.currentScanModule != null) {
@@ -683,6 +727,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 					});
 				}
 			} else if (o instanceof ScanDescriptionEditPart) {
+				// clicking empty space in the editor
 				logger.debug("selection is ScanDescriptionEditPart: " + o);
 				if(this.currentScanModule !=  null) {
 					Display.getCurrent().asyncExec(new Runnable() {
@@ -731,10 +776,16 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 				appendScheduleEventCheckBoxSelectionListener);
 	}
 
+	/*
+	 * 
+	 */
 	private void suspendModelUpdateListener () {
 		this.currentScanModule.removeModelUpdateListener(this);
 	}
 	
+	/*
+	 * 
+	 */
 	private void resumeModelUpdateListener () {
 		this.currentScanModule.addModelUpdateListener(this);
 	}
@@ -744,18 +795,12 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 */
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
-		
 		// widgets will be updated according to set / changed model
 		// -> temporarily disable listeners to prevent Event Loops
 		// (and unnecessary duplicate calls)
-
 		removeListeners();
-
+		
 		if(this.currentScanModule != null) {
-			top.setVisible(true);
-			this.setPartName(this.currentScanModule.getName() + ":"
-							 + this.currentScanModule.getId());	
-			
 			// set trigger delay text
 			this.triggerDelayText.setText((this.currentScanModule.
 					getTriggerdelay() != Double.NEGATIVE_INFINITY) 
@@ -772,74 +817,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 			this.confirmTriggerCheckBox.setSelection(
 					this.currentScanModule.isTriggerconfirm());
 			
-			// select the first tab if none is selected
-			if(actionsTabFolder.getSelection() == null) {
-				actionsTabFolder.setSelection(0);
-			}
-			
-			this.motorAxisComposite.setScanModule(this.currentScanModule);
-			this.detectorChannelComposite.setScanModule(this.currentScanModule);
-			this.prescanComposite.setScanModule(this.currentScanModule);
-			this.postscanComposite.setScanModule(this.currentScanModule);
-			this.positioningComposite.setScanModule(this.currentScanModule);
-			this.plotComposite.setScanModule(this.currentScanModule);
-			
-			/*
-			
-			// TODO
-			// setScanModule muß in der Reihenfolge aufgerufen werden, dass
-			// das gerade selekierte Composite als letztes gesetzt wird,
-			// damit der SelectionProvider richtig gesetzt ist.
-			((PrescanComposite) this.prescanComposite).setScanModule(
-					this.currentScanModule);
-			((PostscanComposite) this.postscanComposite).setScanModule(
-					this.currentScanModule);
-			((PositioningComposite) this.positioningComposite).setScanModule(
-					this.currentScanModule);
-			
-			switch (actionsTabFolder.getSelectionIndex()) {
-			case 0:
-//				actionsTabFolder.setSelection(1);
-				this.detectorChannelComposite.setScanModule(
-						this.currentScanModule);
-//				actionsTabFolder.setSelection(5);
-				this.plotComposite.setScanModule(this.currentScanModule);
-//				actionsTabFolder.setSelection(0);
-				this.motorAxisComposite.setScanModule(this.currentScanModule);
-				break;
-			case 1:
-				//actionsTabFolder.setSelection(0);
-				this.motorAxisComposite.setScanModule(this.currentScanModule);
-				//actionsTabFolder.setSelection(5);
-				this.plotComposite.setScanModule(this.currentScanModule);
-				//actionsTabFolder.setSelection(1);
-				this.detectorChannelComposite.setScanModule(
-						this.currentScanModule);
-				break;
-			case 5:
-			default:
-				this.motorAxisComposite.setScanModule(this.currentScanModule);
-				this.detectorChannelComposite.setScanModule(
-						this.currentScanModule);
-				this.plotComposite.setScanModule(this.currentScanModule);
-				break;
-			}
-			
-			*/
-			
-			if (this.eventsTabFolder.getSelection() == null) {
-				this.eventsTabFolder.setSelection(0);
-			}
-			
-			this.triggerEventComposite.setControlEventManager(
-					this.currentScanModule.getTriggerControlEventManager());
-			this.breakEventComposite.setControlEventManager(
-					this.currentScanModule.getBreakControlEventManager());
-			this.redoEventComposite.setControlEventManager(
-					this.currentScanModule.getRedoControlEventManager());
-			this.pauseEventComposite.setControlEventManager(
-					this.currentScanModule.getPauseControlEventManager());
-			
 			// TODO CheckBox for ScheduleIncident Start or End
 			Event testEvent = new Event(currentScanModule.getChain().getId(), 
 										currentScanModule.getId(), 
@@ -849,26 +826,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 					getEventById(testEvent.getID()) != null);
 			
 			checkForErrors();
-		} else { // currentScanModule == null
-			// no scan module selected -> reset contents
-			
-			this.setPartName("No Scan Module selected");
-			
-			this.motorAxisComposite.setScanModule(null);
-			this.detectorChannelComposite.setScanModule(null);
-			this.prescanComposite.setScanModule(null);
-			this.postscanComposite.setScanModule(null);
-			this.positioningComposite.setScanModule(null);
-			this.plotComposite.setScanModule(null);
-			
-			triggerEventComposite.setControlEventManager(null);
-			breakEventComposite.setControlEventManager(null);
-			redoEventComposite.setControlEventManager(null);
-			pauseEventComposite.setControlEventManager(null);
-			
-			selectionProviderWrapper.setSelectionProvider(null);
-			
-			top.setVisible(false);
 		}
 		addListeners();
 	}

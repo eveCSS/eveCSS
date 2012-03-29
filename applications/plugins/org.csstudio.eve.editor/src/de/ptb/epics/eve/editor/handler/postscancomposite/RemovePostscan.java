@@ -42,7 +42,7 @@ public class RemovePostscan implements IHandler {
 					sm.remove(((Postscan)o));
 					if(logger.isDebugEnabled()) {
 						logger.debug("Postscan " + ((Postscan)o).
-								getAbstractDevice().getName() + "removed");
+								getAbstractDevice().getName() + " removed");
 					}
 				}
 			}
