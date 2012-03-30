@@ -4,6 +4,9 @@ bin/**
 CVS/**
 *.class
 
+**/*.euml2
+**/*.umlproject
+
 syntax: regexp
 ^applications/plugins/org\.csstudio\.eve\.data\.tests/xml/qnim\.xml$
 syntax: regexp
