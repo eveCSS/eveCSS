@@ -1,7 +1,9 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jface.action.IContributionItem;
@@ -87,7 +89,11 @@ public class MenuContribution extends CompoundContributionItem {
 		// *************************************************
 		
 		// iterate over all classes
-		for(final String className : measuringStation.getClassNameList()) {
+		List<String> classNames = new ArrayList<String>();
+		classNames.addAll(measuringStation.getClassNameList());
+		Collections.sort(classNames);
+		
+		for(final String className : classNames) {
 			// create a menu entry for each class name
 			final MenuManager currentClassMenu = new MenuManager(
 					className, classImage, className);

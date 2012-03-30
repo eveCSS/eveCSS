@@ -1,7 +1,9 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jface.action.IContributionItem;
@@ -67,7 +69,11 @@ public class MenuContribution extends CompoundContributionItem {
 		// create menu from all remaining devices:
 		
 		// iterate over all classes
-		for(final String className : measuringStation.getClassNameList()) {
+		List<String> classNames = new ArrayList<String>();
+		classNames.addAll(measuringStation.getClassNameList());
+		Collections.sort(classNames);
+		
+		for(final String className : classNames) {
 			final MenuManager currentClassMenu = new MenuManager(
 					className, classImage, className);
 			
