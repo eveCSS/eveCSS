@@ -1,7 +1,6 @@
 package de.ptb.epics.eve.data.scandescription.updatenotification;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -141,7 +140,6 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 		} else if(this.parentChannel != null) {
 			this.parentChannel.addRedoEvent(controlEvent);
 		}
-//		updateListeners(new ModelUpdateEvent(this, null));
 	}
 	
 	/**
@@ -174,7 +172,15 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 		} else if (this.parentChannel != null) {
 			this.parentChannel.removeRedoEvent(controlEvent);
 		}
-//		updateListeners(new ModelUpdateEvent(this, null));
+	}
+	
+	/**
+	 * Removes all events.
+	 */
+	public void removeAllControlEvents() {
+		for(ControlEvent ce : this.getControlEventsList()) {
+			this.removeControlEvent(ce);
+		}
 	}
 	
 	/**
@@ -250,15 +256,12 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 	/*
 	 * 
 	 */
-	private void updateListeners(final ModelUpdateEvent event)
-	{
+	private void updateListeners(final ModelUpdateEvent event) {
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
 			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
 		
-		Iterator<IModelUpdateListener> it = list.iterator();
-		
-		while(it.hasNext()) {
-			it.next().updateEvent(event);
+		for(IModelUpdateListener imul : list) {
+			imul.updateEvent(event);
 		}
 	}
 }

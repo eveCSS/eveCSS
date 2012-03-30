@@ -250,6 +250,18 @@
                </reference>
             </visibleWhen>
          </command>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.removeallevents"
+               icon="icons/progress_remall.gif"
+               label="Remove All Events"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.oneitemselected">
+               </reference>
+            </visibleWhen>
+         </command>
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup">
@@ -558,6 +570,12 @@
             defaultHandler="de.ptb.epics.eve.editor.handler.eventcomposite.RemoveEvent"
             id="de.ptb.epics.eve.editor.command.removeevent"
             name="RemoveEvent">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.eventcomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.eventcomposite.RemoveAllEvents"
+            id="de.ptb.epics.eve.editor.command.removeallevents"
+            name="Remove All Events">
       </command>
       <category
             id="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.commands"
