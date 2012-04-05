@@ -19,14 +19,14 @@
       <view
             category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.playlistview.PlayListView"
-            icon="icons/css.gif"
+            icon="icons/main_tab.gif"
             id="PlayListView"
             name="%view.name">
       </view>
       <view
             category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.engineview.EngineView"
-            icon="icons/css.gif"
+            icon="icons/threadgroup_obj.gif"
             id="EngineView"
             name="%view.name.0">
       </view>
@@ -34,7 +34,7 @@
             allowMultiple="true"
             category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.devicesview.DevicesView"
-            icon="icons/css.gif"
+            icon="icons/class_32.gif"
             id="DevicesView"
             name="%view.name.1"
             restorable="true">
@@ -42,7 +42,7 @@
       <view
             category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.messagesview.MessagesView"
-            icon="icons/css.gif"
+            icon="icons/showwarn_tsk.gif"
             id="MessagesView"
             name="%view.name.2">
       </view>
@@ -50,28 +50,28 @@
             allowMultiple="true"
             category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView"
-            icon="icons/css.gif"
+            icon="icons/read_obj.gif"
             id="DeviceInspectorView"
             name="%view.name.3"/>
       <view
             allowMultiple="true"
             category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.deviceoptionsview.DeviceOptionsView"
-            icon="icons/css.gif"
+            icon="icons/extension_obj.gif"
             id="DeviceOptionsView"
             name="%view.name.4"/>
       <view
             allowMultiple="true"
             category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.plotview.PlotView"
-            icon="icons/css.gif"
+            icon="icons/variable_tab.gif"
             id="PlotView"
             name="%view.name.5"/>
       <view
             allowMultiple="true"
             category="eveViewerCategory"
             class="de.ptb.epics.eve.viewer.views.devicesview.DevicesView"
-            icon="icons/css.gif"
+            icon="icons/class_32.gif"
             id="LocalDevicesView"
             name="%view.name.6"
             restorable="true">
