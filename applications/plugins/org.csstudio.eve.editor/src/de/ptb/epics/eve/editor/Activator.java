@@ -2,7 +2,6 @@ package de.ptb.epics.eve.editor;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -10,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -81,16 +79,12 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		
 		readStartupParameters();
-		if(!checkRootDir()) {
-			context.getBundle().stop();
-			context.getBundle().uninstall();
-			return;
-		}
+		checkRootDir();
 		configureLogging();
 		loadMeasuringStation();
 		loadColorsAndFonts();
 		startupReport();
-
+		
 		if(logger.isDebugEnabled()) {
 			getWorkbench().getActiveWorkbenchWindow().getSelectionService().
 				addSelectionListener(new SelectionTracker());
@@ -159,22 +153,26 @@ public class Activator extends AbstractUIPlugin {
 	/*
 	 * 
 	 */
-	private void readStartupParameters() {
+	private void readStartupParameters() throws Exception {
 		String[] args = Platform.getCommandLineArgs();
+		rootDir = "";
 		debug = false;
 		int i = 0;
-		while (i < args.length)
-		{
+		while (i < args.length) {
 			if (args[i].equals("-eve.root")) {
 				i++;
 				rootDir = args[i];
-				
 			}
 			if (args[i].equals("-eve.debug")) {
 				i++;
 				debug = args[i].equals("1") ? true : false;
 			}
 			i++;
+		}
+		if (rootDir.isEmpty()) {
+			String message = "parameter 'eve.root' not found!";
+			logger.fatal(message);
+			throw new Exception(message);
 		}
 	}
 	
@@ -185,14 +183,17 @@ public class Activator extends AbstractUIPlugin {
 	 * @return <code>true</code> if the root directory contains a folder named 
 	 * 			eve, <code>false</code> otherwise
 	 */
-	private boolean checkRootDir() {
-		if(!rootDir.endsWith("/")) rootDir += "/";
+	private void checkRootDir() throws Exception {
+		if(!rootDir.endsWith("/")) {
+			rootDir += "/";
+		}
 		String path = rootDir;
 		File file = new File(path + "eve/");
 		if(!file.exists()) {
-			return false;
+			String message = "Root Directory not found!";
+			logger.fatal(message);
+			throw new Exception(message);
 		}
-		return true;
 	}
 	
 	/*
@@ -207,23 +208,21 @@ public class Activator extends AbstractUIPlugin {
 		} else {
 			pathToConfigFile = rootDir + "eve/logger.xml";
 		}
-		
 		File file = new File(pathToConfigFile);
 		if(file.exists()) {
 			// setting property so that the log4j configuration file can access it
 			System.setProperty("eve.logdir", rootDir + "eve/log");
 			DOMConfigurator.configure(pathToConfigFile);
-			
-			logListener = new EclipseLogListener();
-			Platform.addLogListener(logListener);
+		} else {
+			logger.warn("Could not initialize logging. " + 
+					"Path to log configuration not found!");
 		}
 	}
 	
 	/*
 	 * 
 	 */
-	private void loadMeasuringStation() {
-		
+	private void loadMeasuringStation() throws Exception {
 		String measuringStationDescription = new String();
 		
 		// get entry stored in the preferences
@@ -235,18 +234,19 @@ public class Activator extends AbstractUIPlugin {
 			File pathToDefaultMeasuringStation = 
 				new File(rootDir + "eve/default.xml");
 			if(!pathToDefaultMeasuringStation.exists()) {
-				measuringStation = null;
-				schemaFile = null;
-				return;
+				String message = "Could not find 'default.xml' in 'eve.root'!";
+				logger.fatal(message);
+				throw new Exception(message);
 			}
 			measuringStationDescription = rootDir + "eve/default.xml";
 		} else {
 			File measuringStationFile = new File(preferencesEntry);
 			if(!measuringStationFile.exists()) {
 				// preferences entry present, but target does not exist
-				measuringStation = null;
-				schemaFile = null;
-				return;
+				String message = "Could not find device definition file at " + 
+						measuringStationFile;
+				logger.fatal(message);
+				throw new Exception(message);
 			}
 			measuringStationDescription = preferencesEntry;
 		}
@@ -256,42 +256,24 @@ public class Activator extends AbstractUIPlugin {
 		
 		// now we know the location of the measuring station description
 		// -> checking schema file
-		/*
+		
+		/* in older versions the schema file was in the eve.root directory...
 		File pathToSchemaFile = new File(rootDir + "eve/schema.xsd");
 		if(!pathToSchemaFile.exists()) {
 			schemaFile = null;
 			return;
 		}
-		schemaFile = pathToSchemaFile; 
+		schemaFile = pathToSchemaFile;
 		*/
 		
-		/*
-		schemaFile = null;
-		Bundle bundle = Platform.getBundle("org.csstudio.eve.product");
-		URL schemaUrl = FileLocator.find(bundle, new Path("cfg/schema.xsd"), null);		
-		logger.debug(schemaUrl.getFile());
-		logger.debug(schemaUrl.getPath());
-		try {
-			logger.debug(schemaUrl.toURI().toString());
-		} catch (URISyntaxException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		try {
-			schemaFile = new File(schemaUrl.toURI());
-		} catch (URISyntaxException e1) {
-			logger.error(e1.getMessage(), e1);
-		}
-		if(schemaFile == null || !schemaFile.exists()) {
-			schemaFile = null;
-			return;
-		}*/
-		
 		schemaFile = de.ptb.epics.eve.resources.Activator.getXMLSchema();
+		if(schemaFile == null) {
+			String message = "Could not load schema file!";
+			logger.fatal(message);
+			throw new Exception(message);
+		}
 		
 		// measuring station and schema present -> start loading
-
-		
 		try {
 			final MeasuringStationLoader measuringStationLoader = 
 					new MeasuringStationLoader(schemaFile);

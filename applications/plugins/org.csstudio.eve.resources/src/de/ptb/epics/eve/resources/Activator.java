@@ -6,10 +6,8 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -22,29 +20,32 @@ public class Activator implements BundleActivator {
 
 	/** */
 	public static String PLUGIN_ID = "de.ptb.epics.eve.resources";
-	
-	private static BundleContext context;
 
+	private static Logger logger = Logger.getLogger(Activator.class.getName());
+
+	private static BundleContext context;
 	private static Activator plugin;
 	
 	/**
-	 * 
+	 * Constructor
 	 */
 	public Activator() {
 		plugin = this;
 	}
 
 	/**
+	 * Returns the activator.
 	 * 
-	 * @return
+	 * @return the activator
 	 */
 	public static Activator getDefault() {
 		return plugin;
 	}
 
 	/**
+	 * Returns the bundle context.
 	 * 
-	 * @return
+	 * @return the bundle context
 	 */
 	public static BundleContext getContext() {
 		return context;
@@ -65,42 +66,24 @@ public class Activator implements BundleActivator {
 	}
 	
 	/**
+	 * Returns the XML schema definition.
 	 * 
-	 * @return
+	 * @return the XML schema definition
 	 */
 	public static File getXMLSchema() {
-		
-		URL url;
 		try {
-			url = new URL("platform:/plugin/org.csstudio.eve.product/cfg/schema.xsd");
-			System.out.println(url.getPath());
+			URL url;
+			url = new URL(
+				"platform:/plugin/de.ptb.epics.eve.resources/cfg/schema.xsd");
 			File file = new File(FileLocator.toFileURL(url).toURI());
-			System.out.println(file.getPath());
 			return file;
 		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			logger.error(e1.getMessage(), e1);
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
-		
-		
-		Bundle bundle = Platform.getBundle(PLUGIN_ID);
-
-		URL fileUrl = FileLocator.find(bundle, new Path("cfg/schema.xsd"), null);
-		
-		try {
-			return new File(FileLocator.toFileURL(fileUrl).toURI());
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		
 		return null;
 	}
 }

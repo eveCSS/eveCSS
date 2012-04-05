@@ -105,7 +105,8 @@ public class Activator extends AbstractUIPlugin {
 		loadColorsAndFonts();
 		startupReport();
 		
-		this.ecp1Client.getPlayListController().addNewXMLFileListener(this.xmlFileDispatcher);
+		this.ecp1Client.getPlayListController().addNewXMLFileListener(
+				this.xmlFileDispatcher);
 		this.ecp1Client.addErrorListener(this.engineErrorReader);
 		this.ecp1Client.addEngineStatusListener(this.chainStatusAnalyzer);
 		this.ecp1Client.addChainStatusListener(this.chainStatusAnalyzer);
@@ -358,7 +359,7 @@ public class Activator extends AbstractUIPlugin {
 		// now we know the location of the measuring station description
 		// -> checking schema file
 		
-		/*
+		/* in older versions the schema file was in the eve.root directory...
 		File pathToSchemaFile = new File(rootDir + "eve/schema.xsd");
 		if(!pathToSchemaFile.exists()) {
 			schemaFile = null;
@@ -368,12 +369,16 @@ public class Activator extends AbstractUIPlugin {
 		*/
 		
 		schemaFile = de.ptb.epics.eve.resources.Activator.getXMLSchema();
+		if(schemaFile == null) {
+			String message = "Could not load schema file!";
+			logger.fatal(message);
+			throw new Exception(message);
+		}
 		
 		// measuring station and schema present -> start loading
-
-		final MeasuringStationLoader measuringStationLoader = 
-				new MeasuringStationLoader(schemaFile);
 		try {
+			final MeasuringStationLoader measuringStationLoader = 
+					new MeasuringStationLoader(schemaFile);
 			measuringStationLoader.load(measuringStationDescriptionFile);
 			measuringStation = measuringStationLoader.getMeasuringStation();
 		} catch (ParserConfigurationException e) {
@@ -397,6 +402,8 @@ public class Activator extends AbstractUIPlugin {
 			logger.info("root directory: " + rootDir);
 			logger.info("measuring station: " + 
 					measuringStation.getLoadedFileName());
+			logger.info("schema file: " + 
+					measuringStation.getSchemaFileName());
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			logger.info("workspace: " + workspace.getRoot().getLocation().
 					toFile().getAbsolutePath());
