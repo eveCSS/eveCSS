@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Resources
+Bundle-SymbolicName: de.ptb.epics.eve.resources;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.ptb.epics.eve.resources.Activator
+Require-Bundle: org.eclipse.core.runtime
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: de.ptb.epics.eve.resources
