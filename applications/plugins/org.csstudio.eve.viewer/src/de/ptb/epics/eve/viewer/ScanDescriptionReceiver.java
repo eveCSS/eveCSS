@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.viewer;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.eclipse.ui.PlatformUI;
@@ -24,8 +25,19 @@ public class ScanDescriptionReceiver implements IScanDescriptionReceiver {
 	 */
 	@Override
 	public void scanDescriptionReceived(File location, boolean switchPerspective) {
-		Activator.getDefault().addScanDescription(location);
-		if(switchPerspective) {
+		Activator.getDefault().connectEngine();
+		// either we were connected before or have done it above, we are 
+		// connected now and can add the scan description to the play list.
+		if (Activator.getDefault().getEcp1Client().isRunning()) {
+			try {
+				Activator.getDefault().getEcp1Client().getPlayListController().
+					addLocalFile(location);
+			} catch(final IOException e) {
+				logger.error(e.getMessage(), e);
+			}
+		}
+		
+		if (switchPerspective) {
 			try {
 				PlatformUI.getWorkbench().showPerspective(
 						"EveEnginePerspective", Activator.getDefault().

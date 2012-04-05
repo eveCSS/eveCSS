@@ -2,6 +2,7 @@ package de.ptb.epics.eve.editor;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -9,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -98,7 +100,6 @@ public class Activator extends AbstractUIPlugin {
 				addPerspectiveListener(eveEditorPerspectiveListener);
 		
 		PlatformUI.getWorkbench().addWorkbenchListener(workbenchListener);
-
 	}
 
 	/**
@@ -255,24 +256,54 @@ public class Activator extends AbstractUIPlugin {
 		
 		// now we know the location of the measuring station description
 		// -> checking schema file
-		
+		/*
 		File pathToSchemaFile = new File(rootDir + "eve/schema.xsd");
 		if(!pathToSchemaFile.exists()) {
 			schemaFile = null;
 			return;
 		}
-		schemaFile = pathToSchemaFile;
+		schemaFile = pathToSchemaFile; 
+		*/
+		
+		/*
+		schemaFile = null;
+		Bundle bundle = Platform.getBundle("org.csstudio.eve.product");
+		URL schemaUrl = FileLocator.find(bundle, new Path("cfg/schema.xsd"), null);		
+		logger.debug(schemaUrl.getFile());
+		logger.debug(schemaUrl.getPath());
+		try {
+			logger.debug(schemaUrl.toURI().toString());
+		} catch (URISyntaxException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		try {
+			schemaFile = new File(schemaUrl.toURI());
+		} catch (URISyntaxException e1) {
+			logger.error(e1.getMessage(), e1);
+		}
+		if(schemaFile == null || !schemaFile.exists()) {
+			schemaFile = null;
+			return;
+		}*/
+		
+		schemaFile = de.ptb.epics.eve.resources.Activator.getXMLSchema();
 		
 		// measuring station and schema present -> start loading
 
-		final MeasuringStationLoader measuringStationLoader = 
-				new MeasuringStationLoader(schemaFile);
+		
 		try {
+			final MeasuringStationLoader measuringStationLoader = 
+					new MeasuringStationLoader(schemaFile);
+			
 			measuringStationLoader.load(measuringStationDescriptionFile);
 			measuringStation = measuringStationLoader.getMeasuringStation();
 			
 			this.excludeFilter = new ExcludeFilter();
 			this.excludeFilter.setSource(this.measuringStation);
+		} catch (IllegalArgumentException e) {
+			measuringStation = null;
+			logger.error(e.getMessage(), e);
 		} catch (ParserConfigurationException e) {
 			measuringStation = null;
 			logger.error(e.getMessage(), e);
@@ -297,9 +328,13 @@ public class Activator extends AbstractUIPlugin {
 				measuringStation.getVersion() + ")");
 			logger.info("measuring station location: " + 
 					measuringStation.getLoadedFileName());
+			logger.info("version: " + measuringStation.getVersion());
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			logger.info("workspace: " + workspace.getRoot().getLocation().
 					toFile().getAbsolutePath());
+			if(schemaFile != null) {
+				logger.debug("schema URL: " + schemaFile.getPath());
+			}
 		}
 	}
 	

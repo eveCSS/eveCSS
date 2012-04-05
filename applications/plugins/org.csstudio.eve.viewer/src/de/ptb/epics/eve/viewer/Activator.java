@@ -99,16 +99,12 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		
 		readStartupParameters();
-		if(!checkRootDir()) {
-			context.getBundle().stop();
-			context.getBundle().uninstall();
-			return;
-		}
+		checkRootDir();
 		configureLogging();
 		loadMeasuringStation();
 		loadColorsAndFonts();
 		startupReport();
-
+		
 		this.ecp1Client.getPlayListController().addNewXMLFileListener(this.xmlFileDispatcher);
 		this.ecp1Client.addErrorListener(this.engineErrorReader);
 		this.ecp1Client.addEngineStatusListener(this.chainStatusAnalyzer);
@@ -167,7 +163,7 @@ public class Activator extends AbstractUIPlugin {
 	 * @param colorname
 	 * @return
 	 */
-	public Color getColor(String colorname){
+	public Color getColor(String colorname) {
 		Color color = colorreg.get(colorname);
 		if (color == null) {
 			return colorreg.get("COLOR_PV_INITIAL");
@@ -180,7 +176,7 @@ public class Activator extends AbstractUIPlugin {
 	 * @param fontname
 	 * @return
 	 */
-	public Font getFont(String fontname){
+	public Font getFont(String fontname) {
 		Font font = fontreg.get(fontname);
 		if (font == null) {
 			return fontreg.defaultFont();
@@ -240,31 +236,13 @@ public class Activator extends AbstractUIPlugin {
 			final ScanDescription currentScanDescription) {
 		this.currentScanDescription = currentScanDescription;
 	}
-	
-	/**
-	 * Adds a scan description to the play list.
-	 * 
-	 * @param file the file containing the Scan Description (SCML)
-	 */
-	public void addScanDescription(final File file) {
-		Activator.getDefault().connectEngine();
-		// either we were connected before or have done it above, we are 
-		// connected now and can add the scan description to the play list.
-		if(this.ecp1Client.isRunning()) {
-			try {
-				this.ecp1Client.getPlayListController().addLocalFile(file);
-			} catch(final IOException e) {
-				logger.error(e.getMessage(), e);
-			}
-		}
-	}
 
 	/**
 	 * Connect the Engine if Ecp1Client is running
 	 */
 	public void connectEngine() {
-	    // if we are not connected to the engine -> connect to it
-		if( !Activator.getDefault().getEcp1Client().isRunning()) {
+		// if we are not connected to the engine -> connect to it
+		if (!Activator.getDefault().getEcp1Client().isRunning()) {
 			// getting the service to execute registered commands
 			IHandlerService handlerService = (IHandlerService) 
 					PlatformUI.getWorkbench().getService(IHandlerService.class);
@@ -281,16 +259,15 @@ public class Activator extends AbstractUIPlugin {
 	/*
 	 * 
 	 */
-	private void readStartupParameters() {
+	private void readStartupParameters() throws Exception {
 		String[] args = Platform.getCommandLineArgs();
+		rootDir = "";
 		debug = false;
 		int i = 0;
-		while (i < args.length)
-		{
+		while (i < args.length) {
 			if (args[i].equals("-eve.root")) {
 				i++;
 				rootDir = args[i];
-				
 			}
 			if (args[i].equals("-eve.debug")) {
 				i++;
@@ -298,23 +275,28 @@ public class Activator extends AbstractUIPlugin {
 			}
 			i++;
 		}
+		if (rootDir.isEmpty()) {
+			String message = "parameter 'eve.root' not found!";
+			logger.fatal(message);
+			throw new Exception(message);
+		}
 	}
 	
 	/*
-	 * Checks whether the directory (given by parameter -rootdir) contains a 
+	 * Checks whether the directory (given by parameter -eve.root) contains a 
 	 * folder named eve.
-	 * 
-	 * @return <code>true</code> if the root directory contains a folder named 
-	 * 			eve, <code>false</code> otherwise
 	 */
-	private boolean checkRootDir() {
-		if(!rootDir.endsWith("/")) rootDir += "/";
+	private void checkRootDir() throws Exception {
+		if(!rootDir.endsWith("/")) {
+			rootDir += "/";
+		}
 		String path = rootDir;
 		File file = new File(path + "eve/");
 		if(!file.exists()) {
-			return false;
+			String message = "Root Directory not found!";
+			logger.fatal(message);
+			throw new Exception(message);
 		}
-		return true;
 	}
 	
 	/*
@@ -332,14 +314,16 @@ public class Activator extends AbstractUIPlugin {
 			// setting property so that the log4j configuration file can access it
 			System.setProperty("eve.logdir", rootDir + "eve/log");
 			DOMConfigurator.configure(pathToConfigFile);
+		} else {
+			logger.warn("Could not initialize logging. " + 
+					"Path to log configuration not found!");
 		}
 	}
 	
 	/*
 	 * 
 	 */
-	private void loadMeasuringStation() {
-		
+	private void loadMeasuringStation() throws Exception {
 		String measuringStationDescription = new String();
 		
 		// get entry stored in the preferences
@@ -351,18 +335,19 @@ public class Activator extends AbstractUIPlugin {
 			File pathToDefaultMeasuringStation = 
 				new File(rootDir + "eve/default.xml");
 			if(!pathToDefaultMeasuringStation.exists()) {
-				measuringStation = null;
-				schemaFile = null;
-				return;
+				String message = "Could not find 'default.xml' in 'eve.root'!";
+				logger.fatal(message);
+				throw new Exception(message);
 			}
 			measuringStationDescription = rootDir + "eve/default.xml";
 		} else {
 			File measuringStationFile = new File(preferencesEntry);
 			if(!measuringStationFile.exists()) {
 				// preferences entry present, but target does not exist
-				measuringStation = null;
-				schemaFile = null;
-				return;
+				String message = "Could not find device definition file at " + 
+						measuringStationFile;
+				logger.fatal(message);
+				throw new Exception(message);
 			}
 			measuringStationDescription = preferencesEntry;
 		}
@@ -373,12 +358,16 @@ public class Activator extends AbstractUIPlugin {
 		// now we know the location of the measuring station description
 		// -> checking schema file
 		
+		/*
 		File pathToSchemaFile = new File(rootDir + "eve/schema.xsd");
 		if(!pathToSchemaFile.exists()) {
 			schemaFile = null;
 			return;
 		}
 		schemaFile = pathToSchemaFile;
+		*/
+		
+		schemaFile = de.ptb.epics.eve.resources.Activator.getXMLSchema();
 		
 		// measuring station and schema present -> start loading
 

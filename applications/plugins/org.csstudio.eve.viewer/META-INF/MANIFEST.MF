@@ -21,7 +21,8 @@ Require-Bundle: de.ptb.epics.eve.data;bundle-version="1.0.0",
  org.csstudio.csdata;bundle-version="3.0.1",
  org.csstudio.utility.pvmanager;bundle-version="1.0.0",
  org.csstudio.utility.pvmanager.ui;bundle-version="3.1.0",
- de.ptb.epics.eve.editor
+ de.ptb.epics.eve.editor,
+ de.ptb.epics.eve.resources;bundle-version="1.0.0"
 Eclipse-LazyStart: true
 Bundle-ClassPath: de.ptb.epics.ecp1.client.jar,
  de.ptb.epics.ecp1.intern.jar,
