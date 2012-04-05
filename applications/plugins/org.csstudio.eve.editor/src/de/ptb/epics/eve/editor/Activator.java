@@ -213,6 +213,9 @@ public class Activator extends AbstractUIPlugin {
 			// setting property so that the log4j configuration file can access it
 			System.setProperty("eve.logdir", rootDir + "eve/log");
 			DOMConfigurator.configure(pathToConfigFile);
+			
+			logListener = new EclipseLogListener();
+			Platform.addLogListener(logListener);
 		} else {
 			logger.warn("Could not initialize logging. " + 
 					"Path to log configuration not found!");
