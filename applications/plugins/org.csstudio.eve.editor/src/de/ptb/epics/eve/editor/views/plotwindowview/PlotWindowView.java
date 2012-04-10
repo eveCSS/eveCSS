@@ -20,9 +20,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.events.SelectionEvent;
@@ -229,6 +232,17 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	
 	private Image errorImage;
 	
+	private IMemento memento;
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		init(site);
+		this.memento = memento;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -285,6 +299,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		itemYAxis2.setHeight(
 				this.yAxis2Composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		itemYAxis2.setControl(this.yAxis2Composite);
+		
+		this.restoreState();
 		
 		top.setVisible(false);
 
@@ -654,6 +670,27 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	// ********************** end of createPartControl ************************
 	// ************************************************************************
 
+	/*
+	 * restore memento
+	 */
+	private void restoreState() {
+		if (memento == null) {
+			return;
+		}
+		boolean general = memento.getBoolean("itemGeneral") != null 
+						? memento.getBoolean("itemGeneral")
+						: true;
+		this.itemGeneral.setExpanded(general);
+		boolean yAxis1 = memento.getBoolean("itemYAxis1") != null 
+						? memento.getBoolean("itemYAxis1") 
+						: true;
+		this.itemYAxis1.setExpanded(yAxis1);
+		boolean yAxis2 = memento.getBoolean("itemYAxis2") != null
+						? memento.getBoolean("itemYAxis2") 
+						: false;
+		this.itemYAxis2.setExpanded(yAxis2);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -677,7 +714,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	 * 		   <code>null</code> nor both aren't
 	 */
 	private void setPlotWindow(final PlotWindow plotWindow) {
-		
 		if(plotWindow != null) {
 			logger.debug("set plot window (" + plotWindow.getId() + ")");
 		} else {
@@ -1038,13 +1074,30 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				}
 				// set plot related properties according to the model
 				updateColorsAxis(1);
+				yAxis1ColorComboBox.setEnabled(true);
+				yAxis1ColorFieldEditor.getColorSelector().setEnabled(true);
 				yAxis1LinestyleComboBox.setText(yAxis1.getLinestyle().toString());
+				yAxis1LinestyleComboBox.setEnabled(true);
 				yAxis1MarkstyleComboBox.setText(yAxis1.getMarkstyle().toString());
+				yAxis1MarkstyleComboBox.setEnabled(true);
 				yAxis1ScaletypeComboBox.setText(
-									PlotModes.modeToString(yAxis1.getMode()));
+						PlotModes.modeToString(yAxis1.getMode()));
+				yAxis1ScaletypeComboBox.setEnabled(true);
 			} else {
-				// no y axis 1->disable fields
-				this.yAxis1DetectorChannelComboBox.setText("none");
+				// no y axis 1 -> disable fields
+				// this.yAxis1DetectorChannelComboBox.setText("none");
+				this.yAxis1DetectorChannelComboBox.deselectAll();
+				this.yAxis1NormalizeChannelComboBox.deselectAll();
+				this.yAxis1NormalizeChannelComboBox.setEnabled(false);
+				this.yAxis1ColorComboBox.deselectAll();
+				this.yAxis1ColorComboBox.setEnabled(false);
+				this.yAxis1ColorFieldEditor.getColorSelector().setEnabled(false);
+				this.yAxis1LinestyleComboBox.deselectAll();
+				this.yAxis1LinestyleComboBox.setEnabled(false);
+				this.yAxis1MarkstyleComboBox.deselectAll();
+				this.yAxis1MarkstyleComboBox.setEnabled(false);
+				this.yAxis1ScaletypeComboBox.deselectAll();
+				this.yAxis1ScaletypeComboBox.setEnabled(false);
 			}
 			// ***************************************************************
 			// *********************** end of: yAxis1 ************************
@@ -1070,14 +1123,30 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				}
 				// plot related fields...
 				updateColorsAxis(2);
+				yAxis2ColorComboBox.setEnabled(true);
+				yAxis2ColorFieldEditor.getColorSelector().setEnabled(true);
 				yAxis2LinestyleComboBox.setText(yAxis2.getLinestyle().toString());
+				yAxis2LinestyleComboBox.setEnabled(true);
 				yAxis2MarkstyleComboBox.setText(yAxis2.getMarkstyle().toString());
+				yAxis2MarkstyleComboBox.setEnabled(true);
 				yAxis2ScaletypeComboBox.setText(
-								PlotModes.modeToString(yAxis2.getMode()));
+						PlotModes.modeToString(yAxis2.getMode()));
+				yAxis2ScaletypeComboBox.setEnabled(true);
 			} else {
-				// no y axis 2->disable fields
-				itemYAxis2.setExpanded(false);
-				this.yAxis2DetectorChannelComboBox.setText("none");
+				// no y axis 2 -> disable fields
+				// this.yAxis2DetectorChannelComboBox.setText("none");
+				this.yAxis2DetectorChannelComboBox.deselectAll();
+				this.yAxis2NormalizeChannelComboBox.deselectAll();
+				this.yAxis2NormalizeChannelComboBox.setEnabled(false);
+				this.yAxis2ColorComboBox.deselectAll();
+				this.yAxis2ColorComboBox.setEnabled(false);
+				this.yAxis2ColorFieldEditor.getColorSelector().setEnabled(false);
+				this.yAxis2LinestyleComboBox.deselectAll();
+				this.yAxis2LinestyleComboBox.setEnabled(false);
+				this.yAxis2MarkstyleComboBox.deselectAll();
+				this.yAxis2MarkstyleComboBox.setEnabled(false);
+				this.yAxis2ScaletypeComboBox.deselectAll();
+				this.yAxis2ScaletypeComboBox.setEnabled(false);
 			}
 			// ***************************************************************
 			// *********************** end of: yAxis2 ************************
@@ -1116,6 +1185,16 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		this.motorAxisComboBox.setItems(axisItems);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void saveState(IMemento memento) {
+		memento.putBoolean("itemGeneral", this.itemGeneral.getExpanded());
+		memento.putBoolean("itemYAxis1", this.itemYAxis1.getExpanded());
+		memento.putBoolean("itemYAxis2", this.itemYAxis2.getExpanded());
+	}
+	
 	// ************************************************************************
 	// ******************************* listeners ******************************
 	// ************************************************************************
