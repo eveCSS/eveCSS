@@ -6,6 +6,8 @@ import org.apache.log4j.Logger;
 import org.csstudio.swt.xygraph.figures.Trace.TraceType;
 import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
 
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -25,6 +27,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -93,19 +96,19 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	// *******************************************************************
 	
 	// the contents of this view
-	private Composite top = null;
+	private Composite top;
 	
 	// the configurations for the three axis will be expandable
-	private ExpandBar bar = null;
+	private ExpandBar bar;
 	
 	// "General" configurations, concerning the x axis
-	private Composite xAxisComposite = null;
+	private Composite xAxisComposite;
 	
 	// configurations for the first y axis are in here
-	private Composite yAxis1Composite = null;
+	private Composite yAxis1Composite;
 	
 	// configurations for the second y axis are in here
-	private Composite yAxis2Composite = null;
+	private Composite yAxis2Composite;
 	
 	// *********************************************
 	// elements for the "general" composite (x axis)
@@ -114,20 +117,20 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	private ExpandItem itemGeneral;
 	
 	// GUI: Motor Axis: "Select-Box":<motor-name>
-	private Label motorAxisLabel = null;
-	private Combo motorAxisComboBox = null;
-	private Label motorAxisErrorLabel = null;
+	private Label motorAxisLabel;
+	private Combo motorAxisComboBox;
+	private ControlDecoration motorAxisComboControlDecoration;
 	private MotorAxisComboBoxSelectionListener 
 			motorAxisComboBoxSelectionListener;
 	
 	// check box indicating whether the plot should be cleared before
-	private Button preInitWindowCheckBox = null;
+	private Button preInitWindowCheckBox;
 	private PreInitWindowCheckBoxSelectionListener 
 			preInitWindowCheckBoxSelectionListener;
 	
 	// GUI: Scale Type: "Select-Box":{linear,log} x
-	private Label scaleTypeLabel = null;
-	private Combo scaleTypeComboBox = null;
+	private Label scaleTypeLabel;
+	private Combo scaleTypeComboBox;
 	private ScaleTypeComboBoxSelectionListener 
 			scaleTypeComboBoxSelectionListener;
 	// *********************************************
@@ -141,42 +144,40 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	private ExpandItem itemYAxis1;
 	
 	// GUI: Detector Channel: "Select-Box":<detector-channels> x
-	private Label yAxis1DetectorChannelLabel = null;
-	private Combo yAxis1DetectorChannelComboBox = null;
-	private Label yAxis1DetectorChannelErrorLabel = null;
+	private Label yAxis1DetectorChannelLabel;
+	private Combo yAxis1DetectorChannelComboBox;
+	private ControlDecoration yAxis1DetectorChannelComboControlDecoration;
 	private YAxis1DetectorChannelComboBoxSelectionListener
 			yAxis1DetectorChannelComboBoxSelectionListener;
 	
 	// GUI: Normalize Channel: "Select-Box":<detector-channels> x
-	private Label yAxis1NormalizeChannelLabel = null;
-	private Combo yAxis1NormalizeChannelComboBox = null;
-	private Label yAxis1NormalizeChannelErrorLabel = null;
+	private Label yAxis1NormalizeChannelLabel;
+	private Combo yAxis1NormalizeChannelComboBox;
 	private YAxis1NormalizeChannelComboBoxSelectionListener
 			yAxis1NormalizeChannelComboBoxSelectionListener;
 	
 	// GUI: Scale Type: "Select-Box":{linear,log} x
-	private Label yAxis1ScaletypeLabel = null;
-	private Combo yAxis1ScaletypeComboBox = null;
+	private Label yAxis1ScaletypeLabel;
+	private Combo yAxis1ScaletypeComboBox;
 	private YAxis1ScaleTypeComboBoxSelectionListener
 			yAxis1ScaleTypeComboBoxSelectionListener;
 	
-	private ColorFieldEditor yAxis1ColorFieldEditor = null;
+	private ColorFieldEditor yAxis1ColorFieldEditor;
 	private YAxis1ColorFieldEditorPropertyChangeListener
 			yAxis1ColorFieldEditorPropertyChangeListener;
-	private Combo yAxis1ColorComboBox = null; 
+	private Combo yAxis1ColorComboBox; 
 	private YAxis1ColorComboBoxSelectionListener
 			yAxis1ColorComboBoxSelectionListener;
 	
-	private Label yAxis1LinestyleLabel = null;	 	
-	private Combo yAxis1LinestyleComboBox = null; 
+	private Label yAxis1LinestyleLabel;
+	private Combo yAxis1LinestyleComboBox;
 	private YAxis1LineStyleComboBoxSelectionListener
 			yAxis1LineStyleComboBoxSelectionListener;
 	
-	private Label yAxis1MarkstyleLabel = null;		
-	private Combo yAxis1MarkstyleComboBox = null;	
+	private Label yAxis1MarkstyleLabel;
+	private Combo yAxis1MarkstyleComboBox;
 	private YAxis1MarkStyleComboBoxSelectionListener
 			yAxis1MarkStyleComboBoxSelectionListener;
-	
 	// *********************************************
 	// end of: elements for the first y axis composite
 	// *********************************************
@@ -184,49 +185,49 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	// *********************************************
 	// elements for the second y axis composite
 	// *********************************************
-	
 	private ExpandItem itemYAxis2;
 	
 	// GUI: Detector Channel: "Select-Box":<detector-channels> x
-	private Label yAxis2DetectorChannelLabel = null;
-	private Combo yAxis2DetectorChannelComboBox = null;
-	private Label yAxis2DetectorChannelErrorLabel = null;
+	private Label yAxis2DetectorChannelLabel;
+	private Combo yAxis2DetectorChannelComboBox;
+	private ControlDecoration yAxis2DetectorChannelComboControlDecoration;
 	private YAxis2DetectorChannelComboBoxSelectionListener
 			yAxis2DetectorChannelComboBoxSelectionListener;
 	
 	// GUI: Normalize Channel: "Select-Box":<detector-channels> x
-	private Label yAxis2NormalizeChannelLabel = null;
-	private Combo yAxis2NormalizeChannelComboBox = null;
-	private Label yAxis2NormalizeChannelErrorLabel = null;
+	private Label yAxis2NormalizeChannelLabel;
+	private Combo yAxis2NormalizeChannelComboBox;
 	private YAxis2NormalizeChannelComboBoxSelectionListener
 			yAxis2NormalizeChannelComboBoxSelectionListener;
 	
 	// GUI: Scale Type: "Select-Box":{linear,log} x
-	private Label yAxis2ScaletypeLabel = null;
-	private Combo yAxis2ScaletypeComboBox = null;
+	private Label yAxis2ScaletypeLabel;
+	private Combo yAxis2ScaletypeComboBox;
 	private YAxis2ScaleTypeComboBoxSelectionListener
 			yAxis2ScaleTypeComboBoxSelectionListener;
 	
-	private ColorFieldEditor yAxis2ColorFieldEditor = null;
+	private ColorFieldEditor yAxis2ColorFieldEditor;
 	private YAxis2ColorFieldEditorPropertyChangeListener
 			yAxis2ColorFieldEditorPropertyChangeListener;
-	private Combo yAxis2ColorComboBox = null;		
+	private Combo yAxis2ColorComboBox;
 	private YAxis2ColorComboBoxSelectionListener
 			yAxis2ColorComboBoxSelectionListener;
 	
-	private Label yAxis2LinestyleLabel = null;		
-	private Combo yAxis2LinestyleComboBox = null;
+	private Label yAxis2LinestyleLabel;
+	private Combo yAxis2LinestyleComboBox;
 	private YAxis2LineStyleComboBoxSelectionListener
 			yAxis2LineStyleComboBoxSelectionListener;
 	
-	private Label yAxis2MarkstyleLabel = null;		
-	private Combo yAxis2MarkstyleComboBox = null;
+	private Label yAxis2MarkstyleLabel;
+	private Combo yAxis2MarkstyleComboBox;
 	private YAxis2MarkStyleComboBoxSelectionListener
 			yAxis2MarkStyleComboBoxSelectionListener;
 	
 	// *********************************************
 	// end of: elements for the second y axis composite	
 	// *********************************************
+	
+	private Image errorImage;
 	
 	/**
 	 * {@inheritDoc}
@@ -239,9 +240,12 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		if(Activator.getDefault().getMeasuringStation() == null) {
 			final Label errorLabel = new Label(parent, SWT.NONE);
 			errorLabel.setText("No Measuring Station has been loaded. " +
-							   "Please check Preferences!");
+					"Please check Preferences!");
 			return;
 		}
+		
+		this.errorImage = FieldDecorationRegistry.getDefault().
+			getFieldDecoration(FieldDecorationRegistry.DEC_ERROR).getImage();
 		
 		// initialize the contents composite with a grid layout
 		top = new Composite(parent, SWT.NONE);
@@ -256,116 +260,128 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		gridData.verticalAlignment = GridData.FILL;
 		this.bar.setLayoutData(gridData);
 		
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 3;
+		initXAxisComposite();
+		initYAxis1Composite();
+		initYAxis2Composite();
 		
-		/*
-		 * initialize contents of the x axis composite
-		 */
 		
-		// the contents of the first expand item gets a grid layout
+		
+		this.itemGeneral = new ExpandItem(this.bar, SWT.NONE, 0);
+		itemGeneral.setText("General");
+		itemGeneral.setHeight(
+				this.xAxisComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		itemGeneral.setControl(this.xAxisComposite);
+		itemGeneral.setExpanded(true);
+		
+		this.itemYAxis1 = new ExpandItem(this.bar, SWT.NONE, 0);
+		itemYAxis1.setText("Y-Axis 1");
+		itemYAxis1.setHeight(
+				this.yAxis1Composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		itemYAxis1.setControl(this.yAxis1Composite);
+		itemYAxis1.setExpanded(true);
+		
+		this.itemYAxis2 = new ExpandItem(this.bar, SWT.NONE, 0);
+		itemYAxis2.setText("Y-Axis 2");
+		itemYAxis2.setHeight(
+				this.yAxis2Composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		itemYAxis2.setControl(this.yAxis2Composite);
+		
+		top.setVisible(false);
+
+		// listen to selection changes (the selected device's options are 
+		// displayed)
+		getSite().getWorkbenchWindow().getSelectionService().
+				addSelectionListener(this);
+
+	} 
+
+	/*
+	 * initialize contents of the x axis composite
+	 */
+	private void initXAxisComposite() {
 		this.xAxisComposite = new Composite(this.bar, SWT.NONE);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 2;
 		this.xAxisComposite.setLayout(gridLayout);
 		
-		// GUI: Motor Axis:
+		// GUI: Motor Axis: <Combo>
 		this.motorAxisLabel = new Label(this.xAxisComposite, SWT.NONE);
 		this.motorAxisLabel.setText("Motor Axis:");
-		
-		// initialization of the motor axis select box
 		this.motorAxisComboBox = new Combo(this.xAxisComposite, SWT.READ_ONLY);
-		gridData = new GridData();
+		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalIndent = 7;
 		this.motorAxisComboBox.setLayoutData(gridData);
-		
-		// ModifyListener for motorAxisCombobox
+		this.motorAxisComboControlDecoration = new ControlDecoration(
+				motorAxisComboBox, SWT.LEFT);
+		this.motorAxisComboControlDecoration.setImage(errorImage);
+		this.motorAxisComboControlDecoration.setDescriptionText(
+				"xAxis must not be empty!");
+		this.motorAxisComboControlDecoration.hide();
 		this.motorAxisComboBoxSelectionListener = 
 				new MotorAxisComboBoxSelectionListener();
 		this.motorAxisComboBox.addSelectionListener(
 				motorAxisComboBoxSelectionListener);
-
-		// GUI: red x after the combo box if an error occurs
-		this.motorAxisErrorLabel = new Label(this.xAxisComposite, SWT.NONE);
-		this.motorAxisErrorLabel.setImage(PlatformUI.getWorkbench().
-													 getSharedImages().
-									getImage(ISharedImages.IMG_OBJS_WARN_TSK));
-
+		
 		// check box for pre initialization
 		this.preInitWindowCheckBox = new Button(this.xAxisComposite, SWT.CHECK);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 3;
+		gridData.horizontalSpan = 2;
 		this.preInitWindowCheckBox.setLayoutData(gridData);
 		this.preInitWindowCheckBox.setText("Preinit Window");
-		
-		// SelectionListener for preInitWindowCheckBox
 		this.preInitWindowCheckBoxSelectionListener = 
 				new PreInitWindowCheckBoxSelectionListener();
 		this.preInitWindowCheckBox.addSelectionListener(
 				preInitWindowCheckBoxSelectionListener);
 		
-		// GUI: Scale Type:
+		// GUI: Scale Type: <Combo>
 		this.scaleTypeLabel = new Label(this.xAxisComposite, SWT.NONE);
 		this.scaleTypeLabel.setText("Scale Type:");
-
-		// select box for the scale type
 		this.scaleTypeComboBox = new Combo(this.xAxisComposite, SWT.READ_ONLY);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.scaleTypeComboBox.setLayoutData(gridData);
 		this.scaleTypeComboBox.setItems(PlotModes.valuesAsString());
-		
-		// SelectionListener of scaleTypeComboBox
 		this.scaleTypeComboBoxSelectionListener = 
 				new ScaleTypeComboBoxSelectionListener();
 		this.scaleTypeComboBox.addSelectionListener(
 				scaleTypeComboBoxSelectionListener);
-
-		/*
-		 *  end of: initialize contents of the x axis composite
-		 */
-		
-		// ********************************************************************
-		
-		/*
-		 * initialize contents of the first y axis composite
-		 */
-		
-		// the contents of the configuration for the first y axis gets a grid
+	}
+	
+	/*
+	 * initialize contents of the first y axis composite
+	 */
+	private void initYAxis1Composite() {
 		this.yAxis1Composite = new Composite(this.bar, SWT.NONE);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 2;
+		this.yAxis1Composite.setLayout(gridLayout);
 		
-		GridLayout yAxis1GridLayout = new GridLayout();
-		yAxis1GridLayout.numColumns = 3;
-		
-		this.yAxis1Composite.setLayout(yAxis1GridLayout);
-		
-		// GUI: Detector Channel:
+		// GUI: Detector Channel: <Combo>
 		this.yAxis1DetectorChannelLabel = 
 				new Label(this.yAxis1Composite, SWT.NONE);
 		this.yAxis1DetectorChannelLabel.setText("Detector Channel:");
-		
-		// select box for the detector channel
 		this.yAxis1DetectorChannelComboBox = 
 				new Combo(this.yAxis1Composite, SWT.READ_ONLY);
-		gridData = new GridData();
+		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.yAxis1DetectorChannelComboBox.setLayoutData(gridData);
-
-		// SelectionListener for yAxis1DetectorChannelComboBox
+		this.yAxis1DetectorChannelComboControlDecoration = 
+				new ControlDecoration(this.yAxis1DetectorChannelComboBox, 
+						SWT.LEFT);
+		this.yAxis1DetectorChannelComboControlDecoration.setImage(errorImage);
+		this.yAxis1DetectorChannelComboControlDecoration.setDescriptionText(
+				"At least one y axis has to be set!");
+		this.yAxis1DetectorChannelComboControlDecoration.hide();
 		this.yAxis1DetectorChannelComboBoxSelectionListener = 
 				new YAxis1DetectorChannelComboBoxSelectionListener();
 		this.yAxis1DetectorChannelComboBox.addSelectionListener(
 				yAxis1DetectorChannelComboBoxSelectionListener);
-		
-		// red x after combo box if an error occurs
-		this.yAxis1DetectorChannelErrorLabel = 
-				new Label(this.yAxis1Composite, SWT.NONE);
-		this.yAxis1DetectorChannelErrorLabel.setImage(
-				PlatformUI.getWorkbench().getSharedImages().
-				getImage(ISharedImages.IMG_OBJS_WARN_TSK));
 		
 		// GUI: Normalize Channel:
 		this.yAxis1NormalizeChannelLabel = 
@@ -379,16 +395,11 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.yAxis1NormalizeChannelComboBox.setLayoutData(gridData);
-
+		
 		this.yAxis1NormalizeChannelComboBoxSelectionListener = 
 				new YAxis1NormalizeChannelComboBoxSelectionListener();
 		this.yAxis1NormalizeChannelComboBox.addSelectionListener(
 				yAxis1NormalizeChannelComboBoxSelectionListener);
-		
-		// red x after combo box if an error occurs
-		this.yAxis1NormalizeChannelErrorLabel = 
-				new Label(this.yAxis1Composite, SWT.NONE);
-		this.yAxis1NormalizeChannelErrorLabel.isEnabled(); // get rid of warn
 		
 		// GUI: Color:
 		Label yAxis1ColorLabel = new Label(yAxis1Composite, SWT.NONE);
@@ -438,10 +449,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				yAxis1ColorFieldEditorPropertyChangeListener);
 		// end of wrapper composites for color
 		
-		// ensure grid
-		Label colorDummy1 = new Label(yAxis1Composite, SWT.NONE);
-		colorDummy1.getEnabled(); // dummy call to get rid of eclipse warning
-		
 		// GUI: Linestyle:
 		this.yAxis1LinestyleLabel = new Label(this.yAxis1Composite, SWT.NONE);
 		this.yAxis1LinestyleLabel.setText("Linestyle:");
@@ -459,10 +466,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				new YAxis1LineStyleComboBoxSelectionListener();
 		this.yAxis1LinestyleComboBox.addSelectionListener(
 				yAxis1LineStyleComboBoxSelectionListener);
-
-		// ensure grid
-		Label lineStyleDummy1 = new Label(yAxis1Composite, SWT.NONE);
-		lineStyleDummy1.getEnabled(); // dummy call to ged rid of eclipse warning
 		
 		// GUI: Markstyle:
 		this.yAxis1MarkstyleLabel = new Label(this.yAxis1Composite, SWT.NONE);
@@ -483,10 +486,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		this.yAxis1MarkstyleComboBox.addSelectionListener( 
 				yAxis1MarkStyleComboBoxSelectionListener);
 		
-		// ensure grid
-		Label markStyleDummy1 = new Label(yAxis1Composite, SWT.NONE);
-		markStyleDummy1.getEnabled(); // dummy call to get rid of eclipse warning
-		
 		// GUI: Scaletype:
 		this.yAxis1ScaletypeLabel = new Label(this.yAxis1Composite, SWT.NONE);
 		this.yAxis1ScaletypeLabel.setText("Scaletype:");
@@ -503,76 +502,53 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				new YAxis1ScaleTypeComboBoxSelectionListener();
 		this.yAxis1ScaletypeComboBox.addSelectionListener( 
 				yAxis1ScaleTypeComboBoxSelectionListener);
-
-		// ensure grid
-		Label scaleTypeDummy1 = new Label(yAxis1Composite, SWT.NONE);
-		scaleTypeDummy1.getEnabled(); // dummy call to ged rid of eclipse warning	
-		
-		/*
-		 * end of: initialize contents of the first y axis composite
-		 */
-		
-		// ********************************************************************
-		
-		/*
-		 * initialize contents of the second y axis composite	
-		 */
-		
+	}
+	
+	/*
+	 * initialize contents of the second y axis composite
+	 */
+	private void initYAxis2Composite() {
 		this.yAxis2Composite = new Composite(this.bar, SWT.NONE);
-		
 		GridLayout yAxis2GridLayout = new GridLayout();
-		yAxis2GridLayout.numColumns = 3;
+		yAxis2GridLayout.numColumns = 2;
 		this.yAxis2Composite.setLayout(yAxis2GridLayout);
 		
-		// GUI: Detector Channel:
+		// GUI: Detector Channel: <Combo>
 		this.yAxis2DetectorChannelLabel = 
 				new Label(this.yAxis2Composite, SWT.NONE);
 		this.yAxis2DetectorChannelLabel.setText("Detector Channel:");
-		
 		this.yAxis2DetectorChannelComboBox = 
 				new Combo(this.yAxis2Composite, SWT.READ_ONLY);
-		gridData = new GridData();
+		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.yAxis2DetectorChannelComboBox.setLayoutData(gridData);
-
-		// selection listener for the select box
+		this.yAxis2DetectorChannelComboControlDecoration = 
+				new ControlDecoration(this.yAxis2DetectorChannelComboBox, 
+						SWT.LEFT);
+		this.yAxis2DetectorChannelComboControlDecoration.setImage(errorImage);
+		this.yAxis2DetectorChannelComboControlDecoration.setDescriptionText(
+				"At least one y axis has to be set!");
+		this.yAxis2DetectorChannelComboControlDecoration.hide();
 		this.yAxis2DetectorChannelComboBoxSelectionListener = 
 				new YAxis2DetectorChannelComboBoxSelectionListener();
 		this.yAxis2DetectorChannelComboBox.addSelectionListener(
 				yAxis2DetectorChannelComboBoxSelectionListener);
 		
-		// red x if an error occurs
-		this.yAxis2DetectorChannelErrorLabel = 
-				new Label(this.yAxis2Composite, SWT.NONE);
-		this.yAxis2DetectorChannelErrorLabel.setImage(
-				PlatformUI.getWorkbench().getSharedImages().
-				getImage(ISharedImages.IMG_OBJS_WARN_TSK));
-
-		
-		// GUI: Normalize Channel:
+		// GUI: Normalize Channel: <Combo>
 		this.yAxis2NormalizeChannelLabel = 
 				new Label(this.yAxis2Composite, SWT.NONE);
 		this.yAxis2NormalizeChannelLabel.setText("Normalize Channel:");
-		
-		// select box for the normalize channel
 		this.yAxis2NormalizeChannelComboBox = 
 				new Combo(this.yAxis2Composite, SWT.READ_ONLY);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.yAxis2NormalizeChannelComboBox.setLayoutData(gridData);
-
-		// modify listener for the select box
 		this.yAxis2NormalizeChannelComboBoxSelectionListener = 
 				new YAxis2NormalizeChannelComboBoxSelectionListener();
 		this.yAxis2NormalizeChannelComboBox.addSelectionListener( 
 				yAxis2NormalizeChannelComboBoxSelectionListener);
-				
-		// red x if an error occurs
-		this.yAxis2NormalizeChannelErrorLabel = 
-				new Label(this.yAxis2Composite, SWT.NONE);
-		this.yAxis2NormalizeChannelErrorLabel.isEnabled(); // get rid of warn
 		
 		// GUI: Color:
 		Label colorLabel = new Label(yAxis2Composite, SWT.NONE);
@@ -620,10 +596,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		yAxis2ColorFieldEditor.setPropertyChangeListener(
 				yAxis2ColorFieldEditorPropertyChangeListener);
 		
-		// ensure grid
-		Label colorDummy2 = new Label(yAxis2Composite, SWT.NONE);
-		colorDummy2.getEnabled(); // dummy call to get rid of eclipse warning
-		
 		// GUI: Linestyle:
 		this.yAxis2LinestyleLabel = new Label( this.yAxis2Composite, SWT.NONE);
 		this.yAxis2LinestyleLabel.setText("Linestyle:");
@@ -641,10 +613,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				new YAxis2LineStyleComboBoxSelectionListener();
 		this.yAxis2LinestyleComboBox.addSelectionListener( 
 				yAxis2LineStyleComboBoxSelectionListener);
-			
-		// ensure grid
-		Label lineStyleDummy2 = new Label(yAxis2Composite, SWT.NONE);
-		lineStyleDummy2.getEnabled(); // dummy call to get rid of eclipse warning
 		
 		// GUI: Markstyle:
 		this.yAxis2MarkstyleLabel = new Label(this.yAxis2Composite, SWT.NONE);
@@ -663,11 +631,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				new YAxis2MarkStyleComboBoxSelectionListener();
 		this.yAxis2MarkstyleComboBox.addSelectionListener( 
 				yAxis2MarkStyleComboBoxSelectionListener);
-
-		// ensure grid
-		Label markStyleDummy2 = new Label(yAxis2Composite, SWT.NONE);
-		markStyleDummy2.getEnabled(); // dummy call to get rid of eclipse warning
-	
+		
 		// GUI: Scalestype:
 		this.yAxis2ScaletypeLabel = new Label(this.yAxis2Composite, SWT.NONE);
 		this.yAxis2ScaletypeLabel.setText("Scaletype:");
@@ -684,43 +648,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				new YAxis2ScaleTypeComboBoxSelectionListener();
 		this.yAxis2ScaletypeComboBox.addSelectionListener( 
 				yAxis2ScaleTypeComboBoxSelectionListener);
-
-		// ensure grid
-		Label scaleTypeDummy2 = new Label(yAxis2Composite, SWT.NONE);
-		scaleTypeDummy2.getEnabled(); // dummy call to get rid of eclipse warning
-
-		/*
-		 * end of: initialize contents of the second y axis composite
-		 */
-		
-		this.itemGeneral = new ExpandItem(this.bar, SWT.NONE, 0);
-		itemGeneral.setText("General");
-		itemGeneral.setHeight(
-				this.xAxisComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		itemGeneral.setControl(this.xAxisComposite);
-		itemGeneral.setExpanded(true);
-		
-		this.itemYAxis1 = new ExpandItem(this.bar, SWT.NONE, 0);
-		itemYAxis1.setText("Y-Axis 1");
-		itemYAxis1.setHeight(
-				this.yAxis1Composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		itemYAxis1.setControl(this.yAxis1Composite);
-		itemYAxis1.setExpanded(true);
-		
-		this.itemYAxis2 = new ExpandItem(this.bar, SWT.NONE, 0);
-		itemYAxis2.setText("Y-Axis 2");
-		itemYAxis2.setHeight(
-				this.yAxis2Composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		itemYAxis2.setControl(this.yAxis2Composite);
-		
-		top.setVisible(false);
-
-		// listen to selection changes (the selected device's options are 
-		// displayed)
-		getSite().getWorkbenchWindow().getSelectionService().
-				addSelectionListener(this);
-
-	} 
+	}
+	
 	// ************************************************************************
 	// ********************** end of createPartControl ************************
 	// ************************************************************************
@@ -778,38 +707,18 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	/*
 	 * 
 	 */
-	private void checkForErrors()
-	{
-		if(plotWindow.getXAxis() == null)
-		{
-			motorAxisErrorLabel.setImage(PlatformUI.getWorkbench().
-										 getSharedImages().getImage(
-										 ISharedImages.IMG_OBJS_ERROR_TSK));
-			motorAxisErrorLabel.setToolTipText(
-					"The xAxis must not be empty.");
-		} else {
-			motorAxisErrorLabel.setImage(null);
-			motorAxisErrorLabel.setToolTipText(null);
-		}
+	private void checkForErrors() {
+		this.motorAxisComboControlDecoration.hide();
+		this.yAxis1DetectorChannelComboControlDecoration.hide();
+		this.yAxis2DetectorChannelComboControlDecoration.hide();
 		
+		if (plotWindow.getXAxis() == null) {
+			this.motorAxisComboControlDecoration.show();
+		}
 		// at least one y axis must be set -> otherwise show error
 		if ((yAxis1 == null) && (yAxis2 == null)) {
-			yAxis1DetectorChannelErrorLabel.setImage( 
-					PlatformUI.getWorkbench().getSharedImages().
-					getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-			yAxis1DetectorChannelErrorLabel.setToolTipText(
-					"At least one y axis has to be set!");
-			yAxis2DetectorChannelErrorLabel.setImage(
-					PlatformUI.getWorkbench().getSharedImages().
-					getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-			yAxis2DetectorChannelErrorLabel.setToolTipText(
-					"At least one y axis has to be set!");
-		} else {
-			// at least one axis is present -> reset errors
-			yAxis1DetectorChannelErrorLabel.setImage(null);
-			yAxis1DetectorChannelErrorLabel.setToolTipText(null);
-			yAxis2DetectorChannelErrorLabel.setImage(null);
-			yAxis2DetectorChannelErrorLabel.setToolTipText(null);
+			this.yAxis1DetectorChannelComboControlDecoration.show();
+			this.yAxis2DetectorChannelComboControlDecoration.show();
 		}
 	}
 	
@@ -817,16 +726,13 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	 * called by setPlotWindow() and listeners to update the color specific 
 	 * widgets of given axis.
 	 */
-	private void updateColorsAxis(int axis)
-	{
+	private void updateColorsAxis(int axis) {
 		RGB model_rgb = new RGB(0,0,0);
 		
-		if(axis == 1) 
-		{
+		if(axis == 1) {
 			model_rgb = yAxis1.getColor();
 		}
-		if(axis == 2)
-		{
+		if(axis == 2) {
 			model_rgb = yAxis2.getColor();
 		}
 		
@@ -883,8 +789,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	 * called by listeners to update the color field of given axis to match 
 	 * the color selected in the select box.
 	 */
-	private void updateColorField(int axis)
-	{
+	private void updateColorField(int axis) {
 		String selected_color_as_text = "";
 		if(axis == 1) selected_color_as_text = yAxis1ColorComboBox.getText();
 		if(axis == 2) selected_color_as_text = yAxis2ColorComboBox.getText();
@@ -916,8 +821,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	/*
 	 * 
 	 */
-	private void addListeners()
-	{
+	private void addListeners() {
 		motorAxisComboBox.addSelectionListener(
 				motorAxisComboBoxSelectionListener);
 		preInitWindowCheckBox.addSelectionListener(
@@ -959,8 +863,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	/*
 	 * 
 	 */
-	private void removeListeners()
-	{
+	private void removeListeners() {
 		motorAxisComboBox.removeSelectionListener(
 				motorAxisComboBoxSelectionListener);
 		preInitWindowCheckBox.removeSelectionListener(
