@@ -6,10 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.CompoundContributionItem;
 import org.eclipse.ui.menus.CommandContributionItem;
@@ -33,6 +35,9 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
  */
 public class MenuContribution extends CompoundContributionItem {
 
+	private static Logger logger = Logger.getLogger(MenuContribution.class
+			.getName());
+	
 	final ImageDescriptor classImage = ImageDescriptor.createFromImage(
 			Activator.getDefault().
 			getImageRegistry().get("CLASS"));
@@ -51,10 +56,18 @@ public class MenuContribution extends CompoundContributionItem {
 		// create the list that will be returned.
 		ArrayList<IContributionItem> result = new ArrayList<IContributionItem>();
 		
+		// get active part
+		IWorkbenchPart activePart = Activator.getDefault().getWorkbench()
+				.getActiveWorkbenchWindow().getPartService().getActivePart();
+		
 		// get current scan module
-		ScanModule sm = ((ScanModuleView)Activator.getDefault().getWorkbench().
-				getActiveWorkbenchWindow().getPartService().getActivePart()).
-				getCurrentScanModule();
+		ScanModule sm;
+		try {
+			sm = ((ScanModuleView)activePart).getCurrentScanModule();
+		} catch(ClassCastException e) {
+			logger.warn(e.getMessage());
+			return result.toArray(new IContributionItem[0]);
+		}
 		
 		// create filter, that excludes devices used already in scan module
 		ExcludeDevicesOfScanModuleFilterManualUpdate measuringStation = 

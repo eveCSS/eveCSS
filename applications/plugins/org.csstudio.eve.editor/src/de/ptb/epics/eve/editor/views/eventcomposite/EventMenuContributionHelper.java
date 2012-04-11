@@ -18,8 +18,11 @@ import de.ptb.epics.eve.editor.views.scanview.ScanView;
 public class EventMenuContributionHelper {
 	
 	/**
+	 * Returns the active {@link org.eclipse.ui.IViewPart} if any or
+	 * <code>null</code>.
 	 * 
-	 * @return
+	 * @return the active {@link org.eclipse.ui.IViewPart} if any,
+	 *         <code>null</code> otherwise
 	 */
 	public static IViewPart getActiveViewPart() {
 		IWorkbenchPart part = Activator.getDefault().getWorkbench().
@@ -31,8 +34,12 @@ public class EventMenuContributionHelper {
 	}
 	
 	/**
+	 * Returns the event impact (as in
+	 * {@link de.ptb.epics.eve.data.EventImpacts}) if the active part is a
+	 * {@link org.eclipse.ui.IViewPart} or <code>null</code>.
 	 * 
-	 * @return
+	 * @return the event impact if active part is a
+	 *         {@link org.eclipse.ui.IViewPart}, <code>null</code> otherwise
 	 */
 	public static EventImpacts determineEventImpact() {
 		IViewPart activePart = getActiveViewPart();
