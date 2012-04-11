@@ -22,6 +22,17 @@
   
   <!-- de.ptb.epics.eve.data.measuringstation.* -->
 
+  <appender name="AbstractDeviceTestAppender" 
+            class="org.apache.log4j.RollingFileAppender">
+	  <param name="file" value="log/AbstractDeviceTest.log" />
+	  <param name="Append" value="true" />
+	  <param name="MaxFileSize" value="10MB"/>
+      <param name="MaxBackupIndex" value="2"/>
+	  <layout class="org.apache.log4j.PatternLayout">
+		  <param name="ConversionPattern" value="%-5p %M: %m%n" />
+	  </layout>
+  </appender>
+
   <appender name="AccessTestAppender" 
             class="org.apache.log4j.RollingFileAppender">
 	  <param name="file" value="log/AccessTest.log" />
@@ -138,6 +149,11 @@
   <logger name="de.ptb.epics.eve.data.tests.TypeValueTest">
       <level value="DEBUG" />
       <appender-ref ref="TypeValueTestAppender" />
+  </logger>
+
+  <logger name="de.ptb.epics.eve.data.measuringstation.tests.AbstractDeviceTest">
+      <level value="DEBUG" />
+      <appender-ref ref="AbstractDeviceTestAppender" />
   </logger>
 
   <logger name="de.ptb.epics.eve.data.measuringstation.tests.AccessTest">
