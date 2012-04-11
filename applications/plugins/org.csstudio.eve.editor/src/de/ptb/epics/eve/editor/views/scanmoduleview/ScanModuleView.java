@@ -478,9 +478,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	private void setCurrentScanModule(ScanModule currentScanModule) {
 		logger.debug("setCurrentScanModule");
 		
-		// save the currently active part
-		IWorkbenchPart activePart = getSite().getPage().getActivePart();
-		
 		// if there was a scan module shown before, stop listening to changes
 		if (this.currentScanModule != null) {
 			this.currentScanModule.removeModelUpdateListener(this);
@@ -553,11 +550,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		}
 		
 		updateEvent(null);
-		
-		if (this.currentScanModule != null) {
-			// switch back to previously active part
-			this.getSite().getPage().activate(activePart);
-		}
 	}
 	
 	/*
