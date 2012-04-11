@@ -22,11 +22,9 @@ import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -36,8 +34,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 
-import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
-import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
@@ -278,8 +274,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		initYAxis1Composite();
 		initYAxis2Composite();
 		
-		
-		
 		this.itemGeneral = new ExpandItem(this.bar, SWT.NONE, 0);
 		itemGeneral.setText("General");
 		itemGeneral.setHeight(
@@ -303,13 +297,12 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		this.restoreState();
 		
 		top.setVisible(false);
-
+		
 		// listen to selection changes (the selected device's options are 
 		// displayed)
 		getSite().getWorkbenchWindow().getSelectionService().
 				addSelectionListener(this);
-
-	} 
+	}
 
 	/*
 	 * initialize contents of the x axis composite
@@ -936,6 +929,23 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				yAxis2ScaleTypeComboBoxSelectionListener);
 	}
 	
+	/*
+	 * 
+	 */
+	private void suspendModelUpdateListener() {
+		this.scanModule.removeModelUpdateListener(this);
+		this.plotWindow.removeModelUpdateListener(this);
+	}
+	
+	/*
+	 * 
+	 */
+	private void resumeModelUpdateListener() {
+		this.scanModule.addModelUpdateListener(this);
+		this.plotWindow.addModelUpdateListener(this);
+		updateEvent(null);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -965,8 +975,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 							((ScanModuleEditPart)o).getModel()).getId() + 
 							" selected."); 
 				}
-				if (this.scanModule != null && !(this.scanModule.equals(
-						(ScanModule)((ScanModuleEditPart)o).getModel()))) {
+				if (this.scanModule != null && !this.scanModule.equals(
+						((ScanModuleEditPart)o).getModel())) {
 							setPlotWindow(null);
 				}
 			} else if (o instanceof ScanDescriptionEditPart) {
@@ -1028,7 +1038,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			// set the content of the select box according to the given model
 			if (this.plotWindow.getXAxis() != null) {
 				this.motorAxisComboBox.setText(
-							plotWindow.getXAxis().getFullIdentifyer());
+							plotWindow.getXAxis().getName());
 			}
 			
 			// set the selection of the check box according to the given model
@@ -1044,48 +1054,50 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			String[] detectorItems = new String[availableDetectorChannels.length];
 			for (int i = 0; i < availableDetectorChannels.length; ++i) {
 				detectorItems[i] = availableDetectorChannels[i].
-									getDetectorChannel().getFullIdentifyer();
+									getDetectorChannel().getName();
 			}
 			this.yAxis1DetectorChannelComboBox.setItems(detectorItems);
-			this.yAxis1DetectorChannelComboBox.add("none", 0);	
+			this.yAxis1DetectorChannelComboBox.add("none");
 			this.yAxis1NormalizeChannelComboBox.setItems(detectorItems);
-			this.yAxis1NormalizeChannelComboBox.add("none", 0);	
+			this.yAxis1NormalizeChannelComboBox.add("none");
 			this.yAxis2DetectorChannelComboBox.setItems(detectorItems);
-			this.yAxis2DetectorChannelComboBox.add("none", 0);	
+			this.yAxis2DetectorChannelComboBox.add("none");
 			this.yAxis2NormalizeChannelComboBox.setItems(detectorItems);
-			this.yAxis2NormalizeChannelComboBox.add("none", 0);	
+			this.yAxis2NormalizeChannelComboBox.add("none");
 			
 			// ***************************************************************
 			// ************************ yAxis1 *******************************
 			// ***************************************************************
-			if(this.yAxis1 != null) {
+			if (this.yAxis1 != null) {
 				// y axis 1 is set -> insert values and enable fields
 				if(yAxis1.getDetectorChannel() != null) {
 					this.yAxis1DetectorChannelComboBox.setText(
-							yAxis1.getDetectorChannel().getFullIdentifyer());
+							yAxis1.getDetectorChannel().getName());
 				} else {
-					yAxis1DetectorChannelComboBox.setText("none");
+					yAxis1DetectorChannelComboBox.deselectAll();
 				}
 				if (yAxis1.getNormalizeChannel() != null) {
 					this.yAxis1NormalizeChannelComboBox.setText( 
-							yAxis1.getNormalizeChannel().getFullIdentifyer());
+							yAxis1.getNormalizeChannel().getName());
 				} else { 
 					this.yAxis1NormalizeChannelComboBox.setText("none");
 				}
 				// set plot related properties according to the model
-				updateColorsAxis(1);
-				yAxis1ColorComboBox.setEnabled(true);
-				yAxis1ColorFieldEditor.getColorSelector().setEnabled(true);
-				yAxis1LinestyleComboBox.setText(yAxis1.getLinestyle().toString());
-				yAxis1LinestyleComboBox.setEnabled(true);
-				yAxis1MarkstyleComboBox.setText(yAxis1.getMarkstyle().toString());
-				yAxis1MarkstyleComboBox.setEnabled(true);
-				yAxis1ScaletypeComboBox.setText(
-						PlotModes.modeToString(yAxis1.getMode()));
-				yAxis1ScaletypeComboBox.setEnabled(true);
+				this.updateColorsAxis(1);
+				this.yAxis1NormalizeChannelComboBox.setEnabled(true);
+				this.yAxis1ColorComboBox.setEnabled(true);
+				this.yAxis1ColorFieldEditor.getColorSelector().setEnabled(true);
+				this.yAxis1LinestyleComboBox.setText(yAxis1.getLinestyle()
+						.toString());
+				this.yAxis1LinestyleComboBox.setEnabled(true);
+				this.yAxis1MarkstyleComboBox.setText(yAxis1.getMarkstyle()
+						.toString());
+				this.yAxis1MarkstyleComboBox.setEnabled(true);
+				this.yAxis1ScaletypeComboBox.setText(PlotModes
+						.modeToString(yAxis1.getMode()));
+				this.yAxis1ScaletypeComboBox.setEnabled(true);
 			} else {
 				// no y axis 1 -> disable fields
-				// this.yAxis1DetectorChannelComboBox.setText("none");
 				this.yAxis1DetectorChannelComboBox.deselectAll();
 				this.yAxis1NormalizeChannelComboBox.deselectAll();
 				this.yAxis1NormalizeChannelComboBox.setEnabled(false);
@@ -1106,35 +1118,37 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			// ***************************************************************
 			// *********************** yAxis2 ********************************
 			// ***************************************************************
-			if(this.yAxis2 != null) {
+			if (this.yAxis2 != null) {
 				// y axis 2 is present->insert values and enable fields
 				itemYAxis2.setExpanded(true);
-				if(yAxis2.getDetectorChannel() != null) {
+				if (yAxis2.getDetectorChannel() != null) {
 					this.yAxis2DetectorChannelComboBox.setText(
-							yAxis2.getDetectorChannel().getFullIdentifyer());
+							yAxis2.getDetectorChannel().getName());
 				} else {
-					yAxis2DetectorChannelComboBox.setText("none");
+					yAxis2DetectorChannelComboBox.deselectAll();
 				}
 				if (yAxis2.getNormalizeChannel() != null) {
 					this.yAxis2NormalizeChannelComboBox.setText(
-							yAxis2.getNormalizeChannel().getFullIdentifyer());
+							yAxis2.getNormalizeChannel().getName());
 				} else {
 					this.yAxis2NormalizeChannelComboBox.setText("none");
 				}
 				// plot related fields...
 				updateColorsAxis(2);
-				yAxis2ColorComboBox.setEnabled(true);
-				yAxis2ColorFieldEditor.getColorSelector().setEnabled(true);
-				yAxis2LinestyleComboBox.setText(yAxis2.getLinestyle().toString());
-				yAxis2LinestyleComboBox.setEnabled(true);
-				yAxis2MarkstyleComboBox.setText(yAxis2.getMarkstyle().toString());
-				yAxis2MarkstyleComboBox.setEnabled(true);
-				yAxis2ScaletypeComboBox.setText(
-						PlotModes.modeToString(yAxis2.getMode()));
-				yAxis2ScaletypeComboBox.setEnabled(true);
+				this.yAxis2NormalizeChannelComboBox.setEnabled(true);
+				this.yAxis2ColorComboBox.setEnabled(true);
+				this.yAxis2ColorFieldEditor.getColorSelector().setEnabled(true);
+				this.yAxis2LinestyleComboBox.setText(yAxis2.getLinestyle()
+						.toString());
+				this.yAxis2LinestyleComboBox.setEnabled(true);
+				this.yAxis2MarkstyleComboBox.setText(yAxis2.getMarkstyle()
+						.toString());
+				this.yAxis2MarkstyleComboBox.setEnabled(true);
+				this.yAxis2ScaletypeComboBox.setText(PlotModes
+						.modeToString(yAxis2.getMode()));
+				this.yAxis2ScaletypeComboBox.setEnabled(true);
 			} else {
 				// no y axis 2 -> disable fields
-				// this.yAxis2DetectorChannelComboBox.setText("none");
 				this.yAxis2DetectorChannelComboBox.deselectAll();
 				this.yAxis2NormalizeChannelComboBox.deselectAll();
 				this.yAxis2NormalizeChannelComboBox.setEnabled(false);
@@ -1166,7 +1180,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			// plot window is null -> reset axes
 			this.yAxis1 = null;
 			this.yAxis2 = null;
-
 		}
 		addListeners();
 	}
@@ -1179,7 +1192,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		String[] axisItems = new String[availableMotorAxes.length];
 		for (int i = 0; i < availableMotorAxes.length; ++i) {
 			axisItems[i] = 
-				availableMotorAxes[i].getMotorAxis().getFullIdentifyer();
+				availableMotorAxes[i].getMotorAxis().getName();
 		}
 		// set available axes as choices in the select box
 		this.motorAxisComboBox.setItems(axisItems);
@@ -1200,45 +1213,36 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	// ************************************************************************
 
 	/**
-	 * <code>ModifyListener</code> of <code>motorAxisComboBox</code>.
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
+	 * <code>motorAxisComboBox</code>.
 	 */
-	class MotorAxisComboBoxSelectionListener implements SelectionListener {
-		
+	private class MotorAxisComboBoxSelectionListener implements
+			SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {	
+		public void widgetDefaultSelected(SelectionEvent e) {
 		}
 		
 		/**
-		 * {@inheritDoc}<br>
-		 * Updates the data model according to the selected motor axis.
+		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			
-			if(logger.isDebugEnabled())
-				logger.debug("user selected motor: " + 
-							 motorAxisComboBox.getText());
-			
-			if(motorAxisComboBox.getText().equals("none")) {
-				// "none" is selected ->remove axis from the model
-				if (plotWindow != null) 
-				   plotWindow.setXAxis(null); 
-			} else {
-				// motor axis is selected (not "none") -> save it to the model
-				plotWindow.setXAxis((MotorAxis)Activator.getDefault().
-													getMeasuringStation().
-										getAbstractDeviceByFullIdentifyer(
-											motorAxisComboBox.getText()));
-			}
-			checkForErrors();
+			plotWindow.setXAxis(availableMotorAxes[motorAxisComboBox
+					.getSelectionIndex()].getMotorAxis());
 		}
 	}
 	
 	/**
-	 * <code>SelectionListener</code> of <code>preInitWindowCheckBox</code>.
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
+	 * <code>preInitWindowCheckBox</code>.
 	 */
-	class PreInitWindowCheckBoxSelectionListener implements SelectionListener {
-		
+	private class PreInitWindowCheckBoxSelectionListener implements
+			SelectionListener {
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1251,16 +1255,15 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
-			logger.debug("pre init window modified");
-			// set whether the plot should be initialized or not
 			plotWindow.setInit(preInitWindowCheckBox.getSelection());
 		}
 	}
 	
 	/**
-	 * <code>SelectionListener</code> of <code>scaleTypeComboBox</code>.
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
+	 * <code>scaleTypeComboBox</code>.
 	 */
-	class ScaleTypeComboBoxSelectionListener implements SelectionListener {
+	private class ScaleTypeComboBoxSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1274,8 +1277,6 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
-			logger.debug("scale type modified");
-			// set the plot mode selected
 			plotWindow.setMode(
 					PlotModes.stringToMode(scaleTypeComboBox.getText()));
 		}
@@ -1289,7 +1290,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	 * <code>SelectionListener</code> of 
 	 * <code>yAxis1DetectorChannelComboBox</code>.
 	 */
-	class YAxis1DetectorChannelComboBoxSelectionListener 
+	private class YAxis1DetectorChannelComboBoxSelectionListener 
 										implements SelectionListener {
 		/**
 		 * {@inheritDoc}
@@ -1303,73 +1304,36 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			logger.debug("yaxis 1 detector channel modified");
-			// if there is "none" selected:
-			if(yAxis1DetectorChannelComboBox.getText().equals("none")) {
-				if(yAxis1 != null) {
-					// remove the y axis from the plot (if there is any)
-					plotWindow.removeYAxis(yAxis1);
-					yAxis1 = null;
-				}
-				
-				// reset/disable the normalize and scale type select boxes
-				// and the plot related select boxes
-				yAxis1NormalizeChannelComboBox.setText("none");
-				yAxis1ColorComboBox.setText("black");
-				yAxis1ColorFieldEditor.getColorSelector().
-												setColorValue(new RGB(0,0,0));
-				yAxis1LinestyleComboBox.setText("Solid Line");
-				yAxis1MarkstyleComboBox.setText("None");
-				yAxis1ScaletypeComboBox.setText("linear");
-				
-			} else {
-				// first y axis is NOT "" or "none":
-				// if y axis doesn't exist, create it
-				if(yAxis1 == null) {
-					yAxis1 = new YAxis();
-				
-					// default values for color, line style and mark style
-					yAxis1.setColor(new RGB(0,0,255));
-					yAxis1.setLinestyle(TraceType.SOLID_LINE);
-					yAxis1.setMarkstyle(PointStyle.NONE);
-					
-					plotWindow.addYAxis(yAxis1);
-				}
-				
-				// update/enable GUI elements
-				if(yAxis1.getNormalizeChannel() == null) {
-					yAxis1NormalizeChannelComboBox.setText("none");
-				} else {
-					yAxis1NormalizeChannelComboBox.setText(
-							yAxis1.getNormalizeChannel().getFullIdentifyer());
-				}
-				
-				updateColorsAxis(1);
-				
-				yAxis1LinestyleComboBox.setText(
-						yAxis1.getLinestyle().toString());
-				yAxis1MarkstyleComboBox.setText(
-						yAxis1.getMarkstyle().toString());
-				yAxis1ScaletypeComboBox.setText(
-						PlotModes.modeToString(yAxis1.getMode()));
-				yAxis1.setDetectorChannel((DetectorChannel)Activator.
-						getDefault().getMeasuringStation().
-						getAbstractDeviceByFullIdentifyer(
-								yAxis1DetectorChannelComboBox.getText()));
+			suspendModelUpdateListener();
+			if(yAxis1 != null) {
+				plotWindow.removeYAxis(yAxis1);
 			}
-			checkForErrors();
+			if (!yAxis1DetectorChannelComboBox.getText().equals("none")) {
+				yAxis1 = new YAxis();
+				// default values for color, line style and mark style
+				yAxis1.setColor(new RGB(0,0,255));
+				yAxis1.setLinestyle(TraceType.SOLID_LINE);
+				yAxis1.setMarkstyle(PointStyle.NONE);
+				yAxis1.setDetectorChannel(availableDetectorChannels[yAxis1DetectorChannelComboBox
+						.getSelectionIndex()].getDetectorChannel());
+				plotWindow.addYAxis(yAxis1);
+			}
+			resumeModelUpdateListener();
 		}
 	}
 	
 	/**
-	 * <code>SelectionListener</code> of 
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>yAxis1NormalizechannelComboBox</code>.
 	 */
-	class YAxis1NormalizeChannelComboBoxSelectionListener
+	private class YAxis1NormalizeChannelComboBoxSelectionListener
 										implements SelectionListener {
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {	
+		public void widgetDefaultSelected(SelectionEvent e) {
 		}
 		
 		/**
@@ -1377,28 +1341,25 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			logger.debug("yaxis 1 normalize channel modified");
-			
-			if(yAxis1NormalizeChannelComboBox.getText().equals("none")) {
+			suspendModelUpdateListener();
+			if (yAxis1NormalizeChannelComboBox.getText().equals("none")) {
 				// remove normalize channel
 				if (yAxis1 != null) {
 					yAxis1.setNormalizeChannel(null);
 				}
 			} else {
 				// set normalize channel to the one selected
-				yAxis1.setNormalizeChannel(
-						(DetectorChannel)Activator.getDefault().
-						                  getMeasuringStation().
-					        getAbstractDeviceByFullIdentifyer(
-					        		yAxis1NormalizeChannelComboBox.getText()));
+				yAxis1.setNormalizeChannel(availableDetectorChannels[yAxis1NormalizeChannelComboBox
+						.getSelectionIndex()].getDetectorChannel());
 			}
-		}		
+			resumeModelUpdateListener();
+		}
 	}
 	
 	/**
 	 * <code>SelectionListener</code> of <code>yAxis1ColorComboBox</code>.
 	 */
-	class YAxis1ColorComboBoxSelectionListener implements SelectionListener {
+	private class YAxis1ColorComboBoxSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1419,67 +1380,33 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			// save the color to the model
 			yAxis1.setColor(yAxis1ColorFieldEditor.getColorSelector().
 												 getColorValue());
-			if(yAxis1ColorComboBox.getText().equals("custom...")) {
+			if (yAxis1ColorComboBox.getText().equals("custom...")) {
 				yAxis1ColorFieldEditor.getColorSelector().open();
 			}
-			
 		}
 	}
 	
 	/**
 	 * <code>PropertyChangeListener</code> of <code>colorFieldEditor</code>.
 	 */
-	class YAxis1ColorFieldEditorPropertyChangeListener 
+	private class YAxis1ColorFieldEditorPropertyChangeListener 
 							implements IPropertyChangeListener {
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void propertyChange(PropertyChangeEvent event) {
-			
 			yAxis1.setColor(
 					yAxis1ColorFieldEditor.getColorSelector().getColorValue());
-			
 			updateColorsAxis(1);
-		}	
-	}
-	
-	/**
-	 * <code>SelectionListener</code> of <code>yAxis1LineStyleComboBox</code>.
-	 */
-	class YAxis1LineStyleComboBoxSelectionListener 
-											implements SelectionListener {	
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {		
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(final SelectionEvent e) {
-			if(yAxis1 != null) {
-				TraceType[] tracetypes = TraceType.values();
-				for(int i=0;i<tracetypes.length;i++)
-				{
-					if(tracetypes[i].toString().equals(
-							yAxis1LinestyleComboBox.getText()))
-					{
-						yAxis1.setLinestyle(tracetypes[i]);
-					}
-				}
-			}
-			
 		}
 	}
 	
 	/**
-	 * <code>SelectionListener</code> of <code>yAxis1MarkStyleComboBox</code>.
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
+	 * <code>yAxis1LineStyleComboBox</code>.
 	 */
-	class YAxis1MarkStyleComboBoxSelectionListener 
+	private class YAxis1LineStyleComboBoxSelectionListener 
 											implements SelectionListener {
 		/**
 		 * {@inheritDoc}
@@ -1493,24 +1420,51 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
-			
-			PointStyle[] markstyles = PointStyle.values();
-			for(int i=0;i<markstyles.length;i++)
-			{
-				if(markstyles[i].toString().equals(
-						yAxis1MarkstyleComboBox.getText()))
-				{
-					yAxis1.setMarkstyle(markstyles[i]);
+			if(yAxis1 != null) {
+				TraceType[] tracetypes = TraceType.values();
+				for(int i=0; i<tracetypes.length; i++) {
+					if(tracetypes[i].toString().equals(
+							yAxis1LinestyleComboBox.getText())) {
+						yAxis1.setLinestyle(tracetypes[i]);
+					}
 				}
 			}
-			
 		}
 	}
 	
 	/**
-	 * <code>SelectionListener</code> of <code>yAxis1ScaleTypeComboBox</code>.
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
+	 * <code>yAxis1MarkStyleComboBox</code>.
 	 */
-	class YAxis1ScaleTypeComboBoxSelectionListener
+	private class YAxis1MarkStyleComboBoxSelectionListener 
+											implements SelectionListener {
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(final SelectionEvent e) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(final SelectionEvent e) {
+			PointStyle[] markstyles = PointStyle.values();
+			for(int i=0; i<markstyles.length; i++) {
+				if(markstyles[i].toString().equals(
+						yAxis1MarkstyleComboBox.getText())) {
+					yAxis1.setMarkstyle(markstyles[i]);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
+	 * <code>yAxis1ScaleTypeComboBox</code>.
+	 */
+	private class YAxis1ScaleTypeComboBoxSelectionListener
 											implements SelectionListener {
 		/**
 		 * {@inheritDoc}
@@ -1530,17 +1484,15 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	}
 	
 	// ************************************************************************
-	// ************************************************************************
 	// ********************* Listener of axis 2 *******************************
-	// ************************************************************************
 	// ************************************************************************
 	
 	/**
-	 * <code>SelectionListener</code> of 
+	 * {@link org.eclipse.swt.events.SelectionListener} of
 	 * <code>yAxis2DetectorChannelComboBox</code>.
 	 */
-	class YAxis2DetectorChannelComboBoxSelectionListener 
-											implements SelectionListener {
+	private class YAxis2DetectorChannelComboBoxSelectionListener implements
+			SelectionListener {
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1553,100 +1505,63 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			logger.debug("yaxis 2 detector channel modified");
-			if(yAxis2DetectorChannelComboBox.getText().equals("") ||
-			   yAxis2DetectorChannelComboBox.getText().equals("none")) {
-				if(yAxis2 != null) {
-					plotWindow.removeYAxis(yAxis2);
-					yAxis2 = null;
-				}
-				
-				// reset/disable the normalize and scale type select boxes
-				// and the plot related select boxes
-				yAxis2NormalizeChannelComboBox.setText("none");
-				yAxis2ColorComboBox.setText("black");
-				yAxis2ColorFieldEditor.getColorSelector().
-									   setColorValue(new RGB(0,0,0));
-				yAxis2LinestyleComboBox.setText("Solid Line");
-				yAxis2MarkstyleComboBox.setText("None");
-				yAxis2ScaletypeComboBox.setText("linear");
-			
-			} else {
-				// select box has value other than "" or "none"...
-				if(yAxis2 == null) {
-					// a detector channel was selected, but none present yet
-					yAxis2 = new YAxis();
-
-					// default values for color, line style and mark style
-					yAxis2.setColor(new RGB(0,128,0));
-					yAxis2.setLinestyle(TraceType.DASH_LINE);
-					yAxis2.setMarkstyle(PointStyle.NONE);
-					
-					plotWindow.addYAxis(yAxis2);
-				}
-
-				// update/enable GUI elements
-				if(yAxis2.getNormalizeChannel() == null)
-					yAxis2NormalizeChannelComboBox.setText("none");
-				else 
-					yAxis2NormalizeChannelComboBox.setText(
-							yAxis2.getNormalizeChannel().getFullIdentifyer());
-				
-				updateColorsAxis(2);
-				yAxis2LinestyleComboBox.setText(
-						yAxis2.getLinestyle().toString());
-				yAxis2MarkstyleComboBox.setText(
-						yAxis2.getMarkstyle().toString());
-				yAxis2ScaletypeComboBox.setText(
-						PlotModes.modeToString(yAxis2.getMode()));
-						
-				yAxis2.setDetectorChannel((DetectorChannel)
-						Activator.getDefault().getMeasuringStation().
-							getAbstractDeviceByFullIdentifyer(
-									yAxis2DetectorChannelComboBox.getText()));
-				
+			suspendModelUpdateListener();
+			if (yAxis2 != null) {
+				plotWindow.removeYAxis(yAxis2);
 			}
-			checkForErrors();
+			if (!yAxis2DetectorChannelComboBox.getText().equals("none")) {
+				yAxis2 = new YAxis();
+				// default values for color, line style and mark style
+				yAxis2.setColor(new RGB(0, 0, 255));
+				yAxis2.setLinestyle(TraceType.SOLID_LINE);
+				yAxis2.setMarkstyle(PointStyle.NONE);
+				yAxis2.setDetectorChannel(availableDetectorChannels[yAxis2DetectorChannelComboBox
+						.getSelectionIndex()].getDetectorChannel());
+				plotWindow.addYAxis(yAxis2);
+			}
+			resumeModelUpdateListener();
 		}
 	}
 	
 	/**
-	 * <code>ModifyListener</code> of 
+	 * <code>ModifyListener</code> of
 	 * <code>yAxis2NormalizeChannelComboBox</code>.
 	 */
-	class YAxis2NormalizeChannelComboBoxSelectionListener 
-												implements SelectionListener {
-		
+	private class YAxis2NormalizeChannelComboBoxSelectionListener implements
+			SelectionListener {
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			logger.debug("yaxis 2 normalize channel modified");
-			if(yAxis2NormalizeChannelComboBox.getText().equals("none")) {
-				if(yAxis2 != null) {
+			suspendModelUpdateListener();
+			if (yAxis2NormalizeChannelComboBox.getText().equals("none")) {
+				// remove normalize channel
+				if (yAxis2 != null) {
 					yAxis2.setNormalizeChannel(null);
 				}
 			} else {
-				yAxis2.setNormalizeChannel((DetectorChannel)
-						Activator.getDefault().getMeasuringStation().
-							getAbstractDeviceByFullIdentifyer(
-									yAxis2NormalizeChannelComboBox.getText()));
+				// set normalize channel to the one selected
+				yAxis2.setNormalizeChannel(availableDetectorChannels[yAxis2NormalizeChannelComboBox
+						.getSelectionIndex()].getDetectorChannel());
 			}
+			resumeModelUpdateListener();
 		}
 	}
 	
 	/**
 	 * <code>SelectionListener</code> of <code>yAxis2ColorComboBox</code>.
 	 */
-	class YAxis2ColorComboBoxSelectionListener implements SelectionListener {
+	private class YAxis2ColorComboBoxSelectionListener implements
+			SelectionListener {
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1662,40 +1577,37 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			// set the color in the color field to match the selection
 			updateColorField(2);
 			// save the color to the model
-			yAxis2.setColor(yAxis2ColorFieldEditor.getColorSelector().
-													 getColorValue());
-			if(yAxis2ColorComboBox.getText().equals("custom...")) {
+			yAxis2.setColor(yAxis2ColorFieldEditor.getColorSelector()
+					.getColorValue());
+			if (yAxis2ColorComboBox.getText().equals("custom...")) {
 				yAxis2ColorFieldEditor.getColorSelector().open();
 			}
 		}
 	}
 	
 	/**
-	 * <code>PropertyChangeListener</code> of 
+	 * <code>PropertyChangeListener</code> of
 	 * <code>yAxis2ColorFieldEditor</code>.
 	 */
-	class YAxis2ColorFieldEditorPropertyChangeListener
-										implements IPropertyChangeListener {
-
+	private class YAxis2ColorFieldEditorPropertyChangeListener implements
+			IPropertyChangeListener {
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void propertyChange(PropertyChangeEvent event) {
-			
-			yAxis2.setColor(
-					yAxis2ColorFieldEditor.getColorSelector().getColorValue());
-			
+			yAxis2.setColor(yAxis2ColorFieldEditor.getColorSelector()
+					.getColorValue());
 			updateColorsAxis(2);
-			
 		}
 	}
 	
 	/**
-	 * <code>SelectionListener</code> of <code>yAxis2LineStyleComboBox</code>. 
+	 * {@link org.eclipse.swt.events.SelectionListener} of
+	 * <code>yAxis2LineStyleComboBox</code>.
 	 */
-	class YAxis2LineStyleComboBoxSelectionListener 
-											implements SelectionListener {	
+	private class YAxis2LineStyleComboBoxSelectionListener implements
+			SelectionListener {
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1708,25 +1620,22 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
-			
 			TraceType[] tracetypes = TraceType.values();
-			for(int i=0;i<tracetypes.length;i++)
-			{
-				if(tracetypes[i].toString().equals(
-						yAxis2LinestyleComboBox.getText()))
-				{
+			for (int i = 0; i < tracetypes.length; i++) {
+				if (tracetypes[i].toString().equals(
+						yAxis2LinestyleComboBox.getText())) {
 					yAxis2.setLinestyle(tracetypes[i]);
 				}
 			}
 		}
-
 	}
 	
 	/**
-	 * <code>SelectionListener</code> of <code>yAxis2MarkStyleComboBox</code>.
+	 * {@link org.eclipse.swt.events.SelectionListener} of
+	 * <code>yAxis2MarkStyleComboBox</code>.
 	 */
-	class YAxis2MarkStyleComboBoxSelectionListener 
-											implements SelectionListener {
+	private class YAxis2MarkStyleComboBoxSelectionListener implements
+			SelectionListener {
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1740,11 +1649,9 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
 			PointStyle[] markstyles = PointStyle.values();
-			for(int i=0;i<markstyles.length;i++)
-			{
-				if(markstyles[i].toString().equals(
-						yAxis2MarkstyleComboBox.getText()))
-				{
+			for (int i = 0; i < markstyles.length; i++) {
+				if (markstyles[i].toString().equals(
+						yAxis2MarkstyleComboBox.getText())) {
 					yAxis2.setMarkstyle(markstyles[i]);
 				}
 			}
@@ -1752,10 +1659,11 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	}
 
 	/**
-	 * <code>SelectionListener</code> of <code>yAxis2ScaleTypeComboBox</code>.
+	 * {@link org.eclipse.swt.events.SelectionListener} of
+	 * <code>yAxis2ScaleTypeComboBox</code>.
 	 */
-	class YAxis2ScaleTypeComboBoxSelectionListener
-											implements SelectionListener {
+	private class YAxis2ScaleTypeComboBoxSelectionListener implements
+			SelectionListener {
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1768,9 +1676,9 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
-			if(yAxis2 != null) {
-				yAxis2.setMode(PlotModes.stringToMode(
-						yAxis2ScaletypeComboBox.getText()));
+			if (yAxis2 != null) {
+				yAxis2.setMode(PlotModes.stringToMode(yAxis2ScaletypeComboBox
+						.getText()));
 			}
 		}
 	}
