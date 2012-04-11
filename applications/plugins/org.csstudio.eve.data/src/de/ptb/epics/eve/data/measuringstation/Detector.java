@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,12 +31,16 @@ public class Detector extends AbstractMainPhaseDevice {
 	}
 	
 	/**
-	 * Returns a copy of the DetectorChannel list
+	 * Returns a copy of the DetectorChannel list.
+	 * The list is sorted alphabetically.
 	 * 
 	 * @return An ArrayList<DetectorChannel> object
 	 */
 	public List<DetectorChannel> getChannels() {
-		return new ArrayList<DetectorChannel>(channels);
+		List<DetectorChannel> channels = new ArrayList<DetectorChannel>(
+				this.channels);
+		Collections.sort(channels);
+		return channels;
 	}
 	
 	/**

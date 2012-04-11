@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -179,7 +180,9 @@ public abstract class AbstractDevice implements Comparable<AbstractDevice> {
 	 * @return A list of Option objects.
 	 */
 	public List<Option> getOptions() {
-		return new ArrayList<Option>(this.options);
+		List<Option> options = new ArrayList<Option>(this.options);
+		Collections.sort(options);
+		return options;
 	}
 
 	/**

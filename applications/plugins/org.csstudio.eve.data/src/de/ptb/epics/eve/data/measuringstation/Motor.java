@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,12 +28,14 @@ public class Motor extends AbstractMainPhaseDevice {
 	
 	/**
 	 * Returns a copy of the internal List, that is holding the MotorAxis
-	 * objects.
+	 * objects. The list is sorted alphabetically.
 	 * 
 	 * @return A List of MotorAxis objects of the Motor.
 	 */
 	public List<MotorAxis> getAxes() {	
-		return new ArrayList<MotorAxis>(this.axis);
+		List<MotorAxis> axes = new ArrayList<MotorAxis>(this.axis);
+		Collections.sort(axes);
+		return axes;
 	}
 	
 	/**

@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.data.measuringstation.filter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -531,11 +532,13 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<AbstractDevice> getDeviceList(String classname){
-		if (classMap.containsKey(classname))
-			return classMap.get(classname);
-		else
-			return null;
+	public List<AbstractDevice> getDeviceList(String classname) {
+		if (classMap.containsKey(classname)) {
+			List<AbstractDevice> list = classMap.get(classname);
+			Collections.sort(list);
+			return list;
+		}
+		return null;
 	}
 	/**
 	 * {@inheritDoc}
