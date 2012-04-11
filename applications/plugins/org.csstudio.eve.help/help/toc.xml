@@ -12,6 +12,8 @@
       <topic label="Reference">
          <link toc="help/content/reference/toc_reference.xml"/>
       </topic>
+      <topic href="help/content/whatsnew.html" label="Whats new ?">
+      </topic>
    </topic>
 
 </toc>
