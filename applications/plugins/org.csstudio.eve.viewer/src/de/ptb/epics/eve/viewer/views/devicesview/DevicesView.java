@@ -15,6 +15,7 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
@@ -89,6 +90,8 @@ public final class DevicesView extends ViewPart implements Observer {
 	private ViewerFilter motorsAxesFilter;
 	private ViewerFilter detectorsChannelsFilter;
 	private ViewerFilter devicesFilter;
+	
+	private ViewerSorter treeViewerSorter;
 	
 	private ToggleHandlerListener toggleHandlerListener;
 	private ICommandService cmdService;
@@ -172,6 +175,9 @@ public final class DevicesView extends ViewPart implements Observer {
 				getHandler().addHandlerListener(toggleHandlerListener);
 		readToggleStates();
 		setTreeFilters();
+		
+		this.treeViewerSorter = new TreeViewerSorter();
+		this.treeViewer.setSorter(treeViewerSorter);
 	} // end of: createPartControl()
 
 	/**
