@@ -51,7 +51,7 @@ public class ChannelEditingSupport extends EditingSupport {
 		channels = new ArrayList<DetectorChannel>();
 		for(Channel ch : scanModule.getChannels()) {
 			channels.add(ch.getDetectorChannel());
-			channelStrings.add(ch.getDetectorChannel().getFullIdentifyer());
+			channelStrings.add(ch.getDetectorChannel().getName());
 		}
 		return new ComboBoxCellEditor(this.viewer.getTable(), 
 				channelStrings.toArray(new String[0]), SWT.READ_ONLY) {

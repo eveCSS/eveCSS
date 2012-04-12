@@ -7,7 +7,6 @@ import java.util.List;
  *  This class represents a motor axis of a device.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @version 1.3
  */
 public class Option extends AbstractPrePostscanDevice {
 
@@ -39,9 +38,6 @@ public class Option extends AbstractPrePostscanDevice {
 	 */
 	@Override
 	public List<Option> getOptions() {
-		//TODO: austesten was passiert wenn Optionen doch 
-		// Optionen haben, redmine bug #125
-		System.out.println("getOptions von Option liefert null");
 		return null;
 	}
 
@@ -53,9 +49,6 @@ public class Option extends AbstractPrePostscanDevice {
 	 */
 	@Override
 	public Iterator<Option> optionIterator() {
-		System.out.println("optionIterator von Option liefert null");
 		return null;
 	}
-
-
 }

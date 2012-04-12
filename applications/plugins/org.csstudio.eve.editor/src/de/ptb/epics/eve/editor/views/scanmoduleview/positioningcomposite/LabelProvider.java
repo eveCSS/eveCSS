@@ -77,16 +77,16 @@ public class LabelProvider implements ITableLabelProvider {
 		final Positioning pos = (Positioning)positioning;
 		switch(colIndex) {
 			case 0: return (pos.getMotorAxis() != null)
-					? pos.getMotorAxis().getFullIdentifyer()
+					? pos.getMotorAxis().getName()
 					: null;
 			case 1: return (pos.getPluginController().getPlugin() != null)
 					? pos.getPluginController().getPlugin().getName()
 					: null;
 			case 2: return (pos.getDetectorChannel() != null)
-					? pos.getDetectorChannel().getFullIdentifyer()
+					? pos.getDetectorChannel().getName()
 					: null;
 			case 3: return (pos.getNormalization() != null)
-					? pos.getNormalization().getFullIdentifyer()
+					? pos.getNormalization().getName()
 					: null;
 			case 4: return (pos.getPluginController().getPlugin() != null)
 					? pos.getPluginController().toString()

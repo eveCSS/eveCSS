@@ -30,7 +30,7 @@ public class Event implements Comparable<Event> {
 		 * 
 		 */
 		END
-	};
+	}
 	
 	/**
 	 * The name of the Event. Currently this is generated for 
@@ -38,24 +38,28 @@ public class Event implements Comparable<Event> {
 	 */
 	private String pname;		// parentname
 	// the name of the event
-	private String name;		
-		
+	private String name;
+
 	/**
 	 * Id of the Detector, if this is a detector event
 	 */
 	private String detectorId;
+	
 	/**
 	 * The type of the event.
 	 */
 	private EventTypes type;
+	
 	/**
 	 * chainId if event is of type schedule
 	 */
 	private int chainId;
+	
 	/**
 	 * scanModuleId if event is of type schedule
 	 */
 	private int scanModuleId;
+	
 	/**
 	 * Event trigger if event is of type schedule
 	 */
@@ -65,20 +69,6 @@ public class Event implements Comparable<Event> {
 	 * The monitor Event of this event.
 	 */
 	private MonitorEvent monitor;
-
-	/**
-	 * Constructs an <code>Event</code> with a <code>String</code> data type, 
-	 * an empty monitor process variable and empty name. By default the Event 
-	 * is of type schedule. 
-	 *
-	 */
-	public Event() {
-		this.type = EventTypes.SCHEDULE;
-		chainId = 0;
-		scanModuleId = 0;
-		monitor = null;
-		incident = ScheduleIncident.END;
-	}
 	
 	/**
 	 * Constructs an <code>Event</code>.
@@ -174,7 +164,7 @@ public class Event implements Comparable<Event> {
 	 */
 	public String getName() {
 		if (this.type == EventTypes.MONITOR)
-			return getNameID();
+			return this.monitor.getName();
 		else if (this.type == EventTypes.DETECTOR)
 			return getNameID();
 		else if (this.type == EventTypes.SCHEDULE)
@@ -362,10 +352,10 @@ public class Event implements Comparable<Event> {
 	 * 			a monitor event.
 	 */
 	public MonitorEvent getMonitor() {
-		if (this.type == EventTypes.MONITOR)
+		if (this.type == EventTypes.MONITOR) {
 			return monitor;
-		else
-			return null;
+		}
+		return null;
 	}
 	
 	/**
@@ -445,11 +435,7 @@ public class Event implements Comparable<Event> {
 	}
 
 	/**
-	 * Checks whether the argument and calling object are equal.
-	 * 
-	 * @param obj the <code>Object</code> that should be checked
-	 * @return <code>true</code> if objects are equal,
-	 * 			<code>false</code> otherwise
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -519,6 +505,6 @@ public class Event implements Comparable<Event> {
 	 */
 	@Override
 	public int compareTo(Event o) {
-		return this.getName().compareTo(o.getName());
+		return this.getName().toLowerCase().compareTo(o.getName().toLowerCase());
 	}
 }

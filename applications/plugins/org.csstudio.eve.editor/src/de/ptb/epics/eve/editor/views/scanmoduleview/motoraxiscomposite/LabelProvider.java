@@ -1,7 +1,5 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite;
 
-import java.util.Iterator;
-
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -13,9 +11,10 @@ import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 
 /**
- * <code>MotorAxisLabelProvider</code> is the label provider of the table 
- * viewer defined in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.MotorAxisComposite}. 
+ * <code>MotorAxisLabelProvider</code> is the label provider of the table viewer
+ * defined in
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.MotorAxisComposite}
+ * .
  * 
  * @author ?
  * @author Marcus Michalsky
@@ -27,16 +26,11 @@ public class LabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public Image getColumnImage(final Object axis, final int colIndex) {
-		
-		final Axis pos = (Axis)axis;
-		
-		if(colIndex == 1) {
-			final Iterator<IModelError> it = pos.getModelErrors().iterator();
-			while(it.hasNext()) {
-				final IModelError modelError = it.next();
-				if(modelError instanceof AxisError) {
-					return PlatformUI.getWorkbench().getSharedImages().
-									  getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+		if (colIndex == 1) {
+			for (IModelError error : ((Axis) axis).getModelErrors()) {
+				if (error instanceof AxisError) {
+					return PlatformUI.getWorkbench().getSharedImages()
+							.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
 				}
 			}
 		}
@@ -48,18 +42,13 @@ public class LabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public String getColumnText(final Object axis, final int colIndex) {
-		
-		final Axis pos = (Axis) axis;
-		
-		switch(colIndex) {
-			case 0:
-				return (pos.getAbstractDevice()!=null)
-					   ? pos.getAbstractDevice().getFullIdentifyer()
-					   : "";
-			case 1:
-				return pos.getStepfunctionString();
+		switch (colIndex) {
+		case 0:
+			return ((Axis)axis).getAbstractDevice().getName();
+		case 1:
+			return ((Axis)axis).getStepfunctionString();
 		}
-		return "";
+		return null;
 	}
 
 	/**
@@ -83,7 +72,7 @@ public class LabelProvider implements ITableLabelProvider {
 	@Override
 	public void addListener(final ILabelProviderListener arg0) {
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */

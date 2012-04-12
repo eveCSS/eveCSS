@@ -1,7 +1,5 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite;
 
-import java.util.Iterator;
-
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -13,9 +11,10 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 
 /**
- * <code>DetectorChannelLabelProvider</code> is the label provider of the table 
- * viewer defined in 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.DetectorChannelComposite}.
+ * <code>DetectorChannelLabelProvider</code> is the label provider of the table
+ * viewer defined in
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.DetectorChannelComposite}
+ * .
  * 
  * @author ?
  * @author Marcus Michalsky
@@ -27,14 +26,11 @@ public class LabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public Image getColumnImage(final Object channel, final int colIndex) {
-		final Channel pos = (Channel)channel;
-		if(colIndex == 1) {
-			final Iterator<IModelError> it = pos.getModelErrors().iterator();
-			while(it.hasNext()) {
-				final IModelError modelError = it.next();
-				if(modelError instanceof ChannelError) {
-					return PlatformUI.getWorkbench().getSharedImages().
-								getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+		if (colIndex == 1) {
+			for (IModelError error : ((Channel) channel).getModelErrors()) {
+				if (error instanceof ChannelError) {
+					return PlatformUI.getWorkbench().getSharedImages()
+							.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
 				}
 			}
 		}
@@ -46,17 +42,13 @@ public class LabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public String getColumnText(final Object channel, final int colIndex) {
-		final Channel pos = (Channel)channel;
-		switch(colIndex) {
-			case 0:
-				return (pos.getAbstractDevice()!=null)
-					   ? pos.getAbstractDevice().getFullIdentifyer()
-					   : "";
-			case 1:
-				int av = pos.getAverageCount();
-				return Integer.toString(av);
+		switch (colIndex) {
+		case 0:
+			return ((Channel) channel).getAbstractDevice().getName();
+		case 1:
+			return Integer.toString(((Channel) channel).getAverageCount());
 		}
-		return "";
+		return null;
 	}
 
 	/**
@@ -77,7 +69,7 @@ public class LabelProvider implements ITableLabelProvider {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isLabelProperty( final Object arg0, String arg1 ) {
+	public boolean isLabelProperty(final Object arg0, String arg1) {
 		return false;
 	}
 

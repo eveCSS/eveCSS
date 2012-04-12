@@ -259,7 +259,7 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 			this.scanModule.addPropertyChangeListener("removeAxis", this);
 			
 			this.setPartName(
-					this.currentAxis.getMotorAxis().getFullIdentifyer());
+					this.currentAxis.getMotorAxis().getName());
 			
 			this.positionModeCombo.setText(PositionMode.typeToString(
 					this.currentAxis.getPositionMode()));
@@ -369,8 +369,8 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 							((ScanModuleEditPart)o).getModel()).getId() + 
 							" selected."); 
 				}
-				if (this.scanModule != null && !(this.scanModule.equals(
-					(ScanModule)((ScanModuleEditPart)o).getModel()))) {
+				if (this.scanModule != null && !this.scanModule.equals(
+					((ScanModuleEditPart)o).getModel())) {
 						setAxis(null);
 				}
 			} else if (o instanceof ScanDescriptionEditPart) {

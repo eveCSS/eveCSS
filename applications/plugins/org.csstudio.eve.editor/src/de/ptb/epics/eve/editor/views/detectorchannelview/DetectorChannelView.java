@@ -409,8 +409,8 @@ public class DetectorChannelView extends ViewPart
 							" selected."); 
 				}
 				
-				if (this.scanModule != null && !(this.scanModule.equals(
-						(ScanModule)((ScanModuleEditPart)o).getModel()))) {
+				if (this.scanModule != null && !this.scanModule.equals(
+						((ScanModuleEditPart)o).getModel())) {
 							setChannel(null);
 				}
 			} else if (o instanceof ScanDescriptionEditPart) {
@@ -555,7 +555,7 @@ public class DetectorChannelView extends ViewPart
 			
 			// set the view title
 			this.setPartName(
-					currentChannel.getAbstractDevice().getFullIdentifyer());
+					currentChannel.getAbstractDevice().getName());
 			
 			// set average text
 			this.averageText.setText(Integer.toString(

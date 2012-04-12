@@ -18,21 +18,21 @@ import de.ptb.epics.eve.data.scandescription.PauseEvent;
  * @author Marcus Michalsky
  */
 public class LabelProvider implements ITableLabelProvider {
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public Image getColumnImage(Object controlEvent, int colIndex) {
-		switch(colIndex) {
-			// limit column...
-			case 2:	
-				if(((ControlEvent)controlEvent).getModelErrors().size() > 0) {
-						// errors present -> return error image
-						return PlatformUI.getWorkbench().getSharedImages().
-									getImage( ISharedImages.IMG_OBJS_ERROR_TSK);
-					}
-					break;
+		switch (colIndex) {
+		// limit column...
+		case 2:
+			if (((ControlEvent) controlEvent).getModelErrors().size() > 0) {
+				// errors present -> return error image
+				return PlatformUI.getWorkbench().getSharedImages()
+						.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+			}
+			break;
 		}
 		return null;
 	}
@@ -43,31 +43,29 @@ public class LabelProvider implements ITableLabelProvider {
 	@Override
 	public String getColumnText(Object controlEvent, int colIndex) {
 		String returnValue = "";
-		switch(colIndex) {
-			case 0: // Source column
-				returnValue = ((ControlEvent)controlEvent).getEvent().getName();
-				break;
-			case 1: // Operator column
-				if (((ControlEvent)controlEvent).getEvent().getType() 
-					== EventTypes.MONITOR) {
-					returnValue = ComparisonTypes.typeToString(
-						((ControlEvent)controlEvent).getLimit().getComparison());
-				}
-				break;
-			case 2: // Limit column
-				if (((ControlEvent)controlEvent).getEvent().getType() 
-					== EventTypes.MONITOR) {
-					returnValue = 
-						((ControlEvent)controlEvent).getLimit().getValue();
-				}
-				break;
-			case 3: // CIF column
-				if (((ControlEvent)controlEvent).getEvent().getType() 
-					== EventTypes.MONITOR) {
-					returnValue = 
-						"" + ((PauseEvent)controlEvent).isContinueIfFalse();
-				}
-				break;
+		switch (colIndex) {
+		case 0: // Source column
+			returnValue = ((ControlEvent) controlEvent).getEvent().getName();
+			break;
+		case 1: // Operator column
+			if (((ControlEvent) controlEvent).getEvent().getType() == EventTypes.MONITOR) {
+				returnValue = ComparisonTypes
+						.typeToString(((ControlEvent) controlEvent).getLimit()
+								.getComparison());
+			}
+			break;
+		case 2: // Limit column
+			if (((ControlEvent) controlEvent).getEvent().getType() == EventTypes.MONITOR) {
+				returnValue = ((ControlEvent) controlEvent).getLimit()
+						.getValue();
+			}
+			break;
+		case 3: // CIF column
+			if (((ControlEvent) controlEvent).getEvent().getType() == EventTypes.MONITOR) {
+				returnValue = String.valueOf(((PauseEvent) controlEvent)
+						.isContinueIfFalse());
+			}
+			break;
 		}
 		return returnValue;
 	}
@@ -93,7 +91,7 @@ public class LabelProvider implements ITableLabelProvider {
 	@Override
 	public void addListener(ILabelProviderListener arg0) {
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
