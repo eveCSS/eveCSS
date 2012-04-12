@@ -191,7 +191,7 @@ public class MenuContribution extends CompoundContributionItem {
 				// if only one channel in DetectorMenu, switch channel from
 				// DetectorMenu into ClassMenu
 				if (currentDetectorMenu.getSize() == 1) {
-					result.add(currentDetectorMenu.getItems()[0]);
+					detectorsAndChannelsMenu.add(currentDetectorMenu.getItems()[0]);
 					currentDetectorMenu.removeAll();
 				}
 				detectorsAndChannelsMenu.add(currentDetectorMenu);

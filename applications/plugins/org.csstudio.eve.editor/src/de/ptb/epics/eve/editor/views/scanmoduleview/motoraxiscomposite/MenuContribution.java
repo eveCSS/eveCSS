@@ -185,7 +185,7 @@ public class MenuContribution extends CompoundContributionItem {
 				// if only one axis in MotorMenu, switch axis from
 				// MotorMenu into ClassMenu
 				if (currentMotorMenu.getSize() == 1) {
-					result.add(currentMotorMenu.getItems()[0]);
+					motorsAndAxesMenu.add(currentMotorMenu.getItems()[0]);
 					currentMotorMenu.removeAll();
 				}
 				motorsAndAxesMenu.add(currentMotorMenu);
