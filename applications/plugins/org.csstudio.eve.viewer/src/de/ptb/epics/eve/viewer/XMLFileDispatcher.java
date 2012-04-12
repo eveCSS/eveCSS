@@ -44,8 +44,9 @@ public class XMLFileDispatcher extends Observable implements INewXMLFileListener
 	public void newXMLFileReceived(final byte[] xmlData) {
 		logger.debug("new xml file received");
 		try {
-			final File schemaFile = new File(Activator.getDefault().
-					getRootDirectory() + "eve/schema.xsd");
+			final File schemaFile = Activator.getDefault().getSchemaFile();
+					//new File(Activator.getDefault().
+					//getRootDirectory() + "eve/schema.xsd");
 			final MeasuringStationLoader measuringStationLoader = 
 					new MeasuringStationLoader(schemaFile);
 			final IMeasuringStation measuringStation = 

@@ -149,6 +149,13 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
+	 * @return the schemaFile
+	 */
+	public File getSchemaFile() {
+		return schemaFile;
+	}
+
+	/**
 	 * Returns an image descriptor for the image file at the given
 	 * plug-in relative path
 	 *
