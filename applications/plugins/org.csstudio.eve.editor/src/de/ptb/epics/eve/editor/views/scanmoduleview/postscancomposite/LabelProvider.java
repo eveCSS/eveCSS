@@ -46,6 +46,7 @@ public class LabelProvider implements ITableLabelProvider {
 		final Postscan pos = (Postscan) postscan;
 		switch (colIndex) {
 		case 0: // device column
+			if(pos.isDevice()) return pos.getAbstractDevice().getName();
 			return pos.getAbstractDevice().getParent().getName() + " "
 					+ (char) 187 + " " + pos.getAbstractDevice().getName();
 		case 1: // value column

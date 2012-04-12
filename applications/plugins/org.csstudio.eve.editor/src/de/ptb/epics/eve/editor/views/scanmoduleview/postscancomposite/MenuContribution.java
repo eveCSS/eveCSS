@@ -58,7 +58,16 @@ public class MenuContribution extends CompoundContributionItem {
 	final ImageDescriptor optionImage = ImageDescriptor.createFromImage(
 			Activator.getDefault().
 			getImageRegistry().get("OPTION"));
-
+	final ImageDescriptor motorsAxesImage = ImageDescriptor
+			.createFromImage(Activator.getDefault().getImageRegistry()
+					.get("MOTORSAXES"));
+	final ImageDescriptor detectorsAndChannelsImage = ImageDescriptor
+			.createFromImage(Activator.getDefault().getImageRegistry()
+					.get("DETECTORSCHANNELS"));
+	final ImageDescriptor devicesImage = ImageDescriptor.createFromImage(
+			Activator.getDefault().
+			getImageRegistry().get("DEVICES"));
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -391,6 +400,9 @@ public class MenuContribution extends CompoundContributionItem {
 		// ** Menu Entries for Devices without Class Names *
 		// *************************************************
 		
+		final MenuManager motorsAndAxesMenu = new MenuManager("Motors && Axes",
+				motorsAxesImage, "motorsAndAxes");
+		
 		for(final Motor motor : measuringStation.getMotors()) {
 			// add only entries for motors without class names
 			if(motor.getClassName() == null || 
@@ -451,9 +463,14 @@ public class MenuContribution extends CompoundContributionItem {
 					item.setVisible(true);
 					currentMotorMenu.add(item);
 				}
-				result.add(currentMotorMenu);
+				motorsAndAxesMenu.add(currentMotorMenu);
 			}
 		}
+		result.add(motorsAndAxesMenu);
+		
+		final MenuManager detectorsAndChannelsMenu = new MenuManager(
+				"Detectors && Channels", detectorsAndChannelsImage,
+				"detectorsAndChannels");
 		
 		for(final Detector detector : measuringStation.getDetectors()) {
 			// add only menu entries for detectors without class names
@@ -512,9 +529,13 @@ public class MenuContribution extends CompoundContributionItem {
 					item.setVisible(true);
 					currentDetectorMenu.add(item);
 				}
-				result.add(currentDetectorMenu);
+				detectorsAndChannelsMenu.add(currentDetectorMenu);
 			}
 		}
+		result.add(detectorsAndChannelsMenu);
+		
+		final MenuManager devicesMenu = new MenuManager(
+				"Devices", devicesImage, "devices");
 		
 		for(final Device device : measuringStation.getDevices()) {
 			// add only entries for devices without class names
@@ -536,9 +557,10 @@ public class MenuContribution extends CompoundContributionItem {
 				CommandContributionItem item = 
 					new CommandContributionItem(p);
 				item.setVisible(true);
-				result.add(item);
+				devicesMenu.add(item);
 			}
 		}
+		result.add(devicesMenu);
 		
 		// ********************************************************
 		// * end of: Menu Entries for Devices without Class Names *

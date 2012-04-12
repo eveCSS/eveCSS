@@ -26,9 +26,9 @@ import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**
- * Menu entries of the 
- * {@link de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.DetectorChannelComposite}'s 
- * context menu
+ * Menu entries of the
+ * {@link de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.DetectorChannelComposite}
+ * 's context menu
  * 
  * @author Marcus Michalsky
  * @since 1.2
@@ -37,16 +37,19 @@ public class MenuContribution extends CompoundContributionItem {
 
 	private static Logger logger = Logger.getLogger(MenuContribution.class
 			.getName());
-	
-	final ImageDescriptor classImage = ImageDescriptor.createFromImage(
-			Activator.getDefault().
-			getImageRegistry().get("CLASS"));
-	final ImageDescriptor detectorImage = ImageDescriptor.createFromImage(
-			Activator.getDefault().
-			getImageRegistry().get("DETECTOR"));
-	final ImageDescriptor channelImage = ImageDescriptor.createFromImage(
-			Activator.getDefault().
-			getImageRegistry().get("CHANNEL"));
+
+	final ImageDescriptor classImage = ImageDescriptor
+			.createFromImage(Activator.getDefault().getImageRegistry()
+					.get("CLASS"));
+	final ImageDescriptor detectorImage = ImageDescriptor
+			.createFromImage(Activator.getDefault().getImageRegistry()
+					.get("DETECTOR"));
+	final ImageDescriptor channelImage = ImageDescriptor
+			.createFromImage(Activator.getDefault().getImageRegistry()
+					.get("CHANNEL"));
+	final ImageDescriptor detectorsAndChannelsImage = ImageDescriptor
+			.createFromImage(Activator.getDefault().getImageRegistry()
+					.get("DETECTORSCHANNELS"));
 
 	/**
 	 * {@inheritDoc}
@@ -55,142 +58,149 @@ public class MenuContribution extends CompoundContributionItem {
 	protected IContributionItem[] getContributionItems() {
 		// create the list that will be returned.
 		ArrayList<IContributionItem> result = new ArrayList<IContributionItem>();
-		
+
 		// get active part
 		IWorkbenchPart activePart = Activator.getDefault().getWorkbench()
 				.getActiveWorkbenchWindow().getPartService().getActivePart();
-		
+
 		// get current scan module
 		ScanModule sm;
 		try {
-			sm = ((ScanModuleView)activePart).getCurrentScanModule();
-		} catch(ClassCastException e) {
+			sm = ((ScanModuleView) activePart).getCurrentScanModule();
+		} catch (ClassCastException e) {
 			logger.warn(e.getMessage());
 			return result.toArray(new IContributionItem[0]);
 		}
-		
+
 		// create filter, that excludes devices used already in scan module
-		ExcludeDevicesOfScanModuleFilterManualUpdate measuringStation = 
-				new ExcludeDevicesOfScanModuleFilterManualUpdate(
-						false, true, false, false, false);
-		measuringStation.setSource(Activator.getDefault().getMeasuringStation());
-		measuringStation.setSource(sm.getChain().getScanDescription().
-				getMeasuringStation());
+		ExcludeDevicesOfScanModuleFilterManualUpdate measuringStation = new ExcludeDevicesOfScanModuleFilterManualUpdate(
+				false, true, false, false, false);
+		measuringStation
+				.setSource(Activator.getDefault().getMeasuringStation());
+		measuringStation.setSource(sm.getChain().getScanDescription()
+				.getMeasuringStation());
 		measuringStation.setScanModule(sm);
 		measuringStation.update();
-		
+
 		// create menu from all remaining devices:
-		
+
 		// iterate over all classes
 		List<String> classNames = new ArrayList<String>();
 		classNames.addAll(measuringStation.getClassNameList());
 		Collections.sort(classNames);
-		
-		for(final String className : classNames) {
-			final MenuManager currentClassMenu = new MenuManager(
-					className, classImage, className);
-			
-			for(final AbstractDevice device : 
-				measuringStation.getDeviceList(className)) {
-			
-				if(device instanceof Detector) {
-					final Detector detector = (Detector)device;
-					final MenuManager currentDetectorMenu = 
-						new MenuManager(detector.getName(), detectorImage, 
-								detector.getName());
+
+		for (final String className : classNames) {
+			final MenuManager currentClassMenu = new MenuManager(className,
+					classImage, className);
+
+			for (final AbstractDevice device : measuringStation
+					.getDeviceList(className)) {
+
+				if (device instanceof Detector) {
+					final Detector detector = (Detector) device;
+					final MenuManager currentDetectorMenu = new MenuManager(
+							detector.getName(), detectorImage,
+							detector.getName());
 					currentClassMenu.add(currentDetectorMenu);
-					
+
 					// iterate for each channel of the detector
-					for(final DetectorChannel channel : detector.getChannels()) {
+					for (final DetectorChannel channel : detector.getChannels()) {
 						if (channel.getClassName().isEmpty()) {
 							// add only channels which have no className
-							Map<String,String> params = new HashMap<String,String>();
-							params.put("de.ptb.epics.eve.editor.command.addchannel.detectorchannelid", 
+							Map<String, String> params = new HashMap<String, String>();
+							params.put(
+									"de.ptb.epics.eve.editor.command.addchannel.detectorchannelid",
 									channel.getID());
-							CommandContributionItemParameter p = 
-								new CommandContributionItemParameter(
-									PlatformUI.getWorkbench().getActiveWorkbenchWindow(), 
-									"", 
-									"de.ptb.epics.eve.editor.command.addchannel", 
+							CommandContributionItemParameter p = new CommandContributionItemParameter(
+									PlatformUI.getWorkbench()
+											.getActiveWorkbenchWindow(),
+									"",
+									"de.ptb.epics.eve.editor.command.addchannel",
 									SWT.PUSH);
 							p.label = channel.getName();
 							p.icon = channelImage;
 							p.parameters = params;
-							
-							CommandContributionItem item = 
-								new CommandContributionItem(p);
+
+							CommandContributionItem item = new CommandContributionItem(
+									p);
 							item.setVisible(true);
 							currentDetectorMenu.add(item);
 						}
 					}
-					// if only one channel in DetectorMenu, switch channel from 
+					// if only one channel in DetectorMenu, switch channel from
 					// DetectorMenu into ClassMenu
 					if (currentDetectorMenu.getSize() == 1) {
 						currentClassMenu.add(currentDetectorMenu.getItems()[0]);
 						currentDetectorMenu.removeAll();
 					}
-				} else if(device instanceof DetectorChannel) {
-					DetectorChannel channel = (DetectorChannel)device;
-					Map<String,String> params = new HashMap<String,String>();
-					params.put("de.ptb.epics.eve.editor.command.addchannel.detectorchannelid", 
+				} else if (device instanceof DetectorChannel) {
+					DetectorChannel channel = (DetectorChannel) device;
+					Map<String, String> params = new HashMap<String, String>();
+					params.put(
+							"de.ptb.epics.eve.editor.command.addchannel.detectorchannelid",
 							channel.getID());
-					CommandContributionItemParameter p = 
-						new CommandContributionItemParameter(
-							PlatformUI.getWorkbench().getActiveWorkbenchWindow(), 
-							"", 
-							"de.ptb.epics.eve.editor.command.addchannel", 
+					CommandContributionItemParameter p = new CommandContributionItemParameter(
+							PlatformUI.getWorkbench()
+									.getActiveWorkbenchWindow(), "",
+							"de.ptb.epics.eve.editor.command.addchannel",
 							SWT.PUSH);
 					p.label = channel.getName();
 					p.icon = channelImage;
 					p.parameters = params;
-					
-					CommandContributionItem item = 
-						new CommandContributionItem(p);
+
+					CommandContributionItem item = new CommandContributionItem(
+							p);
 					item.setVisible(true);
 					currentClassMenu.add(item);
 				}
 				result.add(currentClassMenu);
 			}
 		}
-			
-		for(final Detector detector : measuringStation.getDetectors()) {
-			if(detector.getClassName().isEmpty() || detector.getClassName() == null) {
+
+		final MenuManager detectorsAndChannelsMenu = new MenuManager(
+				"Detectors && Channels", detectorsAndChannelsImage,
+				"detectorsAndChannels");
+
+		for (final Detector detector : measuringStation.getDetectors()) {
+			if (detector.getClassName().isEmpty()
+					|| detector.getClassName() == null) {
 				final MenuManager currentDetectorMenu = new MenuManager(
 						detector.getName(), detectorImage, detector.getName());
-				for(final DetectorChannel channel : detector.getChannels()) {
-					if(channel.getClassName().isEmpty() || channel.getClassName() == null) {
-						Map<String,String> params = new HashMap<String,String>();
-						params.put("de.ptb.epics.eve.editor.command.addchannel.detectorchannelid", 
+				for (final DetectorChannel channel : detector.getChannels()) {
+					if (channel.getClassName().isEmpty()
+							|| channel.getClassName() == null) {
+						Map<String, String> params = new HashMap<String, String>();
+						params.put(
+								"de.ptb.epics.eve.editor.command.addchannel.detectorchannelid",
 								channel.getID());
-						CommandContributionItemParameter p = 
-							new CommandContributionItemParameter(
-								PlatformUI.getWorkbench().getActiveWorkbenchWindow(), 
-								"", 
-								"de.ptb.epics.eve.editor.command.addchannel", 
+						CommandContributionItemParameter p = new CommandContributionItemParameter(
+								PlatformUI.getWorkbench()
+										.getActiveWorkbenchWindow(), "",
+								"de.ptb.epics.eve.editor.command.addchannel",
 								SWT.PUSH);
 						p.label = channel.getName();
 						p.icon = channelImage;
 						p.parameters = params;
-						
-						CommandContributionItem item = 
-							new CommandContributionItem(p);
+
+						CommandContributionItem item = new CommandContributionItem(
+								p);
 						item.setVisible(true);
 						currentDetectorMenu.add(item);
 					}
 				}
-				// if only one channel in DetectorMenu, switch channel from 
+				// if only one channel in DetectorMenu, switch channel from
 				// DetectorMenu into ClassMenu
 				if (currentDetectorMenu.getSize() == 1) {
 					result.add(currentDetectorMenu.getItems()[0]);
 					currentDetectorMenu.removeAll();
 				}
-				result.add(currentDetectorMenu);
+				detectorsAndChannelsMenu.add(currentDetectorMenu);
 			}
 		}
-		
+		result.add(detectorsAndChannelsMenu);
 		return result.toArray(new IContributionItem[0]);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
