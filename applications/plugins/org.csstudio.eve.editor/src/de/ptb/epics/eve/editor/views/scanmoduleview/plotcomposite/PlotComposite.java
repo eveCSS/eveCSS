@@ -74,7 +74,12 @@ public class PlotComposite extends ActionComposite {
 		TableViewerColumn idColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);
 		idColumn.getColumn().setText("Id");
-		idColumn.getColumn().setWidth(50);
+		idColumn.getColumn().setWidth(30);
+		
+		TableViewerColumn nameColumn = new TableViewerColumn(
+				this.tableViewer, SWT.LEFT);
+		nameColumn.getColumn().setText("Name");
+		nameColumn.getColumn().setWidth(120);
 		
 		TableViewerColumn xColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);

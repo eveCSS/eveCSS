@@ -1221,6 +1221,14 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 			this.atts.clear();
 			this.atts.addAttribute( "", "id", "id", "CDATA", "" + plotWindow.getId() );
 			this.contentHandler.startElement( "", "plot", "plot", this.atts );
+			
+			if (!plotWindow.getName().isEmpty()) {
+				this.atts.clear();
+				this.contentHandler.startElement("", "name", "name", this.atts);
+				this.contentHandler.characters(plotWindow.getName().toCharArray(), 0, plotWindow.getName().length());
+				this.contentHandler.endElement("", "name", "name");
+			}
+			
 			this.atts.clear();
 			this.contentHandler.startElement( "", "xaxis", "xaxis", this.atts );
 			

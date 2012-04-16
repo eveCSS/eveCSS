@@ -1,17 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription.processors;
 
 /**
- * This enum contains the possible states of the load handler for scan descriptions.
+ * Possible states of the load handler for scan descriptions.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
- *
+ * @author Marcus Michalsky
  */
 public enum ScanDescriptionLoaderStates {
 
@@ -571,6 +564,16 @@ public enum ScanDescriptionLoaderStates {
 	CHAIN_SCANMODULE_PLOT_LOADING,
 	
 	/**
+	 * // TODO
+	 */
+	CHAIN_SCANMODULE_PLOT_NAME_NEXT,
+	
+	/**
+	 * // TODO
+	 */
+	CHAIN_SCANMODULE_PLOT_NAME_READ,
+	
+	/**
 	 * The axis information of the plot window is loading.
 	 */
 	CHAIN_SCANMODULE_PLOT_AXIS_LOADING,	
@@ -659,5 +662,4 @@ public enum ScanDescriptionLoaderStates {
 	 * The access of the event has been read and the handler waits for the closing tag.
 	 */
 	EVENT_ACCESS_READ,
-	
 }

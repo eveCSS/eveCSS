@@ -1,17 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2008 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription.processors;
 
 /**
  * 
  * 
  * @author Stephan Rehfeld <stephan.rehfed (-at-) ptb.de>
- *
+ * @author Marcus Michalsky
  */
 public enum ScanDescriptionLoaderSubStates {
 
@@ -64,5 +57,4 @@ public enum ScanDescriptionLoaderSubStates {
 	PLUGIN_CONTROLLER_LOADING,
 	PLUGIN_CONTROLLER_PARAMETER_NEXT,
 	PLUGIN_CONTROLLER_PARAMETER_READ,
-	
 }

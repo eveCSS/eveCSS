@@ -20,12 +20,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -114,6 +117,10 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	// *********************************************
 	
 	private ExpandItem itemGeneral;
+	
+	private Label nameLabel;
+	private Text nameText;
+	private NameTextModifyListener nameTextModifyListener;
 	
 	// GUI: Motor Axis: "Select-Box":<motor-name>
 	private Label motorAxisLabel;
@@ -313,11 +320,22 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		gridLayout.numColumns = 2;
 		this.xAxisComposite.setLayout(gridLayout);
 		
+		this.nameLabel = new Label(this.xAxisComposite, SWT.NONE);
+		this.nameLabel.setText("Name:");
+		this.nameText = new Text(this.xAxisComposite, SWT.BORDER);
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalIndent = 7;
+		this.nameText.setLayoutData(gridData);
+		this.nameTextModifyListener = new NameTextModifyListener();
+		this.nameText.addModifyListener(nameTextModifyListener);
+		
 		// GUI: Motor Axis: <Combo>
 		this.motorAxisLabel = new Label(this.xAxisComposite, SWT.NONE);
 		this.motorAxisLabel.setText("Motor Axis:");
 		this.motorAxisComboBox = new Combo(this.xAxisComposite, SWT.READ_ONLY);
-		GridData gridData = new GridData();
+		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalIndent = 7;
@@ -851,6 +869,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	 * 
 	 */
 	private void addListeners() {
+		nameText.addModifyListener(nameTextModifyListener);
 		motorAxisComboBox.addSelectionListener(
 				motorAxisComboBoxSelectionListener);
 		preInitWindowCheckBox.addSelectionListener(
@@ -893,6 +912,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	 * 
 	 */
 	private void removeListeners() {
+		nameText.removeModifyListener(nameTextModifyListener);
 		motorAxisComboBox.removeSelectionListener(
 				motorAxisComboBoxSelectionListener);
 		preInitWindowCheckBox.removeSelectionListener(
@@ -1021,6 +1041,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			int axes_count = plotWindow.getYAxisAmount();
 			
 			// General
+			this.nameText.setText(plotWindow.getName());
+			
 			// depending on the axes count -> set reference(s) to the axis/axes
 			switch(axes_count) {
 				case 0: yAxis1 = null;
@@ -1212,6 +1234,23 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	// ******************************* listeners ******************************
 	// ************************************************************************
 
+	/**
+	 * {@link org.eclipse.swt.events.ModifyListener} of nameText.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.2
+	 */
+	private class NameTextModifyListener implements ModifyListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void modifyText(ModifyEvent e) {
+			plotWindow.setName(nameText.getText());
+		}
+	}
+	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>motorAxisComboBox</code>.

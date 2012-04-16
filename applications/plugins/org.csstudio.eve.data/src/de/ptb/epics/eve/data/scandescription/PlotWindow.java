@@ -39,6 +39,9 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	// the id 
 	private int id;
 	
+	// a name/title/short description of the plot
+	private String name;
+	
 	// the scan module the plot belongs to
 	private ScanModule scanModule;
 
@@ -149,6 +152,24 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 		updateListeners();
 	}
 	
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		if(this.name == null) {
+			return "";
+		}
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+		updateListeners();
+	}
+
 	/**
 	 * Checks whether the plot window will be initialized.
 	 * 
@@ -277,13 +298,10 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	 * Removes all y-axes of this plot window.
 	 */
 	public void clearYAxis() {
-		Iterator<YAxis> it = this.yAxis.iterator();
-		while(it.hasNext()) {
-			YAxis yAxis = it.next();
+		for(YAxis yAxis : this.yAxis) {
 			yAxis.removeModelUpdateListener(this);
 		}
 		this.yAxis.clear();
-		
 	}
 
 	/**
@@ -404,10 +422,8 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
 			new CopyOnWriteArrayList<IModelUpdateListener>(this.updateListener);
 		
-		Iterator<IModelUpdateListener> it = list.iterator();
-		
-		while(it.hasNext()) {
-			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		for(IModelUpdateListener imul : list) {
+			imul.updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
 }

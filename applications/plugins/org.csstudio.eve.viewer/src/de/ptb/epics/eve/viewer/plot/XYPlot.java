@@ -62,8 +62,7 @@ public class XYPlot extends Figure {
 		if (traceMap.containsKey(name)) {
 			return traceMap.get(name);
 		}
-		else
-			return null;
+		return null;
 	}
 		
 	/**
@@ -86,6 +85,8 @@ public class XYPlot extends Figure {
 		
 		if (name == null) return;
 				
+		this.xyGraph.setTitle(plotWindow.getName());
+		
 		Axis axis;
 		Trace trace;
 				

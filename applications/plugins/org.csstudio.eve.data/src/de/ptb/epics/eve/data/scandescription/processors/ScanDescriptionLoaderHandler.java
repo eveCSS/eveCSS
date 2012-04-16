@@ -453,7 +453,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_PLOT_LOADING:
-			if (qName.equals("xaxis")) {
+			if (qName.equals("name")) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_NAME_NEXT;
+			} else if (qName.equals("xaxis")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_AXIS_LOADING;
 			} else if (qName.equals("init")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_INIT_NEXT;
@@ -856,6 +858,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_READ;
 			break;
+
+		case CHAIN_SCANMODULE_PLOT_NAME_NEXT:
+			this.currentPlotWindow.setName(textBuffer.toString());
+			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_NAME_READ;
+			break;
+
 
 		case CHAIN_SCANMODULE_PLOT_AXIS_ID_NEXT:
 			this.currentPlotWindow.setXAxis(this.measuringStation
@@ -1970,6 +1978,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (qName.equals("plot")) {
 				this.currentScanModul.add(this.currentPlotWindow);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+			}
+			break;
+
+		case CHAIN_SCANMODULE_PLOT_NAME_READ:
+			if (qName.equals("name")) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_LOADING;
 			}
 			break;
 

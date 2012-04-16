@@ -31,15 +31,16 @@ public class LabelProvider implements ITableLabelProvider {
 		boolean noYaxes = pw.getYAxes().size() == 0;
 		switch(colIndex) {
 			case 0: break;
-			case 1: if(pw.getXAxis() == null) {
+			case 1: break;
+			case 2: if(pw.getXAxis() == null) {
 						return error; 
 					}
 					break;
-			case 2: if(noYaxes) {
+			case 3: if(noYaxes) {
 						return error;
 					}
 					break;
-			case 3: if(noYaxes) {
+			case 4: if(noYaxes) {
 						return error;
 					}
 					break;
@@ -58,18 +59,19 @@ public class LabelProvider implements ITableLabelProvider {
 		
 		switch(colIndex) {
 			case 0: return Integer.toString(pw.getId());
-			case 1: if (pw.getXAxis() != null && 
+			case 1: return pw.getName();
+			case 2: if (pw.getXAxis() != null && 
 						pw.getXAxis().getName() != null) {
 							return pw.getXAxis().getName();
 					}
 					break;
-			case 2: if (yAxisCount > 0 && 
+			case 3: if (yAxisCount > 0 && 
 						pw.getYAxes().get(0).getDetectorChannel() != null) {
 							return pw.getYAxes().get(0).getDetectorChannel().
 									getName();
 					}
 					break;
-			case 3: if (yAxisCount > 1 &&
+			case 4: if (yAxisCount > 1 &&
 						pw.getYAxes().get(1).getDetectorChannel() != null) {
 							return pw.getYAxes().get(1).getDetectorChannel().
 									getName();
