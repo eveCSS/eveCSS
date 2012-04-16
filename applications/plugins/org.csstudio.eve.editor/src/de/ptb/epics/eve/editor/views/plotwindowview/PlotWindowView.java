@@ -1036,7 +1036,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			// show controls
 			top.setVisible(true);
 			// set view title
-			this.setPartName("Plot Window: " + this.plotWindow.getId());
+			this.setPartName(this.plotWindow.getName()+ ":" + this.plotWindow.getId());
 			// determine the number of yAxis of the plot
 			int axes_count = plotWindow.getYAxisAmount();
 			
