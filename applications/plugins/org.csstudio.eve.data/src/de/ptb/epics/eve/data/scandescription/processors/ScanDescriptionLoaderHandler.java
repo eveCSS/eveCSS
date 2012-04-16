@@ -51,178 +51,131 @@ import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 
 /**
- * This class represents a load handler for SAX that loads a scan description from a XML file.
+ * This class represents a load handler for SAX that loads a scan description
+ * from a XML file.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
  * @author Marcus Michalsky
  * @author Hartmut Scherr
  */
 public class ScanDescriptionLoaderHandler extends DefaultHandler {
-	
-	// logging
-	private static Logger logger = 
-			Logger.getLogger(ScanDescriptionLoaderHandler.class.getName());
 
-	/**
-	 * The measuring station that contains the devices.
-	 */
+	// logging
+	private static Logger logger = Logger
+			.getLogger(ScanDescriptionLoaderHandler.class.getName());
+
+	// The measuring station that contains the devices
 	private final IMeasuringStation measuringStation;
-	
-	/**
-	 * The loaded scan description.
-	 */
+
+	// The loaded scan description
 	private ScanDescription scanDescription;
-	
-	/**
-	 * The current state.
-	 */
+
+	// The current state
 	private ScanDescriptionLoaderStates state;
-	
-	/**
-	 * The current sub state.
-	 */
+
+	// The current sub state
 	private ScanDescriptionLoaderSubStates subState;
-	
-	/**
-	 * The currently constructed chain.
-	 */
+
+	// The currently constructed chain
 	private Chain currentChain;
-	
-	/**
-	 * The currently constructed control event.
-	 */
+
+	// The currently constructed control event
 	private ControlEvent currentControlEvent;
-	
-	/**
-	 * The currently constructed scan module.
-	 */
+
+	// The currently constructed scan module
 	private ScanModule currentScanModul;
-	
-	/**
-	 * The currently constructed prescan.
-	 */
+
+	// The currently constructed prescan
 	private Prescan currentPrescan;
-	
-	/**
-	 * The currently constructed postscan.
-	 */
+
+	// The currently constructed postscan
 	private Postscan currentPostscan;
-	
-	/**
-	 * The currently constructed positioning.
-	 */
+
+	// The currently constructed positioning
 	private Positioning currentPositioning;
-	
-	/**
-	 * The currently constructed axis.
-	 */
+
+	// The currently constructed axis
 	private Axis currentAxis;
-	
-	/**
-	 * The currently constructed channel.
-	 */
+
+	// The currently constructed channel
 	private Channel currentChannel;
-	
-	/**
-	 * The currently constructed plot window.
-	 */
+
+	// The currently constructed plot window
 	private PlotWindow currentPlotWindow;
-	
-	/**
-	 * The currently constructed y axis.
-	 */
+
+	// The currently constructed y axis
 	private YAxis currentYAxis;
-	
-	/**
-	 * The currently constructed scan module relation reminder.
-	 */
+
+	// The currently constructed scan module relation reminder
 	private ScanModulRelationReminder currentRelationReminder;
-	
-	/**
-	 * The list of all scan module relation reminder.
-	 */
+
+	// The list of all scan module relation reminder
 	private List<ScanModulRelationReminder> relationReminders;
-	
-	/**
-	 * The list of all chains.
-	 */
+
+	// The list of all chains
 	private List<Chain> chainList;
-	
-	/**
-	 * The list of all control events.
-	 */
+
+	// The list of all control events
 	private List<ControlEvent> controlEventList;
-		
-	/**
-	 * A map from scan module id to scan module.
-	 */
-	private Map< Integer, ScanModule > idToScanModulMap;
-	
-	/**
-	 * A map from scan module to chain.
-	 */
-	private Map< ScanModule, Chain > scanModulChainMap;
-		
-	/**
-	 * The currently constructed plug in controller..
-	 */
+
+	// A map from scan module id to scan module
+	private Map<Integer, ScanModule> idToScanModulMap;
+
+	// A map from scan module to chain
+	private Map<ScanModule, Chain> scanModulChainMap;
+
+	// The currently constructed plug in controller
 	private PluginController currentPluginController;
-	
-	/**
-	 * A buffer for the current parameter name.
-	 */
+
+	// A buffer for the current parameter name
 	private String currentParameterName;
-	
-	/**
-	 * A general purpose buffer for strings.
-	 */
+
+	// A general purpose buffer for strings
 	private StringBuffer textBuffer;
 
 	private List<String> lostDevicesList;
 
-	private boolean	trim = true;
-
 	/**
 	 * This constructor creates a new SAX handler to load a scan description.
 	 * 
-	 * @param measuringStation The measuring station description that contains the devices.
+	 * @param measuringStation
+	 *            The measuring station description that contains the devices.
 	 */
-	public ScanDescriptionLoaderHandler( final IMeasuringStation measuringStation ) {
-		if( measuringStation == null ) {
-			throw new IllegalArgumentException( "The parameter 'measuringStation' must not be null!" );
+	public ScanDescriptionLoaderHandler(final IMeasuringStation measuringStation) {
+		if (measuringStation == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'measuringStation' must not be null!");
 		}
 		this.measuringStation = measuringStation;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.xml.sax.helpers.DefaultHandler#startDocument()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void startDocument() throws SAXException {
-		this.scanDescription = new ScanDescription( this.measuringStation );
+		this.scanDescription = new ScanDescription(this.measuringStation);
 		this.state = ScanDescriptionLoaderStates.ROOT;
 		this.subState = ScanDescriptionLoaderSubStates.NONE;
 		this.chainList = new ArrayList<Chain>();
 		this.controlEventList = new ArrayList<ControlEvent>();
 		this.relationReminders = new ArrayList<ScanModulRelationReminder>();
-		
-		this.idToScanModulMap = new HashMap< Integer, ScanModule >();
-		this.scanModulChainMap = new HashMap< ScanModule, Chain >();
+
+		this.idToScanModulMap = new HashMap<Integer, ScanModule>();
+		this.scanModulChainMap = new HashMap<ScanModule, Chain>();
 
 		this.lostDevicesList = new ArrayList<String>();
-
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
-	public void startElement( final String namespaceURI, final String localName, final String qName, final Attributes atts ) throws SAXException {
+	public void startElement(final String namespaceURI, final String localName,
+			final String qName, final Attributes atts) throws SAXException {
 
 		textBuffer = new StringBuffer();
-		
+
 		switch (this.state) {
 		case ROOT:
 			if (qName.equals("version")) {
@@ -230,7 +183,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} else if (qName.equals("repeatcount")) {
 				this.state = ScanDescriptionLoaderStates.REPEATCOUNT_NEXT;
 			} else if (qName.equals("chain")) {
-				this.currentChain = new Chain( Integer.parseInt(atts.getValue("id") ) );
+				this.currentChain = new Chain(Integer.parseInt(atts
+						.getValue("id")));
 				this.chainList.add(this.currentChain);
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			} else if (qName.equals("events")) {
@@ -239,7 +193,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_LOADING:
-			if( qName.equals("comment") ) {
+			if (qName.equals("comment")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_COMMENT_NEXT;
 			} else if (qName.equals("savefilename")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SAVEFILENAME_NEXT;
@@ -249,59 +203,62 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_AUTONUMBER_NEXT;
 			} else if (qName.equals("saveplugin")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SAVEPLUGINCONTROLLER_LOADING;
-				this.currentPluginController = this.currentChain.getSavePluginController();
-				String savePluginName = atts.getValue( "name" );
-				PlugIn savePlugin = this.measuringStation.getPluginByName( savePluginName );
-				if( savePlugin != null ) {
-					if( savePlugin.getType() == PluginTypes.SAVE ) {
-						this.currentChain.getSavePluginController().setPlugin( savePlugin );
+				this.currentPluginController = this.currentChain
+						.getSavePluginController();
+				String savePluginName = atts.getValue("name");
+				PlugIn savePlugin = this.measuringStation
+						.getPluginByName(savePluginName);
+				if (savePlugin != null) {
+					if (savePlugin.getType() == PluginTypes.SAVE) {
+						this.currentChain.getSavePluginController().setPlugin(
+								savePlugin);
 					}
 				}
 				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
-			} else if(qName.equals("savescandescription")) {
+			} else if (qName.equals("savescandescription")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SAVESCANDESCRIPTION_NEXT;
 			} else if (qName.equals("startevent")) {
-				this.currentControlEvent = new ControlEvent(EventTypes.stringToType(atts.getValue( "type" )));
-				if (atts.getValue( "type" ).equals("schedule")){
+				this.currentControlEvent = new ControlEvent(
+						EventTypes.stringToType(atts.getValue("type")));
+				if (atts.getValue("type").equals("schedule")) {
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				}
-				else { // Detector and Monitor
+				} else { // Detector and Monitor
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_STARTEVENT;
 			} else if (qName.equals("pauseevent")) {
-				this.currentControlEvent = new PauseEvent(EventTypes.stringToType(atts.getValue( "type" )));
-				if (atts.getValue( "type" ).equals("schedule")){
+				this.currentControlEvent = new PauseEvent(
+						EventTypes.stringToType(atts.getValue("type")));
+				if (atts.getValue("type").equals("schedule")) {
 					this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
-				}
-				else { // Detector and Monitor
+				} else { // Detector and Monitor
 					this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSEEVENT;
 			} else if (qName.equals("redoevent")) {
-				this.currentControlEvent = new ControlEvent(EventTypes.stringToType(atts.getValue( "type" )));
-				if (atts.getValue( "type" ).equals("schedule")){
+				this.currentControlEvent = new ControlEvent(
+						EventTypes.stringToType(atts.getValue("type")));
+				if (atts.getValue("type").equals("schedule")) {
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				}
-				else { // Detector and Monitor
+				} else { // Detector and Monitor
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_REDOEVENT;
 			} else if (qName.equals("breakevent")) {
-				this.currentControlEvent = new ControlEvent(EventTypes.stringToType(atts.getValue( "type" )));
-				if (atts.getValue( "type" ).equals("schedule")){
+				this.currentControlEvent = new ControlEvent(
+						EventTypes.stringToType(atts.getValue("type")));
+				if (atts.getValue("type").equals("schedule")) {
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				}
-				else { // Detector and Monitor
+				} else { // Detector and Monitor
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_BREAKEVENT;
 			} else if (qName.equals("stopevent")) {
-				this.currentControlEvent = new ControlEvent(EventTypes.stringToType(atts.getValue( "type" )));
-				if (atts.getValue( "type" ).equals("schedule")){
+				this.currentControlEvent = new ControlEvent(
+						EventTypes.stringToType(atts.getValue("type")));
+				if (atts.getValue("type").equals("schedule")) {
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				}
-				else { // Detector and Monitor
+				} else { // Detector and Monitor
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_STOPEVENT;
@@ -344,38 +301,38 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} else if (qName.equals("saveaxispositions")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SAVEAXISPOSITIONS_NEXT;
 			} else if (qName.equals("triggerevent")) {
-				this.currentControlEvent = new ControlEvent(EventTypes.stringToType(atts.getValue( "type" )));
-				if (atts.getValue( "type" ).equals("schedule")){
+				this.currentControlEvent = new ControlEvent(
+						EventTypes.stringToType(atts.getValue("type")));
+				if (atts.getValue("type").equals("schedule")) {
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				}
-				else { // Detector and Monitor
+				} else { // Detector and Monitor
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGEREVENT;
 			} else if (qName.equals("breakevent")) {
-				this.currentControlEvent = new ControlEvent(EventTypes.stringToType(atts.getValue( "type" )));
-				if (atts.getValue( "type" ).equals("schedule")){
+				this.currentControlEvent = new ControlEvent(
+						EventTypes.stringToType(atts.getValue("type")));
+				if (atts.getValue("type").equals("schedule")) {
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				}
-				else { // Detector and Monitor
+				} else { // Detector and Monitor
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_BREAKEVENT;
 			} else if (qName.equals("redoevent")) {
-				this.currentControlEvent = new ControlEvent(EventTypes.stringToType(atts.getValue( "type" )));
-				if (atts.getValue( "type" ).equals("schedule")){
+				this.currentControlEvent = new ControlEvent(
+						EventTypes.stringToType(atts.getValue("type")));
+				if (atts.getValue("type").equals("schedule")) {
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				}
-				else { // Detector and Monitor
+				} else { // Detector and Monitor
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_REDOEVENT;
 			} else if (qName.equals("pauseevent")) {
-				this.currentControlEvent = new PauseEvent(EventTypes.stringToType(atts.getValue( "type" )));
-				if (atts.getValue( "type" ).equals("schedule")){
+				this.currentControlEvent = new PauseEvent(
+						EventTypes.stringToType(atts.getValue("type")));
+				if (atts.getValue("type").equals("schedule")) {
 					this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
-				}
-				else { // Detector and Monitor
+				} else { // Detector and Monitor
 					this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PAUSEEVENT;
@@ -386,13 +343,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentPostscan = new Postscan();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSTSCAN_LOADING;
 			} else if (qName.equals("smaxis")) {
-				this.currentAxis = new Axis( this.currentScanModul );
+				this.currentAxis = new Axis(this.currentScanModul);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			} else if (qName.equals("smchannel")) {
-				this.currentChannel = new Channel( this.currentScanModul );
+				this.currentChannel = new Channel(this.currentScanModul);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
-			} else if( qName.equals( "positioning" ) ) {
-				this.currentPositioning = new Positioning( this.currentScanModul);
+			} else if (qName.equals("positioning")) {
+				this.currentPositioning = new Positioning(this.currentScanModul);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_LOADING;
 			} else if (qName.equals("plot")) {
 				this.currentPlotWindow = new PlotWindow(this.currentScanModul);
@@ -402,22 +359,22 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
-			
 		case CHAIN_SCANMODULE_POSITIONING_LOADING:
-			if( qName.equals( "axis_id" ) ) {
+			if (qName.equals("axis_id")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_AXIS_ID_NEXT;
-			} else if( qName.equals( "channel_id" ) ) {
+			} else if (qName.equals("channel_id")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_CHANNEL_ID_NEXT;
-			} else if( qName.equals( "normalize_id" ) ) {
+			} else if (qName.equals("normalize_id")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_NORMALIZE_ID_NEXT;
-			} else if( qName.equals( "plugin" ) ) {
+			} else if (qName.equals("plugin")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_CONTROLLER_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
-				this.currentPluginController = this.currentPositioning.getPluginController();
-				this.currentPluginController.setPlugin( this.measuringStation.getPluginByName( atts.getValue( "name" ) ) );
+				this.currentPluginController = this.currentPositioning
+						.getPluginController();
+				this.currentPluginController.setPlugin(this.measuringStation
+						.getPluginByName(atts.getValue("name")));
 			}
-			
-			
+
 		case CHAIN_SCANMODULE_PRESCAN_LOADING:
 			if (qName.equals("id")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PRESCAN_ID_NEXT;
@@ -455,12 +412,14 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_POSITIONLIST_NEXT;
 			} else if (qName.equals("ismainaxis")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_ISMAINAXIS_NEXT;
-			} else if( qName.equals( "plugin" ) ) {
+			} else if (qName.equals("plugin")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_CONTROLLER_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
 				this.currentPluginController = new PluginController();
-				this.currentAxis.setPositionPluginController( this.currentPluginController );
-				this.currentPluginController.setPlugin( this.measuringStation.getPluginByName( atts.getValue( "name" ) ) );
+				this.currentAxis
+						.setPositionPluginController(this.currentPluginController);
+				this.currentPluginController.setPlugin(this.measuringStation
+						.getPluginByName(atts.getValue("name")));
 			}
 			break;
 
@@ -482,11 +441,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} else if (qName.equals("sendreadyevent")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_NEXT;
 			} else if (qName.equals("redoevent")) {
-				this.currentControlEvent = new ControlEvent(EventTypes.stringToType(atts.getValue( "type" )));
-				if (atts.getValue( "type" ).equals("schedule")){
+				this.currentControlEvent = new ControlEvent(
+						EventTypes.stringToType(atts.getValue("type")));
+				if (atts.getValue("type").equals("schedule")) {
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				}
-				else { // Detector and Monitor
+				} else { // Detector and Monitor
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_REDOEVENT;
@@ -515,13 +474,16 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		}
 
 		switch (this.subState) {
-		
+
 		case MONITOREVENT_LOADING:
 			if (qName.equals("id")) {
 				this.subState = ScanDescriptionLoaderSubStates.EVENT_ID_NEXT;
 			} else if (qName.equals("limit")) {
-				this.currentControlEvent.getLimit().setComparison( ComparisonTypes.stringToType(atts.getValue("comparison") ) );
-				this.currentControlEvent.getLimit().setType( DataTypes.stringToType(atts.getValue( "type" ) ) );
+				this.currentControlEvent.getLimit().setComparison(
+						ComparisonTypes.stringToType(atts
+								.getValue("comparison")));
+				this.currentControlEvent.getLimit().setType(
+						DataTypes.stringToType(atts.getValue("type")));
 				this.subState = ScanDescriptionLoaderSubStates.EVENT_LIMIT_NEXT;
 			}
 			break;
@@ -540,8 +502,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (qName.equals("id")) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_ID_NEXT;
 			} else if (qName.equals("limit")) {
-				this.currentControlEvent.getLimit().setComparison( ComparisonTypes.stringToType(atts.getValue("comparison") ) );
-				this.currentControlEvent.getLimit().setType( DataTypes.stringToType(atts.getValue( "type" ) ) );
+				this.currentControlEvent.getLimit().setComparison(
+						ComparisonTypes.stringToType(atts
+								.getValue("comparison")));
+				this.currentControlEvent.getLimit().setType(
+						DataTypes.stringToType(atts.getValue("type")));
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_LIMIT_NEXT;
 			} else if (qName.equals("continue_if_false")) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_CONTINUE_NEXT;
@@ -575,44 +540,36 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_COLOR_NEXT;
 			}
 			break;
-			
+
 		case PLUGIN_CONTROLLER_LOADING:
 			if (qName.equals("parameter")) {
 				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_PARAMETER_NEXT;
-				this.currentParameterName = atts.getValue( "name" );
+				this.currentParameterName = atts.getValue("name");
 			}
 			break;
 		}
-
-//		System.err.println(qName);
-//		System.err.println(this.state);
-//		System.err.println(this.subState);
-//		System.err.println("----------------------\n");
-
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
-	public void characters( final char[] ch, final int start, final int length ) {
-
+	public void characters(final char[] ch, final int start, final int length) {
 		String s = new String(ch, start, length);
 		if (textBuffer == null) {
-		    textBuffer = new StringBuffer(s);
+			textBuffer = new StringBuffer(s);
 		} else {
-			  textBuffer.append(s);
-		} 
-		
+			textBuffer.append(s);
+		}
+
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
-	public void endElement( final String uri, final String localName, final String qName ) throws SAXException {
+	public void endElement(final String uri, final String localName,
+			final String qName) throws SAXException {
 
 		String temp = textBuffer.toString().trim();
 		textBuffer = new StringBuffer(temp);
@@ -624,32 +581,36 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case REPEATCOUNT_NEXT:
-			this.scanDescription.setRepeatCount(Integer.parseInt(textBuffer.toString()));
+			this.scanDescription.setRepeatCount(Integer.parseInt(textBuffer
+					.toString()));
 			this.state = ScanDescriptionLoaderStates.REPEATCOUNT_READ;
 			break;
 
 		case CHAIN_COMMENT_NEXT:
-			this.currentChain.setComment( textBuffer.toString() );
+			this.currentChain.setComment(textBuffer.toString());
 			this.state = ScanDescriptionLoaderStates.CHAIN_COMMENT_READ;
 			break;
-			
+
 		case CHAIN_SAVEFILENAME_NEXT:
-			this.currentChain.setSaveFilename( textBuffer.toString() );
+			this.currentChain.setSaveFilename(textBuffer.toString());
 			this.state = ScanDescriptionLoaderStates.CHAIN_SAVEFILENAME_READ;
 			break;
 
 		case CHAIN_CONFIRMSAVE_NEXT:
-			this.currentChain.setConfirmSave(Boolean.parseBoolean(textBuffer.toString()));
+			this.currentChain.setConfirmSave(Boolean.parseBoolean(textBuffer
+					.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_CONFIRMSAVE_READ;
 			break;
 
 		case CHAIN_AUTONUMBER_NEXT:
-			this.currentChain.setAutoNumber(Boolean.parseBoolean(textBuffer.toString()));
+			this.currentChain.setAutoNumber(Boolean.parseBoolean(textBuffer
+					.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_AUTONUMBER_READ;
 			break;
 
 		case CHAIN_SAVESCANDESCRIPTION_NEXT:
-			this.currentChain.setSaveScanDescription(Boolean.parseBoolean(textBuffer.toString()));
+			this.currentChain.setSaveScanDescription(Boolean
+					.parseBoolean(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SAVESCANDESCRIPTION_READ;
 			break;
 
@@ -664,56 +625,63 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_PARENT_NEXT:
-			this.currentRelationReminder.setParent(Integer.parseInt(textBuffer.toString()));
+			this.currentRelationReminder.setParent(Integer.parseInt(textBuffer
+					.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PARENT_READ;
 			break;
 
 		case CHAIN_SCANMODULE_APPENDED_NEXT:
-			this.currentRelationReminder.setAppended(Integer.parseInt(textBuffer.toString()));
+			this.currentRelationReminder.setAppended(Integer
+					.parseInt(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_APPENDED_READ;
 			break;
 
 		case CHAIN_SCANMODULE_NESTED_NEXT:
-			this.currentRelationReminder.setNested(Integer.parseInt(textBuffer.toString()));
+			this.currentRelationReminder.setNested(Integer.parseInt(textBuffer
+					.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_NESTED_READ;
 			break;
 
 		case CHAIN_SCANMODULE_SETTLETIME_NEXT:
 			double settletime = Double.NEGATIVE_INFINITY;
 			try {
-				settletime = Double.parseDouble( textBuffer.toString() );
-			} catch( final NumberFormatException e ) {
+				settletime = Double.parseDouble(textBuffer.toString());
+			} catch (final NumberFormatException e) {
 				logger.error(e.getMessage(), e);
 			}
-			this.currentScanModul.setSettletime( settletime );
+			this.currentScanModul.setSettletime(settletime);
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SETTLETIME_READ;
 			break;
 
 		case CHAIN_SCANMODULE_TRIGGERDELAY_NEXT:
 			double triggerdelay = Double.NEGATIVE_INFINITY;
 			try {
-				triggerdelay = Double.parseDouble( textBuffer.toString() );
-			} catch( final NumberFormatException e ) {
+				triggerdelay = Double.parseDouble(textBuffer.toString());
+			} catch (final NumberFormatException e) {
 				logger.error(e.getMessage(), e);
 			}
-			this.currentScanModul.setTriggerdelay( triggerdelay );
+			this.currentScanModul.setTriggerdelay(triggerdelay);
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERDELAY_READ;
 			break;
 
 		case CHAIN_SCANMODULE_TRIGGERCONFIRM_NEXT:
-			this.currentScanModul.setTriggerconfirm(Boolean.parseBoolean(textBuffer.toString()));
+			this.currentScanModul.setTriggerconfirm(Boolean
+					.parseBoolean(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRM_READ;
 			break;
 
 		case CHAIN_SCANMODULE_SAVEAXISPOSITIONS_NEXT:
-			this.currentScanModul.setSaveAxisPositions( SaveAxisPositionsTypes.stringToType( textBuffer.toString()) );
+			this.currentScanModul.setSaveAxisPositions(SaveAxisPositionsTypes
+					.stringToType(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SAVEAXISPOSITIONS_READ;
 			break;
-			
+
 		case CHAIN_SCANMODULE_PRESCAN_ID_NEXT:
 			try {
-				this.currentPrescan.setAbstractPrePostscanDevice(this.measuringStation.getPrePostscanDeviceById(textBuffer.toString()));
-			} catch( IllegalArgumentException e ) {
+				this.currentPrescan
+						.setAbstractPrePostscanDevice(this.measuringStation
+								.getPrePostscanDeviceById(textBuffer.toString()));
+			} catch (IllegalArgumentException e) {
 				logger.error(e.getMessage(), e);
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PRESCAN_ID_READ;
@@ -726,8 +694,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_POSTSCAN_ID_NEXT:
 			try {
-				this.currentPostscan.setAbstractPrePostscanDevice(this.measuringStation.getPrePostscanDeviceById(textBuffer.toString()));
-			} catch( IllegalArgumentException e ) {
+				this.currentPostscan
+						.setAbstractPrePostscanDevice(this.measuringStation
+								.getPrePostscanDeviceById(textBuffer.toString()));
+			} catch (IllegalArgumentException e) {
 				logger.error(e.getMessage(), e);
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSTSCAN_ID_READ;
@@ -739,8 +709,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_POSTSCAN_RESET_NEXT:
-			if( this.currentPostscan.getAbstractDevice() != null ) {
-				this.currentPostscan.setReset(Boolean.parseBoolean(textBuffer.toString()));
+			if (this.currentPostscan.getAbstractDevice() != null) {
+				this.currentPostscan.setReset(Boolean.parseBoolean(textBuffer
+						.toString()));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSTSCAN_RESET_READ;
 			break;
@@ -748,9 +719,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_SMMOTOR_AXISID_NEXT:
 			if (this.measuringStation.getMotorAxisById(textBuffer.toString()) != null) {
 				// MotorAxis ist am Messplatz vorhanden
-				this.currentAxis.setMotorAxis(this.measuringStation.getMotorAxisById(textBuffer.toString()));
+				this.currentAxis.setMotorAxis(this.measuringStation
+						.getMotorAxisById(textBuffer.toString()));
 			} else {
-				this.lostDevicesList.add("PV " + textBuffer.toString() + " not found in XML-File " + this.measuringStation.getLoadedFileName());	
+				this.lostDevicesList.add("PV " + textBuffer.toString()
+						+ " not found in XML-File "
+						+ this.measuringStation.getLoadedFileName());
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_AXISID_READ;
 			break;
@@ -759,12 +733,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.currentAxis.setStepfunction(textBuffer.toString());
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STEPFUNCTION_READ;
 			break;
-			
+
 		case CHAIN_SCANMODULE_SMMOTOR_POSITIONMODE_NEXT:
-			this.currentAxis.setPositionMode( PositionMode.stringToType(textBuffer.toString() ) );
+			this.currentAxis.setPositionMode(PositionMode
+					.stringToType(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_POSITIONMODE_READ;
 			break;
-			
+
 		case CHAIN_SCANMODULE_SMMOTOR_START_NEXT:
 			this.currentAxis.setStart(textBuffer.toString());
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_START_READ;
@@ -779,85 +754,101 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.currentAxis.setStepwidth(textBuffer.toString());
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STEPWIDTH_READ;
 			break;
-			
+
 		case CHAIN_SCANMODULE_SMMOTOR_STEPFILENAME_NEXT:
 			this.currentAxis.setPositionfile(textBuffer.toString());
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STEPFILENAME_READ;
 			break;
-			
+
 		case CHAIN_SCANMODULE_SMMOTOR_POSITIONLIST_NEXT:
 			this.currentAxis.setPositionlist(textBuffer.toString());
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_POSITIONLIST_READ;
 			break;
-			
+
 		case CHAIN_SCANMODULE_SMMOTOR_ISMAINAXIS_NEXT:
-			this.currentAxis.setMainAxis( Boolean.parseBoolean( textBuffer.toString() ) );
+			this.currentAxis.setMainAxis(Boolean.parseBoolean(textBuffer
+					.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_ISMAINAXIS_READ;
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_CHANNELID_NEXT:
-			if (this.measuringStation.getDetectorChannelById(textBuffer.toString()) != null) {
-				this.currentChannel.setDetectorChannel(this.measuringStation.getDetectorChannelById(textBuffer.toString()));
+			if (this.measuringStation.getDetectorChannelById(textBuffer
+					.toString()) != null) {
+				this.currentChannel.setDetectorChannel(this.measuringStation
+						.getDetectorChannelById(textBuffer.toString()));
 			} else {
-				this.lostDevicesList.add("PV " + textBuffer.toString() + " not found in XML-File " + this.measuringStation.getLoadedFileName());	
+				this.lostDevicesList.add("PV " + textBuffer.toString()
+						+ " not found in XML-File "
+						+ this.measuringStation.getLoadedFileName());
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_CHANNELID_READ;
 			break;
-			
+
 		case CHAIN_SCANMODULE_DETECTOR_AVERAGECOUNT_NEXT:
 			int averageCount = 1;
 			try {
-				averageCount = Integer.parseInt( textBuffer.toString() );
-			} catch( NumberFormatException e ) {
+				averageCount = Integer.parseInt(textBuffer.toString());
+			} catch (NumberFormatException e) {
 				logger.error(e.getMessage(), e);
 			}
-			
+
 			if (this.currentChannel.getAbstractDevice() != null) {
-				this.currentChannel.setAverageCount( averageCount );
+				this.currentChannel.setAverageCount(averageCount);
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_AVERAGECOUNT_READ;
 			break;
-			
+
 		case CHAIN_SCANMODULE_DETECTOR_CONFIRMTRIGGER_NEXT:
 			if (this.currentChannel.getAbstractDevice() != null) {
-				this.currentChannel.setConfirmTrigger( Boolean.parseBoolean( textBuffer.toString() ) );
+				this.currentChannel.setConfirmTrigger(Boolean
+						.parseBoolean(textBuffer.toString()));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_CONFIRMTRIGGER_READ;
 			break;
-			
+
 		case CHAIN_SCANMODULE_DETECTOR_MAX_DEVIATION_NEXT:
 			if (this.currentChannel.getAbstractDevice() != null) {
-				this.currentChannel.setMaxDeviation( Double.parseDouble( textBuffer.toString() ) );
+				this.currentChannel.setMaxDeviation(Double
+						.parseDouble(textBuffer.toString()));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_MAX_DEVIATION_READ;
 			break;
-			
+
 		case CHAIN_SCANMODULE_DETECTOR_MINIMUM_NEXT:
 			if (this.currentChannel.getAbstractDevice() != null) {
-				this.currentChannel.setMinumum( Double.parseDouble( textBuffer.toString() ) );
+				this.currentChannel.setMinumum(Double.parseDouble(textBuffer
+						.toString()));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_MINIMUM_READ;
 			break;
-			
+
 		case CHAIN_SCANMODULE_DETECTOR_MAX_ATTEMPTS_NEXT:
 			if (this.currentChannel.getAbstractDevice() != null) {
-				this.currentChannel.setMaxAttempts( Integer.parseInt( textBuffer.toString() ) );
+				this.currentChannel.setMaxAttempts(Integer.parseInt(textBuffer
+						.toString()));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_MAX_ATTEMPTS_READ;
 			break;
-			
+
 		case CHAIN_SCANMODULE_DETECTOR_REPEATONREDO_NEXT:
 			if (this.currentChannel.getAbstractDevice() != null) {
-				this.currentChannel.setRepeatOnRedo( Boolean.parseBoolean( textBuffer.toString() ) );
+				this.currentChannel.setRepeatOnRedo(Boolean
+						.parseBoolean(textBuffer.toString()));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_REPEATONREDO_READ;
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_NEXT:
 			if (this.currentChannel.getAbstractDevice() != null) {
-				if (Boolean.parseBoolean( textBuffer.toString())){
+				if (Boolean.parseBoolean(textBuffer.toString())) {
 					if (this.currentChannel.getAbstractDevice() != null) {
-						Event readyEvent = new Event(this.currentChannel.getAbstractDevice().getID(), this.currentChannel.getAbstractDevice().getParent().getName(), this.currentChannel.getAbstractDevice().getName(), this.currentChain.getId(), this.currentScanModul.getId());
+						Event readyEvent = new Event(this.currentChannel
+								.getAbstractDevice().getID(),
+								this.currentChannel.getAbstractDevice()
+										.getParent().getName(),
+								this.currentChannel.getAbstractDevice()
+										.getName(), this.currentChain.getId(),
+								this.currentScanModul.getId());
 						this.currentChannel.setDetectorReadyEvent(readyEvent);
 						this.scanDescription.add(readyEvent);
 					}
@@ -865,21 +856,23 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_READ;
 			break;
-			
+
 		case CHAIN_SCANMODULE_PLOT_AXIS_ID_NEXT:
-			this.currentPlotWindow.setXAxis( this.measuringStation.getMotorAxisById( textBuffer.toString() ) );
+			this.currentPlotWindow.setXAxis(this.measuringStation
+					.getMotorAxisById(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_AXIS_ID_READ;
 			break;
 
 		case CHAIN_SCANMODULE_PLOT_AXIS_MODE_NEXT:
-			PlotModes plotMode = PlotModes.stringToMode( textBuffer.toString() );
-			this.currentPlotWindow.setMode( plotMode );
-			
+			PlotModes plotMode = PlotModes.stringToMode(textBuffer.toString());
+			this.currentPlotWindow.setMode(plotMode);
+
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_AXIS_MODE_READ;
 			break;
 
 		case CHAIN_SCANMODULE_PLOT_INIT_NEXT:
-			this.currentPlotWindow.setInit(Boolean.parseBoolean(textBuffer.toString()));
+			this.currentPlotWindow.setInit(Boolean.parseBoolean(textBuffer
+					.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_INIT_READ;
 			break;
 
@@ -893,34 +886,39 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_YPOS_READ;
 			break;
 
-			
 		case CHAIN_SCANMODULE_POSITIONING_AXIS_ID_NEXT:
 			if (this.measuringStation.getMotorAxisById(textBuffer.toString()) != null) {
 				// MotorAxis ist am Messplatz vorhanden
-				this.currentPositioning.setMotorAxis( this.measuringStation.getMotorAxisById(textBuffer.toString() ) );
+				this.currentPositioning.setMotorAxis(this.measuringStation
+						.getMotorAxisById(textBuffer.toString()));
 			}
- 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_AXIS_ID_READ;
+			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_AXIS_ID_READ;
 			break;
-			
+
 		case CHAIN_SCANMODULE_POSITIONING_CHANNEL_ID_NEXT:
-			if (this.measuringStation.getDetectorChannelById(textBuffer.toString()) != null) {
+			if (this.measuringStation.getDetectorChannelById(textBuffer
+					.toString()) != null) {
 				// DetectorChannel ist am Messplatz vorhanden
-				this.currentPositioning.setDetectorChannel( this.measuringStation.getDetectorChannelById(textBuffer.toString() ) );
+				this.currentPositioning
+						.setDetectorChannel(this.measuringStation
+								.getDetectorChannelById(textBuffer.toString()));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_CHANNEL_ID_READ;
 			break;
-			
+
 		case CHAIN_SCANMODULE_POSITIONING_NORMALIZE_ID_NEXT:
-			if (this.measuringStation.getDetectorChannelById(textBuffer.toString()) != null) {
+			if (this.measuringStation.getDetectorChannelById(textBuffer
+					.toString()) != null) {
 				// DetectorChannel ist am Messplatz vorhanden
-				this.currentPositioning.setNormalization( this.measuringStation.getDetectorChannelById(textBuffer.toString() ) );
+				this.currentPositioning.setNormalization(this.measuringStation
+						.getDetectorChannelById(textBuffer.toString()));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_NORMALIZE_ID_READ;
 			break;
-			
+
 		}
 
-		switch( this.subState ) {
+		switch (this.subState) {
 
 		case EVENT_ID_NEXT:
 			this.currentControlEvent.setId(textBuffer.toString());
@@ -933,112 +931,126 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case EVENT_INCIDENT_NEXT:
-			this.currentControlEvent.getEvent().setScheduleIncident(textBuffer.toString());
+			this.currentControlEvent.getEvent().setScheduleIncident(
+					textBuffer.toString());
 			this.subState = ScanDescriptionLoaderSubStates.EVENT_INCIDENT_READ;
 			break;
-			
+
 		case EVENT_CHAINID_NEXT:
-			this.currentControlEvent.getEvent().setChainId(Integer.parseInt(textBuffer.toString()));
+			this.currentControlEvent.getEvent().setChainId(
+					Integer.parseInt(textBuffer.toString()));
 			this.subState = ScanDescriptionLoaderSubStates.EVENT_CHAINID_READ;
 			break;
-			
+
 		case EVENT_SCANMODULEID_NEXT:
-			this.currentControlEvent.getEvent().setScanModuleId(Integer.parseInt(textBuffer.toString()));
+			this.currentControlEvent.getEvent().setScanModuleId(
+					Integer.parseInt(textBuffer.toString()));
 			this.subState = ScanDescriptionLoaderSubStates.EVENT_SCANMODULEID_READ;
 			break;
-			
+
 		case PAUSEEVENT_ID_NEXT:
 			this.currentControlEvent.setId(textBuffer.toString());
 			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_ID_READ;
 			break;
 
 		case PAUSEEVENT_LIMIT_NEXT:
-			((PauseEvent)this.currentControlEvent).getLimit().setValue(textBuffer.toString() );
+			((PauseEvent) this.currentControlEvent).getLimit().setValue(
+					textBuffer.toString());
 			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_LIMIT_READ;
 			break;
 
 		case PAUSEEVENT_INCIDENT_NEXT:
-			this.currentControlEvent.getEvent().setScheduleIncident(textBuffer.toString());
+			this.currentControlEvent.getEvent().setScheduleIncident(
+					textBuffer.toString());
 			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_INCIDENT_READ;
 			break;
-			
+
 		case PAUSEEVENT_CHAINID_NEXT:
-			this.currentControlEvent.getEvent().setChainId(Integer.parseInt(textBuffer.toString()));
+			this.currentControlEvent.getEvent().setChainId(
+					Integer.parseInt(textBuffer.toString()));
 			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_CHAINID_READ;
 			break;
-			
+
 		case PAUSEEVENT_SCANMODULEID_NEXT:
-			this.currentControlEvent.getEvent().setScanModuleId(Integer.parseInt(textBuffer.toString()));
+			this.currentControlEvent.getEvent().setScanModuleId(
+					Integer.parseInt(textBuffer.toString()));
 			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_SCANMODULEID_READ;
 			break;
-			
+
 		case PAUSEMONITOREVENT_CONTINUE_NEXT:
-			((PauseEvent)this.currentControlEvent).setContinueIfFalse(Boolean.parseBoolean(textBuffer.toString()));
+			((PauseEvent) this.currentControlEvent).setContinueIfFalse(Boolean
+					.parseBoolean(textBuffer.toString()));
 			this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_CONTINUE_READ;
 			break;
 
 		case PAUSESCHEDULEEVENT_CONTINUE_NEXT:
-			((PauseEvent)this.currentControlEvent).setContinueIfFalse(Boolean.parseBoolean(textBuffer.toString()));
+			((PauseEvent) this.currentControlEvent).setContinueIfFalse(Boolean
+					.parseBoolean(textBuffer.toString()));
 			this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_CONTINUE_READ;
 			break;
 
 		case YAXIS_ID_NEXT:
-			if (this.measuringStation.getDetectorChannelById(textBuffer.toString()) != null) {
+			if (this.measuringStation.getDetectorChannelById(textBuffer
+					.toString()) != null) {
 				// DetectorChannel ist am Messplatz vorhanden
-				this.currentYAxis.setDetectorChannel( this.measuringStation.getDetectorChannelById(textBuffer.toString() ) );
+				this.currentYAxis.setDetectorChannel(this.measuringStation
+						.getDetectorChannelById(textBuffer.toString()));
 			}
 
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_ID_READ;
 			break;
 
 		case YAXIS_MODE_NEXT:
-			PlotModes plotMode = PlotModes.stringToMode( textBuffer.toString() );
-			this.currentYAxis.setMode( plotMode );
+			PlotModes plotMode = PlotModes.stringToMode(textBuffer.toString());
+			this.currentYAxis.setMode(plotMode);
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_MODE_READ;
 			break;
 
 		case YAXIS_NORMALIZE_ID_NEXT:
-			if (this.measuringStation.getDetectorChannelById(textBuffer.toString()) != null) {
+			if (this.measuringStation.getDetectorChannelById(textBuffer
+					.toString()) != null) {
 				// DetectorChannel ist am Messplatz vorhanden
-				this.currentYAxis.setNormalizeChannel(this.measuringStation.getDetectorChannelById(textBuffer.toString()));
+				this.currentYAxis.setNormalizeChannel(this.measuringStation
+						.getDetectorChannelById(textBuffer.toString()));
 			}
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_NORMALIZE_ID_READ;
 			break;
 
 		case YAXIS_LINESTYLE_NEXT:
 			final String linestyleBuffer = textBuffer.toString();
-			
+
 			boolean foundLinestyle = false;
-				
+
 			TraceType[] tracetypes = TraceType.values();
-			for(int i=0;i<tracetypes.length;i++) {
-				if(tracetypes[i].toString().equals(linestyleBuffer)) {
+			for (int i = 0; i < tracetypes.length; i++) {
+				if (tracetypes[i].toString().equals(linestyleBuffer)) {
 					foundLinestyle = true;
 				}
 			}
 
-			if(foundLinestyle) {
-				
-				for(int i=0;i<tracetypes.length;i++) {
-					if(tracetypes[i].toString().equals(linestyleBuffer)) {
+			if (foundLinestyle) {
+
+				for (int i = 0; i < tracetypes.length; i++) {
+					if (tracetypes[i].toString().equals(linestyleBuffer)) {
 						this.currentYAxis.setLinestyle(tracetypes[i]);
 					}
 				}
-			} 
-			
+			}
+
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_LINESTYLE_READ;
 			break;
 
 		case YAXIS_MARKSTYLE_NEXT:
 			final String markstyleBuffer = textBuffer.toString();
-			
+
 			boolean foundMarkstyle = false;
-			
+
 			PointStyle[] markstyles = PointStyle.values();
-			
-			for(int i=0;i<markstyles.length;i++) {
+
+			for (int i = 0; i < markstyles.length; i++) {
 				try {
-					if(markstyles[i].toString().equals(URLDecoder.decode(markstyleBuffer, "UTF-8"))) {
+					if (markstyles[i].toString().equals(
+							URLDecoder.decode(markstyleBuffer, "UTF-8"))) {
 						foundMarkstyle = true;
 					}
 				} catch (UnsupportedEncodingException e) {
@@ -1046,61 +1058,70 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				}
 			}
 
-			if( foundMarkstyle ) {
-				
-				for(int i=0;i<markstyles.length;i++) {
+			if (foundMarkstyle) {
+
+				for (int i = 0; i < markstyles.length; i++) {
 					try {
-						if(markstyles[i].toString().equals(URLDecoder.decode(markstyleBuffer, "UTF-8"))) {
+						if (markstyles[i].toString().equals(
+								URLDecoder.decode(markstyleBuffer, "UTF-8"))) {
 							this.currentYAxis.setMarkstyle(markstyles[i]);
 						}
 					} catch (UnsupportedEncodingException e) {
 						logger.error(e.getMessage(), e);
 					}
-				}	
+				}
 			}
-			
+
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_MARKSTYLE_READ;
 			break;
 
 		case YAXIS_COLOR_NEXT:
 			final String colorBuffer = textBuffer.toString();
 
-			String red_hex = colorBuffer.substring(0,2);
+			String red_hex = colorBuffer.substring(0, 2);
 			int red = Integer.parseInt(red_hex, 16);
-			String green_hex = colorBuffer.substring(2,4);
+			String green_hex = colorBuffer.substring(2, 4);
 			int green = Integer.parseInt(green_hex, 16);
 			String blue_hex = colorBuffer.substring(4);
 			int blue = Integer.parseInt(blue_hex, 16);
 
-			if(colorBuffer.length()==6)
+			if (colorBuffer.length() == 6)
 				this.currentYAxis.setColor(new RGB(red, green, blue));
 			else
-				this.currentYAxis.setColor(new RGB(0,0,0));
-			
+				this.currentYAxis.setColor(new RGB(0, 0, 0));
+
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_COLOR_READ;
 			break;
-			
+
 		case PLUGIN_CONTROLLER_PARAMETER_NEXT:
 			if (this.currentParameterName.equals("location")) {
 				// location is no parameter of the plugin
-				if (textBuffer.toString().equals(this.currentPluginController.getPlugin().getLocation())) {
-				}
-				else {
+				if (textBuffer.toString().equals(
+						this.currentPluginController.getPlugin().getLocation())) {
+				} else {
 					// Hinweise ausgeben, daß Location überschrieben wurde!
-					this.lostDevicesList.add("Plugin " + this.currentPluginController.getPlugin().getName() + " : Location " + textBuffer.toString() + " replaced by " + this.currentPluginController.getPlugin().getLocation());
+					this.lostDevicesList.add("Plugin "
+							+ this.currentPluginController.getPlugin()
+									.getName()
+							+ " : Location "
+							+ textBuffer.toString()
+							+ " replaced by "
+							+ this.currentPluginController.getPlugin()
+									.getLocation());
 				}
 				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_PARAMETER_READ;
 				break;
 			}
-			this.currentPluginController.set( this.currentParameterName, textBuffer.toString() );
+			this.currentPluginController.set(this.currentParameterName,
+					textBuffer.toString());
 			this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_PARAMETER_READ;
 			break;
 		}
-		
+
 		textBuffer = null;
 
-		/* ******************************************************************/
-		/* ******************************************************************/
+		/* ***************************************************************** */
+		/* ***************************************************************** */
 
 		switch (this.state) {
 		case VERSION_READ:
@@ -1123,7 +1144,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				while (it.hasNext()) {
 					ScanModulRelationReminder reminder = it.next();
 					ScanModule scanModul = reminder.getScanModul();
-					
+
 					ScanModule appendedScanModul = this.currentChain
 							.getScanModulById(reminder.getAppended());
 					ScanModule nestedScanModul = this.currentChain
@@ -1155,7 +1176,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SAVEFILENAME_READ:
 			if (qName.equals("savefilename")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
@@ -1181,7 +1202,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SAVESCANDESCRIPTION_READ:
 			if (qName.equals("savescandescription")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
@@ -1190,7 +1211,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_STARTEVENT:
 			if (qName.equals("startevent")) {
-				this.currentChain.addStartEvent( this.currentControlEvent );
+				this.currentChain.addStartEvent(this.currentControlEvent);
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				controlEventList.add(this.currentControlEvent);
@@ -1203,7 +1224,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 				idOK = eventIdAvailable(this.currentControlEvent);
 				if (idOK == true) {
-					this.currentChain.addPauseEvent( (PauseEvent)this.currentControlEvent );
+					this.currentChain
+							.addPauseEvent((PauseEvent) this.currentControlEvent);
 				}
 
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
@@ -1220,7 +1242,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 				idOK = eventIdAvailable(this.currentControlEvent);
 				if (idOK == true) {
-					this.currentChain.addRedoEvent( this.currentControlEvent );
+					this.currentChain.addRedoEvent(this.currentControlEvent);
 				}
 
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
@@ -1230,16 +1252,16 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				}
 			}
 			break;
-			
+
 		case CHAIN_BREAKEVENT:
 			if (qName.equals("breakevent")) {
 				boolean idOK = false;
 
 				idOK = eventIdAvailable(this.currentControlEvent);
 				if (idOK == true) {
-					this.currentChain.addBreakEvent( this.currentControlEvent );
+					this.currentChain.addBreakEvent(this.currentControlEvent);
 				}
-			
+
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				if (idOK == true) {
@@ -1254,9 +1276,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 				idOK = eventIdAvailable(this.currentControlEvent);
 				if (idOK == true) {
-					this.currentChain.addStopEvent( this.currentControlEvent );
+					this.currentChain.addStopEvent(this.currentControlEvent);
 				}
-				
+
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				if (idOK == true) {
@@ -1275,14 +1297,17 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (qName.equals("scanmodule")) {
 				this.relationReminders.add(this.currentRelationReminder);
 				this.currentChain.add(this.currentScanModul);
-				this.scanModulChainMap.put( this.currentScanModul, this.currentChain );
-				
-				if( this.idToScanModulMap.containsKey( this.currentScanModul.getId() ) ) {
-					
+				this.scanModulChainMap.put(this.currentScanModul,
+						this.currentChain);
+
+				if (this.idToScanModulMap.containsKey(this.currentScanModul
+						.getId())) {
+
 				} else {
-					this.idToScanModulMap.put( this.currentScanModul.getId(), this.currentScanModul );
+					this.idToScanModulMap.put(this.currentScanModul.getId(),
+							this.currentScanModul);
 				}
-				
+
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULES_LOADING;
 			}
 			break;
@@ -1334,9 +1359,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SCANMODULE_SAVEAXISPOSITIONS_READ:
-			if (qName.equals( "saveaxispositions" ) ) {
+			if (qName.equals("saveaxispositions")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
@@ -1347,9 +1372,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 				idOK = eventIdAvailable(this.currentControlEvent);
 				if (idOK == true) {
-					this.currentScanModul.addTriggerEvent( this.currentControlEvent );
+					this.currentScanModul
+							.addTriggerEvent(this.currentControlEvent);
 				}
-				
+
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				if (idOK == true) {
@@ -1364,9 +1390,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 				idOK = eventIdAvailable(this.currentControlEvent);
 				if (idOK == true) {
-					this.currentScanModul.addRedoEvent( this.currentControlEvent );
+					this.currentScanModul
+							.addRedoEvent(this.currentControlEvent);
 				}
-				
+
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				if (idOK == true) {
@@ -1381,7 +1408,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 				idOK = eventIdAvailable(this.currentControlEvent);
 				if (idOK == true) {
-					this.currentScanModul.addBreakEvent( this.currentControlEvent );
+					this.currentScanModul
+							.addBreakEvent(this.currentControlEvent);
 				}
 
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
@@ -1396,13 +1424,15 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (qName.equals("pauseevent")) {
 				boolean idOK = false;
 
-//???? Muß das currentControlEvent erst noch gecastet werden in PauseEvent???
+				// ???? Muß das currentControlEvent erst noch gecastet werden in
+				// PauseEvent???
 
 				idOK = eventIdAvailable(this.currentControlEvent);
 				if (idOK == true) {
-					this.currentScanModul.addPauseEvent( (PauseEvent)this.currentControlEvent );
+					this.currentScanModul
+							.addPauseEvent((PauseEvent) this.currentControlEvent);
 				}
-				
+
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				if (idOK == true) {
@@ -1413,9 +1443,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_PRESCAN_LOADING:
 			if (qName.equals("prescan")) {
-				if (this.currentPrescan.getAbstractPrePostscanDevice() != null){
-					this.currentScanModul.add( this.currentPrescan );
-					if( !this.currentPrescan.getAbstractPrePostscanDevice().isValuePossible( this.currentPrescan.getValue() ) ) {
+				if (this.currentPrescan.getAbstractPrePostscanDevice() != null) {
+					this.currentScanModul.add(this.currentPrescan);
+					if (!this.currentPrescan.getAbstractPrePostscanDevice()
+							.isValuePossible(this.currentPrescan.getValue())) {
 					}
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
@@ -1424,11 +1455,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_POSTSCAN_LOADING:
 			if (qName.equals("postscan")) {
-				if (this.currentPostscan.getAbstractPrePostscanDevice() != null){
+				if (this.currentPostscan.getAbstractPrePostscanDevice() != null) {
 					this.currentScanModul.add(this.currentPostscan);
-					if( !this.currentPostscan.getAbstractPrePostscanDevice().isValuePossible( this.currentPostscan.getValue() ) ) {
+					if (!this.currentPostscan.getAbstractPrePostscanDevice()
+							.isValuePossible(this.currentPostscan.getValue())) {
 						if (!this.currentPostscan.isReset()) {
-						
+
 						}
 					}
 				}
@@ -1469,58 +1501,81 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_SMMOTOR_LOADING:
 			if (qName.equals("smaxis")) {
 				if (this.currentAxis.getAbstractDevice() != null) {
-					this.currentScanModul.add( this.currentAxis );
-				TypeValue tv = null;
-				
-				if( this.currentAxis.getMotorAxis() != null ) {
-					boolean errorFree = true;
-					if( this.currentAxis.getMotorAxis().getGoto() != null ) {
-						if( this.currentAxis.getMotorAxis().getGoto().getValue() != null ) {
-							tv = this.currentAxis.getMotorAxis().getGoto().getValue();
-						} else {
-							tv = new TypeValue( this.currentAxis.getMotorAxis().getGoto().getAccess().getType() );
-						}
-					} else {
-						tv = new TypeValue( this.currentAxis.getMotorAxis().getPosition().getAccess().getType() );
-					}
-				
-					if( this.currentAxis.getStart() != null && !this.currentAxis.getMotorAxis().isValuePossible( this.currentAxis.getStart() ) ) {
-						
-					}
-				
-					if( this.currentAxis.getStop() != null && !this.currentAxis.getMotorAxis().isValuePossible( this.currentAxis.getStop() ) ) {
-					}
-					
-					if( this.currentAxis.getStepwidth() != null && !DataTypes.isValuePossible( tv.getType(), this.currentAxis.getStepwidth() ) ) {
-						
-					}
-					
-					if( errorFree ) {
-						if( this.currentAxis.getStepfunctionString().equals( "Add" ) ) {
-							if( tv.isDiscrete() ) {
-								try {
-									List< String > values = tv.getDiscreteValues();
-									
-									final int start = values.indexOf( this.currentAxis.getStart() );
-									final int stop = values.indexOf( this.currentAxis.getStop() );
-									final int stepwidth = Integer.parseInt( this.currentAxis.getStepwidth() );
+					this.currentScanModul.add(this.currentAxis);
+					TypeValue tv = null;
 
-									if ( (start - stop == 0) || (stepwidth == 0)) {
-										this.currentAxis.setStepCount( 0 );
-									}
-									else {
-										this.currentAxis.setStepCount( ((stop - start) / stepwidth ) );
-									}
-								} catch( final NumberFormatException e ) {
-									logger.error(e.getMessage(), e);
-								}
+					if (this.currentAxis.getMotorAxis() != null) {
+						boolean errorFree = true;
+						if (this.currentAxis.getMotorAxis().getGoto() != null) {
+							if (this.currentAxis.getMotorAxis().getGoto()
+									.getValue() != null) {
+								tv = this.currentAxis.getMotorAxis().getGoto()
+										.getValue();
 							} else {
-								try {
-									double start = 0;
-									double stop = 0;
-									double stepwidth = 0;
+								tv = new TypeValue(this.currentAxis
+										.getMotorAxis().getGoto().getAccess()
+										.getType());
+							}
+						} else {
+							tv = new TypeValue(this.currentAxis.getMotorAxis()
+									.getPosition().getAccess().getType());
+						}
 
-									switch( this.currentAxis.getMotorAxis().getPosition().getType()) {
+						if (this.currentAxis.getStart() != null
+								&& !this.currentAxis.getMotorAxis()
+										.isValuePossible(
+												this.currentAxis.getStart())) {
+
+						}
+
+						if (this.currentAxis.getStop() != null
+								&& !this.currentAxis.getMotorAxis()
+										.isValuePossible(
+												this.currentAxis.getStop())) {
+						}
+
+						if (this.currentAxis.getStepwidth() != null
+								&& !DataTypes.isValuePossible(tv.getType(),
+										this.currentAxis.getStepwidth())) {
+
+						}
+
+						if (errorFree) {
+							if (this.currentAxis.getStepfunctionString()
+									.equals("Add")) {
+								if (tv.isDiscrete()) {
+									try {
+										List<String> values = tv
+												.getDiscreteValues();
+
+										final int start = values
+												.indexOf(this.currentAxis
+														.getStart());
+										final int stop = values
+												.indexOf(this.currentAxis
+														.getStop());
+										final int stepwidth = Integer
+												.parseInt(this.currentAxis
+														.getStepwidth());
+
+										if ((start - stop == 0)
+												|| (stepwidth == 0)) {
+											this.currentAxis.setStepCount(0);
+										} else {
+											this.currentAxis
+													.setStepCount(((stop - start) / stepwidth));
+										}
+									} catch (final NumberFormatException e) {
+										logger.error(e.getMessage(), e);
+									}
+								} else {
+									try {
+										double start = 0;
+										double stop = 0;
+										double stepwidth = 0;
+
+										switch (this.currentAxis.getMotorAxis()
+												.getPosition().getType()) {
 										case DATETIME:
 											int addStart = 0;
 											int addStop = 0;
@@ -1528,132 +1583,235 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 											int startJahr = 1;
 											int stopJahr = 1;
-											
-											DateFormat startDate = DateFormat.getTimeInstance();
-											DateFormat stopDate = DateFormat.getTimeInstance();
-											DateFormat stepwidthDate = DateFormat.getTimeInstance();
-											// Herausfinden welches Format die übergebene Zeit hat
-											if (this.currentAxis.getStart().matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$")) {
-												startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+											DateFormat startDate = DateFormat
+													.getTimeInstance();
+											DateFormat stopDate = DateFormat
+													.getTimeInstance();
+											DateFormat stepwidthDate = DateFormat
+													.getTimeInstance();
+											// Herausfinden welches Format die
+											// übergebene Zeit hat
+											if (this.currentAxis
+													.getStart()
+													.matches(
+															"\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$")) {
+												startDate = new SimpleDateFormat(
+														"yyyy-MM-dd HH:mm:ss.SSS");
 												startJahr = 1;
-												//Nachkommazahl bestimmen
-												//Stelle des Punktes
-												int indexP = this.currentAxis.getStart().indexOf('.');
-												double nachkomma = Double.parseDouble(this.currentAxis.getStart().substring(indexP));
-												int nachMinus = Integer.parseInt(this.currentAxis.getStart().substring(indexP + 1));
+												// Nachkommazahl bestimmen
+												// Stelle des Punktes
+												int indexP = this.currentAxis
+														.getStart()
+														.indexOf('.');
+												double nachkomma = Double
+														.parseDouble(this.currentAxis
+																.getStart()
+																.substring(
+																		indexP));
+												int nachMinus = Integer
+														.parseInt(this.currentAxis
+																.getStart()
+																.substring(
+																		indexP + 1));
 												addStart = (int) (nachkomma * 1000 - nachMinus);
-											}
-											else if (this.currentAxis.getStart().matches("\\d+:\\d+:\\d+?$")) {
-												startDate = new SimpleDateFormat("HH:mm:ss");
+											} else if (this.currentAxis
+													.getStart().matches(
+															"\\d+:\\d+:\\d+?$")) {
+												startDate = new SimpleDateFormat(
+														"HH:mm:ss");
 												startJahr = 0;
-											}
-											else if (this.currentAxis.getStart().matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
-												startDate = new SimpleDateFormat("HH:mm:ss.SSS");
+											} else if (this.currentAxis
+													.getStart()
+													.matches(
+															"\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
+												startDate = new SimpleDateFormat(
+														"HH:mm:ss.SSS");
 												startJahr = 0;
-												//Nachkommazahl bestimmen
-												//Stelle des Punktes
-												int indexP = this.currentAxis.getStart().indexOf('.');
-												double nachkomma = Double.parseDouble(this.currentAxis.getStart().substring(indexP));
-												int nachMinus = Integer.parseInt(this.currentAxis.getStart().substring(indexP + 1));
+												// Nachkommazahl bestimmen
+												// Stelle des Punktes
+												int indexP = this.currentAxis
+														.getStart()
+														.indexOf('.');
+												double nachkomma = Double
+														.parseDouble(this.currentAxis
+																.getStart()
+																.substring(
+																		indexP));
+												int nachMinus = Integer
+														.parseInt(this.currentAxis
+																.getStart()
+																.substring(
+																		indexP + 1));
 												addStart = (int) (nachkomma * 1000 - nachMinus);
 											}
 
-											if (this.currentAxis.getStop().matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$")) {
-												stopDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+											if (this.currentAxis
+													.getStop()
+													.matches(
+															"\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$")) {
+												stopDate = new SimpleDateFormat(
+														"yyyy-MM-dd HH:mm:ss.SSS");
 												stopJahr = 1;
-												//Nachkommazahl bestimmen
-												//Stelle des Punktes
-												int indexP = this.currentAxis.getStop().indexOf('.');
-												double nachkomma = Double.parseDouble(this.currentAxis.getStop().substring(indexP));
-												int nachMinus = Integer.parseInt(this.currentAxis.getStop().substring(indexP + 1));
+												// Nachkommazahl bestimmen
+												// Stelle des Punktes
+												int indexP = this.currentAxis
+														.getStop().indexOf('.');
+												double nachkomma = Double
+														.parseDouble(this.currentAxis
+																.getStop()
+																.substring(
+																		indexP));
+												int nachMinus = Integer
+														.parseInt(this.currentAxis
+																.getStop()
+																.substring(
+																		indexP + 1));
+												addStop = (int) (nachkomma * 1000 - nachMinus);
+											} else if (this.currentAxis
+													.getStop().matches(
+															"\\d+:\\d+:\\d+?$")) {
+												stopDate = new SimpleDateFormat(
+														"HH:mm:ss");
+												stopJahr = 0;
+											} else if (this.currentAxis
+													.getStop()
+													.matches(
+															"\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
+												stopDate = new SimpleDateFormat(
+														"HH:mm:ss.SSS");
+												stopJahr = 0;
+												// Nachkommazahl bestimmen
+												// Stelle des Punktes
+												int indexP = this.currentAxis
+														.getStop().indexOf('.');
+												double nachkomma = Double
+														.parseDouble(this.currentAxis
+																.getStop()
+																.substring(
+																		indexP));
+												int nachMinus = Integer
+														.parseInt(this.currentAxis
+																.getStop()
+																.substring(
+																		indexP + 1));
 												addStop = (int) (nachkomma * 1000 - nachMinus);
 											}
-											else if (this.currentAxis.getStop().matches("\\d+:\\d+:\\d+?$")) {
-												stopDate = new SimpleDateFormat("HH:mm:ss");
-												stopJahr = 0;
-											}
-											else if (this.currentAxis.getStop().matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
-												stopDate = new SimpleDateFormat("HH:mm:ss.SSS");
-												stopJahr = 0;
-												//Nachkommazahl bestimmen
-												//Stelle des Punktes
-												int indexP = this.currentAxis.getStop().indexOf('.');
-												double nachkomma = Double.parseDouble(this.currentAxis.getStop().substring(indexP));
-												int nachMinus = Integer.parseInt(this.currentAxis.getStop().substring(indexP + 1));
-												addStop = (int) (nachkomma * 1000 - nachMinus);
-											}
-											
-											if (this.currentAxis.getStepwidth().matches("\\d+:\\d+:\\d+?$")) {
-												stepwidthDate = new SimpleDateFormat("HH:mm:ss");
-											}
-											else if (this.currentAxis.getStepwidth().matches("\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
-												stepwidthDate = new SimpleDateFormat("HH:mm:ss.SSS");
-												//Nachkommazahl bestimmen
-												//Stelle des Punktes
-												int indexP = this.currentAxis.getStepwidth().indexOf('.');
-												double nachkomma = Double.parseDouble(this.currentAxis.getStepwidth().substring(indexP));
-												int nachMinus = Integer.parseInt(this.currentAxis.getStepwidth().substring(indexP + 1));
+
+											if (this.currentAxis
+													.getStepwidth()
+													.matches("\\d+:\\d+:\\d+?$")) {
+												stepwidthDate = new SimpleDateFormat(
+														"HH:mm:ss");
+											} else if (this.currentAxis
+													.getStepwidth()
+													.matches(
+															"\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
+												stepwidthDate = new SimpleDateFormat(
+														"HH:mm:ss.SSS");
+												// Nachkommazahl bestimmen
+												// Stelle des Punktes
+												int indexP = this.currentAxis
+														.getStepwidth()
+														.indexOf('.');
+												double nachkomma = Double
+														.parseDouble(this.currentAxis
+																.getStepwidth()
+																.substring(
+																		indexP));
+												int nachMinus = Integer
+														.parseInt(this.currentAxis
+																.getStepwidth()
+																.substring(
+																		indexP + 1));
 												addStepwidth = (int) (nachkomma * 1000 - nachMinus);
 											}
 
-											// Wenn startJahr != stopJahr dann wird nicht weitergemacht, weil die Formate nicht gleich sind
+											// Wenn startJahr != stopJahr dann
+											// wird nicht weitergemacht, weil
+											// die Formate nicht gleich sind
 											if (startJahr != stopJahr)
 												return;
-											
+
 											try {
 												startDate.setLenient(false);
-												startDate.parse(this.currentAxis.getStart());
-												Calendar startTime = startDate.getCalendar();
-												start = startTime.getTimeInMillis() + addStart + 3600000;
+												startDate
+														.parse(this.currentAxis
+																.getStart());
+												Calendar startTime = startDate
+														.getCalendar();
+												start = startTime
+														.getTimeInMillis()
+														+ addStart + 3600000;
 
 												stopDate.setLenient(false);
-												stopDate.parse(this.currentAxis.getStop());
-												Calendar stopTime = stopDate.getCalendar();
-												stop = stopTime.getTimeInMillis() + addStop + 3600000;
+												stopDate.parse(this.currentAxis
+														.getStop());
+												Calendar stopTime = stopDate
+														.getCalendar();
+												stop = stopTime
+														.getTimeInMillis()
+														+ addStop + 3600000;
 
 												stepwidthDate.setLenient(false);
-												stepwidthDate.parse(this.currentAxis.getStepwidth());
-												Calendar stepwidthTime = stepwidthDate.getCalendar();
-												stepwidth = stepwidthTime.getTimeInMillis() + addStepwidth + 3600000;
+												stepwidthDate
+														.parse(this.currentAxis
+																.getStepwidth());
+												Calendar stepwidthTime = stepwidthDate
+														.getCalendar();
+												stepwidth = stepwidthTime
+														.getTimeInMillis()
+														+ addStepwidth
+														+ 3600000;
 
 												// Wenn Start > Stop beenden
 												if (start > stop)
 													return;
 
-												if ( (start - stop == 0) || (stepwidth == 0)) {
-													this.currentAxis.setStepCount( 0 );
+												if ((start - stop == 0)
+														|| (stepwidth == 0)) {
+													this.currentAxis
+															.setStepCount(0);
+												} else {
+													this.currentAxis
+															.setStepCount(((stop - start) / stepwidth));
 												}
-												else {
-													this.currentAxis.setStepCount( ( (stop - start) / stepwidth ) );
-												}
-												
-											}
-											catch (final ParseException ef ){
-												logger.error(ef.getMessage(), ef);
+
+											} catch (final ParseException ef) {
+												logger.error(ef.getMessage(),
+														ef);
 											}
 
 											break;
 										default:
-											start = Double.parseDouble( this.currentAxis.getStart() );
-											stop = Double.parseDouble( this.currentAxis.getStop() );
-											stepwidth = Double.parseDouble( this.currentAxis.getStepwidth() );
+											start = Double
+													.parseDouble(this.currentAxis
+															.getStart());
+											stop = Double
+													.parseDouble(this.currentAxis
+															.getStop());
+											stepwidth = Double
+													.parseDouble(this.currentAxis
+															.getStepwidth());
 
-											if ( (start - stop == 0) || (stepwidth == 0)) {
-												this.currentAxis.setStepCount( 0 );
-											}
-											else {
-												this.currentAxis.setStepCount( ( (stop - start) / stepwidth ) );
+											if ((start - stop == 0)
+													|| (stepwidth == 0)) {
+												this.currentAxis
+														.setStepCount(0);
+											} else {
+												this.currentAxis
+														.setStepCount(((stop - start) / stepwidth));
 											}
 
 											break;
+										}
+									} catch (final NumberFormatException e) {
+										logger.error(e.getMessage(), e);
 									}
-								} catch( final NumberFormatException e ) {
-									logger.error(e.getMessage(), e);
 								}
 							}
 						}
 					}
-				}
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
@@ -1662,7 +1820,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_DETECTOR_LOADING:
 			if (qName.equals("smchannel")) {
 				if (this.currentChannel.getAbstractDevice() != null) {
-					this.currentScanModul.add( this.currentChannel );
+					this.currentScanModul.add(this.currentChannel);
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
@@ -1675,29 +1833,30 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 				idOK = eventIdAvailable(this.currentControlEvent);
 				if (idOK == true) {
-					this.currentChannel.addRedoEvent( this.currentControlEvent );
+					this.currentChannel.addRedoEvent(this.currentControlEvent);
 				}
 
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 
 				if (idOK == true) {
-					// RedoEvent wird nur hinzugefügt, wenn DetectorChannel auch vorhanden
+					// RedoEvent wird nur hinzugefügt, wenn DetectorChannel auch
+					// vorhanden
 					controlEventList.add(this.currentControlEvent);
 				}
 			}
 			break;
-			
+
 		case CHAIN_SCANMODULE_POSITIONING_LOADING:
 			if (qName.equals("positioning")) {
 				// nur wenn Achse des CurrentPositioning OK, wird es geladen!!
 				if (this.currentPositioning.getAbstractDevice() != null) {
-					this.currentScanModul.add( this.currentPositioning );
+					this.currentScanModul.add(this.currentPositioning);
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SCANMODULE_SMMOTOR_AXISID_READ:
 			if (qName.equals("axisid")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
@@ -1709,13 +1868,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SCANMODULE_SMMOTOR_POSITIONMODE_READ:
 			if (qName.equals("positionmode")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SCANMODULE_SMMOTOR_START_READ:
 			if (qName.equals("start")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
@@ -1731,28 +1890,29 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SCANMODULE_SMMOTOR_STEPFILENAME_READ:
 			if (qName.equals("stepfilename")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			}
 			break;
-		
+
 		case CHAIN_SCANMODULE_SMMOTOR_ISMAINAXIS_READ:
 			if (qName.equals("ismainaxis")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			}
-			break;	
-			
+			break;
+
 		case CHAIN_SCANMODULE_SMMOTOR_POSITIONLIST_READ:
 			if (qName.equals("positionlist")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			}
 			break;
-		
+
 		case CHAIN_SCANMODULE_SMMOTOR_CONTROLLER_LOADING:
 			if (qName.equals("plugin")) {
-				this.currentAxis.setPositionPluginController( this.currentPluginController );
+				this.currentAxis
+						.setPositionPluginController(this.currentPluginController);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
@@ -1769,43 +1929,43 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SCANMODULE_DETECTOR_CONFIRMTRIGGER_READ:
-			if( qName.equals( "confirmtrigger" ) ) {
+			if (qName.equals("confirmtrigger")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SCANMODULE_DETECTOR_MAX_DEVIATION_READ:
-			if( qName.equals( "maxdeviation" ) ) {
+			if (qName.equals("maxdeviation")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SCANMODULE_DETECTOR_MINIMUM_READ:
-			if( qName.equals( "minimum" ) ) {
+			if (qName.equals("minimum")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SCANMODULE_DETECTOR_MAX_ATTEMPTS_READ:
-			if( qName.equals( "maxattempts" ) ) {
+			if (qName.equals("maxattempts")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SCANMODULE_DETECTOR_REPEATONREDO_READ:
-			if( qName.equals( "repeatonredo" ) ) {
+			if (qName.equals("repeatonredo")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 			}
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_READ:
-			if( qName.equals( "sendreadyevent" ) ) {
+			if (qName.equals("sendreadyevent")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SCANMODULE_PLOT_LOADING:
 			if (qName.equals("plot")) {
 				this.currentScanModul.add(this.currentPlotWindow);
@@ -1839,8 +1999,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_PLOT_YAXIS_LOADING:
 			if (qName.equals("yaxis")) {
-				if( this.currentYAxis.getDetectorChannel() != null ) {
-					this.currentPlotWindow.addYAxis( this.currentYAxis );
+				if (this.currentYAxis.getDetectorChannel() != null) {
+					this.currentPlotWindow.addYAxis(this.currentYAxis);
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
@@ -1858,25 +2018,25 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SCANMODULE_POSITIONING_AXIS_ID_READ:
 			if (qName.equals("axis_id")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_LOADING;
 			}
 			break;
-		
+
 		case CHAIN_SCANMODULE_POSITIONING_CHANNEL_ID_READ:
 			if (qName.equals("channel_id")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SCANMODULE_POSITIONING_NORMALIZE_ID_READ:
 			if (qName.equals("normalize_id")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_LOADING;
 			}
 			break;
-			
+
 		case CHAIN_SCANMODULE_POSITIONING_CONTROLLER_LOADING:
 			if (qName.equals("plugin")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_LOADING;
@@ -1904,13 +2064,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
 			}
 			break;
-		
+
 		case PAUSEMONITOREVENT_CONTINUE_READ:
 			if (qName.equals("continue_if_false")) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
 			}
 			break;
-		
+
 		case PAUSEEVENT_INCIDENT_READ:
 			if (qName.equals("incident")) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
@@ -1994,7 +2154,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.YAXIS_LOADING;
 			}
 			break;
-			
+
 		case PLUGIN_CONTROLLER_PARAMETER_READ:
 			if (qName.equals("parameter")) {
 				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
@@ -2003,203 +2163,223 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.xml.sax.helpers.DefaultHandler#endDocument()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void endDocument() throws SAXException {
-			
-		// register schedule controlEvents with scanDescription and remove double events
+		// register schedule controlEvents with scanDescription and remove
+		// double events
 		for (ControlEvent controlEvent : this.controlEventList) {
-			if (controlEvent.getEventType() == EventTypes.SCHEDULE){
+			if (controlEvent.getEventType() == EventTypes.SCHEDULE) {
 				this.scanDescription.add(controlEvent.getEvent());
 				String eventId = controlEvent.getEvent().getID();
 				controlEvent.setId(eventId);
-				controlEvent.setEvent(this.scanDescription.getEventById(eventId));
-			}
-			else {
-				controlEvent.setEvent( this.measuringStation.getEventById( controlEvent.getId() ) );
-				if( controlEvent.getEvent() == null ) {
-					controlEvent.setEvent( this.scanDescription.getEventById( controlEvent.getId() ) );
+				controlEvent.setEvent(this.scanDescription
+						.getEventById(eventId));
+			} else {
+				controlEvent.setEvent(this.measuringStation
+						.getEventById(controlEvent.getId()));
+				if (controlEvent.getEvent() == null) {
+					controlEvent.setEvent(this.scanDescription
+							.getEventById(controlEvent.getId()));
 				}
-				if( controlEvent.getEvent() == null ) {
+				if (controlEvent.getEvent() == null) {
 					// TODO do proper error handling
-					System.err.println("FATAL ERROR: can't find event for id \n----------------------\n");
+					System.err
+							.println("FATAL ERROR: can't find event for id \n----------------------\n");
 				}
 			}
 		}
 
-		// set the start event or 
+		// set the start event or
 		// define a default start event for chains without startevent tag
 		// add connectors
 		for (Chain loopChain : this.chainList) {
 			Event startEvent;
-			Iterator<ControlEvent> chainStartEventIt = loopChain.getStartEventsIterator();
-			if (chainStartEventIt.hasNext()){
+			Iterator<ControlEvent> chainStartEventIt = loopChain
+					.getStartEventsIterator();
+			if (chainStartEventIt.hasNext()) {
 				startEvent = chainStartEventIt.next().getEvent();
-			}
-			else {
+			} else {
 				startEvent = this.scanDescription.getDefaultStartEvent();
 			}
-			if (startEvent == null){
+			if (startEvent == null) {
 				// TODO do proper error handling
-				System.err.println("FATAL ERROR: unable to create start event \n----------------------\n");
+				System.err
+						.println("FATAL ERROR: unable to create start event \n----------------------\n");
 				startEvent = this.scanDescription.getDefaultStartEvent();
 			}
 
 			StartEvent se = new StartEvent();
-			se.setChain( loopChain );
-			se.setEvent( startEvent );
-			loopChain.setStartEvent( se );
-			for (ScanModule loopScanModule : loopChain.getScanModules() ){
-				if ( loopScanModule.getParent() == null ) {
+			se.setChain(loopChain);
+			se.setEvent(startEvent);
+			loopChain.setStartEvent(se);
+			for (ScanModule loopScanModule : loopChain.getScanModules()) {
+				if (loopScanModule.getParent() == null) {
 					Connector connector = new Connector();
-					connector.setParentEvent( se );
-					connector.setChildScanModul( loopScanModule );
-					se.setConnector( connector );
-					loopScanModule.setParent( connector );
+					connector.setParentEvent(se);
+					connector.setChildScanModul(loopScanModule);
+					se.setConnector(connector);
+					loopScanModule.setParent(connector);
 					break;
-				}					
+				}
 			}
 		}
 
 		// TODO Tidy up
 		// TODO events for the dectector list is not handled
 		for (ControlEvent controlEvent : this.controlEventList) {
-			if (controlEvent.getEventType() == EventTypes.SCHEDULE) break;
-			if (controlEvent.getEventType() == EventTypes.DETECTOR) break;
-			if( controlEvent.getEvent() == null) break;
-			
+			if (controlEvent.getEventType() == EventTypes.SCHEDULE)
+				break;
+			if (controlEvent.getEventType() == EventTypes.DETECTOR)
+				break;
+			if (controlEvent.getEvent() == null)
+				break;
+
 			MonitorEvent monEvent = controlEvent.getEvent().getMonitor();
 
-			if( !monEvent.getDataType().isValuePossible( controlEvent.getLimit().getValue() )
-					|| !DataTypes.isComparisonTypePossible( monEvent.getDataType().getType(), 
-							controlEvent.getLimit().getComparison() ) ) {
-				
-				Iterator<Chain> chainIterator = this.scanDescription.getChains().iterator();
-				while( chainIterator.hasNext() ) {
+			if (!monEvent.getDataType().isValuePossible(
+					controlEvent.getLimit().getValue())
+					|| !DataTypes.isComparisonTypePossible(monEvent
+							.getDataType().getType(), controlEvent.getLimit()
+							.getComparison())) {
+
+				Iterator<Chain> chainIterator = this.scanDescription
+						.getChains().iterator();
+				while (chainIterator.hasNext()) {
 					Chain chain = chainIterator.next();
-					if( chain.isAEventOfTheChain( controlEvent ) ) {
+					if (chain.isAEventOfTheChain(controlEvent)) {
 						break;
 					}
-					
-					Iterator<ScanModule> scanModulIterator = chain.getScanModules().iterator();
-					while( scanModulIterator.hasNext() ) {
+
+					Iterator<ScanModule> scanModulIterator = chain
+							.getScanModules().iterator();
+					while (scanModulIterator.hasNext()) {
 						ScanModule scanModul = scanModulIterator.next();
-						
-						if( scanModul.isAEventOfTheScanModul( controlEvent )  ) {
+
+						if (scanModul.isAEventOfTheScanModul(controlEvent)) {
 							break;
 						}
-						
+
 					}
-					
-				
+
 				}
-				
-				if( monEvent == null ) {
-				} else if( !DataTypes.isComparisonTypePossible( monEvent.getDataType().getType(), controlEvent.getLimit().getComparison() ) ) {
+
+				if (monEvent == null) {
+				} else if (!DataTypes.isComparisonTypePossible(monEvent
+						.getDataType().getType(), controlEvent.getLimit()
+						.getComparison())) {
 				} else {
-					// TODO check location for detector events 
+					// TODO check location for detector events
 				}
 			}
 		}
-		
-		//--- Looking for chains with the same id
-		Chain[] chains = this.scanDescription.getChains().toArray( new Chain[0] );
-		for( int i = 0; i < chains.length; ++i ) {
-			if( chains[i] == null ) 
+
+		// --- Looking for chains with the same id
+		Chain[] chains = this.scanDescription.getChains().toArray(new Chain[0]);
+		for (int i = 0; i < chains.length; ++i) {
+			if (chains[i] == null)
 				continue;
-			
+
 			int id = chains[i].getId();
-			for( int j = i+1; j < chains.length; ++j ) {
-					
-				if( (chains[j] != null) && chains[j].getId() == id ) {
-					
+			for (int j = i + 1; j < chains.length; ++j) {
+
+				if ((chains[j] != null) && chains[j].getId() == id) {
+
 					chains[j] = null;
 				}
 			}
-			
-			
-			
-			
+
 		}
-		//--- End of looking for chains with the same id
-		
-		//--- Checking for multiple command to the same device
-		Iterator<Chain> chainIterator = this.scanDescription.getChains().iterator();
-		while( chainIterator.hasNext() ) {
+		// --- End of looking for chains with the same id
+
+		// --- Checking for multiple command to the same device
+		Iterator<Chain> chainIterator = this.scanDescription.getChains()
+				.iterator();
+		while (chainIterator.hasNext()) {
 			Chain currentChain = chainIterator.next();
-			Iterator<ScanModule> scanModulIterator = currentChain.getScanModules().iterator();
-			
-			while( scanModulIterator.hasNext() ) {
+			Iterator<ScanModule> scanModulIterator = currentChain
+					.getScanModules().iterator();
+
+			while (scanModulIterator.hasNext()) {
 				ScanModule currentScanModul = scanModulIterator.next();
-				
+
 				Prescan[] prescans = currentScanModul.getPrescans();
-				for( int i = 0; i < prescans.length; ++i ) {
-					if( prescans[i] != null ) {
+				for (int i = 0; i < prescans.length; ++i) {
+					if (prescans[i] != null) {
 						AbstractDevice device = null;
-						for( int j = i+1; j < prescans.length; ++j ) {
-							if( prescans[j] != null && prescans[i].getAbstractDevice().getID() == prescans[j].getAbstractDevice().getID() ) {
+						for (int j = i + 1; j < prescans.length; ++j) {
+							if (prescans[j] != null
+									&& prescans[i].getAbstractDevice().getID() == prescans[j]
+											.getAbstractDevice().getID()) {
 								device = prescans[i].getAbstractDevice();
 								prescans[j] = null;
 							}
 						}
-						if( device != null ) {
+						if (device != null) {
 						}
 					}
 				}
-				
+
 				Axis[] axis = currentScanModul.getAxes();
-				for( int i = 0; i < axis.length; ++i ) {
-					if( axis[i] != null ) {
+				for (int i = 0; i < axis.length; ++i) {
+					if (axis[i] != null) {
 						AbstractDevice device = null;
-						for( int j = i+1; j < axis.length; ++j ) {
-							if( axis[j] != null && axis[i].getAbstractDevice() != null && axis[j].getAbstractDevice() != null && axis[i].getAbstractDevice().getID() == axis[j].getAbstractDevice().getID() ) {
+						for (int j = i + 1; j < axis.length; ++j) {
+							if (axis[j] != null
+									&& axis[i].getAbstractDevice() != null
+									&& axis[j].getAbstractDevice() != null
+									&& axis[i].getAbstractDevice().getID() == axis[j]
+											.getAbstractDevice().getID()) {
 								device = axis[i].getAbstractDevice();
 								axis[j] = null;
 							}
 						}
-						if( device != null ) {
+						if (device != null) {
 						}
 					}
 				}
-				
+
 				Channel[] channels = currentScanModul.getChannels();
-				for( int i = 0; i < channels.length; ++i ) {
-					if( channels[i] != null ) {
+				for (int i = 0; i < channels.length; ++i) {
+					if (channels[i] != null) {
 						AbstractDevice device = null;
-						for( int j = i+1; j < channels.length; ++j ) {
-							if( channels[j] != null && channels[i].getAbstractDevice().getID() == channels[j].getAbstractDevice().getID() ) {
+						for (int j = i + 1; j < channels.length; ++j) {
+							if (channels[j] != null
+									&& channels[i].getAbstractDevice().getID() == channels[j]
+											.getAbstractDevice().getID()) {
 								device = channels[i].getAbstractDevice();
 								channels[j] = null;
 							}
 						}
-						if( device != null ) {
+						if (device != null) {
 						}
 					}
 				}
-				
+
 				Postscan[] postscans = currentScanModul.getPostscans();
-				for( int i = 0; i < postscans.length; ++i ) {
-					if( postscans[i] != null ) {
+				for (int i = 0; i < postscans.length; ++i) {
+					if (postscans[i] != null) {
 						AbstractDevice device = null;
-						for( int j = i+1; j < postscans.length; ++j ) {
-							if( postscans[j] != null && postscans[i].getAbstractDevice().getID() == postscans[j].getAbstractDevice().getID() ) {
+						for (int j = i + 1; j < postscans.length; ++j) {
+							if (postscans[j] != null
+									&& postscans[i].getAbstractDevice().getID() == postscans[j]
+											.getAbstractDevice().getID()) {
 								device = postscans[i].getAbstractDevice();
 								postscans[j] = null;
 							}
 						}
-						if( device != null ) {
+						if (device != null) {
 						}
 					}
 				}
-				
+
 			}
-			
+
 		}
-		//--- Checking for multiple command to the same device
-		
+		// --- Checking for multiple command to the same device
+
 	}
 
 	/**
@@ -2210,15 +2390,14 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	public ScanDescription getScanDescription() {
 		return this.scanDescription;
 	}
-	
+
 	/**
-	 * This method returns the PVs which not found in the
-	 * messplatz.xml file.
+	 * This method returns the PVs which not found in the messplatz.xml file.
 	 * 
 	 * @return The loaded scan description.
 	 */
 	public List<String> getLostDevices() {
-		if ( this.lostDevicesList != null )
+		if (this.lostDevicesList != null)
 			return this.lostDevicesList;
 		else
 			return null;
@@ -2227,50 +2406,49 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	/**
 	 * This method returns true if the eventId is available or false if not.
 	 * 
-	 * @param ControlEvent The current Event which will be checked.
+	 * @param ControlEvent
+	 *            The current Event which will be checked.
 	 * @return true or false.
 	 */
-	public boolean eventIdAvailable( ControlEvent currentEvent) {
+	public boolean eventIdAvailable(ControlEvent currentEvent) {
 
 		boolean idOK = false;
 		String checkNeu = null;
 		int indexNeu;
 		String checkString = null;
-		
-		switch (this.currentControlEvent.getEventType() ) {
+
+		switch (this.currentControlEvent.getEventType()) {
 		case SCHEDULE:
 			idOK = true;
 			break;
 		case DETECTOR:
 			checkNeu = this.currentControlEvent.getId().replace("D-", "");
-			indexNeu = checkNeu.indexOf('-' , 1);
-			indexNeu = checkNeu.indexOf('-' , indexNeu+1);
-			checkString = checkNeu.substring(indexNeu+1);
-			if ( this.measuringStation.getDetectorChannelById(checkString) != null ) {
+			indexNeu = checkNeu.indexOf('-', 1);
+			indexNeu = checkNeu.indexOf('-', indexNeu + 1);
+			checkString = checkNeu.substring(indexNeu + 1);
+			if (this.measuringStation.getDetectorChannelById(checkString) != null) {
 				// DetektorChannel ist vorhanden, Event hinzufügen
 				idOK = true;
 			}
 			break;
 		case MONITOR:
 			checkNeu = this.currentControlEvent.getId();
-			indexNeu = checkNeu.indexOf('.' , 1);
+			indexNeu = checkNeu.indexOf('.', 1);
 			if (indexNeu > 0) {
 				checkString = checkNeu.substring(0, indexNeu);
-			}
-			else {
+			} else {
 				checkString = checkNeu;
 			}
 
-			if ( this.measuringStation.getMotorAxisById(checkString) != null ) {
+			if (this.measuringStation.getMotorAxisById(checkString) != null) {
 				// MotorAxis ist vorhanden, Event hinzufügen
 				idOK = true;
-			}
-			else if ( this.measuringStation.getDetectorChannelById(checkString) != null ) {
+			} else if (this.measuringStation
+					.getDetectorChannelById(checkString) != null) {
 				// DetektorChannel ist vorhanden, Event hinzufügen
 				idOK = true;
-			}
-			else {
-				for(Device device : this.measuringStation.getDevices()) {
+			} else {
+				for (Device device : this.measuringStation.getDevices()) {
 					if (device.getID().equals(checkString)) {
 						// Device ist vorhanden, Event hinzufügen
 						idOK = true;
@@ -2281,5 +2459,4 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		}
 		return idOK;
 	}
-	
 }

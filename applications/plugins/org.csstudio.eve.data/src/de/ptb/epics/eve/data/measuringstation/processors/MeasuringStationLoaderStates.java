@@ -1,11 +1,10 @@
 package de.ptb.epics.eve.data.measuringstation.processors;
 
 /**
- * This enum describes the possible states of the SAX handler to load a 
- * measuring station description.
+ * Possible states of the SAX handler to load a device definition file.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (- at -) ptb.de>
- *
+ * @author Marcus Michalsky
  */
 public enum MeasuringStationLoaderStates {
 	
@@ -13,6 +12,16 @@ public enum MeasuringStationLoaderStates {
 	 * The initial and end state of the handler.
 	 */
 	ROOT,
+	
+	/**
+	 * 
+	 */
+	LOCATION_NEXT,
+
+	/**
+	 * 
+	 */
+	LOCATION_READ,
 	
 	/**
 	 * The begin tag of version has been read.
@@ -24,16 +33,6 @@ public enum MeasuringStationLoaderStates {
 	 * close version tag.
 	 */
 	VERSION_READ,
-	
-	/**
-	 * 
-	 */
-	MEASURINGSTATION_NEXT,
-
-	/**
-	 * 
-	 */
-	MEASURINGSTATION_READ,
 	
 	/**
 	 * The begin tag of the plug ins section has been read.

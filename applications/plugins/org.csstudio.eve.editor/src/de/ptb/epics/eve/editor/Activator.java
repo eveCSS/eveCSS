@@ -56,7 +56,7 @@ public class Activator extends AbstractUIPlugin {
 	
 	private final String defaultWindowTitle = "Control System Studio";
 	
-	// used to catch the event that the last editor was closed to reset views
+	// 
 	private EveEditorPerspectiveListener eveEditorPerspectiveListener;
 	
 	// used to handle save on close
@@ -313,13 +313,11 @@ public class Activator extends AbstractUIPlugin {
 				measuringStation.getVersion() + ")");
 			logger.info("measuring station location: " + 
 					measuringStation.getLoadedFileName());
-			logger.info("version: " + measuringStation.getVersion());
+			logger.info("schema file: " + 
+					measuringStation.getSchemaFileName());
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			logger.info("workspace: " + workspace.getRoot().getLocation().
 					toFile().getAbsolutePath());
-			if(schemaFile != null) {
-				logger.debug("schema URL: " + schemaFile.getPath());
-			}
 		}
 	}
 	

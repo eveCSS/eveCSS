@@ -6,39 +6,44 @@ import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IWorkbenchPage;
 
 /**
- * <code>EveEditorPerspectiveListener</code> listens to perspective changes of 
+ * <code>EveEditorPerspectiveListener</code> listens to perspective changes of
  * the {@link EveEditorPerspective}.
  * <p>
- * 
  * 
  * @author Marcus Michalsky
  * @since 0.4.1
  */
 public class EveEditorPerspectiveListener implements IPerspectiveListener {
 
-	private static Logger logger = 
-			Logger.getLogger(EveEditorPerspectiveListener.class.getName());
-	
+	private static Logger logger = Logger
+			.getLogger(EveEditorPerspectiveListener.class.getName());
+
 	/**
-	 *{@inheritDoc} 
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void perspectiveActivated(IWorkbenchPage page,
 			IPerspectiveDescriptor perspective) {
-		if(logger.isDebugEnabled()) {
+		if (logger.isDebugEnabled()) {
 			logger.debug("Perspective enabled: " + perspective.getId());
 		}
-		if(perspective.getId().equals("EveEditorPerpective")) {
-			final String name = 
-				Activator.getDefault().getMeasuringStation().getName() == null 
-				? "" : Activator.getDefault().getMeasuringStation().getName();
-			page.getWorkbenchWindow().getShell().setText(
-				Activator.getDefault().getDefaultWindowTitle() + " - " +
-				name + " (v" +
-				Activator.getDefault().getMeasuringStation().getVersion() + ")");
+		if (perspective.getId().equals("EveEditorPerpective")) {
+			final String name = Activator.getDefault().getMeasuringStation()
+					.getName() == null ? "" : Activator.getDefault()
+					.getMeasuringStation().getName();
+			page.getWorkbenchWindow()
+					.getShell()
+					.setText(
+							Activator.getDefault().getDefaultWindowTitle()
+									+ " - "
+									+ name
+									+ " (v"
+									+ Activator.getDefault()
+											.getMeasuringStation().getVersion()
+									+ ")");
 		} else {
-			page.getWorkbenchWindow().getShell().setText(
-				Activator.getDefault().getDefaultWindowTitle());
+			page.getWorkbenchWindow().getShell()
+					.setText(Activator.getDefault().getDefaultWindowTitle());
 		}
 	}
 
