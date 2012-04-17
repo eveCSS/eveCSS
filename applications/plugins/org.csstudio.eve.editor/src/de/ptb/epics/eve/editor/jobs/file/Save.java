@@ -90,7 +90,13 @@ public class Save extends Job {
 			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = 
 					new ScanDescriptionSaverToXMLusingXerces(
 						os, measuringStation, this.scanDescription);
-			scanDescriptionSaver.save();
+			boolean success = scanDescriptionSaver.save();
+			if(success) {
+				logger.info("Save was successful.");
+			} else {
+				logger.error("Save Error!");
+				return Status.CANCEL_STATUS;
+			}
 			monitor.worked(1);
 			
 			if(logger.isDebugEnabled()) {
