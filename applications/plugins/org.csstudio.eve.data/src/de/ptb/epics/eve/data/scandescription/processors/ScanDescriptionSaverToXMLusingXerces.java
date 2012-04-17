@@ -183,18 +183,19 @@ public class ScanDescriptionSaverToXMLusingXerces implements IScanDescriptionSav
 			
 			this.contentHandler.startElement("tns", "scml", "tns:scml", atts );
 			
+			if (this.scanDescription.getMeasuringStation().getName() != null && 
+				!this.scanDescription.getMeasuringStation().getName().isEmpty()) {
+					this.atts.clear();
+					this.contentHandler.startElement("", "", "location", atts);
+					this.contentHandler.characters(this.scanDescription.getMeasuringStation().getName().toCharArray(), 0, this.scanDescription.getMeasuringStation().getName().toCharArray().length);
+					this.contentHandler.endElement("", "", "location");
+			}
+			
 			this.atts.clear();
 			this.contentHandler.startElement("", "", "version", atts );
 			this.contentHandler.characters( ScanDescription.outputVersion.toCharArray(), 0, ScanDescription.outputVersion.length() );
 			this.contentHandler.endElement( "", "", "version" );
 			
-			if (this.scanDescription.getMeasuringStation().getName() != null && 
-				!this.scanDescription.getMeasuringStation().getName().isEmpty()) {
-					this.atts.clear();
-					this.contentHandler.startElement("", "", "measuringstation", atts);
-					this.contentHandler.characters(this.scanDescription.getMeasuringStation().getName().toCharArray(), 0, this.scanDescription.getMeasuringStation().getName().toCharArray().length);
-					this.contentHandler.endElement("", "", "measuringstation");
-			}
 			
 			this.atts.clear();
 			this.contentHandler.startElement("", "", "repeatcount", atts );
