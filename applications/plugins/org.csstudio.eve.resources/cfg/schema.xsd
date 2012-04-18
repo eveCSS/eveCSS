@@ -220,13 +220,14 @@
       <element name="goto" type="tns:access"></element>
       <element name="position" type="tns:access"></element>
       <element name="stop" type="tns:access"></element>
+      <element name="highlimit" type="tns:access" minOccurs="0"></element>
+      <element name="lowlimit" type="tns:access" minOccurs="0"></element>
       <element name="status" type="tns:access" minOccurs="0"></element>
       <element name="movedone" type="tns:access" minOccurs="0"></element>
       <element name="trigger" type="tns:access" minOccurs="0"></element>
       <element name="unit" type="tns:unit" minOccurs="0"></element>
       <element name="deadband" type="tns:access" minOccurs="0"></element>
       <element name="offset" type="tns:access" minOccurs="0"></element>
-      <element name="setmode" type="tns:access" minOccurs="0"></element>
       <element name="tweakvalue" type="tns:access" minOccurs="0"></element>
       <element name="tweakforward" type="tns:access" minOccurs="0"></element>
       <element name="tweakreverse" type="tns:access" minOccurs="0"></element>

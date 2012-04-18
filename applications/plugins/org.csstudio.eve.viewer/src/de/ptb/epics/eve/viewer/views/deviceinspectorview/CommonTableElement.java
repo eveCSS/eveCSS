@@ -3,6 +3,7 @@ package de.ptb.epics.eve.viewer.views.deviceinspectorview;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.TableViewer;
@@ -33,6 +34,9 @@ import de.ptb.epics.eve.viewer.messages.ViewerMessage;
  */
 public class CommonTableElement {
 
+	private static Logger logger = 
+			Logger.getLogger(CommonTableElement.class.getName());
+	
 	private AbstractDevice device;
 	private TableViewer viewer;
 	private String name;
@@ -165,15 +169,15 @@ public class CommonTableElement {
 				offsetPv = new CommonTableElementPV(motorAxis.
 							getOffset().getAccess().getVariableID(), this);
 				// set Pv's for Soft High and Low Limit
-				for(final Option option : motorAxis.getOptions()) {
-					if (option.getName().equals("Soft High Limit")) {
-						softHighLimitPv = new CommonTableElementPV(option.
-								getValue().getAccess().getVariableID(), this);
-					}
-					if (option.getName().equals("Soft Low Limit")) {
-						softLowLimitPv = new CommonTableElementPV(option.
-								getValue().getAccess().getVariableID(), this);
-					}
+				if (motorAxis.getSoftHighLimit() != null) {
+					softHighLimitPv = new CommonTableElementPV(motorAxis
+							.getSoftHighLimit().getAccess().getVariableID(),
+							this);
+				}
+				if (motorAxis.getSoftLowLimit() != null) {
+					softLowLimitPv = new CommonTableElementPV(motorAxis
+							.getSoftLowLimit().getAccess().getVariableID(),
+							this);
 				}
 			}
 		}

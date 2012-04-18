@@ -138,15 +138,6 @@ public class AccessTest {
 						logger.debug("no offset entry");
 					}
 					
-					if(ma.getSet() != null) {
-						Access setAccess = ma.getSet().getAccess();
-						Access setClone = (Access)setAccess.clone();
-						assertEquals(setAccess, setClone);
-						logger.debug("set Access' are equal");
-					} else {
-						logger.debug("no setmode entry");
-					}
-					
 					if(ma.getTweakValue() != null) {
 						Access tweakValAccess = ma.getTweakValue().getAccess();
 						Access tweakValClone = (Access) tweakValAccess.clone();

@@ -403,6 +403,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements
 		try {
 			this.atts.clear();
 			this.contentHandler.startElement("", "axis", "axis", this.atts);
+			
 			this.atts.clear();
 			this.contentHandler.startElement("", "class", "class", this.atts);
 			if (axis.getClassName() != null)
@@ -430,6 +431,12 @@ public class ScanDescriptionSaverToXMLusingXerces implements
 			}
 			if (axis.getStop() != null) {
 				this.writeFunction(axis.getStop(), "stop");
+			}
+			if (axis.getSoftHighLimit() != null) {
+				this.writeFunction(axis.getSoftHighLimit(), "highlimit");
+			}
+			if (axis.getSoftLowLimit() != null) {
+				this.writeFunction(axis.getSoftLowLimit(), "lowlimit");
 			}
 			if (axis.getStatus() != null) {
 				this.writeFunction(axis.getStatus(), "status");
