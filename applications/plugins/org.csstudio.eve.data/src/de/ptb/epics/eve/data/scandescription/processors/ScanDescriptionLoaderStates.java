@@ -34,6 +34,11 @@ public enum ScanDescriptionLoaderStates {
 	REPEATCOUNT_READ,
 	
 	/**
+	 * indicates that a scan is loading
+	 */
+	SCAN_LOADING,
+	
+	/**
 	 * This state indicates the a chain is loading.
 	 */
 	CHAIN_LOADING,

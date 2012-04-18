@@ -209,6 +209,9 @@ public class ScanDescriptionSaverToXMLusingXerces implements
 					ScanDescription.outputVersion.toCharArray(), 0,
 					ScanDescription.outputVersion.length());
 			this.contentHandler.endElement("", "", "version");
+			
+			this.atts.clear();
+			this.contentHandler.startElement("", "", "scan", atts);
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "", "repeatcount", atts);
@@ -221,6 +224,8 @@ public class ScanDescriptionSaverToXMLusingXerces implements
 				this.writeChain(chain);
 			}
 
+			this.contentHandler.endElement("", "", "scan");
+			
 			successful = this.writePlugins();
 			successful = this.writeDetectors();
 			successful = this.writeMotors();
@@ -228,7 +233,6 @@ public class ScanDescriptionSaverToXMLusingXerces implements
 			successful = this.writeSelections(this.measuringStation.getSelections());
 
 			this.contentHandler.endElement("tns", "scml", "tns:scml");
-
 			this.contentHandler.endDocument();
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
