@@ -2,7 +2,8 @@ h1(eveTopic). What's New ?
 
 h2(eveTopic). Version 1.2
 
-* [Feature] Consistent presentation of device names
+* [Feature] Names for Plot windows
+* [Feature] Consistent presentation of device names (including lexicographical ordering)
 * [Feature] Remove All Axes/Channels/Prescans/Postscans/Positionings/Plots/Events
 
 * [Bug Fix] Selecting a Detector Channel in a Plot fails on first attempt
