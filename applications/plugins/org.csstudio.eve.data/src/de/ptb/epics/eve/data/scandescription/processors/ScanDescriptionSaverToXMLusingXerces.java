@@ -1568,6 +1568,18 @@ public class ScanDescriptionSaverToXMLusingXerces implements
 						.endElement("", "maxattempts", "maxattempts");
 			}
 
+			if (channel.getNormalizeChannel() != null) {
+				this.atts.clear();
+				this.contentHandler.startElement("", "normalize_id", 
+						"normalize_id", this.atts);
+				this.contentHandler.characters(
+						channel.getNormalizeChannel().getID().toCharArray(), 
+						0, 
+						channel.getNormalizeChannel().getID().length());
+				this.contentHandler.endElement("", "normalize_id", 
+						"normalize_id");
+			}
+
 			this.atts.clear();
 			this.contentHandler.startElement("", "confirmtrigger",
 					"confirmtrigger", this.atts);

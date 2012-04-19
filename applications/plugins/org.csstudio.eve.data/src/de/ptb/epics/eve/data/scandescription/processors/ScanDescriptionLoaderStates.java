@@ -539,6 +539,16 @@ public enum ScanDescriptionLoaderStates {
 	CHAIN_SCANMODULE_DETECTOR_MAX_ATTEMPTS_READ,
 	
 	/**
+	 * 
+	 */
+	CHAIN_SCANMODULE_DETECTOR_NORMALIZECHANNEL_NEXT,
+	
+	/**
+	 * 
+	 */
+	CHAIN_SCANMODULE_DETECTOR_NORMALIZECHANNEL_READ,
+	
+	/**
 	 * The begin tag of repeat on redo of the detector channel has been read.
 	 */
 	CHAIN_SCANMODULE_DETECTOR_REPEATONREDO_NEXT,

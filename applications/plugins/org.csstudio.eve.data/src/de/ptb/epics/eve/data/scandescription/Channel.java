@@ -54,6 +54,9 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 */
 	private int maxAttempts = Integer.MIN_VALUE;
 
+	// 
+	private DetectorChannel normalizeChannel;
+
 	/*
 	 * A flag if a trigger of this detector must be confirmed.
 	 */
@@ -73,7 +76,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * A list of the ControlEvents, that holds the configuration for the redo 
 	 * events.
 	 */
-	private List< ControlEvent > redoEvents;
+	private List<ControlEvent> redoEvents;
 	
 	/*
 	 * This control event manager controls the redo events.
@@ -83,7 +86,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	/**
 	 * Constructs a <code>Channel</code>.
 	 * 
-	 * @param parentScanModule The parent scan module.
+	 * @param scanModule The parent scan module.
 	 * @throws IllegalArgumentException if the parameter is <code>null</code>.
 	 */
 	public Channel(final ScanModule scanModule) {
@@ -263,6 +266,21 @@ public class Channel extends AbstractMainPhaseBehavior {
 	}
 
 	/**
+	 * @return the normalizeChannel
+	 */
+	public DetectorChannel getNormalizeChannel() {
+		return normalizeChannel;
+	}
+
+	/**
+	 * @param normalizeChannel the normalizeChannel to set
+	 */
+	public void setNormalizeChannel(DetectorChannel normalizeChannel) {
+		this.normalizeChannel = normalizeChannel;
+		updateListeners();
+	}
+
+	/**
 	 * This method returns if the channel should repeat on redo.
 	 * 
 	 * @return Returns 'true' if the channel repeats reading on a redo event.
@@ -352,7 +370,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 					ChannelErrorTypes.MAX_DEVIATION_NOT_POSSIBLE));
 		}
 
-		if( Double.compare(this.minimum, Double.NaN) == 0 ) {
+		if(Double.compare(this.minimum, Double.NaN) == 0) {
 			modelErrors.add(new ChannelError(this, 
 					ChannelErrorTypes.MINIMUM_NOT_POSSIBLE));
 		}
@@ -368,15 +386,11 @@ public class Channel extends AbstractMainPhaseBehavior {
 	/*
 	 * 
 	 */
-	private void updateListeners()
-	{
+	private void updateListeners() {
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
 			new CopyOnWriteArrayList<IModelUpdateListener>(modelUpdateListener);
-		
-		Iterator<IModelUpdateListener> it = list.iterator();
-		
-		while(it.hasNext()) {
-			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		for(IModelUpdateListener imul : list) {
+			imul.updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
 }

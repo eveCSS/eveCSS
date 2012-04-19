@@ -27,6 +27,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
@@ -81,6 +82,8 @@ public class DetectorChannelView extends ViewPart
 
 	private ScanModule scanModule;
 	
+	private Channel[] availableDetectorChannels;
+	
 	// *******************************************************************
 	// ****************** end of: underlying model ***********************
 	// *******************************************************************
@@ -111,6 +114,10 @@ public class DetectorChannelView extends ViewPart
 	private Label maxAttemptsErrorLabel;	
 	private TextNumberVerifyListener maxAttemptsTextVerifyListener;
 	private MaxAttemptsTextModifyListener maxAttemptsTextModifyListener;
+	
+	private Label normalizeChannelLabel;
+	private Combo normalizeChannelCombo;
+	private NormalizeChannelComboSelectionListener normalizeChannelComboSelectionListener;
 	
 	private Button confirmTriggerManualCheckBox;
 	private ConfirmTriggerManualCheckBoxSelectionListener
@@ -235,6 +242,18 @@ public class DetectorChannelView extends ViewPart
 		this.maxAttemptsText.addModifyListener(maxAttemptsTextModifyListener);
 		this.maxAttemptsErrorLabel = new Label(this.top, SWT.NONE);
 		
+		this.normalizeChannelLabel = new Label(this.top, SWT.NONE);
+		this.normalizeChannelLabel.setText("Normalize Channel:");
+		this.normalizeChannelCombo = new Combo(this.top, SWT.BORDER);
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		this.normalizeChannelCombo.setLayoutData(gridData);
+		this.normalizeChannelComboSelectionListener = 
+				new NormalizeChannelComboSelectionListener();
+		this.normalizeChannelCombo.addSelectionListener(
+				normalizeChannelComboSelectionListener);
+
 		// GUI: [] Confirm Trigger Manual
 		this.confirmTriggerManualCheckBox = new Button(this.top, SWT.CHECK);
 		this.confirmTriggerManualCheckBox.setText("Confirm Trigger manual");
@@ -358,23 +377,19 @@ public class DetectorChannelView extends ViewPart
 		} else {
 			logger.debug("set channel (null)");
 		}
-		
 		if (this.currentChannel != null) {
 			this.currentChannel.removeModelUpdateListener(this);
 			this.scanModule.removePropertyChangeListener("removeChannel", this);
 		}
-		
 		// update the underlying model to the new one
 		this.currentChannel = channel;
 		this.scanModule = null;
 		
 		if(this.currentChannel != null) {
 			this.currentChannel.addModelUpdateListener(this);
-			this.scanModule = channel.getScanModule();
+			this.scanModule = this.currentChannel.getScanModule();
 		}
-
 		updateEvent(null);
-		
 	}
 
 	/**
@@ -427,7 +442,6 @@ public class DetectorChannelView extends ViewPart
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
-	
 		if (e.getOldValue().equals(currentChannel)) {
 			// current Axis will be removed
 			setChannel(null);
@@ -437,10 +451,9 @@ public class DetectorChannelView extends ViewPart
 	/*
 	 * 
 	 */
-	private void checkForErrors()
-	{
-    	// reset errors
-    	this.averageErrorLabel.setImage(null);
+	private void checkForErrors() {
+		// reset errors
+		this.averageErrorLabel.setImage(null);
 		this.averageErrorLabel.setToolTipText("");
 		this.maxDeviationErrorLabel.setImage(null);
 		this.maxDeviationErrorLabel.setToolTipText("");
@@ -449,14 +462,9 @@ public class DetectorChannelView extends ViewPart
 		this.maxAttemptsErrorLabel.setImage(null);
 		this.maxAttemptsErrorLabel.setToolTipText("");	
 
-		final Iterator<IModelError> it = 
-				this.currentChannel.getModelErrors().iterator();
-
-		while(it.hasNext()) {
-			final IModelError modelError = it.next();
-			if(modelError instanceof ChannelError) {
-				final ChannelError channelError = (ChannelError) modelError;
-				
+		for(IModelError error : this.currentChannel.getModelErrors()) {
+			if(error instanceof ChannelError) {
+				final ChannelError channelError = (ChannelError) error;
 				switch(channelError.getErrorType()) {
 					case MAX_DEVIATION_NOT_POSSIBLE:
 						this.maxDeviationErrorLabel.setImage(
@@ -476,7 +484,6 @@ public class DetectorChannelView extends ViewPart
 						this.minimumErrorLabel.getParent().layout();
 						break;
 				}
-				
 			}
 		}
 		if(this.currentChannel.getRedoControlEventManager().
@@ -501,6 +508,8 @@ public class DetectorChannelView extends ViewPart
 		minimumText.addVerifyListener(minimumTextVerifyListener);
 		maxAttemptsText.addModifyListener(maxAttemptsTextModifyListener);
 		maxAttemptsText.addVerifyListener(maxAttemptsTextVerifyListener);
+		normalizeChannelCombo.addSelectionListener(
+				normalizeChannelComboSelectionListener);
 		
 		confirmTriggerManualCheckBox.addSelectionListener(
 				confirmTriggerManualCheckBoxSelectionListener);
@@ -523,6 +532,8 @@ public class DetectorChannelView extends ViewPart
 		minimumText.removeVerifyListener(minimumTextVerifyListener);
 		maxAttemptsText.removeModifyListener(maxAttemptsTextModifyListener);
 		maxAttemptsText.removeVerifyListener(maxAttemptsTextVerifyListener);
+		normalizeChannelCombo.removeSelectionListener(
+				normalizeChannelComboSelectionListener);
 		
 		confirmTriggerManualCheckBox.removeSelectionListener(
 				confirmTriggerManualCheckBoxSelectionListener);
@@ -541,9 +552,11 @@ public class DetectorChannelView extends ViewPart
 		this.currentChannel.addModelUpdateListener(this);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
-		// TODO Auto-generated method stub
 		removeListeners();
 		
 		if(this.currentChannel != null) {
@@ -584,6 +597,20 @@ public class DetectorChannelView extends ViewPart
 						Integer.toString(this.currentChannel.getMaxAttempts()));
 			} else {
 				this.maxAttemptsText.setText("");
+			}
+			
+			availableDetectorChannels = this.scanModule.getChannels();
+			String[] detectorItems = new String[availableDetectorChannels.length];
+			for (int i = 0; i < availableDetectorChannels.length; ++i) {
+				detectorItems[i] = availableDetectorChannels[i].
+									getDetectorChannel().getName();
+			}
+			this.normalizeChannelCombo.setItems(detectorItems);
+			this.normalizeChannelCombo.add("none");
+			
+			if (this.currentChannel.getNormalizeChannel() != null) {
+				this.normalizeChannelCombo.setText(
+						this.currentChannel.getNormalizeChannel().getName());
 			}
 			
 			// set confirm trigger check box
@@ -759,10 +786,45 @@ public class DetectorChannelView extends ViewPart
 	}
 
 	/**
+	 * {@link org.eclipse.swt.events.SelectionListener} of
+	 * normalizeChannelCombo.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.2
+	 */
+	private class NormalizeChannelComboSelectionListener implements
+			SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			suspendModelUpdateListener();
+			if (normalizeChannelCombo.getText().equals("none")) {
+				currentChannel.setNormalizeChannel(null);
+				normalizeChannelCombo.deselectAll();
+			} else {
+				currentChannel.setNormalizeChannel(
+						availableDetectorChannels[normalizeChannelCombo
+								.getSelectionIndex()].getDetectorChannel());
+			}
+			resumeModelUpdateListener();
+		}
+	}
+	
+	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>confirmTriggerManualCheckBox</code>.
 	 */
-	class ConfirmTriggerManualCheckBoxSelectionListener implements 
+	private class ConfirmTriggerManualCheckBoxSelectionListener implements 
 			SelectionListener {
 
 		/**
@@ -789,7 +851,7 @@ public class DetectorChannelView extends ViewPart
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>detectorReadyEventCheckBox</code>.
 	 */
-	class DetectorReadyEventCheckBoxSelectionListener implements 
+	private class DetectorReadyEventCheckBoxSelectionListener implements 
 			SelectionListener {
 		
 		/**
@@ -830,7 +892,7 @@ public class DetectorChannelView extends ViewPart
 	/**
 	 * {@link org.eclipse.swt.events.ControlListener} of <code>bar</code>.
 	 */
-	class BarControlListener implements ControlListener {
+	private class BarControlListener implements ControlListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -853,7 +915,7 @@ public class DetectorChannelView extends ViewPart
 	/**
 	 * {@link org.eclipse.swt.events.ControlListener}.
 	 */
-	class EventCompositeControlListener implements ControlListener {
+	private class EventCompositeControlListener implements ControlListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -881,85 +943,81 @@ public class DetectorChannelView extends ViewPart
 	/**
 	 * {@link org.eclipse.swt.events.VerifyListener}.
 	 */
-	class TextNumberVerifyListener implements VerifyListener {
-		
+	private class TextNumberVerifyListener implements VerifyListener {
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void verifyText(VerifyEvent e) {
-
 			switch (e.keyCode) {
-            	case SWT.BS:           // Backspace
-            	case SWT.DEL:          // Delete
-			    case SWT.HOME:         // Home
-			    case SWT.END:          // End
-			    case SWT.ARROW_LEFT:   // Left arrow
-			    case SWT.ARROW_RIGHT:  // Right arrow
-			    	return;
+			case SWT.BS: // Backspace
+			case SWT.DEL: // Delete
+			case SWT.HOME: // Home
+			case SWT.END: // End
+			case SWT.ARROW_LEFT: // Left arrow
+			case SWT.ARROW_RIGHT: // Right arrow
+				return;
 			}
 
 			if (!Character.isDigit(e.character)) {
-					e.doit = false;  // disallow the action
+				e.doit = false; // disallow the action
 			}
 		}
-
 	}
 
 	/**
 	 * {@link org.eclipse.swt.events.VerifyListener}.
 	 */
-	class TextDoubleVerifyListener implements VerifyListener {
+	private class TextDoubleVerifyListener implements VerifyListener {
 
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void verifyText(VerifyEvent e) {
-
 			switch (e.keyCode) {
-            	case SWT.BS:           // Backspace
-            	case SWT.DEL:          // Delete
-			    case SWT.HOME:         // Home
-			    case SWT.END:          // End
-			    case SWT.ARROW_LEFT:   // Left arrow
-			    case SWT.ARROW_RIGHT:  // Right arrow
-			    	return;  
+			case SWT.BS: // Backspace
+			case SWT.DEL: // Delete
+			case SWT.HOME: // Home
+			case SWT.END: // End
+			case SWT.ARROW_LEFT: // Left arrow
+			case SWT.ARROW_RIGHT: // Right arrow
+				return;
 			}
 
-			String oldText = ((Text)(e.widget)).getText();
+			String oldText = ((Text) (e.widget)).getText();
 
 			if (!Character.isDigit(e.character)) {
 				if (e.character == '.') {
-					// character . is a valid character, if he is not in the 
+					// character . is a valid character, if he is not in the
 					// old string
 					if (oldText.contains("."))
 						e.doit = false;
-				}
-				else if (e.character == '-') {
-					// character - is a valid character as first sign and after 
+				} else if (e.character == '-') {
+					// character - is a valid character as first sign and after
 					// an e
 					if (oldText.isEmpty()) {
 						// oldText is emtpy, - is valid
-					} else if ((((Text)e.widget).getSelection().x) == 0) {
+					} else if ((((Text) e.widget).getSelection().x) == 0) {
 						// - is the first sign an valid
 					} else {
-						// wenn das letzte Zeichen von oldText ein e ist, 
+						// wenn das letzte Zeichen von oldText ein e ist,
 						// ist das minus auch erlaubt
 						int index = oldText.length();
-						if (oldText.substring(index-1).equals("e")) {
+						if (oldText.substring(index - 1).equals("e")) {
 							// letzte Zeichen ist ein e und damit erlaubt
 						} else {
 							e.doit = false;
 						}
 					}
 				} else if (e.character == 'e') {
-					// character e is a valid character, if he is not in the 
+					// character e is a valid character, if he is not in the
 					// old string
 					if (oldText.contains("e"))
 						e.doit = false;
 				} else {
-					e.doit = false;  // disallow the action
+					e.doit = false; // disallow the action
 				}
 			}
 		}

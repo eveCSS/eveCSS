@@ -439,6 +439,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_MINIMUM_NEXT;
 			} else if (qName.equals("maxattempts")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_MAX_ATTEMPTS_NEXT;
+			} else if (qName.equals("normalize_id")) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_NORMALIZECHANNEL_NEXT;
 			} else if (qName.equals("confirmtrigger")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_CONFIRMTRIGGER_NEXT;
 			} else if (qName.equals("repeatonredo")) {
@@ -834,6 +836,15 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						.toString()));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_MAX_ATTEMPTS_READ;
+			break;
+
+		case CHAIN_SCANMODULE_DETECTOR_NORMALIZECHANNEL_NEXT:
+			if (this.currentChannel.getAbstractDevice() != null) {
+				this.currentChannel.setNormalizeChannel(
+						this.measuringStation.getDetectorChannelById(
+								textBuffer.toString()));
+			}
+			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_NORMALIZECHANNEL_READ;
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_REPEATONREDO_NEXT:
@@ -1965,6 +1976,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_DETECTOR_MAX_ATTEMPTS_READ:
 			if (qName.equals("maxattempts")) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
+			}
+			break;
+
+		case CHAIN_SCANMODULE_DETECTOR_NORMALIZECHANNEL_READ:
+			if (qName.equals("normalize_id")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 			}
 			break;

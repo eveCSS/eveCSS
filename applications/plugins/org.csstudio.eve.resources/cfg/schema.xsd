@@ -343,11 +343,12 @@
 
   <complexType name="smchannel">
     <sequence>
-      <element name="channelid" type="string"></element>
+      <element name="channelid" type="tns:identifier"></element>
       <element name="averagecount" type="nonNegativeInteger" minOccurs="0"></element>
       <element name="maxdeviation" type="double" minOccurs="0"></element>
       <element name="minimum" type="double" minOccurs="0"></element>
       <element name="maxattempts" type="nonNegativeInteger" minOccurs="0"></element>
+      <element name="normalize_id" type="tns:identifier" minOccurs="0"></element>
       <element name="confirmtrigger" type="boolean" minOccurs="0"></element>
       <element name="sendreadyevent" type="boolean" minOccurs="0"></element>
       <element name="redoevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
