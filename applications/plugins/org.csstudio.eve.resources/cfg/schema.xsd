@@ -42,7 +42,7 @@
   <complexType name="scan">
     <sequence>
       <element name="repeatcount" type="tns:repeatcount" default="0"></element>
-      <element name="chain" type="tns:chain" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="chain" type="tns:chain" maxOccurs="unbounded"></element>
     </sequence>
   </complexType>
 
