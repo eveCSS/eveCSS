@@ -334,6 +334,16 @@ public enum MeasuringStationLoaderStates {
 	MOTOR_AXIS_STOP_LOADING,
 	
 	/**
+	 *  soft high limit is loading
+	 */
+	MOTOR_AXIS_HIGHLIMIT_LOADING,
+	
+	/**
+	 * soft low limit is loading
+	 */
+	MOTOR_AXIS_LOWLIMIT_LOADING,
+	
+	/**
 	 * The dead band of a motor axis is loading. Processing is done in sub 
 	 * states.
 	 */
@@ -343,11 +353,6 @@ public enum MeasuringStationLoaderStates {
 	 * The offset of a motor axis is loading. Processing is done in sub states.
 	 */
 	MOTOR_AXIS_OFFSET_LOADING,
-	
-	/**
-	 * set or use
-	 */
-	MOTOR_AXIS_SETMODE_LOADING,
 	
 	/**
 	 * The tweak value of a motor axis is loading. Processing is done in sub 

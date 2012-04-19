@@ -248,9 +248,21 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_GOTO_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
+			} else if (qName.equals("position")) {
+				this.currentFunction = new Function();
+				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_POSITION_LOADING;
+				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			} else if (qName.equals("stop")) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_STOP_LOADING;
+				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
+			} else if (qName.equals("highlimit")) {
+				this.currentFunction = new Function();
+				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_HIGHLIMIT_LOADING;
+				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
+			} else if (qName.equals("lowlimit")) {
+				this.currentFunction = new Function();
+				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOWLIMIT_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			} else if (qName.equals("trigger")) {
 				this.currentFunction = new Function();
@@ -272,10 +284,6 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_MOVEDONE_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
-			} else if (qName.equals("position")) {
-				this.currentFunction = new Function();
-				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_POSITION_LOADING;
-				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			} else if (qName.equals("deadband")) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_DEADBAND_LOADING;
@@ -283,10 +291,6 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			} else if (qName.equals("offset")) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_OFFSET_LOADING;
-				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
-			} else if (qName.equals("setmode")) {
-				this.currentFunction = new Function();
-				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_SETMODE_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			} else if (qName.equals("tweakvalue")) {
 				this.currentFunction = new Function();
@@ -942,13 +946,6 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			}
 			break;
 
-		case MOTOR_AXIS_SETMODE_LOADING:
-			if (qName.equals("setmode")) {
-				this.currentMotorAxis.setSet(this.currentFunction);
-				this.subState = MeasuringStationLoaderSubStates.NONE;
-				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
-			}
-
 		case MOTOR_AXIS_TWEAKVALUE_LOADING:
 			if (qName.equals("tweakvalue")) {
 				this.currentMotorAxis.setTweakValue(this.currentFunction);
@@ -980,6 +977,20 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.subState = MeasuringStationLoaderSubStates.NONE;
 			}
 			break;
+
+		case MOTOR_AXIS_HIGHLIMIT_LOADING:
+			if (qName.equals("highlimit")) {
+				this.currentMotorAxis.setSoftHighLimit(this.currentFunction);
+				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
+				this.subState = MeasuringStationLoaderSubStates.NONE;
+			}
+
+		case MOTOR_AXIS_LOWLIMIT_LOADING:
+			if (qName.equals("lowlimit")) {
+				this.currentMotorAxis.setSoftLowLimit(this.currentFunction);
+				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_LOADING;
+				this.subState = MeasuringStationLoaderSubStates.NONE;
+			}
 
 		case DEVICES_LOADING:
 			if (qName.equals("devices")) {

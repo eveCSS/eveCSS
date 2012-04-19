@@ -20,13 +20,13 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.ComparisonTypes;
+import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.data.PluginTypes;
-import de.ptb.epics.eve.data.TypeValue;
 import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
+import de.ptb.epics.eve.data.TypeValue;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Event;
@@ -41,6 +41,7 @@ import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.PluginController;
+import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.Postscan;
 import de.ptb.epics.eve.data.scandescription.Prescan;
@@ -48,7 +49,6 @@ import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
 import de.ptb.epics.eve.data.scandescription.YAxis;
-import de.ptb.epics.eve.data.scandescription.PositionMode;
 
 /**
  * This class represents a load handler for SAX that loads a scan description
@@ -180,18 +180,23 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case ROOT:
 			if (qName.equals("version")) {
 				this.state = ScanDescriptionLoaderStates.VERSION_NEXT;
-			} else if (qName.equals("repeatcount")) {
+			} else if (qName.equals("scan")) {
+				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
+			} else if (qName.equals("events")) {
+				this.state = ScanDescriptionLoaderStates.EVENTS_LOADING;
+			}
+			break;
+
+		case SCAN_LOADING:
+			if (qName.equals("repeatcount")) {
 				this.state = ScanDescriptionLoaderStates.REPEATCOUNT_NEXT;
 			} else if (qName.equals("chain")) {
 				this.currentChain = new Chain(Integer.parseInt(atts
 						.getValue("id")));
 				this.chainList.add(this.currentChain);
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
-			} else if (qName.equals("events")) {
-				this.state = ScanDescriptionLoaderStates.EVENTS_LOADING;
 			}
-			break;
-
+			
 		case CHAIN_LOADING:
 			if (qName.equals("comment")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_COMMENT_NEXT;
@@ -472,7 +477,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} else if (qName.equals("mode")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_AXIS_MODE_NEXT;
 			}
-
 		}
 
 		switch (this.subState) {
@@ -1138,15 +1142,20 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
+		case SCAN_LOADING:
+			if (qName.equals("scan")) {
+				this.state = ScanDescriptionLoaderStates.ROOT;
+			}
+			
 		case REPEATCOUNT_READ:
 			if (qName.equals("repeatcount")) {
-				this.state = ScanDescriptionLoaderStates.ROOT;
+				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
 			}
 			break;
 
 		case CHAIN_LOADING:
 			if (qName.equals("chain")) {
-				this.state = ScanDescriptionLoaderStates.ROOT;
+				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
 				Iterator<ScanModulRelationReminder> it = this.relationReminders
 						.iterator();
 				while (it.hasNext()) {
@@ -1173,9 +1182,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						nestedScanModul.setParent(connector);
 					}
 				}
-
 				this.scanDescription.add(this.currentChain);
-
 			}
 			break;
 

@@ -209,6 +209,9 @@ public class ScanDescriptionSaverToXMLusingXerces implements
 					ScanDescription.outputVersion.toCharArray(), 0,
 					ScanDescription.outputVersion.length());
 			this.contentHandler.endElement("", "", "version");
+			
+			this.atts.clear();
+			this.contentHandler.startElement("", "", "scan", atts);
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "", "repeatcount", atts);
@@ -221,6 +224,8 @@ public class ScanDescriptionSaverToXMLusingXerces implements
 				this.writeChain(chain);
 			}
 
+			this.contentHandler.endElement("", "", "scan");
+			
 			successful = this.writePlugins();
 			successful = this.writeDetectors();
 			successful = this.writeMotors();
@@ -228,7 +233,6 @@ public class ScanDescriptionSaverToXMLusingXerces implements
 			successful = this.writeSelections(this.measuringStation.getSelections());
 
 			this.contentHandler.endElement("tns", "scml", "tns:scml");
-
 			this.contentHandler.endDocument();
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
@@ -399,6 +403,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements
 		try {
 			this.atts.clear();
 			this.contentHandler.startElement("", "axis", "axis", this.atts);
+			
 			this.atts.clear();
 			this.contentHandler.startElement("", "class", "class", this.atts);
 			if (axis.getClassName() != null)
@@ -426,6 +431,12 @@ public class ScanDescriptionSaverToXMLusingXerces implements
 			}
 			if (axis.getStop() != null) {
 				this.writeFunction(axis.getStop(), "stop");
+			}
+			if (axis.getSoftHighLimit() != null) {
+				this.writeFunction(axis.getSoftHighLimit(), "highlimit");
+			}
+			if (axis.getSoftLowLimit() != null) {
+				this.writeFunction(axis.getSoftLowLimit(), "lowlimit");
 			}
 			if (axis.getStatus() != null) {
 				this.writeFunction(axis.getStatus(), "status");
