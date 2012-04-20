@@ -1192,7 +1192,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData.horizontalAlignment = GridData.FILL;
 				saveMotLabel.setLayoutData(gridData);
 				Label saveMotText = new Label(chainShell,SWT.NONE);
-				saveMotText.setText(displayChain.getScanModulById(aktSM).getSaveAxisPositions().toString());
+				// TODO remove Label
 				gridData = new GridData();
 				gridData.horizontalAlignment = GridData.FILL;
 				saveMotText.setLayoutData(gridData);

@@ -244,16 +244,6 @@ public enum ScanDescriptionLoaderStates {
 	CHAIN_SCANMODULE_TRIGGERCONFIRM_READ,
 	
 	/**
-	 * The begin tag of the scan module save axis positions has been read.
-	 */
-	CHAIN_SCANMODULE_SAVEAXISPOSITIONS_NEXT,
-	
-	/**
-	 * The scan module save axis position has been read and the handler waits for the closing tag.
-	 */
-	CHAIN_SCANMODULE_SAVEAXISPOSITIONS_READ,
-	
-	/**
 	 * The trigger events of the scan module are loading.
 	 */
 	CHAIN_SCANMODULE_TRIGGEREVENT,

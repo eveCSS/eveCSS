@@ -10,7 +10,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Logger;
 
-import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.errors.ScanModuleError;
@@ -101,9 +100,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	// the y position of the scan module in the graphical editor
 	private int y;
 	
-	// contains the event when all motor axes gets saved
-	private SaveAxisPositionsTypes saveAxisPositions;
-	
 	// the control event manager that controls the break events
 	private ControlEventManager breakControlEventManager;
 	
@@ -148,9 +144,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.pauseEvents = new ArrayList<PauseEvent>();
 		this.type = "classic";
 		this.name = "";
-		
-		this.saveAxisPositions = SaveAxisPositionsTypes.NEVER;
-		
+
 		this.breakControlEventManager = new ControlEventManager(
 				this, this.breakEvents, ControlEventTypes.CONTROL_EVENT);
 		this.redoControlEventManager = new ControlEventManager(
@@ -331,7 +325,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			channel.getScanModule().getChain().getScanDescription().
 					removeEventById(channel.getDetectorReadyEvent().getID());
 			channel.setDetectorReadyEvent(null);
-		};
+		}
 
 		// 1. log off listener
 		channel.removeModelUpdateListener(this);
@@ -510,9 +504,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	}
 
 	/**
-	 * Gives back if trigger have to be confirmed by hand.
+	 * Returns whether trigger configrmation is enabled.
 	 * 
-	 * @return 
+	 * @return whether trigger confirmation is enabled
 	 */
 	public boolean isTriggerconfirm() {
 		return triggerconfirm;
@@ -522,6 +516,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * Sets if trigger have to be confirmed by hand.
 	 * 
 	 * @param triggerconfirm
+	 *            <code>true</code> to enable manual trigger, <code>false</code>
+	 *            otherwise
 	 */
 	public void setTriggerconfirm(final boolean triggerconfirm) {
 		this.triggerconfirm = triggerconfirm;
@@ -939,27 +935,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public ControlEventManager getTriggerControlEventManager() {
 		return triggerControlEventManager;
 	}
-	
-	/**
-	 * Returns the types axis positions are saved on.
-	 * 
-	 * @return the types axis positions are saved on
-	 */
-	public SaveAxisPositionsTypes getSaveAxisPositions() {
-		return saveAxisPositions;
-	}
-	
-	/**
-	 * Sets the types axis positons are saved on.
-	 * 
-	 * @param saveAxisPositions the types axis positions are saved on
-	 */
-	public void setSaveAxisPositions(
-			final SaveAxisPositionsTypes saveAxisPositions) {
-		this.saveAxisPositions = saveAxisPositions;
-		updateListeners();
-	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */

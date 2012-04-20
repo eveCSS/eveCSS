@@ -25,7 +25,6 @@ import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.data.PluginTypes;
-import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.TypeValue;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Device;
@@ -303,8 +302,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERDELAY_NEXT;
 			} else if (qName.equals("triggerconfirm")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRM_NEXT;
-			} else if (qName.equals("saveaxispositions")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SAVEAXISPOSITIONS_NEXT;
 			} else if (qName.equals("triggerevent")) {
 				this.currentControlEvent = new ControlEvent(
 						EventTypes.stringToType(atts.getValue("type")));
@@ -676,12 +673,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.currentScanModul.setTriggerconfirm(Boolean
 					.parseBoolean(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRM_READ;
-			break;
-
-		case CHAIN_SCANMODULE_SAVEAXISPOSITIONS_NEXT:
-			this.currentScanModul.setSaveAxisPositions(SaveAxisPositionsTypes
-					.stringToType(textBuffer.toString()));
-			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SAVEAXISPOSITIONS_READ;
 			break;
 
 		case CHAIN_SCANMODULE_PRESCAN_ID_NEXT:
@@ -1382,12 +1373,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_TRIGGERCONFIRM_READ:
 			if (qName.equals("triggerconfirm")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
-			}
-			break;
-
-		case CHAIN_SCANMODULE_SAVEAXISPOSITIONS_READ:
-			if (qName.equals("saveaxispositions")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;

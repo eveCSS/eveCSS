@@ -42,7 +42,6 @@ import org.eclipse.ui.progress.IProgressService;
 import org.eclipse.ui.progress.UIJob;
 import org.xml.sax.SAXException;
 
-import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
@@ -677,7 +676,8 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					// Voreinstellungen für das neue Scan Modul
 					newScanModule.setTriggerdelay(0);
 					newScanModule.setSettletime(0);
-					newScanModule.setSaveAxisPositions(SaveAxisPositionsTypes.NEVER);
+					// TODO Constructor should suffice !!!
+					// no additional setXYZ calls should be required
 					
 					Connector connector = new Connector();
 					connector.setParentScanModul(scanModule);
@@ -729,8 +729,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 					// Voreinstellungen für das neue Scan Modul
 					newScanModule.setTriggerdelay(0);
 					newScanModule.setSettletime(0);
-					newScanModule.setSaveAxisPositions(SaveAxisPositionsTypes.NEVER);
-					
+
 					Connector connector = new Connector();
 					connector.setParentEvent(startEvent);
 					connector.setChildScanModul(newScanModule);
@@ -822,8 +821,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 			// Voreinstellungen für das neue Scan Modul
 			newScanModule.setTriggerdelay(0);
 			newScanModule.setSettletime(0);
-			newScanModule.setSaveAxisPositions(SaveAxisPositionsTypes.NEVER);
-			
+
 			Connector connector = new Connector();
 			connector.setParentScanModul(scanModule);
 			connector.setChildScanModul(newScanModule);

@@ -23,7 +23,6 @@ import de.ptb.epics.eve.data.MethodTypes;
 import de.ptb.epics.eve.data.TypeValue;
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.TransportTypes;
-import de.ptb.epics.eve.data.SaveAxisPositionsTypes;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
@@ -1098,16 +1097,6 @@ public class ScanDescriptionSaverToXMLusingXerces implements
 					("" + scanModul.isTriggerconfirm()).length());
 			this.contentHandler.endElement("", "triggerconfirm",
 					"triggerconfirm");
-
-			this.atts.clear();
-			this.contentHandler.startElement("", "saveaxispositions",
-					"saveaxispositions", this.atts);
-			this.contentHandler.characters((SaveAxisPositionsTypes
-					.typeToString(scanModul.getSaveAxisPositions())
-					.toCharArray()), 0, (SaveAxisPositionsTypes
-					.typeToString(scanModul.getSaveAxisPositions()).length()));
-			this.contentHandler.endElement("", "saveaxispositions",
-					"saveaxispositions");
 
 			Iterator<ControlEvent> controlEventIterator = scanModul
 					.getTriggerEventsIterator();
