@@ -293,7 +293,7 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 				}
 				this.device = ((CommonTableElement)o).getAbstractDevice();
 				this.optionsTable.setInput(device);
-				this.setPartName(device.getFullIdentifyer());
+				this.setPartName(device.getName());
 			} else if(o instanceof AbstractDevice) {
 				// the selection is from a treeViewer (from the DevicesView)
 				if (this.device != null && this.device.equals(o)) {
@@ -302,7 +302,7 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 				}
 				this.device = (AbstractDevice)o;
 				this.optionsTable.setInput(device);
-				this.setPartName(device.getFullIdentifyer());
+				this.setPartName(device.getName());
 			} else {
 				/*this.optionsTable.setInput(null);
 				this.device = null;
@@ -369,7 +369,7 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	public void setDevice(final AbstractDevice device) {
 		this.device = device;
 		this.optionsTable.setInput(this.device);
-		this.setPartName(this.device.getFullIdentifyer());
+		this.setPartName(this.device.getName());
 	}
 	
 	/* ******************************************************************** */
