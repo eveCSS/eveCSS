@@ -68,7 +68,6 @@ public class MeasuringStationTest {
 		for(IMeasuringStation ims : stations) {
 			assertNotNull(ims);
 		}
-		
 		classSetUp(logger);
 	}
 	

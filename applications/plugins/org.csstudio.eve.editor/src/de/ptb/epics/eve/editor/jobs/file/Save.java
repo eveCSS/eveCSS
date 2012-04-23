@@ -17,7 +17,7 @@ import org.eclipse.ui.progress.UIJob;
 
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
-import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionSaverToXMLusingXerces;
+import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionSaver;
 import de.ptb.epics.eve.editor.graphical.GraphicalEditor;
 
 /**
@@ -87,8 +87,8 @@ public class Save extends Job {
 			
 			// save the file
 			monitor.subTask("saving scml file");
-			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = 
-					new ScanDescriptionSaverToXMLusingXerces(
+			final ScanDescriptionSaver scanDescriptionSaver = 
+					new ScanDescriptionSaver(
 						os, measuringStation, this.scanDescription);
 			boolean success = scanDescriptionSaver.save();
 			if(success) {
@@ -134,8 +134,8 @@ public class Save extends Job {
 		File tempFile = new File((filename + ".temp"));
 		final FileOutputStream os_temp = new FileOutputStream(tempFile);
 		// save the whole file without filtering
-		final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaverFull = 
-			new ScanDescriptionSaverToXMLusingXerces(os_temp, 
+		final ScanDescriptionSaver scanDescriptionSaverFull = 
+			new ScanDescriptionSaver(os_temp, 
 				scanDescription.getMeasuringStation(), this.scanDescription);
 		scanDescriptionSaverFull.save();
 		// get the size of the unfiltered file

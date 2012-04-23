@@ -236,31 +236,31 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	 * {@inheritDoc}
 	 */
 	public List<String> getAxisFullIdentifyer() {
-		
 		final List<String> identifier = new ArrayList<String>();
 		final Iterator<Motor> motorIterator = this.motors.iterator();
-		
+
 		Motor currentMotor = null;
 		MotorAxis currentAxis = null;
 		Iterator<MotorAxis> axisIterator = null;
-		while( motorIterator.hasNext() ) {
+		while (motorIterator.hasNext()) {
 			currentMotor = motorIterator.next();
-			if( this.excludeList.contains( currentMotor ) ) {
+			if (this.excludeList.contains(currentMotor)) {
 				continue;
 			}
 			axisIterator = currentMotor.axisIterator();
-			while( axisIterator.hasNext() ) {
+			while (axisIterator.hasNext()) {
 				currentAxis = axisIterator.next();
-				if( this.excludeList.contains( currentAxis ) ) {
+				if (this.excludeList.contains(currentAxis)) {
 					continue;
 				}
 				int i = 0;
-				for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();){
+				for (Iterator<String> iterator = identifier.iterator(); iterator
+						.hasNext();) {
 					final String test = iterator.next();
-					if (currentAxis.getFullIdentifyer().compareToIgnoreCase(test) > 0 ){
+					if (currentAxis.getFullIdentifyer().compareToIgnoreCase(
+							test) > 0) {
 						i++;
-					}
-					else
+					} else
 						break;
 				}
 				identifier.add(i, currentAxis.getFullIdentifyer());
@@ -275,25 +275,27 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	public List<String> getChannelsFullIdentifyer() {
 		List<String> identifier = new ArrayList<String>();
 		Iterator<Detector> detectorIterator = this.detectors.iterator();
-		
-		while(detectorIterator.hasNext()) {
+
+		while (detectorIterator.hasNext()) {
 			Detector currentDetector = detectorIterator.next();
-			if(this.excludeList.contains(currentDetector)) {
+			if (this.excludeList.contains(currentDetector)) {
 				continue;
 			}
-			Iterator<DetectorChannel> channelIterator = currentDetector.channelIterator();
-			while( channelIterator.hasNext() ) {
+			Iterator<DetectorChannel> channelIterator = currentDetector
+					.channelIterator();
+			while (channelIterator.hasNext()) {
 				DetectorChannel currentChannel = channelIterator.next();
-				if( this.excludeList.contains( currentChannel ) ) {
+				if (this.excludeList.contains(currentChannel)) {
 					continue;
 				}
 				int i = 0;
-				for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();){
+				for (Iterator<String> iterator = identifier.iterator(); iterator
+						.hasNext();) {
 					final String test = iterator.next();
-					if (currentDetector.getFullIdentifyer().compareToIgnoreCase(test) > 0 ){
+					if (currentDetector.getFullIdentifyer()
+							.compareToIgnoreCase(test) > 0) {
 						i++;
-					}
-					else
+					} else
 						break;
 				}
 				identifier.add(i, currentChannel.getFullIdentifyer());
@@ -308,116 +310,124 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	public List<String> getPrePostScanDevicesFullIdentifyer() {
 		List<String> identifier = new ArrayList<String>();
 		Iterator<Device> deviceIterator = this.devices.iterator();
-		while(deviceIterator.hasNext()) {
+		while (deviceIterator.hasNext()) {
 			Device currentDevice = deviceIterator.next();
-			if( this.excludeList.contains(currentDevice)) {
+			if (this.excludeList.contains(currentDevice)) {
 				continue;
 			}
 			int i = 0;
-			for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();){
+			for (Iterator<String> iterator = identifier.iterator(); iterator
+					.hasNext();) {
 				final String test = iterator.next();
-				if (currentDevice.getFullIdentifyer().compareToIgnoreCase(test) > 0 ){
+				if (currentDevice.getFullIdentifyer().compareToIgnoreCase(test) > 0) {
 					i++;
-				}
-				else
+				} else
 					break;
 			}
 			identifier.add(i, currentDevice.getFullIdentifyer());
 		}
-		
+
 		Iterator<Motor> motorIterator = this.motors.iterator();
-		while( motorIterator.hasNext() ) {
+		while (motorIterator.hasNext()) {
 			Motor currentMotor = motorIterator.next();
-			if( this.excludeList.contains( currentMotor ) ) {
+			if (this.excludeList.contains(currentMotor)) {
 				continue;
 			}
 			Iterator<Option> optionIterator = currentMotor.optionIterator();
-			while( optionIterator.hasNext() ) {
+			while (optionIterator.hasNext()) {
 				Option currentOption = optionIterator.next();
-				if( this.excludeList.contains( currentOption ) ) {
+				if (this.excludeList.contains(currentOption)) {
 					continue;
 				}
 				int i = 0;
-				for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();){
+				for (Iterator<String> iterator = identifier.iterator(); iterator
+						.hasNext();) {
 					final String test = iterator.next();
-					if (currentOption.getFullIdentifyer().compareToIgnoreCase(test) > 0 ){
+					if (currentOption.getFullIdentifyer().compareToIgnoreCase(
+							test) > 0) {
 						i++;
-					}
-					else
+					} else
 						break;
 				}
 				identifier.add(i, currentOption.getFullIdentifyer());
 			}
-			
+
 			Iterator<MotorAxis> axisIterator = currentMotor.axisIterator();
-			while( axisIterator.hasNext() ) {
+			while (axisIterator.hasNext()) {
 				MotorAxis currentAxis = axisIterator.next();
-				if( this.excludeList.contains( currentAxis ) ) {
+				if (this.excludeList.contains(currentAxis)) {
 					continue;
 				}
-				Iterator<Option> optionIterator2 = currentAxis.getOptions().iterator();
-				while( optionIterator2.hasNext() ) {
+				Iterator<Option> optionIterator2 = currentAxis.getOptions()
+						.iterator();
+				while (optionIterator2.hasNext()) {
 					Option currentOption = optionIterator2.next();
-					if( this.excludeList.contains( currentOption ) ) {
+					if (this.excludeList.contains(currentOption)) {
 						continue;
 					}
 					int i = 0;
-					for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();){
+					for (Iterator<String> iterator = identifier.iterator(); iterator
+							.hasNext();) {
 						final String test = iterator.next();
-						if (currentOption.getFullIdentifyer().compareToIgnoreCase(test) > 0 ){
+						if (currentOption.getFullIdentifyer()
+								.compareToIgnoreCase(test) > 0) {
 							i++;
-						}
-						else
+						} else
 							break;
 					}
 					identifier.add(i, currentOption.getFullIdentifyer());
 				}
 			}
 		}
-		
+
 		Iterator<Detector> detectorIterator = this.detectors.iterator();
-		while( detectorIterator.hasNext() ) {
+		while (detectorIterator.hasNext()) {
 			Detector currentDetector = detectorIterator.next();
-			if( this.excludeList.contains( currentDetector ) ) {
+			if (this.excludeList.contains(currentDetector)) {
 				continue;
 			}
-			Iterator<Option> optionIterator = currentDetector.getOptions().iterator();
-			while( optionIterator.hasNext() ) {
+			Iterator<Option> optionIterator = currentDetector.getOptions()
+					.iterator();
+			while (optionIterator.hasNext()) {
 				Option currentOption = optionIterator.next();
-				if( this.excludeList.contains( currentOption ) ) {
+				if (this.excludeList.contains(currentOption)) {
 					continue;
 				}
 				int i = 0;
-				for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();){
+				for (Iterator<String> iterator = identifier.iterator(); iterator
+						.hasNext();) {
 					final String test = iterator.next();
-					if (currentOption.getFullIdentifyer().compareToIgnoreCase(test) > 0 ){
+					if (currentOption.getFullIdentifyer().compareToIgnoreCase(
+							test) > 0) {
 						i++;
-					}
-					else
+					} else
 						break;
 				}
 				identifier.add(i, currentOption.getFullIdentifyer());
 			}
-			
-			Iterator<DetectorChannel> channelsIterator = currentDetector.channelIterator();
-			while( channelsIterator.hasNext() ) {
+
+			Iterator<DetectorChannel> channelsIterator = currentDetector
+					.channelIterator();
+			while (channelsIterator.hasNext()) {
 				DetectorChannel currentChannel = channelsIterator.next();
-				if( this.excludeList.contains( currentChannel ) ) {
+				if (this.excludeList.contains(currentChannel)) {
 					continue;
 				}
-				Iterator<Option> optionIterator2 = currentChannel.getOptions().iterator();
-				while( optionIterator2.hasNext() ) {
+				Iterator<Option> optionIterator2 = currentChannel.getOptions()
+						.iterator();
+				while (optionIterator2.hasNext()) {
 					Option currentOption = optionIterator2.next();
-					if( this.excludeList.contains( currentOption ) ) {
+					if (this.excludeList.contains(currentOption)) {
 						continue;
 					}
 					int i = 0;
-					for (Iterator<String> iterator = identifier.iterator(); iterator.hasNext();){
+					for (Iterator<String> iterator = identifier.iterator(); iterator
+							.hasNext();) {
 						final String test = iterator.next();
-						if (currentOption.getFullIdentifyer().compareToIgnoreCase(test) > 0 ){
+						if (currentOption.getFullIdentifyer()
+								.compareToIgnoreCase(test) > 0) {
 							i++;
-						}
-						else
+						} else
 							break;
 					}
 					identifier.add(i, currentOption.getFullIdentifyer());
@@ -426,7 +436,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		}
 		return identifier;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * @throws IllegalArgumentException if the argument is <code>null</code> or 
@@ -513,9 +523,11 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	}
 	
 	/**
+	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice}
+	 * with the given <code>id</code> or <code>null</code> if none.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id the id of the device
+	 * @return the device with the given id
 	 */
 	public AbstractDevice getAbstractDeviceById(String id) {
 		// XXX ExcludeFilter should extend MeasuringStation and 
@@ -588,10 +600,10 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	 * {@inheritDoc}
 	 */
 	public List<AbstractDevice> getDeviceList(String classname){
-		if (classMap.containsKey(classname))
+		if (classMap.containsKey(classname)) {
 			return classMap.get(classname);
-		else
-			return null;
+		}
+		return null;
 	}
 
 	/**
@@ -842,79 +854,80 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	}
 	
 	/**
-	 * Excludes devices that are not used in the given 
+	 * Excludes devices that are not used in the given
 	 * {@link de.ptb.epics.eve.data.scandescription.ScanDescription}.
 	 * <p>
 	 * The exclusion works as follows:
 	 * <ul>
-	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.Motor} is excluded 
-	 *   	if <u>all</u> of the following conditions are met:
-	 *     <ul>
-	 *       <li>none of its options are used</li>
-	 *       <li>none of its axes are used</li>
-	 *       <li>none of its axes options (pre or post scan) are used</li>
-	 *     </ul>
-	 *   </li>
-	 *   <li>an {@link de.ptb.epics.eve.data.measuringstation.Option} of a 
-	 *   	{@link de.ptb.epics.eve.data.measuringstation.Motor} is excluded 
-	 *   	if it is not used.
-	 *   </li>
-	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.MotorAxis} is 
-	 *   	excluded if <u>all</u> of the following conditions are met:
-	 *     <ul>
-	 *       <li>the motor axis itself is not used</li>
-	 *       <li>none of its options are used</li>
-	 *     </ul>
-	 *   </li>
-	 *   <li>an {@link de.ptb.epics.eve.data.measuringstation.Option} of a 
-	 *   	{@link de.ptb.epics.eve.data.measuringstation.MotorAxis} is excluded 
-	 *   	if it is not used.
-	 *   </li>
-	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.Detector} will be 
-	 *   	excluded if <u>all</u> of the following conditions are met:
-	 *     <ul>
-	 *       <li>none of its options are used</li>
-	 *       <li>none of its channels are used</li>
-	 *       <li>none of its channels options are used</li>
-	 *     </ul>
-	 *   </li>
-	 *   <li>an {@link de.ptb.epics.eve.data.measuringstation.Option} of a 
-	 *   	{@link de.ptb.epics.eve.data.measuringstation.Detector} is excluded 
-	 *   	if it is not used.
-	 *   </li>
-	 *   <li>a {@link de.ptb.epics.eve.data.measuringstation.DetectorChannel} 
-	 *   	will be excluded if <u>all</u> of the following conditions are met:
-	 *   	<ul>
-	 *   	  <li>the detector channel itself is not used</li>
-	 *   	  <li>none of its options are used</li>
-	 *   	</ul>
-	 *   </li>
-	 *   <li>an {@link de.ptb.epics.eve.data.measuringstation.Option} of a 
-	 *   	{@link de.ptb.epics.eve.data.measuringstation.DetectorChannel} is 
-	 *   	excluded if it is not used.
-	 *   </li>
+	 * <li>a {@link de.ptb.epics.eve.data.measuringstation.Motor} is excluded if
+	 * <u>all</u> of the following conditions are met:
+	 * <ul>
+	 * <li>none of its options are used</li>
+	 * <li>none of its axes are used</li>
+	 * <li>none of its axes options (pre or post scan) are used</li>
+	 * </ul>
+	 * </li>
+	 * <li>an {@link de.ptb.epics.eve.data.measuringstation.Option} of a
+	 * {@link de.ptb.epics.eve.data.measuringstation.Motor} is excluded if it is
+	 * not used.</li>
+	 * <li>a {@link de.ptb.epics.eve.data.measuringstation.MotorAxis} is
+	 * excluded if <u>all</u> of the following conditions are met:
+	 * <ul>
+	 * <li>the motor axis itself is not used</li>
+	 * <li>none of its options are used</li>
+	 * </ul>
+	 * </li>
+	 * <li>an {@link de.ptb.epics.eve.data.measuringstation.Option} of a
+	 * {@link de.ptb.epics.eve.data.measuringstation.MotorAxis} is excluded if
+	 * it is not used.</li>
+	 * <li>a {@link de.ptb.epics.eve.data.measuringstation.Detector} will be
+	 * excluded if <u>all</u> of the following conditions are met:
+	 * <ul>
+	 * <li>none of its options are used</li>
+	 * <li>none of its channels are used</li>
+	 * <li>none of its channels options are used</li>
+	 * </ul>
+	 * </li>
+	 * <li>an {@link de.ptb.epics.eve.data.measuringstation.Option} of a
+	 * {@link de.ptb.epics.eve.data.measuringstation.Detector} is excluded if it
+	 * is not used.</li>
+	 * <li>a {@link de.ptb.epics.eve.data.measuringstation.DetectorChannel} will
+	 * be excluded if <u>all</u> of the following conditions are met:
+	 * <ul>
+	 * <li>the detector channel itself is not used</li>
+	 * <li>none of its options are used</li>
+	 * </ul>
+	 * </li>
+	 * <li>an {@link de.ptb.epics.eve.data.measuringstation.Option} of a
+	 * {@link de.ptb.epics.eve.data.measuringstation.DetectorChannel} is
+	 * excluded if it is not used.</li>
 	 * </ul>
 	 * 
-	 * <u>Note:</u> A device is also considered as "used" if it is part of an 
-	 * event.
+	 * <u>Note:</u>
+	 * <ul>
+	 * <li>A device is also considered as "used" if it is part of an event.</li>
+	 * <li>An option is also considered as "used" if it should be monitored.</li>
+	 * </ul>
 	 * 
-	 * @param scandescription the 
-	 * 		  {@link de.ptb.epics.eve.data.scandescription.ScanDescription} 
-	 * 		  containing the devices which will remain (all other are excluded)
+	 * @param scandescription
+	 *            the
+	 *            {@link de.ptb.epics.eve.data.scandescription.ScanDescription}
+	 *            containing the devices which will remain (all other are
+	 *            excluded)
 	 */
 	public void excludeUnusedDevices(ScanDescription scandescription) {
 		/*
 		 * implementation works as follows:
 		 * Hash sets are created for motor axes, detector channels, devices 
 		 * and options. Hash because of performance reasons (they will be 
-		 * accessed frequently) and sets because of uniqueness (marking a 
+		 * accessed frequently) and Sets because of uniqueness (marking a 
 		 * device as used if it was already doesn't hurt).
 		 * The whole scan description is iterated (each scan module of each 
 		 * chain) and all devices and options found are added to the 
 		 * corresponding used lists.
 		 * The second part iterates through all available devices and options 
 		 * of the measuring station (source). If a device is not used (it is 
-		 * not in the exclude list) it is excluded.
+		 * not in the used list) it is excluded.
 		 */
 		
 		filterInProgress = true;
@@ -1046,6 +1059,45 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					used_devices.add((Device)dev);
 				} else if (dev instanceof Option) {
 					used_options.add((Option)dev);
+				}
+			}
+		}
+		
+		// add all options with monitor="true" to the list of used options
+		for(Detector d : this.getSource().getDetectors()) {
+			for(Option o : d.getOptions()) {
+				if(o.isMonitor()) {
+					used_options.add(o);
+				}
+			}
+			for(DetectorChannel ch : d.getChannels()) {
+				for(Option o : ch.getOptions()) {
+					if(o.isMonitor()) {
+						used_options.add(o);
+					}
+				}
+			}
+		}
+		
+		for(Motor m : this.getSource().getMotors()) {
+			for(Option o : m.getOptions()) {
+				if(o.isMonitor()) {
+					used_options.add(o);
+				}
+			}
+			for(MotorAxis ma : m.getAxes()) {
+				for(Option o : ma.getOptions()) {
+					if(o.isMonitor()) {
+						used_options.add(o);
+					}
+				}
+			}
+		}
+		
+		for(Device dev : this.getSource().getDevices()) {
+			for(Option o : dev.getOptions()) {
+				if(o.isMonitor()) {
+					used_options.add(o);
 				}
 			}
 		}

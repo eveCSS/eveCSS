@@ -85,7 +85,6 @@ public class OptionTest {
 		for(IMeasuringStation ims : stations) {
 			assertNotNull(ims);
 		}
-		
 		classSetUp(logger);
 	}
 

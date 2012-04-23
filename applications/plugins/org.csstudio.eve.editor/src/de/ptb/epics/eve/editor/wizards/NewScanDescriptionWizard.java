@@ -24,7 +24,7 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
-import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionSaverToXMLusingXerces;
+import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionSaver;
 import de.ptb.epics.eve.editor.Activator;
 
 /**
@@ -156,8 +156,8 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 		
 		try {
 			final FileOutputStream os = new FileOutputStream(file);
-			final ScanDescriptionSaverToXMLusingXerces scanDescriptionSaver = 
-					new ScanDescriptionSaverToXMLusingXerces(os, 
+			final ScanDescriptionSaver scanDescriptionSaver = 
+					new ScanDescriptionSaver(os, 
 															 measuringStation, 
 															 scanDescription);
 			scanDescriptionSaver.save();

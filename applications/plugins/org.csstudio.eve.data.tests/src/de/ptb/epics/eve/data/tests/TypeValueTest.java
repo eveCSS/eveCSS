@@ -266,7 +266,6 @@ public class TypeValueTest {
 		for(IMeasuringStation measuringStation : stations) {
 			assertNotNull(measuringStation);
 		}
-		
 		classSetUp(logger);
 	}
 

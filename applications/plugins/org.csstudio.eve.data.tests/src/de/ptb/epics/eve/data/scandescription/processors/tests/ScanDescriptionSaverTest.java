@@ -1,6 +1,9 @@
 package de.ptb.epics.eve.data.scandescription.processors.tests;
 
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
+import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.classSetUp;
+import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.classTearDown;
+import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.testSetUp;
+import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.testTearDown;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.RollingFileAppender;
@@ -8,29 +11,25 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 /**
- * 
- * 
  * @author Marcus Michalsky
- * @since 1.1
+ * @since 1.2
  */
-public class ScanDescriptionLoaderTest {
-	
-	private static Logger logger = 
-			Logger.getLogger(ScanDescriptionLoaderTest.class.getName());
+public class ScanDescriptionSaverTest {
+
+	private static Logger logger = Logger
+			.getLogger(ScanDescriptionSaverTest.class.getName());
 	
 	/**
 	 * 
 	 */
-	@Ignore("Incomplete")
 	@Test
-	public void bufferRefresh() {
-
+	public void monitorOptionsTest() {
+		
 	}
 	
 	// **********************************************************************
@@ -46,7 +45,7 @@ public class ScanDescriptionLoaderTest {
 		Configurator.configureLogging();
 		
 		((RollingFileAppender)logger.
-				getAppender("ScanDescriptionLoaderTestAppender")).rollOver();
+				getAppender("ScanDescriptionSaverTestAppender")).rollOver();
 
 		classSetUp(logger);
 	}

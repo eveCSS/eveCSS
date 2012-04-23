@@ -81,7 +81,6 @@ public class MotorTest {
 		for(IMeasuringStation ims : stations) {
 			assertNotNull(ims);
 		}
-		
 		classSetUp(logger);
 	}
 

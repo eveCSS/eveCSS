@@ -43,6 +43,7 @@
     <sequence>
       <element name="repeatcount" type="tns:repeatcount" default="0"></element>
       <element name="chain" type="tns:chain" maxOccurs="unbounded"></element>
+      <element name="monitoroptions" type="tns:monitoroptions"></element>
     </sequence>
   </complexType>
 
@@ -58,6 +59,12 @@
       <element name="scanmodules" type="tns:scanmodules"></element>
     </sequence>
   <attribute name="id" type="tns:oneToThousand"></attribute>
+  </complexType>
+
+  <complexType name="monitoroptions">
+    <sequence>
+      <element name="id" type="tns:identifier" minOccurs="0" maxOccurs="unbounded"></element>
+    </sequence>
   </complexType>
 
   <group name="fileGroup">
@@ -236,7 +243,7 @@
 
   <complexType name="smaxis">
     <sequence>
-      <element name="axisid" type="string"></element>
+      <element name="axisid" type="tns:identifier"></element>
       <element name="stepfunction" type="tns:stepfunction"></element>
       <element name="positionmode">
         <simpleType>
@@ -323,6 +330,7 @@
       <element name="class" type="string" minOccurs="0"></element>
       <group ref="tns:subdeviceGroup"></group>
     </sequence>
+    <attribute name="monitor" type="boolean" default="false"></attribute>
   </complexType>
   
    <simpleType name="display">
@@ -356,9 +364,9 @@
 
  <complexType name="positioning">
     <sequence>
-      <element name="axis_id" type="string"></element>
-      <element name="channel_id" type="string"></element>
-      <element name="normalize_id" type="string" minOccurs="0"></element>   
+      <element name="axis_id" type="tns:identifier"></element>
+      <element name="channel_id" type="tns:identifier"></element>
+      <element name="normalize_id" type="tns:identifier" minOccurs="0"></element>   
       <element name="plugin" type="tns:controller"></element>
     </sequence>
   </complexType>
@@ -573,7 +581,7 @@
     <sequence>
       <element name="id" type="tns:identifier"></element>
       <element name="mode" type="tns:plotmode"></element>
-      <element name="normalize_id" type="string" minOccurs="0"></element>
+      <element name="normalize_id" type="tns:identifier" minOccurs="0"></element>
       <element name="linestyle" type="string"></element>
       <element name="color" type="tns:color"></element>
       <element name="markstyle" type="string"></element>

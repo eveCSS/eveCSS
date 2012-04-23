@@ -7,34 +7,76 @@ import java.util.List;
  *  This class represents a motor axis of a device.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
+ * @author Marcus Michalsky
  */
 public class Option extends AbstractPrePostscanDevice {
 
+	private boolean monitor;
+	
 	/**
-	 * Returns a copy of the calling Option object
+	 * Constructor.
+	 */
+	public Option() {
+		super();
+		this.monitor = false;
+	}
+	
+	/**
+	 * Constructor.
 	 * 
-	 * @return a clone of the current Option
+	 * @param monitor
+	 *            <code>true</code> if option should be monitored,
+	 *            <code>false</code> otherwise
+	 */
+	public Option(boolean monitor) {
+		super();
+		this.monitor = monitor;
+	}
+	
+	
+	
+	/**
+	 * @return the monitor
+	 */
+	public boolean isMonitor() {
+		return monitor;
+	}
+
+
+
+	/**
+	 * @param monitor the monitor to set
+	 */
+	public void setMonitor(boolean monitor) {
+		this.monitor = monitor;
+	}
+
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Object clone() {
 		final Option option = new Option();
-		
+
 		option.setClassName(this.getClassName());
 		option.setDisplaygroup(this.getDisplaygroup());
-		option.setValue((Function)
-				(this.getValue()!=null?this.getValue().clone():null));
+		option.setValue((Function) (this.getValue() != null ? this.getValue()
+				.clone() : null));
 		this.setName(this.getName());
 		option.setName(this.getName());
 		option.setId(this.getID());
-		option.setUnit((Unit)
-				(this.getUnit()!=null?this.getUnit().clone():null));
+		option.setUnit((Unit) (this.getUnit() != null ? this.getUnit().clone()
+				: null));
+		option.setMonitor(this.isMonitor());
 		return option;
 	}
 
 	/**
-	 * Returns a copy of the internal options list.
-	 * 
-	 * @return A list of Option objects.
+	 * {@inheritDoc}
+	 * <p>
+	 * Always returns <code>null</code> (
+	 * {@link de.ptb.epics.eve.data.measuringstation.Option}s don't have
+	 * options.
 	 */
 	@Override
 	public List<Option> getOptions() {
@@ -42,10 +84,11 @@ public class Option extends AbstractPrePostscanDevice {
 	}
 
 	/**
-	 * Returns an <code>Iterator</code> over the internal <code>List</code> of 
-	 * <code>Option</code>s.
-	 * 
-	 * @return An Iterator<Option> object over the internal options list.
+	 * {@inheritDoc}
+	 * <p>
+	 * Always returns <code>null</code> (
+	 * {@link de.ptb.epics.eve.data.measuringstation.Option}s don't have
+	 * options.
 	 */
 	@Override
 	public Iterator<Option> optionIterator() {

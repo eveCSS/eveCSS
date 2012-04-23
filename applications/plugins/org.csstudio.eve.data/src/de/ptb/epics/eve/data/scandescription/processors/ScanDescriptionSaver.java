@@ -59,11 +59,11 @@ import de.ptb.epics.eve.data.scandescription.PositionMode;
  * @author Marcus Michalsky
  * @author Hartmut Scherr
  */
-public class ScanDescriptionSaverToXMLusingXerces implements
+public class ScanDescriptionSaver implements
 		IScanDescriptionSaver {
 
 	private static Logger logger = Logger
-			.getLogger(ScanDescriptionSaverToXMLusingXerces.class.getName());
+			.getLogger(ScanDescriptionSaver.class.getName());
 	
 	private IMeasuringStation measuringStation;
 	private ScanDescription scanDescription;
@@ -92,7 +92,7 @@ public class ScanDescriptionSaverToXMLusingXerces implements
 	 * @param scanDescription
 	 *            The scan description.
 	 */
-	public ScanDescriptionSaverToXMLusingXerces(final OutputStream destination,
+	public ScanDescriptionSaver(final OutputStream destination,
 			final IMeasuringStation measuringStation,
 			final ScanDescription scanDescription) {
 		if (measuringStation == null) {
@@ -223,6 +223,8 @@ public class ScanDescriptionSaverToXMLusingXerces implements
 				this.writeChain(chain);
 			}
 
+			successful = this.writeMonitorDevices();
+			
 			this.contentHandler.endElement("", "", "scan");
 			
 			successful = this.writePlugins();
@@ -240,6 +242,76 @@ public class ScanDescriptionSaverToXMLusingXerces implements
 		return successful;
 	}
 
+	/**
+	 * Returns whether writing was successful.
+	 * 
+	 * @return whether writing was successful
+	 */
+	private boolean writeMonitorDevices() {
+		boolean successful = true;
+		try {
+			this.atts.clear();
+			this.contentHandler.startElement("", "monitordevices",
+					"monitordevices", this.atts);
+
+			for (Detector d : this.measuringStation.getDetectors()) {
+				for (Option o : d.getOptions()) {
+					if(!o.isMonitor()) continue;
+					successful = this.writeId(o.getID());
+				}
+				for (DetectorChannel ch : d.getChannels()) {
+					for (Option o : ch.getOptions()) {
+						if(!o.isMonitor()) continue;
+						successful = this.writeId(o.getID());
+					}
+				}
+			}
+			for (Motor m : this.measuringStation.getMotors()) {
+				for (Option o : m.getOptions()) {
+					if(!o.isMonitor()) continue;
+					successful = this.writeId(o.getID());
+				}
+				for (MotorAxis ma : m.getAxes()) {
+					for (Option o : ma.getOptions()) {
+						if(!o.isMonitor()) continue;
+						successful = this.writeId(o.getID());
+					}
+				}
+			}
+			for (Device dev : this.measuringStation.getDevices()) {
+				for (Option o : dev.getOptions()) {
+					if(!o.isMonitor()) continue;
+					successful = this.writeId(o.getID());
+				}
+			}
+
+			this.contentHandler.endElement("", "monitordevices",
+					"monitordevices");
+		} catch (SAXException e) {
+			logger.error(e.getMessage(), e);
+			return false;
+		}
+		return successful;
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	private boolean writeId(String id) {
+		this.atts.clear();
+		try {
+			this.contentHandler.startElement("", "id", "id", this.atts);
+			this.contentHandler.characters(id.toCharArray(), 0, id.length());
+			this.contentHandler.endElement("", "id", "id");
+		} catch (SAXException e) {
+			logger.error(e.getMessage(), e);
+			return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * This method writes all devices of the current measuring station.
 	 * 

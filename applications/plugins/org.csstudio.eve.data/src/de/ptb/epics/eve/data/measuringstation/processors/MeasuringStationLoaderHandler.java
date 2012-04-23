@@ -161,7 +161,12 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			} else if (qName.equals("name")) {
 				this.state = MeasuringStationLoaderStates.DETECTOR_NAME_NEXT;
 			} else if (qName.equals("option")) {
-				this.currentOption = new Option();
+				if (atts.getValue("monitor") != null) {
+					this.currentOption = new Option(Boolean.parseBoolean(atts
+							.getValue("monitor")));
+				} else {
+					this.currentOption = new Option();
+				}
 				this.state = MeasuringStationLoaderStates.DETECTOR_OPTION;
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
 			} else if (qName.equals("unit")) {
@@ -190,7 +195,12 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_READ_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			} else if (qName.equals("option")) {
-				this.currentOption = new Option();
+				if (atts.getValue("monitor") != null) {
+					this.currentOption = new Option(Boolean.parseBoolean(atts
+							.getValue("monitor")));
+				} else {
+					this.currentOption = new Option();
+				}
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_OPTION;
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
 			} else if (qName.equals("unit")) {
@@ -224,7 +234,12 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.state = MeasuringStationLoaderStates.MOTOR_UNIT;
 				this.subState = MeasuringStationLoaderSubStates.UNIT_LOADING;
 			} else if (qName.equals("option")) {
-				this.currentOption = new Option();
+				if (atts.getValue("monitor") != null) {
+					this.currentOption = new Option(Boolean.parseBoolean(atts
+							.getValue("monitor")));
+				} else {
+					this.currentOption = new Option();
+				}
 				this.state = MeasuringStationLoaderStates.MOTOR_OPTION;
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
 			} else if (qName.equals("trigger")) {
@@ -269,7 +284,12 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_TRIGGER_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			} else if (qName.equals("option")) {
-				this.currentOption = new Option();
+				if (atts.getValue("monitor") != null) {
+					this.currentOption = new Option(Boolean.parseBoolean(atts
+							.getValue("monitor")));
+				} else {
+					this.currentOption = new Option();
+				}
 				this.state = MeasuringStationLoaderStates.MOTOR_AXIS_OPTION;
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
 			} else if (qName.equals("unit")) {
@@ -333,7 +353,12 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.subState = MeasuringStationLoaderSubStates.UNIT_LOADING;
 				this.state = MeasuringStationLoaderStates.DEVICE_UNIT;
 			} else if (qName.equals("option")) {
-				this.currentOption = new Option();
+				if (atts.getValue("monitor") != null) {
+					this.currentOption = new Option(Boolean.parseBoolean(atts
+							.getValue("monitor")));
+				} else {
+					this.currentOption = new Option();
+				}
 				this.subState = MeasuringStationLoaderSubStates.OPTION_LOADING;
 				this.state = MeasuringStationLoaderStates.DEVICE_OPTION;
 			}
