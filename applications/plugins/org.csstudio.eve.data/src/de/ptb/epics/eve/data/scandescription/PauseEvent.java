@@ -1,8 +1,8 @@
 package de.ptb.epics.eve.data.scandescription;
 
-import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import de.ptb.epics.eve.data.EventActions;
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessage;
@@ -10,11 +10,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMess
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
-
 /**
- * Because a pause event have one more field, that is indicating that all operations
- * will be continue if the conditions of event are not true anymore, PauseEvent extends
- * ControlEvent to provide the additional field.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
@@ -22,11 +18,9 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class PauseEvent extends ControlEvent {
 
-	/*
-	 * The attribute.
-	 */
-	private boolean continueIfFalse;
-
+	/** @since 1.2 */
+	private EventActions eventAction;
+	
 	/**
 	 * Constructs a <code>PauseEvent</code>.
 	 * 
@@ -34,7 +28,15 @@ public class PauseEvent extends ControlEvent {
 	 */
 	public PauseEvent(final EventTypes type) {
 		super(type);
-		this.continueIfFalse = false;
+		switch(type) {
+		case DETECTOR:
+		case SCHEDULE:
+			this.eventAction = EventActions.ON;
+			break;
+		case MONITOR:
+			this.eventAction = EventActions.ONOFF;
+			break;
+		}
 	}
 
 	/**
@@ -47,43 +49,54 @@ public class PauseEvent extends ControlEvent {
 	 */
 	public PauseEvent(final EventTypes type, Event event, String id) {
 		super(type, event, id);
-		this.continueIfFalse = false;
+		switch(type) {
+		case DETECTOR:
+		case SCHEDULE:
+			this.eventAction = EventActions.ON;
+			break;
+		case MONITOR:
+			this.eventAction = EventActions.ONOFF;
+			break;
+		}
 	}
-	
+
 	/**
-	 * Checks whether the attribute is set.
-	 * 
-	 * @return <code>true</code> if the attribute is set, 
-	 * 		   <code>false</code> otherwise
+	 * @return the eventAction
+	 * @since 1.2
 	 */
-	public boolean isContinueIfFalse() {
-		return continueIfFalse;
+	public EventActions getEventAction() {
+		return eventAction;
 	}
-	
+
 	/**
-	 * Sets the attribute.
-	 * 
-	 * @param continueIfFalse <code>true</code> if continue, 
-	 * 		  				  <code>false</code> otherwise
+	 * @param eventAction the eventAction to set
+	 * @since 1.2
+	 * @throws IllegalArgumentException
+	 * 			if <code>eventAction</code> is
+	 * 			{@link de.ptb.epics.eve.data.EventActions#ONOFF} and event
+	 * 			type is not {@link de.ptb.epics.eve.data.EventTypes#MONITOR}
 	 */
-	public void setContinueIfFalse(boolean continueIfFalse) {
-		this.continueIfFalse = continueIfFalse;
-		updateListeners();
+	public void setEventAction(EventActions eventAction) {
+		if (eventAction.equals(EventActions.ONOFF)
+				&& !this.eventType.equals(EventTypes.MONITOR)) {
+			throw new IllegalArgumentException(
+					"Event action 'ONOFF' is only valid for events of type 'MONITOR'");
+		}
+		this.eventAction = eventAction;
+		this.updateListeners();
 	}
-	
+
 	/*
 	 * 
 	 */
-	private void updateListeners()
-	{
+	private void updateListeners() {
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
 			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
 		
-		Iterator<IModelUpdateListener> it = list.iterator();
-		
-		while(it.hasNext()) {
-			it.next().updateEvent(new ModelUpdateEvent(this, 
-				new ControlEventMessage(this, ControlEventMessageEnum.UPDATED)));
+		for(IModelUpdateListener imul : list) {
+			imul.updateEvent(new ModelUpdateEvent(this,
+					new ControlEventMessage(this,
+							ControlEventMessageEnum.UPDATED)));
 		}
-	}	
+	}
 }

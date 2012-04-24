@@ -2,6 +2,8 @@ h1(eveTopic). What's New ?
 
 h2(eveTopic). Version 1.2
 
+* [Feature] Pause events now pause or continue the scan (or both)
+* [Feature] Normalize Channel for Detector Channels (DetectorChannelView)
 * [Feature] Names for Plot windows
 * [Feature] Consistent presentation of device names (including lexicographical ordering)
 * [Feature] Remove All Axes/Channels/Prescans/Postscans/Positionings/Plots/Events

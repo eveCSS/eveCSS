@@ -18,7 +18,7 @@ import de.ptb.epics.eve.data.scandescription.PauseEvent;
  * @author Marcus Michalsky
  */
 public class LabelProvider implements ITableLabelProvider {
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -42,29 +42,27 @@ public class LabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public String getColumnText(Object controlEvent, int colIndex) {
-		String returnValue = "";
+		String returnValue = null;
+		ControlEvent ce = (ControlEvent)controlEvent;
 		switch (colIndex) {
 		case 0: // Source column
-			returnValue = ((ControlEvent) controlEvent).getEvent().getName();
+			returnValue = ce.getEvent().getName();
 			break;
 		case 1: // Operator column
-			if (((ControlEvent) controlEvent).getEvent().getType() == EventTypes.MONITOR) {
+			if (ce.getEvent().getType() == EventTypes.MONITOR) {
 				returnValue = ComparisonTypes
 						.typeToString(((ControlEvent) controlEvent).getLimit()
 								.getComparison());
 			}
 			break;
 		case 2: // Limit column
-			if (((ControlEvent) controlEvent).getEvent().getType() == EventTypes.MONITOR) {
+			if (ce.getEvent().getType() == EventTypes.MONITOR) {
 				returnValue = ((ControlEvent) controlEvent).getLimit()
 						.getValue();
 			}
 			break;
-		case 3: // CIF column
-			if (((ControlEvent) controlEvent).getEvent().getType() == EventTypes.MONITOR) {
-				returnValue = String.valueOf(((PauseEvent) controlEvent)
-						.isContinueIfFalse());
-			}
+		case 3: // Action column
+			returnValue = ((PauseEvent)ce).getEventAction().toString();
 			break;
 		}
 		return returnValue;

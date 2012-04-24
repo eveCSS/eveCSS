@@ -251,8 +251,8 @@ public class ScanDescriptionSaver implements
 		boolean successful = true;
 		try {
 			this.atts.clear();
-			this.contentHandler.startElement("", "monitordevices",
-					"monitordevices", this.atts);
+			this.contentHandler.startElement("", "monitoroptions",
+					"monitoroptions", this.atts);
 
 			for (Detector d : this.measuringStation.getDetectors()) {
 				for (Option o : d.getOptions()) {
@@ -1891,20 +1891,6 @@ public class ScanDescriptionSaver implements
 						.getValue().toCharArray(), 0, controlEvent.getLimit()
 						.getValue().length());
 				this.contentHandler.endElement("", "limit", "limit");
-
-				if (name.equals("pauseevent")) {
-					atts.clear();
-					this.contentHandler.startElement("", "continue_if_false",
-							"continue_if_false", this.atts);
-					this.contentHandler.characters(
-							("" + ((PauseEvent) controlEvent)
-									.isContinueIfFalse()).toCharArray(), 0,
-							("" + ((PauseEvent) controlEvent)
-									.isContinueIfFalse()).length());
-					this.contentHandler.endElement("", "continue_if_false",
-							"continue_if_false");
-				}
-
 			} else if (controlEvent.getEventType() == EventTypes.DETECTOR) {
 				this.atts.clear();
 				this.contentHandler.startElement("", "id", "id", this.atts);
@@ -1934,6 +1920,17 @@ public class ScanDescriptionSaver implements
 				this.contentHandler.characters(tag.toCharArray(), 0,
 						tag.length());
 				this.contentHandler.endElement("", "smid", "smid");
+			}
+			if (name.equals("pauseevent")) {
+				atts.clear();
+				this.contentHandler.startElement("", "action",
+						"action", this.atts);
+				this.contentHandler.characters(
+						("" + ((PauseEvent) controlEvent).getEventAction()
+								.toString()).toCharArray(), 0,
+						("" + ((PauseEvent) controlEvent).getEventAction()
+								.toString()).length());
+				this.contentHandler.endElement("", "action", "action");
 			}
 			this.contentHandler.endElement("", name, name);
 		} catch (SAXException e) {

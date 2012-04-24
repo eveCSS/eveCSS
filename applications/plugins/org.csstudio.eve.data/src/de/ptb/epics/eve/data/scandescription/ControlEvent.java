@@ -1,7 +1,6 @@
 package de.ptb.epics.eve.data.scandescription;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -34,7 +33,7 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 	private Limit limit;
 	
 	// the event type
-	private EventTypes eventType;
+	protected EventTypes eventType;
 	
 	// the event id
 	private String eventId;
@@ -199,16 +198,14 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 	/*
 	 * 
 	 */
-	private void updateListeners()
-	{
+	private void updateListeners() {
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
 			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
 		
-		Iterator<IModelUpdateListener> it = list.iterator();
-		
-		while(it.hasNext()) {
-			it.next().updateEvent(new ModelUpdateEvent(this, 
-				new ControlEventMessage(this, ControlEventMessageEnum.UPDATED)));
+		for(IModelUpdateListener imul : list) {
+			imul.updateEvent(new ModelUpdateEvent(this,
+					new ControlEventMessage(this,
+							ControlEventMessageEnum.UPDATED)));
 		}
 	}
 }

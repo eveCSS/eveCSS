@@ -22,6 +22,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.DataTypes;
+import de.ptb.epics.eve.data.EventActions;
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.data.PluginTypes;
@@ -513,8 +514,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentControlEvent.getLimit().setType(
 						DataTypes.stringToType(atts.getValue("type")));
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_LIMIT_NEXT;
-			} else if (qName.equals("continue_if_false")) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_CONTINUE_NEXT;
+			} else if (qName.equals("action")) {
+				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_ACTION_NEXT;
 			}
 			break;
 
@@ -525,8 +526,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_CHAINID_NEXT;
 			} else if (qName.equals("smid")) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_SCANMODULEID_NEXT;
-			} else if (qName.equals("continue_if_false")) {
-				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_CONTINUE_NEXT;
+			} else if (qName.equals("action")) {
+				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_ACTION_NEXT;
 			}
 			break;
 
@@ -991,16 +992,16 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_SCANMODULEID_READ;
 			break;
 
-		case PAUSEMONITOREVENT_CONTINUE_NEXT:
-			((PauseEvent) this.currentControlEvent).setContinueIfFalse(Boolean
-					.parseBoolean(textBuffer.toString()));
-			this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_CONTINUE_READ;
+		case PAUSEMONITOREVENT_ACTION_NEXT:
+			((PauseEvent) this.currentControlEvent).setEventAction(EventActions
+					.valueOf(textBuffer.toString()));
+			this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_ACTION_READ;
 			break;
 
-		case PAUSESCHEDULEEVENT_CONTINUE_NEXT:
-			((PauseEvent) this.currentControlEvent).setContinueIfFalse(Boolean
-					.parseBoolean(textBuffer.toString()));
-			this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_CONTINUE_READ;
+		case PAUSESCHEDULEEVENT_ACTION_NEXT:
+			((PauseEvent) this.currentControlEvent).setEventAction(EventActions
+					.valueOf(textBuffer.toString()));
+			this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_ACTION_READ;
 			break;
 
 		case YAXIS_ID_NEXT:
@@ -1787,7 +1788,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 													this.currentAxis
 															.setStepCount(((stop - start) / stepwidth));
 												}
-
 											} catch (final ParseException ef) {
 												logger.error(ef.getMessage(),
 														ef);
@@ -1804,7 +1804,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 											stepwidth = Double
 													.parseDouble(this.currentAxis
 															.getStepwidth());
-
 											if ((start - stop == 0)
 													|| (stepwidth == 0)) {
 												this.currentAxis
@@ -1813,7 +1812,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 												this.currentAxis
 														.setStepCount(((stop - start) / stepwidth));
 											}
-
 											break;
 										}
 									} catch (final NumberFormatException e) {
@@ -2066,7 +2064,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
 			break;
-
 		}
 
 		switch (this.subState) {
@@ -2082,14 +2079,14 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
-		case PAUSESCHEDULEEVENT_CONTINUE_READ:
-			if (qName.equals("continue_if_false")) {
+		case PAUSESCHEDULEEVENT_ACTION_READ:
+			if (qName.equals("action")) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
 			}
 			break;
 
-		case PAUSEMONITOREVENT_CONTINUE_READ:
-			if (qName.equals("continue_if_false")) {
+		case PAUSEMONITOREVENT_ACTION_READ:
+			if (qName.equals("action")) {
 				this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
 			}
 			break;
@@ -2208,9 +2205,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 							.getEventById(controlEvent.getId()));
 				}
 				if (controlEvent.getEvent() == null) {
-					// TODO do proper error handling
-					System.err
-							.println("FATAL ERROR: can't find event for id \n----------------------\n");
+					logger.fatal("can't find event for id!");
 				}
 			}
 		}
@@ -2228,9 +2223,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				startEvent = this.scanDescription.getDefaultStartEvent();
 			}
 			if (startEvent == null) {
-				// TODO do proper error handling
-				System.err
-						.println("FATAL ERROR: unable to create start event \n----------------------\n");
+				logger.fatal("unable to create start event!");
 				startEvent = this.scanDescription.getDefaultStartEvent();
 			}
 
@@ -2267,7 +2260,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					|| !DataTypes.isComparisonTypePossible(monEvent
 							.getDataType().getType(), controlEvent.getLimit()
 							.getComparison())) {
-
 				Iterator<Chain> chainIterator = this.scanDescription
 						.getChains().iterator();
 				while (chainIterator.hasNext()) {
@@ -2275,18 +2267,14 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					if (chain.isAEventOfTheChain(controlEvent)) {
 						break;
 					}
-
 					Iterator<ScanModule> scanModulIterator = chain
 							.getScanModules().iterator();
 					while (scanModulIterator.hasNext()) {
 						ScanModule scanModul = scanModulIterator.next();
-
 						if (scanModul.isAEventOfTheScanModul(controlEvent)) {
 							break;
 						}
-
 					}
-
 				}
 
 				if (monEvent == null) {
@@ -2304,12 +2292,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		for (int i = 0; i < chains.length; ++i) {
 			if (chains[i] == null)
 				continue;
-
 			int id = chains[i].getId();
 			for (int j = i + 1; j < chains.length; ++j) {
-
 				if ((chains[j] != null) && chains[j].getId() == id) {
-
 					chains[j] = null;
 				}
 			}
@@ -2397,12 +2382,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						}
 					}
 				}
-
 			}
-
 		}
 		// --- Checking for multiple command to the same device
-
 	}
 
 	/**

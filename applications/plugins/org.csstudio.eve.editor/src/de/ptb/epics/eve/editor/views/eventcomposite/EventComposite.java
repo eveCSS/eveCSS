@@ -53,6 +53,8 @@ public class EventComposite extends Composite {
 	 * 
 	 * @param parent the parent composite
 	 * @param style the style
+	 * @param eventType control or pause event
+	 * @param parentView the parent view
 	 */
 	public EventComposite(final Composite parent, final int style, 
 			final ControlEventTypes eventType, final IViewPart parentView) {
@@ -128,64 +130,10 @@ public class EventComposite extends Composite {
 			limitCol.getColumn().setWidth(60);
 			// column 4: CIF (Continue if false), only for Pause Events
 			TableViewerColumn cifCol = new TableViewerColumn(viewer, SWT.LEFT);
-			cifCol.getColumn().setText("CIF");
+			cifCol.getColumn().setText("Action");
 			cifCol.getColumn().setWidth(40);
-			cifCol.setEditingSupport(new CifEditingSupport(this.tableViewer));
+			cifCol.setEditingSupport(new PauseEditingSupport(this.tableViewer));
 			break;
-		}
-	}
-
-	/**
-	 * TODO
-	 */
-	private void setEventChoice() {
-		Event[] measuringStationEvents = Activator.getDefault().
-											getMeasuringStation().getEvents().
-											toArray(new Event[0]);
-		Event[] scanDescriptionEvents = null;
-
-		if(controlEventManager.getParentChain() != null) {
-			scanDescriptionEvents = controlEventManager.getParentChain().
-										getScanDescription().getEvents().
-										toArray(new Event[0]);
-		} else if(controlEventManager.getParentScanModule() != null) {
-			scanDescriptionEvents = controlEventManager.getParentScanModule().
-										getChain().getScanDescription().
-										getEvents().toArray(new Event[0]);
-		} else if(controlEventManager.getParentChannel() != null) {
-			scanDescriptionEvents = controlEventManager.getParentChannel().
-										getScanModule().getChain().
-										getScanDescription().getEvents().
-										toArray(new Event[0]);
-		}
-
-		List<? extends ControlEvent> vorhListe = 
-				controlEventManager.getControlEventsList();
-
-		eventIDs = new String[
-		        measuringStationEvents.length + scanDescriptionEvents.length];
-		for(int i = 0; i < measuringStationEvents.length; ++i) {
-			eventIDs[i] = measuringStationEvents[i].getName();
-		}
-
-		for(int i = measuringStationEvents.length; i < eventIDs.length; ++i) {
-			eventIDs[i] = 
-				scanDescriptionEvents[i-measuringStationEvents.length].getName();
-		}
-		//eventsCombo.setItems(eventIDs);
-
-		// durchlaufen durch die vorhandenen Events,
-		// alle Namen die schon gesetzt sind mit remove wieder entfernen.
-		for(int i = measuringStationEvents.length; i < eventIDs.length; ++i) {
-			for(ControlEvent cevent : vorhListe) {
-				if(cevent.getId() != null) {
-					if(cevent.getId().equals(scanDescriptionEvents[
-					               i-measuringStationEvents.length].getID())) {
-						//eventsCombo.remove(scanDescriptionEvents[
-					//	       i-measuringStationEvents.length].getNameID());
-					}
-				}
-			}
 		}
 	}
 

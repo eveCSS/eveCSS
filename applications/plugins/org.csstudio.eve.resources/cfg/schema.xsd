@@ -116,7 +116,7 @@
   <complexType name="pauseevent">
     <sequence>
       <group ref="tns:smeventGroup"></group>
-      <element name="continue_if_false" type="boolean" minOccurs="0"></element>
+      <element name="action" type="tns:eventactions"></element>
     </sequence>
     <attribute name="type" type="tns:event" use="required"></attribute>
   </complexType>
@@ -143,6 +143,14 @@
       </choice>
     </sequence>
   </group>
+
+  <simpleType name="eventactions">
+    <restriction base="string">
+      <enumeration value="ON"></enumeration>
+      <enumeration value="OFF"></enumeration>
+      <enumeration value="ONOFF"></enumeration>
+    </restriction>
+  </simpleType>
 
   <simpleType name="incident">
     <restriction base="string">

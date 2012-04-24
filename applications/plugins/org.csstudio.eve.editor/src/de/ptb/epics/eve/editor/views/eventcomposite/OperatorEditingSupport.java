@@ -29,6 +29,11 @@ public class OperatorEditingSupport extends EditingSupport {
 	
 	private List<String> comparisonTypes;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param viewer the table viewer
+	 */
 	public OperatorEditingSupport(TableViewer viewer) {
 		super(viewer);
 		this.viewer = viewer;
