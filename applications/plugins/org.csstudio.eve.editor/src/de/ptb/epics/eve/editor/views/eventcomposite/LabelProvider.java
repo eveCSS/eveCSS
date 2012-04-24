@@ -53,12 +53,16 @@ public class LabelProvider implements ITableLabelProvider {
 				returnValue = ComparisonTypes
 						.typeToString(((ControlEvent) controlEvent).getLimit()
 								.getComparison());
+			} else {
+				returnValue = "---";
 			}
 			break;
 		case 2: // Limit column
 			if (ce.getEvent().getType() == EventTypes.MONITOR) {
 				returnValue = ((ControlEvent) controlEvent).getLimit()
 						.getValue();
+			} else {
+				returnValue = "---";
 			}
 			break;
 		case 3: // Action column

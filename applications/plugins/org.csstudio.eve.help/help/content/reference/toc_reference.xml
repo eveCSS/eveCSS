@@ -2,8 +2,6 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Reference">
-   <topic href="help/content/reference/xmlschema.html" label="XML Schema">
-   </topic>
    <topic href="help/content/reference/xmlmsisyntax.html" label="xmlmsi Argument Syntax">
    </topic>
 
