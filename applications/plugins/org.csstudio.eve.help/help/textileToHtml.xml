@@ -3,7 +3,7 @@
 	<description>
 		Ant File for Building help documents
 	</description>
-	
+
 	<property name="eclipse_dir" location="/opt/eclipse/eclipse-rcp-indigo-SR1/eclipse" />
 
 	<path id="wikitext.classpath">
