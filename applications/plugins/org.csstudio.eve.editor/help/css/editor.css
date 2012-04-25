@@ -1,5 +1,5 @@
 body {
- 	max-width: 800px;
+ 	max-width: 700px;
 }
 
 p {
@@ -13,6 +13,25 @@ p {
 
 .eveImage {
 	margin: 10px 0;
+}
+
+.eveDataTable {
+	empty-cells: show;
+	border: 2px solid black;
+	padding: 0;
+	margin: 15px auto;
+	border-collapse: collapse;
+	max-width: 600px;
+}
+
+.eveDataTable th {
+	border: 1px solid black;
+	margin: 0;
+	padding: 4px;
+}
+
+.eveDataTable td {
+	text-align: center;
 }
 
 .eveRefTable {
