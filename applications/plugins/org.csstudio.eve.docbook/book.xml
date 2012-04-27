@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" 
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<book xmlns="http://docbook.org/ns/docbook">
+	<title>eveCSS</title>
+	<bookinfo>
+		<author>
+			<firstname>Marcus</firstname>
+			<surname>Michalsky</surname>
+		</author>
+		<publisher>
+			<publishername>Physikalisch-Technische Bundesanstalt</publishername>
+		</publisher>
+		<mediaobject>
+			<imageobject>
+				<imagedata fileref="img/ptb-logo.png" format="PNG" />
+			</imageobject>
+			<textobject>
+				<phrase>PTB-Logo</phrase>
+			</textobject>
+			<caption>
+				<para>Physikalisch-Technische Bundesanstalt</para>
+			</caption>
+		</mediaobject>
+	</bookinfo>
+	<preface>
+		<title>Foreword</title>
+		<para>
+			Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+			diam nonumy eirmod tempor invidunt ut labore et dolore magna
+			aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+			duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
+			sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+			consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+			ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero
+			eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+			gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+		</para>
+	</preface>
+	<!-- ************************ -->
+	<!-- ******* Main Part ****** -->
+	<!-- ************************ -->
+	<part>
+		<title>The EVE-Editor</title>
+		<partintro>
+			<para>
+				Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+				diam nonumy eirmod tempor invidunt ut labore et dolore magna
+				aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+				duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
+				sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+				consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+				ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero
+				eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+				gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+			</para>
+		</partintro>
+		<chapter id="gettingstarted-editor">
+			<xi:include href="help/editor/content/gettingstarted.xml"
+				xpointer="xpointer(//chapter/node())" 
+				xmlns:xi="http://www.w3.org/2001/XInclude" />
+		</chapter>
+
+	<chapter>
+		<title>Concepts</title>
+		<section>
+			<xi:include href="help/editor/content/concepts/events.xml"
+				xpointer="xpointer(//chapter/node())" 
+				xmlns:xi="http://www.w3.org/2001/XInclude" />
+		</section>
+	</chapter>
+		
+		<chapter>
+			<title>Reference</title>
+			<section>
+				<xi:include href="help/editor/content/reference/chainproperties.xml"
+					xpointer="xpointer(//chapter/node())" 
+					xmlns:xi="http://www.w3.org/2001/XInclude" />
+			</section>
+		</chapter>
+	</part>
+	<part>
+		<title>The EVE-Viewer</title>
+		<partintro>
+			<para>
+				Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+				diam nonumy eirmod tempor invidunt ut labore et dolore magna
+				aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+				duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
+				sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+				consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+				ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero
+				eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+				gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+			</para>
+		</partintro>
+
+		<chapter id="gettingstarted-viewer">
+			<xi:include href="help/viewer/content/gettingstarted.xml"
+				xpointer="xpointer(//chapter/node())" 
+				xmlns:xi="http://www.w3.org/2001/XInclude" />
+		</chapter>
+
+		<chapter>
+			<title>Concepts</title>
+
+		</chapter>
+
+		<chapter>
+			<title>Reference</title>
+		</chapter>
+	</part>
+	<part>
+		<title></title>
+		<partintro>
+			<para>
+				Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+				diam nonumy eirmod tempor invidunt ut labore et dolore magna
+				aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+				duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
+				sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+				consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+				ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero
+				eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+				gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+			</para>
+		</partintro>
+		
+	<chapter>
+		<title>Concepts</title>
+		<section>
+			<xi:include href="help/viewer/content/concepts/pvupdateinterval.xml"
+				xpointer="xpointer(//chapter/node())" 
+				xmlns:xi="http://www.w3.org/2001/XInclude" />
+		</section>
+	</chapter>
+
+	<chapter>
+		<title>Reference</title>
+		<section>
+			<xi:include href="help/viewer/content/reference/deviceclasses.xml"
+				xpointer="xpointer(//chapter/node())" 
+				xmlns:xi="http://www.w3.org/2001/XInclude" />
+		</section>
+	</chapter>
+	</part>
+	<!-- ************************ -->
+	<!-- *** End of Main Part *** -->
+	<!-- ************************ -->
+	<appendix>
+		<title>Release Notes</title>
+		<sect1>
+			<title>EVE-Editor</title>
+			<xi:include href="help/editor/content/whatsnew.xml"
+				xpointer="xpointer(//section)" 
+				xmlns:xi="http://www.w3.org/2001/XInclude" />
+		</sect1>
+		<!-- <sect1> <title>EVE-Viewer</title> <xi:include href="help/viewer/content/whatsnew.xml" 
+			xpointer="xpointer(//section/node())" /> </sect1> <sect1> <title>EVE</title> 
+			<xi:include href="help/editor/content/whatsnew.xml" xpointer="xpointer(//section/node())" 
+			/> </sect1> -->
+		<!-- ...Problem with duplicate IDs here... -->
+	</appendix>
+</book>

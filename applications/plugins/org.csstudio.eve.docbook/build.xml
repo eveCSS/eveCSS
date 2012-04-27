@@ -1,22 +1,85 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="getTextiles" basedir="../"><!-- base directory is eveCSS -->
+<project default="createFop" basedir="./">
+	<!-- base directory is eveCSS -->
 
-	<property name="editor_dir" location="de.ptb.epics.eve.editor/help" />
-	<property name="viewer_dir" location="" />
-	<property name="help_dir" location="" />
-	
 	<description>Ant File for Building Docbook...</description>
 
+	<property name="eclipse_dir" location="/opt/eclipse/eclipse" />
+	<property name="docbook_dir" location="/usr/share/xml/docbook/stylesheet/nwalsh/current" />
+	<property name="fop_dir" location="lib/fop" />
+	
+	<property name="editor_dir" location="../org.csstudio.eve.editor/help" />
+	<property name="viewer_dir" location="../org.csstudio.eve.viewer/help" />
+	<property name="help_dir" location="../org.csstudio.eve.help/help" />
+
+	<path id="wikitext.classpath">
+		<fileset dir="${eclipse_dir}/plugins">
+			<include name="org.eclipse.mylyn.wikitext.*core*.jar" />
+			<include name="org.eclipse.mylyn.wikitext.textile.*core*.jar" />
+		</fileset>
+	</path>
+
+	<path id="fop.classpath">
+		<pathelement location="lib/fop-hyph.jar" />
+		<fileset dir="${fop_dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<taskdef classpathref="wikitext.classpath" resource="org/eclipse/mylyn/wikitext/core/util/anttask/tasks.properties" />
+
+	<taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop" classpathref="fop.classpath" />
+
 	<target name="getTextiles">
+		<!-- copy editor help -->
 		<copy todir="help/editor">
 			<fileset dir="${editor_dir}">
-				<exclude name="**/*.html" />
+				<include name="**/*.textile" />
+				<include name="**/*.png" />
+			</fileset>
+		</copy>
+
+		<!-- copy viewer help -->
+		<copy todir="help/viewer">
+			<fileset dir="${viewer_dir}">
+				<include name="**/*.textile" />
+				<include name="**/*.png" />
+			</fileset>
+		</copy>
+
+		<!-- copy general help -->
+		<copy todir="help/help">
+			<fileset dir="${help_dir}">
+				<include name="**/*.textile" />
+				<include name="**/*.png" />
 			</fileset>
 		</copy>
 	</target>
 
-	<target name="docbook">
-
+	<!-- fetched textile -> docbook xml -->
+	<target name="generateDocbook" depends="getTextiles">
+		<wikitext-to-docbook markupLanguage="Textile">
+			<fileset dir="help">
+				<include name="**/*.textile" />
+			</fileset>
+		</wikitext-to-docbook>
 	</target>
 
+	<!-- combine xml files and generate font object -->
+	<target name="xsltproc" depends="generateDocbook">
+		<exec executable="xsltproc">
+			<arg line="--output book.fo" />
+			<arg line="--stringparam draft.watermark.image file:///${docbook_dir}/images/draft.png"/>
+			<arg line="--nonet --xinclude" />
+			<arg value="${docbook_dir}/fo/docbook.xsl" />
+			<arg value="book.xml" />
+		</exec>
+	</target>
+
+	<!-- font object to pdf -->
+	<target name="createFop" depends="xsltproc">
+		<fop format="application/pdf" 
+			userconfig="${fop_dir}/conf/fop.xconf.xml"
+			fofile="book.fo" outfile="book.pdf" />
+	</target>
 </project>
