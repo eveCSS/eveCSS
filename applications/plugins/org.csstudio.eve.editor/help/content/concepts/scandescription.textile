@@ -24,4 +24,4 @@ An appended scan module is executed after the preceding module is completed.
 h3. Nested Scan Module
 
 A nested scan module is processed at each motor position of its parent scan module. If multiple axes are moved the positions of the axis defined as "main axis" are used.
-Consider that a scan modules prescan and postscan phases are only processed once (not at each iteration of the nested module(s)).
+*Note* that a scan modules prescan and postscan phases are only processed once (not at each iteration of the nested module(s)).

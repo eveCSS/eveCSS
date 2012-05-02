@@ -1,22 +1,22 @@
 h1(eveTopic). Device Description
 
-p. A device description (file) is a collection of devices defined in XML. It is a list of motors and axes, detectors and channels, devices, options, plug ins and events which should be available in the program.
+p. A device description (file) is a collection of devices defined in XML. It is a list of motors and axes, detectors and channels, devices, options, plug ins and events. A device description file is required in order to run the EVE application.
 
 h2(eveTopic). Motors & Motor Axes
 
-p. Motors are devices where you can read from or write to (e.g. a 'real' motor actually moving its axis or a radiator altering temperatures). They contain at least one axis.
+p. Motors are devices where you can read from or write to (a 'real' motor would actually move its axis or a radiator alter its temperature). They contain at least one axis.
 
 h2(eveTopic). Detectors & Detector Channels
 
-p. Detectors are devices to measure something. They have at least one channel. During the main phase they can only be read. Additionally options can be set during pre and postscan phases.
+p. Detectors are devices to measure something. They have at least one channel. During the "main phase":/help/topic/de.ptb.epics.eve.editor/help/content/concepts/scandescription.html they can only be read. Additionally options can be set during pre and postscan phases.
 
 h2(eveTopic). (Pre-/Postscan) Device
 
-p. Pre-/Postscan devices are devices where values could be assigned (as the name suspects) exclusively in pre- and postscan phases (e.g. open/close a beam shutter or switch on/off a fan).
+p. Pre-/Postscan devices are devices where values could be assigned (as the name suspects) exclusively in "pre-":/help/topic/de.ptb.epics.eve.editor/help/content/concepts/scandescription.html and "postscan phases":/help/topic/de.ptb.epics.eve.editor/help/content/concepts/scandescription.html (e.g. open/close a beam shutter or switch on/off a fan).
 
 h2(eveTopic). Option
 
-p. Motors & motor axes as well as detectors & detector channels can have several options (e.g. __GoTo Position__ or __Hi Warn Limit__) which like devices could be assigned in pre and postscan phases.
+p. Motors & motor axes as well as detectors & detector channels can have several options (e.g. __GoTo Position__ or __Hi Warn Limit__). They can be assigned in "pre-":/help/topic/de.ptb.epics.eve.editor/help/content/concepts/scandescription.html and "postscan phases":/help/topic/de.ptb.epics.eve.editor/help/content/concepts/scandescription.html.
 
 h2(eveTopic). Plugin
 
@@ -24,4 +24,4 @@ p. There are several types of plug ins which allow extension of functionality. E
 
 h2(eveTopic). Event
 
-p. An event can start a scan (special __S-0__ event), pause, cancel a scan or scan module or repeat the last step. Depending on their use, they are assigned to a chain, a scan module or to a detector.
+p. An event can start a scan (special __S-0__ event), pause, cancel a chain or scan module or repeat the last step. Depending on their use, they are assigned to a chain, a scan module or to a detector. "Read more":/help/topic/de.ptb.epics.eve.editor/help/content/concepts/events.html on the usage of events.

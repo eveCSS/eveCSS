@@ -34,7 +34,7 @@ public class EventFigure extends Figure {
 	 * @param id the id the <code>EventFigure</code> should get
 	 */
 	public EventFigure(final String id) {
-		this.setSize(20, 40);
+		this.setSize(60, 40);
 		this.id = id;
 		
 		// add a listener for mouse pressed and released events
@@ -43,9 +43,9 @@ public class EventFigure extends Figure {
 		// add a listener for mouse moved event
 		this.addMouseMotionListener(new EventFigureMouseMotionListener());
 		
-		this.setLocation(new Point(10, 10));
+		this.setLocation(new Point(20, 24));
 		Rectangle rect = this.getBounds();
-		this.sourceAnchor = new XYAnchor(new Point(rect.x + 8, rect.y + 10));	
+		this.sourceAnchor = new XYAnchor(new Point(rect.x + 8, rect.y + 10));
 	}
 	
 	/**
@@ -67,7 +67,7 @@ public class EventFigure extends Figure {
 		graphics.setBackgroundColor(color);
 		// show the identifier of the event
 		graphics.drawText(
-				this.id, this.getLocation().x + 2, this.getLocation().y + 16);
+				this.id, this.getLocation().x, this.getLocation().y + 16);
 	}
 	
 	/**
@@ -90,7 +90,7 @@ public class EventFigure extends Figure {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void mouseDoubleClicked(MouseEvent me) {			
+		public void mouseDoubleClicked(MouseEvent me) {
 		}
 		
 		/**
@@ -101,7 +101,7 @@ public class EventFigure extends Figure {
 			// calculating the offset to the point of origin (0,0)
 			xOffset = me.x - getLocation().x ;
 			yOffset = me.y - getLocation().y;
-			me.consume();			
+			me.consume();
 		}
 	
 		/**

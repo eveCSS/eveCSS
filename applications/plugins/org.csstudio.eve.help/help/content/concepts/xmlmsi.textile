@@ -3,7 +3,7 @@ h1(eveTopic). The xmlmsi Tool
 p. To avoid typing XML tags over and over again a device description is not created within XML itself but with the aid of a shell script called __xmlmsi__. __xmlmsi__ is a macro substitution tool to create device definition files for EVE from simple user-created substitution files. __xmlmsi__ is based on __msi__[1] and as __msi__, it is an EPICS extension which needs the appropriate build environment. __xmlmsi__ conducts the following tasks:
 
 * calls the __msi__ tool
-* verifies the result (XML validation with "schema":../reference/xmlschema.html )
+* verifies the result (XML validation with the schema)
 * checks for duplicate IDs
 
 How to create a "Device Description":devicedescription.html is described "here":../tasks/createdevicedescription.html .
