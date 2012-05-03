@@ -103,6 +103,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 		if(generateId) {
 			this.id = this.getScanModule().getChain().getScanDescription().
 				getAvailablePlotId();
+			this.name = "Plot " + this.id;
 		}
 		if(scanModule.getAxes().length == 1) {
 			this.xAxis = scanModule.getAxes()[0].getMotorAxis();
