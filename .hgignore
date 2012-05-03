@@ -19,3 +19,6 @@ syntax: regexp
 ^applications/plugins/org\.csstudio\.eve\.editor\.tests/screenshots$
 syntax: regexp
 ^applications/plugins/org\.csstudio\.eve\.editor\.tests/log$
+
+syntax: regexp
+^applications/plugins/org\.csstudio\.eve\.docbook/help$
