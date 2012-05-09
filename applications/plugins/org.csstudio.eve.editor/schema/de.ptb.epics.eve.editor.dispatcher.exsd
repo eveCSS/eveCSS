@@ -6,7 +6,7 @@
          <meta.schema plugin="de.ptb.epics.eve.editor" id="de.ptb.epics.eve.editor.dispatcher" name="ScanDescriptionDispatcher"/>
       </appinfo>
       <documentation>
-         [Enter description of this extension point.]
+         ScanDescriptionDispatcher propagates scan description files. Any interested party can implement the extension point to get notified if a file is propagated.
       </documentation>
    </annotation>
 
@@ -67,7 +67,7 @@
          <meta.section type="since"/>
       </appinfo>
       <documentation>
-         [Enter the first release in which this extension point appears.]
+         1.1
       </documentation>
    </annotation>
 

@@ -288,16 +288,16 @@ public class Activator extends AbstractUIPlugin {
 			this.excludeFilter.setSource(this.measuringStation);
 		} catch (IllegalArgumentException e) {
 			measuringStation = null;
-			logger.error(e.getMessage(), e);
+			logger.fatal(e.getMessage(), e);
 		} catch (ParserConfigurationException e) {
 			measuringStation = null;
-			logger.error(e.getMessage(), e);
+			logger.fatal(e.getMessage(), e);
 		} catch (SAXException e) {
 			measuringStation = null;
-			logger.error(e.getMessage(), e);
+			logger.fatal(e.getMessage(), e);
 		} catch (IOException e) {
 			measuringStation = null;
-			logger.error(e.getMessage(), e);
+			logger.fatal(e.getMessage(), e);
 		}
 	}
 	

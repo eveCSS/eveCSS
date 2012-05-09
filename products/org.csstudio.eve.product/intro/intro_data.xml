@@ -4,7 +4,7 @@
 	File can be generated via the Welcome page preference panel.
 	Items that are not listed in here will show in a
 	default place on their page.
-	Items listen in <hidden></hidden> sections will be, well,
+	Items listed in <hidden></hidden> sections will be, well,
 	hidden.
 -->
 <extensions>

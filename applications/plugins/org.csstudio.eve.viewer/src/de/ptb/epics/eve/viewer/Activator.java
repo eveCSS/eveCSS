@@ -388,15 +388,18 @@ public class Activator extends AbstractUIPlugin {
 					new MeasuringStationLoader(schemaFile);
 			measuringStationLoader.load(measuringStationDescriptionFile);
 			measuringStation = measuringStationLoader.getMeasuringStation();
+		} catch (IllegalArgumentException e) {
+			measuringStation = null;
+			logger.fatal(e.getMessage(), e);
 		} catch (ParserConfigurationException e) {
 			measuringStation = null;
-			logger.error(e.getMessage(), e);
+			logger.fatal(e.getMessage(), e);
 		} catch (SAXException e) {
 			measuringStation = null;
-			logger.error(e.getMessage(), e);
+			logger.fatal(e.getMessage(), e);
 		} catch (IOException e) {
 			measuringStation = null;
-			logger.error(e.getMessage(), e);
+			logger.fatal(e.getMessage(), e);
 		}
 	}
 	
