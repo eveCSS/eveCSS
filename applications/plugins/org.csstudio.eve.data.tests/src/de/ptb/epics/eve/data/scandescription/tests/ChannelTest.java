@@ -18,7 +18,7 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 /**
  * @author Marcus Michalsky
- * @since 1.0
+ * @since 1.3
  */
 public class ChannelTest implements PropertyChangeListener {
 

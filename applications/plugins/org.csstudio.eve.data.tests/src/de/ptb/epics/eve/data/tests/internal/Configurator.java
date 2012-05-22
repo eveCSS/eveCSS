@@ -98,6 +98,6 @@ public class Configurator {
 	 * @return the schema file
 	 */
 	public static File getSchemaFile() {
-		return new File("org.csstudio.eve.resources/cfg/schema.xsd");
+		return new File("../org.csstudio.eve.resources/cfg/schema.xsd");
 	}
 }
