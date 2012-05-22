@@ -584,9 +584,9 @@ public class DetectorChannelView extends ViewPart
 			}
 			
 			// set minimum
-			if(this.currentChannel.getMinumum() != Double.NEGATIVE_INFINITY) {
+			if(this.currentChannel.getMinimum() != Double.NEGATIVE_INFINITY) {
 				this.minimumText.setText(Double.toString(
-						this.currentChannel.getMinumum()));
+						this.currentChannel.getMinimum()));
 			} else {
 				this.minimumText.setText("");
 			}
@@ -741,13 +741,13 @@ public class DetectorChannelView extends ViewPart
 
 			if(currentChannel != null) {
 				if(minimumText.getText().equals("")) {
-					currentChannel.setMinumum(Double.NEGATIVE_INFINITY);
+					currentChannel.setMinimum(Double.NEGATIVE_INFINITY);
 				} else {
 					try {
-						currentChannel.setMinumum(Double.parseDouble(
+						currentChannel.setMinimum(Double.parseDouble(
 								minimumText.getText()));
 					} catch(final NumberFormatException ex) {
-						currentChannel.setMinumum(Double.NaN);
+						currentChannel.setMinimum(Double.NaN);
 					}
 				}
 			}

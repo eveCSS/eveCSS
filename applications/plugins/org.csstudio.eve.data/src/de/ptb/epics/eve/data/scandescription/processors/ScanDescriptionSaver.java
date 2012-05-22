@@ -1608,13 +1608,13 @@ public class ScanDescriptionSaver implements
 				this.contentHandler.endElement("", "maxdeviation",
 						"maxdeviation");
 			}
-			if (channel.getMinumum() != Double.NEGATIVE_INFINITY) {
+			if (channel.getMinimum() != Double.NEGATIVE_INFINITY) {
 				this.atts.clear();
 				this.contentHandler.startElement("", "minimum", "minimum",
 						this.atts);
 				this.contentHandler.characters(
-						("" + channel.getMinumum()).toCharArray(), 0,
-						("" + channel.getMinumum()).length());
+						("" + channel.getMinimum()).toCharArray(), 0,
+						("" + channel.getMinimum()).length());
 				this.contentHandler.endElement("", "minimum", "minimum");
 			}
 

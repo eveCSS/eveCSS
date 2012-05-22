@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.data.scandescription;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,6 +28,9 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class Channel extends AbstractMainPhaseBehavior {
 
+	// delegated observable
+	private PropertyChangeSupport propertyChangeSupport;
+	
 	/*
 	 * This attribute controls how often the detector should be read to make
 	 * an average value. default value is 1.
@@ -33,6 +38,18 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 */
 	private int averageCount = 1;
 	
+	/*
+	 * A flag if a trigger of this detector must be confirmed.
+	 */
+	private boolean confirmTrigger = false;
+
+	/*
+	 * The maximum attempts for reading the channel.
+	 * -1 = value is invalid
+	 * Integer.MIN_VALUE = value is empty
+	 */
+	private int maxAttempts = Integer.MIN_VALUE;
+
 	/*
 	 * The max deviation of this channel.
 	 * Double.NaN = value is invalid
@@ -48,25 +65,13 @@ public class Channel extends AbstractMainPhaseBehavior {
 	private double minimum = Double.NEGATIVE_INFINITY;
 	
 	/*
-	 * The maximum attempts for reading the channel.
-	 * -1 = value is invalid
-	 * Integer.MIN_VALUE = value is empty
+	 * A flag for repeat on redo.
 	 */
-	private int maxAttempts = Integer.MIN_VALUE;
+	private boolean repeatOnRedo = false;
 
 	// 
 	private DetectorChannel normalizeChannel;
 
-	/*
-	 * A flag if a trigger of this detector must be confirmed.
-	 */
-	private boolean confirmTrigger = false;
-	
-	/*
-	 * A flag for repeat on redo.
-	 */
-	private boolean repeatOnRedo = false;
-	
 	/*
 	 * The detector ready event.
 	 */
@@ -101,6 +106,8 @@ public class Channel extends AbstractMainPhaseBehavior {
 		this.redoControlEventManager = new ControlEventManager(
 				this, this.redoEvents, ControlEventTypes.CONTROL_EVENT);
 		this.redoControlEventManager.addModelUpdateListener(this);
+		
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 	
 	/**
@@ -112,6 +119,154 @@ public class Channel extends AbstractMainPhaseBehavior {
 	public Channel(final ScanModule scanModule, final DetectorChannel channel) {
 		this(scanModule);
 		this.setDetectorChannel(channel);
+	}
+
+	/**
+	 * Returns how often the detector should be read to make an average
+	 * result for the measuring.
+	 * 
+	 * @return the average count
+	 */
+	public int getAverageCount() {
+		return this.averageCount;
+	}
+
+	/**
+	 * Sets how often the detector should be read to make an average result
+	 * for the measuring.
+	 * 
+	 * @param averageCount How often the detector should be read.
+	 * @throws IllegalArgumentException if <code>averageCount</code> 
+	 * 		   is less than zero
+	 */
+	public void setAverageCount(final int averageCount) {
+		if(averageCount < 0) {
+			throw new IllegalArgumentException(
+					"The average must be larger than 0.");
+		}
+		this.propertyChangeSupport.firePropertyChange("averageCount",
+				this.averageCount, this.averageCount = averageCount);
+		updateListeners();
+	}
+
+	/**
+	 * Checks whether a trigger of the detector must be confirmed.
+	 * 
+	 * @return <code>true</code> if a trigger of the detector must be confirmed, 
+	 * 			<code>false</code> otherwise
+	 */
+	public boolean isConfirmTrigger() {
+		return confirmTrigger;
+	}
+
+	/**
+	 * Sets whether a trigger of this channel must be confirmed.
+	 * 
+	 * @param confirmTrigger <code>true</code> if a trigger of this channel 
+	 * 			must be confirmed, <code>false</code> otherwise
+	 */
+	public void setConfirmTrigger(final boolean confirmTrigger) {
+		this.propertyChangeSupport.firePropertyChange("confirmTrigger",
+				this.confirmTrigger, this.confirmTrigger = confirmTrigger);
+		updateListeners();
+	}
+
+	/**
+	 * Returns the maximum attempts to read the detector.
+	 * 
+	 * @return the maximum attempts to read the detector
+	 */
+	public int getMaxAttempts() {
+		return maxAttempts;
+	}
+
+	/**
+	 * Sets the maximum attempts to read the detector.
+	 * 
+	 * @param maxAttempts the maximum attempts to read the detector.
+	 */
+	public void setMaxAttempts(final int maxAttempts) {
+		this.propertyChangeSupport.firePropertyChange("maxAttempts",
+				this.maxAttempts, this.maxAttempts = maxAttempts);
+		updateListeners();
+	}
+
+	/**
+	 * Returns the maximum deviation between the taken values.
+	 *  
+	 * @return The maximum deviation.
+	 */
+	public double getMaxDeviation() {
+		return this.maxDeviation;
+	}
+
+	/**
+	 * Sets the maximum deviation.
+	 * 
+	 * @param maxDeviation the new maximum deviation.
+	 */
+	public void setMaxDeviation(final double maxDeviation) {
+		this.propertyChangeSupport.firePropertyChange("maxDeviation",
+				this.maxDeviation, this.maxDeviation = maxDeviation);
+		updateListeners();
+	}
+
+	/**
+	 * Returns the minimum.
+	 * 
+	 * @return the minimum for this channel.
+	 */
+	public double getMinimum() {
+		return this.minimum;
+	}
+
+	/**
+	 * Sets the minimum for this channel.
+	 * 
+	 * @param minimum the new minimum for this channel.
+	 */
+	public void setMinimum(final double minimum) {
+		this.propertyChangeSupport.firePropertyChange("minimum", this.minimum,
+				this.minimum = minimum);
+		updateListeners();
+	}
+
+	/**
+	 * Returns whether the channel should repeat on redo.
+	 * 
+	 * @return <code>true</code> if the channel repeats reading on a redo event.
+	 */
+	public boolean isRepeatOnRedo() {
+		return repeatOnRedo;
+	}
+
+	/**
+	 * Sets whether the read of the detector should be repeated on a 
+	 * redo event.
+	 * 
+	 * @param repeatOnRedo <code>true</code> if the detector read should be 
+	 * 		repeated, <code>false</code> otherwise
+	 */
+	public void setRepeatOnRedo(final boolean repeatOnRedo) {
+		this.propertyChangeSupport.firePropertyChange("repeatOnRedo",
+				this.repeatOnRedo, this.repeatOnRedo = repeatOnRedo);
+		updateListeners();
+	}
+
+	/**
+	 * @return the normalizeChannel
+	 */
+	public DetectorChannel getNormalizeChannel() {
+		return normalizeChannel;
+	}
+
+	/**
+	 * @param normalizeChannel the normalizeChannel to set
+	 */
+	public void setNormalizeChannel(DetectorChannel normalizeChannel) {
+		this.propertyChangeSupport.firePropertyChange("normalizeChannel", 
+			this.normalizeChannel, this.normalizeChannel = normalizeChannel);
+		updateListeners();
 	}
 
 	/**
@@ -162,146 +317,6 @@ public class Channel extends AbstractMainPhaseBehavior {
 	}
 	
 	/**
-	 * Returns how often the detector should be read to make an average
-	 * result for the measuring.
-	 * 
-	 * @return the average count
-	 */
-	public int getAverageCount() {
-		return this.averageCount;
-	}
-	
-	/**
-	 * Sets how often the detector should be read to make an average result
-	 * for the measuring.
-	 * 
-	 * @param averageCount How often the detector should be read.
-	 * @throws IllegalArgumentException if <code>averageCount</code> 
-	 * 		   is less than zero
-	 */
-	public void setAverageCount(final int averageCount) {
-		if(averageCount < 0) {
-			throw new IllegalArgumentException(
-					"The average must be larger than 0.");
-		}
-		this.averageCount = averageCount;
-		updateListeners();
-	}
-
-	/**
-	 * Checks whether a trigger of the detector must be confirmed.
-	 * 
-	 * @return <code>true</code> if a trigger of the detector must be confirmed, 
-	 * 			<code>false</code> otherwise
-	 */
-	public boolean isConfirmTrigger() {
-		return confirmTrigger;
-	}
-
-	/**
-	 * This method sets if a trigger of this channel must be confirmed.
-	 * 
-	 * @param confirmTrigger Pass 'true' if a trigger of this channel must be confirmed and 'false' if not.
-	 */
-	public void setConfirmTrigger(final boolean confirmTrigger) {
-		this.confirmTrigger = confirmTrigger;
-		updateListeners();
-	}
-
-	/**
-	 * This method returns the maximum attempts to read the detector.
-	 * 
-	 * @return The maximum attempts to read the detector.
-	 */
-	public int getMaxAttempts() {
-		return maxAttempts;
-	}
-
-	/**
-	 * This method sets the maximum attempts to read the detector.
-	 * 
-	 * @param maxAttempts The maximum attempts to read the detector.
-	 */
-	public void setMaxAttempts( final int maxAttempts ) {
-		this.maxAttempts = maxAttempts;
-		updateListeners();
-	}
-
-	/**
-	 * This method returns the maximum deviation between the taken values.
-	 *  
-	 * @return The maximum deviation.
-	 */
-	public double getMaxDeviation() {
-		return this.maxDeviation;
-	}
-
-	/**
-	 * This method sets the maximum deviation.
-	 * 
-	 * @param maxDeviation The new maximimum deviation.
-	 */
-	public void setMaxDeviation( final double maxDeviation ) {
-		this.maxDeviation = maxDeviation;
-		updateListeners();
-	}
-
-	/**
-	 * This method returns the minimum.
-	 * 
-	 * @return The minimum for this channel.
-	 */
-	public double getMinumum() {
-		return this.minimum;
-	}
-
-	/**
-	 * This method sets the minimum for this channel.
-	 * 
-	 * @param minumum The new minimum for this channel.
-	 */
-	public void setMinumum(final double minumum) {
-		this.minimum = minumum;
-		updateListeners();
-	}
-
-	/**
-	 * @return the normalizeChannel
-	 */
-	public DetectorChannel getNormalizeChannel() {
-		return normalizeChannel;
-	}
-
-	/**
-	 * @param normalizeChannel the normalizeChannel to set
-	 */
-	public void setNormalizeChannel(DetectorChannel normalizeChannel) {
-		this.normalizeChannel = normalizeChannel;
-		updateListeners();
-	}
-
-	/**
-	 * This method returns if the channel should repeat on redo.
-	 * 
-	 * @return Returns 'true' if the channel repeats reading on a redo event.
-	 */
-	public boolean isRepeatOnRedo() {
-		return repeatOnRedo;
-	}
-
-	/**
-	 * This methods sets if the read of the detector should be repeated on a 
-	 * redo event.
-	 * 
-	 * @param repeatOnRedo Pass 'true' if the detector read should be repeated 
-	 * on a redo event.
-	 */
-	public void setRepeatOnRedo(final boolean repeatOnRedo) {
-		this.repeatOnRedo = repeatOnRedo;
-		updateListeners();
-	}
-	
-	/**
 	 * This method returns the detector ready event.
 	 * 
 	 * @return The detector ready event.
@@ -342,7 +357,7 @@ public class Channel extends AbstractMainPhaseBehavior {
 	/**
 	 * Sets the detector channel that will be controlled by this behavior.
 	 * 
-	 * @param detectorChannel The detector channel that will be controlles by this behavior.
+	 * @param detectorChannel The detector channel that will be controlled by this behavior.
 	 */
 	public void setDetectorChannel(final DetectorChannel detectorChannel) {
 		this.abstractDevice = detectorChannel;
@@ -392,5 +407,31 @@ public class Channel extends AbstractMainPhaseBehavior {
 		for(IModelUpdateListener imul : list) {
 			imul.updateEvent(new ModelUpdateEvent(this, null));
 		}
+	}
+	
+	/**
+	 * See 
+	 * {@link java.beans.PropertyChangeSupport#addPropertyChangeListener(String, PropertyChangeListener)}.
+	 * 
+	 * @param propertyName
+	 * @param listener
+	 */
+	public void addPropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+			this.propertyChangeSupport.addPropertyChangeListener(propertyName,
+					listener);
+	}
+	
+	/**
+	 * See
+	 * {@link java.beans.PropertyChangeSupport#removePropertyChangeListener(String, PropertyChangeListener)}.
+	 * 
+	 * @param propertyName
+	 * @param listener
+	 */
+	public void removePropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		this.propertyChangeSupport.removePropertyChangeListener(propertyName,
+				listener);
 	}
 }

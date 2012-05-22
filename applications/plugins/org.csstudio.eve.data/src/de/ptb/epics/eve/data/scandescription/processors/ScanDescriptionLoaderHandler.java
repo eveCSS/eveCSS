@@ -816,7 +816,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_DETECTOR_MINIMUM_NEXT:
 			if (this.currentChannel.getAbstractDevice() != null) {
-				this.currentChannel.setMinumum(Double.parseDouble(textBuffer
+				this.currentChannel.setMinimum(Double.parseDouble(textBuffer
 						.toString()));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_MINIMUM_READ;
