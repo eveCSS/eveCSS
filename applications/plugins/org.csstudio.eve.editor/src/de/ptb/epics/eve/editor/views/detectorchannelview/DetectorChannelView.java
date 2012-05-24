@@ -2,9 +2,10 @@ package de.ptb.epics.eve.editor.views.detectorchannelview;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.layout.FillLayout;
@@ -21,12 +22,16 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.ExpandEvent;
+import org.eclipse.swt.events.ExpandListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ExpandBar;
@@ -66,7 +71,7 @@ public class DetectorChannelView extends ViewPart
 	 */
 	public static final String ID = 
 		"de.ptb.epics.eve.editor.views.DetectorChannelView";
-	
+
 	// logging
 	private static Logger logger = 
 			Logger.getLogger(DetectorChannelView.class.getName());
@@ -93,49 +98,50 @@ public class DetectorChannelView extends ViewPart
 
 	private Label averageLabel;
 	private Text averageText;
-	private Label averageErrorLabel;
+	private ControlDecoration averageTextControlDecoration;
 	private TextNumberVerifyListener averageTextVerifyListener;
 	private AverageTextModifyListener averageTextModifyListener;
-	
+
 	private Label maxDeviationLabel;
 	private Text maxDeviationText;
-	private Label maxDeviationErrorLabel;
+	private ControlDecoration maxDeviationTextControlDecoration;
 	private TextDoubleVerifyListener maxDeviationTextVerifyListener;
 	private MaxDeviationTextModifyListener maxDeviationTextModifyListener;
-	
+
 	private Label minimumLabel;
 	private Text minimumText;
-	private Label minimumErrorLabel;
+	private ControlDecoration minimumTextControlDecoration;
 	private TextDoubleVerifyListener minimumTextVerifyListener;
 	private MinimumTextModifyListener minimumTextModifyListener;
-	
+
 	private Label maxAttemptsLabel;
 	private Text maxAttemptsText;
-	private Label maxAttemptsErrorLabel;	
+	private ControlDecoration maxAttemptsTextControlDecoration;
 	private TextNumberVerifyListener maxAttemptsTextVerifyListener;
 	private MaxAttemptsTextModifyListener maxAttemptsTextModifyListener;
-	
+
 	private Label normalizeChannelLabel;
 	private Combo normalizeChannelCombo;
-	private NormalizeChannelComboSelectionListener normalizeChannelComboSelectionListener;
-	
+	private NormalizeChannelComboSelectionListener 
+			normalizeChannelComboSelectionListener;
+
 	private Button confirmTriggerManualCheckBox;
 	private ConfirmTriggerManualCheckBoxSelectionListener
 			confirmTriggerManualCheckBoxSelectionListener;
-	
+
 	private ExpandBar bar = null;
-	private BarControlListener barControlListener;
-	private ExpandItem itemEventOptions;
+	private ExpandItem eventExpandItem;
 	public CTabFolder eventsTabFolder = null;
 	private EventComposite redoEventComposite = null;
-	private EventCompositeControlListener eventCompositeControlListener;
 	private Composite eventComposite = null;
 
 	private CTabItem redoEventTabItem;
-	
+
 	private Button detectorReadyEventCheckBox;
 	private DetectorReadyEventCheckBoxSelectionListener 
 			detectorReadyEventCheckBoxSelectionListener;
+
+	private Image errorImage;
 
 	/**
 	 * {@inheritDoc}
@@ -143,55 +149,63 @@ public class DetectorChannelView extends ViewPart
 	@Override
 	public void createPartControl(final Composite parent) {
 		parent.setLayout(new FillLayout());
-		
+
 		if(Activator.getDefault().getMeasuringStation() == null) {
 			final Label errorLabel = new Label(parent, SWT.NONE);
 			errorLabel.setText("No Measuring Station has been loaded. " +
-							   "Please check Preferences!");
+					"Please check Preferences!");
 			return;
 		}
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 3;
-		GridData gridData;
 		
-		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | 
-										SWT.V_SCROLL | SWT.BORDER);
+		this.errorImage = FieldDecorationRegistry.getDefault().
+			getFieldDecoration(FieldDecorationRegistry.DEC_ERROR).getImage();
+
+		this.sc = new ScrolledComposite(parent, SWT.V_SCROLL);
 
 		this.top = new Composite(sc, SWT.NONE);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 2;
 		this.top.setLayout(gridLayout);
 
-		sc.setContent(this.top);
-		sc.setExpandHorizontal(true);
-		sc.setExpandVertical(true);
-		
+		this.sc.setExpandHorizontal(true);
+		this.sc.setExpandVertical(true);
+		this.sc.setContent(this.top);
+
 		// GUI: Average: <TextBox> x
 		this.averageLabel = new Label(this.top, SWT.NONE);
 		this.averageLabel.setText("Average:");
+		GridData gridData;
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.averageLabel.setLayoutData(gridData);
-		
+
 		this.averageText = new Text(this.top, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.averageText.setLayoutData(gridData);
 		this.averageTextVerifyListener = new TextNumberVerifyListener();
 		this.averageText.addVerifyListener(averageTextVerifyListener);
 		this.averageTextModifyListener = new AverageTextModifyListener();
 		this.averageText.addModifyListener(averageTextModifyListener); 
-		this.averageErrorLabel = new Label(this.top, SWT.NONE);
-		
+		this.averageTextControlDecoration = new ControlDecoration(
+				this.averageText, SWT.LEFT);
+		this.averageTextControlDecoration.setDescriptionText("");
+		this.averageTextControlDecoration.setImage(errorImage);
+		this.averageTextControlDecoration.hide();
+
 		// GUI: Max. Deviation (%): <TextBox> x
 		this.maxDeviationLabel = new Label(this.top, SWT.NONE);
 		this.maxDeviationLabel.setText("Max. Deviation (%):");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.maxDeviationLabel.setLayoutData(gridData);
-		
+
 		this.maxDeviationText = new Text(this.top, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.maxDeviationText.setLayoutData(gridData);
 		this.maxDeviationTextVerifyListener = new TextDoubleVerifyListener();
@@ -199,8 +213,13 @@ public class DetectorChannelView extends ViewPart
 		this.maxDeviationTextModifyListener = new 
 				MaxDeviationTextModifyListener();
 		this.maxDeviationText.addModifyListener(maxDeviationTextModifyListener);
-		this.maxDeviationErrorLabel = new Label(this.top, SWT.NONE);
-		
+		this.maxDeviationTextControlDecoration = new ControlDecoration(
+				this.maxDeviationText, SWT.LEFT);
+		this.maxDeviationTextControlDecoration
+				.setDescriptionText("Value not possible!");
+		this.maxDeviationTextControlDecoration.setImage(errorImage);
+		this.maxDeviationTextControlDecoration.hide();
+
 		// GUI: Minimum: <TextBox> x
 		this.minimumLabel = new Label(this.top, SWT.NONE);
 		this.minimumLabel.setText("Minimum:");
@@ -209,18 +228,24 @@ public class DetectorChannelView extends ViewPart
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.minimumLabel.setLayoutData(gridData);
-		
+
 		this.minimumText = new Text(this.top, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.minimumText.setLayoutData(gridData);
 		this.minimumTextVerifyListener = new TextDoubleVerifyListener();
 		this.minimumText.addVerifyListener(minimumTextVerifyListener);
 		this.minimumTextModifyListener = new MinimumTextModifyListener();
 		this.minimumText.addModifyListener(minimumTextModifyListener);
-		this.minimumErrorLabel = new Label(this.top, SWT.NONE);
-		
+		this.minimumTextControlDecoration = new ControlDecoration(
+				this.minimumText, SWT.LEFT);
+		this.minimumTextControlDecoration
+				.setDescriptionText("Value not possible!");
+		this.minimumTextControlDecoration.setImage(errorImage);
+		this.minimumTextControlDecoration.hide();
+
 		// GUI: Max. Attempts: <TextBox> x
 		this.maxAttemptsLabel = new Label(this.top, SWT.NONE);
 		this.maxAttemptsLabel.setText("Max. Attempts:");
@@ -233,6 +258,7 @@ public class DetectorChannelView extends ViewPart
 		this.maxAttemptsText = new Text(this.top, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.maxAttemptsText.setLayoutData(gridData);
 		this.maxAttemptsTextVerifyListener = new TextNumberVerifyListener();
@@ -240,13 +266,20 @@ public class DetectorChannelView extends ViewPart
 		this.maxAttemptsTextModifyListener = new 
 				MaxAttemptsTextModifyListener();
 		this.maxAttemptsText.addModifyListener(maxAttemptsTextModifyListener);
-		this.maxAttemptsErrorLabel = new Label(this.top, SWT.NONE);
-		
+		this.maxAttemptsTextControlDecoration = new ControlDecoration(
+				this.maxAttemptsText, SWT.LEFT);
+		this.maxAttemptsTextControlDecoration.setDescriptionText("");
+		this.maxAttemptsTextControlDecoration.setImage(errorImage);
+		this.maxAttemptsTextControlDecoration.hide();
+
+		//
 		this.normalizeChannelLabel = new Label(this.top, SWT.NONE);
 		this.normalizeChannelLabel.setText("Normalize Channel:");
-		this.normalizeChannelCombo = new Combo(this.top, SWT.BORDER);
+		this.normalizeChannelCombo = new Combo(this.top, SWT.BORDER
+				| SWT.READ_ONLY);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.normalizeChannelCombo.setLayoutData(gridData);
 		this.normalizeChannelComboSelectionListener = 
@@ -268,31 +301,21 @@ public class DetectorChannelView extends ViewPart
 				confirmTriggerManualCheckBoxSelectionListener);
 
 		// Expand Bar
-		this.bar = new ExpandBar(this.top, SWT.V_SCROLL);
+		this.bar = new ExpandBar(this.top, SWT.NONE);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 3;
+		gridData.horizontalSpan = 2;
 		this.bar.setLayoutData(gridData);
-		this.barControlListener = new BarControlListener();
-		this.bar.addControlListener(barControlListener);
+
+		this.bar.addExpandListener(new BarExpandListener());
 		
 		// Event Section
-		gridLayout = new GridLayout();
 		this.eventComposite = new Composite(this.bar, SWT.NONE);
+		gridLayout = new GridLayout();
 		this.eventComposite.setLayout(gridLayout);
-		this.eventCompositeControlListener = new 
-				EventCompositeControlListener();
-		this.eventComposite.addControlListener(eventCompositeControlListener);
-
-		// first expand item (Events)
-		this.itemEventOptions = new ExpandItem (this.bar, SWT.NONE, 0);
-		this.itemEventOptions.setText("Event options");
-		this.itemEventOptions.setHeight(
-				this.eventComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		this.itemEventOptions.setControl(this.eventComposite);
 
 		this.detectorReadyEventCheckBox = 
 				new Button(this.eventComposite, SWT.CHECK);
@@ -326,6 +349,15 @@ public class DetectorChannelView extends ViewPart
 		this.redoEventTabItem.setToolTipText("Repeat the current reading " +
 				"of the channel, if redo event occurs");
 		this.redoEventTabItem.setControl(redoEventComposite);
+		
+		// expand item (Events)
+		this.eventExpandItem = new ExpandItem(this.bar, SWT.NONE, 0);
+		this.eventExpandItem.setText("Event options");
+		this.eventExpandItem.setHeight(this.eventComposite.computeSize(
+				SWT.DEFAULT, SWT.DEFAULT).y);
+		this.eventExpandItem.setControl(this.eventComposite);
+		
+		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
 		top.setVisible(false);
 		
@@ -453,41 +485,26 @@ public class DetectorChannelView extends ViewPart
 	 */
 	private void checkForErrors() {
 		// reset errors
-		this.averageErrorLabel.setImage(null);
-		this.averageErrorLabel.setToolTipText("");
-		this.maxDeviationErrorLabel.setImage(null);
-		this.maxDeviationErrorLabel.setToolTipText("");
-		this.minimumErrorLabel.setImage(null);
-		this.minimumErrorLabel.setToolTipText("");	
-		this.maxAttemptsErrorLabel.setImage(null);
-		this.maxAttemptsErrorLabel.setToolTipText("");	
+		this.averageTextControlDecoration.hide();
+		this.maxDeviationTextControlDecoration.hide();
+		this.minimumTextControlDecoration.hide();
+		this.maxAttemptsTextControlDecoration.hide();
 
 		for(IModelError error : this.currentChannel.getModelErrors()) {
 			if(error instanceof ChannelError) {
 				final ChannelError channelError = (ChannelError) error;
 				switch(channelError.getErrorType()) {
 					case MAX_DEVIATION_NOT_POSSIBLE:
-						this.maxDeviationErrorLabel.setImage(
-								PlatformUI.getWorkbench().getSharedImages().
-								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-						this.maxDeviationErrorLabel.setToolTipText(
-								"Max Deviation value not possible");
-						// update and resize View with getParent().layout()
-						this.maxDeviationErrorLabel.getParent().layout();
+						this.maxDeviationTextControlDecoration.show();
 						break;
 					case MINIMUM_NOT_POSSIBLE:
-						this.minimumErrorLabel.setImage(
-								PlatformUI.getWorkbench().getSharedImages().
-								getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
-						this.minimumErrorLabel.setToolTipText(
-								"Minimum value not possible");
-						this.minimumErrorLabel.getParent().layout();
+						this.minimumTextControlDecoration.show();
 						break;
 				}
 			}
 		}
 		if(this.currentChannel.getRedoControlEventManager().
-							   getModelErrors().size() > 0) {
+							getModelErrors().size() > 0) {
 			this.redoEventTabItem.setImage(
 					PlatformUI.getWorkbench().getSharedImages().
 					getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
@@ -515,9 +532,6 @@ public class DetectorChannelView extends ViewPart
 				confirmTriggerManualCheckBoxSelectionListener);
 		detectorReadyEventCheckBox.addSelectionListener(
 				detectorReadyEventCheckBoxSelectionListener);
-		
-		bar.addControlListener(barControlListener);
-		eventComposite.addControlListener(eventCompositeControlListener);
 	}
 	
 	/*
@@ -539,9 +553,6 @@ public class DetectorChannelView extends ViewPart
 				confirmTriggerManualCheckBoxSelectionListener);
 		detectorReadyEventCheckBox.removeSelectionListener(
 				detectorReadyEventCheckBoxSelectionListener);
-		
-		bar.removeControlListener(barControlListener);
-		eventComposite.removeControlListener(eventCompositeControlListener);
 	}
 	
 	private void suspendModelUpdateListener () {
@@ -623,19 +634,9 @@ public class DetectorChannelView extends ViewPart
 			
 			this.redoEventComposite.setControlEventManager(
 					this.currentChannel.getRedoControlEventManager());
-			
-			if (sc.getMinHeight() == 0) {
-				// Wenn das erste Mal die DetectorChannelView für einen Channel 
-				// aufgerufen wird, gibt es noch keine Mindesthöhe für die 
-				// Scrollbar. Die wird hier dann gesetzt.
 
-				int height = bar.getBounds().y + 
-							 itemEventOptions.getHeight() + 
-							 itemEventOptions.getHeaderHeight() + 5;
-// TODO: Höhe und Breite muß noch besser berechnet werden (Hartmut 22.6.11)
-				int width = bar.getBounds().x + bar.getBounds().width -25;
-				sc.setMinSize(this.top.computeSize(width, height));
-			}
+			this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+			
 			checkForErrors();
 		} else {
 			// this.currentChannel == null (no channel selected)
@@ -647,11 +648,6 @@ public class DetectorChannelView extends ViewPart
 			this.maxAttemptsText.setText("");
 			this.confirmTriggerManualCheckBox.setSelection(false);
 			this.detectorReadyEventCheckBox.setSelection(false);
-			
-			this.averageErrorLabel.setImage(null);
-			this.maxDeviationErrorLabel.setImage(null);
-			this.minimumErrorLabel.setImage(null);
-			this.maxAttemptsErrorLabel.setImage(null);
 			
 			this.redoEventComposite.setControlEventManager(null);
 			
@@ -671,7 +667,7 @@ public class DetectorChannelView extends ViewPart
 	 * {@link org.eclipse.swt.events.ModifyListener} of 
 	 * <code>averageText</code>.
 	 */
-	class AverageTextModifyListener implements ModifyListener {
+	private class AverageTextModifyListener implements ModifyListener {
 
 		/**
 		 * {@inheritDoc}
@@ -699,7 +695,7 @@ public class DetectorChannelView extends ViewPart
 	 * {@link org.eclipse.swt.events.ModifyListener} of 
 	 * <code>maxDeviationText</code>.
 	 */
-	class MaxDeviationTextModifyListener implements ModifyListener {
+	private class MaxDeviationTextModifyListener implements ModifyListener {
 
 		/**
 		 * {@inheritDoc}
@@ -728,7 +724,7 @@ public class DetectorChannelView extends ViewPart
 	 * {@link org.eclipse.swt.events.ModifyListener} of 
 	 * <code>minimumText</code>.
 	 */
-	class MinimumTextModifyListener implements ModifyListener {
+	private class MinimumTextModifyListener implements ModifyListener {
 
 		/**
 		 * {@inheritDoc}
@@ -760,7 +756,7 @@ public class DetectorChannelView extends ViewPart
 	 * {@link org.eclipse.swt.events.ModifyListener} of 
 	 * <code>maxAttemptsText</code>.
 	 */
-	class MaxAttemptsTextModifyListener implements ModifyListener {
+	private class MaxAttemptsTextModifyListener implements ModifyListener {
 
 		/**
 		 * {@inheritDoc}
@@ -888,58 +884,40 @@ public class DetectorChannelView extends ViewPart
 			}
 		}
 	}
-	
+
 	/**
-	 * {@link org.eclipse.swt.events.ControlListener} of <code>bar</code>.
+	 * {@link org.eclipse.swt.events.ExpandListener} of bar.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.4
 	 */
-	private class BarControlListener implements ControlListener {
-		
+	private class BarExpandListener implements ExpandListener {
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void controlMoved(final ControlEvent e) {
+		public void itemCollapsed(ExpandEvent e) {
+			logger.debug("collapse");
+			Point topPoint = top.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+			Point eventPoint = eventComposite.computeSize(SWT.DEFAULT,
+					SWT.DEFAULT);
+			sc.setMinSize(topPoint.x, topPoint.y - eventPoint.y);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void controlResized(final ControlEvent e) {
-			int height = bar.getSize().y - itemEventOptions.getHeaderHeight() -
-					20;
-			itemEventOptions.setHeight(height < 200 ? 200 : height);
+		public void itemExpanded(ExpandEvent e) {
+			logger.debug("expand");
+			Point topPoint = top.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+			Point eventPoint = eventComposite.computeSize(SWT.DEFAULT,
+					SWT.DEFAULT);
+			sc.setMinSize(topPoint.x, topPoint.y + eventPoint.y);
 		}
 	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.ControlListener}.
-	 */
-	private class EventCompositeControlListener implements ControlListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlMoved(ControlEvent e) {
-			// Erst werden die Children ausgelesen um nachzusehen, welches
-			// Child ein CTabFolder ist, dieses bekommt dann den Focus!
-			Control[] childArray = eventComposite.getChildren();
-			for( int i = 0; i < childArray.length; ++i ) {
-				if (childArray[i].toString().equals("CTabFolder {}")) {
-					childArray[i].setFocus();
-				}
-			}
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void controlResized(ControlEvent e) {
-		}
-	}
-	
+
 	/**
 	 * {@link org.eclipse.swt.events.VerifyListener}.
 	 */
