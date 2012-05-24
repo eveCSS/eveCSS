@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.apache.log4j.Logger;
+
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
@@ -28,6 +30,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class Channel extends AbstractMainPhaseBehavior {
 
+	private static Logger logger = Logger.getLogger(Channel.class.getName());
+	
 	// delegated observable
 	private PropertyChangeSupport propertyChangeSupport;
 	
@@ -97,11 +101,11 @@ public class Channel extends AbstractMainPhaseBehavior {
 	public Channel(final ScanModule scanModule) {
 		if(scanModule == null) {
 			throw new IllegalArgumentException(
-					"The parameter 'scanModul' must not be null!");
+					"The parameter 'scanModule' must not be null!");
 
 		}
 		this.scanModule = scanModule;
-
+		this.normalizeChannel = null;
 		this.redoEvents = new ArrayList<ControlEvent>();
 		this.redoControlEventManager = new ControlEventManager(
 				this, this.redoEvents, ControlEventTypes.CONTROL_EVENT);
@@ -373,6 +377,22 @@ public class Channel extends AbstractMainPhaseBehavior {
 		return (DetectorChannel)this.abstractDevice;
 	}
 
+	/**
+	 * Resets the channel to its default values.
+	 */
+	public void reset() {
+		this.averageCount = 1;
+		this.confirmTrigger = false;
+		this.maxAttempts = Integer.MIN_VALUE;
+		this.maxDeviation = Double.NEGATIVE_INFINITY;
+		this.minimum = Double.NEGATIVE_INFINITY;
+		this.repeatOnRedo = false;
+		this.normalizeChannel = null;
+		this.redoControlEventManager.removeAllControlEvents();
+		logger.debug("Channel " + this.getDetectorChannel().getName()
+				+ " has been reset");
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

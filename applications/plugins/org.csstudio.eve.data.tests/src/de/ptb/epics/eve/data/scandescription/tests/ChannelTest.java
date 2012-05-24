@@ -78,7 +78,7 @@ public class ChannelTest implements PropertyChangeListener {
 	}
 
 	/**
-	 * 
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {

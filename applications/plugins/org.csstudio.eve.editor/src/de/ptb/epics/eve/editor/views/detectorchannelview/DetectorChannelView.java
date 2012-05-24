@@ -2,6 +2,8 @@ package de.ptb.epics.eve.editor.views.detectorchannelview;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -20,8 +22,6 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.ExpandEvent;
 import org.eclipse.swt.events.ExpandListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -33,7 +33,6 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Label;
@@ -420,6 +419,7 @@ public class DetectorChannelView extends ViewPart
 		if(this.currentChannel != null) {
 			this.currentChannel.addModelUpdateListener(this);
 			this.scanModule = this.currentChannel.getScanModule();
+			this.scanModule.addPropertyChangeListener("removeChannel", this);
 		}
 		updateEvent(null);
 	}
@@ -574,9 +574,6 @@ public class DetectorChannelView extends ViewPart
 			// current channel set -> update widgets
 			top.setVisible(true);
 			
-			// used to notice if the channel is being deleted
-			this.scanModule.addPropertyChangeListener("removeChannel", this);
-			
 			// set the view title
 			this.setPartName(
 					currentChannel.getAbstractDevice().getName());
@@ -610,7 +607,19 @@ public class DetectorChannelView extends ViewPart
 				this.maxAttemptsText.setText("");
 			}
 			
-			availableDetectorChannels = this.scanModule.getChannels();
+			// fill combo box
+			List<Channel> channels = new ArrayList<Channel>();
+			for(Channel ch : this.scanModule.getChannels()) {
+				if(ch.getNormalizeChannel() != null) {
+					continue;
+				}
+				if (ch.getDetectorChannel().getID().equals(
+						this.currentChannel.getDetectorChannel().getID())) {
+					continue;
+				}
+				channels.add(ch);
+			}
+			this.availableDetectorChannels = channels.toArray(new Channel[0]);
 			String[] detectorItems = new String[availableDetectorChannels.length];
 			for (int i = 0; i < availableDetectorChannels.length; ++i) {
 				detectorItems[i] = availableDetectorChannels[i].
@@ -623,21 +632,63 @@ public class DetectorChannelView extends ViewPart
 				this.normalizeChannelCombo.setText(
 						this.currentChannel.getNormalizeChannel().getName());
 			}
-			
+
 			// set confirm trigger check box
 			this.confirmTriggerManualCheckBox.setSelection(
 					this.currentChannel.isConfirmTrigger());
-			
+
 			// set detector ready event check box
 			this.detectorReadyEventCheckBox.setSelection(
 					this.currentChannel.getDetectorReadyEvent() != null);
-			
+
 			this.redoEventComposite.setControlEventManager(
 					this.currentChannel.getRedoControlEventManager());
 
 			this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 			
 			checkForErrors();
+			
+			this.averageLabel.setEnabled(true);
+			this.averageText.setEnabled(true);
+			this.maxDeviationLabel.setEnabled(true);
+			this.maxDeviationText.setEnabled(true);
+			this.minimumLabel.setEnabled(true);
+			this.minimumText.setEnabled(true);
+			this.maxAttemptsLabel.setEnabled(true);
+			this.maxAttemptsText.setEnabled(true);
+			this.normalizeChannelLabel.setEnabled(true);
+			this.normalizeChannelCombo.setEnabled(true);
+			this.confirmTriggerManualCheckBox.setEnabled(true);
+			this.bar.setEnabled(true);
+			this.detectorReadyEventCheckBox.setEnabled(true);
+			this.eventsTabFolder.setEnabled(true);
+			this.redoEventComposite.getTableViewer().getTable().setEnabled(true);
+			
+			for(Channel ch : this.scanModule.getChannels()) {
+				if (ch.getNormalizeChannel() == null) {
+					continue;
+				}
+				if (ch.getNormalizeChannel().getID().equals(
+						this.currentChannel.getDetectorChannel().getID())) {
+					this.averageLabel.setEnabled(false);
+					this.averageText.setEnabled(false);
+					this.maxDeviationLabel.setEnabled(false);
+					this.maxDeviationText.setEnabled(false);
+					this.minimumLabel.setEnabled(false);
+					this.minimumText.setEnabled(false);
+					this.maxAttemptsLabel.setEnabled(false);
+					this.maxAttemptsText.setEnabled(false);
+					this.normalizeChannelLabel.setEnabled(false);
+					this.normalizeChannelCombo.setEnabled(false);
+					this.confirmTriggerManualCheckBox.setEnabled(false);
+					this.bar.setEnabled(false);
+					this.detectorReadyEventCheckBox.setEnabled(false);
+
+					this.eventsTabFolder.setEnabled(false);
+					this.redoEventComposite.getTableViewer().getTable().
+							setEnabled(false);
+				}
+			}
 		} else {
 			// this.currentChannel == null (no channel selected)
 			this.setPartName("No Detector Channel selected");
@@ -653,10 +704,8 @@ public class DetectorChannelView extends ViewPart
 			
 			top.setVisible(false);
 		}
-
 		// re-enable listeners
 		addListeners();
-		
 	}
 
 	/* ********************************************************************* */
@@ -808,9 +857,11 @@ public class DetectorChannelView extends ViewPart
 				currentChannel.setNormalizeChannel(null);
 				normalizeChannelCombo.deselectAll();
 			} else {
+				Channel normCh = availableDetectorChannels[normalizeChannelCombo
+						.getSelectionIndex()];
+				normCh.reset();
 				currentChannel.setNormalizeChannel(
-						availableDetectorChannels[normalizeChannelCombo
-								.getSelectionIndex()].getDetectorChannel());
+						normCh.getDetectorChannel());
 			}
 			resumeModelUpdateListener();
 		}
