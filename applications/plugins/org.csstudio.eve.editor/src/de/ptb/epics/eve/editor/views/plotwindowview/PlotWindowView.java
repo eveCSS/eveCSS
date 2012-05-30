@@ -156,11 +156,10 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	private YAxis1DetectorChannelComboBoxSelectionListener
 			yAxis1DetectorChannelComboBoxSelectionListener;
 	
-	// GUI: Normalize Channel: "Select-Box":<detector-channels> x
-	private Label yAxis1NormalizeChannelLabel;
-	private Combo yAxis1NormalizeChannelComboBox;
-	private YAxis1NormalizeChannelComboBoxSelectionListener
-			yAxis1NormalizeChannelComboBoxSelectionListener;
+	// GUI: Normalize Channel: "CheckBox": <detector-channels>
+	private Button yAxis1NormalizeCheckBox;
+	private YAxis1NormalizeCheckBoxSelectionListener 
+			yAxis1NormalizeCheckBoxSelectionListener;
 	
 	// GUI: Scale Type: "Select-Box":{linear,log} x
 	private Label yAxis1ScaletypeLabel;
@@ -201,10 +200,9 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			yAxis2DetectorChannelComboBoxSelectionListener;
 	
 	// GUI: Normalize Channel: "Select-Box":<detector-channels> x
-	private Label yAxis2NormalizeChannelLabel;
-	private Combo yAxis2NormalizeChannelComboBox;
-	private YAxis2NormalizeChannelComboBoxSelectionListener
-			yAxis2NormalizeChannelComboBoxSelectionListener;
+	private Button yAxis2NormalizeCheckBox;
+	private YAxis2NormalizeCheckBoxSelectionListener
+			yAxis2NormalizeCheckBoxSelectionListener;
 	
 	// GUI: Scale Type: "Select-Box":{linear,log} x
 	private Label yAxis2ScaletypeLabel;
@@ -411,22 +409,18 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				yAxis1DetectorChannelComboBoxSelectionListener);
 		
 		// GUI: Normalize Channel:
-		this.yAxis1NormalizeChannelLabel = 
-				new Label(this.yAxis1Composite, SWT.NONE);
-		this.yAxis1NormalizeChannelLabel.setText("Normalize Channel:");
-		
-		// select box for the normalize channel
-		this.yAxis1NormalizeChannelComboBox = 
-				new Combo(this.yAxis1Composite, SWT.READ_ONLY);
+		this.yAxis1NormalizeCheckBox = new Button(this.yAxis1Composite,
+				SWT.CHECK);
+		this.yAxis1NormalizeCheckBox.setText("normalize with: ");
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		this.yAxis1NormalizeChannelComboBox.setLayoutData(gridData);
-		
-		this.yAxis1NormalizeChannelComboBoxSelectionListener = 
-				new YAxis1NormalizeChannelComboBoxSelectionListener();
-		this.yAxis1NormalizeChannelComboBox.addSelectionListener(
-				yAxis1NormalizeChannelComboBoxSelectionListener);
+		gridData.horizontalSpan = 2;
+		this.yAxis1NormalizeCheckBox.setLayoutData(gridData);
+		this.yAxis1NormalizeCheckBoxSelectionListener = 
+				new YAxis1NormalizeCheckBoxSelectionListener();
+		this.yAxis1NormalizeCheckBox.addSelectionListener(
+				yAxis1NormalizeCheckBoxSelectionListener);
 		
 		// GUI: Color:
 		Label yAxis1ColorLabel = new Label(yAxis1Composite, SWT.NONE);
@@ -562,21 +556,20 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		this.yAxis2DetectorChannelComboBox.addSelectionListener(
 				yAxis2DetectorChannelComboBoxSelectionListener);
 		
-		// GUI: Normalize Channel: <Combo>
-		this.yAxis2NormalizeChannelLabel = 
-				new Label(this.yAxis2Composite, SWT.NONE);
-		this.yAxis2NormalizeChannelLabel.setText("Normalize Channel:");
-		this.yAxis2NormalizeChannelComboBox = 
-				new Combo(this.yAxis2Composite, SWT.READ_ONLY);
+		// GUI: Normalize Channel:
+		this.yAxis2NormalizeCheckBox = new Button(this.yAxis2Composite,
+				SWT.CHECK);
+		this.yAxis2NormalizeCheckBox.setText("normalize with: ");
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
-		this.yAxis2NormalizeChannelComboBox.setLayoutData(gridData);
-		this.yAxis2NormalizeChannelComboBoxSelectionListener = 
-				new YAxis2NormalizeChannelComboBoxSelectionListener();
-		this.yAxis2NormalizeChannelComboBox.addSelectionListener( 
-				yAxis2NormalizeChannelComboBoxSelectionListener);
-		
+		gridData.horizontalSpan = 2;
+		this.yAxis2NormalizeCheckBox.setLayoutData(gridData);
+		this.yAxis2NormalizeCheckBoxSelectionListener = 
+				new YAxis2NormalizeCheckBoxSelectionListener();
+		this.yAxis2NormalizeCheckBox.addSelectionListener(
+				yAxis2NormalizeCheckBoxSelectionListener);
+
 		// GUI: Color:
 		Label colorLabel = new Label(yAxis2Composite, SWT.NONE);
 		colorLabel.setText("Color:");
@@ -879,8 +872,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		
 		yAxis1DetectorChannelComboBox.addSelectionListener(
 				yAxis1DetectorChannelComboBoxSelectionListener);
-		yAxis1NormalizeChannelComboBox.addSelectionListener(
-				yAxis1NormalizeChannelComboBoxSelectionListener);
+		yAxis1NormalizeCheckBox.addSelectionListener(
+				yAxis1NormalizeCheckBoxSelectionListener);
 		yAxis1ColorComboBox.addSelectionListener(
 				yAxis1ColorComboBoxSelectionListener);
 		yAxis1ColorFieldEditor.setPropertyChangeListener(
@@ -894,8 +887,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		
 		yAxis2DetectorChannelComboBox.addSelectionListener(
 				yAxis2DetectorChannelComboBoxSelectionListener);
-		yAxis2NormalizeChannelComboBox.addSelectionListener(
-				yAxis2NormalizeChannelComboBoxSelectionListener);
+		yAxis2NormalizeCheckBox.addSelectionListener(
+				yAxis2NormalizeCheckBoxSelectionListener);
 		yAxis2ColorComboBox.addSelectionListener(
 				yAxis2ColorComboBoxSelectionListener);
 		yAxis2ColorFieldEditor.setPropertyChangeListener(
@@ -922,8 +915,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		
 		yAxis1DetectorChannelComboBox.removeSelectionListener(
 				yAxis1DetectorChannelComboBoxSelectionListener);
-		yAxis1NormalizeChannelComboBox.removeSelectionListener(
-				yAxis1NormalizeChannelComboBoxSelectionListener);
+		yAxis1NormalizeCheckBox.removeSelectionListener(
+				yAxis1NormalizeCheckBoxSelectionListener);
 		yAxis1ColorComboBox.removeSelectionListener(
 				yAxis1ColorComboBoxSelectionListener);
 		yAxis1ColorFieldEditor.setPropertyChangeListener(null);
@@ -936,8 +929,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		
 		yAxis2DetectorChannelComboBox.removeSelectionListener(
 				yAxis2DetectorChannelComboBoxSelectionListener);
-		yAxis2NormalizeChannelComboBox.removeSelectionListener(
-				yAxis2NormalizeChannelComboBoxSelectionListener);
+		yAxis2NormalizeCheckBox.removeSelectionListener(
+				yAxis2NormalizeCheckBoxSelectionListener);
 		yAxis2ColorComboBox.removeSelectionListener(
 				yAxis2ColorComboBoxSelectionListener);
 		yAxis2ColorFieldEditor.setPropertyChangeListener(null);
@@ -1080,12 +1073,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			}
 			this.yAxis1DetectorChannelComboBox.setItems(detectorItems);
 			this.yAxis1DetectorChannelComboBox.add("none");
-			this.yAxis1NormalizeChannelComboBox.setItems(detectorItems);
-			this.yAxis1NormalizeChannelComboBox.add("none");
 			this.yAxis2DetectorChannelComboBox.setItems(detectorItems);
 			this.yAxis2DetectorChannelComboBox.add("none");
-			this.yAxis2NormalizeChannelComboBox.setItems(detectorItems);
-			this.yAxis2NormalizeChannelComboBox.add("none");
 			
 			// ***************************************************************
 			// ************************ yAxis1 *******************************
@@ -1095,18 +1084,33 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				if(yAxis1.getDetectorChannel() != null) {
 					this.yAxis1DetectorChannelComboBox.setText(
 							yAxis1.getDetectorChannel().getName());
+					for(Channel ch : this.scanModule.getChannels()) {
+						if (ch.getDetectorChannel().getID()
+								.equals(yAxis1.getDetectorChannel().getID())) {
+							if(ch.getNormalizeChannel() != null) {
+								this.yAxis1NormalizeCheckBox.setText(
+										"normalize with: "+ ch.
+										getNormalizeChannel().getName());
+								this.yAxis1NormalizeCheckBox.setEnabled(true);
+								this.yAxis1NormalizeCheckBox.setSelection(
+										!(this.yAxis1.getNormalizeChannel() 
+												== null));
+							} else {
+								this.yAxis1NormalizeCheckBox.setText(
+										"normalize with: ");
+								this.yAxis1NormalizeCheckBox.setSelection(false);
+								this.yAxis1NormalizeCheckBox.setEnabled(false);
+							}
+						}
+					}
 				} else {
 					yAxis1DetectorChannelComboBox.deselectAll();
-				}
-				if (yAxis1.getNormalizeChannel() != null) {
-					this.yAxis1NormalizeChannelComboBox.setText( 
-							yAxis1.getNormalizeChannel().getName());
-				} else { 
-					this.yAxis1NormalizeChannelComboBox.setText("none");
+					this.yAxis1NormalizeCheckBox.setText("normalize with: ");
+					this.yAxis1NormalizeCheckBox.setSelection(false);
+					this.yAxis1NormalizeCheckBox.setEnabled(false);
 				}
 				// set plot related properties according to the model
 				this.updateColorsAxis(1);
-				this.yAxis1NormalizeChannelComboBox.setEnabled(true);
 				this.yAxis1ColorComboBox.setEnabled(true);
 				this.yAxis1ColorFieldEditor.getColorSelector().setEnabled(true);
 				this.yAxis1LinestyleComboBox.setText(yAxis1.getLinestyle()
@@ -1121,8 +1125,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			} else {
 				// no y axis 1 -> disable fields
 				this.yAxis1DetectorChannelComboBox.deselectAll();
-				this.yAxis1NormalizeChannelComboBox.deselectAll();
-				this.yAxis1NormalizeChannelComboBox.setEnabled(false);
+				this.yAxis1NormalizeCheckBox.setSelection(false);
+				this.yAxis1NormalizeCheckBox.setEnabled(false);
 				this.yAxis1ColorComboBox.deselectAll();
 				this.yAxis1ColorComboBox.setEnabled(false);
 				this.yAxis1ColorFieldEditor.getColorSelector().setEnabled(false);
@@ -1146,18 +1150,34 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				if (yAxis2.getDetectorChannel() != null) {
 					this.yAxis2DetectorChannelComboBox.setText(
 							yAxis2.getDetectorChannel().getName());
+					for(Channel ch : this.scanModule.getChannels()) {
+						if (ch.getDetectorChannel().getID()
+								.equals(yAxis2.getDetectorChannel().getID())) {
+							if(ch.getNormalizeChannel() != null) {
+								this.yAxis2NormalizeCheckBox.setText(
+										"normalize with: "+ ch.
+										getNormalizeChannel().getName());
+								this.yAxis2NormalizeCheckBox.setEnabled(true);
+								this.yAxis2NormalizeCheckBox.setSelection(
+										!(this.yAxis2.getNormalizeChannel() 
+												== null));
+							} else {
+								this.yAxis2NormalizeCheckBox.setText(
+										"normalize with: ");
+								this.yAxis2NormalizeCheckBox.setSelection(false);
+								this.yAxis2NormalizeCheckBox.setEnabled(false);
+							}
+						}
+					}
 				} else {
 					yAxis2DetectorChannelComboBox.deselectAll();
-				}
-				if (yAxis2.getNormalizeChannel() != null) {
-					this.yAxis2NormalizeChannelComboBox.setText(
-							yAxis2.getNormalizeChannel().getName());
-				} else {
-					this.yAxis2NormalizeChannelComboBox.setText("none");
+					this.yAxis2NormalizeCheckBox.setText(
+							"normalize with: ");
+					this.yAxis1NormalizeCheckBox.setSelection(false);
+					this.yAxis2NormalizeCheckBox.setEnabled(false);
 				}
 				// plot related fields...
 				updateColorsAxis(2);
-				this.yAxis2NormalizeChannelComboBox.setEnabled(true);
 				this.yAxis2ColorComboBox.setEnabled(true);
 				this.yAxis2ColorFieldEditor.getColorSelector().setEnabled(true);
 				this.yAxis2LinestyleComboBox.setText(yAxis2.getLinestyle()
@@ -1172,8 +1192,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			} else {
 				// no y axis 2 -> disable fields
 				this.yAxis2DetectorChannelComboBox.deselectAll();
-				this.yAxis2NormalizeChannelComboBox.deselectAll();
-				this.yAxis2NormalizeChannelComboBox.setEnabled(false);
+				this.yAxis1NormalizeCheckBox.setSelection(false);
+				this.yAxis1NormalizeCheckBox.setEnabled(false);
 				this.yAxis2ColorComboBox.deselectAll();
 				this.yAxis2ColorComboBox.setEnabled(false);
 				this.yAxis2ColorFieldEditor.getColorSelector().setEnabled(false);
@@ -1326,7 +1346,7 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	// ************************************************************************	
 	
 	/**
-	 * <code>SelectionListener</code> of 
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>yAxis1DetectorChannelComboBox</code>.
 	 */
 	private class YAxis1DetectorChannelComboBoxSelectionListener 
@@ -1355,6 +1375,11 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 				yAxis1.setMarkstyle(PointStyle.NONE);
 				yAxis1.setDetectorChannel(availableDetectorChannels[yAxis1DetectorChannelComboBox
 						.getSelectionIndex()].getDetectorChannel());
+				
+				//availableDetectorChannels[yAxis1DetectorChannelComboBox
+				  //						.getSelectionIndex()].addPropertyChangeListener("normalizeChannel", listener)
+				// TODO
+				
 				plotWindow.addYAxis(yAxis1);
 			}
 			resumeModelUpdateListener();
@@ -1363,10 +1388,31 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>yAxis1NormalizechannelComboBox</code>.
+	 * <code>yAxis1NormalizeCheckBox</code>.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.4
 	 */
-	private class YAxis1NormalizeChannelComboBoxSelectionListener
-										implements SelectionListener {
+	private class YAxis1NormalizeCheckBoxSelectionListener implements SelectionListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			if(yAxis1NormalizeCheckBox.getSelection()) {
+				// checked
+				for(Channel ch : scanModule.getChannels()) {
+					if (ch.getDetectorChannel().getID()
+							.equals(yAxis1.getDetectorChannel().getID())) {
+						yAxis1.setNormalizeChannel(ch.getNormalizeChannel());
+					}
+				}
+			} else {
+				// unchecked
+				yAxis1.setNormalizeChannel(null);
+			}
+		}
 
 		/**
 		 * {@inheritDoc}
@@ -1374,29 +1420,11 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			suspendModelUpdateListener();
-			if (yAxis1NormalizeChannelComboBox.getText().equals("none")) {
-				// remove normalize channel
-				if (yAxis1 != null) {
-					yAxis1.setNormalizeChannel(null);
-				}
-			} else {
-				// set normalize channel to the one selected
-				yAxis1.setNormalizeChannel(availableDetectorChannels[yAxis1NormalizeChannelComboBox
-						.getSelectionIndex()].getDetectorChannel());
-			}
-			resumeModelUpdateListener();
-		}
 	}
 	
 	/**
-	 * <code>SelectionListener</code> of <code>yAxis1ColorComboBox</code>.
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
+	 * <code>yAxis1ColorComboBox</code>.
 	 */
 	private class YAxis1ColorComboBoxSelectionListener implements SelectionListener {
 		
@@ -1426,7 +1454,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	}
 	
 	/**
-	 * <code>PropertyChangeListener</code> of <code>colorFieldEditor</code>.
+	 * {@link org.eclipse.jface.util.IPropertyChangeListener} of 
+	 * <code>colorFieldEditor</code>.
 	 */
 	private class YAxis1ColorFieldEditorPropertyChangeListener 
 							implements IPropertyChangeListener {
@@ -1561,38 +1590,41 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 			resumeModelUpdateListener();
 		}
 	}
-	
-	/**
-	 * <code>ModifyListener</code> of
-	 * <code>yAxis2NormalizeChannelComboBox</code>.
-	 */
-	private class YAxis2NormalizeChannelComboBoxSelectionListener implements
-			SelectionListener {
 
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
+	/**
+	 * {@link org.eclipse.swt.events.SelectionListener} of 
+	 * <code>yAxis2NormalizeCheckBox</code>.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.4
+	 */
+	private class YAxis2NormalizeCheckBoxSelectionListener 
+			implements SelectionListener {
 
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			suspendModelUpdateListener();
-			if (yAxis2NormalizeChannelComboBox.getText().equals("none")) {
-				// remove normalize channel
-				if (yAxis2 != null) {
-					yAxis2.setNormalizeChannel(null);
+			if(yAxis2NormalizeCheckBox.getSelection()) {
+				// checked
+				for(Channel ch : scanModule.getChannels()) {
+					if (ch.getDetectorChannel().getID()
+							.equals(yAxis2.getDetectorChannel().getID())) {
+						yAxis2.setNormalizeChannel(ch.getNormalizeChannel());
+					}
 				}
 			} else {
-				// set normalize channel to the one selected
-				yAxis2.setNormalizeChannel(availableDetectorChannels[yAxis2NormalizeChannelComboBox
-						.getSelectionIndex()].getDetectorChannel());
+				// unchecked
+				yAxis1.setNormalizeChannel(null);
 			}
-			resumeModelUpdateListener();
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
 		}
 	}
 	

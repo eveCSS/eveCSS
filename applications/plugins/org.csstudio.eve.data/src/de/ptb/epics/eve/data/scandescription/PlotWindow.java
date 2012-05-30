@@ -55,7 +55,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	private MotorAxis xAxis;
 	
 	// contains all y axes
-	private List<YAxis> yAxis;
+	private List<YAxis> yAxes;
 	
 	// parties interested in updates of the plot window
 	private List<IModelUpdateListener> updateListener;
@@ -80,7 +80,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 		this.scanModule.addPropertyChangeListener("addAxis", this);
 
 		this.updateListener = new ArrayList<IModelUpdateListener>();
-		this.yAxis = new ArrayList<YAxis>();
+		this.yAxes = new ArrayList<YAxis>();
 		this.mode = PlotModes.LINEAR;
 	}
 	
@@ -116,7 +116,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 			yAxis.setMarkstyle(PointStyle.NONE);
 			yAxis.setDetectorChannel(scanModule.getChannels()[0].
 					getDetectorChannel());
-			this.yAxis.add(yAxis);
+			this.yAxes.add(yAxis);
 		}
 	}
 	
@@ -249,7 +249,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 					"The parameter 'yAxis' must not be null!");
 		}
 		yAxis.addModelUpdateListener(this);
-		this.yAxis.add(yAxis);
+		this.yAxes.add(yAxis);
 		updateListeners();
 	}
 	
@@ -265,7 +265,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 					"The parameter 'yAxis' must not be null!");
 		}
 		yAxis.removeModelUpdateListener(this);
-		this.yAxis.remove(yAxis);
+		this.yAxes.remove(yAxis);
 		updateListeners();
 	}
 	
@@ -275,7 +275,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	 * @return An iterator over all y axes.
 	 */
 	public Iterator<YAxis> getYAxisIterator() {
-		return this.yAxis.iterator();
+		return this.yAxes.iterator();
 	}
 	/**
 	 * get a list of y-axes
@@ -283,7 +283,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	 * @return a list of y axes
 	 */
 	public List<YAxis> getYAxes() {
-		return new ArrayList<YAxis>(this.yAxis);
+		return new ArrayList<YAxis>(this.yAxes);
 	}
 
 	/**
@@ -292,17 +292,17 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	 * @return the amount of y-axes of the plot window
 	 */
 	public int getYAxisAmount() {
-		return this.yAxis.size();
+		return this.yAxes.size();
 	}
 
 	/**
 	 * Removes all y-axes of this plot window.
 	 */
 	public void clearYAxis() {
-		for(YAxis yAxis : this.yAxis) {
+		for(YAxis yAxis : this.yAxes) {
 			yAxis.removeModelUpdateListener(this);
 		}
-		this.yAxis.clear();
+		this.yAxes.clear();
 	}
 
 	/**
@@ -383,6 +383,24 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	}
 
 	/**
+	 * 
+	 * @param channel
+	 * @param oldChannel
+	 * @param newChannel
+	 */
+	protected void normalizeChannelChanged(Channel channel,
+			DetectorChannel normalizeChannel) {
+		for(YAxis yAxis : this.yAxes) {
+			if (yAxis.getDetectorChannel().equals(channel.getDetectorChannel())) {
+				if (yAxis.getNormalizeChannel() != null && 
+					yAxis.getNormalizeChannel().equals(normalizeChannel)) {
+						yAxis.setNormalizeChannel(null);
+				}
+			}
+		}
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	public boolean addModelUpdateListener(
@@ -412,7 +430,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 		if(this.getYAxisAmount() == 0) {
 			modelErrors.add(new PlotWindowError(
 					this, PlotWindowErrorTypes.NO_Y_AXIS_SET));
-		}	
+		}
 		return modelErrors;
 	}	
 	

@@ -315,6 +315,9 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * Returns an iterator of the redo events.
 	 * 
 	 * @return an iterator of the redo events
+	 * @deprecated use {@link #getRedoControlEventManager()} and 
+	 * {@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager#getControlEventsList()} 
+	 * 			instead.
 	 */
 	public Iterator<ControlEvent> getRedoEventsIterator() {
 		return this.redoEvents.iterator();
@@ -404,12 +407,10 @@ public class Channel extends AbstractMainPhaseBehavior {
 			modelErrors.add(new ChannelError(this, 
 					ChannelErrorTypes.MAX_DEVIATION_NOT_POSSIBLE));
 		}
-
 		if(Double.compare(this.minimum, Double.NaN) == 0) {
 			modelErrors.add(new ChannelError(this, 
 					ChannelErrorTypes.MINIMUM_NOT_POSSIBLE));
 		}
-
 		if(this.redoControlEventManager.getModelErrors().size() > 0) {
 			modelErrors.addAll(this.redoControlEventManager.getModelErrors());
 			modelErrors.add(new ChannelError(this, 
