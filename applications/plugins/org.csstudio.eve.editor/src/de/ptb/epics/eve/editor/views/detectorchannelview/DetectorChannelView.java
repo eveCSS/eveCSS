@@ -92,12 +92,14 @@ public class DetectorChannelView extends ViewPart
 	// ****************** end of: underlying model ***********************
 	// *******************************************************************
 
-	private Composite top = null;
+	
 	private ScrolledComposite sc = null;
+	private Composite top = null;
 
 	private Label averageLabel;
 	private Text averageText;
 	private ControlDecoration averageTextControlDecoration;
+	private ControlDecoration averageTextDisabledControlDecoration;
 	private TextNumberVerifyListener averageTextVerifyListener;
 	private AverageTextModifyListener averageTextModifyListener;
 
@@ -140,6 +142,7 @@ public class DetectorChannelView extends ViewPart
 	private DetectorReadyEventCheckBoxSelectionListener 
 			detectorReadyEventCheckBoxSelectionListener;
 
+	private Image infoImage;
 	private Image errorImage;
 
 	/**
@@ -158,6 +161,10 @@ public class DetectorChannelView extends ViewPart
 		
 		this.errorImage = FieldDecorationRegistry.getDefault().
 			getFieldDecoration(FieldDecorationRegistry.DEC_ERROR).getImage();
+
+		this.infoImage = FieldDecorationRegistry.getDefault()
+				.getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION)
+				.getImage();
 
 		this.sc = new ScrolledComposite(parent, SWT.V_SCROLL);
 
@@ -193,6 +200,12 @@ public class DetectorChannelView extends ViewPart
 		this.averageTextControlDecoration.setDescriptionText("");
 		this.averageTextControlDecoration.setImage(errorImage);
 		this.averageTextControlDecoration.hide();
+		this.averageTextDisabledControlDecoration = new ControlDecoration(
+				this.averageText, SWT.LEFT);
+		this.averageTextDisabledControlDecoration.setDescriptionText("");
+		this.averageTextDisabledControlDecoration.setImage(infoImage);
+		this.averageTextDisabledControlDecoration.hide();
+		
 
 		// GUI: Max. Deviation (%): <TextBox> x
 		this.maxDeviationLabel = new Label(this.top, SWT.NONE);
@@ -664,12 +677,22 @@ public class DetectorChannelView extends ViewPart
 			this.eventsTabFolder.setEnabled(true);
 			this.redoEventComposite.getTableViewer().getTable().setEnabled(true);
 			
+			this.averageTextDisabledControlDecoration.hide();
+			
+			// disable fields if channel is used as a normalize channel
 			for(Channel ch : this.scanModule.getChannels()) {
 				if (ch.getNormalizeChannel() == null) {
 					continue;
 				}
 				if (ch.getNormalizeChannel().getID().equals(
 						this.currentChannel.getDetectorChannel().getID())) {
+					String message = this.currentChannel.getDetectorChannel().
+							getName() + " is used as normalize channel for " +
+							ch.getDetectorChannel().getName();
+					this.averageTextDisabledControlDecoration.
+							setDescriptionText(message);
+					this.averageTextDisabledControlDecoration.show();
+					
 					this.averageLabel.setEnabled(false);
 					this.averageText.setEnabled(false);
 					this.maxDeviationLabel.setEnabled(false);
