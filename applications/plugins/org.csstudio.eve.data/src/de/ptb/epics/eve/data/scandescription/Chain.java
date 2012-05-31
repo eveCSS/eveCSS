@@ -249,7 +249,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * @return the {@link de.ptb.epics.eve.data.scandescription.ScanModule} with 
 	 * 			the given id <b>or</b> <code>null</code> if none
 	 */
-	public ScanModule getScanModulById(final int id) {
+	public ScanModule getScanModuleById(final int id) {
 		return this.scanModuleMap.get(id);
 	}
 	

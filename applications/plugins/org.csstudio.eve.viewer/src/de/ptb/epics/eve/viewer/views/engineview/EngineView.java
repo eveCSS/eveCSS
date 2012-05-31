@@ -1154,7 +1154,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData.horizontalAlignment = GridData.FILL;
 				trigDelLabel.setLayoutData(gridData);
 				Label trigDelText = new Label(chainShell,SWT.NONE);
-				trigDelText.setText(""+displayChain.getScanModulById(aktSM).getTriggerdelay());
+				trigDelText.setText(""+displayChain.getScanModuleById(aktSM).getTriggerdelay());
 				gridData = new GridData();
 				gridData.horizontalAlignment = GridData.FILL;
 				trigDelText.setLayoutData(gridData);
@@ -1165,7 +1165,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData.horizontalAlignment = GridData.FILL;
 				settleLabel.setLayoutData(gridData);
 				Label settleText = new Label(chainShell,SWT.NONE);
-				settleText.setText(""+displayChain.getScanModulById(aktSM).getSettletime());
+				settleText.setText(""+displayChain.getScanModuleById(aktSM).getSettletime());
 				gridData = new GridData();
 				gridData.horizontalAlignment = GridData.FILL;
 				settleText.setLayoutData(gridData);
@@ -1176,7 +1176,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData.horizontalAlignment = GridData.FILL;
 				confLabel.setLayoutData(gridData);
 				Label confText = new Label(chainShell,SWT.NONE);
-				if (displayChain.getScanModulById(aktSM).isTriggerconfirm()) {
+				if (displayChain.getScanModuleById(aktSM).isTriggerconfirm()) {
 					confText.setText(" YES ");
 				}
 				else {
@@ -1222,7 +1222,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				motColumn3.setWidth(100);
 				motColumn3.setText("Stepwidth");
 	
-				Axis[] axis = displayChain.getScanModulById(aktSM).getAxes();
+				Axis[] axis = displayChain.getScanModuleById(aktSM).getAxes();
 				for (int i=0; i<axis.length; i++) {
 					// Neuer Tabelleneintrag muß gemacht werden
 					TableItem tableItem = new TableItem( motTable, 0 );
@@ -1251,7 +1251,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				detColumn1.setWidth(100);
 				detColumn1.setText("Average");
 				
-				Channel[] channels = displayChain.getScanModulById(aktSM).getChannels();
+				Channel[] channels = displayChain.getScanModuleById(aktSM).getChannels();
 				for (int i=0; i<channels.length; i++) {
 					// Neuer Tabelleneintrag muß gemacht werden
 					TableItem tableItem = new TableItem( detTable, 0 );

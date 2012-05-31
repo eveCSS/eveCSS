@@ -2,6 +2,7 @@ package de.ptb.epics.eve.viewer;
 
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
@@ -27,6 +28,9 @@ import de.ptb.epics.eve.viewer.views.plotview.PlotView;
 public class PlotViewDispatcher implements 
 		IEngineStatusListener, IChainStatusListener, IConnectionStateListener {
 
+	private static Logger logger = Logger.getLogger(PlotViewDispatcher.class
+			.getName());
+	
 	private ScanDescription scanDescription;
 	private EngineStatus engineStatus;
 	private boolean dispatchDelayed;
@@ -34,7 +38,7 @@ public class PlotViewDispatcher implements
 	private int smid;
 	
 	/**
-	 * Constructs a <code>PlotViewDispatcher</code>.
+	 * Constructor.
 	 */
 	public PlotViewDispatcher(){
 		scanDescription = null;
@@ -64,31 +68,42 @@ public class PlotViewDispatcher implements
 	/*
 	 * called by setScanDescription
 	 */
-	private void doDispatch(int chid, int smid){
-
-		HashMap<Integer, PlotWindow> windowIdMap = new HashMap<Integer, PlotWindow>();
+	private void doDispatch(int chid, int smid) {
+		HashMap<Integer, PlotWindow> windowIdMap =
+				new HashMap<Integer, PlotWindow>();
 		
-		if (scanDescription == null) return;
+		if (scanDescription == null) {
+			return;
+		}
 		Chain chain = scanDescription.getChain(chid);
-		if (chain == null) return;
-		
-		ScanModule sm = chain.getScanModulById(smid);
-		if (sm == null) return;
+		if (chain == null) {
+			return;
+		}
+		ScanModule sm = chain.getScanModuleById(smid);
+		if (sm == null) {
+			return;
+		}
 		
 		PlotWindow[] plotWindows = sm.getPlotWindows();
 		for (PlotWindow plotWindow : plotWindows) {
 			windowIdMap.put(plotWindow.getId(), plotWindow);
 		}
 		
-		// create a new plotView for all remaining windowIds without corresponding plotView
+		// create a new plotView for all remaining windowIds without 
+		// corresponding plotView
 		for (Integer windowId : windowIdMap.keySet()) {
-			IViewReference viewRef = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().findViewReference(PlotView.ID, windowId.toString());
+			IViewReference viewRef = PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getPartService()
+					.getActivePart().getSite().getPage()
+					.findViewReference(PlotView.ID, windowId.toString());
 			if (viewRef == null) {
 				// TODO create new plotView with secondary id windowI
 				try {
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(PlotView.ID, windowId.toString(), IWorkbenchPage.VIEW_ACTIVATE);
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+							.getActivePage().showView(PlotView.ID, 
+							windowId.toString(), IWorkbenchPage.VIEW_ACTIVATE);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				}
 			}
 		}
@@ -103,8 +118,7 @@ public class PlotViewDispatcher implements
 					if ((plotView.getViewSite()!= null) && (plotView.getViewSite().getSecondaryId() != null))
 						plotViewId = Integer.parseInt(plotView.getViewSite().getSecondaryId());
 				} catch (Exception e) {
-					// TODO: handle exception
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 					return;
 				}
 				if (windowIdMap.containsKey(plotViewId)) {
@@ -123,7 +137,8 @@ public class PlotViewDispatcher implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void engineStatusChanged(EngineStatus engineStatus, String xmlName, int repeatCount) {
+	public void engineStatusChanged(EngineStatus engineStatus, String xmlName,
+			int repeatCount) {
 		this.engineStatus = engineStatus;
 	}
 
@@ -132,7 +147,6 @@ public class PlotViewDispatcher implements
 	 */
 	@Override
 	public void chainStatusChanged(ChainStatusCommand chainStatusCommand) {
-		
 		this.chid = chainStatusCommand.getChainId();
 		this.smid = chainStatusCommand.getScanModulId();
 		if (chainStatusCommand.getChainStatus() == ChainStatus.EXECUTING_SM) {

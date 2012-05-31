@@ -1166,9 +1166,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					ScanModule scanModul = reminder.getScanModul();
 
 					ScanModule appendedScanModul = this.currentChain
-							.getScanModulById(reminder.getAppended());
+							.getScanModuleById(reminder.getAppended());
 					ScanModule nestedScanModul = this.currentChain
-							.getScanModulById(reminder.getNested());
+							.getScanModuleById(reminder.getNested());
 
 					Connector connector = new Connector();
 					if (appendedScanModul != null) {

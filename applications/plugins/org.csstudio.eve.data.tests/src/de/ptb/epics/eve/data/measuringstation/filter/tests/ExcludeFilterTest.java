@@ -923,7 +923,7 @@ public class ExcludeFilterTest {
 				ScanDescription sd = Configurator.getBasicScanDescription(
 						measuringStation);
 				
-				sd.getChain(1).getScanModulById(1).getPauseControlEventManager().
+				sd.getChain(1).getScanModuleById(1).getPauseControlEventManager().
 						addControlEvent(new PauseEvent(EventTypes.MONITOR, e, 
 								e.getMonitor().getID()));
 				
@@ -948,7 +948,7 @@ public class ExcludeFilterTest {
 				ScanDescription sd = Configurator.getBasicScanDescription(
 						measuringStation);
 				
-				sd.getChain(1).getScanModulById(1).getRedoControlEventManager().
+				sd.getChain(1).getScanModuleById(1).getRedoControlEventManager().
 						addControlEvent(new ControlEvent(EventTypes.MONITOR, e, 
 								e.getMonitor().getID()));
 				
@@ -973,7 +973,7 @@ public class ExcludeFilterTest {
 				ScanDescription sd = Configurator.getBasicScanDescription(
 						measuringStation);
 				
-				sd.getChain(1).getScanModulById(1).getBreakControlEventManager().
+				sd.getChain(1).getScanModuleById(1).getBreakControlEventManager().
 						addControlEvent(new ControlEvent(EventTypes.MONITOR, e, 
 								e.getMonitor().getID()));
 				
@@ -998,7 +998,7 @@ public class ExcludeFilterTest {
 				ScanDescription sd = Configurator.getBasicScanDescription(
 						measuringStation);
 				
-				sd.getChain(1).getScanModulById(1).getTriggerControlEventManager().
+				sd.getChain(1).getScanModuleById(1).getTriggerControlEventManager().
 						addControlEvent(new ControlEvent(EventTypes.MONITOR, e, 
 								e.getMonitor().getID()));
 				
@@ -1029,9 +1029,9 @@ public class ExcludeFilterTest {
 				ch.setId("DetCh1");
 				d.add(ch);
 				
-				Channel chan = new Channel(sd.getChain(1).getScanModulById(1));
+				Channel chan = new Channel(sd.getChain(1).getScanModuleById(1));
 				chan.setDetectorChannel(ch);
-				sd.getChain(1).getScanModulById(1).add(chan);
+				sd.getChain(1).getScanModuleById(1).add(chan);
 				
 				chan.getRedoControlEventManager().addControlEvent(
 						new ControlEvent(EventTypes.MONITOR, e, 
