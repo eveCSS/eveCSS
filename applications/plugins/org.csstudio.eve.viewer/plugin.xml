@@ -240,6 +240,28 @@
             id="de.ptb.epics.eve.viewer.devicesview.Collapse"
             name="Collapse">
       </command>
+      <category
+            id="de.ptb.epics.eve.viewer.messages"
+            name="Messages">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.messages"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.messages.Clear"
+            id="de.ptb.epics.eve.viewer.messagesview.clear"
+            name="Clear Messages">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.messages"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.messages.SetFilter"
+            id="de.ptb.epics.eve.viewer.messagesview.SetFilter"
+            name="Set Filter">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.messages"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.messages.Save"
+            id="de.ptb.epics.eve.viewer.messagesview.save"
+            name="Save Messages">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -495,6 +517,27 @@
                label="Collapse All"
                style="push"
                tooltip="Collapse All">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:MessagesView">
+         <command
+               commandId="de.ptb.epics.eve.viewer.messagesview.clear"
+               icon="icons/clear_co.gif"
+               label="Clear Messages"
+               style="push">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.messagesview.SetFilter"
+               icon="icons/filter_tsk.gif"
+               label="Set Filter"
+               style="push">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.messagesview.save"
+               icon="icons/save_edit.gif"
+               label="Save Messages to File"
+               style="push">
          </command>
       </menuContribution>
    </extension>

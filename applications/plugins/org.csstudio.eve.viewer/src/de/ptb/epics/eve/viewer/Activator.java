@@ -533,5 +533,8 @@ public class Activator extends AbstractUIPlugin {
 		
 		imagereg.put("CLASS", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/class_obj.png").createImage());
+		
+		imagereg.put("QUESTION", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/signed_unknown.gif").createImage());
 	}
 }

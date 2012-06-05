@@ -30,7 +30,7 @@ public class ViewerMessage {
 		// the source of the message		
 		private final MessageSource messageSource;
 		// the type of the message
-		private final MessageTypes messageType;
+		private final Levels messageType;
 		// the contents of the message
 		private final String message;
 		
@@ -44,7 +44,7 @@ public class ViewerMessage {
 		 * @param message the content of the message
 		 */
 		public ViewerMessage(final MessageSource messageSource, 
-							 final MessageTypes messageType, 
+							 final Levels messageType, 
 							 final String message) {
 			this.timestamp = new TimeStamp();
 			this.messageSource = messageSource;
@@ -59,7 +59,7 @@ public class ViewerMessage {
 		 * @param messageType the type of the message
 		 * @param message the content of the message
 		 */
-		public ViewerMessage(final MessageTypes messageType, 
+		public ViewerMessage(final Levels messageType, 
 							 final String message) {
 			this.timestamp = new TimeStamp();
 			this.messageSource = MessageSource.VIEWER;
@@ -77,7 +77,7 @@ public class ViewerMessage {
 		 */
 		public ViewerMessage(final Calendar cal, 
 							 final MessageSource messageSource, 
-							 final MessageTypes messageType, 
+							 final Levels messageType, 
 							 final String message) {
 			
 			this.timestamp = new TimeStamp(
@@ -101,7 +101,7 @@ public class ViewerMessage {
 					error.getNanoseconds());
 			this.messageSource = MessageSource.convertFromErrorFacility(
 					error.getErrorFacility());
-			this.messageType = MessageTypes.convertFromErrorSeverity(
+			this.messageType = Levels.convertFromErrorSeverity(
 					error.getErrorSeverity());
 			this.message = error.getText();	
 		}
@@ -129,7 +129,7 @@ public class ViewerMessage {
 		 * 
 		 * @return the message' type
 		 */
-		public MessageTypes getMessageType() {
+		public Levels getMessageType() {
 			return this.messageType;
 		}		
 		

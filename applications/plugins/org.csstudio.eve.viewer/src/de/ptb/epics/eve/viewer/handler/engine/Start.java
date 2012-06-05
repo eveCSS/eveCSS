@@ -14,7 +14,7 @@ import org.eclipse.ui.handlers.IHandlerService;
 
 import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.messages.MessageTypes;
+import de.ptb.epics.eve.viewer.messages.Levels;
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 
 /**
@@ -67,14 +67,14 @@ public class Start extends AbstractHandler {
 					"Engine not started due to empty preferences entry!";
 				logger.error(message);
 				Activator.getDefault().getMessagesContainer().addMessage(
-						new ViewerMessage(MessageTypes.ERROR, message));
+						new ViewerMessage(Levels.ERROR, message));
 			} else {
 				runtime.exec(engineLocation, parameters, null);
 				String message = "started engine process at: " + engineLocation +
 				"(Port: " + enginePort + ")";
 				logger.info(message);
 				Activator.getDefault().getMessagesContainer().addMessage(
-						new ViewerMessage(MessageTypes.INFO, message));
+						new ViewerMessage(Levels.INFO, message));
 			}
 			
 			Thread.sleep(2000);

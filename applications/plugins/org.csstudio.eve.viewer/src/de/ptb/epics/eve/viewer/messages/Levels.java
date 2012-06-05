@@ -8,7 +8,7 @@ import de.ptb.epics.eve.ecp1.intern.ErrorSeverity;
  * @author ?
  * @author Marcus Michalsky
  */
-public enum MessageTypes {
+public enum Levels {
 
 	/**
 	 * a debug level message (lowest level)
@@ -42,38 +42,34 @@ public enum MessageTypes {
 	
 	/**
 	 * Converts an {@link de.ptb.epics.eve.ecp1.intern.ErrorSeverity} into its 
-	 * corresponding {@link de.ptb.epics.eve.viewer.messages.MessageTypes}. 
+	 * corresponding {@link de.ptb.epics.eve.viewer.messages.Levels}. 
 	 * 
 	 * @param errorSeverity the 
 	 * 		  {@link de.ptb.epics.eve.ecp1.intern.ErrorSeverity}
 	 * @return the corresponding 
-	 *         {@link de.ptb.epics.eve.viewer.messages.MessageTypes}
+	 *         {@link de.ptb.epics.eve.viewer.messages.Levels}
 	 */
-	public static MessageTypes convertFromErrorSeverity(
-										final ErrorSeverity errorSeverity) {
-		
+	public static Levels convertFromErrorSeverity(
+			final ErrorSeverity errorSeverity) {
 		switch(errorSeverity) {
-		
 			case DEBUG:
-				return MessageTypes.DEBUG;
+				return Levels.DEBUG;
 				
 			case INFO:
-				return MessageTypes.INFO;
+				return Levels.INFO;
 				
 			case MINOR:
-				return MessageTypes.MINOR;
+				return Levels.MINOR;
 				
 			case ERROR:
-				return MessageTypes.ERROR;
+				return Levels.ERROR;
 				
 			case FATAL:
-				return MessageTypes.FATAL;
+				return Levels.FATAL;
 		
 			case SYSTEM:
-				return MessageTypes.SYSTEM;
-		
+				return Levels.SYSTEM;
 		}
-		
 		throw new UnsupportedOperationException(
 				"Unsupported value: " + errorSeverity);
 	}
@@ -105,5 +101,5 @@ public enum MessageTypes {
 			default:
 				return "U";
 		}
-	}	
+	}
 }

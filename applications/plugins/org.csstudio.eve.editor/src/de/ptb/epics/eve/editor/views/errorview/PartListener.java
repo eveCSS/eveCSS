@@ -44,7 +44,7 @@ public class PartListener implements IPartListener {
 				logger.debug("Editor '" + part.getTitle() + "' activated.");
 			}
 			GraphicalEditor ge = (GraphicalEditor) part;
-			ScanDescription sd = (ScanDescription) ge.getContent();
+			ScanDescription sd = ge.getContent();
 			this.errorView.setCurrentScanDescription(sd);
 		}
 	}

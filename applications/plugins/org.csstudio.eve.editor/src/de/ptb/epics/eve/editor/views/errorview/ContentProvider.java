@@ -57,7 +57,7 @@ public class ContentProvider implements IStructuredContentProvider, IModelUpdate
 	}
 
 	/**
-	 * {@inheritDoc}}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
@@ -69,15 +69,20 @@ public class ContentProvider implements IStructuredContentProvider, IModelUpdate
 	 * 
 	 */
 	private void setColumnWidth() {
-		int max_width = 90;
+		int typeColMaxWidth = 120;
+		int descrColMaxWidth = 90;
 		GC gc = new GC(((TableViewer)viewer).getTable());
 		FontMetrics fm = gc.getFontMetrics();
 		int charWidth = fm.getAverageCharWidth();
 		for(IModelError ime : this.scanDescription.getModelErrors()) {
-			if(max_width < ime.getErrorMessage().length() * charWidth + 8) {
-				max_width = ime.getErrorMessage().length() * charWidth + 8;
+			if(typeColMaxWidth < ime.getErrorName().length() * charWidth + 8) {
+				typeColMaxWidth = ime.getErrorName().length() * charWidth + 8;
+			}
+			if(descrColMaxWidth < ime.getErrorMessage().length() * charWidth + 8) {
+				descrColMaxWidth = ime.getErrorMessage().length() * charWidth + 8;
 			}
 		}
-		((TableViewer)viewer).getTable().getColumn(1).setWidth(max_width);
+		((TableViewer)viewer).getTable().getColumn(0).setWidth(typeColMaxWidth);
+		((TableViewer)viewer).getTable().getColumn(1).setWidth(descrColMaxWidth);
 	}
 }

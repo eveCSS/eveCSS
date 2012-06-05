@@ -17,10 +17,9 @@ import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
-import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.MessageSource;
-import de.ptb.epics.eve.viewer.messages.MessageTypes;
+import de.ptb.epics.eve.viewer.messages.Levels;
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 
 /**
@@ -612,7 +611,7 @@ public class CommonTableElement {
 			MotorAxis motorAxis = (MotorAxis)device;
 			Activator.getDefault().getMessagesContainer().addMessage(
 					new ViewerMessage(MessageSource.VIEWER, 
-							MessageTypes.INFO, "Define " + 
+							Levels.INFO, "Define " + 
 							motorAxis.getFullIdentifyer() + " from " +
 							gotoPv.getValue() + " to " + newValue));
 			offsetPv.setValue(newOffset.toString());

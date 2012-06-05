@@ -1,8 +1,10 @@
-package de.ptb.epics.eve.viewer.messages;
+package de.ptb.epics.eve.viewer.views.messagesview;
 
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
+
+import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 
 /**
  * <code>MessagesTableLabelProvider</code> is the label provider for the table 
@@ -11,7 +13,7 @@ import org.eclipse.swt.graphics.Image;
  * @author ?
  * @author Marcus Michalsky
  */
-public class MessagesTableLabelProvider implements ITableLabelProvider {
+public class LabelProvider implements ITableLabelProvider {
 
 	/**
 	 * {@inheritDoc}
@@ -28,11 +30,11 @@ public class MessagesTableLabelProvider implements ITableLabelProvider {
 	public String getColumnText(final Object element, final int columnIndex) {
 		ViewerMessage message = (ViewerMessage) element;
 		
-		if( columnIndex == 0 ) {
+		if(columnIndex == 0) {
 			// first column is the time (show only msecs not nsecs)
 			return message.getTimeStamp().toMONDDYYYY().length()==30 
-				   ? message.getTimeStamp().toMONDDYYYY().substring(0, 24) 
-				   : message.getTimeStamp().toMONDDYYYY();
+					? message.getTimeStamp().toMONDDYYYY().substring(0, 24) 
+					: message.getTimeStamp().toMONDDYYYY();
 		} else if(columnIndex == 1) {
 			// second column is the source
 			return message.getMessageSource().toString();
@@ -42,7 +44,7 @@ public class MessagesTableLabelProvider implements ITableLabelProvider {
 		} else if(columnIndex == 3) {
 			// fourth column is the message
 			return message.getMessage();
-		}	
+		}
 		return null;
 	}
 	

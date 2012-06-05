@@ -8,7 +8,7 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import de.ptb.epics.eve.ecp1.client.model.PlayListEntry;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.MessageSource;
-import de.ptb.epics.eve.viewer.messages.MessageTypes;
+import de.ptb.epics.eve.viewer.messages.Levels;
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 import de.ptb.epics.eve.viewer.views.playlistview.PlayListView;
 
@@ -28,7 +28,7 @@ public class RemoveFileFromPlayListAction extends Action implements IWorkbenchAc
 		TableItem[] selectedItems = tableViewer.getTable().getSelection();
 		for( int i = 0; i < selectedItems.length; ++i ) {
 			final PlayListEntry entry = (PlayListEntry)selectedItems[i].getData();
-			Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( MessageTypes.INFO, "Removing entry: id = " + entry.getId() + " name = " + entry.getName() + " author " + entry.getAuthor() + "." ) );
+			Activator.getDefault().getMessagesContainer().addMessage( new ViewerMessage( Levels.INFO, "Removing entry: id = " + entry.getId() + " name = " + entry.getName() + " author " + entry.getAuthor() + "." ) );
 			Activator.getDefault().getEcp1Client().getPlayListController().removePlayListEntry( entry );
 		}
 		

@@ -8,7 +8,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.messages.MessageTypes;
+import de.ptb.epics.eve.viewer.messages.Levels;
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 
 /**
@@ -36,7 +36,7 @@ public class Disconnect extends AbstractHandler {
 				logger.error(e.getMessage(), e);
 			}
 			Activator.getDefault().getMessagesContainer().addMessage(
-				new ViewerMessage(MessageTypes.INFO, "Disconnected from Engine"));
+				new ViewerMessage(Levels.INFO, "Disconnected from Engine"));
 		}
 		return null;
 	}

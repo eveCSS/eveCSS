@@ -44,7 +44,7 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.MessageSource;
-import de.ptb.epics.eve.viewer.messages.MessageTypes;
+import de.ptb.epics.eve.viewer.messages.Levels;
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
 
@@ -194,7 +194,7 @@ public final class DevicesView extends ViewPart implements Observer {
 	 */
 	public void setMeasuringStation(final IMeasuringStation measuringStation) {
 		Activator.getDefault().getMessagesContainer().addMessage(
-				new ViewerMessage(MessageSource.VIEWER, MessageTypes.INFO, 
+				new ViewerMessage(MessageSource.VIEWER, Levels.INFO, 
 						"Got new measuring station description."));
 		this.measuringStation = measuringStation;
 		this.treeViewer.setInput(this.measuringStation);

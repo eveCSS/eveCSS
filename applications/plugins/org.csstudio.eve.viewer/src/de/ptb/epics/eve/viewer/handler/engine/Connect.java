@@ -10,7 +10,7 @@ import org.eclipse.core.commands.ExecutionException;
 
 import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.messages.MessageTypes;
+import de.ptb.epics.eve.viewer.messages.Levels;
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 
 /**
@@ -48,7 +48,7 @@ public class Connect extends AbstractHandler {
 			
 			if((port > 0) && (EngineString.length() > 1)) {
 				Activator.getDefault().getMessagesContainer().addMessage(
-					new ViewerMessage(MessageTypes.INFO,
+					new ViewerMessage(Levels.INFO,
 						"Trying to connect to: " + EngineString + 
 						" (Port: " + port + ")."));
 				try {
@@ -59,17 +59,17 @@ public class Connect extends AbstractHandler {
 							System.getProperty("user.name")+"@"+
 								localMachine.getHostName());
 					Activator.getDefault().getMessagesContainer().addMessage(
-						new ViewerMessage(MessageTypes.INFO, 
+						new ViewerMessage(Levels.INFO, 
 							"Connection established to: " + EngineString + "."));
 				} catch(final IOException e) {
 					Activator.getDefault().getMessagesContainer().addMessage(
-						new ViewerMessage(MessageTypes.ERROR, 
+						new ViewerMessage(Levels.ERROR, 
 							"Cannot establish connection! " + e.getMessage() + "."));
 					logger.error(e.getMessage(), e);
 				}
 			} else {
 				Activator.getDefault().getMessagesContainer().addMessage(
-						new ViewerMessage(MessageTypes.ERROR, 
+						new ViewerMessage(Levels.ERROR, 
 						"Could not establish connection! Please provide a " +
 						"valid address in CSS -> Preferences... -> " +
 						"CSS Applications -> Eve"));
