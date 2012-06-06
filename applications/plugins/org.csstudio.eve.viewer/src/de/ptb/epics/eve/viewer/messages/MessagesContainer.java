@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.viewer.messages;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -92,6 +93,7 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 			}
 			returnList.add(message);
 		}
+		Collections.sort(returnList);
 		return returnList;
 	}
 

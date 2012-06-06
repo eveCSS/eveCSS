@@ -43,7 +43,7 @@ public final class MessagesView extends ViewPart {
 		TableViewerColumn typeColumn = new TableViewerColumn(this.tableViewer, 
 				SWT.LEFT);
 		typeColumn.getColumn().setText("T");
-		typeColumn.getColumn().setWidth(20);
+		typeColumn.getColumn().setWidth(22);
 
 		// fourth column: the text (contents) of the message
 		TableViewerColumn messageColumn = new TableViewerColumn(

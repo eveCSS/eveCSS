@@ -6,7 +6,6 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 
-import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;
 import de.ptb.epics.eve.viewer.messages.MessagesContainer;
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
