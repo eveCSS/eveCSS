@@ -24,7 +24,8 @@ public final class MessagesView extends ViewPart {
 	@Override
 	public void createPartControl(final Composite parent) {
 
-		this.tableViewer = new TableViewer(parent, SWT.MULTI);
+		this.tableViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | 
+				SWT.V_SCROLL);
 
 		// the first column contains the time
 		TableViewerColumn timeColumn = new TableViewerColumn(this.tableViewer,

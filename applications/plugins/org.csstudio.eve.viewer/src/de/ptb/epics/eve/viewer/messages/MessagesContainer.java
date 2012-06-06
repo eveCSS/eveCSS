@@ -38,6 +38,10 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 	public MessagesContainer() {
 		this.messages = new LinkedList<ViewerMessage>();
 		this.listener = new ArrayList<IMessagesContainerUpdateListener>();
+		
+		if (logger.isDebugEnabled()) {
+			this.level = Levels.DEBUG;
+		}
 	}
 	
 	/**

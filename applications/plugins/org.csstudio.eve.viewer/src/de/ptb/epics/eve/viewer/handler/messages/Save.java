@@ -55,8 +55,8 @@ public class Save implements IHandler {
 			}
 		}
 		
-		List<ViewerMessage> messages = Activator.getDefault()
-				.getMessagesContainer().getList(); // TODO concurrency !
+		List<ViewerMessage> messages = Activator.getDefault().
+				getMessagesContainer().getList();
 		de.ptb.epics.eve.viewer.jobs.messages.Save saveJob = 
 				new de.ptb.epics.eve.viewer.jobs.messages.Save(
 						"Save Messages to File", name, messages);
