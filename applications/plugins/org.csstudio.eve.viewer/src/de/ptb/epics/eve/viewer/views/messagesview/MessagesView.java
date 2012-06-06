@@ -7,7 +7,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.actions.MessagesViewSaveMessagesToFileAction;
 
 /**
  * 
@@ -18,10 +17,7 @@ public final class MessagesView extends ViewPart {
 
 	// the only element in this view is a table viewer for the messages
 	private TableViewer tableViewer;
-
-	// actions provided to manipulate the messages table
-	private MessagesViewSaveMessagesToFileAction saveMessagesToFileAction;
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -64,20 +60,6 @@ public final class MessagesView extends ViewPart {
 		// the MessageContainer is the input object of the table viewer
 		this.tableViewer.setInput(Activator.getDefault().
 				getMessagesContainer());
-		
-		/*
-		// initialize actions
-		IToolBarManager tbmngr = this.getViewSite().getActionBars()
-				.getToolBarManager();
-
-		// action to save the messages to a file
-		this.saveMessagesToFileAction = new MessagesViewSaveMessagesToFileAction(
-				this.tableViewer);
-		this.saveMessagesToFileAction.setText("Save messages to a file.");
-		this.saveMessagesToFileAction.setImageDescriptor(Activator.getDefault()
-				.getImageRegistry().getDescriptor("SAVE"));
-		tbmngr.add(this.saveMessagesToFileAction);
-		*/
 	}
 
 	/**

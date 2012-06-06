@@ -52,6 +52,8 @@ public class Activator extends AbstractUIPlugin {
 	
 	private static Logger logger = Logger.getLogger(Activator.class.getName());
 	
+	private WorkbenchListener workbenchListener;
+	
 	private final MessagesContainer messagesContainer;
 	private final XMLFileDispatcher xmlFileDispatcher;
 	private final EngineErrorReader engineErrorReader;
@@ -89,6 +91,8 @@ public class Activator extends AbstractUIPlugin {
 		composite.setDefaultDataSource("ca");
 		// Set the composite as the default
 		PVManager.setDefaultDataSource(composite);
+		
+		this.workbenchListener = new WorkbenchListener();
 	}
 
 	/**
@@ -112,6 +116,8 @@ public class Activator extends AbstractUIPlugin {
 		this.ecp1Client.addChainStatusListener(this.chainStatusAnalyzer);
 		this.requestProcessor = new RequestProcessor(Display.getCurrent());
 		this.ecp1Client.addRequestListener(this.requestProcessor);
+		
+		PlatformUI.getWorkbench().addWorkbenchListener(workbenchListener);
 	}
 
 	/**
