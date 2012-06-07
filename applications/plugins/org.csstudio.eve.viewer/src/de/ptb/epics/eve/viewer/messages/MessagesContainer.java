@@ -52,7 +52,7 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 	 * @param viewerMessage the 
 	 * 		  {@link de.ptb.epics.eve.viewer.messages.ViewerMessage}
 	 */
-	public void addMessage(final ViewerMessage viewerMessage) {
+	public synchronized void addMessage(final ViewerMessage viewerMessage) {
 		this.messages.add(0, viewerMessage);
 		// inform observers
 		for(final IMessagesContainerUpdateListener imcul : this.listener) {
@@ -63,7 +63,7 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 	/**
 	 * Clears all messages.
 	 */
-	public void clear() {
+	public synchronized void clear() {
 		this.messages.clear();
 		// inform observers
 		for(final IMessagesContainerUpdateListener imcul : this.listener) {
@@ -76,7 +76,7 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 	 *  
 	 * @return a list of {@link de.ptb.epics.eve.viewer.messages.ViewerMessage}s
 	 */
-	public List<ViewerMessage> getList() {
+	public synchronized List<ViewerMessage> getList() {
 		final List<ViewerMessage> returnList = new ArrayList<ViewerMessage>();
 		
 		for(ViewerMessage message : this.messages) {
