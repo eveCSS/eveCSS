@@ -3,6 +3,8 @@ package de.ptb.epics.eve.viewer.views.messagesview;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 
@@ -20,6 +22,29 @@ public class LabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public Image getColumnImage(final Object element, final int columnIndex) {
+		if(columnIndex == 2) {
+			ViewerMessage message = (ViewerMessage) element;
+			switch(message.getMessageType()) {
+			case DEBUG:
+				return PlatformUI.getWorkbench().getSharedImages().
+						getImage("DEBUG");
+			case ERROR:
+				return PlatformUI.getWorkbench().getSharedImages()
+						.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+			case FATAL:
+				return PlatformUI.getWorkbench().getSharedImages().
+						getImage("FATAL");
+			case INFO:
+				return PlatformUI.getWorkbench().getSharedImages()
+						.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+			case MINOR:
+				return PlatformUI.getWorkbench().getSharedImages()
+						.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+			case SYSTEM:
+				return PlatformUI.getWorkbench().getSharedImages().
+						getImage("SYSTEM");
+			}
+		}
 		return null;
 	}
 
@@ -38,9 +63,6 @@ public class LabelProvider implements ITableLabelProvider {
 		} else if(columnIndex == 1) {
 			// second column is the source
 			return message.getMessageSource().toString();
-		} else if(columnIndex == 2) {
-			// third column is the type
-			return message.getMessageType().toString();
 		} else if(columnIndex == 3) {
 			// fourth column is the message
 			return message.getMessage();

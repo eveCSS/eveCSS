@@ -542,5 +542,14 @@ public class Activator extends AbstractUIPlugin {
 		
 		imagereg.put("QUESTION", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/signed_unknown.gif").createImage());
+		
+		imagereg.put("DEBUG", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/debug_exc.gif").createImage());
+		imagereg.put("FATAL", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/fatalerror_obj.gif").createImage());
+		imagereg.put("SYSTEM", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/build_exec.gif").createImage());
+		imagereg.put("SORTARROW", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/view_menu.gif").createImage());
 	}
 }
