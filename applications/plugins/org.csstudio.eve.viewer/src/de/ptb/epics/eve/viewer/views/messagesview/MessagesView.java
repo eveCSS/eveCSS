@@ -79,8 +79,13 @@ public final class MessagesView extends ViewPart {
 		this.tableViewer.getTable().setLinesVisible(true);
 
 		// set provider classes which fill the tables labels and content
-		this.tableViewer.setContentProvider(new ContentProvider());
+		ContentProvider cp = new ContentProvider();
+		this.tableViewer.setContentProvider(cp);
 		this.tableViewer.setLabelProvider(new LabelProvider());
+		
+		// if a new scan arrives, old messages are removed
+		Activator.getDefault().getXMLFileDispatcher()
+				.addObserver(cp);
 
 		// the MessageContainer is the input object of the table viewer
 		this.tableViewer.setInput(Activator.getDefault().
@@ -129,7 +134,7 @@ public final class MessagesView extends ViewPart {
 	/* ******************************************************************** */
 	/* *************************** Listeners ****************************** */
 	/* ******************************************************************** */
-	
+
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * typeColumn.

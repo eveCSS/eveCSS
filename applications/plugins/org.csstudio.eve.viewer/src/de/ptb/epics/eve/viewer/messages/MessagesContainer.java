@@ -166,6 +166,15 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 	}
 	
 	/**
+	 * Returns the number of contained messages.
+	 * 
+	 * @return the number of contained messages
+	 */
+	public int getMessageCount() {
+		return this.messages.size();
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override

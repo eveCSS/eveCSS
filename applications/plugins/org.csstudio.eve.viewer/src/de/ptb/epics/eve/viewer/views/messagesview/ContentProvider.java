@@ -1,11 +1,16 @@
 package de.ptb.epics.eve.viewer.views.messagesview;
 
+import java.util.Observable;
+import java.util.Observer;
+
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 
+import de.ptb.epics.eve.viewer.XMLFileDispatcher;
 import de.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;
 import de.ptb.epics.eve.viewer.messages.MessagesContainer;
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
@@ -15,9 +20,12 @@ import de.ptb.epics.eve.viewer.messages.ViewerMessage;
  * @author ?
  * @author Marcus Michalsky
  */
-public class ContentProvider 
-		implements IStructuredContentProvider, IMessagesContainerUpdateListener {
+public class ContentProvider implements IStructuredContentProvider,
+		IMessagesContainerUpdateListener, Observer {
 
+	private static Logger logger = Logger.getLogger(ContentProvider.class
+			.getName());
+	
 	private TableViewer viewer;
 	private MessagesContainer messagesContainer;
 	
@@ -108,5 +116,20 @@ public class ContentProvider
 		}
 		viewer.getTable().getColumn(1).setWidth(sourceColMaxWidth);
 		viewer.getTable().getColumn(3).setWidth(messageColMaxWidth);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void update(Observable o, Object arg) {
+		if (o instanceof XMLFileDispatcher) {
+			if (this.messagesContainer.getMessageCount() > 200) {
+				this.messagesContainer.clear();
+				logger.debug("new scan arrived & msg count > 200 -> clear all");
+			} else {
+				logger.debug("new scan arrived but lt 200 msgs -> ignore");
+			}
+		}
 	}
 }
