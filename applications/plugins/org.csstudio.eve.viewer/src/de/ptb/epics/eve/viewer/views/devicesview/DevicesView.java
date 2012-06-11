@@ -329,7 +329,6 @@ public final class DevicesView extends ViewPart implements Observer {
 			// provide the data of the requested type
 			
 			if(TextTransfer.getInstance().isSupportedType(event.dataType)) {
-				
 				TreeItem[] items = treeViewer.getTree().getSelection();
 				StringBuffer data = new StringBuffer();
 				int count = 0;
@@ -419,7 +418,6 @@ public final class DevicesView extends ViewPart implements Observer {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void doubleClick(DoubleClickEvent event) {
-			
 			if(logger.isDebugEnabled()) {
 				logger.debug("Double Click: " + event.getSelection());
 			}
@@ -430,8 +428,10 @@ public final class DevicesView extends ViewPart implements Observer {
 			DeviceInspectorView deviceInspectorView = null;
 			for(IViewReference ivr : ref) {
 				if(ivr.getId().equals(DeviceInspectorView.ID)) {
-					if(DeviceInspectorView.activeDeviceInspectorView.equals(ivr.getSecondaryId())) {
-						deviceInspectorView = (DeviceInspectorView)ivr.getPart(false);
+					if(DeviceInspectorView.activeDeviceInspectorView.equals(
+							ivr.getSecondaryId())) {
+						deviceInspectorView = (DeviceInspectorView)
+								ivr.getPart(false);
 					}
 				}
 			}
@@ -439,7 +439,6 @@ public final class DevicesView extends ViewPart implements Observer {
 			if(deviceInspectorView != null) {
 				Object selection = 
 					treeViewer.getTree().getSelection()[0].getData();
-				
 				if(selection instanceof AbstractDevice) {
 					deviceInspectorView.addAbstractDevice((AbstractDevice)
 							treeViewer.getTree().getSelection()[0].getData());
@@ -448,10 +447,8 @@ public final class DevicesView extends ViewPart implements Observer {
 						deviceInspectorView.addAbstractDevice((AbstractDevice)o);
 					}
 				} else if(selection instanceof String) {
-					IMeasuringStation measuringstation = 
-						Activator.getDefault().getMeasuringStation();
 					List<AbstractDevice> devices = 
-						measuringstation.getDeviceList((String)selection);
+						measuringStation.getDeviceList((String)selection);
 					for(AbstractDevice d : devices) {
 						deviceInspectorView.addAbstractDevice(d);
 					}

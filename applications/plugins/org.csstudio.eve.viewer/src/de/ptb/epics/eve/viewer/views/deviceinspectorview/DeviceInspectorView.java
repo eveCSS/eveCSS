@@ -861,13 +861,12 @@ public class DeviceInspectorView extends ViewPart {
 				if(channel.getTrigger() != null && 
 						channel.getTrigger().getAccess() != null) {
 					return channel.getTrigger().getAccess().getVariableID();
-				} else {
-					// triggerPv is the detector of the channel
-					Detector detector = channel.getDetector();
-					if(detector.getTrigger() != null && 
-							detector.getTrigger().getAccess() != null) {
-						return detector.getTrigger().getAccess().getVariableID();
-					}
+				}
+				// triggerPv is the detector of the channel
+				Detector detector = channel.getDetector();
+				if(detector.getTrigger() != null && 
+						detector.getTrigger().getAccess() != null) {
+					return detector.getTrigger().getAccess().getVariableID();
 				}
 				return null;
 			}
@@ -1480,8 +1479,11 @@ public class DeviceInspectorView extends ViewPart {
 				logger.debug("drop data: " + event.data);
 			}
 			
-			IMeasuringStation measuringstation = 
-				Activator.getDefault().getMeasuringStation();
+			IMeasuringStation measuringstation = getSite().getPage().
+					getPerspective().getId().equals("EveDevicePerspective")
+					? Activator.getDefault().getMeasuringStation()
+					: Activator.getDefault().getCurrentScanDescription().
+							getMeasuringStation();
 			
 			boolean refuse = true;
 			
@@ -1574,9 +1576,12 @@ public class DeviceInspectorView extends ViewPart {
 				logger.debug("drop data: " + event.data);
 			}
 			
-			IMeasuringStation measuringstation = 
-				Activator.getDefault().getMeasuringStation();
-			
+			IMeasuringStation measuringstation = getSite().getPage().
+					getPerspective().getId().equals("EveDevicePerspective")
+					? Activator.getDefault().getMeasuringStation()
+					: Activator.getDefault().getCurrentScanDescription().
+							getMeasuringStation();
+
 			boolean refuse = true;
 			
 			for(String s : ((String)event.data).split(",")) {
@@ -1668,8 +1673,11 @@ public class DeviceInspectorView extends ViewPart {
 				logger.debug("drop data: " + event.data);
 			}
 			
-			IMeasuringStation measuringstation = 
-				Activator.getDefault().getMeasuringStation();
+			IMeasuringStation measuringstation = getSite().getPage().
+					getPerspective().getId().equals("EveDevicePerspective")
+					? Activator.getDefault().getMeasuringStation()
+					: Activator.getDefault().getCurrentScanDescription().
+							getMeasuringStation();
 			
 			boolean refuse = true;
 			
