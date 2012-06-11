@@ -49,18 +49,7 @@ public abstract class ActionComposite extends Composite {
 	 */
 	public void setScanModule(final ScanModule scanModule) {
 		logger.debug(this.getClass().getName());
-		
 		this.tableViewer.setInput(scanModule);
-		
-		// if there are any entries ... 
-		if(tableViewer.getTable().getItems().length > 0) {
-			// ... and none is selected ...
-			if(tableViewer.getTable().getSelectionCount() == 0) {
-				// ... select the first one
-				tableViewer.getTable().select(0);
-			}
-		}
-		parentView.setSelectionProvider(this.tableViewer);
 	}
 
 	// ************************************************************************

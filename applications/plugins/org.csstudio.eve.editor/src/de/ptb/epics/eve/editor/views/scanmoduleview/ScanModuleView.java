@@ -477,44 +477,31 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 */
 	private void setCurrentScanModule(ScanModule currentScanModule) {
 		logger.debug("setCurrentScanModule");
-		
+
 		// if there was a scan module shown before, stop listening to changes
 		if (this.currentScanModule != null) {
 			this.currentScanModule.removeModelUpdateListener(this);
 		}
-		
+
 		// set the new scan module as the current one
 		this.currentScanModule = currentScanModule;
-		
-		// activate the scan module view (to assure propagation of selections)
-		this.getSite().getPage().activate(this);
-		
+
+		// tell the action composites about the change
+		this.motorAxisComposite.setScanModule(this.currentScanModule);
+		this.detectorChannelComposite.setScanModule(this.currentScanModule);
+		this.prescanComposite.setScanModule(this.currentScanModule);
+		this.postscanComposite.setScanModule(this.currentScanModule);
+		this.positioningComposite.setScanModule(this.currentScanModule);
+		this.plotComposite.setScanModule(this.currentScanModule);
+
 		// get the selected tab
 		int selection_index = this.actionsTabFolder.getSelectionIndex();
-		
-		// tell the action composites about the change
-		this.actionsTabFolder.setSelection(0);
-		this.motorAxisComposite.setScanModule(this.currentScanModule);
-		this.actionsTabFolder.setSelection(1);
-		this.detectorChannelComposite.setScanModule(this.currentScanModule);
-		this.actionsTabFolder.setSelection(2);
-		this.prescanComposite.setScanModule(this.currentScanModule);
-		this.actionsTabFolder.setSelection(3);
-		this.postscanComposite.setScanModule(this.currentScanModule);
-		this.actionsTabFolder.setSelection(4);
-		this.positioningComposite.setScanModule(this.currentScanModule);
-		this.actionsTabFolder.setSelection(5);
-		this.plotComposite.setScanModule(this.currentScanModule);
-		
-		if(selection_index != -1) {
-			actionsTabFolder.setSelection(selection_index);
-			((ActionComposite)actionsTabFolder.getTabList()[selection_index]).
-					setScanModule(currentScanModule);
+		if (selection_index == -1) {
+			this.actionsTabFolder.setSelection(0);
 		} else {
-			// select the first tab if none is selected
-			actionsTabFolder.setSelection(0);
+			this.actionsTabFolder.setSelection(selection_index);
 		}
-		
+
 		if (this.currentScanModule != null) {
 			// new scan module
 			this.currentScanModule.addModelUpdateListener(this);
@@ -548,7 +535,6 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 			
 			top.setVisible(false);
 		}
-		
 		updateEvent(null);
 	}
 	
@@ -684,57 +670,28 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		logger.debug("selection changed");
-		
-		if(selection instanceof IStructuredSelection) {
-			if(((IStructuredSelection) selection).size() == 0) {
+		if (!(selection instanceof IStructuredSelection) ||
+			((IStructuredSelection) selection).size() == 0) {
 				return;
+		}
+		// since at any given time this view can only display options of
+		// one device we take the first element of the selection
+		Object o = ((IStructuredSelection) selection).toList().get(0);
+		if (o instanceof ScanModuleEditPart) {
+			// set new ScanModule
+			if (logger.isDebugEnabled()) {
+				logger.debug("ScanModule: "
+						+ ((ScanModule) ((ScanModuleEditPart) o).getModel())
+								.getId() + " selected.");
 			}
-			// since at any given time this view can only display options of 
-			// one device we take the first element of the selection
-			Object o = ((IStructuredSelection) selection).toList().get(0);
-			if (o instanceof ScanModuleEditPart) {
-				// set new ScanModule
-				if(logger.isDebugEnabled()) {
-					logger.debug("ScanModule: " + ((ScanModule)(
-							(ScanModuleEditPart)o).getModel()).getId() + 
-							" selected."); 
-				}
-				// copy into final var so it can be used in runnable
-				final ScanModuleEditPart smep = (ScanModuleEditPart)o;
-				if (this.currentScanModule != null) {
-					ScanModule newScanModule = (ScanModule)
-							((ScanModuleEditPart)o).getModel();
-					if(!this.currentScanModule.equals(newScanModule)) {
-						// to get rid of preventing recursive attempt to 
-						// activate part, use asynchronous execution
-						Display.getCurrent().asyncExec(new Runnable() {
-							@Override public void run() {
-								setCurrentScanModule((ScanModule)
-										smep.getModel());
-							}
-						});
-					}
-				} else {
-					Display.getCurrent().asyncExec(new Runnable() {
-						@Override public void run() {
-							setCurrentScanModule((ScanModule)
-									smep.getModel());
-						}
-					});
-				}
-			} else if (o instanceof ScanDescriptionEditPart) {
-				// clicking empty space in the editor
-				logger.debug("selection is ScanDescriptionEditPart: " + o);
-				if(this.currentScanModule !=  null) {
-					Display.getCurrent().asyncExec(new Runnable() {
-						@Override public void run() {} {
-							setCurrentScanModule(null);
-						}
-					});
-				}
-			} else {
-				logger.debug("selection other than ScanModule -> ignore: " + o);
-			}
+			final ScanModuleEditPart smep = (ScanModuleEditPart) o;
+			setCurrentScanModule((ScanModule) smep.getModel());
+		} else if (o instanceof ScanDescriptionEditPart) {
+			// clicking empty space in the editor
+			logger.debug("selection is ScanDescriptionEditPart: " + o);
+			setCurrentScanModule(null);
+		} else {
+			logger.debug("selection other than ScanModule -> ignore: " + o);
 		}
 	}
 	
@@ -865,39 +822,42 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 					confirmTriggerCheckBox.getSelection());
 		}
 	}
-	
+
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of
 	 * <code>eventsTabFolder</code>.
 	 */
-	private class EventsTabFolderSelectionListener implements 
-					SelectionListener {
-		
+	private class EventsTabFolderSelectionListener implements SelectionListener {
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			switch(eventsTabFolder.getSelectionIndex()) {
-				case 0: selectionProviderWrapper.setSelectionProvider(
-							pauseEventComposite.getTableViewer());
-						break;
-				case 1: selectionProviderWrapper.setSelectionProvider(
-							redoEventComposite.getTableViewer());
-						break;
-				case 2: selectionProviderWrapper.setSelectionProvider(
-							breakEventComposite.getTableViewer());
-						break;
-				case 3: selectionProviderWrapper.setSelectionProvider(
-							triggerEventComposite.getTableViewer());
-						break;
+			switch (eventsTabFolder.getSelectionIndex()) {
+			case 0:
+				selectionProviderWrapper.setSelectionProvider(
+						pauseEventComposite.getTableViewer());
+				break;
+			case 1:
+				selectionProviderWrapper.setSelectionProvider(
+						redoEventComposite.getTableViewer());
+				break;
+			case 2:
+				selectionProviderWrapper.setSelectionProvider(
+						breakEventComposite.getTableViewer());
+				break;
+			case 3:
+				selectionProviderWrapper.setSelectionProvider(
+						triggerEventComposite.getTableViewer());
+				break;
 			}
 		}
 	}
@@ -906,40 +866,40 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	 * {@link org.eclipse.swt.events.SelectionListener} of
 	 * <code> appendScheduleEventCheckBox</code>.
 	 */
-	private class AppendScheduleEventCheckBoxSelectionListener implements 
-					SelectionListener {
-		
+	private class AppendScheduleEventCheckBoxSelectionListener implements
+			SelectionListener {
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			Event scheduleEvent = new Event(currentScanModule.getChain().getId(), 
-											currentScanModule.getId(), 
-											Event.ScheduleIncident.END);
-			
+			Event scheduleEvent = new Event(currentScanModule.getChain()
+					.getId(), currentScanModule.getId(),
+					Event.ScheduleIncident.END);
+
 			if (appendScheduleEventCheckBox.getSelection()) {
-				if (currentScanModule.getChain().getScanDescription().
-						getEventById(scheduleEvent.getID()) == null) {
-					currentScanModule.getChain().getScanDescription().
-						add(scheduleEvent);
+				if (currentScanModule.getChain().getScanDescription()
+						.getEventById(scheduleEvent.getID()) == null) {
+					currentScanModule.getChain().getScanDescription()
+							.add(scheduleEvent);
 				}
 			} else {
-				Event event = currentScanModule.getChain().getScanDescription().
-											getEventById(scheduleEvent.getID());
+				Event event = currentScanModule.getChain().getScanDescription()
+						.getEventById(scheduleEvent.getID());
 				if (event != null) {
 					// TODO
-					//check if this event is used by any ControlEvents
+					// check if this event is used by any ControlEvents
 					// and notify them, that we remove the event
-					currentScanModule.getChain().getScanDescription().
-									  remove(event);
+					currentScanModule.getChain().getScanDescription()
+							.remove(event);
 				}
 			}
 		}
@@ -976,24 +936,24 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	}
 	
 	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of 
+	 * {@link org.eclipse.swt.events.ModifyListener} of
 	 * <code>settleTimeText</code>.
 	 */
 	private class SettleTimeTextModifiedListener implements ModifyListener {
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void modifyText(ModifyEvent e) {
 			suspendModelUpdateListener();
-			
+
 			if (settleTimeText.getText().equals("")) {
 				currentScanModule.setSettletime(Double.NEGATIVE_INFINITY);
 			} else {
 				try {
-					currentScanModule.setSettletime(
-							Double.parseDouble(settleTimeText.getText()));
+					currentScanModule.setSettletime(Double
+							.parseDouble(settleTimeText.getText()));
 				} catch (Exception ex) {
 					currentScanModule.setSettletime(Double.NaN);
 				}
@@ -1005,8 +965,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	// ************************ Verify Listener ****************************
 
 	/**
-	 * <code>VerifyListener</code> of Text Widget from
-	 * <code>generalComposite</code>
+	 * {@link org.eclipse.swt.events.VerifyListener} of text widget
 	 */
 	class TextDoubleVerifyListener implements VerifyListener {
 		// this is a copy from DetectorChannelView
@@ -1018,48 +977,47 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		public void verifyText(VerifyEvent e) {
 
 			switch (e.keyCode) {
-            	case SWT.BS:           // Backspace
-            	case SWT.DEL:          // Delete
-			    case SWT.HOME:         // Home
-			    case SWT.END:          // End
-			    case SWT.ARROW_LEFT:   // Left arrow
-			    case SWT.ARROW_RIGHT:  // Right arrow
-			    	return;  
+			case SWT.BS: // Backspace
+			case SWT.DEL: // Delete
+			case SWT.HOME: // Home
+			case SWT.END: // End
+			case SWT.ARROW_LEFT: // Left arrow
+			case SWT.ARROW_RIGHT: // Right arrow
+				return;
 			}
 
-			String oldText = ((Text)(e.widget)).getText();
+			String oldText = ((Text) (e.widget)).getText();
 
 			if (!Character.isDigit(e.character)) {
 				if (e.character == '.') {
-					// character . is a valid character, if he is not in the 
+					// character . is a valid character, if he is not in the
 					// old string
 					if (oldText.contains("."))
 						e.doit = false;
-				}
-				else if (e.character == '-') {
-					// character - is a valid character as first sign and after 
+				} else if (e.character == '-') {
+					// character - is a valid character as first sign and after
 					// an e
 					if (oldText.isEmpty()) {
 						// oldText is emtpy, - is valid
-					} else if ((((Text)e.widget).getSelection().x) == 0) {
+					} else if ((((Text) e.widget).getSelection().x) == 0) {
 						// - is the first sign an valid
 					} else {
-						// wenn das letzte Zeichen von oldText ein e ist, 
+						// wenn das letzte Zeichen von oldText ein e ist,
 						// ist das minus auch erlaubt
 						int index = oldText.length();
-						if (oldText.substring(index-1).equals("e")) {
+						if (oldText.substring(index - 1).equals("e")) {
 							// letzte Zeichen ist ein e und damit erlaubt
 						} else {
 							e.doit = false;
 						}
 					}
 				} else if (e.character == 'e') {
-					// character e is a valid character, if he is not in the 
+					// character e is a valid character, if he is not in the
 					// old string
 					if (oldText.contains("e"))
 						e.doit = false;
 				} else {
-					e.doit = false;  // disallow the action
+					e.doit = false; // disallow the action
 				}
 			}
 		}
