@@ -46,6 +46,9 @@ public class Configurator {
 		File test = new File("xml/test.xml");
 		File qnim = new File("xml/qnim.xml");
 		File sx700 = new File("xml/sx700.xml");
+		File bigref = new File("xml/bigref.xml");
+		File kmc = new File("xml/kmc.xml");
+		File rfa = new File("xml/rfa.xml");
 		
 		try {
 			measuringStationLoader.load(test);
@@ -53,6 +56,12 @@ public class Configurator {
 			measuringStationLoader.load(qnim);
 			stations.add(measuringStationLoader.getMeasuringStation());
 			measuringStationLoader.load(sx700);
+			stations.add(measuringStationLoader.getMeasuringStation());
+			measuringStationLoader.load(bigref);
+			stations.add(measuringStationLoader.getMeasuringStation());
+			measuringStationLoader.load(kmc);
+			stations.add(measuringStationLoader.getMeasuringStation());
+			measuringStationLoader.load(rfa);
 			stations.add(measuringStationLoader.getMeasuringStation());
 		} catch (ParserConfigurationException e) {
 			logger.error(e.getMessage(), e);
