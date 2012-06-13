@@ -103,11 +103,14 @@ public final class MessagesView extends ViewPart {
 	 * 
 	 */
 	private void restoreState() {
-		
+		if (this.memento == null) {
+			return;
+		}
 		this.sort = this.memento.getBoolean("sort") != null 
 					? this.memento.getBoolean("sort")
 					: false;
-					
+
+
 		if (this.sort) {
 			tableViewer.getTable().getColumn(2).setImage(sortImage);
 			tableViewer.setComparator(typeViewerComparator);
