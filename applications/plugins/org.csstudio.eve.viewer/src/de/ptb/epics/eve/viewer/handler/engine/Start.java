@@ -12,10 +12,10 @@ import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 
-import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.messages.Levels;
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
 
 /**
  * <code>Start</code> is the default command handler of the engine start 
@@ -39,14 +39,12 @@ public class Start extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
-		String engineLocation = de.ptb.epics.eve.preferences.Activator.
-				getDefault().getPreferenceStore().getString(
-				PreferenceConstants.P_DEFAULT_ENGINE_LOCATION);
+		String engineLocation = Activator.getDefault().getPreferenceStore().
+				getString(PreferenceConstants.P_DEFAULT_ENGINE_LOCATION);
 		
 		int enginePort = 0;
-		String engineHost = de.ptb.epics.eve.preferences.Activator.
-			getDefault().getPreferenceStore().getString(
-			PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
+		String engineHost = Activator.getDefault().getPreferenceStore().
+				getString(PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
 
 		int index  = engineHost.lastIndexOf(":");
 		if (index != -1) {

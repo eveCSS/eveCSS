@@ -36,9 +36,9 @@ import de.ptb.epics.eve.ecp1.intern.ChainStatus;
 import de.ptb.epics.eve.ecp1.intern.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.intern.EngineStatus;
 import de.ptb.epics.eve.ecp1.intern.ErrorType;
-import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.IUpdateListener;
+import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
 
 /**
  * <code>EngineView</code>.
@@ -434,9 +434,8 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	 * 
 	 */
 	private void setConnectionStatus(ConnectionStatus status) {
-		final String engineString = de.ptb.epics.eve.preferences.Activator.
-				getDefault().getPreferenceStore().getString(
-				PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
+		final String engineString = Activator.getDefault().getPreferenceStore().
+				getString(PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
 		switch(status) {
 			case CONNECTED:		// engine stuff
 								this.startButton.setEnabled(false);
@@ -592,7 +591,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 							rows[i].setText(3, ""+remainTime);
 						}
 					}
-				};
+				}
 				
 				if (neu) {
 					// neuer Tabelleneintrag muß gemacht werden

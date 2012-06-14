@@ -11,16 +11,16 @@ import org.eclipse.ui.IWorkbench;
  * @author ?
  * @author Marcus Michalsky
  */
-public class EvePreferencePage extends FieldEditorPreferencePage 
+public class PreferencePage extends FieldEditorPreferencePage 
 										implements IWorkbenchPreferencePage {
 
 	/**
 	 * Constructor
 	 */
-	public EvePreferencePage() {
+	public PreferencePage() {
 		super(GRID);
 		this.setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		this.setDescription("Configuration for Eve");
+		// this.setDescription("");
 	}
 	
 	/**
@@ -33,10 +33,6 @@ public class EvePreferencePage extends FieldEditorPreferencePage
 				"device definition file:", this.getFieldEditorParent());
 		stationFileFieldEditor.setFileExtensions(new String[]{"*.xml"});
 		
-		FileFieldEditor engineFileFieldEditor = new FileFieldEditor(
-				PreferenceConstants.P_DEFAULT_ENGINE_LOCATION, 
-				"Engine location:", this.getFieldEditorParent());
-		
 		String rootdir = Activator.getDefault().getRootDirectory();
 		File file = new File(rootdir + "eve/");
 		if(file.exists()) {
@@ -47,11 +43,6 @@ public class EvePreferencePage extends FieldEditorPreferencePage
 		file = null;
 		
 		addField(stationFileFieldEditor);
-		addField(new StringFieldEditor(
-				PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS, 
-				"Engine (name:port):", 
-				this.getFieldEditorParent()));
-		addField(engineFileFieldEditor);
 	}
 	
 	/**

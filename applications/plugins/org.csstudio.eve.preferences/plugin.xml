@@ -5,7 +5,7 @@
          point="org.eclipse.ui.preferencePages">
       <page
             category="org.csstudio.platform.ui.css.applications.others"
-            class="de.ptb.epics.eve.preferences.EvePreferencePage"
+            class="de.ptb.epics.eve.preferences.PreferencePage"
             id="de.ptb.epics.eve.preferences.EvePreferencePage"
             name="EVE">
       </page>

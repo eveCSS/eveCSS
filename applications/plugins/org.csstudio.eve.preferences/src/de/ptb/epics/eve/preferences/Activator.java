@@ -33,9 +33,7 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		readStartupParameters();
 		if(!checkRootDir()) {
-			context.getBundle().stop();
-			context.getBundle().uninstall();
-			return;
+			throw new Exception("Preferences plugin could not be started");
 		}
 		plugin = this;
 	}
@@ -64,12 +62,10 @@ public class Activator extends AbstractUIPlugin {
 	private void readStartupParameters() {
 		String[] args = Platform.getCommandLineArgs();
 		int i = 0;
-		while (i < args.length)
-		{
+		while (i < args.length) {
 			if (args[i].equals("-eve.root")) {
 				i++;
 				rootDir = args[i];
-				
 			}
 			i++;
 		}

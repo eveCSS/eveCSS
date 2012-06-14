@@ -1,12 +1,13 @@
 package de.ptb.epics.eve.viewer.preferences;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.FileFieldEditor;
 import org.eclipse.jface.preference.IntegerFieldEditor;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import de.ptb.epics.eve.viewer.Activator;
-
 
 /**
  * 
@@ -14,16 +15,16 @@ import de.ptb.epics.eve.viewer.Activator;
  * @author Marcus Michalsky
  *
  */
-public class EveViewerPreferencePage extends FieldEditorPreferencePage
+public class PreferencePage extends FieldEditorPreferencePage
 		implements IWorkbenchPreferencePage {
 
 	/**
 	 * 
 	 */
-	public EveViewerPreferencePage() {
+	public PreferencePage() {
 		super(GRID);
 		this.setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		this.setDescription("Configuration for EVE Viewer");
+		// this.setDescription("");
 	}
 	
 	/**
@@ -31,6 +32,15 @@ public class EveViewerPreferencePage extends FieldEditorPreferencePage
 	 */
 	@Override
 	protected void createFieldEditors() {
+		addField(new StringFieldEditor(
+				PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS, 
+				"Engine (name:port):", 
+				this.getFieldEditorParent()));
+		FileFieldEditor engineFileFieldEditor = new FileFieldEditor(
+				PreferenceConstants.P_DEFAULT_ENGINE_LOCATION, 
+				"Engine location:", this.getFieldEditorParent());
+		addField(engineFileFieldEditor);
+		
 		IntegerFieldEditor pvIntegerFieldEditor = new IntegerFieldEditor(
 				PreferenceConstants.P_PV_UPDATE_INTERVAL, 
 				"PV Update Interval (in ms):", 

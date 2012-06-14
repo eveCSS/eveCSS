@@ -8,10 +8,10 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.messages.Levels;
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
 
 /**
  * <code>ConnectCommandHandler</code> is the default command handler of the 
@@ -36,9 +36,8 @@ public class Connect extends AbstractHandler {
 		
 		if(!Activator.getDefault().getEcp1Client().isRunning()) {
 			int port = 0;
-			String EngineString = de.ptb.epics.eve.preferences.Activator.
-				getDefault().getPreferenceStore().getString(
-				PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
+			String EngineString = Activator.getDefault().getPreferenceStore().
+					getString(PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
 
 			int index  = EngineString.lastIndexOf(":");
 			if (index != -1) {
