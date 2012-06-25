@@ -49,6 +49,8 @@ public class Configurator {
 		File bigref = new File("xml/bigref.xml");
 		File kmc = new File("xml/kmc.xml");
 		File rfa = new File("xml/rfa.xml");
+		File nrfa = new File("xml/nrfa.xml");
+		File pgm = new File("xml/pfm.xml");
 		
 		try {
 			measuringStationLoader.load(test);
@@ -62,6 +64,10 @@ public class Configurator {
 			measuringStationLoader.load(kmc);
 			stations.add(measuringStationLoader.getMeasuringStation());
 			measuringStationLoader.load(rfa);
+			stations.add(measuringStationLoader.getMeasuringStation());
+			measuringStationLoader.load(nrfa);
+			stations.add(measuringStationLoader.getMeasuringStation());
+			measuringStationLoader.load(pgm);
 			stations.add(measuringStationLoader.getMeasuringStation());
 		} catch (ParserConfigurationException e) {
 			logger.error(e.getMessage(), e);

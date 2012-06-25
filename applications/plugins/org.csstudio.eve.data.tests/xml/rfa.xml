@@ -43,13 +43,31 @@
 	</plugin>
         <!-- positioning plugin goto peak-->
 	<plugin type="postscanpositioning">
-		<name>GOTO-Peak</name>
+		<name>PEAK</name>
 		<location>/path/to/plugin3</location>
 		<parameter name="direction" datatype="string">positive,negative</parameter>
 	</plugin>
         <!-- positioning plugin goto center-->
 	<plugin type="postscanpositioning">
-		<name>GOTO-Center</name>
+		<name>CENTER</name>
+		<location>/path/to/plugin3</location>
+		<parameter name="direction" datatype="string" mandatory="true">positive,negative</parameter>
+	</plugin>
+        <!-- positioning plugin goto maximum-->
+	<plugin type="postscanpositioning">
+		<name>MAX</name>
+		<location>/path/to/plugin3</location>
+		<parameter name="direction" datatype="string" mandatory="true">positive,negative</parameter>
+	</plugin>
+        <!-- positioning plugin goto minimum-->
+	<plugin type="postscanpositioning">
+		<name>MIN</name>
+		<location>/path/to/plugin3</location>
+		<parameter name="direction" datatype="string" mandatory="true">positive,negative</parameter>
+	</plugin>
+        <!-- positioning plugin goto edge-->
+	<plugin type="postscanpositioning">
+		<name>EDGE</name>
 		<location>/path/to/plugin3</location>
 		<parameter name="direction" datatype="string" mandatory="true">positive,negative</parameter>
 	</plugin>
@@ -392,7 +410,7 @@
 	<motor>
             <class></class>
             <name></name>
-            <id>OMSMv:io03000</id>
+            <id>OMSMv:io0300</id>
             <!-- axis, to be included by motors -->
             <axis>
                 <class>RFA</class>
