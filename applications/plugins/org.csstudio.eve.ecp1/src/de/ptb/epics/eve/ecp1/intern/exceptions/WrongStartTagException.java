@@ -1,6 +1,6 @@
 package de.ptb.epics.eve.ecp1.intern.exceptions;
 
-import de.ptb.epics.eve.ecp1.intern.IECP1Command;
+import de.ptb.epics.eve.ecp1.commands.IECP1Command;
 
 public class WrongStartTagException extends AbstractRestoreECP1CommandException {
 

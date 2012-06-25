@@ -1,6 +1,6 @@
 package de.ptb.epics.eve.viewer.messages;
 
-import de.ptb.epics.eve.ecp1.intern.ErrorSeverity;
+import de.ptb.epics.eve.ecp1.types.ErrorSeverity;
 
 /**
  * <code>MessageTypes</code> contains all available types of of a message.
@@ -41,11 +41,11 @@ public enum Levels {
 	SYSTEM;
 	
 	/**
-	 * Converts an {@link de.ptb.epics.eve.ecp1.intern.ErrorSeverity} into its 
+	 * Converts an {@link de.ptb.epics.eve.ecp1.types.ErrorSeverity} into its 
 	 * corresponding {@link de.ptb.epics.eve.viewer.messages.Levels}. 
 	 * 
 	 * @param errorSeverity the 
-	 * 		  {@link de.ptb.epics.eve.ecp1.intern.ErrorSeverity}
+	 * 		  {@link de.ptb.epics.eve.ecp1.types.ErrorSeverity}
 	 * @return the corresponding 
 	 *         {@link de.ptb.epics.eve.viewer.messages.Levels}
 	 */

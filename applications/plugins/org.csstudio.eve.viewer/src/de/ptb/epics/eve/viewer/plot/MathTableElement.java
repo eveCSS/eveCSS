@@ -10,7 +10,7 @@ import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
-import de.ptb.epics.eve.ecp1.intern.DataType;
+import de.ptb.epics.eve.ecp1.types.DataType;
 import de.ptb.epics.eve.viewer.Activator;
 
 /**

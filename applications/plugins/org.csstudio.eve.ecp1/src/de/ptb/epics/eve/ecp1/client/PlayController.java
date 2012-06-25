@@ -1,13 +1,13 @@
 package de.ptb.epics.eve.ecp1.client;
 
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayController;
-import de.ptb.epics.eve.ecp1.intern.BreakCommand;
-import de.ptb.epics.eve.ecp1.intern.EndProgramCommand;
-import de.ptb.epics.eve.ecp1.intern.HaltCommand;
-import de.ptb.epics.eve.ecp1.intern.LiveDescriptionCommand;
-import de.ptb.epics.eve.ecp1.intern.PauseCommand;
-import de.ptb.epics.eve.ecp1.intern.StartCommand;
-import de.ptb.epics.eve.ecp1.intern.StopCommand;
+import de.ptb.epics.eve.ecp1.commands.BreakCommand;
+import de.ptb.epics.eve.ecp1.commands.EndProgramCommand;
+import de.ptb.epics.eve.ecp1.commands.HaltCommand;
+import de.ptb.epics.eve.ecp1.commands.LiveDescriptionCommand;
+import de.ptb.epics.eve.ecp1.commands.PauseCommand;
+import de.ptb.epics.eve.ecp1.commands.StartCommand;
+import de.ptb.epics.eve.ecp1.commands.StopCommand;
 
 public class PlayController implements IPlayController {
 

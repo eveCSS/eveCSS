@@ -21,7 +21,7 @@
       <children xsi:type="editmodel:MethodEditModel" name="addMeasurementDataListener" id="de.ptb.epics.eve.ecp1.client/ECP1Client#addMeasurementDataListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;)"/>
       <children xsi:type="editmodel:MethodEditModel" name="addRequestListener" id="de.ptb.epics.eve.ecp1.client/ECP1Client#addRequestListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IRequestListener;)"/>
       <children xsi:type="editmodel:MethodEditModel" name="addToOutQueue" id="de.ptb.epics.eve.ecp1.client/ECP1Client#addToOutQueue(Lde.ptb.epics.eve.ecp1.intern.IECP1Command;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="close" id="de.ptb.epics.eve.ecp1.client/ECP1Client#close()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="close" id="de.ptb.epics.eve.ecp1.client/ECP1Client#disconnect()"/>
       <children xsi:type="editmodel:MethodEditModel" name="connect" id="de.ptb.epics.eve.ecp1.client/ECP1Client#connect(Ljava.net.SocketAddress;Ljava.lang.String;)"/>
       <children xsi:type="editmodel:MethodEditModel" name="isRunning" id="de.ptb.epics.eve.ecp1.client/ECP1Client#isRunning()"/>
       <children xsi:type="editmodel:MethodEditModel" name="removeChainStatusListener" id="de.ptb.epics.eve.ecp1.client/ECP1Client#removeChainStatusListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;)"/>
@@ -57,17 +57,17 @@
       <children xsi:type="editmodel:AssociationEndEditModel" location="453,152" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="0,47"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/ECP1Client-Standard::Instantiate->de.ptb.epics.eve.ecp1.client/PlayController*de.ptb.epics.eve.ecp1.client/ECP1Client-Soyatec::Import->de.ptb.epics.eve.ecp1.client/PlayController" source="//@children.0" target="//@children.6" targetEnd="//@children.0/@sourceConnections.5/@children.2" label="//@children.0/@sourceConnections.5/@children.0" sourceEnd="//@children.0/@sourceConnections.5/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/ECP1Client->Standard::Instantiate" source="//@children.0" target="//@children.6" targetEnd="//@children.0/@sourceConnections.5/@children.2" label="//@children.0/@sourceConnections.5/@children.0" sourceEnd="//@children.0/@sourceConnections.5/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate»" size="119,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="406,531" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="46,0"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/ECP1Client-Standard::Instantiate->de.ptb.epics.eve.ecp1.client/PlayListController*de.ptb.epics.eve.ecp1.client/ECP1Client-Soyatec::Import->de.ptb.epics.eve.ecp1.client/PlayListController" source="//@children.0" target="//@children.7" targetEnd="//@children.0/@sourceConnections.6/@children.2" label="//@children.0/@sourceConnections.6/@children.0" sourceEnd="//@children.0/@sourceConnections.6/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/ECP1Client->Standard::Instantiate" source="//@children.0" target="//@children.7" targetEnd="//@children.0/@sourceConnections.6/@children.2" label="//@children.0/@sourceConnections.6/@children.0" sourceEnd="//@children.0/@sourceConnections.6/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Instantiate»" size="119,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="146,531" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="146,0"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/ECP1Client-Standard::Call->de.ptb.epics.eve.ecp1.client.interfaces/IConnectionStateListener*de.ptb.epics.eve.ecp1.client/ECP1Client-Soyatec::Import->de.ptb.epics.eve.ecp1.client.interfaces/IConnectionStateListener" source="//@children.0" target="//@children.9" targetEnd="//@children.0/@sourceConnections.7/@children.2" label="//@children.0/@sourceConnections.7/@children.0" sourceEnd="//@children.0/@sourceConnections.7/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/ECP1Client->Standard::Call" source="//@children.0" target="//@children.9" targetEnd="//@children.0/@sourceConnections.7/@children.2" label="//@children.0/@sourceConnections.7/@children.0" sourceEnd="//@children.0/@sourceConnections.7/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="453,465" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="57,0"/>
@@ -129,7 +129,7 @@
       <children xsi:type="editmodel:MethodEditModel" name="stop" id="de.ptb.epics.eve.ecp1.client/PlayController#stop()"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/PlayController-Standard::Call->de.ptb.epics.eve.ecp1.client/ECP1Client*de.ptb.epics.eve.ecp1.client/PlayController-Soyatec::Import->de.ptb.epics.eve.ecp1.client/ECP1Client" source="//@children.6" target="//@children.0" targetEnd="//@children.6/@sourceConnections.0/@children.2" label="//@children.6/@sourceConnections.0/@children.0" sourceEnd="//@children.6/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/PlayController->Standard::Call" source="//@children.6" target="//@children.0" targetEnd="//@children.6/@sourceConnections.0/@children.2" label="//@children.6/@sourceConnections.0/@children.0" sourceEnd="//@children.6/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="200,15" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="426,531"/>
@@ -160,17 +160,17 @@
       <children xsi:type="editmodel:MethodEditModel" name="setAutoplay" id="de.ptb.epics.eve.ecp1.client/PlayListController#setAutoplay(Z)"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/PlayListController-Standard::Call->de.ptb.epics.eve.ecp1.client/ECP1Client*de.ptb.epics.eve.ecp1.client/PlayListController-Soyatec::Import->de.ptb.epics.eve.ecp1.client/ECP1Client" source="//@children.7" target="//@children.0" targetEnd="//@children.7/@sourceConnections.0/@children.2" label="//@children.7/@sourceConnections.0/@children.0" sourceEnd="//@children.7/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/PlayListController->Standard::Call" source="//@children.7" target="//@children.0" targetEnd="//@children.7/@sourceConnections.0/@children.2" label="//@children.7/@sourceConnections.0/@children.0" sourceEnd="//@children.7/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="166,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="166,531"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/PlayListController-Standard::Call->de.ptb.epics.eve.ecp1.client.interfaces/IPlayListListener*de.ptb.epics.eve.ecp1.client/PlayListController-Soyatec::Import->de.ptb.epics.eve.ecp1.client.interfaces/IPlayListListener" source="//@children.7" target="//@children.10" targetEnd="//@children.7/@sourceConnections.1/@children.2" label="//@children.7/@sourceConnections.1/@children.0" sourceEnd="//@children.7/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/PlayListController->Standard::Call" source="//@children.7" target="//@children.10" targetEnd="//@children.7/@sourceConnections.1/@children.2" label="//@children.7/@sourceConnections.1/@children.0" sourceEnd="//@children.7/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="334,250" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="0,55"/>
     </sourceConnections>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/PlayListController-Standard::Call->de.ptb.epics.eve.ecp1.client.interfaces/INewXMLFileListener*de.ptb.epics.eve.ecp1.client/PlayListController-Soyatec::Import->de.ptb.epics.eve.ecp1.client.interfaces/INewXMLFileListener" source="//@children.7" target="//@children.8" targetEnd="//@children.7/@sourceConnections.2/@children.2" label="//@children.7/@sourceConnections.2/@children.0" sourceEnd="//@children.7/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/PlayListController->Standard::Call" source="//@children.7" target="//@children.8" targetEnd="//@children.7/@sourceConnections.2/@children.2" label="//@children.7/@sourceConnections.2/@children.0" sourceEnd="//@children.7/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="334,32" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="0,62"/>

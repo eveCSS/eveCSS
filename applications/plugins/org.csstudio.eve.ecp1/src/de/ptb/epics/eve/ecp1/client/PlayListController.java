@@ -13,12 +13,12 @@ import de.ptb.epics.eve.ecp1.client.interfaces.INewXMLFileListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;
 import de.ptb.epics.eve.ecp1.client.interfaces.IPlayListListener;
 import de.ptb.epics.eve.ecp1.client.model.PlayListEntry;
-import de.ptb.epics.eve.ecp1.intern.AddToPlayListCommand;
-import de.ptb.epics.eve.ecp1.intern.AutoPlayCommand;
-import de.ptb.epics.eve.ecp1.intern.CurrentXMLCommand;
-import de.ptb.epics.eve.ecp1.intern.PlayListCommand;
-import de.ptb.epics.eve.ecp1.intern.RemoveFromPlayListCommand;
-import de.ptb.epics.eve.ecp1.intern.ReorderPlayListCommand;
+import de.ptb.epics.eve.ecp1.commands.AddToPlayListCommand;
+import de.ptb.epics.eve.ecp1.commands.AutoPlayCommand;
+import de.ptb.epics.eve.ecp1.commands.CurrentXMLCommand;
+import de.ptb.epics.eve.ecp1.commands.PlayListCommand;
+import de.ptb.epics.eve.ecp1.commands.RemoveFromPlayListCommand;
+import de.ptb.epics.eve.ecp1.commands.ReorderPlayListCommand;
 
 public class PlayListController implements IPlayListController {
 
@@ -132,7 +132,7 @@ public class PlayListController implements IPlayListController {
 	}
 
 	protected void reportPlayListCommand( final PlayListCommand playListCommand ) {
-		Iterator<de.ptb.epics.eve.ecp1.intern.PlayListEntry> it = playListCommand.iterator();
+		Iterator<de.ptb.epics.eve.ecp1.commands.PlayListEntry> it = playListCommand.iterator();
 		this.playListEntries.clear();
 		while( it.hasNext() ) {
 			this.playListEntries.add( new PlayListEntry( it.next() ) );

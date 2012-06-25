@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Queue;
 
-import de.ptb.epics.eve.ecp1.intern.IECP1Command;
+import de.ptb.epics.eve.ecp1.commands.IECP1Command;
 
 public class OutHandler implements Runnable {
 

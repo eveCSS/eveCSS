@@ -1,6 +1,6 @@
 package de.ptb.epics.eve.viewer.plot;
 
-import de.ptb.epics.eve.ecp1.intern.DataModifier;
+import de.ptb.epics.eve.ecp1.types.DataModifier;
 
 /**
  * Defines all available mathematical functions.

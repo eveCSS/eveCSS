@@ -1,8 +1,17 @@
 package de.ptb.epics.eve.ecp1.client.interfaces;
 
-import de.ptb.epics.eve.ecp1.intern.ChainStatusCommand;
+import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 
+/**
+ * @author ?
+ * @since 1.0
+ */
 public interface IChainStatusListener {
 
-	public void chainStatusChanged( final ChainStatusCommand chainStatusCommand );
+	/**
+	 * Gets called if the chain status has changed.
+	 * 
+	 * @param chainStatusCommand the chain status command
+	 */
+	public void chainStatusChanged(final ChainStatusCommand chainStatusCommand);
 }

@@ -47,7 +47,7 @@ public class InHandler implements Runnable {
 				
 			} catch( final IOException e ) {
 				try {
-					this.ecp1client.close();
+					this.ecp1client.disconnect();
 				} catch ( final IOException e1 ) {
 					e1.printStackTrace();
 				}

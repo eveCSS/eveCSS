@@ -14,9 +14,9 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
-import de.ptb.epics.eve.ecp1.intern.ChainStatus;
-import de.ptb.epics.eve.ecp1.intern.ChainStatusCommand;
-import de.ptb.epics.eve.ecp1.intern.EngineStatus;
+import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
+import de.ptb.epics.eve.ecp1.types.ChainStatus;
+import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.viewer.views.plotview.PlotView;
 
 /**

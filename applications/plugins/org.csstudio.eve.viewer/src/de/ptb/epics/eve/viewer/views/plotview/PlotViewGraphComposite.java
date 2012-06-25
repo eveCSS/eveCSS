@@ -13,8 +13,8 @@ import org.eclipse.swt.widgets.Composite;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
-import de.ptb.epics.eve.ecp1.intern.DataModifier;
-import de.ptb.epics.eve.ecp1.intern.DataType;
+import de.ptb.epics.eve.ecp1.types.DataModifier;
+import de.ptb.epics.eve.ecp1.types.DataType;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.plot.XYPlot;
 

@@ -1,6 +1,6 @@
 package de.ptb.epics.eve.viewer;
 
-import de.ptb.epics.eve.ecp1.intern.ErrorFacility;
+import de.ptb.epics.eve.ecp1.types.ErrorFacility;
 
 public enum MessageSource {
 	VIEWER,

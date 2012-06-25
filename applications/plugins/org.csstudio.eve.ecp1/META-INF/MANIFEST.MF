@@ -7,6 +7,8 @@ Bundle-Localization: plugin
 Export-Package: de.ptb.epics.eve.ecp1.client,
  de.ptb.epics.eve.ecp1.client.interfaces,
  de.ptb.epics.eve.ecp1.client.model,
- de.ptb.epics.eve.ecp1.client.test,
- de.ptb.epics.eve.ecp1.intern,
- de.ptb.epics.eve.ecp1.intern.exceptions
+ de.ptb.epics.eve.ecp1.commands,
+ de.ptb.epics.eve.ecp1.intern.exceptions,
+ de.ptb.epics.eve.ecp1.types
+Require-Bundle: org.csstudio.platform.libs.log4j;bundle-version="1.2.16"
+Import-Package: de.ptb.epics.eve.ecp1.commands

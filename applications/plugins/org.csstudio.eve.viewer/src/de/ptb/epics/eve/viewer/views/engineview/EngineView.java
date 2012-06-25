@@ -32,10 +32,10 @@ import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
 import de.ptb.epics.eve.ecp1.client.model.Error;
-import de.ptb.epics.eve.ecp1.intern.ChainStatus;
-import de.ptb.epics.eve.ecp1.intern.ChainStatusCommand;
-import de.ptb.epics.eve.ecp1.intern.EngineStatus;
-import de.ptb.epics.eve.ecp1.intern.ErrorType;
+import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
+import de.ptb.epics.eve.ecp1.types.ChainStatus;
+import de.ptb.epics.eve.ecp1.types.EngineStatus;
+import de.ptb.epics.eve.ecp1.types.ErrorType;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.IUpdateListener;
 import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
@@ -106,7 +106,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		
 		playIcon = Activator.getDefault().getImageRegistry().get("PLAY16");
 		pauseIcon = Activator.getDefault().getImageRegistry().get("PAUSE16");
 		stopIcon = Activator.getDefault().getImageRegistry().get("STOP16");
@@ -510,6 +509,20 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		}
 	}
 	
+	/*
+	 * 
+	 */
+	private void setAutoPlay(boolean autoPlay) {
+		if(autoPlay) {
+			autoPlayToggleButton.setToolTipText("AutoPlay is on");
+			autoPlayToggleButton.setImage(autoPlayOnIcon);
+		} else {
+			autoPlayToggleButton.setToolTipText("AutoPlay is off");
+			autoPlayToggleButton.setImage(autoPlayOffIcon);
+		}
+		autoPlayToggleButton.setSelection(autoPlay);
+	}
+	
 	/* ******************************************************************** */
 	/* ********************** IChainStatusListener ************************ */
 	/* ******************************************************************** */
@@ -716,7 +729,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	public void setAutoPlayStatus(final boolean autoPlayStatus) {
 		this.autoPlayToggleButton.getDisplay().syncExec(new Runnable() {
 			@Override public void run() {
-				autoPlayToggleButton.setSelection(autoPlayStatus);
+				setAutoPlay(autoPlayStatus);
 			}
 		});
 	}
@@ -1021,15 +1034,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			if(autoPlayToggleButton.getSelection()) {
-				autoPlayToggleButton.setSelection(true);
-				autoPlayToggleButton.setToolTipText("AutoPlay is on");
-				autoPlayToggleButton.setImage(autoPlayOnIcon);
-			} else {
-				autoPlayToggleButton.setSelection(false);
-				autoPlayToggleButton.setToolTipText("AutoPlay is off");
-				autoPlayToggleButton.setImage(autoPlayOffIcon);
-			}
+			setAutoPlay(autoPlayToggleButton.getSelection());
 			Activator.getDefault().getEcp1Client().getPlayListController().
 				setAutoplay(autoPlayToggleButton.getSelection());
 		}

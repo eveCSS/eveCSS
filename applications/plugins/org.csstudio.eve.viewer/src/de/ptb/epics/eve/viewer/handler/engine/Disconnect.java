@@ -31,7 +31,7 @@ public class Disconnect extends AbstractHandler {
 		
 		if(Activator.getDefault().getEcp1Client().isRunning()) {
 			try {
-				Activator.getDefault().getEcp1Client().close();
+				Activator.getDefault().getEcp1Client().disconnect();
 			} catch (IOException e) {
 				logger.error(e.getMessage(), e);
 			}
