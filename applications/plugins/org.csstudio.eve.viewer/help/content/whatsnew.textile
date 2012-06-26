@@ -1,5 +1,18 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.4
+
+* [Feature] new filter dialog for the @Messages@ view
+* [Feature] the message type (@Messages@ view) is now shown as an icon
+* [Feature] the table in the @Messages@ view is now sortable by type (the sort state is remembered by the application)
+* [Feature] limited the size of the table (number of entries) of the @Messages@ view (for performance reasons)
+
+* [Bug Fix] fixed scrolling issues in the @Messages@ view
+* [Bug Fix] removed a bug where an error occurred if new messages arrived while saving them into a file (synchronization)
+* [Bug Fix] fixed a bug where a drag and drop added all available devices to the device inspector (not just the ones used in the current scan)
+* [Bug Fix] fixed a bug where the channel access configuration depended on the network the application was started from
+* [Bug Fix] fixed a bug where the auto play button of the @Engine@ view wasn't properly updated if it was changed from another client
+
 h2(eveTopic). Version 1.2
 
 * [Feature] Monitorable Options

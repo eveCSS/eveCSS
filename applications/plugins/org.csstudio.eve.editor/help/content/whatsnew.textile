@@ -1,5 +1,12 @@
 h1(eveTopic). What's New ?
 
+h2(eveTopic). Version 1.4
+
+* [Feature] Normalize Channel for Detector Channels
+
+* [Bug Fix] fixed scrolling issues in @Detector Channel View@
+* [Bug Fix] fixed a bug where the selection was not properly propagated resulting in an inconsistent editor state, however the auto selection of devices had to be disabled
+
 h2(eveTopic). Version 1.2
 
 * [Feature] Pause events now pause or continue the scan (or both)

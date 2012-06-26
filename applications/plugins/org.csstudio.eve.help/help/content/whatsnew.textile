@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.4
+
+* [Bug Fix] Engine name, port and location preference entries are now viewer specific (as expected)
+
 h2(eveTopic). Version 1.2
 
 * [Feature] eveCSS 1.2 uses schema version 1.0
