@@ -7,13 +7,13 @@ table(eveRefTable).
 | __Scale Type__| defines whether the axis should be scaled linear or logarithmic| {linear, log}| ==&#8212;==|
 |\4. Y Axis:|
 | __Detector Channel__| the detector channel defining the y axis of the plot| set of detector channels present in the scan module| true|
-| __Normalize Channel__| the detector channel the y axis channel should be normalized with (select __none__ for no normalization)| set of detector channels present in the scan module| false|
+| __normalize with__| if a normalize channel has been set for the selected detector you can choose whether the normalized value should be plotted| boolean| ==&#8212;==|
 | __Color__| the color of the graph| RGB| ==&#8212;==|
 | __Linestyle__| the line style of the graph (e.g. solid or dashed)| set of CSS line styles| ==&#8212;==|
 | __Markstyle__| the mark style of the graph (e.g. circle or square)| set of CSS mark styles| ==&#8212;==|
 | __Scaletyle__| defines whether the axis should be scaled linear or logarithmic| {linear, log}| ==&#8212;==|
 
-p. *Note:* __Detector Channel, Normalize Channel, Color, Linestyle, Markstyle__ and __Scaletype__ appear twice (once for each y axis).
+p. *Note:* __Detector Channel, normalize with, Color, Linestyle, Markstyle__ and __Scaletype__ appear twice (once for each y axis).
 
 p. *Note:* These settings can also be modified after "creating a scan description":../tasks/createscandescription.html and executing the scan by clicking on the configure button in the plot view of the "EveEngine Perspective":/help/topic/de.ptb.epics.eve.viewer/help/content/concepts/eveengineperspective.html (see image below).
 
