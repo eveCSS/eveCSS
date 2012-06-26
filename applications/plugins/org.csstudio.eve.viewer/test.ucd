@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="test" size="1715,1011" id="" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D313030302064652E7074622E65706963732E6576652E7669657765722F6D6D696368616C73">
+  <children xsi:type="editmodel:ClassEditModel" name="PlayListView" location="67,614" size="290,135" id="de.ptb.epics.eve.viewer.views.playlistview/PlayListView" runTimeClassModel="dispose(),autoPlayHasChanged(Lde.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;),playListHasChanged(Lde.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;),stackConnected(),setFocus(),tableViewer,iD,getTableViewer(),stackDisconnected(),createPartControl(Lorg.eclipse.swt.widgets.Composite;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="267,72">
+      <children xsi:type="editmodel:MethodEditModel" name="autoPlayHasChanged" id="de.ptb.epics.eve.viewer.views.playlistview/PlayListView#autoPlayHasChanged(Lde.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="playListHasChanged" id="de.ptb.epics.eve.viewer.views.playlistview/PlayListView#playListHasChanged(Lde.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="stackConnected" id="de.ptb.epics.eve.viewer.views.playlistview/PlayListView#stackConnected()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="stackDisconnected" id="de.ptb.epics.eve.viewer.views.playlistview/PlayListView#stackDisconnected()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.1/@sourceConnections.1" autoLocated="true" id="de.ptb.epics.eve.ecp1.client.interfaces/IConnectionStateListener&lt;-de.ptb.epics.eve.viewer.views.playlistview/PlayListView" source="//@children.0" target="//@children.3" targetEnd="//@children.0/@sourceConnections.0/@children.1" sourceEnd="//@children.0/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="145,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="121,112" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client.interfaces/IPlayListListener&lt;-de.ptb.epics.eve.viewer.views.playlistview/PlayListView" source="//@children.0" target="//@children.4" targetEnd="//@children.0/@sourceConnections.1/@children.1" sourceEnd="//@children.0/@sourceConnections.1/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="121,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="121,112"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Name" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="EngineView" location="420,675" size="312,297" id="de.ptb.epics.eve.viewer.views.engineview/EngineView" runTimeClassModel="updateOccured(I),setFocus(),clearStatusTable(),setActualFilename(Ljava.lang.String;),fillEngineStatus(Lde.ptb.epics.eve.ecp1.types.EngineStatus;I),setLoadedScmlFile(Ljava.lang.String;),stackDisconnected(),disableSendToFile(),id,fillStatusTable(IILjava.lang.String;I),stackConnected(),chainStatusChanged(Lde.ptb.epics.eve.ecp1.commands.ChainStatusCommand;),setAutoPlayStatus(Z),createPartControl(Lorg.eclipse.swt.widgets.Composite;),errorOccured(Lde.ptb.epics.eve.ecp1.client.model.Error;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="289,234">
+      <children xsi:type="editmodel:MethodEditModel" name="chainStatusChanged" id="de.ptb.epics.eve.viewer.views.engineview/EngineView#chainStatusChanged(Lde.ptb.epics.eve.ecp1.commands.ChainStatusCommand;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clearStatusTable" id="de.ptb.epics.eve.viewer.views.engineview/EngineView#clearStatusTable()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="createPartControl" id="de.ptb.epics.eve.viewer.views.engineview/EngineView#createPartControl(Lorg.eclipse.swt.widgets.Composite;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="disableSendToFile" id="de.ptb.epics.eve.viewer.views.engineview/EngineView#disableSendToFile()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="errorOccured" id="de.ptb.epics.eve.viewer.views.engineview/EngineView#errorOccured(Lde.ptb.epics.eve.ecp1.client.model.Error;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="fillEngineStatus" id="de.ptb.epics.eve.viewer.views.engineview/EngineView#fillEngineStatus(Lde.ptb.epics.eve.ecp1.types.EngineStatus;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="fillStatusTable" id="de.ptb.epics.eve.viewer.views.engineview/EngineView#fillStatusTable(IILjava.lang.String;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setActualFilename" id="de.ptb.epics.eve.viewer.views.engineview/EngineView#setActualFilename(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setAutoPlayStatus" id="de.ptb.epics.eve.viewer.views.engineview/EngineView#setAutoPlayStatus(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setLoadedScmlFile" id="de.ptb.epics.eve.viewer.views.engineview/EngineView#setLoadedScmlFile(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="stackConnected" id="de.ptb.epics.eve.viewer.views.engineview/EngineView#stackConnected()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="stackDisconnected" id="de.ptb.epics.eve.viewer.views.engineview/EngineView#stackDisconnected()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="updateOccured" id="de.ptb.epics.eve.viewer.views.engineview/EngineView#updateOccured(I)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.2/@sourceConnections.0" autoLocated="true" id="de.ptb.epics.eve.ecp1.client.interfaces/IChainStatusListener&lt;-de.ptb.epics.eve.viewer.views.engineview/EngineView" source="//@children.1" target="//@children.5" targetEnd="//@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.1/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="156,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="121,94" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="de.ptb.epics.eve.ecp1.client.interfaces/IConnectionStateListener&lt;-de.ptb.epics.eve.viewer.views.engineview/EngineView" source="//@children.1" target="//@children.0/@sourceConnections.0" targetEnd="//@children.1/@sourceConnections.1/@children.1" sourceEnd="//@children.1/@sourceConnections.1/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="156,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="-105,-33"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client.interfaces/IErrorListener&lt;-de.ptb.epics.eve.viewer.views.engineview/EngineView" source="//@children.1" target="//@children.6" targetEnd="//@children.1/@sourceConnections.2/@children.1" sourceEnd="//@children.1/@sourceConnections.2/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="252,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="58,94"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/IUpdateListener&lt;-de.ptb.epics.eve.viewer.views.engineview/EngineView" source="//@children.1" target="//@children.7" targetEnd="//@children.1/@sourceConnections.3/@children.1" sourceEnd="//@children.1/@sourceConnections.3/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="309,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,177"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Name" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ChainStatusAnalyzer" location="1124,675" size="360,171" id="de.ptb.epics.eve.viewer/ChainStatusAnalyzer" runTimeClassModel="getIdleChains(),runningChains,initializingScanModules,getWaitingScanModules(),removeUpdateListener(Lde.ptb.epics.eve.viewer.IUpdateListener;),pausedScanModules,getPausedScanModules(),executingScanModules,getExitedChains(),idleChains,getExitingScanModules(),addUpdateListener(Lde.ptb.epics.eve.viewer.IUpdateListener;),getInitializingScanModules(),engineStatusChanged(Lde.ptb.epics.eve.ecp1.types.EngineStatus;Ljava.lang.String;I),chainStatusChanged(Lde.ptb.epics.eve.ecp1.commands.ChainStatusCommand;),getRunningChains(),exitedChains,setAutoPlayStatus(Z),getExecutingScanModules(),waitingScanModules,ChainStatusAnalyzer()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="337,108">
+      <children xsi:type="editmodel:MethodEditModel" name="addUpdateListener" id="de.ptb.epics.eve.viewer/ChainStatusAnalyzer#addUpdateListener(Lde.ptb.epics.eve.viewer.IUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="chainStatusChanged" id="de.ptb.epics.eve.viewer/ChainStatusAnalyzer#chainStatusChanged(Lde.ptb.epics.eve.ecp1.commands.ChainStatusCommand;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="engineStatusChanged" id="de.ptb.epics.eve.viewer/ChainStatusAnalyzer#engineStatusChanged(Lde.ptb.epics.eve.ecp1.types.EngineStatus;Ljava.lang.String;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getIdleChains" id="de.ptb.epics.eve.viewer/ChainStatusAnalyzer#getIdleChains()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeUpdateListener" id="de.ptb.epics.eve.viewer/ChainStatusAnalyzer#removeUpdateListener(Lde.ptb.epics.eve.viewer.IUpdateListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setAutoPlayStatus" id="de.ptb.epics.eve.viewer/ChainStatusAnalyzer#setAutoPlayStatus(Z)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client.interfaces/IChainStatusListener&lt;-de.ptb.epics.eve.viewer/ChainStatusAnalyzer" source="//@children.2" target="//@children.1/@sourceConnections.0" targetEnd="//@children.2/@sourceConnections.0/@children.1" sourceEnd="//@children.2/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="180,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="157,94"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client.interfaces/IEngineStatusListener&lt;-de.ptb.epics.eve.viewer/ChainStatusAnalyzer" source="//@children.2" target="//@children.8" targetEnd="//@children.2/@sourceConnections.1/@children.1" sourceEnd="//@children.2/@sourceConnections.1/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="292,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="67,94"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Name" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.0/@sourceConnections.0 //@children.10/@sourceConnections.2" name="IConnectionStateListener" location="345,345" size="243,112" id="de.ptb.epics.eve.ecp1.client.interfaces/IConnectionStateListener" runTimeClassModel="stackConnected(),stackDisconnected()">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="137,36">
+      <children xsi:type="editmodel:MethodEditModel" name="stackConnected" id="de.ptb.epics.eve.ecp1.client.interfaces/IConnectionStateListener#stackConnected()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="stackDisconnected" id="de.ptb.epics.eve.ecp1.client.interfaces/IConnectionStateListener#stackDisconnected()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.0/@sourceConnections.1" name="IPlayListListener" location="67,360" size="243,112" id="de.ptb.epics.eve.ecp1.client.interfaces/IPlayListListener" runTimeClassModel="autoPlayHasChanged(Lde.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;),playListHasChanged(Lde.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="151,36">
+      <children xsi:type="editmodel:MethodEditModel" name="autoPlayHasChanged" id="de.ptb.epics.eve.ecp1.client.interfaces/IPlayListListener#autoPlayHasChanged(Lde.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="playListHasChanged" id="de.ptb.epics.eve.ecp1.client.interfaces/IPlayListListener#playListHasChanged(Lde.ptb.epics.eve.ecp1.client.interfaces.IPlayListController;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.1/@sourceConnections.0 //@children.10/@sourceConnections.1" name="IChainStatusListener" location="1076,345" size="243,94" id="de.ptb.epics.eve.ecp1.client.interfaces/IChainStatusListener" runTimeClassModel="chainStatusChanged(Lde.ptb.epics.eve.ecp1.commands.ChainStatusCommand;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="148,18">
+      <children xsi:type="editmodel:MethodEditModel" name="chainStatusChanged" id="de.ptb.epics.eve.ecp1.client.interfaces/IChainStatusListener#chainStatusChanged(Lde.ptb.epics.eve.ecp1.commands.ChainStatusCommand;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.1/@sourceConnections.2 //@children.9/@sourceConnections.0" name="IErrorListener" location="614,345" size="243,94" id="de.ptb.epics.eve.ecp1.client.interfaces/IErrorListener" runTimeClassModel="errorOccured(Lde.ptb.epics.eve.ecp1.client.model.Error;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="107,18">
+      <children xsi:type="editmodel:MethodEditModel" name="errorOccured" id="de.ptb.epics.eve.ecp1.client.interfaces/IErrorListener#errorOccured(Lde.ptb.epics.eve.ecp1.client.model.Error;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.1/@sourceConnections.3" name="IUpdateListener" location="887,345" size="159,202" id="de.ptb.epics.eve.viewer/IUpdateListener" runTimeClassModel="updateOccured(I),fillStatusTable(IILjava.lang.String;I),setAutoPlayStatus(Z),clearStatusTable(),fillEngineStatus(Lde.ptb.epics.eve.ecp1.types.EngineStatus;I),disableSendToFile(),setLoadedScmlFile(Ljava.lang.String;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="136,126">
+      <children xsi:type="editmodel:MethodEditModel" name="clearStatusTable" id="de.ptb.epics.eve.viewer/IUpdateListener#clearStatusTable()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="disableSendToFile" id="de.ptb.epics.eve.viewer/IUpdateListener#disableSendToFile()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="fillEngineStatus" id="de.ptb.epics.eve.viewer/IUpdateListener#fillEngineStatus(Lde.ptb.epics.eve.ecp1.types.EngineStatus;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="fillStatusTable" id="de.ptb.epics.eve.viewer/IUpdateListener#fillStatusTable(IILjava.lang.String;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setAutoPlayStatus" id="de.ptb.epics.eve.viewer/IUpdateListener#setAutoPlayStatus(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setLoadedScmlFile" id="de.ptb.epics.eve.viewer/IUpdateListener#setLoadedScmlFile(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="updateOccured" id="de.ptb.epics.eve.viewer/IUpdateListener#updateOccured(I)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.1 //@children.10/@sourceConnections.0" name="IEngineStatusListener" location="1349,345" size="243,94" id="de.ptb.epics.eve.ecp1.client.interfaces/IEngineStatusListener" runTimeClassModel="engineStatusChanged(Lde.ptb.epics.eve.ecp1.types.EngineStatus;Ljava.lang.String;I)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="156,18">
+      <children xsi:type="editmodel:MethodEditModel" name="engineStatusChanged" id="de.ptb.epics.eve.ecp1.client.interfaces/IEngineStatusListener#engineStatusChanged(Lde.ptb.epics.eve.ecp1.types.EngineStatus;Ljava.lang.String;I)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="EngineErrorReader" location="540,74" size="181,81" id="de.ptb.epics.eve.viewer/EngineErrorReader" runTimeClassModel="errorOccured(Lde.ptb.epics.eve.ecp1.client.model.Error;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="107,18">
+      <children xsi:type="editmodel:MethodEditModel" name="errorOccured" id="de.ptb.epics.eve.viewer/EngineErrorReader#errorOccured(Lde.ptb.epics.eve.ecp1.client.model.Error;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client.interfaces/IErrorListener&lt;-de.ptb.epics.eve.viewer/EngineErrorReader" source="//@children.9" target="//@children.6" targetEnd="//@children.9/@sourceConnections.0/@children.1" sourceEnd="//@children.9/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="127,81" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="53,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.13/@sourceConnections.0" name="PlotViewDispatcher" location="779,45" size="360,153" id="de.ptb.epics.eve.viewer/PlotViewDispatcher" runTimeClassModel="scanDescription,PlotViewDispatcher(),engineStatusChanged(Lde.ptb.epics.eve.ecp1.types.EngineStatus;Ljava.lang.String;I),stackConnected(),setScanDescription(Lde.ptb.epics.eve.data.scandescription.ScanDescription;),chainStatusChanged(Lde.ptb.epics.eve.ecp1.commands.ChainStatusCommand;),stackDisconnected()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="337,90">
+      <children xsi:type="editmodel:MethodEditModel" name="chainStatusChanged" id="de.ptb.epics.eve.viewer/PlotViewDispatcher#chainStatusChanged(Lde.ptb.epics.eve.ecp1.commands.ChainStatusCommand;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="engineStatusChanged" id="de.ptb.epics.eve.viewer/PlotViewDispatcher#engineStatusChanged(Lde.ptb.epics.eve.ecp1.types.EngineStatus;Ljava.lang.String;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setScanDescription" id="de.ptb.epics.eve.viewer/PlotViewDispatcher#setScanDescription(Lde.ptb.epics.eve.data.scandescription.ScanDescription;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="stackConnected" id="de.ptb.epics.eve.viewer/PlotViewDispatcher#stackConnected()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="stackDisconnected" id="de.ptb.epics.eve.viewer/PlotViewDispatcher#stackDisconnected()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client.interfaces/IEngineStatusListener&lt;-de.ptb.epics.eve.viewer/PlotViewDispatcher" source="//@children.10" target="//@children.8" targetEnd="//@children.10/@sourceConnections.0/@children.1" sourceEnd="//@children.10/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="325,153" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="32,0"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client.interfaces/IChainStatusListener&lt;-de.ptb.epics.eve.viewer/PlotViewDispatcher" source="//@children.10" target="//@children.5" targetEnd="//@children.10/@sourceConnections.1/@children.1" sourceEnd="//@children.10/@sourceConnections.1/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="328,153" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="31,0"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client.interfaces/IConnectionStateListener&lt;-de.ptb.epics.eve.viewer/PlotViewDispatcher" source="//@children.10" target="//@children.3" targetEnd="//@children.10/@sourceConnections.2/@children.1" sourceEnd="//@children.10/@sourceConnections.2/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="44,153" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="220,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Name" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="PlayListController" location="60,59" size="334,279" id="de.ptb.epics.eve.ecp1.client/PlayListController" runTimeClassModel="addNewXMLFileListener(Lde.ptb.epics.eve.ecp1.client.interfaces.INewXMLFileListener;),removePlayListListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IPlayListListener;),addPlayListListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IPlayListListener;),addLocalFile(Ljava.io.File;),addXMLString(Ljava.lang.String;),movePlayListEntry(Lde.ptb.epics.eve.ecp1.client.model.PlayListEntry;I),autoplay,isAutoplay(),addFromInputStream(Ljava.io.InputStream;Ljava.lang.String;),getEntries(),removeNewXMLFileListener(Lde.ptb.epics.eve.ecp1.client.interfaces.INewXMLFileListener;),removePlayListEntry(Lde.ptb.epics.eve.ecp1.client.model.PlayListEntry;),setAutoplay(Z),addLocalFile(Ljava.lang.String;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="311,216">
+      <children xsi:type="editmodel:MethodEditModel" name="addFromInputStream" id="de.ptb.epics.eve.ecp1.client/PlayListController#addFromInputStream(Ljava.io.InputStream;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addLocalFile" id="de.ptb.epics.eve.ecp1.client/PlayListController#addLocalFile(Ljava.io.File;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addLocalFile" id="de.ptb.epics.eve.ecp1.client/PlayListController#addLocalFile(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addNewXMLFileListener" id="de.ptb.epics.eve.ecp1.client/PlayListController#addNewXMLFileListener(Lde.ptb.epics.eve.ecp1.client.interfaces.INewXMLFileListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addPlayListListener" id="de.ptb.epics.eve.ecp1.client/PlayListController#addPlayListListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IPlayListListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addXMLString" id="de.ptb.epics.eve.ecp1.client/PlayListController#addXMLString(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isAutoplay" id="de.ptb.epics.eve.ecp1.client/PlayListController#isAutoplay()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="movePlayListEntry" id="de.ptb.epics.eve.ecp1.client/PlayListController#movePlayListEntry(Lde.ptb.epics.eve.ecp1.client.model.PlayListEntry;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeNewXMLFileListener" id="de.ptb.epics.eve.ecp1.client/PlayListController#removeNewXMLFileListener(Lde.ptb.epics.eve.ecp1.client.interfaces.INewXMLFileListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removePlayListEntry" id="de.ptb.epics.eve.ecp1.client/PlayListController#removePlayListEntry(Lde.ptb.epics.eve.ecp1.client.model.PlayListEntry;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removePlayListListener" id="de.ptb.epics.eve.ecp1.client/PlayListController#removePlayListListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IPlayListListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setAutoplay" id="de.ptb.epics.eve.ecp1.client/PlayListController#setAutoplay(Z)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Name" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="RequestProcessor" location="1482,44" size="176,117" id="de.ptb.epics.eve.viewer/RequestProcessor" runTimeClassModel="request(Lde.ptb.epics.eve.ecp1.client.model.Request;),cancelRequest(Lde.ptb.epics.eve.ecp1.client.model.Request;),RequestProcessor(Lorg.eclipse.swt.widgets.Display;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="135,54">
+      <children xsi:type="editmodel:MethodEditModel" name="RequestProcessor" id="de.ptb.epics.eve.viewer/RequestProcessor#RequestProcessor(Lorg.eclipse.swt.widgets.Display;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="cancelRequest" id="de.ptb.epics.eve.viewer/RequestProcessor#cancelRequest(Lde.ptb.epics.eve.ecp1.client.model.Request;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="request" id="de.ptb.epics.eve.viewer/RequestProcessor#request(Lde.ptb.epics.eve.ecp1.client.model.Request;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="XMLFileDispatcher" location="1275,45" size="179,99" id="de.ptb.epics.eve.viewer/XMLFileDispatcher" runTimeClassModel="newXMLFileReceived([B),XMLFileDispatcher()">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="144,36">
+      <children xsi:type="editmodel:MethodEditModel" name="XMLFileDispatcher" id="de.ptb.epics.eve.viewer/XMLFileDispatcher#XMLFileDispatcher()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="newXMLFileReceived" id="de.ptb.epics.eve.viewer/XMLFileDispatcher#newXMLFileReceived([B)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/XMLFileDispatcher-Standard::Instantiate->de.ptb.epics.eve.viewer/PlotViewDispatcher*de.ptb.epics.eve.viewer/XMLFileDispatcher-Soyatec::Import->de.ptb.epics.eve.viewer/PlotViewDispatcher" source="//@children.13" target="//@children.10" targetEnd="//@children.13/@sourceConnections.0/@children.2" label="//@children.13/@sourceConnections.0/@children.0" sourceEnd="//@children.13/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Instantiate, Import»" size="119,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,49" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="360,49"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=1;Product=eUML2" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>
