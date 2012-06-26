@@ -50,7 +50,7 @@ table(eveDataTable).
 |11| _pause_| _ONOFF_| _true_| _running_|*
 |12| _pause_| _ONOFF_| _false_| _pause_|
 
-p. If the specified condition is not met nothing happens at all (even rows). Rows three and seven just overwrites the state with the same value. The behavior in rows one and nine is equal to the behavior of detector and schedule events. Rows five and eleven show the behavior specific to monitor events due to the additional _ONOFF_ action.
+p. If the specified condition is not met nothing happens at all (even rows). Rows three and seven just overwrite the state with the same value. The behavior in rows one and nine is equal to the behavior of detector and schedule events. Rows five and eleven show the behavior specific to monitor events due to the additional _ONOFF_ action.
 
 p. +Note+: Each event can continue the scan (stop the pause) regardless of which event paused it. "Read more":#combine on combining events.
 
@@ -66,4 +66,4 @@ h2(#combine). Combining _Chain_ and _ScanModule_ Events
 
 p. Chains and scan modules have _independent_ pause states, i.e. both scan module and chain states must be _running_ in order to continue a scan.
 
-p. When monitor events are combined (one in the chain, one in the scan module) a redo occurs if at least one of their last send values was @true@. Only when both last sent @false@ the scan continues normally.
+p. When monitor events are combined (one in the chain, one in the scan module) a redo occurs if at least one of their last sent values was @true@. Only when both last sent @false@ the scan continues normally.
