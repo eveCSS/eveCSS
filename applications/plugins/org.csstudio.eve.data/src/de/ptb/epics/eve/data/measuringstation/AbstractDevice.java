@@ -181,7 +181,7 @@ public abstract class AbstractDevice implements Comparable<AbstractDevice> {
 	 */
 	public List<Option> getOptions() {
 		List<Option> options = new ArrayList<Option>(this.options);
-		Collections.sort(options);
+		// Collections.sort(options);
 		return options;
 	}
 
