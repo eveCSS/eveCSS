@@ -18,6 +18,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Label;
@@ -29,6 +30,8 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
+import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
+import de.ptb.epics.eve.editor.views.IEditorView;
 
 /**
  * <code>MotorAxisView</code> shows the attributes of a 
@@ -38,8 +41,8 @@ import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class MotorAxisView extends ViewPart implements ISelectionListener, 
-					PropertyChangeListener  {
+public class MotorAxisView extends ViewPart implements IEditorView,
+		ISelectionListener, PropertyChangeListener {
 
 	/** the unique identifier of the view. */
 	public static final String ID = 
@@ -94,6 +97,8 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 	
 	private String[] stepfunctions;
 	private List<String> discreteStepfunctions;
+	
+	private EditorViewPerspectiveListener editorViewPerspectiveListener;
 	
 	/**
 	 * {@inheritDoc}
@@ -214,6 +219,12 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 		// displayed for editing)
 		getSite().getWorkbenchWindow().getSelectionService().
 				addSelectionListener(this);
+		
+		// reset view if last editor was closed
+		this.editorViewPerspectiveListener = new EditorViewPerspectiveListener(
+				this);
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.addPerspectiveListener(this.editorViewPerspectiveListener);
 	}
 	// ************************************************************************
 	// ********************** end of createPartControl ************************
@@ -338,6 +349,14 @@ public class MotorAxisView extends ViewPart implements ISelectionListener,
 			this.sashForm.setMaximizedControl(emptyComposite);
 		}
 		sc.setMinSize(targetWidth, targetHeight);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void reset() {
+		this.setAxis(null);
 	}
 
 	/**

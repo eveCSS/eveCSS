@@ -18,7 +18,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
@@ -52,6 +51,8 @@ import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.SelectionProviderWrapper;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
+import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
+import de.ptb.epics.eve.editor.views.IEditorView;
 import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
 import de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite.DetectorChannelComposite;
 import de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.MotorAxisComposite;
@@ -67,8 +68,8 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.PrescanComp
  * @author Marcus Michalsky
  * @author Hartmut Scherr
  */
-public class ScanModuleView extends ViewPart implements ISelectionListener,
-					IModelUpdateListener {
+public class ScanModuleView extends ViewPart implements IEditorView,
+		ISelectionListener, IModelUpdateListener {
 	
 	/**
 	 * the id of the <code>ScanModulView</code>.
@@ -105,6 +106,7 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	private ConfirmTriggerCheckBoxSelectionListener 
 			confirmTriggerCheckBoxSelectionListener;
 	
+	/** */
 	public CTabFolder eventsTabFolder;
 	private EventsTabFolderSelectionListener eventsTabFolderSelectionListener;
 	
@@ -149,6 +151,8 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 	// a wrapper handles them and registers the active one with the global 
 	// selection service
 	protected SelectionProviderWrapper selectionProviderWrapper;
+	
+	private EditorViewPerspectiveListener editorViewPerspectiveListener;
 	
 	private IMemento memento;
 	
@@ -203,6 +207,12 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		
 		selectionProviderWrapper = new SelectionProviderWrapper();
 		getSite().setSelectionProvider(selectionProviderWrapper);
+		
+		// reset view if last editor was closed
+		this.editorViewPerspectiveListener = new EditorViewPerspectiveListener(
+				this);
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.addPerspectiveListener(this.editorViewPerspectiveListener);
 	} // end of: createPartControl()
 	
 	/*
@@ -795,10 +805,18 @@ public class ScanModuleView extends ViewPart implements ISelectionListener,
 		memento.putBoolean("expandEvents", itemEvents.getExpanded());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void reset() {
+		this.setCurrentScanModule(null);
+	}
+	
 	// ************************************************************************
 	// ******************** Listener ******************************************
 	// ************************************************************************
-	
+
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>confirmTriggerCheckBox</code>.

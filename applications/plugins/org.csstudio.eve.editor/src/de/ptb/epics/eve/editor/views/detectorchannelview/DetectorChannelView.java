@@ -51,6 +51,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
+import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
+import de.ptb.epics.eve.editor.views.IEditorView;
 import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
 
 /**
@@ -61,9 +63,8 @@ import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class DetectorChannelView extends ViewPart 
-						implements ISelectionListener, PropertyChangeListener,
-						IModelUpdateListener {
+public class DetectorChannelView extends ViewPart implements IEditorView,
+		ISelectionListener, PropertyChangeListener, IModelUpdateListener {
 
 	/**
 	 * the unique identifier of the view.
@@ -132,6 +133,8 @@ public class DetectorChannelView extends ViewPart
 
 	private ExpandBar bar = null;
 	private ExpandItem eventExpandItem;
+	
+	/** */
 	public CTabFolder eventsTabFolder = null;
 	private EventComposite redoEventComposite = null;
 	private Composite eventComposite = null;
@@ -145,6 +148,8 @@ public class DetectorChannelView extends ViewPart
 	private Image infoImage;
 	private Image errorImage;
 
+	private EditorViewPerspectiveListener editorViewPerspectiveListener;
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -382,6 +387,12 @@ public class DetectorChannelView extends ViewPart
 		// attributes are made available for editing)
 		getSite().getWorkbenchWindow().getSelectionService().
 				addSelectionListener(this);
+		
+		// reset view if last editor was closed
+		this.editorViewPerspectiveListener = new EditorViewPerspectiveListener(
+				this);
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.addPerspectiveListener(this.editorViewPerspectiveListener);
 	}
 	// ************************************************************************
 	// ********************** end of createPartControl ************************
@@ -435,6 +446,14 @@ public class DetectorChannelView extends ViewPart
 			this.scanModule.addPropertyChangeListener("removeChannel", this);
 		}
 		updateEvent(null);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void reset() {
+		this.setChannel(null);
 	}
 
 	/**

@@ -26,6 +26,7 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -48,6 +49,8 @@ import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
+import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
+import de.ptb.epics.eve.editor.views.IEditorView;
 
 /**
  * <code>PlotWindowView</code> contains all configuration parts, corresponding 
@@ -59,8 +62,8 @@ import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
  * @author Marcus Michalsky
  * @author Hartmut Scherr
  */
-public class PlotWindowView extends ViewPart implements ISelectionListener, 
-					IModelUpdateListener, PropertyChangeListener  {
+public class PlotWindowView extends ViewPart implements IEditorView,
+		ISelectionListener, IModelUpdateListener, PropertyChangeListener {
 
 	/**
 	 * The unique identifier of <code>PlotWindowView</code>.
@@ -235,6 +238,8 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 	
 	private IMemento memento;
 	
+	private EditorViewPerspectiveListener editorViewPerspectiveListener;
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -307,6 +312,12 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 		// displayed)
 		getSite().getWorkbenchWindow().getSelectionService().
 				addSelectionListener(this);
+		
+		// reset view if last editor was closed
+		this.editorViewPerspectiveListener = new EditorViewPerspectiveListener(
+				this);
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.addPerspectiveListener(this.editorViewPerspectiveListener);
 	}
 
 	/*
@@ -858,6 +869,14 @@ public class PlotWindowView extends ViewPart implements ISelectionListener,
 											setColorValue(selected_color);
 		if(axis == 2) yAxis2ColorFieldEditor.getColorSelector().
 											setColorValue(selected_color);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void reset() {
+		this.setPlotWindow(null);
 	}
 
 	/*
