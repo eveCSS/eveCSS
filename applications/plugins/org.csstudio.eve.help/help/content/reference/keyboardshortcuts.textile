@@ -1,0 +1,22 @@
+h1(eveTopic). Keyboard Shortcuts
+
+h2(eveTopic). File
+
+|Close| __Ctrl+W__|
+|Exit| __Alt+F4__|
+|New| __Ctrl+N__|
+|Save| __Ctrl+S__|
+|Save All| __Ctrl+Shift+S__|
+
+h2(eveTopic). Navigation
+
+|Activate Editor| __F12__|
+|Maximize Active View or Editor| __Ctrl+M__|
+|Next Editor| __Ctrl+F6__|
+|Next Perspective| __Ctrl+F8__|
+|Next View| __Ctrl+F7__|
+|Open Editor Drop Down| __Ctrl+E__|
+|Previous Editor| __Ctrl+Shift+F6__|
+|Previous Perspective| __Ctrl+Shift+F8__|
+|Previous View| __Ctrl+Shift+F7__|
+|Switch to previous/next Editor| __Ctrl+PageUp/PageDown__|

@@ -2,6 +2,8 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Reference">
+   <topic href="help/content/reference/keyboardshortcuts.html" label="Keyboard Shortcuts">
+   </topic>
    <topic href="help/content/reference/xmlmsisyntax.html" label="xmlmsi Argument Syntax">
    </topic>
 
