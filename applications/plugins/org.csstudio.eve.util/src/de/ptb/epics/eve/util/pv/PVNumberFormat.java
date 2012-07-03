@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.pv;
+package de.ptb.epics.eve.util.pv;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;

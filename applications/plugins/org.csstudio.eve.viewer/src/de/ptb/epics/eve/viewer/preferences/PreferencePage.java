@@ -40,13 +40,6 @@ public class PreferencePage extends FieldEditorPreferencePage
 				PreferenceConstants.P_DEFAULT_ENGINE_LOCATION, 
 				"Engine location:", this.getFieldEditorParent());
 		addField(engineFileFieldEditor);
-		
-		IntegerFieldEditor pvIntegerFieldEditor = new IntegerFieldEditor(
-				PreferenceConstants.P_PV_UPDATE_INTERVAL, 
-				"PV Update Interval (in ms):", 
-				this.getFieldEditorParent()); 
-		pvIntegerFieldEditor.setValidRange(250, 60000);
-		addField(pvIntegerFieldEditor);
 		IntegerFieldEditor plotIntegerFieldEditor = new IntegerFieldEditor(
 				PreferenceConstants.P_PLOT_BUFFER_SIZE, 
 				"Plot Buffer Size (in # points):", 

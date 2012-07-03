@@ -27,7 +27,6 @@ Eclipse-LazyStart: true
 Bundle-ClassPath: de.ptb.epics.ecp1.client.jar,
  de.ptb.epics.ecp1.intern.jar,
  .
-Export-Package: de.ptb.epics.eve.viewer,
- de.ptb.epics.eve.viewer.actions
 Bundle-ActivationPolicy: lazy
-Import-Package: org.eclipse.ui.views.properties
+Import-Package: de.ptb.epics.eve.util.pv,
+ org.eclipse.ui.views.properties

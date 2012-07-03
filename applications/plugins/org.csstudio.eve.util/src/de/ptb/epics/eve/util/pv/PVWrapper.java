@@ -1,12 +1,9 @@
-package de.ptb.epics.eve.viewer.pv;
+package de.ptb.epics.eve.util.pv;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.csstudio.utility.pv.PV;
@@ -19,8 +16,9 @@ import org.epics.pvmanager.data.VEnum;
 import org.epics.pvmanager.data.ValueFormat;
 import org.epics.pvmanager.data.ValueUtil;
 
-import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
+
+import de.ptb.epics.eve.preferences.Activator;
+import de.ptb.epics.eve.preferences.PreferenceConstants;
 
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.pvmanager.util.TimeDuration.*;
@@ -350,7 +348,7 @@ public class PVWrapper {
 			propertyChangeSupport.firePropertyChange("value", pvValue,
 					pvValue = valueFormat.format(newVal));
 			propertyChangeSupport.firePropertyChange("status", pvStatus, 
-					pvStatus = ((Alarm)ValueUtil.alarmOf(pv.getValue())).
+					pvStatus = ValueUtil.alarmOf(pv.getValue()).
 									getAlarmSeverity());
 			Exception e = pv.lastException();
 			if(e != null) {

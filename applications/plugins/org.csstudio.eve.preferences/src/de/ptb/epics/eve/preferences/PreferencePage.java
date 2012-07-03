@@ -41,8 +41,13 @@ public class PreferencePage extends FieldEditorPreferencePage
 			stationFileFieldEditor.setFilterPath(new File(rootdir));
 		}
 		file = null;
-		
 		addField(stationFileFieldEditor);
+		IntegerFieldEditor pvIntegerFieldEditor = new IntegerFieldEditor(
+				PreferenceConstants.P_PV_UPDATE_INTERVAL, 
+				"PV Update Interval (in ms):", 
+				this.getFieldEditorParent()); 
+		pvIntegerFieldEditor.setValidRange(250, 60000);
+		addField(pvIntegerFieldEditor);
 	}
 	
 	/**

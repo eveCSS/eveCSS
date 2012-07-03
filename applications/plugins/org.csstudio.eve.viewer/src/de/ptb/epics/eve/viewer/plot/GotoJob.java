@@ -6,7 +6,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-import de.ptb.epics.eve.viewer.pv.PVWrapper;
+import de.ptb.epics.eve.util.pv.PVWrapper;
 
 /**
  * {@link org.eclipse.core.runtime.jobs.Job} which sends a goto to the given 

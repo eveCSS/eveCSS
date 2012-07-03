@@ -10,4 +10,9 @@ public class PreferenceConstants {
 	 */
 	public static final String P_DEFAULT_MEASURING_STATION_DESCRIPTION = 
 			"xmlPath";
+	
+	/**
+	 * 
+	 */
+	public static final String P_PV_UPDATE_INTERVAL = "PVUpdateInterval";
 }

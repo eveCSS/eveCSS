@@ -4,3 +4,10 @@ Bundle-Name: Util
 Bundle-SymbolicName: de.ptb.epics.eve.util
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.csstudio.utility.pv;bundle-version="3.0.0",
+ org.csstudio.utility.pvmanager;bundle-version="1.0.0",
+ org.csstudio.platform.libs.log4j;bundle-version="1.2.16",
+ org.csstudio.utility.pvmanager.ui;bundle-version="3.1.0",
+ org.eclipse.ui;bundle-version="3.7.0"
+Export-Package: de.ptb.epics.eve.util.pv
+Import-Package: de.ptb.epics.eve.preferences

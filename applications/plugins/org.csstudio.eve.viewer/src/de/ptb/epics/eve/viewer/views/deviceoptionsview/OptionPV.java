@@ -1,7 +1,7 @@
 package de.ptb.epics.eve.viewer.views.deviceoptionsview;
 
 import de.ptb.epics.eve.data.measuringstation.Option;
-import de.ptb.epics.eve.viewer.pv.PVWrapper;
+import de.ptb.epics.eve.util.pv.PVWrapper;
 
 /**
  * <code>OptionPV</code>.

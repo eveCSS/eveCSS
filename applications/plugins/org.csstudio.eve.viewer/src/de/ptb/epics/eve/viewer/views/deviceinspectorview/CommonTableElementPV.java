@@ -3,7 +3,7 @@ package de.ptb.epics.eve.viewer.views.deviceinspectorview;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import de.ptb.epics.eve.viewer.pv.PVWrapper;
+import de.ptb.epics.eve.util.pv.PVWrapper;
 
 /**
  * <code>CommonTableElementPV</code> wraps a {@link org.epics.pvmanager.PV} 
