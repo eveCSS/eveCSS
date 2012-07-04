@@ -50,7 +50,7 @@ public class Configurator {
 		File kmc = new File("xml/kmc.xml");
 		File rfa = new File("xml/rfa.xml");
 		File nrfa = new File("xml/nrfa.xml");
-		File pgm = new File("xml/pfm.xml");
+		File pgm = new File("xml/pgm.xml");
 		
 		try {
 			measuringStationLoader.load(test);
