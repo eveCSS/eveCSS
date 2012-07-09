@@ -70,10 +70,11 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 	// Scrolled Composite wrapping top to enable scrolling
 	private ScrolledComposite sc = null;
 
+	private CAComposite caComposite;
+	
 	// GUI: "Step function: <combo> x"
 	private Label stepfunctionLabel;
 	private Combo stepFunctionCombo;
-	private Label stepfunctionErrorLabel;
 	
 	private StepFunctionComboSelectionListener 
 			stepFunctionComboSelectionListener;
@@ -81,7 +82,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 	// GUI: "Position mode: <combo> x"
 	private Label positionModeLabel;
 	private Combo positionModeCombo;
-	private Label positionModeErrorLabel;
 	
 	private PositionModeComboSelectionListener 
 			positionModeComboSelectionListener;
@@ -105,7 +105,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		
 		// simple fill layout
 		parent.setLayout(new FillLayout());
 		
@@ -119,7 +118,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		
 		// layout, scrolling and top composite
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 3;
+		gridLayout.numColumns = 2;
 		GridData gridData;
 		
 		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | 
@@ -132,6 +131,22 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
 		
+		this.caComposite = new CAComposite(this.top, SWT.NONE);
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 2;
+		this.caComposite.setLayoutData(gridData);
+		
+		Label shadow_sep_h = new Label(this.top, SWT.SEPARATOR | SWT.SHADOW_OUT
+				| SWT.HORIZONTAL);
+		shadow_sep_h.setBounds(50,80,100,50);
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 2;
+		shadow_sep_h.setLayoutData(gridData);
+		
 		// step function elements
 		this.stepfunctions = Activator.getDefault().getMeasuringStation().
 				getSelections().getStepfunctions();
@@ -142,11 +157,11 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 				this.discreteStepfunctions.add(s);
 			}
 		}
-		
 		this.stepfunctionLabel = new Label(this.top, SWT.NONE);
 		this.stepfunctionLabel.setText("Step function: ");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalIndent = 5;
 		this.stepfunctionLabel.setLayoutData(gridData);
 		
 		this.stepFunctionCombo = new Combo(this.top, SWT.READ_ONLY);
@@ -154,16 +169,12 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
+		gridData.verticalIndent = 5;
 		this.stepFunctionCombo.setLayoutData(gridData);
 		this.stepFunctionComboSelectionListener = 
 				new StepFunctionComboSelectionListener();
 		this.stepFunctionCombo.addSelectionListener(
 				stepFunctionComboSelectionListener);
-		
-		this.stepfunctionErrorLabel = new Label(this.top, SWT.NONE);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		this.stepfunctionErrorLabel.setLayoutData(gridData);
 		// end of: step function elements
 		
 		// position mode elements
@@ -183,11 +194,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 				new PositionModeComboSelectionListener();
 		this.positionModeCombo.addSelectionListener(
 				positionModeComboSelectionListener);
-		
-		this.positionModeErrorLabel = new Label(this.top, SWT.NONE);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		this.positionModeErrorLabel.setLayoutData(gridData);
 		// end of: position mode elements
 		
 		sashForm = new SashForm(top, SWT.VERTICAL);
@@ -196,7 +202,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalSpan = 3;
+		gridData.horizontalSpan = 2;
 		sashForm.setLayoutData(gridData);
 		
 		this.emptyComposite = new Composite(sashForm, SWT.NONE);
@@ -256,6 +262,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		
 		if (this.currentAxis != null) {
 			this.scanModule.removePropertyChangeListener("removeAxis", this);
+			this.currentAxis.getMotorAxis().disconnect();
 		}
 		
 		// set the new axis as current axis
@@ -296,10 +303,12 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			top.layout();
 			
 			addListeners();
+			this.currentAxis.getMotorAxis().connect();
 		} else {
 			this.setPartName("No Motor Axis selected");
 			top.setVisible(false);
 		}
+		this.caComposite.setAxis(this.currentAxis);
 	}
 	
 	/*

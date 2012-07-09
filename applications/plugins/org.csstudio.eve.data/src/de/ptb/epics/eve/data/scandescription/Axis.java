@@ -3,7 +3,6 @@ package de.ptb.epics.eve.data.scandescription;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -18,60 +17,60 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateList
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
 /**
- * This class describes the behavior of an axis during the main phase of a
- * scan module.
+ * This class describes the behavior of an axis during the main phase of a scan
+ * module.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
  * @author Hartmut Scherr
  */
 public class Axis extends AbstractMainPhaseBehavior {
-	
+
 	// logging
 	private static Logger logger = Logger.getLogger(Axis.class.getName());
-	
+
 	// delegated observable
 	private PropertyChangeSupport propertyChangeSupport;
-	
+
 	// The step function of this axis
 	private Stepfunctions stepfunction;
 
 	// the file path of the position file
 	private String positionfile;
-	
+
 	/*
-	 * the start value (of the triple start, stop, step width)
-	 * (used if neither a position file nor a position plug in is used)
+	 * the start value (of the triple start, stop, step width) (used if neither
+	 * a position file nor a position plug in is used)
 	 */
 	private String start;
-	
+
 	/*
-	 * the stop value (of the triple start, stop, step width)
-	 * (used if neither a position file nor a position plug in is used)
+	 * the stop value (of the triple start, stop, step width) (used if neither a
+	 * position file nor a position plug in is used)
 	 */
 	private String stop;
-	
+
 	/*
-	 * the step width (of the triple start, stop, step width)
-	 *(used if neither a position file nor a position plug in is used)
+	 * the step width (of the triple start, stop, step width)(used if neither a
+	 * position file nor a position plug in is used)
 	 */
 	private String stepwidth;
-	
+
 	// the step count
 	private double stepcount;
-	
+
 	// default position mode is absolute
 	private PositionMode positionMode = PositionMode.ABSOLUTE;
-	
+
 	// the position list (position values divided by semicolon)
 	private String positionlist;
-	
+
 	// indicates whether the axis is the main axis of the scan module
 	private boolean isMainAxis = false;
-	
+
 	// the plug in controller
 	private PluginController positionPluginController;
-	
+
 	/**
 	 * Constructs an <code>Axis</code>.
 	 * 
@@ -79,14 +78,14 @@ public class Axis extends AbstractMainPhaseBehavior {
 	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public Axis(final ScanModule scanModule) {
-		if(scanModule == null) {
+		if (scanModule == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'scanModule' must not be null!");
 		}
 		this.scanModule = scanModule;
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
-	
+
 	/**
 	 * Better Constructor.
 	 * 
@@ -99,17 +98,17 @@ public class Axis extends AbstractMainPhaseBehavior {
 	public Axis(final ScanModule scanModule, MotorAxis axis) {
 		this(scanModule);
 		this.setMotorAxis(axis);
-		if(axis.getGoto().isDiscrete()) {
-			this.setStepfunction(Stepfunctions.stepfunctionToString(
-					Stepfunctions.POSITIONLIST));
+		if (axis.getGoto().isDiscrete()) {
+			this.setStepfunction(Stepfunctions
+					.stepfunctionToString(Stepfunctions.POSITIONLIST));
 			StringBuffer sb = new StringBuffer();
-			for(String s : axis.getGoto().getDiscreteValues()) {
+			for (String s : axis.getGoto().getDiscreteValues()) {
 				sb.append(s + ",");
 			}
 			this.setPositionlist(sb.substring(0, sb.length() - 1));
 		}
 	}
-	
+
 	/**
 	 * Returns the path of the position file.
 	 * 
@@ -132,8 +131,8 @@ public class Axis extends AbstractMainPhaseBehavior {
 	/**
 	 * Returns the plug in controller of the position plug in.
 	 * 
-	 * @return the plug in controller of the position plug in or 
-	 * 		   <code>null</code> if none is set
+	 * @return the plug in controller of the position plug in or
+	 * 			<code>null</code> if none is set
 	 */
 	public PluginController getPositionPluginController() {
 		return this.positionPluginController;
@@ -146,11 +145,11 @@ public class Axis extends AbstractMainPhaseBehavior {
 	 */
 	public void setPositionPluginController(
 			final PluginController positionPluginController) {
-		if(this.positionPluginController != null) {
+		if (this.positionPluginController != null) {
 			this.positionPluginController.removeModelUpdateListener(this);
 		}
 		this.positionPluginController = positionPluginController;
-		if(this.positionPluginController != null) {
+		if (this.positionPluginController != null) {
 			this.positionPluginController.addModelUpdateListener(this);
 		}
 		updateListeners();
@@ -185,7 +184,7 @@ public class Axis extends AbstractMainPhaseBehavior {
 	}
 
 	/**
-	 * Returns the step function 
+	 * Returns the step function
 	 * 
 	 * @return the step function
 	 */
@@ -195,16 +194,17 @@ public class Axis extends AbstractMainPhaseBehavior {
 
 	/**
 	 * Sets the step function.
-	 *  
+	 * 
 	 * @param stepfunctionString the step function that should be set
 	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public void setStepfunction(final String stepfunctionString) {
-		if(stepfunctionString == null) {
+		if (stepfunctionString == null) {
 			throw new IllegalArgumentException(
 					"The parameter stepfunction must not be null!");
 		}
-		this.stepfunction = Stepfunctions.stepfunctionToEnum(stepfunctionString);
+		this.stepfunction = Stepfunctions
+				.stepfunctionToEnum(stepfunctionString);
 		updateListeners();
 	}
 
@@ -245,16 +245,16 @@ public class Axis extends AbstractMainPhaseBehavior {
 		this.stop = stop;
 		updateListeners();
 	}
-	
+
 	/**
 	 * Returns the motor axis.
 	 * 
 	 * @return the motor axis
 	 */
 	public MotorAxis getMotorAxis() {
-		return (MotorAxis)this.abstractDevice;
+		return (MotorAxis) this.abstractDevice;
 	}
-	
+
 	/**
 	 * Sets the motor axis.
 	 * 
@@ -270,7 +270,7 @@ public class Axis extends AbstractMainPhaseBehavior {
 		this.setStepwidth(formattedText);
 		updateListeners();
 	}
-	
+
 	/**
 	 * Returns the step count.
 	 * 
@@ -279,18 +279,18 @@ public class Axis extends AbstractMainPhaseBehavior {
 	public double getStepCount() {
 		return this.stepcount;
 	}
-	
+
 	/**
 	 * Sets the step count.
 	 * 
 	 * @param stepcount the step count that should be set
 	 */
 	public void setStepCount(final double stepcount) {
-		propertyChangeSupport.firePropertyChange(
-				"stepcount", this.stepcount, this.stepcount = stepcount);
+		propertyChangeSupport.firePropertyChange("stepcount", this.stepcount,
+				this.stepcount = stepcount);
 		updateListeners();
 	}
-	
+
 	/**
 	 * Returns the position list.
 	 * 
@@ -299,13 +299,13 @@ public class Axis extends AbstractMainPhaseBehavior {
 	public String getPositionlist() {
 		return this.positionlist;
 	}
-	
+
 	/**
 	 * Sets the position list.
 	 * 
 	 * @param positionlist the position list that should be set
 	 */
-	public void setPositionlist( final String positionlist ) {
+	public void setPositionlist(final String positionlist) {
 		this.positionlist = positionlist;
 		updateListeners();
 	}
@@ -313,8 +313,8 @@ public class Axis extends AbstractMainPhaseBehavior {
 	/**
 	 * Checks whether the axis is the main axis of the scan module.
 	 * 
-	 * @return <code>true</code> if the axis is the main axis, 
-	 * 		   <code>false</code> otherwise
+	 * @return <code>true</code> if the axis is the main axis,
+	 * 			<code>false</code> otherwise
 	 */
 	public boolean isMainAxis() {
 		return this.isMainAxis;
@@ -324,11 +324,11 @@ public class Axis extends AbstractMainPhaseBehavior {
 	 * Sets whether the axis is the main axis of the scan module.
 	 * 
 	 * @param isMainAxis <code>true</code> to set the axis as main axisPass,
-	 * 		  <code>false</code> otherwise
+	 * 					<code>false</code> otherwise
 	 */
 	public void setMainAxis(final boolean isMainAxis) {
-		this.propertyChangeSupport.firePropertyChange(
-				"mainAxis", this.isMainAxis, this.isMainAxis = isMainAxis);
+		this.propertyChangeSupport.firePropertyChange("mainAxis",
+				this.isMainAxis, this.isMainAxis = isMainAxis);
 		updateListeners();
 	}
 
@@ -352,50 +352,51 @@ public class Axis extends AbstractMainPhaseBehavior {
 	}
 
 	/**
-	 * Checks whether a value is valid for the behavior. Used to check 
-	 * possible input parameters for start, stop and step width.
+	 * Checks whether a value is valid for the behavior. Used to check possible
+	 * input parameters for start, stop and step width.
 	 * 
 	 * @param value the value that should be checked.
 	 * @return <code>true</code> if the value is valid, 
-	 * 		   <code>false</code> otherwise
+	 * 			<code>false</code> otherwise
 	 * @throws IllegalArgumentException if the argument is <code>null</code>
 	 */
 	public boolean isValuePossible(final String value) {
 		return this.getMotorAxis().isValuePossible(value);
 	}
-	
+
 	/**
-	 * Return a well-formatted string with a valid value for the datatype.
-	 * If value can not be converted, return a default value
+	 * Return a well-formatted string with a valid value for the datatype. If
+	 * value can not be converted, return a default value
 	 * 
 	 * @param value The value that will be formatted.
 	 * @return a well-formatted string with a valid value
 	 */
-	public String formatValueDefault( final String value ) {
-		return this.getMotorAxis().formatValueDefault( value );
+	public String formatValueDefault(final String value) {
+		return this.getMotorAxis().formatValueDefault(value);
 	}
 
 	/**
-	 * Return a well-formatted string with a valid value for the datatype.
-	 * If value can not be converted, return null
+	 * Return a well-formatted string with a valid value for the datatype. If
+	 * value can not be converted, return null
 	 * 
-	 * @param value The value that will be formatted.
+	 * @param value
+	 *            The value that will be formatted.
 	 * @return a well-formatted string or null
 	 */
-	public String formatValue( final String value ) {
-		return this.getMotorAxis().formatValue( value );
+	public String formatValue(final String value) {
+		return this.getMotorAxis().formatValue(value);
 	}
 
 	/**
-	 * Return a well-formatted string with a valid value for the datatype.
-	 * If value can not be converted, return a default value
+	 * Return a well-formatted string with a valid value for the datatype. If
+	 * value can not be converted, return a default value
 	 * 
 	 * @return a well-formatted string with a valid default value
 	 */
 	public String getDefaultValue() {
-		return this.getMotorAxis().getDefaultValue( );
+		return this.getMotorAxis().getDefaultValue();
 	}
-	
+
 	/**
 	 * This method returns the type of the data type of the motor axis.
 	 * 
@@ -406,56 +407,57 @@ public class Axis extends AbstractMainPhaseBehavior {
 	}
 
 	/**
-	 * {@inheritDoc} 
+	 * {@inheritDoc}
 	 */
 	@Override
 	public List<IModelError> getModelErrors() {
-		final List< IModelError > errorList = new ArrayList< IModelError >();
-		if( this.stepfunction == Stepfunctions.ADD || 
-				this.stepfunction == Stepfunctions.MULTIPLY ) {
+		final List<IModelError> errorList = new ArrayList<IModelError>();
+		if (this.stepfunction == Stepfunctions.ADD
+				|| this.stepfunction == Stepfunctions.MULTIPLY) {
 
-			if( this.start == null || this.start.equals( "" ) ) {
-				errorList.add( new AxisError( this, 
-									AxisErrorTypes.START_NOT_SET ) );
-			} else if( !this.getMotorAxis().isValuePossible( this.start ) ) {
-				errorList.add( new AxisError( this, 
-									AxisErrorTypes.START_VALUE_NOT_POSSIBLE ) );
+			if (this.start == null || this.start.equals("")) {
+				errorList
+						.add(new AxisError(this, AxisErrorTypes.START_NOT_SET));
+			} else if (!this.getMotorAxis().isValuePossible(this.start)) {
+				errorList.add(new AxisError(this,
+						AxisErrorTypes.START_VALUE_NOT_POSSIBLE));
 			}
-			if( this.stop == null || this.stop.equals( "" ) ) {
-				errorList.add( new AxisError( this, 
-									AxisErrorTypes.STOP_NOT_SET ) );
-			} else if( !this.getMotorAxis().isValuePossible( this.stop ) ) {
-				errorList.add( new AxisError( this, 
-									AxisErrorTypes.STOP_VALUE_NOT_POSSIBLE ) );
+			if (this.stop == null || this.stop.equals("")) {
+				errorList.add(new AxisError(this, AxisErrorTypes.STOP_NOT_SET));
+			} else if (!this.getMotorAxis().isValuePossible(this.stop)) {
+				errorList.add(new AxisError(this,
+						AxisErrorTypes.STOP_VALUE_NOT_POSSIBLE));
 			}
-			if( this.stepwidth == null || this.stepwidth.equals( "" ) ) {
-				errorList.add( new AxisError( this, 
-									AxisErrorTypes.STEPWIDTH_NOT_SET ) );
+			if (this.stepwidth == null || this.stepwidth.equals("")) {
+				errorList.add(new AxisError(this,
+						AxisErrorTypes.STEPWIDTH_NOT_SET));
 			}
-			if( this.stepcount == -1.0) {
-				errorList.add( new AxisError( this, 
-									AxisErrorTypes.STEPCOUNT_NOT_SET ) );
+			if (this.stepcount == -1.0) {
+				errorList.add(new AxisError(this,
+						AxisErrorTypes.STEPCOUNT_NOT_SET));
 			}
-			
-		} else if( this.stepfunction == Stepfunctions.FILE ) {
-			if( this.positionfile == null || this.positionfile.equals( "" ) ) {
-				errorList.add( new AxisError( this, 
-									AxisErrorTypes.FILENAME_NOT_SET ) );
+
+		} else if (this.stepfunction == Stepfunctions.FILE) {
+			if (this.positionfile == null || this.positionfile.equals("")) {
+				errorList.add(new AxisError(this,
+						AxisErrorTypes.FILENAME_NOT_SET));
 			}
-		} else if( this.stepfunction == Stepfunctions.POSITIONLIST ) {
-			if( this.positionlist == null || this.positionlist.equals( "" ) ) {
-				errorList.add( new AxisError( this, 
-									AxisErrorTypes.POSITIONLIST_NOT_SET ) );
+		} else if (this.stepfunction == Stepfunctions.POSITIONLIST) {
+			if (this.positionlist == null || this.positionlist.equals("")) {
+				errorList.add(new AxisError(this,
+						AxisErrorTypes.POSITIONLIST_NOT_SET));
 			}
-		} else if( this.stepfunction == Stepfunctions.PLUGIN ) {
+		} else if (this.stepfunction == Stepfunctions.PLUGIN) {
 			if (this.positionPluginController == null) {
-				errorList.add( new AxisError( this, 
-									AxisErrorTypes.PLUGIN_NOT_SET ) );
+				errorList
+						.add(new AxisError(this, AxisErrorTypes.PLUGIN_NOT_SET));
 			} else {
 				// TODO: Austesten ob Fehler wirklich erkannt werden
-				errorList.addAll( this.positionPluginController.getModelErrors() );
-				if (this.getPositionPluginController().getModelErrors().size() > 0 ) {
-					errorList.add( new AxisError( this, AxisErrorTypes.PLUGIN_ERROR ) );
+				errorList
+						.addAll(this.positionPluginController.getModelErrors());
+				if (this.getPositionPluginController().getModelErrors().size() > 0) {
+					errorList.add(new AxisError(this,
+							AxisErrorTypes.PLUGIN_ERROR));
 				}
 			}
 		}
@@ -465,45 +467,41 @@ public class Axis extends AbstractMainPhaseBehavior {
 	/*
 	 * 
 	 */
-	private void updateListeners()
-	{
+	private void updateListeners() {
 		final CopyOnWriteArrayList<IModelUpdateListener> list = 
 			new CopyOnWriteArrayList<IModelUpdateListener>(modelUpdateListener);
-		
-		Iterator<IModelUpdateListener> it = list.iterator();
-		
-		while(it.hasNext()) {
-			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		for (IModelUpdateListener imul : list) {
+			imul.updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
-	
+
 	/**
-	 * Adjusts the stepwidth according to the stepcount of the given axis, 
-	 * which is the main axis.
+	 * Adjusts the stepwidth according to the stepcount of the given axis, which
+	 * is the main axis.
 	 * 
 	 * @param mainAxis the main axis
 	 */
 	public void adjustStepwidth(Axis mainAxis) {
-		if(logger.isDebugEnabled()) {
-			logger.debug("Adjusting stepwidth of '" + 
-						this.getMotorAxis().getName() + "'");
-			logger.debug("Stepcount: " + this.getStepCount() + " -> " + 
-						mainAxis.getStepCount());
+		if (logger.isDebugEnabled()) {
+			logger.debug("Adjusting stepwidth of '"
+					+ this.getMotorAxis().getName() + "'");
+			logger.debug("Stepcount: " + this.getStepCount() + " -> "
+					+ mainAxis.getStepCount());
 		}
-		if (!(this.stepfunction.equals(Stepfunctions.ADD) ||
-			this.stepfunction.equals(Stepfunctions.MULTIPLY))) {
-				return;
+		if (!(this.stepfunction.equals(Stepfunctions.ADD) || this.stepfunction
+				.equals(Stepfunctions.MULTIPLY))) {
+			return;
 		}
 		this.stepcount = mainAxis.stepcount;
 		String oldStepwidth = this.stepwidth;
 
-		if(this.getMotorAxis().getGoto().isDiscrete()) {
-			List<String> values = 
-					this.getMotorAxis().getGoto().getDiscreteValues();
+		if (this.getMotorAxis().getGoto().isDiscrete()) {
+			List<String> values = this.getMotorAxis().getGoto()
+					.getDiscreteValues();
 			int sStart = values.indexOf(this.start);
 			int sStop = values.indexOf(this.start);
 			try {
-				int sStepwidth = (int)((sStop - sStart) / this.stepcount);
+				int sStepwidth = (int) ((sStop - sStart) / this.stepcount);
 				this.stepwidth = Integer.toString(sStepwidth);
 			} catch (ArithmeticException e) {
 				// division by zero
@@ -511,41 +509,41 @@ public class Axis extends AbstractMainPhaseBehavior {
 				return;
 			}
 		} else {
-			switch(this.getMotorAxis().getPosition().getType()) {
-				case DATETIME: 
-					// TODO
-					break;
-				case INT:
-					int iStart = Integer.parseInt(this.start);
-					int iStop = Integer.parseInt(this.stop);
-					try {
-						this.stepwidth = Integer.toString(
-								(int)((iStop - iStart) / this.stepcount)); 
-					} catch(ArithmeticException e) {
-						// division by zero
-						this.stepwidth = "0";
-						return;
-					}
-					break;
-				case DOUBLE: 
-					double dStart = Double.parseDouble(this.start);
-					double dStop = Double.parseDouble(this.stop);
-					try {
-						this.stepwidth = Double.toString(
-								(dStop - dStart) / this.stepcount);
-					} catch(ArithmeticException e) {
-						// division by zero
-						this.stepwidth = "0";
-						return;
-					}
-					break;
+			switch (this.getMotorAxis().getPosition().getType()) {
+			case DATETIME:
+				// TODO
+				break;
+			case INT:
+				int iStart = Integer.parseInt(this.start);
+				int iStop = Integer.parseInt(this.stop);
+				try {
+					this.stepwidth = Integer
+							.toString((int) ((iStop - iStart) / this.stepcount));
+				} catch (ArithmeticException e) {
+					// division by zero
+					this.stepwidth = "0";
+					return;
+				}
+				break;
+			case DOUBLE:
+				double dStart = Double.parseDouble(this.start);
+				double dStop = Double.parseDouble(this.stop);
+				try {
+					this.stepwidth = Double.toString((dStop - dStart)
+							/ this.stepcount);
+				} catch (ArithmeticException e) {
+					// division by zero
+					this.stepwidth = "0";
+					return;
+				}
+				break;
 			}
 		}
-		if(logger.isDebugEnabled()) {
+		if (logger.isDebugEnabled()) {
 			logger.debug("Stepwidth: " + oldStepwidth + " -> " + this.stepwidth);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param propertyName
@@ -553,10 +551,10 @@ public class Axis extends AbstractMainPhaseBehavior {
 	 */
 	public void addPropertyChangeListener(String propertyName,
 			PropertyChangeListener listener) {
-		this.propertyChangeSupport.addPropertyChangeListener(
-				propertyName, listener);
+		this.propertyChangeSupport.addPropertyChangeListener(propertyName,
+				listener);
 	}
-	
+
 	/**
 	 * 
 	 * @param propertyName
@@ -564,7 +562,7 @@ public class Axis extends AbstractMainPhaseBehavior {
 	 */
 	public void removePropertyChangeListener(String propertyName,
 			PropertyChangeListener listener) {
-		this.propertyChangeSupport.removePropertyChangeListener(
-				propertyName, listener);
+		this.propertyChangeSupport.removePropertyChangeListener(propertyName,
+				listener);
 	}
 }

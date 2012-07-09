@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.data.measuringstation;
 
+import java.beans.PropertyChangeListener;
+
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedException;
 
@@ -22,7 +24,7 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	private Function moveDone;
 
 	// the goto of the motor axis
-	private Function gotoAdvisor;
+	private Function goTo;
 
 	// the stop trigger
 	private Function stop;
@@ -42,11 +44,15 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	private Function softHighLimit;
 	private Function softLowLimit;
 
+	// channel access work is delegated
+	private MotorAxisChannelAccess channelAccess;
+	
 	/**
 	 * Constructor.
 	 */
 	public MotorAxis() {
 		this(new Function(), null, null, new Function(), new Function());
+		this.channelAccess = new MotorAxisChannelAccess(this);
 	}
 
 	/**
@@ -83,8 +89,9 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 		this.position = position;
 		this.status = status;
 		this.moveDone = moveDone;
-		this.gotoAdvisor = gotoAdvisor;
+		this.goTo = gotoAdvisor;
 		this.stop = stop;
+		this.channelAccess = new MotorAxisChannelAccess(this);
 	}
 
 	/**
@@ -124,7 +131,7 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	 *         set.
 	 */
 	public Function getGoto() {
-		return this.gotoAdvisor;
+		return this.goTo;
 	}
 
 	/**
@@ -150,7 +157,7 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 			throw new IllegalArgumentException(
 					"The parameter 'gotoAdvisor' must not be null!");
 		}
-		this.gotoAdvisor = gotoAdvisor;
+		this.goTo = gotoAdvisor;
 	}
 
 	/**
@@ -259,8 +266,8 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 			return false;
 		}
 
-		if (this.gotoAdvisor != null) {
-			return this.gotoAdvisor.isValuePossible(value);
+		if (this.goTo != null) {
+			return this.goTo.isValuePossible(value);
 		}
 		return this.position.isValuePossible(value);
 	}
@@ -274,8 +281,8 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	 * @return a <code>String</code> with a valid value
 	 */
 	public String formatValueDefault(final String value) {
-		if (this.gotoAdvisor != null) {
-			return this.gotoAdvisor.formatValueDefault(value);
+		if (this.goTo != null) {
+			return this.goTo.formatValueDefault(value);
 		}
 		return this.position.formatValueDefault(value);
 	}
@@ -290,8 +297,8 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	 *         the value isn't convertible
 	 */
 	public String formatValue(final String value) {
-		if (this.gotoAdvisor != null) {
-			return this.gotoAdvisor.formatValue(value);
+		if (this.goTo != null) {
+			return this.goTo.formatValue(value);
 		}
 		return this.position.formatValue(value);
 	}
@@ -303,8 +310,8 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	 * @return a <code>String</code> with a valid default value
 	 */
 	public String getDefaultValue() {
-		if (this.gotoAdvisor != null) {
-			return this.gotoAdvisor.getDefaultValue();
+		if (this.goTo != null) {
+			return this.goTo.getDefaultValue();
 		}
 		return this.position.getDefaultValue();
 	}
@@ -316,8 +323,8 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	 * @return the data type of this axis
 	 */
 	public DataTypes getType() {
-		if (this.gotoAdvisor != null) {
-			return this.gotoAdvisor.getType();
+		if (this.goTo != null) {
+			return this.goTo.getType();
 		}
 		return this.position.getType();
 	}
@@ -446,6 +453,20 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	}
 
 	/**
+	 * Connects the motor axis via channel access
+	 */
+	public void connect() {
+		this.channelAccess.connect();
+	}
+	
+	/**
+	 * Disconnects the motor axis from channel access
+	 */
+	public void disconnect() {
+		this.channelAccess.disconnect();
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -453,6 +474,20 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 		return super.hashCode();
 	}
 
+	/**
+	 * Returns the channel access delegate or <code>null</code> if not 
+	 * connected.
+	 * 
+	 * @return the channel access delegate or <code>null</code> if not 
+	 * 			connected
+	 */
+	public MotorAxisChannelAccess getChannelAccess() {
+		if (this.channelAccess.isConncted()) {
+			return this.channelAccess;
+		}
+		return null;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -478,8 +513,8 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 		final MotorAxis motorAxis = new MotorAxis();
 		motorAxis.position = (Function) (this.position != null ? this.position
 				.clone() : null);
-		motorAxis.gotoAdvisor = (Function) (this.gotoAdvisor != null ? this.gotoAdvisor
-				.clone() : null);
+		motorAxis.goTo = (Function) (this.goTo != null ? this.goTo.clone()
+				: null);
 		motorAxis.stop = (Function) (this.stop != null ? this.stop.clone()
 				: null);
 		motorAxis.deadband = (Function) (this.deadband != null ? this.deadband
@@ -507,5 +542,25 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 			motorAxis.add((Option) option.clone());
 		}
 		return motorAxis;
+	}
+	
+	/**
+	 * 
+	 * @param propertyName
+	 * @param listener
+	 */
+	public void addPropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		this.channelAccess.addPropertyChangeListener(propertyName, listener);
+	}
+	
+	/**
+	 * 
+	 * @param propertyName
+	 * @param listener
+	 */
+	public void removePropertyChangeListener(String propertyName, 
+			PropertyChangeListener listener) {
+		this.channelAccess.removePropertyChangeListener(propertyName, listener);
 	}
 }

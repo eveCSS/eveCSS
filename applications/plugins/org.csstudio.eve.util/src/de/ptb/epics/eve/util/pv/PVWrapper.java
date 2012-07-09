@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.csstudio.utility.pv.PV;
 import org.csstudio.utility.pv.PVFactory;
 import org.epics.pvmanager.*;
-import org.epics.pvmanager.data.Alarm;
 import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.SimpleValueFormat;
 import org.epics.pvmanager.data.VEnum;
@@ -47,6 +46,7 @@ public class PVWrapper {
 	private org.csstudio.utility.pv.PV pv2;
 	
 	// the trigger pv (if a "goto" pv has to be triggered)
+	// also workaround until write issues with pvmanager are solved
 	private org.csstudio.utility.pv.PV triggerPV;
 	
 	// the name of the process variable
@@ -210,6 +210,16 @@ public class PVWrapper {
 	}
 	
 	/**
+	 * Returns the value of the PV as in 
+	 * {@link org.epics.pvmanager.PV#getValue()}.
+	 * 
+	 * @return {@link org.epics.pvmanager.PV#getValue()}
+	 */
+	public Double getRawValue() {
+		return ValueUtil.numericValueOf(this.pv.getValue());
+	}
+	
+	/**
 	 * Returns the status (severity) of the process variable.
 	 * Possible values are defined in 
 	 * {@link org.epics.pvmanager.data.AlarmSeverity}.
@@ -295,7 +305,7 @@ public class PVWrapper {
 	 * Temporary. 
 	 * Stays until PVManager can write...
 	 * 
-	 * @return
+	 * @return @{@link org.csstudio.utility.pv.PV#isConnected()}
 	 */
 	public boolean isConnected2() {
 		return this.pv2.isConnected();
