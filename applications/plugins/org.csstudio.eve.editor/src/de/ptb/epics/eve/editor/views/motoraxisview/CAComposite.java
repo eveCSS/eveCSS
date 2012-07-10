@@ -8,6 +8,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -188,8 +189,18 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 			FontMetrics fontMetrics = e.gc.getFontMetrics();
 			int width = fontMetrics.getAverageCharWidth() * position.length();
 			int height = fontMetrics.getHeight();
+			e.gc.setClipping(e.gc.getClipping());
 			e.gc.setForeground(Display.getCurrent().getSystemColor(
 					SWT.COLOR_BLACK));
+			e.gc.drawString(position, (point.x - width) / 2,
+					(point.y - height) / 2, true); // transparency boolean
+
+			Rectangle all = e.gc.getClipping();//progressBar.getBounds();
+			Rectangle clip = new Rectangle(all.x, all.y, all.width
+					* progressBar.getSelection() / 100, all.height);
+			e.gc.setClipping(clip);
+			e.gc.setForeground(Display.getCurrent().getSystemColor(
+					SWT.COLOR_WHITE));
 			e.gc.drawString(position, (point.x - width) / 2,
 					(point.y - height) / 2, true); // transparency boolean
 		}
