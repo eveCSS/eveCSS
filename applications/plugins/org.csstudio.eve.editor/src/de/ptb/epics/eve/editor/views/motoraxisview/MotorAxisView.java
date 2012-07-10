@@ -298,12 +298,13 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			this.pluginComposite.setAxis(null, null);
 			this.positionlistComposite.setAxis(null);
 			
+			this.currentAxis.getMotorAxis().connect();
+			
 			setComposite();
 			
 			top.layout();
 			
 			addListeners();
-			this.currentAxis.getMotorAxis().connect();
 		} else {
 			this.setPartName("No Motor Axis selected");
 			top.setVisible(false);

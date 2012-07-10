@@ -23,6 +23,7 @@ public class MotorAxisChannelAccess implements PropertyChangeListener {
 	private MotorAxis motorAxis;
 	
 	private PVWrapper position;
+	private PVWrapper goTo;
 	private PVWrapper offset;
 	private PVWrapper highLimit;
 	private PVWrapper lowLimit;
@@ -40,6 +41,7 @@ public class MotorAxisChannelAccess implements PropertyChangeListener {
 		this.motorAxis = motorAxis;
 		this.propertyChangeSupport = new PropertyChangeSupport(this.motorAxis);
 		this.position = null;
+		this.goTo = null;
 		this.offset = null;
 		this.highLimit = null;
 		this.lowLimit = null;
@@ -53,6 +55,9 @@ public class MotorAxisChannelAccess implements PropertyChangeListener {
 		this.position = new PVWrapper(this.motorAxis.getPosition().getAccess().
 				getVariableID());
 		this.position.addPropertyChangeListener("value", this);
+		this.goTo = new PVWrapper(this.motorAxis.getGoto().getAccess()
+				.getVariableID());
+		this.goTo.addPropertyChangeListener("discreteValues", this);
 		if (this.motorAxis.getOffset() != null) {
 			this.offset = new PVWrapper(this.motorAxis.getOffset().getAccess()
 					.getVariableID());
@@ -78,6 +83,9 @@ public class MotorAxisChannelAccess implements PropertyChangeListener {
 		this.position.removePropertyChangeListener(this);
 		this.position.disconnect();
 		this.position = null;
+		this.goTo.removePropertyChangeListener(this);
+		this.goTo.disconnect();
+		this.goTo = null;
 		if (this.offset != null) {
 			this.offset.removePropertyChangeListener(this);
 			this.offset.disconnect();
@@ -109,6 +117,9 @@ public class MotorAxisChannelAccess implements PropertyChangeListener {
 		if (e.getSource() == this.position) {
 			this.propertyChangeSupport.firePropertyChange("position",
 					e.getOldValue(), e.getNewValue());
+		} else if (e.getSource() == this.goTo) {
+			this.propertyChangeSupport.firePropertyChange("discreteValues",
+					null, e.getNewValue());
 		} else if (e.getSource() == this.offset) {
 			this.propertyChangeSupport.firePropertyChange("offset",
 					e.getOldValue(), e.getNewValue());
@@ -181,5 +192,13 @@ public class MotorAxisChannelAccess implements PropertyChangeListener {
 			return null;
 		}
 		return this.lowLimit.getRawValue();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String[] getDiscretePositions() {
+		return this.position.getDiscreteValues();
 	}
 }

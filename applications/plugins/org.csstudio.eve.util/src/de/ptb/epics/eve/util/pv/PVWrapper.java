@@ -377,6 +377,10 @@ public class PVWrapper {
 				isEnumInitialized = true;
 				discreteValues = ((VEnum)newVal).getLabels();
 			}
+			if(newVal instanceof VEnum) {
+				propertyChangeSupport.firePropertyChange("discreteValues",
+						null, discreteValues);
+			}
 		}
 	}
 	
