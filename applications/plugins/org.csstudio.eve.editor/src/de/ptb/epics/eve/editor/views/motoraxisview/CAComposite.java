@@ -150,7 +150,10 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 	 * => P = W * 100 / G
 	 */
 	private void calculateBarValue() {
-		if (this.currentAxis.getMotorAxis().getChannelAccess().getLowLimit() == null
+		if (this.currentAxis.getMotorAxis().getChannelAccess()
+					.getPosition() == null
+				|| this.currentAxis.getMotorAxis().getChannelAccess()
+						.getLowLimit() == null
 				|| this.currentAxis.getMotorAxis().getChannelAccess()
 						.getHighLimit() == null) {
 			return;
