@@ -232,8 +232,11 @@ public class PositionlistComposite extends Composite implements
 				}
 			}
 			if (!values.isEmpty()) {
-				this.positionlistText.setText(values.substring(0,
-						values.length() - 2));
+				String result = values.substring(0, values.length() - 2);
+				if (!this.positionlistText.getText().equals(result)) {
+					this.positionlistText.setText(values.substring(0,
+							values.length() - 2));
+				}
 				if (logger.isDebugEnabled()) {
 					logger.debug("got enum: "
 							+ values.substring(0, values.length() - 2));
