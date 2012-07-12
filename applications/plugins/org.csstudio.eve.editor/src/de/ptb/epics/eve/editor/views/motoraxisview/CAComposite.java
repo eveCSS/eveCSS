@@ -3,6 +3,7 @@ package de.ptb.epics.eve.editor.views.motoraxisview;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -25,6 +26,9 @@ import de.ptb.epics.eve.data.scandescription.Axis;
  * @since 1.5
  */
 public class CAComposite extends Composite implements PropertyChangeListener {
+	
+	private static Logger logger = Logger.getLogger(CAComposite.class.getName());
+	
 	private Text llmText;
 	private ProgressBar progressBar;
 	private ProgressBarPaintListener progressBarPaintListener;
@@ -144,32 +148,32 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 	/*
 	 * Calculate bar value by percentage:
 	 * bar min is 0%. bar max is 100%.
-	 * max value - min value is the value for 100% (G).
+	 * the absolute difference (|min - max|) is the value for 100% (G).
 	 * the position is the percent value (W).
 	 * we need the percentage (P).
 	 * => P = W * 100 / G
 	 */
 	private void calculateBarValue() {
-		if (this.currentAxis.getMotorAxis().getChannelAccess()
-					.getPosition() == null
-				|| this.currentAxis.getMotorAxis().getChannelAccess()
-						.getLowLimit() == null
-				|| this.currentAxis.getMotorAxis().getChannelAccess()
-						.getHighLimit() == null) {
+		this.progressBar.setEnabled(true);
+		try {
+			Double min = this.currentAxis.getMotorAxis().getChannelAccess()
+					.getLowLimit();
+			Double max = this.currentAxis.getMotorAxis().getChannelAccess()
+					.getHighLimit();
+			if (min == null || max == null) {
+				return;
+			}
+			Double currentPos = this.currentAxis.getMotorAxis().
+					getChannelAccess().getPosition();
+			double g = Math.abs(min - max);
+			double w = currentPos - min;
+			double p = (w / g) * 100.0;
+			this.progressBar.setSelection((int) p);
+		} catch (NullPointerException e) {
+			logger.debug(
+					"lowlimit/highlimit/position CA is null, no progress bar");
 			return;
 		}
-		Double min = this.currentAxis.getMotorAxis().getChannelAccess()
-				.getLowLimit();
-		Double max = this.currentAxis.getMotorAxis().getChannelAccess()
-				.getHighLimit();
-		if (min == null || max == null) {
-			return;
-		}
-		double g = max - min;
-		double w = this.currentAxis.getMotorAxis().getChannelAccess()
-				.getPosition() - min;
-		double p = (w / g) * 100.0;
-		this.progressBar.setSelection((int) p);
 	}
 	
 	/* ******************************************************************** */
