@@ -4,10 +4,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
@@ -32,12 +35,16 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 	private Text llmText;
 	private ProgressBar progressBar;
 	private ProgressBarPaintListener progressBarPaintListener;
+	private ControlDecoration barMinimumControlDecoration;
+	private ControlDecoration barMaximumControlDecoration;
 	private Text hlmText;
 	
 	private Axis currentAxis;
 	
 	private String position;
 
+	private Image warnImage;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -47,8 +54,13 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 	public CAComposite(Composite parent, int style) {
 		super(parent, style);
 		
+		this.warnImage = FieldDecorationRegistry.getDefault()
+				.getFieldDecoration(FieldDecorationRegistry.DEC_WARNING)
+				.getImage();
+		
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
+		gridLayout.horizontalSpacing = 10;
 		this.setLayout(gridLayout);
 		
 		this.llmText = new Text(this, SWT.READ_ONLY | SWT.BORDER);
@@ -64,6 +76,18 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 		gridData.horizontalAlignment = GridData.FILL;
 		this.progressBar.setLayoutData(gridData);
 		this.progressBarPaintListener = new ProgressBarPaintListener();
+		this.barMinimumControlDecoration = new ControlDecoration(
+				this.progressBar, SWT.LEFT);
+		this.barMinimumControlDecoration.setImage(warnImage);
+		this.barMinimumControlDecoration.setDescriptionText(
+				"Current position is below low limit!");
+		this.barMinimumControlDecoration.hide();
+		this.barMaximumControlDecoration = new ControlDecoration(
+				this.progressBar, SWT.RIGHT);
+		this.barMaximumControlDecoration.setImage(warnImage);
+		this.barMaximumControlDecoration.setDescriptionText(
+				"Current position is above high limit!");
+		this.barMaximumControlDecoration.hide();
 		
 		this.hlmText = new Text(this, SWT.READ_ONLY | SWT.BORDER);
 		
@@ -165,6 +189,18 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 			}
 			Double currentPos = this.currentAxis.getMotorAxis().
 					getChannelAccess().getPosition();
+			if (currentPos.compareTo(min) <= 0) {
+				this.progressBar.setSelection(0);
+				this.barMinimumControlDecoration.show();
+				return;
+			}
+			if (currentPos.compareTo(max) >= 0) {
+				this.progressBar.setSelection(100);
+				this.barMaximumControlDecoration.show();
+				return;
+			}
+			this.barMinimumControlDecoration.hide();
+			this.barMaximumControlDecoration.hide();
 			double g = Math.abs(min - max);
 			double w = currentPos - min;
 			double p = (w / g) * 100.0;
