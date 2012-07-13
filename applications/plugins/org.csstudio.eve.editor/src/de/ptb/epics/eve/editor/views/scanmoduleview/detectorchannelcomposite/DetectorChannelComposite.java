@@ -26,15 +26,15 @@ public class DetectorChannelComposite extends ActionComposite {
 	/**
 	 * Constructs a <code>DetectorChannelComposite</code>.
 	 * 
+	 * @param parentView the parent view
 	 * @param parent the parent composite
 	 * @param style the style
-	 * @param measuringStation the measuring station (containing available 
-	 * 		  detector channels)
 	 */
 	public DetectorChannelComposite(final ScanModuleView parentView, 
 									final Composite parent, final int style) {
 		super(parentView, parent, style);
 		this.setLayout(new GridLayout());
+		this.tableViewerComparator = new TableViewerComparator();
 		createViewer();
 	}
 
@@ -76,8 +76,10 @@ public class DetectorChannelComposite extends ActionComposite {
 	private void createColumns() {
 		TableViewerColumn channelColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);
-		channelColumn.getColumn().setText("Detector Channel");
+		channelColumn.getColumn().setText("Name");
 		channelColumn.getColumn().setWidth(250);
+		channelColumn.getColumn().addSelectionListener(
+				new ColumnSelectionListener(channelColumn));
 		
 		TableViewerColumn avgColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);

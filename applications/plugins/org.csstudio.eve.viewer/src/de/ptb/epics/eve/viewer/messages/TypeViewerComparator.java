@@ -1,14 +1,12 @@
-/**
- * 
- */
 package de.ptb.epics.eve.viewer.messages;
 
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerComparator;
+
+import de.ptb.epics.eve.util.jface.ViewerComparator;
 
 /**
- * @author mmichals
- *
+ * @author Marcus Michalsky
+ * @since 1.4
  */
 public class TypeViewerComparator extends ViewerComparator {
 	

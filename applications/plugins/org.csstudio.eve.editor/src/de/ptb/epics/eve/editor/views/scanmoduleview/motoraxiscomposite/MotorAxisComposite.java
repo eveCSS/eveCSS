@@ -3,15 +3,16 @@ package de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ActionComposite;
+import de.ptb.epics.eve.util.jface.ViewerComparator;
 
 /**
  * <code>MotorAxisComposite</code> is part of the 
@@ -22,7 +23,7 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.ActionComposite;
  * @author Hartmut Scherr
  */
 public class MotorAxisComposite extends ActionComposite {
-
+	
 	/**
 	 * Constructs a <code>MotorAxisComposite</code>.
 	 * 
@@ -34,6 +35,7 @@ public class MotorAxisComposite extends ActionComposite {
 							final Composite parent, final int style) {
 		super(parentView, parent, style);
 		this.setLayout(new GridLayout());
+		this.tableViewerComparator = new TableViewerComparator();
 		createViewer();
 	}
 	
@@ -73,13 +75,16 @@ public class MotorAxisComposite extends ActionComposite {
 	 * 
 	 */
 	private void createColumns() {
-		TableColumn column = new TableColumn(
-				this.tableViewer.getTable(), SWT.LEFT, 0);
-		column.setText("Motor Axis");
-		column.setWidth(250);
+		TableViewerColumn nameColumn = new TableViewerColumn(
+				this.tableViewer, SWT.NONE);
+		nameColumn.getColumn().setText("Name");
+		nameColumn.getColumn().setWidth(250);
+		nameColumn.getColumn().addSelectionListener(
+				new ColumnSelectionListener(nameColumn));
 		
-		column = new TableColumn(this.tableViewer.getTable(), SWT.LEFT, 1);
-		column.setText("Stepfunction");
-		column.setWidth(80);
+		TableViewerColumn stepfunctionColumn = new TableViewerColumn(
+				this.tableViewer, SWT.NONE);
+		stepfunctionColumn.getColumn().setText("Stepfunction");
+		stepfunctionColumn.getColumn().setWidth(80);
 	}
 }

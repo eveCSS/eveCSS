@@ -42,9 +42,7 @@ import de.ptb.epics.eve.viewer.messages.MessagesContainer;
  */
 public class Activator extends AbstractUIPlugin {
 
-	/**
-	 * The unique identifier of the plug in
-	 */
+	/** The unique identifier of the plug in */
 	public static final String PLUGIN_ID = "de.ptb.epics.eve.viewer";
 
 	// The shared instance
