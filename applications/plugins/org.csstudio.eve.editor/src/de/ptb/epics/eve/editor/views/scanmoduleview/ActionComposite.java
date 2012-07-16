@@ -3,7 +3,6 @@ package de.ptb.epics.eve.editor.views.scanmoduleview;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -94,10 +93,7 @@ public abstract class ActionComposite extends Composite {
 	 * Sets the sort state of the contained table viewer.
 	 * 
 	 * @param sortState the sort state that should be set.
-	 * @throws IllegalArgumentException if <code>sortState</code> not in {
-	 * 	{@link de.ptb.epics.eve.util.jface.ViewerComparator#NONE}, 
-	 *  {@link de.ptb.epics.eve.util.jface.ViewerComparator#ASCENDING}, 
-	 *   {@link de.ptb.epics.eve.util.jface.ViewerComparator#DESCENDING}}
+	 * @throws IllegalArgumentException if <code>sortState</code> not in {0,1,2}
 	 */
 	public void setSortState(int sortState) {
 		switch(sortState) {
