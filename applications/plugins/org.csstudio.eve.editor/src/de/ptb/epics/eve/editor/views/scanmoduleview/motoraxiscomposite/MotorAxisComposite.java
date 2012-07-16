@@ -12,7 +12,6 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ActionComposite;
-import de.ptb.epics.eve.util.jface.ViewerComparator;
 
 /**
  * <code>MotorAxisComposite</code> is part of the 
