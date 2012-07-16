@@ -3,6 +3,7 @@ package de.ptb.epics.eve.editor.views.scanmoduleview;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -28,6 +29,7 @@ import de.ptb.epics.eve.util.jface.ViewerComparator;
  * {@link #tableViewerComparator}. Afterwards an instance of 
  * {@link ColumnSelectionListener} can be set as 
  * {@link org.eclipse.swt.events.SelectionListener} to the column of interest.
+ * Remember to initialize the <code>sortColumn</code> property in the subclass.
  * 
  * @author Marcus Michalsky
  * @since 1.2
@@ -38,6 +40,7 @@ public abstract class ActionComposite extends Composite {
 			Logger.getLogger(ActionComposite.class.getName());
 	
 	protected TableViewer tableViewer;
+	protected TableViewerColumn sortColumn;
 	protected ScanModuleView parentView;
 
 	protected ViewerComparator tableViewerComparator;
@@ -78,6 +81,50 @@ public abstract class ActionComposite extends Composite {
 		this.tableViewer.setInput(scanModule);
 	}
 
+	/**
+	 * Returns the current sort state of the contained table viewer.
+	 * 
+	 * @return the current sort state of the contained table viewer
+	 */
+	public int getSortState() {
+		return this.tableViewerSortState;
+	}
+	
+	/**
+	 * Sets the sort state of the contained table viewer.
+	 * 
+	 * @param sortState the sort state that should be set.
+	 * @throws IllegalArgumentException if <code>sortState</code> not in {
+	 * 	{@link de.ptb.epics.eve.util.jface.ViewerComparator#NONE}, 
+	 *  {@link de.ptb.epics.eve.util.jface.ViewerComparator#ASCENDING}, 
+	 *   {@link de.ptb.epics.eve.util.jface.ViewerComparator#DESCENDING}}
+	 */
+	public void setSortState(int sortState) {
+		switch(sortState) {
+		case 0:
+			this.tableViewer.setComparator(null);
+			this.sortColumn.getColumn().setImage(null);
+			this.tableViewerSortState = 0;
+			break;
+		case 1:
+			this.tableViewerComparator.setDirection(
+					ViewerComparator.ASCENDING);
+			this.tableViewer.setComparator(tableViewerComparator);
+			this.sortColumn.getColumn().setImage(ascending);
+			this.tableViewerSortState = 1;
+			break;
+		case 2:
+			this.tableViewerComparator.setDirection(
+					ViewerComparator.DESCENDING);
+			this.tableViewer.setComparator(tableViewerComparator);
+			this.tableViewer.refresh();
+			this.sortColumn.getColumn().setImage(descending);
+			this.tableViewerSortState = 2;
+			break;
+		default: throw new IllegalArgumentException("Illegal sort state.");
+		}
+	}
+	
 	// ************************************************************************
 	// **************************** Listener **********************************
 	// ************************************************************************

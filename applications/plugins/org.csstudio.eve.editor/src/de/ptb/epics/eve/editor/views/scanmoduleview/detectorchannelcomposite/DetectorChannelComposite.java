@@ -80,6 +80,7 @@ public class DetectorChannelComposite extends ActionComposite {
 		channelColumn.getColumn().setWidth(250);
 		channelColumn.getColumn().addSelectionListener(
 				new ColumnSelectionListener(channelColumn));
+		this.sortColumn = channelColumn;
 		
 		TableViewerColumn avgColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);

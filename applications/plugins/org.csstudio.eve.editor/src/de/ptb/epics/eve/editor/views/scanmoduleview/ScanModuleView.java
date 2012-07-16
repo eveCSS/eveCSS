@@ -234,6 +234,17 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 						? memento.getBoolean("expandEvents")
 						: true;
 		this.itemEvents.setExpanded(events);
+		
+		
+		// restore sort state of action composite viewers
+		if (memento.getInteger("AxesSortState") != null) {
+			this.motorAxisComposite.setSortState(memento
+					.getInteger("AxesSortState"));
+		}
+		if (memento.getInteger("ChannelSortState") != null) {
+			this.detectorChannelComposite.setSortState(memento
+					.getInteger("ChannelSortState"));
+		}
 	}
 	
 	/*
@@ -800,9 +811,16 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	 */
 	@Override
 	public void saveState(IMemento memento) {
+		// remember expand items state
 		memento.putBoolean("expandGeneral", itemGeneral.getExpanded());
 		memento.putBoolean("expandActions", itemActions.getExpanded());
 		memento.putBoolean("expandEvents", itemEvents.getExpanded());
+		
+		// remember sort state of action composite viewers
+		memento.putInteger("AxesSortState",
+				this.motorAxisComposite.getSortState());
+		memento.putInteger("ChannelSortState",
+				this.detectorChannelComposite.getSortState());
 	}
 
 	/**

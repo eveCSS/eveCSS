@@ -81,6 +81,7 @@ public class MotorAxisComposite extends ActionComposite {
 		nameColumn.getColumn().setWidth(250);
 		nameColumn.getColumn().addSelectionListener(
 				new ColumnSelectionListener(nameColumn));
+		this.sortColumn = nameColumn;
 		
 		TableViewerColumn stepfunctionColumn = new TableViewerColumn(
 				this.tableViewer, SWT.NONE);
