@@ -26,7 +26,11 @@ public class LabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public Image getColumnImage(final Object axis, final int colIndex) {
-		if (colIndex == 1) {
+		if (colIndex == 0) {
+			return PlatformUI.getWorkbench().getSharedImages()
+					.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE)
+					.createImage();
+		} else if (colIndex == 2) {
 			for (IModelError error : ((Axis) axis).getModelErrors()) {
 				if (error instanceof AxisError) {
 					return PlatformUI.getWorkbench().getSharedImages()
@@ -43,9 +47,9 @@ public class LabelProvider implements ITableLabelProvider {
 	@Override
 	public String getColumnText(final Object axis, final int colIndex) {
 		switch (colIndex) {
-		case 0:
-			return ((Axis)axis).getAbstractDevice().getName();
 		case 1:
+			return ((Axis)axis).getAbstractDevice().getName();
+		case 2:
 			return ((Axis)axis).getStepfunctionString();
 		}
 		return null;

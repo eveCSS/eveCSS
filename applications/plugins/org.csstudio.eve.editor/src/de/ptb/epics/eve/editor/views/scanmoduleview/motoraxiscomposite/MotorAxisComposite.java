@@ -10,6 +10,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
+import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ActionComposite;
 
@@ -42,7 +43,7 @@ public class MotorAxisComposite extends ActionComposite {
 	 * 
 	 */
 	private void createViewer() {
-		this.tableViewer = new TableViewer(this, SWT.NONE);
+		this.tableViewer = new TableViewer(this, SWT.FULL_SELECTION);
 		GridData gridData = new GridData();
 		gridData.minimumHeight = 120;
 		gridData.horizontalAlignment = GridData.FILL;
@@ -74,6 +75,14 @@ public class MotorAxisComposite extends ActionComposite {
 	 * 
 	 */
 	private void createColumns() {
+		TableViewerColumn delColumn = new TableViewerColumn(
+				this.tableViewer, SWT.NONE);
+		delColumn.getColumn().setText("");
+		delColumn.getColumn().setWidth(22);
+		delColumn.setEditingSupport(new DelColumnEditingSupport(
+				this.tableViewer,
+				"de.ptb.epics.eve.editor.command.removeaxis"));
+		
 		TableViewerColumn nameColumn = new TableViewerColumn(
 				this.tableViewer, SWT.NONE);
 		nameColumn.getColumn().setText("Name");

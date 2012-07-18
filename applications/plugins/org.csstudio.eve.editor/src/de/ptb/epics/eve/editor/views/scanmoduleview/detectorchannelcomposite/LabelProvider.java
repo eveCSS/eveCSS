@@ -26,7 +26,11 @@ public class LabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public Image getColumnImage(final Object channel, final int colIndex) {
-		if (colIndex == 1) {
+		if (colIndex == 0) {
+			return PlatformUI.getWorkbench().getSharedImages()
+					.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE)
+					.createImage();
+		} else if (colIndex == 1) {
 			for (IModelError error : ((Channel) channel).getModelErrors()) {
 				if (error instanceof ChannelError) {
 					return PlatformUI.getWorkbench().getSharedImages()
@@ -43,9 +47,9 @@ public class LabelProvider implements ITableLabelProvider {
 	@Override
 	public String getColumnText(final Object channel, final int colIndex) {
 		switch (colIndex) {
-		case 0:
-			return ((Channel) channel).getAbstractDevice().getName();
 		case 1:
+			return ((Channel) channel).getAbstractDevice().getName();
+		case 2:
 			return Integer.toString(((Channel) channel).getAverageCount());
 		}
 		return null;

@@ -25,8 +25,10 @@ public class LabelProvider implements ITableLabelProvider {
 	@Override
 	public Image getColumnImage(Object controlEvent, int colIndex) {
 		switch (colIndex) {
-		// limit column...
-		case 2:
+		case 0: return PlatformUI.getWorkbench().getSharedImages()
+				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE)
+				.createImage();
+		case 3: // limit column
 			if (((ControlEvent) controlEvent).getModelErrors().size() > 0) {
 				// errors present -> return error image
 				return PlatformUI.getWorkbench().getSharedImages()
@@ -45,10 +47,10 @@ public class LabelProvider implements ITableLabelProvider {
 		String returnValue = null;
 		ControlEvent ce = (ControlEvent)controlEvent;
 		switch (colIndex) {
-		case 0: // Source column
+		case 1: // Source column
 			returnValue = ce.getEvent().getName();
 			break;
-		case 1: // Operator column
+		case 2: // Operator column
 			if (ce.getEvent().getType() == EventTypes.MONITOR) {
 				returnValue = ComparisonTypes
 						.typeToString(((ControlEvent) controlEvent).getLimit()
@@ -57,7 +59,7 @@ public class LabelProvider implements ITableLabelProvider {
 				returnValue = "---";
 			}
 			break;
-		case 2: // Limit column
+		case 3: // Limit column
 			if (ce.getEvent().getType() == EventTypes.MONITOR) {
 				returnValue = ((ControlEvent) controlEvent).getLimit()
 						.getValue();
@@ -65,7 +67,7 @@ public class LabelProvider implements ITableLabelProvider {
 				returnValue = "---";
 			}
 			break;
-		case 3: // Action column
+		case 4: // Action column
 			returnValue = ((PauseEvent)ce).getEventAction().toString();
 			break;
 		}

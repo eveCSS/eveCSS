@@ -10,6 +10,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
+import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ActionComposite;
 
@@ -26,7 +27,7 @@ public class PostscanComposite extends ActionComposite {
 	/**
 	 * Constructs a <code>PostscanComposite</code>.
 	 * 
-	 * @param parentView 
+	 * @param parentView  the parent view
 	 * @param parent the parent
 	 * @param style the style
 	 */
@@ -73,6 +74,14 @@ public class PostscanComposite extends ActionComposite {
 	 * 
 	 */
 	private void createColumns() {
+		TableViewerColumn delColumn = new TableViewerColumn(
+				this.tableViewer, SWT.CENTER);
+		delColumn.getColumn().setText("");
+		delColumn.getColumn().setWidth(22);
+		delColumn.setEditingSupport(new DelColumnEditingSupport(
+				this.tableViewer,
+				"de.ptb.epics.eve.editor.command.removepostscan"));
+		
 		TableViewerColumn deviceColumn = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT);
 		deviceColumn.getColumn().setText("Device");

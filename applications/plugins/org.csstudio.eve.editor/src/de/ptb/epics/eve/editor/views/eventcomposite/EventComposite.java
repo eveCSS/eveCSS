@@ -1,7 +1,5 @@
 package de.ptb.epics.eve.editor.views.eventcomposite;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
@@ -17,11 +15,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
-import de.ptb.epics.eve.data.measuringstation.Event;
-import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
-import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 import de.ptb.epics.eve.editor.views.scanview.ScanView;
 
@@ -38,8 +34,6 @@ public class EventComposite extends Composite {
 		Logger.getLogger(EventComposite.class.getName());
 
 	private IViewPart parentView;
-	
-	private String[] eventIDs;
 
 	private ControlEventTypes eventType;
 	private ControlEventManager controlEventManager;
@@ -106,6 +100,12 @@ public class EventComposite extends Composite {
 	 * 
 	 */
 	private void createColumns(TableViewer viewer) {
+		TableViewerColumn delColumn = new TableViewerColumn(viewer, SWT.CENTER);
+		delColumn.getColumn().setText("");
+		delColumn.getColumn().setWidth(22);
+		delColumn.setEditingSupport(new DelColumnEditingSupport(viewer,
+				"de.ptb.epics.eve.editor.command.removeevent"));
+		
 		// column 1: Source
 		TableViewerColumn sourceCol = new TableViewerColumn(viewer, SWT.LEFT);
 		sourceCol.getColumn().setText("Source");
@@ -169,8 +169,9 @@ public class EventComposite extends Composite {
 	}
 	
 	/**
+	 * Returns the table viewer.
 	 * 
-	 * @return
+	 * @return the table viewer
 	 */
 	public TableViewer getTableViewer() {
 		return this.tableViewer;

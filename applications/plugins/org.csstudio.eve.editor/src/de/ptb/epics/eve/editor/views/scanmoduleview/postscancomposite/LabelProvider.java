@@ -27,7 +27,11 @@ public class LabelProvider implements ITableLabelProvider {
 	@Override
 	public Image getColumnImage(final Object postscan, final int colIndex) {
 		final Postscan pos = (Postscan) postscan;
-		if (colIndex == 1) {
+		if (colIndex == 0) {
+			return PlatformUI.getWorkbench().getSharedImages()
+					.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE)
+					.createImage();
+		} else if (colIndex == 1) {
 			for (IModelError error : pos.getModelErrors()) {
 				if (error instanceof PostscanError) {
 					return PlatformUI.getWorkbench().getSharedImages()
@@ -45,11 +49,11 @@ public class LabelProvider implements ITableLabelProvider {
 	public String getColumnText(final Object postscan, final int colIndex) {
 		final Postscan pos = (Postscan) postscan;
 		switch (colIndex) {
-		case 0: // device column
+		case 1: // device column
 			if(pos.isDevice()) return pos.getAbstractDevice().getName();
 			return pos.getAbstractDevice().getParent().getName() + " "
 					+ (char) 187 + " " + pos.getAbstractDevice().getName();
-		case 1: // value column
+		case 2: // value column
 			if (pos.getAbstractPrePostscanDevice().getValue().getType()
 					.equals(DataTypes.ONOFF)) {
 				String[] werte = pos.getAbstractPrePostscanDevice().getValue()
@@ -78,7 +82,7 @@ public class LabelProvider implements ITableLabelProvider {
 					return "";
 			} else
 				return (pos.getValue() != null) ? pos.getValue() : "";
-		case 2:
+		case 3:
 			return Boolean.toString(pos.isReset());
 		}
 		return null;

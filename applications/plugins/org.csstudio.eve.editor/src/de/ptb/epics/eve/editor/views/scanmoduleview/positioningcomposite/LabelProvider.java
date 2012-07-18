@@ -32,7 +32,11 @@ public class LabelProvider implements ITableLabelProvider {
 	@Override
 	public Image getColumnImage(final Object positioning, final int colIndex) {
 		final Positioning pos = (Positioning)positioning;
-		if (colIndex == 1) { // Plugin column
+		if (colIndex == 0) {
+			return PlatformUI.getWorkbench().getSharedImages()
+					.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE)
+					.createImage();
+		} else if (colIndex == 2) { // Plugin column
 			for(IModelError error : pos.getModelErrors()) {
 				if (error instanceof PluginError) {
 					final PluginError pluginError = (PluginError)error;
@@ -42,7 +46,7 @@ public class LabelProvider implements ITableLabelProvider {
 					}
 				}
 			}
-		} else if (colIndex == 2) { // Detector Channel column
+		} else if (colIndex == 3) { // Detector Channel column
 			for(IModelError error : pos.getModelErrors()) {
 				if (error instanceof PositioningError) {
 					final PositioningError posError = (PositioningError)error;
@@ -52,7 +56,7 @@ public class LabelProvider implements ITableLabelProvider {
 					}
 				}
 			}
-		} else if (colIndex == 4) { // Parameters column
+		} else if (colIndex == 5) { // Parameters column
 			for(IModelError error : pos.getModelErrors()) {
 				if (error instanceof PluginError) {
 					final PluginError pluginError = (PluginError)error;
@@ -76,19 +80,19 @@ public class LabelProvider implements ITableLabelProvider {
 	public String getColumnText(final Object positioning, final int colIndex) {
 		final Positioning pos = (Positioning)positioning;
 		switch(colIndex) {
-			case 0: return (pos.getMotorAxis() != null)
+			case 1: return (pos.getMotorAxis() != null)
 					? pos.getMotorAxis().getName()
 					: null;
-			case 1: return (pos.getPluginController().getPlugin() != null)
+			case 2: return (pos.getPluginController().getPlugin() != null)
 					? pos.getPluginController().getPlugin().getName()
 					: null;
-			case 2: return (pos.getDetectorChannel() != null)
+			case 3: return (pos.getDetectorChannel() != null)
 					? pos.getDetectorChannel().getName()
 					: null;
-			case 3: return (pos.getNormalization() != null)
+			case 4: return (pos.getNormalization() != null)
 					? pos.getNormalization().getName()
 					: null;
-			case 4: return (pos.getPluginController().getPlugin() != null)
+			case 5: return (pos.getPluginController().getPlugin() != null)
 					? pos.getPluginController().toString()
 					: "Choose a plugin to see options";
 		}

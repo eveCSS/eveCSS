@@ -27,7 +27,11 @@ public class LabelProvider implements ITableLabelProvider {
 	 */
 	@Override
 	public Image getColumnImage(final Object prescan, final int colIndex) {
-		if (colIndex == 1) {
+		if (colIndex == 0) {
+			return PlatformUI.getWorkbench().getSharedImages()
+					.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE)
+					.createImage();
+		} else if (colIndex == 1) {
 			for (IModelError error : ((Prescan) prescan).getModelErrors()) {
 				if (error instanceof PrescanError) {
 					return PlatformUI.getWorkbench().getSharedImages()
@@ -47,12 +51,12 @@ public class LabelProvider implements ITableLabelProvider {
 		final Prescan pos = (Prescan) prescan;
 
 		switch (colIndex) {
-		case 0:
+		case 1:
 			if(pos.isDevice()) return pos.getAbstractDevice().getName();
 			return pos.getAbstractDevice().getParent().getName() + " "
 					+ (char) 187 + " "
 					+ ((Prescan) prescan).getAbstractDevice().getName();
-		case 1:
+		case 2:
 			if (pos.getAbstractPrePostscanDevice().getValue().getType()
 					.equals(DataTypes.ONOFF)) {
 				// ONOFF -> als Value wird On oder Off gesetzt
@@ -89,13 +93,6 @@ public class LabelProvider implements ITableLabelProvider {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addListener(final ILabelProviderListener arg0) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public void dispose() {
 	}
 
@@ -105,6 +102,13 @@ public class LabelProvider implements ITableLabelProvider {
 	@Override
 	public boolean isLabelProperty(final Object arg0, String arg1) {
 		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void addListener(final ILabelProviderListener arg0) {
 	}
 
 	/**
