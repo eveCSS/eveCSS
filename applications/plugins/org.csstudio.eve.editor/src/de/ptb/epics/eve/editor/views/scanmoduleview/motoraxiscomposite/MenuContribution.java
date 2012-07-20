@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
@@ -72,8 +73,9 @@ public class MenuContribution extends CompoundContributionItem {
 		}
 
 		// create filter, that excludes devices used already in scan module
-		ExcludeDevicesOfScanModuleFilterManualUpdate measuringStation = new ExcludeDevicesOfScanModuleFilterManualUpdate(
-				true, false, false, false, false);
+		ExcludeDevicesOfScanModuleFilterManualUpdate measuringStation = 
+				new ExcludeDevicesOfScanModuleFilterManualUpdate(
+						true, false, false, false, false);
 		measuringStation.setSource(sm.getChain().getScanDescription()
 				.getMeasuringStation());
 		measuringStation.setScanModule(sm);
@@ -81,6 +83,10 @@ public class MenuContribution extends CompoundContributionItem {
 
 		// create menu from all remaining devices:
 
+		// create a string buffer (for the insert all menu entry
+		StringBuilder classDeviceList = new StringBuilder();
+		StringBuilder motorDeviceList = new StringBuilder();
+		
 		// iterate over all classes
 		List<String> classNames = new ArrayList<String>();
 		classNames.addAll(measuringStation.getClassNameList());
@@ -90,11 +96,18 @@ public class MenuContribution extends CompoundContributionItem {
 			// each class gets a sub menu entry ...
 			final MenuManager currentClassMenu = new MenuManager(className,
 					classImage, className);
+			
+			// (re-)init insert all list (class level)
+			classDeviceList = new StringBuilder();
+			
 			for (final AbstractDevice device : measuringStation
 					.getDeviceList(className)) {
-
+				
 				// each motor of that class gets a sub menu (of that class)
 				if (device instanceof Motor) {
+					// (re-)init insert all list (motor level)
+					motorDeviceList = new StringBuilder();
+					
 					final Motor motor = (Motor) device;
 					final MenuManager currentMotorMenu = new MenuManager(
 							motor.getName(), motorImage, motor.getName());
@@ -104,23 +117,14 @@ public class MenuContribution extends CompoundContributionItem {
 					for (final MotorAxis axis : motor.getAxes()) {
 						if (axis.getClassName().isEmpty()) {
 							// add only axis which have no className
-							Map<String, String> params = new HashMap<String, String>();
-							params.put(
-									"de.ptb.epics.eve.editor.command.addaxis.motoraxisid",
-									axis.getID());
-							CommandContributionItemParameter p = new CommandContributionItemParameter(
-									PlatformUI.getWorkbench()
-											.getActiveWorkbenchWindow(), "",
+							currentMotorMenu.add(this.getItem(
 									"de.ptb.epics.eve.editor.command.addaxis",
-									SWT.PUSH);
-							p.label = axis.getName();
-							p.icon = axisImage;
-							p.parameters = params;
-
-							CommandContributionItem item = new CommandContributionItem(
-									p);
-							item.setVisible(true);
-							currentMotorMenu.add(item);
+									"de.ptb.epics.eve.editor.command.addaxis.motoraxisid", 
+									axis.getID(),
+									axis.getName(), 
+									axisImage));
+							// add the id to device list (insert all menu entry)
+							motorDeviceList.append(axis.getID() + "!");
 						}
 					}
 					// if only one axis in MotorMenu, switch axis from
@@ -128,27 +132,41 @@ public class MenuContribution extends CompoundContributionItem {
 					if (currentMotorMenu.getSize() == 1) {
 						currentClassMenu.add(currentMotorMenu.getItems()[0]);
 						currentMotorMenu.removeAll();
+						currentClassMenu.remove(currentMotorMenu);
+						// adjust insert all lists
+						classDeviceList.append(motorDeviceList.toString());
+					} else if (currentMotorMenu.getSize() > 1) {
+						// insert all menu entry
+						currentMotorMenu.add(new Separator());
+						currentMotorMenu.add(this.getItem(
+							"de.ptb.epics.eve.editor.command.addabstractdevices",
+							"de.ptb.epics.eve.editor.command.addabstractdevices.devicelist",
+							motorDeviceList.toString(), "Add All", null));
 					}
 				} else if (device instanceof MotorAxis) {
 					MotorAxis axis = (MotorAxis) device;
-					Map<String, String> params = new HashMap<String, String>();
-					params.put(
-							"de.ptb.epics.eve.editor.command.addaxis.motoraxisid",
-							axis.getID());
-					CommandContributionItemParameter p = new CommandContributionItemParameter(
-							PlatformUI.getWorkbench()
-									.getActiveWorkbenchWindow(), "",
-							"de.ptb.epics.eve.editor.command.addaxis", SWT.PUSH);
-					p.label = axis.getName();
-					p.icon = axisImage;
-					p.parameters = params;
-
-					CommandContributionItem item = new CommandContributionItem(
-							p);
-					item.setVisible(true);
-					currentClassMenu.add(item);
+					currentClassMenu.add(this.getItem(
+							"de.ptb.epics.eve.editor.command.addaxis",
+							"de.ptb.epics.eve.editor.command.addaxis.motoraxisid", 
+							axis.getID(),
+							axis.getName(), 
+							axisImage));
+					
+					classDeviceList.append(axis.getID() + "!");
 				}
 			}
+			
+			if(currentClassMenu.getSize() > 1) {
+				// insert all menu entry
+				currentClassMenu.add(new Separator());
+				currentClassMenu.add(this.getItem(
+						"de.ptb.epics.eve.editor.command.addabstractdevices", 
+						"de.ptb.epics.eve.editor.command.addabstractdevices.devicelist",
+						classDeviceList.toString(), 
+						"Add All", 
+						null));
+			}
+			
 			result.add(currentClassMenu);
 		}
 
@@ -163,23 +181,12 @@ public class MenuContribution extends CompoundContributionItem {
 				for (final MotorAxis axis : motor.getAxes()) {
 					if (axis.getClassName().isEmpty()
 							|| axis.getClassName() == null) {
-						Map<String, String> params = new HashMap<String, String>();
-						params.put(
-								"de.ptb.epics.eve.editor.command.addaxis.motoraxisid",
-								axis.getID());
-						CommandContributionItemParameter p = new CommandContributionItemParameter(
-								PlatformUI.getWorkbench()
-										.getActiveWorkbenchWindow(), "",
-								"de.ptb.epics.eve.editor.command.addaxis",
-								SWT.PUSH);
-						p.label = axis.getName();
-						p.icon = axisImage;
-						p.parameters = params;
-
-						CommandContributionItem item = new CommandContributionItem(
-								p);
-						item.setVisible(true);
-						currentMotorMenu.add(item);
+						currentMotorMenu.add(this.getItem(
+								"de.ptb.epics.eve.editor.command.addaxis", 
+								"de.ptb.epics.eve.editor.command.addaxis.motoraxisid", 
+								axis.getID(),
+								axis.getName(),
+								axisImage));
 					}
 				}
 				// if only one axis in MotorMenu, switch axis from
@@ -201,5 +208,28 @@ public class MenuContribution extends CompoundContributionItem {
 	@Override
 	public boolean isDynamic() {
 		return true;
+	}
+	
+	/*
+	 * 
+	 */
+	private CommandContributionItem getItem(String commandId, String paramId,
+			String paramValue, String label, ImageDescriptor icon) {
+		
+		Map<String, String> params = new HashMap<String, String>();
+		params.put(paramId, paramValue);
+		CommandContributionItemParameter p = new CommandContributionItemParameter(
+				PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow(), "",
+				commandId,
+				SWT.PUSH);
+		p.label = label;
+		p.icon = icon;
+		p.parameters = params;
+
+		CommandContributionItem item = new CommandContributionItem(
+				p);
+		item.setVisible(true);
+		return item;
 	}
 }

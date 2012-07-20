@@ -740,6 +740,16 @@
             id="de.ptb.epics.eve.editor.command.removeallplotwindows"
             name="Remove All Plot Windows">
       </command>
+      <command
+            defaultHandler="de.ptb.epics.eve.editor.handler.AddAbstractDevices"
+            id="de.ptb.epics.eve.editor.command.addabstractdevices"
+            name="Add Abstract Devices">
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.addabstractdevices.devicelist"
+               name="Device List"
+               optional="false">
+         </commandParameter>
+      </command>
    </extension>
    <extension
          point="org.eclipse.help.toc">
