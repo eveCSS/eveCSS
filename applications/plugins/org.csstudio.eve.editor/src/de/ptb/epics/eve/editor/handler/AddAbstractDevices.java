@@ -73,7 +73,7 @@ public class AddAbstractDevices implements IHandler {
 					logger.debug("ma:" + device.getName());
 				} else if (device instanceof DetectorChannel) {
 					// TODO
-					logger.debug("dc");
+					logger.debug("dc: " + device.getName());
 				}
 			}
 		}

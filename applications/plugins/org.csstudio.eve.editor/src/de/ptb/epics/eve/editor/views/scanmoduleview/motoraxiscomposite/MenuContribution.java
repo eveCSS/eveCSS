@@ -127,6 +127,11 @@ public class MenuContribution extends CompoundContributionItem {
 							motorDeviceList.append(axis.getID() + "!");
 						}
 					}
+					// if motor has no axes the (invisible) menu entry has to 
+					// be removed
+					if (motor.getAxes().size() == 0) {
+						currentClassMenu.remove(currentMotorMenu);
+					}
 					// if only one axis in MotorMenu, switch axis from
 					// MotorMenu into ClassMenu
 					if (currentMotorMenu.getSize() == 1) {
@@ -170,14 +175,20 @@ public class MenuContribution extends CompoundContributionItem {
 			result.add(currentClassMenu);
 		}
 
+		// motors and axes WITHOUT class
 		final MenuManager motorsAndAxesMenu = new MenuManager("Motors && Axes",
 				motorsAxesImage, "motorsAndAxes");
 
+		StringBuilder noClassMotorDeviceList = new StringBuilder();
+		StringBuilder noClassAxesDeviceList = new StringBuilder();
+		
 		// all motors and axes without a class
 		for (final Motor motor : measuringStation.getMotors()) {
+			noClassMotorDeviceList = new StringBuilder();
 			if (motor.getClassName().isEmpty() || motor.getClassName() == null) {
 				final MenuManager currentMotorMenu = new MenuManager(
 						motor.getName(), motorImage, motor.getName());
+				motorsAndAxesMenu.add(currentMotorMenu);
 				for (final MotorAxis axis : motor.getAxes()) {
 					if (axis.getClassName().isEmpty()
 							|| axis.getClassName() == null) {
@@ -187,17 +198,43 @@ public class MenuContribution extends CompoundContributionItem {
 								axis.getID(),
 								axis.getName(),
 								axisImage));
+						// add the id to device list (insert all menu entry)
+						noClassMotorDeviceList.append(axis.getID() + "!");
 					}
+				}
+				// if a motor has no axes the (invisible) entry has to be 
+				// removed
+				if (motor.getAxes().size() == 0) {
+					motorsAndAxesMenu.remove(currentMotorMenu);
 				}
 				// if only one axis in MotorMenu, switch axis from
 				// MotorMenu into ClassMenu
 				if (currentMotorMenu.getSize() == 1) {
 					motorsAndAxesMenu.add(currentMotorMenu.getItems()[0]);
 					currentMotorMenu.removeAll();
+					motorsAndAxesMenu.remove(currentMotorMenu);
+					// adjust insert all list
+					noClassAxesDeviceList.append(noClassMotorDeviceList
+							.toString());
+				} else if (currentMotorMenu.getSize() > 1) {
+					// insert all menu entry
+					currentMotorMenu.add(new Separator());
+					currentMotorMenu.add(this.getItem(
+							"de.ptb.epics.eve.editor.command.addabstractdevices",
+							"de.ptb.epics.eve.editor.command.addabstractdevices.devicelist",
+							noClassMotorDeviceList.toString(), "Add All", null));
 				}
-				motorsAndAxesMenu.add(currentMotorMenu);
 			}
 		}
+		
+		if (motorsAndAxesMenu.getSize() > 1) {
+			motorsAndAxesMenu.add(new Separator());
+			motorsAndAxesMenu.add(this.getItem(
+					"de.ptb.epics.eve.editor.command.addabstractdevices",
+					"de.ptb.epics.eve.editor.command.addabstractdevices.devicelist",
+					noClassAxesDeviceList.toString(), "Add All", null));
+		}
+		
 		result.add(motorsAndAxesMenu);
 		return result.toArray(new IContributionItem[0]);
 	}
