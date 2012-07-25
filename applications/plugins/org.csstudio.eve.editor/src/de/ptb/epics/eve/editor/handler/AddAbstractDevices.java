@@ -70,10 +70,25 @@ public class AddAbstractDevices implements IHandler {
 					} catch (NotHandledException e) {
 						logger.error(e.getMessage(), e);
 					}
-					logger.debug("ma:" + device.getName());
 				} else if (device instanceof DetectorChannel) {
-					// TODO
-					logger.debug("dc: " + device.getName());
+					Map<String, String> parameters= new HashMap<String, String>();
+					parameters.put(
+						"de.ptb.epics.eve.editor.command.addchannel.detectorchannelid",
+								device.getID());
+					Command command = commandService.getCommand(
+						"de.ptb.epics.eve.editor.command.addchannel");
+					try {
+						ExecutionEvent executionEvent = new ExecutionEvent(
+								command, parameters, event.getTrigger(),
+								event.getApplicationContext());
+						command.executeWithChecks(executionEvent);
+					} catch (NotDefinedException e) {
+						logger.error(e.getMessage(), e);
+					} catch (NotEnabledException e) {
+						logger.error(e.getMessage(), e);
+					} catch (NotHandledException e) {
+						logger.error(e.getMessage(), e);
+					}
 				}
 			}
 		}

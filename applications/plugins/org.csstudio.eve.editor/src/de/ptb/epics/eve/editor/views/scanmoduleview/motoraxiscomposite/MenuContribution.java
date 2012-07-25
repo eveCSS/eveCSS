@@ -53,6 +53,22 @@ public class MenuContribution extends CompoundContributionItem {
 
 	/**
 	 * {@inheritDoc}
+	 * <p>
+	 * The List is created as follows:
+	 * <ul>
+	 *  <li>root entry for each class name</li>
+	 *  <li>"Motors & Axes" root entry for motors and axes without class 
+	 *  	names</li>
+	 * </ul>
+	 * Class root entries contain axis of the same class as well as sub menus 
+	 * of motors with the same class name.<br>
+	 * The "Motors & Axes" root menu contains axis without class names as well 
+	 * as sub menus of motors without a class name.<br>
+	 * In both cases motor sub menus list axes without class names.<br>
+	 * If a motor has only one axis the axis is moved to the level of the motor 
+	 * and the motor becomes invisible.<br>
+	 * Additionally if there exists more than one (non-menu) entry on a level 
+	 * a separator and an "Add All" entry is added.
 	 */
 	@Override
 	protected IContributionItem[] getContributionItems() {
@@ -161,7 +177,15 @@ public class MenuContribution extends CompoundContributionItem {
 				}
 			}
 			
-			if(currentClassMenu.getSize() > 1) {
+			// count number of axis elements in current class
+			int count = 0;
+			for (IContributionItem item : currentClassMenu.getItems()) {
+				if (item instanceof CommandContributionItem) {
+					count++;
+				}
+			}
+			// only add "Add All" Button if more than one axis is present
+			if(count > 1) {
 				// insert all menu entry
 				currentClassMenu.add(new Separator());
 				currentClassMenu.add(this.getItem(
@@ -204,7 +228,13 @@ public class MenuContribution extends CompoundContributionItem {
 				}
 				// if a motor has no axes the (invisible) entry has to be 
 				// removed
-				if (motor.getAxes().size() == 0) {
+				boolean isEmpty = true;
+				for (MotorAxis ma : motor.getAxes()) {
+					if (ma.getClassName() == null || ma.getClassName().isEmpty()) {
+						isEmpty = false;
+					}
+				}
+				if (isEmpty) {
 					motorsAndAxesMenu.remove(currentMotorMenu);
 				}
 				// if only one axis in MotorMenu, switch axis from
@@ -227,7 +257,15 @@ public class MenuContribution extends CompoundContributionItem {
 			}
 		}
 		
-		if (motorsAndAxesMenu.getSize() > 1) {
+		// count number of axis elements in Motors & Axes Menu
+		int count = 0;
+		for (IContributionItem item : motorsAndAxesMenu.getItems()) {
+			if (item instanceof CommandContributionItem) {
+				count++;
+			}
+		}
+		// only add "Add All" button if more than one axis is present
+		if (count > 1) {
 			motorsAndAxesMenu.add(new Separator());
 			motorsAndAxesMenu.add(this.getItem(
 					"de.ptb.epics.eve.editor.command.addabstractdevices",
@@ -256,16 +294,14 @@ public class MenuContribution extends CompoundContributionItem {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put(paramId, paramValue);
 		CommandContributionItemParameter p = new CommandContributionItemParameter(
-				PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow(), "",
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow(), "",
 				commandId,
 				SWT.PUSH);
 		p.label = label;
 		p.icon = icon;
 		p.parameters = params;
 
-		CommandContributionItem item = new CommandContributionItem(
-				p);
+		CommandContributionItem item = new CommandContributionItem(p);
 		item.setVisible(true);
 		return item;
 	}
