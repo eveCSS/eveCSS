@@ -114,18 +114,15 @@ public class MathTableElement implements IMeasurementDataListener {
 				}
 				if (data.isNaN()) {
 					return " ";
-				} else {
-					Formatter formatter = new Formatter(
-							new Locale(Locale.ENGLISH.getCountry()));
-					return formatter.format("%12.4g", data).out().
-							toString().trim();
-				}
-		} else {
-			if (element == 0) {
-				rawPosition = mData.getValues().get(element).toString();
 			}
-			return mData.getValues().get(element).toString();
+			Formatter formatter = new Formatter(new Locale(
+					Locale.ENGLISH.getCountry()));
+			return formatter.format("%14.7g", data).out().toString().trim();
 		}
+		if (element == 0) {
+			rawPosition = mData.getValues().get(element).toString();
+		}
+		return mData.getValues().get(element).toString();
 	}
 	
 	/*
@@ -213,8 +210,7 @@ public class MathTableElement implements IMeasurementDataListener {
 	public String getPosition() {
 		if ((mathFunction == MathFunction.UNMODIFIED) || drawIcon()) {
 			return position;
-		} else {
-			return null;
 		}
+		return null;
 	}
 }

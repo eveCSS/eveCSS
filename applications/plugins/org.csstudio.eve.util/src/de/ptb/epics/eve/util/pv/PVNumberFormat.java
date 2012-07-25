@@ -20,6 +20,11 @@ public class PVNumberFormat extends DecimalFormat {
 
 	private DecimalFormat decimalFormat;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param pattern a non-localized pattern string
+	 */
 	public PVNumberFormat(String pattern) {
 		Locale locale = new Locale("en");
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols(locale);
