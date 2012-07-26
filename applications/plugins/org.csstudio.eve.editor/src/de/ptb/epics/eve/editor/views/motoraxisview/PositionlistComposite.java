@@ -2,7 +2,6 @@ package de.ptb.epics.eve.editor.views.motoraxisview;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -17,7 +16,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
@@ -133,8 +131,7 @@ public class PositionlistComposite extends Composite implements
 		removeListeners();
 		
 		if (this.axis != null) {
-			this.axis.getMotorAxis().removePropertyChangeListener(
-					"discreteValues", this);
+			this.axis.removePropertyChangeListener("positionList", this);
 		}
 		
 		this.axis = axis;
@@ -144,10 +141,8 @@ public class PositionlistComposite extends Composite implements
 			if(this.axis.getPositionlist() != null) { 
 				this.positionlistText.setText(axis.getPositionlist());
 				countPositions();
+				this.axis.addPropertyChangeListener("positionList", this);
 			}
-			// try to get values from the device itself
-			this.axis.getMotorAxis().addPropertyChangeListener(
-					"discreteValues", this);
 			checkForErrors();
 		} else {
 			this.positionlistText.setText("");
@@ -156,7 +151,20 @@ public class PositionlistComposite extends Composite implements
 		addListeners();
 	}
 
-	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		removeListeners();
+		if (e.getPropertyName().equals("positionList")) {
+			this.positionlistText.setText((String)e.getNewValue());
+			this.countPositions();
+			logger.debug("position list");
+		}
+		addListeners();
+	}
+
 	/*
 	 * 
 	 */
@@ -210,40 +218,6 @@ public class PositionlistComposite extends Composite implements
 	 */
 	private void removeListeners() {
 		positionlistText.removeModifyListener(positionlistTextModifyListener);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public void propertyChange(PropertyChangeEvent e) {
-		if (e.getPropertyName().equals("discreteValues")) {
-			String values = "";
-			if (this.axis.getMotorAxis().getGoto().getType()
-					.equals(DataTypes.STRING)) {
-				for (String s : (List<String>) e.getNewValue()) {
-					values += s + ", ";
-				}
-			} else if (this.axis.getMotorAxis().getGoto().getType()
-					.equals(DataTypes.INT)) {
-				for (int i = 1; i <= ((List<String>) e.getNewValue()).size(); i++) {
-					values += i + ", ";
-				}
-			}
-			if (!values.isEmpty()) {
-				String result = values.substring(0, values.length() - 2);
-				if (!this.positionlistText.getText().equals(result)) {
-					this.positionlistText.setText(values.substring(0,
-							values.length() - 2));
-				}
-				if (logger.isDebugEnabled()) {
-					logger.debug("got enum: "
-							+ values.substring(0, values.length() - 2));
-				}
-			}
-		}
-		this.axis.removePropertyChangeListener("discreteValues", this);
 	}
 	
 	/* ********************************************************************* */

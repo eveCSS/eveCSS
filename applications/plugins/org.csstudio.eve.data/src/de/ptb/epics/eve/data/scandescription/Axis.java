@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.data.scandescription;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -24,7 +25,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author Marcus Michalsky
  * @author Hartmut Scherr
  */
-public class Axis extends AbstractMainPhaseBehavior {
+public class Axis extends AbstractMainPhaseBehavior implements
+		PropertyChangeListener {
 
 	// logging
 	private static Logger logger = Logger.getLogger(Axis.class.getName());
@@ -106,6 +108,9 @@ public class Axis extends AbstractMainPhaseBehavior {
 				sb.append(s + ",");
 			}
 			this.setPositionlist(sb.substring(0, sb.length() - 1));
+			
+			axis.connect();
+			axis.addPropertyChangeListener("discreteValues", this);
 		}
 	}
 
@@ -306,7 +311,8 @@ public class Axis extends AbstractMainPhaseBehavior {
 	 * @param positionlist the position list that should be set
 	 */
 	public void setPositionlist(final String positionlist) {
-		this.positionlist = positionlist;
+		this.propertyChangeSupport.firePropertyChange("positionList",
+				this.positionlist, this.positionlist = positionlist);
 		updateListeners();
 	}
 
@@ -541,6 +547,40 @@ public class Axis extends AbstractMainPhaseBehavior {
 		}
 		if (logger.isDebugEnabled()) {
 			logger.debug("Stepwidth: " + oldStepwidth + " -> " + this.stepwidth);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals("discreteValues")) {
+			String values = "";
+			if (this.getMotorAxis().getGoto().getType().equals(DataTypes.STRING)) {
+				for (String s : (List<String>) e.getNewValue()) {
+					values += s + ",";
+				}
+			} else if (this.getMotorAxis().getGoto().getType()
+					.equals(DataTypes.INT)) {
+				for (int i = 1; i <= ((List<String>) e.getNewValue()).size(); i++) {
+					values += i + ",";
+				}
+			}
+			if (!values.isEmpty()) {
+				String result = values.substring(0, values.length() - 1);
+				if (!this.positionlist.equals(result)) {
+					this.setPositionlist(values.substring(0, values.length() -1));
+				}
+				if (logger.isDebugEnabled()) {
+					logger.debug("got enum values: "
+							+ values.substring(0, values.length() - 1));
+				}
+			}
+			this.getMotorAxis().removePropertyChangeListener("discreteValues",
+					this);
+			this.getMotorAxis().disconnect();
 		}
 	}
 

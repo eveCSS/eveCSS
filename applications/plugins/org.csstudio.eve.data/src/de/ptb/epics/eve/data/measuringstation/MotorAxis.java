@@ -2,6 +2,8 @@ package de.ptb.epics.eve.data.measuringstation;
 
 import java.beans.PropertyChangeListener;
 
+import org.apache.log4j.Logger;
+
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedException;
 
@@ -14,6 +16,8 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  */
 public class MotorAxis extends AbstractMainPhaseDevice {
 
+	private static Logger logger = Logger.getLogger(MotorAxis.class.getName());
+	
 	// the position (read back value)
 	private Function position;
 
@@ -46,6 +50,7 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 
 	// channel access work is delegated
 	private MotorAxisChannelAccess channelAccess;
+	private int connections;
 	
 	/**
 	 * Constructor.
@@ -92,6 +97,7 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 		this.goTo = gotoAdvisor;
 		this.stop = stop;
 		this.channelAccess = new MotorAxisChannelAccess(this);
+		this.connections = 0;
 	}
 
 	/**
@@ -457,13 +463,20 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 	 */
 	public void connect() {
 		this.channelAccess.connect();
+		connections++;
+		logger.debug("connected (" + connections + " connections)");
 	}
 	
 	/**
 	 * Disconnects the motor axis from channel access
 	 */
 	public void disconnect() {
+		if(--connections != 0) {
+			logger.debug("no disconnect (" + connections + " still open)");
+			return;
+		}
 		this.channelAccess.disconnect();
+		logger.debug("disconnected");
 	}
 	
 	/**
