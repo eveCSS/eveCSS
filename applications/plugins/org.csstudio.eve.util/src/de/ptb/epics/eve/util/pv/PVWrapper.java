@@ -372,10 +372,22 @@ public class PVWrapper {
 							+ ")");
 			}
 			
-			if(newVal instanceof VEnum && !isEnumInitialized) {
+			if(newVal instanceof VEnum) { // && !isEnumInitialized) {
 				isDiscrete = true;
 				isEnumInitialized = true;
 				discreteValues = ((VEnum)newVal).getLabels();
+				if (logger.isDebugEnabled()) {
+					StringBuilder sb = new StringBuilder();
+					for (String s : discreteValues) {
+						sb.append(s + ",");
+					}
+					logger.debug("got enums: "
+							+ sb.toString().substring(0,
+									sb.toString().length() - 2)
+							+ " at "
+							+ ValueUtil.timeOf(newVal).getTimeStamp().asDate()
+									.toString());
+				}
 			}
 			if(newVal instanceof VEnum) {
 				propertyChangeSupport.firePropertyChange("discreteValues",

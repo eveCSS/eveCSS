@@ -576,6 +576,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 				if (logger.isDebugEnabled()) {
 					logger.debug("got enum values: "
 							+ values.substring(0, values.length() - 1));
+					logger.debug(this.getMotorAxis().getChannelAccess().getDiscretePositions().toString());
 				}
 			}
 			this.getMotorAxis().removePropertyChangeListener("discreteValues",
