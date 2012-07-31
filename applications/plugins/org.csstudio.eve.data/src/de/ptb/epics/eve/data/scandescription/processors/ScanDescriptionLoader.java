@@ -27,12 +27,12 @@ public class ScanDescriptionLoader {
 
 	// the file to load.
 	private File fileToLoad;
-	
+
 	/**
 	 * The measuring station that contains the devices in the scan description.
 	 */
 	private final IMeasuringStation measuringStation;
-	
+
 	/**
 	 * The loaded scan description.
 	 */
@@ -41,96 +41,116 @@ public class ScanDescriptionLoader {
 	/**
 	 * A List of PVs that was not found in the messplatz.xml File.
 	 */
-	private List<String> lostDevicesList;
+	private List<ScanDescriptionLoaderLostDeviceMessage> lostDevicesList;
 
 	/**
 	 * The schema file that is used to load the measuring station description.
 	 */
 	private final File schemaFile;
-	
+
 	/**
 	 * Constructs a <code>ScanDescriptionLoader</code>.
 	 * 
-	 * @param measuringStation 
+	 * @param measuringStation
 	 * @param schemaFile
-	 * @throws IllegalArgumentException 
+	 * @throws IllegalArgumentException
 	 */
-	public ScanDescriptionLoader( final IMeasuringStation measuringStation, final File schemaFile ) {
-		if( schemaFile == null ) {
-			throw new IllegalArgumentException( "The parameter 'schemaFile' must not be null!" );
+	public ScanDescriptionLoader(final IMeasuringStation measuringStation,
+			final File schemaFile) {
+		if (schemaFile == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'schemaFile' must not be null!");
 		}
-		if( measuringStation == null ) {
-			throw new IllegalArgumentException( "The parameter 'measuringStation' must not be null!" );
+		if (measuringStation == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'measuringStation' must not be null!");
 		}
 		this.measuringStation = measuringStation;
 		this.schemaFile = schemaFile;
 	}
-	
+
 	/**
 	 * This method loads the a scan description out of a given file.
 	 * 
-	 * @param fileToLoad The file to load.
-	 * @throws ParserConfigurationException Gets thrown if the parser has been configured in a wrong way.
-	 * @throws SAXException Thrown by the SAX Parser.
-	 * @throws IOException Thrown is IO Operations to the file didn't work.
+	 * @param fileToLoad
+	 *            The file to load.
+	 * @throws ParserConfigurationException
+	 *             Gets thrown if the parser has been configured in a wrong way.
+	 * @throws SAXException
+	 *             Thrown by the SAX Parser.
+	 * @throws IOException
+	 *             Thrown is IO Operations to the file didn't work.
 	 */
-	public void load( final File fileToLoad ) throws ParserConfigurationException, SAXException, IOException {
+	public void load(final File fileToLoad)
+			throws ParserConfigurationException, SAXException, IOException {
 		this.fileToLoad = fileToLoad;
 		this.load();
 	}
-	
+
 	/**
 	 * This method loads a scan description from a byte array stream.
 	 * 
-	 * @param xmlData The byte array stream that contains the scan description.
-	 * @throws ParserConfigurationException Gets thrown if the parser has been configured in a wrong way.
-	 * @throws SAXException Thrown by the SAX Parser.
-	 * @throws IOException Thrown is IO Operations to the file didn't work.
+	 * @param xmlData
+	 *            The byte array stream that contains the scan description.
+	 * @throws ParserConfigurationException
+	 *             Gets thrown if the parser has been configured in a wrong way.
+	 * @throws SAXException
+	 *             Thrown by the SAX Parser.
+	 * @throws IOException
+	 *             Thrown is IO Operations to the file didn't work.
 	 */
-	public void loadFromByteArray( final byte[] xmlData ) throws ParserConfigurationException, SAXException, IOException {
-		
-		final SchemaFactory sFactory = SchemaFactory.newInstance( XMLConstants.W3C_XML_SCHEMA_NS_URI  );
-		File schemaFile = new File( measuringStation.getSchemaFileName());
-		final Schema schema = sFactory.newSchema( schemaFile );
-		
+	public void loadFromByteArray(final byte[] xmlData)
+			throws ParserConfigurationException, SAXException, IOException {
+
+		final SchemaFactory sFactory = SchemaFactory
+				.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		File schemaFile = new File(measuringStation.getSchemaFileName());
+		final Schema schema = sFactory.newSchema(schemaFile);
+
 		final SAXParserFactory factory = SAXParserFactory.newInstance();
-		factory.setSchema( schema );
-		factory.setValidating( true );
+		factory.setSchema(schema);
+		factory.setValidating(true);
 		final SAXParser saxParser = factory.newSAXParser();
-		
-		final ScanDescriptionLoaderHandler handler = new ScanDescriptionLoaderHandler( this.measuringStation ); 
-		saxParser.parse( new ByteArrayInputStream( xmlData ), handler );
-		
+
+		final ScanDescriptionLoaderHandler handler = new ScanDescriptionLoaderHandler(
+				this.measuringStation);
+		saxParser.parse(new ByteArrayInputStream(xmlData), handler);
+
 		this.scanDescription = handler.getScanDescription();
-		
+
 	}
 
-	
 	/**
 	 * This method loads the scan description out of the current file.
 	 * 
-	 * @throws ParserConfigurationException Gets thrown if the parser has been configured in a wrong way.
-	 * @throws SAXException Thrown by the SAX Parser.
-	 * @throws IOException Thrown is IO Operations to the file didn't work.
+	 * @throws ParserConfigurationException
+	 *             Gets thrown if the parser has been configured in a wrong way.
+	 * @throws SAXException
+	 *             Thrown by the SAX Parser.
+	 * @throws IOException
+	 *             Thrown is IO Operations to the file didn't work.
 	 */
-	public void load() throws ParserConfigurationException, SAXException, IOException {
-		
+	public void load() throws ParserConfigurationException, SAXException,
+			IOException {
+
 		this.scanDescription = null;
-		
-		final SchemaFactory sFactory = SchemaFactory.newInstance( XMLConstants.W3C_XML_SCHEMA_NS_URI  );
-		final Schema schema = sFactory.newSchema( schemaFile );
-		
+
+		final SchemaFactory sFactory = SchemaFactory
+				.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		final Schema schema = sFactory.newSchema(schemaFile);
+
 		final SAXParserFactory factory = SAXParserFactory.newInstance();
-		factory.setSchema( schema );
-		factory.setValidating( true );
+		factory.setSchema(schema);
+		factory.setValidating(true);
 		final SAXParser saxParser = factory.newSAXParser();
-		
-		final ScanDescriptionLoaderHandler handler = new ScanDescriptionLoaderHandler( this.measuringStation ); 
-		saxParser.parse( this.fileToLoad, handler );
-		
+
+		final ScanDescriptionLoaderHandler handler = new ScanDescriptionLoaderHandler(
+				this.measuringStation);
+		saxParser.parse(this.fileToLoad, handler);
+
 		this.scanDescription = handler.getScanDescription();
 		this.lostDevicesList = handler.getLostDevices();
-		
+
 	}
 
 	/**
@@ -144,9 +164,10 @@ public class ScanDescriptionLoader {
 
 	/**
 	 * This method sets the currently used source file.
+	 * 
 	 * @param fileToLoad
 	 */
-	public void setFileToLoad( final File fileToLoad ) {
+	public void setFileToLoad(final File fileToLoad) {
 		this.fileToLoad = fileToLoad;
 	}
 
@@ -167,17 +188,15 @@ public class ScanDescriptionLoader {
 	public ScanDescription getScanDescription() {
 		return scanDescription;
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
-	public List<String> getLostDevices() {
-
-		if ( (this.lostDevicesList != null) && (!this.lostDevicesList.isEmpty()))
+	public List<ScanDescriptionLoaderLostDeviceMessage> getLostDevices() {
+		if ((this.lostDevicesList != null) && (!this.lostDevicesList.isEmpty())) {
 			return this.lostDevicesList;
-		else
-			return null;
+		}
+		return null;
 	}
-
 }

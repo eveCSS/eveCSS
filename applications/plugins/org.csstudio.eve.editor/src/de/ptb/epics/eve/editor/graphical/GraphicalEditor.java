@@ -51,7 +51,7 @@ import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.dialogs.LostDevicesDialog;
+import de.ptb.epics.eve.editor.dialogs.lostdevices.LostDevicesDialog;
 import de.ptb.epics.eve.editor.graphical.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.EventEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;

@@ -133,8 +133,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	// A general purpose buffer for strings
 	private StringBuffer textBuffer;
 
-	private List<String> lostDevicesList;
+	private List<ScanDescriptionLoaderLostDeviceMessage> lostDevices;
 
+	private boolean invalidPlugin;
+	
 	/**
 	 * This constructor creates a new SAX handler to load a scan description.
 	 * 
@@ -164,7 +166,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		this.idToScanModulMap = new HashMap<Integer, ScanModule>();
 		this.scanModulChainMap = new HashMap<ScanModule, Chain>();
 
-		this.lostDevicesList = new ArrayList<String>();
+		this.lostDevices = new ArrayList<ScanDescriptionLoaderLostDeviceMessage>();
 	}
 
 	/**
@@ -207,7 +209,16 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} else if (qName.equals("autonumber")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_AUTONUMBER_NEXT;
 			} else if (qName.equals("saveplugin")) {
+				this.invalidPlugin = false;
 				this.state = ScanDescriptionLoaderStates.CHAIN_SAVEPLUGINCONTROLLER_LOADING;
+				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
+				if (this.measuringStation.getPluginByName(
+						atts.getValue("name")) == null) {
+					this.invalidPlugin = true;
+					this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
+							ScanDescriptionLoaderLostDeviceType.PLUGIN_NOT_FOUND,
+							"Plugin '" + atts.getValue("name") + "' has been removed!"));
+				}
 				this.currentPluginController = this.currentChain
 						.getSavePluginController();
 				String savePluginName = atts.getValue("name");
@@ -219,7 +230,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 								savePlugin);
 					}
 				}
-				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
 			} else if (qName.equals("savescandescription")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SAVESCANDESCRIPTION_NEXT;
 			} else if (qName.equals("startevent")) {
@@ -370,8 +380,17 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} else if (qName.equals("normalize_id")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_NORMALIZE_ID_NEXT;
 			} else if (qName.equals("plugin")) {
+				this.invalidPlugin = false;
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_CONTROLLER_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
+				if (this.measuringStation.getPluginByName(
+						atts.getValue("name")) == null) {
+					// plugin not found
+					this.invalidPlugin = true;
+					this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
+							ScanDescriptionLoaderLostDeviceType.PLUGIN_NOT_FOUND,
+							"Plugin '" + atts.getValue("name")+ "' has been removed!"));
+				}
 				this.currentPluginController = this.currentPositioning
 						.getPluginController();
 				this.currentPluginController.setPlugin(this.measuringStation
@@ -416,9 +435,18 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} else if (qName.equals("ismainaxis")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_ISMAINAXIS_NEXT;
 			} else if (qName.equals("plugin")) {
+				this.invalidPlugin = false;
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_CONTROLLER_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
 				this.currentPluginController = new PluginController();
+				if (this.measuringStation.getPluginByName(
+						atts.getValue("name")) == null) {
+					// plugin not found
+					this.invalidPlugin = true;
+					this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
+							ScanDescriptionLoaderLostDeviceType.PLUGIN_NOT_FOUND,
+							"Plugin '" + atts.getValue("name")+ "' has been removed!"));
+				}
 				this.currentAxis
 						.setPositionPluginController(this.currentPluginController);
 				this.currentPluginController.setPlugin(this.measuringStation
@@ -722,9 +750,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentAxis.setMotorAxis(this.measuringStation
 						.getMotorAxisById(textBuffer.toString()));
 			} else {
-				this.lostDevicesList.add("PV " + textBuffer.toString()
-						+ " not found in XML-File "
-						+ this.measuringStation.getLoadedFileName());
+				this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
+						ScanDescriptionLoaderLostDeviceType.MOTOR_AXIS_ID_NOT_FOUND,
+						"Axis '" + textBuffer.toString() + "' has been removed."));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_AXISID_READ;
 			break;
@@ -777,9 +805,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentChannel.setDetectorChannel(this.measuringStation
 						.getDetectorChannelById(textBuffer.toString()));
 			} else {
-				this.lostDevicesList.add("PV " + textBuffer.toString()
-						+ " not found in XML-File "
-						+ this.measuringStation.getLoadedFileName());
+				this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
+						ScanDescriptionLoaderLostDeviceType.DETECTOR_CHANNEL_ID_NOT_FOUND,
+						"Channel '" + textBuffer.toString() + "' has been removed!"));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_CHANNELID_READ;
 			break;
@@ -1109,26 +1137,28 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case PLUGIN_CONTROLLER_PARAMETER_NEXT:
-			if (this.currentParameterName.equals("location")) {
-				// location is no parameter of the plugin
-				if (textBuffer.toString().equals(
-						this.currentPluginController.getPlugin().getLocation())) {
-				} else {
-					// Hinweise ausgeben, daß Location überschrieben wurde!
-					this.lostDevicesList.add("Plugin "
-							+ this.currentPluginController.getPlugin()
-									.getName()
-							+ " : Location "
-							+ textBuffer.toString()
+			if (!this.invalidPlugin) {
+				if (this.currentParameterName.equals("location")) {
+					// location is no parameter of the plugin
+					if (textBuffer.toString().equals(
+							this.currentPluginController.getPlugin()
+									.getLocation())) {
+					} else {
+						// Hinweise ausgeben, daß Location überschrieben wurde!
+						this.lostDevices
+							.add(new ScanDescriptionLoaderLostDeviceMessage(
+							ScanDescriptionLoaderLostDeviceType.PLUGIN_LOCATION_CHANGED,
+							textBuffer.toString()
 							+ " replaced by "
 							+ this.currentPluginController.getPlugin()
-									.getLocation());
+									.getLocation()));
+					}
+					this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_PARAMETER_READ;
+					break;
 				}
-				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_PARAMETER_READ;
-				break;
+				this.currentPluginController.set(this.currentParameterName,
+						textBuffer.toString());
 			}
-			this.currentPluginController.set(this.currentParameterName,
-					textBuffer.toString());
 			this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_PARAMETER_READ;
 			break;
 		}
@@ -2401,9 +2431,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	 * 
 	 * @return The loaded scan description.
 	 */
-	public List<String> getLostDevices() {
-		if (this.lostDevicesList != null)
-			return this.lostDevicesList;
+	public List<ScanDescriptionLoaderLostDeviceMessage> getLostDevices() {
+		if (this.lostDevices != null)
+			return this.lostDevices;
 		else
 			return null;
 	}
