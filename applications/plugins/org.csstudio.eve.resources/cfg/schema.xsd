@@ -3,7 +3,7 @@
   targetNamespace="http://www.ptb.de/epics/SCML" 
   xmlns:tns="http://www.ptb.de/epics/SCML">
 
-  <!-- schema version 1.0
+  <!-- schema version 1.1
        please increase version number on every modification
        If the corresponding xml-file of the previous schema version is still
        valid with the current schema version, change the minor version number only -->
@@ -174,6 +174,7 @@
       <element name="parent" type="nonNegativeInteger"></element>
       <element name="nested" type="positiveInteger"  minOccurs="0"></element>
       <element name="appended" type="positiveInteger" minOccurs="0"></element>
+      <element name="valuecount" type="positiveInteger" default="1"></element>
       <element name="settletime" type="double" minOccurs="0"></element>
       <element name="triggerdelay" type="double" minOccurs="0"></element>
       <element name="triggerconfirm" type="boolean" minOccurs="0"></element>

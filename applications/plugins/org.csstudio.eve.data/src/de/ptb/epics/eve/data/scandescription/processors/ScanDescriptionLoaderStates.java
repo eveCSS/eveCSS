@@ -223,6 +223,16 @@ public enum ScanDescriptionLoaderStates {
 	CHAIN_SCANMODULE_APPENDED_READ,
 
 	/**
+	 * The begin tag of the value count has been read.
+	 */
+	CHAIN_SCANMODULE_VALUECOUNT_NEXT,
+	
+	/**
+	 * The value count has been read and the handler waits for the closing tag.
+	 */
+	CHAIN_SCANMODULE_VALUECOUNT_READ,
+	
+	/**
 	 * The begin tag of the scan module settle time has been read.
 	 */
 	CHAIN_SCANMODULE_SETTLETIME_NEXT,

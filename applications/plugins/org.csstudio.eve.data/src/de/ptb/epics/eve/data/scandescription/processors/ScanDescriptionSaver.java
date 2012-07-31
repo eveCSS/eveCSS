@@ -1140,6 +1140,14 @@ public class ScanDescriptionSaver implements
 				this.contentHandler.endElement("", "appended", "appended");
 			}
 
+			this.atts.clear();
+			this.contentHandler.startElement("", "valuecount", "valuecount",
+					this.atts);
+			this.contentHandler.characters(
+					("" + scanModul.getValuecount()).toCharArray(), 0,
+					("" + scanModul.getValuecount()).length());
+			this.contentHandler.endElement("", "valuecount", "valuecount");
+
 			if (scanModul.getSettletime() != Double.NEGATIVE_INFINITY) {
 				this.atts.clear();
 				this.contentHandler.startElement("", "settletime",

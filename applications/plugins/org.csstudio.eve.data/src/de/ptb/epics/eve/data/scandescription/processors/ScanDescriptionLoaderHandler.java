@@ -307,6 +307,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_NESTED_NEXT;
 			} else if (qName.equals("appended")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_APPENDED_NEXT;
+			} else if (qName.equals("valuecount")) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_VALUECOUNT_NEXT;
 			} else if (qName.equals("settletime")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SETTLETIME_NEXT;
 			} else if (qName.equals("triggerdelay")) {
@@ -676,6 +678,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_NESTED_READ;
 			break;
 
+		case CHAIN_SCANMODULE_VALUECOUNT_NEXT:
+			this.currentScanModul.setValuecount(Integer.parseInt(textBuffer.toString()));
+			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_VALUECOUNT_READ;
+			break;
+			
 		case CHAIN_SCANMODULE_SETTLETIME_NEXT:
 			double settletime = Double.NEGATIVE_INFINITY;
 			try {
@@ -1390,6 +1397,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
+		case CHAIN_SCANMODULE_VALUECOUNT_READ:
+			if (qName.equals("valuecount")) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+			}
+			break;
+			
 		case CHAIN_SCANMODULE_SETTLETIME_READ:
 			if (qName.equals("settletime")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;

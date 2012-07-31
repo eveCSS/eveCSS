@@ -47,6 +47,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	// the name of the scan module
 	private String name;
 	
+	// the number of measurements per position
+	private int valuecount;
+	
 	// the settle time
 	private double settletime;
 	
@@ -137,6 +140,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.channels = new ArrayList<Channel>();
 		this.axes = new ArrayList<Axis>();
 		this.plotWindows = new ArrayList<PlotWindow>();
+		this.valuecount = 1;
 		this.settletime = 0.0;
 		this.triggerdelay = 0.0;
 		this.triggerEvents = new ArrayList<ControlEvent>();
@@ -546,6 +550,24 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		updateListeners();
 	}
 
+
+	/**
+	 * @return the valuecount
+	 */
+	public int getValuecount() {
+		return valuecount;
+	}
+
+	/**
+	 * @param valuecount the valuecount to set
+	 * @throws IllegalArgumentException if <code>valuecount</code> < 1
+	 */
+	public void setValuecount(int valuecount) {
+		if (valuecount < 1) {
+			throw new IllegalArgumentException("valuecount must be > 0!");
+		}
+		this.valuecount = valuecount;
+	}
 
 	/**
 	 * Gives back the type of the scan modul.
