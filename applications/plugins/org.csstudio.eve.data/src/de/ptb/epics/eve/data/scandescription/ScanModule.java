@@ -567,6 +567,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			throw new IllegalArgumentException("valuecount must be > 0!");
 		}
 		this.valuecount = valuecount;
+		updateListeners();
 	}
 
 	/**

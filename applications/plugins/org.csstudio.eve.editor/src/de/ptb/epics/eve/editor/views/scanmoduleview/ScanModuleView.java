@@ -60,6 +60,7 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.PlotComposite;
 import de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.PositioningComposite;
 import de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.PostscanComposite;
 import de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.PrescanComposite;
+import de.ptb.epics.eve.util.swt.PositiveIntegerVerifyListener;
 
 /**
  * <code>ScanModulView</code> shows the currently selected scan module.
@@ -88,19 +89,22 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	private Composite actionsComposite;
 	private Composite eventsComposite;
 
+	private Label valueCountLabel;
+	private Text valueCountText;
+	private PositiveIntegerVerifyListener valueCountTextVerifyListener;
+	private ValueCountTextModifyListener valueCountTextModifyListener;
+	
 	private Label triggerDelayLabel;
 	private Text triggerDelayText;
 	private ControlDecoration triggerDelayTextControlDecoration;
 	private TextDoubleVerifyListener triggerDelayTextVerifyListener;
 	private TriggerDelayTextModifiedListener triggerDelayTextModifiedListener;
-	private Label triggerDelayUnitLabel;
 	
 	private Label settleTimeLabel;
 	private Text settleTimeText;
 	private ControlDecoration settleTimeTextControlDecoration;
 	private TextDoubleVerifyListener settleTimeTextVerifyListener;
 	private SettleTimeTextModifiedListener settleTimeTextModifiedListener;
-	private Label settleTimeUnitLabel;
 	
 	private Button confirmTriggerCheckBox;
 	private ConfirmTriggerCheckBoxSelectionListener 
@@ -253,17 +257,37 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	 */
 	private void createGeneralExpandItem() {
 		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 3;
+		gridLayout.numColumns = 2;
 		this.generalComposite = new Composite(this.bar, SWT.NONE);
 		this.generalComposite.setLayout(gridLayout);
 		
+		// Value Count
+		this.valueCountLabel = new Label(this.generalComposite, SWT.NONE);
+		this.valueCountLabel.setText("No of Measurements:");
+		this.valueCountLabel.setToolTipText("" +
+				"Number of Measurements taken for each motor position");
+		
+		this.valueCountText = new Text(this.generalComposite, SWT.BORDER);
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.CENTER;
+		gridData.horizontalIndent = 7;
+		gridData.grabExcessHorizontalSpace = true;
+		this.valueCountText.setLayoutData(gridData);
+		this.valueCountTextVerifyListener = new PositiveIntegerVerifyListener(
+				valueCountText);
+		this.valueCountText.addVerifyListener(valueCountTextVerifyListener);
+		this.valueCountTextModifyListener = new ValueCountTextModifyListener();
+		this.valueCountText.addModifyListener(valueCountTextModifyListener);
+		// TODO add listeners
+		
 		// Trigger Delay
 		this.triggerDelayLabel = new Label(this.generalComposite, SWT.NONE);
-		this.triggerDelayLabel.setText("Trigger delay:");
+		this.triggerDelayLabel.setText("Trigger delay (in s):");
 		this.triggerDelayLabel.setToolTipText("Delay time after positioning");
 		
 		this.triggerDelayText = new Text(this.generalComposite, SWT.BORDER);
-		GridData gridData = new GridData();
+		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
 		gridData.horizontalIndent = 7;
@@ -281,12 +305,10 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		this.triggerDelayTextControlDecoration.setDescriptionText(
 				"Trigger Delay value not possible");
 		this.triggerDelayTextControlDecoration.hide();
-		this.triggerDelayUnitLabel = new Label(this.generalComposite, SWT.NONE);
-		this.triggerDelayUnitLabel.setText("s");
 		
 		// Settle Time
 		this.settleTimeLabel = new Label(this.generalComposite, SWT.NONE);
-		this.settleTimeLabel.setText("Settle time:");
+		this.settleTimeLabel.setText("Settle time (in s):");
 		this.settleTimeLabel.setToolTipText(
 				"Delay time after first positioning in the scan module");
 		
@@ -307,8 +329,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		this.settleTimeTextControlDecoration.setDescriptionText(
 				"Settle Time value not possible");
 		this.settleTimeTextControlDecoration.hide();
-		this.settleTimeUnitLabel = new Label(this.generalComposite, SWT.NONE);
-		this.settleTimeUnitLabel.setText("s");
 		
 		// Trigger Confirm 
 		gridData = new GridData();
@@ -720,6 +740,8 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	 * used by updateEvent() to re-enable listeners
 	 */
 	private void addListeners() {
+		this.valueCountText.addModifyListener(valueCountTextModifyListener);
+		this.valueCountText.addVerifyListener(valueCountTextVerifyListener);
 		this.triggerDelayText.addModifyListener(
 				triggerDelayTextModifiedListener);
 		this.triggerDelayText.addVerifyListener(triggerDelayTextVerifyListener);
@@ -738,6 +760,8 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	 * event loops)
 	 */
 	private void removeListeners() {
+		this.valueCountText.removeModifyListener(valueCountTextModifyListener);
+		this.valueCountText.removeVerifyListener(valueCountTextVerifyListener);
 		this.triggerDelayText.removeVerifyListener(
 				triggerDelayTextVerifyListener);
 		this.triggerDelayText.removeModifyListener(
@@ -777,6 +801,10 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		removeListeners();
 		
 		if(this.currentScanModule != null) {
+			// set value count text
+			this.valueCountText.setText(Integer.toString(this.currentScanModule
+					.getValuecount()));
+			
 			// set trigger delay text
 			this.triggerDelayText.setText((this.currentScanModule.
 					getTriggerdelay() != Double.NEGATIVE_INFINITY) 
@@ -944,6 +972,35 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	// ************************ Modify Listener ****************************
 	
 	/**
+	 * {@link org.eclipse.swt.events.ModifyListener} of 
+	 * <code>valueCountText</code>.
+	 *
+	 * @author Marcus Michalsky
+	 * @since 1.5
+	 */
+	private class ValueCountTextModifyListener implements ModifyListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void modifyText(ModifyEvent e) {
+			suspendModelUpdateListener();
+			if (valueCountText.getText().equals("")) {
+				currentScanModule.setValuecount(1);
+			} else {
+				try {
+					currentScanModule.setValuecount(Integer
+							.parseInt(valueCountText.getText()));
+				} catch (NumberFormatException e1) {
+					logger.error(e1.getMessage(), e1);
+				}
+			}
+			resumeModelUpdateListener();
+		}
+	}
+	
+	/**
 	 * {@link org.eclipse.swt.events.ModifyListener} of
 	 * <code>triggerDelayText</code>.
 	 */
@@ -1003,7 +1060,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	/**
 	 * {@link org.eclipse.swt.events.VerifyListener} of text widget
 	 */
-	class TextDoubleVerifyListener implements VerifyListener {
+	private class TextDoubleVerifyListener implements VerifyListener {
 		// this is a copy from DetectorChannelView
 
 		/**
