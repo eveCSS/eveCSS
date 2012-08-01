@@ -616,8 +616,8 @@ public class ScanView extends ViewPart implements IEditorView,
 		} else if (o instanceof ScanModuleEditPart) {
 			// a scan module belongs to a chain -> show chain
 			if(logger.isDebugEnabled()) {
-				logger.debug("ScanModule " + (ScanModule)
-						((ScanModuleEditPart)o).getModel() + " selected.");
+				logger.debug("ScanModule "
+						+ ((ScanModuleEditPart) o).getModel() + " selected.");
 			}
 			setCurrentChain(((ScanModule)((ScanModuleEditPart)o).
 					getModel()).getChain());
