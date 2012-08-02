@@ -39,7 +39,7 @@ public class ScanDescription implements IModelUpdateProvider,
 	/**
 	 * Schema version of the output.
 	 */
-	public static final String outputVersion = "1.0";
+	public static final String outputVersion = "2.0";
 	
 	// version of the scan description.
 	private int inputVersion;

@@ -17,6 +17,9 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  */
 public class Detector extends AbstractMainPhaseDevice {
 
+	private Function stop;
+	private Function status;
+	
 	/**
 	 * A List holding the detector channels
 	 */
@@ -28,8 +31,38 @@ public class Detector extends AbstractMainPhaseDevice {
 	 */
 	public Detector() {
 		this.channels = new ArrayList<DetectorChannel>();
+		this.stop = new Function();
+		this.status = new Function();
 	}
 	
+	/**
+	 * @return the stop
+	 */
+	public Function getStop() {
+		return stop;
+	}
+
+	/**
+	 * @param stop the stop to set
+	 */
+	public void setStop(Function stop) {
+		this.stop = stop;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public Function getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(Function status) {
+		this.status = status;
+	}
+
 	/**
 	 * Returns a copy of the DetectorChannel list.
 	 * The list is sorted alphabetically.

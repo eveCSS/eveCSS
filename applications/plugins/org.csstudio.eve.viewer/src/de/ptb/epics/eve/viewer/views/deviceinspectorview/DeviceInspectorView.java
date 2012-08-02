@@ -844,7 +844,7 @@ public class DeviceInspectorView extends ViewPart {
 
 		TableViewerColumn triggerColumn = 
 				new TableViewerColumn(channelTableViewer, SWT.NONE);
-		triggerColumn.getColumn().setText("Trig");
+		triggerColumn.getColumn().setText("");
 		triggerColumn.setEditingSupport(
 				new CommonTableEditingSupport(channelTableViewer, "trigger"));
 		triggerColumn.setLabelProvider(new ColumnLabelProvider() {
@@ -872,6 +872,65 @@ public class DeviceInspectorView extends ViewPart {
 			}
 		});
 		triggerColumn.getColumn().setWidth(22);
+		
+		TableViewerColumn stopColumn = 
+				new TableViewerColumn(channelTableViewer, SWT.NONE);
+		stopColumn.getColumn().setText("");
+		stopColumn.setEditingSupport(
+				new CommonTableEditingSupport(channelTableViewer, "stop"));
+		stopColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override public Image getImage(Object element) {
+				if (((CommonTableElement)element).isConnected("stop")) {
+					return stopIcon;
+				}
+				return stopIconDisabled;
+			}
+			@Override public String getText(Object element) { return null; }
+			@Override public String getToolTipText(Object element) {
+				DetectorChannel channel = (DetectorChannel) 
+						((CommonTableElement)element).getAbstractDevice();
+				if (channel.getStop() != null &&
+						channel.getStop().getAccess() != null &&
+						!channel.getStop().getAccess().getVariableID().equals("")) {
+					return channel.getStop().getAccess().getVariableID();
+				}
+				// stopPV is the detector of the channel
+				Detector detector = channel.getDetector();
+				if (detector.getStop() != null &&
+						detector.getStop().getAccess() != null && 
+						!detector.getStop().getAccess().getVariableID().equals("")) {
+					return detector.getStop().getAccess().getVariableID();
+				}
+				return null;
+			}
+		});
+		stopColumn.getColumn().setWidth(22);
+		
+		TableViewerColumn statusColumn = 
+				new TableViewerColumn(channelTableViewer, SWT.NONE);
+		statusColumn.getColumn().setText("Status");
+		statusColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override public String getText(Object element) {
+				return ((CommonTableElement) element).getValue("status");
+			}
+			@Override public String getToolTipText(Object element) {
+				DetectorChannel channel = (DetectorChannel) 
+						((CommonTableElement)element).getAbstractDevice();
+				if (channel.getStatus() != null &&
+						channel.getStatus().getAccess() != null &&
+						!channel.getStatus().getAccess().getVariableID().equals("")) {
+					return channel.getStatus().getAccess().getVariableID();
+				}
+				Detector detector = channel.getDetector();
+				if (detector.getStatus() != null &&
+						detector.getStatus().getAccess() != null && 
+						!detector.getStatus().getAccess().getVariableID().equals("")) {
+					return detector.getStatus().getAccess().getVariableID();
+				}
+				return null;
+			}
+		});
+		statusColumn.getColumn().setWidth(70);
 		
 		TableViewerColumn emptyColumn = 
 			new TableViewerColumn(channelTableViewer, SWT.NONE);

@@ -136,6 +136,16 @@ public enum MeasuringStationLoaderStates {
 	DETECTOR_TRIGGER_LOADING,
 	
 	/**
+	 * stop of detector loading (processing is done in sub states)
+	 */
+	DETECTOR_STOP_LOADING,
+	
+	/**
+	 * status of detector loading (processing is done in sub states)
+	 */
+	DETECTOR_STATUS_LOADING,
+	
+	/**
 	 * A channel of a detector channel is loading.
 	 */
 	DETECTOR_CHANNEL_LOADING,
@@ -195,6 +205,16 @@ public enum MeasuringStationLoaderStates {
 	 * states.
 	 */
 	DETECTOR_CHANNEL_TRIGGER_LOADING,
+
+	/**
+	 * 
+	 */
+	DETECTOR_CHANNEL_STOP_LOADING,
+	
+	/**
+	 * 
+	 */
+	DETECTOR_CHANNEL_STATUS_LOADING,
 	
 	/**
 	 * The begin tag of the motors section has been read.

@@ -215,6 +215,36 @@ public class CommonTableElement {
 								getAccess().getVariableID(), this);
 				}
 			}
+			
+			if (channel.getStop() != null &&
+					channel.getStop().getAccess().getTransport() == 
+					TransportTypes.CA) {
+				stopPv = new CommonTableElementPV(channel.getStop().getAccess()
+						.getVariableID(), this);
+			} else if (channel.getParent() != null) {
+				Detector parent = channel.getDetector();
+				if (parent.getStop() != null &&
+						parent.getStop().getAccess().getTransport() == 
+						TransportTypes.CA) {
+					stopPv = new CommonTableElementPV(parent.getStop()
+							.getAccess().getVariableID(), this);
+				}
+			}
+			
+			if (channel.getStatus() != null &&
+					channel.getStatus().getAccess().getTransport() == 
+					TransportTypes.CA) {
+				statusPv = new CommonTableElementPV(channel.getStatus()
+						.getAccess().getVariableID(), this);
+			} else if (channel.getParent() != null) {
+				Detector parent = channel.getDetector();
+				if (parent.getStatus() != null &&
+						parent.getStatus().getAccess().getTransport() == 
+						TransportTypes.CA) {
+					statusPv = new CommonTableElementPV(parent.getStatus()
+							.getAccess().getVariableID(), this);
+				}
+			}
 		}
 		if(device instanceof Device) {
 			Device realDevice = (Device)device;
@@ -527,7 +557,14 @@ public class CommonTableElement {
 			return name;
 		else if (property.equals("value") && (valuePv != null)) {
 			return valuePv.getValue();
-		} else if (property.equals("status")) {  
+		} else if (property.equals("status")) {
+			if (device instanceof DetectorChannel) {
+				if (statusPv != null) {
+					return statusPv.getValue();
+				}
+				return "";
+			}
+			
 			if(movedonePv != null) {
 				String moveStatus = movedonePv.getValue();
 				if ((moveStatus != null) && (moveStatus != "")) {
@@ -650,10 +687,21 @@ public class CommonTableElement {
 	 */
 	public void stop() {
 		if (stopPv != null && stopPv.isConnected()) {
-			MotorAxis axis = (MotorAxis)device;
-			if (axis.getStop().getValue() != null) {
-				stopPv.setValue(Integer.parseInt(
-						axis.getStop().getValue().getDefaultValue()));
+			if (device instanceof MotorAxis) {
+				MotorAxis axis = (MotorAxis) device;
+				if (axis.getStop().getValue() != null) {
+					stopPv.setValue(Integer.parseInt(axis.getStop().getValue()
+							.getDefaultValue()));
+				}
+			} else if (device instanceof DetectorChannel) {
+				DetectorChannel ch = (DetectorChannel) device;
+				if (ch.getStop().getValue() != null) {
+					stopPv.setValue(Integer.parseInt(ch.getStop().getValue()
+							.getDefaultValue()));
+				} else if (ch.getDetector().getStop().getValue() != null) {
+					stopPv.setValue(Integer.parseInt(ch.getDetector()
+							.getStop().getValue().getDefaultValue()));
+				}
 			}
 		}
 	}

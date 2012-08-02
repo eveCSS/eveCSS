@@ -177,6 +177,14 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.DETECTOR_TRIGGER_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
+			} else if (qName.equals("stop")) {
+				this.currentFunction = new Function();
+				this.state = MeasuringStationLoaderStates.DETECTOR_STOP_LOADING;
+				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
+			} else if (qName.equals("status")) {
+				this.currentFunction = new Function();
+				this.state = MeasuringStationLoaderStates.DETECTOR_STATUS_LOADING;
+				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			} else if (qName.equals("channel")) {
 				this.currentDetectorChannel = new DetectorChannel();
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;
@@ -210,6 +218,14 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			} else if (qName.equals("trigger")) {
 				this.currentFunction = new Function();
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_TRIGGER_LOADING;
+				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
+			} else if (qName.equals("stop")) {
+				this.currentFunction = new Function();
+				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_STOP_LOADING;
+				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
+			} else if (qName.equals("status")) {
+				this.currentFunction = new Function();
+				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_STATUS_LOADING;
 				this.subState = MeasuringStationLoaderSubStates.FUNCTION_LOADING;
 			}
 			break;
@@ -785,6 +801,22 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			}
 			break;
 
+		case DETECTOR_STOP_LOADING:
+			if (qName.equals("stop")) {
+				this.currentDetector.setStop(this.currentFunction);
+				this.subState = MeasuringStationLoaderSubStates.NONE;
+				this.state = MeasuringStationLoaderStates.DETECTOR_LOADING;
+			}
+			break;
+		
+		case DETECTOR_STATUS_LOADING:
+			if (qName.equals("status")) {
+				this.currentDetector.setStatus(this.currentFunction);
+				this.subState = MeasuringStationLoaderSubStates.NONE;
+				this.state = MeasuringStationLoaderStates.DETECTOR_LOADING;
+			}
+			break;
+		
 		case DETECTOR_CHANNEL_LOADING:
 			if (qName.equals("channel")) {
 				this.currentDetector.add(this.currentDetectorChannel);
@@ -822,6 +854,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;
 			}
 			break;
+			
 		case DETECTOR_CHANNEL_UNIT:
 			if (qName.equals("unit")) {
 				this.currentDetectorChannel.setUnit(this.currentUnit);
@@ -829,6 +862,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;
 			}
 			break;
+			
 		case DETECTOR_CHANNEL_TRIGGER_LOADING:
 			if (qName.equals("trigger")) {
 				this.currentDetectorChannel.setTrigger(this.currentFunction);
@@ -836,7 +870,23 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;
 			}
 			break;
-
+		
+		case DETECTOR_CHANNEL_STOP_LOADING:
+			if (qName.equals("stop")) {
+				this.currentDetectorChannel.setStop(this.currentFunction);
+				this.subState = MeasuringStationLoaderSubStates.NONE;
+				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;
+			}
+			break;
+		
+		case DETECTOR_CHANNEL_STATUS_LOADING:
+			if (qName.equals("status")) {
+				this.currentDetectorChannel.setStatus(this.currentFunction);
+				this.subState = MeasuringStationLoaderSubStates.NONE;
+				this.state = MeasuringStationLoaderStates.DETECTOR_CHANNEL_LOADING;
+			}
+			break;
+		
 		case MOTORS_LOADING:
 			if (qName.equals("motors")) {
 				this.state = MeasuringStationLoaderStates.ROOT;

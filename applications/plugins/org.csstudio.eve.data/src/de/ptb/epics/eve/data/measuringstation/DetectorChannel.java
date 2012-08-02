@@ -15,11 +15,16 @@ public class DetectorChannel extends AbstractMainPhaseDevice {
 	 */
 	private Function read;
 	
+	private Function stop;
+	private Function status;
+	
 	/**
 	 * Constructs an empty <code>DetectorChannel</code>.
 	 */
 	public DetectorChannel() {
 		this.read = new Function();
+		this.stop = new Function();
+		this.status = new Function();
 	}
 	
 	/**
@@ -59,6 +64,34 @@ public class DetectorChannel extends AbstractMainPhaseDevice {
 		this.read = read;
 	}
 	
+	/**
+	 * @return the stop
+	 */
+	public Function getStop() {
+		return stop;
+	}
+
+	/**
+	 * @param stop the stop to set
+	 */
+	public void setStop(Function stop) {
+		this.stop = stop;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public Function getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(Function status) {
+		this.status = status;
+	}
+
 	/**
 	 * Returns the parent as detector.
 	 * 

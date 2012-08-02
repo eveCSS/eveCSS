@@ -3,7 +3,7 @@
   targetNamespace="http://www.ptb.de/epics/SCML" 
   xmlns:tns="http://www.ptb.de/epics/SCML">
 
-  <!-- schema version 1.1
+  <!-- schema version 2.0
        please increase version number on every modification
        If the corresponding xml-file of the previous schema version is still
        valid with the current schema version, change the minor version number only -->
@@ -295,6 +295,8 @@
       <element name="id" type="tns:identifier"></element>
       <element name="unit" type="tns:unit" minOccurs="0"></element>
       <element name="trigger" type="tns:access" minOccurs="0"></element>
+      <element name="stop" type="tns:access" minOccurs="0"></element>
+      <element name="status" type="tns:access" minOccurs="0"></element>
       <element name="channel" type="tns:channel" maxOccurs="unbounded"></element>
       <element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"></element>
     </sequence>
@@ -308,6 +310,8 @@
       <element name="read" type="tns:access"></element>
       <element name="unit" type="tns:unit" minOccurs="0"></element>   
       <element name="trigger" type="tns:access" minOccurs="0"></element>
+      <element name="stop" type="tns:access" minOccurs="0"></element>
+      <element name="status" type="tns:access" minOccurs="0"></element>
       <element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"></element>
     </sequence>
   </complexType>
