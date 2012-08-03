@@ -531,18 +531,6 @@ public enum ScanDescriptionLoaderStates {
 	CHAIN_SCANMODULE_DETECTOR_AVERAGECOUNT_READ,
 
 	/**
-	 * The begin tag of confirm trigger of the average count of the detector
-	 * channel has been read.
-	 */
-	CHAIN_SCANMODULE_DETECTOR_CONFIRMTRIGGER_NEXT,
-
-	/**
-	 * The confirm trigger of the detector channel has been read and the handler
-	 * waits for the closing tag.
-	 */
-	CHAIN_SCANMODULE_DETECTOR_CONFIRMTRIGGER_READ,
-
-	/**
 	 * The begin tag of max deviation of the average count of the detector
 	 * channel has been read.
 	 */

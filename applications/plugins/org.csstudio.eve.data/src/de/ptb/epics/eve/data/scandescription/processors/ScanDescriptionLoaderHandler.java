@@ -469,8 +469,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_MAX_ATTEMPTS_NEXT;
 			} else if (qName.equals("normalize_id")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_NORMALIZECHANNEL_NEXT;
-			} else if (qName.equals("confirmtrigger")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_CONFIRMTRIGGER_NEXT;
 			} else if (qName.equals("repeatonredo")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_REPEATONREDO_NEXT;
 			} else if (qName.equals("sendreadyevent")) {
@@ -831,14 +829,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentChannel.setAverageCount(averageCount);
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_AVERAGECOUNT_READ;
-			break;
-
-		case CHAIN_SCANMODULE_DETECTOR_CONFIRMTRIGGER_NEXT:
-			if (this.currentChannel.getAbstractDevice() != null) {
-				this.currentChannel.setConfirmTrigger(Boolean
-						.parseBoolean(textBuffer.toString()));
-			}
-			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_CONFIRMTRIGGER_READ;
 			break;
 
 		case CHAIN_SCANMODULE_DETECTOR_MAX_DEVIATION_NEXT:
@@ -1978,12 +1968,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_DETECTOR_AVERAGECOUNT_READ:
 			if (qName.equals("averagecount")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
-			}
-			break;
-
-		case CHAIN_SCANMODULE_DETECTOR_CONFIRMTRIGGER_READ:
-			if (qName.equals("confirmtrigger")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 			}
 			break;

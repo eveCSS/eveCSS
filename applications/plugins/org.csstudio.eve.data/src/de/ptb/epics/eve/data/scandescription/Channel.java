@@ -41,11 +41,6 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 * If input is invalid, set 0
 	 */
 	private int averageCount = 1;
-	
-	/*
-	 * A flag if a trigger of this detector must be confirmed.
-	 */
-	private boolean confirmTrigger = false;
 
 	/*
 	 * The maximum attempts for reading the channel.
@@ -150,28 +145,6 @@ public class Channel extends AbstractMainPhaseBehavior {
 		}
 		this.propertyChangeSupport.firePropertyChange("averageCount",
 				this.averageCount, this.averageCount = averageCount);
-		updateListeners();
-	}
-
-	/**
-	 * Checks whether a trigger of the detector must be confirmed.
-	 * 
-	 * @return <code>true</code> if a trigger of the detector must be confirmed, 
-	 * 			<code>false</code> otherwise
-	 */
-	public boolean isConfirmTrigger() {
-		return confirmTrigger;
-	}
-
-	/**
-	 * Sets whether a trigger of this channel must be confirmed.
-	 * 
-	 * @param confirmTrigger <code>true</code> if a trigger of this channel 
-	 * 			must be confirmed, <code>false</code> otherwise
-	 */
-	public void setConfirmTrigger(final boolean confirmTrigger) {
-		this.propertyChangeSupport.firePropertyChange("confirmTrigger",
-				this.confirmTrigger, this.confirmTrigger = confirmTrigger);
 		updateListeners();
 	}
 
@@ -385,7 +358,6 @@ public class Channel extends AbstractMainPhaseBehavior {
 	 */
 	public void reset() {
 		this.averageCount = 1;
-		this.confirmTrigger = false;
 		this.maxAttempts = Integer.MIN_VALUE;
 		this.maxDeviation = Double.NEGATIVE_INFINITY;
 		this.minimum = Double.NEGATIVE_INFINITY;

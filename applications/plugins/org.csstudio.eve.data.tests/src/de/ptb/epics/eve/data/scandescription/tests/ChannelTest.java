@@ -28,7 +28,6 @@ public class ChannelTest implements PropertyChangeListener {
 	
 	// indicators for PropertyChangeSupportTest
 	private boolean averageCount;
-	private boolean confirmTrigger;
 	private boolean maxAttempts;
 	private boolean maxDeviation;
 	private boolean minimum;
@@ -42,7 +41,6 @@ public class ChannelTest implements PropertyChangeListener {
 	public void testPropertyChangeSupport() {
 		// initialize indicators
 		this.averageCount = false;
-		this.confirmTrigger = false;
 		this.maxAttempts = false;
 		this.maxDeviation = false;
 		this.minimum = false;
@@ -60,7 +58,6 @@ public class ChannelTest implements PropertyChangeListener {
 		
 		// manipulate properties
 		this.channel.setAverageCount(0);
-		this.channel.setConfirmTrigger(true);
 		this.channel.setMaxAttempts(1);
 		this.channel.setMaxDeviation(1.0);
 		this.channel.setMinimum(1.0);
@@ -69,7 +66,6 @@ public class ChannelTest implements PropertyChangeListener {
 		
 		// check whether the manipulation was notified
 		assertTrue(this.averageCount);
-		assertTrue(this.confirmTrigger);
 		assertTrue(this.maxAttempts);
 		assertTrue(this.maxDeviation);
 		assertTrue(this.minimum);
@@ -84,8 +80,6 @@ public class ChannelTest implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 		if(evt.getPropertyName().equals("averageCount")) {
 			this.averageCount = true;
-		} else if(evt.getPropertyName().equals("confirmTrigger")) {
-			this.confirmTrigger = true;
 		} else if(evt.getPropertyName().equals("maxAttempts")) {
 			this.maxAttempts = true;
 		} else if(evt.getPropertyName().equals("maxDeviation")) {

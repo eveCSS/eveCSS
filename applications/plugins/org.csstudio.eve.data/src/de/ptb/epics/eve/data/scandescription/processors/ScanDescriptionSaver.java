@@ -1649,15 +1649,6 @@ public class ScanDescriptionSaver implements
 						"normalize_id");
 			}
 
-			this.atts.clear();
-			this.contentHandler.startElement("", "confirmtrigger",
-					"confirmtrigger", this.atts);
-			this.contentHandler.characters(
-					("" + channel.isConfirmTrigger()).toCharArray(), 0,
-					("" + channel.isConfirmTrigger()).length());
-			this.contentHandler.endElement("", "confirmtrigger",
-					"confirmtrigger");
-
 			if (channel.hasReadyEvent()) {
 				this.atts.clear();
 				this.contentHandler.startElement("", "sendreadyevent",

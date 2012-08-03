@@ -127,10 +127,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	private NormalizeChannelComboSelectionListener 
 			normalizeChannelComboSelectionListener;
 
-	private Button confirmTriggerManualCheckBox;
-	private ConfirmTriggerManualCheckBoxSelectionListener
-			confirmTriggerManualCheckBoxSelectionListener;
-
 	private ExpandBar bar = null;
 	private ExpandItem eventExpandItem;
 	
@@ -303,19 +299,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 				new NormalizeChannelComboSelectionListener();
 		this.normalizeChannelCombo.addSelectionListener(
 				normalizeChannelComboSelectionListener);
-
-		// GUI: [] Confirm Trigger Manual
-		this.confirmTriggerManualCheckBox = new Button(this.top, SWT.CHECK);
-		this.confirmTriggerManualCheckBox.setText("Confirm Trigger manual");
-		this.confirmTriggerManualCheckBox.setToolTipText(
-				"Mark to ask before trigger this channel");
-		gridData = new GridData();
-		gridData.horizontalSpan = 2;
-		this.confirmTriggerManualCheckBox.setLayoutData(gridData);
-		this.confirmTriggerManualCheckBoxSelectionListener = 
-				new ConfirmTriggerManualCheckBoxSelectionListener();
-		this.confirmTriggerManualCheckBox.addSelectionListener( 
-				confirmTriggerManualCheckBoxSelectionListener);
 
 		// Expand Bar
 		this.bar = new ExpandBar(this.top, SWT.NONE);
@@ -560,8 +543,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		normalizeChannelCombo.addSelectionListener(
 				normalizeChannelComboSelectionListener);
 		
-		confirmTriggerManualCheckBox.addSelectionListener(
-				confirmTriggerManualCheckBoxSelectionListener);
 		detectorReadyEventCheckBox.addSelectionListener(
 				detectorReadyEventCheckBoxSelectionListener);
 	}
@@ -581,8 +562,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		normalizeChannelCombo.removeSelectionListener(
 				normalizeChannelComboSelectionListener);
 		
-		confirmTriggerManualCheckBox.removeSelectionListener(
-				confirmTriggerManualCheckBoxSelectionListener);
 		detectorReadyEventCheckBox.removeSelectionListener(
 				detectorReadyEventCheckBoxSelectionListener);
 	}
@@ -664,11 +643,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 				this.normalizeChannelCombo.setText(
 						this.currentChannel.getNormalizeChannel().getName());
 			}
-
-			// set confirm trigger check box
-			this.confirmTriggerManualCheckBox.setSelection(
-					this.currentChannel.isConfirmTrigger());
-
+			
 			// set detector ready event check box
 			this.detectorReadyEventCheckBox.setSelection(
 					this.currentChannel.getDetectorReadyEvent() != null);
@@ -690,7 +665,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			this.maxAttemptsText.setEnabled(true);
 			this.normalizeChannelLabel.setEnabled(true);
 			this.normalizeChannelCombo.setEnabled(true);
-			this.confirmTriggerManualCheckBox.setEnabled(true);
 			this.bar.setEnabled(true);
 			this.detectorReadyEventCheckBox.setEnabled(true);
 			this.eventsTabFolder.setEnabled(true);
@@ -722,7 +696,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 					this.maxAttemptsText.setEnabled(false);
 					this.normalizeChannelLabel.setEnabled(false);
 					this.normalizeChannelCombo.setEnabled(false);
-					this.confirmTriggerManualCheckBox.setEnabled(false);
 					this.bar.setEnabled(false);
 					this.detectorReadyEventCheckBox.setEnabled(false);
 
@@ -739,7 +712,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			this.maxDeviationText.setText("");
 			this.minimumText.setText("");
 			this.maxAttemptsText.setText("");
-			this.confirmTriggerManualCheckBox.setSelection(false);
 			this.detectorReadyEventCheckBox.setSelection(false);
 			
 			this.redoEventComposite.setControlEventManager(null);
@@ -906,33 +878,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 						normCh.getDetectorChannel());
 			}
 			resumeModelUpdateListener();
-		}
-	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>confirmTriggerManualCheckBox</code>.
-	 */
-	private class ConfirmTriggerManualCheckBoxSelectionListener implements 
-			SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			logger.debug("confirm trigger manual modified");
-			if(currentChannel != null) {
-				currentChannel.setConfirmTrigger(
-						confirmTriggerManualCheckBox.getSelection());
-			}
 		}
 	}
 
