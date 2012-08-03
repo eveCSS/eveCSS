@@ -257,14 +257,25 @@ public enum ScanDescriptionLoaderStates {
 	/**
 	 * The begin tag of the scan module trigger confirm has been read.
 	 */
-	CHAIN_SCANMODULE_TRIGGERCONFIRM_NEXT,
+	CHAIN_SCANMODULE_TRIGGERCONFIRMAXIS_NEXT,
 
 	/**
 	 * The scan module trigger confirm has been read and the handler waits for
 	 * the closing tag.
 	 */
-	CHAIN_SCANMODULE_TRIGGERCONFIRM_READ,
+	CHAIN_SCANMODULE_TRIGGERCONFIRMAXIS_READ,
 
+	/**
+	 * The begin tag of the scan module trigger confirm has been read.
+	 */
+	CHAIN_SCANMODULE_TRIGGERCONFIRMCHANNEL_NEXT,
+	
+	/**
+	 * The scan module trigger confirm has been read and the handler waits for
+	 * the closing tag.
+	 */
+	CHAIN_SCANMODULE_TRIGGERCONFIRMCHANNEL_READ,
+	
 	/**
 	 * The trigger events of the scan module are loading.
 	 */

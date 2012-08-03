@@ -1065,51 +1065,51 @@ public class ScanDescriptionSaver implements
 	/**
 	 * This method writes a scan module.
 	 * 
-	 * @param scanModul
+	 * @param scanModule
 	 *            The scan module that should be written.
 	 * @return Returns if the write process was successful.
 	 */
-	private boolean writeScanModule(final ScanModule scanModul) {
+	private boolean writeScanModule(final ScanModule scanModule) {
 		try {
 			this.atts.clear();
 			this.atts.addAttribute("", "id", "id", "CDATA",
-					"" + scanModul.getId());
+					"" + scanModule.getId());
 			this.contentHandler.startElement("", "scanmodule", "scanmodule",
 					this.atts);
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "type", "type", this.atts);
-			this.contentHandler.characters(scanModul.getType().toCharArray(),
-					0, scanModul.getType().length());
+			this.contentHandler.characters(scanModule.getType().toCharArray(),
+					0, scanModule.getType().length());
 			this.contentHandler.endElement("", "type", "type");
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "name", "name", this.atts);
-			this.contentHandler.characters(scanModul.getName().toCharArray(),
-					0, scanModul.getName().length());
+			this.contentHandler.characters(scanModule.getName().toCharArray(),
+					0, scanModule.getName().length());
 			this.contentHandler.endElement("", "name", "name");
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "xpos", "xpos", this.atts);
 			this.contentHandler.characters(
-					("" + scanModul.getX()).toCharArray(), 0,
-					("" + scanModul.getX()).length());
+					("" + scanModule.getX()).toCharArray(), 0,
+					("" + scanModule.getX()).length());
 			this.contentHandler.endElement("", "xpos", "xpos");
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "ypos", "ypos", this.atts);
 			this.contentHandler.characters(
-					("" + scanModul.getY()).toCharArray(), 0,
-					("" + scanModul.getY()).length());
+					("" + scanModule.getY()).toCharArray(), 0,
+					("" + scanModule.getY()).length());
 			this.contentHandler.endElement("", "ypos", "ypos");
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "parent", "parent", this.atts);
-			if (scanModul.getParent() != null
-					&& scanModul.getParent().getParentScanModule() != null) {
-				this.contentHandler.characters(("" + scanModul.getParent()
+			if (scanModule.getParent() != null
+					&& scanModule.getParent().getParentScanModule() != null) {
+				this.contentHandler.characters(("" + scanModule.getParent()
 						.getParentScanModule().getId()).toCharArray(), 0,
-						("" + scanModul.getParent().getParentScanModule()
+						("" + scanModule.getParent().getParentScanModule()
 								.getId()).length());
 			} else {
 				this.contentHandler.characters("0".toCharArray(), 0, 1);
@@ -1117,25 +1117,25 @@ public class ScanDescriptionSaver implements
 			this.contentHandler.endElement("", "parent", "parent");
 
 			this.atts.clear();
-			if (scanModul.getNested() != null
-					&& scanModul.getNested().getChildScanModule() != null) {
+			if (scanModule.getNested() != null
+					&& scanModule.getNested().getChildScanModule() != null) {
 				this.contentHandler.startElement("", "nested", "nested",
 						this.atts);
-				this.contentHandler.characters(("" + scanModul.getNested()
+				this.contentHandler.characters(("" + scanModule.getNested()
 						.getChildScanModule().getId()).toCharArray(), 0,
-						("" + scanModul.getNested().getChildScanModule()
+						("" + scanModule.getNested().getChildScanModule()
 								.getId()).length());
 				this.contentHandler.endElement("", "nested", "nested");
 			}
 
 			this.atts.clear();
-			if (scanModul.getAppended() != null
-					&& scanModul.getAppended().getChildScanModule() != null) {
+			if (scanModule.getAppended() != null
+					&& scanModule.getAppended().getChildScanModule() != null) {
 				this.contentHandler.startElement("", "appended", "appended",
 						this.atts);
-				this.contentHandler.characters(("" + scanModul.getAppended()
+				this.contentHandler.characters(("" + scanModule.getAppended()
 						.getChildScanModule().getId()).toCharArray(), 0,
-						("" + scanModul.getAppended().getChildScanModule()
+						("" + scanModule.getAppended().getChildScanModule()
 								.getId()).length());
 				this.contentHandler.endElement("", "appended", "appended");
 			}
@@ -1144,70 +1144,79 @@ public class ScanDescriptionSaver implements
 			this.contentHandler.startElement("", "valuecount", "valuecount",
 					this.atts);
 			this.contentHandler.characters(
-					("" + scanModul.getValuecount()).toCharArray(), 0,
-					("" + scanModul.getValuecount()).length());
+					("" + scanModule.getValuecount()).toCharArray(), 0,
+					("" + scanModule.getValuecount()).length());
 			this.contentHandler.endElement("", "valuecount", "valuecount");
 
-			if (scanModul.getSettletime() != Double.NEGATIVE_INFINITY) {
+			if (scanModule.getSettletime() != Double.NEGATIVE_INFINITY) {
 				this.atts.clear();
 				this.contentHandler.startElement("", "settletime",
 						"settletime", this.atts);
 				this.contentHandler.characters(
-						("" + scanModul.getSettletime()).toCharArray(), 0,
-						("" + scanModul.getSettletime()).length());
+						("" + scanModule.getSettletime()).toCharArray(), 0,
+						("" + scanModule.getSettletime()).length());
 				this.contentHandler.endElement("", "settletime", "settletime");
 			}
 
-			if (scanModul.getTriggerdelay() != Double.NEGATIVE_INFINITY) {
+			if (scanModule.getTriggerdelay() != Double.NEGATIVE_INFINITY) {
 				this.atts.clear();
 				this.contentHandler.startElement("", "triggerdelay",
 						"triggerdelay", this.atts);
 				this.contentHandler.characters(
-						("" + scanModul.getTriggerdelay()).toCharArray(), 0,
-						("" + scanModul.getTriggerdelay()).length());
+						("" + scanModule.getTriggerdelay()).toCharArray(), 0,
+						("" + scanModule.getTriggerdelay()).length());
 				this.contentHandler.endElement("", "triggerdelay",
 						"triggerdelay");
 			}
 
 			this.atts.clear();
-			this.contentHandler.startElement("", "triggerconfirm",
-					"triggerconfirm", this.atts);
+			this.contentHandler.startElement("", "triggerconfirmaxis",
+					"triggerconfirmaxis", this.atts);
 			this.contentHandler.characters(
-					("" + scanModul.isTriggerconfirm()).toCharArray(), 0,
-					("" + scanModul.isTriggerconfirm()).length());
-			this.contentHandler.endElement("", "triggerconfirm",
-					"triggerconfirm");
+					("" + scanModule.isTriggerconfirmaxis()).toCharArray(), 0,
+					("" + scanModule.isTriggerconfirmaxis()).length());
+			this.contentHandler.endElement("", "triggerconfirmaxis",
+					"triggerconfirmaxis");
 
-			Iterator<ControlEvent> controlEventIterator = scanModul
+			this.atts.clear();
+			this.contentHandler.startElement("", "triggerconfirmchannel",
+					"triggerconfirmchannel", this.atts);
+			this.contentHandler.characters(
+					("" + scanModule.isTriggerconfirmchannel()).toCharArray(), 0,
+					("" + scanModule.isTriggerconfirmchannel()).length());
+			this.contentHandler.endElement("", "triggerconfirmchannel",
+					"triggerconfirmchannel");
+			
+			Iterator<ControlEvent> controlEventIterator = scanModule
 					.getTriggerEventsIterator();
 			while (controlEventIterator.hasNext()) {
 				this.writeControlEvent(controlEventIterator.next(),
 						"triggerevent");
 			}
 
-			Iterator<PauseEvent> pauseEventIterator = scanModul
+			Iterator<PauseEvent> pauseEventIterator = scanModule
 					.getPauseEventsIterator();
 			while (pauseEventIterator.hasNext()) {
 				this.writeControlEvent(pauseEventIterator.next(), "pauseevent");
 			}
 
-			controlEventIterator = scanModul.getRedoEventsIterator();
+			controlEventIterator = scanModule.getRedoEventsIterator();
 			while (controlEventIterator.hasNext()) {
 				this.writeControlEvent(controlEventIterator.next(), "redoevent");
 			}
 
-			controlEventIterator = scanModul.getBreakEventsIterator();
+			controlEventIterator = scanModule.getBreakEventsIterator();
 			while (controlEventIterator.hasNext()) {
 				this.writeControlEvent(controlEventIterator.next(),
 						"breakevent");
 			}
 
-			Prescan[] prescans = scanModul.getPrescans();
+			Prescan[] prescans = scanModule.getPrescans();
 			for (int i = 0; i < prescans.length; ++i) {
 				this.writePrescan(prescans[i]);
 			}
 
-			Axis[] axis = scanModul.getAxes();
+			Axis[] axis = scanModule.getAxes();
 			for (int i = 0; i < axis.length; ++i) {
 				try {
 					this.writeAxis(axis[i]);
@@ -1216,22 +1225,22 @@ public class ScanDescriptionSaver implements
 				}
 			}
 
-			Channel[] channels = scanModul.getChannels();
+			Channel[] channels = scanModule.getChannels();
 			for (int i = 0; i < channels.length; ++i) {
 				this.writeChannel(channels[i]);
 			}
 
-			Postscan[] postscans = scanModul.getPostscans();
+			Postscan[] postscans = scanModule.getPostscans();
 			for (int i = 0; i < postscans.length; ++i) {
 				this.writePostscan(postscans[i]);
 			}
 
-			Positioning[] positioning = scanModul.getPositionings();
+			Positioning[] positioning = scanModule.getPositionings();
 			for (int i = 0; i < positioning.length; ++i) {
 				this.writePositioning(positioning[i]);
 			}
 
-			PlotWindow[] plotWindows = scanModul.getPlotWindows();
+			PlotWindow[] plotWindows = scanModule.getPlotWindows();
 			for (int i = 0; i < plotWindows.length; ++i) {
 				if (plotWindows[i].getXAxis() != null)
 					this.writePlotWindow(plotWindows[i]);

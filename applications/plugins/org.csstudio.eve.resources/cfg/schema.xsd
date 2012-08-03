@@ -177,7 +177,8 @@
       <element name="valuecount" type="positiveInteger" default="1"></element>
       <element name="settletime" type="double" minOccurs="0"></element>
       <element name="triggerdelay" type="double" minOccurs="0"></element>
-      <element name="triggerconfirm" type="boolean" minOccurs="0"></element>
+      <element name="triggerconfirmaxis" type="boolean" minOccurs="0"></element>
+      <element name="triggerconfirmchannel" type="boolean" minOccurs="0"></element>
       <element name="triggerevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="pauseevent" type="tns:pauseevent" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="redoevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>

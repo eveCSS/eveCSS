@@ -83,7 +83,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	private ControlEvent currentControlEvent;
 
 	// The currently constructed scan module
-	private ScanModule currentScanModul;
+	private ScanModule currentScanModule;
 
 	// The currently constructed prescan
 	private Prescan currentPrescan;
@@ -284,10 +284,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULES_LOADING:
 			if (qName.equals("scanmodule")) {
-				this.currentScanModul = new ScanModule(Integer.parseInt(atts
+				this.currentScanModule = new ScanModule(Integer.parseInt(atts
 						.getValue("id")));
 				this.currentRelationReminder = new ScanModulRelationReminder(
-						this.currentScanModul);
+						this.currentScanModule);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
@@ -313,8 +313,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SETTLETIME_NEXT;
 			} else if (qName.equals("triggerdelay")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERDELAY_NEXT;
-			} else if (qName.equals("triggerconfirm")) {
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRM_NEXT;
+			} else if (qName.equals("triggerconfirmaxis")) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRMAXIS_NEXT;
+			} else if (qName.equals("triggerconfirmchannel")) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRMCHANNEL_NEXT;
 			} else if (qName.equals("triggerevent")) {
 				this.currentControlEvent = new ControlEvent(
 						EventTypes.stringToType(atts.getValue("type")));
@@ -358,16 +360,16 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentPostscan = new Postscan();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSTSCAN_LOADING;
 			} else if (qName.equals("smaxis")) {
-				this.currentAxis = new Axis(this.currentScanModul);
+				this.currentAxis = new Axis(this.currentScanModule);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 			} else if (qName.equals("smchannel")) {
-				this.currentChannel = new Channel(this.currentScanModul);
+				this.currentChannel = new Channel(this.currentScanModule);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 			} else if (qName.equals("positioning")) {
-				this.currentPositioning = new Positioning(this.currentScanModul);
+				this.currentPositioning = new Positioning(this.currentScanModule);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_LOADING;
 			} else if (qName.equals("plot")) {
-				this.currentPlotWindow = new PlotWindow(this.currentScanModul);
+				this.currentPlotWindow = new PlotWindow(this.currentScanModule);
 				this.currentPlotWindow.setId(Integer.parseInt(atts
 						.getValue("id")));
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_LOADING;
@@ -649,12 +651,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_TYPE_NEXT:
-			this.currentScanModul.setType(textBuffer.toString());
+			this.currentScanModule.setType(textBuffer.toString());
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TYPE_READ;
 			break;
 
 		case CHAIN_SCANMODULE_NAME_NEXT:
-			this.currentScanModul.setName(textBuffer.toString());
+			this.currentScanModule.setName(textBuffer.toString());
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_NAME_READ;
 			break;
 
@@ -677,7 +679,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_VALUECOUNT_NEXT:
-			this.currentScanModul.setValuecount(Integer.parseInt(textBuffer.toString()));
+			this.currentScanModule.setValuecount(Integer.parseInt(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_VALUECOUNT_READ;
 			break;
 			
@@ -688,7 +690,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} catch (final NumberFormatException e) {
 				logger.error(e.getMessage(), e);
 			}
-			this.currentScanModul.setSettletime(settletime);
+			this.currentScanModule.setSettletime(settletime);
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SETTLETIME_READ;
 			break;
 
@@ -699,16 +701,22 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} catch (final NumberFormatException e) {
 				logger.error(e.getMessage(), e);
 			}
-			this.currentScanModul.setTriggerdelay(triggerdelay);
+			this.currentScanModule.setTriggerdelay(triggerdelay);
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERDELAY_READ;
 			break;
 
-		case CHAIN_SCANMODULE_TRIGGERCONFIRM_NEXT:
-			this.currentScanModul.setTriggerconfirm(Boolean
+		case CHAIN_SCANMODULE_TRIGGERCONFIRMAXIS_NEXT:
+			this.currentScanModule.setTriggerconfirmaxis(Boolean
 					.parseBoolean(textBuffer.toString()));
-			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRM_READ;
+			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRMAXIS_READ;
 			break;
 
+		case CHAIN_SCANMODULE_TRIGGERCONFIRMCHANNEL_NEXT:
+			this.currentScanModule.setTriggerconfirmchannel(Boolean
+					.parseBoolean(textBuffer.toString()));
+			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRMCHANNEL_READ;
+			break;
+			
 		case CHAIN_SCANMODULE_PRESCAN_ID_NEXT:
 			try {
 				this.currentPrescan
@@ -882,7 +890,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 										.getParent().getName(),
 								this.currentChannel.getAbstractDevice()
 										.getName(), this.currentChain.getId(),
-								this.currentScanModul.getId());
+								this.currentScanModule.getId());
 						this.currentChannel.setDetectorReadyEvent(readyEvent);
 						this.scanDescription.add(readyEvent);
 					}
@@ -917,12 +925,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_XPOS_NEXT:
-			this.currentScanModul.setX(Integer.parseInt(textBuffer.toString()));
+			this.currentScanModule.setX(Integer.parseInt(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_XPOS_READ;
 			break;
 
 		case CHAIN_SCANMODULE_YPOS_NEXT:
-			this.currentScanModul.setY(Integer.parseInt(textBuffer.toString()));
+			this.currentScanModule.setY(Integer.parseInt(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_YPOS_READ;
 			break;
 
@@ -1341,16 +1349,16 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_LOADING:
 			if (qName.equals("scanmodule")) {
 				this.relationReminders.add(this.currentRelationReminder);
-				this.currentChain.add(this.currentScanModul);
-				this.scanModulChainMap.put(this.currentScanModul,
+				this.currentChain.add(this.currentScanModule);
+				this.scanModulChainMap.put(this.currentScanModule,
 						this.currentChain);
 
-				if (this.idToScanModulMap.containsKey(this.currentScanModul
+				if (this.idToScanModulMap.containsKey(this.currentScanModule
 						.getId())) {
 
 				} else {
-					this.idToScanModulMap.put(this.currentScanModul.getId(),
-							this.currentScanModul);
+					this.idToScanModulMap.put(this.currentScanModule.getId(),
+							this.currentScanModule);
 				}
 
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULES_LOADING;
@@ -1405,19 +1413,25 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
-		case CHAIN_SCANMODULE_TRIGGERCONFIRM_READ:
-			if (qName.equals("triggerconfirm")) {
+		case CHAIN_SCANMODULE_TRIGGERCONFIRMAXIS_READ:
+			if (qName.equals("triggerconfirmaxis")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
 
+		case CHAIN_SCANMODULE_TRIGGERCONFIRMCHANNEL_READ:
+			if (qName.equals("triggerconfirmchannel")) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
+			}
+			break;
+			
 		case CHAIN_SCANMODULE_TRIGGEREVENT:
 			if (qName.equals("triggerevent")) {
 				boolean idOK = false;
 
 				idOK = eventIdAvailable(this.currentControlEvent);
 				if (idOK == true) {
-					this.currentScanModul
+					this.currentScanModule
 							.addTriggerEvent(this.currentControlEvent);
 				}
 
@@ -1435,7 +1449,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 				idOK = eventIdAvailable(this.currentControlEvent);
 				if (idOK == true) {
-					this.currentScanModul
+					this.currentScanModule
 							.addRedoEvent(this.currentControlEvent);
 				}
 
@@ -1453,7 +1467,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 				idOK = eventIdAvailable(this.currentControlEvent);
 				if (idOK == true) {
-					this.currentScanModul
+					this.currentScanModule
 							.addBreakEvent(this.currentControlEvent);
 				}
 
@@ -1474,7 +1488,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 				idOK = eventIdAvailable(this.currentControlEvent);
 				if (idOK == true) {
-					this.currentScanModul
+					this.currentScanModule
 							.addPauseEvent((PauseEvent) this.currentControlEvent);
 				}
 
@@ -1489,7 +1503,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_PRESCAN_LOADING:
 			if (qName.equals("prescan")) {
 				if (this.currentPrescan.getAbstractPrePostscanDevice() != null) {
-					this.currentScanModul.add(this.currentPrescan);
+					this.currentScanModule.add(this.currentPrescan);
 					if (!this.currentPrescan.getAbstractPrePostscanDevice()
 							.isValuePossible(this.currentPrescan.getValue())) {
 					}
@@ -1501,7 +1515,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_POSTSCAN_LOADING:
 			if (qName.equals("postscan")) {
 				if (this.currentPostscan.getAbstractPrePostscanDevice() != null) {
-					this.currentScanModul.add(this.currentPostscan);
+					this.currentScanModule.add(this.currentPostscan);
 					if (!this.currentPostscan.getAbstractPrePostscanDevice()
 							.isValuePossible(this.currentPostscan.getValue())) {
 						if (!this.currentPostscan.isReset()) {
@@ -1546,7 +1560,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_SMMOTOR_LOADING:
 			if (qName.equals("smaxis")) {
 				if (this.currentAxis.getAbstractDevice() != null) {
-					this.currentScanModul.add(this.currentAxis);
+					this.currentScanModule.add(this.currentAxis);
 					TypeValue tv = null;
 
 					if (this.currentAxis.getMotorAxis() != null) {
@@ -1862,7 +1876,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_SCANMODULE_DETECTOR_LOADING:
 			if (qName.equals("smchannel")) {
 				if (this.currentChannel.getAbstractDevice() != null) {
-					this.currentScanModul.add(this.currentChannel);
+					this.currentScanModule.add(this.currentChannel);
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
@@ -1893,7 +1907,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (qName.equals("positioning")) {
 				// nur wenn Achse des CurrentPositioning OK, wird es geladen!!
 				if (this.currentPositioning.getAbstractDevice() != null) {
-					this.currentScanModul.add(this.currentPositioning);
+					this.currentScanModule.add(this.currentPositioning);
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
@@ -2010,7 +2024,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_PLOT_LOADING:
 			if (qName.equals("plot")) {
-				this.currentScanModul.add(this.currentPlotWindow);
+				this.currentScanModule.add(this.currentPlotWindow);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;

@@ -1180,7 +1180,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData.horizontalAlignment = GridData.FILL;
 				confLabel.setLayoutData(gridData);
 				Label confText = new Label(chainShell,SWT.NONE);
-				if (displayChain.getScanModuleById(aktSM).isTriggerconfirm()) {
+				if (displayChain.getScanModuleById(aktSM).isTriggerconfirmaxis()) {
 					confText.setText(" YES ");
 				}
 				else {

@@ -57,7 +57,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	private double triggerdelay;
 	
 	// indicates whether a trigger should be confirmed by hand
-	private boolean triggerconfirm;
+	private boolean triggerconfirmaxis;
+	private boolean triggerconfirmchannel;
 	
 	// a list containing all prescans
 	private List<Prescan> prescans;
@@ -150,6 +151,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.type = "classic";
 		this.name = "";
 
+		this.triggerconfirmaxis = false;
+		this.triggerconfirmchannel = false;
+		
 		this.breakControlEventManager = new ControlEventManager(
 				this, this.breakEvents, ControlEventTypes.CONTROL_EVENT);
 		this.redoControlEventManager = new ControlEventManager(
@@ -515,19 +519,34 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @return whether trigger confirmation is enabled
 	 */
-	public boolean isTriggerconfirm() {
-		return triggerconfirm;
+	public boolean isTriggerconfirmaxis() {
+		return triggerconfirmaxis;
 	}
 
 	/**
 	 * Sets if trigger have to be confirmed by hand.
 	 * 
-	 * @param triggerconfirm
+	 * @param triggerconfirmaxis
 	 *            <code>true</code> to enable manual trigger, <code>false</code>
 	 *            otherwise
 	 */
-	public void setTriggerconfirm(final boolean triggerconfirm) {
-		this.triggerconfirm = triggerconfirm;
+	public void setTriggerconfirmaxis(final boolean triggerconfirmaxis) {
+		this.triggerconfirmaxis = triggerconfirmaxis;
+		updateListeners();
+	}
+
+	/**
+	 * @return the triggerconfirmchannel
+	 */
+	public boolean isTriggerconfirmchannel() {
+		return triggerconfirmchannel;
+	}
+
+	/**
+	 * @param triggerconfirmchannel the triggerconfirmchannel to set
+	 */
+	public void setTriggerconfirmchannel(boolean triggerconfirmchannel) {
+		this.triggerconfirmchannel = triggerconfirmchannel;
 		updateListeners();
 	}
 

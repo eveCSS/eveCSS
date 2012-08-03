@@ -106,12 +106,18 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	private TextDoubleVerifyListener settleTimeTextVerifyListener;
 	private SettleTimeTextModifiedListener settleTimeTextModifiedListener;
 	
-	private Button confirmTriggerCheckBox;
-	private ConfirmTriggerCheckBoxSelectionListener 
-			confirmTriggerCheckBoxSelectionListener;
+	private Button triggerConfirmAxisCheckBox;
+	private TriggerConfirmAxisCheckBoxSelectionListener 
+			triggerConfirmAxisCheckBoxSelectionListener;
+	
+	private Button triggerConfirmChannelCheckBox;
+	private TriggerConfirmChannelCheckBoxSelectionListener
+			triggerConfirmChannelCheckBoxSelectionListener;
 	
 	/** */
 	public CTabFolder eventsTabFolder;
+	
+	
 	private EventsTabFolderSelectionListener eventsTabFolderSelectionListener;
 	
 	private EventComposite pauseEventComposite;
@@ -331,18 +337,36 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		this.settleTimeTextControlDecoration.hide();
 		
 		// Trigger Confirm 
-		gridData = new GridData();
-		gridData.horizontalSpan = 3;
+		Label triggerLabel = new Label(this.generalComposite, SWT.NONE);
+		triggerLabel.setText("Trigger Confirm:");
+		triggerLabel.setLayoutData(new GridData());
 		
-		this.confirmTriggerCheckBox = new Button(this.generalComposite, 
+		Composite triggerCheckBoxes = new Composite(this.generalComposite,
+				SWT.NONE);
+		gridData = new GridData();
+		gridData.horizontalIndent = 7;
+		triggerCheckBoxes.setLayoutData(gridData);
+		triggerCheckBoxes.setLayout(new FillLayout(SWT.HORIZONTAL));
+		
+		this.triggerConfirmAxisCheckBox = new Button(triggerCheckBoxes, 
 												SWT.CHECK);
-		this.confirmTriggerCheckBox.setText("Confirm Trigger");
-		this.confirmTriggerCheckBox.setToolTipText("Mark to ask before trigger");
-		this.confirmTriggerCheckBox.setLayoutData(gridData);
-		this.confirmTriggerCheckBoxSelectionListener = 
-				new ConfirmTriggerCheckBoxSelectionListener();
-		this.confirmTriggerCheckBox.addSelectionListener(
-				confirmTriggerCheckBoxSelectionListener);
+		this.triggerConfirmAxisCheckBox.setText("Axes");
+		this.triggerConfirmAxisCheckBox
+				.setToolTipText("Mark to ask before axis trigger");
+		this.triggerConfirmAxisCheckBoxSelectionListener = 
+				new TriggerConfirmAxisCheckBoxSelectionListener();
+		this.triggerConfirmAxisCheckBox.addSelectionListener(
+				triggerConfirmAxisCheckBoxSelectionListener);
+		
+		this.triggerConfirmChannelCheckBox = new Button(triggerCheckBoxes, 
+												SWT.CHECK);
+		this.triggerConfirmChannelCheckBox.setText("Channels");
+		this.triggerConfirmChannelCheckBox
+				.setToolTipText("Mark to ask before channel trigger");
+		this.triggerConfirmChannelCheckBoxSelectionListener = 
+				new TriggerConfirmChannelCheckBoxSelectionListener();
+		this.triggerConfirmChannelCheckBox.addSelectionListener(
+				triggerConfirmChannelCheckBoxSelectionListener);
 		
 		this.itemGeneral = new ExpandItem(this.bar, SWT.NONE, 0);
 		itemGeneral.setText("General");
@@ -747,8 +771,8 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		this.triggerDelayText.addVerifyListener(triggerDelayTextVerifyListener);
 		this.settleTimeText.addModifyListener(settleTimeTextModifiedListener);
 		this.settleTimeText.addVerifyListener(settleTimeTextVerifyListener);
-		this.confirmTriggerCheckBox.addSelectionListener(
-				confirmTriggerCheckBoxSelectionListener);
+		this.triggerConfirmAxisCheckBox.addSelectionListener(
+				triggerConfirmAxisCheckBoxSelectionListener);
 		this.eventsTabFolder.addSelectionListener(
 				eventsTabFolderSelectionListener);
 		this.appendScheduleEventCheckBox.addSelectionListener(
@@ -768,8 +792,8 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 				triggerDelayTextModifiedListener);
 		this.settleTimeText.removeModifyListener(settleTimeTextModifiedListener);
 		this.settleTimeText.removeVerifyListener(settleTimeTextVerifyListener);
-		this.confirmTriggerCheckBox.removeSelectionListener(
-				confirmTriggerCheckBoxSelectionListener);
+		this.triggerConfirmAxisCheckBox.removeSelectionListener(
+				triggerConfirmAxisCheckBoxSelectionListener);
 		this.eventsTabFolder.removeSelectionListener(
 				eventsTabFolderSelectionListener);
 		this.appendScheduleEventCheckBox.removeSelectionListener(
@@ -818,8 +842,10 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 					: "");
 					
 			// set the check box for confirm trigger
-			this.confirmTriggerCheckBox.setSelection(
-					this.currentScanModule.isTriggerconfirm());
+			this.triggerConfirmAxisCheckBox.setSelection(
+					this.currentScanModule.isTriggerconfirmaxis());
+			this.triggerConfirmChannelCheckBox.setSelection(
+					this.currentScanModule.isTriggerconfirmchannel());
 			
 			// TODO CheckBox for ScheduleIncident Start or End
 			Event testEvent = new Event(currentScanModule.getChain().getId(), 
@@ -865,9 +891,9 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>confirmTriggerCheckBox</code>.
+	 * <code>confirmTriggerAxisCheckBox</code>.
 	 */
-	private class ConfirmTriggerCheckBoxSelectionListener implements 
+	private class TriggerConfirmAxisCheckBoxSelectionListener implements 
 					SelectionListener {
 		
 		/**
@@ -882,11 +908,38 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			currentScanModule.setTriggerconfirm(
-					confirmTriggerCheckBox.getSelection());
+			currentScanModule.setTriggerconfirmaxis(
+					triggerConfirmAxisCheckBox.getSelection());
 		}
 	}
 
+	/**
+	 * {@link org.eclipse.swt.events.SelectionListener} of
+	 * <code>confirmTriggerDetectorCheckBox</code>.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.5
+	 */
+	private class TriggerConfirmChannelCheckBoxSelectionListener implements 
+				SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			currentScanModule.setTriggerconfirmchannel(
+					triggerConfirmChannelCheckBox.getSelection());
+		}
+	}
+	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of
 	 * <code>eventsTabFolder</code>.
