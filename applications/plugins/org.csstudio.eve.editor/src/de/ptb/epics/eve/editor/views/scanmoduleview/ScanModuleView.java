@@ -338,7 +338,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		
 		// Trigger Confirm 
 		Label triggerLabel = new Label(this.generalComposite, SWT.NONE);
-		triggerLabel.setText("Trigger Confirm:");
+		triggerLabel.setText("Manual Trigger:");
 		triggerLabel.setLayoutData(new GridData());
 		
 		Composite triggerCheckBoxes = new Composite(this.generalComposite,
@@ -350,9 +350,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		
 		this.triggerConfirmAxisCheckBox = new Button(triggerCheckBoxes, 
 												SWT.CHECK);
-		this.triggerConfirmAxisCheckBox.setText("Axes");
-		this.triggerConfirmAxisCheckBox
-				.setToolTipText("Mark to ask before axis trigger");
+		this.triggerConfirmAxisCheckBox.setText("Motors");
 		this.triggerConfirmAxisCheckBoxSelectionListener = 
 				new TriggerConfirmAxisCheckBoxSelectionListener();
 		this.triggerConfirmAxisCheckBox.addSelectionListener(
@@ -360,9 +358,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		
 		this.triggerConfirmChannelCheckBox = new Button(triggerCheckBoxes, 
 												SWT.CHECK);
-		this.triggerConfirmChannelCheckBox.setText("Channels");
-		this.triggerConfirmChannelCheckBox
-				.setToolTipText("Mark to ask before channel trigger");
+		this.triggerConfirmChannelCheckBox.setText("Detectors");
 		this.triggerConfirmChannelCheckBoxSelectionListener = 
 				new TriggerConfirmChannelCheckBoxSelectionListener();
 		this.triggerConfirmChannelCheckBox.addSelectionListener(
