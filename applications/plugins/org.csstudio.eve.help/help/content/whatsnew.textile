@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.5
+
+* [Feature] Added help "reference sheet":/help/topic/de.ptb.epics.eve.help/help/content/reference/keyboardshortcuts.html for (eclipse) keyboard shortcuts
+
 h2(eveTopic). Version 1.4
 
 * [Bug Fix] Engine name, port and location preference entries are now viewer specific (as expected)

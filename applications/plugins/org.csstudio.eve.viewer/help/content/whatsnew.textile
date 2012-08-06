@@ -1,5 +1,11 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.5
+
+* [Feature] detectors and channels are now stoppable (via @Device Inspector@)
+
+* [Bug Fix] removed a bug where the precision of the plot table entries was incorrect
+
 h2(eveTopic). Version 1.4
 
 * [Feature] new filter dialog for the @Messages@ view

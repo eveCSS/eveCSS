@@ -1,5 +1,21 @@
 h1(eveTopic). What's New ?
 
+h2(eveTopic). Version 1.5
+
+* @ScanModuleView@ Actions tables
+** [Feature] added "Add All" context menu entry
+** [Feature] added delete button for table entries
+** [Feature] name column of (Axes and Channels) table is now sortable[2]
+* [Feature] introduced Channel Access
+** [Feature] show current motor position and limits in @MotorAxisView@
+** [Feature] Axis inputs are validated with limits
+** [Feature] discrete motor positions are retrieved (if available)[1]
+
+* [Bug Fix] revised manual trigger behavior: manual triggering is now available for axes and channels via the @ScanModuleView@
+* [Bug Fix] the number of measurements per motor position is now configurable
+* [Bug Fix] removed a bug occurred while loading an __scml__ file containing a plugin which doesn't exist in the device definition file
+* [Bug Fix] fixed an inconsistent view state after the last open editor was closed
+
 h2(eveTopic). Version 1.4
 
 * [Feature] Normalize Channel for Detector Channels
@@ -20,3 +36,9 @@ h2(eveTopic). Version 1.2
 h2(eveTopic). Version 1.1
 
 * [Feature] Fill options "Save all Motor Positions" and "Save all Detector Values"
+
+<hr/>
+
+fn1. positions retrieved from the "device description":/help/topic/de.ptb.epics.eve.help/help/content/concepts/devicedescription.html file are overridden
+
+fn2. sort state can be toggled (A&rarr;Z, Z&rarr;A, NONE) and is saved in the workspace
