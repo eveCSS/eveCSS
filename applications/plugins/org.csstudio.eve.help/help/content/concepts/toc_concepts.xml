@@ -4,6 +4,8 @@
 <toc label="Concepts">
    <topic href="help/content/concepts/devicedescription.html" label="Device Description">
    </topic>
+   <topic href="help/content/concepts/pvupdateinterval.html" label="PV Update Interval">
+   </topic>
    <topic href="help/content/concepts/xmlmsi.html" label="The xmlmsi Tool">
    </topic>
 

@@ -2,6 +2,7 @@ h1(eveTopic). Scan Module Properties
 
 table(eveRefTable).
 |_. Property |_. Description|_. Domain|
+| __No of Measurements__ | number of measurements taken per motor position|positive integer|
 | __Trigger delay__ | delay time before trigger| float|
 | __Settletime__ | delay time after prescan| float|
-| __Confirm Trigger__ | indicates whether triggering should be confirmed| {true, false}|
+| __Manual Trigger__ | indicates whether triggering (axes/channels) should be confirmed| boolean|
