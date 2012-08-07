@@ -95,12 +95,6 @@ public class ScanDescription implements IModelUpdateProvider,
 	public boolean add(final Chain chain) {
 		chain.setScanDescription(this);
 		boolean returnValue = chains.add(chain);
-		// set a save plugin as default
-		for(PlugIn p : this.getMeasuringStation().getPlugins()) {
-			if(p.getType().equals(PluginTypes.SAVE)) {
-				chain.getSavePluginController().setPlugin(p);
-			}
-		}
 		chain.addModelUpdateListener(this);
 		updateListeners();
 		return returnValue;
