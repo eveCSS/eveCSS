@@ -310,6 +310,7 @@
       <element name="id" type="tns:identifier"></element>
       <element name="read" type="tns:access"></element>
       <element name="unit" type="tns:unit" minOccurs="0"></element>
+      <element name="trigger" type="tns:access" minOccurs="0"></element>
       <element name="stop" type="tns:access" minOccurs="0"></element>
       <element name="status" type="tns:access" minOccurs="0"></element>
       <element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"></element>
@@ -369,7 +370,6 @@
       <element name="minimum" type="double" minOccurs="0"></element>
       <element name="maxattempts" type="nonNegativeInteger" minOccurs="0"></element>
       <element name="normalize_id" type="tns:identifier" minOccurs="0"></element>
-      <element name="confirmtrigger" type="boolean" minOccurs="0"></element>
       <element name="sendreadyevent" type="boolean" minOccurs="0"></element>
       <element name="redoevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
     </sequence>
