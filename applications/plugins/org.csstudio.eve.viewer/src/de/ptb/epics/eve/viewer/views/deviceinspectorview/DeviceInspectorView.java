@@ -52,8 +52,8 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.Device;
+import de.ptb.epics.eve.util.jface.SelectionProviderWrapper;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.SelectionProviderWrapper;
 
 /**
  * <code>DeviceInspectorView</code> presents a selection of devices separated in 

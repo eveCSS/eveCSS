@@ -48,7 +48,6 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventType
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.SelectionProviderWrapper;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.graphical.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
@@ -60,6 +59,7 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.plotcomposite.PlotComposite;
 import de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.PositioningComposite;
 import de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.PostscanComposite;
 import de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.PrescanComposite;
+import de.ptb.epics.eve.util.jface.SelectionProviderWrapper;
 import de.ptb.epics.eve.util.swt.PositiveIntegerVerifyListener;
 
 /**

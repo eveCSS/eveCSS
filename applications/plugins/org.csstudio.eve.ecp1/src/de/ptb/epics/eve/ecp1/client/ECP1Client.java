@@ -228,7 +228,12 @@ public class ECP1Client {
 			throws IOException {
 		this.loginName = loginName;
 		this.socket = new Socket();
-		this.socket.connect(socketAddress);
+		try {
+			this.socket.connect(socketAddress);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		this.inQueue.clear();
 		this.outQueue.clear();

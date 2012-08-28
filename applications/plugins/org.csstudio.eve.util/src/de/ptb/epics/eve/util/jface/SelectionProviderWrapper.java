@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer;
+package de.ptb.epics.eve.util.jface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +106,12 @@ public class SelectionProviderWrapper implements ISelectionProvider {
 				for(ISelectionChangedListener iscl : selectionChangedListeners) {
 					this.selectionProvider.addSelectionChangedListener(iscl);
 				}
+				setSelection(selectionProvider.getSelection());
+			} else {
+				setSelection(emptySelection);
+			}
+		} else {
+			if(this.selectionProvider != null) {
 				setSelection(selectionProvider.getSelection());
 			} else {
 				setSelection(emptySelection);
