@@ -696,11 +696,21 @@ public class CommonTableElement {
 			} else if (device instanceof DetectorChannel) {
 				DetectorChannel ch = (DetectorChannel) device;
 				if (ch.getStop().getValue() != null) {
-					stopPv.setValue(Integer.parseInt(ch.getStop().getValue()
-							.getDefaultValue()));
+					try {
+						stopPv.setValue(Integer.parseInt(ch.getStop().getValue()
+								.getDefaultValue()));
+					} catch (NumberFormatException e) {
+						stopPv.setValue(ch.getStop().getValue()
+								.getDefaultValue());
+					}
 				} else if (ch.getDetector().getStop().getValue() != null) {
-					stopPv.setValue(Integer.parseInt(ch.getDetector()
-							.getStop().getValue().getDefaultValue()));
+					try {
+						stopPv.setValue(Integer.parseInt(ch.getDetector()
+								.getStop().getValue().getDefaultValue()));
+					} catch (NumberFormatException e) {
+						stopPv.setValue(ch.getDetector().getStop().getValue()
+								.getDefaultValue());
+					}
 				}
 			}
 		}
