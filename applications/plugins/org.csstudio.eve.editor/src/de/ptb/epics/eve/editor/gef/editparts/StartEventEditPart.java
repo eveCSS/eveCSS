@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.graphical.editparts;
+package de.ptb.epics.eve.editor.gef.editparts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,23 +11,22 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import de.ptb.epics.eve.data.scandescription.StartEvent;
-import de.ptb.epics.eve.editor.graphical.editparts.figures.EventFigure;
+import de.ptb.epics.eve.editor.gef.figures.StartEventFigure;
 
 /**
- * <code>EventEditPart</code>
- * 
- * @author ?
  * @author Marcus Michalsky
+ * @since 1.6
  */
-public class EventEditPart extends AbstractGraphicalEditPart implements NodeEditPart {
+public class StartEventEditPart extends AbstractGraphicalEditPart implements
+		NodeEditPart {
 
 	/**
-	 * Constructs an <code>EventEditPart</code>
+	 * Constructor.
 	 * 
-	 * @param startEvent the start event
+	 * @param event the model element to set
 	 */
-	public EventEditPart(final StartEvent startEvent) {
-		this.setModel(startEvent);
+	public StartEventEditPart(StartEvent event) {
+		this.setModel(event);
 	}
 	
 	/**
@@ -35,14 +34,14 @@ public class EventEditPart extends AbstractGraphicalEditPart implements NodeEdit
 	 */
 	@Override
 	protected IFigure createFigure() {
-		return new EventFigure(((StartEvent)this.getModel()).getEvent().getID());
+		return new StartEventFigure(this.getModel().getEvent().getID());
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns the model element.
 	 */
-	@Override
-	protected void createEditPolicies() {
+	public StartEvent getModel() {
+		return (StartEvent)super.getModel();
 	}
 	
 	/**
@@ -58,14 +57,21 @@ public class EventEditPart extends AbstractGraphicalEditPart implements NodeEdit
 		}
 		return sourceList;
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void createEditPolicies() {
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(
 									final ConnectionEditPart connection) {
-		return ((EventFigure)this.figure).getSourceAnchor();
+		return ((StartEventFigure)this.figure).getSourceAnchor();
 	}
 
 	/**
@@ -73,7 +79,7 @@ public class EventEditPart extends AbstractGraphicalEditPart implements NodeEdit
 	 */
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(final Request request) {
-		return ((EventFigure)this.figure).getSourceAnchor();
+		return ((StartEventFigure)this.figure).getSourceAnchor();
 	}
 
 	/**

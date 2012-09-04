@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.graphical.editparts;
+package de.ptb.epics.eve.editor.gef.editparts;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolygonDecoration;
@@ -9,22 +9,20 @@ import org.eclipse.swt.SWT;
 import de.ptb.epics.eve.data.scandescription.Connector;
 
 /**
- * <code>EventToScanModulConnectionEditPart</code>
- * 
- * @author ?
  * @author Marcus Michalsky
+ * @since 1.6
  */
-public class EventToScanModulConnectionEditPart extends AbstractConnectionEditPart {
+public class ConnectionEditPart extends AbstractConnectionEditPart {
 
 	/**
-	 * Constructs an <code>EventToScanModulConnectionEditPart</code>.
+	 * Constructor.
 	 * 
-	 * @param connector the connector between scan module and event
+	 * @param connector the model to set
 	 */
-	public EventToScanModulConnectionEditPart(final Connector connector) {
+	public ConnectionEditPart(Connector connector) {
 		this.setModel(connector);
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -32,9 +30,9 @@ public class EventToScanModulConnectionEditPart extends AbstractConnectionEditPa
 	protected IFigure createFigure() {
 		PolylineConnection connection = new PolylineConnection();
 		PolygonDecoration decoration = new PolygonDecoration();
-	    decoration.setTemplate(PolygonDecoration.TRIANGLE_TIP);
-	    connection.setTargetDecoration(decoration);
-	    connection.setAntialias(SWT.ON);
+		decoration.setTemplate(PolygonDecoration.TRIANGLE_TIP);
+		connection.setTargetDecoration(decoration);
+		connection.setAntialias(SWT.ON);
 		return connection;
 	}
 	

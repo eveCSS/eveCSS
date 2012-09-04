@@ -1,24 +1,20 @@
-package de.ptb.epics.eve.editor.graphical.editparts.figures;
+package de.ptb.epics.eve.editor.gef.figures;
 
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * <code>ScanDescriptionFigure</code>
- * 
- * @author ?
  * @author Marcus Michalsky
+ * @since 1.6
  */
-public class ScanDescriptionFigure extends Figure  {
-
+public class ChainFigure extends Figure {
+	
 	/**
-	 * Constructs a <code>ScanDescriptionFigure</code>.
+	 * Constructor.
 	 */
-	public ScanDescriptionFigure() {
-		this.setLayoutManager(new XYLayout());
-		this.setBounds(new Rectangle(0,0,1,1));
+	public ChainFigure() {
+		this.setBounds(new Rectangle(0, 0, 1, 1));
 	}
 	
 	/**

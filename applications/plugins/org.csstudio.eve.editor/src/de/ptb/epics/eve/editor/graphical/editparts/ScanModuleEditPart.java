@@ -24,22 +24,12 @@ import de.ptb.epics.eve.editor.graphical.editparts.figures.ScanModuleFigure;
  * @author ?
  * @author Marcus Michalsky
  */
-public class ScanModuleEditPart extends AbstractGraphicalEditPart 
-									implements NodeEditPart {
+public class ScanModuleEditPart extends AbstractGraphicalEditPart {
 
 	private static Logger logger = 
 			Logger.getLogger(ScanModuleEditPart.class.getName());
 	
 	private ScanModuleFigureCoordinateListener scanModuleFigureCoordinateListener;
-	
-	/**
-	 * Constructs a <code>ScanModulEditPart</code>.
-	 * 
-	 * @param scanModule the scan module
-	 */
-	public ScanModuleEditPart(final ScanModule scanModule) {
-		this.setModel(scanModule);
-	}
 
 	/**
 	 * TODO remove: Redmine #168
@@ -158,31 +148,6 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 	// ************************************************************************
 	// ********* Methods inherited from AbstractGraphicalEditPart *************
 	// ************************************************************************
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected IFigure createFigure() {
-		final ScanModule scanModule = (ScanModule)this.getModel();
-		ScanModuleFigure scanModuleFigure = 
-			new ScanModuleFigure(scanModule.getName(), 
-								scanModule.getX(), 
-								scanModule.getY());
-		scanModuleFigureCoordinateListener = 
-			new ScanModuleFigureCoordinateListener();
-		scanModuleFigure.addCoordinateListener(
-				scanModuleFigureCoordinateListener);
-		return scanModuleFigure;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void createEditPolicies() {
-		// TODO Redmine Bug #168
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -232,79 +197,6 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart
 		((ScanModuleFigure)this.figure).repaint();
 		
 		super.refresh();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected List<?> getModelSourceConnections() {
-		final List<Object> sourceList = new ArrayList<Object>();
-		final ScanModule scanModul = (ScanModule)this.getModel();
-		
-		if(scanModul.getAppended() != null) {
-			sourceList.add(scanModul.getAppended());
-		}
-		if(scanModul.getNested() != null) {
-			sourceList.add(scanModul.getNested());
-		}
-		return sourceList;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected List<?> getModelTargetConnections() {
-		final List<Object> sourceList = new ArrayList<Object>();
-		final ScanModule scanModul = (ScanModule)this.getModel();
-		if(scanModul.getParent() != null) {
-			sourceList.add(scanModul.getParent());
-		}
-		return sourceList;
-	}
-
-	// ************************************************************************
-	// ****************** Methods inherited from NodeEditPart *****************
-	// ************************************************************************	
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ConnectionAnchor getSourceConnectionAnchor(
-										final ConnectionEditPart connection) {
-		final ScanModule scanModul = (ScanModule)this.getModel();
-		if(connection.getModel() == scanModul.getAppended()) {
-			return ((ScanModuleFigure)this.figure).getAppendedAnchor();
-		} else {
-			return ((ScanModuleFigure)this.figure).getNestedAnchor();
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ConnectionAnchor getSourceConnectionAnchor(final Request request) {
-		return new ChopboxAnchor(this.getFigure());
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ConnectionAnchor getTargetConnectionAnchor(
-										final ConnectionEditPart connection) {
-		return ((ScanModuleFigure)this.figure).getTargetAnchor();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ConnectionAnchor getTargetConnectionAnchor(final Request request) {
-		return new ChopboxAnchor(this.getFigure());
 	}
 	
 	// ************************************************************************

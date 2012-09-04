@@ -137,7 +137,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 				getLayer(ScalableRootEditPart.PRIMARY_LAYER).
 				setLayoutManager(new XYLayout());
 		
-		this.viewer.setEditPartFactory(new GraphicalEditorEditPartFactory());
+		// this.viewer.setEditPartFactory(new GraphicalEditorEditPartFactory());
 		
 		this.viewer.setContents(this.scanDescription);
 		

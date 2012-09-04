@@ -13,11 +13,11 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="de.ptb.epics.eve.editor.graphical.GraphicalEditor"
+            class="de.ptb.epics.eve.editor.gef.ScanDescriptionEditor"
             default="true"
             extensions="scml"
             filenames="*.scml"
-            id="de.ptb.epics.eve.editor.graphical.GraphicalEditor"
+            id="de.ptb.epics.eve.editor.gef.GraphicalEditor"
             name="%editor.name">
       </editor>
    </extension>
