@@ -26,9 +26,6 @@ import de.ptb.epics.eve.editor.graphical.editparts.figures.ScanModuleFigure;
  */
 public class ScanModuleEditPart extends AbstractGraphicalEditPart {
 
-	private static Logger logger = 
-			Logger.getLogger(ScanModuleEditPart.class.getName());
-	
 	private ScanModuleFigureCoordinateListener scanModuleFigureCoordinateListener;
 
 	/**
@@ -148,28 +145,6 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart {
 	// ************************************************************************
 	// ********* Methods inherited from AbstractGraphicalEditPart *************
 	// ************************************************************************
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setFocus(final boolean focus) {
-		if (this.figure != null) {
-			((ScanModuleFigure)this.figure).setActive(focus);
-		}
-		logger.debug("Scan Module coords : x = " + 
-					((ScanModule)getModel()).getX() + " , y = " + 
-					((ScanModule)getModel()).getY());
-
-		logger.debug("Scan Module Figure coords : x = " + 
-					getFigure().getClientArea().x + " , y = " +
-					getFigure().getClientArea().y);
-
-		if (focus) {
-			this.getViewer().select(this);
-		}
-		super.setFocus(true);
-	}
 	
 	/**
 	 * {@inheritDoc}

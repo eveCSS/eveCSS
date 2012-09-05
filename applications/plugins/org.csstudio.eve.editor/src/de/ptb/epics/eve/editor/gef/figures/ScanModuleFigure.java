@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.editor.gef.figures;
 
+import org.apache.log4j.Logger;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
@@ -18,6 +19,9 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ScanModuleFigure extends Figure {
 
+	private static Logger logger = Logger.getLogger(ScanModuleFigure.class
+			.getName());
+	
 	private String name;
 	private int x;
 	private int y;
@@ -48,13 +52,12 @@ public class ScanModuleFigure extends Figure {
 		this.setBackgroundColor(ColorConstants.white);
 		this.setOpaque(true);
 		this.setSize(70, 30);
-		this.setLocation(new Point(x, y));
+		this.setLocation(new Point(this.x, this.y));
 		
 		// set anchor points
 		Rectangle rect = this.getBounds();
 		this.targetAnchor = new XYAnchor(new Point(rect.x, rect.y + rect.height
 				/ 2));
-
 		this.appendedAnchor = new XYAnchor(new Point(rect.x + rect.width,
 				rect.y + rect.height / 2));
 		this.nestedAnchor = new XYAnchor(new Point(rect.x + rect.width / 2,
@@ -87,6 +90,7 @@ public class ScanModuleFigure extends Figure {
 	 */
 	public void setSelected(boolean selected) {
 		this.selected_primary = selected;
+		this.repaint();
 	}
 
 	/**
@@ -171,6 +175,10 @@ public class ScanModuleFigure extends Figure {
 		graphics.setClip(oldClipping);
 		// free
 		path.dispose();
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug("painted ScanModule: " + this.name);
+		}
 	}
 	
 	/**

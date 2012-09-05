@@ -487,6 +487,15 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.gef.GraphicalEditor?after=additions">
+         <command
+               commandId="de.ptb.epics.eve.editor.command.handover"
+               icon="icons/alt_launcher.ico"
+               label="test"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.core.expressions.definitions">

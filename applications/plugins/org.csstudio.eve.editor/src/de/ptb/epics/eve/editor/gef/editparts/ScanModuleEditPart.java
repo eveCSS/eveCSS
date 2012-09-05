@@ -8,11 +8,9 @@ import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.gef.figures.ScanModuleFigure;
@@ -55,10 +53,18 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	 */
 	@Override
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE,
-				new NonResizableEditPolicy());
 	}
 
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void fireSelectionChanged() {
+		((ScanModuleFigure) this.getFigure())
+				.setSelected(this.getSelected() == EditPart.SELECTED_PRIMARY);
+		super.fireSelectionChanged();
+	}
 	
 	/**
 	 * {@inheritDoc}

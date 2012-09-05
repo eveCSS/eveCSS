@@ -12,9 +12,12 @@ import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.xml.sax.SAXException;
@@ -130,6 +133,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette {
 		viewer.setEditPartFactory(new ScanDescriptionEditorEditPartFactory());
 		// construct layered view for displaying FreeformFigures (zoomable)
 		viewer.setRootEditPart(new ScalableFreeformRootEditPart());
+		viewer.setSelectionManager(new ModifiedSelectionManager(viewer));
 		super.configureGraphicalViewer();
 	}
 	
@@ -141,6 +145,10 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette {
 		super.initializeGraphicalViewer();
 		this.getGraphicalViewer().setContents(this.scanDescription);
 		this.getSite().setSelectionProvider(this.getGraphicalViewer());
+		MenuManager menuManager = new MenuManager();
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		this.getSite().registerContextMenu(menuManager,
+				this.getGraphicalViewer()); // TODO does not work (also plugin xml)
 	}
 
 	/**
