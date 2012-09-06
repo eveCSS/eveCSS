@@ -37,7 +37,7 @@ public class ScanDescriptionEditPart extends AbstractGraphicalEditPart {
 	@Override
 	protected IFigure createFigure() {
 		Figure figure = new FreeformLayer();
-		figure.setBorder(new MarginBorder(3));
+		figure.setBorder(new MarginBorder(0));
 		figure.setLayoutManager(new FreeformLayout());
 		return figure;
 	}

@@ -43,6 +43,7 @@ public class ScanDescriptionEditorEditPartFactory implements EditPartFactory {
 				return new StartEventEditPart((StartEvent)model);
 			}
 		}
-		return null;
+		throw new RuntimeException("Can't create part for model element: " + 
+				model != null ? model.getClass().getName() : null);
 	}
 }

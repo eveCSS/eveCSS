@@ -25,6 +25,8 @@ public class ScanModuleFigure extends Figure {
 	private String name;
 	private int x;
 	private int y;
+	private int width;
+	private int height;
 	
 	private boolean selected_primary;
 	private boolean contains_errors;
@@ -41,17 +43,19 @@ public class ScanModuleFigure extends Figure {
 	 * @param x the x coordinate of its initial position
 	 * @param y the y coordinate of its initial position
 	 */
-	public ScanModuleFigure(String name, int x, int y) {
+	public ScanModuleFigure(String name, int x, int y, int width, int height) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
+		this.width = width;
+		this.height = height;
 		
 		this.selected_primary = false;
 		this.contains_errors = false;
 		
 		this.setBackgroundColor(ColorConstants.white);
 		this.setOpaque(true);
-		this.setSize(70, 30);
+		this.setSize(this.width, this.height);
 		this.setLocation(new Point(this.x, this.y));
 		
 		// set anchor points

@@ -2,11 +2,14 @@ package de.ptb.epics.eve.editor.gef.editparts;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.editor.gef.editpolicies.ChainLayoutEditPolicy;
 import de.ptb.epics.eve.editor.gef.figures.ChainFigure;
 
 /**
@@ -15,6 +18,9 @@ import de.ptb.epics.eve.editor.gef.figures.ChainFigure;
  */
 public class ChainEditPart extends AbstractGraphicalEditPart {
 
+	private static Logger logger = Logger.getLogger(ChainEditPart.class
+			.getName());
+	
 	/**
 	 * Constructor.
 	 * 
@@ -24,13 +30,12 @@ public class ChainEditPart extends AbstractGraphicalEditPart {
 		this.setModel(chain);
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected IFigure createFigure() {
 		return new ChainFigure();
-		// TODO Auto-generated method stub  old: return new ChainFigure(((Chain)this.getModel()).getId());	
 	}
 
 	/**
@@ -53,5 +58,7 @@ public class ChainEditPart extends AbstractGraphicalEditPart {
 	 */
 	@Override
 	protected void createEditPolicies() {
+		logger.debug("createEditPolicies");
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ChainLayoutEditPolicy());
 	}
 }

@@ -6,34 +6,44 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.FileStoreEditorInput;
+import org.eclipse.ui.progress.IProgressService;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
+import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.dialogs.lostdevices.LostDevicesDialog;
+import de.ptb.epics.eve.editor.jobs.file.Save;
 
 /**
  * 
  * @author Marcus Michalsky
  * @since 1.6
  */
-public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette {
+public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
+		implements IModelUpdateListener {
 
 	private static Logger logger = Logger.getLogger(ScanDescriptionEditor.class
 			.getName());
@@ -50,16 +60,13 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette {
 		setEditDomain(new DefaultEditDomain(this));
 	}
 	
-	/* ********************************************************************* */
-	/* ****************************** EditorPart *************************** */
-	/* ********************************************************************* */
-	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
+		logger.trace("init");
 		this.setSite(site);
 		this.setInput(input);
 		this.setPartName(input.getName());
@@ -96,7 +103,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette {
 				this.dirty = true;
 			}
 			
-			// TODO ??? this.scanDescription.addModelUpdateListener(this);
+			this.scanDescription.addModelUpdateListener(this);
 		} catch(final ParserConfigurationException e) {
 			logger.error(e.getMessage(), e);
 		} catch(final SAXException e) {
@@ -113,23 +120,162 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette {
 	 */
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		// TODO Auto-generated method stub
-
+		if(!isSaveAllowed()) {
+			return;
+		}
+		try {
+			monitor.beginTask("Saving Scan Description", 3);
+			monitor.subTask("determine file name");
+			String saveFileName = ((FileStoreEditorInput)this.getEditorInput()).
+				getURI().getPath().toString();
+			monitor.worked(1);
+			monitor.subTask("creating save routine");
+			Job saveJob = new Save("Save", saveFileName, this.scanDescription, this);
+			monitor.worked(1);
+			monitor.subTask("running save routine");
+			saveJob.setUser(true);
+			saveJob.schedule();
+			monitor.worked(1);
+		} finally {
+			monitor.done();
+		}
 	}
-	
-	/* ********************************************************************* */
-	/* ********************** end of: EditorPart *************************** */
-	/* ********************************************************************* */
-	
-	/* ********************************************************************* */
-	/* ****************** GraphicalEditor(WithFlyoutPalette) *************** */
-	/* ********************************************************************* */
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
+	public void doSaveAs() {
+		if(!isSaveAllowed()) {
+			return;
+		}
+		// show dialog preconfigured with path of "last" file name
+		final FileDialog fileDialog = 
+				new FileDialog(this.getEditorSite().getShell(), SWT.SAVE);
+		fileDialog.setFilterPath(new File(((FileStoreEditorInput)
+				this.getEditorInput()).getURI()).getParent());
+		final String dialogName = fileDialog.open();
+		
+		// file path where the file will be saved
+		String saveFileName;
+		
+		// check dialog result
+		if(dialogName != null) {
+			// adjust filename to ".scml"
+			final int lastPoint = dialogName.lastIndexOf(".");
+			final int lastSep = dialogName.lastIndexOf("/");
+			if ((lastPoint > 0) && (lastPoint > lastSep)) {
+				saveFileName = dialogName.substring(0, lastPoint) + ".scml";
+			} else {
+				saveFileName = dialogName + ".scml";
+			}
+		} else {
+			// user pressed "cancel" -> do nothing
+			return;
+		}
+		
+		// create the save job
+		Job saveJob = new Save(
+				"Save As", saveFileName, this.scanDescription, this);
+		
+		// run the save job with a progress dialog
+		IProgressService service = (IProgressService) getSite().getService(
+				IProgressService.class);
+		service.showInDialog(getSite().getShell(), saveJob);
+		saveJob.setUser(true);
+		saveJob.schedule();
+	}
+	
+	/**
+	 * Called by the save as job to update the input.
+	 * 
+	 * @param filename the new file name
+	 */
+	public void resetEditorState(String filename) {
+		logger.debug("reset editor state");
+		
+		final IFileStore fileStore = 
+			EFS.getLocalFileSystem().getStore(new Path(filename));
+		final FileStoreEditorInput fileStoreEditorInput = 
+			new FileStoreEditorInput(fileStore);
+		this.setInput(fileStoreEditorInput);
+		this.firePropertyChange(PROP_INPUT);
+		
+		this.setPartName(fileStoreEditorInput.getName());
+		this.firePropertyChange(PROP_TITLE);
+		
+		this.dirty = false;
+		this.firePropertyChange(PROP_DIRTY);
+	}
+	
+	/*
+	 * helper for save and save as to determine whether saving is allowed.
+	 * returns true if saving is allowed, false otherwise
+	 */
+	private boolean isSaveAllowed() {
+		// check for errors in the model
+		// if present -> inform the user
+		if(scanDescription.getModelErrors().size() > 0)	{
+			MessageDialog.openError(
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+				"Save Error", 
+				"Scandescription could not be saved! " +
+				"Consult the Error View for more Information.");
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isDirty() {
+		return this.dirty;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isSaveAsAllowed() {
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isSaveOnCloseNeeded() {
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() {
+		getSite().setSelectionProvider(null);
+		this.scanDescription.removeModelUpdateListener(this);
+		super.dispose();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
+		logger.debug("update event");
+		this.dirty = true;
+		this.firePropertyChange(PROP_DIRTY);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	protected void configureGraphicalViewer() {
+		logger.trace("configureGraphicalViewer");
 		GraphicalViewer viewer = this.getGraphicalViewer();
 		viewer.setEditPartFactory(new ScanDescriptionEditorEditPartFactory());
 		// construct layered view for displaying FreeformFigures (zoomable)
@@ -144,6 +290,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette {
 	 */
 	@Override
 	protected void initializeGraphicalViewer() {
+		logger.trace("initializeGraphicalViewer");
 		super.initializeGraphicalViewer();
 		this.getGraphicalViewer().setContents(this.scanDescription);
 		this.getSite().setSelectionProvider(this.getGraphicalViewer());
@@ -157,8 +304,4 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	/* ********************************************************************* */
-	/* ************ end of: GraphicalEditor(WithFlyoutPalette) ************* */
-	/* ********************************************************************* */
 }

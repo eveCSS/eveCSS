@@ -105,6 +105,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	// the y position of the scan module in the graphical editor
 	private int y;
 	
+	private int width;
+	private int height;
+	
 	// the control event manager that controls the break events
 	private ControlEventManager breakControlEventManager;
 	
@@ -172,6 +175,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		
 		this.positionings = new ArrayList<Positioning>();
 
+		this.width = 70;
+		this.height = 30;
+		
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
@@ -656,7 +662,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param x The x-position in the graphical diagramm.
 	 */
 	public void setX(final int x) {
-		this.x = x;
+		this.propertyChangeSupport.firePropertyChange("x", this.x, this.x = x);
 		updateListeners();
 	}
 
@@ -675,8 +681,22 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param y The y-position in the graphical diagram.
 	 */
 	public void setY(final int y) {
-		this.y = y;
+		this.propertyChangeSupport.firePropertyChange("y", this.y, this.y = y);
 		updateListeners();
+	}
+
+	/**
+	 * @return the width
+	 */
+	public int getWidth() {
+		return width;
+	}
+
+	/**
+	 * @return the height
+	 */
+	public int getHeight() {
+		return height;
 	}
 
 	/**

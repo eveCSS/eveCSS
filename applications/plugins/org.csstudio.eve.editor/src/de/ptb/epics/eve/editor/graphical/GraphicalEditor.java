@@ -67,36 +67,15 @@ import de.ptb.epics.eve.editor.jobs.filloptions.SaveAllAxisPositions;
  */
 public class GraphicalEditor extends EditorPart implements IModelUpdateListener {
 
-	// logging
-	private static Logger logger = 
-			Logger.getLogger(GraphicalEditor.class.getName());
-
-	// a graphical view of the model (hosts the figures) (Draw2d FigureCanvas)
-	private ScrollingGraphicalViewer viewer;
-	
 	// the currently loaded scan description
 	private ScanDescription scanDescription;
-	
-	/*
-	 * reminder of the currently selected scan module
-	 * decides what is shown in the scan module view
-	 */
-	private ScanModule selectedScanModule = null;
-	
-	/*
-	 * reminder of the currently selected edit part
-	 * if it is a scan module, it is selected (colored)
-	 */
-	private EditPart selectedEditPart;
 	
 	/*
 	 * reminder of the recently right-clicked edit part
 	 * used by the actions of the context menu
 	 */
 	private EditPart rightClickEditPart;
-	
-	private EditDomain editDomain = new EditDomain();
-	
+
 	// the context menu of the editor (right-click)
 	private Menu menu;
 	
@@ -120,30 +99,9 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		logger.debug("create part control");
-		
-		this.viewer = new ScrollingGraphicalViewer();
-		this.viewer.createControl(parent);
-		this.editDomain.addViewer(this.viewer);
-
 		this.viewer.getControl().addMouseListener(new ViewerMouseListener());
 
-		// configure GraphicalViewer
-		this.viewer.getControl().setBackground(ColorConstants.listBackground);
-		
-		((ScalableRootEditPart)this.viewer.getRootEditPart()).
-				getLayer(ScalableRootEditPart.PRIMARY_LAYER).
-				setLayoutManager(new XYLayout());
-		
-		// this.viewer.setEditPartFactory(new GraphicalEditorEditPartFactory());
-		
-		this.viewer.setContents(this.scanDescription);
-		
 		menu = createContextMenu();
-		
-		getSite().setSelectionProvider(viewer);
-		
-		updateViews();
 	}
 
 	/*
@@ -193,54 +151,6 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 		return menu;
 	}
 	
-	/*
-	 * 
-	 */
-	private void updateScanModuleView() {
-		refreshAllEditParts(viewer.getRootEditPart());
-		logger.debug("selectedScanModule: " + selectedScanModule);
-	}
-	
-	/*
-	 * wrapper to update all views
-	 */
-	private void updateViews() {
-		updateScanModuleView();
-	}
-	
-	/*
-	 * used to select a scan module (and deselect the old one) by 
-	 * updating all necessary references
-	 * 
-	 * @param part the corresponding edit part of the scan module that should
-	 * 		  be selected
-	 */
-	private void selectScanModule(ScanModuleEditPart part) {
-		// if a scan module was previously selected -> deselect it
-		if(selectedEditPart instanceof ScanModuleEditPart) {
-			((ScanModuleEditPart)selectedEditPart).setFocus(false);
-		}
-		
-		if(part != null) {
-			// remember the selected scan module
-			selectedEditPart = part;
-			
-			// update the model to the currently selected module 
-			selectedScanModule = (ScanModule)selectedEditPart.getModel();
-			
-			// set the focus (to select/color it)
-			((ScanModuleEditPart)selectedEditPart).setFocus(true);
-		} else {
-			// reset selection
-			selectedEditPart = null;
-			// reset model
-			selectedScanModule = null;
-		}
-		
-		// tell the views about the changes
-		updateViews();
-	}
-	
 	/**
 	 * 
 	 * @return
@@ -248,256 +158,7 @@ public class GraphicalEditor extends EditorPart implements IModelUpdateListener 
 	public ScanDescription getContent() {
 		return this.scanDescription;
 	}
-	
-	// ***********************************************************************
-	// ************* methods inherited from IModelUpdateListener *************
-	// ***********************************************************************
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		logger.debug("update event");
-		this.dirty = true;
-		this.firePropertyChange(PROP_DIRTY);
-		
-		refreshAllEditParts(viewer.getRootEditPart());
-	}
 
-	@SuppressWarnings("unchecked")
-	private void refreshAllEditParts(EditPart part) {
-		scanDescription.removeModelUpdateListener(this);
-		
-		part.refresh();
-		List<EditPart> children = part.getChildren();
-		for (EditPart child : children) {
-			refreshAllEditParts(child);
-		}
-		
-		scanDescription.addModelUpdateListener(this);
-	}
-	
-	// ***********************************************************************
-	// ************ methods inherited from IWorkbenchPart ********************
-	// ***********************************************************************
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setFocus() {
-		logger.debug("Focus gained");
-		
-		refreshAllEditParts(viewer.getRootEditPart());
-		
-		updateViews();
-	}
-	
-	// ***********************************************************************
-	// ************ methods inherited from EditorPart ************************
-	// ***********************************************************************
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void init(final IEditorSite site, final IEditorInput input) 
-													throws PartInitException {
-		logger.debug("Init");
-		
-		this.selectedScanModule = null;
-		
-		this.setSite(site);
-		this.setInput(input);
-		this.setPartName(input.getName());
-		
-		final FileStoreEditorInput fileStoreEditorInput = 
-										(FileStoreEditorInput)input;
-		final File scanDescriptionFile = new File(fileStoreEditorInput.getURI());
-		
-		if (scanDescriptionFile.isFile() == true) {
-			if (scanDescriptionFile.length() == 0) {
-				// file exists but is empty -> do not read
-				return;
-			}
-		} else {
-			// file does not exist -> do not read
-			return;
-		}
-		
-		final ScanDescriptionLoader scanDescriptionLoader = 
-				new ScanDescriptionLoader(Activator.getDefault().
-													getMeasuringStation(), 
-										  Activator.getDefault().
-										  			getSchemaFile());
-		this.dirty = false;
-		try {
-			scanDescriptionLoader.load(scanDescriptionFile);
-			this.scanDescription = scanDescriptionLoader.getScanDescription();
-
-			if (scanDescriptionLoader.getLostDevices() != null) {
-				Shell shell = getSite().getShell();
-				LostDevicesDialog dialog = 
-						new LostDevicesDialog(shell, scanDescriptionLoader);
-				dialog.open();
-				this.dirty = true;
-			}
-			
-			this.scanDescription.addModelUpdateListener(this);
-		} catch(final ParserConfigurationException e) {
-			logger.error(e.getMessage(), e);
-		} catch(final SAXException e) {
-			logger.error(e.getMessage(), e);
-		} catch(final IOException e) {
-			logger.error(e.getMessage(), e);
-		}
-		this.firePropertyChange(PROP_DIRTY);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void doSave(final IProgressMonitor monitor) {
-		if(!isSaveAllowed()) {
-			return;
-		}
-		try {
-			monitor.beginTask("Saving Scan Description", 3);
-			monitor.subTask("determine file name");
-			String saveFileName = ((FileStoreEditorInput)this.getEditorInput()).
-				getURI().getPath().toString();
-			monitor.worked(1);
-			monitor.subTask("creating save routine");
-			Job saveJob = new Save("Save", saveFileName, this.scanDescription, this);
-			monitor.worked(1);
-			monitor.subTask("running save routine");
-			saveJob.setUser(true);
-			saveJob.schedule();
-			monitor.worked(1);
-		} finally {
-			monitor.done();
-		}
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void doSaveAs() {
-		if(!isSaveAllowed()) {
-			return;
-		}
-		// show dialog preconfigured with path of "last" file name
-		final FileDialog fileDialog = 
-				new FileDialog(this.getEditorSite().getShell(), SWT.SAVE);
-		fileDialog.setFilterPath(new File(((FileStoreEditorInput)
-				this.getEditorInput()).getURI()).getParent());
-		final String dialogName = fileDialog.open();
-		
-		// file path where the file will be saved
-		String saveFileName;
-		
-		// check dialog result
-		if(dialogName != null) {
-			// adjust filename to ".scml"
-			final int lastPoint = dialogName.lastIndexOf(".");
-			final int lastSep = dialogName.lastIndexOf("/");
-			if ((lastPoint > 0) && (lastPoint > lastSep)) {
-				saveFileName = dialogName.substring(0, lastPoint) + ".scml";
-			} else {
-				saveFileName = dialogName + ".scml";
-			}
-		} else {
-			// user pressed "cancel" -> do nothing
-			return;
-		}
-		
-		// create the save job
-		Job saveJob = new Save(
-				"Save As", saveFileName, this.scanDescription, this);
-		
-		// run the save job with a progress dialog
-		IProgressService service = (IProgressService) getSite().getService(
-				IProgressService.class);
-		service.showInDialog(getSite().getShell(), saveJob);
-		saveJob.setUser(true);
-		saveJob.schedule();
-	}
-	
-	/**
-	 * Called by the save as job to update the input.
-	 * 
-	 * @param filename the new file name
-	 */
-	public void resetEditorState(String filename) {
-		logger.debug("reset editor state");
-		
-		final IFileStore fileStore = 
-			EFS.getLocalFileSystem().getStore(new Path(filename));
-		final FileStoreEditorInput fileStoreEditorInput = 
-			new FileStoreEditorInput(fileStore);
-		this.setInput(fileStoreEditorInput);
-		this.firePropertyChange(PROP_INPUT);
-		
-		this.setPartName(fileStoreEditorInput.getName());
-		this.firePropertyChange(PROP_TITLE);
-		
-		this.dirty = false;
-		this.firePropertyChange(PROP_DIRTY);
-	}
-
-	/*
-	 * helper for save and save as to determine whether saving is allowed.
-	 * returns true if saving is allowed, false otherwise
-	 */
-	private boolean isSaveAllowed() {
-		// check for errors in the model
-		// if present -> inform the user
-		if(scanDescription.getModelErrors().size() > 0)	{
-			MessageDialog.openError(
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
-				"Save Error", 
-				"Scandescription could not be saved! " +
-				"Consult the Error View for more Information.");
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isDirty() {
-		return this.dirty;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isSaveAsAllowed() {
-		return true;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isSaveOnCloseNeeded() {
-		return true;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void dispose() {
-		getSite().setSelectionProvider(null);
-		super.dispose();
-	}
 	
 	// ***********************************************************************
 	// ************************* Listener ************************************

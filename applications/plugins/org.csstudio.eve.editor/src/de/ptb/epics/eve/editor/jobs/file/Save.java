@@ -18,7 +18,7 @@ import org.eclipse.ui.progress.UIJob;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionSaver;
-import de.ptb.epics.eve.editor.graphical.GraphicalEditor;
+import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
 
 /**
  * <code>Save</code> is a {@link org.eclipse.core.runtime.jobs.Job} to save 
@@ -185,7 +185,7 @@ public class Save extends Job {
 		 */
 		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) {
-			((GraphicalEditor)this.editor).resetEditorState(filename);
+			((ScanDescriptionEditor)this.editor).resetEditorState(filename);
 			return Status.OK_STATUS;
 		}
 		
