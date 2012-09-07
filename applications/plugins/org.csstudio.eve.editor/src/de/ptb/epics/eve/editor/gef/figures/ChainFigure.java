@@ -20,6 +20,7 @@ public class ChainFigure extends FreeformLayer {
 		super();
 		this.setBorder(new MarginBorder(3));
 		this.setLayoutManager(new FreeformLayout());
+		
 		//this.setBounds(new Rectangle(0, 0, 1, 1));
 	}
 	

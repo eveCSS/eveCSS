@@ -11,12 +11,19 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditDomain;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.MouseWheelHandler;
+import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
+import org.eclipse.gef.editparts.ScalableRootEditPart;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
@@ -273,6 +280,29 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Object getAdapter(Class type) {
+		if (type == ZoomManager.class) {
+			return ((ScalableFreeformRootEditPart) getGraphicalViewer()
+					.getRootEditPart()).getZoomManager();
+		} else if (type == CommandStack.class) {
+			this.getEditDomain().getCommandStack();
+		} else if (type == GraphicalViewer.class) {
+			return this.getGraphicalViewer();
+		} else if (type == EditPart.class) {
+			return this.getGraphicalViewer().getRootEditPart();
+		} else if (type == IFigure.class) {
+			return ((GraphicalEditPart) this.getGraphicalViewer()
+					.getRootEditPart()).getFigure();
+		}
+		// TODO necessary ??? maybe delete
+		return super.getAdapter(type);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
 		logger.debug("update event");
@@ -292,6 +322,9 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		viewer.setRootEditPart(new ScalableFreeformRootEditPart());
 		viewer.setSelectionManager(new ModifiedSelectionManager(viewer));
 		viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer));
+		// zoom with MouseWheel
+		viewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1),
+				MouseWheelZoomHandler.SINGLETON);
 		super.configureGraphicalViewer();
 	}
 	

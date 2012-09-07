@@ -8,10 +8,16 @@ import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.Panel;
+import org.eclipse.draw2d.XYLayout;
+import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
+import de.ptb.epics.eve.editor.gef.editpolicies.ChainLayoutEditPolicy;
+import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleDirectEditPolicy;
 
 /**
  * @author Marcus Michalsky
@@ -37,8 +43,9 @@ public class ScanDescriptionEditPart extends AbstractGraphicalEditPart {
 	@Override
 	protected IFigure createFigure() {
 		Figure figure = new FreeformLayer();
-		figure.setBorder(new MarginBorder(0));
+		figure.setBorder(new MarginBorder(2));
 		figure.setLayoutManager(new FreeformLayout());
+		figure.setOpaque(true);
 		return figure;
 	}
 
@@ -68,5 +75,9 @@ public class ScanDescriptionEditPart extends AbstractGraphicalEditPart {
 	 */
 	@Override
 	protected void createEditPolicies() {
+		installEditPolicy(EditPolicy.COMPONENT_ROLE,
+				new RootComponentEditPolicy());
+		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
+				new ScanModuleDirectEditPolicy());
 	}
 }

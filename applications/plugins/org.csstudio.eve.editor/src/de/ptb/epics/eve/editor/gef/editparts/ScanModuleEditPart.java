@@ -20,6 +20,7 @@ import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.gef.editpolicies.ChainLayoutEditPolicy;
+import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleDirectEditPolicy;
 import de.ptb.epics.eve.editor.gef.figures.ScanModuleFigure;
 
 /**
@@ -81,6 +82,8 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	protected void createEditPolicies() {
 		//installEditPolicy(EditPolicy.LAYOUT_ROLE, new ChainLayoutEditPolicy());
 		//installEditPolicy(EditPolicy.LAYOUT_ROLE, new NonResizableEditPolicy());
+		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
+				new ScanModuleDirectEditPolicy());
 	}
 	
 	/**
