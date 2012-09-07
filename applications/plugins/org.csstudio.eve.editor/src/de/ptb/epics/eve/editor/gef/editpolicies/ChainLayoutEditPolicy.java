@@ -16,6 +16,7 @@ import org.eclipse.gef.requests.CreateRequest;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.gef.commands.MoveScanModule;
+import de.ptb.epics.eve.editor.gef.commands.RenameScanModule;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 
 /**
@@ -55,7 +56,7 @@ public class ChainLayoutEditPolicy extends XYLayoutEditPolicy {
 	@Override
 	protected Command getCreateCommand(CreateRequest arg0) {
 		// TODO Auto-generated method stub
-		return null;
+		return new RenameScanModule();
 	}
 	
 	@Override

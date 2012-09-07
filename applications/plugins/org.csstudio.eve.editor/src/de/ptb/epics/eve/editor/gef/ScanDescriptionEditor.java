@@ -12,17 +12,23 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.gef.DefaultEditDomain;
+import org.eclipse.gef.EditDomain;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.FileStoreEditorInput;
@@ -57,7 +63,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 	 * Constructor.
 	 */
 	public ScanDescriptionEditor() {
-		setEditDomain(new DefaultEditDomain(this));
+		this.setEditDomain(new DefaultEditDomain(this));
 	}
 	
 	/**
@@ -112,6 +118,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 			logger.error(e.getMessage(), e);
 		}
 		this.firePropertyChange(PROP_DIRTY);
+		// TODO add CommandStackListener
 		super.init(site, fileStoreEditorInput);
 	}
 	
@@ -139,6 +146,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		} finally {
 			monitor.done();
 		}
+		this.getCommandStack().markSaveLocation();
 	}
 	
 	/**
@@ -184,6 +192,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		service.showInDialog(getSite().getShell(), saveJob);
 		saveJob.setUser(true);
 		saveJob.schedule();
+		this.getCommandStack().markSaveLocation();
 	}
 	
 	/**
@@ -233,7 +242,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 	public boolean isDirty() {
 		return this.dirty;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -257,6 +266,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 	public void dispose() {
 		getSite().setSelectionProvider(null);
 		this.scanDescription.removeModelUpdateListener(this);
+		// TODO remove CommandStackListener
 		super.dispose();
 	}
 	
@@ -293,15 +303,18 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		logger.trace("initializeGraphicalViewer");
 		super.initializeGraphicalViewer();
 		this.getGraphicalViewer().setContents(this.scanDescription);
+		MenuManager menuManager = new MenuManager();
+		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		this.getGraphicalViewer().setContextMenu(menuManager);
+		getSite().registerContextMenu(menuManager, this.getGraphicalViewer());
 		this.getSite().setSelectionProvider(this.getGraphicalViewer());
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected PaletteRoot getPaletteRoot() {
-		// TODO Auto-generated method stub
-		return null;
+		return ScanDescriptionEditorPaletteFactory.createPalette();
 	}
 }

@@ -487,6 +487,19 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.gef.GraphicalEditor">
+         <command
+               commandId="org.eclipse.ui.edit.redo"
+               label="Redo"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.ui.edit.undo"
+               label="Undo"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.core.expressions.definitions">
