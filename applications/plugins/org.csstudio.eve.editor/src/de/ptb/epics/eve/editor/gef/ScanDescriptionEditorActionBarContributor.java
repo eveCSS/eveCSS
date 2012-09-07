@@ -5,12 +5,15 @@ package de.ptb.epics.eve.editor.gef;
 
 import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.DeleteRetargetAction;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.RedoRetargetAction;
 import org.eclipse.gef.ui.actions.UndoRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.EditorActionBarContributor;
 
@@ -32,6 +35,7 @@ public class ScanDescriptionEditorActionBarContributor extends
 	public void contributeToToolBar(IToolBarManager toolBarManager) {
 		toolBarManager.add(getAction(ActionFactory.UNDO.getId()));
 		toolBarManager.add(getAction(ActionFactory.REDO.getId()));
+		toolBarManager.add(getAction(ActionFactory.DELETE.getId()));
 		toolBarManager.add(new Separator());
 		toolBarManager.add(new ZoomComboContributionItem(getPage()));
 	}
@@ -52,6 +56,5 @@ public class ScanDescriptionEditorActionBarContributor extends
 	
 	@Override
 	public void contributeToMenu(IMenuManager menuManager) {
-		
 	}
 }

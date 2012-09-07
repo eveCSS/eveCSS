@@ -3,6 +3,7 @@ package de.ptb.epics.eve.editor.gef.editparts;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.ConnectionLayer;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayer;
@@ -44,10 +45,14 @@ public class ChainEditPart extends AbstractGraphicalEditPart {
 	@Override
 	protected IFigure createFigure() {
 		Figure f = new FreeformLayer();
-		f.setBorder(new MarginBorder(3));
+		
+		f.setBorder(new MarginBorder(0));
 		f.setLayoutManager(new FreeformLayout());
+		f.setOpaque(true);
+		// f.setBackgroundColor(ColorConstants.blue);
 		// Create the static router for the connection layer
-		ConnectionLayer connLayer = (ConnectionLayer) getLayer(LayerConstants.CONNECTION_LAYER);
+		ConnectionLayer connLayer = (ConnectionLayer) getLayer(
+				LayerConstants.CONNECTION_LAYER);
 		connLayer.setConnectionRouter(new ShortestPathConnectionRouter(f));
 		return f; // new ChainFigure();
 	}
@@ -74,6 +79,7 @@ public class ChainEditPart extends AbstractGraphicalEditPart {
 	protected void createEditPolicies() {
 		logger.debug("createEditPolicies");
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ChainLayoutEditPolicy());
-		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ChainComponentEditPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE,
+				new ChainComponentEditPolicy());
 	}
 }

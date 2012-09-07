@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
@@ -15,8 +16,10 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
+import org.eclipse.jface.viewers.TextCellEditor;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.gef.editpolicies.ChainLayoutEditPolicy;
@@ -31,6 +34,9 @@ import de.ptb.epics.eve.editor.gef.figures.ScanModuleFigure;
 public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 		NodeEditPart, PropertyChangeListener {
 
+	private static Logger logger = Logger.getLogger(ScanModuleEditPart.class
+			.getName());
+	
 	/**
 	 * Constructor.
 	 * 
@@ -81,7 +87,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	@Override
 	protected void createEditPolicies() {
 		//installEditPolicy(EditPolicy.LAYOUT_ROLE, new ChainLayoutEditPolicy());
-		//installEditPolicy(EditPolicy.LAYOUT_ROLE, new NonResizableEditPolicy());
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new NonResizableEditPolicy());
 		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
 				new ScanModuleDirectEditPolicy());
 	}

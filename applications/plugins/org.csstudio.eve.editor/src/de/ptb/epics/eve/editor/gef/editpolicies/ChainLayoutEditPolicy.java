@@ -28,11 +28,6 @@ public class ChainLayoutEditPolicy extends XYLayoutEditPolicy {
 	private static Logger logger = Logger.getLogger(ChainLayoutEditPolicy.class
 			.getName());
 	
-	public ChainLayoutEditPolicy() {
-		super();
-		logger.debug("construct");
-	}
-	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -62,7 +57,14 @@ public class ChainLayoutEditPolicy extends XYLayoutEditPolicy {
 	@Override
 	public Command getCommand(Request request) {
 		// TODO Auto-generated method stub
-		logger.debug("getCommand, Request: " + request.getType().toString());
+		logger.debug("getCommand, Request: " + request.getType());
 		return super.getCommand(request);
+	}
+	
+	@Override
+	public boolean understandsRequest(Request req) {
+		logger.debug("understandsRequest " + req.getType());
+		// TODO Auto-generated method stub
+		return true;
 	}
 }

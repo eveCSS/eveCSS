@@ -4,6 +4,7 @@
 package de.ptb.epics.eve.editor.gef.editpolicies;
 
 import org.apache.log4j.Logger;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.DirectEditPolicy;
 import org.eclipse.gef.requests.DirectEditRequest;
@@ -36,5 +37,15 @@ public class ScanModuleDirectEditPolicy extends DirectEditPolicy {
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean understandsRequest(Request request) {
+		logger.debug("Understands Request " + request.getType());
+		// TODO Auto-generated method stub
+		return true;
+		// return super.understandsRequest(request);
+	}
 }
