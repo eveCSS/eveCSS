@@ -7,13 +7,12 @@ import org.eclipse.draw2d.FreeformLayout;
  * @author Marcus Michalsky
  * @since 1.6
  */
-public class ChainFigure extends FreeformLayer {
+public class ScanDescriptionFigure extends FreeformLayer {
 	
 	/**
 	 * Constructor.
 	 */
-	public ChainFigure() {
+	public ScanDescriptionFigure() {
 		this.setLayoutManager(new FreeformLayout());
-		this.setOpaque(true);
 	}
 }

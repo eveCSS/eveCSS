@@ -3,17 +3,14 @@ package de.ptb.epics.eve.editor.gef.editparts;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FreeformLayer;
-import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
+import de.ptb.epics.eve.editor.gef.figures.ScanDescriptionFigure;
 
 /**
  * @author Marcus Michalsky
@@ -38,10 +35,7 @@ public class ScanDescriptionEditPart extends AbstractGraphicalEditPart {
 	 */
 	@Override
 	protected IFigure createFigure() {
-		Figure figure = new FreeformLayer();
-		figure.setBorder(new MarginBorder(2));
-		figure.setLayoutManager(new FreeformLayout());
-		return figure;
+		return new ScanDescriptionFigure();
 	}
 
 	/**
@@ -57,11 +51,11 @@ public class ScanDescriptionEditPart extends AbstractGraphicalEditPart {
 	@Override
 	protected List<Object> getModelChildren() {
 		List<Object> children = new ArrayList<Object>();
+		children.addAll(this.getModel().getChains());
 		// add start events
 		for(Chain ch : this.getModel().getChains()) {
 			children.add(ch.getStartEvent());
 		}
-		children.addAll(this.getModel().getChains());
 		return children;
 	}
 

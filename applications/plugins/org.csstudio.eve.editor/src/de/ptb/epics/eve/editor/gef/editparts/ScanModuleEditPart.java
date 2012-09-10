@@ -12,18 +12,12 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
-import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
-import org.eclipse.jface.viewers.TextCellEditor;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.editor.gef.editpolicies.ChainLayoutEditPolicy;
-import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleDirectEditPolicy;
 import de.ptb.epics.eve.editor.gef.figures.ScanModuleFigure;
 
 /**
@@ -86,10 +80,8 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	 */
 	@Override
 	protected void createEditPolicies() {
-		//installEditPolicy(EditPolicy.LAYOUT_ROLE, new ChainLayoutEditPolicy());
-		installEditPolicy(EditPolicy.LAYOUT_ROLE, new NonResizableEditPolicy());
-		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
-				new ScanModuleDirectEditPolicy());
+		//installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
+			//	new ScanModuleDirectEditPolicy());
 	}
 	
 	/**

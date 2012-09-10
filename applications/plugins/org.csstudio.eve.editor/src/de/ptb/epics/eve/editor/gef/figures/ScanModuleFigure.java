@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.XYAnchor;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -17,7 +18,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Marcus Michalsky
  * @since 1.6
  */
-public class ScanModuleFigure extends Figure {
+public class ScanModuleFigure extends Shape {
 
 	private static Logger logger = Logger.getLogger(ScanModuleFigure.class
 			.getName());
@@ -210,5 +211,16 @@ public class ScanModuleFigure extends Figure {
 	 */
 	public XYAnchor getTargetAnchor() {
 		return targetAnchor;
+	}
+
+	@Override
+	protected void fillShape(Graphics arg0) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	protected void outlineShape(Graphics arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
