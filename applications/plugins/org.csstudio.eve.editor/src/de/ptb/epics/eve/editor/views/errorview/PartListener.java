@@ -5,7 +5,7 @@ import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWorkbenchPart;
 
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
-import de.ptb.epics.eve.editor.graphical.GraphicalEditor;
+import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
 
 /**
  * <code>PartListener</code> listens to 
@@ -39,11 +39,11 @@ public class PartListener implements IPartListener {
 	 */
 	@Override
 	public void partActivated(IWorkbenchPart part) {
-		if(part instanceof GraphicalEditor) {
+		if(part instanceof ScanDescriptionEditor) {
 			if(logger.isDebugEnabled()) {
 				logger.debug("Editor '" + part.getTitle() + "' activated.");
 			}
-			GraphicalEditor ge = (GraphicalEditor) part;
+			ScanDescriptionEditor ge = (ScanDescriptionEditor) part;
 			ScanDescription sd = ge.getContent();
 			this.errorView.setCurrentScanDescription(sd);
 		}

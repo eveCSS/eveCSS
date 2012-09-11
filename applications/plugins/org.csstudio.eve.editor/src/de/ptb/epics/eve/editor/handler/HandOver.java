@@ -21,7 +21,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 
 import de.ptb.epics.eve.editor.IScanDescriptionReceiver;
-import de.ptb.epics.eve.editor.graphical.GraphicalEditor;
+import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
 
 /**
  * <code>HandOver</code>.
@@ -90,8 +90,8 @@ public class HandOver extends AbstractHandler {
 		}
 		
 		// determine filename
-		final GraphicalEditor graphicalEditor = 
-				(GraphicalEditor) window.getActivePage().getActiveEditor();
+		final ScanDescriptionEditor graphicalEditor = 
+				(ScanDescriptionEditor) window.getActivePage().getActiveEditor();
 			
 		final FileStoreEditorInput editorInput = 
 				(FileStoreEditorInput)graphicalEditor.getEditorInput();	

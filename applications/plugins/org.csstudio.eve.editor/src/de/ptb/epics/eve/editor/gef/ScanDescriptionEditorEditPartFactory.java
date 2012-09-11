@@ -14,7 +14,6 @@ import de.ptb.epics.eve.editor.gef.editparts.StartEventEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 
-
 /**
  * 
  * @author Marcus Michalsky
@@ -27,23 +26,19 @@ public class ScanDescriptionEditorEditPartFactory implements EditPartFactory {
 	 */
 	@Override
 	public EditPart createEditPart(EditPart context, Object model) {
-		if (context instanceof ScanModuleEditPart
-				|| context instanceof StartEventEditPart) {
-			// connectors
-			return new ConnectionEditPart((Connector)model);
-		} else {
-			// elements
-			if (model instanceof ScanDescription) {
-				return new ScanDescriptionEditPart((ScanDescription)model);
-			} else if (model instanceof Chain) {
-				return new ChainEditPart((Chain)model);
-			} else if (model instanceof ScanModule) {
-				return new ScanModuleEditPart((ScanModule)model);
-			} else if (model instanceof StartEvent) {
-				return new StartEventEditPart((StartEvent)model);
-			}
+		if (model instanceof ScanDescription) {
+			return new ScanDescriptionEditPart((ScanDescription) model);
+		} else if (model instanceof Chain) {
+			return new ChainEditPart((Chain) model);
+		} else if (model instanceof ScanModule) {
+			return new ScanModuleEditPart((ScanModule) model);
+		} else if (model instanceof StartEvent) {
+			return new StartEventEditPart((StartEvent) model);
+		} else if (model instanceof Connector) {
+			return new ConnectionEditPart((Connector) model);
 		}
-		throw new RuntimeException("Can't create part for model element: " + 
-				model != null ? model.getClass().getName() : null);
+
+		throw new RuntimeException("Can't create part for model element: "
+				+ model != null ? model.getClass().getName() : null);
 	}
 }

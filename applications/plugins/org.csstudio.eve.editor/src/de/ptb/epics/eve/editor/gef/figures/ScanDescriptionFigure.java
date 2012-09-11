@@ -13,6 +13,7 @@ public class ScanDescriptionFigure extends FreeformLayer {
 	 * Constructor.
 	 */
 	public ScanDescriptionFigure() {
+		super();
 		this.setLayoutManager(new FreeformLayout());
 	}
 }

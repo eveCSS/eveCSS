@@ -13,6 +13,7 @@ public class ChainFigure extends FreeformLayer {
 	 * Constructor.
 	 */
 	public ChainFigure() {
+		super();
 		this.setLayoutManager(new FreeformLayout());
 		this.setOpaque(true);
 	}

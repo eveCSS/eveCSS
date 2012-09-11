@@ -505,6 +505,21 @@
                label="Delete"
                style="push">
          </command>
+         <separator
+               name="de.ptb.epics.eve.editor.gef.GraphicalEditor.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.addevent"
+               label="test"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.scanmoduleselected">
+               </reference>
+            </visibleWhen>
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -534,6 +549,21 @@
             <count
                   value="1">
             </count>
+         </with>
+      </definition>
+      <definition
+            id="de.ptb.epics.eve.editor.expressions.scanmoduleselected">
+         <with
+               variable="selection">
+            <count
+                  value="1">
+            </count>
+            <iterate
+                  ifEmpty="false">
+               <instanceof
+                     value="de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart">
+               </instanceof>
+            </iterate>
          </with>
       </definition>
    </extension>

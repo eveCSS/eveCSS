@@ -12,7 +12,6 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.editor.gef.editpolicies.ChainComponentEditPolicy;
 import de.ptb.epics.eve.editor.gef.editpolicies.ChainLayoutEditPolicy;
 import de.ptb.epics.eve.editor.gef.figures.ChainFigure;
 
@@ -68,7 +67,7 @@ public class ChainEditPart extends AbstractGraphicalEditPart {
 	protected void createEditPolicies() {
 		logger.debug("createEditPolicies");
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ChainLayoutEditPolicy());
-		installEditPolicy(EditPolicy.COMPONENT_ROLE,
-				new ChainComponentEditPolicy());
+		//installEditPolicy(EditPolicy.COMPONENT_ROLE,
+		//		new ChainComponentEditPolicy());
 	}
 }

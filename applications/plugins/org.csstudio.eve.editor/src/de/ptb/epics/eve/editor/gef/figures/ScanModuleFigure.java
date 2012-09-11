@@ -2,7 +2,6 @@ package de.ptb.epics.eve.editor.gef.figures;
 
 import org.apache.log4j.Logger;
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.XYAnchor;
@@ -213,14 +212,27 @@ public class ScanModuleFigure extends Shape {
 		return targetAnchor;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected void fillShape(Graphics arg0) {
-		// TODO Auto-generated method stub
+	protected void fillShape(Graphics graphics) {
+		//graphics.fillRectangle(getBounds());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected void outlineShape(Graphics arg0) {
-		// TODO Auto-generated method stub
-		
+	protected void outlineShape(Graphics graphics) {
+		/*float lineInset = Math.max(1.0f, getLineWidthFloat()) / 2.0f;
+		int inset1 = (int) Math.floor(lineInset);
+		int inset2 = (int) Math.ceil(lineInset);
+		Rectangle r = Rectangle.SINGLETON.setBounds(getBounds());
+		r.x += inset1;
+		r.y += inset1;
+		r.width -= inset1 + inset2;
+		r.height -= inset1 + inset2;
+		graphics.drawRectangle(r);*/
 	}
 }

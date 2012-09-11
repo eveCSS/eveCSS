@@ -18,7 +18,7 @@ import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.graphical.GraphicalEditor;
+import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
 
 import static de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContributionHelper.*;
 
@@ -39,7 +39,7 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 	@Override
 	protected IContributionItem[] getContributionItems() {
 		ArrayList<IContributionItem> result = new ArrayList<IContributionItem>();
-		ScanDescription sd = ((GraphicalEditor) Activator.getDefault()
+		ScanDescription sd = ((ScanDescriptionEditor) Activator.getDefault()
 				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActiveEditor()).getContent();
 		for (Event e : sd.getEvents()) {

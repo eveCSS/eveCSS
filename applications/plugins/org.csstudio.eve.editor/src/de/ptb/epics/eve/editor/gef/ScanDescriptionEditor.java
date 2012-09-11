@@ -278,6 +278,14 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 	}
 	
 	/**
+	 * 
+	 * @return
+	 */
+	public ScanDescription getContent() {
+		return this.scanDescription;
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("rawtypes")
@@ -292,10 +300,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 			return this.getGraphicalViewer();
 		} else if (type == EditPart.class) {
 			return this.getGraphicalViewer().getRootEditPart();
-		} else if (type == IFigure.class) {
-			return ((GraphicalEditPart) this.getGraphicalViewer()
-					.getRootEditPart()).getFigure();
-		}
+		} 
 		// TODO necessary ??? maybe delete
 		return super.getAdapter(type);
 	}
