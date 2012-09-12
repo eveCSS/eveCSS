@@ -57,15 +57,6 @@ public class ScanModuleFigure extends Shape {
 		this.setOpaque(true);
 		this.setSize(this.width, this.height);
 		this.setLocation(new Point(this.x, this.y));
-		
-		// set anchor points
-		Rectangle rect = this.getBounds();
-		this.targetAnchor = new XYAnchor(new Point(rect.x, rect.y + rect.height
-				/ 2));
-		this.appendedAnchor = new XYAnchor(new Point(rect.x + rect.width,
-				rect.y + rect.height / 2));
-		this.nestedAnchor = new XYAnchor(new Point(rect.x + rect.width / 2,
-				rect.y + rect.height));
 	}
 
 	/**
@@ -95,13 +86,18 @@ public class ScanModuleFigure extends Shape {
 	 * 
 	 */
 	private void refreshAnchors() {
-		Rectangle rect = this.getBounds();
-		this.targetAnchor.setLocation(new Point(rect.x, rect.y + rect.height
-				/ 2));
-		this.appendedAnchor.setLocation(new Point(rect.x + rect.width,
-				rect.y + rect.height / 2));
-		this.nestedAnchor.setLocation(new Point(rect.x + rect.width / 2,
-				rect.y + rect.height));
+		if (this.targetAnchor != null) {
+			this.targetAnchor.setLocation(new Point(this.x, this.y
+					+ this.height / 2));
+		}
+		if (this.appendedAnchor != null) {
+			this.appendedAnchor.setLocation(new Point(this.x + this.width,
+					this.y + this.height / 2));
+		}
+		if (this.nestedAnchor != null) {
+			this.nestedAnchor.setLocation(new Point(this.x + this.width / 2,
+					this.y + this.height));
+		}
 	}
 	
 	/**
@@ -206,6 +202,10 @@ public class ScanModuleFigure extends Shape {
 	 * @return the <code>XYAnchor</code> for appended scan modules
 	 */
 	public XYAnchor getAppendedAnchor() {
+		if (this.appendedAnchor == null) {
+			this.appendedAnchor = new XYAnchor(new Point(this.x + this.width,
+					this.y + this.height / 2));
+		}
 		return appendedAnchor;
 	}
 
@@ -215,6 +215,10 @@ public class ScanModuleFigure extends Shape {
 	 * @return the <code>XYAnchor</code> for nested scan modules
 	 */
 	public XYAnchor getNestedAnchor() {
+		if (this.nestedAnchor == null) {
+			this.nestedAnchor = new XYAnchor(new Point(this.x + this.width / 2,
+					this.y + this.height));
+		}
 		return nestedAnchor;
 	}
 
@@ -224,6 +228,10 @@ public class ScanModuleFigure extends Shape {
 	 * @return the <code>XYAnchor</code> targeting the scan module
 	 */
 	public XYAnchor getTargetAnchor() {
+		if (this.targetAnchor == null) {
+			this.targetAnchor = new XYAnchor(new Point(this.x, this.y
+					+ this.height / 2));
+		}
 		return targetAnchor;
 	}
 
@@ -232,7 +240,6 @@ public class ScanModuleFigure extends Shape {
 	 */
 	@Override
 	protected void fillShape(Graphics graphics) {
-		//graphics.fillRectangle(getBounds());
 	}
 
 	/**
@@ -240,14 +247,5 @@ public class ScanModuleFigure extends Shape {
 	 */
 	@Override
 	protected void outlineShape(Graphics graphics) {
-		/*float lineInset = Math.max(1.0f, getLineWidthFloat()) / 2.0f;
-		int inset1 = (int) Math.floor(lineInset);
-		int inset2 = (int) Math.ceil(lineInset);
-		Rectangle r = Rectangle.SINGLETON.setBounds(getBounds());
-		r.x += inset1;
-		r.y += inset1;
-		r.width -= inset1 + inset2;
-		r.height -= inset1 + inset2;
-		graphics.drawRectangle(r);*/
 	}
 }
