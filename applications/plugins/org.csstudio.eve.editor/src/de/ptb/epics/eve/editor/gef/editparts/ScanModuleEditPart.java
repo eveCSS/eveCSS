@@ -12,12 +12,10 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.gef.figures.ScanModuleFigure;
@@ -49,6 +47,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	public void activate() {
 		this.getModel().addPropertyChangeListener("x", this);
 		this.getModel().addPropertyChangeListener("y", this);
+		super.activate();
 	}
 	
 	/**
@@ -58,6 +57,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	public void deactivate() {
 		this.getModel().removePropertyChangeListener("x", this);
 		this.getModel().removePropertyChangeListener("y", this);
+		super.deactivate();
 	}
 	
 	/**
@@ -82,9 +82,6 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	 */
 	@Override
 	protected void createEditPolicies() {
-		
-		//installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
-			//	new ScanModuleDirectEditPolicy());
 	}
 	
 	/**
@@ -103,12 +100,14 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	@Override
 	protected void refreshVisuals() {
 		ScanModule sm = this.getModel();
-		((ScanModuleFigure)this.getFigure()).setX(sm.getX());
-		((ScanModuleFigure)this.getFigure()).setY(sm.getY());
+		//((ScanModuleFigure)this.getFigure()).setX(sm.getX());
+		//((ScanModuleFigure)this.getFigure()).setY(sm.getY());
 		Rectangle bounds = new Rectangle(sm.getX(), sm.getY(), sm.getWidth(),
 				sm.getHeight());
 		((GraphicalEditPart) this.getParent()).setLayoutConstraint(this,
 				this.getFigure(), bounds);
+		this.refreshSourceConnections();
+		this.refreshTargetConnections();
 	}
 	
 	/**
@@ -117,13 +116,13 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	@Override
 	protected List<?> getModelSourceConnections() {
 		final List<Object> sourceList = new ArrayList<Object>();
-		final ScanModule scanModul = (ScanModule)this.getModel();
+		final ScanModule scanModule = (ScanModule)this.getModel();
 		
-		if(scanModul.getAppended() != null) {
-			sourceList.add(scanModul.getAppended());
+		if(scanModule.getAppended() != null) {
+			sourceList.add(scanModule.getAppended());
 		}
-		if(scanModul.getNested() != null) {
-			sourceList.add(scanModul.getNested());
+		if(scanModule.getNested() != null) {
+			sourceList.add(scanModule.getNested());
 		}
 		return sourceList;
 	}

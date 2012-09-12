@@ -67,7 +67,5 @@ public class ChainEditPart extends AbstractGraphicalEditPart {
 	protected void createEditPolicies() {
 		logger.debug("createEditPolicies");
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ChainLayoutEditPolicy());
-		//installEditPolicy(EditPolicy.COMPONENT_ROLE,
-		//		new ChainComponentEditPolicy());
 	}
 }

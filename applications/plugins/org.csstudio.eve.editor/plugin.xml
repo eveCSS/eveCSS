@@ -208,6 +208,20 @@
                </parameter>
             </command>
          </toolbar>
+         <toolbar
+               id="de.ptb.epics.eve.editor.toolbar.zoom">
+            <command
+                  commandId="org.eclipse.gef.zoom_in"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.gef.zoom_out"
+                  style="push">
+            </command>
+            <separator
+                  name="additions">
+            </separator>
+         </toolbar>
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.eventcomposite.tablepopup">
@@ -520,6 +534,30 @@
                </reference>
             </visibleWhen>
          </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:file?after=additions">
+         <command
+               commandId="org.eclipse.ui.file.print"
+               label="Print"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=edit">
+         <menu
+               label="View">
+            <command
+                  commandId="org.eclipse.gef.zoom_in"
+                  label="Zoom In"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.gef.zoom_out"
+                  label="Zoom Out"
+                  style="push">
+            </command>
+         </menu>
       </menuContribution>
    </extension>
    <extension

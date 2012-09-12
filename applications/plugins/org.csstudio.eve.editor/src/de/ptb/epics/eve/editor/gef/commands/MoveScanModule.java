@@ -23,9 +23,6 @@ public class MoveScanModule extends Command {
 	public MoveScanModule(ScanModule scanModule, Rectangle contraint) {
 		this.scanModule = scanModule;
 		this.box = contraint;
-		/*this.box = new Rectangle(this.scanModule.getX(),
-				this.scanModule.getY(), this.scanModule.getWidth(),
-				this.scanModule.getHeight());*/
 	}
 	
 	/**
@@ -50,8 +47,16 @@ public class MoveScanModule extends Command {
 	}
 	
 	@Override
+	public void redo() {
+		this.scanModule.setX(this.box.x);
+		this.scanModule.setY(this.box.y);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public boolean canExecute() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 }

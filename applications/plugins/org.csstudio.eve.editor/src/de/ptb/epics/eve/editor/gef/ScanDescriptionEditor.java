@@ -2,6 +2,7 @@ package de.ptb.epics.eve.editor.gef;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.EventObject;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -11,20 +12,17 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
-import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.ui.actions.PrintAction;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.jface.action.MenuManager;
@@ -34,6 +32,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
@@ -270,6 +269,23 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 	 * {@inheritDoc}
 	 */
 	@Override
+	public void commandStackChanged(EventObject event) {
+		logger.debug("Command Stack changed");
+		firePropertyChange(IEditorPart.PROP_DIRTY);
+		super.commandStackChanged(event);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public CommandStack getCommandStack() {
+		return this.getEditDomain().getCommandStack();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void dispose() {
 		getSite().setSelectionProvider(null);
 		this.scanDescription.removeModelUpdateListener(this);
@@ -295,7 +311,9 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 			return ((ScalableFreeformRootEditPart) getGraphicalViewer()
 					.getRootEditPart()).getZoomManager();
 		} else if (type == CommandStack.class) {
-			this.getEditDomain().getCommandStack();
+			return this.getEditDomain().getCommandStack();
+		} else if (type == EditDomain.class) {
+			return this.getEditDomain();
 		} else if (type == GraphicalViewer.class) {
 			return this.getGraphicalViewer();
 		} else if (type == EditPart.class) {

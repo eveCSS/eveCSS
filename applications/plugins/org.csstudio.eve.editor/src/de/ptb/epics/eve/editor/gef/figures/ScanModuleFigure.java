@@ -80,6 +80,7 @@ public class ScanModuleFigure extends Shape {
 	 */
 	public void setX(int x) {
 		this.x = x;
+		this.refreshAnchors();
 	}
 
 	/**
@@ -87,6 +88,20 @@ public class ScanModuleFigure extends Shape {
 	 */
 	public void setY(int y) {
 		this.y = y;
+		this.refreshAnchors();
+	}
+	
+	/*
+	 * 
+	 */
+	private void refreshAnchors() {
+		Rectangle rect = this.getBounds();
+		this.targetAnchor.setLocation(new Point(rect.x, rect.y + rect.height
+				/ 2));
+		this.appendedAnchor.setLocation(new Point(rect.x + rect.width,
+				rect.y + rect.height / 2));
+		this.nestedAnchor.setLocation(new Point(rect.x + rect.width / 2,
+				rect.y + rect.height));
 	}
 	
 	/**
