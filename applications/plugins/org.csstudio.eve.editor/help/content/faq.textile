@@ -1,0 +1,14 @@
+h1(eveTopic). Frequently Asked Questions
+
+{toc}
+
+h3(eveFAQquestion). Why does the context menu contain a menu named "input methods" ?
+
+p. !(eveImage)../img/faq-inputmethods.png(input methods)!
+
+p. This menu entry is contributed by "Gtk":http://www.gtk.org/. To deactivate it the file @/home/<username>/.gtkrc-2.0@ must contain the following lines:
+
+@gtk-show-input-method-menu = 0@
+@gtk-show-unicode-menu = 0@
+
+p. In order to use these settings the application has to be restarted. Keep in mind that this is a global setting, i.e. every application using Gtk will not show this menu anymore.

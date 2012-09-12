@@ -49,6 +49,13 @@ p {
 	padding: 4px;
 }
 
+.eveFAQquestion {
+	font-style: italic;
+	display: inline;
+	padding-left: 20px;
+	background: url(../img/misc/unknown_obj.gif) no-repeat;
+}
+
 .red {
 	color: red;
 }

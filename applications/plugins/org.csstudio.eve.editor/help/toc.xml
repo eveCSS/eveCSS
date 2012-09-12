@@ -22,7 +22,7 @@
       </topic>
       <topic label="Legal">
       </topic>
-      <topic label="FAQ">
+      <topic href="help/content/faq.html" label="Frequently Asked Questions">
       </topic>
    </topic>
 </toc>
