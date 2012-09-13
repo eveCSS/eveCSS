@@ -11,13 +11,20 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.tools.DirectEditManager;
+import org.eclipse.jface.viewers.TextCellEditor;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleDirectEditPolicy;
 import de.ptb.epics.eve.editor.gef.figures.ScanModuleFigure;
+import de.ptb.epics.eve.editor.gef.tools.ScanModuleCellEditorLocator;
+import de.ptb.epics.eve.editor.gef.tools.ScanModuleDirectEditManager;
 
 /**
  * @author Marcus Michalsky
@@ -29,6 +36,8 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	private static Logger logger = Logger.getLogger(ScanModuleEditPart.class
 			.getName());
 
+	private DirectEditManager directEditManager;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -45,6 +54,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	public void activate() {
 		this.getModel().addPropertyChangeListener("x", this);
 		this.getModel().addPropertyChangeListener("y", this);
+		this.getModel().addPropertyChangeListener("name", this);
 		super.activate();
 	}
 	
@@ -55,6 +65,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	public void deactivate() {
 		this.getModel().removePropertyChangeListener("x", this);
 		this.getModel().removePropertyChangeListener("y", this);
+		this.getModel().removePropertyChangeListener("name", this);
 		super.deactivate();
 	}
 	
@@ -80,6 +91,26 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	 */
 	@Override
 	protected void createEditPolicies() {
+		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
+				new ScanModuleDirectEditPolicy());
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void performRequest(Request request) {
+		logger.debug(request.getType());
+		// click when selected || double click
+		if (request.getType() == RequestConstants.REQ_DIRECT_EDIT
+				|| request.getType() == RequestConstants.REQ_OPEN) {
+			if (directEditManager == null) {
+				directEditManager = new ScanModuleDirectEditManager(this,
+						TextCellEditor.class, new ScanModuleCellEditorLocator(
+								(ScanModuleFigure) this.getFigure()));
+			}
+			directEditManager.show();
+		}
 	}
 	
 	/**
@@ -188,6 +219,8 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 			((ScanModuleFigure)this.getFigure()).setX((Integer)e.getNewValue());
 		} else if (e.getPropertyName().equals("y")) {
 			((ScanModuleFigure)this.getFigure()).setY((Integer)e.getNewValue());
+		} else if (e.getPropertyName().equals("name")) {
+			((ScanModuleFigure)this.getFigure()).setName((String)e.getNewValue());
 		}
 		this.refreshVisuals();
 	}

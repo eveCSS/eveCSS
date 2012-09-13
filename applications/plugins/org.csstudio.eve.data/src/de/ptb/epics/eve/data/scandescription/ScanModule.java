@@ -459,7 +459,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param name The name of the scan modul. Must not be null!
 	 */
 	public void setName(final String name) {
-		this.name = name;
+		this.propertyChangeSupport.firePropertyChange("name", this.name,
+				this.name = name);
 		updateListeners();
 	}
 

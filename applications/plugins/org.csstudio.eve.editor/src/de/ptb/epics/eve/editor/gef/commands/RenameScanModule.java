@@ -1,40 +1,61 @@
-/**
- * 
- */
 package de.ptb.epics.eve.editor.gef.commands;
 
 import org.eclipse.gef.commands.Command;
 
+import de.ptb.epics.eve.data.scandescription.ScanModule;
+
 /**
- * @author mmichals
- *
+ * @author Marcus Michalsky
+ * @since 1.6
  */
 public class RenameScanModule extends Command {
+	
+	private String oldName;
+	private String newName;
+	private ScanModule scanModule;
+	
+	/**
+	 * Constructor.
+	 * 
+	 * @param newName the name to set
+	 * @param scanModule the scan module which name should be set
+	 */
+	public RenameScanModule(String newName, ScanModule scanModule) {
+		super();
+		this.newName = newName;
+		this.scanModule = scanModule;
+	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-		super.execute();
+		this.oldName = this.scanModule.getName();
+		this.scanModule.setName(newName);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean canExecute() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void undo() {
-		// TODO Auto-generated method stub
-		super.undo();
+		this.scanModule.setName(oldName);
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void redo() {
-		// TODO Auto-generated method stub
-		super.redo();
+		this.scanModule.setName(newName);
 	}
 }
