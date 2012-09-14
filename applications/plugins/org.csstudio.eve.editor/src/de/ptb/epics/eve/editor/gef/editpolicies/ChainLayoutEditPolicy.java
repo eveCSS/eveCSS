@@ -4,13 +4,16 @@ import org.apache.log4j.Logger;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 
+import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.editor.gef.commands.CreateScanModule;
 import de.ptb.epics.eve.editor.gef.commands.MoveScanModule;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 
@@ -52,7 +55,14 @@ public class ChainLayoutEditPolicy extends XYLayoutEditPolicy {
 	 */
 	@Override
 	protected Command getCreateCommand(CreateRequest request) {
-		return null;
+		return new CreateScanModule((Chain) this.getHost().getModel(),
+				(Rectangle) this.getConstraintFor(request));
+	}
+	
+	@Override
+	public Command getCommand(Request request) {
+		logger.debug("getCommand: " + request.getType());
+		return super.getCommand(request);
 	}
 	
 	/**

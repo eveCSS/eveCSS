@@ -21,6 +21,7 @@ import org.eclipse.gef.tools.DirectEditManager;
 import org.eclipse.jface.viewers.TextCellEditor;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleComponentEditPolicy;
 import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleDirectEditPolicy;
 import de.ptb.epics.eve.editor.gef.figures.ScanModuleFigure;
 import de.ptb.epics.eve.editor.gef.tools.ScanModuleCellEditorLocator;
@@ -55,6 +56,13 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 		this.getModel().addPropertyChangeListener("x", this);
 		this.getModel().addPropertyChangeListener("y", this);
 		this.getModel().addPropertyChangeListener("name", this);
+		
+		this.getModel().addPropertyChangeListener(
+				ScanModule.PARENT_CONNECTION_PROP, this);
+		this.getModel().addPropertyChangeListener(
+				ScanModule.APPENDED_CONNECTION_PROP, this);
+		this.getModel().addPropertyChangeListener(
+				ScanModule.NESTED_CONNECTION_PROP, this);
 		super.activate();
 	}
 	
@@ -66,6 +74,13 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 		this.getModel().removePropertyChangeListener("x", this);
 		this.getModel().removePropertyChangeListener("y", this);
 		this.getModel().removePropertyChangeListener("name", this);
+		
+		this.getModel().removePropertyChangeListener(
+				ScanModule.PARENT_CONNECTION_PROP, this);
+		this.getModel().removePropertyChangeListener(
+				ScanModule.APPENDED_CONNECTION_PROP, this);
+		this.getModel().removePropertyChangeListener(
+				ScanModule.NESTED_CONNECTION_PROP, this);
 		super.deactivate();
 	}
 	
@@ -93,6 +108,8 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
 				new ScanModuleDirectEditPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, 
+				new ScanModuleComponentEditPolicy());
 	}
 	
 	/**
@@ -100,7 +117,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	 */
 	@Override
 	public void performRequest(Request request) {
-		logger.debug(request.getType());
+		logger.debug("perform request: " + request.getType());
 		// click when selected || double click
 		if (request.getType() == RequestConstants.REQ_DIRECT_EDIT
 				|| request.getType() == RequestConstants.REQ_OPEN) {
@@ -110,6 +127,8 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 								(ScanModuleFigure) this.getFigure()));
 			}
 			directEditManager.show();
+		} else if (request.getType() == RequestConstants.REQ_CREATE) {
+			super.performRequest(request);
 		}
 	}
 	
@@ -211,7 +230,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	}
 
 	/**
-	 * {@inheritDoc}}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
@@ -221,6 +240,13 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 			((ScanModuleFigure)this.getFigure()).setY((Integer)e.getNewValue());
 		} else if (e.getPropertyName().equals("name")) {
 			((ScanModuleFigure)this.getFigure()).setName((String)e.getNewValue());
+		}
+		if (e.getPropertyName().equals(ScanModule.APPENDED_CONNECTION_PROP) ||
+				e.getPropertyName().equals(ScanModule.NESTED_CONNECTION_PROP)) {
+			this.refreshSourceConnections();
+		}
+		if (e.getPropertyName().equals(ScanModule.PARENT_CONNECTION_PROP)) {
+			this.refreshTargetConnections();
 		}
 		this.refreshVisuals();
 	}

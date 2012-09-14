@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.gef.editparts;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -19,10 +21,32 @@ import de.ptb.epics.eve.editor.gef.figures.ChainFigure;
  * @author Marcus Michalsky
  * @since 1.6
  */
-public class ChainEditPart extends AbstractGraphicalEditPart {
+public class ChainEditPart extends AbstractGraphicalEditPart implements
+		PropertyChangeListener {
 
 	private static Logger logger = Logger.getLogger(ChainEditPart.class
 			.getName());
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void activate() {
+		this.getModel().addPropertyChangeListener(Chain.SCANMODULE_ADDED_PROP,
+				this);
+		this.getModel().addPropertyChangeListener(
+				Chain.SCANMODULE_REMOVED_PROP, this);
+		super.activate();
+	}
+	
+	@Override
+	public void deactivate() {
+		this.getModel().removePropertyChangeListener(
+				Chain.SCANMODULE_ADDED_PROP, this);
+		this.getModel().removePropertyChangeListener(
+				Chain.SCANMODULE_REMOVED_PROP, this);
+		super.deactivate();
+	}
 	
 	/**
 	 * Constructor.
@@ -67,5 +91,16 @@ public class ChainEditPart extends AbstractGraphicalEditPart {
 	protected void createEditPolicies() {
 		logger.debug("createEditPolicies");
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ChainLayoutEditPolicy());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals(Chain.SCANMODULE_ADDED_PROP) ||
+				e.getPropertyName().equals(Chain.SCANMODULE_REMOVED_PROP)) {
+			this.refreshChildren();
+		}
 	}
 }

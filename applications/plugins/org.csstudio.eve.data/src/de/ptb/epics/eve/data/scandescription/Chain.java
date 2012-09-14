@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.data.scandescription;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -102,6 +104,12 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	// indicates whether the scan description should be saved in the result file
 	private boolean saveScanDescription;
 	
+	private PropertyChangeSupport propertyChangeSupport;
+	public static final String SCANMODULE_ADDED_PROP = 
+			"Chain.SCANMODULE_ADDED_PROP";
+	public static final String SCANMODULE_REMOVED_PROP = 
+			"Chain.SCANMODULE_REMOVED_PROP";
+	
 	/**
 	 * Constructs a <code>ScanDescription</code> with the given id.
 	 * 
@@ -116,7 +124,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		}
 		this.id = id;
 		this.scanModules = new ArrayList<ScanModule>();
-		this.scanModuleMap = new HashMap< Integer, ScanModule >();
+		this.scanModuleMap = new HashMap<Integer, ScanModule>();
 		this.redoEvents = new ArrayList<ControlEvent>();
 		this.breakEvents = new ArrayList<ControlEvent>();
 		this.startEvents = new ArrayList<ControlEvent>();
@@ -148,6 +156,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		
 		this.comment = "";
 		this.saveScanDescription = false;
+		
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 	
 	/**
@@ -198,6 +208,14 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		updateListeners();
 	}
 	
+	public int getAvailableScanModuleId() {
+		int i = 1;
+		while(this.getScanModuleById(i) != null) {
+			i++;
+		}
+		return i;
+	}
+	
 	/**
 	 * Adds a {@link de.ptb.epics.eve.data.scandescription.ScanModule}.
 	 * 
@@ -216,6 +234,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.scanModules.add(scanModule);
 		scanModule.setChain(this);
 		scanModule.addModelUpdateListener(this);
+		this.propertyChangeSupport.firePropertyChange(
+				Chain.SCANMODULE_ADDED_PROP, null, scanModule);
 		updateListeners();
 	}
 	
@@ -236,6 +256,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.scanModuleMap.remove(scanModule.getId());
 		scanModule.removeModelUpdateListener(this);
 		scanModule.setChain(null);
+		this.propertyChangeSupport.firePropertyChange(
+				Chain.SCANMODULE_REMOVED_PROP, scanModule, null);
 		updateListeners();
 	}
 	
@@ -851,5 +873,27 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public boolean removeModelUpdateListener(
 			final IModelUpdateListener modelUpdateListener) {
 		return this.updateListener.remove(modelUpdateListener);
+	}
+	
+	/**
+	 * 
+	 * @param property
+	 * @param listener
+	 */
+	public void addPropertyChangeListener(String property,
+			PropertyChangeListener listener) {
+		this.propertyChangeSupport
+				.addPropertyChangeListener(property, listener);
+	}
+
+	/**
+	 * 
+	 * @param property
+	 * @param listener
+	 */
+	public void removePropertyChangeListener(String property,
+			PropertyChangeListener listener) {
+		this.propertyChangeSupport.removePropertyChangeListener(property,
+				listener);
 	}
 }

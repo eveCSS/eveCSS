@@ -38,6 +38,13 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	// delegated observable
 	private PropertyChangeSupport propertyChangeSupport;
 
+	public static final String PARENT_CONNECTION_PROP = 
+			"ScanModule.PARENT_CONNECTION_PROP";
+	public static final String APPENDED_CONNECTION_PROP = 
+			"ScanModule.APPENDED_CONNECTION_PROP";
+	public static final String NESTED_CONNECTION_PROP = 
+			"ScanModule.NESTED_CONNECTION_PROP";
+	
 	// the id of the scan module
 	private int id;
 	
@@ -417,7 +424,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param appended The connector that brings you to the appended scan modul.
 	 */
 	public void setAppended(final Connector appended) {
-		this.appended = appended;
+		this.propertyChangeSupport.firePropertyChange(
+				ScanModule.APPENDED_CONNECTION_PROP, this.appended,
+				this.appended = appended);
 		updateListeners();
 	}
 
@@ -479,7 +488,10 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param nested The Connector to the nested scan module.
 	 */
 	public void setNested(final Connector nested) {
-		this.nested = nested;
+		this.propertyChangeSupport.firePropertyChange(
+				ScanModule.NESTED_CONNECTION_PROP, this.nested,
+				this.nested = nested);
+		updateListeners();
 	}
 
 	/**
@@ -497,7 +509,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param parent The Connector to the parent element.
 	 */
 	public void setParent(final Connector parent) {
-		this.parent = parent;
+		this.propertyChangeSupport.firePropertyChange(PARENT_CONNECTION_PROP,
+				this.parent, this.parent = parent);
+		updateListeners();
 	}
 
 

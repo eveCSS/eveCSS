@@ -100,6 +100,5 @@ public class Connector {
 	 */
 	public boolean isParentScanModul() {
 		return this.parentScanModul!=null;
-	}
-	
+	}	
 }
