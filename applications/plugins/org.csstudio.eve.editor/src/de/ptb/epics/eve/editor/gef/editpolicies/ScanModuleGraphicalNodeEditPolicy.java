@@ -46,12 +46,12 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 	 */
 	@Override
 	protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
-		request.setStartCommand(new CreateSMConnection(this.scanModule));
+		request.setStartCommand(new CreateSMConnection(this.scanModule, null));
 		return request.getStartCommand();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#getReconnectSourceCommand(org.eclipse.gef.requests.ReconnectRequest)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected Command getReconnectSourceCommand(ReconnectRequest arg0) {
@@ -59,8 +59,8 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#getReconnectTargetCommand(org.eclipse.gef.requests.ReconnectRequest)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected Command getReconnectTargetCommand(ReconnectRequest arg0) {

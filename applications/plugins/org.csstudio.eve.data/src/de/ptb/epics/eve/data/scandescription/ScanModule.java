@@ -45,6 +45,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public static final String NESTED_CONNECTION_PROP = 
 			"ScanModule.NESTED_CONNECTION_PROP";
 	
+	public static int default_width = 70;
+	public static int default_height = 30;
+	
 	// the id of the scan module
 	private int id;
 	
@@ -182,8 +185,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		
 		this.positionings = new ArrayList<Positioning>();
 
-		this.width = 70;
-		this.height = 30;
+		this.width = ScanModule.default_width;
+		this.height = ScanModule.default_height;
 		
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}

@@ -5,31 +5,33 @@ import org.eclipse.gef.commands.Command;
 
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.StartEvent;
 
 /**
  * @author Marcus Michalsky
  * @since 1.6
  */
-public class CreateSMConnection extends Command {
-	
-	private static Logger logger = Logger.getLogger(CreateSMConnection.class
+public class CreateSEConnection extends Command {
+
+	private static Logger logger = Logger.getLogger(CreateSEConnection.class
 			.getName());
 	
-	private ScanModule source;
+	private StartEvent source;
 	private ScanModule target;
 	private Connector conn;
 	
 	/**
 	 * Constructor.
 	 * 
-	 * @param scanModule the scanModule
+	 * @param source the start event
+	 * @param target the scan module
 	 */
-	public CreateSMConnection(ScanModule source, ScanModule target) {
+	public CreateSEConnection(StartEvent source, ScanModule target) {
 		this.source = source;
 		this.target = target;
 		this.conn = new Connector();
-		conn.setParentScanModul(source);
-		conn.setChildScanModul(target);
+		this.conn.setParentEvent(source);
+		this.conn.setChildScanModul(target);
 	}
 	
 	/**
@@ -48,8 +50,8 @@ public class CreateSMConnection extends Command {
 	@Override
 	public void execute() {
 		logger.debug("execute");
-		this.source.setAppended(this.conn);
-		this.target.setParent(this.conn);
+		this.source.setConnector(conn);
+		this.target.setParent(conn);
 	}
 	
 	/**
@@ -57,7 +59,8 @@ public class CreateSMConnection extends Command {
 	 */
 	@Override
 	public void undo() {
-		this.source.setAppended(null);
+		logger.debug("undo");
+		this.source.setConnector(null);
 		this.target.setParent(null);
 	}
 	
@@ -66,7 +69,8 @@ public class CreateSMConnection extends Command {
 	 */
 	@Override
 	public void redo() {
-		this.source.setAppended(this.conn);
-		this.target.setParent(this.conn);
+		logger.debug("redo");
+		this.source.setConnector(conn);
+		this.target.setParent(conn);
 	}
 }

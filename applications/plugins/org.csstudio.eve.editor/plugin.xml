@@ -513,17 +513,26 @@
                name="de.ptb.epics.eve.editor.gef.GraphicalEditor.separator"
                visible="true">
          </separator>
-         <command
-               commandId="de.ptb.epics.eve.editor.command.addevent"
-               label="test"
-               style="push">
+         <menu
+               label="Add">
+            <command
+                  commandId="de.ptb.epics.eve.editor.command.addappended"
+                  icon="icons/devices/scanmodule.gif"
+                  label="Appended Scan Module"
+                  style="push">
+            </command>
             <visibleWhen
                   checkEnabled="false">
-               <reference
-                     definitionId="de.ptb.epics.eve.editor.expressions.scanmoduleselected">
-               </reference>
+               <or>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.scanmoduleselected">
+                  </reference>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.starteventselected">
+                  </reference>
+               </or>
             </visibleWhen>
-         </command>
+         </menu>
       </menuContribution>
       <menuContribution
             locationURI="menu:file?after=additions">
@@ -594,6 +603,21 @@
             </iterate>
          </with>
       </definition>
+      <definition
+            id="de.ptb.epics.eve.editor.expressions.starteventselected">
+         <with
+               variable="selection">
+            <count
+                  value="1">
+            </count>
+            <iterate
+                  ifEmpty="false">
+               <instanceof
+                     value="de.ptb.epics.eve.editor.gef.editparts.StartEventEditPart">
+               </instanceof>
+            </iterate>
+         </with>
+      </definition>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -611,6 +635,16 @@
                name="switchPerspective"
                optional="false">
          </commandParameter>
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.commands"
+            name="Editor">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.editor.AddAppendedScanModule"
+            id="de.ptb.epics.eve.editor.command.addappended"
+            name="Add Appended Scan Module">
       </command>
       <category
             id="de.ptb.epics.eve.editor.views.eventcomposite.commands"
