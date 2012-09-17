@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.editor.gef;
 
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
+import org.eclipse.gef.palette.ConnectionCreationToolEntry;
 import org.eclipse.gef.palette.MarqueeToolEntry;
 import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteEntry;
@@ -43,6 +44,14 @@ public class ScanDescriptionEditorPaletteFactory {
 		
 		toolbar.add(new MarqueeToolEntry());
 		
+		ConnectionCreationToolEntry connection = new ConnectionCreationToolEntry(
+				"Connection", "Create a connection", null, 
+				Activator.imageDescriptorFromPlugin(
+						Activator.PLUGIN_ID, "icons/entry_ovr.gif"), 
+				Activator.imageDescriptorFromPlugin(
+						Activator.PLUGIN_ID, "icons/entry_ovr.gif"));
+		toolbar.add(connection);
+		
 		return toolbar;
 	}
 	
@@ -51,7 +60,6 @@ public class ScanDescriptionEditorPaletteFactory {
 	 */
 	private static PaletteEntry createElementsDrawer() {
 		PaletteDrawer componentsDrawer = new PaletteDrawer("Create Tools");
-		
 		CombinedTemplateCreationEntry component = new CombinedTemplateCreationEntry(
 				"Scan Module", "Create a Scan Module", new SimpleFactory(
 						ScanModule.class), Activator.imageDescriptorFromPlugin(

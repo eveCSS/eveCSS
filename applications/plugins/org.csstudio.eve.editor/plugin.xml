@@ -208,20 +208,6 @@
                </parameter>
             </command>
          </toolbar>
-         <toolbar
-               id="de.ptb.epics.eve.editor.toolbar.zoom">
-            <command
-                  commandId="org.eclipse.gef.zoom_in"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.eclipse.gef.zoom_out"
-                  style="push">
-            </command>
-            <separator
-                  name="additions">
-            </separator>
-         </toolbar>
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.eventcomposite.tablepopup">
@@ -514,6 +500,10 @@
                label="Redo"
                style="push">
          </command>
+         <separator
+               name="de.ptb.epics.eve.editor.gef.GraphicalEditor.separator1"
+               visible="true">
+         </separator>
          <command
                commandId="org.eclipse.ui.edit.delete"
                label="Delete"

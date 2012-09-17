@@ -23,6 +23,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleComponentEditPolicy;
 import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleDirectEditPolicy;
+import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleGraphicalNodeEditPolicy;
 import de.ptb.epics.eve.editor.gef.figures.ScanModuleFigure;
 import de.ptb.epics.eve.editor.gef.tools.ScanModuleCellEditorLocator;
 import de.ptb.epics.eve.editor.gef.tools.ScanModuleDirectEditManager;
@@ -110,6 +111,8 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 				new ScanModuleDirectEditPolicy());
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, 
 				new ScanModuleComponentEditPolicy());
+		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE,
+				new ScanModuleGraphicalNodeEditPolicy(this.getModel()));
 	}
 	
 	/**
