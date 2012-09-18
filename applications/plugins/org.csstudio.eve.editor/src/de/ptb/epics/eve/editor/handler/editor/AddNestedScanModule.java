@@ -17,31 +17,28 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.scandescription.StartEvent;
 import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
-import de.ptb.epics.eve.editor.gef.commands.CreateSEConnection;
 import de.ptb.epics.eve.editor.gef.commands.CreateSMConnection;
 import de.ptb.epics.eve.editor.gef.commands.CreateScanModule;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
-import de.ptb.epics.eve.editor.gef.editparts.StartEventEditPart;
 
 /**
  * @author Marcus Michalsky
  * @since 1.6
  */
-public class AddAppendedScanModule extends AbstractHandler implements
+public class AddNestedScanModule extends AbstractHandler implements
 		ISelectionListener {
 
-	private static Logger logger = Logger.getLogger(AddAppendedScanModule.class
+	private static Logger logger = Logger.getLogger(AddNestedScanModule.class
 			.getName());
 	
 	/**
 	 * Constructor.
 	 */
-	public AddAppendedScanModule() {
+	public AddNestedScanModule() {
 		super();
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getSelectionService().addSelectionListener(this);
+			.getSelectionService().addSelectionListener(this);
 	}
 	
 	/**
@@ -59,13 +56,10 @@ public class AddAppendedScanModule extends AbstractHandler implements
 		}
 		
 		ScanModule scanModule = null;
-		StartEvent startEvent = null;
 		Object element = ((IStructuredSelection)selection).getFirstElement();
 		
 		if (element instanceof ScanModuleEditPart) {
 			scanModule = ((ScanModuleEditPart)element).getModel();
-		} else if (element instanceof StartEventEditPart) {
-			startEvent = ((StartEventEditPart)element).getModel();
 		} else {
 			return null;
 		}
@@ -75,28 +69,13 @@ public class AddAppendedScanModule extends AbstractHandler implements
 					HandlerUtil.getActiveEditor(event);
 			CommandStack commandStack = editor.getCommandStack();
 			Command compositeCmd = null;
-			
-			if (scanModule != null) {
-				CreateScanModule createCmd = new CreateScanModule(
-						scanModule.getChain(), new Rectangle(
-								scanModule.getX() + 130, scanModule.getY(),
-								scanModule.getWidth(), scanModule.getHeight()));
-				Command connCmd = new CreateSMConnection(scanModule,
-						createCmd.getScanModule(), Connector.APPENDED);
-				compositeCmd = createCmd.chain(connCmd);
-			} else if (startEvent != null) {
-				CreateScanModule createCmd = new CreateScanModule(
-						startEvent.getChain(), new Rectangle(
-								startEvent.getX() + 130, startEvent.getY(),
-								ScanModule.default_width,
-								ScanModule.default_height));
-				Command connCmd = new CreateSEConnection(startEvent,
-						createCmd.getScanModule());
-				compositeCmd = createCmd.chain(connCmd);
-			} else {
-				return null;
-			}
-			
+			CreateScanModule createCmd = new CreateScanModule(
+					scanModule.getChain(), new Rectangle(
+							scanModule.getX() + 130, scanModule.getY() + 100,
+							scanModule.getWidth(), scanModule.getHeight()));
+			Command connCmd = new CreateSMConnection(scanModule,
+					createCmd.getScanModule(), Connector.NESTED);
+			compositeCmd = createCmd.chain(connCmd);
 			commandStack.execute(compositeCmd);
 		}
 		return null;
@@ -107,6 +86,7 @@ public class AddAppendedScanModule extends AbstractHandler implements
 	 */
 	@Override
 	public boolean isEnabled() {
+		logger.debug("isEnabled");
 		ISelection selection = PlatformUI.getWorkbench().
 				getActiveWorkbenchWindow().getSelectionService().getSelection();
 		// look at what is selected
@@ -123,13 +103,11 @@ public class AddAppendedScanModule extends AbstractHandler implements
 						((ScanModuleEditPart) element).getModel()
 						.getAppended() == null);
 			}
-			return ((ScanModuleEditPart) element).getModel().getAppended() == null;
-		} else if (element instanceof StartEventEditPart) {
-			return ((StartEventEditPart) element).getModel().getConnector() == null;
+			return ((ScanModuleEditPart) element).getModel().getNested() == null;
 		}
 		return false;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -144,7 +122,7 @@ public class AddAppendedScanModule extends AbstractHandler implements
 	@Override
 	public void dispose() {
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-		.getSelectionService().removeSelectionListener(this);
+			.getSelectionService().removeSelectionListener(this);
 		super.dispose();
 	}
 }

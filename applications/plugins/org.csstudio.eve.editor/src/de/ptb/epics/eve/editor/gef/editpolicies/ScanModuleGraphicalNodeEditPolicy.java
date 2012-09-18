@@ -5,6 +5,7 @@ import org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy;
 import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.ReconnectRequest;
 
+import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.gef.commands.CreateSMConnection;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
@@ -46,7 +47,8 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 	 */
 	@Override
 	protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
-		request.setStartCommand(new CreateSMConnection(this.scanModule, null));
+		request.setStartCommand(new CreateSMConnection(this.scanModule, null,
+				Connector.APPENDED));
 		return request.getStartCommand();
 	}
 

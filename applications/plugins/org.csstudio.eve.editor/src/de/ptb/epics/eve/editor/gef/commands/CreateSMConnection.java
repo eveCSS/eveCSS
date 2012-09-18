@@ -18,15 +18,26 @@ public class CreateSMConnection extends Command {
 	private ScanModule source;
 	private ScanModule target;
 	private Connector conn;
+	private String type;
 	
 	/**
 	 * Constructor.
 	 * 
-	 * @param scanModule the scanModule
+	 * @param source the connection source
+	 * @param target the connection target
+	 * @param type the connection type (either 
+	 * 		{@link de.ptb.epics.eve.data.scandescription.Connector#APPENDED} or
+	 *  	{@link de.ptb.epics.eve.data.scandescription.Connector#NESTED}
+	 * @throws IllegalArgumentException if <code>type</code> incorrect
 	 */
-	public CreateSMConnection(ScanModule source, ScanModule target) {
+	public CreateSMConnection(ScanModule source, ScanModule target, String type) {
+		if (!type.equals(Connector.APPENDED) && !type.equals(Connector.NESTED)) {
+			throw new IllegalArgumentException(
+				"type must be either 'Connector.APPENDED' or 'Connector.Nested'");
+		}
 		this.source = source;
 		this.target = target;
+		this.type = type;
 		this.conn = new Connector();
 		conn.setParentScanModul(source);
 		conn.setChildScanModul(target);
@@ -48,7 +59,11 @@ public class CreateSMConnection extends Command {
 	@Override
 	public void execute() {
 		logger.debug("execute");
-		this.source.setAppended(this.conn);
+		if (type.equals(Connector.APPENDED)) {
+			this.source.setAppended(this.conn);
+		} else if (type.equals(Connector.NESTED)) {
+			this.source.setNested(this.conn);
+		}
 		this.target.setParent(this.conn);
 	}
 	
@@ -57,7 +72,11 @@ public class CreateSMConnection extends Command {
 	 */
 	@Override
 	public void undo() {
-		this.source.setAppended(null);
+		if (type.equals(Connector.APPENDED)) {
+			this.source.setAppended(null);
+		} else if (type.equals(Connector.NESTED)) {
+			this.source.setNested(null);
+		}
 		this.target.setParent(null);
 	}
 	
@@ -66,7 +85,11 @@ public class CreateSMConnection extends Command {
 	 */
 	@Override
 	public void redo() {
-		this.source.setAppended(this.conn);
+		if (type.equals(Connector.APPENDED)) {
+			this.source.setAppended(this.conn);
+		} else if (type.equals(Connector.NESTED)) {
+			this.source.setNested(this.conn);
+		}
 		this.target.setParent(this.conn);
 	}
 }

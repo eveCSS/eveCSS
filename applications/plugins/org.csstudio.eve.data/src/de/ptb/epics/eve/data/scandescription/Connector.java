@@ -10,6 +10,9 @@ package de.ptb.epics.eve.data.scandescription;
  */
 public class Connector {
 
+	public static final String APPENDED = "appended";
+	public static final String NESTED = "nested";
+	
 	/**
 	 * If the parent is an event, it is saved here.
 	 */
