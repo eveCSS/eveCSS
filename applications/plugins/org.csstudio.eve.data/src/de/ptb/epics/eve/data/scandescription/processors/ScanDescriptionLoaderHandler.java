@@ -1207,15 +1207,15 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 					Connector connector = new Connector();
 					if (appendedScanModul != null) {
-						connector.setParentScanModul(scanModul);
-						connector.setChildScanModul(appendedScanModul);
+						connector.setParentScanModule(scanModul);
+						connector.setChildScanModule(appendedScanModul);
 						scanModul.setAppended(connector);
 						appendedScanModul.setParent(connector);
 						connector = new Connector();
 					}
 					if (nestedScanModul != null) {
-						connector.setParentScanModul(scanModul);
-						connector.setChildScanModul(nestedScanModul);
+						connector.setParentScanModule(scanModul);
+						connector.setChildScanModule(nestedScanModul);
 						scanModul.setNested(connector);
 						nestedScanModul.setParent(connector);
 					}
@@ -2276,7 +2276,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				if (loopScanModule.getParent() == null) {
 					Connector connector = new Connector();
 					connector.setParentEvent(se);
-					connector.setChildScanModul(loopScanModule);
+					connector.setChildScanModule(loopScanModule);
 					se.setConnector(connector);
 					loopScanModule.setParent(connector);
 					break;

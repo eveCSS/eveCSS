@@ -121,8 +121,8 @@ public class AddNestedScanModule extends AbstractHandler implements
 	 */
 	@Override
 	public void dispose() {
+		super.dispose();
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 			.getSelectionService().removeSelectionListener(this);
-		super.dispose();
 	}
 }

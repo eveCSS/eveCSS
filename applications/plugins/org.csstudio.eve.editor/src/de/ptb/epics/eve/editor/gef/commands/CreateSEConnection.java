@@ -31,7 +31,7 @@ public class CreateSEConnection extends Command {
 		this.target = target;
 		this.conn = new Connector();
 		this.conn.setParentEvent(source);
-		this.conn.setChildScanModul(target);
+		this.conn.setChildScanModule(target);
 	}
 	
 	/**
@@ -41,7 +41,7 @@ public class CreateSEConnection extends Command {
 	 */
 	public void setTargetModule(ScanModule target) {
 		this.target = target;
-		this.conn.setChildScanModul(target);
+		this.conn.setChildScanModule(target);
 	}
 	
 	/**

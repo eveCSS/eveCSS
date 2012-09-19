@@ -1,8 +1,8 @@
 package de.ptb.epics.eve.data.scandescription;
 
 /**
- * This class represents connections between scan modules and scan modules
- * to start events. It is constructed to make it more easier to represent the
+ * This class represents connections between scan modules and scan modules to
+ * start events. It is constructed to make it more easier to represent the
  * connections in a MVC system (like GEF).
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
@@ -12,40 +12,41 @@ public class Connector {
 
 	public static final String APPENDED = "appended";
 	public static final String NESTED = "nested";
-	
+
 	/**
 	 * If the parent is an event, it is saved here.
 	 */
 	private StartEvent parentEvent;
-	
+
 	/**
-	 * If the parent is an scan modoul, it is saved here.
+	 * If the parent is an scan module, it is saved here.
 	 */
-	private ScanModule parentScanModul;
-	
+	private ScanModule parentScanModule;
+
 	/**
-	 * The child scan modul of the connection.
+	 * The child scan module of the connection.
 	 */
-	private ScanModule childScanModul;
-	
+	private ScanModule childScanModule;
+
 	/**
-	 * Gives back the child scan modul of this connection.
+	 * Gives back the child scan module of this connection.
 	 * 
-	 * @return The child scan modul of this connection.
+	 * @return The child scan module of this connection.
 	 */
 	public ScanModule getChildScanModule() {
-		return childScanModul;
+		return childScanModule;
 	}
-	
+
 	/**
-	 * Sets the child scan Modul of this connection.
+	 * Sets the child scan module of this connection.
 	 * 
-	 * @param childScanModul The child scan modul of this connection.
+	 * @param childScanModule
+	 *            The child scan module of this connection.
 	 */
-	public void setChildScanModul( final ScanModule childScanModul ) {
-		this.childScanModul = childScanModul;
+	public void setChildScanModule(final ScanModule childScanModule) {
+		this.childScanModule = childScanModule;
 	}
-	
+
 	/**
 	 * Gives back the parent event of this connection.
 	 * 
@@ -54,54 +55,57 @@ public class Connector {
 	public StartEvent getParentEvent() {
 		return parentEvent;
 	}
-	
+
 	/**
-	 * Sets the parent event of this connection. The parent scan modul will be
+	 * Sets the parent event of this connection. The parent scan module will be
 	 * forgotten after calling this method.
 	 * 
-	 * @param parentEvent The parent event.
+	 * @param parentEvent
+	 *            The parent event.
 	 */
-	public void setParentEvent( final StartEvent parentEvent ) {
+	public void setParentEvent(final StartEvent parentEvent) {
 		this.parentEvent = null;
 		this.parentEvent = parentEvent;
 	}
-	
+
 	/**
 	 * Gives back the parent scan modul.
 	 * 
 	 * @return The parent scan modul.
 	 */
 	public ScanModule getParentScanModule() {
-		return parentScanModul;
+		return parentScanModule;
 	}
-	
+
 	/**
-	 * Sets the parent scan modul. The parent event will be forgotten
-	 * after calling this method.
+	 * Sets the parent scan modul. The parent event will be forgotten after
+	 * calling this method.
 	 * 
-	 * @param parentScanModul The parent scan modul.
+	 * @param parentScanModule
+	 *            The parent scan modul.
 	 */
-	public void setParentScanModul( final ScanModule parentScanModul ) {
+	public void setParentScanModule(final ScanModule parentScanModule) {
 		this.parentEvent = null;
-		this.parentScanModul = parentScanModul;
+		this.parentScanModule = parentScanModule;
 	}
-	
+
 	/**
-	 * This method can be used to find out if the parent of the
-	 * connection is an event or not.
+	 * This method can be used to find out if the parent of the connection is an
+	 * event or not.
 	 * 
 	 * @return Gives back true if the parent is an event.
 	 */
 	public boolean isParentEvent() {
-		return this.parentEvent!=null;
+		return this.parentEvent != null;
 	}
+
 	/**
-	 * This method can be used to find out if the parent of the
-	 * connection is an scan modul or not.
+	 * This method can be used to find out if the parent of the connection is an
+	 * scan modul or not.
 	 * 
 	 * @return Gives back true if the parent is an scan modul.
 	 */
-	public boolean isParentScanModul() {
-		return this.parentScanModul!=null;
-	}	
+	public boolean isParentScanModule() {
+		return this.parentScanModule != null;
+	}
 }

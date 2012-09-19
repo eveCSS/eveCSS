@@ -39,8 +39,8 @@ public class CreateSMConnection extends Command {
 		this.target = target;
 		this.type = type;
 		this.conn = new Connector();
-		conn.setParentScanModul(source);
-		conn.setChildScanModul(target);
+		conn.setParentScanModule(source);
+		conn.setChildScanModule(target);
 	}
 	
 	/**
@@ -50,7 +50,7 @@ public class CreateSMConnection extends Command {
 	 */
 	public void setTargetModule(ScanModule target) {
 		this.target = target;
-		this.conn.setChildScanModul(target);
+		this.conn.setChildScanModule(target);
 	}
 	
 	/**
