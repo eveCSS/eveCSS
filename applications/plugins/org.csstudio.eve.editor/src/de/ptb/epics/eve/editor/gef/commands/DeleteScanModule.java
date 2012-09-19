@@ -20,6 +20,9 @@ public class DeleteScanModule extends Command {
 	 *  - connector to connected scan module
 	 *  - connected scan module to connector
 	 *  ScanModule (StartEvent) <- -> Connector <- -> ScanModule
+	 *  
+	 *  Since a ScanModule has a parent appended and nested anchor point there 
+	 *  are at most twelve pointers which have to be changed.
 	 */
 	
 	private Chain chain;

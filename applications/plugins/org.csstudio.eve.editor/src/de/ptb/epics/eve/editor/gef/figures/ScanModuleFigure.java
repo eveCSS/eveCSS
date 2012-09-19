@@ -68,6 +68,7 @@ public class ScanModuleFigure extends Shape {
 		} else {
 			this.name = name;
 		}
+		this.repaint();
 	}
 
 	/**

@@ -545,6 +545,33 @@
                </or>
             </visibleWhen>
          </menu>
+         <menu
+               label="Fill">
+            <command
+                  commandId="de.ptb.epics.eve.editor.command.saveallaxispositions"
+                  icon="icons/devices/axis.gif"
+                  label="Save Axis Positions"
+                  style="push">
+            </command>
+            <command
+                  commandId="de.ptb.epics.eve.editor.command.saveallchannelvalues"
+                  icon="icons/devices/channel.gif"
+                  label="Save Channel Values"
+                  style="push">
+            </command>
+            <command
+                  commandId="de.ptb.epics.eve.editor.command.clear"
+                  icon="icons/clear.gif"
+                  label="Clear"
+                  style="push">
+            </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.scanmoduleselected">
+               </reference>
+            </visibleWhen>
+         </menu>
       </menuContribution>
       <menuContribution
             locationURI="menu:file?after=additions">
@@ -876,6 +903,28 @@
                name="Device List"
                optional="false">
          </commandParameter>
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.command.filloptions"
+            name="Fill Options">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.command.filloptions"
+            defaultHandler="de.ptb.epics.eve.editor.handler.editor.FillAxisPositions"
+            id="de.ptb.epics.eve.editor.command.saveallaxispositions"
+            name="Save All Axis Positions">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.command.filloptions"
+            defaultHandler="de.ptb.epics.eve.editor.handler.editor.FillChannelValues"
+            id="de.ptb.epics.eve.editor.command.saveallchannelvalues"
+            name="Save All Channel Values">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.command.filloptions"
+            defaultHandler="de.ptb.epics.eve.editor.handler.editor.FillClear"
+            id="de.ptb.epics.eve.editor.command.clear"
+            name="Clear">
       </command>
    </extension>
    <extension
