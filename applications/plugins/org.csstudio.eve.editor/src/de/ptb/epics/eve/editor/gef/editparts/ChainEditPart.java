@@ -89,7 +89,6 @@ public class ChainEditPart extends AbstractGraphicalEditPart implements
 	 */
 	@Override
 	protected void createEditPolicies() {
-		logger.debug("createEditPolicies");
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ChainLayoutEditPolicy());
 	}
 
@@ -101,6 +100,9 @@ public class ChainEditPart extends AbstractGraphicalEditPart implements
 		if (e.getPropertyName().equals(Chain.SCANMODULE_ADDED_PROP) ||
 				e.getPropertyName().equals(Chain.SCANMODULE_REMOVED_PROP)) {
 			this.refreshChildren();
+			if (logger.isDebugEnabled()) {
+				logger.debug("Property changed: " + e.getPropertyName());
+			}
 		}
 	}
 }

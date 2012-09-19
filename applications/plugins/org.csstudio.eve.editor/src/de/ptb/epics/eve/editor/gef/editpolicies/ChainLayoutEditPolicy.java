@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
@@ -36,7 +35,7 @@ public class ChainLayoutEditPolicy extends XYLayoutEditPolicy {
 		if (child instanceof ScanModuleEditPart
 				&& constraint instanceof Rectangle) {
 			return new MoveScanModule((ScanModule) child.getModel(),
-					(Rectangle) constraint);
+					(Rectangle) constraint, request);
 		}
 		return super.createChangeConstraintCommand(request, child, constraint);
 	}
@@ -55,14 +54,12 @@ public class ChainLayoutEditPolicy extends XYLayoutEditPolicy {
 	 */
 	@Override
 	protected Command getCreateCommand(CreateRequest request) {
-		return new CreateScanModule((Chain) this.getHost().getModel(),
-				(Rectangle) this.getConstraintFor(request));
-	}
-	
-	@Override
-	public Command getCommand(Request request) {
-		logger.debug("getCommand: " + request.getType());
-		return super.getCommand(request);
+		Object childClass = request.getNewObjectType();
+		if (childClass == ScanModule.class) {
+			return new CreateScanModule((Chain) this.getHost().getModel(),
+					(Rectangle) this.getConstraintFor(request));
+		}
+		return null;
 	}
 	
 	/**

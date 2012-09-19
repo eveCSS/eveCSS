@@ -3,8 +3,10 @@ package de.ptb.epics.eve.editor.gef.editparts;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 
@@ -18,6 +20,9 @@ import de.ptb.epics.eve.editor.gef.figures.ScanDescriptionFigure;
  */
 public class ScanDescriptionEditPart extends AbstractGraphicalEditPart {
 
+	private static Logger logger = Logger
+			.getLogger(ScanDescriptionEditPart.class.getName());
+	
 	/**
 	 * Constructor.
 	 * 
@@ -66,5 +71,12 @@ public class ScanDescriptionEditPart extends AbstractGraphicalEditPart {
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.COMPONENT_ROLE,
 				new RootComponentEditPolicy());
+	}
+	
+	@Override
+	public boolean understandsRequest(Request request) {
+		logger.debug(request.getType());
+		// TODO Auto-generated method stub
+		return super.understandsRequest(request);
 	}
 }

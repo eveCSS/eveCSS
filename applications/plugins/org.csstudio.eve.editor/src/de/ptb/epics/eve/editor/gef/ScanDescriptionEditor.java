@@ -22,8 +22,11 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.ui.actions.ZoomInAction;
+import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -318,7 +321,6 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		} else if (type == EditPart.class) {
 			return this.getGraphicalViewer().getRootEditPart();
 		} 
-		// TODO necessary ??? maybe delete
 		return super.getAdapter(type);
 	}
 	
@@ -341,12 +343,17 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		GraphicalViewer viewer = this.getGraphicalViewer();
 		viewer.setEditPartFactory(new ScanDescriptionEditorEditPartFactory());
 		// construct layered view for displaying FreeformFigures (zoomable)
-		viewer.setRootEditPart(new ScalableFreeformRootEditPart());
+		ScalableFreeformRootEditPart root = new ScalableFreeformRootEditPart();
+		viewer.setRootEditPart(root);
 		viewer.setSelectionManager(new ModifiedSelectionManager(viewer));
 		viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer));
 		// zoom with MouseWheel
 		viewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1),
 				MouseWheelZoomHandler.SINGLETON);
+		IAction zoomIn = new ZoomInAction(root.getZoomManager());
+		IAction zoomOut = new ZoomOutAction(root.getZoomManager());
+		getActionRegistry().registerAction(zoomIn);
+		getActionRegistry().registerAction(zoomOut);
 		super.configureGraphicalViewer();
 	}
 	
