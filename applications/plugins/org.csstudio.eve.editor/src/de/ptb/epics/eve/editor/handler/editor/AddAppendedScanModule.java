@@ -4,14 +4,11 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.HandlerEvent;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -29,20 +26,10 @@ import de.ptb.epics.eve.editor.gef.editparts.StartEventEditPart;
  * @author Marcus Michalsky
  * @since 1.6
  */
-public class AddAppendedScanModule extends AbstractHandler implements
-		ISelectionListener {
+public class AddAppendedScanModule extends AbstractHandler {
 
 	private static Logger logger = Logger.getLogger(AddAppendedScanModule.class
 			.getName());
-	
-	/**
-	 * Constructor.
-	 */
-	public AddAppendedScanModule() {
-		super();
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-		.getSelectionService().addSelectionListener(this);
-	}
 	
 	/**
 	 * {@inheritDoc}
@@ -128,14 +115,5 @@ public class AddAppendedScanModule extends AbstractHandler implements
 			return ((StartEventEditPart) element).getModel().getConnector() == null;
 		}
 		return false;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		logger.debug("selection changed");
-		fireHandlerChanged(new HandlerEvent(this, true, true));
 	}
 }

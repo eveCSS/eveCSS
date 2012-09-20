@@ -4,14 +4,11 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.HandlerEvent;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -26,20 +23,11 @@ import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
  * @author Marcus Michalsky
  * @since 1.6
  */
-public class AddNestedScanModule extends AbstractHandler implements
-		ISelectionListener {
+public class AddNestedScanModule extends AbstractHandler {
 
 	private static Logger logger = Logger.getLogger(AddNestedScanModule.class
 			.getName());
-	
-	/**
-	 * Constructor.
-	 */
-	public AddNestedScanModule() {
-		super();
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-			.getSelectionService().addSelectionListener(this);
-	}
+
 	
 	/**
 	 * {@inheritDoc}
@@ -105,19 +93,5 @@ public class AddNestedScanModule extends AbstractHandler implements
 			return ((ScanModuleEditPart) element).getModel().getNested() == null;
 		}
 		return false;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		logger.debug("selection Changed");
-		if (part == null) {
-			logger.debug("part");
-		} else {
-			logger.debug(part.getTitle());
-		}
-		fireHandlerChanged(new HandlerEvent(this, true, true));
 	}
 }
