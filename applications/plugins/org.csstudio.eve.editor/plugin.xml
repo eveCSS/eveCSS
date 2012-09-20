@@ -515,24 +515,10 @@
          </separator>
          <menu
                label="Add">
-            <command
-                  commandId="de.ptb.epics.eve.editor.command.addappended"
-                  icon="icons/devices/scanmodule.gif"
-                  label="Appended Scan Module"
-                  style="push">
-            </command>
-            <command
-                  commandId="de.ptb.epics.eve.editor.command.addnested"
-                  icon="icons/devices/scanmodule.gif"
-                  label="Nested Scan Module"
-                  style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <reference
-                        definitionId="de.ptb.epics.eve.editor.expressions.scanmoduleselected">
-                  </reference>
-               </visibleWhen>
-            </command>
+            <dynamic
+                  class="de.ptb.epics.eve.editor.gef.ContextMenuAddContributionItem"
+                  id="de.ptb.epics.eve.editor.dynamic.add.popup">
+            </dynamic>
             <visibleWhen
                   checkEnabled="false">
                <or>
