@@ -48,6 +48,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventType
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
@@ -735,9 +736,11 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			((IStructuredSelection) selection).size() == 0) {
 				return;
 		}
-		// since at any given time this view can only display options of
-		// one device we take the first element of the selection
-		Object o = ((IStructuredSelection) selection).toList().get(0);
+		// at any given time this view can only display options of
+		// one device we take the last (see org.eclipse.gef.SelectionMananger, 
+		// primary selection)
+		IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+		Object o = structuredSelection.toList().get(structuredSelection.size()-1);
 		if (o instanceof ScanModuleEditPart) {
 			// set new ScanModule
 			if (logger.isDebugEnabled()) {
@@ -747,7 +750,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			}
 			final ScanModuleEditPart smep = (ScanModuleEditPart) o;
 			setCurrentScanModule((ScanModule) smep.getModel());
-		} else if (o instanceof ScanDescriptionEditPart) {
+		} else if (o instanceof ChainEditPart) {
 			// clicking empty space in the editor
 			logger.debug("selection is ScanDescriptionEditPart: " + o);
 			setCurrentScanModule(null);

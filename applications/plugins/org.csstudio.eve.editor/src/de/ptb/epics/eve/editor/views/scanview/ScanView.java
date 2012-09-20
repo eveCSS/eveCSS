@@ -54,7 +54,6 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.dialogs.PluginControllerDialog;
 import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
-import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
@@ -602,18 +601,10 @@ public class ScanView extends ViewPart implements IEditorView,
 				return;
 			}
 		}
-		
 		// since at any given time this view can only display options of 
 		// one device we take the first element of the selection
 		Object o = ((IStructuredSelection) selection).toList().get(0);
-		if (o instanceof ChainEditPart) {
-			// set new Chain
-			if(logger.isDebugEnabled()) {
-				logger.debug("Chain: " + ((Chain)((ChainEditPart)o).
-						getModel()).getId() + " selected."); 
-			}
-			setCurrentChain((Chain)((ChainEditPart)o).getModel());
-		} else if (o instanceof ScanModuleEditPart) {
+		if (o instanceof ScanModuleEditPart) {
 			// a scan module belongs to a chain -> show chain
 			if(logger.isDebugEnabled()) {
 				logger.debug("ScanModule "
@@ -621,7 +612,7 @@ public class ScanView extends ViewPart implements IEditorView,
 			}
 			setCurrentChain(((ScanModule)((ScanModuleEditPart)o).
 					getModel()).getChain());
-		} else if (o instanceof ScanDescriptionEditPart) {
+		} else if (o instanceof ChainEditPart) {
 				logger.debug("selection is ScanDescriptionEditPart: " + o);
 				setCurrentChain(null);
 		} else {

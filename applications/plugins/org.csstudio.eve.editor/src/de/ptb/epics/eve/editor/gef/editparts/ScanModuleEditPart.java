@@ -253,4 +253,12 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 		}
 		this.refreshVisuals();
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return super.toString() + "(" + this.getModel().getName() + ")";
+	}
 }

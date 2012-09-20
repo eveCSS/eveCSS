@@ -345,7 +345,6 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		// construct layered view for displaying FreeformFigures (zoomable)
 		ScalableFreeformRootEditPart root = new ScalableFreeformRootEditPart();
 		viewer.setRootEditPart(root);
-		viewer.setSelectionManager(new ModifiedSelectionManager(viewer));
 		viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer));
 		// zoom with MouseWheel
 		viewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1),

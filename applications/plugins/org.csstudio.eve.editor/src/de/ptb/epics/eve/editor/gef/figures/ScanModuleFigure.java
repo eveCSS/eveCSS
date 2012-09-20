@@ -109,6 +109,7 @@ public class ScanModuleFigure extends Shape {
 	 * @param active the active to set
 	 */
 	public void setSelected(boolean selected) {
+		logger.debug(this.name + " is primary ?: " + Boolean.toString(selected));
 		this.selected_primary = selected;
 		this.repaint();
 	}
