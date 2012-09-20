@@ -21,11 +21,15 @@ import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.commands.CommandStack;
+import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
+import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
+import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.jface.action.IAction;
@@ -370,6 +374,9 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		logger.trace("initializeGraphicalViewer");
 		super.initializeGraphicalViewer();
 		this.getGraphicalViewer().setContents(this.scanDescription);
+		this.getGraphicalViewer().addDropTargetListener(
+				new TemplateTransferDropTargetListener(this
+						.getGraphicalViewer()));
 		MenuManager menuManager = new MenuManager();
 		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		this.getGraphicalViewer().setContextMenu(menuManager);
@@ -383,5 +390,17 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 	@Override
 	protected PaletteRoot getPaletteRoot() {
 		return ScanDescriptionEditorPaletteFactory.createPalette();
+	}
+	
+	@Override
+	protected PaletteViewerProvider createPaletteViewerProvider() {
+		return new PaletteViewerProvider(getEditDomain()) {
+			@Override
+			protected void configurePaletteViewer(PaletteViewer viewer) {
+				super.configurePaletteViewer(viewer);
+				viewer.addDragSourceListener(new TemplateTransferDragSourceListener(
+						viewer));
+			}
+		};
 	}
 }
