@@ -2,7 +2,9 @@ package de.ptb.epics.eve.editor.gef;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.EventObject;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -349,6 +351,10 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		// zoom with MouseWheel
 		viewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1),
 				MouseWheelZoomHandler.SINGLETON);
+		List<String> zoomContributions = Arrays.asList(new String[] { 
+				ZoomManager.FIT_ALL, ZoomManager.FIT_HEIGHT,
+				ZoomManager.FIT_WIDTH });
+			root.getZoomManager().setZoomLevelContributions(zoomContributions);
 		IAction zoomIn = new ZoomInAction(root.getZoomManager());
 		IAction zoomOut = new ZoomOutAction(root.getZoomManager());
 		getActionRegistry().registerAction(zoomIn);
