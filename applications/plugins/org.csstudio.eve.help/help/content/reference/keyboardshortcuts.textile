@@ -1,5 +1,7 @@
 h1(eveTopic). Keyboard Shortcuts
 
+p. Below is a list of shortcuts used frequently. To see a full list of available shortcuts press __Ctrl+Shift+l__.
+
 h2(eveTopic). File
 
 |Close| __Ctrl+W__|
