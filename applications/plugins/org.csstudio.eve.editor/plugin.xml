@@ -970,7 +970,4 @@
             commandId="de.ptb.epics.eve.editor.command.addnested">
       </handler>
    </extension>
-   <extension
-         point="org.eclipse.ui.services">
-   </extension>
 </plugin>

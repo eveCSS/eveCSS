@@ -44,6 +44,8 @@ public class ModifiedSelectionManager extends SelectionManager {
 				newSelection.add(o);
 			}
 		}
+		oldSelection.removeAll(newSelection);
+		newSelection.addAll(oldSelection);
 		if (!newSelection.isEmpty()) {
 			super.setSelection(new StructuredSelection(newSelection));
 		}
