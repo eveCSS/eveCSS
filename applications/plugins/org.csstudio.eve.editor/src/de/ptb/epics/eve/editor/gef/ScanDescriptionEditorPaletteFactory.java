@@ -10,6 +10,7 @@ import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.palette.PanningSelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.requests.SimpleFactory;
+import org.eclipse.gef.tools.AbstractTool;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
@@ -42,7 +43,10 @@ public class ScanDescriptionEditorPaletteFactory {
 		toolbar.add(tool);
 		palette.setDefaultEntry(tool);
 		
-		toolbar.add(new MarqueeToolEntry());
+		tool = new MarqueeToolEntry();
+		tool.setToolProperty(AbstractTool.PROPERTY_UNLOAD_WHEN_FINISHED,
+				Boolean.TRUE); 
+		toolbar.add(tool);
 		
 		ConnectionCreationToolEntry connection = new ConnectionCreationToolEntry(
 				"Connection", "Create a connection", null, 
