@@ -98,9 +98,9 @@ public class AddNestedScanModule extends AbstractHandler implements
 		Object element = ((IStructuredSelection) selection).getFirstElement();
 		if (element instanceof ScanModuleEditPart) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("isEnabled:  " + 
-						((ScanModuleEditPart) element).getModel()
-						.getAppended() == null);
+				logger.debug("isEnabled: " + 
+						Boolean.toString(((ScanModuleEditPart) element).getModel()
+						.getNested() == null));
 			}
 			return ((ScanModuleEditPart) element).getModel().getNested() == null;
 		}
@@ -112,18 +112,12 @@ public class AddNestedScanModule extends AbstractHandler implements
 	 */
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		logger.debug(part);
+		logger.debug("selection Changed");
+		if (part == null) {
+			logger.debug("part");
+		} else {
+			logger.debug(part.getTitle());
+		}
 		fireHandlerChanged(new HandlerEvent(this, true, true));
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void dispose() {
-		logger.debug(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-			.getSelectionService().removeSelectionListener(this);
-		super.dispose();
 	}
 }

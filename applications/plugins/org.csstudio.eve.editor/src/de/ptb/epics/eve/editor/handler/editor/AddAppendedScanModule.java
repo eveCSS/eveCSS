@@ -119,9 +119,9 @@ public class AddAppendedScanModule extends AbstractHandler implements
 		Object element = ((IStructuredSelection) selection).getFirstElement();
 		if (element instanceof ScanModuleEditPart) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("isEnabled:   " + 
-						((ScanModuleEditPart) element).getModel()
-						.getAppended() == null);
+				logger.debug("isEnabled: " + 
+						Boolean.toString(((ScanModuleEditPart) element).getModel()
+						.getAppended() == null));
 			}
 			return ((ScanModuleEditPart) element).getModel().getAppended() == null;
 		} else if (element instanceof StartEventEditPart) {
@@ -137,15 +137,5 @@ public class AddAppendedScanModule extends AbstractHandler implements
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		logger.debug("selection changed");
 		fireHandlerChanged(new HandlerEvent(this, true, true));
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void dispose() {
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-		.getSelectionService().removeSelectionListener(this);
-		super.dispose();
 	}
 }
