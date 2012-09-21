@@ -13,11 +13,12 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="de.ptb.epics.eve.editor.graphical.GraphicalEditor"
+            class="de.ptb.epics.eve.editor.gef.ScanDescriptionEditor"
+            contributorClass="de.ptb.epics.eve.editor.gef.ScanDescriptionEditorActionBarContributor"
             default="true"
             extensions="scml"
             filenames="*.scml"
-            id="de.ptb.epics.eve.editor.graphical.GraphicalEditor"
+            id="de.ptb.epics.eve.editor.gef.GraphicalEditor"
             name="%editor.name">
       </editor>
    </extension>
@@ -487,6 +488,101 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            locationURI="popup:de.ptb.epics.eve.editor.gef.GraphicalEditor">
+         <command
+               commandId="org.eclipse.ui.edit.undo"
+               label="Undo"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.ui.edit.redo"
+               label="Redo"
+               style="push">
+         </command>
+         <separator
+               name="de.ptb.epics.eve.editor.gef.GraphicalEditor.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="org.eclipse.ui.edit.delete"
+               label="Delete"
+               style="push">
+         </command>
+         <separator
+               name="de.ptb.epics.eve.editor.gef.GraphicalEditor.separator"
+               visible="true">
+         </separator>
+         <menu
+               label="Add">
+            <dynamic
+                  class="de.ptb.epics.eve.editor.gef.ContextMenuAddContributionItem"
+                  id="de.ptb.epics.eve.editor.dynamic.add.popup">
+            </dynamic>
+            <visibleWhen
+                  checkEnabled="false">
+               <or>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.scanmoduleselected">
+                  </reference>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.expressions.starteventselected">
+                  </reference>
+               </or>
+            </visibleWhen>
+         </menu>
+         <menu
+               label="Fill">
+            <command
+                  commandId="de.ptb.epics.eve.editor.command.saveallaxispositions"
+                  icon="icons/devices/axis.gif"
+                  label="Save Axis Positions"
+                  style="push">
+            </command>
+            <command
+                  commandId="de.ptb.epics.eve.editor.command.saveallchannelvalues"
+                  icon="icons/devices/channel.gif"
+                  label="Save Channel Values"
+                  style="push">
+            </command>
+            <command
+                  commandId="de.ptb.epics.eve.editor.command.clear"
+                  icon="icons/clear.gif"
+                  label="Clear"
+                  style="push">
+            </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.ptb.epics.eve.editor.expressions.scanmoduleselected">
+               </reference>
+            </visibleWhen>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:file?after=additions">
+         <command
+               commandId="org.eclipse.ui.file.print"
+               label="Print"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=edit">
+         <menu
+               label="View">
+            <command
+                  commandId="org.eclipse.gef.zoom_in"
+                  label="Zoom In"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.gef.zoom_out"
+                  label="Zoom Out"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.core.expressions.definitions">
@@ -517,6 +613,36 @@
             </count>
          </with>
       </definition>
+      <definition
+            id="de.ptb.epics.eve.editor.expressions.scanmoduleselected">
+         <with
+               variable="selection">
+            <count
+                  value="1">
+            </count>
+            <iterate
+                  ifEmpty="false">
+               <instanceof
+                     value="de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart">
+               </instanceof>
+            </iterate>
+         </with>
+      </definition>
+      <definition
+            id="de.ptb.epics.eve.editor.expressions.starteventselected">
+         <with
+               variable="selection">
+            <count
+                  value="1">
+            </count>
+            <iterate
+                  ifEmpty="false">
+               <instanceof
+                     value="de.ptb.epics.eve.editor.gef.editparts.StartEventEditPart">
+               </instanceof>
+            </iterate>
+         </with>
+      </definition>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -534,6 +660,20 @@
                name="switchPerspective"
                optional="false">
          </commandParameter>
+      </command>
+      <category
+            id="de.ptb.epics.eve.editor.commands"
+            name="Editor">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.commands"
+            id="de.ptb.epics.eve.editor.command.addappended"
+            name="Add Appended Scan Module">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.commands"
+            id="de.ptb.epics.eve.editor.command.addnested"
+            name="Add nested Scan Module">
       </command>
       <category
             id="de.ptb.epics.eve.editor.views.eventcomposite.commands"
@@ -750,6 +890,28 @@
                optional="false">
          </commandParameter>
       </command>
+      <category
+            id="de.ptb.epics.eve.editor.command.filloptions"
+            name="Fill Options">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.editor.command.filloptions"
+            defaultHandler="de.ptb.epics.eve.editor.handler.editor.FillAxisPositions"
+            id="de.ptb.epics.eve.editor.command.saveallaxispositions"
+            name="Save All Axis Positions">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.command.filloptions"
+            defaultHandler="de.ptb.epics.eve.editor.handler.editor.FillChannelValues"
+            id="de.ptb.epics.eve.editor.command.saveallchannelvalues"
+            name="Save All Channel Values">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.command.filloptions"
+            defaultHandler="de.ptb.epics.eve.editor.handler.editor.FillClear"
+            id="de.ptb.epics.eve.editor.command.clear"
+            name="Clear">
+      </command>
    </extension>
    <extension
          point="org.eclipse.help.toc">
@@ -782,5 +944,16 @@
             configId="org.eclipse.ui.intro.universalConfig"
             content="intro/overview.xml">
       </configExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="de.ptb.epics.eve.editor.handler.editor.AddAppendedScanModule"
+            commandId="de.ptb.epics.eve.editor.command.addappended">
+      </handler>
+      <handler
+            class="de.ptb.epics.eve.editor.handler.editor.AddNestedScanModule"
+            commandId="de.ptb.epics.eve.editor.command.addnested">
+      </handler>
    </extension>
 </plugin>

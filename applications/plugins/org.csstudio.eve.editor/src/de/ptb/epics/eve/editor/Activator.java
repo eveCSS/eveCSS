@@ -351,5 +351,8 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, "icons/checked.gif").createImage());
 		imagereg.put("UNCHECKED", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/unchecked.gif").createImage());
+		
+		imagereg.put("ADD_SM", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/add_stat.gif").createImage());
 	}
 }

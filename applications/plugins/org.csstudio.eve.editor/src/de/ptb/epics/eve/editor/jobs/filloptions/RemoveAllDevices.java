@@ -38,6 +38,7 @@ public class RemoveAllDevices extends UIJob {
 		try {
 			monitor.beginTask("Removing Devices", 1);
 			this.scanModule.removeAll();
+			this.scanModule.setName("Empty");
 			monitor.worked(1);
 		} finally {
 			monitor.done();

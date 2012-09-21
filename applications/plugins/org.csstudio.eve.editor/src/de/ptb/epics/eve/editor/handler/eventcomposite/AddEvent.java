@@ -16,7 +16,7 @@ import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.graphical.GraphicalEditor;
+import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
 import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 import de.ptb.epics.eve.editor.views.scanview.ScanView;
@@ -58,7 +58,7 @@ public class AddEvent implements IHandler {
 			event = Activator.getDefault().getMeasuringStation().
 			getEventById(eventId);
 		} else {
-			event = ((GraphicalEditor)Activator.getDefault().
+			event = ((ScanDescriptionEditor)Activator.getDefault().
 					getWorkbench().getActiveWorkbenchWindow().getActivePage().
 					getActiveEditor()).getContent().getEventById(eventId);
 		}

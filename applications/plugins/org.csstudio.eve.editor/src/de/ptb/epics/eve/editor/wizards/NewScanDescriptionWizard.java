@@ -177,7 +177,7 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 												 getActivePage();
 				try {
 					IDE.openEditor(page, fileStoreEditorInput, 
-						"de.ptb.epics.eve.editor.graphical.GraphicalEditor");
+						"de.ptb.epics.eve.editor.gef.GraphicalEditor");
 				} catch(final PartInitException e) {
 					logger.error(e.getMessage(), e);
 				}
