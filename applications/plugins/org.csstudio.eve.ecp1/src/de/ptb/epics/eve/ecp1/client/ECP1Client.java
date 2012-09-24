@@ -230,9 +230,9 @@ public class ECP1Client {
 		this.socket = new Socket();
 		try {
 			this.socket.connect(socketAddress);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (IOException e) {
+			logger.warn(e.getMessage(), e);
+			throw e;
 		}
 
 		this.inQueue.clear();

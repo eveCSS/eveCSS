@@ -64,15 +64,16 @@ public class HandOver extends AbstractHandler {
 			boolean confirm = MessageDialog.openConfirm(null, "Unsaved Changes",
 					filename + " has been modified. Save Changes ?");
 				
-			if(confirm) {
-				// save changes 
-				window.getActivePage().getActiveEditor().
-						doSave(new NullProgressMonitor());
-			} else { 
+			if(!confirm) {
 				// abort = do nothing
 				return null;
 			}
 		}
+		
+		// save changes
+		NullProgressMonitor monitor = new NullProgressMonitor();
+		window.getActivePage().getActiveEditor().
+				doSave(monitor);
 		
 		// Obtain the Platform job manager to sync with save job
 		IJobManager manager = Job.getJobManager();
@@ -80,13 +81,19 @@ public class HandOver extends AbstractHandler {
 			manager.join("file", new NullProgressMonitor());
 		} catch (OperationCanceledException e1) {
 			logger.warn(e1.getMessage(), e1);
+			throw new ExecutionException(e1.getMessage());
 		} catch (InterruptedException e1) {
 			logger.warn(e1.getMessage(), e1);
+			throw new ExecutionException(e1.getMessage());
+		}
+		
+		if (monitor.isCanceled()) {
+			throw new ExecutionException("");
 		}
 		
 		// if it is still dirty (save unsuccessful) don't switch perspective
 		if(window.getActivePage().getActiveEditor().isDirty()) {
-			return null;
+			throw new ExecutionException("");
 		}
 		
 		// determine filename

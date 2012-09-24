@@ -12,12 +12,14 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.progress.UIJob;
 
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionSaver;
+import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
 
 /**
@@ -31,7 +33,7 @@ public class Save extends Job {
 	
 	private final static Logger logger = Logger.getLogger(Save.class.getName());
 	
-	private String family = "file";
+	private final String family = "file";
 	
 	private String filename;
 	private ScanDescription scanDescription;
@@ -43,6 +45,7 @@ public class Save extends Job {
 	 * @param name the name of the job
 	 * @param filename the filename where the scan description should be saved
 	 * @param scanDescription the scan description that should be saved
+	 * @param editor the current editor
 	 */
 	public Save(String name, String filename, ScanDescription scanDescription, 
 			EditorPart editor) {
@@ -105,8 +108,12 @@ public class Save extends Job {
 			}
 		} catch(FileNotFoundException fnfe) {
 			logger.error(fnfe.getMessage(), fnfe);
+			UIJob reportError = new ReportError(fnfe.getMessage(), this.editor);
+			reportError.schedule();
+			return Status.CANCEL_STATUS;
 		} catch (InterruptedException e) {
 			logger.error(e.getMessage(), e);
+			return Status.CANCEL_STATUS;
 		} finally {
 			monitor.done();
 		}
@@ -186,6 +193,8 @@ public class Save extends Job {
 		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) {
 			((ScanDescriptionEditor)this.editor).resetEditorState(filename);
+			((ScanDescriptionEditor) this.editor).getCommandStack()
+					.markSaveLocation();
 			return Status.OK_STATUS;
 		}
 		
@@ -195,6 +204,35 @@ public class Save extends Job {
 		@Override
 		public boolean belongsTo(Object family) {
 			return family.equals(family);
+		}
+	}
+	
+	/**
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.6
+	 */
+	private class ReportError extends UIJob {
+
+		private String message;
+		private EditorPart editor;
+		
+		public ReportError(String message, EditorPart editor) {
+			super("Save");
+			this.message = message;
+			this.editor = editor;
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public IStatus runInUIThread(IProgressMonitor monitor) {
+			Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+					this.message);
+			ErrorDialog.openError(this.editor.getSite().getShell(),
+					"Save Error", "Save Error", status);
+			return Status.OK_STATUS;
 		}
 	}
 }
