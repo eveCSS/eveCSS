@@ -208,6 +208,36 @@
                </parameter>
             </command>
          </toolbar>
+         <toolbar
+               id="de.ptb.epics.eve.editor.toolbar.editor">
+            <command
+                  commandId="org.eclipse.ui.edit.undo"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.edit.redo"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.eclipse.ui.edit.delete"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </visibleWhen>
+            </command>
+         </toolbar>
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.eventcomposite.tablepopup">

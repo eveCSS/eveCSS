@@ -2,9 +2,7 @@ package de.ptb.epics.eve.editor.gef;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.EventObject;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -18,21 +16,16 @@ import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.gef.MouseWheelHandler;
-import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.ui.actions.ZoomInAction;
-import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -160,7 +153,6 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		} finally {
 			monitor.done();
 		}
-		this.getCommandStack().markSaveLocation();
 	}
 	
 	/**
@@ -206,7 +198,6 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		service.showInDialog(getSite().getShell(), saveJob);
 		saveJob.setUser(true);
 		saveJob.schedule();
-		this.getCommandStack().markSaveLocation();
 	}
 	
 	/**
@@ -302,8 +293,9 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 	}
 	
 	/**
+	 * Returns the editor content.
 	 * 
-	 * @return
+	 * @return the editor content
 	 */
 	public ScanDescription getContent() {
 		return this.scanDescription;
@@ -352,8 +344,9 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		ScalableFreeformRootEditPart root = new ScalableFreeformRootEditPart();
 		viewer.setRootEditPart(root);
 		viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer));
+		
 		// zoom with MouseWheel
-		viewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1),
+		/*viewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1),
 				MouseWheelZoomHandler.SINGLETON);
 		List<String> zoomContributions = Arrays.asList(new String[] { 
 				ZoomManager.FIT_ALL, ZoomManager.FIT_HEIGHT,
@@ -362,7 +355,8 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		IAction zoomIn = new ZoomInAction(root.getZoomManager());
 		IAction zoomOut = new ZoomOutAction(root.getZoomManager());
 		getActionRegistry().registerAction(zoomIn);
-		getActionRegistry().registerAction(zoomOut);
+		getActionRegistry().registerAction(zoomOut);*/ // TODO zoom
+		
 		super.configureGraphicalViewer();
 	}
 	

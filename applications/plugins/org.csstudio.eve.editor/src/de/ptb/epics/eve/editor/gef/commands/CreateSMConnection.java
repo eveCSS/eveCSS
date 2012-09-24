@@ -59,12 +59,7 @@ public class CreateSMConnection extends Command {
 	@Override
 	public void execute() {
 		logger.debug("execute");
-		if (type.equals(Connector.APPENDED)) {
-			this.source.setAppended(this.conn);
-		} else if (type.equals(Connector.NESTED)) {
-			this.source.setNested(this.conn);
-		}
-		this.target.setParent(this.conn);
+		this.redo();
 	}
 	
 	/**
