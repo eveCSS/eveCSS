@@ -87,6 +87,8 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	
 	/**
 	 * Returns the model element.
+	 * 
+	 * @return the model elements
 	 */
 	public ScanModule getModel() {
 		return (ScanModule)super.getModel();
@@ -165,7 +167,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	@Override
 	protected List<?> getModelSourceConnections() {
 		final List<Object> sourceList = new ArrayList<Object>();
-		final ScanModule scanModule = (ScanModule)this.getModel();
+		final ScanModule scanModule = this.getModel();
 		
 		if(scanModule.getAppended() != null) {
 			sourceList.add(scanModule.getAppended());
@@ -182,7 +184,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	@Override
 	protected List<?> getModelTargetConnections() {
 		final List<Object> sourceList = new ArrayList<Object>();
-		final ScanModule scanModule = (ScanModule)this.getModel();
+		final ScanModule scanModule = this.getModel();
 		if(scanModule.getParent() != null) {
 			sourceList.add(scanModule.getParent());
 		}
@@ -199,12 +201,11 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(
 										final ConnectionEditPart connection) {
-		final ScanModule scanModule = (ScanModule)this.getModel();
+		final ScanModule scanModule = this.getModel();
 		if(connection.getModel() == scanModule.getAppended()) {
 			return ((ScanModuleFigure)this.figure).getAppendedAnchor();
-		} else {
-			return ((ScanModuleFigure)this.figure).getNestedAnchor();
 		}
+		return ((ScanModuleFigure)this.figure).getNestedAnchor();
 	}
 
 	/**

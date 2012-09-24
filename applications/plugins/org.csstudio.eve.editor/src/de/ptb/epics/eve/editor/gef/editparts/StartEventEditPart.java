@@ -1,8 +1,11 @@
 package de.ptb.epics.eve.editor.gef.editparts;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.ConnectionEditPart;
@@ -18,8 +21,11 @@ import de.ptb.epics.eve.editor.gef.figures.StartEventFigure;
  * @since 1.6
  */
 public class StartEventEditPart extends AbstractGraphicalEditPart implements
-		NodeEditPart {
+		NodeEditPart, PropertyChangeListener {
 
+	private static Logger logger = Logger.getLogger(StartEventEditPart.class
+			.getName());
+	
 	/**
 	 * Constructor.
 	 * 
@@ -33,12 +39,39 @@ public class StartEventEditPart extends AbstractGraphicalEditPart implements
 	 * {@inheritDoc}
 	 */
 	@Override
+	public void activate() {
+		this.getModel().addPropertyChangeListener(StartEvent.X_PROP, this);
+		this.getModel().addPropertyChangeListener(StartEvent.Y_PROP, this);
+		this.getModel()
+				.addPropertyChangeListener(StartEvent.CONNECT_PROP, this);
+		super.activate();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void deactivate() {
+		this.getModel().removePropertyChangeListener(StartEvent.X_PROP, this);
+		this.getModel().removePropertyChangeListener(StartEvent.Y_PROP, this);
+		this.getModel().removePropertyChangeListener(StartEvent.CONNECT_PROP,
+				this);
+		super.deactivate();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	protected IFigure createFigure() {
-		return new StartEventFigure(this.getModel().getEvent().getID());
+		return new StartEventFigure(this.getModel().getEvent().getID(), 
+				this.getModel().getX(), this.getModel().getY());
 	}
 
 	/**
 	 * Returns the model element.
+	 * 
+	 * @return the model element
 	 */
 	public StartEvent getModel() {
 		return (StartEvent)super.getModel();
@@ -50,7 +83,7 @@ public class StartEventEditPart extends AbstractGraphicalEditPart implements
 	@Override
 	protected List<?> getModelSourceConnections() {
 		final List<Object> sourceList = new ArrayList<Object>();
-		final StartEvent startEvent = (StartEvent)this.getModel();
+		final StartEvent startEvent = this.getModel();
 		
 		if(startEvent.getConnector() != null) {
 			sourceList.add(startEvent.getConnector());
@@ -71,7 +104,8 @@ public class StartEventEditPart extends AbstractGraphicalEditPart implements
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(
 									final ConnectionEditPart connection) {
-		return ((StartEventFigure)this.figure).getSourceAnchor();
+		logger.debug("get source conn anchors");
+		return ((StartEventFigure)this.getFigure()).getSourceAnchor();
 	}
 
 	/**
@@ -79,7 +113,8 @@ public class StartEventEditPart extends AbstractGraphicalEditPart implements
 	 */
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(final Request request) {
-		return ((StartEventFigure)this.figure).getSourceAnchor();
+		logger.debug("get source conn anchors req");
+		return ((StartEventFigure)this.getFigure()).getSourceAnchor();
 	}
 
 	/**
@@ -97,5 +132,20 @@ public class StartEventEditPart extends AbstractGraphicalEditPart implements
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(final Request request) {
 		return null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals(StartEvent.X_PROP)) {
+			((StartEventFigure)this.getFigure()).setX((Integer)e.getNewValue());
+		} else if (e.getPropertyName().equals(StartEvent.Y_PROP)) {
+			((StartEventFigure)this.getFigure()).setY((Integer)e.getNewValue());
+		} else if (e.getPropertyName().equals(StartEvent.CONNECT_PROP)) {
+			this.refreshSourceConnections();
+		}
+		this.refreshVisuals();
 	}
 }

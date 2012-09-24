@@ -39,6 +39,9 @@ public class ChainEditPart extends AbstractGraphicalEditPart implements
 		super.activate();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void deactivate() {
 		this.getModel().removePropertyChangeListener(
@@ -71,6 +74,8 @@ public class ChainEditPart extends AbstractGraphicalEditPart implements
 
 	/**
 	 * Returns the model element.
+	 * 
+	 * @return the model elements
 	 */
 	public Chain getModel() {
 		return (Chain)super.getModel();

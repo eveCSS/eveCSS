@@ -42,6 +42,8 @@ public class ScanModuleFigure extends Shape {
 	 * @param name the name of the scan module
 	 * @param x the x coordinate of its initial position
 	 * @param y the y coordinate of its initial position
+	 * @param width
+	 * @param height
 	 */
 	public ScanModuleFigure(String name, int x, int y, int width, int height) {
 		this.name = name;
@@ -106,7 +108,7 @@ public class ScanModuleFigure extends Shape {
 	}
 	
 	/**
-	 * @param active the active to set
+	 * @param selected <code>true</code> if
 	 */
 	public void setSelected(boolean selected) {
 		logger.debug(this.name + " is primary ?: " + Boolean.toString(selected));
@@ -129,6 +131,7 @@ public class ScanModuleFigure extends Shape {
 		super.paint(graphics);
 		
 		graphics.setAntialias(SWT.ON);
+		graphics.setTextAntialias(SWT.ON);
 		
 		Display display = PlatformUI.getWorkbench().getDisplay();
 		if(selected_primary) {

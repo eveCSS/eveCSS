@@ -38,14 +38,19 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	// delegated observable
 	private PropertyChangeSupport propertyChangeSupport;
 
+	/** */
 	public static final String PARENT_CONNECTION_PROP = 
 			"ScanModule.PARENT_CONNECTION_PROP";
+	/** */
 	public static final String APPENDED_CONNECTION_PROP = 
 			"ScanModule.APPENDED_CONNECTION_PROP";
+	/** */
 	public static final String NESTED_CONNECTION_PROP = 
 			"ScanModule.NESTED_CONNECTION_PROP";
 	
+	/** */
 	public static int default_width = 70;
+	/** */
 	public static int default_height = 30;
 	
 	// the id of the scan module
@@ -1143,8 +1148,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	
 	/**
 	 * 
-	 * @param propertyName
-	 * @param listener
+	 * 
+	 * @param propertyName the name of the property
+	 * @param listener the {@link java.beans.PropertyChangeListener}
 	 * @see {@link java.beans.PropertyChangeSupport#addPropertyChangeListener(String, PropertyChangeListener)}
 	 */
 	public void addPropertyChangeListener(String propertyName,
@@ -1155,8 +1161,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	
 	/**
 	 * 
-	 * @param propertyName
-	 * @param listener
+	 * 
+	 * @param propertyName the name of the property
+	 * @param listener {@link java.beans.PropertyChangeListener}
 	 * @see {@link java.beans.PropertyChangeSupport#removePropertyChangeListener(String, PropertyChangeListener)}
 	 */
 	public void removePropertyChangeListener(String propertyName,
