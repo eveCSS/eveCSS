@@ -10,6 +10,12 @@ h2(eveTopic). File
 |Save| __Ctrl+S__|
 |Save All| __Ctrl+Shift+S__|
 
+h2(eveTopic). Editor
+
+|Undo|Ctrl+Z|
+|Redo|Ctrl+Y|
+|Delete|Del|
+
 h2(eveTopic). Navigation
 
 |Activate Editor| __F12__|

@@ -1,5 +1,15 @@
 h1(eveTopic). What's New ?
 
+h2(eveTopic). Version 1.6
+
+* [Feature] reimplemented the Editor using the ==<a href="http://www.eclipse.org/gef" target="_blank">Graphical Editing Framework</a>==
+** [Feature] (re-)implemented user interactions on ScanModules: Rename, Move, Delete, Create Appended/Nested
+** [Feature] interactions are now part of the introduced command stack (i.e. they support undo/redo)
+** [Feature] introduced a Palette including "Select" and "Marquee" tools
+** [Feature] the editor content is now printable
+
+* [Bug Fix] removed a bug where a scan description was send to the engine although saving it failed
+
 h2(eveTopic). Version 1.5
 
 * @ScanModuleView@ Actions tables
