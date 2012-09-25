@@ -846,13 +846,18 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 					this.currentScanModule.isTriggerconfirmchannel());
 			
 			// TODO CheckBox for ScheduleIncident Start or End
-			Event testEvent = new Event(currentScanModule.getChain().getId(), 
-										currentScanModule.getId(), 
-										Event.ScheduleIncident.END);
-			this.appendScheduleEventCheckBox.setSelection(
-					this.currentScanModule.getChain().getScanDescription().
-					getEventById(testEvent.getID()) != null);
-			
+			// TODO understand
+			if (currentScanModule.getChain() != null) {
+				Event testEvent = new Event(currentScanModule.getChain()
+						.getId(), currentScanModule.getId(),
+						Event.ScheduleIncident.END);
+				this.appendScheduleEventCheckBox
+						.setSelection(this.currentScanModule.getChain()
+								.getScanDescription()
+								.getEventById(testEvent.getID()) != null);
+			} else {
+				this.appendScheduleEventCheckBox.setSelection(false);
+			}
 			checkForErrors();
 		}
 		addListeners();
