@@ -48,15 +48,13 @@ public class ScanDescriptionEditorPaletteFactory {
 				Boolean.TRUE); 
 		toolbar.add(tool);
 		
-		/*// TODO enable
 		ConnectionCreationToolEntry connection = new ConnectionCreationToolEntry(
 				"Connection", "Create a connection", null, 
 				Activator.imageDescriptorFromPlugin(
-						Activator.PLUGIN_ID, "icons/entry_ovr.gif"), 
+						Activator.PLUGIN_ID, "icons/arrow.gif"), 
 				Activator.imageDescriptorFromPlugin(
-						Activator.PLUGIN_ID, "icons/entry_ovr.gif"));
+						Activator.PLUGIN_ID, "icons/arrow_24.gif"));
 		toolbar.add(connection);
-		*/
 		
 		return toolbar;
 	}
@@ -66,13 +64,13 @@ public class ScanDescriptionEditorPaletteFactory {
 	 */
 	private static PaletteEntry createElementsDrawer() {
 		PaletteDrawer componentsDrawer = new PaletteDrawer("Create Tools");
-		/*CombinedTemplateCreationEntry component = new CombinedTemplateCreationEntry(
+		CombinedTemplateCreationEntry component = new CombinedTemplateCreationEntry(
 				"Scan Module", "Create a Scan Module", new SimpleFactory(
 						ScanModule.class), Activator.imageDescriptorFromPlugin(
 						Activator.PLUGIN_ID, "icons/devices/scanmodule.gif"),
 				Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/devices/scanmodule24.gif"));
-		componentsDrawer.add(component); */ // TODO enable
+		componentsDrawer.add(component);
 		return componentsDrawer;
 	}
 }

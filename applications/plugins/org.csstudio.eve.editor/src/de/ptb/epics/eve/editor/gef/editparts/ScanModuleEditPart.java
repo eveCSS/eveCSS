@@ -17,9 +17,11 @@ import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.tools.DirectEditManager;
 import org.eclipse.jface.viewers.TextCellEditor;
 
+import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleComponentEditPolicy;
 import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleDirectEditPolicy;
@@ -114,7 +116,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, 
 				new ScanModuleComponentEditPolicy());
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE,
-				new ScanModuleGraphicalNodeEditPolicy(this.getModel()));
+				new ScanModuleGraphicalNodeEditPolicy(this));
 	}
 	
 	/**
@@ -201,6 +203,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(
 										final ConnectionEditPart connection) {
+		// used when connection is created
 		final ScanModule scanModule = this.getModel();
 		if(connection.getModel() == scanModule.getAppended()) {
 			return ((ScanModuleFigure)this.figure).getAppendedAnchor();
@@ -213,6 +216,17 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	 */
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(final Request request) {
+		// used during creation, for feedback only
+		if (request instanceof CreateConnectionRequest) {
+			String type = ((ScanModuleFigure) this.getFigure())
+					.getConnectionType(((CreateConnectionRequest) request)
+							.getLocation());
+			if (type.equals(Connector.APPENDED)) {
+				return ((ScanModuleFigure)this.getFigure()).getAppendedAnchor();
+			} else if (type.equals(Connector.NESTED)) {
+				return ((ScanModuleFigure)this.getFigure()).getNestedAnchor();
+			}
+		}
 		return null;
 	}
 
@@ -222,6 +236,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(
 										final ConnectionEditPart connection) {
+		// used when connection is created
 		return ((ScanModuleFigure)this.getFigure()).getTargetAnchor();
 	}
 
@@ -230,7 +245,19 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	 */
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(final Request request) {
-		return ((ScanModuleFigure)this.getFigure()).getTargetAnchor();
+		// used during creation, for feedback only
+		if (request instanceof CreateConnectionRequest) {
+			CreateConnectionRequest connReq = (CreateConnectionRequest)request;
+			if (connReq.getSourceEditPart() == connReq.getTargetEditPart()) {
+				return null;
+			}
+			if (((ScanModuleEditPart) connReq.getTargetEditPart()).getModel()
+					.getParent() != null) {
+				return null;
+			}
+			return ((ScanModuleFigure) this.getFigure()).getTargetAnchor();
+		}
+		return null;
 	}
 
 	/**

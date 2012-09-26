@@ -73,6 +73,8 @@ public class CreateSMConnection extends Command {
 			this.source.setNested(null);
 		}
 		this.target.setParent(null);
+		this.conn.setParentScanModule(null);
+		this.conn.setChildScanModule(null);
 	}
 	
 	/**
@@ -86,5 +88,7 @@ public class CreateSMConnection extends Command {
 			this.source.setNested(this.conn);
 		}
 		this.target.setParent(this.conn);
+		this.conn.setParentScanModule(source);
+		this.conn.setChildScanModule(target);
 	}
 }

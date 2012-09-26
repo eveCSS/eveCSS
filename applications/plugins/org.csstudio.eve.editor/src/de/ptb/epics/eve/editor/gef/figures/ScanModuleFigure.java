@@ -12,6 +12,8 @@ import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
+import de.ptb.epics.eve.data.scandescription.Connector;
+
 /**
  * 
  * @author Marcus Michalsky
@@ -31,6 +33,10 @@ public class ScanModuleFigure extends Shape {
 	private boolean selected_primary;
 	private boolean contains_errors;
 	
+	private boolean appended_feedback;
+	private boolean nested_feedback;
+	private boolean parent_feedback;
+	
 	// anchor points for incoming, outgoing and nested modules
 	private XYAnchor targetAnchor;
 	private XYAnchor appendedAnchor;
@@ -42,8 +48,8 @@ public class ScanModuleFigure extends Shape {
 	 * @param name the name of the scan module
 	 * @param x the x coordinate of its initial position
 	 * @param y the y coordinate of its initial position
-	 * @param width
-	 * @param height
+	 * @param width (initial) width of the figure
+	 * @param height (initial) height of the figure
 	 */
 	public ScanModuleFigure(String name, int x, int y, int width, int height) {
 		this.name = name;
@@ -54,6 +60,9 @@ public class ScanModuleFigure extends Shape {
 		
 		this.selected_primary = false;
 		this.contains_errors = false;
+		this.appended_feedback = false;
+		this.nested_feedback = false;
+		this.parent_feedback = false;
 		
 		this.setBackgroundColor(ColorConstants.white);
 		this.setOpaque(true);
@@ -87,6 +96,45 @@ public class ScanModuleFigure extends Shape {
 	public void setY(int y) {
 		this.y = y;
 		this.refreshAnchors();
+	}
+	
+	/**
+	 * @param appended_feedback the appended_feedback to set
+	 */
+	public void setAppended_feedback(boolean appended_feedback) {
+		this.appended_feedback = appended_feedback;
+	}
+
+	/**
+	 * @param nested_feedback the nested_feedback to set
+	 */
+	public void setNested_feedback(boolean nested_feedback) {
+		this.nested_feedback = nested_feedback;
+	}
+
+	/**
+	 * @param parent_feedback the parent_feedback to set
+	 */
+	public void setParent_feedback(boolean parent_feedback) {
+		this.parent_feedback = parent_feedback;
+	}
+
+	/**
+	 * 
+	 * @param p the point to check
+	 * @return {@link de.ptb.epics.eve.data.scandescription.Connector#APPENDED} if 
+	 * <code>x + 2 * width / 3 < p.x < x + width</code>, <br>
+	 * {@link de.ptb.epics.eve.data.scandescription.Connector#NESTED} if 
+	 * <code>y + height / 2 < p.y < y + height</code>.<br>
+	 * Empty String otherwise.
+	 */
+	public String getConnectionType(Point p) {
+		if (p.x < this.x + this.width && p.x > this.x + 2*this.width/3) {
+			return Connector.APPENDED;
+		} else if (p.y < this.y + this.height && p.y > this.y + this.height/2) {
+			return Connector.NESTED;
+		}
+		return "";
 	}
 	
 	/*
@@ -183,6 +231,30 @@ public class ScanModuleFigure extends Shape {
 			graphics.setBackgroundColor(ColorConstants.red);
 			graphics.fillGradient(getLocation().x, getLocation().y, 
 								this.bounds.width, 5, false);
+		}
+		
+		if (this.appended_feedback) {
+			graphics.setForegroundColor(ColorConstants.lightGray);
+			graphics.setBackgroundColor(ColorConstants.black);
+			graphics.fillGradient(new Rectangle(this.x + 6* this.width/7,
+					this.y, this.width/7, this.height), false);
+		}
+		if (this.nested_feedback) {
+			if (selected_primary) {
+				graphics.setForegroundColor(ColorConstants.white);
+				graphics.setBackgroundColor(ColorConstants.darkGray);
+			} else {
+				graphics.setForegroundColor(ColorConstants.lightGray);
+				graphics.setBackgroundColor(ColorConstants.darkGray);
+			}
+			graphics.fillGradient(new Rectangle(this.x,
+					this.y + 3*this.height/4, this.width, this.height/4), true);
+		}
+		if (this.parent_feedback) {
+			graphics.setForegroundColor(ColorConstants.black);
+			graphics.setBackgroundColor(ColorConstants.lightGray);
+			graphics.fillGradient(new Rectangle(this.x,
+					this.y, this.width/7, this.height), false);
 		}
 		
 		// draw border
