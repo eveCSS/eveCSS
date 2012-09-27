@@ -23,6 +23,8 @@ import org.eclipse.jface.viewers.TextCellEditor;
 
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleComponentEditPolicy;
 import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleDirectEditPolicy;
 import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleGraphicalNodeEditPolicy;
@@ -35,7 +37,7 @@ import de.ptb.epics.eve.editor.gef.tools.ScanModuleDirectEditManager;
  * @since 1.6
  */
 public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
-		NodeEditPart, PropertyChangeListener {
+		NodeEditPart, PropertyChangeListener, IModelUpdateListener {
 
 	private static Logger logger = Logger.getLogger(ScanModuleEditPart.class
 			.getName());
@@ -59,6 +61,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 		this.getModel().addPropertyChangeListener("x", this);
 		this.getModel().addPropertyChangeListener("y", this);
 		this.getModel().addPropertyChangeListener("name", this);
+		this.getModel().addModelUpdateListener(this);
 		
 		this.getModel().addPropertyChangeListener(
 				ScanModule.PARENT_CONNECTION_PROP, this);
@@ -77,6 +80,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 		this.getModel().removePropertyChangeListener("x", this);
 		this.getModel().removePropertyChangeListener("y", this);
 		this.getModel().removePropertyChangeListener("name", this);
+		this.getModel().removeModelUpdateListener(this);
 		
 		this.getModel().removePropertyChangeListener(
 				ScanModule.PARENT_CONNECTION_PROP, this);
@@ -288,5 +292,17 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	@Override
 	public String toString() {
 		return super.toString() + "(" + this.getModel().getName() + ")";
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
+		((ScanModuleFigure)this.getFigure()).setContains_errors(false);
+		if (!this.getModel().getModelErrors().isEmpty()) {
+			((ScanModuleFigure)this.getFigure()).setContains_errors(true);
+		}
+		this.getFigure().repaint();
 	}
 }
