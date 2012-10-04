@@ -12,6 +12,8 @@ import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.gef.commands.CreateSEConnection;
 import de.ptb.epics.eve.editor.gef.commands.CreateSMConnection;
+import de.ptb.epics.eve.editor.gef.commands.DeleteConnection;
+import de.ptb.epics.eve.editor.gef.editparts.ConnectionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.gef.figures.ScanModuleFigure;
 
@@ -58,7 +60,7 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 			connectionCmd.setTargetModule(target);
 			return connectionCmd;
 		} else if (startCmd instanceof CreateSEConnection) {
-			
+			// TODO 
 		}
 		return null;
 	}
@@ -92,7 +94,7 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Command getReconnectSourceCommand(ReconnectRequest arg0) {
+	protected Command getReconnectSourceCommand(ReconnectRequest request) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -101,8 +103,32 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Command getReconnectTargetCommand(ReconnectRequest arg0) {
-		// TODO Auto-generated method stub
+	protected Command getReconnectTargetCommand(ReconnectRequest request) {
+		if (!(request.getTarget() instanceof ScanModuleEditPart)) {
+			return null;
+		}
+		ConnectionEditPart conn = (ConnectionEditPart)
+				request.getConnectionEditPart();
+		ScanModuleEditPart target = (ScanModuleEditPart)request.getTarget();
+		if (target.getModel().getParent() != null) {
+			return null;
+		}
+		if (conn.getModel().getParentEvent() != null) {
+			// TODO createSEconn
+		} else {
+			if (conn.getModel().getParentScanModule().getAppended() != null
+					&& conn.getModel().getParentScanModule().getAppended() == 
+						conn.getModel()) {
+				return new DeleteConnection(conn.getModel())
+						.chain(new CreateSMConnection(conn.getModel()
+								.getParentScanModule(), target.getModel(),
+								Connector.APPENDED));
+			}
+			return new DeleteConnection(conn.getModel())
+					.chain(new CreateSMConnection(conn.getModel()
+							.getParentScanModule(), target.getModel(),
+							Connector.NESTED));
+		}
 		return null;
 	}
 	
