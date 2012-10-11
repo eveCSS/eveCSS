@@ -50,7 +50,7 @@ public class LabelProvider implements ITableLabelProvider {
 		case 1:
 			return ((Axis)axis).getAbstractDevice().getName();
 		case 2:
-			return ((Axis)axis).getStepfunctionString();
+			return ((Axis)axis).getStepfunction().toString();
 		}
 		return null;
 	}

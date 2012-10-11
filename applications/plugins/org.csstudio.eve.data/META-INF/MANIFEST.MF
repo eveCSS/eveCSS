@@ -9,11 +9,13 @@ Export-Package: de.ptb.epics.eve.data,
  de.ptb.epics.eve.data.measuringstation.filter,
  de.ptb.epics.eve.data.measuringstation.processors,
  de.ptb.epics.eve.data.scandescription,
+ de.ptb.epics.eve.data.scandescription.axismode,
  de.ptb.epics.eve.data.scandescription.errors,
  de.ptb.epics.eve.data.scandescription.processors,
  de.ptb.epics.eve.data.scandescription.updatenotification
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.ptb.epics.eve.util.pv,
+Import-Package: de.ptb.epics.eve.util.math,
+ de.ptb.epics.eve.util.pv,
  org.apache.xml.serialize,
  org.eclipse.core.runtime;version="3.4.0",
  org.eclipse.jface.viewers

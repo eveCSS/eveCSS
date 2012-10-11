@@ -30,7 +30,7 @@ import de.ptb.epics.eve.data.scandescription.Axis;
  */
 public class CAComposite extends Composite implements PropertyChangeListener {
 	
-	private static Logger logger = Logger.getLogger(CAComposite.class.getName());
+	private static Logger LOGGER = Logger.getLogger(CAComposite.class.getName());
 	
 	private Text llmText;
 	private ProgressBar progressBar;
@@ -40,7 +40,6 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 	private Text hlmText;
 	
 	private Axis currentAxis;
-	
 	private String position;
 
 	private Image warnImage;
@@ -92,13 +91,13 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 		this.hlmText = new Text(this, SWT.READ_ONLY | SWT.BORDER);
 		
 		this.position = "";
-		
 		this.currentAxis = null;
 	}
 	
 	/**
+	 * Sets the axis (model)
 	 * 
-	 * @param axis
+	 * @param axis the axis to set
 	 */
 	public void setAxis(Axis axis) {
 		if (this.currentAxis == axis) {
@@ -118,8 +117,6 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 			this.currentAxis.getMotorAxis().removePropertyChangeListener(
 					"position", this);
 			this.currentAxis.getMotorAxis().removePropertyChangeListener(
-					"offset", this);
-			this.currentAxis.getMotorAxis().removePropertyChangeListener(
 					"lowlimit", this);
 			this.currentAxis.getMotorAxis().removePropertyChangeListener(
 					"highlimit", this);
@@ -130,7 +127,6 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 		
 		if (axis != null) {
 			axis.getMotorAxis().addPropertyChangeListener("position", this);
-			axis.getMotorAxis().addPropertyChangeListener("offset", this);
 			axis.getMotorAxis().addPropertyChangeListener("lowlimit", this);
 			axis.getMotorAxis().addPropertyChangeListener("highlimit", this);
 			this.progressBar.addPaintListener(progressBarPaintListener);
@@ -158,8 +154,6 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent e) {
 		if (e.getPropertyName().equals("position")) {
 			this.position = e.getNewValue().toString();
-		} else if (e.getPropertyName().equals("offset")) {
-			
 		} else if (e.getPropertyName().equals("lowlimit")) {
 			this.llmText.setText(e.getNewValue().toString());
 		} else if (e.getPropertyName().equals("highlimit")) {
@@ -206,7 +200,7 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 			double p = (w / g) * 100.0;
 			this.progressBar.setSelection((int) p);
 		} catch (NullPointerException e) {
-			logger.debug(
+			LOGGER.debug(
 					"lowlimit/highlimit/position CA is null, no progress bar");
 			return;
 		}
@@ -227,6 +221,11 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 		 */
 		@Override
 		public void paintControl(PaintEvent e) {
+			/*
+			 * calculates the length of the progress bar. 
+			 * the ratio of the label text that overlaps with it 
+			 * gets a different color.
+			 */
 			Point point = progressBar.getSize();
 
 			FontMetrics fontMetrics = e.gc.getFontMetrics();

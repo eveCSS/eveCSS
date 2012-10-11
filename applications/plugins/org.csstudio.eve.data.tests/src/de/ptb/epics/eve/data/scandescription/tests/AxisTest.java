@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -44,7 +45,7 @@ public class AxisTest {
 		IModelError stopError = new AxisError(axis, AxisErrorTypes.STOP_NOT_SET);
 		IModelError stepwidthError = new AxisError(axis, AxisErrorTypes.STEPWIDTH_NOT_SET);
 		
-		axis.setStepfunction("add");
+		axis.setStepfunction(Stepfunctions.ADD);
 		assertTrue(axis.getModelErrors().size() == 3);
 		assertTrue(axis.getModelErrors().contains(startError));
 		assertTrue(axis.getModelErrors().contains(stopError));

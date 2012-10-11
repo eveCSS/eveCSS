@@ -1,87 +1,54 @@
 package de.ptb.epics.eve.data.scandescription;
 
 /**
- * The step function that is used to move the axis.
- * 
- * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
+ * @author Marcus Michalsky
+ * @since 1.7
  */
 public enum Stepfunctions {
 
 	/**
-	 * This step function adds a value to the current position until the end
+	 * adds a value to the current position until the end
 	 * value has been reached.
 	 */
-	ADD,
+	ADD {@Override public String toString() {return "Add";}},
 
 	/**
-	 * This step function multiplies the current position with a given value
-	 * until the end position has been reached..
+	 * multiplies the current position with a given value
+	 * until the end position has been reached.
 	 */
-	MULTIPLY,
+	MULTIPLY {@Override public String toString() {return "Multiply";}},
 
 	/**
-	 * This step function reads the positions from a file.
+	 * reads positions from a file.
 	 */
-	FILE,
+	FILE {@Override public String toString() {return "File";}},
 
 	/**
-	 * This step function indicates that the axis is controlled by a plug in.
+	 * axis movement is controlled by a plug in.
 	 */
-	PLUGIN,
+	PLUGIN {@Override public String toString() {return "Plugin";}},
 
 	/**
-	 * This step function indicates that the axis is controlled by a list of
-	 * values.
+	 * axis positions are defined as a list of positions.
 	 */
-	POSITIONLIST;
-
+	POSITIONLIST {@Override public String toString() {return "Positionlist";}};
+	
 	/**
-	 * This method converts a string to a value of this enum.
-	 * 
-	 * The strings are the values of the enum, beginning with upper case and
-	 * continues with lower case letters.
-	 * 
-	 * @param stepfunction
-	 *            The string of the step function. Must not be null!
-	 * @return The corresponding enum value. The value ADD is returned it the
-	 *         string is unknown.
+	 * @param value the value
+	 * @return the enum
 	 */
-	public static Stepfunctions stepfunctionToEnum(final String stepfunction) {
-		if (stepfunction == null) {
-			throw new IllegalArgumentException(
-					"The parameter 'stepfunction' must not be null!");
-		}
-		if (stepfunction.equals("File"))
-			return Stepfunctions.FILE;
-		else if (stepfunction.equals("Multiply"))
-			return Stepfunctions.MULTIPLY;
-		else if (stepfunction.equals("Plugin"))
-			return Stepfunctions.PLUGIN;
-		else if (stepfunction.equals("Positionlist"))
-			return Stepfunctions.POSITIONLIST;
-		else
+	public static Stepfunctions getEnum(String value) {
+		if (value.equals("Add")) {
 			return Stepfunctions.ADD;
-	}
-
-	/**
-	 * This method converts a value of the step function enum to a string,
-	 * 
-	 * @param stepenum
-	 *            The value of the step function enum.
-	 * @return The string.
-	 */
-	public static String stepfunctionToString(final Stepfunctions stepenum) {
-		switch (stepenum) {
-		case FILE:
-			return "File";
-		case MULTIPLY:
-			return "Multiply";
-		case PLUGIN:
-			return "Plugin";
-		case POSITIONLIST:
-			return "Positionlist";
-		default:
-			return "Add";
+		} else if (value.equals("Multiply")) {
+			return Stepfunctions.MULTIPLY;
+		} else if (value.equals("File")) {
+			return Stepfunctions.FILE;
+		} else if (value.equals("Plugin")) {
+			return Stepfunctions.PLUGIN;
+		} else if (value.equals("Positionlist")) {
+			return Stepfunctions.POSITIONLIST;
 		}
+		throw new IllegalArgumentException("no match");
 	}
 }

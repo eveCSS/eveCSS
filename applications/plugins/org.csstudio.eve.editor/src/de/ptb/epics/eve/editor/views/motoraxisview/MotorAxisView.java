@@ -27,11 +27,16 @@ import org.eclipse.swt.widgets.Combo;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
+import de.ptb.epics.eve.editor.views.motoraxisview.addmultiplycomposite.AddMultiplyComposite;
+import de.ptb.epics.eve.editor.views.motoraxisview.filecomposite.FileComposite;
+import de.ptb.epics.eve.editor.views.motoraxisview.plugincomposite.PluginComposite;
+import de.ptb.epics.eve.editor.views.motoraxisview.positionlistcomposite.PositionlistComposite;
 
 /**
  * <code>MotorAxisView</code> shows the attributes of a 
@@ -49,7 +54,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		"de.ptb.epics.eve.editor.views.MotorAxisView";
 
 	// logging
-	private static Logger logger = 
+	private static Logger LOGGER = 
 		Logger.getLogger(MotorAxisView.class.getName());
 	
 	// *******************************************************************
@@ -66,9 +71,9 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 	// *******************************************************************
 	
 	// the utmost composite
-	private Composite top = null;
+	private Composite top;
 	// Scrolled Composite wrapping top to enable scrolling
-	private ScrolledComposite sc = null;
+	private ScrolledComposite sc;
 
 	private CAComposite caComposite;
 	
@@ -87,7 +92,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			positionModeComboSelectionListener;
 	
 	private Composite emptyComposite;
-	private StartStopStepwidthComposite startStopStepwidthComposite;
+	private AddMultiplyComposite addMultipyComposite;
 	private DateTimeComposite dateTimeComposite;
 	private FileComposite fileComposite;
 	private PluginComposite pluginComposite;
@@ -138,14 +143,14 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		gridData.horizontalSpan = 2;
 		this.caComposite.setLayoutData(gridData);
 		
-		Label shadow_sep_h = new Label(this.top, SWT.SEPARATOR | SWT.SHADOW_OUT
+		Label separator = new Label(this.top, SWT.SEPARATOR | SWT.SHADOW_OUT
 				| SWT.HORIZONTAL);
-		shadow_sep_h.setBounds(50,80,100,50);
+		separator.setBounds(50,80,100,50);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 2;
-		shadow_sep_h.setLayoutData(gridData);
+		separator.setLayoutData(gridData);
 		
 		// step function elements
 		this.stepfunctions = Activator.getDefault().getMeasuringStation().
@@ -206,8 +211,8 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		sashForm.setLayoutData(gridData);
 		
 		this.emptyComposite = new Composite(sashForm, SWT.NONE);
-		this.startStopStepwidthComposite = 
-				new StartStopStepwidthComposite(sashForm, SWT.NONE);
+		this.addMultipyComposite = 
+				new AddMultiplyComposite(sashForm, SWT.NONE);
 		this.dateTimeComposite = new DateTimeComposite(sashForm, SWT.NONE);
 		this.fileComposite = 
 				new FileComposite(sashForm, SWT.NONE);
@@ -241,7 +246,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 	 */
 	@Override
 	public void setFocus() {
-		logger.debug("got focus -> forward to top composite");
+		LOGGER.debug("got focus -> forward to top composite");
 		this.top.setFocus();
 	}
 	
@@ -254,10 +259,10 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 	 */
 	private void setAxis(final Axis axis) {
 		if(axis != null) {
-			logger.debug("set axis (" + axis.getAbstractDevice().
+			LOGGER.debug("set axis (" + axis.getAbstractDevice().
 					getFullIdentifyer() + ")");
 		} else {
-			logger.debug("set axis (null)");
+			LOGGER.debug("set axis (null)");
 		}
 		
 		if (this.currentAxis != null) {
@@ -273,7 +278,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			top.setVisible(true);
 			removeListeners();
 			
-			this.scanModule = axis.getScanModule();
+			this.scanModule = this.currentAxis.getScanModule();
 			this.scanModule.addPropertyChangeListener("removeAxis", this);
 			
 			this.setPartName(
@@ -292,8 +297,8 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 				this.positionModeCombo.setVisible(true);
 			}
 			this.stepFunctionCombo.setText(
-					this.currentAxis.getStepfunctionString());
-			this.startStopStepwidthComposite.setCurrentAxis(null);
+					this.currentAxis.getStepfunction().toString());
+			this.addMultipyComposite.setAxis(null);
 			this.fileComposite.setAxis(null);
 			this.pluginComposite.setAxis(null, null);
 			this.positionlistComposite.setAxis(null);
@@ -303,7 +308,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			setComposite();
 			
 			top.layout();
-			
 			addListeners();
 		} else {
 			this.setPartName("No Motor Axis selected");
@@ -322,41 +326,47 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		int sashX = sashForm.getBounds().x;
 		int sashY = sashForm.getBounds().y;
 		
-		if (currentAxis.getStepfunctionString().equals("Add") ||
-			currentAxis.getStepfunctionString().equals("Multiply")) {
-				// use code block in future implementations that use the 
-				// DateTimeComposite...
-				/*if(currentAxis.getMotorAxis().getPosition().getType().equals(
-						de.ptb.epics.eve.data.DataTypes.DATETIME)) {
-					this.sashForm.setMaximizedControl(dateTimeComposite);
-				} else {*/
-				this.sashForm.setMaximizedControl(
-						startStopStepwidthComposite);
-				this.startStopStepwidthComposite.setCurrentAxis(currentAxis);
-				targetWidth = startStopStepwidthComposite.
-						getTargetWidth() + sashX;
-				targetHeight = startStopStepwidthComposite.
-						getTargetHeight() + sashY;
-				/*}*/
-		} else if(currentAxis.getStepfunctionString().equals("File")) {
+		switch (this.currentAxis.getStepfunction()) {
+		case ADD:
+		case MULTIPLY:
+			// use code block in future implementations that use the 
+			// DateTimeComposite...
+			if(currentAxis.getMotorAxis().getPosition().getType().equals(
+					de.ptb.epics.eve.data.DataTypes.DATETIME)) {
+				this.sashForm.setMaximizedControl(dateTimeComposite);
+			} else {
+			this.sashForm.setMaximizedControl(
+					addMultipyComposite);
+			this.addMultipyComposite.setAxis(currentAxis);
+			targetWidth = addMultipyComposite.
+					getTargetWidth() + sashX;
+			targetHeight = addMultipyComposite.
+					getTargetHeight() + sashY;
+			}
+			break;
+		case FILE:
 			this.sashForm.setMaximizedControl(fileComposite);
 			this.fileComposite.setAxis(currentAxis);
 			targetWidth = fileComposite.getTargetWidth() + sashX;
 			targetHeight = fileComposite.getTargetHeight() + sashY;
-		} else if(currentAxis.getStepfunctionString().equals("Plugin")) {
+			break;
+		case PLUGIN:
 			this.sashForm.setMaximizedControl(pluginComposite);
 			this.pluginComposite.setAxis(currentAxis, scanModule);
 			targetWidth = pluginComposite.getTargetWidth() + sashX;
 			targetHeight = pluginComposite.getTargetHeight() + sashY;
-		} else if(currentAxis.getStepfunctionString().equals("Positionlist")) {
+			break;
+		case POSITIONLIST:
 			this.sashForm.setMaximizedControl(positionlistComposite);
 			this.positionlistComposite.setAxis(currentAxis);
 			targetWidth = positionlistComposite.getTargetWidth() 
 							+ sashX;
 			targetHeight = positionlistComposite.getTargetHeight() 
 							+ sashY;
-		} else {
+			break;
+		default:
 			this.sashForm.setMaximizedControl(emptyComposite);
+			break;
 		}
 		sc.setMinSize(targetWidth, targetHeight);
 	}
@@ -374,7 +384,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 	 */
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-			logger.debug("selection changed");
+			LOGGER.debug("selection changed");
 			
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).size() == 0) {
@@ -385,17 +395,17 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			Object o = ((IStructuredSelection) selection).toList().get(0);
 			if (o instanceof Axis) {
 				// set new Axis
-				if(logger.isDebugEnabled()) {
-					logger.debug("Axis: " + ((Axis)o).getMotorAxis().
+				if(LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Axis: " + ((Axis)o).getMotorAxis().
 							getFullIdentifyer() + " selected.");
 				}
 				setAxis((Axis)o);
 			} else if (o instanceof ScanModuleEditPart) {
 				// ScanModule was selected
-				if(logger.isDebugEnabled()) {
-					logger.debug("selection is ScanModuleEditPart: " + o);
-					logger.debug("ScanModule: " + ((ScanModule)
-							((ScanModuleEditPart)o).getModel()).getId() + 
+				if(LOGGER.isDebugEnabled()) {
+					LOGGER.debug("selection is ScanModuleEditPart: " + o);
+					LOGGER.debug("ScanModule: " + 
+							((ScanModuleEditPart)o).getModel().getId() + 
 							" selected."); 
 				}
 				if (this.scanModule != null && !this.scanModule.equals(
@@ -403,10 +413,10 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 						setAxis(null);
 				}
 			} else if (o instanceof ScanDescriptionEditPart) {
-				logger.debug("selection is ScanDescriptionEditPart: " + o);
+				LOGGER.debug("selection is ScanDescriptionEditPart: " + o);
 				setAxis(null);
 			} else {
-				logger.debug("unknown selection -> ignore: " + o);
+				LOGGER.debug("unknown selection -> ignore: " + o);
 			}
 		}
 	}
@@ -464,13 +474,14 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			logger.debug("step function modified");
+			LOGGER.debug("step function modified");
 			if(currentAxis != null) {
-				if(currentAxis.getStepfunctionString().equals(
-						stepFunctionCombo.getText())) {
+				if (currentAxis.getStepfunction().equals(
+						Stepfunctions.getEnum(stepFunctionCombo.getText()))) {
 					return;
 				}
-				currentAxis.setStepfunction(stepFunctionCombo.getText());
+				currentAxis.setStepfunction(Stepfunctions.getEnum(
+						stepFunctionCombo.getText()));
 				setComposite();
 			}
 		}
@@ -494,7 +505,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			logger.debug("position mode modified");
+			LOGGER.debug("position mode modified");
 			if(currentAxis != null) {
 				currentAxis.setPositionMode(
 						PositionMode.stringToType(positionModeCombo.getText()));

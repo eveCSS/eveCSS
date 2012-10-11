@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.motoraxisview;
+package de.ptb.epics.eve.editor.views.motoraxisview.plugincomposite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,7 @@ import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.PluginControllerComposite;
+import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisViewComposite;
 
 /**
  * <code>MotorAxisPluginComposite</code> is a composite to input plug in values
@@ -121,7 +122,7 @@ public class PluginComposite extends Composite {
 		return (pluginControllerComposite.getBounds().x + 
 				pluginControllerComposite.getBounds().width + 5);
 	}
-
+	
 	/**
 	 * 
 	 * @param axis
@@ -135,16 +136,16 @@ public class PluginComposite extends Composite {
 		this.scanModule = scanModule;
 		
 		if(this.axis != null) {
-			if(this.axis.getPositionPluginController() != null &&
-			   this.axis.getPositionPluginController().getPlugin() != null) {
+			if(this.axis.getPluginController() != null &&
+			   this.axis.getPluginController().getPlugin() != null) {
 				this.pluginCombo.setText(
-					this.axis.getPositionPluginController().getPlugin().getName());
+					this.axis.getPluginController().getPlugin().getName());
 				checkForErrors();
 			} else {
 				this.pluginCombo.deselectAll();
 			}
 			this.pluginControllerComposite.setPluginController(
-					axis.getPositionPluginController());
+					axis.getPluginController());
 			pluginControllerComposite.setScanModule(scanModule);
 			
 			checkForErrors();
@@ -186,6 +187,8 @@ public class PluginComposite extends Composite {
 								ISharedImages.IMG_OBJS_ERROR_TSK));
 						this.pluginErrorLabel.setToolTipText("Plugin error");
 						this.pluginErrorLabel.getParent().layout();
+						break;
+					default:
 						break;
 				}
 			}
@@ -239,19 +242,19 @@ public class PluginComposite extends Composite {
 					logger.debug("Plugin: null");
 				
 				
-				if(axis.getPositionPluginController() == null)
+				if(axis.getPluginController() == null)
 				{
-					axis.setPositionPluginController(new PluginController(plugin));
+					axis.setPluginController(new PluginController(plugin));
 					logger.debug("filled with default ? " + 
-							axis.getPositionPluginController().isFilledWithDefault());
+							axis.getPluginController().isFilledWithDefault());
 				}
 				
 				
-				if(axis.getPositionPluginController().getPlugin() != plugin) {
-					axis.getPositionPluginController().setPlugin(plugin);
+				if(axis.getPluginController().getPlugin() != plugin) {
+					axis.getPluginController().setPlugin(plugin);
 				}
 					pluginControllerComposite.setPluginController(
-							axis.getPositionPluginController());
+							axis.getPluginController());
 					pluginControllerComposite.setScanModule(scanModule);
 			}
 			checkForErrors();

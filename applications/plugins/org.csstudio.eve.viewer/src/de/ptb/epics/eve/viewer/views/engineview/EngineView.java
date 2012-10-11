@@ -1231,9 +1231,9 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 					// Neuer Tabelleneintrag muß gemacht werden
 					TableItem tableItem = new TableItem( motTable, 0 );
 					tableItem.setText( 0, axis[i].getAbstractDevice().getFullIdentifyer());
-					tableItem.setText( 1, axis[i].getStart());
-					tableItem.setText( 2, axis[i].getStop());
-					tableItem.setText( 3, axis[i].getStepwidth());
+					tableItem.setText( 1, axis[i].getStart().toString());
+					tableItem.setText( 2, axis[i].getStop().toString());
+					tableItem.setText( 3, axis[i].getStepwidth().toString());
 				}
 	
 				// Tabelle für die Detector Channels erzeugen

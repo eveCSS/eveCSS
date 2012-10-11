@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.data.scandescription.processors;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DateFormat;
@@ -7,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -48,6 +50,7 @@ import de.ptb.epics.eve.data.scandescription.Prescan;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
+import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.YAxis;
 
 /**
@@ -452,7 +455,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 							"Plugin '" + atts.getValue("name")+ "' has been removed!"));
 				}
 				this.currentAxis
-						.setPositionPluginController(this.currentPluginController);
+						.setPluginController(this.currentPluginController);
 				this.currentPluginController.setPlugin(this.measuringStation
 						.getPluginByName(atts.getValue("name")));
 			}
@@ -771,7 +774,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_STEPFUNCTION_NEXT:
-			this.currentAxis.setStepfunction(textBuffer.toString());
+			this.currentAxis.setStepfunction(Enum.valueOf(Stepfunctions.class, textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STEPFUNCTION_READ;
 			break;
 
@@ -782,22 +785,61 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_START_NEXT:
-			this.currentAxis.setStart(textBuffer.toString());
+			String startValue = textBuffer.toString();
+			switch (this.currentAxis.getType()) {
+			case DATETIME:
+				this.currentAxis.setStart(Date.parse(startValue));
+				break;
+			case DOUBLE:
+				this.currentAxis.setStart(Double.parseDouble(startValue));
+				break;
+			case INT:
+				this.currentAxis.setStart(Integer.parseInt(startValue));
+				break;
+			default:
+				break;
+			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_START_READ;
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_STOP_NEXT:
-			this.currentAxis.setStop(textBuffer.toString());
+			String stopValue = textBuffer.toString();
+			switch (this.currentAxis.getType()) {
+			case DATETIME:
+				this.currentAxis.setStop(Date.parse(stopValue));
+				break;
+			case DOUBLE:
+				this.currentAxis.setStop(Double.parseDouble(stopValue));
+				break;
+			case INT:
+				this.currentAxis.setStop(Integer.parseInt(stopValue));
+				break;
+			default:
+				break;
+			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STOP_READ;
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_STEPWIDTH_NEXT:
-			this.currentAxis.setStepwidth(textBuffer.toString());
+			String stepwidthValue = textBuffer.toString();
+			switch (this.currentAxis.getType()) {
+			case DATETIME:
+				this.currentAxis.setStepwidth(Date.parse(stepwidthValue));
+				break;
+			case DOUBLE:
+				this.currentAxis.setStepwidth(Double.parseDouble(stepwidthValue));
+				break;
+			case INT:
+				this.currentAxis.setStepwidth(Integer.parseInt(stepwidthValue));
+				break;
+			default:
+				break;
+			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STEPWIDTH_READ;
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_STEPFILENAME_NEXT:
-			this.currentAxis.setPositionfile(textBuffer.toString());
+			this.currentAxis.setFile(new File(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STEPFILENAME_READ;
 			break;
 
@@ -1564,7 +1606,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					TypeValue tv = null;
 
 					if (this.currentAxis.getMotorAxis() != null) {
-						boolean errorFree = true;
+
 						if (this.currentAxis.getMotorAxis().getGoto() != null) {
 							if (this.currentAxis.getMotorAxis().getGoto()
 									.getValue() != null) {
@@ -1580,28 +1622,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 									.getPosition().getAccess().getType());
 						}
 
-						if (this.currentAxis.getStart() != null
-								&& !this.currentAxis.getMotorAxis()
-										.isValuePossible(
-												this.currentAxis.getStart())) {
 
-						}
-
-						if (this.currentAxis.getStop() != null
-								&& !this.currentAxis.getMotorAxis()
-										.isValuePossible(
-												this.currentAxis.getStop())) {
-						}
-
-						if (this.currentAxis.getStepwidth() != null
-								&& !DataTypes.isValuePossible(tv.getType(),
-										this.currentAxis.getStepwidth())) {
-
-						}
-
-						if (errorFree) {
-							if (this.currentAxis.getStepfunctionString()
-									.equals("Add")) {
+							if (this.currentAxis.getStepfunction()
+									.equals(Stepfunctions.ADD)) {
 								if (tv.isDiscrete()) {
 									try {
 										List<String> values = tv
@@ -1609,20 +1632,20 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 										final int start = values
 												.indexOf(this.currentAxis
-														.getStart());
+														.getStart().toString());
 										final int stop = values
 												.indexOf(this.currentAxis
-														.getStop());
+														.getStop().toString());
 										final int stepwidth = Integer
 												.parseInt(this.currentAxis
-														.getStepwidth());
+														.getStepwidth().toString());
 
 										if ((start - stop == 0)
 												|| (stepwidth == 0)) {
-											this.currentAxis.setStepCount(0);
+											this.currentAxis.setStepcount(0);
 										} else {
 											this.currentAxis
-													.setStepCount(((stop - start) / stepwidth));
+													.setStepcount(((stop - start) / stepwidth));
 										}
 									} catch (final NumberFormatException e) {
 										logger.error(e.getMessage(), e);
@@ -1652,7 +1675,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 											// Herausfinden welches Format die
 											// übergebene Zeit hat
 											if (this.currentAxis
-													.getStart()
+													.getStart().toString()
 													.matches(
 															"\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$")) {
 												startDate = new SimpleDateFormat(
@@ -1661,27 +1684,27 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 												// Nachkommazahl bestimmen
 												// Stelle des Punktes
 												int indexP = this.currentAxis
-														.getStart()
+														.getStart().toString()
 														.indexOf('.');
 												double nachkomma = Double
 														.parseDouble(this.currentAxis
-																.getStart()
+																.getStart().toString()
 																.substring(
 																		indexP));
 												int nachMinus = Integer
 														.parseInt(this.currentAxis
-																.getStart()
+																.getStart().toString()
 																.substring(
 																		indexP + 1));
 												addStart = (int) (nachkomma * 1000 - nachMinus);
 											} else if (this.currentAxis
-													.getStart().matches(
+													.getStart().toString().matches(
 															"\\d+:\\d+:\\d+?$")) {
 												startDate = new SimpleDateFormat(
 														"HH:mm:ss");
 												startJahr = 0;
 											} else if (this.currentAxis
-													.getStart()
+													.getStart().toString()
 													.matches(
 															"\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
 												startDate = new SimpleDateFormat(
@@ -1690,23 +1713,23 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 												// Nachkommazahl bestimmen
 												// Stelle des Punktes
 												int indexP = this.currentAxis
-														.getStart()
+														.getStart().toString()
 														.indexOf('.');
 												double nachkomma = Double
 														.parseDouble(this.currentAxis
-																.getStart()
+																.getStart().toString()
 																.substring(
 																		indexP));
 												int nachMinus = Integer
 														.parseInt(this.currentAxis
-																.getStart()
+																.getStart().toString()
 																.substring(
 																		indexP + 1));
 												addStart = (int) (nachkomma * 1000 - nachMinus);
 											}
 
 											if (this.currentAxis
-													.getStop()
+													.getStop().toString()
 													.matches(
 															"\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}([.]\\d{1,3})?$")) {
 												stopDate = new SimpleDateFormat(
@@ -1715,26 +1738,26 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 												// Nachkommazahl bestimmen
 												// Stelle des Punktes
 												int indexP = this.currentAxis
-														.getStop().indexOf('.');
+														.getStop().toString().indexOf('.');
 												double nachkomma = Double
 														.parseDouble(this.currentAxis
-																.getStop()
+																.getStop().toString()
 																.substring(
 																		indexP));
 												int nachMinus = Integer
 														.parseInt(this.currentAxis
-																.getStop()
+																.getStop().toString()
 																.substring(
 																		indexP + 1));
 												addStop = (int) (nachkomma * 1000 - nachMinus);
 											} else if (this.currentAxis
-													.getStop().matches(
+													.getStop().toString().matches(
 															"\\d+:\\d+:\\d+?$")) {
 												stopDate = new SimpleDateFormat(
 														"HH:mm:ss");
 												stopJahr = 0;
 											} else if (this.currentAxis
-													.getStop()
+													.getStop().toString()
 													.matches(
 															"\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
 												stopDate = new SimpleDateFormat(
@@ -1743,27 +1766,27 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 												// Nachkommazahl bestimmen
 												// Stelle des Punktes
 												int indexP = this.currentAxis
-														.getStop().indexOf('.');
+														.getStop().toString().indexOf('.');
 												double nachkomma = Double
 														.parseDouble(this.currentAxis
-																.getStop()
+																.getStop().toString()
 																.substring(
 																		indexP));
 												int nachMinus = Integer
 														.parseInt(this.currentAxis
-																.getStop()
+																.getStop().toString()
 																.substring(
 																		indexP + 1));
 												addStop = (int) (nachkomma * 1000 - nachMinus);
 											}
 
 											if (this.currentAxis
-													.getStepwidth()
+													.getStepwidth().toString()
 													.matches("\\d+:\\d+:\\d+?$")) {
 												stepwidthDate = new SimpleDateFormat(
 														"HH:mm:ss");
 											} else if (this.currentAxis
-													.getStepwidth()
+													.getStepwidth().toString()
 													.matches(
 															"\\d+:\\d+:\\d+([.]\\d{1,3})?$")) {
 												stepwidthDate = new SimpleDateFormat(
@@ -1771,16 +1794,16 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 												// Nachkommazahl bestimmen
 												// Stelle des Punktes
 												int indexP = this.currentAxis
-														.getStepwidth()
+														.getStepwidth().toString()
 														.indexOf('.');
 												double nachkomma = Double
 														.parseDouble(this.currentAxis
-																.getStepwidth()
+																.getStepwidth().toString()
 																.substring(
 																		indexP));
 												int nachMinus = Integer
 														.parseInt(this.currentAxis
-																.getStepwidth()
+																.getStepwidth().toString()
 																.substring(
 																		indexP + 1));
 												addStepwidth = (int) (nachkomma * 1000 - nachMinus);
@@ -1796,7 +1819,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 												startDate.setLenient(false);
 												startDate
 														.parse(this.currentAxis
-																.getStart());
+																.getStart().toString());
 												Calendar startTime = startDate
 														.getCalendar();
 												start = startTime
@@ -1805,7 +1828,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 												stopDate.setLenient(false);
 												stopDate.parse(this.currentAxis
-														.getStop());
+														.getStop().toString());
 												Calendar stopTime = stopDate
 														.getCalendar();
 												stop = stopTime
@@ -1815,7 +1838,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 												stepwidthDate.setLenient(false);
 												stepwidthDate
 														.parse(this.currentAxis
-																.getStepwidth());
+																.getStepwidth().toString());
 												Calendar stepwidthTime = stepwidthDate
 														.getCalendar();
 												stepwidth = stepwidthTime
@@ -1830,10 +1853,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 												if ((start - stop == 0)
 														|| (stepwidth == 0)) {
 													this.currentAxis
-															.setStepCount(0);
+															.setStepcount(0);
 												} else {
 													this.currentAxis
-															.setStepCount(((stop - start) / stepwidth));
+															.setStepcount(((stop - start) / stepwidth));
 												}
 											} catch (final ParseException ef) {
 												logger.error(ef.getMessage(),
@@ -1844,20 +1867,20 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 										default:
 											start = Double
 													.parseDouble(this.currentAxis
-															.getStart());
+															.getStart().toString());
 											stop = Double
 													.parseDouble(this.currentAxis
-															.getStop());
+															.getStop().toString());
 											stepwidth = Double
 													.parseDouble(this.currentAxis
-															.getStepwidth());
+															.getStepwidth().toString());
 											if ((start - stop == 0)
 													|| (stepwidth == 0)) {
 												this.currentAxis
-														.setStepCount(0);
+														.setStepcount(0);
 											} else {
 												this.currentAxis
-														.setStepCount(((stop - start) / stepwidth));
+														.setStepcount(((stop - start) / stepwidth));
 											}
 											break;
 										}
@@ -1866,7 +1889,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 									}
 								}
 							}
-						}
+						
 					}
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
@@ -1967,8 +1990,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_SMMOTOR_CONTROLLER_LOADING:
 			if (qName.equals("plugin")) {
-				this.currentAxis
-						.setPositionPluginController(this.currentPluginController);
+				this.currentAxis.setPluginController(this.currentPluginController);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}

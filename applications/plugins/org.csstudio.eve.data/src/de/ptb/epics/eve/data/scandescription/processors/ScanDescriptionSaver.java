@@ -1704,8 +1704,8 @@ public class ScanDescriptionSaver implements
 			this.atts.clear();
 			this.contentHandler.startElement("", "stepfunction",
 					"stepfunction", this.atts);
-			this.contentHandler.characters(axis.getStepfunctionString()
-					.toCharArray(), 0, axis.getStepfunctionString().length());
+			this.contentHandler.characters(axis.getStepfunction().toString()
+					.toCharArray(), 0, axis.getStepfunction().toString().length());
 			this.contentHandler.endElement("", "stepfunction", "stepfunction");
 
 			this.atts.clear();
@@ -1716,8 +1716,8 @@ public class ScanDescriptionSaver implements
 							.toCharArray(), 0,
 					PositionMode.typeToString(axis.getPositionMode()).length());
 			this.contentHandler.endElement("", "positionmode", "positionmode");
-
-			switch (axis.getStepfunctionEnum()) {
+			
+			switch (axis.getStepfunction()) {
 			case ADD:
 			case MULTIPLY:
 				if (axis.getStart() != null) {
@@ -1726,8 +1726,8 @@ public class ScanDescriptionSaver implements
 							DataTypes.typeToString(axis.getType()));
 					this.contentHandler.startElement("", "start", "start",
 							this.atts);
-					this.contentHandler.characters(axis.getStart()
-							.toCharArray(), 0, axis.getStart().length());
+					this.contentHandler.characters(axis.getStart().toString()
+						.toCharArray(), 0, axis.getStart().toString().length());
 					this.contentHandler.endElement("", "start", "start");
 				}
 				if (axis.getStop() != null) {
@@ -1737,8 +1737,8 @@ public class ScanDescriptionSaver implements
 					this.contentHandler.startElement("", "stop", "stop",
 							this.atts);
 					this.contentHandler.characters(
-							axis.getStop().toCharArray(), 0, axis.getStop()
-									.length());
+							axis.getStop().toString().toCharArray(), 0, 
+									axis.getStop().toString().length());
 					this.contentHandler.endElement("", "stop", "stop");
 				}
 				if (axis.getStepwidth() != null) {
@@ -1748,7 +1748,8 @@ public class ScanDescriptionSaver implements
 					this.contentHandler.startElement("", "stepwidth",
 							"stepwidth", this.atts);
 					this.contentHandler.characters(axis.getStepwidth()
-							.toCharArray(), 0, axis.getStepwidth().length());
+							.toString().toCharArray(), 0, axis.getStepwidth()
+							.toString().length());
 					this.contentHandler
 							.endElement("", "stepwidth", "stepwidth");
 				}
@@ -1760,29 +1761,27 @@ public class ScanDescriptionSaver implements
 						Boolean.toString(axis.isMainAxis()).length());
 				this.contentHandler.endElement("", "ismainaxis", "ismainaxis");
 				break;
-			case FILE:
-				if (axis.getPositionfile() != null) {
+			case FILE: 
+				if (axis.getFile() != null) {
 					this.atts.clear();
 					this.contentHandler.startElement("", "stepfilename",
 							"stepfilename", this.atts);
-					this.contentHandler.characters(axis.getPositionfile()
-							.toCharArray(), 0, axis.getPositionfile().length());
+					this.contentHandler.characters(axis.getFile()
+							.getAbsolutePath().toCharArray(), 0, axis.getFile()
+							.getAbsolutePath().length());
 					this.contentHandler.endElement("", "stepfilename",
 							"stepfilename");
 				}
 				break;
-
 			case PLUGIN:
-				if (axis.getPositionPluginController() != null) {
+				if (axis.getPluginController() != null) {
 					this.atts.clear();
 					this.writePluginController(
-							axis.getPositionPluginController(), "plugin");
+							axis.getPluginController(), "plugin");
 				}
 				break;
-
 			case POSITIONLIST:
 				if (axis.getPositionlist() != null) {
-
 					this.atts.clear();
 					this.contentHandler.startElement("", "positionlist",
 							"positionlist", this.atts);
@@ -1792,8 +1791,7 @@ public class ScanDescriptionSaver implements
 							"positionlist");
 				}
 				break;
-
-			default:
+			default: 
 				break;
 			}
 			this.contentHandler.endElement("", "smaxis", "smaxis");

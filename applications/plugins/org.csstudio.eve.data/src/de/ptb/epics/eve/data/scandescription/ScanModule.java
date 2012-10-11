@@ -1130,7 +1130,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			}
 			for (Axis axis : this.getAxes()) {
 				if (!axis.equals(source)) {
-					axis.adjustStepwidth(source);
+					axis.matchMainAxis(source);
 				}
 			}
 		} else if (e.getPropertyName().equals("normalizeChannel")) {

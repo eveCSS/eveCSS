@@ -91,12 +91,11 @@ public class SaveAllAxisPositions extends Job {
 			monitor.subTask("creating axis " + ma.getName());
 			final Axis axis = new Axis(scanModule);
 			axis.setMotorAxis(ma);
-			axis.setStepfunction(Stepfunctions.stepfunctionToString(
-					Stepfunctions.PLUGIN));
+			axis.setStepfunction(Stepfunctions.PLUGIN);
 			PlugIn motionDisabled = scanModule.getChain().getScanDescription().
 					getMeasuringStation().getPluginByName("MotionDisabled");
-			axis.setPositionPluginController(new PluginController(motionDisabled));
-			axis.getPositionPluginController().setPlugin(motionDisabled);
+			axis.setPluginController(new PluginController(motionDisabled));
+			axis.getPluginController().setPlugin(motionDisabled);
 			axes.add(axis);
 			if(logger.isDebugEnabled()) {
 				// progress view in "Slow Motion" when debugging

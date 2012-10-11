@@ -43,64 +43,12 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 public class StartStopStepwidthComposite extends Composite implements
 		PropertyChangeListener {
 	
-	// logging
-	private static Logger logger = 
-		Logger.getLogger(StartStopStepwidthComposite.class.getName());
-	
-	// the underlying model the composite takes the data from
-	private Axis currentAxis;
-	
 	// indicates whether an axis in the scan module containing 
 	// the current axis is set as main axis
 	private boolean mainAxisSet; // TODO should be in the model !
 	
-	// start elements
-	private Button startRadioButton;
-	private StartRadioButtonSelectionListener startRadioButtonSelectionListener;
+
 	
-	private Text startText;
-	private ControlDecoration startTextControlDecoration;
-	private TextVerifyListener startTextVerifyListener;
-	private StartTextModifyListener startTextModifyListener;
-	// end of: start elements
-	
-	// stop elements
-	private Button stopRadioButton;
-	private StopRadioButtonSelectionListener stopRadioButtonSelectionListener;
-	
-	private Text stopText;
-	private ControlDecoration stopTextControlDecoration;
-	private TextVerifyListener stopTextVerifyListener;
-	private StopTextModifyListener stopTextModifyListener;
-	// end of: stop elements
-	
-	// step width elements
-	private Button stepwidthRadioButton;
-	private StepwidthRadioButtonSelectionListener
-			stepwidthRadioButtonSelectionListener;
-	
-	private Text stepwidthText;
-	private ControlDecoration stepwidthTextControlDecoration;
-	private TextDoubleVerifyListener stepwidthTextVerifyListener;
-	private StepwidthTextModifyListener stepwidthTextModifyListener;
-	// end of: step width elements
-	
-	// step count elements
-	private Button stepcountRadioButton;
-	private StepcountRadioButtonSelectionListener
-			stepcountRadioButtonSelectionListener;
-	
-	private Text stepcountText;
-	private ControlDecoration stepcountTextControlDecoration;
-	private TextNumberVerifyListener stepcountTextVerifyListener;
-	private StepcountTextModifyListener stepcountTextModifyListener;
-	// end of step count elements
-	
-	private Button mainAxisCheckBox;
-	private MainAxisCheckBoxSelectionListener mainAxisCheckBoxSelectionListener;
-	
-	private Image warnImage;
-	private Image errorImage;
 	
 	/**
 	 * Constructs a <code>MotorAxisStartStopStepwidthComposite</code>.
@@ -111,156 +59,8 @@ public class StartStopStepwidthComposite extends Composite implements
 	 */
 	public StartStopStepwidthComposite(final Composite parent, 
 										final int style) {
-		super(parent, style);
-		
-		this.warnImage = FieldDecorationRegistry.getDefault()
-				.getFieldDecoration(FieldDecorationRegistry.DEC_WARNING)
-				.getImage();
-		
-		this.errorImage = FieldDecorationRegistry.getDefault()
-				.getFieldDecoration(FieldDecorationRegistry.DEC_ERROR)
-				.getImage();
 		
 		this.mainAxisSet = false;
-		
-		// the composite gets a 3 column grid
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 2;
-		this.setLayout(gridLayout);
-		
-		// initialize start elements
-		this.startRadioButton = new Button(this, SWT.RADIO);
-		this.startRadioButton.setText("Start:");
-		this.startRadioButton.setToolTipText(
-				"Mark to enable auto-fill for start value.");
-		this.startRadioButtonSelectionListener = 
-				new StartRadioButtonSelectionListener();
-		this.startRadioButton.addSelectionListener(
-				startRadioButtonSelectionListener);
-		
-		this.startText = new Text(this, SWT.BORDER);
-		this.startTextVerifyListener = new TextVerifyListener();
-		this.startText.addVerifyListener(startTextVerifyListener);
-		this.startTextModifyListener = new StartTextModifyListener();
-		this.startText.addModifyListener(startTextModifyListener);
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalIndent = 7;
-		gridData.grabExcessHorizontalSpace = true;
-		this.startText.setLayoutData(gridData);
-		this.startTextControlDecoration = new ControlDecoration(this.startText,
-				SWT.LEFT);
-		// end of: initialize start elements
-		
-		// initialize stop elements
-		this.stopRadioButton = new Button(this, SWT.RADIO);
-		this.stopRadioButton.setText("Stop:");
-		this.stopRadioButton.setToolTipText(
-				"Mark to enable auto-fill for stop value.");
-		this.stopRadioButtonSelectionListener = 
-				new StopRadioButtonSelectionListener();
-		this.stopRadioButton.addSelectionListener(
-				startRadioButtonSelectionListener);
-		
-		this.stopText = new Text(this, SWT.BORDER);
-		this.stopTextVerifyListener = new TextVerifyListener();
-		this.stopText.addVerifyListener(stopTextVerifyListener);
-		this.stopTextModifyListener = new StopTextModifyListener();
-		this.stopText.addModifyListener(stopTextModifyListener);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalIndent = 7;
-		gridData.grabExcessHorizontalSpace = true;
-		this.stopText.setLayoutData(gridData);
-		this.stopTextControlDecoration = new ControlDecoration(this.stopText,
-				SWT.LEFT);
-		// end of: initialize stop elements
-		
-		// initialize step width elements
-		this.stepwidthRadioButton = new Button(this, SWT.RADIO);
-		this.stepwidthRadioButton.setText("Stepwidth:");
-		this.stepwidthRadioButton.setToolTipText(
-				"Mark to enable auto-fill for stepwidth value.");
-		this.stepwidthRadioButtonSelectionListener = 
-				new StepwidthRadioButtonSelectionListener();
-		this.stepwidthRadioButton.addSelectionListener(
-				stepwidthRadioButtonSelectionListener);
-		
-		this.stepwidthText = new Text(this, SWT.BORDER);
-		this.stepwidthTextVerifyListener = new TextDoubleVerifyListener();
-		this.stepwidthText.addVerifyListener(stepwidthTextVerifyListener);
-		this.stepwidthTextModifyListener = new StepwidthTextModifyListener();
-		this.stepwidthText.addModifyListener(stepwidthTextModifyListener);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalIndent = 7;
-		gridData.grabExcessHorizontalSpace = true;
-		this.stepwidthText.setLayoutData(gridData);
-		this.stepwidthTextControlDecoration = new ControlDecoration(
-				this.stepwidthText, SWT.LEFT);
-		// end of: initialize step width elements 
-		
-		// initialize step count elements
-		this.stepcountRadioButton = new Button(this, SWT.RADIO);
-		this.stepcountRadioButton.setText("Stepcount:");
-		this.stepcountRadioButton.setToolTipText(
-				"Mark to enable auto-fill for step count.");
-		this.stepcountRadioButtonSelectionListener = 
-				new StepcountRadioButtonSelectionListener();
-		this.stepcountRadioButton.addSelectionListener(
-				stepcountRadioButtonSelectionListener);
-		
-		this.stepcountText = new Text(this, SWT.BORDER);
-		this.stepcountTextVerifyListener = new TextNumberVerifyListener();
-		this.stepcountText.addVerifyListener(stepcountTextVerifyListener);
-		this.stepcountTextModifyListener = new StepcountTextModifyListener();
-		this.stepcountText.addModifyListener(stepcountTextModifyListener);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.horizontalIndent = 7;
-		gridData.grabExcessHorizontalSpace = true;
-		this.stepcountText.setLayoutData(gridData);
-		this.stepcountTextControlDecoration = new ControlDecoration(
-				this.stepcountText, SWT.LEFT);
-		// end of: initialize step count elements
-		
-		this.mainAxisCheckBox = new Button(this, SWT.CHECK);
-		this.mainAxisCheckBox.setText("main axis");
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalSpan = 2;
-		this.mainAxisCheckBox.setLayoutData(gridData);
-		this.mainAxisCheckBoxSelectionListener = 
-				new MainAxisCheckBoxSelectionListener();
-		this.mainAxisCheckBox.addSelectionListener(
-				mainAxisCheckBoxSelectionListener);
-		
-		this.startText.setEnabled(false);
-		this.stopText.setEnabled(false);
-		this.stepwidthText.setEnabled(false);
-		this.stepcountText.setEnabled(false);
-		this.mainAxisCheckBox.setEnabled(false);
-	}
-	
-	/**
-	 * calculate the height to see all entries of this composite
-	 * 
-	 * @return the needed height of Composite to see all entries
-	 */
-	public int getTargetHeight() {
-		return (mainAxisCheckBox.getBounds().y + 
-				mainAxisCheckBox.getBounds().height + 5);
-	}
-
-	/**
-	 * calculate the width to see all entries of this composite
-	 * 
-	 * @return the needed width of Composite to see all entries
-	 */
-	public int getTargetWidth() {
-		return (mainAxisCheckBox.getBounds().x + 
-				mainAxisCheckBox.getBounds().width + 5);
 	}
 	
 	/**
@@ -277,14 +77,7 @@ public class StartStopStepwidthComposite extends Composite implements
 		} else {
 			logger.debug("set axis to: null");
 		}
-		
-		// remove listeners (if any) from the "old" axis
-		if (this.currentAxis != null) {
-			this.currentAxis.getMotorAxis().removePropertyChangeListener(
-					"lowlimit", this);
-			this.currentAxis.getMotorAxis().removePropertyChangeListener(
-					"highlimit", this);
-		}
+
 		
 		removeListeners();
 		
@@ -292,11 +85,7 @@ public class StartStopStepwidthComposite extends Composite implements
 		this.currentAxis = axis;
 		
 		if(this.currentAxis != null) {
-			this.currentAxis.getMotorAxis().addPropertyChangeListener(
-					"lowlimit", this);
-			this.currentAxis.getMotorAxis().addPropertyChangeListener(
-					"highlimit", this);
-			
+
 			// set tooltips
 			switch(this.currentAxis.getMotorAxis().getPosition().getType()) {
 				case DATETIME:
@@ -307,87 +96,13 @@ public class StartStopStepwidthComposite extends Composite implements
 					String tooltip2 = "The input format is HH:mm:ss.SSS";
 					this.stepwidthText.setToolTipText(tooltip2);
 					break;
-				case INT:
-					this.startText.setToolTipText("the input format is integer");
-					this.stopText.setToolTipText("the input format is integer");
-					this.stepwidthText.setToolTipText("the input format is integer");
-					break;
-				default:
-					this.startText.setToolTipText("the input format is double");
-					this.stopText.setToolTipText("the input format is double");
-					this.stepwidthText.setToolTipText("the input format is double");
-					break;
 			} // end of: set tooltips
 			
-			// set values
-			this.startText.setText(this.currentAxis.getStart() != null
-									? this.currentAxis.getStart()
-									: "");
-			this.startText.setSelection(new Point(0,0));
-			this.stopText.setText(this.currentAxis.getStop() != null
-									? this.currentAxis.getStop()
-									: "");
-			this.stopText.setSelection(new Point(0,0));
-			this.stepwidthText.setText(this.currentAxis.getStepwidth() != null
-										? this.currentAxis.getStepwidth()
-										: "");
-			if(this.currentAxis.getMotorAxis().getGoto().isDiscrete()) {
-				this.stepcountText.setText(Integer.toString(
-						(int)currentAxis.getStepCount()));
-			} else {
-				this.stepcountText.setText(Double.toString(
-						currentAxis.getStepCount()));
-			}
-			this.mainAxisCheckBox.setSelection(this.currentAxis.isMainAxis());
-			// end of: set values
-			
-			checkForMainAxis();
-			
-			// enable / disable elements
-			this.startText.setEnabled(true);
-			this.stopText.setEnabled(true);
-			if(mainAxisSet && !this.currentAxis.isMainAxis()) {
-				// another axis is set as main axis
-				this.stepwidthRadioButton.setSelection(true);
-				this.stepcountRadioButton.setSelection(false);
-				this.stepcountRadioButton.setEnabled(false);
-				this.stepwidthText.setEnabled(false);
-				this.stepcountText.setEnabled(false);
-				this.mainAxisCheckBox.setEnabled(false);
-			} else {
-				// no other axis or this axis is set as main axis
-				this.stepwidthRadioButton.setSelection(false);
-				this.stepcountRadioButton.setSelection(true);
-				this.stepcountRadioButton.setEnabled(true);
-				this.stepwidthText.setEnabled(true);
-				this.stepcountText.setEnabled(false);
-				this.mainAxisCheckBox.setEnabled(true);
-			} // end of: enable / disable elements
-			
+
 			checkForErrors();
-			addListeners();
-		} else {
-			// currentAxis is null
-			this.startText.setEnabled(false);
-			this.stopText.setEnabled(false);
-			this.stepwidthText.setEnabled(false);
-			this.stepcountText.setEnabled(false);
-			this.mainAxisCheckBox.setEnabled(false);
 		}
 	}
-	
-	/*
-	 * 
-	 */
-	private void checkForMainAxis() {
-		mainAxisSet = false;
-		Axis[] axis = this.currentAxis.getScanModule().getAxes();
-		for(Axis a : axis) {
-			if(a.isMainAxis()) {
-				mainAxisSet = true;
-			}
-		}
-	}
+
 	
 	/*
 	 *
@@ -447,56 +162,7 @@ public class StartStopStepwidthComposite extends Composite implements
 			logger.debug("null, maybe PV wasn't ready / doesn't exist.");
 		}
 		// end of: bounds check
-		
-		for(IModelError error : this.currentAxis.getModelErrors()) {
-			if(error instanceof AxisError) {
-				final AxisError axisError = (AxisError)error;
-				
-				switch(axisError.getErrorType()) {
-					case START_NOT_SET:
-						this.startTextControlDecoration.setImage(errorImage);
-						this.startTextControlDecoration.setDescriptionText(
-								"Start value is mandatory!");
-						this.startTextControlDecoration.show();
-						break;
-						
-					case START_VALUE_NOT_POSSIBLE: // still necessary ? TODO
-						this.startTextControlDecoration.setImage(errorImage);
-						this.startTextControlDecoration.setDescriptionText(
-								"Value not possible!");
-						this.startTextControlDecoration.show();
-						break;
-						
-					case STOP_NOT_SET:
-						this.stopTextControlDecoration.setImage(errorImage);
-						this.stopTextControlDecoration.setDescriptionText(
-								"Stop value is mandatory!");
-						this.stopTextControlDecoration.show();
-						break;
-						
-					case STOP_VALUE_NOT_POSSIBLE: // still necessary TODO
-						this.stopTextControlDecoration.setImage(errorImage);
-						this.stopTextControlDecoration.setDescriptionText(
-								"Value not possible!");
-						this.stopTextControlDecoration.show();
-						break;
-						
-					case STEPWIDTH_NOT_SET:
-						this.stepwidthTextControlDecoration.setImage(errorImage);
-						this.stepwidthTextControlDecoration.setDescriptionText(
-								"Stepwidth Value is mandatory!");
-						this.stepwidthTextControlDecoration.show();
-						break;
-						
-					case STEPCOUNT_NOT_SET:
-						this.stepcountTextControlDecoration.setImage(errorImage);
-						this.stepcountTextControlDecoration.setDescriptionText(
-								"Stepcount Value is mandatory!");
-						this.stepcountTextControlDecoration.show();
-						break;
-				}
-			}
-		}
+
 	}
 
 	// TODO REMOVE !!!
@@ -679,51 +345,9 @@ public class StartStopStepwidthComposite extends Composite implements
 								currentAxis.setStart(this.startText.getText());
 							}
 							break;
-						case INT:
-							stop = Integer.parseInt(this.stopText.getText());
-							stepwidth = Integer.parseInt(this.stepwidthText
-									.getText());
-							stepcount = Double.parseDouble(this.stepcountText
-									.getText());
-
-							start = stop - (stepwidth * stepcount);
-							int startInt = (int) start;
-
-							this.startText.setText("" + startInt);
-							currentAxis.setStart(this.startText.getText());
-							break;
-						default:
-							stop = Double.parseDouble(this.stopText.getText());
-							stepwidth = Double.parseDouble(this.stepwidthText
-									.getText());
-							stepcount = Double.parseDouble(this.stepcountText
-									.getText());
-							this.startText.setText(""
-									+ (stop - (stepwidth * stepcount)));
-							currentAxis.setStart(this.startText.getText());
-							break;
 						}
 					} else {
-						List<String> values = this.currentAxis.getMotorAxis()
-								.getGoto().getDiscreteValues();
-
-						final int stop = values
-								.indexOf(this.stopText.getText());
-						final int stepwidth = Integer
-								.parseInt(this.stepwidthText.getText());
-						final int stepcount = Integer
-								.parseInt(this.stepcountText.getText());
-
-						int index = (stop - (stepwidth * stepcount));
-						if (index < 0) {
-							currentAxis.setStart(null);
-						} else if (index >= values.size()) {
-							currentAxis.setStart(null);
-						} else {
-							this.startText.setText(values.get(index));
-							this.startText.setSelection(new Point(0, 0));
-							currentAxis.setStart(this.startText.getText());
-						}
+						
 					}
 				}
 			} else if (this.stopRadioButton.getSelection()) {
@@ -876,52 +500,9 @@ public class StartStopStepwidthComposite extends Composite implements
 								currentAxis.setStop(this.stopText.getText());
 							}
 							break;
-						case INT:
-							start = Integer.parseInt(this.startText.getText());
-							stepwidth = Integer.parseInt(this.stepwidthText
-									.getText());
-							stepcount = Double.parseDouble(this.stepcountText
-									.getText());
-
-							stop = start + (stepwidth * stepcount);
-							int stopInt = (int) stop;
-
-							this.stopText.setText("" + stopInt);
-							currentAxis.setStop(this.stopText.getText());
-							break;
-						default:
-							start = Double
-									.parseDouble(this.startText.getText());
-							stepwidth = Double.parseDouble(this.stepwidthText
-									.getText());
-							stepcount = Double.parseDouble(this.stepcountText
-									.getText());
-							this.stopText.setText(""
-									+ (start + (stepwidth * stepcount)));
-							currentAxis.setStop(this.stopText.getText());
-							break;
 						}
 					} else {
-						List<String> values = this.currentAxis.getMotorAxis()
-								.getGoto().getDiscreteValues();
-
-						final int start = values.indexOf(this.startText
-								.getText());
-						final int stepwidth = Integer
-								.parseInt(this.stepwidthText.getText());
-						final int stepcount = Integer
-								.parseInt(this.stepcountText.getText());
-
-						int index = (start + (stepwidth * stepcount));
-						if (index < 0) {
-							currentAxis.setStop(null);
-						} else if (index >= values.size()) {
-							currentAxis.setStop(null);
-						} else {
-							this.stopText.setText(values.get(index));
-							this.stopText.setSelection(new Point(0, 0));
-							currentAxis.setStop(this.stopText.getText());
-						}
+						
 					}
 				}
 			} else if (this.stepwidthRadioButton.getSelection()) {
@@ -1083,75 +664,9 @@ public class StartStopStepwidthComposite extends Composite implements
 										.getText());
 							}
 							break;
-						case INT:
-							start = Integer.parseInt(this.startText.getText());
-							stop = Integer.parseInt(this.stopText.getText());
-							stepcount = Double.parseDouble(this.stepcountText
-									.getText());
-
-							if ((stop - start == 0) || (stepcount == 0)) {
-								this.stepwidthText.setText("0");
-								currentAxis.setStepwidth(this.stepwidthText
-										.getText());
-							} else {
-								int stepwidthInt = (int) ((stop - start) / stepcount);
-								this.stepwidthText.setText("" + stepwidthInt);
-								currentAxis.setStepwidth(this.stepwidthText
-										.getText());
-							}
-							break;
-						default:
-							start = Double
-									.parseDouble(this.startText.getText());
-							stop = Double.parseDouble(this.stopText.getText());
-							stepcount = Double.parseDouble(this.stepcountText
-									.getText());
-
-							if ((stop - start == 0) || (stepcount == 0)) {
-								this.stepwidthText.setText("0");
-								currentAxis.setStepwidth(this.stepwidthText
-										.getText());
-							} else {
-								this.stepwidthText.setText(""
-										+ ((stop - start) / stepcount));
-								currentAxis.setStepwidth(this.stepwidthText
-										.getText());
-							}
-							break;
 						}
 					} else {
-						List<String> values = this.currentAxis.getMotorAxis()
-								.getGoto().getDiscreteValues();
-
-						final int start = values.indexOf(this.startText
-								.getText());
-						final int stop = values
-								.indexOf(this.stopText.getText());
-						final int stepcount = Integer
-								.parseInt(this.stepcountText.getText());
-
-						if (stepcount != 0) {
-							if (!this.stepwidthText.getText().equals("")) {
-								// stepwidth Eintrag schon vorhanden
-								final double stepwidth_d = Double
-										.parseDouble(this.stepwidthText
-												.getText());
-								final int stepwidth = (int) stepwidth_d;
-								if (stepwidth == ((stop - start) / stepcount)) {
-									// Wert wird nicht nochmal gesetzt
-								} else {
-									this.stepwidthText.setText(""
-											+ ((stop - start) / stepcount));
-									currentAxis.setStepwidth(this.stepwidthText
-											.getText());
-								}
-							} else {
-								this.stepwidthText.setText(""
-										+ ((stop - start) / stepcount));
-								currentAxis.setStepwidth(this.stepwidthText
-										.getText());
-							}
-						}
+						
 					}
 				}
 			} else if (this.stepcountRadioButton.getSelection()) {
@@ -1557,178 +1072,10 @@ public class StartStopStepwidthComposite extends Composite implements
 		}
 	}
 
-	/*
-	 * 
-	 */
-	private void addListeners() {
-		startRadioButton
-				.addSelectionListener(startRadioButtonSelectionListener);
-		stopRadioButton.addSelectionListener(stopRadioButtonSelectionListener);
-		stepwidthRadioButton
-				.addSelectionListener(stepwidthRadioButtonSelectionListener);
-		stepcountRadioButton
-				.addSelectionListener(stepcountRadioButtonSelectionListener);
-
-		startText.addModifyListener(startTextModifyListener);
-		startText.addVerifyListener(startTextVerifyListener);
-		stopText.addModifyListener(stopTextModifyListener);
-		stopText.addVerifyListener(stopTextVerifyListener);
-
-		stepwidthText.addModifyListener(stepwidthTextModifyListener);
-		stepwidthText.addVerifyListener(stepwidthTextVerifyListener);
-
-		stepcountText.addModifyListener(stepcountTextModifyListener);
-		stepcountText.addVerifyListener(stepcountTextVerifyListener);
-
-		mainAxisCheckBox
-				.addSelectionListener(mainAxisCheckBoxSelectionListener);
-	}
-
-	/*
-	 * 
-	 */
-	private void removeListeners() {
-		startRadioButton
-				.removeSelectionListener(startRadioButtonSelectionListener);
-		startText.removeVerifyListener(startTextVerifyListener);
-		startText.removeModifyListener(startTextModifyListener);
-
-		stopRadioButton
-				.removeSelectionListener(stopRadioButtonSelectionListener);
-		stopText.removeVerifyListener(stopTextVerifyListener);
-		stopText.removeModifyListener(stopTextModifyListener);
-
-		stepwidthRadioButton
-				.removeSelectionListener(stepwidthRadioButtonSelectionListener);
-		stepwidthText.removeVerifyListener(stepwidthTextVerifyListener);
-		stepwidthText.removeModifyListener(stepwidthTextModifyListener);
-
-		stepcountRadioButton
-				.removeSelectionListener(stepcountRadioButtonSelectionListener);
-		stepcountText.removeVerifyListener(stepcountTextVerifyListener);
-		stepcountText.removeModifyListener(stepcountTextModifyListener);
-
-		mainAxisCheckBox
-				.removeSelectionListener(mainAxisCheckBoxSelectionListener);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void dispose() {
-		removeListeners();
-		super.dispose();
-	}
-
-	/**
-	 *  {@inheritDoc}
-	 */
-	@Override
-	public void propertyChange(PropertyChangeEvent e) {
-		// due to asynchronous connections of PV the limits are not read
-		// when the axis is set. Warn / Error labels are set when ready though.
-		this.checkForErrors();
-	}
 	
 	/* ********************************************************************* */
 	/* **************************** Listeners ****************************** */
 	/* ********************************************************************* */
-
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>startRadioButton</code>.
-	 */
-	private class StartRadioButtonSelectionListener implements SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(final SelectionEvent e) {
-			if (startRadioButton.getSelection()) {
-				startText.setEnabled(false);
-			} else {
-				startText.setEnabled(true);
-			}
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of 
-	 * <code>startText</code>.
-	 */
-	private class StartTextModifyListener implements ModifyListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modifyText(ModifyEvent e) {
-			removeListeners();
-
-			if (currentAxis != null) {
-				switch (currentAxis.getMotorAxis().getPosition().getType()) {
-				case DATETIME:
-					if (currentAxis.getMotorAxis().isValuePossible(
-							startText.getText())) {
-						currentAxis.setStart(startText.getText());
-						autoFill();
-					} else {
-						currentAxis.setStart(null);
-					}
-					break;
-				default:
-					// if string is a double set value in model
-					// else set null in model
-					try {
-						Double.parseDouble(startText.getText());
-						currentAxis.setStart(startText.getText());
-						autoFill();
-					} catch (final NumberFormatException ex) {
-						// string is not a double
-						currentAxis.setStart(null);
-					}
-					break;
-				}
-			}
-			checkForErrors();
-			addListeners();
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>stopRadioButton</code>.
-	 */
-	private class StopRadioButtonSelectionListener implements SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(final SelectionEvent e) {
-			if (stopRadioButton.getSelection()) {
-				stopText.setEnabled(false);
-			} else {
-				stopText.setEnabled(true);
-			}
-		}
-	}
 
 	/**
 	 * {@link org.eclipse.swt.events.ModifyListener} of 
@@ -1767,33 +1114,6 @@ public class StartStopStepwidthComposite extends Composite implements
 				}
 				checkForErrors();
 				addListeners();
-			}
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>stepwidthRadioButton</code>.
-	 */
-	private class StepwidthRadioButtonSelectionListener implements
-			SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(final SelectionEvent e) {
-			if (stepwidthRadioButton.getSelection()) {
-				stepwidthText.setEnabled(false);
-			} else {
-				stepwidthText.setEnabled(true);
 			}
 		}
 	}
@@ -1953,32 +1273,6 @@ public class StartStopStepwidthComposite extends Composite implements
 			}
 			checkForErrors();
 			addListeners();
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>mainAxisCheckBox</code>.
-	 */
-	private class MainAxisCheckBoxSelectionListener implements
-			SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(final SelectionEvent e) {
-
-			if (currentAxis != null) {
-				currentAxis.setMainAxis(mainAxisCheckBox.getSelection());
-			}
 		}
 	}
 

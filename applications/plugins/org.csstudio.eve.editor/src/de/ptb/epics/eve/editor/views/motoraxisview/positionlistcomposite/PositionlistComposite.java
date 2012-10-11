@@ -1,14 +1,20 @@
-package de.ptb.epics.eve.editor.views.motoraxisview;
+package de.ptb.epics.eve.editor.views.motoraxisview.positionlistcomposite;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.databinding.Binding;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
+import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -17,9 +23,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
-import de.ptb.epics.eve.data.scandescription.errors.AxisError;
-import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
-import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.data.scandescription.axismode.PositionlistMode;
+import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisViewComposite;
 
 /**
  * <code>MotorAxisPositionlistComposite</code> is a 
@@ -30,28 +35,25 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelError;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class PositionlistComposite extends Composite implements
+public class PositionlistComposite extends MotorAxisViewComposite implements
 		PropertyChangeListener {
 	
-	private static Logger logger = 
+	private static Logger LOGGER = 
 			Logger.getLogger(PositionlistComposite.class.getName());
 	
-	// position list Label
+	private PositionlistMode positionlistMode;
+	
 	private Label positionlistLabel;
 	private ControlDecoration positionlistLabelDecoration;
 	
-	// position list Text
 	private Text positionlistText;
-	private PositionlistTextModifyListener positionlistTextModifyListener;
-	private ControlDecoration positionlistTextDecoration;
+	private Binding positionlistBinding;
+	private IObservableValue positionlistModelObservable;
+	private IObservableValue positionlistGUIObservable;
 	
-	// position count Label
 	private Label positionCountLabel;
 	
 	private Image infoImage;
-	private Image errorImage;
-	
-	private Axis axis;
 	
 	/**
 	 * Constructs a <code>MotorAxisPositionlistComposite</code>.
@@ -64,13 +66,10 @@ public class PositionlistComposite extends Composite implements
 		super(parent, style);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
-		gridLayout.marginRight = 12;
 		this.setLayout(gridLayout);
 		
 		this.infoImage = FieldDecorationRegistry.getDefault().getFieldDecoration(
 				FieldDecorationRegistry.DEC_INFORMATION).getImage();
-		this.errorImage = FieldDecorationRegistry.getDefault().getFieldDecoration(
-				FieldDecorationRegistry.DEC_ERROR).getImage();
 		
 		// position list Label
 		this.positionlistLabel = new Label(this, SWT.NONE);
@@ -90,15 +89,16 @@ public class PositionlistComposite extends Composite implements
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
+		gridData.horizontalIndent = 7;
 		this.positionlistText.setLayoutData(gridData);
-		this.positionlistTextModifyListener = new PositionlistTextModifyListener();
-		this.positionlistText.addModifyListener(positionlistTextModifyListener);
-		this.positionlistTextDecoration = new ControlDecoration(
-				positionlistText, SWT.TOP | SWT.RIGHT);
-		
+		this.positionlistText
+				.addFocusListener(new PositionlistTextFocusListener());
+
 		// position count label
 		this.positionCountLabel = new Label(this, SWT.NONE);
 		this.positionCountLabel.setText("0 positions");
+		
+		this.positionlistMode  = null;
 	} // end of: Constructor
 
 	/**
@@ -122,47 +122,67 @@ public class PositionlistComposite extends Composite implements
 	}
 
 	/**
-	 * Sets the {@link de.ptb.epics.eve.data.scandescription.Axis}.
-	 * 
-	 * @param axis the {@link de.ptb.epics.eve.data.scandescription.Axis}
-	 * 		  that should be set
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void setAxis(final Axis axis) {
-		removeListeners();
-		
-		if (this.axis != null) {
-			this.axis.removePropertyChangeListener("positionList", this);
+		if (axis == null) {
+			this.reset();
+			return;
 		}
-		
-		this.axis = axis;
-		
-		if(this.axis != null) {
-			// write values from xml file
-			if(this.axis.getPositionlist() != null) { 
-				this.positionlistText.setText(axis.getPositionlist());
-				countPositions();
-				this.axis.addPropertyChangeListener("positionList", this);
-			}
-			checkForErrors();
-		} else {
-			this.positionlistText.setText("");
-			this.positionCountLabel.setText("0 positions");
+		if (!(axis.getMode() instanceof PositionlistMode)) {
+			LOGGER.warn("invalid axis mode");
+			return;
 		}
-		addListeners();
+		this.positionlistMode = (PositionlistMode)axis.getMode();
+		this.createBinding();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
+	protected void createBinding() {
+		this.positionlistModelObservable = BeansObservables.observeValue(
+				this.positionlistMode, PositionlistMode.POSITIONLIST_PROP);
+		this.positionlistGUIObservable = SWTObservables.observeText(
+				this.positionlistText, SWT.Modify);
+		UpdateValueStrategy targetToModel = new UpdateValueStrategy(
+				UpdateValueStrategy.POLICY_UPDATE);
+		targetToModel.setAfterGetValidator(new PositionlistValidator());
+		UpdateValueStrategy modelToTarget = new UpdateValueStrategy(
+				UpdateValueStrategy.POLICY_UPDATE);
+		this.positionlistBinding = context.bindValue(positionlistGUIObservable,
+				positionlistModelObservable, targetToModel, modelToTarget);
+		ControlDecorationSupport.create(positionlistBinding, SWT.LEFT);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void reset() {
+		LOGGER.debug("reset");
+		if (this.positionlistMode != null) {
+			this.context.removeBinding(this.positionlistBinding);
+			this.positionlistBinding.dispose();
+			this.positionlistModelObservable.dispose();
+			this.positionlistGUIObservable.dispose();
+		}
+		this.positionlistMode = null;
+		this.positionCountLabel.setText("0 positions");
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent e) {
-		removeListeners();
 		if (e.getPropertyName().equals("positionList")) {
 			this.positionlistText.setText((String)e.getNewValue());
 			this.countPositions();
-			logger.debug("position list");
+			LOGGER.debug("position list");
 		}
-		addListeners();
 	}
 
 	/*
@@ -175,72 +195,43 @@ public class PositionlistComposite extends Composite implements
 			int count = positionlistText.getText().split(",").length;
 			if(count == 1) {
 				this.positionCountLabel.setText("1 position");
-				logger.debug("1 position");
+				LOGGER.debug("1 position");
 			} else {
 				this.positionCountLabel.setText(count + " positions");
-				if(logger.isDebugEnabled()) {
-					logger.debug(count + " positions");
+				if(LOGGER.isDebugEnabled()) {
+					LOGGER.debug(count + " positions");
 				}
 			}
 		}
 		this.positionCountLabel.getParent().layout();
 	}
 	
-	/*
-	 * 
-	 */
-	private void checkForErrors() {
-		this.positionlistTextDecoration.hide();
-		
-		for(IModelError error : this.axis.getModelErrors()) {
-			if(error instanceof AxisError) {
-				final AxisError axisError = (AxisError)error;
-				if(axisError.getErrorType() == AxisErrorTypes.POSITIONLIST_NOT_SET) {
-					this.positionlistTextDecoration.setImage(errorImage);
-					this.positionlistTextDecoration.setDescriptionText(
-							"Please provide at least one position!");
-					this.positionlistTextDecoration.show();
-					break;
-				}
-			}
-		}
-	}
+	/* ******************************************************************** */
+	/* ************************** Listeners ******************************* */
+	/* ******************************************************************** */
 	
-	/*
-	 * 
-	 */
-	private void addListeners() {
-		positionlistText.addModifyListener(positionlistTextModifyListener);
-	}
-	
-	/*
-	 * 
-	 */
-	private void removeListeners() {
-		positionlistText.removeModifyListener(positionlistTextModifyListener);
-	}
-	
-	/* ********************************************************************* */
-	/* ************************** Listeners ******************************** */
-	/* ********************************************************************* */
-
 	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of 
-	 * <code>positionlistText</code>.
+	 * @author Marcus Michalsky
+	 * @since 1.7
 	 */
-	private class PositionlistTextModifyListener implements ModifyListener {
-		
+	private class PositionlistTextFocusListener implements FocusListener {
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void modifyText(ModifyEvent e) {
-			
-			if(axis != null) {
-				axis.setPositionlist(positionlistText.getText());
-				countPositions();
-			}
-			checkForErrors();
+		public void focusGained(FocusEvent e) {
 		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void focusLost(FocusEvent e) {
+			if (positionlistText.getText().isEmpty()) {
+				positionlistBinding.updateModelToTarget();
+			}
+		}
+		
 	}
 }
