@@ -53,6 +53,16 @@ public class ModelToTargetConverter implements IConverter {
 	public Object convert(Object fromObject) {
 		LOGGER.debug("converted: " + fromObject.toString() + " (was " + type
 				+ ")");
+		switch (type) {
+		case DOUBLE:
+			if (((Double)fromObject).isNaN()) {
+				return "0.0";
+			}
+			break;
+		case INT: 
+			break;
+		default: return fromObject.toString();
+		}
 		return fromObject.toString();
 	}
 }

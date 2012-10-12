@@ -70,15 +70,6 @@ public class StartStopStepwidthComposite extends Composite implements
 	 * 		  should be set
 	 */
 	public void setCurrentAxis(final Axis axis) {
-		
-		// logging
-		if(axis != null) {
-			logger.debug("set axis to: " + axis.getMotorAxis().getID());
-		} else {
-			logger.debug("set axis to: null");
-		}
-
-		
 		removeListeners();
 		
 		// update to the new axis
@@ -346,9 +337,7 @@ public class StartStopStepwidthComposite extends Composite implements
 							}
 							break;
 						}
-					} else {
-						
-					}
+					} 
 				}
 			} else if (this.stopRadioButton.getSelection()) {
 				if (startOk && stepwidthOk && stepcountOk) {
@@ -1201,80 +1190,7 @@ public class StartStopStepwidthComposite extends Composite implements
 		}
 	}
 
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>stepcountRadioButton</code>.
-	 */
-	private class StepcountRadioButtonSelectionListener implements
-			SelectionListener {
 
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(final SelectionEvent e) {
-			if (stepcountRadioButton.getSelection()) {
-				stepcountText.setEnabled(false);
-			} else {
-				// nur wenn main axis erlaubt ist, darf auch stepcount wieder
-				// erlaubt werden
-				if (mainAxisCheckBox.isEnabled()) {
-					stepcountText.setEnabled(true);
-					stepcountRadioButton.setEnabled(true);
-				}
-			}
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of 
-	 * <code>stepcountText</code>.
-	 */
-	private class StepcountTextModifyListener implements ModifyListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modifyText(final ModifyEvent e) {
-			removeListeners();
-
-			if (currentAxis != null) {
-				if (currentAxis.getMotorAxis().getGoto().isDiscrete()) {
-					try {
-						Integer.parseInt(stepcountText.getText());
-						currentAxis.setStepCount(Integer.parseInt(stepcountText
-								.getText()));
-						recalculateStepwidth();
-						autoFill();
-					} catch (final NumberFormatException ex) {
-						// string is not an integer
-						currentAxis.setStepCount(-1.0);
-					}
-				} else {
-					try {
-						Double.parseDouble(stepcountText.getText());
-						currentAxis.setStepCount(Double
-								.parseDouble(stepcountText.getText()));
-						recalculateStepwidth();
-						autoFill();
-					} catch (final NumberFormatException ex) {
-						// string is not a double
-						currentAxis.setStepCount(-1.0);
-					}
-				}
-			}
-			checkForErrors();
-			addListeners();
-		}
-	}
 
 	/**
 	 * {@link org.eclipse.swt.events.VerifyListener} of text widgets.

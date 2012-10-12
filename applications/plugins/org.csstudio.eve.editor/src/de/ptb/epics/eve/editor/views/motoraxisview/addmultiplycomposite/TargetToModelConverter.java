@@ -53,9 +53,14 @@ public class TargetToModelConverter implements IConverter {
 	public Object convert(Object fromObject) {
 		switch (this.type) {
 		case DOUBLE:
-			Double dVal = Double.parseDouble((String)fromObject);
-			LOGGER.debug("converted " + dVal.toString() + " to String");
-			return dVal;
+			try {
+				Double dVal = Double.parseDouble((String)fromObject);
+				LOGGER.debug("converted " + dVal.toString() + " to String");
+				return dVal;
+			} catch (NumberFormatException e) {
+				LOGGER.warn(e.getMessage(), e);
+				return null;
+			}
 		case INT:
 			Integer iVal = Integer.parseInt(((String)fromObject));
 			LOGGER.debug("converted " + iVal.toString() + " to String");

@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.editor.views.motoraxisview;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -10,6 +11,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
 
 /**
  * <code>DateTimeComposite</code>. is a 
@@ -23,10 +25,12 @@ import de.ptb.epics.eve.data.scandescription.Axis;
  * @author Marcus Michalsky
  * @since 1.1
  */
-public class DateTimeComposite extends Composite {
+public class DateTimeComposite extends MotorAxisViewComposite {
 	
-	// the underlying model the composite takes the data from
-	private Axis currentAxis;
+	private static final Logger LOGGER = Logger
+			.getLogger(DateTimeComposite.class.getName());
+	
+	private AddMultiplyMode<?> addMultiplyMode;
 	
 	// start row (declaration)
 	private Button startRadioButton;
@@ -142,7 +146,25 @@ public class DateTimeComposite extends Composite {
 		this.mainAxisCheckButton = new Button(this, SWT.CHECK);
 		this.mainAxisCheckButton.setText("main axis");
 		
-		this.currentAxis = null;
+		this.addMultiplyMode = null;
+	}
+
+	@Override
+	public void setAxis(Axis axis) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void createBinding() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void reset() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	/* ********************************************************************* */

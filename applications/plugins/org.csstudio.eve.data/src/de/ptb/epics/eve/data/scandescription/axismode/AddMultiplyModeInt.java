@@ -20,21 +20,12 @@ public class AddMultiplyModeInt extends AddMultiplyMode<Integer> {
 		this.stop = new Integer(axis.getDefaultValue());
 		this.stepwidth = new Integer(axis.getDefaultValue());
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void matchMainAxis(Axis mainAxis) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void adjust() {
+	protected synchronized void adjust() {
 		boolean autoAdjustValue = this.isAutoAdjust();
 		this.setAutoAdjust(false);
 		LOGGER.debug("adjusting");

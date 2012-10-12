@@ -13,15 +13,6 @@ public class AddMultiplyModeDate extends AddMultiplyMode<Date> {
 	protected AddMultiplyModeDate(Axis axis) {
 		super(axis);
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void matchMainAxis(Axis mainAxis) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	/**
 	 * {@inheritDoc}

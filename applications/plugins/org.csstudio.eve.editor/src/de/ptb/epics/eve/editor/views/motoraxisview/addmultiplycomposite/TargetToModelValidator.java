@@ -30,12 +30,15 @@ public class TargetToModelValidator implements IValidator {
 	 */
 	@Override
 	public IStatus validate(Object value) {
+		if (value instanceof Double) {
+			return ValidationStatus.ok();
+		}
 		switch (this.type) {
 		case DOUBLE:
 			try {
 				Double.parseDouble(((String)value));
 			} catch (Exception e) {
-				LOGGER.warn("error validating target to model " + "(" + type
+				LOGGER.debug("error validating target to model " + "(" + type
 						+ ")");
 				return ValidationStatus.error("cannot parse double");
 			}
@@ -44,7 +47,7 @@ public class TargetToModelValidator implements IValidator {
 			try {
 				Integer.parseInt((String)value);
 			} catch (Exception e) {
-				LOGGER.warn("error validating target to model " + "(" + type
+				LOGGER.debug("error validating target to model " + "(" + type
 						+ ")");
 				return ValidationStatus.error("cannot parse int");
 			}

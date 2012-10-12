@@ -36,7 +36,7 @@ public class ModelToTargetValidator implements IValidator {
 			LOGGER.debug("validation ok");
 			return ValidationStatus.ok();
 		default:
-			LOGGER.warn("validation error");
+			LOGGER.debug("validation error");
 			return ValidationStatus.error("");
 		}
 	}

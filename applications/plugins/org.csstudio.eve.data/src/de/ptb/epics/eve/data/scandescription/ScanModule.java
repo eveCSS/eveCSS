@@ -11,6 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.errors.ScanModuleError;
@@ -47,6 +48,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	/** */
 	public static final String NESTED_CONNECTION_PROP = 
 			"ScanModule.NESTED_CONNECTION_PROP";
+	/** */
+	public static final String MAIN_AXIS_PROP = "mainAxis";
 	
 	/** */
 	public static int default_width = 70;
@@ -86,6 +89,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	
 	// a list containing all axes
 	private List<Axis> axes;
+	
+	// indicates whether an axis in the scan module is set as main axis
+	private Axis mainAxis;
 	
 	// a list containing all plot windows
 	private List<PlotWindow> plotWindows;
@@ -158,6 +164,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.postscans = new ArrayList<Postscan>();
 		this.channels = new ArrayList<Channel>();
 		this.axes = new ArrayList<Axis>();
+		this.mainAxis = null;
 		this.plotWindows = new ArrayList<PlotWindow>();
 		this.valuecount = 1;
 		this.settletime = 0.0;
@@ -233,6 +240,13 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	}
 	
 	/**
+	 * @return the mainAxis
+	 */
+	public Axis getMainAxis() {
+		return mainAxis;
+	}
+
+	/**
 	 * Gives back an Array that contains all plot windows.
 	 * 
 	 * @return An Array, that contains all plot windows.
@@ -293,9 +307,16 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public void add(final Axis axis) {
 		axis.addModelUpdateListener(this);
-		axis.addPropertyChangeListener("mainAxis", this);
-		axis.addPropertyChangeListener("stepcount", this);
+		// scan module has to be notified if an axis is set as main axis:
+		axis.addPropertyChangeListener(AddMultiplyMode.MAIN_AXIS_PROP, this);
+		// each axis has to be notified that some axis is set as main axis 
+		// (or reset)
+		this.propertyChangeSupport.addPropertyChangeListener(
+				ScanModule.MAIN_AXIS_PROP, axis);
 		this.axes.add(axis);
+		if (axis.isMainAxis()) {
+			this.mainAxis = axis;
+		}
 		propertyChangeSupport.firePropertyChange("addAxis", axis, null);
 		updateListeners();
 	}
@@ -376,8 +397,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public void remove(final Axis axis) {
 		axis.removeModelUpdateListener(this);
-		axis.removePropertyChangeListener("mainAxis", this);
-		axis.removePropertyChangeListener("stepcount", this);
+		axis.removePropertyChangeListener(AddMultiplyMode.MAIN_AXIS_PROP, this);
+		this.propertyChangeSupport.removePropertyChangeListener(
+				ScanModule.MAIN_AXIS_PROP, axis);
 
 		this.axes.remove(axis);
 		
@@ -1115,23 +1137,18 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
-		if (e.getPropertyName().equals("mainAxis")
-				|| e.getPropertyName().equals("stepcount")) {
-			Axis source = (Axis) e.getSource();
+		if (e.getSource() instanceof AddMultiplyMode<?> &&
+				e.getPropertyName().equals(AddMultiplyMode.MAIN_AXIS_PROP)) {
+			Axis newAxis = null;
+			if ((Boolean)e.getNewValue()) {
+				newAxis = ((AddMultiplyMode<?>) e.getSource()).getAxis();
+			}
+			this.propertyChangeSupport.firePropertyChange(
+					ScanModule.MAIN_AXIS_PROP, this.mainAxis,
+					this.mainAxis = newAxis);
 			if (logger.isDebugEnabled()) {
-				logger.debug("Property: '" + e.getPropertyName() + "' "
-						+ "of '" + source.getMotorAxis().getName()
-						+ "' changed from '" + e.getOldValue().toString()
-						+ "' to '" + e.getNewValue().toString() + "'");
-			}
-			if (!source.isMainAxis()) {
-				// continue only if main axis was checked, not if unchecked !
-				return;
-			}
-			for (Axis axis : this.getAxes()) {
-				if (!axis.equals(source)) {
-					axis.matchMainAxis(source);
-				}
+				logger.debug("Axis " + this.mainAxis.getMotorAxis().getName()
+						+ " has been set as main axis");
 			}
 		} else if (e.getPropertyName().equals("normalizeChannel")) {
 			if(e.getNewValue() != null) {

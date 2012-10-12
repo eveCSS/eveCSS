@@ -435,17 +435,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 		if (this.getStepfunction().equals(Stepfunctions.ADD) ||
 				this.getStepfunction().equals(Stepfunctions.MULTIPLY)) {
 			((AddMultiplyMode<?>)this.mode).setMainAxis(mainAxis);
-		}
-	}
-	
-	/**
-	 * 
-	 * @param axis
-	 */
-	public void matchMainAxis(Axis axis) {
-		if (this.getStepfunction().equals(Stepfunctions.ADD) ||
-				this.getStepfunction().equals(Stepfunctions.MULTIPLY)) {
-			((AddMultiplyMode<?>)this.mode).matchMainAxis(axis);
+			
 		}
 	}
 	
@@ -537,6 +527,18 @@ public class Axis extends AbstractMainPhaseBehavior implements
 			this.getMotorAxis().removePropertyChangeListener("discreteValues",
 					this);
 			this.getMotorAxis().disconnect();
+		}
+		if (e.getSource() instanceof AddMultiplyMode<?>) {
+			this.propertyChangeSupport.firePropertyChange(e);
+		}
+		if (e.getSource() instanceof ScanModule && 
+				e.getPropertyName().equals(ScanModule.MAIN_AXIS_PROP)) {
+			if (this.getMode() != null
+					&& this.getMode() instanceof AddMultiplyMode<?>) {
+				((AddMultiplyMode<?>) this.getMode())
+						.matchMainAxis(((ScanModule) e.getSource())
+								.getMainAxis());
+			}
 		}
 		if (e.getSource() instanceof AxisMode) {
 			updateListeners();

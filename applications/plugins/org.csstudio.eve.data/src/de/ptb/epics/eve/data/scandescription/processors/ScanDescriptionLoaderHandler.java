@@ -774,7 +774,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_STEPFUNCTION_NEXT:
-			this.currentAxis.setStepfunction(Enum.valueOf(Stepfunctions.class, textBuffer.toString()));
+			this.currentAxis.setStepfunction(Stepfunctions.getEnum(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STEPFUNCTION_READ;
 			break;
 

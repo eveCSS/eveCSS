@@ -47,6 +47,13 @@ public abstract class AxisMode implements IModelErrorProvider {
 	}
 	
 	/**
+	 * @return the axis
+	 */
+	public Axis getAxis() {
+		return axis;
+	}
+
+	/**
 	 * @param listener the listener to add
 	 * @see {@link java.beans.PropertyChangeSupport#addPropertyChangeListener(PropertyChangeListener)}
 	 */

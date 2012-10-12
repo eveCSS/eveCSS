@@ -5,7 +5,7 @@ package de.ptb.epics.eve.util.math;
  * @since 1.7
  */
 public class Sequence {
-
+	
 	/**
 	 * 
 	 * @param stop

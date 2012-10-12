@@ -20,15 +20,6 @@ public class AddMultiplyModeDouble extends AddMultiplyMode<Double> {
 		this.stop = new Double(axis.getDefaultValue());
 		this.stepwidth = new Double(axis.getDefaultValue());
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void matchMainAxis(Axis mainAxis) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	/**
 	 * {@inheritDoc}

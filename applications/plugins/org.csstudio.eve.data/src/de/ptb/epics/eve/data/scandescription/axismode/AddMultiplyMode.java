@@ -41,14 +41,22 @@ public abstract class AddMultiplyMode<T extends Object> extends AxisMode {
 	
 	private boolean autoAdjust;
 	private AdjustParameter adjustParameter;
-	private boolean mainAxis;
+	
+	protected boolean mainAxis;
+	protected Axis referenceAxis;
 	
 	protected AddMultiplyMode(Axis axis) {
 		super(axis);
 		this.autoAdjust = true;
 		this.adjustParameter = AdjustParameter.STEPCOUNT;
 		this.mainAxis = false;
+		this.referenceAxis = null;
 		this.stepcount = new Double(Double.NaN);
+		if (axis.getScanModule() != null && 
+				axis.getScanModule().getMainAxis() != null) {
+			this.referenceAxis = axis.getScanModule().getMainAxis();
+			this.stepcount = this.referenceAxis.getStepcount();
+		}
 	}
 	
 	/**
@@ -56,7 +64,30 @@ public abstract class AddMultiplyMode<T extends Object> extends AxisMode {
 	 * 
 	 * @param mainAxis the axis set as main axis
 	 */
-	public abstract void matchMainAxis(Axis mainAxis);
+	public void matchMainAxis(Axis mainAxis) {
+		if (LOGGER.isDebugEnabled()) {
+			if (mainAxis == null) {
+				LOGGER.debug("Notified '" + this.axis.getMotorAxis().getName() + 
+						"' that main axis has been reset.");
+			} else {
+				LOGGER.debug("matching " + this.axis.getMotorAxis().getName()
+						+ " to " + mainAxis.getMotorAxis().getName());
+			}
+		}
+		if (this.isMainAxis()) {
+			// this axis is the main axis
+			return;
+		}
+		this.referenceAxis = mainAxis;
+		if (mainAxis == null) {
+			this.adjustParameter = AdjustParameter.STEPCOUNT;
+			// main axis has been reset
+			return;
+		}
+		this.adjustParameter = AdjustParameter.STEPWIDTH;
+		this.stepcount = ((AddMultiplyMode<?>)mainAxis.getMode()).getStepcount();
+		this.adjust();
+	}
 
 	/*
 	 * adjusts the value set in adjustParameter to satisfy the other three
@@ -186,8 +217,23 @@ public abstract class AddMultiplyMode<T extends Object> extends AxisMode {
 		this.propertyChangeSupport.firePropertyChange(
 				AddMultiplyMode.MAIN_AXIS_PROP, this.mainAxis,
 				this.mainAxis = mainAxis);
+		if (LOGGER.isDebugEnabled()) {
+			if (mainAxis) {
+				LOGGER.debug("Axis " + this.axis.getMotorAxis().getName()
+						+ " has been set as main axis.");
+			} else {
+				LOGGER.debug("Main axis has been reset.");
+			}
+		}
 	}
 	
+	/**
+	 * @return the referenceAxis
+	 */
+	public Axis getReferenceAxis() {
+		return referenceAxis;
+	}
+
 	/**
 	 * @return the data type
 	 */
@@ -219,7 +265,7 @@ public abstract class AddMultiplyMode<T extends Object> extends AxisMode {
 			errors.add(new AxisError(this.axis,
 					AxisErrorTypes.STEPWIDTH_NOT_SET));
 		}
-		if (this.getStepcount() == null) { // TODO : was -1.0, diffs ?
+		if (this.getStepcount() == null) {
 			errors.add(new AxisError(this.axis,
 					AxisErrorTypes.STEPCOUNT_NOT_SET));
 		}
