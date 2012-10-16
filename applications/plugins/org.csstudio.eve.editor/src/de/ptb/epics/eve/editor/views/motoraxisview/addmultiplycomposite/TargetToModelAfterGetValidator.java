@@ -6,22 +6,23 @@ import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 import de.ptb.epics.eve.data.DataTypes;
+import de.ptb.epics.eve.util.math.Constants;
 
 /**
  * @author Marcus Michalsky
  * @since 1.7
  */
-public class TargetToModelValidator implements IValidator {
+public class TargetToModelAfterGetValidator implements IValidator {
 
 	private static final Logger LOGGER = Logger
-			.getLogger(TargetToModelValidator.class.getName());
+			.getLogger(TargetToModelAfterGetValidator.class.getName());
 	
 	private DataTypes type;
 	
 	/**
 	 * @param type the type
 	 */
-	public TargetToModelValidator(DataTypes type) {
+	public TargetToModelAfterGetValidator(DataTypes type) {
 		this.type = type;
 	}
 	
@@ -35,9 +36,7 @@ public class TargetToModelValidator implements IValidator {
 		}
 		switch (this.type) {
 		case DOUBLE:
-			try {
-				Double.parseDouble(((String)value));
-			} catch (Exception e) {
+			if (!((String)value).matches(Constants.FLOATING_POINT_REGEXP)) {
 				LOGGER.debug("error validating target to model " + "(" + type
 						+ ")");
 				return ValidationStatus.error("cannot parse double");
@@ -53,9 +52,9 @@ public class TargetToModelValidator implements IValidator {
 			}
 			break;
 		default:
-			return ValidationStatus.error("");
+			return ValidationStatus.error("type is neither double nor int");
 		}
-		LOGGER.debug("validation ok");
+		LOGGER.debug("after get validation ok");
 		return ValidationStatus.ok();
 	}
 }

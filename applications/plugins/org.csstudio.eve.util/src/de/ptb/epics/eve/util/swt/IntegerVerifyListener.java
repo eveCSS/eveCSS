@@ -22,6 +22,10 @@ public class IntegerVerifyListener extends TextVerifyListener {
 	@Override
 	public void verifyText(VerifyEvent e) {
 		super.verifyText(e);
+		if (e.doit) {
+			return;
+		}
+		e.doit = true;
 		try {
 			Integer.parseInt(textField.getText() + String.valueOf(e.character));
 		} catch (NumberFormatException e1) {

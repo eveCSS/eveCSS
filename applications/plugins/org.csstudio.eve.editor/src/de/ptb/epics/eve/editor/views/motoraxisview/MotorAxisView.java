@@ -29,7 +29,7 @@ import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
+import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
@@ -412,7 +412,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 					((ScanModuleEditPart)o).getModel())) {
 						setAxis(null);
 				}
-			} else if (o instanceof ScanDescriptionEditPart) {
+			} else if (o instanceof ChainEditPart) {
 				LOGGER.debug("selection is ScanDescriptionEditPart: " + o);
 				setAxis(null);
 			} else {

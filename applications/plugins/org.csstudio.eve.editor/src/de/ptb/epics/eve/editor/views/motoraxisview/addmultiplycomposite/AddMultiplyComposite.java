@@ -7,12 +7,13 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.SelectObservableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -25,7 +26,6 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisViewComposite;
-import de.ptb.epics.eve.util.pv.PVNumberFormat;
 import de.ptb.epics.eve.util.swt.DoubleVerifyListener;
 import de.ptb.epics.eve.util.swt.IntegerVerifyListener;
 
@@ -44,15 +44,19 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 	private Button startRadioButton;
 	private Text startText;
 	private VerifyListener startTextVerifyListener;
+	private FocusListener startTextFocusListener;
 	private Button stopRadioButton;
 	private Text stopText;
 	private VerifyListener stopTextVerifyListener;
+	private FocusListener stopTextFocusListener;
 	private Button stepwidthRadioButton;
 	private Text stepwidthText;
 	private VerifyListener stepwidthTextVerifyListener;
+	private FocusListener stepwidthTextFocusListener;
 	private Button stepcountRadioButton;
 	private Text stepcountText;
 	private VerifyListener stepcountTextVerifyListener;
+	private FocusListener stepcountTextFocusListener;
 
 	private Button mainAxisCheckBox;
 	
@@ -103,6 +107,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.startText.setLayoutData(gridData);
+		this.startTextFocusListener = new TextFocusListener(startText);
 		// end of: initialize start elements
 		
 		// initialize stop elements
@@ -115,6 +120,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.stopText.setLayoutData(gridData);
+		this.stopTextFocusListener = new TextFocusListener(stopText);
 		// end of: initialize stop elements
 		
 		// initialize step width elements
@@ -127,6 +133,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.stepwidthText.setLayoutData(gridData);
+		this.stepwidthTextFocusListener = new TextFocusListener(stepwidthText);
 		// end of: initialize step width elements 
 		
 		// initialize step count elements
@@ -139,6 +146,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.stepcountText.setLayoutData(gridData);
+		this.stepcountTextFocusListener = new TextFocusListener(stepcountText);
 		// end of: initialize step count elements
 		
 		this.mainAxisCheckBox = new Button(this, SWT.CHECK);
@@ -200,34 +208,6 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 	@Override
 	protected void createBinding() {
 		LOGGER.debug("create bindings");
-	/*	switch (this.addMultiplyMode.getType()) {
-		case DOUBLE:
-			this.startTextVerifyListener = new DoubleVerifyListener(
-					this.startText);
-			this.stopTextVerifyListener = new DoubleVerifyListener(
-					this.stopText);
-			this.stepwidthTextVerifyListener = new DoubleVerifyListener(
-					this.stepwidthText);
-			this.stepcountTextVerifyListener = new DoubleVerifyListener(
-					this.stepcountText);
-			break;
-		case INT:
-			this.startTextVerifyListener = new IntegerVerifyListener(
-					this.startText);
-			this.stopTextVerifyListener = new IntegerVerifyListener(
-					this.stopText);
-			this.stepwidthTextVerifyListener = new IntegerVerifyListener(
-					this.stepwidthText);
-			this.stepcountTextVerifyListener = new IntegerVerifyListener(
-					this.stepcountText);
-			break;
-		default:
-			break;
-		}
-		this.startText.addVerifyListener(startTextVerifyListener);
-		this.stopText.addVerifyListener(stopTextVerifyListener);
-		this.stepwidthText.addVerifyListener(stepwidthTextVerifyListener);
-		this.stepcountText.addVerifyListener(stepcountTextVerifyListener);*/
 		this.selectionTargetObservable = new SelectObservableValue();
 		this.selectionTargetObservable.addOption(AdjustParameter.START,
 				SWTObservables.observeSelection(this.startRadioButton));
@@ -252,16 +232,20 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 				this.addMultiplyMode, AddMultiplyMode.START_PROP);
 		UpdateValueStrategy startTargetToModel = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
-		/*startTargetToModel.setConverter(new TargetToModelConverter(
+		startTargetToModel.setConverter(new TargetToModelConverter(
 				this.addMultiplyMode.getType()));
-		startTargetToModel.setAfterConvertValidator(new TargetToModelValidator(
-				this.addMultiplyMode.getType()));*/
+		startTargetToModel.setAfterGetValidator(
+				new TargetToModelAfterGetValidator(
+						this.addMultiplyMode.getType()));
+		startTargetToModel.setAfterConvertValidator(
+				new TargetToModelAfterConvertValidator(
+						this.addMultiplyMode.getAxis()));
 		UpdateValueStrategy startModelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
-		/*startModelToTarget.setConverter(new ModelToTargetConverter(
+		startModelToTarget.setConverter(new ModelToTargetConverter(
 				this.addMultiplyMode.getType()));
 		startModelToTarget.setAfterGetValidator(new ModelToTargetValidator(
-				this.addMultiplyMode.getType()));*/
+				this.addMultiplyMode.getType()));
 		this.startBinding = context.bindValue(startTargetObservable,
 				startModelObservable, startTargetToModel, startModelToTarget);
 		ControlDecorationSupport.create(this.startBinding, SWT.LEFT);
@@ -274,14 +258,18 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 				UpdateValueStrategy.POLICY_UPDATE);
 		stopTargetToModel.setConverter(new TargetToModelConverter(
 				this.addMultiplyMode.getType()));
-		/*stopTargetToModel.setAfterGetValidator(new TargetToModelValidator(
-				this.addMultiplyMode.getType()));*/
+		stopTargetToModel.setAfterGetValidator(
+				new TargetToModelAfterGetValidator(
+						this.addMultiplyMode.getType()));
+		stopTargetToModel.setAfterConvertValidator(
+				new TargetToModelAfterConvertValidator(
+						this.addMultiplyMode.getAxis()));
 		UpdateValueStrategy stopModelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		stopModelToTarget.setConverter(new ModelToTargetConverter(
 				this.addMultiplyMode.getType()));
-		/*stopModelToTarget.setAfterGetValidator(new ModelToTargetValidator(
-				this.addMultiplyMode.getType()));*/
+		stopModelToTarget.setAfterGetValidator(new ModelToTargetValidator(
+				this.addMultiplyMode.getType()));
 		this.stopBinding = context.bindValue(stopTargetObservable,
 				stopModelObservable, stopTargetToModel, stopModelToTarget);
 		ControlDecorationSupport.create(this.stopBinding, SWT.LEFT);
@@ -294,8 +282,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 				UpdateValueStrategy.POLICY_UPDATE);
 		stepwidthTargetToModel.setConverter(new TargetToModelConverter(
 				this.addMultiplyMode.getType()));
-				//StringToNumberConverter.toDouble(new PVNumberFormat("##0.00000E00"), false));
-		stepwidthTargetToModel.setAfterGetValidator(new TargetToModelValidator(
+		stepwidthTargetToModel.setAfterGetValidator(new TargetToModelAfterGetValidator(
 				this.addMultiplyMode.getType()));
 		UpdateValueStrategy stepwidthModelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
@@ -316,7 +303,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 				UpdateValueStrategy.POLICY_UPDATE);
 		stepcountTargetToModel.setConverter(new TargetToModelConverter(
 				DataTypes.DOUBLE));
-		stepcountTargetToModel.setAfterGetValidator(new TargetToModelValidator(
+		stepcountTargetToModel.setAfterGetValidator(new TargetToModelAfterGetValidator(
 				DataTypes.DOUBLE));
 		UpdateValueStrategy stepcountModelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
@@ -340,6 +327,43 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		this.mainAxisBinding = context.bindValue(mainAxisTargetObservable,
 				mainAxisModelObservable, mainAxisTargetToModel,
 				mainAxisModelToTarget);
+		
+		switch (this.addMultiplyMode.getType()) {
+		case DOUBLE:
+			this.startTextVerifyListener = new DoubleVerifyListener(
+					this.startText);
+			this.stopTextVerifyListener = new DoubleVerifyListener(
+					this.stopText);
+			this.stepwidthTextVerifyListener = new DoubleVerifyListener(
+					this.stepwidthText);
+			this.stepcountTextVerifyListener = new DoubleVerifyListener(
+					this.stepcountText);
+			break;
+		case INT:
+			this.startTextVerifyListener = new IntegerVerifyListener(
+					this.startText);
+			this.stopTextVerifyListener = new IntegerVerifyListener(
+					this.stopText);
+			this.stepwidthTextVerifyListener = new IntegerVerifyListener(
+					this.stepwidthText);
+			this.stepcountTextVerifyListener = new IntegerVerifyListener(
+					this.stepcountText);
+			break;
+		default:
+			break;
+		}
+		
+		/*
+		this.startText.addVerifyListener(startTextVerifyListener);
+		this.stopText.addVerifyListener(stopTextVerifyListener);
+		this.stepwidthText.addVerifyListener(stepwidthTextVerifyListener);
+		this.stepcountText.addVerifyListener(stepcountTextVerifyListener);
+		*/
+		
+		this.startText.addFocusListener(startTextFocusListener);
+		this.stopText.addFocusListener(stopTextFocusListener);
+		this.stepwidthText.addFocusListener(stepwidthTextFocusListener);
+		this.stepcountText.addFocusListener(stepcountTextFocusListener);
 	}
 	
 	/**
@@ -349,10 +373,19 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 	protected void reset() {
 		if (this.addMultiplyMode != null) {
 			LOGGER.debug("remove bindings");
-			/*this.startText.removeVerifyListener(startTextVerifyListener);
+			
+			this.startText.removeFocusListener(startTextFocusListener);
+			this.stopText.removeFocusListener(stopTextFocusListener);
+			this.stepwidthText.removeFocusListener(stepwidthTextFocusListener);
+			this.stepcountText.removeFocusListener(stepcountTextFocusListener);
+			
+			/*
+			this.startText.removeVerifyListener(startTextVerifyListener);
 			this.stopText.removeVerifyListener(stopTextVerifyListener);
 			this.stepwidthText.removeVerifyListener(stepwidthTextVerifyListener);
-			this.stepcountText.removeVerifyListener(stepcountTextVerifyListener);*/
+			this.stepcountText.removeVerifyListener(stepcountTextVerifyListener);
+			*/
+			
 			this.addMultiplyMode.removePropertyChangeListener(
 					AddMultiplyMode.ADJUST_PARAMETER_PROP, this);
 			this.selectBinding.dispose();
@@ -437,6 +470,70 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		LOGGER.debug(e.getPropertyName());
 		if (e.getPropertyName().equals(AddMultiplyMode.ADJUST_PARAMETER_PROP)) {
 			this.setEnabled();
+		}
+	}
+	
+	/* ********************************************************************** */
+	/* **************************** Listeners ******************************* */
+	/* ********************************************************************** */
+	
+	/**
+	 * @author Marcus Michalsky
+	 * @since 1.7
+	 */
+	private class TextFocusListener implements FocusListener {
+
+		private Text widget;
+		
+		/**
+		 * @param widget the widget to observe
+		 */
+		public TextFocusListener(Text widget) {
+			this.widget = widget;
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override 
+		public void focusGained(FocusEvent e) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void focusLost(FocusEvent e) {
+			LOGGER.debug("focus lost");
+			if (this.widget == startText) {
+				//startText.removeVerifyListener(startTextVerifyListener);
+			 	startBinding.updateModelToTarget();
+			 	/*MessageDialog.openWarning(getShell(), "Restored Value", 
+			 			"Restored last valid value for 'start' of " + 
+			 			addMultiplyMode.getAxis().getMotorAxis().getName());*/
+			 	//startText.addVerifyListener(startTextVerifyListener);
+			} else if (this.widget == stopText) {
+				//stopText.removeVerifyListener(stopTextVerifyListener);
+				stopBinding.updateModelToTarget();
+				/*MessageDialog.openWarning(getShell(), "Restored Value", 
+			 			"Restored last valid value for 'stop' of " + 
+			 			addMultiplyMode.getAxis().getMotorAxis().getName());*/
+				//stopText.addVerifyListener(stopTextVerifyListener);
+			} else if (this.widget == stepwidthText) {
+				//stepwidthText.removeVerifyListener(stepwidthTextVerifyListener);
+				stepwidthBinding.updateModelToTarget();
+				/*MessageDialog.openWarning(getShell(), "Restored Value", 
+			 			"Restored last valid value for 'stepwidth' of " + 
+			 			addMultiplyMode.getAxis().getMotorAxis().getName());*/
+				//stepwidthText.addVerifyListener(stepwidthTextVerifyListener);
+			} else if (this.widget == stepcountText) {
+				//stepcountText.removeVerifyListener(stepcountTextVerifyListener);
+				stepcountBinding.updateModelToTarget();
+				/*MessageDialog.openWarning(getShell(), "Restored Value", 
+			 			"Restored last valid value for 'stepcount' of " + 
+			 			addMultiplyMode.getAxis().getMotorAxis().getName());*/
+				//stepcountText.addVerifyListener(stepcountTextVerifyListener);
+			}
 		}
 	}
 }

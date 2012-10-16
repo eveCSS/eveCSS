@@ -48,7 +48,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventType
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
+import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
@@ -749,7 +749,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			}
 			final ScanModuleEditPart smep = (ScanModuleEditPart) o;
 			setCurrentScanModule(smep.getModel());
-		} else if (o instanceof ScanDescriptionEditPart) {
+		} else if (o instanceof ChainEditPart) {
 			// clicking empty space in the editor
 			logger.debug("selection is ScanDescriptionEditPart: " + o);
 			setCurrentScanModule(null);

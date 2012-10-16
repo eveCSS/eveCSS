@@ -37,7 +37,7 @@ public class ModelToTargetValidator implements IValidator {
 			return ValidationStatus.ok();
 		default:
 			LOGGER.debug("validation error");
-			return ValidationStatus.error("");
+			return ValidationStatus.error("error reading model value");
 		}
 	}
 }

@@ -28,6 +28,10 @@ public class PositiveIntegerVerifyListener extends IntegerVerifyListener {
 	@Override
 	public void verifyText(VerifyEvent e) {
 		super.verifyText(e);
+		if (e.doit) {
+			return;
+		}
+		e.doit = true;
 		if (Integer.parseInt(textField.getText() + String.valueOf(e.character)) < 1) {
 			// result is not positive
 			e.doit = false;

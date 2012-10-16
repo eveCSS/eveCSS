@@ -13,7 +13,6 @@ import org.eclipse.swt.widgets.Text;
  * @since 1.7
  */
 public class TextVerifyListener implements VerifyListener {
-
 	protected Text textField;
 
 	/**

@@ -49,7 +49,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventType
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
+import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
@@ -466,8 +466,8 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 				// ScanModule was selected
 				if(logger.isDebugEnabled()) {
 					logger.debug("selection is ScanModuleEditPart: " + o);
-					logger.debug("ScanModule: " + ((ScanModule)
-							((ScanModuleEditPart)o).getModel()).getId() + 
+					logger.debug("ScanModule: " + 
+							((ScanModuleEditPart)o).getModel().getId() + 
 							" selected."); 
 				}
 				
@@ -475,7 +475,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 						((ScanModuleEditPart)o).getModel())) {
 							setChannel(null);
 				}
-			} else if (o instanceof ScanDescriptionEditPart) {
+			} else if (o instanceof ChainEditPart) {
 				logger.debug("selection is ScanDescriptionEditPart: " + o);
 				setChannel(null);
 			} else {

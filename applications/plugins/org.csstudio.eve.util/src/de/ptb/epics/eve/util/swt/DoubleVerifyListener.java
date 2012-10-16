@@ -4,6 +4,7 @@ import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.widgets.Text;
 
 /**
+ * @author Hartmut Scherr
  * @author Marcus Michalsky
  * @since 1.7
  */
@@ -44,20 +45,20 @@ public class DoubleVerifyListener extends TextVerifyListener {
 					// wenn das letzte Zeichen von oldText ein e ist,
 					// ist das minus auch erlaubt
 					int index = oldText.length();
-					if (oldText.substring(index - 1).equals("e")) {
+					if (oldText.substring(index - 1).equals("e") ||
+							oldText.substring(index - 1).equals("E")) {
 						// letzte Zeichen ist ein e und damit erlaubt
 					} else
 						e.doit = false;
 				}
-			} else if (e.character == 'e') {
-				// character e is a valid character, if he is not in the
+			} else if (e.character == 'e' || e.character == 'E') {
+				// character e/E is a valid character, if he is not in the
 				// old string
-				if (oldText.contains("e"))
+				if (oldText.contains("e") || oldText.contains("E"))
 					e.doit = false;
 			} else {
 				e.doit = false; // disallow the action
 			}
 		}
-		// double regexp ^\d*\.?\d*$
 	}
 }

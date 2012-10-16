@@ -43,26 +43,6 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 public class StartStopStepwidthComposite extends Composite implements
 		PropertyChangeListener {
 	
-	// indicates whether an axis in the scan module containing 
-	// the current axis is set as main axis
-	private boolean mainAxisSet; // TODO should be in the model !
-	
-
-	
-	
-	/**
-	 * Constructs a <code>MotorAxisStartStopStepwidthComposite</code>.
-	 * 
-	 * @param parent the parent composite
-	 * @param style the style
-	 * @param parentView the view this composite is contained in
-	 */
-	public StartStopStepwidthComposite(final Composite parent, 
-										final int style) {
-		
-		this.mainAxisSet = false;
-	}
-	
 	/**
 	 * Sets the {@link de.ptb.epics.eve.data.scandescription.Axis}.
 	 *  
@@ -158,33 +138,6 @@ public class StartStopStepwidthComposite extends Composite implements
 
 	// TODO REMOVE !!!
 	private void autoFill() {
-
-		boolean startOk = true;
-		boolean stopOk = true;
-		boolean stepwidthOk = true;
-		boolean stepcountOk = true;
-
-		for (IModelError error : this.currentAxis.getModelErrors()) {
-			if (error instanceof AxisError) {
-				final AxisError axisError = (AxisError) error;
-				switch (axisError.getErrorType()) {
-				case START_NOT_SET:
-				case START_VALUE_NOT_POSSIBLE:
-					startOk = false;
-					break;
-				case STOP_NOT_SET:
-				case STOP_VALUE_NOT_POSSIBLE:
-					stopOk = false;
-					break;
-				case STEPWIDTH_NOT_SET:
-					stepwidthOk = false;
-					break;
-				case STEPCOUNT_NOT_SET:
-					stepcountOk = false;
-					break;
-				}
-			}
-		}
 
 		if (this.currentAxis != null) {
 			if (this.startRadioButton.getSelection()) {
@@ -1065,131 +1018,6 @@ public class StartStopStepwidthComposite extends Composite implements
 	/* ********************************************************************* */
 	/* **************************** Listeners ****************************** */
 	/* ********************************************************************* */
-
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of 
-	 * <code>stopText</code>.
-	 */
-	private class StopTextModifyListener implements ModifyListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modifyText(ModifyEvent e) {
-			removeListeners();
-			if (currentAxis != null) {
-				switch (currentAxis.getMotorAxis().getPosition().getType()) {
-				case DATETIME:
-					if (currentAxis.getMotorAxis().isValuePossible(
-							stopText.getText())) {
-						currentAxis.setStop(stopText.getText());
-						autoFill();
-					} else {
-						currentAxis.setStop(null);
-					}
-					break;
-				default:
-					// if string is a double set value in model
-					// else set null in model
-					try {
-						Double.parseDouble(stopText.getText());
-						currentAxis.setStop(stopText.getText());
-						autoFill();
-					} catch (final NumberFormatException ex) {
-						// string is not a double
-						currentAxis.setStop(null);
-					}
-				}
-				checkForErrors();
-				addListeners();
-			}
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of 
-	 * <code>stepwidthText</code>.
-	 */
-	private class StepwidthTextModifyListener implements ModifyListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modifyText(final ModifyEvent e) {
-			removeListeners();
-
-			// if Text is empty, do nothing
-			if (currentAxis != null) {
-				if (currentAxis.getMotorAxis().getGoto().isDiscrete()) {
-					try {
-						Integer.parseInt(stepwidthText.getText());
-						currentAxis.setStepwidth(stepwidthText.getText());
-						autoFill();
-					} catch (final NumberFormatException ex) {
-						// string is not an integer
-						currentAxis.setStepwidth(null);
-					}
-				} else {
-					switch (currentAxis.getMotorAxis().getPosition().getType()) {
-					case DATETIME:
-						if (currentAxis.getMotorAxis().isValuePossible(
-								stepwidthText.getText())) {
-							currentAxis.setStepwidth(stepwidthText.getText());
-							autoFill();
-						} else {
-							currentAxis.setStepwidth(null);
-						}
-						break;
-					default:
-						try {
-							double start = Double.parseDouble(startText
-									.getText());
-							double stop = Double
-									.parseDouble(stopText.getText());
-							double stepwidth = Double.parseDouble(stepwidthText
-									.getText());
-
-							if (start > stop) {
-								if (stepwidth > 0) {
-									// Vorzeichen von Stepwidth umdrehen!
-									stepwidth = stepwidth * -1;
-									stepwidthText.setText("" + (int) stepwidth);
-									stepwidthText.setSelection(2);
-								}
-
-								if (stepwidthText.getText().equals("0")) {
-									// Vorzeichen umdrehen
-									stepwidthText.setText("-0");
-									stepwidthText.setSelection(2);
-								}
-							}
-
-							if (start < stop) {
-								if (stepwidth < 0) {
-									// Vorzeichen von Stepwidth umdrehen!
-									stepwidth = stepwidth * -1;
-									stepwidthText.setText("" + (int) stepwidth);
-									stepwidthText.setSelection(1);
-								}
-							}
-
-							Double.parseDouble(stepwidthText.getText());
-							currentAxis.setStepwidth(stepwidthText.getText());
-							autoFill();
-						} catch (final NumberFormatException ex) {
-							// string is not a double
-							currentAxis.setStepwidth(null);
-						}
-					}
-				}
-			}
-			checkForErrors();
-			addListeners();
-		}
-	}
-
 
 
 	/**
