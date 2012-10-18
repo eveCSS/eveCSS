@@ -43,31 +43,40 @@ public class Configurator {
 		final MeasuringStationLoader measuringStationLoader = 
 			new MeasuringStationLoader(Configurator.getSchemaFile());
 		
-		File test = new File("xml/test.xml");
-		File qnim = new File("xml/qnim.xml");
-		File sx700 = new File("xml/sx700.xml");
 		File bigref = new File("xml/bigref.xml");
+		File euvr = new File("xml/euvr.xml");
 		File kmc = new File("xml/kmc.xml");
-		File rfa = new File("xml/rfa.xml");
+		File newref = new File("xml/newref");
 		File nrfa = new File("xml/nrfa.xml");
 		File pgm = new File("xml/pgm.xml");
+		File qnim = new File("xml/qnim.xml");
+		File rfa = new File("xml/rfa.xml");
+		File sx700 = new File("xml/sx700.xml");
+		File test = new File("xml/test.xml");
+		File trfa = new File("xml/trfa.xml");
 		
 		try {
-			measuringStationLoader.load(test);
-			stations.add(measuringStationLoader.getMeasuringStation());
-			measuringStationLoader.load(qnim);
-			stations.add(measuringStationLoader.getMeasuringStation());
-			measuringStationLoader.load(sx700);
-			stations.add(measuringStationLoader.getMeasuringStation());
 			measuringStationLoader.load(bigref);
+			stations.add(measuringStationLoader.getMeasuringStation());
+			measuringStationLoader.load(euvr);
 			stations.add(measuringStationLoader.getMeasuringStation());
 			measuringStationLoader.load(kmc);
 			stations.add(measuringStationLoader.getMeasuringStation());
-			measuringStationLoader.load(rfa);
+			measuringStationLoader.load(newref);
 			stations.add(measuringStationLoader.getMeasuringStation());
 			measuringStationLoader.load(nrfa);
 			stations.add(measuringStationLoader.getMeasuringStation());
 			measuringStationLoader.load(pgm);
+			stations.add(measuringStationLoader.getMeasuringStation());
+			measuringStationLoader.load(qnim);
+			stations.add(measuringStationLoader.getMeasuringStation());
+			measuringStationLoader.load(rfa);
+			stations.add(measuringStationLoader.getMeasuringStation());
+			measuringStationLoader.load(sx700);
+			stations.add(measuringStationLoader.getMeasuringStation());
+			measuringStationLoader.load(test);
+			stations.add(measuringStationLoader.getMeasuringStation());
+			measuringStationLoader.load(trfa);
 			stations.add(measuringStationLoader.getMeasuringStation());
 		} catch (ParserConfigurationException e) {
 			logger.error(e.getMessage(), e);

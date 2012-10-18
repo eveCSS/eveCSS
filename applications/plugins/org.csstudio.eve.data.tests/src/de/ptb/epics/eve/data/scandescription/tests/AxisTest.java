@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
@@ -35,6 +36,7 @@ public class AxisTest {
 	 * 
 	 */
 	@Test
+	@Ignore("Obsolete (see Feature #591)")
 	public void testGetModelErrorsStepFunctionsAdd() {
 		log_start(logger, "testGetModelErrors");
 		
