@@ -46,7 +46,7 @@ public class Configurator {
 		File bigref = new File("xml/bigref.xml");
 		File euvr = new File("xml/euvr.xml");
 		File kmc = new File("xml/kmc.xml");
-		File newref = new File("xml/newref");
+		File newref = new File("xml/newref.xml");
 		File nrfa = new File("xml/nrfa.xml");
 		File pgm = new File("xml/pgm.xml");
 		File qnim = new File("xml/qnim.xml");
