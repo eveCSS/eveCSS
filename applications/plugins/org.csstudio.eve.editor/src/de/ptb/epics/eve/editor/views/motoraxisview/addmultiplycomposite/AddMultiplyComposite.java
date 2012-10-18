@@ -39,7 +39,14 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 	private static final Logger LOGGER = Logger
 			.getLogger(AddMultiplyComposite.class.getName());
 	
+	private Axis axis;
 	private AddMultiplyMode<?> addMultiplyMode;
+	
+	/*
+	 * VerifyListeners deactivated. They interfer with verify listeners set 
+	 * by the databinding framework resulting in no calculations are written 
+	 * to the AdjustParameter field. 
+	 */
 	
 	private Button startRadioButton;
 	private Text startText;
@@ -158,6 +165,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		this.mainAxisCheckBox.setLayoutData(gridData);
 		
 		this.addMultiplyMode = null;
+		this.axis = null;
 		
 		LOGGER.debug("composite created");
 	}
@@ -185,6 +193,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 			LOGGER.warn("invalid axis mode");
 			return;
 		}
+		this.axis = axis;
 		switch(axis.getType()) {
 		case DOUBLE:
 			this.addMultiplyMode = (AddMultiplyMode<Double>)axis.getMode();
@@ -198,6 +207,10 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		}
 		this.addMultiplyMode.addPropertyChangeListener(
 				AddMultiplyMode.ADJUST_PARAMETER_PROP, this);
+		this.axis.getMotorAxis().addPropertyChangeListener("highlimit", this);
+		this.axis.getMotorAxis().addPropertyChangeListener("lowlimit", this);
+		this.axis.addPropertyChangeListener("positionMode", this);
+		
 		this.createBinding();
 		this.setEnabled();
 	}
@@ -407,7 +420,15 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 			this.mainAxisTargetObservable.dispose();
 			this.mainAxisModelObservable.dispose();
 		}
+		if (this.axis != null) {
+			this.axis.getMotorAxis().removePropertyChangeListener("highlimit",
+					this);
+			this.axis.getMotorAxis().removePropertyChangeListener("lowlimit",
+					this);
+			this.axis.removePropertyChangeListener("positionMode", this);
+		}
 		this.addMultiplyMode = null;
+		this.axis = null;
 	}
 	
 	private void setEnabled() {
@@ -471,6 +492,11 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		LOGGER.debug(e.getPropertyName());
 		if (e.getPropertyName().equals(AddMultiplyMode.ADJUST_PARAMETER_PROP)) {
 			this.setEnabled();
+		} else if (e.getPropertyName().equals("highlimit") ||
+				e.getPropertyName().equals("lowlimit") ||
+				e.getPropertyName().equals("positionMode")) {
+			this.startBinding.updateTargetToModel();
+			this.stopBinding.updateTargetToModel();
 		}
 	}
 	

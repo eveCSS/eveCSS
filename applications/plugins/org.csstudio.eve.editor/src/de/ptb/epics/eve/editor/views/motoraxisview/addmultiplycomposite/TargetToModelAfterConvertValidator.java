@@ -31,10 +31,12 @@ public class TargetToModelAfterConvertValidator implements IValidator {
 	@Override
 	public IStatus validate(Object value) {
 		MotorAxisChannelAccess ca = null;
+		Double mPos = null;
 		if (this.axis.getMotorAxis().getChannelAccess() != null) {
 			ca = this.axis.getMotorAxis().getChannelAccess();
+			mPos = ca.getPosition();
 		}
-		if (ca == null) {
+		if (ca == null || mPos == null) {
 			LOGGER.warn("motor position could not be verified due to missing channel access");
 			return ValidationStatus.ok();
 		}
@@ -53,12 +55,53 @@ public class TargetToModelAfterConvertValidator implements IValidator {
 			LOGGER.warn("value could not be read");
 			return ValidationStatus.ok();
 		}
-		if (ca.getLowLimit() != null && ca.getLowLimit() > val) {
-			return ValidationStatus.warning(
-					"The entered value is below the current low limit!");
-		} else if (ca.getHighLimit() != null && ca.getHighLimit() < val) {
-			return ValidationStatus.warning(
-					"The entered value is above the current high limit!");
+		if (LOGGER.isDebugEnabled()) {
+			String log = "Position Mode: " + this.axis.getPositionMode()
+					+ " , value: " + val + " , mPos: " + mPos;
+			if (ca.getLowLimit() != null) {
+				log = log.concat(" , LLM: " + ca.getLowLimit());
+			}
+			if (ca.getHighLimit() != null) {
+				log = log.concat(" , HLM: " + ca.getHighLimit());
+			}
+			LOGGER.debug(log);
+		}
+		switch(this.axis.getPositionMode()) {
+		case ABSOLUTE:
+			if (ca.getLowLimit() != null && ca.getLowLimit() > val) {
+				LOGGER.info("Value is below the current low limit!" + 
+						"(" + this.axis.getMotorAxis().getName() + ")");
+				return ValidationStatus.warning(
+						"Value is below the current low limit!"
+							+ "(" + this.axis.getMotorAxis().getName() + ")");
+			} else if (ca.getHighLimit() != null && ca.getHighLimit() < val) {
+				LOGGER.info("Value is above the current high limit!" + 
+						"(" + this.axis.getMotorAxis().getName() + ")");
+				return ValidationStatus.warning(
+						"Value is above the current high limit!"
+							+ "(" + this.axis.getMotorAxis().getName() + ")");
+			}
+			break;
+		case RELATIVE:
+			if (ca.getLowLimit() != null && ca.getLowLimit() > mPos + val) {
+				LOGGER.info("Value is below the current low limit"
+						+ "(" + this.axis.getMotorAxis().getName() + ")");
+				return ValidationStatus.warning(
+						"Value is below the current low limit!"
+							+ "(" + this.axis.getMotorAxis().getName() + ")");
+			} else if (ca.getHighLimit() != null && 
+					ca.getHighLimit() < mPos + val) {
+				LOGGER.debug("Value is above the current high limit!"
+						+ "(" + this.axis.getMotorAxis().getName() + ")");
+				return ValidationStatus.warning(
+						"Value is above the current high limit!"
+							+ "(" + this.axis.getMotorAxis().getName() + ")");
+			}
+			break;
+		}
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Validation ok: " + ca.getLowLimit() + " < " + val
+					+ " < " + ca.getHighLimit());
 		}
 		return ValidationStatus.ok();
 	}

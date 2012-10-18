@@ -150,7 +150,8 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 * @param positionMode the position mode that should be set
 	 */
 	public void setPositionMode(final PositionMode positionMode) {
-		this.positionMode = positionMode;
+		this.propertyChangeSupport.firePropertyChange("positionMode",
+				this.positionMode, this.positionMode = positionMode);
 		updateListeners();
 	}
 	

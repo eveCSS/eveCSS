@@ -298,6 +298,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			}
 			this.stepFunctionCombo.setText(
 					this.currentAxis.getStepfunction().toString());
+			this.dateTimeComposite.setAxis(null);
 			this.addMultipyComposite.setAxis(null);
 			this.fileComposite.setAxis(null);
 			this.pluginComposite.setAxis(null, null);
@@ -329,8 +330,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		switch (this.currentAxis.getStepfunction()) {
 		case ADD:
 		case MULTIPLY:
-			// use code block in future implementations that use the 
-			// DateTimeComposite...
 			if(currentAxis.getMotorAxis().getPosition().getType().equals(
 					de.ptb.epics.eve.data.DataTypes.DATETIME)) {
 				this.sashForm.setMaximizedControl(dateTimeComposite);
