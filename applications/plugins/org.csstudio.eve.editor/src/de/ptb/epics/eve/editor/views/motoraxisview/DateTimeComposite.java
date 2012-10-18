@@ -149,18 +149,27 @@ public class DateTimeComposite extends MotorAxisViewComposite {
 		this.addMultiplyMode = null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setAxis(Axis axis) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void createBinding() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void reset() {
 		// TODO Auto-generated method stub

@@ -317,6 +317,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		if (axis.isMainAxis()) {
 			this.mainAxis = axis;
 		}
+		if (axis.getMode() instanceof AddMultiplyMode<?>) {
+			((AddMultiplyMode<?>)axis.getMode()).matchMainAxis(this.mainAxis);
+		}
 		propertyChangeSupport.firePropertyChange("addAxis", axis, null);
 		updateListeners();
 	}
@@ -405,6 +408,12 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		
 		propertyChangeSupport.firePropertyChange("removeAxis", axis, null);
 		propertyChangeSupport.firePropertyChange("removePosAxis", axis, null);
+		
+		if (this.mainAxis != null && this.mainAxis.equals(axis)) {
+			this.propertyChangeSupport.firePropertyChange(
+					ScanModule.MAIN_AXIS_PROP, this.mainAxis,
+					this.mainAxis = null);
+		}
 		updateListeners();
 	}
 	

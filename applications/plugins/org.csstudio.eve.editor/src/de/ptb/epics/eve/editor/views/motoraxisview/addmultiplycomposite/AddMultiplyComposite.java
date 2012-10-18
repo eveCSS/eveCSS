@@ -434,7 +434,8 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 			this.stopText.setEnabled(false);
 			break;
 		}
-		// if an axis is set as main axis, its step count is used
+		// if an axis (other than this one) is set as main axis, 
+		// its step count is used
 		if (this.addMultiplyMode.getReferenceAxis() != null) {
 			this.stepcountText.setEnabled(false);
 			this.stepcountRadioButton.setEnabled(false);
