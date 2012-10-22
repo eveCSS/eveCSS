@@ -21,112 +21,119 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 /**
  * This class represents a plug in controller.
  * 
- * A <code>PluginController</code> takes a 
- * {@link de.ptb.epics.eve.data.measuringstation.PlugIn} and saves the 
+ * A <code>PluginController</code> takes a
+ * {@link de.ptb.epics.eve.data.measuringstation.PlugIn} and saves the
  * corresponding parameter values.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
  * @author Marcus Michalsky
  */
-public class PluginController implements IModelErrorProvider, IModelUpdateProvider {
-	
+public class PluginController implements IModelErrorProvider,
+		IModelUpdateProvider {
+
 	/*
 	 * The plug in to control.
 	 */
 	private PlugIn plugin;
-	
+
 	/*
 	 * The values of the parameter of the plug in.
 	 */
 	private Map<String, String> values;
-	
+
 	/*
 	 * The list of model update listener.
 	 */
 	private List<IModelUpdateListener> modelUpdateListener;
-	
+
 	/*
-	 * This flag indicates if the values has been filled with default values. 
+	 * This flag indicates if the values has been filled with default values.
 	 */
 	private boolean defaultFlag;
-	
+
 	/*
 	 * The parent scan module.
 	 */
 	private ScanModule scanModule;
-	
+
 	/**
 	 * Constructs a(n) (empty) <code>PluginController</code>.
 	 */
 	public PluginController() {
-		this( null );
+		this(null);
 	}
-	
+
 	/**
-	 * Constructs a <code>PluginController</code> with a given plug in to 
+	 * Constructs a <code>PluginController</code> with a given plug in to
 	 * control.
 	 * 
-	 * @param plugin the plug in to control.
+	 * @param plugin
+	 *            the plug in to control.
 	 */
 	public PluginController(final PlugIn plugin) {
 		this.plugin = plugin;
 		this.values = new HashMap<String, String>();
 		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
-		
-		if(this.plugin != null) {
+
+		if (this.plugin != null) {
 			this.fillWithDefaults();
 		}
 	}
-	
+
 	/**
 	 * Returns the current plug in to control.
 	 * 
-	 * @return the current plug in that is controlled by this controller 
+	 * @return the current plug in that is controlled by this controller
 	 */
 	public PlugIn getPlugin() {
 		return this.plugin;
 	}
-	
+
 	/**
 	 * Sets the controlled plug in.
 	 * 
-	 * @param plugin the plug in to control.
+	 * @param plugin
+	 *            the plug in to control.
 	 */
 	public void setPlugin(final PlugIn plugin) {
 		this.plugin = plugin;
 		this.values.clear();
-		if(this.plugin != null) {
+		if (this.plugin != null) {
 			this.fillWithDefaults();
 		}
 		updateListeners();
 	}
-	
+
 	/**
 	 * Sets a value for a parameter of the plug in.
 	 * 
-	 * @param name the name of the parameter.
-	 * @param value the value for the parameter.
+	 * @param name
+	 *            the name of the parameter.
+	 * @param value
+	 *            the value for the parameter.
 	 */
 	public void set(final String name, final String value) {
 		this.values.put(name, value);
 		this.defaultFlag = false;
 		updateListeners();
 	}
-	
+
 	/**
 	 * Sets back a value.
 	 * 
-	 * @param name the name of the value that should be set back.
+	 * @param name
+	 *            the name of the value that should be set back.
 	 */
 	public void unset(final String name) {
 		this.values.remove(name);
 		updateListeners();
 	}
-	
+
 	/**
 	 * Returns a value of a parameter.
 	 * 
-	 * @param name the name of the parameter.
+	 * @param name
+	 *            the name of the parameter.
 	 * @return the value of the parameter.
 	 */
 	public String get(final String name) {
@@ -134,7 +141,7 @@ public class PluginController implements IModelErrorProvider, IModelUpdateProvid
 	}
 
 	/**
-	 * {@inheritDoc} 
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean addModelUpdateListener(
@@ -151,24 +158,22 @@ public class PluginController implements IModelErrorProvider, IModelUpdateProvid
 		return this.modelUpdateListener.remove(modelUpdateListener);
 	}
 
-	
-	
 	/**
 	 * Checks whether the values are filled with default values.
 	 * 
-	 * @return <code>true</code> if the values are filled, 
-	 * 		   <code>false</code> otherwise
+	 * @return <code>true</code> if the values are filled, <code>false</code>
+	 *         otherwise
 	 */
 	public boolean isFilledWithDefault() {
 		return this.defaultFlag;
 	}
-	
+
 	/**
 	 * Fills the values with default values specified by the plug in.
 	 */
 	private void fillWithDefaults() {
 		Iterator<PluginParameter> it = this.plugin.getParameters().iterator();
-		while(it.hasNext()) {
+		while (it.hasNext()) {
 			final PluginParameter currentPluginParameter = it.next();
 			// TODO um hier vernünftige Werte vorzuschlagen muß irgendwie
 			// erkannt werden, welche Parameter diskrete Werte beinhalten
@@ -177,25 +182,27 @@ public class PluginController implements IModelErrorProvider, IModelUpdateProvid
 			// wie z.B. type=discrete?
 			// es müßte über den datatype axisid erkannt werden!!!
 
-			if (currentPluginParameter.getType().toString() .equals("AXISID")) {
+			if (currentPluginParameter.getType().toString().equals("AXISID")) {
 				// aus dem scanModul wird der erste Wert des Plugins erzeugt!
-				if ( scanModule != null) {
+				if (scanModule != null) {
 					Axis[] cur_axis = scanModule.getAxes();
 					String[] cur_feld = new String[cur_axis.length];
-					for (int i=0; i<cur_axis.length; ++i) {
-						cur_feld[i] = cur_axis[i].getMotorAxis().getFullIdentifyer();
+					for (int i = 0; i < cur_axis.length; ++i) {
+						cur_feld[i] = cur_axis[i].getMotorAxis()
+								.getFullIdentifyer();
 					}
-					this.values.put( currentPluginParameter.getName(), cur_feld[0] );
-				}
-				else
-				   this.values.put( currentPluginParameter.getName(), currentPluginParameter.getDefaultValue() );
-			}
-			else
-			   this.values.put( currentPluginParameter.getName(), currentPluginParameter.getDefaultValue() );
+					this.values.put(currentPluginParameter.getName(),
+							cur_feld[0]);
+				} else
+					this.values.put(currentPluginParameter.getName(),
+							currentPluginParameter.getDefaultValue());
+			} else
+				this.values.put(currentPluginParameter.getName(),
+						currentPluginParameter.getDefaultValue());
 		}
 		this.defaultFlag = true;
 	}
-	
+
 	/**
 	 * Returns an array of all elements of the plug in controller.
 	 * 
@@ -205,20 +212,21 @@ public class PluginController implements IModelErrorProvider, IModelUpdateProvid
 	public Entry<String, String>[] getElements() {
 		return this.values.entrySet().toArray(new Entry[0]);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
 		final StringBuffer stringBuffer = new StringBuffer();
-		if(this.plugin != null) {
-			Iterator<PluginParameter> it = this.plugin.getParameters().iterator();
-			while(it.hasNext()) {
+		if (this.plugin != null) {
+			Iterator<PluginParameter> it = this.plugin.getParameters()
+					.iterator();
+			while (it.hasNext()) {
 				final PluginParameter pp = it.next();
 				stringBuffer.append(pp.getName());
 				stringBuffer.append('=');
-				stringBuffer.append(this.values.get( pp.getName()));
+				stringBuffer.append(this.values.get(pp.getName()));
 				stringBuffer.append("; ");
 			}
 		}
@@ -237,46 +245,54 @@ public class PluginController implements IModelErrorProvider, IModelUpdateProvid
 	/**
 	 * Sets the scan module.
 	 * 
-	 * @param scanModule The current scan module.
+	 * @param scanModule
+	 *            The current scan module.
 	 */
 	public void setScanModule(final ScanModule scanModule) {
 		this.scanModule = scanModule;
 	}
 
 	/**
-	 * {@inheritDoc} 
+	 * {@inheritDoc}
 	 */
 	@Override
 	public List<IModelError> getModelErrors() {
-		final List<IModelError> errorList = new ArrayList< IModelError >();
-		if( this.plugin != null ) {
-			final Iterator< PluginParameter > it = this.plugin.getParameters().iterator();
-			while( it.hasNext() ) {
+		final List<IModelError> errorList = new ArrayList<IModelError>();
+		if (this.plugin != null) {
+			final Iterator<PluginParameter> it = this.plugin.getParameters()
+					.iterator();
+			while (it.hasNext()) {
 				final PluginParameter parameter = it.next();
-				if( parameter.isMandatory() && !this.values.containsKey( parameter.getName() ) ) {
-					errorList.add( new PluginError( this, PluginErrorTypes.MISSING_MANDATORY_PARAMETER, parameter.getName() ) );
+				if (parameter.isMandatory()
+						&& !this.values.containsKey(parameter.getName())) {
+					errorList.add(new PluginError(this,
+							PluginErrorTypes.MISSING_MANDATORY_PARAMETER,
+							parameter.getName()));
 				}
-				if( this.values.containsKey( parameter.getName() ) && !parameter.isValuePossible( this.values.get( parameter.getName() ) ) ) {
-					errorList.add( new PluginError( this, PluginErrorTypes.WRONG_VALUE, parameter.getName() ) );
+				if (this.values.containsKey(parameter.getName())
+						&& !parameter.isValuePossible(this.values.get(parameter
+								.getName()))) {
+					errorList.add(new PluginError(this,
+							PluginErrorTypes.WRONG_VALUE, parameter.getName()));
 				}
 			}
 		} else {
-			errorList.add( new PluginError( this, PluginErrorTypes.PLUING_NOT_SET, "" ) );
+			errorList.add(new PluginError(this,
+					PluginErrorTypes.PLUING_NOT_SET, ""));
 		}
 		return errorList;
 	}
-	
+
 	/*
 	 * 
 	 */
-	private void updateListeners()
-	{
-		final CopyOnWriteArrayList<IModelUpdateListener> list = 
-			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
-		
+	private void updateListeners() {
+		final CopyOnWriteArrayList<IModelUpdateListener> list = new CopyOnWriteArrayList<IModelUpdateListener>(
+				this.modelUpdateListener);
+
 		Iterator<IModelUpdateListener> it = list.iterator();
-		
-		while(it.hasNext()) {
+
+		while (it.hasNext()) {
 			it.next().updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}

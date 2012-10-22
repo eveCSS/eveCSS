@@ -21,6 +21,7 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
@@ -152,6 +153,10 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 		final StartEvent startEvent = 
 				new StartEvent(scanDescription.getEventById("S0") , chain);
 		chain.setStartEvent(startEvent);
+		PlugIn plugin = measuringStation.getPluginByName("HDF5");
+		if (plugin != null) {
+			chain.getSavePluginController().setPlugin(plugin);
+		}
 		scanDescription.add(chain);
 		
 		try {

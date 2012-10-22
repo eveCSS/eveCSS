@@ -105,8 +105,11 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	private boolean saveScanDescription;
 	
 	private PropertyChangeSupport propertyChangeSupport;
+	
+	/** */
 	public static final String SCANMODULE_ADDED_PROP = 
 			"Chain.SCANMODULE_ADDED_PROP";
+	/** */
 	public static final String SCANMODULE_REMOVED_PROP = 
 			"Chain.SCANMODULE_REMOVED_PROP";
 	
@@ -208,6 +211,10 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		updateListeners();
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getAvailableScanModuleId() {
 		int i = 1;
 		while(this.getScanModuleById(i) != null) {

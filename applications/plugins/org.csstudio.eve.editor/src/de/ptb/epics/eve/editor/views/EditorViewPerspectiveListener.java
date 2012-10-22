@@ -49,6 +49,12 @@ public class EditorViewPerspectiveListener implements IPerspectiveListener {
 		// (otherwise page references would lead to null pointers)
 		if(page.getWorkbenchWindow().getActivePage() == null) return;
 		
+		// if a new editor is opened, previously shown content has to be 
+		// cleared
+		if(changeId.equals(IWorkbenchPage.CHANGE_EDITOR_OPEN)) {
+			view.reset();
+		}
+		
 		// only update if no editor is open anymore
 		if(page.getEditorReferences().length > 0) return;
 		// Note: resetting views generally did not work, because the activation 

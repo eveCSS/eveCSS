@@ -44,7 +44,6 @@ import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.measuringstation.PluginParameter;
 import de.ptb.epics.eve.data.scandescription.Chain;
-import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.ChainError;
 import de.ptb.epics.eve.data.scandescription.errors.ChainErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -55,6 +54,7 @@ import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.dialogs.PluginControllerDialog;
 import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
+import de.ptb.epics.eve.editor.gef.editparts.StartEventEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
 import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
@@ -610,8 +610,15 @@ public class ScanView extends ViewPart implements IEditorView,
 				logger.debug("ScanModule "
 						+ ((ScanModuleEditPart) o).getModel() + " selected.");
 			}
-			setCurrentChain(((ScanModule)((ScanModuleEditPart)o).
-					getModel()).getChain());
+			setCurrentChain(((ScanModuleEditPart)o).getModel().getChain());
+		} else if (o instanceof StartEventEditPart) {
+			// a start event belongs to a chain -> show chain
+			if (logger.isDebugEnabled()) {
+				logger.debug("Chain " 
+						+ (((StartEventEditPart) o).getModel()).getChain() 
+						+ " selected.");
+			}
+			setCurrentChain((((StartEventEditPart) o).getModel()).getChain());
 		} else if (o instanceof ChainEditPart) {
 				logger.debug("selection is ScanDescriptionEditPart: " + o);
 				setCurrentChain(null);
