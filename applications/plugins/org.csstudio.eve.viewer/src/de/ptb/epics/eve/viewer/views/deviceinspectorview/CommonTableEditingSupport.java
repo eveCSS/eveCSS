@@ -5,6 +5,7 @@ import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.SWT;
 
 /**
  * <code>CommonTableEditingSupport</code> is the 
@@ -69,7 +70,7 @@ public class CommonTableEditingSupport extends EditingSupport {
 		if (ctb.getCellEditor(column) == null) {
 			if (ctb.isDiscrete(column)) {
 				ctb.setCellEditor(new ComboBoxCellEditor(viewer.getTable(), 
-						ctb.getSelectStrings(column)) {
+						ctb.getSelectStrings(column), SWT.READ_ONLY) {
 					@Override protected void focusLost() {
 						if(isActivated()) {
 							fireCancelEditor();
