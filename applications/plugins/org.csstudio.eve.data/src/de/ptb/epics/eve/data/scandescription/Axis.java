@@ -122,7 +122,11 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 */
 	public void setMotorAxis(final MotorAxis motorAxis) {
 		this.abstractDevice = motorAxis;
-		this.setStepfunction(Stepfunctions.ADD);
+		if (motorAxis.getGoto().isDiscrete()) {
+			this.setStepfunction(Stepfunctions.POSITIONLIST);
+		} else {
+			this.setStepfunction(Stepfunctions.ADD);
+		}
 		updateListeners();
 	}
 
