@@ -1,5 +1,9 @@
 package de.ptb.epics.eve.editor.views.motoraxisview.addmultiplycomposite;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.conversion.IConverter;
 
@@ -41,6 +45,8 @@ public class TargetToModelConverter implements IConverter {
 			return Double.class;
 		case INT: 
 			return Integer.class;
+		case DATETIME:
+			return Date.class;
 		default:
 			return null;
 		}
@@ -55,7 +61,7 @@ public class TargetToModelConverter implements IConverter {
 		case DOUBLE:
 			try {
 				Double dVal = Double.parseDouble((String)fromObject);
-				LOGGER.debug("converted " + dVal.toString() + " to String");
+				LOGGER.debug("converted " + dVal.toString() + " to Double");
 				return dVal;
 			} catch (NumberFormatException e) {
 				LOGGER.warn(e.getMessage(), e);
@@ -63,8 +69,18 @@ public class TargetToModelConverter implements IConverter {
 			}
 		case INT:
 			Integer iVal = Integer.parseInt(((String)fromObject));
-			LOGGER.debug("converted " + iVal.toString() + " to String");
+			LOGGER.debug("converted " + iVal.toString() + " to Integer");
 			return iVal;
+		case DATETIME:
+			try {
+				Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
+						.parse((String) fromObject);
+				LOGGER.debug("converted " + date.toString() + " to Date");
+				return date;
+			} catch (ParseException e) {
+				LOGGER.error(e.getMessage(), e);
+				return null;
+			}
 		default:
 			return null;
 		}

@@ -788,7 +788,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			String startValue = textBuffer.toString();
 			switch (this.currentAxis.getType()) {
 			case DATETIME:
-				this.currentAxis.setStart(Date.parse(startValue));
+				try {
+					this.currentAxis.setStart(DateFormat.getInstance().parse(startValue));
+				} catch (ParseException e) {
+					logger.error(e.getMessage(), e);
+				}
 				break;
 			case DOUBLE:
 				this.currentAxis.setStart(Double.parseDouble(startValue));
@@ -806,7 +810,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			String stopValue = textBuffer.toString();
 			switch (this.currentAxis.getType()) {
 			case DATETIME:
-				this.currentAxis.setStop(Date.parse(stopValue));
+				try {
+					this.currentAxis.setStop(DateFormat.getInstance().parse(stopValue));
+				} catch (ParseException e1) {
+					logger.error(e1.getMessage(), e1);
+				}
 				break;
 			case DOUBLE:
 				this.currentAxis.setStop(Double.parseDouble(stopValue));
@@ -824,7 +832,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			String stepwidthValue = textBuffer.toString();
 			switch (this.currentAxis.getType()) {
 			case DATETIME:
-				this.currentAxis.setStepwidth(Date.parse(stepwidthValue));
+				try {
+					this.currentAxis.setStepwidth(DateFormat.getInstance().parse(stepwidthValue));
+				} catch (ParseException e) {
+					logger.error(e.getMessage(), e);
+				}
 				break;
 			case DOUBLE:
 				this.currentAxis.setStepwidth(Double.parseDouble(stepwidthValue));

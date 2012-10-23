@@ -2,6 +2,7 @@ package de.ptb.epics.eve.editor.views.motoraxisview.addmultiplycomposite;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
@@ -200,6 +201,9 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 			break;
 		case INT:
 			this.addMultiplyMode = (AddMultiplyMode<Integer>)axis.getMode();
+			break;
+		case DATETIME:
+			this.addMultiplyMode = (AddMultiplyMode<Date>)axis.getMode();
 			break;
 		default:
 			LOGGER.warn("wrong axis type");

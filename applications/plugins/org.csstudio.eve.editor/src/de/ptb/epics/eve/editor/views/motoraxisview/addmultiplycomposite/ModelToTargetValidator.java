@@ -33,6 +33,7 @@ public class ModelToTargetValidator implements IValidator {
 		switch (this.type) {
 		case DOUBLE:
 		case INT:
+		case DATETIME:
 			LOGGER.debug("validation ok");
 			return ValidationStatus.ok();
 		default:

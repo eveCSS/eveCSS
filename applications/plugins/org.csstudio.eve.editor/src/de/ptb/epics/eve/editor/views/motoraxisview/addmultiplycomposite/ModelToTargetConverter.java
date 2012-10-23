@@ -1,5 +1,9 @@
 package de.ptb.epics.eve.editor.views.motoraxisview.addmultiplycomposite;
 
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.conversion.IConverter;
 
@@ -16,11 +20,14 @@ public class ModelToTargetConverter implements IConverter {
 	
 	private DataTypes type;
 	
+	private SimpleDateFormat dateFormat;
+	
 	/**
 	 * @param type the type
 	 */
 	public ModelToTargetConverter(DataTypes type) {
 		this.type = type;
+		this.dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 	}
 	
 	/**
@@ -33,6 +40,8 @@ public class ModelToTargetConverter implements IConverter {
 			return Double.class;
 		case INT: 
 			return Integer.class;
+		case DATETIME:
+			return Date.class;
 		default:
 			return null;
 		}
@@ -61,6 +70,8 @@ public class ModelToTargetConverter implements IConverter {
 			break;
 		case INT: 
 			break;
+		case DATETIME:
+			return this.dateFormat.format((Date)fromObject);
 		default: return fromObject.toString();
 		}
 		return fromObject.toString();

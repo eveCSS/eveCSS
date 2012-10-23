@@ -93,7 +93,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 	
 	private Composite emptyComposite;
 	private AddMultiplyComposite addMultipyComposite;
-	private DateTimeComposite dateTimeComposite;
 	private FileComposite fileComposite;
 	private PluginComposite pluginComposite;
 	private PositionlistComposite positionlistComposite;
@@ -213,7 +212,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		this.emptyComposite = new Composite(sashForm, SWT.NONE);
 		this.addMultipyComposite = 
 				new AddMultiplyComposite(sashForm, SWT.NONE);
-		this.dateTimeComposite = new DateTimeComposite(sashForm, SWT.NONE);
 		this.fileComposite = 
 				new FileComposite(sashForm, SWT.NONE);
 		this.pluginComposite = 
@@ -298,7 +296,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			}
 			this.stepFunctionCombo.setText(
 					this.currentAxis.getStepfunction().toString());
-			this.dateTimeComposite.setAxis(null);
 			this.addMultipyComposite.setAxis(null);
 			this.fileComposite.setAxis(null);
 			this.pluginComposite.setAxis(null, null);
@@ -330,10 +327,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		switch (this.currentAxis.getStepfunction()) {
 		case ADD:
 		case MULTIPLY:
-			if(currentAxis.getMotorAxis().getPosition().getType().equals(
-					de.ptb.epics.eve.data.DataTypes.DATETIME)) {
-				this.sashForm.setMaximizedControl(dateTimeComposite);
-			} else {
 			this.sashForm.setMaximizedControl(
 					addMultipyComposite);
 			this.addMultipyComposite.setAxis(currentAxis);
@@ -341,7 +334,6 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 					getTargetWidth() + sashX;
 			targetHeight = addMultipyComposite.
 					getTargetHeight() + sashY;
-			}
 			break;
 		case FILE:
 			this.sashForm.setMaximizedControl(fileComposite);
