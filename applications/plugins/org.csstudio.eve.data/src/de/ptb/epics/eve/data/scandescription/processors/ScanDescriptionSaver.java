@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
@@ -1726,8 +1727,16 @@ public class ScanDescriptionSaver implements
 							DataTypes.typeToString(axis.getType()));
 					this.contentHandler.startElement("", "start", "start",
 							this.atts);
+					if (axis.getType().equals(DataTypes.DATETIME)) {
+						String date = new SimpleDateFormat(
+								"yyyy-MM-dd HH:mm:ss.SSS").format(axis
+								.getStart());
+						this.contentHandler.characters(date.toCharArray(), 0,
+								date.length());
+					} else {
 					this.contentHandler.characters(axis.getStart().toString()
 						.toCharArray(), 0, axis.getStart().toString().length());
+					}
 					this.contentHandler.endElement("", "start", "start");
 				}
 				if (axis.getStop() != null) {
@@ -1736,9 +1745,17 @@ public class ScanDescriptionSaver implements
 							DataTypes.typeToString(axis.getType()));
 					this.contentHandler.startElement("", "stop", "stop",
 							this.atts);
-					this.contentHandler.characters(
-							axis.getStop().toString().toCharArray(), 0, 
-									axis.getStop().toString().length());
+					if (axis.getType().equals(DataTypes.DATETIME)) {
+						String date = new SimpleDateFormat(
+								"yyyy-MM-dd HH:mm:ss.SSS").format(axis
+								.getStop());
+						this.contentHandler.characters(date.toCharArray(), 0,
+								date.length());
+					} else {
+						this.contentHandler.characters(
+								axis.getStop().toString().toCharArray(), 0, 
+										axis.getStop().toString().length());
+					}
 					this.contentHandler.endElement("", "stop", "stop");
 				}
 				if (axis.getStepwidth() != null) {
@@ -1747,9 +1764,17 @@ public class ScanDescriptionSaver implements
 							DataTypes.typeToString(axis.getType()));
 					this.contentHandler.startElement("", "stepwidth",
 							"stepwidth", this.atts);
+					if (axis.getType().equals(DataTypes.DATETIME)) {
+						String date = new SimpleDateFormat(
+								"HH:mm:ss.SSS").format(axis
+								.getStepwidth());
+						this.contentHandler.characters(date.toCharArray(), 0,
+								date.length());
+					} else {
 					this.contentHandler.characters(axis.getStepwidth()
 							.toString().toCharArray(), 0, axis.getStepwidth()
 							.toString().length());
+					}
 					this.contentHandler
 							.endElement("", "stepwidth", "stepwidth");
 				}

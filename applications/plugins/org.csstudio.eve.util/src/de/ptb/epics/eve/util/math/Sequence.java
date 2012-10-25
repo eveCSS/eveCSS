@@ -6,6 +6,12 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 /**
+ * Contains functions to complete the missing value of a quadruple consisting 
+ * of <code>start, stop, stepwidth </code> and <code>stepcount</code> values.
+ * The Quadruple defines a sequence from <code>start</code> to <code>stop</code> 
+ * with <code>stepcount+1</code> values with equidistant width of 
+ * <code>stepwidth</code> (except for <code>stop</code>).
+ * 
  * @author Marcus Michalsky
  * @since 1.7
  */
@@ -15,22 +21,24 @@ public class Sequence {
 			.getName());
 	
 	/**
+	 * Calculates the <code>start</code> value for the given values.
 	 * 
-	 * @param stop
-	 * @param stepwidth
-	 * @param stepcount
-	 * @return
+	 * @param stop end value of the sequence
+	 * @param stepwidth distance between each value
+	 * @param stepcount number of steps
+	 * @return the start value
 	 */
 	public static int getStart(int stop, int stepwidth, double stepcount) {
 		return (int)(stop - stepwidth * stepcount);
 	}
 	
 	/**
+	 * Calculates the <code>start</code> value for the given values.
 	 * 
-	 * @param stop
-	 * @param stepwidth
-	 * @param stepcount
-	 * @return
+	 * @param stop end value of the sequence
+	 * @param stepwidth distance between each value
+	 * @param stepcount number of steps
+	 * @return the start value
 	 */
 	public static double getStart(double stop, double stepwidth,
 			double stepcount) {
@@ -38,38 +46,41 @@ public class Sequence {
 	}
 	
 	/**
+	 * Calculates the <code>start</code> value for the given values.
 	 * 
-	 * @param stop
-	 * @param stepwidth
-	 * @param stepcount
-	 * @return
+	 * @param stop end value of the sequence
+	 * @param stepwidth distance between each value
+	 * @param stepcount number of steps
+	 * @return the start value
 	 */
 	public static Date getStart(Date stop, Date stepwidth, double stepcount) {
 		/* start = stop - (stepwidth * stepcount) */
 		Calendar start = Calendar.getInstance();
-		Calendar realStepwidth = Sequence.adjustStepwidth(stepwidth);
-		start.setTimeInMillis((long) (stop.getTime() - 
-				(realStepwidth.getTime().getTime() * stepcount)));
+		start.setTimeInMillis((long) (stop.getTime() - ((Sequence
+				.adjustStepwidth(stepwidth).getTime().getTime() + start
+				.get(Calendar.ZONE_OFFSET)) * stepcount)));
 		return start.getTime();
 	}
 	
 	/**
+	 * Calculates the <code>stop</code> value for the given values.
 	 * 
-	 * @param start
-	 * @param stepwidth
-	 * @param stepcount
-	 * @return
+	 * @param start start value of the sequence
+	 * @param stepwidth distance between each value
+	 * @param stepcount number of steps
+	 * @return the stop value
 	 */
 	public static int getStop(int start, int stepwidth, double stepcount) {
 		return (int)(start + stepwidth * stepcount);
 	}
 	
 	/**
+	 * Calculates the <code>stop</code> value for the given values.
 	 * 
-	 * @param start
-	 * @param stepwidth
-	 * @param stepcount
-	 * @return
+	 * @param start start value of the sequence
+	 * @param stepwidth distance between each value
+	 * @param stepcount number of steps
+	 * @return the stop value
 	 */
 	public static double getStop(double start, double stepwidth,
 			double stepcount) {
@@ -77,23 +88,29 @@ public class Sequence {
 	}
 	
 	/**
+	 * Calculates the <code>stop</code> value for the given values.
 	 * 
-	 * @param start
-	 * @param stepwidth
-	 * @param stepcount
-	 * @return
+	 * @param start start value of the sequence
+	 * @param stepwidth distance between each value
+	 * @param stepcount number of steps
+	 * @return the stop value
 	 */
 	public static Date getStop(Date start, Date stepwidth, double stepcount) {
-		// TODO
-		return null;
+		// stop = start + (stepwidth * stepcount)
+		Calendar stop = Calendar.getInstance();
+		stop.setTimeInMillis((long) (start.getTime() + ((Sequence
+				.adjustStepwidth(stepwidth).getTime().getTime() + stop
+				.get(Calendar.ZONE_OFFSET)) * stepcount)));
+		return stop.getTime();
 	}
 	
 	/**
+	 * Calculates the distance between each value.
 	 * 
-	 * @param start
-	 * @param stop
-	 * @param stepcount
-	 * @return
+	 * @param start start value of the sequence
+	 * @param stop stop value of the sequence
+	 * @param stepcount number of steps
+	 * @return the distance between each value
 	 */
 	public static int getStepwidth(int start, int stop, double stepcount) {
 		if (stepcount == 0) {
@@ -103,11 +120,12 @@ public class Sequence {
 	}
 	
 	/**
+	 * Calculates the distance between each value.
 	 * 
-	 * @param start
-	 * @param stop
-	 * @param stepcount
-	 * @return
+	 * @param start start value of the sequence
+	 * @param stop stop value of the sequence
+	 * @param stepcount number of steps
+	 * @return the distance between each value
 	 */
 	public static double getStepwidth(double start, double stop,
 			double stepcount) {
@@ -115,27 +133,28 @@ public class Sequence {
 	}
 	
 	/**
+	 * Calculates the distance between each value.
 	 * 
-	 * @param start
-	 * @param stop
-	 * @param stepcount
-	 * @return
+	 * @param start start value of the sequence
+	 * @param stop stop value of the sequence
+	 * @param stepcount number of steps
+	 * @return the distance between each value
 	 */
 	public static Date getStepwidth(Date start, Date stop, double stepcount) {
-		// TODO
 		Calendar stepwidth = Calendar.getInstance();
-		stepwidth.set(Calendar.DAY_OF_MONTH, 1);
-		stepwidth.set(Calendar.MONTH, 0);
-		stepwidth.set(Calendar.YEAR, 1970);
-		return null;
+		stepwidth.setTimeInMillis(((long) 
+				((stop.getTime() - start.getTime()) / stepcount)) - 
+						stepwidth.get(Calendar.ZONE_OFFSET));
+		return stepwidth.getTime();
 	}
 	
 	/**
+	 * Calculates the number of steps.
 	 * 
-	 * @param start
-	 * @param stop
-	 * @param stepwidth
-	 * @return
+	 * @param start start value of the sequence
+	 * @param stop stop value of the sequence
+	 * @param stepwidth distance between each value
+	 * @return the number of steps
 	 */
 	public static double getStepcount(int start, int stop, int stepwidth) {
 		return Sequence.getStepcount((double) start, (double) stop,
@@ -143,11 +162,12 @@ public class Sequence {
 	}
 	
 	/**
+	 * Calculates the number of steps.
 	 * 
-	 * @param start
-	 * @param stop
-	 * @param stepwidth
-	 * @return
+	 * @param start start value of the sequence
+	 * @param stop stop value of the sequence
+	 * @param stepwidth distance between each value
+	 * @return the number of steps
 	 */
 	public static double getStepcount(double start, double stop, double stepwidth) {
 		if (stepwidth == 0) {
@@ -157,18 +177,21 @@ public class Sequence {
 	}
 	
 	/**
+	 * Calculates the number of steps.
 	 * 
-	 * @param start
-	 * @param stop
-	 * @param stepwidth
-	 * @return
+	 * @param start start value of the sequence
+	 * @param stop stop value of the sequence
+	 * @param stepwidth distance between each value
+	 * @return the number of steps
 	 */
 	public static double getStepcount(Date start, Date stop, Date stepwidth) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug(stop.getTime() + " - " + start.getTime() + " / "
 					+ stepwidth.getTime());
 		}
-		return (stop.getTime() - start.getTime()) / ((double)stepwidth.getTime());
+		Calendar offset = Calendar.getInstance();
+		return (stop.getTime() - start.getTime()) / 
+				((double)stepwidth.getTime() + offset.get(Calendar.ZONE_OFFSET));
 	}
 	
 	/*

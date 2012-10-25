@@ -3,12 +3,9 @@ package de.ptb.epics.eve.data.scandescription.processors;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -789,7 +786,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			switch (this.currentAxis.getType()) {
 			case DATETIME:
 				try {
-					this.currentAxis.setStart(DateFormat.getInstance().parse(startValue));
+					this.currentAxis.setStart(new SimpleDateFormat(
+							"yyyy-MM-dd HH:mm:ss.SSS").parse(startValue));
 				} catch (ParseException e) {
 					logger.error(e.getMessage(), e);
 				}
@@ -811,7 +809,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			switch (this.currentAxis.getType()) {
 			case DATETIME:
 				try {
-					this.currentAxis.setStop(DateFormat.getInstance().parse(stopValue));
+					this.currentAxis.setStop(new SimpleDateFormat(
+							"yyyy-MM-dd HH:mm:ss.SSS").parse(stopValue));
 				} catch (ParseException e1) {
 					logger.error(e1.getMessage(), e1);
 				}
@@ -833,7 +832,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			switch (this.currentAxis.getType()) {
 			case DATETIME:
 				try {
-					this.currentAxis.setStepwidth(DateFormat.getInstance().parse(stepwidthValue));
+					this.currentAxis.setStepwidth(new SimpleDateFormat(
+							"HH:mm:ss.SSS").parse(stepwidthValue));
 				} catch (ParseException e) {
 					logger.error(e.getMessage(), e);
 				}

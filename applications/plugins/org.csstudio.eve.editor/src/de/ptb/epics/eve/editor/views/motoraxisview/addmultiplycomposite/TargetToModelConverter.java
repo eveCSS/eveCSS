@@ -78,8 +78,15 @@ public class TargetToModelConverter implements IConverter {
 				LOGGER.debug("converted " + date.toString() + " to Date");
 				return date;
 			} catch (ParseException e) {
-				LOGGER.error(e.getMessage(), e);
-				return null;
+				try {
+					Date date = new SimpleDateFormat("HH:mm:ss.SSS")
+							.parse((String) fromObject);
+					LOGGER.debug("converted " + date.toString() + " to Date");
+					return date;
+				} catch (ParseException e1) {
+					LOGGER.error(e1.getMessage(), e1);
+					return null;
+				}
 			}
 		default:
 			return null;

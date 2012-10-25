@@ -279,6 +279,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 * 
 	 * @param start
 	 */
+	@SuppressWarnings("unchecked")
 	public void setStart(Date start) {
 		if (!this.getType().equals(DataTypes.DATETIME)) {
 			return;

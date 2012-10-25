@@ -246,20 +246,15 @@ public abstract class AddMultiplyMode<T extends Object> extends AxisMode {
 	 */
 	@Override
 	public List<IModelError> getModelErrors() {
+		// there should be always some default value, all succeeding values 
+		// are only written to the model if they are valid, so there should 
+		// be no errors at all for Axis in AddMultiplyMode
 		List<IModelError> errors = new ArrayList<IModelError>();
 		if (this.getStart() == null) {
 			errors.add(new AxisError(this.axis, AxisErrorTypes.START_NOT_SET));
-		} else if (!this.axis.getMotorAxis().isValuePossible(
-				this.getStart().toString())) {
-			errors.add(new AxisError(this.axis,
-					AxisErrorTypes.START_VALUE_NOT_POSSIBLE));
 		}
 		if (this.getStop() == null) {
 			errors.add(new AxisError(this.axis, AxisErrorTypes.STOP_NOT_SET));
-		} else if (!this.axis.getMotorAxis().isValuePossible(
-				this.getStop().toString())) {
-			errors.add(new AxisError(this.axis,
-					AxisErrorTypes.STOP_VALUE_NOT_POSSIBLE));
 		}
 		if (this.getStepwidth() == null) {
 			errors.add(new AxisError(this.axis,

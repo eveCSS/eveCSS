@@ -19,6 +19,7 @@ public class AddMultiplyModeDate extends AddMultiplyMode<Date> {
 	
 	protected AddMultiplyModeDate(Axis axis) {
 		super(axis);
+		// initialize with default values
 		Calendar now = Calendar.getInstance();
 		now.set(Calendar.MINUTE, now.get(Calendar.MINUTE) + 1);
 		now.set(Calendar.SECOND, 0);
@@ -29,9 +30,9 @@ public class AddMultiplyModeDate extends AddMultiplyMode<Date> {
 		now.set(Calendar.DAY_OF_MONTH, 1);
 		now.set(Calendar.MONTH, 0);
 		now.set(Calendar.YEAR, 1970);
+		now.set(Calendar.AM_PM, Calendar.AM);
 		now.set(Calendar.HOUR, 0);
 		now.set(Calendar.MINUTE, 1);
-		now.set(Calendar.AM_PM, Calendar.AM);
 		this.stepwidth = now.getTime();
 	}
 
@@ -53,10 +54,12 @@ public class AddMultiplyModeDate extends AddMultiplyMode<Date> {
 					this.stepwidth));
 			break;
 		case STEPWIDTH:
-			// TODO Auto-generated method stub
+			this.setStepwidth(Sequence.getStepwidth(this.start, this.stop,
+					this.stepcount));
 			break;
 		case STOP:
-			// TODO Auto-generated method stub
+			this.setStop(Sequence.getStop(this.start, this.stepwidth,
+					this.stepcount));
 			break;
 		}
 		this.setAutoAdjust(autoAdjustValue);

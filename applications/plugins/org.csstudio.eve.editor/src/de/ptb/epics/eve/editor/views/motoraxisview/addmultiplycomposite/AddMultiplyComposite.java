@@ -158,7 +158,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		// end of: initialize step count elements
 		
 		this.mainAxisCheckBox = new Button(this, SWT.CHECK);
-		this.mainAxisCheckBox.setText("main axis");
+		this.mainAxisCheckBox.setText("Main Axis");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -260,7 +260,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		UpdateValueStrategy startModelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		startModelToTarget.setConverter(new ModelToTargetConverter(
-				this.addMultiplyMode.getType()));
+				this.addMultiplyMode.getType(), false));
 		startModelToTarget.setAfterGetValidator(new ModelToTargetValidator(
 				this.addMultiplyMode.getType()));
 		this.startBinding = context.bindValue(startTargetObservable,
@@ -284,7 +284,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		UpdateValueStrategy stopModelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		stopModelToTarget.setConverter(new ModelToTargetConverter(
-				this.addMultiplyMode.getType()));
+				this.addMultiplyMode.getType(), false));
 		stopModelToTarget.setAfterGetValidator(new ModelToTargetValidator(
 				this.addMultiplyMode.getType()));
 		this.stopBinding = context.bindValue(stopTargetObservable,
@@ -304,7 +304,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		UpdateValueStrategy stepwidthModelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		stepwidthModelToTarget.setConverter(new ModelToTargetConverter(
-				this.addMultiplyMode.getType()));
+				this.addMultiplyMode.getType(), true));
 		stepwidthModelToTarget.setAfterGetValidator(new ModelToTargetValidator(
 				this.addMultiplyMode.getType()));
 		this.stepwidthBinding = context.bindValue(stepwidthTargetObservable,
@@ -325,7 +325,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		UpdateValueStrategy stepcountModelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		stepcountModelToTarget.setConverter(new ModelToTargetConverter(
-				DataTypes.DOUBLE));
+				DataTypes.DOUBLE, false));
 		stepcountModelToTarget.setAfterGetValidator(new ModelToTargetValidator(
 				DataTypes.DOUBLE));
 		this.stepcountBinding = context.bindValue(stepcountTargetObservable,

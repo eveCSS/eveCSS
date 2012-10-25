@@ -16,6 +16,7 @@ public class AddMultiplyModeDouble extends AddMultiplyMode<Double> {
 	
 	protected AddMultiplyModeDouble(Axis axis) {
 		super(axis);
+		// initialize with default values
 		this.start = new Double(axis.getDefaultValue());
 		this.stop = new Double(axis.getDefaultValue());
 		this.stepwidth = new Double(axis.getDefaultValue());

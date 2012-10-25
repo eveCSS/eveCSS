@@ -24,10 +24,17 @@ public class ModelToTargetConverter implements IConverter {
 	
 	/**
 	 * @param type the type
+	 * @param shortDate if <code>true</code> converted date Strings are 
+	 * 		formatted with <code>HH:mm:ss.SSS</code>, 
+	 * 		<code>yyyy-MM-dd HH:mm:ss.SSS</code> will be used otherwise
 	 */
-	public ModelToTargetConverter(DataTypes type) {
+	public ModelToTargetConverter(DataTypes type, boolean shortDate) {
 		this.type = type;
-		this.dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		if (shortDate) {
+			this.dateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+		} else {
+			this.dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		}
 	}
 	
 	/**

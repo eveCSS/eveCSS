@@ -1,6 +1,5 @@
 package de.ptb.epics.eve.editor.views.motoraxisview.addmultiplycomposite;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -60,9 +59,14 @@ public class TargetToModelAfterGetValidator implements IValidator {
 				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
 						.parse((String) value);
 			} catch (ParseException e) {
-				LOGGER.debug("error validating target to model " + "(" + type
-						+ "): " + e.getMessage());
-				return ValidationStatus.error(e.getMessage());
+				try {
+					new SimpleDateFormat("HH:mm:ss.SSS")
+					.parse((String) value);
+				} catch (ParseException e1) {
+					LOGGER.debug("error validating target to model " + "(" + type
+							+ "): " + e1.getMessage());
+					return ValidationStatus.error(e1.getMessage());
+				}
 			}
 			break;
 		default:

@@ -16,6 +16,7 @@ public class AddMultiplyModeInt extends AddMultiplyMode<Integer> {
 	
 	protected AddMultiplyModeInt(Axis axis) {
 		super(axis);
+		// initialize with default values
 		this.start = new Integer(axis.getDefaultValue());
 		this.stop = new Integer(axis.getDefaultValue());
 		this.stepwidth = new Integer(axis.getDefaultValue());

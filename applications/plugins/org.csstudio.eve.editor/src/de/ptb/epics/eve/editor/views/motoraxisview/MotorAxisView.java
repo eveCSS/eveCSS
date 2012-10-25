@@ -162,7 +162,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			}
 		}
 		this.stepfunctionLabel = new Label(this.top, SWT.NONE);
-		this.stepfunctionLabel.setText("Step function: ");
+		this.stepfunctionLabel.setText("Step Function: ");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalIndent = 5;
@@ -183,7 +183,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		
 		// position mode elements
 		this.positionModeLabel = new Label(this.top, SWT.NONE);
-		this.positionModeLabel.setText("Position mode: ");
+		this.positionModeLabel.setText("Position Mode: ");
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.positionModeLabel.setLayoutData(gridData);
