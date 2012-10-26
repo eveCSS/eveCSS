@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="junit" basedir="../"> 
 
-  <property name="eclipse_dir" location="/opt/eclipse/eclipse-rcp-indigo-SR1/eclipse" />
+  <property name="eclipse_dir" location="/opt/eclipse/eclipse-rcp-indigo-SR2/eclipse" />
   <property name="doc_dir" location="../../../../eveCSS2-docs" />
   <property name="repo_dir" location="../../.." />
   <property name="css_app_dir" location="${repo_dir}/cs-studio-3.0/applications/plugins" />

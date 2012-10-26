@@ -7,7 +7,7 @@
 
   <property name="home_dir" location="${user.home}" /> <!-- ../../../.." /> -->
   <property name="repo_dir" location="../../../" />
-  <property name="eclipse_dir" location="/opt/eclipse/eclipse-rcp-indigo-SR1/eclipse" />
+  <property name="eclipse_dir" location="/opt/eclipse/eclipse-rcp-indigo-SR2/eclipse" />
   <property name="target_dir" location="${home_dir}/eveCSS2-docs/api/files/eveCSS" />
   <property name="css_core_dir" location="${repo_dir}/cs-studio-3.0/core/plugins" />
   <property name="css_app_dir" location="${repo_dir}/cs-studio-3.0/applications/plugins" />
