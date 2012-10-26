@@ -9,6 +9,7 @@ import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.swt.SWT;
 
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
@@ -49,7 +50,7 @@ public class LimitEditingSupport extends EditingSupport {
 			this.discreteValues.addAll(ce.getEvent().getMonitor().getDataType().
 							getDiscreteValues());
 			return new ComboBoxCellEditor(this.viewer.getTable(), 
-					this.discreteValues.toArray(new String[0])) {
+					this.discreteValues.toArray(new String[0]), SWT.READ_ONLY) {
 				@Override protected void focusLost() {
 					if(isActivated()) {
 						fireCancelEditor();
@@ -57,18 +58,19 @@ public class LimitEditingSupport extends EditingSupport {
 					deactivate();
 				}
 			};
-		} else {
-			TextCellEditor editor = new TextCellEditor(this.viewer.getTable()) {
-				@Override protected void focusLost() {
-					if(isActivated()) {
-						fireCancelEditor();
-					}
-					deactivate();
+		} 
+		TextCellEditor editor = new TextCellEditor(this.viewer.getTable()) {
+			@Override
+			protected void focusLost() {
+				if (isActivated()) {
+					fireCancelEditor();
 				}
-			};
-			editor.setValidator(new LimitValidator(ce));
-			return editor;
-		}
+				deactivate();
+			}
+		};
+		editor.setValidator(new LimitValidator(ce));
+		return editor;
+
 	}
 
 	/**

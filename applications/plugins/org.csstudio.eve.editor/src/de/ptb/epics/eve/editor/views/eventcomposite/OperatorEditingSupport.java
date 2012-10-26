@@ -8,6 +8,7 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.SWT;
 
 import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.DataTypes;
@@ -53,7 +54,7 @@ public class OperatorEditingSupport extends EditingSupport {
 			comparisonTypes.add(s);
 		}
 		return new ComboBoxCellEditor(this.viewer.getTable(), 
-				this.comparisonTypes.toArray(new String[0])) {
+				this.comparisonTypes.toArray(new String[0]), SWT.READ_ONLY) {
 			@Override protected void focusLost() {
 				if(isActivated()) {
 					fireCancelEditor();

@@ -9,6 +9,7 @@ import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.SWT;
 
 import de.ptb.epics.eve.data.EventActions;
 import de.ptb.epics.eve.data.EventTypes;
@@ -52,7 +53,7 @@ public class PauseEditingSupport extends EditingSupport {
 			this.eventActions.remove(new String("ONOFF"));
 		}
 		return new ComboBoxCellEditor(this.viewer.getTable(), 
-				eventActions.toArray(new String[0])) {
+				eventActions.toArray(new String[0]), SWT.READ_ONLY) {
 			@Override protected void focusLost() {
 				if(isActivated()) {
 					fireCancelEditor();
