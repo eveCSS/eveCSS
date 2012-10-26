@@ -12,10 +12,16 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.SelectObservableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -51,10 +57,14 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 	
 	private Button startRadioButton;
 	private Text startText;
+	private ControlDecoration startTextControlDecoration;
+	private SelectionListener startTextControlDecorationSelectionListener;
 	private VerifyListener startTextVerifyListener;
 	private FocusListener startTextFocusListener;
 	private Button stopRadioButton;
 	private Text stopText;
+	private ControlDecoration stopTextControlDecoration;
+	private SelectionListener stopTextControlDecorationSelectionListener;
 	private VerifyListener stopTextVerifyListener;
 	private FocusListener stopTextFocusListener;
 	private Button stepwidthRadioButton;
@@ -92,6 +102,10 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 	private IObservableValue mainAxisTargetObservable;
 	private IObservableValue mainAxisModelObservable;
 	
+	private Image contentProposalImage;
+	
+	private final String descriptionText = "Click to open Date Selector";
+	
 	/**
 	 * Constructor.
 	 * 
@@ -100,6 +114,11 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 	 */
 	public AddMultiplyComposite(final Composite parent, final int style) {
 		super(parent, style);
+		
+		this.contentProposalImage = FieldDecorationRegistry.getDefault()
+				.getFieldDecoration(
+						FieldDecorationRegistry.DEC_CONTENT_PROPOSAL)
+								.getImage();
 		
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
@@ -115,6 +134,15 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.startText.setLayoutData(gridData);
+		this.startTextControlDecoration = new ControlDecoration(this.startText,
+				SWT.LEFT | SWT.BOTTOM);
+		this.startTextControlDecoration.setImage(contentProposalImage);
+		this.startTextControlDecoration.setDescriptionText(this.descriptionText);
+		this.startTextControlDecoration.setShowOnlyOnFocus(true);
+		this.startTextControlDecorationSelectionListener = 
+				new DateTimeProposalSelectionListener(this.startText);
+		this.startTextControlDecoration.addSelectionListener(
+				startTextControlDecorationSelectionListener);
 		this.startTextFocusListener = new TextFocusListener(startText);
 		// end of: initialize start elements
 		
@@ -128,6 +156,15 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.stopText.setLayoutData(gridData);
+		this.stopTextControlDecoration = new ControlDecoration(this.stopText,
+				SWT.LEFT | SWT.BOTTOM);
+		this.stopTextControlDecoration.setImage(contentProposalImage);
+		this.stopTextControlDecoration.setDescriptionText(this.descriptionText);
+		this.stopTextControlDecoration.setShowOnlyOnFocus(true);
+		this.stopTextControlDecorationSelectionListener = 
+				new DateTimeProposalSelectionListener(this.stopText);
+		this.stopTextControlDecoration.addSelectionListener(
+				stopTextControlDecorationSelectionListener);
 		this.stopTextFocusListener = new TextFocusListener(stopText);
 		// end of: initialize stop elements
 		
@@ -204,6 +241,8 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 			break;
 		case DATETIME:
 			this.addMultiplyMode = (AddMultiplyMode<Date>)axis.getMode();
+			this.startTextControlDecoration.show();
+			this.stopTextControlDecoration.show();
 			break;
 		default:
 			LOGGER.warn("wrong axis type");
@@ -265,7 +304,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 				this.addMultiplyMode.getType()));
 		this.startBinding = context.bindValue(startTargetObservable,
 				startModelObservable, startTargetToModel, startModelToTarget);
-		ControlDecorationSupport.create(this.startBinding, SWT.LEFT);
+		ControlDecorationSupport.create(this.startBinding, SWT.LEFT | SWT.TOP);
 		
 		this.stopTargetObservable = SWTObservables.observeText(stopText, 
 				SWT.Modify);
@@ -289,7 +328,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 				this.addMultiplyMode.getType()));
 		this.stopBinding = context.bindValue(stopTargetObservable,
 				stopModelObservable, stopTargetToModel, stopModelToTarget);
-		ControlDecorationSupport.create(this.stopBinding, SWT.LEFT);
+		ControlDecorationSupport.create(this.stopBinding, SWT.LEFT | SWT.TOP);
 		
 		this.stepwidthTargetObservable = SWTObservables.observeText(
 				stepwidthText, SWT.Modify);
@@ -310,7 +349,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		this.stepwidthBinding = context.bindValue(stepwidthTargetObservable,
 				stepwidthModelObservable, stepwidthTargetToModel,
 				stepwidthModelToTarget);
-		ControlDecorationSupport.create(this.stepwidthBinding, SWT.LEFT);
+		ControlDecorationSupport.create(this.stepwidthBinding, SWT.LEFT | SWT.TOP);
 		
 		this.stepcountTargetObservable = SWTObservables.observeText(
 				stepcountText, SWT.Modify);
@@ -423,6 +462,9 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 			this.mainAxisBinding.dispose();
 			this.mainAxisTargetObservable.dispose();
 			this.mainAxisModelObservable.dispose();
+			
+			this.startTextControlDecoration.hide();
+			this.stopTextControlDecoration.hide();
 		}
 		if (this.axis != null) {
 			this.axis.getMotorAxis().removePropertyChangeListener("highlimit",
@@ -565,6 +607,52 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 			 			addMultiplyMode.getAxis().getMotorAxis().getName());*/
 				//stepcountText.addVerifyListener(stepcountTextVerifyListener);
 			}
+		}
+	}
+	
+	/**
+	 * @author Marcus Michalsky
+	 * @since 1.7
+	 */
+	private class DateTimeProposalSelectionListener implements SelectionListener {
+
+		private Text text;
+		
+		/**
+		 * @param text the text field to fill
+		 */
+		public DateTimeProposalSelectionListener(Text text) {
+			this.text = text;
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@SuppressWarnings("unchecked")
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			DateSelectorDialog dialog = new DateSelectorDialog(getShell());
+			dialog.open();
+			if (dialog.getReturnCode() == Dialog.OK) {
+				LOGGER.debug("OK");
+				LOGGER.debug(dialog.getDate().toString());
+				if (this.text == startText) {
+					((AddMultiplyMode<Date>) axis.getMode()).setStart(dialog
+							.getDate());
+				} else if (this.text == stopText) {
+					((AddMultiplyMode<Date>) axis.getMode()).setStop(dialog
+							.getDate());
+				}
+			} else {
+				LOGGER.debug("cancel");
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
 		}
 	}
 }
