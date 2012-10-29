@@ -7,6 +7,8 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 
+import javax.xml.datatype.Duration;
+
 import org.apache.log4j.Logger;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
@@ -1728,11 +1730,22 @@ public class ScanDescriptionSaver implements
 					this.contentHandler.startElement("", "start", "start",
 							this.atts);
 					if (axis.getType().equals(DataTypes.DATETIME)) {
-						String date = new SimpleDateFormat(
-								"yyyy-MM-dd HH:mm:ss.SSS").format(axis
-								.getStart());
-						this.contentHandler.characters(date.toCharArray(), 0,
-								date.length());
+						switch (axis.getPositionMode()) {
+						case ABSOLUTE:
+							String date = new SimpleDateFormat(
+									"yyyy-MM-dd HH:mm:ss.SSS").format(axis
+									.getStart());
+							this.contentHandler.characters(date.toCharArray(), 0,
+									date.length());
+							break;
+						case RELATIVE:
+							String duration = ((Duration)axis.getStart()).
+									toString();
+							this.contentHandler.characters(
+									duration.toCharArray(), 0,
+											duration.length());
+							break;
+						}
 					} else {
 					this.contentHandler.characters(axis.getStart().toString()
 						.toCharArray(), 0, axis.getStart().toString().length());
@@ -1746,11 +1759,22 @@ public class ScanDescriptionSaver implements
 					this.contentHandler.startElement("", "stop", "stop",
 							this.atts);
 					if (axis.getType().equals(DataTypes.DATETIME)) {
-						String date = new SimpleDateFormat(
-								"yyyy-MM-dd HH:mm:ss.SSS").format(axis
-								.getStop());
-						this.contentHandler.characters(date.toCharArray(), 0,
-								date.length());
+						switch (axis.getPositionMode()) {
+						case ABSOLUTE:
+							String date = new SimpleDateFormat(
+									"yyyy-MM-dd HH:mm:ss.SSS").format(axis
+									.getStop());
+							this.contentHandler.characters(date.toCharArray(), 0,
+									date.length());
+							break;
+						case RELATIVE:
+							String duration = ((Duration)axis.getStop()).
+									toString();
+							this.contentHandler.characters(
+									duration.toCharArray(), 0,
+											duration.length());
+							break;
+						}
 					} else {
 						this.contentHandler.characters(
 								axis.getStop().toString().toCharArray(), 0, 
@@ -1765,11 +1789,22 @@ public class ScanDescriptionSaver implements
 					this.contentHandler.startElement("", "stepwidth",
 							"stepwidth", this.atts);
 					if (axis.getType().equals(DataTypes.DATETIME)) {
-						String date = new SimpleDateFormat(
-								"HH:mm:ss.SSS").format(axis
-								.getStepwidth());
-						this.contentHandler.characters(date.toCharArray(), 0,
-								date.length());
+						switch (axis.getPositionMode()) {
+						case ABSOLUTE:
+							String date = new SimpleDateFormat(
+									"HH:mm:ss.SSS").format(axis
+									.getStepwidth());
+							this.contentHandler.characters(date.toCharArray(), 0,
+									date.length());
+							break;
+						case RELATIVE:
+							String duration = ((Duration)axis.getStepwidth()).
+									toString();
+							this.contentHandler.characters(
+									duration.toCharArray(), 0,
+											duration.length());
+							break;
+						}
 					} else {
 					this.contentHandler.characters(axis.getStepwidth()
 							.toString().toCharArray(), 0, axis.getStepwidth()

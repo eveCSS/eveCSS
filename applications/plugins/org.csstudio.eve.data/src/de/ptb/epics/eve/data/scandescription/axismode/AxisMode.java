@@ -32,17 +32,32 @@ public abstract class AxisMode implements IModelErrorProvider {
 		DataTypes type = axis.getType();
 		switch (stepfunction) {
 		case ADD: 
-		case MULTIPLY: switch(type) {
-			case DATETIME: return new AddMultiplyModeDate(axis);
-			case DOUBLE: return new AddMultiplyModeDouble(axis);
-			case INT: return new AddMultiplyModeInt(axis);
-			default: throw new IllegalArgumentException("unknown axis type");
+		case MULTIPLY:
+			switch (type) {
+			case DATETIME:
+				switch (axis.getPositionMode()) {
+				case ABSOLUTE:
+					return new AddMultiplyModeDate(axis);
+				case RELATIVE:
+					return new AddMultiplyModeDuration(axis);
+				}
+				break;
+			case DOUBLE:
+				return new AddMultiplyModeDouble(axis);
+			case INT:
+				return new AddMultiplyModeInt(axis);
+			default:
+				throw new IllegalArgumentException("unknown axis type");
 			}
-		case FILE: return new FileMode(axis);
-		case PLUGIN: return new PluginMode(axis);
-		case POSITIONLIST: return new PositionlistMode(axis);
-		default: throw new IllegalArgumentException(
-				"Incorrect Stepfunction code");
+			throw new IllegalArgumentException("Incorrect Stepfunction code");
+		case FILE: 
+			return new FileMode(axis);
+		case PLUGIN: 
+			return new PluginMode(axis);
+		case POSITIONLIST: 
+			return new PositionlistMode(axis);
+		default: 
+			throw new IllegalArgumentException("Incorrect Stepfunction code");
 		}
 	}
 	

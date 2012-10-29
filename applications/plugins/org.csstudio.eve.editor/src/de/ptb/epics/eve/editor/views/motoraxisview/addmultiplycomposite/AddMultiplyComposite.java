@@ -4,12 +4,15 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Date;
 
+import javax.xml.datatype.Duration;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.SelectObservableValue;
+import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.dialogs.Dialog;
@@ -30,6 +33,7 @@ import org.eclipse.swt.widgets.Text;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisViewComposite;
@@ -69,6 +73,8 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 	private FocusListener stopTextFocusListener;
 	private Button stepwidthRadioButton;
 	private Text stepwidthText;
+	private ControlDecoration stepwidthTextControlDecoration;
+	private SelectionListener stepwidhtTextControlDecorationSelectionListener;
 	private VerifyListener stepwidthTextVerifyListener;
 	private FocusListener stepwidthTextFocusListener;
 	private Button stepcountRadioButton;
@@ -178,6 +184,16 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.stepwidthText.setLayoutData(gridData);
+		this.stepwidthTextControlDecoration = new ControlDecoration(
+				this.stepwidthText, SWT.LEFT | SWT.BOTTOM);
+		this.stepwidthTextControlDecoration.setImage(contentProposalImage);
+		this.stepwidthTextControlDecoration
+				.setDescriptionText(this.descriptionText);
+		this.stepwidthTextControlDecoration.setShowOnlyOnFocus(true);
+		this.stepwidhtTextControlDecorationSelectionListener = 
+				new DateTimeProposalSelectionListener(this.stepwidthText);
+		this.stepwidthTextControlDecoration.addSelectionListener(
+				stepwidhtTextControlDecorationSelectionListener);
 		this.stepwidthTextFocusListener = new TextFocusListener(stepwidthText);
 		// end of: initialize step width elements 
 		
@@ -240,9 +256,16 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 			this.addMultiplyMode = (AddMultiplyMode<Integer>)axis.getMode();
 			break;
 		case DATETIME:
-			this.addMultiplyMode = (AddMultiplyMode<Date>)axis.getMode();
-			this.startTextControlDecoration.show();
-			this.stopTextControlDecoration.show();
+			if (axis.getPositionMode().equals(PositionMode.ABSOLUTE)) {
+				this.addMultiplyMode = (AddMultiplyMode<Date>)axis.getMode();
+				this.startTextControlDecoration.show();
+				this.stopTextControlDecoration.show();
+			} else if (axis.getPositionMode().equals(PositionMode.RELATIVE)) {
+				this.addMultiplyMode = (AddMultiplyMode<Duration>)axis.getMode();
+				this.startTextControlDecoration.show();
+				this.stopTextControlDecoration.show();
+				this.stepwidthTextControlDecoration.show();
+			}
 			break;
 		default:
 			LOGGER.warn("wrong axis type");
@@ -289,17 +312,19 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		UpdateValueStrategy startTargetToModel = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		startTargetToModel.setConverter(new TargetToModelConverter(
-				this.addMultiplyMode.getType()));
+				this.addMultiplyMode.getType(), this.addMultiplyMode.getAxis()));
 		startTargetToModel.setAfterGetValidator(
 				new TargetToModelAfterGetValidator(
-						this.addMultiplyMode.getType()));
+						this.addMultiplyMode.getType(), this.addMultiplyMode
+								.getAxis()));
 		startTargetToModel.setAfterConvertValidator(
 				new TargetToModelAfterConvertValidator(
 						this.addMultiplyMode.getAxis()));
 		UpdateValueStrategy startModelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		startModelToTarget.setConverter(new ModelToTargetConverter(
-				this.addMultiplyMode.getType(), false));
+				this.addMultiplyMode.getType(), this.addMultiplyMode.getAxis(),
+				false));
 		startModelToTarget.setAfterGetValidator(new ModelToTargetValidator(
 				this.addMultiplyMode.getType()));
 		this.startBinding = context.bindValue(startTargetObservable,
@@ -313,17 +338,19 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		UpdateValueStrategy stopTargetToModel = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		stopTargetToModel.setConverter(new TargetToModelConverter(
-				this.addMultiplyMode.getType()));
+				this.addMultiplyMode.getType(), this.addMultiplyMode.getAxis()));
 		stopTargetToModel.setAfterGetValidator(
 				new TargetToModelAfterGetValidator(
-						this.addMultiplyMode.getType()));
+						this.addMultiplyMode.getType(), this.addMultiplyMode
+								.getAxis()));
 		stopTargetToModel.setAfterConvertValidator(
 				new TargetToModelAfterConvertValidator(
 						this.addMultiplyMode.getAxis()));
 		UpdateValueStrategy stopModelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		stopModelToTarget.setConverter(new ModelToTargetConverter(
-				this.addMultiplyMode.getType(), false));
+				this.addMultiplyMode.getType(), this.addMultiplyMode.getAxis(),
+				false));
 		stopModelToTarget.setAfterGetValidator(new ModelToTargetValidator(
 				this.addMultiplyMode.getType()));
 		this.stopBinding = context.bindValue(stopTargetObservable,
@@ -337,13 +364,14 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		UpdateValueStrategy stepwidthTargetToModel = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		stepwidthTargetToModel.setConverter(new TargetToModelConverter(
-				this.addMultiplyMode.getType()));
+				this.addMultiplyMode.getType(), this.addMultiplyMode.getAxis()));
 		stepwidthTargetToModel.setAfterGetValidator(new TargetToModelAfterGetValidator(
-				this.addMultiplyMode.getType()));
+				this.addMultiplyMode.getType(), this.addMultiplyMode.getAxis()));
 		UpdateValueStrategy stepwidthModelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		stepwidthModelToTarget.setConverter(new ModelToTargetConverter(
-				this.addMultiplyMode.getType(), true));
+				this.addMultiplyMode.getType(), this.addMultiplyMode.getAxis(),
+				true));
 		stepwidthModelToTarget.setAfterGetValidator(new ModelToTargetValidator(
 				this.addMultiplyMode.getType()));
 		this.stepwidthBinding = context.bindValue(stepwidthTargetObservable,
@@ -358,13 +386,13 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		UpdateValueStrategy stepcountTargetToModel = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		stepcountTargetToModel.setConverter(new TargetToModelConverter(
-				DataTypes.DOUBLE));
+				DataTypes.DOUBLE, this.addMultiplyMode.getAxis()));
 		stepcountTargetToModel.setAfterGetValidator(new TargetToModelAfterGetValidator(
-				DataTypes.DOUBLE));
+				DataTypes.DOUBLE, this.addMultiplyMode.getAxis()));
 		UpdateValueStrategy stepcountModelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		stepcountModelToTarget.setConverter(new ModelToTargetConverter(
-				DataTypes.DOUBLE, false));
+				DataTypes.DOUBLE, this.addMultiplyMode.getAxis(), false));
 		stepcountModelToTarget.setAfterGetValidator(new ModelToTargetValidator(
 				DataTypes.DOUBLE));
 		this.stepcountBinding = context.bindValue(stepcountTargetObservable,
@@ -465,6 +493,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 			
 			this.startTextControlDecoration.hide();
 			this.stopTextControlDecoration.hide();
+			this.stepwidthTextControlDecoration.hide();
 		}
 		if (this.axis != null) {
 			this.axis.getMotorAxis().removePropertyChangeListener("highlimit",
@@ -538,11 +567,12 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		LOGGER.debug(e.getPropertyName());
 		if (e.getPropertyName().equals(AddMultiplyMode.ADJUST_PARAMETER_PROP)) {
 			this.setEnabled();
-		} else if (e.getPropertyName().equals("highlimit") ||
-				e.getPropertyName().equals("lowlimit") ||
-				e.getPropertyName().equals("positionMode")) {
+		} else if (e.getPropertyName().equals("highlimit") || 
+				e.getPropertyName().equals("lowlimit")) {
 			this.startBinding.updateTargetToModel();
 			this.stopBinding.updateTargetToModel();
+		} else if (e.getPropertyName().equals("positionMode")) {
+			this.setAxis(this.axis);
 		}
 	}
 	
@@ -631,20 +661,45 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		@SuppressWarnings("unchecked")
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			DateSelectorDialog dialog = new DateSelectorDialog(getShell());
-			dialog.open();
-			if (dialog.getReturnCode() == Dialog.OK) {
-				LOGGER.debug("OK");
-				LOGGER.debug(dialog.getDate().toString());
-				if (this.text == startText) {
-					((AddMultiplyMode<Date>) axis.getMode()).setStart(dialog
-							.getDate());
-				} else if (this.text == stopText) {
-					((AddMultiplyMode<Date>) axis.getMode()).setStop(dialog
-							.getDate());
+			switch (axis.getPositionMode()) {
+			case ABSOLUTE:
+				DateSelectorDialog dialog = new DateSelectorDialog(getShell());
+				dialog.open();
+				if (dialog.getReturnCode() == Dialog.OK) {
+					LOGGER.debug("OK");
+					LOGGER.debug(dialog.getDate());
+					if (this.text == startText) {
+						((AddMultiplyMode<Date>) axis.getMode()).setStart(dialog
+								.getDate());
+					} else if (this.text == stopText) {
+						((AddMultiplyMode<Date>) axis.getMode()).setStop(dialog
+								.getDate());
+					}
+				} else {
+					LOGGER.debug("cancel");
 				}
-			} else {
-				LOGGER.debug("cancel");
+				break;
+			case RELATIVE:
+				DurationSelectorDialog durationDialog = 
+						new DurationSelectorDialog(getShell());
+				durationDialog.open();
+				if (durationDialog.getReturnCode() == Dialog.OK) {
+					LOGGER.debug("OK");
+					LOGGER.debug(durationDialog.getDuration());
+					if (this.text == startText) {
+						((AddMultiplyMode<Duration>) axis.getMode())
+								.setStart(durationDialog.getDuration());
+					} else if (this.text == stopText) {
+						((AddMultiplyMode<Duration>) axis.getMode())
+						.setStop(durationDialog.getDuration());
+					} else if (this.text == stepwidthText) {
+						((AddMultiplyMode<Duration>) axis.getMode())
+						.setStepwidth(durationDialog.getDuration());
+					}
+				} else {
+					LOGGER.debug("cancel");
+				}
+				break;
 			}
 		}
 

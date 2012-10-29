@@ -3,12 +3,16 @@ package de.ptb.epics.eve.editor.views.motoraxisview.addmultiplycomposite;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 import de.ptb.epics.eve.data.DataTypes;
+import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.util.math.Constants;
 
 /**
@@ -21,12 +25,15 @@ public class TargetToModelAfterGetValidator implements IValidator {
 			.getLogger(TargetToModelAfterGetValidator.class.getName());
 	
 	private DataTypes type;
+	private Axis axis;
 	
 	/**
 	 * @param type the type
+	 * @param axis the axis
 	 */
-	public TargetToModelAfterGetValidator(DataTypes type) {
+	public TargetToModelAfterGetValidator(DataTypes type, Axis axis) {
 		this.type = type;
+		this.axis = axis;
 	}
 	
 	/**
@@ -55,18 +62,33 @@ public class TargetToModelAfterGetValidator implements IValidator {
 			}
 			break;
 		case DATETIME:
-			try {
-				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
-						.parse((String) value);
-			} catch (ParseException e) {
+			switch (this.axis.getPositionMode()) {
+			case ABSOLUTE:
 				try {
-					new SimpleDateFormat("HH:mm:ss.SSS")
-					.parse((String) value);
-				} catch (ParseException e1) {
-					LOGGER.debug("error validating target to model " + "(" + type
-							+ "): " + e1.getMessage());
-					return ValidationStatus.error(e1.getMessage());
+					new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
+							.parse((String) value);
+				} catch (ParseException e) {
+					try {
+						new SimpleDateFormat("HH:mm:ss.SSS")
+						.parse((String) value);
+					} catch (ParseException e1) {
+						LOGGER.debug("error validating target to model " + 
+								"(" + type + "): " + e1.getMessage());
+						return ValidationStatus.error(e1.getMessage());
+					}
 				}
+				break;
+			case RELATIVE:
+				try {
+					DatatypeFactory factory = DatatypeFactory.newInstance();
+					factory.newDuration("P0Y0M0DT" + (String)value);
+				} catch(IllegalArgumentException e) {
+					return ValidationStatus.error("Invalid duration");
+				} catch (DatatypeConfigurationException e) {
+					LOGGER.error(e.getMessage(), e);
+					return ValidationStatus.error(e.getMessage());
+				}
+				break;
 			}
 			break;
 		default:

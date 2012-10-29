@@ -11,6 +11,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+
 import org.apache.log4j.Logger;
 import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
 import org.csstudio.swt.xygraph.figures.Trace.TraceType;
@@ -785,11 +788,24 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			String startValue = textBuffer.toString();
 			switch (this.currentAxis.getType()) {
 			case DATETIME:
-				try {
-					this.currentAxis.setStart(new SimpleDateFormat(
-							"yyyy-MM-dd HH:mm:ss.SSS").parse(startValue));
-				} catch (ParseException e) {
-					logger.error(e.getMessage(), e);
+				switch (this.currentAxis.getPositionMode()) {
+				case ABSOLUTE:
+					try {
+						this.currentAxis.setStart(new SimpleDateFormat(
+								"yyyy-MM-dd HH:mm:ss.SSS").parse(startValue));
+					} catch (ParseException e) {
+						logger.error(e.getMessage(), e);
+					}
+					break;
+				case RELATIVE:
+					try {
+						DatatypeFactory factory = DatatypeFactory.newInstance();
+						this.currentAxis.setStart(factory
+								.newDuration(textBuffer.toString()));
+					} catch (DatatypeConfigurationException e2) {
+						logger.error(e2.getMessage(), e2);
+					}
+					break;
 				}
 				break;
 			case DOUBLE:
@@ -808,11 +824,24 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			String stopValue = textBuffer.toString();
 			switch (this.currentAxis.getType()) {
 			case DATETIME:
-				try {
-					this.currentAxis.setStop(new SimpleDateFormat(
-							"yyyy-MM-dd HH:mm:ss.SSS").parse(stopValue));
-				} catch (ParseException e1) {
-					logger.error(e1.getMessage(), e1);
+				switch (this.currentAxis.getPositionMode()) {
+				case ABSOLUTE:
+					try {
+						this.currentAxis.setStop(new SimpleDateFormat(
+								"yyyy-MM-dd HH:mm:ss.SSS").parse(stopValue));
+					} catch (ParseException e1) {
+						logger.error(e1.getMessage(), e1);
+					}
+					break;
+				case RELATIVE:
+					try {
+						DatatypeFactory factory = DatatypeFactory.newInstance();
+						this.currentAxis.setStop(factory
+								.newDuration(textBuffer.toString()));
+					} catch (DatatypeConfigurationException e2) {
+						logger.error(e2.getMessage(), e2);
+					}
+					break;
 				}
 				break;
 			case DOUBLE:
@@ -831,11 +860,24 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			String stepwidthValue = textBuffer.toString();
 			switch (this.currentAxis.getType()) {
 			case DATETIME:
-				try {
-					this.currentAxis.setStepwidth(new SimpleDateFormat(
-							"HH:mm:ss.SSS").parse(stepwidthValue));
-				} catch (ParseException e) {
-					logger.error(e.getMessage(), e);
+				switch (this.currentAxis.getPositionMode()) {
+				case ABSOLUTE:
+					try {
+						this.currentAxis.setStepwidth(new SimpleDateFormat(
+								"HH:mm:ss.SSS").parse(stepwidthValue));
+					} catch (ParseException e) {
+						logger.error(e.getMessage(), e);
+					}
+					break;
+				case RELATIVE:
+					try {
+						DatatypeFactory factory = DatatypeFactory.newInstance();
+						this.currentAxis.setStepwidth(factory
+								.newDuration(textBuffer.toString()));
+					} catch (DatatypeConfigurationException e2) {
+						logger.error(e2.getMessage(), e2);
+					}
+					break;
 				}
 				break;
 			case DOUBLE:

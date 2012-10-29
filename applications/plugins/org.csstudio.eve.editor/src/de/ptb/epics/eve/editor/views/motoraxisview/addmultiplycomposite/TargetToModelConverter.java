@@ -4,10 +4,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.Duration;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.conversion.IConverter;
 
 import de.ptb.epics.eve.data.DataTypes;
+import de.ptb.epics.eve.data.scandescription.Axis;
 
 /**
  * @author Marcus Michalsky
@@ -19,12 +24,15 @@ public class TargetToModelConverter implements IConverter {
 			.getLogger(TargetToModelConverter.class.getName());
 	
 	private DataTypes type;
+	private Axis axis;
 	
 	/**
 	 * @param type the type
+	 * @param axis the axis
 	 */
-	public TargetToModelConverter(DataTypes type) {
+	public TargetToModelConverter(DataTypes type, Axis axis) {
 		this.type = type;
+		this.axis = axis;
 	}
 	
 	/**
@@ -46,7 +54,13 @@ public class TargetToModelConverter implements IConverter {
 		case INT: 
 			return Integer.class;
 		case DATETIME:
-			return Date.class;
+			switch (this.axis.getPositionMode()) {
+			case ABSOLUTE:
+				return Date.class;
+			case RELATIVE:
+				return Duration.class;
+			}
+			return null;
 		default:
 			return null;
 		}
@@ -72,24 +86,37 @@ public class TargetToModelConverter implements IConverter {
 			LOGGER.debug("converted " + iVal.toString() + " to Integer");
 			return iVal;
 		case DATETIME:
-			try {
-				Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
-						.parse((String) fromObject);
-				LOGGER.debug("converted " + date.toString() + " to Date");
-				return date;
-			} catch (ParseException e) {
+			switch (this.axis.getPositionMode()) {
+			case ABSOLUTE:
 				try {
-					Date date = new SimpleDateFormat("HH:mm:ss.SSS")
+					Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
 							.parse((String) fromObject);
 					LOGGER.debug("converted " + date.toString() + " to Date");
 					return date;
-				} catch (ParseException e1) {
-					LOGGER.error(e1.getMessage(), e1);
-					return null;
+				} catch (ParseException e) {
+					try {
+						Date date = new SimpleDateFormat("HH:mm:ss.SSS")
+								.parse((String) fromObject);
+						LOGGER.debug("converted " + date.toString() + " to Date");
+						return date;
+					} catch (ParseException e1) {
+						LOGGER.error(e1.getMessage(), e1);
+						return null;
+					}
 				}
+			case RELATIVE:
+				try {
+					DatatypeFactory factory = DatatypeFactory.newInstance();
+					return factory.newDuration("P0Y0M0DT" + (String)fromObject);
+				} catch (DatatypeConfigurationException e) {
+					LOGGER.error(e.getMessage(), e);
+				}
+				break;
 			}
+			break;
 		default:
 			return null;
 		}
+		return null;
 	}
 }

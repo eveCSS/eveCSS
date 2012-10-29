@@ -3,6 +3,10 @@ package de.ptb.epics.eve.util.math;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.Duration;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -63,6 +67,27 @@ public class Sequence {
 	}
 	
 	/**
+	 * Calculates the <code>start</code> value for the given values.
+	 * 
+	 * @param stop end value of the sequence
+	 * @param stepwidth distance between each value
+	 * @param stepcount number of steps
+	 * @return the start value
+	 */
+	public static Duration getStart(Duration stop, Duration stepwidth,
+			double stepcount) {
+		try {
+			Calendar cal = Calendar.getInstance();
+			DatatypeFactory factory = DatatypeFactory.newInstance();
+			return factory.newDuration((long) (stop.getTimeInMillis(cal) - 
+					(stepwidth.getTimeInMillis(cal) * stepcount)));
+		} catch (DatatypeConfigurationException e) {
+			LOGGER.error(e.getMessage(), e);
+			return null;
+		}
+	}
+	
+	/**
 	 * Calculates the <code>stop</code> value for the given values.
 	 * 
 	 * @param start start value of the sequence
@@ -102,6 +127,27 @@ public class Sequence {
 				.adjustStepwidth(stepwidth).getTime().getTime() + stop
 				.get(Calendar.ZONE_OFFSET)) * stepcount)));
 		return stop.getTime();
+	}
+	
+	/**
+	 * Calculates the <code>stop</code> value for the given values.
+	 * 
+	 * @param start start value of the sequence
+	 * @param stepwidth distance between each value
+	 * @param stepcount number of steps
+	 * @return the stop value
+	 */
+	public static Duration getStop(Duration start, Duration stepwidth,
+			double stepcount) {
+		try {
+			Calendar cal = Calendar.getInstance();
+			DatatypeFactory factory = DatatypeFactory.newInstance();
+			return factory.newDuration((long) (start.getTimeInMillis(cal) + 
+					(stepwidth.getTimeInMillis(cal) * stepcount)));
+		} catch (DatatypeConfigurationException e) {
+			LOGGER.error(e.getMessage(), e);
+			return null;
+		}
 	}
 	
 	/**
@@ -149,6 +195,27 @@ public class Sequence {
 	}
 	
 	/**
+	 * Calculates the distance between each value.
+	 * 
+	 * @param start start value of the sequence
+	 * @param stop stop value of the sequence
+	 * @param stepcount number of steps
+	 * @return the distance between each value
+	 */
+	public static Duration getStepwidth(Duration start, Duration stop,
+			double stepcount) {
+		try {
+			Calendar cal = Calendar.getInstance();
+			DatatypeFactory factory = DatatypeFactory.newInstance();
+			return factory.newDuration((long) ((stop.getTimeInMillis(cal) - 
+					start.getTimeInMillis(cal)) / stepcount));
+		} catch (DatatypeConfigurationException e) {
+			LOGGER.error(e.getMessage(), e);
+			return null;
+		}
+	}
+	
+	/**
 	 * Calculates the number of steps.
 	 * 
 	 * @param start start value of the sequence
@@ -192,6 +259,21 @@ public class Sequence {
 		Calendar offset = Calendar.getInstance();
 		return (stop.getTime() - start.getTime()) / 
 				((double)stepwidth.getTime() + offset.get(Calendar.ZONE_OFFSET));
+	}
+	
+	/**
+	 * Calculates the number of steps.
+	 * 
+	 * @param start start value of the sequence
+	 * @param stop stop value of the sequence
+	 * @param stepwidth distance between each value
+	 * @return the number of steps
+	 */
+	public static double getStepcount(Duration start, Duration stop,
+			Duration stepwidth) {
+		Calendar cal = Calendar.getInstance();
+		return (stop.getTimeInMillis(cal) - start.getTimeInMillis(cal))
+				/ (double)stepwidth.getTimeInMillis(cal);
 	}
 	
 	/*

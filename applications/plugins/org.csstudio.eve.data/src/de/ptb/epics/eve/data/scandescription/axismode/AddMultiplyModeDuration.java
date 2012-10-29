@@ -7,6 +7,7 @@ import javax.xml.datatype.Duration;
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.util.math.Sequence;
 
 /**
  * @author Marcus Michalsky
@@ -41,16 +42,20 @@ public class AddMultiplyModeDuration extends AddMultiplyMode<Duration> {
 		LOGGER.debug("adjusting");
 		switch (this.getAdjustParameter()) {
 		case START:
-			// TODO
+			this.setStart(Sequence.getStart(this.stop, this.stepwidth,
+					this.stepcount));
 			break;
 		case STEPCOUNT:
-			// TODO
+			this.setStepcount(Sequence.getStepcount(this.start, this.stop,
+					this.stepwidth));
 			break;
 		case STEPWIDTH:
-			// TODO
+			this.setStepwidth(Sequence.getStepwidth(this.start, this.stop,
+					this.stepcount));
 			break;
 		case STOP:
-			// TODO
+			this.setStop(Sequence.getStop(this.start, this.stepwidth,
+					this.stepcount));
 			break;
 		}
 		this.setAutoAdjust(autoAdjustValue);

@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.xml.datatype.Duration;
+
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.DataTypes;
@@ -101,6 +103,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 			this.mode.removePropertyChangeListener(this);
 		}
 		this.stepfunction = stepfunction;
+		// listener to forward mode changes to the axis (dirty state)
 		this.mode = AxisMode.newMode(stepfunction, this);
 		this.mode.addPropertyChangeListener(this);
 		updateListeners();
@@ -154,8 +157,11 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 * @param positionMode the position mode that should be set
 	 */
 	public void setPositionMode(final PositionMode positionMode) {
+		PositionMode oldValue = this.positionMode;
+		this.positionMode = positionMode;
+		this.setStepfunction(this.getStepfunction());
 		this.propertyChangeSupport.firePropertyChange("positionMode",
-				this.positionMode, this.positionMode = positionMode);
+				oldValue, this.positionMode);
 		updateListeners();
 	}
 	
@@ -251,6 +257,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 * 
 	 * @param start
 	 */
+	@SuppressWarnings("unchecked")
 	public void setStart(int start) {
 		if (!this.getType().equals(DataTypes.INT)) {
 			return;
@@ -265,6 +272,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 * 
 	 * @param start
 	 */
+	@SuppressWarnings("unchecked")
 	public void setStart(double start) {
 		if (!this.getType().equals(DataTypes.DOUBLE)) {
 			return;
@@ -292,6 +300,21 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	
 	/**
 	 * 
+	 * @param start
+	 */
+	@SuppressWarnings("unchecked")
+	public void setStart(Duration start) {
+		if (!this.getType().equals(DataTypes.DATETIME)) {
+			return;
+		}
+		if (this.getStepfunction().equals(Stepfunctions.ADD) ||
+				this.getStepfunction().equals(Stepfunctions.MULTIPLY)) {
+			((AddMultiplyMode<Duration>)this.mode).setStart(start);
+		}
+	}
+	
+	/**
+	 * 
 	 * @return
 	 */
 	public Object getStop() {
@@ -306,6 +329,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 * 
 	 * @param stop
 	 */
+	@SuppressWarnings("unchecked")
 	public void setStop(int stop) {
 		if (!this.getType().equals(DataTypes.INT)) {
 			return;
@@ -320,6 +344,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 * 
 	 * @param stop
 	 */
+	@SuppressWarnings("unchecked")
 	public void setStop(double stop) {
 		if (!this.getType().equals(DataTypes.DOUBLE)) {
 			return;
@@ -334,6 +359,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 * 
 	 * @param stop
 	 */
+	@SuppressWarnings("javadoc")
 	public void setStop(Date stop) {
 		if (!this.getType().equals(DataTypes.DATETIME)) {
 			return;
@@ -341,6 +367,21 @@ public class Axis extends AbstractMainPhaseBehavior implements
 		if (this.getStepfunction().equals(Stepfunctions.ADD) ||
 				this.getStepfunction().equals(Stepfunctions.MULTIPLY)) {
 			((AddMultiplyMode<Date>)this.mode).setStop(stop);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param stop
+	 */
+	@SuppressWarnings("unchecked")
+	public void setStop(Duration stop) {
+		if (!this.getType().equals(DataTypes.DATETIME)) {
+			return;
+		}
+		if (this.getStepfunction().equals(Stepfunctions.ADD) ||
+				this.getStepfunction().equals(Stepfunctions.MULTIPLY)) {
+			((AddMultiplyMode<Duration>)this.mode).setStop(stop);
 		}
 	}
 	
@@ -360,6 +401,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 * 
 	 * @param stepwidth
 	 */
+	@SuppressWarnings("unchecked")
 	public void setStepwidth(int stepwidth) {
 		if (!this.getType().equals(DataTypes.INT)) {
 			return;
@@ -374,6 +416,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 * 
 	 * @param stepwidth
 	 */
+	@SuppressWarnings("unchecked")
 	public void setStepwidth(double stepwidth) {
 		if (!this.getType().equals(DataTypes.DOUBLE)) {
 			return;
@@ -388,6 +431,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 * 
 	 * @param stepwidth
 	 */
+	@SuppressWarnings("unchecked")
 	public void setStepwidth(Date stepwidth) {
 		if (!this.getType().equals(DataTypes.DATETIME)) {
 			return;
@@ -395,6 +439,21 @@ public class Axis extends AbstractMainPhaseBehavior implements
 		if (this.getStepfunction().equals(Stepfunctions.ADD) ||
 				this.getStepfunction().equals(Stepfunctions.MULTIPLY)) {
 			((AddMultiplyMode<Date>)this.mode).setStepwidth(stepwidth);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param stepwidth
+	 */
+	@SuppressWarnings("unchecked")
+	public void setStepwidth(Duration stepwidth) {
+		if (!this.getType().equals(DataTypes.DATETIME)) {
+			return;
+		}
+		if (this.getStepfunction().equals(Stepfunctions.ADD) ||
+				this.getStepfunction().equals(Stepfunctions.MULTIPLY)) {
+			((AddMultiplyMode<Duration>)this.mode).setStepwidth(stepwidth);
 		}
 	}
 	
