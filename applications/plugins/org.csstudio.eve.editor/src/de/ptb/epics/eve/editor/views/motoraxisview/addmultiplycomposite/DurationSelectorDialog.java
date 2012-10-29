@@ -79,6 +79,7 @@ public class DurationSelectorDialog extends Dialog {
 		minuteSpinner = new Spinner(composite, SWT.NONE);
 		secondSpinner = new Spinner(composite, SWT.NONE);
 		millisSpinner = new Spinner(composite, SWT.NONE);
+		millisSpinner.setMaximum(999);
 		
 		return composite;
 	}

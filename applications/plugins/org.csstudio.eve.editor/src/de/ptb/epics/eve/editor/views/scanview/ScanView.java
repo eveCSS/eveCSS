@@ -227,7 +227,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		
 		// GUI: "File Format: <Combo Box>"
 		this.fileFormatLabel = new Label(this.saveOptionsComposite, SWT.NONE);
-		this.fileFormatLabel.setText("File format:");
+		this.fileFormatLabel.setText("File Format:");
 		
 		this.fileFormatCombo = new Combo(this.saveOptionsComposite, SWT.READ_ONLY);
 		gridData = new GridData();
@@ -341,7 +341,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		
 		// repeat count text field
 		this.repeatCountLabel = new Label(this.saveOptionsComposite, SWT.NONE);
-		this.repeatCountLabel.setText("repeat count:");
+		this.repeatCountLabel.setText("Repeat Count:");
 		this.repeatCountText = new Text(this.saveOptionsComposite, SWT.BORDER);
 		this.repeatCountText.setToolTipText(
 				"the number of times the scan will be repeated");

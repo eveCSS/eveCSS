@@ -289,7 +289,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		
 		// Trigger Delay
 		this.triggerDelayLabel = new Label(this.generalComposite, SWT.NONE);
-		this.triggerDelayLabel.setText("Trigger delay (in s):");
+		this.triggerDelayLabel.setText("Trigger Delay (in s):");
 		this.triggerDelayLabel.setToolTipText("Delay time after positioning");
 		
 		this.triggerDelayText = new Text(this.generalComposite, SWT.BORDER);
@@ -314,7 +314,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		
 		// Settle Time
 		this.settleTimeLabel = new Label(this.generalComposite, SWT.NONE);
-		this.settleTimeLabel.setText("Settle time (in s):");
+		this.settleTimeLabel.setText("Settle Time (in s):");
 		this.settleTimeLabel.setToolTipText(
 				"Delay time after first positioning in the scan module");
 		
