@@ -1108,14 +1108,17 @@ public class ScanDescriptionSaver implements
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "parent", "parent", this.atts);
-			if (scanModule.getParent() != null
-					&& scanModule.getParent().getParentScanModule() != null) {
+			if (scanModule.getParent() != null) {
+				if (scanModule.getParent().getParentScanModule() != null) {
 				this.contentHandler.characters(("" + scanModule.getParent()
 						.getParentScanModule().getId()).toCharArray(), 0,
 						("" + scanModule.getParent().getParentScanModule()
 								.getId()).length());
+				} else if (scanModule.getParent().getParentEvent() != null) {
+					this.contentHandler.characters("0".toCharArray(), 0, 1);
+				}
 			} else {
-				this.contentHandler.characters("0".toCharArray(), 0, 1);
+				this.contentHandler.characters("-1".toCharArray(), 0, 2);
 			}
 			this.contentHandler.endElement("", "parent", "parent");
 
