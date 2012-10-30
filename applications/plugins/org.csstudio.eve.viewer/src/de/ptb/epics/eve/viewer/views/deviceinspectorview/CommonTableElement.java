@@ -57,6 +57,8 @@ public class CommonTableElement {
 	private boolean initialized = false;
 	private HashMap<String, CellEditor> cellEditorHash;
 	
+	private TransportTypes type;
+	
 	/**
 	 * Constructs a <code>CommonTableElement</code>.
 	 * 
@@ -78,6 +80,7 @@ public class CommonTableElement {
 
 		if(device instanceof MotorAxis) {
 			MotorAxis motorAxis = (MotorAxis)device;
+			this.type = motorAxis.getPosition().getAccess().getTransport();
 			engine = new CommonTableElementEngineData(abstractdevice.getID(), 
 					this);
 			if ((motorAxis.getPosition() != null) && 
@@ -182,6 +185,7 @@ public class CommonTableElement {
 		}
 		if(device instanceof DetectorChannel) {
 			DetectorChannel channel = (DetectorChannel)device;
+			this.type = channel.getRead().getAccess().getTransport();
 			engine = new CommonTableElementEngineData(abstractdevice.getID(), 
 					this);
 			if ((channel.getRead() != null) && 
@@ -387,11 +391,21 @@ public class CommonTableElement {
 	 * 			given property is connected, <code>false</code> otherwise
 	 */
 	public boolean isConnected(String property) {
-		if (property.equals("name") && valuePv != null) {
-			return valuePv.isConnected();
+		if (property.equals("name")) {
+			if (this.type != null && this.type.equals(TransportTypes.LOCAL)) {
+				return true;
+			}
+			if (valuePv != null) {
+				return valuePv.isConnected();
+			}
 		}
-		else if (property.equals("value") && valuePv != null) {
-			return valuePv.isConnected();
+		else if (property.equals("value")) {
+			if (this.type != null && this.type.equals(TransportTypes.LOCAL)) {
+				return true;
+			}
+			if (valuePv != null) {
+				return valuePv.isConnected();
+			}
 		}
 		else if (property.equals("goto") && gotoPv != null) {
 			return gotoPv.isConnected();
