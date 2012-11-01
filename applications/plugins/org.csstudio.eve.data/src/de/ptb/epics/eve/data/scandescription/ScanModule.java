@@ -52,6 +52,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public static final String MAIN_AXIS_PROP = "mainAxis";
 	
 	/** */
+	public static final String CHANNELS_PROP = "channels";
+	
+	/** */
 	public static int default_width = 70;
 	/** */
 	public static int default_height = 30;
@@ -296,6 +299,11 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		channel.addModelUpdateListener(this);
 		channel.addPropertyChangeListener("normalizeChannel", this);
 		this.channels.add(channel);
+		this.propertyChangeSupport.firePropertyChange(ScanModule.CHANNELS_PROP,
+				null, this.channels);
+		// channel has to notice if its normalize channel is removed
+		this.propertyChangeSupport.addPropertyChangeListener(
+				ScanModule.CHANNELS_PROP, channel);
 		propertyChangeSupport.firePropertyChange("addChannel", channel, null);
 		updateListeners();
 	}
@@ -385,9 +393,14 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		// 1. log off listener
 		channel.removeModelUpdateListener(this);
 		channel.removePropertyChangeListener("normalizeChannel", this);
+		// channel no longer needs to listen to changes
+		this.propertyChangeSupport.removePropertyChangeListener(
+				ScanModule.CHANNELS_PROP, channel);
 		// 2. remove channel
 		this.channels.remove(channel);
 		// 3. tell that channel was removed
+		this.propertyChangeSupport.firePropertyChange(ScanModule.CHANNELS_PROP,
+				null, this.channels);
 		propertyChangeSupport.firePropertyChange("removeChannel", channel, null);
 		propertyChangeSupport.firePropertyChange("removePosChannel", channel, null);
 		updateListeners();

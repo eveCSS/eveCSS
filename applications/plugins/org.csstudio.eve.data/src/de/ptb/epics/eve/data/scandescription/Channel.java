@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.data.scandescription;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -28,7 +29,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class Channel extends AbstractMainPhaseBehavior {
+public class Channel extends AbstractMainPhaseBehavior implements
+		PropertyChangeListener {
 
 	private static Logger logger = Logger.getLogger(Channel.class.getName());
 	
@@ -426,5 +428,22 @@ public class Channel extends AbstractMainPhaseBehavior {
 			PropertyChangeListener listener) {
 		this.propertyChangeSupport.removePropertyChangeListener(propertyName,
 				listener);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (this.normalizeChannel == null) {
+			return;
+		}
+		if (e.getPropertyName().equals(ScanModule.CHANNELS_PROP)) {
+			if (!((List<Channel>)e.getNewValue()).contains(this.normalizeChannel)) {
+				// normalize channel has been deleted -> remove
+			}
+			this.setNormalizeChannel(null);
+		}
 	}
 }
