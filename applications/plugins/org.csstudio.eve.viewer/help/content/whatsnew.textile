@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.7
+
+* [Bug Fix] fixed a bug where a select box for discrete values was editable
+
 h2(eveTopic). Version 1.6
 
 * [Bug Fix] removed a bug where the stop button (for detectors) did not work due to a non-integer value (e.g. 'Acquire').

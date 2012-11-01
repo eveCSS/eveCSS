@@ -1,5 +1,20 @@
 h1(eveTopic). What's New ?
 
+h2(eveTopic). Version 1.7
+
+* GEF (Graphical Editor)
+** [Feature] Create orphan Scan Modules
+** [Feature] introduced Connection Create Tool
+** [Feature] Connections can be deleted
+* [Feature] improved MotorAxisView inputs for date time values and durations
+* [Feature] introduced MotorAxis concept "help entry":/help/topic/de.ptb.epics.eve.editor/help/content/concepts/motoraxis.html
+* [Feature] introduced content proposal in the MotorAxisView (Dates and Durations could now be entered via a dialog)
+* [Feature] the too restrictive normalize channel feature (Version 1.4) is extended again
+
+* [Bug Fix] fixed a bug where the Motor Axis calculations where not correct if a "Main Axis" existed
+* [Bug Fix] fixed a bug where an "empty" scan (containing the start event only) could not be saved
+* [Bug Fix] fixed a bug where a set normalize channel was not reset if it was deleted from the scan module
+
 h2(eveTopic). Version 1.6
 
 * [Feature] reimplemented the Editor using the ==<a href="http://www.eclipse.org/gef" target="_blank">Graphical Editing Framework</a>==

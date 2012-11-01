@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.7
+
+* [Feature] incremented schema version to 2.1 due to changes in the data type of parent in scanmodule (now allowing negative integers representing orphan scan modules)
+
 h2(eveTopic). Version 1.5
 
 * [Feature] Added help "reference sheet":/help/topic/de.ptb.epics.eve.help/help/content/reference/keyboardshortcuts.html for (eclipse) keyboard shortcuts
