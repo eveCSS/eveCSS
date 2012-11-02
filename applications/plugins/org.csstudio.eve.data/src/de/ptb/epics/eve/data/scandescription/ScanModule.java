@@ -1165,12 +1165,29 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			if ((Boolean)e.getNewValue()) {
 				newAxis = ((AddMultiplyMode<?>) e.getSource()).getAxis();
 			}
+			if (this.mainAxis != null) {
+				// remove Listener of old main axis
+				this.mainAxis.removePropertyChangeListener(
+						AddMultiplyMode.STEPCOUNT_PROP, this);
+			}
 			this.propertyChangeSupport.firePropertyChange(
 					ScanModule.MAIN_AXIS_PROP, this.mainAxis,
 					this.mainAxis = newAxis);
+			if (this.mainAxis != null) {
+				// register listener to new main axis
+				this.mainAxis.addPropertyChangeListener(
+						AddMultiplyMode.STEPCOUNT_PROP, this);
+			}
 			if (logger.isDebugEnabled()) {
 				logger.debug("Axis " + this.mainAxis.getMotorAxis().getName()
 						+ " has been set as main axis");
+			}
+		} else if (e.getPropertyName().equals(AddMultiplyMode.STEPCOUNT_PROP)) { 
+			for (Axis axis : this.axes) {
+				if (axis.getMode() instanceof AddMultiplyMode<?>) {
+					((AddMultiplyMode<?>) axis.getMode())
+							.matchMainAxis(this.mainAxis);
+				}
 			}
 		} else if (e.getPropertyName().equals("normalizeChannel")) {
 			if(e.getNewValue() != null) {
