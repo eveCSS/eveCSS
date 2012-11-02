@@ -774,120 +774,137 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_STEPFUNCTION_NEXT:
-			this.currentAxis.setStepfunction(Stepfunctions.getEnum(textBuffer.toString()));
+			if (this.currentAxis.getAbstractDevice() != null) {
+				this.currentAxis.setStepfunction(Stepfunctions.getEnum(textBuffer.toString()));
+			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STEPFUNCTION_READ;
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_POSITIONMODE_NEXT:
-			this.currentAxis.setPositionMode(PositionMode
-					.stringToType(textBuffer.toString()));
+			if (this.currentAxis.getAbstractDevice() != null) {
+				this.currentAxis.setPositionMode(PositionMode.stringToType(textBuffer.toString()));
+			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_POSITIONMODE_READ;
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_START_NEXT:
 			String startValue = textBuffer.toString();
-			switch (this.currentAxis.getType()) {
-			case DATETIME:
-				switch (this.currentAxis.getPositionMode()) {
-				case ABSOLUTE:
-					try {
-						this.currentAxis.setStart(new SimpleDateFormat(
-								"yyyy-MM-dd HH:mm:ss.SSS").parse(startValue));
-					} catch (ParseException e) {
-						logger.error(e.getMessage(), e);
+			if (this.currentAxis.getAbstractDevice() != null) {
+				switch (this.currentAxis.getType()) {
+				case DATETIME:
+					switch (this.currentAxis.getPositionMode()) {
+					case ABSOLUTE:
+						try {
+							this.currentAxis.setStart(new SimpleDateFormat(
+									"yyyy-MM-dd HH:mm:ss.SSS")
+									.parse(startValue));
+						} catch (ParseException e) {
+							logger.error(e.getMessage(), e);
+						}
+						break;
+					case RELATIVE:
+						try {
+							DatatypeFactory factory = DatatypeFactory
+									.newInstance();
+							this.currentAxis.setStart(factory
+									.newDuration(textBuffer.toString()));
+						} catch (DatatypeConfigurationException e2) {
+							logger.error(e2.getMessage(), e2);
+						}
+						break;
 					}
 					break;
-				case RELATIVE:
-					try {
-						DatatypeFactory factory = DatatypeFactory.newInstance();
-						this.currentAxis.setStart(factory
-								.newDuration(textBuffer.toString()));
-					} catch (DatatypeConfigurationException e2) {
-						logger.error(e2.getMessage(), e2);
-					}
+				case DOUBLE:
+					this.currentAxis.setStart(Double.parseDouble(startValue));
+					break;
+				case INT:
+					this.currentAxis.setStart(Integer.parseInt(startValue));
+					break;
+				default:
 					break;
 				}
-				break;
-			case DOUBLE:
-				this.currentAxis.setStart(Double.parseDouble(startValue));
-				break;
-			case INT:
-				this.currentAxis.setStart(Integer.parseInt(startValue));
-				break;
-			default:
-				break;
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_START_READ;
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_STOP_NEXT:
 			String stopValue = textBuffer.toString();
-			switch (this.currentAxis.getType()) {
-			case DATETIME:
-				switch (this.currentAxis.getPositionMode()) {
-				case ABSOLUTE:
-					try {
-						this.currentAxis.setStop(new SimpleDateFormat(
-								"yyyy-MM-dd HH:mm:ss.SSS").parse(stopValue));
-					} catch (ParseException e1) {
-						logger.error(e1.getMessage(), e1);
+			if (this.currentAxis.getAbstractDevice() != null) {
+				switch (this.currentAxis.getType()) {
+				case DATETIME:
+					switch (this.currentAxis.getPositionMode()) {
+					case ABSOLUTE:
+						try {
+							this.currentAxis
+									.setStop(new SimpleDateFormat(
+											"yyyy-MM-dd HH:mm:ss.SSS")
+											.parse(stopValue));
+						} catch (ParseException e1) {
+							logger.error(e1.getMessage(), e1);
+						}
+						break;
+					case RELATIVE:
+						try {
+							DatatypeFactory factory = DatatypeFactory
+									.newInstance();
+							this.currentAxis.setStop(factory
+									.newDuration(textBuffer.toString()));
+						} catch (DatatypeConfigurationException e2) {
+							logger.error(e2.getMessage(), e2);
+						}
+						break;
 					}
 					break;
-				case RELATIVE:
-					try {
-						DatatypeFactory factory = DatatypeFactory.newInstance();
-						this.currentAxis.setStop(factory
-								.newDuration(textBuffer.toString()));
-					} catch (DatatypeConfigurationException e2) {
-						logger.error(e2.getMessage(), e2);
-					}
+				case DOUBLE:
+					this.currentAxis.setStop(Double.parseDouble(stopValue));
+					break;
+				case INT:
+					this.currentAxis.setStop(Integer.parseInt(stopValue));
+					break;
+				default:
 					break;
 				}
-				break;
-			case DOUBLE:
-				this.currentAxis.setStop(Double.parseDouble(stopValue));
-				break;
-			case INT:
-				this.currentAxis.setStop(Integer.parseInt(stopValue));
-				break;
-			default:
-				break;
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STOP_READ;
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_STEPWIDTH_NEXT:
 			String stepwidthValue = textBuffer.toString();
-			switch (this.currentAxis.getType()) {
-			case DATETIME:
-				switch (this.currentAxis.getPositionMode()) {
-				case ABSOLUTE:
-					try {
-						this.currentAxis.setStepwidth(new SimpleDateFormat(
-								"HH:mm:ss.SSS").parse(stepwidthValue));
-					} catch (ParseException e) {
-						logger.error(e.getMessage(), e);
+			if (this.currentAxis.getAbstractDevice() != null) {
+				switch (this.currentAxis.getType()) {
+				case DATETIME:
+					switch (this.currentAxis.getPositionMode()) {
+					case ABSOLUTE:
+						try {
+							this.currentAxis.setStepwidth(new SimpleDateFormat(
+									"HH:mm:ss.SSS").parse(stepwidthValue));
+						} catch (ParseException e) {
+							logger.error(e.getMessage(), e);
+						}
+						break;
+					case RELATIVE:
+						try {
+							DatatypeFactory factory = DatatypeFactory
+									.newInstance();
+							this.currentAxis.setStepwidth(factory
+									.newDuration(textBuffer.toString()));
+						} catch (DatatypeConfigurationException e2) {
+							logger.error(e2.getMessage(), e2);
+						}
+						break;
 					}
 					break;
-				case RELATIVE:
-					try {
-						DatatypeFactory factory = DatatypeFactory.newInstance();
-						this.currentAxis.setStepwidth(factory
-								.newDuration(textBuffer.toString()));
-					} catch (DatatypeConfigurationException e2) {
-						logger.error(e2.getMessage(), e2);
-					}
+				case DOUBLE:
+					this.currentAxis.setStepwidth(Double
+							.parseDouble(stepwidthValue));
+					break;
+				case INT:
+					this.currentAxis.setStepwidth(Integer
+							.parseInt(stepwidthValue));
+					break;
+				default:
 					break;
 				}
-				break;
-			case DOUBLE:
-				this.currentAxis.setStepwidth(Double.parseDouble(stepwidthValue));
-				break;
-			case INT:
-				this.currentAxis.setStepwidth(Integer.parseInt(stepwidthValue));
-				break;
-			default:
-				break;
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STEPWIDTH_READ;
 			break;
@@ -903,8 +920,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_ISMAINAXIS_NEXT:
-			this.currentAxis.setMainAxis(Boolean.parseBoolean(textBuffer
-					.toString()));
+			if (this.currentAxis.getAbstractDevice() != null) {
+				this.currentAxis.setMainAxis(Boolean.parseBoolean(textBuffer.toString()));
+			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_ISMAINAXIS_READ;
 			break;
 
