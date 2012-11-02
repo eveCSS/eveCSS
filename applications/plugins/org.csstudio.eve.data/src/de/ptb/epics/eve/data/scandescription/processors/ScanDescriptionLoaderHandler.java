@@ -442,22 +442,27 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} else if (qName.equals("ismainaxis")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_ISMAINAXIS_NEXT;
 			} else if (qName.equals("plugin")) {
-				this.invalidPlugin = false;
-				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_CONTROLLER_LOADING;
-				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
-				this.currentPluginController = new PluginController();
-				if (this.measuringStation.getPluginByName(
-						atts.getValue("name")) == null) {
-					// plugin not found
-					this.invalidPlugin = true;
-					this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
-							ScanDescriptionLoaderLostDeviceType.PLUGIN_NOT_FOUND,
-							"Plugin '" + atts.getValue("name")+ "' has been removed!"));
+				if (this.currentAxis.getAbstractDevice() != null) {
+					this.invalidPlugin = false;
+					this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_CONTROLLER_LOADING;
+					this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
+					this.currentPluginController = new PluginController();
+					if (this.measuringStation.getPluginByName(atts
+							.getValue("name")) == null) {
+						// plugin not found
+						this.invalidPlugin = true;
+						this.lostDevices
+								.add(new ScanDescriptionLoaderLostDeviceMessage(
+										ScanDescriptionLoaderLostDeviceType.PLUGIN_NOT_FOUND,
+										"Plugin '" + atts.getValue("name")
+												+ "' has been removed!"));
+					}
+					this.currentAxis
+							.setPluginController(this.currentPluginController);
+					this.currentPluginController
+							.setPlugin(this.measuringStation
+									.getPluginByName(atts.getValue("name")));
 				}
-				this.currentAxis
-						.setPluginController(this.currentPluginController);
-				this.currentPluginController.setPlugin(this.measuringStation
-						.getPluginByName(atts.getValue("name")));
 			}
 			break;
 
