@@ -69,33 +69,25 @@ public class TargetToModelAfterConvertValidator implements IValidator {
 		switch(this.axis.getPositionMode()) {
 		case ABSOLUTE:
 			if (ca.getLowLimit() != null && ca.getLowLimit() > val) {
-				LOGGER.info("Value is below the current low limit!" + 
-						"(" + this.axis.getMotorAxis().getName() + ")");
+				LOGGER.info("Value is below the current low limit!");
 				return ValidationStatus.warning(
-						"Value is below the current low limit!"
-							+ "(" + this.axis.getMotorAxis().getName() + ")");
+						"Value is below the current low limit!");
 			} else if (ca.getHighLimit() != null && ca.getHighLimit() < val) {
-				LOGGER.info("Value is above the current high limit!" + 
-						"(" + this.axis.getMotorAxis().getName() + ")");
+				LOGGER.info("Value is above the current high limit!");
 				return ValidationStatus.warning(
-						"Value is above the current high limit!"
-							+ "(" + this.axis.getMotorAxis().getName() + ")");
+						"Value is above the current high limit!");
 			}
 			break;
 		case RELATIVE:
 			if (ca.getLowLimit() != null && ca.getLowLimit() > mPos + val) {
-				LOGGER.info("Value is below the current low limit"
-						+ "(" + this.axis.getMotorAxis().getName() + ")");
+				LOGGER.info("Value is below the current low limit");
 				return ValidationStatus.warning(
-						"Value is below the current low limit!"
-							+ "(" + this.axis.getMotorAxis().getName() + ")");
+						"Value is below the current low limit!");
 			} else if (ca.getHighLimit() != null && 
 					ca.getHighLimit() < mPos + val) {
-				LOGGER.debug("Value is above the current high limit!"
-						+ "(" + this.axis.getMotorAxis().getName() + ")");
+				LOGGER.debug("Value is above the current high limit!");
 				return ValidationStatus.warning(
-						"Value is above the current high limit!"
-							+ "(" + this.axis.getMotorAxis().getName() + ")");
+						"Value is above the current high limit!");
 			}
 			break;
 		}

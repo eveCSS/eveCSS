@@ -12,9 +12,9 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.SelectObservableValue;
-import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
@@ -30,12 +30,14 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
+import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisViewComposite;
 import de.ptb.epics.eve.util.swt.DoubleVerifyListener;
 import de.ptb.epics.eve.util.swt.IntegerVerifyListener;
@@ -91,18 +93,22 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 	private Binding startBinding;
 	private IObservableValue startTargetObservable;
 	private IObservableValue startModelObservable;
+	private ControlDecorationSupport startDecoration;
 	
 	private Binding stopBinding;
 	private IObservableValue stopTargetObservable;
 	private IObservableValue stopModelObservable;
+	private ControlDecorationSupport stopDecoration;
 	
 	private Binding stepwidthBinding;
 	private IObservableValue stepwidthTargetObservable;
 	private IObservableValue stepwidthModelObservable;
+	private ControlDecorationSupport stepwidthDecoration;
 	
 	private Binding stepcountBinding;
 	private IObservableValue stepcountTargetObservable;
 	private IObservableValue stepcountModelObservable;
+	private ControlDecorationSupport stepcountDecoration;
 	
 	private Binding mainAxisBinding;
 	private IObservableValue mainAxisTargetObservable;
@@ -329,7 +335,8 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 				this.addMultiplyMode.getType()));
 		this.startBinding = context.bindValue(startTargetObservable,
 				startModelObservable, startTargetToModel, startModelToTarget);
-		ControlDecorationSupport.create(this.startBinding, SWT.LEFT | SWT.TOP);
+		this.startDecoration = ControlDecorationSupport.create(
+				this.startBinding, SWT.LEFT | SWT.TOP);
 		
 		this.stopTargetObservable = SWTObservables.observeText(stopText, 
 				SWT.Modify);
@@ -355,7 +362,8 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 				this.addMultiplyMode.getType()));
 		this.stopBinding = context.bindValue(stopTargetObservable,
 				stopModelObservable, stopTargetToModel, stopModelToTarget);
-		ControlDecorationSupport.create(this.stopBinding, SWT.LEFT | SWT.TOP);
+		this.stopDecoration = ControlDecorationSupport.create(this.stopBinding,
+				SWT.LEFT | SWT.TOP);
 		
 		this.stepwidthTargetObservable = SWTObservables.observeText(
 				stepwidthText, SWT.Modify);
@@ -377,7 +385,8 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		this.stepwidthBinding = context.bindValue(stepwidthTargetObservable,
 				stepwidthModelObservable, stepwidthTargetToModel,
 				stepwidthModelToTarget);
-		ControlDecorationSupport.create(this.stepwidthBinding, SWT.LEFT | SWT.TOP);
+		this.stepwidthDecoration = ControlDecorationSupport.create(
+				this.stepwidthBinding, SWT.LEFT | SWT.TOP);
 		
 		this.stepcountTargetObservable = SWTObservables.observeText(
 				stepcountText, SWT.Modify);
@@ -398,7 +407,8 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		this.stepcountBinding = context.bindValue(stepcountTargetObservable,
 				stepcountModelObservable, stepcountTargetToModel,
 				stepcountModelToTarget);
-		ControlDecorationSupport.create(this.stepcountBinding, SWT.LEFT);
+		this.stepcountDecoration = ControlDecorationSupport.create(
+				this.stepcountBinding, SWT.LEFT);
 		
 		this.mainAxisTargetObservable = SWTObservables
 				.observeSelection(mainAxisCheckBox);
@@ -478,15 +488,27 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 			this.startBinding.dispose();
 			this.startTargetObservable.dispose();
 			this.startModelObservable.dispose();
+			if (this.startDecoration != null) {
+				this.startDecoration.dispose();
+			}
 			this.stopBinding.dispose();
 			this.stopTargetObservable.dispose();
 			this.stopModelObservable.dispose();
+			if (this.stopDecoration != null) {
+				this.stopDecoration.dispose();
+			}
 			this.stepwidthBinding.dispose();
 			this.stepwidthTargetObservable.dispose();
 			this.stepwidthModelObservable.dispose();
+			if (this.stepwidthDecoration != null) {
+				this.stepwidthDecoration.dispose();
+			}
 			this.stepcountBinding.dispose();
 			this.stepcountTargetObservable.dispose();
 			this.stepcountModelObservable.dispose();
+			if (this.stepcountDecoration != null) {
+				this.stepcountDecoration.dispose();
+			}
 			this.mainAxisBinding.dispose();
 			this.mainAxisTargetObservable.dispose();
 			this.mainAxisModelObservable.dispose();
@@ -504,6 +526,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		}
 		this.addMultiplyMode = null;
 		this.axis = null;
+		this.redraw();
 	}
 	
 	private void setEnabled() {
