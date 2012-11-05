@@ -14,7 +14,6 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.SelectObservableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
-import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
@@ -30,14 +29,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
-import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisViewComposite;
 import de.ptb.epics.eve.util.swt.DoubleVerifyListener;
 import de.ptb.epics.eve.util.swt.IntegerVerifyListener;
@@ -634,6 +631,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 			if (this.widget == startText) {
 				//startText.removeVerifyListener(startTextVerifyListener);
 			 	startBinding.updateModelToTarget();
+			 	startBinding.validateTargetToModel();
 			 	/*MessageDialog.openWarning(getShell(), "Restored Value", 
 			 			"Restored last valid value for 'start' of " + 
 			 			addMultiplyMode.getAxis().getMotorAxis().getName());*/
@@ -641,6 +639,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 			} else if (this.widget == stopText) {
 				//stopText.removeVerifyListener(stopTextVerifyListener);
 				stopBinding.updateModelToTarget();
+				stopBinding.validateTargetToModel();
 				/*MessageDialog.openWarning(getShell(), "Restored Value", 
 			 			"Restored last valid value for 'stop' of " + 
 			 			addMultiplyMode.getAxis().getMotorAxis().getName());*/
