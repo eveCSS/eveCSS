@@ -138,6 +138,17 @@
                   </reference>
                </visibleWhen>
             </command>
+            <command
+                  commandId="org.eclipse.ui.edit.text.openLocalFile"
+                  icon="icons/fldr_obj.gif"
+                  label="Open"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </visibleWhen>
+            </command>
          </toolbar>
          <toolbar
                id="de.ptb.epics.eve.editor.toolbar.save">
