@@ -20,6 +20,9 @@ import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyListener;
@@ -64,22 +67,26 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 	private SelectionListener startTextControlDecorationSelectionListener;
 	private VerifyListener startTextVerifyListener;
 	private FocusListener startTextFocusListener;
+	private MouseListener startTextMouseListener;
 	private Button stopRadioButton;
 	private Text stopText;
 	private ControlDecoration stopTextControlDecoration;
 	private SelectionListener stopTextControlDecorationSelectionListener;
 	private VerifyListener stopTextVerifyListener;
 	private FocusListener stopTextFocusListener;
+	private MouseListener stopTextMouseListener;
 	private Button stepwidthRadioButton;
 	private Text stepwidthText;
 	private ControlDecoration stepwidthTextControlDecoration;
 	private SelectionListener stepwidhtTextControlDecorationSelectionListener;
 	private VerifyListener stepwidthTextVerifyListener;
 	private FocusListener stepwidthTextFocusListener;
+	private MouseListener stepwidthTextMouseListener;
 	private Button stepcountRadioButton;
 	private Text stepcountText;
 	private VerifyListener stepcountTextVerifyListener;
 	private FocusListener stepcountTextFocusListener;
+	private MouseListener stepcountTextMouseListener;
 
 	private Button mainAxisCheckBox;
 	
@@ -152,7 +159,8 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 				new DateTimeProposalSelectionListener(this.startText);
 		this.startTextControlDecoration.addSelectionListener(
 				startTextControlDecorationSelectionListener);
-		this.startTextFocusListener = new TextFocusListener(startText);
+		this.startTextFocusListener = new TextFocusListener(this.startText);
+		this.startTextMouseListener = new TextMouseListener(this.startText);
 		// end of: initialize start elements
 		
 		// initialize stop elements
@@ -175,6 +183,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		this.stopTextControlDecoration.addSelectionListener(
 				stopTextControlDecorationSelectionListener);
 		this.stopTextFocusListener = new TextFocusListener(stopText);
+		this.stopTextMouseListener = new TextMouseListener(stopText);
 		// end of: initialize stop elements
 		
 		// initialize step width elements
@@ -198,6 +207,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		this.stepwidthTextControlDecoration.addSelectionListener(
 				stepwidhtTextControlDecorationSelectionListener);
 		this.stepwidthTextFocusListener = new TextFocusListener(stepwidthText);
+		this.stepwidthTextMouseListener = new TextMouseListener(stepwidthText);
 		// end of: initialize step width elements 
 		
 		// initialize step count elements
@@ -211,6 +221,7 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		gridData.grabExcessHorizontalSpace = true;
 		this.stepcountText.setLayoutData(gridData);
 		this.stepcountTextFocusListener = new TextFocusListener(stepcountText);
+		this.stepcountTextMouseListener = new TextMouseListener(stepcountText);
 		// end of: initialize step count elements
 		
 		this.mainAxisCheckBox = new Button(this, SWT.CHECK);
@@ -455,6 +466,11 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		this.stopText.addFocusListener(stopTextFocusListener);
 		this.stepwidthText.addFocusListener(stepwidthTextFocusListener);
 		this.stepcountText.addFocusListener(stepcountTextFocusListener);
+		
+		this.startText.addMouseListener(startTextMouseListener);
+		this.stopText.addMouseListener(stopTextMouseListener);
+		this.stepwidthText.addMouseListener(stepwidthTextMouseListener);
+		this.stepcountText.addMouseListener(stepcountTextMouseListener);
 	}
 	
 	/**
@@ -464,6 +480,11 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 	protected void reset() {
 		if (this.addMultiplyMode != null) {
 			LOGGER.debug("remove bindings");
+			
+			this.startText.removeMouseListener(startTextMouseListener);
+			this.stopText.removeMouseListener(stopTextMouseListener);
+			this.stepwidthText.removeMouseListener(stepwidthTextMouseListener);
+			this.stepcountText.removeMouseListener(stepcountTextMouseListener);
 			
 			this.startText.removeFocusListener(startTextFocusListener);
 			this.stopText.removeFocusListener(stopTextFocusListener);
@@ -620,6 +641,9 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		 */
 		@Override 
 		public void focusGained(FocusEvent e) {
+			if (!axis.getType().equals(DataTypes.DATETIME)) {
+				this.widget.selectAll();
+			}
 		}
 
 		/**
@@ -659,6 +683,36 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 			 			addMultiplyMode.getAxis().getMotorAxis().getName());*/
 				//stepcountText.addVerifyListener(stepcountTextVerifyListener);
 			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.8
+	 */
+	private class TextMouseListener extends MouseAdapter {
+		
+		private Text widget;
+		
+		/**
+		 * @param widget the widget the listener is attached to
+		 */
+		public TextMouseListener(Text widget) {
+			this.widget = widget;
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void mouseDown(MouseEvent e) {
+			if (e.button == 1) {
+				if (!axis.getType().equals(DataTypes.DATETIME)) {
+					this.widget.selectAll();
+				}
+			}
+			super.mouseDown(e);
 		}
 	}
 	
