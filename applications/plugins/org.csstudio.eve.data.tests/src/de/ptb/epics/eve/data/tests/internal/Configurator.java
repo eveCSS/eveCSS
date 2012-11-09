@@ -48,6 +48,7 @@ public class Configurator {
 		File kmc = new File("xml/kmc.xml");
 		File newref = new File("xml/newref.xml");
 		File nrfa = new File("xml/nrfa.xml");
+		File oldref = new File("xml/oldref.xml");
 		File pgm = new File("xml/pgm.xml");
 		File qnim = new File("xml/qnim.xml");
 		File rfa = new File("xml/rfa.xml");
@@ -65,6 +66,8 @@ public class Configurator {
 			measuringStationLoader.load(newref);
 			stations.add(measuringStationLoader.getMeasuringStation());
 			measuringStationLoader.load(nrfa);
+			stations.add(measuringStationLoader.getMeasuringStation());
+			measuringStationLoader.load(oldref);
 			stations.add(measuringStationLoader.getMeasuringStation());
 			measuringStationLoader.load(pgm);
 			stations.add(measuringStationLoader.getMeasuringStation());
