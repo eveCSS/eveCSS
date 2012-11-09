@@ -159,6 +159,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		
 		this.comment = "";
 		this.saveScanDescription = false;
+		this.autoNumber = true;
 		
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
