@@ -26,6 +26,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -59,6 +61,8 @@ import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
 import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
 import de.ptb.epics.eve.util.jface.SelectionProviderWrapper;
+import de.ptb.epics.eve.util.swt.TextSelectAllFocusListener;
+import de.ptb.epics.eve.util.swt.TextSelectAllMouseListener;
 
 /**
  * <code>ScanView</code> is the graphical representation of a 
@@ -352,6 +356,15 @@ public class ScanView extends ViewPart implements IEditorView,
 		this.repeatCountText.addVerifyListener(repeatCountTextVerifyListener);
 		repeatCountTextModifiedListener = new RepeatCountTextModifiedListener();
 		this.repeatCountText.addModifyListener(repeatCountTextModifiedListener);
+		this.repeatCountText.addFocusListener(
+				new TextSelectAllFocusListener(this.repeatCountText));
+		this.repeatCountText.addMouseListener(
+				new TextSelectAllMouseListener(this.repeatCountText));
+		this.repeatCountText.addFocusListener(new FocusAdapter() {
+			@Override public void focusLost(FocusEvent e) {
+				repeatCountText.setSelection(0,0);
+			}
+		});
 		
 		// add expand item to the expander
 		this.saveOptionsExpandItem = new ExpandItem(this.bar, SWT.NONE, 0);
