@@ -145,6 +145,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 			throw new IllegalArgumentException(
 					"The average must be larger than 0.");
 		}
+		logger.debug("average count set");
 		this.propertyChangeSupport.firePropertyChange("averageCount",
 				this.averageCount, this.averageCount = averageCount);
 		updateListeners();

@@ -6,6 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.databinding.Binding;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
+import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.viewers.ISelection;
@@ -24,8 +32,8 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ExpandEvent;
 import org.eclipse.swt.events.ExpandListener;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
@@ -43,8 +51,6 @@ import org.eclipse.swt.layout.GridData;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
-import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -54,6 +60,8 @@ import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
 import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
+import de.ptb.epics.eve.util.swt.TextSelectAllFocusListener;
+import de.ptb.epics.eve.util.swt.TextSelectAllMouseListener;
 
 /**
  * <code>DetectorChannelView</code> shows attributes of a 
@@ -73,7 +81,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		"de.ptb.epics.eve.editor.views.DetectorChannelView";
 
 	// logging
-	private static Logger logger = 
+	private static final Logger LOGGER = 
 			Logger.getLogger(DetectorChannelView.class.getName());
 	
 	
@@ -99,41 +107,55 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 
 	private Label averageLabel;
 	private Text averageText;
-	private ControlDecoration averageTextControlDecoration;
 	private ControlDecoration averageTextDisabledControlDecoration;
 	private TextNumberVerifyListener averageTextVerifyListener;
-	private AverageTextModifyListener averageTextModifyListener;
 
 	private Label maxDeviationLabel;
 	private Text maxDeviationText;
-	private ControlDecoration maxDeviationTextControlDecoration;
 	private TextDoubleVerifyListener maxDeviationTextVerifyListener;
-	private MaxDeviationTextModifyListener maxDeviationTextModifyListener;
 
 	private Label minimumLabel;
 	private Text minimumText;
-	private ControlDecoration minimumTextControlDecoration;
 	private TextDoubleVerifyListener minimumTextVerifyListener;
-	private MinimumTextModifyListener minimumTextModifyListener;
 
 	private Label maxAttemptsLabel;
 	private Text maxAttemptsText;
-	private ControlDecoration maxAttemptsTextControlDecoration;
 	private TextNumberVerifyListener maxAttemptsTextVerifyListener;
-	private MaxAttemptsTextModifyListener maxAttemptsTextModifyListener;
 
 	private Label normalizeChannelLabel;
 	private Combo normalizeChannelCombo;
 	private NormalizeChannelComboSelectionListener 
 			normalizeChannelComboSelectionListener;
 
-	private ExpandBar bar = null;
+	private DataBindingContext context;
+	
+	private SingleSelectionProvider selectionProvider;
+	
+	private IObservableValue selectionObservable;
+	
+	private Binding averageBinding;
+	private IObservableValue averageTargetObservable;
+	private IObservableValue averageModelObservable;
+	
+	private Binding maxDeviationBinding;
+	private IObservableValue maxDeviationTargetObservable;
+	private IObservableValue maxDeviationModelObservable;
+	
+	private Binding minimumBinding;
+	private IObservableValue minimumTargetObservable;
+	private IObservableValue minimumModelObservable;
+	
+	private Binding maxAttemptsBinding;
+	private IObservableValue maxAttemptsTargetObservable;
+	private IObservableValue maxAttemptsModelObservable;
+	
+	private ExpandBar bar;
 	private ExpandItem eventExpandItem;
 	
 	/** */
-	public CTabFolder eventsTabFolder = null;
-	private EventComposite redoEventComposite = null;
-	private Composite eventComposite = null;
+	public CTabFolder eventsTabFolder;
+	private EventComposite redoEventComposite;
+	private Composite eventComposite;
 
 	private CTabItem redoEventTabItem;
 
@@ -142,7 +164,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			detectorReadyEventCheckBoxSelectionListener;
 
 	private Image infoImage;
-	private Image errorImage;
 
 	private EditorViewPerspectiveListener editorViewPerspectiveListener;
 	
@@ -159,9 +180,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 					"Please check Preferences!");
 			return;
 		}
-		
-		this.errorImage = FieldDecorationRegistry.getDefault().
-			getFieldDecoration(FieldDecorationRegistry.DEC_ERROR).getImage();
 
 		this.infoImage = FieldDecorationRegistry.getDefault()
 				.getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION)
@@ -192,21 +210,19 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.averageText.setLayoutData(gridData);
+		this.averageText.addFocusListener(
+				new TextSelectAllFocusListener(this.averageText));
+		this.averageText.addMouseListener(
+				new TextSelectAllMouseListener(this.averageText));
+		this.averageText.addFocusListener(new TextFocusListener(this.averageText));
 		this.averageTextVerifyListener = new TextNumberVerifyListener();
-		this.averageText.addVerifyListener(averageTextVerifyListener);
-		this.averageTextModifyListener = new AverageTextModifyListener();
-		this.averageText.addModifyListener(averageTextModifyListener); 
-		this.averageTextControlDecoration = new ControlDecoration(
-				this.averageText, SWT.LEFT);
-		this.averageTextControlDecoration.setDescriptionText("");
-		this.averageTextControlDecoration.setImage(errorImage);
-		this.averageTextControlDecoration.hide();
+		//this.averageText.addVerifyListener(averageTextVerifyListener);
+
 		this.averageTextDisabledControlDecoration = new ControlDecoration(
 				this.averageText, SWT.LEFT);
 		this.averageTextDisabledControlDecoration.setDescriptionText("");
 		this.averageTextDisabledControlDecoration.setImage(infoImage);
 		this.averageTextDisabledControlDecoration.hide();
-		
 
 		// GUI: Max. Deviation (%): <TextBox> x
 		this.maxDeviationLabel = new Label(this.top, SWT.NONE);
@@ -221,17 +237,14 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.maxDeviationText.setLayoutData(gridData);
+		this.maxDeviationText.addFocusListener(
+				new TextSelectAllFocusListener(this.maxDeviationText));
+		this.maxDeviationText.addMouseListener(
+				new TextSelectAllMouseListener(this.maxDeviationText));
+		this.maxDeviationText.addFocusListener(
+				new TextFocusListener(this.maxDeviationText));
 		this.maxDeviationTextVerifyListener = new TextDoubleVerifyListener();
-		this.maxDeviationText.addVerifyListener(maxDeviationTextVerifyListener);
-		this.maxDeviationTextModifyListener = new 
-				MaxDeviationTextModifyListener();
-		this.maxDeviationText.addModifyListener(maxDeviationTextModifyListener);
-		this.maxDeviationTextControlDecoration = new ControlDecoration(
-				this.maxDeviationText, SWT.LEFT);
-		this.maxDeviationTextControlDecoration
-				.setDescriptionText("Value not possible!");
-		this.maxDeviationTextControlDecoration.setImage(errorImage);
-		this.maxDeviationTextControlDecoration.hide();
+		// this.maxDeviationText.addVerifyListener(maxDeviationTextVerifyListener);
 
 		// GUI: Minimum: <TextBox> x
 		this.minimumLabel = new Label(this.top, SWT.NONE);
@@ -248,16 +261,14 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.minimumText.setLayoutData(gridData);
+		this.minimumText.addFocusListener(
+				new TextSelectAllFocusListener(this.minimumText));
+		this.minimumText.addMouseListener(
+				new TextSelectAllMouseListener(this.minimumText));
+		this.minimumText.addFocusListener(
+				new TextFocusListener(this.minimumText));
 		this.minimumTextVerifyListener = new TextDoubleVerifyListener();
-		this.minimumText.addVerifyListener(minimumTextVerifyListener);
-		this.minimumTextModifyListener = new MinimumTextModifyListener();
-		this.minimumText.addModifyListener(minimumTextModifyListener);
-		this.minimumTextControlDecoration = new ControlDecoration(
-				this.minimumText, SWT.LEFT);
-		this.minimumTextControlDecoration
-				.setDescriptionText("Value not possible!");
-		this.minimumTextControlDecoration.setImage(errorImage);
-		this.minimumTextControlDecoration.hide();
+		// this.minimumText.addVerifyListener(minimumTextVerifyListener);
 
 		// GUI: Max. Attempts: <TextBox> x
 		this.maxAttemptsLabel = new Label(this.top, SWT.NONE);
@@ -274,16 +285,14 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.maxAttemptsText.setLayoutData(gridData);
+		this.maxAttemptsText.addFocusListener(
+				new TextSelectAllFocusListener(this.maxAttemptsText));
+		this.maxAttemptsText.addMouseListener(
+				new TextSelectAllMouseListener(this.maxAttemptsText));
+		this.maxAttemptsText.addFocusListener(
+				new TextFocusListener(this.maxAttemptsText));
 		this.maxAttemptsTextVerifyListener = new TextNumberVerifyListener();
-		this.maxAttemptsText.addVerifyListener(maxAttemptsTextVerifyListener);
-		this.maxAttemptsTextModifyListener = new 
-				MaxAttemptsTextModifyListener();
-		this.maxAttemptsText.addModifyListener(maxAttemptsTextModifyListener);
-		this.maxAttemptsTextControlDecoration = new ControlDecoration(
-				this.maxAttemptsText, SWT.LEFT);
-		this.maxAttemptsTextControlDecoration.setDescriptionText("");
-		this.maxAttemptsTextControlDecoration.setImage(errorImage);
-		this.maxAttemptsTextControlDecoration.hide();
+		// this.maxAttemptsText.addVerifyListener(maxAttemptsTextVerifyListener);
 
 		//
 		this.normalizeChannelLabel = new Label(this.top, SWT.NONE);
@@ -376,17 +385,107 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 				this);
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.addPerspectiveListener(this.editorViewPerspectiveListener);
+		
+		this.bindValues();
 	}
 	// ************************************************************************
 	// ********************** end of createPartControl ************************
 	// ************************************************************************
 
+	/*
+	 * 
+	 */
+	private void bindValues() {
+		this.context = new DataBindingContext();
+
+		this.selectionProvider = new SingleSelectionProvider();
+		this.selectionObservable = ViewersObservables
+				.observeSingleSelection(selectionProvider);
+
+		this.averageTargetObservable = SWTObservables.observeText(
+				this.averageText, SWT.Modify);
+		this.averageModelObservable = BeansObservables.observeDetailValue(
+				selectionObservable, Channel.class, "averageCount",
+				Integer.class);
+		UpdateValueStrategy averageTargetToModelStrategy = 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
+		averageTargetToModelStrategy.setAfterGetValidator(
+				new AverageTargetToModelValidator());
+		averageTargetToModelStrategy.setConverter(
+				new AverageTargetToModelConverter());
+		this.averageBinding = context.bindValue(averageTargetObservable,
+				averageModelObservable, 
+				averageTargetToModelStrategy,
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		ControlDecorationSupport.create(this.averageBinding, SWT.LEFT);
+		
+		this.maxDeviationTargetObservable = SWTObservables.observeText(
+				this.maxDeviationText, SWT.Modify);
+		this.maxDeviationModelObservable = BeansObservables.observeDetailValue(
+				selectionObservable, Channel.class, "maxDeviation", Double.class);
+		UpdateValueStrategy maxDeviationTargetToModelStrategy = 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
+		maxDeviationTargetToModelStrategy.setAfterGetValidator(
+				new MaxDeviationTargetToModelValidator());
+		maxDeviationTargetToModelStrategy.setConverter(
+				new DoubleTargetToModelConverter());
+		UpdateValueStrategy maxDeviationModelToTargetStrategy = 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
+		maxDeviationModelToTargetStrategy.setConverter(
+				new DoubleModelToTargetConverter());
+		this.maxDeviationBinding = context.bindValue(
+				maxDeviationTargetObservable, maxDeviationModelObservable,
+				maxDeviationTargetToModelStrategy, 
+				maxDeviationModelToTargetStrategy);
+		ControlDecorationSupport.create(this.maxDeviationBinding, SWT.LEFT);
+		
+		this.minimumTargetObservable = SWTObservables.observeText(
+				this.minimumText, SWT.Modify);
+		this.minimumModelObservable = BeansObservables.observeDetailValue(
+				selectionObservable, Channel.class, "minimum", Double.class);
+		UpdateValueStrategy minimumTargetToModelStrategy = 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
+		minimumTargetToModelStrategy.setAfterGetValidator(
+				new MinimumTargetToModelValidator());
+		minimumTargetToModelStrategy.setConverter(
+				new DoubleTargetToModelConverter());
+		UpdateValueStrategy minimumModelToTargetStrategy = 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
+		minimumModelToTargetStrategy.setConverter(
+				new DoubleModelToTargetConverter());
+		this.minimumBinding = context.bindValue(minimumTargetObservable,
+				minimumModelObservable, 
+				minimumTargetToModelStrategy,
+				minimumModelToTargetStrategy);
+		ControlDecorationSupport.create(this.minimumBinding, SWT.LEFT);
+		
+		this.maxAttemptsTargetObservable = SWTObservables.observeText(
+				this.maxAttemptsText, SWT.Modify);
+		this.maxAttemptsModelObservable = BeansObservables.observeDetailValue(
+				selectionObservable, Channel.class, "maxAttempts", Integer.class);
+		UpdateValueStrategy maxAttemptsTargetToModelStrategy = 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
+		maxAttemptsTargetToModelStrategy.setAfterGetValidator(
+				new MaxAttemptsTargetToModelValidator());
+		maxAttemptsTargetToModelStrategy.setConverter(
+				new MaxAttemptsTargetToModelConverter());
+		UpdateValueStrategy maxAttemptsModelToTargetStrategy = 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
+		maxAttemptsModelToTargetStrategy.setConverter(
+				new MaxAttemptsModelToTargetConverter());
+		this.maxAttemptsBinding = context.bindValue(
+				maxAttemptsTargetObservable, maxAttemptsModelObservable,
+				maxAttemptsTargetToModelStrategy,
+				maxAttemptsModelToTargetStrategy);
+		ControlDecorationSupport.create(this.maxAttemptsBinding, SWT.LEFT);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void setFocus() {
-		logger.debug("got focus -> forward to top composite");
+		LOGGER.debug("got focus -> forward to top composite");
 		this.top.setFocus();
 	}
 
@@ -410,10 +509,10 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	 */
 	private void setChannel(final Channel channel) {
 		if(channel != null) {
-			logger.debug("set channel (" + channel.getAbstractDevice().
+			LOGGER.debug("set channel (" + channel.getAbstractDevice().
 					getFullIdentifyer() + ")");
 		} else {
-			logger.debug("set channel (null)");
+			LOGGER.debug("set channel (null)");
 		}
 		if (this.currentChannel != null) {
 			this.currentChannel.removeModelUpdateListener(this);
@@ -444,7 +543,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	 */
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		logger.debug("selection changed");
+		LOGGER.debug("selection changed");
 		
 		if(selection instanceof IStructuredSelection) {
 			if(((IStructuredSelection) selection).size() == 0) {
@@ -456,17 +555,17 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			Object o = ((IStructuredSelection) selection).toList().get(0);
 			if (o instanceof Channel) {
 				// set new Channel
-				if(logger.isDebugEnabled()) {
-					logger.debug("Channel: " + ((Channel)o).
+				if(LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Channel: " + ((Channel)o).
 								getDetectorChannel().getFullIdentifyer() + 
 								" selected.");
 				}
 				setChannel((Channel)o);
 			} else if (o instanceof ScanModuleEditPart) {
 				// ScanModule was selected
-				if(logger.isDebugEnabled()) {
-					logger.debug("selection is ScanModuleEditPart: " + o);
-					logger.debug("ScanModule: " + 
+				if(LOGGER.isDebugEnabled()) {
+					LOGGER.debug("selection is ScanModuleEditPart: " + o);
+					LOGGER.debug("ScanModule: " + 
 							((ScanModuleEditPart)o).getModel().getId() + 
 							" selected."); 
 				}
@@ -476,10 +575,10 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 							setChannel(null);
 				}
 			} else if (o instanceof ChainEditPart) {
-				logger.debug("selection is ScanDescriptionEditPart: " + o);
+				LOGGER.debug("selection is ScanDescriptionEditPart: " + o);
 				setChannel(null);
 			} else {
-				logger.debug("unknown selection -> ignore");
+				LOGGER.debug("unknown selection -> ignore");
 			}
 		}
 	}
@@ -499,25 +598,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	 * 
 	 */
 	private void checkForErrors() {
-		// reset errors
-		this.averageTextControlDecoration.hide();
-		this.maxDeviationTextControlDecoration.hide();
-		this.minimumTextControlDecoration.hide();
-		this.maxAttemptsTextControlDecoration.hide();
-
-		for(IModelError error : this.currentChannel.getModelErrors()) {
-			if(error instanceof ChannelError) {
-				final ChannelError channelError = (ChannelError) error;
-				switch(channelError.getErrorType()) {
-					case MAX_DEVIATION_NOT_POSSIBLE:
-						this.maxDeviationTextControlDecoration.show();
-						break;
-					case MINIMUM_NOT_POSSIBLE:
-						this.minimumTextControlDecoration.show();
-						break;
-				}
-			}
-		}
 		if(this.currentChannel.getRedoControlEventManager().
 							getModelErrors().size() > 0) {
 			this.redoEventTabItem.setImage(
@@ -532,14 +612,10 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	 * 
 	 */
 	private void addListeners() {
-		averageText.addModifyListener(averageTextModifyListener);
-		averageText.addVerifyListener(averageTextVerifyListener);
-		maxDeviationText.addModifyListener(maxDeviationTextModifyListener);
-		maxDeviationText.addVerifyListener(maxDeviationTextVerifyListener);
-		minimumText.addModifyListener(minimumTextModifyListener);
-		minimumText.addVerifyListener(minimumTextVerifyListener);
-		maxAttemptsText.addModifyListener(maxAttemptsTextModifyListener);
-		maxAttemptsText.addVerifyListener(maxAttemptsTextVerifyListener);
+		//averageText.addVerifyListener(averageTextVerifyListener);
+		//maxDeviationText.addVerifyListener(maxDeviationTextVerifyListener);
+		//minimumText.addVerifyListener(minimumTextVerifyListener);
+		//maxAttemptsText.addVerifyListener(maxAttemptsTextVerifyListener);
 		normalizeChannelCombo.addSelectionListener(
 				normalizeChannelComboSelectionListener);
 		
@@ -551,14 +627,10 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	 * 
 	 */
 	private void removeListeners() {
-		averageText.removeModifyListener(averageTextModifyListener);
-		averageText.removeVerifyListener(averageTextVerifyListener);
-		maxDeviationText.removeModifyListener(maxDeviationTextModifyListener);
-		maxDeviationText.removeVerifyListener(maxDeviationTextVerifyListener);
-		minimumText.removeModifyListener(minimumTextModifyListener);
-		minimumText.removeVerifyListener(minimumTextVerifyListener);
-		maxAttemptsText.removeModifyListener(maxAttemptsTextModifyListener);
-		maxAttemptsText.removeVerifyListener(maxAttemptsTextVerifyListener);
+		//averageText.removeVerifyListener(averageTextVerifyListener);
+		//maxDeviationText.removeVerifyListener(maxDeviationTextVerifyListener);
+		//minimumText.removeVerifyListener(minimumTextVerifyListener);
+		//maxAttemptsText.removeVerifyListener(maxAttemptsTextVerifyListener);
 		normalizeChannelCombo.removeSelectionListener(
 				normalizeChannelComboSelectionListener);
 		
@@ -588,35 +660,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			// set the view title
 			this.setPartName(
 					currentChannel.getAbstractDevice().getName());
-			
-			// set average text
-			this.averageText.setText(Integer.toString(
-					this.currentChannel.getAverageCount()));
-
-			// set max deviation
-			if(this.currentChannel.getMaxDeviation() != 
-					Double.NEGATIVE_INFINITY) {
-				this.maxDeviationText.setText(
-						Double.toString(this.currentChannel.getMaxDeviation()));
-			} else {
-				this.maxDeviationText.setText("");
-			}
-			
-			// set minimum
-			if(this.currentChannel.getMinimum() != Double.NEGATIVE_INFINITY) {
-				this.minimumText.setText(Double.toString(
-						this.currentChannel.getMinimum()));
-			} else {
-				this.minimumText.setText("");
-			}
-			
-			// set max attempts
-			if(this.currentChannel.getMaxAttempts() != Integer.MIN_VALUE) {
-				this.maxAttemptsText.setText(
-						Integer.toString(this.currentChannel.getMaxAttempts()));
-			} else {
-				this.maxAttemptsText.setText("");
-			}
 			
 			// fill combo box
 			List<Channel> channels = new ArrayList<Channel>();
@@ -708,10 +751,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			// this.currentChannel == null (no channel selected)
 			this.setPartName("No Detector Channel selected");
 
-			this.averageText.setText("");
-			this.maxDeviationText.setText("");
-			this.minimumText.setText("");
-			this.maxAttemptsText.setText("");
 			this.detectorReadyEventCheckBox.setSelection(false);
 			
 			this.redoEventComposite.setControlEventManager(null);
@@ -725,125 +764,50 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	/* ********************************************************************* */
 	/* ******************************* Listeners *************************** */
 	/* ********************************************************************* */
-	
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of 
-	 * <code>averageText</code>.
-	 */
-	private class AverageTextModifyListener implements ModifyListener {
 
+	/**
+	 * @author Marcus Michalsky
+	 * @since 1.8
+	 */
+	private class TextFocusListener implements FocusListener {
+
+		private Text widget;
+		
 		/**
-		 * {@inheritDoc}
+		 * @param widget the widget to observe
 		 */
-		@Override
-		public void modifyText(final ModifyEvent e) {
-			logger.debug("average text modified");
-			
-			if(currentChannel != null) {
-				try {
-					currentChannel.setAverageCount(Integer.parseInt(
-							averageText.getText()));
-					logger.debug("set average text to: " + Integer.parseInt(
-							averageText.getText()));
-				} catch(final NumberFormatException ex) {
-					// set default value (1)
-					currentChannel.setAverageCount(1);
-				}
-			}
-			checkForErrors();
+		public TextFocusListener(Text widget) {
+			this.widget = widget;
 		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of 
-	 * <code>maxDeviationText</code>.
-	 */
-	private class MaxDeviationTextModifyListener implements ModifyListener {
-
+		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void modifyText(final ModifyEvent e) {
-			logger.debug("max deviation text modified");
-
-			if(currentChannel != null) {
-				if(maxDeviationText.getText().equals("")) {
-					currentChannel.setMaxDeviation(Double.NEGATIVE_INFINITY);
-				} else {
-					try {
-						currentChannel.setMaxDeviation(Double.parseDouble(
-								maxDeviationText.getText()));
-					} catch(final NumberFormatException ex) {
-						currentChannel.setMaxDeviation(Double.NaN);
-					}
-				}
+		public void focusGained(FocusEvent e) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void focusLost(FocusEvent e) {
+			if (widget == averageText) {
+				averageText.setSelection(0,0);
+				averageBinding.updateModelToTarget();
+			} else if (widget == maxDeviationText) {
+				maxDeviationText.setSelection(0,0);
+				maxDeviationBinding.updateModelToTarget();
+			} else if (widget == minimumText) {
+				minimumText.setSelection(0,0);
+				minimumBinding.updateModelToTarget();
+			} else if (widget == maxAttemptsText) {
+				maxAttemptsText.setSelection(0,0);
+				maxAttemptsBinding.updateModelToTarget();
 			}
-			checkForErrors();
 		}
 	}
 	
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of 
-	 * <code>minimumText</code>.
-	 */
-	private class MinimumTextModifyListener implements ModifyListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modifyText(final ModifyEvent e) {
-			logger.debug("minimum text modified");
-
-			suspendModelUpdateListener();
-
-			if(currentChannel != null) {
-				if(minimumText.getText().equals("")) {
-					currentChannel.setMinimum(Double.NEGATIVE_INFINITY);
-				} else {
-					try {
-						currentChannel.setMinimum(Double.parseDouble(
-								minimumText.getText()));
-					} catch(final NumberFormatException ex) {
-						currentChannel.setMinimum(Double.NaN);
-					}
-				}
-			}
-			checkForErrors();
-			resumeModelUpdateListener();
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of 
-	 * <code>maxAttemptsText</code>.
-	 */
-	private class MaxAttemptsTextModifyListener implements ModifyListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modifyText(final ModifyEvent e) {
-			logger.debug("max attempts text modified");
-
-			if(currentChannel != null) {
-				if(maxAttemptsText.getText().equals("")) {
-					currentChannel.setMaxAttempts(Integer.MIN_VALUE);
-				} else {
-					try {
-						currentChannel.setMaxAttempts(Integer.parseInt(
-								maxAttemptsText.getText()));
-					} catch(final NumberFormatException ex) {
-						currentChannel.setMaxAttempts(-1);
-					}
-				}
-			}
-			checkForErrors();
-		}
-	}
-
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of
 	 * normalizeChannelCombo.
@@ -900,7 +864,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		 */
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
-			logger.debug("send detector ready event modified");
+			LOGGER.debug("send detector ready event modified");
 			// we create an event and add it to the list if selected 
 			// or remove the event with same id from the list if deselected
 			Event detReadyEvent = new Event(
@@ -936,7 +900,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		 */
 		@Override
 		public void itemCollapsed(ExpandEvent e) {
-			logger.debug("collapse");
+			LOGGER.debug("collapse");
 			Point topPoint = top.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 			Point eventPoint = eventComposite.computeSize(SWT.DEFAULT,
 					SWT.DEFAULT);
@@ -948,7 +912,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		 */
 		@Override
 		public void itemExpanded(ExpandEvent e) {
-			logger.debug("expand");
+			LOGGER.debug("expand");
 			Point topPoint = top.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 			Point eventPoint = eventComposite.computeSize(SWT.DEFAULT,
 					SWT.DEFAULT);
