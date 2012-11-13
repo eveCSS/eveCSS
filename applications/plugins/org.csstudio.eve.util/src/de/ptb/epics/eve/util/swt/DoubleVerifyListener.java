@@ -1,6 +1,8 @@
 package de.ptb.epics.eve.util.swt;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -8,25 +10,27 @@ import org.eclipse.swt.widgets.Text;
  * @author Marcus Michalsky
  * @since 1.7
  */
-public class DoubleVerifyListener extends TextVerifyListener {
-
-	/**
-	 * @param textField the text field to be verified
-	 */
-	public DoubleVerifyListener(Text textField) {
-		super(textField);
-	}
+public class DoubleVerifyListener implements VerifyListener {
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void verifyText(VerifyEvent e) {
-		super.verifyText(e);
-		if (e.doit) {
+		if (e.doit == false) {
 			return;
 		}
-		e.doit = true;
+		
+		switch (e.keyCode) {
+		case SWT.BS: 			// Backspace
+		case SWT.DEL: 			// Delete
+		case SWT.HOME:			// Home
+		case SWT.END: 			// End
+		case SWT.ARROW_LEFT: 	// Left arrow
+		case SWT.ARROW_RIGHT: 	// Right arrow
+			return;
+		}
+		
 		String oldText = ((Text) (e.widget)).getText();
 		if (!Character.isDigit(e.character)) {
 			if (e.character == '.') {

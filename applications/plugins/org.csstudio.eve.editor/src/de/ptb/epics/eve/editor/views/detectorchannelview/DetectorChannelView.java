@@ -36,8 +36,6 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Combo;
@@ -108,19 +106,15 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	private Label averageLabel;
 	private Text averageText;
 	private ControlDecoration averageTextDisabledControlDecoration;
-	private TextNumberVerifyListener averageTextVerifyListener;
 
 	private Label maxDeviationLabel;
 	private Text maxDeviationText;
-	private TextDoubleVerifyListener maxDeviationTextVerifyListener;
 
 	private Label minimumLabel;
 	private Text minimumText;
-	private TextDoubleVerifyListener minimumTextVerifyListener;
 
 	private Label maxAttemptsLabel;
 	private Text maxAttemptsText;
-	private TextNumberVerifyListener maxAttemptsTextVerifyListener;
 
 	private Label normalizeChannelLabel;
 	private Combo normalizeChannelCombo;
@@ -214,9 +208,8 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 				new TextSelectAllFocusListener(this.averageText));
 		this.averageText.addMouseListener(
 				new TextSelectAllMouseListener(this.averageText));
-		this.averageText.addFocusListener(new TextFocusListener(this.averageText));
-		this.averageTextVerifyListener = new TextNumberVerifyListener();
-		//this.averageText.addVerifyListener(averageTextVerifyListener);
+		this.averageText.addFocusListener(
+				new TextFocusListener(this.averageText));
 
 		this.averageTextDisabledControlDecoration = new ControlDecoration(
 				this.averageText, SWT.LEFT);
@@ -243,8 +236,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 				new TextSelectAllMouseListener(this.maxDeviationText));
 		this.maxDeviationText.addFocusListener(
 				new TextFocusListener(this.maxDeviationText));
-		this.maxDeviationTextVerifyListener = new TextDoubleVerifyListener();
-		// this.maxDeviationText.addVerifyListener(maxDeviationTextVerifyListener);
 
 		// GUI: Minimum: <TextBox> x
 		this.minimumLabel = new Label(this.top, SWT.NONE);
@@ -267,8 +258,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 				new TextSelectAllMouseListener(this.minimumText));
 		this.minimumText.addFocusListener(
 				new TextFocusListener(this.minimumText));
-		this.minimumTextVerifyListener = new TextDoubleVerifyListener();
-		// this.minimumText.addVerifyListener(minimumTextVerifyListener);
 
 		// GUI: Max. Attempts: <TextBox> x
 		this.maxAttemptsLabel = new Label(this.top, SWT.NONE);
@@ -291,8 +280,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 				new TextSelectAllMouseListener(this.maxAttemptsText));
 		this.maxAttemptsText.addFocusListener(
 				new TextFocusListener(this.maxAttemptsText));
-		this.maxAttemptsTextVerifyListener = new TextNumberVerifyListener();
-		// this.maxAttemptsText.addVerifyListener(maxAttemptsTextVerifyListener);
 
 		//
 		this.normalizeChannelLabel = new Label(this.top, SWT.NONE);
@@ -575,7 +562,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 							setChannel(null);
 				}
 			} else if (o instanceof ChainEditPart) {
-				LOGGER.debug("selection is ScanDescriptionEditPart: " + o);
+				LOGGER.debug("selection is ChainEditPart: " + o);
 				setChannel(null);
 			} else {
 				LOGGER.debug("unknown selection -> ignore");
@@ -612,10 +599,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	 * 
 	 */
 	private void addListeners() {
-		//averageText.addVerifyListener(averageTextVerifyListener);
-		//maxDeviationText.addVerifyListener(maxDeviationTextVerifyListener);
-		//minimumText.addVerifyListener(minimumTextVerifyListener);
-		//maxAttemptsText.addVerifyListener(maxAttemptsTextVerifyListener);
 		normalizeChannelCombo.addSelectionListener(
 				normalizeChannelComboSelectionListener);
 		
@@ -627,10 +610,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	 * 
 	 */
 	private void removeListeners() {
-		//averageText.removeVerifyListener(averageTextVerifyListener);
-		//maxDeviationText.removeVerifyListener(maxDeviationTextVerifyListener);
-		//minimumText.removeVerifyListener(minimumTextVerifyListener);
-		//maxAttemptsText.removeVerifyListener(maxAttemptsTextVerifyListener);
 		normalizeChannelCombo.removeSelectionListener(
 				normalizeChannelComboSelectionListener);
 		
@@ -917,89 +896,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			Point eventPoint = eventComposite.computeSize(SWT.DEFAULT,
 					SWT.DEFAULT);
 			sc.setMinSize(topPoint.x, topPoint.y + eventPoint.y);
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.VerifyListener}.
-	 */
-	private class TextNumberVerifyListener implements VerifyListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void verifyText(VerifyEvent e) {
-			switch (e.keyCode) {
-			case SWT.BS: // Backspace
-			case SWT.DEL: // Delete
-			case SWT.HOME: // Home
-			case SWT.END: // End
-			case SWT.ARROW_LEFT: // Left arrow
-			case SWT.ARROW_RIGHT: // Right arrow
-				return;
-			}
-
-			if (!Character.isDigit(e.character)) {
-				e.doit = false; // disallow the action
-			}
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.VerifyListener}.
-	 */
-	private class TextDoubleVerifyListener implements VerifyListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void verifyText(VerifyEvent e) {
-			switch (e.keyCode) {
-			case SWT.BS: // Backspace
-			case SWT.DEL: // Delete
-			case SWT.HOME: // Home
-			case SWT.END: // End
-			case SWT.ARROW_LEFT: // Left arrow
-			case SWT.ARROW_RIGHT: // Right arrow
-				return;
-			}
-
-			String oldText = ((Text) (e.widget)).getText();
-
-			if (!Character.isDigit(e.character)) {
-				if (e.character == '.') {
-					// character . is a valid character, if he is not in the
-					// old string
-					if (oldText.contains("."))
-						e.doit = false;
-				} else if (e.character == '-') {
-					// character - is a valid character as first sign and after
-					// an e
-					if (oldText.isEmpty()) {
-						// oldText is emtpy, - is valid
-					} else if ((((Text) e.widget).getSelection().x) == 0) {
-						// - is the first sign an valid
-					} else {
-						// wenn das letzte Zeichen von oldText ein e ist,
-						// ist das minus auch erlaubt
-						int index = oldText.length();
-						if (oldText.substring(index - 1).equals("e")) {
-							// letzte Zeichen ist ein e und damit erlaubt
-						} else {
-							e.doit = false;
-						}
-					}
-				} else if (e.character == 'e') {
-					// character e is a valid character, if he is not in the
-					// old string
-					if (oldText.contains("e"))
-						e.doit = false;
-				} else {
-					e.doit = false; // disallow the action
-				}
-			}
 		}
 	}
 }

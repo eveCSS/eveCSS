@@ -45,8 +45,6 @@ public class SingleSelectionProvider implements ISelectionProvider,
 	 */
 	@Override
 	public ISelection getSelection() {
-		// return Activator.getDefault().getWorkbench().getActiveWorkbenchWindow()
-			//	.getSelectionService().getSelection();
 		return this.currentSelection;
 	}
 
@@ -55,8 +53,6 @@ public class SingleSelectionProvider implements ISelectionProvider,
 	 */
 	@Override
 	public void setSelection(ISelection selection) {
-		// TODO Auto-generated method stub
-	
 	}
 
 	/**
@@ -100,25 +96,6 @@ public class SingleSelectionProvider implements ISelectionProvider,
 			return;
 		}
 		this.currentSelection = selection;
-		/*
-		// TODO check if part is Editor Perspective
-		if (selection.isEmpty()) {
-			return;
-		}
-		if (!(selection instanceof IStructuredSelection)) {
-			return;
-		}
-		IStructuredSelection sel = (IStructuredSelection)selection;
-		LOGGER.debug("size: " + sel.size());
-		if (sel.size() > 1) {
-			return;
-		}
-		if (sel.size() == 1) {
-			LOGGER.debug(sel.getFirstElement().getClass().getName());
-		}
-		if (sel.size() == 1 && !(sel.getFirstElement() instanceof Channel)) {
-			return;
-		}*/
 		for (ISelectionChangedListener listener : this.listeners) {
 			listener.selectionChanged(new SelectionChangedEvent(this, selection));
 		}

@@ -49,7 +49,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateList
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
+import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
@@ -1033,16 +1033,16 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				// ScanModule was selected
 				if(logger.isDebugEnabled()) {
 					logger.debug("selection is ScanModuleEditPart: " + o);
-					logger.debug("ScanModule: " + ((ScanModule)
-							((ScanModuleEditPart)o).getModel()).getId() + 
+					logger.debug("ScanModule: " + 
+							((ScanModuleEditPart)o).getModel().getId() + 
 							" selected."); 
 				}
 				if (this.scanModule != null && !this.scanModule.equals(
 						((ScanModuleEditPart)o).getModel())) {
 							setPlotWindow(null);
 				}
-			} else if (o instanceof ScanDescriptionEditPart) {
-				logger.debug("selection is ScanDescriptionEditPart: " + o);
+			} else if (o instanceof ChainEditPart) {
+				logger.debug("selection is ChainEditPart: " + o);
 				setPlotWindow(null);
 			} else {
 				logger.debug("unknown selection -> ignore");

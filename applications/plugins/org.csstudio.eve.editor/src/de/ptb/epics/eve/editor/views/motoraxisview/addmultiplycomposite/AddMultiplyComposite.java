@@ -25,7 +25,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -39,8 +38,6 @@ import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
 import de.ptb.epics.eve.data.scandescription.axismode.AdjustParameter;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisViewComposite;
-import de.ptb.epics.eve.util.swt.DoubleVerifyListener;
-import de.ptb.epics.eve.util.swt.IntegerVerifyListener;
 
 /**
  * @author Marcus Michalsky
@@ -55,36 +52,26 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 	private Axis axis;
 	private AddMultiplyMode<?> addMultiplyMode;
 	
-	/*
-	 * VerifyListeners deactivated. They interfer with verify listeners set 
-	 * by the databinding framework resulting in no calculations are written 
-	 * to the AdjustParameter field. 
-	 */
-	
 	private Button startRadioButton;
 	private Text startText;
 	private ControlDecoration startTextControlDecoration;
 	private SelectionListener startTextControlDecorationSelectionListener;
-	private VerifyListener startTextVerifyListener;
 	private FocusListener startTextFocusListener;
 	private MouseListener startTextMouseListener;
 	private Button stopRadioButton;
 	private Text stopText;
 	private ControlDecoration stopTextControlDecoration;
 	private SelectionListener stopTextControlDecorationSelectionListener;
-	private VerifyListener stopTextVerifyListener;
 	private FocusListener stopTextFocusListener;
 	private MouseListener stopTextMouseListener;
 	private Button stepwidthRadioButton;
 	private Text stepwidthText;
 	private ControlDecoration stepwidthTextControlDecoration;
 	private SelectionListener stepwidhtTextControlDecorationSelectionListener;
-	private VerifyListener stepwidthTextVerifyListener;
 	private FocusListener stepwidthTextFocusListener;
 	private MouseListener stepwidthTextMouseListener;
 	private Button stepcountRadioButton;
 	private Text stepcountText;
-	private VerifyListener stepcountTextVerifyListener;
 	private FocusListener stepcountTextFocusListener;
 	private MouseListener stepcountTextMouseListener;
 
@@ -430,38 +417,6 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 				mainAxisModelObservable, mainAxisTargetToModel,
 				mainAxisModelToTarget);
 		
-		switch (this.addMultiplyMode.getType()) {
-		case DOUBLE:
-			this.startTextVerifyListener = new DoubleVerifyListener(
-					this.startText);
-			this.stopTextVerifyListener = new DoubleVerifyListener(
-					this.stopText);
-			this.stepwidthTextVerifyListener = new DoubleVerifyListener(
-					this.stepwidthText);
-			this.stepcountTextVerifyListener = new DoubleVerifyListener(
-					this.stepcountText);
-			break;
-		case INT:
-			this.startTextVerifyListener = new IntegerVerifyListener(
-					this.startText);
-			this.stopTextVerifyListener = new IntegerVerifyListener(
-					this.stopText);
-			this.stepwidthTextVerifyListener = new IntegerVerifyListener(
-					this.stepwidthText);
-			this.stepcountTextVerifyListener = new IntegerVerifyListener(
-					this.stepcountText);
-			break;
-		default:
-			break;
-		}
-		
-		/*
-		this.startText.addVerifyListener(startTextVerifyListener);
-		this.stopText.addVerifyListener(stopTextVerifyListener);
-		this.stepwidthText.addVerifyListener(stepwidthTextVerifyListener);
-		this.stepcountText.addVerifyListener(stepcountTextVerifyListener);
-		*/
-		
 		this.startText.addFocusListener(startTextFocusListener);
 		this.stopText.addFocusListener(stopTextFocusListener);
 		this.stepwidthText.addFocusListener(stepwidthTextFocusListener);
@@ -490,13 +445,6 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 			this.stopText.removeFocusListener(stopTextFocusListener);
 			this.stepwidthText.removeFocusListener(stepwidthTextFocusListener);
 			this.stepcountText.removeFocusListener(stepcountTextFocusListener);
-			
-			/*
-			this.startText.removeVerifyListener(startTextVerifyListener);
-			this.stopText.removeVerifyListener(stopTextVerifyListener);
-			this.stepwidthText.removeVerifyListener(stepwidthTextVerifyListener);
-			this.stepcountText.removeVerifyListener(stepcountTextVerifyListener);
-			*/
 			
 			this.addMultiplyMode.removePropertyChangeListener(
 					AddMultiplyMode.ADJUST_PARAMETER_PROP, this);
@@ -653,35 +601,15 @@ public class AddMultiplyComposite extends MotorAxisViewComposite implements
 		public void focusLost(FocusEvent e) {
 			LOGGER.debug("focus lost");
 			if (this.widget == startText) {
-				//startText.removeVerifyListener(startTextVerifyListener);
 			 	startBinding.updateModelToTarget();
 			 	startBinding.validateTargetToModel();
-			 	/*MessageDialog.openWarning(getShell(), "Restored Value", 
-			 			"Restored last valid value for 'start' of " + 
-			 			addMultiplyMode.getAxis().getMotorAxis().getName());*/
-			 	//startText.addVerifyListener(startTextVerifyListener);
 			} else if (this.widget == stopText) {
-				//stopText.removeVerifyListener(stopTextVerifyListener);
 				stopBinding.updateModelToTarget();
 				stopBinding.validateTargetToModel();
-				/*MessageDialog.openWarning(getShell(), "Restored Value", 
-			 			"Restored last valid value for 'stop' of " + 
-			 			addMultiplyMode.getAxis().getMotorAxis().getName());*/
-				//stopText.addVerifyListener(stopTextVerifyListener);
 			} else if (this.widget == stepwidthText) {
-				//stepwidthText.removeVerifyListener(stepwidthTextVerifyListener);
 				stepwidthBinding.updateModelToTarget();
-				/*MessageDialog.openWarning(getShell(), "Restored Value", 
-			 			"Restored last valid value for 'stepwidth' of " + 
-			 			addMultiplyMode.getAxis().getMotorAxis().getName());*/
-				//stepwidthText.addVerifyListener(stepwidthTextVerifyListener);
 			} else if (this.widget == stepcountText) {
-				//stepcountText.removeVerifyListener(stepcountTextVerifyListener);
 				stepcountBinding.updateModelToTarget();
-				/*MessageDialog.openWarning(getShell(), "Restored Value", 
-			 			"Restored last valid value for 'stepcount' of " + 
-			 			addMultiplyMode.getAxis().getMotorAxis().getName());*/
-				//stepcountText.addVerifyListener(stepcountTextVerifyListener);
 			}
 		}
 	}

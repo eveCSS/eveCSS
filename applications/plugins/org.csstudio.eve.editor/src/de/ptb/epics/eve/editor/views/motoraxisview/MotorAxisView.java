@@ -404,7 +404,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 						setAxis(null);
 				}
 			} else if (o instanceof ChainEditPart) {
-				LOGGER.debug("selection is ScanDescriptionEditPart: " + o);
+				LOGGER.debug("selection is ChainEditPart: " + o);
 				setAxis(null);
 			} else {
 				LOGGER.debug("unknown selection -> ignore: " + o);

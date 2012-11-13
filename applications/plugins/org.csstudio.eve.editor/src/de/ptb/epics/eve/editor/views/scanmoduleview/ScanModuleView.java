@@ -280,8 +280,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.valueCountText.setLayoutData(gridData);
-		this.valueCountTextVerifyListener = new PositiveIntegerVerifyListener(
-				valueCountText);
+		this.valueCountTextVerifyListener = new PositiveIntegerVerifyListener();
 		this.valueCountText.addVerifyListener(valueCountTextVerifyListener);
 		this.valueCountTextModifyListener = new ValueCountTextModifyListener();
 		this.valueCountText.addModifyListener(valueCountTextModifyListener);
