@@ -26,6 +26,8 @@ import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -61,6 +63,8 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.PostscanCo
 import de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.PrescanComposite;
 import de.ptb.epics.eve.util.jface.SelectionProviderWrapper;
 import de.ptb.epics.eve.util.swt.PositiveIntegerVerifyListener;
+import de.ptb.epics.eve.util.swt.TextSelectAllFocusListener;
+import de.ptb.epics.eve.util.swt.TextSelectAllMouseListener;
 
 /**
  * <code>ScanModulView</code> shows the currently selected scan module.
@@ -284,7 +288,15 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		this.valueCountText.addVerifyListener(valueCountTextVerifyListener);
 		this.valueCountTextModifyListener = new ValueCountTextModifyListener();
 		this.valueCountText.addModifyListener(valueCountTextModifyListener);
-		// TODO add listeners
+		this.valueCountText.addFocusListener(
+				new TextSelectAllFocusListener(this.valueCountText));
+		this.valueCountText.addMouseListener(
+				new TextSelectAllMouseListener(this.valueCountText));
+		this.valueCountText.addFocusListener(new FocusAdapter() {
+			@Override public void focusLost(FocusEvent e) {
+				valueCountText.setSelection(0,0);
+			}
+		});
 		
 		// Trigger Delay
 		this.triggerDelayLabel = new Label(this.generalComposite, SWT.NONE);
@@ -304,6 +316,15 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 				new TriggerDelayTextModifiedListener();
 		this.triggerDelayText.addModifyListener(
 				triggerDelayTextModifiedListener);
+		this.triggerDelayText.addFocusListener(
+				new TextSelectAllFocusListener(this.triggerDelayText));
+		this.triggerDelayText.addMouseListener(
+				new TextSelectAllMouseListener(this.triggerDelayText));
+		this.triggerDelayText.addFocusListener(new FocusAdapter() {
+			@Override public void focusLost(FocusEvent e) {
+				triggerDelayText.setSelection(0,0);
+			}
+		});
 		this.triggerDelayTextControlDecoration = new ControlDecoration(
 				triggerDelayText, SWT.LEFT);
 		this.triggerDelayTextControlDecoration.setImage(errorImage);
@@ -328,6 +349,15 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		this.settleTimeTextModifiedListener = 
 				new SettleTimeTextModifiedListener();
 		this.settleTimeText.addModifyListener(settleTimeTextModifiedListener);
+		this.settleTimeText.addFocusListener(
+				new TextSelectAllFocusListener(this.settleTimeText));
+		this.settleTimeText.addMouseListener(
+				new TextSelectAllMouseListener(this.settleTimeText));
+		this.settleTimeText.addFocusListener(new FocusAdapter() {
+			@Override public void focusLost(FocusEvent e) {
+				settleTimeText.setSelection(0,0);
+			}
+		});
 		this.settleTimeTextControlDecoration = new ControlDecoration(
 				settleTimeText, SWT.LEFT);
 		this.settleTimeTextControlDecoration.setImage(errorImage);
