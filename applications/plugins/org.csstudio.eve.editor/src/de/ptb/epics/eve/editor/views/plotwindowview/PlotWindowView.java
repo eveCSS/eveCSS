@@ -28,6 +28,8 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -51,6 +53,8 @@ import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
+import de.ptb.epics.eve.util.swt.TextSelectAllFocusListener;
+import de.ptb.epics.eve.util.swt.TextSelectAllMouseListener;
 
 /**
  * <code>PlotWindowView</code> contains all configuration parts, corresponding 
@@ -341,6 +345,15 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		this.nameText.setLayoutData(gridData);
 		this.nameTextModifyListener = new NameTextModifyListener();
 		this.nameText.addModifyListener(nameTextModifyListener);
+		this.nameText.addFocusListener(
+				new TextSelectAllFocusListener(this.nameText));
+		this.nameText.addMouseListener(
+				new TextSelectAllMouseListener(this.nameText));
+		this.nameText.addFocusListener(new FocusAdapter() {
+			@Override public void focusLost(FocusEvent e) {
+				nameText.setSelection(0,0);
+			}
+		});
 		
 		// GUI: Motor Axis: <Combo>
 		this.motorAxisLabel = new Label(this.xAxisComposite, SWT.NONE);
