@@ -54,6 +54,21 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	}
 	
 	/**
+	 * Constructs a YAxis with a preset detector channel and default values 
+	 * for plot mode, trace type, point style and color.
+	 * 
+	 * @param channel the detector channel that should be set
+	 */
+	public YAxis(DetectorChannel channel) {
+		this();
+		this.setDetectorChannel(channel);
+		this.mode = PlotModes.LINEAR;
+		this.linestyle = TraceType.SOLID_LINE;
+		this.markstyle = PointStyle.POINT;
+		this.color = new RGB(0, 0, 255);
+	}
+	
+	/**
 	 * Returns the color of the line and mark points of the axis.
 	 * 
 	 * @return the color of the line and mark points

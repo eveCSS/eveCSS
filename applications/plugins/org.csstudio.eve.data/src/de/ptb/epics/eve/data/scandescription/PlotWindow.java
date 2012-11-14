@@ -254,6 +254,16 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	}
 	
 	/**
+	 * Adds a y axis to the plot window and sets the given detector channel.
+	 * 
+	 * @param channel the detector channel that should be set
+	 */
+	public void addYAxis(final DetectorChannel channel) {
+		YAxis axis = new YAxis(channel);
+		this.addYAxis(axis);
+	}
+	
+	/**
 	 * Removes a y axis from the plot window.
 	 * 
 	 * @param yAxis the y axis that should be removed

@@ -1386,18 +1386,21 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			suspendModelUpdateListener();
-			if(yAxis1 != null) {
-				plotWindow.removeYAxis(yAxis1);
-			}
-			if (!yAxis1DetectorChannelComboBox.getText().equals("none")) {
-				yAxis1 = new YAxis();
-				// default values for color, line style and mark style
-				yAxis1.setColor(new RGB(0,0,255));
-				yAxis1.setLinestyle(TraceType.SOLID_LINE);
-				yAxis1.setMarkstyle(PointStyle.POINT);
-				yAxis1.setDetectorChannel(availableDetectorChannels[yAxis1DetectorChannelComboBox
-						.getSelectionIndex()].getDetectorChannel());
-				plotWindow.addYAxis(yAxis1);
+			if (yAxis1 == null) {
+				// create new axis
+				plotWindow.addYAxis(
+						availableDetectorChannels[yAxis1DetectorChannelComboBox
+								.getSelectionIndex()].getDetectorChannel());
+			} else {
+				if (yAxis1DetectorChannelComboBox.getText().equals("none")) {
+					// remove axis
+					plotWindow.removeYAxis(yAxis1);
+				} else {
+					// set new channel for axis
+					yAxis1.setDetectorChannel(
+						availableDetectorChannels[yAxis1DetectorChannelComboBox
+							.getSelectionIndex()].getDetectorChannel());
+				}
 			}
 			resumeModelUpdateListener();
 		}
@@ -1589,19 +1592,23 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			suspendModelUpdateListener();
-			if (yAxis2 != null) {
-				plotWindow.removeYAxis(yAxis2);
-			}
-			if (!yAxis2DetectorChannelComboBox.getText().equals("none")) {
-				yAxis2 = new YAxis();
-				// default values for color, line style and mark style
-				yAxis2.setColor(new RGB(255, 0, 0));
-				yAxis2.setLinestyle(TraceType.SOLID_LINE);
-				yAxis2.setMarkstyle(PointStyle.POINT);
-				yAxis2.setDetectorChannel(
-					availableDetectorChannels[yAxis2DetectorChannelComboBox
-					.getSelectionIndex()].getDetectorChannel());
-				plotWindow.addYAxis(yAxis2);
+			if (yAxis2 == null) {
+				// create new axis
+				plotWindow.addYAxis(
+						availableDetectorChannels[yAxis2DetectorChannelComboBox
+								.getSelectionIndex()].getDetectorChannel());
+				plotWindow.getYAxes().get(plotWindow.getYAxes().size() - 1)
+						.setColor(new RGB(255, 0, 0));
+			} else {
+				if (yAxis2DetectorChannelComboBox.getText().equals("none")) {
+					// remove axis
+					plotWindow.removeYAxis(yAxis2);
+				} else {
+					// set new channel for axis
+					yAxis2.setDetectorChannel(
+						availableDetectorChannels[yAxis2DetectorChannelComboBox
+							.getSelectionIndex()].getDetectorChannel());
+				}
 			}
 			resumeModelUpdateListener();
 		}
@@ -1634,7 +1641,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				}
 			} else {
 				// set normalize channel to the one selected
-				yAxis2.setNormalizeChannel(availableDetectorChannels[yAxis2NormalizeChannelComboBox
+				yAxis2.setNormalizeChannel(
+					availableDetectorChannels[yAxis2NormalizeChannelComboBox
 						.getSelectionIndex()].getDetectorChannel());
 			}
 			resumeModelUpdateListener();
