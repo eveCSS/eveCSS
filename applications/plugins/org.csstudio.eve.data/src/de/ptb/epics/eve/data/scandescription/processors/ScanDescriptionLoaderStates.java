@@ -614,6 +614,10 @@ public enum ScanDescriptionLoaderStates {
 	 */
 	CHAIN_SCANMODULE_DETECTOR_REDOEVENT,
 
+	CHAIN_SCANMODULE_DETECTOR_DEFERRED_NEXT,
+	
+	CHAIN_SCANMODULE_DETECTOR_DEFERRED_READ,
+	
 	/**
 	 * A plot window is loading.
 	 */

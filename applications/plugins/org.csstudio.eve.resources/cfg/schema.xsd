@@ -3,9 +3,9 @@
   targetNamespace="http://www.ptb.de/epics/SCML" 
   xmlns:tns="http://www.ptb.de/epics/SCML">
 
-  <!-- schema version 2.1
+  <!-- schema version 2.2
        please increase version number on every modification
-       If the corresponding xml-file of the previous schema version is still
+       If the corresponding XML-file of the previous schema version is still
        valid with the current schema version, change the minor version number only -->
   <!-- Note:
        The default value for both maxOccurs and minOccurs is 1! 
@@ -372,6 +372,7 @@
       <element name="normalize_id" type="tns:identifier" minOccurs="0"></element>
       <element name="sendreadyevent" type="boolean" minOccurs="0"></element>
       <element name="redoevent" type="tns:smevent" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="deferredtrigger" type="boolean" minOccurs="0"></element>
     </sequence>
   </complexType>
 

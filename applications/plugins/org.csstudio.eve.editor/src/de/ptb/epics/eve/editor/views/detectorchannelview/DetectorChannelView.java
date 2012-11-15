@@ -121,6 +121,8 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	private NormalizeChannelComboSelectionListener 
 			normalizeChannelComboSelectionListener;
 
+	private Button deferredCheckBox;
+	
 	private DataBindingContext context;
 	
 	private SingleSelectionProvider selectionProvider;
@@ -142,6 +144,10 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	private Binding maxAttemptsBinding;
 	private IObservableValue maxAttemptsTargetObservable;
 	private IObservableValue maxAttemptsModelObservable;
+	
+	private Binding deferredTriggerBinding;
+	private IObservableValue deferredTriggerTargetObservable;
+	private IObservableValue deferredTriggerModelObservable;
 	
 	private ExpandBar bar;
 	private ExpandItem eventExpandItem;
@@ -296,6 +302,14 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		this.normalizeChannelCombo.addSelectionListener(
 				normalizeChannelComboSelectionListener);
 
+		this.deferredCheckBox = new Button(this.top, SWT.CHECK);
+		this.deferredCheckBox.setText("Deferred Trigger");
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 2;
+		gridData.grabExcessHorizontalSpace = true;
+		this.deferredCheckBox.setLayoutData(gridData);
+		
 		// Expand Bar
 		this.bar = new ExpandBar(this.top, SWT.NONE);
 		gridData = new GridData();
@@ -465,6 +479,17 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 				maxAttemptsTargetToModelStrategy,
 				maxAttemptsModelToTargetStrategy);
 		ControlDecorationSupport.create(this.maxAttemptsBinding, SWT.LEFT);
+		
+		this.deferredTriggerTargetObservable = SWTObservables.observeSelection(
+				this.deferredCheckBox);
+		this.deferredTriggerModelObservable = BeansObservables
+				.observeDetailValue(selectionObservable, Channel.class, 
+						"deferred", Boolean.class);
+		this.deferredTriggerBinding = context.bindValue(
+				deferredTriggerTargetObservable,
+				deferredTriggerModelObservable, new UpdateValueStrategy(
+						UpdateValueStrategy.POLICY_UPDATE),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 	}
 	
 	/**

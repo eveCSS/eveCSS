@@ -1681,6 +1681,16 @@ public class ScanDescriptionSaver implements
 				this.writeControlEvent(controlEventIterator.next(), "redoevent");
 			}
 
+			if (channel.isDeferred()) {
+				this.atts.clear();
+				this.contentHandler.startElement("", "deferredtrigger", 
+						"deferredtrigger", this.atts);
+				this.contentHandler.characters("true".toCharArray(), 0,
+						"true".length());
+				this.contentHandler.endElement("", "deferredtrigger",
+						"deferredtrigger");
+			}
+			
 			this.contentHandler.endElement("", "smchannel", "smchannel");
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);

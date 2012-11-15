@@ -51,6 +51,8 @@ public class LabelProvider implements ITableLabelProvider {
 			return ((Channel) channel).getAbstractDevice().getName();
 		case 2:
 			return Integer.toString(((Channel) channel).getAverageCount());
+		case 3:
+			return Boolean.toString(((Channel)channel).isDeferred());
 		}
 		return null;
 	}

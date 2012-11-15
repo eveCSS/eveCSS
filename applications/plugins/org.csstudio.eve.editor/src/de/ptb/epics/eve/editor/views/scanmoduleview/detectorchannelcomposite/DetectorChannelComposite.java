@@ -95,5 +95,10 @@ public class DetectorChannelComposite extends ActionComposite {
 				this.tableViewer, SWT.LEFT);
 		avgColumn.getColumn().setText("Average");
 		avgColumn.getColumn().setWidth(80);
+		
+		TableViewerColumn deferredColumn = new TableViewerColumn(
+				this.tableViewer, SWT.LEFT);
+		deferredColumn.getColumn().setText("Deferred");
+		deferredColumn.getColumn().setWidth(100);
 	}
 }

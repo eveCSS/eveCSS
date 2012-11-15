@@ -492,6 +492,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_REDOEVENT;
+			} else if (qName.equals("deferredtrigger")) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DEFERRED_NEXT;
 			}
 			break;
 
@@ -1018,6 +1020,15 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_READ;
 			break;
 
+		case CHAIN_SCANMODULE_DETECTOR_DEFERRED_NEXT:
+			if (this.currentChannel.getAbstractDevice() != null) {
+				if (Boolean.parseBoolean(textBuffer.toString())) {
+					this.currentChannel.setDeferred(true);
+				}
+			}
+			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DEFERRED_READ;
+			break;
+			
 		case CHAIN_SCANMODULE_PLOT_NAME_NEXT:
 			this.currentPlotWindow.setName(textBuffer.toString());
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PLOT_NAME_READ;
@@ -1853,6 +1864,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 
+		case CHAIN_SCANMODULE_DETECTOR_DEFERRED_READ:
+			if (qName.equals("deferredtrigger")) {
+				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
+			}
+			
 		case CHAIN_SCANMODULE_PLOT_LOADING:
 			if (qName.equals("plot")) {
 				this.currentScanModule.add(this.currentPlotWindow);

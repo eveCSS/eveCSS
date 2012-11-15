@@ -42,37 +42,39 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 * an average value. default value is 1.
 	 * If input is invalid, set 0
 	 */
-	private int averageCount = 1;
+	private int averageCount;
 
 	/*
 	 * The maximum attempts for reading the channel.
 	 * -1 = value is invalid
 	 * Integer.MIN_VALUE = value is empty
 	 */
-	private int maxAttempts = Integer.MIN_VALUE;
+	private int maxAttempts;
 
 	/*
 	 * The max deviation of this channel.
 	 * Double.NaN = value is invalid
 	 * Double.NEGATIVE_INFINITY = value is empty
 	 */
-	private double maxDeviation = Double.NEGATIVE_INFINITY;
+	private double maxDeviation;
 	
 	/*
 	 * The minimum for this channel.
 	 * Double.NaN = value is invalid
 	 * Double.NEGATIVE_INFINITY = value is empty
 	 */
-	private double minimum = Double.NEGATIVE_INFINITY;
+	private double minimum;
 	
 	/*
 	 * A flag for repeat on redo.
 	 */
-	private boolean repeatOnRedo = false;
+	private boolean repeatOnRedo;
 
 	// 
 	private DetectorChannel normalizeChannel;
 
+	private boolean deferred;
+	
 	/*
 	 * The detector ready event.
 	 */
@@ -102,12 +104,17 @@ public class Channel extends AbstractMainPhaseBehavior implements
 
 		}
 		this.scanModule = scanModule;
+		this.averageCount = 1;
+		this.maxAttempts = Integer.MIN_VALUE;
+		this.maxDeviation = Double.NEGATIVE_INFINITY;
+		this.minimum = Double.NEGATIVE_INFINITY;
+		this.repeatOnRedo = false;
+		this.deferred = false;
 		this.normalizeChannel = null;
 		this.redoEvents = new ArrayList<ControlEvent>();
 		this.redoControlEventManager = new ControlEventManager(
 				this, this.redoEvents, ControlEventTypes.CONTROL_EVENT);
 		this.redoControlEventManager.addModelUpdateListener(this);
-		
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 	
@@ -230,6 +237,22 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	public void setRepeatOnRedo(final boolean repeatOnRedo) {
 		this.propertyChangeSupport.firePropertyChange("repeatOnRedo",
 				this.repeatOnRedo, this.repeatOnRedo = repeatOnRedo);
+		updateListeners();
+	}
+
+	/**
+	 * @return the deferred
+	 */
+	public boolean isDeferred() {
+		return deferred;
+	}
+
+	/**
+	 * @param deferred the deferred to set
+	 */
+	public void setDeferred(boolean deferred) {
+		this.propertyChangeSupport.firePropertyChange("deferred", 
+				this.deferred, this.deferred = deferred);
 		updateListeners();
 	}
 
