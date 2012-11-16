@@ -159,7 +159,9 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	public void setPositionMode(final PositionMode positionMode) {
 		PositionMode oldValue = this.positionMode;
 		this.positionMode = positionMode;
-		this.setStepfunction(this.getStepfunction());
+		if (this.getType().equals(DataTypes.DATETIME)) {
+			this.setStepfunction(this.getStepfunction());
+		}
 		this.propertyChangeSupport.firePropertyChange("positionMode",
 				oldValue, this.positionMode);
 		updateListeners();
