@@ -113,7 +113,7 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 			// default values for color, line style and mark style
 			yAxis.setColor(new RGB(0,0,255));
 			yAxis.setLinestyle(TraceType.SOLID_LINE);
-			yAxis.setMarkstyle(PointStyle.NONE);
+			yAxis.setMarkstyle(PointStyle.POINT);
 			yAxis.setDetectorChannel(scanModule.getChannels()[0].
 					getDetectorChannel());
 			this.yAxes.add(yAxis);
