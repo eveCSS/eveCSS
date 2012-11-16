@@ -9,7 +9,7 @@ import org.eclipse.core.runtime.IStatus;
  * @since 1.7
  */
 public class PositionlistValidator implements IValidator {
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
