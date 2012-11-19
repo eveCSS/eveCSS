@@ -1,0 +1,59 @@
+h1(eveTopic). Detector Channel
+
+p. Detectors are devices where you can read from (e.g. its value) or write to (e.g. trigger its channel). They contain at least one channel.
+
+p. A detector channel usually has different modes (called step functions) it can be controlled with:
+
+h2(eveTopic). Average
+
+p. The number in the __Average__ determines how many channel readings are taken to calculate an average.
+
+h2(eveTopic). Max. Deviation (%):
+
+p. The __Max. Deviation (%)__ bestimmt wie gross die Abweichung der ersten beiden Messpunkte voneinander maximal sein darf, damit die Werte gültig sind. Ist die Abweichung größer als __Max. Deviation (%)__ wird der erste Wert verworfen und der nächste Messwert zur neuen Bestimmung der Abweichung verwendet.
+
+h2(eveTopic). Minimum:
+
+p. The __Minimum__ bestimmt, ab welchem Signal die __Max. Deviation (%)__ überhaupt bestimmt wird. Ist der Messwert kleiner als der __Minimum__ 
+Wert, findet keine Überprüfung statt.
+
+h2(eveTopic). Max. Attempts:
+
+p. __Max. Attempts__ definiert wie oft die Max. Deviation berechnet wird. Wenn __Max. Attempts__ vergangen sind ohne das die Abweichung eingehalten wird, werden keine weiteren Werte mehr verworfen und die folgenden Werte werden akzeptiert.
+
+h2(eveTopic). Normalize Channel:
+
+p. The __Normalize Channel__ legt den Channel fest durch den der Channel Wert geteilt wird, bevor mit den oben beschriebenen Berechnungen angefangen wird.
+
+h2(eveTopic). Deferred Trigger:
+
+p. If __Deferred Trigger__ is set, this Channel will be triggered after (all) other Channels of this scan Module will be read.
+
+h2(eveTopic). Send Detector Ready Event:
+
+p. If __Send Detector Ready Event__ is set, an Event will send if the channel is ready.
+
+h3(eveTopic). Example 1
+
+p. Given: __Average__=3, __Max. Deviation (%)__=5, __Minimum__=1e-8, __Max. Attempts__=10, __Normalize Channel__=none
+
+p. Channel values: (4.231, 4.787, 4.687, 4.732, 4.894, 4.738)
+
+__Max. Deviation (%)__ from 1 and 2: 13.14 => discard first value 
+__Max. Deviation (%)__ from 2 and 3:  2.09 => Deviation is OK 
+Value of the channel is the __Average__ from 2., 3. and 4. point: = 4.735
+
+h3(eveTopic). Example 2
+
+p. Given: __Average__=3, __Max. Deviation (%)__=0.5, __Minimum__=1e-8, __Max. Attempts__=5, __Normalize Channel__=none
+
+p. Channel values: (4.231, 4.787, 4.687, 4.732, 4.894, 4.738, 4,834, 4,963)
+
+__Max. Deviation (%)__ from 1 and 2: 13.14 => discard first value 
+__Max. Deviation (%)__ from 2 and 3:  2.09 => discard second value 
+__Max. Deviation (%)__ from 3 and 4:  0.96 => discard third value 
+__Max. Deviation (%)__ from 4 and 5:  2.09 => discard fourth value 
+__Max. Deviation (%)__ from 5 and 6:  3.42 => discard fifth value 
+Value of the channel is the __Average__ from 6., 7. and 8. point: = 4.845
+
+

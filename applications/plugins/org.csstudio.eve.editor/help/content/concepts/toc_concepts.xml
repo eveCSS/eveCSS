@@ -4,6 +4,8 @@
 <toc label="Concepts">
    <topic href="help/content/concepts/events.html" label="Events">
    </topic>
+   <topic href="help/content/concepts/detectorchannels.html" label="Detector Channel">
+   </topic>
    <topic href="help/content/concepts/motoraxis.html" label="Motor Axis">
    </topic>
    <topic href="help/content/concepts/scandescription.html" label="Scan Description">
