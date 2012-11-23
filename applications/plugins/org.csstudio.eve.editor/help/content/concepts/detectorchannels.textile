@@ -31,29 +31,60 @@ p. If __Deferred Trigger__ is set, this Channel will be triggered after (all) ot
 
 h2(eveTopic). Send Detector Ready Event:
 
-p. If __Send Detector Ready Event__ is set, an Event will send if the channel is ready.
+p. If __Send Detector Ready Event__ is set, an Event will send if the channel reading is ready.
 
 h3(eveTopic). Example 1
 
-p. Given: __Average__=3, __Max. Deviation (%)__=5, __Minimum__=1e-8, __Max. Attempts__=10, __Normalize Channel__=none
+p. __Average__ = ==&empty;==, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = ==&empty;==, __Max. Attempts__ = ==&empty;==
 
-p. Channel values: (4.231, 4.787, 4.687, 4.732, 4.894, 4.738)
-
-__Max. Deviation (%)__ from 1 and 2: 13.14 => discard first value 
-__Max. Deviation (%)__ from 2 and 3:  2.09 => Deviation is OK 
-Value of the channel is the __Average__ from 2., 3. and 4. point: = 4.735
+p. __Average__ omitted ==&rArr;== no average is calculated.
 
 h3(eveTopic). Example 2
 
-p. Given: __Average__=3, __Max. Deviation (%)__=0.5, __Minimum__=1e-8, __Max. Attempts__=5, __Normalize Channel__=none
+p. __Average__ = 3, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = ==&empty;==, __Max. Attempts__ = ==&empty;==
 
-p. Channel values: (4.231, 4.787, 4.687, 4.732, 4.894, 4.738, 4,834, 4,963)
+p. __Minimum__ omitted ==&rArr;== __Average__ is calculated from three subsequent measurements.
+
+p. measured values: {%(green)0.00197%, %(green)0.00199%, %(green)0.00153%} ==&rArr;== __Average__ = 0.00183
+
+h3(eveTopic). Example 3
+
+p. __Average__ = 3, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = 1.0, __Max. Attempts__ = ==&empty;==
+
+p. measured value: -0.898492 ==&rArr;== value is less than __Minimum__ ==&rArr;== __Average__ is calculated from three subsequent measurements.
+
+p. measured values: {%(green)-0.898492%, %(green)-0.900868%, %(green)-0.906199%} ==&rArr;== __Average__ = -0.901853
+
+p. %(red)Achtung, bisher (Version 1.7) wird hier nur 1 Messwert aufgenommen%
+
+h3(eveTopic). Example 4
+
+p. __Average__ = 3, __Max. Deviation (%)__ = ==&empty;==, __Minimum__ = 0.0001, __Max. Attempts__ = ==&empty;==
+
+p. measured values: {%(green)0.00197%, %(green)0.00199%, %(green)0.00153%} ==&rArr;== __Average__ = 0.00183
+
+h3(eveTopic). Example 5
+
+p. __Average__ = 3, __Max. Deviation (%)__ = 5, __Minimum__ = 0.3, __Max. Attempts__ = 10
+
+p. measured values: {%(red)4.231%, %(green)4.787%, %(green)4.687%, %(green)4.732%}
+__Max. Deviation (%)__ from 1 and 2: 13.14 => discard first value 
+__Max. Deviation (%)__ from 2 and 3:  2.09 => Deviation is OK 
+
+p. ==&rArr;== value of the channel is the __Average__ from 2., 3. and 4. point: = 4.735
+
+h3(eveTopic). Example 6
+
+p. __Average__ = 3, __Max. Deviation (%)__ = 0.5, __Minimum__ = 1e-8, __Max. Attempts__ = 5
+
+p. measured values: {%(red)4.231%, %(red)4.787%, %(red)4.687%, %(red)4.732%, %(red)4.894%, %(green)4.738%, %(green)4.834%, %(green)4.963%)
 
 __Max. Deviation (%)__ from 1 and 2: 13.14 => discard first value 
 __Max. Deviation (%)__ from 2 and 3:  2.09 => discard second value 
 __Max. Deviation (%)__ from 3 and 4:  0.96 => discard third value 
 __Max. Deviation (%)__ from 4 and 5:  2.09 => discard fourth value 
 __Max. Deviation (%)__ from 5 and 6:  3.42 => discard fifth value 
-Value of the channel is the __Average__ from 6., 7. and 8. point: = 4.845
 
+p. __Max. Attempts__ reached ==&rArr;== value of the channel is the __Average__ from 6., 7. and 8. point: = 4.845
 
+p. %(red)Achtung, bisher (Version 1.7) wird hier nur 1 Messwert aufgenommen (der 6. Wert)%

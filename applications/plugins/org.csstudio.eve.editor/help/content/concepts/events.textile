@@ -12,7 +12,7 @@ table(eveDataTable).
 |_.View|_.Pause|_.Redo|_.Break|_.Stop|_.Trigger|
 |<. Chain |+|+|+|+| |
 |<. Scan Module |+|+|+| |+|
-|<. Detector Channel | | | | |+|
+|<. Detector Channel | |+| | | |
 
 p. Monitor conditions are evaluated at the start of a chain/scan module.
 

@@ -1,0 +1,61 @@
+h1(eveTopic). Plot Window
+
+p. In the Plot Window you can choose which detector channel (as y-axis) you will seen over which motor axis (as x-axis). Each Plot Window contain one or two y-axis.
+
+h2(eveTopic). General
+
+p. In the __General__ item you make settings for the x-axis of the plot.
+
+h3(eveTopic). Name
+
+p. The __Name__ is a given string for the name of the plot.
+
+h3(eveTopic). Motor Axis
+
+p. The __Motor Axis__ defining the x axis of the plot. You can select one of the motor axis present in the scan module.
+
+h3(eveTopic). Preinit Window
+
+p. With __Preinit Window__ you define, whether the plot should be cleared. False only has an effect if the axes are still the same as before.
+
+h3(eveTopic). Scale Type
+
+p. The __Scale Type__ defines whether the x-axis should be scaled linear or logarithmic.[1]
+
+h2(eveTopic). Y-Axis 1
+
+p. In the __Y-Axis 1__ item you select which detector channel will be plotted. The __Y-Axis 1__ is the left y-Axis in the plot window.
+
+h3(eveTopic). Detector Channel
+
+p. The __Detector Channel__ is defining the y axis of the plot. You can select one of the detector channels present in the scan module.
+
+h3(eveTopic). Normalize Channel
+
+p. The __Normalize Channel__ is defining the channel on which the __Detector Channel__ will normalized in the plot. You can select one of the detector channels present in the scan module.
+
+h3(eveTopic). Color
+
+p. Here you select the __Color__ of the graph.[1]
+
+h3(eveTopic). Linestyle
+
+p. Here you select the __Linestyle__ of the graph. Such as __Solid Line__ or __Dash Line__.[1]
+
+h3(eveTopic). Markstyle
+
+p. Here you select the __Markstyle__ of the graph, such as _Square_ or __Point__.[1]
+
+h3(eveTopic). Scaletype
+
+p. The __Scale Type__ defines whether the y-axis should be scaled linear or logarithmic.[1] 
+
+h2(eveTopic). Y-Axis 2
+
+p. In the __Y-Axis 2__ item you select which second detector channel will be plotted. The __Y-Axis 2__ is the right y-Axis in the plot window. The settings of __Y-Axis 2__ are the same as of __Y-Axis 1__.
+
+<hr/>
+
+fn1. *Note:* These settings can also be modified after "creating a scan description":../tasks/createscandescription.html and executing the scan by clicking on the configure button in the plot view of the "EveEngine Perspective":/help/topic/de.ptb.epics.eve.viewer/help/content/concepts/eveengineperspective.html (see image below).
+
+!(eveImage)../../img/reference/plotwindowproperties-configure.png(Configure Plot Window Properties)!

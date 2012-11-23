@@ -304,6 +304,20 @@
                </reference>
             </visibleWhen>
          </command>
+         <separator
+               name="de.ptb.epics.eve.editor.views.eventcomposite.tablepopup.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="org.eclipse.ui.help.displayHelp"
+               icon="icons/conditional_ovr.gif"
+               label="Click to learn more about Events"
+               style="push">
+            <parameter
+                  name="href"
+                  value="/de.ptb.epics.eve.editor/help/content/concepts/events.html">
+            </parameter>
+         </command>
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup">
@@ -647,6 +661,32 @@
             <parameter
                   name="href"
                   value="/de.ptb.epics.eve.editor/help/content/concepts/detectorchannels.html">
+            </parameter>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:de.ptb.epics.eve.editor.views.PlotWindowView">
+         <command
+               commandId="org.eclipse.ui.help.displayHelp"
+               icon="icons/conditional_ovr.gif"
+               label="Click to learn more about the Plot Wiondow View."
+               style="push">
+            <parameter
+                  name="href"
+                  value="/de.ptb.epics.eve.editor/help/content/concepts/plotwindow.html">
+            </parameter>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:de.ptb.epics.eve.editor.views.ScanModulView">
+         <command
+               commandId="org.eclipse.ui.help.displayHelp"
+               icon="icons/conditional_ovr.gif"
+               label="Click to learn more about the Scan Module View"
+               style="push">
+            <parameter
+                  name="href"
+                  value="/de.ptb.epics.eve.editor/help/content/concepts/scandescription.html">
             </parameter>
          </command>
       </menuContribution>
