@@ -925,7 +925,11 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 				this.actionsCompositeMaximized);
 		memento.putBoolean("eventsCompositeMaximized",
 				this.eventsCompositeMaximized);
-
+		
+		// save composite heights
+		memento.putInteger("actionsCompositeWeight", sashForm.getWeights()[0]);
+		memento.putInteger("eventsCompositeWeight", sashForm.getWeights()[1]);
+		
 		// remember sort state of action composite viewers
 		memento.putInteger("AxesSortState",
 				this.motorAxisComposite.getSortState());
@@ -956,6 +960,14 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			this.eventMaxIcon.setImage(restoreIcon);
 			this.sashForm.setMaximizedControl(eventsComposite);
 		}
+		
+		// restore sash form weights
+		int[] weights = new int[2];
+		weights[0] = (memento.getInteger("actionsCompositeWeight") == null) 
+						? 1 : memento.getInteger("actionsCompositeWeight");
+		weights[1] = (memento.getInteger("eventsCompositeWeight") == null) 
+						? 1 : memento.getInteger("eventsCompositeWeight");
+		sashForm.setWeights(weights);
 		
 		// restore sort state of action composite viewers
 		if (memento.getInteger("AxesSortState") != null) {
