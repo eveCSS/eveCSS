@@ -22,14 +22,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.ExpandBar;
-import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
@@ -88,10 +87,12 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	private ScanModule currentScanModule;
 
 	private Composite top;
-	private ExpandBar bar;
 	private Composite generalComposite;
 	private Composite actionsComposite;
 	private Composite eventsComposite;
+	
+	private boolean actionsCompositeMaximized;
+	private boolean eventsCompositeMaximized;
 
 	private Label valueCountLabel;
 	private Text valueCountText;
@@ -118,34 +119,8 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	private TriggerConfirmChannelCheckBoxSelectionListener
 			triggerConfirmChannelCheckBoxSelectionListener;
 	
-	/** */
-	public CTabFolder eventsTabFolder;
-	
-	
-	private EventsTabFolderSelectionListener eventsTabFolderSelectionListener;
-	
-	private EventComposite pauseEventComposite;
-	private EventComposite redoEventComposite;
-	private EventComposite breakEventComposite;
-	private EventComposite triggerEventComposite;
 	
 	private CTabFolder actionsTabFolder;
-	
-	private ActionComposite motorAxisComposite;
-	private ActionComposite detectorChannelComposite;
-	private ActionComposite prescanComposite;
-	private ActionComposite postscanComposite;
-	private ActionComposite positioningComposite;
-	private ActionComposite plotComposite;
-	
-	private Button appendScheduleEventCheckBox;
-	private AppendScheduleEventCheckBoxSelectionListener
-			appendScheduleEventCheckBoxSelectionListener;
-	
-	private ExpandItem itemGeneral;
-	private ExpandItem itemActions;
-	private ExpandItem itemEvents;
-	
 	private CTabItem motorAxisTab;
 	private CTabItem detectorChannelTab;
 	private CTabItem prescanTab;
@@ -153,11 +128,39 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	private CTabItem positioningTab;
 	private CTabItem plotTab;
 	
+	private Label actionMaxIcon;
+	private ActionComposite motorAxisComposite;
+	private ActionComposite detectorChannelComposite;
+	private ActionComposite prescanComposite;
+	private ActionComposite postscanComposite;
+	private ActionComposite positioningComposite;
+	private ActionComposite plotComposite;
+	
+	/** */
+	public CTabFolder eventsTabFolder;
 	private CTabItem pauseEventsTabItem;
 	private CTabItem redoEventsTabItem;
 	private CTabItem breakEventsTabItem;
 	private CTabItem triggerEventsTabItem;
 	
+	private EventsTabFolderSelectionListener eventsTabFolderSelectionListener;
+	
+	private Label eventMaxIcon;
+	private EventComposite pauseEventComposite;
+	private EventComposite redoEventComposite;
+	private EventComposite breakEventComposite;
+	private EventComposite triggerEventComposite;
+	
+	private Button appendScheduleEventCheckBox;
+	private AppendScheduleEventCheckBoxSelectionListener
+			appendScheduleEventCheckBoxSelectionListener;
+	
+	private SashForm sashForm;
+	
+	private Image restoreIcon;
+	private Image maximizeIcon;
+	
+
 	private Image errorImage;
 	
 	// the selection service only accepts one selection provider per view,
@@ -195,24 +198,42 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			return;
 		}
 		
+		this.restoreIcon = Activator.getDefault().getImageRegistry()
+				.get("RESTORE");
+		this.maximizeIcon = Activator.getDefault().getImageRegistry()
+				.get("MAXIMIZE");
+		
+		this.errorImage = FieldDecorationRegistry.getDefault()
+				.getFieldDecoration(FieldDecorationRegistry.DEC_ERROR)
+				.getImage();
+		
 		this.top = new Composite(parent, SWT.NONE);
-		this.top.setLayout(new FillLayout());
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		gridLayout.verticalSpacing = 4;
+		this.top.setLayout(gridLayout);
 		
-		this.bar = new ExpandBar(this.top, SWT.V_SCROLL);
+		this.createGeneralComposite(this.top);
+		this.sashForm = new SashForm(this.top, SWT.VERTICAL);
+		this.sashForm.SASH_WIDTH = 4;
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		this.sashForm.setLayoutData(gridData);
+		this.createActionsComposite(this.sashForm);
+		this.createEventComposite(this.sashForm);
 		
-		this.errorImage = FieldDecorationRegistry.getDefault().getFieldDecoration(
-				FieldDecorationRegistry.DEC_ERROR).getImage();
+		this.actionsCompositeMaximized = false;
+		this.eventsCompositeMaximized = false;
 		
-		// General Section
-		createGeneralExpandItem();
-		// Actions Section
-		createActionsExpandItem();
-		// Event Section
-		createEventsExpandItem();
-		
-		restoreState();
+		this.restoreState();
 		
 		top.setVisible(false);
+		
+		this.bindValues();
 		
 		// listen to selection changes (if a scan module is selected, its 
 		// attributes are made available for editing)
@@ -228,81 +249,37 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.addPerspectiveListener(this.editorViewPerspectiveListener);
 	} // end of: createPartControl()
-	
+
 	/*
 	 * 
 	 */
-	private void restoreState() {
-		if (memento == null) {
-			return;
-		}
-		boolean general = memento.getBoolean("expandGeneral") != null 
-						? memento.getBoolean("expandGeneral")
-						: true;
-		this.itemGeneral.setExpanded(general);
-		boolean actions = memento.getBoolean("expandActions") != null 
-						? memento.getBoolean("expandActions")
-						: true;
-		this.itemActions.setExpanded(actions);
-		boolean events = memento.getBoolean("expandEvents") != null 
-						? memento.getBoolean("expandEvents")
-						: true;
-		this.itemEvents.setExpanded(events);
-		
-		
-		// restore sort state of action composite viewers
-		if (memento.getInteger("AxesSortState") != null) {
-			this.motorAxisComposite.setSortState(memento
-					.getInteger("AxesSortState"));
-		}
-		if (memento.getInteger("ChannelSortState") != null) {
-			this.detectorChannelComposite.setSortState(memento
-					.getInteger("ChannelSortState"));
-		}
-	}
-	
-	/*
-	 * called by CreatePartControl to create the contents of the first 
-	 * expand item (General)
-	 */
-	private void createGeneralExpandItem() {
+	private void createGeneralComposite(Composite parent) {
+		this.generalComposite = new Composite(parent, SWT.BORDER);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
-		this.generalComposite = new Composite(this.bar, SWT.NONE);
 		this.generalComposite.setLayout(gridLayout);
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		this.generalComposite.setLayoutData(gridData);
 		
-		// Value Count
+		// value count
 		this.valueCountLabel = new Label(this.generalComposite, SWT.NONE);
 		this.valueCountLabel.setText("No of Measurements:");
 		this.valueCountLabel.setToolTipText("" +
 				"Number of Measurements taken for each motor position");
-		
 		this.valueCountText = new Text(this.generalComposite, SWT.BORDER);
-		GridData gridData = new GridData();
+		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.CENTER;
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.valueCountText.setLayoutData(gridData);
-		this.valueCountTextVerifyListener = new PositiveIntegerVerifyListener();
-		this.valueCountText.addVerifyListener(valueCountTextVerifyListener);
-		this.valueCountTextModifyListener = new ValueCountTextModifyListener();
-		this.valueCountText.addModifyListener(valueCountTextModifyListener);
-		this.valueCountText.addFocusListener(
-				new TextSelectAllFocusListener(this.valueCountText));
-		this.valueCountText.addMouseListener(
-				new TextSelectAllMouseListener(this.valueCountText));
-		this.valueCountText.addFocusListener(new FocusAdapter() {
-			@Override public void focusLost(FocusEvent e) {
-				valueCountText.setSelection(0,0);
-			}
-		});
 		
 		// Trigger Delay
 		this.triggerDelayLabel = new Label(this.generalComposite, SWT.NONE);
 		this.triggerDelayLabel.setText("Trigger Delay (in s):");
 		this.triggerDelayLabel.setToolTipText("Delay time after positioning");
-		
 		this.triggerDelayText = new Text(this.generalComposite, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -310,34 +287,12 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.triggerDelayText.setLayoutData(gridData);
-		this.triggerDelayTextVerifyListener = new TextDoubleVerifyListener();
-		this.triggerDelayText.addVerifyListener(triggerDelayTextVerifyListener);
-		this.triggerDelayTextModifiedListener = 
-				new TriggerDelayTextModifiedListener();
-		this.triggerDelayText.addModifyListener(
-				triggerDelayTextModifiedListener);
-		this.triggerDelayText.addFocusListener(
-				new TextSelectAllFocusListener(this.triggerDelayText));
-		this.triggerDelayText.addMouseListener(
-				new TextSelectAllMouseListener(this.triggerDelayText));
-		this.triggerDelayText.addFocusListener(new FocusAdapter() {
-			@Override public void focusLost(FocusEvent e) {
-				triggerDelayText.setSelection(0,0);
-			}
-		});
-		this.triggerDelayTextControlDecoration = new ControlDecoration(
-				triggerDelayText, SWT.LEFT);
-		this.triggerDelayTextControlDecoration.setImage(errorImage);
-		this.triggerDelayTextControlDecoration.setDescriptionText(
-				"Trigger Delay value not possible");
-		this.triggerDelayTextControlDecoration.hide();
 		
 		// Settle Time
 		this.settleTimeLabel = new Label(this.generalComposite, SWT.NONE);
 		this.settleTimeLabel.setText("Settle Time (in s):");
 		this.settleTimeLabel.setToolTipText(
 				"Delay time after first positioning in the scan module");
-		
 		this.settleTimeText = new Text(this.generalComposite, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -345,68 +300,38 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.settleTimeText.setLayoutData(gridData);
-		this.settleTimeTextVerifyListener = new TextDoubleVerifyListener();
-		this.settleTimeTextModifiedListener = 
-				new SettleTimeTextModifiedListener();
-		this.settleTimeText.addModifyListener(settleTimeTextModifiedListener);
-		this.settleTimeText.addFocusListener(
-				new TextSelectAllFocusListener(this.settleTimeText));
-		this.settleTimeText.addMouseListener(
-				new TextSelectAllMouseListener(this.settleTimeText));
-		this.settleTimeText.addFocusListener(new FocusAdapter() {
-			@Override public void focusLost(FocusEvent e) {
-				settleTimeText.setSelection(0,0);
-			}
-		});
-		this.settleTimeTextControlDecoration = new ControlDecoration(
-				settleTimeText, SWT.LEFT);
-		this.settleTimeTextControlDecoration.setImage(errorImage);
-		this.settleTimeTextControlDecoration.setDescriptionText(
-				"Settle Time value not possible");
-		this.settleTimeTextControlDecoration.hide();
 		
-		// Trigger Confirm 
+		// Manual Trigger
 		Label triggerLabel = new Label(this.generalComposite, SWT.NONE);
 		triggerLabel.setText("Manual Trigger:");
 		triggerLabel.setLayoutData(new GridData());
-		
 		Composite triggerCheckBoxes = new Composite(this.generalComposite,
 				SWT.NONE);
 		gridData = new GridData();
 		gridData.horizontalIndent = 7;
 		triggerCheckBoxes.setLayoutData(gridData);
 		triggerCheckBoxes.setLayout(new FillLayout(SWT.HORIZONTAL));
-		
 		this.triggerConfirmAxisCheckBox = new Button(triggerCheckBoxes, 
 												SWT.CHECK);
 		this.triggerConfirmAxisCheckBox.setText("Motors");
-		this.triggerConfirmAxisCheckBoxSelectionListener = 
-				new TriggerConfirmAxisCheckBoxSelectionListener();
-		this.triggerConfirmAxisCheckBox.addSelectionListener(
-				triggerConfirmAxisCheckBoxSelectionListener);
-		
 		this.triggerConfirmChannelCheckBox = new Button(triggerCheckBoxes, 
 												SWT.CHECK);
 		this.triggerConfirmChannelCheckBox.setText("Detectors");
-		this.triggerConfirmChannelCheckBoxSelectionListener = 
-				new TriggerConfirmChannelCheckBoxSelectionListener();
-		this.triggerConfirmChannelCheckBox.addSelectionListener(
-				triggerConfirmChannelCheckBoxSelectionListener);
-		
-		this.itemGeneral = new ExpandItem(this.bar, SWT.NONE, 0);
-		itemGeneral.setText("General");
-		itemGeneral.setHeight(this.generalComposite.computeSize(
-				SWT.DEFAULT, SWT.DEFAULT).y);
-		itemGeneral.setControl(this.generalComposite);
 	}
 	
 	/*
-	 * called by CreatePartControl to create the contents of the second 
-	 * expand item (Actions)
+	 * 
 	 */
-	private void createActionsExpandItem() {
-		this.actionsComposite = new Composite(this.bar, SWT.NONE);
-		this.actionsComposite.setLayout(new GridLayout());
+	private void createActionsComposite(Composite parent) {
+		this.actionsComposite = new Composite(parent, SWT.BORDER);
+		this.actionsComposite.setLayout(new GridLayout(2, false));
+		
+		this.actionMaxIcon = new Label(actionsComposite, SWT.NONE);
+		this.actionMaxIcon.setImage(maximizeIcon);
+		this.actionMaxIcon.addMouseListener(new ActionsMaxIconMouseListener());
+		
+		Label actionsLabel = new Label(actionsComposite, SWT.NONE);
+		actionsLabel.setText("Actions:");
 		
 		this.actionsTabFolder = new CTabFolder(this.actionsComposite, SWT.FLAT);
 		this.actionsTabFolder.setSimple(false);
@@ -416,6 +341,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalSpan = 2;
 		this.actionsTabFolder.setLayoutData(gridData);
 		
 		motorAxisComposite = new MotorAxisComposite(this, 
@@ -463,22 +389,21 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		this.plotTab.setText(" Plot ");
 		this.plotTab.setToolTipText("Plot settings for this scan module");
 		this.plotTab.setControl(this.plotComposite);
-		
-		this.itemActions = new ExpandItem(this.bar, SWT.NONE, 0);
-		itemActions.setText("Actions");
-		itemActions.setHeight(this.actionsComposite.computeSize(
-				SWT.DEFAULT, SWT.DEFAULT).y);
-		itemActions.setControl(this.actionsComposite);
 	}
 	
 	/*
-	 * called by CreatePartControl to create the contents of the third 
-	 * expand item (Events)
+	 * 
 	 */
-	private void createEventsExpandItem() {
-		this.eventsComposite = new Composite(this.bar, SWT.NONE);
-		GridLayout gridLayout = new GridLayout();
-		this.eventsComposite.setLayout(gridLayout);
+	private void createEventComposite(Composite parent) {
+		this.eventsComposite = new Composite(parent, SWT.BORDER);
+		this.eventsComposite.setLayout(new GridLayout(2, false));
+		
+		this.eventMaxIcon = new Label(eventsComposite, SWT.NONE);
+		this.eventMaxIcon.setImage(maximizeIcon);
+		this.eventMaxIcon.addMouseListener(new EventMaxIconMouseListener());
+		
+		Label eventLabel = new Label(eventsComposite, SWT.NONE);
+		eventLabel.setText("Events:");
 		
 		eventsTabFolder = new CTabFolder(this.eventsComposite, SWT.NONE);
 		this.eventsTabFolder.setSimple(false);
@@ -491,6 +416,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalSpan = 2;
 		eventsTabFolder.setLayoutData(gridData);
 		
 		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
@@ -526,17 +452,126 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		appendScheduleEventCheckBox = new Button(this.eventsComposite, 
 												SWT.CHECK);
 		appendScheduleEventCheckBox.setText("Append Schedule Event");
+		gridData = new GridData();
+		gridData.horizontalSpan = 2;
+		appendScheduleEventCheckBox.setLayoutData(gridData);
+	}
+	
+	/*
+	 * 
+	 */
+	private void bindValues() {
+		
+	}
+	
+	/*
+	 * 
+	 */
+	private void restoreState() {
+		if (memento == null) {
+			return;
+		}
+		
+		// restore sort state of action composite viewers
+		if (memento.getInteger("AxesSortState") != null) {
+			this.motorAxisComposite.setSortState(memento
+					.getInteger("AxesSortState"));
+		}
+		if (memento.getInteger("ChannelSortState") != null) {
+			this.detectorChannelComposite.setSortState(memento
+					.getInteger("ChannelSortState"));
+		}
+	}
+	
+	/*
+	 * called by CreatePartControl to create the contents of the first 
+	 * expand item (General)
+	 */
+	private void createGeneralExpandItem() {
+		/*
+		this.valueCountTextVerifyListener = new PositiveIntegerVerifyListener();
+		this.valueCountText.addVerifyListener(valueCountTextVerifyListener);
+		this.valueCountTextModifyListener = new ValueCountTextModifyListener();
+		this.valueCountText.addModifyListener(valueCountTextModifyListener);
+		this.valueCountText.addFocusListener(
+				new TextSelectAllFocusListener(this.valueCountText));
+		this.valueCountText.addMouseListener(
+				new TextSelectAllMouseListener(this.valueCountText));
+		this.valueCountText.addFocusListener(new FocusAdapter() {
+			@Override public void focusLost(FocusEvent e) {
+				valueCountText.setSelection(0,0);
+			}
+		});
+		
+		this.triggerDelayTextVerifyListener = new TextDoubleVerifyListener();
+		this.triggerDelayText.addVerifyListener(triggerDelayTextVerifyListener);
+		this.triggerDelayTextModifiedListener = 
+				new TriggerDelayTextModifiedListener();
+		this.triggerDelayText.addModifyListener(
+				triggerDelayTextModifiedListener);
+		this.triggerDelayText.addFocusListener(
+				new TextSelectAllFocusListener(this.triggerDelayText));
+		this.triggerDelayText.addMouseListener(
+				new TextSelectAllMouseListener(this.triggerDelayText));
+		this.triggerDelayText.addFocusListener(new FocusAdapter() {
+			@Override public void focusLost(FocusEvent e) {
+				triggerDelayText.setSelection(0,0);
+			}
+		});
+		this.triggerDelayTextControlDecoration = new ControlDecoration(
+				triggerDelayText, SWT.LEFT);
+		this.triggerDelayTextControlDecoration.setImage(errorImage);
+		this.triggerDelayTextControlDecoration.setDescriptionText(
+				"Trigger Delay value not possible");
+		this.triggerDelayTextControlDecoration.hide();
+		
+		this.settleTimeTextVerifyListener = new TextDoubleVerifyListener();
+		this.settleTimeTextModifiedListener = 
+				new SettleTimeTextModifiedListener();
+		this.settleTimeText.addModifyListener(settleTimeTextModifiedListener);
+		this.settleTimeText.addFocusListener(
+				new TextSelectAllFocusListener(this.settleTimeText));
+		this.settleTimeText.addMouseListener(
+				new TextSelectAllMouseListener(this.settleTimeText));
+		this.settleTimeText.addFocusListener(new FocusAdapter() {
+			@Override public void focusLost(FocusEvent e) {
+				settleTimeText.setSelection(0,0);
+			}
+		});
+		this.settleTimeTextControlDecoration = new ControlDecoration(
+				settleTimeText, SWT.LEFT);
+		this.settleTimeTextControlDecoration.setImage(errorImage);
+		this.settleTimeTextControlDecoration.setDescriptionText(
+				"Settle Time value not possible");
+		this.settleTimeTextControlDecoration.hide();
+		
+		this.triggerConfirmAxisCheckBoxSelectionListener = 
+				new TriggerConfirmAxisCheckBoxSelectionListener();
+		this.triggerConfirmAxisCheckBox.addSelectionListener(
+				triggerConfirmAxisCheckBoxSelectionListener);
+		
+		this.triggerConfirmChannelCheckBox = new Button(triggerCheckBoxes, 
+												SWT.CHECK);
+		this.triggerConfirmChannelCheckBox.setText("Detectors");
+		this.triggerConfirmChannelCheckBoxSelectionListener = 
+				new TriggerConfirmChannelCheckBoxSelectionListener();
+		this.triggerConfirmChannelCheckBox.addSelectionListener(
+				triggerConfirmChannelCheckBoxSelectionListener);
+		*/
+	}
+	
+	/*
+	 * called by CreatePartControl to create the contents of the third 
+	 * expand item (Events)
+	 */
+	private void createEventsExpandItem() {
+		/*
 		
 		this.appendScheduleEventCheckBoxSelectionListener = 
 				new AppendScheduleEventCheckBoxSelectionListener();
 		this.appendScheduleEventCheckBox.addSelectionListener(
 				appendScheduleEventCheckBoxSelectionListener);
-		
-		this.itemEvents = new ExpandItem(this.bar, SWT.NONE, 0);
-		itemEvents.setText("Events");
-		itemEvents.setHeight(this.eventsComposite.computeSize(SWT.DEFAULT, 
-							SWT.DEFAULT).y);
-		itemEvents.setControl(this.eventsComposite);
+		*/
 	}
 	
 	// ***********************************************************************
@@ -633,8 +668,8 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	 */
 	private void checkForErrors() {
 		// check errors in General Tab
-		this.triggerDelayTextControlDecoration.hide();
-		this.settleTimeTextControlDecoration.hide();
+		//this.triggerDelayTextControlDecoration.hide();
+		//this.settleTimeTextControlDecoration.hide();
 		
 		for(IModelError error : this.currentScanModule.getModelErrors()) {
 			final IModelError modelError = error;
@@ -791,7 +826,9 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	 * used by updateEvent() to re-enable listeners
 	 */
 	private void addListeners() {
+		/*
 		this.valueCountText.addModifyListener(valueCountTextModifyListener);
+		 
 		this.valueCountText.addVerifyListener(valueCountTextVerifyListener);
 		this.triggerDelayText.addModifyListener(
 				triggerDelayTextModifiedListener);
@@ -804,6 +841,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 				eventsTabFolderSelectionListener);
 		this.appendScheduleEventCheckBox.addSelectionListener(
 				appendScheduleEventCheckBoxSelectionListener);
+		*/
 	}
 	
 	/*
@@ -811,6 +849,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	 * event loops)
 	 */
 	private void removeListeners() {
+		/*
 		this.valueCountText.removeModifyListener(valueCountTextModifyListener);
 		this.valueCountText.removeVerifyListener(valueCountTextVerifyListener);
 		this.triggerDelayText.removeVerifyListener(
@@ -825,6 +864,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 				eventsTabFolderSelectionListener);
 		this.appendScheduleEventCheckBox.removeSelectionListener(
 				appendScheduleEventCheckBoxSelectionListener);
+				*/
 	}
 
 	/*
@@ -897,11 +937,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	 */
 	@Override
 	public void saveState(IMemento memento) {
-		// remember expand items state
-		memento.putBoolean("expandGeneral", itemGeneral.getExpanded());
-		memento.putBoolean("expandActions", itemActions.getExpanded());
-		memento.putBoolean("expandEvents", itemEvents.getExpanded());
-		
 		// remember sort state of action composite viewers
 		memento.putInteger("AxesSortState",
 				this.motorAxisComposite.getSortState());
@@ -921,6 +956,58 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	// ******************** Listener ******************************************
 	// ************************************************************************
 
+	/**
+	 * @author Marcus Michalsky
+	 * @since 1.8
+	 */
+	private class ActionsMaxIconMouseListener extends MouseAdapter {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override 
+		public void mouseUp(MouseEvent e) {
+			if (actionsCompositeMaximized) {
+				actionMaxIcon.setImage(maximizeIcon);
+				actionMaxIcon.getParent().layout();
+				sashForm.setMaximizedControl(null);
+				actionsCompositeMaximized = false;
+			} else {
+				actionMaxIcon.setImage(restoreIcon);
+				sashForm.setMaximizedControl(actionsComposite);
+				actionsCompositeMaximized = true;
+			}
+		}
+	}
+	
+	/**
+	 * @author Marcus Michalsky
+	 * @since 1.8
+	 */
+	private class EventMaxIconMouseListener extends MouseAdapter {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void mouseUp(MouseEvent e) {
+			if (eventsCompositeMaximized) {
+				eventMaxIcon.setImage(maximizeIcon);
+				eventMaxIcon.getParent().layout();
+				sashForm.setMaximizedControl(null);
+				eventsCompositeMaximized = false;
+			} else {
+				eventMaxIcon.setImage(restoreIcon);
+				sashForm.setMaximizedControl(eventsComposite);
+				eventsCompositeMaximized = true;
+			}
+		}
+	}
+	
+	
+	
+	
+	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>confirmTriggerAxisCheckBox</code>.

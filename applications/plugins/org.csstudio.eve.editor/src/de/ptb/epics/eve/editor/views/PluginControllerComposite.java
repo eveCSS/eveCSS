@@ -47,7 +47,7 @@ public class PluginControllerComposite extends Composite {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		
-		this.tableViewer = new TableViewer(this, SWT.NONE);
+		this.tableViewer = new TableViewer(this, SWT.BORDER);
 		this.tableViewer.getControl().setLayoutData(gridData);
 		
 		// Option column
