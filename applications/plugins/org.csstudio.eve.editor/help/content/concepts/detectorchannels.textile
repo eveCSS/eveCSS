@@ -10,20 +10,19 @@ p. The number in the __Average__ determines how many channel readings are taken 
 
 h2(eveTopic). Max. Deviation (%):
 
-p. The __Max. Deviation (%)__ bestimmt wie gross die Abweichung der ersten beiden Messpunkte voneinander maximal sein darf, damit die Werte gültig sind. Ist die Abweichung größer als __Max. Deviation (%)__ wird der erste Wert verworfen und der nächste Messwert zur neuen Bestimmung der Abweichung verwendet.
+p. The Deviation of the first two measured values must be less or equal then __Max. Deviation (%)__ to be valid. If that constraints ist not fulfilled, the first measured value is discarded and a new value is taken until the condition is met.
 
 h2(eveTopic). Minimum:
 
-p. The __Minimum__ bestimmt, ab welchem Signal die __Max. Deviation (%)__ überhaupt bestimmt wird. Ist der Messwert kleiner als der __Minimum__ 
-Wert, findet keine Überprüfung statt.
+p. If the first measured value is ==&ge;== __Minimum__ a tolerance check is conducted. 
 
 h2(eveTopic). Max. Attempts:
 
-p. __Max. Attempts__ definiert wie oft die Max. Deviation berechnet wird. Wenn __Max. Attempts__ vergangen sind ohne das die Abweichung eingehalten wird, werden keine weiteren Werte mehr verworfen und die folgenden Werte werden akzeptiert.
+p. If the tolerance check failed __Max. Attempts__ times, the check is stopped an the next values are used for the average calculation.
 
 h2(eveTopic). Normalize Channel:
 
-p. The __Normalize Channel__ legt den Channel fest durch den der Channel Wert geteilt wird, bevor mit den oben beschriebenen Berechnungen angefangen wird.
+p. The __Normalize Channel__ is the channel on wich the __Detector Channel__ should be normalized. The calculation of the deviation to be based on the normalized value.
 
 h2(eveTopic). Deferred Trigger:
 

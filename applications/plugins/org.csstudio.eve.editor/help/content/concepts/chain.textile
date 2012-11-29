@@ -1,0 +1,49 @@
+h1(eveTopic). Chain View
+
+p. In the Chain View you set the following chain properties.
+
+h2(eveTopic). Save Options
+
+p. In the __Save Options__ item you make settings for properties in connection of saving the data file.
+
+h3(eveTopic). File Format
+
+p. The __File Format__ is a given format of the data file. You can choose between __ASCII__, __HDF5__ and __Do not save__.
+
+h3(eveTopic). Filename
+
+p. The __Filename__ defines the name of the data file. You can use the macros shown in the table to build the filename.
+
+table(eveRefTable).
+|_. Macro |_. Description|
+|_. ${WEEK} |_. calendar week|
+|_. ${DATE} |_. date as yyyyMMdd (e.g., 20111231)|
+|_. ${DATE-} |_. date as yyyy-MM-dd (e.g., 2011-12-31)|
+|_. ${TIME} |_. time as HHmmss|
+|_. ${TIME-} |_. time as HH-mm-ss|
+|_. ${PV:pvname} |_. replace with value of pvname|
+
+
+h3(eveTopic). Save Scan-Description
+
+p. With __Save Scan-Description__ you define, whether the scan description should be saved (at the same location as the data file).
+
+h3(eveTopic). Confirm Save
+
+p. With __Confirm Save__ you define, whether saving should be confirmed.
+
+h3(eveTopic). Add Autoincrementing Number to Filename
+
+p. If __Add Autoincrementing Number to Filename__ is true, a five digit number is appendet to the filename. Starting at __x + 1__ where __x__ is the lagest number found with the same filename frefix.
+
+h3(eveTopic). Repeat Count
+
+p. The __Repeat Count__ sets how often the scan should be executed in addition to the first execution. For Example a __Repeat Count__ of 1 starts the scan twice. The possible values are from 0 up to 999999.
+
+h2(eveTopic). Comment
+
+p. In the __Comment__ Box you can write additional comments.
+
+h2(eveTopic). Events
+
+p. In the __Events__ Tab you choose which Events you need in the chain. The description of events an which event types are available in the chain view you found "here":events.html

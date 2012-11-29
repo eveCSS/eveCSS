@@ -690,6 +690,19 @@
             </parameter>
          </command>
       </menuContribution>
+      <menuContribution
+            locationURI="toolbar:de.ptb.epics.eve.editor.views.ScanView">
+         <command
+               commandId="org.eclipse.ui.help.displayHelp"
+               icon="icons/conditional_ovr.gif"
+               label="Click to learn more about the Chain View"
+               style="push">
+            <parameter
+                  name="href"
+                  value="/de.ptb.epics.eve.editor/help/content/concepts/chain.html">
+            </parameter>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.core.expressions.definitions">

@@ -9,13 +9,14 @@ This scan description example only has one chain started by S-0 (the Start Event
 
 h2. Scan Modules
 
-p. Scan modules are self-contained units which are partitioned into three stages, a prescan phase, a main phase and a postscan phase:
+p. Scan modules are self-contained units which are partitioned into four stages, a prescan phase, a main phase, a postscan phase and a positioning phase:
 
-p=. !(eveImage)../../img/concepts/scanmodule.png(the three phases of a scan module)!
+p=. !(eveImage)../../img/concepts/scanmodule.png(the four phases of a scan module)!
 
 * Prescan-phase (prior to a scan): values and options of devices will be set (e.g. open beam shutter).
 * Main-phase: actually measuring something by controlling devices (e.g. moving motor axis) and reading detector channels.
 * Postscan-phase (after measuring): options and devices are eventually set again, or reset (e.g. close beam shutter)
+* Positioning-phase (after postscan): one or more axis from the main-phase can moved per plugin (e.g. move PP_Motor1 with plugin CENTER to the center position)
 
 h3. Appended Scan Module
 
@@ -24,4 +25,4 @@ An appended scan module is executed after the preceding module is completed.
 h3. Nested Scan Module
 
 A nested scan module is processed at each motor position of its parent scan module. If multiple axes are moved the positions of the axis defined as "main axis" are used.
-*Note* that a scan modules prescan and postscan phases are only processed once (not at each iteration of the nested module(s)).
+*Note* that a scan modules prescan, postscan and positioning phases are only processed once (not at each iteration of the nested module(s)).
