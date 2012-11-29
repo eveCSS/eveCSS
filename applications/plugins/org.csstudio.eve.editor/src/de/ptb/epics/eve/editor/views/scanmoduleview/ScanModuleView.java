@@ -74,13 +74,12 @@ import de.ptb.epics.eve.util.swt.TextSelectAllMouseListener;
  */
 public class ScanModuleView extends ViewPart implements IEditorView,
 		ISelectionListener, IModelUpdateListener {
-	
+
 	/**
 	 * the id of the <code>ScanModulView</code>.
 	 */
-	public static final String ID = 
-			"de.ptb.epics.eve.editor.views.ScanModulView"; 
-	
+	public static final String ID = "de.ptb.epics.eve.editor.views.ScanModulView";
+
 	private static Logger logger = Logger.getLogger(ScanModuleView.class);
 
 	// the scan module currently represented by this view
@@ -90,7 +89,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	private Composite generalComposite;
 	private Composite actionsComposite;
 	private Composite eventsComposite;
-	
+
 	private boolean actionsCompositeMaximized;
 	private boolean eventsCompositeMaximized;
 
@@ -98,28 +97,25 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	private Text valueCountText;
 	private PositiveIntegerVerifyListener valueCountTextVerifyListener;
 	private ValueCountTextModifyListener valueCountTextModifyListener;
-	
+
 	private Label triggerDelayLabel;
 	private Text triggerDelayText;
 	private ControlDecoration triggerDelayTextControlDecoration;
 	private TextDoubleVerifyListener triggerDelayTextVerifyListener;
 	private TriggerDelayTextModifiedListener triggerDelayTextModifiedListener;
-	
+
 	private Label settleTimeLabel;
 	private Text settleTimeText;
 	private ControlDecoration settleTimeTextControlDecoration;
 	private TextDoubleVerifyListener settleTimeTextVerifyListener;
 	private SettleTimeTextModifiedListener settleTimeTextModifiedListener;
-	
+
 	private Button triggerConfirmAxisCheckBox;
-	private TriggerConfirmAxisCheckBoxSelectionListener 
-			triggerConfirmAxisCheckBoxSelectionListener;
-	
+	private TriggerConfirmAxisCheckBoxSelectionListener triggerConfirmAxisCheckBoxSelectionListener;
+
 	private Button triggerConfirmChannelCheckBox;
-	private TriggerConfirmChannelCheckBoxSelectionListener
-			triggerConfirmChannelCheckBoxSelectionListener;
-	
-	
+	private TriggerConfirmChannelCheckBoxSelectionListener triggerConfirmChannelCheckBoxSelectionListener;
+
 	private CTabFolder actionsTabFolder;
 	private CTabItem motorAxisTab;
 	private CTabItem detectorChannelTab;
@@ -127,7 +123,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	private CTabItem postscanTab;
 	private CTabItem positioningTab;
 	private CTabItem plotTab;
-	
+
 	private Label actionMaxIcon;
 	private ActionComposite motorAxisComposite;
 	private ActionComposite detectorChannelComposite;
@@ -135,44 +131,42 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	private ActionComposite postscanComposite;
 	private ActionComposite positioningComposite;
 	private ActionComposite plotComposite;
-	
+
 	/** */
 	public CTabFolder eventsTabFolder;
 	private CTabItem pauseEventsTabItem;
 	private CTabItem redoEventsTabItem;
 	private CTabItem breakEventsTabItem;
 	private CTabItem triggerEventsTabItem;
-	
+
 	private EventsTabFolderSelectionListener eventsTabFolderSelectionListener;
-	
+
 	private Label eventMaxIcon;
 	private EventComposite pauseEventComposite;
 	private EventComposite redoEventComposite;
 	private EventComposite breakEventComposite;
 	private EventComposite triggerEventComposite;
-	
+
 	private Button appendScheduleEventCheckBox;
-	private AppendScheduleEventCheckBoxSelectionListener
-			appendScheduleEventCheckBoxSelectionListener;
-	
+	private AppendScheduleEventCheckBoxSelectionListener appendScheduleEventCheckBoxSelectionListener;
+
 	private SashForm sashForm;
-	
+
 	private Image restoreIcon;
 	private Image maximizeIcon;
-	
 
 	private Image errorImage;
-	
+
 	// the selection service only accepts one selection provider per view,
-	// since we have multiple tabs with tables capable of providing selections, 
-	// a wrapper handles them and registers the active one with the global 
+	// since we have multiple tabs with tables capable of providing selections,
+	// a wrapper handles them and registers the active one with the global
 	// selection service
 	protected SelectionProviderWrapper selectionProviderWrapper;
-	
+
 	private EditorViewPerspectiveListener editorViewPerspectiveListener;
-	
+
 	private IMemento memento;
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -181,39 +175,39 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		init(site);
 		this.memento = memento;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
 		logger.debug("createPartControl");
-		
+
 		parent.setLayout(new FillLayout());
-		
-		if(Activator.getDefault().getMeasuringStation() == null) {
+
+		if (Activator.getDefault().getMeasuringStation() == null) {
 			final Label errorLabel = new Label(parent, SWT.NONE);
-			errorLabel.setText("No Measuring Station has been loaded. " +
-					"Please check Preferences!");
+			errorLabel.setText("No Measuring Station has been loaded. "
+					+ "Please check Preferences!");
 			return;
 		}
-		
+
 		this.restoreIcon = Activator.getDefault().getImageRegistry()
 				.get("RESTORE");
 		this.maximizeIcon = Activator.getDefault().getImageRegistry()
 				.get("MAXIMIZE");
-		
+
 		this.errorImage = FieldDecorationRegistry.getDefault()
 				.getFieldDecoration(FieldDecorationRegistry.DEC_ERROR)
 				.getImage();
-		
+
 		this.top = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginWidth = 0;
 		gridLayout.marginHeight = 0;
 		gridLayout.verticalSpacing = 4;
 		this.top.setLayout(gridLayout);
-		
+
 		this.createGeneralComposite(this.top);
 		this.sashForm = new SashForm(this.top, SWT.VERTICAL);
 		this.sashForm.SASH_WIDTH = 4;
@@ -225,24 +219,24 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		this.sashForm.setLayoutData(gridData);
 		this.createActionsComposite(this.sashForm);
 		this.createEventComposite(this.sashForm);
-		
+
 		this.actionsCompositeMaximized = false;
 		this.eventsCompositeMaximized = false;
-		
+
 		this.restoreState();
-		
+
 		top.setVisible(false);
-		
+
 		this.bindValues();
-		
-		// listen to selection changes (if a scan module is selected, its 
+
+		// listen to selection changes (if a scan module is selected, its
 		// attributes are made available for editing)
-		getSite().getWorkbenchWindow().getSelectionService().
-				addSelectionListener(this);
-		
+		getSite().getWorkbenchWindow().getSelectionService()
+				.addSelectionListener(this);
+
 		selectionProviderWrapper = new SelectionProviderWrapper();
 		getSite().setSelectionProvider(selectionProviderWrapper);
-		
+
 		// reset view if last editor was closed
 		this.editorViewPerspectiveListener = new EditorViewPerspectiveListener(
 				this);
@@ -262,12 +256,12 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		this.generalComposite.setLayoutData(gridData);
-		
+
 		// value count
 		this.valueCountLabel = new Label(this.generalComposite, SWT.NONE);
 		this.valueCountLabel.setText("No of Measurements:");
-		this.valueCountLabel.setToolTipText("" +
-				"Number of Measurements taken for each motor position");
+		this.valueCountLabel.setToolTipText(""
+				+ "Number of Measurements taken for each motor position");
 		this.valueCountText = new Text(this.generalComposite, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -275,7 +269,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.valueCountText.setLayoutData(gridData);
-		
+
 		// Trigger Delay
 		this.triggerDelayLabel = new Label(this.generalComposite, SWT.NONE);
 		this.triggerDelayLabel.setText("Trigger Delay (in s):");
@@ -287,12 +281,12 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.triggerDelayText.setLayoutData(gridData);
-		
+
 		// Settle Time
 		this.settleTimeLabel = new Label(this.generalComposite, SWT.NONE);
 		this.settleTimeLabel.setText("Settle Time (in s):");
-		this.settleTimeLabel.setToolTipText(
-				"Delay time after first positioning in the scan module");
+		this.settleTimeLabel
+				.setToolTipText("Delay time after first positioning in the scan module");
 		this.settleTimeText = new Text(this.generalComposite, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -300,7 +294,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.settleTimeText.setLayoutData(gridData);
-		
+
 		// Manual Trigger
 		Label triggerLabel = new Label(this.generalComposite, SWT.NONE);
 		triggerLabel.setText("Manual Trigger:");
@@ -311,28 +305,28 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.horizontalIndent = 7;
 		triggerCheckBoxes.setLayoutData(gridData);
 		triggerCheckBoxes.setLayout(new FillLayout(SWT.HORIZONTAL));
-		this.triggerConfirmAxisCheckBox = new Button(triggerCheckBoxes, 
-												SWT.CHECK);
+		this.triggerConfirmAxisCheckBox = new Button(triggerCheckBoxes,
+				SWT.CHECK);
 		this.triggerConfirmAxisCheckBox.setText("Motors");
-		this.triggerConfirmChannelCheckBox = new Button(triggerCheckBoxes, 
-												SWT.CHECK);
+		this.triggerConfirmChannelCheckBox = new Button(triggerCheckBoxes,
+				SWT.CHECK);
 		this.triggerConfirmChannelCheckBox.setText("Detectors");
 	}
-	
+
 	/*
 	 * 
 	 */
 	private void createActionsComposite(Composite parent) {
 		this.actionsComposite = new Composite(parent, SWT.BORDER);
 		this.actionsComposite.setLayout(new GridLayout(2, false));
-		
+
 		this.actionMaxIcon = new Label(actionsComposite, SWT.NONE);
 		this.actionMaxIcon.setImage(maximizeIcon);
 		this.actionMaxIcon.addMouseListener(new ActionsMaxIconMouseListener());
-		
+
 		Label actionsLabel = new Label(actionsComposite, SWT.NONE);
 		actionsLabel.setText("Actions:");
-		
+
 		this.actionsTabFolder = new CTabFolder(this.actionsComposite, SWT.FLAT);
 		this.actionsTabFolder.setSimple(false);
 		this.actionsTabFolder.setBorderVisible(true);
@@ -343,73 +337,72 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalSpan = 2;
 		this.actionsTabFolder.setLayoutData(gridData);
-		
-		motorAxisComposite = new MotorAxisComposite(this, 
-				actionsTabFolder, SWT.NONE);
-		detectorChannelComposite = new DetectorChannelComposite(this, 
-				actionsTabFolder, SWT.NONE);
-		prescanComposite = new PrescanComposite(this, actionsTabFolder, 
+
+		motorAxisComposite = new MotorAxisComposite(this, actionsTabFolder,
 				SWT.NONE);
-		postscanComposite = new PostscanComposite(this, actionsTabFolder, 
+		detectorChannelComposite = new DetectorChannelComposite(this,
+				actionsTabFolder, SWT.NONE);
+		prescanComposite = new PrescanComposite(this, actionsTabFolder,
 				SWT.NONE);
-		positioningComposite = new PositioningComposite(this, actionsTabFolder, 
+		postscanComposite = new PostscanComposite(this, actionsTabFolder,
+				SWT.NONE);
+		positioningComposite = new PositioningComposite(this, actionsTabFolder,
 				SWT.NONE);
 		plotComposite = new PlotComposite(this, actionsTabFolder, SWT.NONE);
-		
+
 		this.motorAxisTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.motorAxisTab.setText(" Motor Axes ");
-		this.motorAxisTab.setToolTipText(
-				"Select motor axes to be used in this scan module");
+		this.motorAxisTab
+				.setToolTipText("Select motor axes to be used in this scan module");
 		this.motorAxisTab.setControl(this.motorAxisComposite);
-		
+
 		this.detectorChannelTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.detectorChannelTab.setText(" Detector Channels ");
-		this.detectorChannelTab.setToolTipText(
-				"Select detector channels to be used in this scan module");
+		this.detectorChannelTab
+				.setToolTipText("Select detector channels to be used in this scan module");
 		this.detectorChannelTab.setControl(this.detectorChannelComposite);
-		
+
 		this.prescanTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.prescanTab.setText(" Prescan ");
-		this.prescanTab.setToolTipText(
-				"Action to do before scan module is started");
+		this.prescanTab
+				.setToolTipText("Action to do before scan module is started");
 		this.prescanTab.setControl(this.prescanComposite);
-		
+
 		this.postscanTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.postscanTab.setText(" Postscan ");
 		this.postscanTab.setToolTipText("Action to do if scan module is done");
 		this.postscanTab.setControl(this.postscanComposite);
-		
+
 		this.positioningTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.positioningTab.setText(" Positioning ");
-		this.positioningTab.setToolTipText(
-				"Move motor to calculated position after scan module is done");
+		this.positioningTab
+				.setToolTipText("Move motor to calculated position after scan module is done");
 		this.positioningTab.setControl(this.positioningComposite);
-		
+
 		this.plotTab = new CTabItem(this.actionsTabFolder, SWT.FLAT);
 		this.plotTab.setText(" Plot ");
 		this.plotTab.setToolTipText("Plot settings for this scan module");
 		this.plotTab.setControl(this.plotComposite);
 	}
-	
+
 	/*
 	 * 
 	 */
 	private void createEventComposite(Composite parent) {
 		this.eventsComposite = new Composite(parent, SWT.BORDER);
 		this.eventsComposite.setLayout(new GridLayout(2, false));
-		
+
 		this.eventMaxIcon = new Label(eventsComposite, SWT.NONE);
 		this.eventMaxIcon.setImage(maximizeIcon);
 		this.eventMaxIcon.addMouseListener(new EventMaxIconMouseListener());
-		
+
 		Label eventLabel = new Label(eventsComposite, SWT.NONE);
 		eventLabel.setText("Events:");
-		
+
 		eventsTabFolder = new CTabFolder(this.eventsComposite, SWT.NONE);
 		this.eventsTabFolder.setSimple(false);
 		this.eventsTabFolder.setBorderVisible(true);
-		this.eventsTabFolderSelectionListener = 
-				new EventsTabFolderSelectionListener();	
+		this.eventsTabFolderSelectionListener = new EventsTabFolderSelectionListener();
 		eventsTabFolder.addSelectionListener(eventsTabFolderSelectionListener);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -418,166 +411,147 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.grabExcessVerticalSpace = true;
 		gridData.horizontalSpan = 2;
 		eventsTabFolder.setLayoutData(gridData);
-		
-		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
+
+		pauseEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
 				ControlEventTypes.PAUSE_EVENT, this);
-		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
+		redoEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
 				ControlEventTypes.CONTROL_EVENT, this);
-		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
+		breakEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
 				ControlEventTypes.CONTROL_EVENT, this);
-		triggerEventComposite = new EventComposite(eventsTabFolder, SWT.NONE, 
+		triggerEventComposite = new EventComposite(eventsTabFolder, SWT.NONE,
 				ControlEventTypes.CONTROL_EVENT, this);
-		
+
 		this.pauseEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
 		this.pauseEventsTabItem.setText(" Pause ");
-		this.pauseEventsTabItem.setToolTipText(
-				"Configure event to pause and resume this scan module");
+		this.pauseEventsTabItem
+				.setToolTipText("Configure event to pause and resume this scan module");
 		this.pauseEventsTabItem.setControl(pauseEventComposite);
 		this.redoEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
 		this.redoEventsTabItem.setText(" Redo ");
-		this.redoEventsTabItem.setToolTipText(
-				"Repeat the last acquisition, if redo event occurs");
+		this.redoEventsTabItem
+				.setToolTipText("Repeat the last acquisition, if redo event occurs");
 		this.redoEventsTabItem.setControl(redoEventComposite);
 		this.breakEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
 		this.breakEventsTabItem.setText(" Break ");
-		this.breakEventsTabItem.setToolTipText(
-				"Finish this scan module and continue with next");
+		this.breakEventsTabItem
+				.setToolTipText("Finish this scan module and continue with next");
 		this.breakEventsTabItem.setControl(breakEventComposite);
 		this.triggerEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
 		this.triggerEventsTabItem.setText(" Trigger ");
-		this.triggerEventsTabItem.setToolTipText(
-				"Wait for trigger event before moving to next position");
+		this.triggerEventsTabItem
+				.setToolTipText("Wait for trigger event before moving to next position");
 		this.triggerEventsTabItem.setControl(triggerEventComposite);
-		
-		appendScheduleEventCheckBox = new Button(this.eventsComposite, 
-												SWT.CHECK);
+
+		appendScheduleEventCheckBox = new Button(this.eventsComposite,
+				SWT.CHECK);
 		appendScheduleEventCheckBox.setText("Append Schedule Event");
 		gridData = new GridData();
 		gridData.horizontalSpan = 2;
 		appendScheduleEventCheckBox.setLayoutData(gridData);
 	}
-	
+
 	/*
 	 * 
 	 */
 	private void bindValues() {
-		
+
 	}
-	
+
 	/*
-	 * 
-	 */
-	private void restoreState() {
-		if (memento == null) {
-			return;
-		}
-		
-		// restore sort state of action composite viewers
-		if (memento.getInteger("AxesSortState") != null) {
-			this.motorAxisComposite.setSortState(memento
-					.getInteger("AxesSortState"));
-		}
-		if (memento.getInteger("ChannelSortState") != null) {
-			this.detectorChannelComposite.setSortState(memento
-					.getInteger("ChannelSortState"));
-		}
-	}
-	
-	/*
-	 * called by CreatePartControl to create the contents of the first 
-	 * expand item (General)
+	 * called by CreatePartControl to create the contents of the first expand
+	 * item (General)
 	 */
 	private void createGeneralExpandItem() {
 		/*
-		this.valueCountTextVerifyListener = new PositiveIntegerVerifyListener();
-		this.valueCountText.addVerifyListener(valueCountTextVerifyListener);
-		this.valueCountTextModifyListener = new ValueCountTextModifyListener();
-		this.valueCountText.addModifyListener(valueCountTextModifyListener);
-		this.valueCountText.addFocusListener(
-				new TextSelectAllFocusListener(this.valueCountText));
-		this.valueCountText.addMouseListener(
-				new TextSelectAllMouseListener(this.valueCountText));
-		this.valueCountText.addFocusListener(new FocusAdapter() {
-			@Override public void focusLost(FocusEvent e) {
-				valueCountText.setSelection(0,0);
-			}
-		});
-		
-		this.triggerDelayTextVerifyListener = new TextDoubleVerifyListener();
-		this.triggerDelayText.addVerifyListener(triggerDelayTextVerifyListener);
-		this.triggerDelayTextModifiedListener = 
-				new TriggerDelayTextModifiedListener();
-		this.triggerDelayText.addModifyListener(
-				triggerDelayTextModifiedListener);
-		this.triggerDelayText.addFocusListener(
-				new TextSelectAllFocusListener(this.triggerDelayText));
-		this.triggerDelayText.addMouseListener(
-				new TextSelectAllMouseListener(this.triggerDelayText));
-		this.triggerDelayText.addFocusListener(new FocusAdapter() {
-			@Override public void focusLost(FocusEvent e) {
-				triggerDelayText.setSelection(0,0);
-			}
-		});
-		this.triggerDelayTextControlDecoration = new ControlDecoration(
-				triggerDelayText, SWT.LEFT);
-		this.triggerDelayTextControlDecoration.setImage(errorImage);
-		this.triggerDelayTextControlDecoration.setDescriptionText(
-				"Trigger Delay value not possible");
-		this.triggerDelayTextControlDecoration.hide();
-		
-		this.settleTimeTextVerifyListener = new TextDoubleVerifyListener();
-		this.settleTimeTextModifiedListener = 
-				new SettleTimeTextModifiedListener();
-		this.settleTimeText.addModifyListener(settleTimeTextModifiedListener);
-		this.settleTimeText.addFocusListener(
-				new TextSelectAllFocusListener(this.settleTimeText));
-		this.settleTimeText.addMouseListener(
-				new TextSelectAllMouseListener(this.settleTimeText));
-		this.settleTimeText.addFocusListener(new FocusAdapter() {
-			@Override public void focusLost(FocusEvent e) {
-				settleTimeText.setSelection(0,0);
-			}
-		});
-		this.settleTimeTextControlDecoration = new ControlDecoration(
-				settleTimeText, SWT.LEFT);
-		this.settleTimeTextControlDecoration.setImage(errorImage);
-		this.settleTimeTextControlDecoration.setDescriptionText(
-				"Settle Time value not possible");
-		this.settleTimeTextControlDecoration.hide();
-		
-		this.triggerConfirmAxisCheckBoxSelectionListener = 
-				new TriggerConfirmAxisCheckBoxSelectionListener();
-		this.triggerConfirmAxisCheckBox.addSelectionListener(
-				triggerConfirmAxisCheckBoxSelectionListener);
-		
-		this.triggerConfirmChannelCheckBox = new Button(triggerCheckBoxes, 
-												SWT.CHECK);
-		this.triggerConfirmChannelCheckBox.setText("Detectors");
-		this.triggerConfirmChannelCheckBoxSelectionListener = 
-				new TriggerConfirmChannelCheckBoxSelectionListener();
-		this.triggerConfirmChannelCheckBox.addSelectionListener(
-				triggerConfirmChannelCheckBoxSelectionListener);
-		*/
+		 * this.valueCountTextVerifyListener = new
+		 * PositiveIntegerVerifyListener();
+		 * this.valueCountText.addVerifyListener(valueCountTextVerifyListener);
+		 * this.valueCountTextModifyListener = new
+		 * ValueCountTextModifyListener();
+		 * this.valueCountText.addModifyListener(valueCountTextModifyListener);
+		 * this.valueCountText.addFocusListener( new
+		 * TextSelectAllFocusListener(this.valueCountText));
+		 * this.valueCountText.addMouseListener( new
+		 * TextSelectAllMouseListener(this.valueCountText));
+		 * this.valueCountText.addFocusListener(new FocusAdapter() {
+		 * 
+		 * @Override public void focusLost(FocusEvent e) {
+		 * valueCountText.setSelection(0,0); } });
+		 * 
+		 * this.triggerDelayTextVerifyListener = new TextDoubleVerifyListener();
+		 * this
+		 * .triggerDelayText.addVerifyListener(triggerDelayTextVerifyListener);
+		 * this.triggerDelayTextModifiedListener = new
+		 * TriggerDelayTextModifiedListener();
+		 * this.triggerDelayText.addModifyListener(
+		 * triggerDelayTextModifiedListener);
+		 * this.triggerDelayText.addFocusListener( new
+		 * TextSelectAllFocusListener(this.triggerDelayText));
+		 * this.triggerDelayText.addMouseListener( new
+		 * TextSelectAllMouseListener(this.triggerDelayText));
+		 * this.triggerDelayText.addFocusListener(new FocusAdapter() {
+		 * 
+		 * @Override public void focusLost(FocusEvent e) {
+		 * triggerDelayText.setSelection(0,0); } });
+		 * this.triggerDelayTextControlDecoration = new ControlDecoration(
+		 * triggerDelayText, SWT.LEFT);
+		 * this.triggerDelayTextControlDecoration.setImage(errorImage);
+		 * this.triggerDelayTextControlDecoration.setDescriptionText(
+		 * "Trigger Delay value not possible");
+		 * this.triggerDelayTextControlDecoration.hide();
+		 * 
+		 * this.settleTimeTextVerifyListener = new TextDoubleVerifyListener();
+		 * this.settleTimeTextModifiedListener = new
+		 * SettleTimeTextModifiedListener();
+		 * this.settleTimeText.addModifyListener
+		 * (settleTimeTextModifiedListener);
+		 * this.settleTimeText.addFocusListener( new
+		 * TextSelectAllFocusListener(this.settleTimeText));
+		 * this.settleTimeText.addMouseListener( new
+		 * TextSelectAllMouseListener(this.settleTimeText));
+		 * this.settleTimeText.addFocusListener(new FocusAdapter() {
+		 * 
+		 * @Override public void focusLost(FocusEvent e) {
+		 * settleTimeText.setSelection(0,0); } });
+		 * this.settleTimeTextControlDecoration = new ControlDecoration(
+		 * settleTimeText, SWT.LEFT);
+		 * this.settleTimeTextControlDecoration.setImage(errorImage);
+		 * this.settleTimeTextControlDecoration.setDescriptionText(
+		 * "Settle Time value not possible");
+		 * this.settleTimeTextControlDecoration.hide();
+		 * 
+		 * this.triggerConfirmAxisCheckBoxSelectionListener = new
+		 * TriggerConfirmAxisCheckBoxSelectionListener();
+		 * this.triggerConfirmAxisCheckBox.addSelectionListener(
+		 * triggerConfirmAxisCheckBoxSelectionListener);
+		 * 
+		 * this.triggerConfirmChannelCheckBox = new Button(triggerCheckBoxes,
+		 * SWT.CHECK); this.triggerConfirmChannelCheckBox.setText("Detectors");
+		 * this.triggerConfirmChannelCheckBoxSelectionListener = new
+		 * TriggerConfirmChannelCheckBoxSelectionListener();
+		 * this.triggerConfirmChannelCheckBox.addSelectionListener(
+		 * triggerConfirmChannelCheckBoxSelectionListener);
+		 */
 	}
-	
+
 	/*
-	 * called by CreatePartControl to create the contents of the third 
-	 * expand item (Events)
+	 * called by CreatePartControl to create the contents of the third expand
+	 * item (Events)
 	 */
 	private void createEventsExpandItem() {
 		/*
-		
-		this.appendScheduleEventCheckBoxSelectionListener = 
-				new AppendScheduleEventCheckBoxSelectionListener();
-		this.appendScheduleEventCheckBox.addSelectionListener(
-				appendScheduleEventCheckBoxSelectionListener);
-		*/
+		 * 
+		 * this.appendScheduleEventCheckBoxSelectionListener = new
+		 * AppendScheduleEventCheckBoxSelectionListener();
+		 * this.appendScheduleEventCheckBox.addSelectionListener(
+		 * appendScheduleEventCheckBoxSelectionListener);
+		 */
 	}
-	
+
 	// ***********************************************************************
 	// ********************** end of create part control *********************
 	// ***********************************************************************
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -586,7 +560,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		logger.debug("focus gained -> forward to top composite");
 		this.top.setFocus();
 	}
-	
+
 	/**
 	 * Returns the currently active scan module.
 	 * 
@@ -595,10 +569,10 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	public ScanModule getCurrentScanModule() {
 		return currentScanModule;
 	}
-	
+
 	/*
-	 * Sets the currently active scan module. Called by selectionChanged if 
-	 * the current selection is of interest.
+	 * Sets the currently active scan module. Called by selectionChanged if the
+	 * current selection is of interest.
 	 */
 	private void setCurrentScanModule(ScanModule currentScanModule) {
 		logger.debug("setCurrentScanModule");
@@ -630,63 +604,66 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		if (this.currentScanModule != null) {
 			// new scan module
 			this.currentScanModule.addModelUpdateListener(this);
-			
+
 			top.setVisible(true);
 			this.setPartName(this.currentScanModule.getName() + ":"
-							 + this.currentScanModule.getId());
-			
+					+ this.currentScanModule.getId());
+
 			if (this.eventsTabFolder.getSelection() == null) {
 				this.eventsTabFolder.setSelection(0);
 			}
-			
-			this.triggerEventComposite.setControlEventManager(
-					this.currentScanModule.getTriggerControlEventManager());
-			this.breakEventComposite.setControlEventManager(
-					this.currentScanModule.getBreakControlEventManager());
-			this.redoEventComposite.setControlEventManager(
-					this.currentScanModule.getRedoControlEventManager());
-			this.pauseEventComposite.setControlEventManager(
-					this.currentScanModule.getPauseControlEventManager());
+
+			this.triggerEventComposite
+					.setControlEventManager(this.currentScanModule
+							.getTriggerControlEventManager());
+			this.breakEventComposite
+					.setControlEventManager(this.currentScanModule
+							.getBreakControlEventManager());
+			this.redoEventComposite
+					.setControlEventManager(this.currentScanModule
+							.getRedoControlEventManager());
+			this.pauseEventComposite
+					.setControlEventManager(this.currentScanModule
+							.getPauseControlEventManager());
 		} else {
 			// no scan module selected -> reset contents
 			selectionProviderWrapper.setSelectionProvider(null);
-			
+
 			this.setPartName("No Scan Module selected");
-			
+
 			triggerEventComposite.setControlEventManager(null);
 			breakEventComposite.setControlEventManager(null);
 			redoEventComposite.setControlEventManager(null);
 			pauseEventComposite.setControlEventManager(null);
-			
+
 			top.setVisible(false);
 		}
 		updateEvent(null);
 	}
-	
+
 	/*
 	 * 
 	 */
 	private void checkForErrors() {
 		// check errors in General Tab
-		//this.triggerDelayTextControlDecoration.hide();
-		//this.settleTimeTextControlDecoration.hide();
-		
-		for(IModelError error : this.currentScanModule.getModelErrors()) {
+		// this.triggerDelayTextControlDecoration.hide();
+		// this.settleTimeTextControlDecoration.hide();
+
+		for (IModelError error : this.currentScanModule.getModelErrors()) {
 			final IModelError modelError = error;
-			if(modelError instanceof ScanModuleError) {
-				final ScanModuleError scanModuleError = 
-						(ScanModuleError) modelError;
-				switch(scanModuleError.getErrorType()) {
-					case TRIGGER_DELAY_NOT_POSSIBLE:
-						this.triggerDelayTextControlDecoration.show();
-						break;
-					case SETTLE_TIME_NOT_POSSIBLE:
-						this.settleTimeTextControlDecoration.show();
-						break;
+			if (modelError instanceof ScanModuleError) {
+				final ScanModuleError scanModuleError = (ScanModuleError) modelError;
+				switch (scanModuleError.getErrorType()) {
+				case TRIGGER_DELAY_NOT_POSSIBLE:
+					this.triggerDelayTextControlDecoration.show();
+					break;
+				case SETTLE_TIME_NOT_POSSIBLE:
+					this.settleTimeTextControlDecoration.show();
+					break;
 				}
 			}
 		}
-		
+
 		// check errors in Actions Tab
 		this.motorAxisTab.setImage(null);
 		this.detectorChannelTab.setImage(null);
@@ -700,115 +677,116 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		boolean postscanErrors = false;
 		boolean positioningErrors = false;
 		boolean plotWindowErrors = false;
-		
-		for(IModelError error : this.currentScanModule.getModelErrors()) {
-			if(error instanceof AxisError) {
+
+		for (IModelError error : this.currentScanModule.getModelErrors()) {
+			if (error instanceof AxisError) {
 				motorAxisErrors = true;
-			} else if(error instanceof ChannelError) {
+			} else if (error instanceof ChannelError) {
 				detectorChannelErrors = true;
-			} else if(error instanceof PrescanError) {
+			} else if (error instanceof PrescanError) {
 				prescanErrors = true;
-			} else if(error instanceof PostscanError) {
+			} else if (error instanceof PostscanError) {
 				postscanErrors = true;
-			} else if(error instanceof PositioningError) {
+			} else if (error instanceof PositioningError) {
 				positioningErrors = true;
-			} else if(error instanceof PlotWindowError) {
+			} else if (error instanceof PlotWindowError) {
 				plotWindowErrors = true;
 			}
 		}
-		
-		if(motorAxisErrors) {
-			this.motorAxisTab.setImage(PlatformUI.getWorkbench().
-									getSharedImages().getImage(
-									ISharedImages.IMG_OBJS_ERROR_TSK));
+
+		if (motorAxisErrors) {
+			this.motorAxisTab.setImage(PlatformUI.getWorkbench()
+					.getSharedImages()
+					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 		}
-		if(detectorChannelErrors) {
-			this.detectorChannelTab.setImage(PlatformUI.getWorkbench().
-									getSharedImages().getImage( 
-									ISharedImages.IMG_OBJS_ERROR_TSK));
+		if (detectorChannelErrors) {
+			this.detectorChannelTab.setImage(PlatformUI.getWorkbench()
+					.getSharedImages()
+					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 		}
-		if(prescanErrors) {
-			this.prescanTab.setImage(PlatformUI.getWorkbench().
-									getSharedImages().getImage(
-									ISharedImages.IMG_OBJS_ERROR_TSK));
+		if (prescanErrors) {
+			this.prescanTab.setImage(PlatformUI.getWorkbench()
+					.getSharedImages()
+					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 		}
-		if(postscanErrors) {
-			this.postscanTab.setImage(PlatformUI.getWorkbench().
-									getSharedImages().getImage(
-									ISharedImages.IMG_OBJS_ERROR_TSK));
+		if (postscanErrors) {
+			this.postscanTab.setImage(PlatformUI.getWorkbench()
+					.getSharedImages()
+					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 		}
-		if(positioningErrors) {
-			this.positioningTab.setImage(PlatformUI.getWorkbench().
-									getSharedImages().getImage(
-									ISharedImages.IMG_OBJS_ERROR_TSK));
+		if (positioningErrors) {
+			this.positioningTab.setImage(PlatformUI.getWorkbench()
+					.getSharedImages()
+					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 		}
-		if(plotWindowErrors) {
-			this.plotTab.setImage(PlatformUI.getWorkbench().
-									getSharedImages().getImage(
-									ISharedImages.IMG_OBJS_ERROR_TSK));
-		}		
-		
+		if (plotWindowErrors) {
+			this.plotTab.setImage(PlatformUI.getWorkbench().getSharedImages()
+					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+		}
+
 		// check errors in Events Tab
 		this.pauseEventsTabItem.setImage(null);
 		this.redoEventsTabItem.setImage(null);
 		this.breakEventsTabItem.setImage(null);
 		this.triggerEventsTabItem.setImage(null);
-		
-		if (this.currentScanModule.getPauseControlEventManager().
-				getModelErrors().size() > 0) {
-			this.pauseEventsTabItem.setImage(PlatformUI.getWorkbench().
-									getSharedImages().getImage( 
-									ISharedImages.IMG_OBJS_ERROR_TSK));
+
+		if (this.currentScanModule.getPauseControlEventManager()
+				.getModelErrors().size() > 0) {
+			this.pauseEventsTabItem.setImage(PlatformUI.getWorkbench()
+					.getSharedImages()
+					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 		}
-		if (this.currentScanModule.getRedoControlEventManager().
-				getModelErrors().size() > 0) {
-			this.redoEventsTabItem.setImage(PlatformUI.getWorkbench().
-									getSharedImages().getImage(
-									ISharedImages.IMG_OBJS_ERROR_TSK));
+		if (this.currentScanModule.getRedoControlEventManager()
+				.getModelErrors().size() > 0) {
+			this.redoEventsTabItem.setImage(PlatformUI.getWorkbench()
+					.getSharedImages()
+					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 		}
-		if (this.currentScanModule.getBreakControlEventManager().
-				getModelErrors().size() > 0) {
-			this.breakEventsTabItem.setImage(PlatformUI.getWorkbench().
-									getSharedImages().getImage(
-									ISharedImages.IMG_OBJS_ERROR_TSK));
+		if (this.currentScanModule.getBreakControlEventManager()
+				.getModelErrors().size() > 0) {
+			this.breakEventsTabItem.setImage(PlatformUI.getWorkbench()
+					.getSharedImages()
+					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 		}
-		if (this.currentScanModule.getTriggerControlEventManager().
-				getModelErrors().size() > 0) {
-			this.triggerEventsTabItem.setImage(PlatformUI.getWorkbench().
-									getSharedImages().getImage(
-									ISharedImages.IMG_OBJS_ERROR_TSK));
+		if (this.currentScanModule.getTriggerControlEventManager()
+				.getModelErrors().size() > 0) {
+			this.triggerEventsTabItem.setImage(PlatformUI.getWorkbench()
+					.getSharedImages()
+					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 		}
 	}
-	
+
 	/**
 	 * Sets the selection provider.
 	 * 
-	 * @param selectionProvider the selection provider that should be set
+	 * @param selectionProvider
+	 *            the selection provider that should be set
 	 */
 	public void setSelectionProvider(ISelectionProvider selectionProvider) {
 		this.selectionProviderWrapper.setSelectionProvider(selectionProvider);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		logger.debug("selection changed");
-		if (!(selection instanceof IStructuredSelection) ||
-			((IStructuredSelection) selection).size() == 0) {
-				return;
+		if (!(selection instanceof IStructuredSelection)
+				|| ((IStructuredSelection) selection).size() == 0) {
+			return;
 		}
 		// at any given time this view can only display options of
-		// one device we take the last (see org.eclipse.gef.SelectionMananger, 
+		// one device we take the last (see org.eclipse.gef.SelectionMananger,
 		// primary selection)
 		IStructuredSelection structuredSelection = (IStructuredSelection) selection;
-		Object o = structuredSelection.toList().get(structuredSelection.size()-1);
+		Object o = structuredSelection.toList().get(
+				structuredSelection.size() - 1);
 		if (o instanceof ScanModuleEditPart) {
 			// set new ScanModule
 			if (logger.isDebugEnabled()) {
 				logger.debug("ScanModule: "
-						+ ((ScanModuleEditPart) o).getModel().getId() 
+						+ ((ScanModuleEditPart) o).getModel().getId()
 						+ " selected.");
 			}
 			final ScanModuleEditPart smep = (ScanModuleEditPart) o;
@@ -821,63 +799,68 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			logger.debug("selection other than ScanModule -> ignore: " + o);
 		}
 	}
-	
+
 	/*
 	 * used by updateEvent() to re-enable listeners
 	 */
 	private void addListeners() {
 		/*
-		this.valueCountText.addModifyListener(valueCountTextModifyListener);
-		 
-		this.valueCountText.addVerifyListener(valueCountTextVerifyListener);
-		this.triggerDelayText.addModifyListener(
-				triggerDelayTextModifiedListener);
-		this.triggerDelayText.addVerifyListener(triggerDelayTextVerifyListener);
-		this.settleTimeText.addModifyListener(settleTimeTextModifiedListener);
-		this.settleTimeText.addVerifyListener(settleTimeTextVerifyListener);
-		this.triggerConfirmAxisCheckBox.addSelectionListener(
-				triggerConfirmAxisCheckBoxSelectionListener);
-		this.eventsTabFolder.addSelectionListener(
-				eventsTabFolderSelectionListener);
-		this.appendScheduleEventCheckBox.addSelectionListener(
-				appendScheduleEventCheckBoxSelectionListener);
-		*/
+		 * this.valueCountText.addModifyListener(valueCountTextModifyListener);
+		 * 
+		 * this.valueCountText.addVerifyListener(valueCountTextVerifyListener);
+		 * this.triggerDelayText.addModifyListener(
+		 * triggerDelayTextModifiedListener);
+		 * this.triggerDelayText.addVerifyListener
+		 * (triggerDelayTextVerifyListener);
+		 * this.settleTimeText.addModifyListener
+		 * (settleTimeTextModifiedListener);
+		 * this.settleTimeText.addVerifyListener(settleTimeTextVerifyListener);
+		 * this.triggerConfirmAxisCheckBox.addSelectionListener(
+		 * triggerConfirmAxisCheckBoxSelectionListener);
+		 * this.eventsTabFolder.addSelectionListener(
+		 * eventsTabFolderSelectionListener);
+		 * this.appendScheduleEventCheckBox.addSelectionListener(
+		 * appendScheduleEventCheckBoxSelectionListener);
+		 */
 	}
-	
+
 	/*
-	 * used by updateEvent() to temporarily disable listeners (preventing 
-	 * event loops)
+	 * used by updateEvent() to temporarily disable listeners (preventing event
+	 * loops)
 	 */
 	private void removeListeners() {
 		/*
-		this.valueCountText.removeModifyListener(valueCountTextModifyListener);
-		this.valueCountText.removeVerifyListener(valueCountTextVerifyListener);
-		this.triggerDelayText.removeVerifyListener(
-				triggerDelayTextVerifyListener);
-		this.triggerDelayText.removeModifyListener(
-				triggerDelayTextModifiedListener);
-		this.settleTimeText.removeModifyListener(settleTimeTextModifiedListener);
-		this.settleTimeText.removeVerifyListener(settleTimeTextVerifyListener);
-		this.triggerConfirmAxisCheckBox.removeSelectionListener(
-				triggerConfirmAxisCheckBoxSelectionListener);
-		this.eventsTabFolder.removeSelectionListener(
-				eventsTabFolderSelectionListener);
-		this.appendScheduleEventCheckBox.removeSelectionListener(
-				appendScheduleEventCheckBoxSelectionListener);
-				*/
+		 * this.valueCountText.removeModifyListener(valueCountTextModifyListener)
+		 * ;
+		 * this.valueCountText.removeVerifyListener(valueCountTextVerifyListener
+		 * ); this.triggerDelayText.removeVerifyListener(
+		 * triggerDelayTextVerifyListener);
+		 * this.triggerDelayText.removeModifyListener(
+		 * triggerDelayTextModifiedListener);
+		 * this.settleTimeText.removeModifyListener
+		 * (settleTimeTextModifiedListener);
+		 * this.settleTimeText.removeVerifyListener
+		 * (settleTimeTextVerifyListener);
+		 * this.triggerConfirmAxisCheckBox.removeSelectionListener(
+		 * triggerConfirmAxisCheckBoxSelectionListener);
+		 * this.eventsTabFolder.removeSelectionListener(
+		 * eventsTabFolderSelectionListener);
+		 * this.appendScheduleEventCheckBox.removeSelectionListener(
+		 * appendScheduleEventCheckBoxSelectionListener);
+		 */
 	}
 
 	/*
 	 * 
 	 */
-	private void suspendModelUpdateListener () {
+	private void suspendModelUpdateListener() {
 		this.currentScanModule.removeModelUpdateListener(this);
 	}
-	
+
 	/*
 	 * 
 	 */
-	private void resumeModelUpdateListener () {
+	private void resumeModelUpdateListener() {
 		this.currentScanModule.addModelUpdateListener(this);
 	}
 
@@ -890,30 +873,30 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		// -> temporarily disable listeners to prevent Event Loops
 		// (and unnecessary duplicate calls)
 		removeListeners();
-		
-		if(this.currentScanModule != null) {
+
+		if (this.currentScanModule != null) {
 			// set value count text
 			this.valueCountText.setText(Integer.toString(this.currentScanModule
 					.getValuecount()));
-			
+
 			// set trigger delay text
-			this.triggerDelayText.setText((this.currentScanModule.
-					getTriggerdelay() != Double.NEGATIVE_INFINITY) 
-					? String.valueOf(this.currentScanModule.getTriggerdelay()) 
-					: "");
-			
+			this.triggerDelayText.setText((this.currentScanModule
+					.getTriggerdelay() != Double.NEGATIVE_INFINITY) ? String
+					.valueOf(this.currentScanModule.getTriggerdelay()) : "");
+
 			// set settle time text
-			this.settleTimeText.setText((this.currentScanModule
-					.getSettletime() != Double.NEGATIVE_INFINITY) 
-					? String.valueOf(this.currentScanModule.getSettletime()) 
-					: "");
-					
+			this.settleTimeText
+					.setText((this.currentScanModule.getSettletime() != Double.NEGATIVE_INFINITY) ? String
+							.valueOf(this.currentScanModule.getSettletime())
+							: "");
+
 			// set the check box for confirm trigger
-			this.triggerConfirmAxisCheckBox.setSelection(
-					this.currentScanModule.isTriggerconfirmaxis());
-			this.triggerConfirmChannelCheckBox.setSelection(
-					this.currentScanModule.isTriggerconfirmchannel());
-			
+			this.triggerConfirmAxisCheckBox.setSelection(this.currentScanModule
+					.isTriggerconfirmaxis());
+			this.triggerConfirmChannelCheckBox
+					.setSelection(this.currentScanModule
+							.isTriggerconfirmchannel());
+
 			// TODO CheckBox for ScheduleIncident Start or End
 			// TODO understand
 			if (currentScanModule.getChain() != null) {
@@ -931,17 +914,58 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		}
 		addListeners();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void saveState(IMemento memento) {
+		// remember maximized states of sash form
+		memento.putBoolean("actionsCompositeMaximized",
+				this.actionsCompositeMaximized);
+		memento.putBoolean("eventsCompositeMaximized",
+				this.eventsCompositeMaximized);
+
 		// remember sort state of action composite viewers
 		memento.putInteger("AxesSortState",
 				this.motorAxisComposite.getSortState());
 		memento.putInteger("ChannelSortState",
 				this.detectorChannelComposite.getSortState());
+	}
+
+	/*
+	 * 
+	 */
+	private void restoreState() {
+		if (memento == null) {
+			return;
+		}
+		
+		// restore maximized states
+		this.actionsCompositeMaximized = (memento
+				.getBoolean("actionsCompositeMaximized") == null) ? false
+				: memento.getBoolean("actionsCompositeMaximized");
+		this.eventsCompositeMaximized = (memento
+				.getBoolean("eventsCompositeMaximized") == null) ? false
+				: memento.getBoolean("eventsCompositeMaximized");
+		if (this.actionsCompositeMaximized) {
+			this.actionMaxIcon.setImage(restoreIcon);
+			this.sashForm.setMaximizedControl(actionsComposite);
+		}
+		if (this.eventsCompositeMaximized) {
+			this.eventMaxIcon.setImage(restoreIcon);
+			this.sashForm.setMaximizedControl(eventsComposite);
+		}
+		
+		// restore sort state of action composite viewers
+		if (memento.getInteger("AxesSortState") != null) {
+			this.motorAxisComposite.setSortState(memento
+					.getInteger("AxesSortState"));
+		}
+		if (memento.getInteger("ChannelSortState") != null) {
+			this.detectorChannelComposite.setSortState(memento
+					.getInteger("ChannelSortState"));
+		}
 	}
 
 	/**
@@ -951,7 +975,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	public void reset() {
 		this.setCurrentScanModule(null);
 	}
-	
+
 	// ************************************************************************
 	// ******************** Listener ******************************************
 	// ************************************************************************
@@ -961,11 +985,11 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	 * @since 1.8
 	 */
 	private class ActionsMaxIconMouseListener extends MouseAdapter {
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
-		@Override 
+		@Override
 		public void mouseUp(MouseEvent e) {
 			if (actionsCompositeMaximized) {
 				actionMaxIcon.setImage(maximizeIcon);
@@ -979,13 +1003,13 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			}
 		}
 	}
-	
+
 	/**
 	 * @author Marcus Michalsky
 	 * @since 1.8
 	 */
 	private class EventMaxIconMouseListener extends MouseAdapter {
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1003,32 +1027,28 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			}
 		}
 	}
-	
-	
-	
-	
-	
+
 	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
+	 * {@link org.eclipse.swt.events.SelectionListener} of
 	 * <code>confirmTriggerAxisCheckBox</code>.
 	 */
-	private class TriggerConfirmAxisCheckBoxSelectionListener implements 
-					SelectionListener {
-		
+	private class TriggerConfirmAxisCheckBoxSelectionListener implements
+			SelectionListener {
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			currentScanModule.setTriggerconfirmaxis(
-					triggerConfirmAxisCheckBox.getSelection());
+			currentScanModule.setTriggerconfirmaxis(triggerConfirmAxisCheckBox
+					.getSelection());
 		}
 	}
 
@@ -1039,8 +1059,8 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	 * @author Marcus Michalsky
 	 * @since 1.5
 	 */
-	private class TriggerConfirmChannelCheckBoxSelectionListener implements 
-				SelectionListener {
+	private class TriggerConfirmChannelCheckBoxSelectionListener implements
+			SelectionListener {
 
 		/**
 		 * {@inheritDoc}
@@ -1054,11 +1074,12 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			currentScanModule.setTriggerconfirmchannel(
-					triggerConfirmChannelCheckBox.getSelection());
+			currentScanModule
+					.setTriggerconfirmchannel(triggerConfirmChannelCheckBox
+							.getSelection());
 		}
 	}
-	
+
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of
 	 * <code>eventsTabFolder</code>.
@@ -1079,25 +1100,29 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		public void widgetSelected(SelectionEvent e) {
 			switch (eventsTabFolder.getSelectionIndex()) {
 			case 0:
-				selectionProviderWrapper.setSelectionProvider(
-						pauseEventComposite.getTableViewer());
+				selectionProviderWrapper
+						.setSelectionProvider(pauseEventComposite
+								.getTableViewer());
 				break;
 			case 1:
-				selectionProviderWrapper.setSelectionProvider(
-						redoEventComposite.getTableViewer());
+				selectionProviderWrapper
+						.setSelectionProvider(redoEventComposite
+								.getTableViewer());
 				break;
 			case 2:
-				selectionProviderWrapper.setSelectionProvider(
-						breakEventComposite.getTableViewer());
+				selectionProviderWrapper
+						.setSelectionProvider(breakEventComposite
+								.getTableViewer());
 				break;
 			case 3:
-				selectionProviderWrapper.setSelectionProvider(
-						triggerEventComposite.getTableViewer());
+				selectionProviderWrapper
+						.setSelectionProvider(triggerEventComposite
+								.getTableViewer());
 				break;
 			}
 		}
 	}
-	
+
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of
 	 * <code> appendScheduleEventCheckBox</code>.
@@ -1142,11 +1167,11 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	}
 
 	// ************************ Modify Listener ****************************
-	
+
 	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of 
+	 * {@link org.eclipse.swt.events.ModifyListener} of
 	 * <code>valueCountText</code>.
-	 *
+	 * 
 	 * @author Marcus Michalsky
 	 * @since 1.5
 	 */
@@ -1171,35 +1196,35 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			resumeModelUpdateListener();
 		}
 	}
-	
+
 	/**
 	 * {@link org.eclipse.swt.events.ModifyListener} of
 	 * <code>triggerDelayText</code>.
 	 */
 	private class TriggerDelayTextModifiedListener implements ModifyListener {
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void modifyText(ModifyEvent e) {
 			suspendModelUpdateListener();
-			
+
 			if (triggerDelayText.getText().equals("")) {
 				currentScanModule.setTriggerdelay(Double.NEGATIVE_INFINITY);
 			} else {
 				try {
-					currentScanModule.setTriggerdelay(Double.parseDouble(
-							triggerDelayText.getText()));
+					currentScanModule.setTriggerdelay(Double
+							.parseDouble(triggerDelayText.getText()));
 				} catch (NumberFormatException ex) {
 					currentScanModule.setTriggerdelay(Double.NaN);
 				}
-			}	
+			}
 			checkForErrors();
 			resumeModelUpdateListener();
 		}
 	}
-	
+
 	/**
 	 * {@link org.eclipse.swt.events.ModifyListener} of
 	 * <code>settleTimeText</code>.
@@ -1227,6 +1252,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			resumeModelUpdateListener();
 		}
 	}
+
 	// ************************ Verify Listener ****************************
 
 	/**
