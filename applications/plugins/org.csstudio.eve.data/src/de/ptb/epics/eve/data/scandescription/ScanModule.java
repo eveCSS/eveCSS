@@ -55,6 +55,21 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public static final String CHANNELS_PROP = "channels";
 	
 	/** */
+	public static final String VALUE_COUNT_PROP = "valueCount";
+	
+	/** */
+	public static final String TRIGGER_DELAY_PROP = "triggerDelay";
+	
+	/** */
+	public static final String SETTLE_TIME_PROP = "settleTime";
+	
+	/** */
+	public static final String TRIGGER_CONFIRM_AXIS_PROP = "triggerConfirmAxis";
+
+	/** */
+	public static final String TRIGGER_CONFIRM_CHANNEL_PROP = "triggerConfirmChannel";
+	
+	/** */
 	public static int default_width = 70;
 	/** */
 	public static int default_height = 30;
@@ -69,17 +84,17 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	private String name;
 	
 	// the number of measurements per position
-	private int valuecount;
+	private int valueCount;
 	
 	// the settle time
-	private double settletime;
+	private double settleTime;
 	
 	// the trigger delay
-	private double triggerdelay;
+	private double triggerDelay;
 	
 	// indicates whether a trigger should be confirmed by hand
-	private boolean triggerconfirmaxis;
-	private boolean triggerconfirmchannel;
+	private boolean triggerConfirmAxis;
+	private boolean triggerConfirmChannel;
 	
 	// a list containing all prescans
 	private List<Prescan> prescans;
@@ -169,9 +184,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.axes = new ArrayList<Axis>();
 		this.mainAxis = null;
 		this.plotWindows = new ArrayList<PlotWindow>();
-		this.valuecount = 1;
-		this.settletime = 0.0;
-		this.triggerdelay = 0.0;
+		this.valueCount = 1;
+		this.settleTime = 0.0;
+		this.triggerDelay = 0.0;
 		this.triggerEvents = new ArrayList<ControlEvent>();
 		this.redoEvents = new ArrayList<ControlEvent>();
 		this.breakEvents = new ArrayList<ControlEvent>();
@@ -179,8 +194,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.type = "classic";
 		this.name = "";
 
-		this.triggerconfirmaxis = false;
-		this.triggerconfirmchannel = false;
+		this.triggerConfirmAxis = false;
+		this.triggerConfirmChannel = false;
 		
 		this.breakControlEventManager = new ControlEventManager(
 				this, this.breakEvents, ControlEventTypes.CONTROL_EVENT);
@@ -573,8 +588,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @return The settle time.
 	 */
-	public double getSettletime() {
-		return settletime;
+	public double getSettleTime() {
+		return settleTime;
 	}
 
 	/**
@@ -582,8 +597,10 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param settletime The settle time.
 	 */
-	public void setSettletime(final double settletime) {
-		this.settletime = settletime;
+	public void setSettleTime(final double settletime) {
+		this.propertyChangeSupport.firePropertyChange(
+				ScanModule.SETTLE_TIME_PROP, this.settleTime,
+				this.settleTime = settletime);
 		updateListeners();
 	}
 
@@ -592,8 +609,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @return whether trigger confirmation is enabled
 	 */
-	public boolean isTriggerconfirmaxis() {
-		return triggerconfirmaxis;
+	public boolean isTriggerConfirmAxis() {
+		return triggerConfirmAxis;
 	}
 
 	/**
@@ -603,23 +620,28 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 *            <code>true</code> to enable manual trigger, <code>false</code>
 	 *            otherwise
 	 */
-	public void setTriggerconfirmaxis(final boolean triggerconfirmaxis) {
-		this.triggerconfirmaxis = triggerconfirmaxis;
+	public void setTriggerConfirmAxis(final boolean triggerconfirmaxis) {
+		this.propertyChangeSupport.firePropertyChange(
+				ScanModule.TRIGGER_CONFIRM_AXIS_PROP, this.triggerConfirmAxis,
+				this.triggerConfirmAxis = triggerconfirmaxis);
 		updateListeners();
 	}
 
 	/**
 	 * @return the triggerconfirmchannel
 	 */
-	public boolean isTriggerconfirmchannel() {
-		return triggerconfirmchannel;
+	public boolean isTriggerConfirmChannel() {
+		return triggerConfirmChannel;
 	}
 
 	/**
 	 * @param triggerconfirmchannel the triggerconfirmchannel to set
 	 */
-	public void setTriggerconfirmchannel(boolean triggerconfirmchannel) {
-		this.triggerconfirmchannel = triggerconfirmchannel;
+	public void setTriggerConfirmChannel(boolean triggerconfirmchannel) {
+		this.propertyChangeSupport.firePropertyChange(
+				ScanModule.TRIGGER_CONFIRM_CHANNEL_PROP,
+				this.triggerConfirmChannel,
+				this.triggerConfirmChannel = triggerconfirmchannel);
 		updateListeners();
 	}
 
@@ -628,8 +650,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @return The trigger delay
 	 */
-	public double getTriggerdelay() {
-		return triggerdelay;
+	public double getTriggerDelay() {
+		return triggerDelay;
 	}
 
 	/**
@@ -637,8 +659,10 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param triggerdelay The trigger delay
 	 */
-	public void setTriggerdelay(final double triggerdelay) {
-		this.triggerdelay = triggerdelay;
+	public void setTriggerDelay(final double triggerdelay) {
+		this.propertyChangeSupport.firePropertyChange(
+				ScanModule.TRIGGER_DELAY_PROP, this.triggerDelay,
+				this.triggerDelay = triggerdelay);
 		updateListeners();
 	}
 
@@ -646,19 +670,21 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	/**
 	 * @return the valuecount
 	 */
-	public int getValuecount() {
-		return valuecount;
+	public int getValueCount() {
+		return valueCount;
 	}
 
 	/**
 	 * @param valuecount the valuecount to set
 	 * @throws IllegalArgumentException if <code>valuecount</code> < 1
 	 */
-	public void setValuecount(int valuecount) {
+	public void setValueCount(int valuecount) {
 		if (valuecount < 1) {
 			throw new IllegalArgumentException("valuecount must be > 0!");
 		}
-		this.valuecount = valuecount;
+		this.propertyChangeSupport.firePropertyChange(
+				ScanModule.VALUE_COUNT_PROP, this.valueCount,
+				this.valueCount = valuecount);
 		updateListeners();
 	}
 
@@ -1131,11 +1157,11 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			errorList.addAll(plotwindow.getModelErrors());
 		}
 
-		if(Double.compare(this.triggerdelay, Double.NaN) == 0) {
+		if(Double.compare(this.triggerDelay, Double.NaN) == 0) {
 			errorList.add(new ScanModuleError(this, 
 					ScanModuleErrorTypes.TRIGGER_DELAY_NOT_POSSIBLE));
 		}
-		if(Double.compare(this.settletime, Double.NaN) == 0) {
+		if(Double.compare(this.settleTime, Double.NaN) == 0) {
 			errorList.add(new ScanModuleError(this, 
 					ScanModuleErrorTypes.SETTLE_TIME_NOT_POSSIBLE));
 		}

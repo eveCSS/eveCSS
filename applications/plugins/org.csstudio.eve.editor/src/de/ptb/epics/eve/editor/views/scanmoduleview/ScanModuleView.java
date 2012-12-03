@@ -1,8 +1,14 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jface.fieldassist.ControlDecoration;
-import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
+import org.eclipse.core.databinding.Binding;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
+import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -25,14 +31,12 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 
 import de.ptb.epics.eve.data.measuringstation.Event;
@@ -44,7 +48,6 @@ import de.ptb.epics.eve.data.scandescription.errors.PlotWindowError;
 import de.ptb.epics.eve.data.scandescription.errors.PositioningError;
 import de.ptb.epics.eve.data.scandescription.errors.PostscanError;
 import de.ptb.epics.eve.data.scandescription.errors.PrescanError;
-import de.ptb.epics.eve.data.scandescription.errors.ScanModuleError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -61,7 +64,6 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.positioningcomposite.Positio
 import de.ptb.epics.eve.editor.views.scanmoduleview.postscancomposite.PostscanComposite;
 import de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.PrescanComposite;
 import de.ptb.epics.eve.util.jface.SelectionProviderWrapper;
-import de.ptb.epics.eve.util.swt.PositiveIntegerVerifyListener;
 import de.ptb.epics.eve.util.swt.TextSelectAllFocusListener;
 import de.ptb.epics.eve.util.swt.TextSelectAllMouseListener;
 
@@ -95,26 +97,16 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 
 	private Label valueCountLabel;
 	private Text valueCountText;
-	private PositiveIntegerVerifyListener valueCountTextVerifyListener;
-	private ValueCountTextModifyListener valueCountTextModifyListener;
 
 	private Label triggerDelayLabel;
 	private Text triggerDelayText;
-	private ControlDecoration triggerDelayTextControlDecoration;
-	private TextDoubleVerifyListener triggerDelayTextVerifyListener;
-	private TriggerDelayTextModifiedListener triggerDelayTextModifiedListener;
 
 	private Label settleTimeLabel;
 	private Text settleTimeText;
-	private ControlDecoration settleTimeTextControlDecoration;
-	private TextDoubleVerifyListener settleTimeTextVerifyListener;
-	private SettleTimeTextModifiedListener settleTimeTextModifiedListener;
 
 	private Button triggerConfirmAxisCheckBox;
-	private TriggerConfirmAxisCheckBoxSelectionListener triggerConfirmAxisCheckBoxSelectionListener;
 
 	private Button triggerConfirmChannelCheckBox;
-	private TriggerConfirmChannelCheckBoxSelectionListener triggerConfirmChannelCheckBoxSelectionListener;
 
 	private CTabFolder actionsTabFolder;
 	private CTabItem motorAxisTab;
@@ -148,14 +140,39 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	private EventComposite triggerEventComposite;
 
 	private Button appendScheduleEventCheckBox;
-	private AppendScheduleEventCheckBoxSelectionListener appendScheduleEventCheckBoxSelectionListener;
+	private AppendScheduleEventCheckBoxSelectionListener 
+			appendScheduleEventCheckBoxSelectionListener;
 
 	private SashForm sashForm;
 
 	private Image restoreIcon;
 	private Image maximizeIcon;
 
-	private Image errorImage;
+	private DataBindingContext context;
+	
+	private ISelectionProvider selectionProvider;
+	
+	private IObservableValue selectionObservable;
+	
+	private IObservableValue valueCountTargetObservable;
+	private IObservableValue valueCountModelObservable;
+	private Binding valueCountBinding;
+	
+	private IObservableValue triggerDelayTargetObservable;
+	private IObservableValue triggerDelayModelObservable;
+	private Binding triggerDelayBinding;
+	
+	private IObservableValue settleTimeTargetObservable;
+	private IObservableValue settleTimeModelObservable;
+	private Binding settleTimeBinding;
+	
+	private IObservableValue axisTriggerTargetObservable;
+	private IObservableValue axisTriggerModelObservable;
+	private Binding axisTriggerBinding;
+	
+	private IObservableValue channelTriggerTargetObservable;
+	private IObservableValue channelTriggerModelObservable;
+	private Binding channelTriggerBinding;
 
 	// the selection service only accepts one selection provider per view,
 	// since we have multiple tabs with tables capable of providing selections,
@@ -196,10 +213,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 				.get("RESTORE");
 		this.maximizeIcon = Activator.getDefault().getImageRegistry()
 				.get("MAXIMIZE");
-
-		this.errorImage = FieldDecorationRegistry.getDefault()
-				.getFieldDecoration(FieldDecorationRegistry.DEC_ERROR)
-				.getImage();
 
 		this.top = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
@@ -260,8 +273,8 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		// value count
 		this.valueCountLabel = new Label(this.generalComposite, SWT.NONE);
 		this.valueCountLabel.setText("No of Measurements:");
-		this.valueCountLabel.setToolTipText(""
-				+ "Number of Measurements taken for each motor position");
+		this.valueCountLabel.setToolTipText(
+				"Number of Measurements taken for each motor position");
 		this.valueCountText = new Text(this.generalComposite, SWT.BORDER);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -269,6 +282,10 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.valueCountText.setLayoutData(gridData);
+		this.valueCountText.addFocusListener(new TextSelectAllFocusListener(
+				this.valueCountText));
+		this.valueCountText.addMouseListener(new TextSelectAllMouseListener(
+				this.valueCountText));
 
 		// Trigger Delay
 		this.triggerDelayLabel = new Label(this.generalComposite, SWT.NONE);
@@ -281,6 +298,10 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.triggerDelayText.setLayoutData(gridData);
+		this.triggerDelayText.addFocusListener(new TextSelectAllFocusListener(
+				this.triggerDelayText));
+		this.triggerDelayText.addMouseListener(new TextSelectAllMouseListener(
+				this.triggerDelayText));
 
 		// Settle Time
 		this.settleTimeLabel = new Label(this.generalComposite, SWT.NONE);
@@ -294,6 +315,10 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData.horizontalIndent = 7;
 		gridData.grabExcessHorizontalSpace = true;
 		this.settleTimeText.setLayoutData(gridData);
+		this.settleTimeText.addFocusListener(new TextSelectAllFocusListener(
+				this.settleTimeText));
+		this.settleTimeText.addMouseListener(new TextSelectAllMouseListener(
+				this.settleTimeText));
 
 		// Manual Trigger
 		Label triggerLabel = new Label(this.generalComposite, SWT.NONE);
@@ -448,104 +473,106 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		gridData = new GridData();
 		gridData.horizontalSpan = 2;
 		appendScheduleEventCheckBox.setLayoutData(gridData);
+		this.appendScheduleEventCheckBoxSelectionListener = 
+				new AppendScheduleEventCheckBoxSelectionListener();
+		appendScheduleEventCheckBox.addSelectionListener(
+				appendScheduleEventCheckBoxSelectionListener);
 	}
 
 	/*
 	 * 
 	 */
 	private void bindValues() {
-
-	}
-
-	/*
-	 * called by CreatePartControl to create the contents of the first expand
-	 * item (General)
-	 */
-	private void createGeneralExpandItem() {
-		/*
-		 * this.valueCountTextVerifyListener = new
-		 * PositiveIntegerVerifyListener();
-		 * this.valueCountText.addVerifyListener(valueCountTextVerifyListener);
-		 * this.valueCountTextModifyListener = new
-		 * ValueCountTextModifyListener();
-		 * this.valueCountText.addModifyListener(valueCountTextModifyListener);
-		 * this.valueCountText.addFocusListener( new
-		 * TextSelectAllFocusListener(this.valueCountText));
-		 * this.valueCountText.addMouseListener( new
-		 * TextSelectAllMouseListener(this.valueCountText));
-		 * this.valueCountText.addFocusListener(new FocusAdapter() {
-		 * 
-		 * @Override public void focusLost(FocusEvent e) {
-		 * valueCountText.setSelection(0,0); } });
-		 * 
-		 * this.triggerDelayTextVerifyListener = new TextDoubleVerifyListener();
-		 * this
-		 * .triggerDelayText.addVerifyListener(triggerDelayTextVerifyListener);
-		 * this.triggerDelayTextModifiedListener = new
-		 * TriggerDelayTextModifiedListener();
-		 * this.triggerDelayText.addModifyListener(
-		 * triggerDelayTextModifiedListener);
-		 * this.triggerDelayText.addFocusListener( new
-		 * TextSelectAllFocusListener(this.triggerDelayText));
-		 * this.triggerDelayText.addMouseListener( new
-		 * TextSelectAllMouseListener(this.triggerDelayText));
-		 * this.triggerDelayText.addFocusListener(new FocusAdapter() {
-		 * 
-		 * @Override public void focusLost(FocusEvent e) {
-		 * triggerDelayText.setSelection(0,0); } });
-		 * this.triggerDelayTextControlDecoration = new ControlDecoration(
-		 * triggerDelayText, SWT.LEFT);
-		 * this.triggerDelayTextControlDecoration.setImage(errorImage);
-		 * this.triggerDelayTextControlDecoration.setDescriptionText(
-		 * "Trigger Delay value not possible");
-		 * this.triggerDelayTextControlDecoration.hide();
-		 * 
-		 * this.settleTimeTextVerifyListener = new TextDoubleVerifyListener();
-		 * this.settleTimeTextModifiedListener = new
-		 * SettleTimeTextModifiedListener();
-		 * this.settleTimeText.addModifyListener
-		 * (settleTimeTextModifiedListener);
-		 * this.settleTimeText.addFocusListener( new
-		 * TextSelectAllFocusListener(this.settleTimeText));
-		 * this.settleTimeText.addMouseListener( new
-		 * TextSelectAllMouseListener(this.settleTimeText));
-		 * this.settleTimeText.addFocusListener(new FocusAdapter() {
-		 * 
-		 * @Override public void focusLost(FocusEvent e) {
-		 * settleTimeText.setSelection(0,0); } });
-		 * this.settleTimeTextControlDecoration = new ControlDecoration(
-		 * settleTimeText, SWT.LEFT);
-		 * this.settleTimeTextControlDecoration.setImage(errorImage);
-		 * this.settleTimeTextControlDecoration.setDescriptionText(
-		 * "Settle Time value not possible");
-		 * this.settleTimeTextControlDecoration.hide();
-		 * 
-		 * this.triggerConfirmAxisCheckBoxSelectionListener = new
-		 * TriggerConfirmAxisCheckBoxSelectionListener();
-		 * this.triggerConfirmAxisCheckBox.addSelectionListener(
-		 * triggerConfirmAxisCheckBoxSelectionListener);
-		 * 
-		 * this.triggerConfirmChannelCheckBox = new Button(triggerCheckBoxes,
-		 * SWT.CHECK); this.triggerConfirmChannelCheckBox.setText("Detectors");
-		 * this.triggerConfirmChannelCheckBoxSelectionListener = new
-		 * TriggerConfirmChannelCheckBoxSelectionListener();
-		 * this.triggerConfirmChannelCheckBox.addSelectionListener(
-		 * triggerConfirmChannelCheckBoxSelectionListener);
-		 */
-	}
-
-	/*
-	 * called by CreatePartControl to create the contents of the third expand
-	 * item (Events)
-	 */
-	private void createEventsExpandItem() {
-		/*
-		 * 
-		 * this.appendScheduleEventCheckBoxSelectionListener = new
-		 * AppendScheduleEventCheckBoxSelectionListener();
-		 * this.appendScheduleEventCheckBox.addSelectionListener(
-		 * appendScheduleEventCheckBoxSelectionListener);
-		 */
+		this.context = new DataBindingContext();
+		
+		this.selectionProvider = new ScanModuleSelectionProvider();
+		this.selectionObservable = ViewersObservables
+				.observeSingleSelection(selectionProvider);
+		
+		this.valueCountTargetObservable = SWTObservables
+				.observeText(this.valueCountText, SWT.Modify);
+		this.valueCountModelObservable = BeansObservables.observeDetailValue(
+				selectionObservable, ScanModule.class,
+				ScanModule.VALUE_COUNT_PROP, Integer.class);
+		UpdateValueStrategy valueCountTargetToModelStrategy = 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
+		valueCountTargetToModelStrategy
+				.setAfterGetValidator(new ValueCountValidator());
+		valueCountTargetToModelStrategy.setConverter(new ValueCountConverter());
+		this.valueCountBinding = context.bindValue(valueCountTargetObservable,
+				valueCountModelObservable, valueCountTargetToModelStrategy,
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		ControlDecorationSupport.create(this.valueCountBinding, SWT.LEFT);
+		this.valueCountText.addFocusListener(new TextFocusListener(
+				this.valueCountText));
+		
+		this.triggerDelayTargetObservable = SWTObservables.observeText(
+				this.triggerDelayText, SWT.Modify);
+		this.triggerDelayModelObservable = BeansObservables.observeDetailValue(
+				selectionObservable, ScanModule.class, 
+				ScanModule.TRIGGER_DELAY_PROP, Double.class);
+		UpdateValueStrategy triggerDelayTargetToModelStrategy = 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
+		triggerDelayTargetToModelStrategy
+				.setAfterGetValidator(new TriggerDelaySettleTimeValidator("Settle Time"));
+		triggerDelayTargetToModelStrategy
+				.setConverter(new TriggerDelaySettleTimeConverter());
+		UpdateValueStrategy triggerDelayModelToTargetStrategy = 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
+		triggerDelayModelToTargetStrategy
+				.setConverter(new ModelToTargetConverter());
+		this.triggerDelayBinding = context.bindValue(
+				triggerDelayTargetObservable, triggerDelayModelObservable,
+				triggerDelayTargetToModelStrategy,
+				triggerDelayModelToTargetStrategy);
+		ControlDecorationSupport.create(this.triggerDelayBinding, SWT.LEFT);
+		this.triggerDelayText.addFocusListener(new TextFocusListener(
+				this.triggerDelayText));
+		
+		this.settleTimeTargetObservable = SWTObservables.observeText(
+				this.settleTimeText, SWT.Modify);
+		this.settleTimeModelObservable = BeansObservables.observeDetailValue(
+				selectionObservable, ScanModule.class,
+				ScanModule.SETTLE_TIME_PROP, Double.class);
+		UpdateValueStrategy settleTimeTargetToModelStrategy = 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
+		UpdateValueStrategy settleTimeModelToTargetStrategy = 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
+		settleTimeModelToTargetStrategy
+				.setConverter(new ModelToTargetConverter());
+		settleTimeTargetToModelStrategy
+				.setAfterGetValidator(new TriggerDelaySettleTimeValidator(
+						"Settle Time"));
+		settleTimeTargetToModelStrategy
+				.setConverter(new TriggerDelaySettleTimeConverter());
+		this.settleTimeBinding = context.bindValue(settleTimeTargetObservable,
+				settleTimeModelObservable, settleTimeTargetToModelStrategy,
+				settleTimeModelToTargetStrategy);
+		ControlDecorationSupport.create(this.settleTimeBinding, SWT.LEFT);
+		this.settleTimeText.addFocusListener(new TextFocusListener(
+				this.settleTimeText));
+		
+		this.axisTriggerTargetObservable = SWTObservables
+				.observeSelection(this.triggerConfirmAxisCheckBox);
+		this.axisTriggerModelObservable = BeansObservables.observeDetailValue(
+				selectionObservable, ScanModule.class,
+				ScanModule.TRIGGER_CONFIRM_AXIS_PROP, Boolean.class);
+		this.axisTriggerBinding = context.bindValue(
+				axisTriggerTargetObservable, axisTriggerModelObservable,
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		this.axisTriggerBinding.getClass();
+		
+		this.channelTriggerTargetObservable = SWTObservables
+				.observeSelection(this.triggerConfirmChannelCheckBox);
+		this.channelTriggerModelObservable = BeansObservables
+				.observeDetailValue(selectionObservable, ScanModule.class,
+						ScanModule.TRIGGER_CONFIRM_CHANNEL_PROP, Boolean.class);
+		this.channelTriggerBinding = context.bindValue(
+				channelTriggerTargetObservable, channelTriggerModelObservable,
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		this.channelTriggerBinding.getClass();
 	}
 
 	// ***********************************************************************
@@ -628,14 +655,14 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		} else {
 			// no scan module selected -> reset contents
 			selectionProviderWrapper.setSelectionProvider(null);
-
+			
 			this.setPartName("No Scan Module selected");
-
+			
 			triggerEventComposite.setControlEventManager(null);
 			breakEventComposite.setControlEventManager(null);
 			redoEventComposite.setControlEventManager(null);
 			pauseEventComposite.setControlEventManager(null);
-
+			
 			top.setVisible(false);
 		}
 		updateEvent(null);
@@ -645,24 +672,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	 * 
 	 */
 	private void checkForErrors() {
-		// check errors in General Tab
-		// this.triggerDelayTextControlDecoration.hide();
-		// this.settleTimeTextControlDecoration.hide();
-
-		for (IModelError error : this.currentScanModule.getModelErrors()) {
-			final IModelError modelError = error;
-			if (modelError instanceof ScanModuleError) {
-				final ScanModuleError scanModuleError = (ScanModuleError) modelError;
-				switch (scanModuleError.getErrorType()) {
-				case TRIGGER_DELAY_NOT_POSSIBLE:
-					this.triggerDelayTextControlDecoration.show();
-					break;
-				case SETTLE_TIME_NOT_POSSIBLE:
-					this.settleTimeTextControlDecoration.show();
-					break;
-				}
-			}
-		}
 
 		// check errors in Actions Tab
 		this.motorAxisTab.setImage(null);
@@ -800,103 +809,12 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		}
 	}
 
-	/*
-	 * used by updateEvent() to re-enable listeners
-	 */
-	private void addListeners() {
-		/*
-		 * this.valueCountText.addModifyListener(valueCountTextModifyListener);
-		 * 
-		 * this.valueCountText.addVerifyListener(valueCountTextVerifyListener);
-		 * this.triggerDelayText.addModifyListener(
-		 * triggerDelayTextModifiedListener);
-		 * this.triggerDelayText.addVerifyListener
-		 * (triggerDelayTextVerifyListener);
-		 * this.settleTimeText.addModifyListener
-		 * (settleTimeTextModifiedListener);
-		 * this.settleTimeText.addVerifyListener(settleTimeTextVerifyListener);
-		 * this.triggerConfirmAxisCheckBox.addSelectionListener(
-		 * triggerConfirmAxisCheckBoxSelectionListener);
-		 * this.eventsTabFolder.addSelectionListener(
-		 * eventsTabFolderSelectionListener);
-		 * this.appendScheduleEventCheckBox.addSelectionListener(
-		 * appendScheduleEventCheckBoxSelectionListener);
-		 */
-	}
-
-	/*
-	 * used by updateEvent() to temporarily disable listeners (preventing event
-	 * loops)
-	 */
-	private void removeListeners() {
-		/*
-		 * this.valueCountText.removeModifyListener(valueCountTextModifyListener)
-		 * ;
-		 * this.valueCountText.removeVerifyListener(valueCountTextVerifyListener
-		 * ); this.triggerDelayText.removeVerifyListener(
-		 * triggerDelayTextVerifyListener);
-		 * this.triggerDelayText.removeModifyListener(
-		 * triggerDelayTextModifiedListener);
-		 * this.settleTimeText.removeModifyListener
-		 * (settleTimeTextModifiedListener);
-		 * this.settleTimeText.removeVerifyListener
-		 * (settleTimeTextVerifyListener);
-		 * this.triggerConfirmAxisCheckBox.removeSelectionListener(
-		 * triggerConfirmAxisCheckBoxSelectionListener);
-		 * this.eventsTabFolder.removeSelectionListener(
-		 * eventsTabFolderSelectionListener);
-		 * this.appendScheduleEventCheckBox.removeSelectionListener(
-		 * appendScheduleEventCheckBoxSelectionListener);
-		 */
-	}
-
-	/*
-	 * 
-	 */
-	private void suspendModelUpdateListener() {
-		this.currentScanModule.removeModelUpdateListener(this);
-	}
-
-	/*
-	 * 
-	 */
-	private void resumeModelUpdateListener() {
-		this.currentScanModule.addModelUpdateListener(this);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
-		// widgets will be updated according to set / changed model
-		// -> temporarily disable listeners to prevent Event Loops
-		// (and unnecessary duplicate calls)
-		removeListeners();
-
 		if (this.currentScanModule != null) {
-			// set value count text
-			this.valueCountText.setText(Integer.toString(this.currentScanModule
-					.getValuecount()));
-
-			// set trigger delay text
-			this.triggerDelayText.setText((this.currentScanModule
-					.getTriggerdelay() != Double.NEGATIVE_INFINITY) ? String
-					.valueOf(this.currentScanModule.getTriggerdelay()) : "");
-
-			// set settle time text
-			this.settleTimeText
-					.setText((this.currentScanModule.getSettletime() != Double.NEGATIVE_INFINITY) ? String
-							.valueOf(this.currentScanModule.getSettletime())
-							: "");
-
-			// set the check box for confirm trigger
-			this.triggerConfirmAxisCheckBox.setSelection(this.currentScanModule
-					.isTriggerconfirmaxis());
-			this.triggerConfirmChannelCheckBox
-					.setSelection(this.currentScanModule
-							.isTriggerconfirmchannel());
-
 			// TODO CheckBox for ScheduleIncident Start or End
 			// TODO understand
 			if (currentScanModule.getChain() != null) {
@@ -912,7 +830,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			}
 			checkForErrors();
 		}
-		addListeners();
 	}
 
 	/**
@@ -1041,54 +958,32 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	}
 
 	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of
-	 * <code>confirmTriggerAxisCheckBox</code>.
-	 */
-	private class TriggerConfirmAxisCheckBoxSelectionListener implements
-			SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			currentScanModule.setTriggerconfirmaxis(triggerConfirmAxisCheckBox
-					.getSelection());
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of
-	 * <code>confirmTriggerDetectorCheckBox</code>.
-	 * 
 	 * @author Marcus Michalsky
-	 * @since 1.5
+	 * @since 1.8
 	 */
-	private class TriggerConfirmChannelCheckBoxSelectionListener implements
-			SelectionListener {
+	private class TextFocusListener extends FocusAdapter {
+
+		private Text widget;
 
 		/**
-		 * {@inheritDoc}
+		 * @param widget the widget to observe
 		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
+		public TextFocusListener(Text widget) {
+			this.widget = widget;
 		}
-
+		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void widgetSelected(SelectionEvent e) {
-			currentScanModule
-					.setTriggerconfirmchannel(triggerConfirmChannelCheckBox
-							.getSelection());
+		public void focusLost(FocusEvent e) {
+			if (this.widget == valueCountText) {
+				valueCountBinding.updateModelToTarget();
+			} else if (this.widget == triggerDelayText) {
+				triggerDelayBinding.updateModelToTarget();
+			} else if (this.widget == settleTimeText) {
+				settleTimeBinding.updateModelToTarget();
+			}
 		}
 	}
 
@@ -1173,154 +1068,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 					// and notify them, that we remove the event
 					currentScanModule.getChain().getScanDescription()
 							.remove(event);
-				}
-			}
-		}
-	}
-
-	// ************************ Modify Listener ****************************
-
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of
-	 * <code>valueCountText</code>.
-	 * 
-	 * @author Marcus Michalsky
-	 * @since 1.5
-	 */
-	private class ValueCountTextModifyListener implements ModifyListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modifyText(ModifyEvent e) {
-			suspendModelUpdateListener();
-			if (valueCountText.getText().equals("")) {
-				currentScanModule.setValuecount(1);
-			} else {
-				try {
-					currentScanModule.setValuecount(Integer
-							.parseInt(valueCountText.getText()));
-				} catch (NumberFormatException e1) {
-					logger.error(e1.getMessage(), e1);
-				}
-			}
-			resumeModelUpdateListener();
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of
-	 * <code>triggerDelayText</code>.
-	 */
-	private class TriggerDelayTextModifiedListener implements ModifyListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modifyText(ModifyEvent e) {
-			suspendModelUpdateListener();
-
-			if (triggerDelayText.getText().equals("")) {
-				currentScanModule.setTriggerdelay(Double.NEGATIVE_INFINITY);
-			} else {
-				try {
-					currentScanModule.setTriggerdelay(Double
-							.parseDouble(triggerDelayText.getText()));
-				} catch (NumberFormatException ex) {
-					currentScanModule.setTriggerdelay(Double.NaN);
-				}
-			}
-			checkForErrors();
-			resumeModelUpdateListener();
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of
-	 * <code>settleTimeText</code>.
-	 */
-	private class SettleTimeTextModifiedListener implements ModifyListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modifyText(ModifyEvent e) {
-			suspendModelUpdateListener();
-
-			if (settleTimeText.getText().equals("")) {
-				currentScanModule.setSettletime(Double.NEGATIVE_INFINITY);
-			} else {
-				try {
-					currentScanModule.setSettletime(Double
-							.parseDouble(settleTimeText.getText()));
-				} catch (Exception ex) {
-					currentScanModule.setSettletime(Double.NaN);
-				}
-			}
-			checkForErrors();
-			resumeModelUpdateListener();
-		}
-	}
-
-	// ************************ Verify Listener ****************************
-
-	/**
-	 * {@link org.eclipse.swt.events.VerifyListener} of text widget
-	 */
-	private class TextDoubleVerifyListener implements VerifyListener {
-		// this is a copy from DetectorChannelView
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void verifyText(VerifyEvent e) {
-
-			switch (e.keyCode) {
-			case SWT.BS: // Backspace
-			case SWT.DEL: // Delete
-			case SWT.HOME: // Home
-			case SWT.END: // End
-			case SWT.ARROW_LEFT: // Left arrow
-			case SWT.ARROW_RIGHT: // Right arrow
-				return;
-			}
-
-			String oldText = ((Text) (e.widget)).getText();
-
-			if (!Character.isDigit(e.character)) {
-				if (e.character == '.') {
-					// character . is a valid character, if he is not in the
-					// old string
-					if (oldText.contains("."))
-						e.doit = false;
-				} else if (e.character == '-') {
-					// character - is a valid character as first sign and after
-					// an e
-					if (oldText.isEmpty()) {
-						// oldText is emtpy, - is valid
-					} else if ((((Text) e.widget).getSelection().x) == 0) {
-						// - is the first sign an valid
-					} else {
-						// wenn das letzte Zeichen von oldText ein e ist,
-						// ist das minus auch erlaubt
-						int index = oldText.length();
-						if (oldText.substring(index - 1).equals("e")) {
-							// letzte Zeichen ist ein e und damit erlaubt
-						} else {
-							e.doit = false;
-						}
-					}
-				} else if (e.character == 'e') {
-					// character e is a valid character, if he is not in the
-					// old string
-					if (oldText.contains("e"))
-						e.doit = false;
-				} else {
-					e.doit = false; // disallow the action
 				}
 			}
 		}

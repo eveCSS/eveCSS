@@ -1150,27 +1150,27 @@ public class ScanDescriptionSaver implements
 			this.contentHandler.startElement("", "valuecount", "valuecount",
 					this.atts);
 			this.contentHandler.characters(
-					("" + scanModule.getValuecount()).toCharArray(), 0,
-					("" + scanModule.getValuecount()).length());
+					("" + scanModule.getValueCount()).toCharArray(), 0,
+					("" + scanModule.getValueCount()).length());
 			this.contentHandler.endElement("", "valuecount", "valuecount");
 
-			if (scanModule.getSettletime() != Double.NEGATIVE_INFINITY) {
+			if (scanModule.getSettleTime() != Double.NEGATIVE_INFINITY) {
 				this.atts.clear();
 				this.contentHandler.startElement("", "settletime",
 						"settletime", this.atts);
 				this.contentHandler.characters(
-						("" + scanModule.getSettletime()).toCharArray(), 0,
-						("" + scanModule.getSettletime()).length());
+						("" + scanModule.getSettleTime()).toCharArray(), 0,
+						("" + scanModule.getSettleTime()).length());
 				this.contentHandler.endElement("", "settletime", "settletime");
 			}
 
-			if (scanModule.getTriggerdelay() != Double.NEGATIVE_INFINITY) {
+			if (scanModule.getTriggerDelay() != Double.NEGATIVE_INFINITY) {
 				this.atts.clear();
 				this.contentHandler.startElement("", "triggerdelay",
 						"triggerdelay", this.atts);
 				this.contentHandler.characters(
-						("" + scanModule.getTriggerdelay()).toCharArray(), 0,
-						("" + scanModule.getTriggerdelay()).length());
+						("" + scanModule.getTriggerDelay()).toCharArray(), 0,
+						("" + scanModule.getTriggerDelay()).length());
 				this.contentHandler.endElement("", "triggerdelay",
 						"triggerdelay");
 			}
@@ -1179,8 +1179,8 @@ public class ScanDescriptionSaver implements
 			this.contentHandler.startElement("", "triggerconfirmaxis",
 					"triggerconfirmaxis", this.atts);
 			this.contentHandler.characters(
-					("" + scanModule.isTriggerconfirmaxis()).toCharArray(), 0,
-					("" + scanModule.isTriggerconfirmaxis()).length());
+					("" + scanModule.isTriggerConfirmAxis()).toCharArray(), 0,
+					("" + scanModule.isTriggerConfirmAxis()).length());
 			this.contentHandler.endElement("", "triggerconfirmaxis",
 					"triggerconfirmaxis");
 
@@ -1188,8 +1188,8 @@ public class ScanDescriptionSaver implements
 			this.contentHandler.startElement("", "triggerconfirmchannel",
 					"triggerconfirmchannel", this.atts);
 			this.contentHandler.characters(
-					("" + scanModule.isTriggerconfirmchannel()).toCharArray(), 0,
-					("" + scanModule.isTriggerconfirmchannel()).length());
+					("" + scanModule.isTriggerConfirmChannel()).toCharArray(), 0,
+					("" + scanModule.isTriggerConfirmChannel()).length());
 			this.contentHandler.endElement("", "triggerconfirmchannel",
 					"triggerconfirmchannel");
 			

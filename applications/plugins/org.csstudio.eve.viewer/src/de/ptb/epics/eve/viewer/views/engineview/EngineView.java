@@ -1158,7 +1158,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData.horizontalAlignment = GridData.FILL;
 				trigDelLabel.setLayoutData(gridData);
 				Label trigDelText = new Label(chainShell,SWT.NONE);
-				trigDelText.setText(""+displayChain.getScanModuleById(aktSM).getTriggerdelay());
+				trigDelText.setText(""+displayChain.getScanModuleById(aktSM).getTriggerDelay());
 				gridData = new GridData();
 				gridData.horizontalAlignment = GridData.FILL;
 				trigDelText.setLayoutData(gridData);
@@ -1169,7 +1169,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData.horizontalAlignment = GridData.FILL;
 				settleLabel.setLayoutData(gridData);
 				Label settleText = new Label(chainShell,SWT.NONE);
-				settleText.setText(""+displayChain.getScanModuleById(aktSM).getSettletime());
+				settleText.setText(""+displayChain.getScanModuleById(aktSM).getSettleTime());
 				gridData = new GridData();
 				gridData.horizontalAlignment = GridData.FILL;
 				settleText.setLayoutData(gridData);
@@ -1180,7 +1180,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData.horizontalAlignment = GridData.FILL;
 				confLabel.setLayoutData(gridData);
 				Label confText = new Label(chainShell,SWT.NONE);
-				if (displayChain.getScanModuleById(aktSM).isTriggerconfirmaxis()) {
+				if (displayChain.getScanModuleById(aktSM).isTriggerConfirmAxis()) {
 					confText.setText(" YES ");
 				}
 				else {

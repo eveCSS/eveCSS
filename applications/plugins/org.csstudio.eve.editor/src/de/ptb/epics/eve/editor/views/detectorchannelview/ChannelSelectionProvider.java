@@ -1,77 +1,25 @@
 package de.ptb.epics.eve.editor.views.detectorchannelview;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 
 import de.ptb.epics.eve.data.scandescription.Channel;
-import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.util.rcp.SingleSelectionProvider;
 
 /**
  * @author Marcus Michalsky
  * @since 1.8
  */
-public class SingleSelectionProvider implements ISelectionProvider,
-		ISelectionListener {
+public class ChannelSelectionProvider extends SingleSelectionProvider {
 
 	private static final Logger LOGGER = Logger
-			.getLogger(SingleSelectionProvider.class.getName());
+			.getLogger(ChannelSelectionProvider.class.getName());
 	
-	private List<ISelectionChangedListener> listeners;
-	
-	private ISelection currentSelection;
-	
-	/**
-	 * 
-	 */
-	public SingleSelectionProvider() {
-		this.listeners = new ArrayList<ISelectionChangedListener>();
-		this.currentSelection = null;
-		Activator.getDefault().getWorkbench().getActiveWorkbenchWindow()
-				.getSelectionService().addSelectionListener(this);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ISelection getSelection() {
-		return this.currentSelection;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setSelection(ISelection selection) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void addSelectionChangedListener(ISelectionChangedListener listener) {
-		this.listeners.add(listener);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void removeSelectionChangedListener(
-			ISelectionChangedListener listener) {
-		this.listeners.remove(listener);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */

@@ -30,4 +30,5 @@ Import-Package: de.ptb.epics.eve.util,
  de.ptb.epics.eve.util.jface,
  de.ptb.epics.eve.util.math,
  de.ptb.epics.eve.util.pv,
+ de.ptb.epics.eve.util.rcp,
  de.ptb.epics.eve.util.swt

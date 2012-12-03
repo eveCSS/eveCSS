@@ -125,7 +125,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	
 	private DataBindingContext context;
 	
-	private SingleSelectionProvider selectionProvider;
+	private ChannelSelectionProvider selectionProvider;
 	
 	private IObservableValue selectionObservable;
 	
@@ -399,7 +399,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	private void bindValues() {
 		this.context = new DataBindingContext();
 
-		this.selectionProvider = new SingleSelectionProvider();
+		this.selectionProvider = new ChannelSelectionProvider();
 		this.selectionObservable = ViewersObservables
 				.observeSingleSelection(selectionProvider);
 

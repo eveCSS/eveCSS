@@ -689,7 +689,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_VALUECOUNT_NEXT:
-			this.currentScanModule.setValuecount(Integer.parseInt(textBuffer.toString()));
+			this.currentScanModule.setValueCount(Integer.parseInt(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_VALUECOUNT_READ;
 			break;
 			
@@ -700,7 +700,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} catch (final NumberFormatException e) {
 				logger.error(e.getMessage(), e);
 			}
-			this.currentScanModule.setSettletime(settletime);
+			this.currentScanModule.setSettleTime(settletime);
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SETTLETIME_READ;
 			break;
 
@@ -711,18 +711,18 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			} catch (final NumberFormatException e) {
 				logger.error(e.getMessage(), e);
 			}
-			this.currentScanModule.setTriggerdelay(triggerdelay);
+			this.currentScanModule.setTriggerDelay(triggerdelay);
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERDELAY_READ;
 			break;
 
 		case CHAIN_SCANMODULE_TRIGGERCONFIRMAXIS_NEXT:
-			this.currentScanModule.setTriggerconfirmaxis(Boolean
+			this.currentScanModule.setTriggerConfirmAxis(Boolean
 					.parseBoolean(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRMAXIS_READ;
 			break;
 
 		case CHAIN_SCANMODULE_TRIGGERCONFIRMCHANNEL_NEXT:
-			this.currentScanModule.setTriggerconfirmchannel(Boolean
+			this.currentScanModule.setTriggerConfirmChannel(Boolean
 					.parseBoolean(textBuffer.toString()));
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGERCONFIRMCHANNEL_READ;
 			break;
