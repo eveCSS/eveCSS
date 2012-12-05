@@ -87,3 +87,8 @@ __Max. Deviation (%)__ from 5 and 6:  3.42 => discard fifth value
 p. __Max. Attempts__ reached ==&rArr;== value of the channel is the __Average__ from 6., 7. and 8. point: = 4.845
 
 p. %(red)Achtung, bisher (Version 1.7) wird hier nur 1 Messwert aufgenommen (der 6. Wert)%
+
+h2(eveTopic). Redo Event
+
+p. In the __Redo__ Tab you choose which Redo Events you set for the detector channel. The description of events an which event types are available you found "here":events.html
+

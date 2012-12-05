@@ -2,6 +2,7 @@ h1(eveTopic). Plot Window Properties
 
 table(eveRefTable).
 |_. Property |_. Description|_. Domain|_. Mandatory|
+| __Name__| the name of the plot| string| false|
 | __Motor Axis__| the motor axis defining the x axis of the plot| set of motor axes present in the scan module| true|
 | __Preinit Window__| defines whether the plot should be cleared (false only has any effect if the axes are still the same)| {true, false}| ==&#8212;==|
 | __Scale Type__| defines whether the axis should be scaled linear or logarithmic| {linear, log}[1]| ==&#8212;==|
@@ -14,6 +15,7 @@ table(eveRefTable).
 | __Scaletyle__| defines whether the axis should be scaled linear or logarithmic| {linear, log}[1]| ==&#8212;==|
 
 <hr/>
+
 
 p. *Note:* __Detector Channel, Normalize Channel, Color, Linestyle, Markstyle__ and __Scaletype__ appear twice (once for each y axis).
 

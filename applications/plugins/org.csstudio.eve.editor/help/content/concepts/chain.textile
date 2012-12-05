@@ -21,7 +21,7 @@ table(eveRefTable).
 |_. ${DATE-} |_. date as yyyy-MM-dd (e.g., 2011-12-31)|
 |_. ${TIME} |_. time as HHmmss|
 |_. ${TIME-} |_. time as HH-mm-ss|
-|_. ${PV:pvname} |_. replace with value of pvname|
+|_. ${PV:&lt;pvname&gt;} |_. replace with value of pvname|
 
 
 h3(eveTopic). Save Scan-Description
@@ -34,7 +34,7 @@ p. With __Confirm Save__ you define, whether saving should be confirmed.
 
 h3(eveTopic). Add Autoincrementing Number to Filename
 
-p. If __Add Autoincrementing Number to Filename__ is true, a five digit number is appendet to the filename. Starting at __x + 1__ where __x__ is the lagest number found with the same filename frefix.
+p. If __Add Autoincrementing Number to Filename__ is true, a five digit number is appended to the filename. Starting at __x + 1__ where __x__ is the largest number found with the same filename prefix.
 
 h3(eveTopic). Repeat Count
 
@@ -46,4 +46,4 @@ p. In the __Comment__ Box you can write additional comments.
 
 h2(eveTopic). Events
 
-p. In the __Events__ Tab you choose which Events you need in the chain. The description of events an which event types are available in the chain view you found "here":events.html
+p. In the __Events__ Tab you choose which Events you need in the chain. The description of events and which event types are available in the chain view you found "here":events.html

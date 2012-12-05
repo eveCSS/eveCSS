@@ -8,10 +8,12 @@ table(eveRefTable).
 | __Stepwidth__[1] | the range between two points of measurement| numeric or string[2]|
 | __Stepcount__[1] | the number of points to measure| numeric|
 | __main axis__ | defines whether this axis is the main axis, i.e. __Stepcount__ of each other axis in the same scan module is set to the __Stepcount__ of this axis (with all related effects[1]).| {true, false}|
-| __File__| __filename__ | the filename containing axis positions| ==&#8212;==|
+|/2. __File__| __Position mode__| defines whether positions are absolute or relative| {absolute, relative}|
+| __filename__ | the filename containing axis positions| ==&#8212;==|
 |/2 __Plugin__| __Plug-In__ | the plug in of choice| set of position plug ins defined in xml|
 | __Parameter__| parameter(s) of the plug in| depends on the plug in|
-| __Positionlist__| __Positionlist__| a list of positions (separator is ;)| ==&#8212;==|
+|/2. __Positionlist__| __Position mode__| defines whether positions are absolute or relative| {absolute, relative}|
+| __Positionlist__| a list of positions (separator is ;)| ==&#8212;==|
 
 fn1. The one field selected is calculated out of the other three.
 

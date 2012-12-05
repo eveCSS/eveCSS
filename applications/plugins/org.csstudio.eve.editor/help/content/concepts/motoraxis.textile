@@ -9,6 +9,7 @@ table(eveDataTable).
 | __Add__ | !(eveImage)../../img/misc/signed_yes.gif! | !(eveImage)../../img/misc/signed_yes.gif! | !(eveImage)../../img/misc/signed_yes.gif! | !(eveImage)../../img/misc/signed_yes.gif! |
 | __Multiply__ | !(eveImage)../../img/misc/signed_yes.gif! | !(eveImage)../../img/misc/signed_no.gif! | !(eveImage)../../img/misc/signed_no.gif! | !(eveImage)../../img/misc/signed_yes.gif! |
 | __File/Positionlist__ | !(eveImage)../../img/misc/signed_yes.gif! | !(eveImage)../../img/misc/signed_no.gif! | !(eveImage)../../img/misc/signed_yes.gif! | !(eveImage)../../img/misc/signed_yes.gif! |
+| __Plugin__ | !(eveImage)../../img/misc/signed_yes.gif! | !(eveImage)../../img/misc/signed_no.gif! | see below | see below |
 
 h2(eveTopic). Add (Number)
 

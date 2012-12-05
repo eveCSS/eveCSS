@@ -686,7 +686,7 @@
                style="push">
             <parameter
                   name="href"
-                  value="/de.ptb.epics.eve.editor/help/content/concepts/scandescription.html">
+                  value="/de.ptb.epics.eve.editor/help/content/concepts/scanmodule.html">
             </parameter>
          </command>
       </menuContribution>

@@ -9,3 +9,4 @@ table(eveRefTable).
 | __Add Autoincrementing Number to Filename__ | if __true__ a five digit number is appended to the file name (starting at __x + 1__ where __x__ is the largest number found with the same filename prefix) | {true, false}|
 | __repeat count__ | sets how often the scan should be executed (in addition to the first execution)| [0,999999]|
 | __Comment__| additional comments| string|
+| __Events__| One or more of Pause, Redo, Break or Stop Event|  |
