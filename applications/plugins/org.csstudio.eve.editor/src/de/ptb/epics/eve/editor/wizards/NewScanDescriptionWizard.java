@@ -147,7 +147,7 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 				new ScanDescription(measuringStation);
 		final Chain chain = new Chain(1);
 		chain.setSaveFilename(Activator.getDefault().getRootDirectory() + 
-								"data/" + 
+								"daten/" + 
 								Calendar.getInstance().get(Calendar.YEAR) + "/" + 
 								"kw" + Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) + "/");
 		final StartEvent startEvent = 
