@@ -9,9 +9,10 @@ import javax.xml.bind.annotation.XmlElement;
 public class DefaultChannel {
 	private String id;
 	private Integer averageCount;
-	private Integer maxAttempts;
 	private Double maxDeviation;
 	private Double minimum;
+	private Integer maxAttempts;
+	private String normalizeId;
 	private Boolean deferred;
 	
 	/**
@@ -20,9 +21,10 @@ public class DefaultChannel {
 	public DefaultChannel() {
 		this.id = null;
 		this.averageCount = null;
-		this.maxAttempts = null;
 		this.maxDeviation = null;
 		this.minimum = null;
+		this.maxAttempts = null;
+		this.normalizeId = null;
 		this.deferred = false;
 	}
 	
@@ -57,22 +59,6 @@ public class DefaultChannel {
 		this.averageCount = averageCount;
 	}
 	/**
-	 * @return the maxAttempts
-	 * @throws NullPointerException if not set
-	 */
-	public int getMaxAttempts() {
-		if (this.maxAttempts == null) {
-			throw new NullPointerException("Value not set!");
-		}
-		return maxAttempts;
-	}
-	/**
-	 * @param maxAttempts the maxAttempts to set
-	 */
-	public void setMaxAttempts(int maxAttempts) {
-		this.maxAttempts = maxAttempts;
-	}
-	/**
 	 * @return the maxDeviation
 	 * @throws NullPointerException if not set
 	 */
@@ -85,6 +71,7 @@ public class DefaultChannel {
 	/**
 	 * @param maxDeviation the maxDeviation to set
 	 */
+	@XmlElement(name="maxdeviation")
 	public void setMaxDeviation(double maxDeviation) {
 		this.maxDeviation = maxDeviation;
 	}
@@ -101,9 +88,48 @@ public class DefaultChannel {
 	/**
 	 * @param minimum the minimum to set
 	 */
+	@XmlElement(name="minimum")
 	public void setMinimum(double minimum) {
 		this.minimum = minimum;
 	}
+	/**
+	 * @return the maxAttempts
+	 * @throws NullPointerException if not set
+	 */
+	public int getMaxAttempts() {
+		if (this.maxAttempts == null) {
+			throw new NullPointerException("Value not set!");
+		}
+		return maxAttempts;
+	}
+
+	/**
+	 * @param maxAttempts the maxAttempts to set
+	 */
+	@XmlElement(name="maxattempts")
+	public void setMaxAttempts(int maxAttempts) {
+		this.maxAttempts = maxAttempts;
+	}
+
+	/**
+	 * @return the normalizeId
+	 * @throws NullPointerException if not set
+	 */
+	public String getNormalizeId() {
+		if (this.normalizeId == null) {
+			throw new NullPointerException("Value not set!");
+		}
+		return normalizeId;
+	}
+
+	/**
+	 * @param normalizeId the normalizeId to set
+	 */
+	@XmlElement(name="normalize_id")
+	public void setNormalizeId(String normalizeId) {
+		this.normalizeId = normalizeId;
+	}
+
 	/**
 	 * @return the deferred
 	 */
@@ -113,6 +139,7 @@ public class DefaultChannel {
 	/**
 	 * @param deferred the deferred to set
 	 */
+	@XmlElement(name="deferredtrigger")
 	public void setDeferred(boolean deferred) {
 		this.deferred = deferred;
 	}

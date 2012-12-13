@@ -12,6 +12,9 @@ import javax.xml.validation.SchemaFactory;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
+import de.ptb.epics.eve.data.scandescription.Channel;
+
 /**
  * Tries to read a given XML file (as defined in 
  * de.ptb.epics.eve.resources/cfg/defaults.xsd) for default values.
@@ -92,5 +95,63 @@ public class DefaultsManager {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Transfers the properties from the given default channel to the 
+	 * target channel.
+	 * 
+	 * @param from the source values (defaults)
+	 * @param to the target channel
+	 * @param measuringStation the device definition
+	 */
+	public static void transferDefaults(DefaultChannel from, Channel to, 
+			IMeasuringStation measuringStation) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("transfering defaults for "
+					+ to.getAbstractDevice().getID());
+		}
+		try {
+			to.setAverageCount(from.getAverageCount());
+		} catch (NullPointerException e) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("no default for average count of "
+						+ to.getAbstractDevice().getID());
+			}
+		}
+		try {
+			to.setMaxAttempts(from.getMaxAttempts());
+		} catch (NullPointerException e) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("no default for max attempts of "
+						+ to.getAbstractDevice().getID());
+			}
+		}
+		try {
+			to.setMaxDeviation(from.getMaxDeviation());
+		} catch (NullPointerException e) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("no default for max deviation of "
+						+ to.getAbstractDevice().getID());
+			}
+		}
+		try {
+			to.setMinimum(from.getMinimum());
+		} catch (NullPointerException e) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("no default for minimum of "
+						+ to.getAbstractDevice().getID());
+			}
+		}
+		try {
+			to.setNormalizeChannel(measuringStation.getDetectorChannelById(from
+					.getNormalizeId()));
+		} catch (NullPointerException e) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("no default for normalize channel of "
+						+ to.getAbstractDevice().getID());
+			}
+		}
+		to.setDeferred(from.isDeferred());
 	}
 }
