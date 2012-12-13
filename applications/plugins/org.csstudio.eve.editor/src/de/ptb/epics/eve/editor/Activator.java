@@ -11,6 +11,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -22,6 +23,8 @@ import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
+import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
+import de.ptb.epics.eve.editor.jobs.defaults.Load;
 import de.ptb.epics.eve.editor.logging.EclipseLogListener;
 
 /**
@@ -49,6 +52,8 @@ public class Activator extends AbstractUIPlugin {
 	
 	private IMeasuringStation measuringStation;
 	private ExcludeFilter excludeFilter;
+	
+	private DefaultsManager defaultsManager;
 	
 	private File schemaFile;
 	private String rootDir;
@@ -83,6 +88,7 @@ public class Activator extends AbstractUIPlugin {
 		configureLogging();
 		loadMeasuringStation();
 		loadColorsAndFonts();
+		loadDefaults();
 		startupReport();
 		
 		if(logger.isDebugEnabled()) {
@@ -140,6 +146,14 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public File getSchemaFile() {
 		return this.schemaFile;
+	}
+	
+	/**
+	 * 
+	 * @return defaults
+	 */
+	public DefaultsManager getDefaults() {
+		return this.defaultsManager;
 	}
 	
 	/**
@@ -299,6 +313,25 @@ public class Activator extends AbstractUIPlugin {
 			measuringStation = null;
 			logger.fatal(e.getMessage(), e);
 		}
+	}
+	
+	/*
+	 * 
+	 */
+	private void loadDefaults() {
+		this.defaultsManager = new DefaultsManager();
+		File defaultsFile = ResourcesPlugin.getWorkspace().getRoot()
+				.getLocation().append("/defaults.xml").toFile();
+		if (defaultsFile.exists()) {
+			logger.info("found defaults file for user "
+					+ System.getProperty("user.name") + " (" + 
+					ResourcesPlugin.getWorkspace().getRoot().getLocation().
+					lastSegment() + ")");
+		}
+		Job job = new Load("Loading Defaults", this.defaultsManager,
+				defaultsFile,
+				de.ptb.epics.eve.resources.Activator.getDefaultsSchema());
+		job.schedule();
 	}
 	
 	/*

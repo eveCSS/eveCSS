@@ -86,4 +86,26 @@ public class Activator implements BundleActivator {
 		}
 		return null;
 	}
+	
+	/**
+	 * Returns the defaults schema definition.
+	 * 
+	 * @return the defaults schema definition
+	 */
+	public static File getDefaultsSchema() {
+		try {
+			URL url;
+			url = new URL(
+				"platform:/plugin/de.ptb.epics.eve.resources/cfg/defaults.xsd");
+			File file = new File(FileLocator.toFileURL(url).toURI());
+			return file;
+		} catch (MalformedURLException e1) {
+			logger.error(e1.getMessage(), e1);
+		} catch (URISyntaxException e) {
+			logger.error(e.getMessage(), e);
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+		}
+		return null;
+	}
 }
