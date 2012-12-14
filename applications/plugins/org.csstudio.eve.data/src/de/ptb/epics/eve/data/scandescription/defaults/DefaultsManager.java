@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
+import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 
 /**
@@ -29,14 +30,20 @@ public class DefaultsManager {
 			.getName());
 	
 	private volatile Defaults defaults;
+	private boolean initialized;
+	
+	/** */
+	public DefaultsManager() {
+		this.defaults = null;
+		this.initialized = false;
+	}
 	
 	/**
 	 * @param pathToDefaults the location of the defaults file
 	 * @param schema the schema file
 	 */
-	public void load(File pathToDefaults, File schema) {
+	public void init(File pathToDefaults, File schema) {
 		if (!pathToDefaults.exists()) {
-			LOGGER.error("schema file not found!");
 			defaults = null;
 			return;
 		}
@@ -54,11 +61,21 @@ public class DefaultsManager {
 			} else {
 				LOGGER.info("found defaults");
 			}
+			this.initialized = true;
 		} catch(JAXBException e) {
 			LOGGER.error(e.getMessage(), e);
 		} catch (SAXException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
+	}
+	
+	/**
+	 * Returns whether the manager is initialized.
+	 * 
+	 * @return whether the manager is initialized
+	 */
+	public boolean isInitialized() {
+		return this.initialized;
 	}
 	
 	/**
@@ -96,6 +113,8 @@ public class DefaultsManager {
 		}
 		return null;
 	}
+	
+	
 	
 	/**
 	 * Transfers the properties from the given default channel to the 
@@ -153,5 +172,30 @@ public class DefaultsManager {
 			}
 		}
 		to.setDeferred(from.isDeferred());
+	}
+	
+	/**
+	 * Transfers the properties from the given default axis to the 
+	 * target axis.
+	 * 
+	 * @param from the source values (defaults)
+	 * @param to the target axis
+	 */
+	public static void transferDefaults(DefaultAxis from, Axis to) {
+		to.setStepfunction(from.getStepfunction());
+		to.setPositionMode(from.getPositionmode());
+		switch (from.getStepfunction()) {
+		case ADD:
+		case MULTIPLY:
+		case PLUGIN:
+			// TODO
+			break;
+		case FILE:
+			to.setFile(new File(from.getFile()));
+			break;
+		case POSITIONLIST:
+			to.setPositionlist(from.getPositionList());
+			break;
+		}
 	}
 }

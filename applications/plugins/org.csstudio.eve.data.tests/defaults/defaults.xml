@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:defaults xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
+	xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<axes>
+		<axis>
+			<axisid>FileAxis</axisid>
+			<stepfunction>File</stepfunction>
+			<positionmode>relative</positionmode>
+			<stepfilename>/test/file</stepfilename>
+		</axis>
+		<axis>
+			<axisid>PositionlistAxis</axisid>
+			<stepfunction>Positionlist</stepfunction>
+			<positionmode>absolute</positionmode>
+			<positionlist>4565656,2,4534,22</positionlist>
+		</axis>
+	</axes>
+	<channels>
+	</channels>
+</tns:defaults>

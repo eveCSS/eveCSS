@@ -144,6 +144,16 @@
 		</layout>
 	</appender>
 
+	<appender name="DefaultsManagerTestAppender" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="log/DefaultsManagerTest.log" />
+		<param name="Append" value="true" />
+		<param name="MaxFileSize" value="10MB" />
+		<param name="MaxBackupIndex" value="2" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p %M: %m%n" />
+		</layout>
+	</appender>
+
 	<!-- **************************************************************** -->
 
 	<logger name="de.ptb.epics.eve.data.tests.TypeValueTest">
@@ -221,6 +231,11 @@
 	<logger name="de.ptb.epics.eve.data.tests.internal">
 		<level value="DEBUG" />
 		<appender-ref ref="ConsoleAppender" />
+	</logger>
+
+	<logger name="de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager">
+		<level value="DEBUG" />
+		<appender-ref ref="DefaultsManagerTestAppender" />
 	</logger>
 
 	<root>

@@ -4,7 +4,7 @@ package de.ptb.epics.eve.data.scandescription.defaults;
  * @author Marcus Michalsky
  * @since 1.8
  */
-public class DefaultAxisList extends DefaultAxis {
+public class DefaultAxisList extends DefaultAxisMode {
 	private String positionList;
 
 	/**

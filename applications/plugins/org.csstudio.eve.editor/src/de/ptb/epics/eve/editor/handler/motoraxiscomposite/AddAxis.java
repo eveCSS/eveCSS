@@ -11,6 +11,9 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.defaults.DefaultAxis;
+import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
+import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**
@@ -31,16 +34,22 @@ public class AddAxis implements IHandler {
 		String axisId = event.getParameter(
 				"de.ptb.epics.eve.editor.command.addaxis.motoraxisid");
 		IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-		if (activePart.getSite().getId().equals(
-			"de.ptb.epics.eve.editor.views.ScanModulView")) {
-				ScanModule sm = ((ScanModuleView)activePart).
-						getCurrentScanModule();
-				MotorAxis ma = sm.getChain().getScanDescription().
-						getMeasuringStation().getMotorAxisById(axisId);
-				sm.add(new Axis(sm, ma));
-				if(logger.isDebugEnabled()) {
-					logger.debug("MotorAxis " + ma.getName() + " added.");
-				}
+		if (activePart.getSite().getId()
+				.equals("de.ptb.epics.eve.editor.views.ScanModulView")) {
+			ScanModule sm = ((ScanModuleView) activePart)
+					.getCurrentScanModule();
+			MotorAxis ma = sm.getChain().getScanDescription()
+					.getMeasuringStation().getMotorAxisById(axisId);
+			Axis sma = new Axis(sm, ma);
+			DefaultAxis defMa = Activator.getDefault().getDefaults()
+					.getAxis(ma.getID());
+			if (defMa != null) {
+				DefaultsManager.transferDefaults(defMa, sma);
+			}
+			sm.add(sma);
+			if (logger.isDebugEnabled()) {
+				logger.debug("MotorAxis " + ma.getName() + " added.");
+			}
 		} else {
 			logger.warn("Motor Axis was not added!");
 			throw new ExecutionException("ScanModulView is not the active part!");

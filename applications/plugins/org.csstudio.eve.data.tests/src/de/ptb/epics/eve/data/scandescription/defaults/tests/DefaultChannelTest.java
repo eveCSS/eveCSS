@@ -76,22 +76,21 @@ public class DefaultChannelTest {
 	// **********************************************************************
 
 	/**
-	 * Initializes logging and loads the measuring station (Class wide setup
-	 * method of the test).
+	 * Class wide setup.
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
 	}
 
 	/**
-	 * Class wide tear down method.
+	 * Class wide tear down.
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() {
 	}
 
 	/**
-	 * Test wide set up method.
+	 * Test wide set up.
 	 */
 	@Before
 	public void setUp() {
@@ -99,7 +98,7 @@ public class DefaultChannelTest {
 	}
 
 	/**
-	 * Test wide tear down method.
+	 * Test wide tear down.
 	 */
 	@After
 	public void tearDown() {

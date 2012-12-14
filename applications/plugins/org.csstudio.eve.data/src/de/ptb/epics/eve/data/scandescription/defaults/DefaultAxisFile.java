@@ -6,9 +6,9 @@ import java.io.File;
  * @author Marcus Michalsky
  * @since 1.8
  */
-public class DefaultAxisFile extends DefaultAxis {
+public class DefaultAxisFile extends DefaultAxisMode {
 	private File file;
-
+	
 	/**
 	 * @return the file
 	 */

@@ -42,7 +42,7 @@ public class Load extends Job {
 	 */
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		this.manager.load(defaults, schema);
+		this.manager.init(defaults, schema);
 		return Status.OK_STATUS;
 	}
 }

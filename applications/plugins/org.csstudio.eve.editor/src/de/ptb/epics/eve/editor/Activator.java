@@ -327,6 +327,11 @@ public class Activator extends AbstractUIPlugin {
 					+ System.getProperty("user.name") + " (" + 
 					ResourcesPlugin.getWorkspace().getRoot().getLocation().
 					lastSegment() + ")");
+		} else {
+			logger.info("no defaults file for user "
+					+ System.getProperty("user.name") + " (" + 
+					ResourcesPlugin.getWorkspace().getRoot().getLocation().
+					lastSegment() + ")");
 		}
 		Job job = new Load("Loading Defaults", this.defaultsManager,
 				defaultsFile,
