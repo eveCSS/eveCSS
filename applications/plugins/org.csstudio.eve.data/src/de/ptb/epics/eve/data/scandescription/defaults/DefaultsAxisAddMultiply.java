@@ -5,7 +5,7 @@ package de.ptb.epics.eve.data.scandescription.defaults;
  * @param <T>  one of {Integer, Double, DateTime, Duration}
  * @since 1.8
  */
-public class DefaultsAxisAddMultiply<T> extends DefaultAxisMode {
+public class DefaultsAxisAddMultiply<T> extends DefaultsAxisMode {
 	private T start;
 	private T stop;
 	private T stepwidth;

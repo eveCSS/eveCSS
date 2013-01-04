@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" size="984,446" id="de.ptb.epics.eve.data.scandescription.defaults" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D313030302064652E7074622E65706963732E6576652E646174612F6D6D696368616C73">
+  <children xsi:type="editmodel:ClassEditModel" name="DefaultAxis" location="45,30" size="202,320" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis" runTimeClassModel="setPositionmode(Lde.ptb.epics.eve.data.scandescription.PositionMode;),getPositionmode(),setStepfunction(Lde.ptb.epics.eve.data.scandescription.Stepfunctions;),getPositionList(),getFile(),positionmode,getStepfunction(),setId(Ljava.lang.String;),toString(),id,getId(),DefaultAxis(),setFile(Ljava.lang.String;),stepfunction,setPositionList(Ljava.lang.String;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="179,54">
+      <children xsi:type="editmodel:AttributeEditModel" name="id" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis#id"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="positionmode" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis#positionmode"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="stepfunction" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis#stepfunction"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="126,216">
+      <children xsi:type="editmodel:MethodEditModel" name="DefaultAxis" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis#DefaultAxis()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getFile" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis#getFile()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getId" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis#getId()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPositionList" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis#getPositionList()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPositionmode" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis#getPositionmode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStepfunction" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis#getStepfunction()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setFile" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis#setFile(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setId" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis#setId(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setPositionList" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis#setPositionList(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setPositionmode" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis#setPositionmode(Lde.ptb.epics.eve.data.scandescription.PositionMode;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStepfunction" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis#setStepfunction(Lde.ptb.epics.eve.data.scandescription.Stepfunctions;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis#toString()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultAxis-Soyatec::Import->de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisMode" source="//@children.0" target="//@children.2" targetEnd="//@children.0/@sourceConnections.0/@children.2" label="//@children.0/@sourceConnections.0/@children.0" sourceEnd="//@children.0/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="202,12" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="38,17"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="DefaultAxisAdaptee" location="885,24" size="202,266" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAdaptee" runTimeClassModel="id,getPositionmode(),setPositionmode(Lde.ptb.epics.eve.data.scandescription.PositionMode;),setStepfunction(Lde.ptb.epics.eve.data.scandescription.Stepfunctions;),setMode(Ljava.lang.Object;),getId(),stepfunction,positionmode,getStepfunction(),mode,setId(Ljava.lang.String;),getMode()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="179,72">
+      <children xsi:type="editmodel:AttributeEditModel" name="id" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAdaptee#id"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="mode" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAdaptee#mode"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="positionmode" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAdaptee#positionmode"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="stepfunction" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAdaptee#stepfunction"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="126,144">
+      <children xsi:type="editmodel:MethodEditModel" name="getId" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAdaptee#getId()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMode" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAdaptee#getMode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPositionmode" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAdaptee#getPositionmode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStepfunction" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAdaptee#getStepfunction()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setId" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAdaptee#setId(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMode" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAdaptee#setMode(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setPositionmode" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAdaptee#setPositionmode(Lde.ptb.epics.eve.data.scandescription.PositionMode;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStepfunction" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAdaptee#setStepfunction(Lde.ptb.epics.eve.data.scandescription.Stepfunctions;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.0 //@children.3/@sourceConnections.0" name="DefaultAxisMode" location="510,25" size="167,30" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisMode" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="DefaultAxisAddMultiply" location="255,105" size="249,266" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAddMultiply" runTimeClassModel="stop,setMainAxis(Z),getStop(),setStart(LT;),stepwidth,setStop(LT;),start,getStart(),isMainAxis(),mainAxis,setStepwidth(LT;),getStepwidth()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="123,72">
+      <children xsi:type="editmodel:AttributeEditModel" name="mainAxis" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAddMultiply#mainAxis"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="start" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAddMultiply#start"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="stepwidth" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAddMultiply#stepwidth"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="stop" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAddMultiply#stop"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="105,144">
+      <children xsi:type="editmodel:MethodEditModel" name="getStart" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAddMultiply#getStart()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStepwidth" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAddMultiply#getStepwidth()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStop" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAddMultiply#getStop()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isMainAxis" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAddMultiply#isMainAxis()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMainAxis" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAddMultiply#setMainAxis(Z)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStart" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAddMultiply#setStart(LT;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStepwidth" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAddMultiply#setStepwidth(LT;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStop" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAddMultiply#setStop(LT;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.4/@sourceConnections.0 //@children.5/@sourceConnections.0" autoLocated="true" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisMode&lt;-de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisAddMultiply" source="//@children.3" target="//@children.2" targetEnd="//@children.3/@sourceConnections.0/@children.1" sourceEnd="//@children.3/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="124,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="83,30" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="DefaultAxisFile" location="538,105" size="152,104" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisFile" runTimeClassModel="setFile(Ljava.io.File;),getFile(),file">
+    <children xsi:type="editmodel:CompartmentEditModel" size="62,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="file" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisFile#file"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="67,36">
+      <children xsi:type="editmodel:MethodEditModel" name="getFile" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisFile#getFile()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setFile" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisFile#setFile(Ljava.io.File;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisMode&lt;-de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisFile" source="//@children.4" target="//@children.3/@sourceConnections.0" targetEnd="//@children.4/@sourceConnections.0/@children.1" sourceEnd="//@children.4/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="76,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="DefaultAxisList" location="716,105" size="152,104" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisList" runTimeClassModel="getPositionList(),positionList,setPositionList(Ljava.lang.String;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="126,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="positionList" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisList#positionList"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="114,36">
+      <children xsi:type="editmodel:MethodEditModel" name="getPositionList" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisList#getPositionList()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setPositionList" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisList#setPositionList(Ljava.lang.String;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisMode&lt;-de.ptb.epics.eve.data.scandescription.defaults/DefaultsAxisList" source="//@children.5" target="//@children.3/@sourceConnections.0" targetEnd="//@children.5/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="76,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=1;Product=eUML2" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>

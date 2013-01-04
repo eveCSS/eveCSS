@@ -5,6 +5,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * 
@@ -14,13 +15,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name="defaults", namespace="http://www.ptb.de/epics/SCML")
 public class Defaults {
-	private List<DefaultAxis> axes;
-	private List<DefaultChannel> channels;
+	private List<DefaultsAxis> axes;
+	private List<DefaultsChannel> channels;
 	
 	/**
 	 * @return the axes
 	 */
-	public List<DefaultAxis> getAxes() {
+	public List<DefaultsAxis> getAxes() {
 		return axes;
 	}
 	/**
@@ -28,13 +29,13 @@ public class Defaults {
 	 */
 	@XmlElementWrapper(name="axes")
 	@XmlElement(name="axis")
-	public void setAxes(List<DefaultAxis> axes) {
+	public void setAxes(List<DefaultsAxis> axes) {
 		this.axes = axes;
 	}
 	/**
 	 * @return the channels
 	 */
-	public List<DefaultChannel> getChannels() {
+	public List<DefaultsChannel> getChannels() {
 		return channels;
 	}
 	/**
@@ -42,7 +43,7 @@ public class Defaults {
 	 */
 	@XmlElementWrapper(name="channels")
 	@XmlElement(name="channel")
-	public void setChannels(List<DefaultChannel> channels) {
+	public void setChannels(List<DefaultsChannel> channels) {
 		this.channels = channels;
 	}
 	
@@ -54,7 +55,7 @@ public class Defaults {
 		StringBuffer buff = new StringBuffer();
 		buff.append("Axes: ");
 		String axesString = "";
-		for (DefaultAxis axis : this.axes) {
+		for (DefaultsAxis axis : this.axes) {
 			axesString += axis.toString() + ", ";
 		}
 		if (!axesString.isEmpty()) {
@@ -65,7 +66,7 @@ public class Defaults {
 		buff.append("\n");
 		buff.append("Channels: ");
 		String channelsString = "";
-		for (DefaultChannel channel : this.channels) {
+		for (DefaultsChannel channel : this.channels) {
 			channelsString += channel.toString() + ", ";
 		}
 		if (!channelsString.isEmpty()) {

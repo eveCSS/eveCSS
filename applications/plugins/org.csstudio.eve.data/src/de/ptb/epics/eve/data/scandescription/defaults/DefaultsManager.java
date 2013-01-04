@@ -1,10 +1,12 @@
 package de.ptb.epics.eve.data.scandescription.defaults;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -15,6 +17,7 @@ import org.xml.sax.SAXException;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.util.io.*;
 
 /**
  * Tries to read a given XML file (as defined in 
@@ -29,7 +32,7 @@ public class DefaultsManager {
 	private static final Logger LOGGER = Logger.getLogger(DefaultsManager.class
 			.getName());
 	
-	private volatile Defaults defaults;
+	private Defaults defaults;
 	private boolean initialized;
 	
 	/** */
@@ -79,16 +82,52 @@ public class DefaultsManager {
 	}
 	
 	/**
+	 * ... {@link #isInitialized()} should be checked before.
+	 * 
+	 * @param targetFile the destination
+	 * @param schemaFile the schema file
+	 */
+	public void save(File targetFile, File schemaFile) {
+		if (targetFile.exists()) {
+			try {
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("target file already exists, creating backup");
+				}
+				File backup = new File(targetFile.getParent() + "/"
+						+ targetFile.getName() + ".bup");
+				FileUtil.copyFile(targetFile, backup);
+			} catch (IOException e) {
+				LOGGER.error(e.getMessage(), e);
+			}
+		}
+		SchemaFactory schemaFactory = SchemaFactory.newInstance(
+				XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance(Defaults.class);
+			Schema schema = schemaFactory.newSchema(schemaFile);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+			jaxbMarshaller.setSchema(schema);
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			jaxbMarshaller.marshal(this.defaults, System.err); // TODO remove
+			jaxbMarshaller.marshal(this.defaults, targetFile);
+		} catch (JAXBException e) {
+			LOGGER.error(e.getMessage(), e);
+		} catch (SAXException e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+	}
+	
+	/**
 	 * Returns the axis with the given id or <code>null</code> if not found.
 	 * 
 	 * @param id the id of the axis to get defaults for
 	 * @return the axis with the given id or <code>null</code> if not found.
 	 */
-	public DefaultAxis getAxis(String id) {
+	public DefaultsAxis getAxis(String id) {
 		if (this.defaults == null) {
 			return null;
 		}
-		for (DefaultAxis axis : this.defaults.getAxes()) {
+		for (DefaultsAxis axis : this.defaults.getAxes()) {
 			if (axis.getId().equals(id)) {
 				return axis;
 			}
@@ -102,11 +141,11 @@ public class DefaultsManager {
 	 * @param id the id of the channel to get defaults for
 	 * @return the channel with the given id or <code>null</code> if not found.
 	 */
-	public DefaultChannel getChannel(String id) {
+	public DefaultsChannel getChannel(String id) {
 		if (this.defaults == null) {
 			return null;
 		}
-		for (DefaultChannel channel : this.defaults.getChannels()) {
+		for (DefaultsChannel channel : this.defaults.getChannels()) {
 			if (channel.getId().equals(id)) {
 				return channel;
 			}
@@ -124,7 +163,7 @@ public class DefaultsManager {
 	 * @param to the target channel
 	 * @param measuringStation the device definition
 	 */
-	public static void transferDefaults(DefaultChannel from, Channel to, 
+	public static void transferDefaults(DefaultsChannel from, Channel to, 
 			IMeasuringStation measuringStation) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("transfering defaults for "
@@ -181,7 +220,7 @@ public class DefaultsManager {
 	 * @param from the source values (defaults)
 	 * @param to the target axis
 	 */
-	public static void transferDefaults(DefaultAxis from, Axis to) {
+	public static void transferDefaults(DefaultsAxis from, Axis to) {
 		to.setStepfunction(from.getStepfunction());
 		to.setPositionMode(from.getPositionmode());
 		switch (from.getStepfunction()) {

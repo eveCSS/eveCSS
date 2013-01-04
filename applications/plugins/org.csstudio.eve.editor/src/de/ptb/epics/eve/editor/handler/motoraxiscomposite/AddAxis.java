@@ -11,7 +11,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.scandescription.defaults.DefaultAxis;
+import de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxis;
 import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
@@ -41,7 +41,7 @@ public class AddAxis implements IHandler {
 			MotorAxis ma = sm.getChain().getScanDescription()
 					.getMeasuringStation().getMotorAxisById(axisId);
 			Axis sma = new Axis(sm, ma);
-			DefaultAxis defMa = Activator.getDefault().getDefaults()
+			DefaultsAxis defMa = Activator.getDefault().getDefaults()
 					.getAxis(ma.getID());
 			if (defMa != null) {
 				DefaultsManager.transferDefaults(defMa, sma);

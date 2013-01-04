@@ -11,7 +11,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.scandescription.defaults.DefaultChannel;
+import de.ptb.epics.eve.data.scandescription.defaults.DefaultsChannel;
 import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
@@ -41,7 +41,7 @@ public class AddChannel implements IHandler {
 			DetectorChannel detCh = sm.getChain().getScanDescription()
 					.getMeasuringStation().getDetectorChannelById(channelId);
 			Channel ch = new Channel(sm, detCh);
-			DefaultChannel defCh = Activator.getDefault().getDefaults()
+			DefaultsChannel defCh = Activator.getDefault().getDefaults()
 					.getChannel(detCh.getID());
 			if (defCh != null) {
 				DefaultsManager.transferDefaults(defCh, ch, 

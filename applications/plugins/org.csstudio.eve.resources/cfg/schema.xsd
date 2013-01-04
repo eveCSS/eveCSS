@@ -3,7 +3,7 @@
   targetNamespace="http://www.ptb.de/epics/SCML" 
   xmlns:tns="http://www.ptb.de/epics/SCML">
 
-  <!-- schema version 2.2
+  <!-- schema version 3.2
        please increase version number on every modification
        If the corresponding XML-file of the previous schema version is still
        valid with the current schema version, change the minor version number only -->
@@ -264,22 +264,20 @@
         </simpleType>
       </element>
       <choice>
-         <sequence>
-          <element name="start" type="tns:typevalue"></element>
-          <element name="stop" type="tns:typevalue"></element>
-          <element name="stepwidth" type="tns:typevalue"></element>
-          <element name="ismainaxis" type="boolean" minOccurs="0"></element>
-         </sequence>
-        <sequence>
-          <element name="stepfilename" type="string"></element>
-        </sequence>
-        <sequence>
-          <element name="plugin" type="tns:controller"></element>
-        </sequence>
-         <sequence>
-          <element name="positionlist" type="string"></element>
-        </sequence>
+        <element name="startstopstep" type="tns:startstopstep"></element>
+        <element name="stepfilename" type="string"></element>
+        <element name="plugin" type="tns:controller"></element>
+        <element name="positionlist" type="string"></element>
       </choice>
+    </sequence>
+  </complexType>
+
+  <complexType name="startstopstep">
+    <sequence>
+      <element name="start" type="tns:typevalue"></element>
+      <element name="stop" type="tns:typevalue"></element>
+      <element name="stepwidth" type="tns:typevalue"></element>
+      <element name="ismainaxis" type="boolean" minOccurs="0"></element>
     </sequence>
   </complexType>
 

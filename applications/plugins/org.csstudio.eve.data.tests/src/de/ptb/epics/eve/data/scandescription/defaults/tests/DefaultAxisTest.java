@@ -7,7 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
-import de.ptb.epics.eve.data.scandescription.defaults.DefaultAxis;
+import de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxis;
 
 
 /**
@@ -15,7 +15,7 @@ import de.ptb.epics.eve.data.scandescription.defaults.DefaultAxis;
  * @since 1.8
  */
 public class DefaultAxisTest {
-	private DefaultAxis axis;
+	private DefaultsAxis axis;
 	
 	
 	
@@ -60,7 +60,7 @@ public class DefaultAxisTest {
 	 */
 	@Before
 	public void setUp() {
-		this.axis = new DefaultAxis();
+		this.axis = new DefaultsAxis();
 	}
 
 	/**

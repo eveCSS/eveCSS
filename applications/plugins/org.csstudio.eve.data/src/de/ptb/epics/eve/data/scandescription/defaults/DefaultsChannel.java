@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
  * @author Marcus Michalsky
  * @since 1.8
  */
-public class DefaultChannel {
+public class DefaultsChannel {
 	private String id;
 	private Integer averageCount;
 	private Double maxDeviation;
@@ -18,7 +18,7 @@ public class DefaultChannel {
 	/**
 	 * 
 	 */
-	public DefaultChannel() {
+	public DefaultsChannel() {
 		this.id = null;
 		this.averageCount = null;
 		this.maxDeviation = null;

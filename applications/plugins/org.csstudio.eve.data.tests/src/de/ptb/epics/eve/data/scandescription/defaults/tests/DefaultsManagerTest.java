@@ -6,13 +6,14 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
-import de.ptb.epics.eve.data.scandescription.defaults.DefaultAxis;
+import de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxis;
 import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
 import de.ptb.epics.eve.data.tests.internal.Configurator;
 
@@ -29,7 +30,7 @@ public class DefaultsManagerTest {
 	 */
 	@Test
 	public void testVoidAxis() {
-		DefaultAxis axis = DefaultsManagerTest.defaultsManager
+		DefaultsAxis axis = DefaultsManagerTest.defaultsManager
 				.getAxis("VoidAxis");
 		assertNull(axis);
 	}
@@ -40,7 +41,7 @@ public class DefaultsManagerTest {
 	 */
 	@Test
 	public void testFileAxis() {
-		DefaultAxis axis = DefaultsManagerTest.defaultsManager
+		DefaultsAxis axis = DefaultsManagerTest.defaultsManager
 				.getAxis("FileAxis");
 		assertNotNull(axis);
 		assertEquals("FileAxis", axis.getId());
@@ -55,13 +56,24 @@ public class DefaultsManagerTest {
 	 */
 	@Test
 	public void testPositionlistAxis() {
-		DefaultAxis axis = DefaultsManagerTest.defaultsManager
+		DefaultsAxis axis = DefaultsManagerTest.defaultsManager
 				.getAxis("PositionlistAxis");
 		assertNotNull(axis);
 		assertEquals("PositionlistAxis", axis.getId());
 		assertEquals(Stepfunctions.POSITIONLIST, axis.getStepfunction());
 		assertEquals(PositionMode.ABSOLUTE, axis.getPositionmode());
 		assertEquals("4565656,2,4534,22", axis.getPositionList());
+	}
+	
+	/**
+	 * Tests whether loaded defaults are correctly marshaled to XML.
+	 */
+	@Test
+	public void testSaveDefaults() {
+		new File("defaults/defaults.xml.bup").delete();
+		DefaultsManagerTest.defaultsManager.save(new File(
+				"defaults/defaults.xml"), new File("defaults/defaults.xsd"));
+		assertTrue(new File("defaults/defaults.xml.bup").exists());
 	}
 	
 	// **********************************************************************
@@ -74,12 +86,9 @@ public class DefaultsManagerTest {
 	@BeforeClass
 	public static void setUpBeforeClass() {
 		Configurator.configureLogging();
-		
-		File defaults = new File("defaults/defaults.xml");
-		File schema = new File("defaults/defaults.xsd");
-		
 		DefaultsManagerTest.defaultsManager =  new DefaultsManager();
-		DefaultsManagerTest.defaultsManager.init(defaults, schema);
+		DefaultsManagerTest.defaultsManager.init(new File(
+				"defaults/defaults.xml"), new File("defaults/defaults.xsd"));
 		assertTrue(DefaultsManagerTest.defaultsManager.isInitialized());
 	}
 

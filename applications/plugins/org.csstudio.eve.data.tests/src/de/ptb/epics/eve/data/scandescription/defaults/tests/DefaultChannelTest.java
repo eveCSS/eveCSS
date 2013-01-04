@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.ptb.epics.eve.data.scandescription.defaults.DefaultChannel;
+import de.ptb.epics.eve.data.scandescription.defaults.DefaultsChannel;
 
 /**
  * @author Marcus Michalsky
@@ -16,7 +16,7 @@ import de.ptb.epics.eve.data.scandescription.defaults.DefaultChannel;
  */
 public class DefaultChannelTest {
 
-	private DefaultChannel channel;
+	private DefaultsChannel channel;
 	
 	/**
 	 * Tests whether a new instance of DefaultChannel has not set its average 
@@ -94,7 +94,7 @@ public class DefaultChannelTest {
 	 */
 	@Before
 	public void setUp() {
-		this.channel = new DefaultChannel();
+		this.channel = new DefaultsChannel();
 	}
 
 	/**
