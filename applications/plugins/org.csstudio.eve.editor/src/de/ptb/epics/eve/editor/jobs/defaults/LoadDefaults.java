@@ -14,9 +14,11 @@ import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
  * @author Marcus Michalsky
  * @since 1.8
  */
-public class Load extends Job {
+public class LoadDefaults extends Job {
 	private static final Logger LOGGER = Logger
-			.getLogger(Load.class.getName());
+			.getLogger(LoadDefaults.class.getName());
+	
+	private final String family = "defaults";
 	
 	private DefaultsManager manager;
 	private File defaults;
@@ -29,7 +31,7 @@ public class Load extends Job {
 	 * @param pathToDefaults
 	 * @param schema
 	 */
-	public Load(String name, DefaultsManager manager, File pathToDefaults,
+	public LoadDefaults(String name, DefaultsManager manager, File pathToDefaults,
 			File schema) {
 		super(name);
 		this.manager = manager;
@@ -44,5 +46,13 @@ public class Load extends Job {
 	protected IStatus run(IProgressMonitor monitor) {
 		this.manager.init(defaults, schema);
 		return Status.OK_STATUS;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean belongsTo(Object family) {
+		return family.equals(this.family);
 	}
 }

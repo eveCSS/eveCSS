@@ -1,11 +1,14 @@
 package de.ptb.epics.eve.data.scandescription.defaults;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author Marcus Michalsky
  * @since 1.8
  */
+@XmlType(propOrder = { "id", "averageCount", "maxDeviation", "minimum",
+		"maxAttempts", "normalizeId", "deferred" })
 public class DefaultsChannel {
 	private String id;
 	private Integer averageCount;

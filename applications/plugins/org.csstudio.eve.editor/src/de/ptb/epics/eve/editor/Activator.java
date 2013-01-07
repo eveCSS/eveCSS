@@ -23,8 +23,10 @@ import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
+import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
-import de.ptb.epics.eve.editor.jobs.defaults.Load;
+import de.ptb.epics.eve.editor.jobs.defaults.LoadDefaults;
+import de.ptb.epics.eve.editor.jobs.defaults.SaveDefaults;
 import de.ptb.epics.eve.editor.logging.EclipseLogListener;
 
 /**
@@ -333,9 +335,23 @@ public class Activator extends AbstractUIPlugin {
 					ResourcesPlugin.getWorkspace().getRoot().getLocation().
 					lastSegment() + ")");
 		}
-		Job job = new Load("Loading Defaults", this.defaultsManager,
+		Job job = new LoadDefaults("Loading Defaults", this.defaultsManager,
 				defaultsFile,
 				de.ptb.epics.eve.resources.Activator.getDefaultsSchema());
+		job.schedule();
+	}
+	
+	/**
+	 * 
+	 * @param scanDescription
+	 */
+	public void saveDefaults(ScanDescription scanDescription) {
+		File defaultsFile = ResourcesPlugin.getWorkspace().getRoot()
+				.getLocation().append("/defaults.xml").toFile();
+		File schemaFile = de.ptb.epics.eve.resources.Activator
+				.getDefaultsSchema();
+		Job job = new SaveDefaults("Saving Defaults", this.defaultsManager,
+				scanDescription, defaultsFile, schemaFile);
 		job.schedule();
 	}
 	

@@ -5,7 +5,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * 
@@ -45,6 +44,40 @@ public class Defaults {
 	@XmlElement(name="channel")
 	public void setChannels(List<DefaultsChannel> channels) {
 		this.channels = channels;
+	}
+	
+	/**
+	 * 
+	 * @param axis
+	 */
+	public void updateAxis(DefaultsAxis axis) {
+		DefaultsAxis found = null;
+		for (DefaultsAxis defaultsAxis : this.axes) {
+			if (defaultsAxis.getId().equals(axis.getId())) {
+				found = defaultsAxis;
+			}
+		}
+		if (found != null) {
+			this.axes.remove(found);
+		}
+		this.axes.add(axis);
+	}
+	
+	/**
+	 * 
+	 * @param channel
+	 */
+	public void updateChannel(DefaultsChannel channel) {
+		DefaultsChannel found = null;
+		for (DefaultsChannel defaultsChannel : this.channels) {
+			if (defaultsChannel.getId().equals(channel.getId())) {
+				found = defaultsChannel;
+			}
+		}
+		if (found != null) {
+			this.channels.remove(found);
+		}
+		this.channels.add(channel);
 	}
 	
 	/**

@@ -2,6 +2,7 @@ package de.ptb.epics.eve.data.scandescription.defaults;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlType;
 
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
@@ -10,6 +11,7 @@ import de.ptb.epics.eve.data.scandescription.Stepfunctions;
  * @author Marcus Michalsky
  * @since 1.9
  */
+@XmlType(propOrder = {"id", "stepfunction", "positionmode", "mode"})
 public class DefaultsAxisAdaptee {
 	private String id;
 	private Stepfunctions stepfunction;
@@ -72,10 +74,10 @@ public class DefaultsAxisAdaptee {
 	 * @param mode the mode to set
 	 */
 	@XmlElements(value = {
-			@XmlElement(name = "startstopstep", type = DefaultsAxisModeAdaptee.class),
-			@XmlElement(name = "stepfilename", type = String.class),
-			//@XmlElement(name = "plugin", type = String.class), // TODO
-			@XmlElement(name = "positionlist", type = String.class) 
+		@XmlElement(name = "startstopstep", type = DefaultsAxisModeAdaptee.class),
+		@XmlElement(name = "stepfilename", type = String.class),
+		//@XmlElement(name = "plugin", type = String.class), // TODO
+		@XmlElement(name = "positionlist", type = String.class) 
 	})
 	public void setMode(Object mode) {
 		this.mode = mode;

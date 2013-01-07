@@ -16,7 +16,10 @@ import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.ScanDescription;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.util.io.*;
 
 /**
@@ -87,7 +90,7 @@ public class DefaultsManager {
 	 * @param targetFile the destination
 	 * @param schemaFile the schema file
 	 */
-	public void save(File targetFile, File schemaFile) {
+	public synchronized void save(File targetFile, File schemaFile) {
 		if (targetFile.exists()) {
 			try {
 				if (LOGGER.isDebugEnabled()) {
@@ -108,7 +111,6 @@ public class DefaultsManager {
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 			jaxbMarshaller.setSchema(schema);
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			jaxbMarshaller.marshal(this.defaults, System.err); // TODO remove
 			jaxbMarshaller.marshal(this.defaults, targetFile);
 		} catch (JAXBException e) {
 			LOGGER.error(e.getMessage(), e);
@@ -152,8 +154,6 @@ public class DefaultsManager {
 		}
 		return null;
 	}
-	
-	
 	
 	/**
 	 * Transfers the properties from the given default channel to the 
@@ -235,6 +235,70 @@ public class DefaultsManager {
 		case POSITIONLIST:
 			to.setPositionlist(from.getPositionList());
 			break;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param axis
+	 * @return
+	 */
+	public static DefaultsAxis getDefaultsAxis(Axis axis) {
+		DefaultsAxis defaultsAxis = new DefaultsAxis();
+		defaultsAxis.setId(axis.getMotorAxis().getID());
+		defaultsAxis.setPositionmode(axis.getPositionMode());
+		defaultsAxis.setStepfunction(axis.getStepfunction());
+		switch(axis.getStepfunction()) {
+		case ADD:
+		case MULTIPLY:
+			// TODO
+			break;
+		case FILE:
+			defaultsAxis.setFile(axis.getFile().getAbsolutePath());
+			break;
+		case PLUGIN:
+			// TODO
+			break;
+		case POSITIONLIST:
+			defaultsAxis.setPositionList(axis.getPositionlist());
+			break;
+		}
+		return defaultsAxis;
+	}
+	
+	/**
+	 * 
+	 * @param channel
+	 * @return
+	 */
+	public static DefaultsChannel getDefaultsChannel(Channel channel) {
+		DefaultsChannel defaultsChannel = new DefaultsChannel();
+		defaultsChannel.setId(channel.getDetectorChannel().getID());
+		defaultsChannel.setAverageCount(channel.getAverageCount());
+		defaultsChannel.setMaxAttempts(channel.getMaxAttempts());
+		defaultsChannel.setMinimum(channel.getMinimum());
+		defaultsChannel.setMaxDeviation(channel.getMaxDeviation());
+		defaultsChannel.setDeferred(channel.isDeferred());
+		defaultsChannel.setNormalizeId(channel.getNormalizeChannel().getID());
+		return defaultsChannel;
+	}
+	
+	/**
+	 * 
+	 * @param scanDescription
+	 */
+	public synchronized void update(ScanDescription scanDescription) {
+		for (Chain ch : scanDescription.getChains()) {
+			for (ScanModule sm : ch.getScanModules()) {
+				for (Axis axis : sm.getAxes()) {
+					this.defaults.updateAxis(DefaultsManager
+							.getDefaultsAxis(axis));
+				}
+				for (Channel channel : sm.getChannels()) {
+					this.defaults.updateChannel(DefaultsManager
+							.getDefaultsChannel(channel));
+				}
+			}
 		}
 	}
 }

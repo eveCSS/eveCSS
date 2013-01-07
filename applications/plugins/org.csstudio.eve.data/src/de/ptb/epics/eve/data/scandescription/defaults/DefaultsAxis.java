@@ -2,7 +2,6 @@ package de.ptb.epics.eve.data.scandescription.defaults;
 
 import java.io.File;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.ptb.epics.eve.data.scandescription.PositionMode;

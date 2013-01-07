@@ -238,6 +238,11 @@
 		<appender-ref ref="DefaultsManagerTestAppender" />
 	</logger>
 
+	<logger name="de.ptb.epics.eve.data.scandescription.defaults.tests.DefaultsManagerTest">
+		<level value="DEBUG" />
+		<appender-ref ref="DefaultsManagerTestAppender" />
+	</logger>
+
 	<root>
 		<priority value="WARN" />
 	</root>

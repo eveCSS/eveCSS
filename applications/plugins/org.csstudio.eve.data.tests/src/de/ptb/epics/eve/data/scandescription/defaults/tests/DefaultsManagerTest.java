@@ -1,12 +1,13 @@
 package de.ptb.epics.eve.data.scandescription.defaults.tests;
 
 import java.io.File;
+import java.util.Calendar;
 
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -22,6 +23,8 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  * @since 1.8
  */
 public class DefaultsManagerTest {
+	private static Logger LOGGER = Logger.getLogger(DefaultsManagerTest.class);
+	
 	private static DefaultsManager defaultsManager;
 	
 	/**
@@ -70,10 +73,12 @@ public class DefaultsManagerTest {
 	 */
 	@Test
 	public void testSaveDefaults() {
+		long now = Calendar.getInstance().getTimeInMillis();
 		new File("defaults/defaults.xml.bup").delete();
 		DefaultsManagerTest.defaultsManager.save(new File(
 				"defaults/defaults.xml"), new File("defaults/defaults.xsd"));
 		assertTrue(new File("defaults/defaults.xml.bup").exists());
+		assertTrue(new File("defaults/defaults.xml").lastModified() > now);
 	}
 	
 	// **********************************************************************
