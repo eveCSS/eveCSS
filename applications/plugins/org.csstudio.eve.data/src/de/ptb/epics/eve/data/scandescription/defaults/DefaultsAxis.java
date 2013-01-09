@@ -65,6 +65,7 @@ public class DefaultsAxis {
 			this.mode = new DefaultsAxisFile();
 			break;
 		case PLUGIN:
+			this.mode = new DefaultsAxisPlugin();
 			// TODO
 			break;
 		case POSITIONLIST:
@@ -132,6 +133,17 @@ public class DefaultsAxis {
 					+ Stepfunctions.POSITIONLIST);
 		}
 		((DefaultsAxisList)this.mode).setPositionList(list);
+	}
+	
+	/**
+	 * @return the plugin
+	 */
+	public DefaultsAxisPlugin getPlugin() {
+		if (!(this.mode instanceof DefaultsAxisPlugin)) {
+			throw new IllegalStateException("Axis step function is not "
+					+ Stepfunctions.PLUGIN);
+		}
+		return ((DefaultsAxisPlugin)this.mode);
 	}
 	
 	/**

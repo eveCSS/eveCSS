@@ -18,6 +18,7 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.util.io.*;
@@ -227,7 +228,18 @@ public class DefaultsManager {
 		switch (from.getStepfunction()) {
 		case ADD:
 		case MULTIPLY:
+			// TODO
+			break;
 		case PLUGIN:
+			/*
+			PluginController controller = to.getPluginController();
+			for (DefaultsAxisPluginParameter param : from.getPlugin()
+					.getParameters()) {
+				if (controller.get(param.getName()) != null) {
+					controller.set(param.getName(), param.getValue());
+				}
+			}
+			*/
 			// TODO
 			break;
 		case FILE:
