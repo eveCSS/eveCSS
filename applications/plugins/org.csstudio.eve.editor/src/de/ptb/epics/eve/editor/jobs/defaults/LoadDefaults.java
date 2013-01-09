@@ -45,6 +45,7 @@ public class LoadDefaults extends Job {
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 		this.manager.init(defaults, schema);
+		LOGGER.debug("Defaults Manager initialized");
 		return Status.OK_STATUS;
 	}
 	

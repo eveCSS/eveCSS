@@ -2,6 +2,7 @@ package de.ptb.epics.eve.editor.jobs.defaults;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -16,6 +17,9 @@ import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
  */
 public class SaveDefaults extends Job {
 
+	private static final Logger LOGGER = Logger.getLogger(SaveDefaults.class
+			.getName());
+	
 	private final String family = "defaults";
 	
 	private DefaultsManager defaultsManager;
@@ -56,6 +60,7 @@ public class SaveDefaults extends Job {
 		} finally {
 			monitor.done();
 		}
+		LOGGER.info("defaults saved");
 		return Status.OK_STATUS;
 	}
 	

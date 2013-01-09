@@ -1,21 +1,33 @@
 package de.ptb.epics.eve.data.scandescription.defaults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.log4j.Logger;
+
 /**
- * 
+ * Collection of default values containing a list of axes and channel defaults.
  * 
  * @author Marcus Michalsky
  * @since 1.8
  */
 @XmlRootElement(name="defaults", namespace="http://www.ptb.de/epics/SCML")
 public class Defaults {
+	private static final Logger LOGGER = Logger.getLogger(Defaults.class
+			.getName());
+	
 	private List<DefaultsAxis> axes;
 	private List<DefaultsChannel> channels;
+	
+	/** */
+	public Defaults() {
+		this.axes = new ArrayList<DefaultsAxis>();
+		this.channels = new ArrayList<DefaultsChannel>();
+	}
 	
 	/**
 	 * @return the axes
@@ -47,10 +59,13 @@ public class Defaults {
 	}
 	
 	/**
+	 * Adds the given axis to the defaults. If the axis previously existed, it 
+	 * is removed before adding the new one.
 	 * 
-	 * @param axis
+	 * @param axis the axis to be added/updated
 	 */
 	public void updateAxis(DefaultsAxis axis) {
+		LOGGER.debug("updating axis: " + axis.getId());
 		DefaultsAxis found = null;
 		for (DefaultsAxis defaultsAxis : this.axes) {
 			if (defaultsAxis.getId().equals(axis.getId())) {
@@ -59,15 +74,21 @@ public class Defaults {
 		}
 		if (found != null) {
 			this.axes.remove(found);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("axis already exists -> deleting old one");
+			}
 		}
 		this.axes.add(axis);
 	}
 	
 	/**
+	 * Adds the given channel to the defaults. If the channel previously 
+	 * existed, it is removed before adding the new one.
 	 * 
-	 * @param channel
+	 * @param channel the channel to be added/updated
 	 */
 	public void updateChannel(DefaultsChannel channel) {
+		LOGGER.debug("updating channel: " + channel.getId());
 		DefaultsChannel found = null;
 		for (DefaultsChannel defaultsChannel : this.channels) {
 			if (defaultsChannel.getId().equals(channel.getId())) {
@@ -76,6 +97,9 @@ public class Defaults {
 		}
 		if (found != null) {
 			this.channels.remove(found);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("channel already exists -> deleting old one");
+			}
 		}
 		this.channels.add(channel);
 	}

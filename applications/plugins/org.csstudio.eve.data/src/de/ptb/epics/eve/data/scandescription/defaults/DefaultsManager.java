@@ -112,6 +112,7 @@ public class DefaultsManager {
 			jaxbMarshaller.setSchema(schema);
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			jaxbMarshaller.marshal(this.defaults, targetFile);
+			LOGGER.info("defaults saved");
 		} catch (JAXBException e) {
 			LOGGER.error(e.getMessage(), e);
 		} catch (SAXException e) {
