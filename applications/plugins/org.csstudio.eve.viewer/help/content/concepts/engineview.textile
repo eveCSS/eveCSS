@@ -1,0 +1,66 @@
+h1(eveTopic). Engine View
+
+p. Te Engine View is the view to run the scans.
+
+h2(eveTopic). ENGINE
+
+p. In the __ENGINE__ area you see the state of the engine.
+
+h3(eveTopic). start
+
+p. With __start__ button you start the engine with that name and port which is set in preferences. The preferences are to find a Edit -> Preferences... -> CSS Applications -> Display -> EVE Viewer. The status of the engine is shown in a line.
+
+h3(eveTopic). kill
+
+p. The __kill__ button kills the engine.
+
+h3(eveTopic). connect
+
+p. The __connect__ button connect the program to a running engine.
+
+
+h3(eveTopic). disconnect
+
+p. The __disconnect__ button disconnect the programm from the engine. The engine is still running.
+
+h2(eveTopic). SCAN
+
+p. In the __SCAN__ area are buttons to play the scan.
+
+table(eveRefTable).
+|_. Button |_. Description|
+|_. Play |_. The __Play__ Button is starting or continuing then scan|
+|_. Pause |_. The __Pause__ Button paused the scan|
+|_. Stop |_. The __Stop__ Button exiting the scan when the actual scan point is finished|
+|_. Skip |_. The __Skip__ Button staring the next scan module when the actual scan point is finished|
+|_. Halt |_. The __Halt__ Button terminate the scan. |
+|_. AutoPlay |_. __AutoPlay__ is a toggle Button and in state on the scans starting automatically|
+
+h3(eveTopic). repeat count
+
+p. The __Repeat Count__ sets how often the scan should be executed in addition to the first execution. For Example a __repeat count__ of 1 starts the scan twice. The possible values are from 0 up to 999999.
+
+h3(eveTopic). loaded File
+
+p. The __loaded File__ is the actual scan file in the engine.
+
+h3(eveTopic). Filename
+
+p. The shown __Filename__ is the name of the actual datafile.
+
+h3(eveTopic). live Comment
+
+p. The __live Comment__ field is to write comment while the scan is running.
+
+h3(eveTopic). Send to File
+
+p. With the __Send to File__ Button the live Comment is writing into the datafile. It is only possible if the scan is running.
+
+
+h2(eveTopic). Comment
+
+p. In the __Comment__ Box you can write additional comments.
+
+h2(eveTopic). Status Table
+
+p. In der Status Tabelle sieht man alle chain und scan Module des geladenen Scan aufgelistet und deren Zustand. Remaining Time ist außerdem eine Abschätzung darüber wie lange der Scan noch dauert.

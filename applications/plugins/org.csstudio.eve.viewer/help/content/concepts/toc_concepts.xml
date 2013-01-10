@@ -6,5 +6,19 @@
    </topic>
    <topic href="help/content/concepts/eveengineperspective.html" label="EveEngine Perspective">
    </topic>
+   <topic label="Playlist View">
+   </topic>
+   <topic href="help/content/concepts/engineview.html" label="Engine View">
+   </topic>
+   <topic label="Messages View">
+   </topic>
+   <topic label="Plot View">
+   </topic>
+   <topic label="Devices View">
+   </topic>
+   <topic label="Device Inspector View">
+   </topic>
+   <topic label="Device Options View">
+   </topic>
 
 </toc>
