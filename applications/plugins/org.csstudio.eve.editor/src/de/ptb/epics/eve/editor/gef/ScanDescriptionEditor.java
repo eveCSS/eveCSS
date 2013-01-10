@@ -153,6 +153,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		} finally {
 			monitor.done();
 		}
+		Activator.getDefault().saveDefaults(this.scanDescription);
 	}
 	
 	/**
@@ -191,13 +192,14 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		// create the save job
 		Job saveJob = new Save(
 				"Save As", saveFileName, this.scanDescription, this);
-		
 		// run the save job with a progress dialog
 		IProgressService service = (IProgressService) getSite().getService(
 				IProgressService.class);
 		service.showInDialog(getSite().getShell(), saveJob);
 		saveJob.setUser(true);
 		saveJob.schedule();
+		
+		Activator.getDefault().saveDefaults(this.scanDescription);
 	}
 	
 	/**

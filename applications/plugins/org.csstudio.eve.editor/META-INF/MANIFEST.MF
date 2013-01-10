@@ -27,6 +27,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: de.ptb.epics.eve.editor
 Import-Package: de.ptb.epics.eve.util,
+ de.ptb.epics.eve.util.io,
  de.ptb.epics.eve.util.jface,
  de.ptb.epics.eve.util.math,
  de.ptb.epics.eve.util.pv,

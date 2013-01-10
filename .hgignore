@@ -22,3 +22,5 @@ syntax: regexp
 
 syntax: regexp
 ^applications/plugins/org\.csstudio\.eve\.docbook/help$
+syntax: regexp
+^applications/plugins/org\.csstudio\.eve\.data\.tests/defaults/defaults\.xml\.bup$

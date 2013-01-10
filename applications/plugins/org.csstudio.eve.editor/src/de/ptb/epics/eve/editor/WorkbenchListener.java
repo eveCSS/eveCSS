@@ -38,6 +38,7 @@ public class WorkbenchListener implements IWorkbenchListener {
 		IJobManager manager = Job.getJobManager();
 		try {
 			manager.join("file", new NullProgressMonitor());
+			manager.join("defaults", new NullProgressMonitor());
 		} catch (OperationCanceledException e1) {
 			logger.warn(e1.getMessage(), e1);
 			logger.warn("shutdown aborted");

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		targetNamespace="http://www.ptb.de/epics/SCML"
+		xmlns:tns="http://www.ptb.de/epics/SCML"
+		version="1.0">
+	
+	<xsd:include schemaLocation="schema.xsd" />
+	
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en">
+			Schema for (device) default settings
+		</xsd:documentation>
+	</xsd:annotation>
+	
+	<xsd:element name="defaults">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="axes">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="axis" type="tns:smaxis" 
+								minOccurs="0" maxOccurs="unbounded" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="channels">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="channel" type="tns:smchannel" 
+								minOccurs="0" maxOccurs="unbounded" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+</xsd:schema>

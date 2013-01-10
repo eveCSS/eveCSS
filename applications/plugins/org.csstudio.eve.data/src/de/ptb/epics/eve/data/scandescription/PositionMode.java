@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.data.scandescription;
 
+import javax.xml.bind.annotation.XmlEnumValue;
+
 /**
  * <code>PositionMode</code> represents the position modes available for a 
  * motor axis.
@@ -13,11 +15,13 @@ public enum PositionMode {
 	 * The positions are understood as relative to the axis position at the 
 	 * beginning of the scan module.
 	 */
+	@XmlEnumValue("relative")
 	RELATIVE,
 	
 	/**
 	 * The positions are absolute.
 	 */
+	@XmlEnumValue("absolute")
 	ABSOLUTE;
 	
 	/**

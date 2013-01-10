@@ -11,6 +11,9 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.defaults.DefaultsChannel;
+import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
+import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 
 /**
@@ -31,16 +34,23 @@ public class AddChannel implements IHandler {
 		String channelId = event.getParameter(
 				"de.ptb.epics.eve.editor.command.addchannel.detectorchannelid");
 		IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-		if (activePart.getSite().getId().equals(
-			"de.ptb.epics.eve.editor.views.ScanModulView")) {
-				ScanModule sm = ((ScanModuleView)activePart).
-						getCurrentScanModule();
-				DetectorChannel ch = sm.getChain().getScanDescription().
-						getMeasuringStation().getDetectorChannelById(channelId);
-				sm.add(new Channel(sm, ch));
-				if(logger.isDebugEnabled()) {
-					logger.debug("Detector Channel " + ch.getName() + " added.");
-				}
+		if (activePart.getSite().getId()
+				.equals("de.ptb.epics.eve.editor.views.ScanModulView")) {
+			ScanModule sm = ((ScanModuleView) activePart)
+					.getCurrentScanModule();
+			DetectorChannel detCh = sm.getChain().getScanDescription()
+					.getMeasuringStation().getDetectorChannelById(channelId);
+			Channel ch = new Channel(sm, detCh);
+			DefaultsChannel defCh = Activator.getDefault().getDefaults()
+					.getChannel(detCh.getID());
+			if (defCh != null) {
+				DefaultsManager.transferDefaults(defCh, ch, 
+					sm.getChain().getScanDescription().getMeasuringStation());
+			}
+			sm.add(ch);
+			if (logger.isDebugEnabled()) {
+				logger.debug("Detector Channel " + detCh.getName() + " added.");
+			}
 		} else {
 			logger.warn("Detector Channel was not added!");
 			throw new ExecutionException("ScanModulView is not the active part!");

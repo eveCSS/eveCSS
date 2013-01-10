@@ -44,7 +44,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	private Stepfunctions stepfunction;
 	private AxisMode mode;
 	private PositionMode positionMode;
-
+	
 	/**
 	 * Constructs an <code>Axis</code>.
 	 * 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:defaults xmlns:ns2="http://www.ptb.de/epics/SCML">
+    <axes>
+        <axis>
+            <axisid>FileAxis</axisid>
+            <stepfunction>File</stepfunction>
+            <positionmode>relative</positionmode>
+            <positionlist>/test/file</positionlist>
+        </axis>
+        <axis>
+            <axisid>PositionlistAxis</axisid>
+            <stepfunction>Positionlist</stepfunction>
+            <positionmode>absolute</positionmode>
+            <positionlist>4565656,2,4534,22</positionlist>
+        </axis>
+    </axes>
+    <channels/>
+</ns2:defaults>

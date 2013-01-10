@@ -31,6 +31,7 @@
         <pathelement path="org.csstudio.eve.data.tests/bin" />
         <pathelement path="org.csstudio.eve.data/bin" />
         <pathelement path="org.csstudio.eve.resources/bin" />
+        <pathelement path="org.csstudio.eve.util/bin" />
         <pathelement path="${css_app_dir}/org.csstudio.swt.xygraph/bin" />
         <pathelement path="${css_core_dir}/org.csstudio.platform.libs.log4j" />
       </classpath>

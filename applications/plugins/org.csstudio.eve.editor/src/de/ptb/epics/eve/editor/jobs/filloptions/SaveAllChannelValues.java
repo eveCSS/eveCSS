@@ -116,6 +116,32 @@ public class SaveAllChannelValues extends Job {
 		return family.equals(this.family);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean shouldRun() {
+		if (logger.isDebugEnabled()) {
+			if (Job.getJobManager().find(this.family).length > 1) {
+				logger.debug("found another running job of family 'filloptions', aborting");
+			}
+		}
+		return Job.getJobManager().find(this.family).length == 1;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean shouldSchedule() {
+		if (logger.isDebugEnabled()) {
+			if (Job.getJobManager().find(this.family).length > 0) {
+				logger.debug("found another scheduled job of family 'filloptions', aborting");
+			}
+		}
+		return Job.getJobManager().find(this.family).length == 0;
+	}
+	
 	/* ********************************************************************* */
 	
 	/**

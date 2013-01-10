@@ -15,6 +15,8 @@ import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -82,7 +84,7 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 		this.positionlistLabelDecoration.show();
 		
 		// position list Text field 
-		this.positionlistText = new Text(this, SWT.BORDER | SWT.V_SCROLL);
+		this.positionlistText = new Text(this, SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
 		GridData gridData = new GridData();
 		gridData.horizontalSpan = 2;
 		gridData.grabExcessHorizontalSpace = true;
@@ -93,7 +95,11 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 		this.positionlistText.setLayoutData(gridData);
 		this.positionlistText
 				.addFocusListener(new PositionlistTextFocusListener());
-
+		this.positionlistText.addModifyListener(new ModifyListener() {
+			@Override public void modifyText(ModifyEvent e) {
+					countPositions();
+			}
+		});
 		// position count label
 		this.positionCountLabel = new Label(this, SWT.NONE);
 		this.positionCountLabel.setText("0 positions");
@@ -232,6 +238,8 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 		public void focusLost(FocusEvent e) {
 			if (positionlistText.getText().isEmpty()) {
 				positionlistBinding.updateModelToTarget();
+				positionlistBinding.validateTargetToModel();
+				countPositions();
 			}
 		}
 	}
