@@ -17,8 +17,6 @@ import de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxis;
 public class DefaultAxisTest {
 	private DefaultsAxis axis;
 	
-	
-	
 	/**
 	 * 
 	 */

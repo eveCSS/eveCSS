@@ -1,6 +1,10 @@
 package de.ptb.epics.eve.data.scandescription.defaults.tests;
 
 import java.io.File;
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.xml.datatype.Duration;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -62,6 +66,126 @@ public class DefaultsManagerTest {
 		assertEquals(Stepfunctions.POSITIONLIST, axis.getStepfunction());
 		assertEquals(PositionMode.ABSOLUTE, axis.getPositionmode());
 		assertEquals("4565656,2,4534,22", axis.getPositionList());
+	}
+	
+	/**
+	 * 
+	 */
+	@SuppressWarnings("cast")
+	@Test
+	public void testStartStopStepIntAxis() {
+		DefaultsAxis axis = DefaultsManagerTest.defaultsManager
+				.getAxis("StartStopStepIntAxis");
+		assertNotNull(axis);
+		assertEquals("StartStopStepIntAxis", axis.getId());
+		assertEquals(Stepfunctions.ADD, axis.getStepfunction());
+		assertEquals(PositionMode.ABSOLUTE, axis.getPositionmode());
+		assertEquals(new Integer(1), (Integer)axis.getStart());
+		assertEquals(new Integer(2), (Integer)axis.getStop());
+		assertEquals(new Integer(3), (Integer)axis.getStepwidth());
+	}
+	
+	/**
+	 * 
+	 */
+	@SuppressWarnings("cast")
+	@Test
+	public void testStartStopStepDoubleAxis() {
+		DefaultsAxis axis = DefaultsManagerTest.defaultsManager
+				.getAxis("StartStopStepDoubleAxis");
+		assertNotNull(axis);
+		assertEquals("StartStopStepDoubleAxis", axis.getId());
+		assertEquals(Stepfunctions.ADD, axis.getStepfunction());
+		assertEquals(PositionMode.ABSOLUTE, axis.getPositionmode());
+		assertEquals(new Double(1.0), (Double)axis.getStart());
+		assertEquals(new Double(10.0), (Double)axis.getStop());
+		assertEquals(new Double(1.0), (Double)axis.getStepwidth());
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void testStartStopStepDateAxis() {
+		DefaultsAxis axis = DefaultsManagerTest.defaultsManager
+				.getAxis("StartStopStepDateAxis");
+		assertNotNull(axis);
+		assertEquals("StartStopStepDateAxis", axis.getId());
+		assertEquals(Stepfunctions.ADD, axis.getStepfunction());
+		assertEquals(PositionMode.ABSOLUTE, axis.getPositionmode());
+		
+		Date start = ((Date)axis.getStart());
+		Calendar startCal = Calendar.getInstance();
+		startCal.setTime(start);
+
+		assertEquals(2013, startCal.get(Calendar.YEAR));
+		assertEquals(0, startCal.get(Calendar.MONTH));
+		assertEquals(1, startCal.get(Calendar.DAY_OF_MONTH));
+		assertEquals(0, startCal.get(Calendar.HOUR));
+		assertEquals(0, startCal.get(Calendar.MINUTE));
+		assertEquals(0, startCal.get(Calendar.SECOND));
+		assertEquals(0, startCal.get(Calendar.MILLISECOND));
+		
+		Date stop = ((Date)axis.getStop());
+		Calendar stopCal = Calendar.getInstance();
+		stopCal.setTime(stop);
+
+		assertEquals(2013, stopCal.get(Calendar.YEAR));
+		assertEquals(0, stopCal.get(Calendar.MONTH));
+		assertEquals(1, stopCal.get(Calendar.DAY_OF_MONTH));
+		assertEquals(1, stopCal.get(Calendar.HOUR));
+		assertEquals(0, stopCal.get(Calendar.MINUTE));
+		assertEquals(0, stopCal.get(Calendar.SECOND));
+		assertEquals(0, stopCal.get(Calendar.MILLISECOND));
+		
+		Date stepwidth = ((Date)axis.getStepwidth());
+		Calendar stepwidthCal = Calendar.getInstance();
+		stepwidthCal.setTime(stepwidth);
+
+		assertEquals(1970, stepwidthCal.get(Calendar.YEAR));
+		assertEquals(0, stepwidthCal.get(Calendar.MONTH));
+		assertEquals(1, stepwidthCal.get(Calendar.DAY_OF_MONTH));
+		assertEquals(0, stepwidthCal.get(Calendar.HOUR));
+		assertEquals(1, stepwidthCal.get(Calendar.MINUTE));
+		assertEquals(0, stepwidthCal.get(Calendar.SECOND));
+		assertEquals(0, stepwidthCal.get(Calendar.MILLISECOND));
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void testStartStopStepDurationAxis() {
+		DefaultsAxis axis = DefaultsManagerTest.defaultsManager
+				.getAxis("StartStopStepDurationAxis");
+		assertNotNull(axis);
+		assertEquals("StartStopStepDurationAxis", axis.getId());
+		assertEquals(Stepfunctions.ADD, axis.getStepfunction());
+		assertEquals(PositionMode.RELATIVE, axis.getPositionmode());
+		
+		Duration startDur = (Duration)axis.getStart();
+		assertEquals(0, startDur.getYears());
+		assertEquals(0, startDur.getMonths());
+		assertEquals(0, startDur.getDays());
+		assertEquals(0, startDur.getHours());
+		assertEquals(0, startDur.getMinutes());
+		assertEquals(0, startDur.getSeconds());
+		
+		Duration stopDur = (Duration)axis.getStop();
+		assertEquals(0, stopDur.getYears());
+		assertEquals(0, stopDur.getMonths());
+		assertEquals(0, stopDur.getDays());
+		assertEquals(1, stopDur.getHours());
+		assertEquals(0, stopDur.getMinutes());
+		assertEquals(0, stopDur.getSeconds());
+		
+		Duration stepwidthDur = (Duration)axis.getStepwidth();
+		assertEquals(0, stepwidthDur.getYears());
+		assertEquals(0, stepwidthDur.getMonths());
+		assertEquals(0, stepwidthDur.getDays());
+		assertEquals(0, stepwidthDur.getHours());
+		assertEquals(1, stepwidthDur.getMinutes());
+		assertEquals(0, stepwidthDur.getSeconds());
 	}
 	
 	/**
