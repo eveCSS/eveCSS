@@ -1736,6 +1736,9 @@ public class ScanDescriptionSaver implements
 			switch (axis.getStepfunction()) {
 			case ADD:
 			case MULTIPLY:
+				this.atts.clear();
+				this.contentHandler.startElement("", "startstopstep",
+						"startstopstep", this.atts);
 				if (axis.getStart() != null) {
 					this.atts.clear();
 					this.atts.addAttribute("", "type", "type", "CDATA",
@@ -1833,6 +1836,9 @@ public class ScanDescriptionSaver implements
 						Boolean.toString(axis.isMainAxis()).toCharArray(), 0,
 						Boolean.toString(axis.isMainAxis()).length());
 				this.contentHandler.endElement("", "ismainaxis", "ismainaxis");
+				this.atts.clear();
+				this.contentHandler.endElement("", "startstopstep",
+						"startstopstep");
 				break;
 			case FILE: 
 				if (axis.getFile() != null) {

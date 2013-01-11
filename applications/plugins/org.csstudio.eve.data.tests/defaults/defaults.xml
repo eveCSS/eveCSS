@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:defaults xmlns:ns2="http://www.ptb.de/epics/SCML">
-	<axes>
-		<axis>
-			<axisid>FileAxis</axisid>
-			<stepfunction>File</stepfunction>
-			<positionmode>relative</positionmode>
-			<positionlist>/test/file</positionlist>
-		</axis>
-		<axis>
-			<axisid>PositionlistAxis</axisid>
-			<stepfunction>Positionlist</stepfunction>
-			<positionmode>absolute</positionmode>
-			<positionlist>4565656,2,4534,22</positionlist>
-		</axis>
-		<axis>
-			<axisid>StartStopStepDoubleAxis</axisid>
-			<stepfunction>Add</stepfunction>
-			<positionmode>absolute</positionmode>
-			<startstopstep>
-				<start type="double">1.0</start>
-				<stop type="double">10.0</stop>
-				<stepwidth type="double">1.0</stepwidth>
-				<ismainaxis>false</ismainaxis>
-			</startstopstep>
-		</axis>
-		<axis>
-			<axisid>StartStopStepIntAxis</axisid>
-			<stepfunction>Add</stepfunction>
-			<positionmode>absolute</positionmode>
-			<startstopstep>
-				<start type="int">1</start>
-				<stop type="int">2</stop>
-				<stepwidth type="int">3</stepwidth>
-				<ismainaxis>false</ismainaxis>
-			</startstopstep>
-		</axis>
-		<axis>
-			<axisid>StartStopStepDateAxis</axisid>
-			<stepfunction>Add</stepfunction>
-			<positionmode>absolute</positionmode>
-			<startstopstep>
-				<start type="datetime">2013-01-01 00:00:00.000</start>
-				<stop type="datetime">2013-01-01 01:00:00.000</stop>
-				<stepwidth type="datetime">00:01:00.000</stepwidth>
-				<ismainaxis>false</ismainaxis>
-			</startstopstep>
-		</axis>
-		<axis>
-			<axisid>StartStopStepDurationAxis</axisid>
-			<stepfunction>Add</stepfunction>
-			<positionmode>relative</positionmode>
-			<startstopstep>
-				<start type="datetime">P0Y0M0DT0H0M0.000S</start>
-				<stop type="datetime">P0Y0M0DT1H0M0.000S</stop>
-				<stepwidth type="datetime">P0Y0M0DT0H1M0.000S</stepwidth>
-				<ismainaxis>false</ismainaxis>
-			</startstopstep>
-		</axis>
-	</axes>
-	<channels />
+    <axes>
+        <axis>
+            <axisid>FileAxis</axisid>
+            <stepfunction>File</stepfunction>
+            <positionmode>relative</positionmode>
+            <positionlist>/test/file</positionlist>
+        </axis>
+        <axis>
+            <axisid>PositionlistAxis</axisid>
+            <stepfunction>Positionlist</stepfunction>
+            <positionmode>absolute</positionmode>
+            <positionlist>4565656,2,4534,22</positionlist>
+        </axis>
+        <axis>
+            <axisid>StartStopStepDoubleAxis</axisid>
+            <stepfunction>Add</stepfunction>
+            <positionmode>absolute</positionmode>
+            <startstopstep>
+                <start type="double">1.0</start>
+                <stop type="double">10.0</stop>
+                <stepwidth type="double">1.0</stepwidth>
+                <ismainaxis>false</ismainaxis>
+            </startstopstep>
+        </axis>
+        <axis>
+            <axisid>StartStopStepIntAxis</axisid>
+            <stepfunction>Add</stepfunction>
+            <positionmode>absolute</positionmode>
+            <startstopstep>
+                <start type="int">1</start>
+                <stop type="int">2</stop>
+                <stepwidth type="int">3</stepwidth>
+                <ismainaxis>false</ismainaxis>
+            </startstopstep>
+        </axis>
+        <axis>
+            <axisid>StartStopStepDateAxis</axisid>
+            <stepfunction>Add</stepfunction>
+            <positionmode>absolute</positionmode>
+            <startstopstep>
+                <start type="datetime">2013-01-01 00:00:00.000</start>
+                <stop type="datetime">2013-01-01 01:00:00.000</stop>
+                <stepwidth type="datetime">00:01:00.000</stepwidth>
+                <ismainaxis>false</ismainaxis>
+            </startstopstep>
+        </axis>
+        <axis>
+            <axisid>StartStopStepDurationAxis</axisid>
+            <stepfunction>Add</stepfunction>
+            <positionmode>relative</positionmode>
+            <startstopstep>
+                <start type="datetime">P0Y0M0DT0H0M0.000S</start>
+                <stop type="datetime">P0Y0M0DT1H0M0.000S</stop>
+                <stepwidth type="datetime">P0Y0M0DT0H1M0.000S</stepwidth>
+                <ismainaxis>false</ismainaxis>
+            </startstopstep>
+        </axis>
+    </axes>
+    <channels/>
 </ns2:defaults>

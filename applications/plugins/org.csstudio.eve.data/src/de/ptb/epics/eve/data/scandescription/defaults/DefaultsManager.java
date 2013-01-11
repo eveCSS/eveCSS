@@ -95,6 +95,9 @@ public class DefaultsManager {
 	 * @param schemaFile the schema file
 	 */
 	public synchronized void save(File targetFile, File schemaFile) {
+		if (!isInitialized()) {
+			return;
+		}
 		if (targetFile.exists()) {
 			try {
 				if (LOGGER.isDebugEnabled()) {
@@ -107,6 +110,7 @@ public class DefaultsManager {
 				LOGGER.error(e.getMessage(), e);
 			}
 		}
+
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(
 				XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		try {
@@ -365,6 +369,9 @@ public class DefaultsManager {
 	 * 		that should be updated
 	 */
 	public synchronized void update(ScanDescription scanDescription) {
+		if (!isInitialized()) {
+			return;
+		}
 		for (Chain ch : scanDescription.getChains()) {
 			for (ScanModule sm : ch.getScanModules()) {
 				for (Axis axis : sm.getAxes()) {
