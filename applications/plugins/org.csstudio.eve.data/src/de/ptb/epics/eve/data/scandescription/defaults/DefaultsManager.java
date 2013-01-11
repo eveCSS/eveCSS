@@ -2,23 +2,26 @@ package de.ptb.epics.eve.data.scandescription.defaults;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.datatype.Duration;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
+import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
-import de.ptb.epics.eve.data.scandescription.PluginController;
+import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.util.io.*;
@@ -228,10 +231,37 @@ public class DefaultsManager {
 		switch (from.getStepfunction()) {
 		case ADD:
 		case MULTIPLY:
-			// TODO
+			to.setMainAxis(from.isMainAxis());
+			switch (to.getMotorAxis().getType()) {
+			case DATETIME:
+				if (to.getPositionMode().equals(PositionMode.ABSOLUTE)) {
+					to.setStart((Date)from.getStart());
+					to.setStop((Date)from.getStop());
+					to.setStepwidth((Date)from.getStepwidth());
+				} else {
+					to.setStart((Duration)from.getStart());
+					to.setStop((Duration)from.getStop());
+					to.setStepwidth((Duration)from.getStepwidth());
+				}
+				break;
+			case DOUBLE:
+				to.setStart((Double)from.getStart());
+				to.setStop((Double)from.getStop());
+				to.setStepwidth((Double)from.getStepwidth());
+				break;
+			case INT:
+				to.setStart((Integer)from.getStart());
+				to.setStop((Integer)from.getStop());
+				to.setStepwidth((Integer)from.getStepwidth());
+				break;
+			default:
+				break;
+			}
 			break;
 		case PLUGIN:
 			/*
+			 * plugin modifications have to be made elsewhere
+			 * (not when the device is created, but when a plugin is selected)
 			PluginController controller = to.getPluginController();
 			for (DefaultsAxisPluginParameter param : from.getPlugin()
 					.getParameters()) {
@@ -252,9 +282,12 @@ public class DefaultsManager {
 	}
 	
 	/**
+	 * Returns a 
+	 * {@link de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxis} for 
+	 * the given {@link de.ptb.epics.eve.data.scandescription.Axis}.
 	 * 
-	 * @param axis
-	 * @return
+	 * @param axis the axis to convert
+	 * @return the converted defaults axis
 	 */
 	public static DefaultsAxis getDefaultsAxis(Axis axis) {
 		DefaultsAxis defaultsAxis = new DefaultsAxis();
@@ -264,7 +297,29 @@ public class DefaultsManager {
 		switch(axis.getStepfunction()) {
 		case ADD:
 		case MULTIPLY:
-			// TODO
+			defaultsAxis.setMainAxis(axis.isMainAxis());
+			switch(axis.getType()) {
+			case DATETIME:
+				defaultsAxis.setStartStopStepType(DataTypes.DATETIME);
+				defaultsAxis.setStart((Date)axis.getStart());
+				defaultsAxis.setStop((Date)axis.getStop());
+				defaultsAxis.setStepwidth((Date)axis.getStepwidth());
+				break;
+			case DOUBLE:
+				defaultsAxis.setStartStopStepType(DataTypes.DOUBLE);
+				defaultsAxis.setStart((Double)axis.getStart());
+				defaultsAxis.setStop((Double)axis.getStop());
+				defaultsAxis.setStepwidth((Double)axis.getStepwidth());
+				break;
+			case INT:
+				defaultsAxis.setStartStopStepType(DataTypes.INT);
+				defaultsAxis.setStart((Integer)axis.getStart());
+				defaultsAxis.setStop((Integer)axis.getStop());
+				defaultsAxis.setStepwidth((Integer)axis.getStepwidth());
+				break;
+			default:
+				break;
+			}
 			break;
 		case FILE:
 			defaultsAxis.setFile(axis.getFile().getAbsolutePath());
@@ -280,9 +335,13 @@ public class DefaultsManager {
 	}
 	
 	/**
+	 * Returns a 
+	 * {@link de.ptb.epics.eve.data.scandescription.defaults.DefaultsChannel} 
+	 * for the given 
+	 * {@link de.ptb.epics.eve.data.scandescription.Channel}.
 	 * 
-	 * @param channel
-	 * @return
+	 * @param channel the channel to convert
+	 * @return the converted defaults channel
 	 */
 	public static DefaultsChannel getDefaultsChannel(Channel channel) {
 		DefaultsChannel defaultsChannel = new DefaultsChannel();
@@ -292,13 +351,18 @@ public class DefaultsManager {
 		defaultsChannel.setMinimum(channel.getMinimum());
 		defaultsChannel.setMaxDeviation(channel.getMaxDeviation());
 		defaultsChannel.setDeferred(channel.isDeferred());
-		defaultsChannel.setNormalizeId(channel.getNormalizeChannel().getID());
+		if (channel.getNormalizeChannel() != null) {
+			defaultsChannel.setNormalizeId(channel.getNormalizeChannel().getID());
+		}
 		return defaultsChannel;
 	}
 	
 	/**
+	 * Updates the defaults of channels and axes contained in the given 
+	 * scan description.
 	 * 
-	 * @param scanDescription
+	 * @param scanDescription the scan description containing axes and channels 
+	 * 		that should be updated
 	 */
 	public synchronized void update(ScanDescription scanDescription) {
 		for (Chain ch : scanDescription.getChains()) {
@@ -308,8 +372,8 @@ public class DefaultsManager {
 							.getDefaultsAxis(axis));
 				}
 				for (Channel channel : sm.getChannels()) {
-					this.defaults.updateChannel(DefaultsManager
-							.getDefaultsChannel(channel));
+					// this.defaults.updateChannel(DefaultsManager
+						//	.getDefaultsChannel(channel));
 				}
 			}
 		}

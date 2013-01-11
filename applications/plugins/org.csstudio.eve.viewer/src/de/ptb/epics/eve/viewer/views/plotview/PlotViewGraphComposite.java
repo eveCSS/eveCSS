@@ -148,6 +148,7 @@ public class PlotViewGraphComposite extends Composite implements
 			}
 		}
 
+		this.detector2normalized = false;
 		if (axis_pos != -1) { // axis of detector 2 was found -> check if it is
 								// normalized
 			this.detector2normalized = plotWindow.getYAxes().get(axis_pos)
