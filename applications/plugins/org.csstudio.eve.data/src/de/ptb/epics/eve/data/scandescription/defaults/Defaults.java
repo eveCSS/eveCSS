@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.log4j.Logger;
 
+import de.ptb.epics.eve.data.scandescription.Stepfunctions;
+
 /**
  * Collection of default values containing a list of axes and channel defaults.
  * 
@@ -67,6 +69,9 @@ public class Defaults {
 	 * @param axis the axis to be added/updated
 	 */
 	public void updateAxis(DefaultsAxis axis) {
+		if (axis.getStepfunction().equals(Stepfunctions.PLUGIN)) {
+			return; // TODO has to be removed when plugins are working !
+		}
 		LOGGER.debug("updating axis: " + axis.getId());
 		DefaultsAxis found = null;
 		for (DefaultsAxis defaultsAxis : this.axes) {

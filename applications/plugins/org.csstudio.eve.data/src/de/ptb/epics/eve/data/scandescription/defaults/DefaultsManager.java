@@ -108,7 +108,9 @@ public class DefaultsManager {
 				LOGGER.error(e.getMessage(), e);
 			}
 		}
-
+		
+		this.defaults.sort();
+		
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(
 				XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		try {
@@ -122,6 +124,7 @@ public class DefaultsManager {
 		} catch (JAXBException e) {
 			LOGGER.error(e.getMessage(), e);
 			try {
+				LOGGER.info("saving defaults failed -> restoring backup.");
 				FileUtil.copyFile(backup, targetFile);
 			} catch (IOException e1) {
 				LOGGER.error("restoring backup has failed.");
@@ -129,6 +132,7 @@ public class DefaultsManager {
 		} catch (SAXException e) {
 			LOGGER.error(e.getMessage(), e);
 			try {
+				LOGGER.info("saving defaults failed -> restoring backup.");
 				FileUtil.copyFile(backup, targetFile);
 			} catch (IOException e1) {
 				LOGGER.error("restoring backup has failed.");
@@ -379,6 +383,7 @@ public class DefaultsManager {
 	public synchronized void update(ScanDescription scanDescription) {
 		if (!isInitialized()) {
 			this.defaults = new Defaults();
+			this.initialized = true;
 		}
 		for (Chain ch : scanDescription.getChains()) {
 			for (ScanModule sm : ch.getScanModules()) {
