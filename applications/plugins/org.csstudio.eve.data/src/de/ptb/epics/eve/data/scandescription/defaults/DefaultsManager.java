@@ -54,6 +54,7 @@ public class DefaultsManager {
 	 */
 	public void init(File pathToDefaults, File schema) {
 		if (!pathToDefaults.exists()) {
+			LOGGER.debug("no defaults file found.");
 			defaults = null;
 			return;
 		}
@@ -95,16 +96,13 @@ public class DefaultsManager {
 	 * @param schemaFile the schema file
 	 */
 	public synchronized void save(File targetFile, File schemaFile) {
-		if (!isInitialized()) {
-			return;
-		}
+		File backup = new File(targetFile.getParent() + "/"
+				+ targetFile.getName() + ".bup");
 		if (targetFile.exists()) {
 			try {
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("target file already exists, creating backup");
 				}
-				File backup = new File(targetFile.getParent() + "/"
-						+ targetFile.getName() + ".bup");
 				FileUtil.copyFile(targetFile, backup);
 			} catch (IOException e) {
 				LOGGER.error(e.getMessage(), e);
@@ -123,8 +121,18 @@ public class DefaultsManager {
 			LOGGER.info("defaults saved");
 		} catch (JAXBException e) {
 			LOGGER.error(e.getMessage(), e);
+			try {
+				FileUtil.copyFile(backup, targetFile);
+			} catch (IOException e1) {
+				LOGGER.error("restoring backup has failed.");
+			}
 		} catch (SAXException e) {
 			LOGGER.error(e.getMessage(), e);
+			try {
+				FileUtil.copyFile(backup, targetFile);
+			} catch (IOException e1) {
+				LOGGER.error("restoring backup has failed.");
+			}
 		}
 	}
 	
@@ -370,7 +378,7 @@ public class DefaultsManager {
 	 */
 	public synchronized void update(ScanDescription scanDescription) {
 		if (!isInitialized()) {
-			return;
+			this.defaults = new Defaults();
 		}
 		for (Chain ch : scanDescription.getChains()) {
 			for (ScanModule sm : ch.getScanModules()) {

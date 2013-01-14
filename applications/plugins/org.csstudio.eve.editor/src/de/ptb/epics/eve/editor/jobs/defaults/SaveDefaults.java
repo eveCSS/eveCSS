@@ -28,12 +28,11 @@ public class SaveDefaults extends Job {
 	private File schemaFile;
 	
 	/**
-	 * 
-	 * @param name
-	 * @param defaultsManager
-	 * @param scanDescription
-	 * @param defaultsFile
-	 * @param schemaFile
+	 * @param name the name of the job
+	 * @param defaultsManager the defaults manager used
+	 * @param scanDescription the scan description that is saved
+	 * @param defaultsFile the file to save to
+	 * @param schemaFile the schema file
 	 */
 	public SaveDefaults(String name, DefaultsManager defaultsManager,
 			ScanDescription scanDescription, File defaultsFile, File schemaFile) {
