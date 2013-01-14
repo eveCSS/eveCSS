@@ -121,6 +121,8 @@ public class DefaultsManager {
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			jaxbMarshaller.marshal(this.defaults, targetFile);
 			LOGGER.info("defaults saved");
+			LOGGER.info("creating backup");
+			FileUtil.copyFile(targetFile, backup);
 		} catch (JAXBException e) {
 			LOGGER.error(e.getMessage(), e);
 			try {
@@ -137,6 +139,8 @@ public class DefaultsManager {
 			} catch (IOException e1) {
 				LOGGER.error("restoring backup has failed.");
 			}
+		} catch (IOException e) {
+			LOGGER.error("creating backup has failed.");
 		}
 	}
 	
