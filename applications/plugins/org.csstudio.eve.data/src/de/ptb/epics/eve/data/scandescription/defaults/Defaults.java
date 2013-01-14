@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.data.scandescription.defaults;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -49,6 +50,7 @@ public class Defaults {
 	public List<DefaultsChannel> getChannels() {
 		return channels;
 	}
+	
 	/**
 	 * @param channels the channels to set
 	 */
@@ -102,6 +104,15 @@ public class Defaults {
 			}
 		}
 		this.channels.add(channel);
+	}
+	
+	/**
+	 * Sorts the lists returned by {@link #getAxes()} and {@link #getChannels()} 
+	 * lexicographically by id.
+	 */
+	public void sort() {
+		Collections.sort(this.axes);
+		Collections.sort(this.channels);
 	}
 	
 	/**

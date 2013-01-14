@@ -16,7 +16,7 @@ import de.ptb.epics.eve.data.scandescription.Stepfunctions;
  * @since 1.8
  */
 @XmlJavaTypeAdapter(DefaultsAxisAdapter.class)
-public class DefaultsAxis {
+public class DefaultsAxis implements Comparable<DefaultsAxis> {
 	private String id;
 	private Stepfunctions stepfunction;
 	private PositionMode positionmode;
@@ -371,8 +371,7 @@ public class DefaultsAxis {
 	}
 	
 	/**
-	 * 
-	 * @param stepwidth
+	 * @param stepwidth the stepwidth to set
 	 */
 	@SuppressWarnings("unchecked")
 	public void setStepwidth(Duration stepwidth) {
@@ -405,5 +404,13 @@ public class DefaultsAxis {
 	@Override
 	public String toString() {
 		return "[Axis:" + this.id + "]";
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int compareTo(DefaultsAxis other) {
+		return this.getId().compareTo(other.getId());
 	}
 }

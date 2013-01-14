@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(propOrder = { "id", "averageCount", "maxDeviation", "minimum",
 		"maxAttempts", "normalizeId", "deferred" })
-public class DefaultsChannel {
+public class DefaultsChannel implements Comparable<DefaultsChannel> {
 	private String id;
 	private Integer averageCount;
 	private Double maxDeviation;
@@ -153,5 +153,13 @@ public class DefaultsChannel {
 	@Override
 	public String toString() {
 		return "[Channel:" + this.id + "]";
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int compareTo(DefaultsChannel other) {
+		return this.getId().compareTo(other.getId());
 	}
 }
