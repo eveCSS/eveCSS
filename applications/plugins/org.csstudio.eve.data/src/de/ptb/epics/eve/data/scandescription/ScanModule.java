@@ -78,7 +78,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	private int id;
 	
 	// the type of the scan module
-	private String type;
+	private ScanModuleTypes type;
 	
 	// the name of the scan module
 	private String name;
@@ -191,7 +191,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.redoEvents = new ArrayList<ControlEvent>();
 		this.breakEvents = new ArrayList<ControlEvent>();
 		this.pauseEvents = new ArrayList<PauseEvent>();
-		this.type = "classic";
+		this.type = ScanModuleTypes.CLASSIC;
 		this.name = "";
 
 		this.triggerConfirmAxis = false;
@@ -693,7 +693,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @return The type of the scan modul.
 	 */
-	public String getType() {
+	public ScanModuleTypes getType() {
 		return type;
 	}
 
@@ -702,7 +702,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 
 	 * @param type The type of the scan modul.
 	 */
-	public void setType(final String type) {
+	public void setType(final ScanModuleTypes type) {
 		this.type = type;
 		updateListeners();
 	}

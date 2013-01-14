@@ -54,6 +54,7 @@ public class ChainLayoutEditPolicy extends XYLayoutEditPolicy {
 	 */
 	@Override
 	protected Command getCreateCommand(CreateRequest request) {
+		logger.debug("type = " + request.getNewObjectType());
 		Object childClass = request.getNewObjectType();
 		if (childClass == ScanModule.class) {
 			return new CreateScanModule((Chain) this.getHost().getModel(),

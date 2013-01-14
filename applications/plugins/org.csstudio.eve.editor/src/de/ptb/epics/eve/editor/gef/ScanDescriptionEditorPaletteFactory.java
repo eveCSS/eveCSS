@@ -9,6 +9,7 @@ import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.palette.PanningSelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
+import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
 import org.eclipse.gef.tools.AbstractTool;
 
@@ -71,6 +72,30 @@ public class ScanDescriptionEditorPaletteFactory {
 				Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/devices/scanmodule24.gif"));
 		componentsDrawer.add(component);
+		
+		CombinedTemplateCreationEntry component2 = new CombinedTemplateCreationEntry(
+				"Scan Module 2", "Save Axis Positions", 
+				new CreationFactory() {
+					
+					@Override
+					public Object getObjectType() {
+						// TODO Auto-generated method stub
+						// return null;
+						return "Test";
+					}
+					
+					@Override
+					public Object getNewObject() {
+						// TODO Auto-generated method stub
+						return null;
+					}
+				},
+				Activator.imageDescriptorFromPlugin(
+						Activator.PLUGIN_ID, "icons/devices/scanmodule.gif"),
+				Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
+						"icons/devices/scanmodule24.gif"));
+		componentsDrawer.add(component2);
+		
 		return componentsDrawer;
 	}
 }

@@ -1082,8 +1082,8 @@ public class ScanDescriptionSaver implements
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "type", "type", this.atts);
-			this.contentHandler.characters(scanModule.getType().toCharArray(),
-					0, scanModule.getType().length());
+			this.contentHandler.characters(scanModule.getType().toString().toCharArray(),
+					0, scanModule.getType().toString().length());
 			this.contentHandler.endElement("", "type", "type");
 
 			this.atts.clear();
