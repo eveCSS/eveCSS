@@ -70,6 +70,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public static final String TRIGGER_CONFIRM_CHANNEL_PROP = "triggerConfirmChannel";
 	
 	/** */
+	public static final String TYPE_PROP = "type";
+	
+	/** */
 	public static int default_width = 70;
 	/** */
 	public static int default_height = 30;
@@ -703,7 +706,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param type The type of the scan modul.
 	 */
 	public void setType(final ScanModuleTypes type) {
-		this.type = type;
+		this.propertyChangeSupport.firePropertyChange(ScanModule.TYPE_PROP,
+				this.type, this.type = type);
 		updateListeners();
 	}
 

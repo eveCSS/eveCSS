@@ -6,6 +6,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.progress.UIJob;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 
 /**
  * {@link org.eclipse.ui.progress.UIJob} removing all devices 
@@ -38,6 +39,7 @@ public class RemoveAllDevices extends UIJob {
 		try {
 			monitor.beginTask("Removing Devices", 1);
 			this.scanModule.removeAll();
+			this.scanModule.setType(ScanModuleTypes.CLASSIC);
 			this.scanModule.setName("Empty");
 			monitor.worked(1);
 		} finally {

@@ -23,6 +23,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
 
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.gef.editpolicies.ScanModuleComponentEditPolicy;
@@ -69,6 +70,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 				ScanModule.APPENDED_CONNECTION_PROP, this);
 		this.getModel().addPropertyChangeListener(
 				ScanModule.NESTED_CONNECTION_PROP, this);
+		this.getModel().addPropertyChangeListener(ScanModule.TYPE_PROP, this);
 		super.activate();
 	}
 	
@@ -88,6 +90,7 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 				ScanModule.APPENDED_CONNECTION_PROP, this);
 		this.getModel().removePropertyChangeListener(
 				ScanModule.NESTED_CONNECTION_PROP, this);
+		this.getModel().removePropertyChangeListener(ScanModule.TYPE_PROP, this);
 		super.deactivate();
 	}
 	
@@ -282,6 +285,10 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 		}
 		if (e.getPropertyName().equals(ScanModule.PARENT_CONNECTION_PROP)) {
 			this.refreshTargetConnections();
+		}
+		if (e.getPropertyName().equals(ScanModule.TYPE_PROP)) {
+			((ScanModuleFigure) this.getFigure()).setType(this.getModel()
+					.getType());
 		}
 		this.refreshVisuals();
 	}

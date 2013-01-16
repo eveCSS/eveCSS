@@ -16,6 +16,7 @@ import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 
 /**
@@ -186,6 +187,7 @@ public class SaveAllAxisPositions extends Job {
 			}
 			scanModule.setName("S APOS");
 			monitor.done();
+			scanModule.setType(ScanModuleTypes.SAVE_AXIS_POSITIONS);
 			return Status.OK_STATUS;
 		}
 	}

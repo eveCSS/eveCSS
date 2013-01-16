@@ -14,6 +14,7 @@ import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 
 /**
  * <code>SaveAllDetectorValues</code> saves all detector channel values by 
@@ -178,6 +179,7 @@ public class SaveAllChannelValues extends Job {
 				monitor.worked(1);
 			}
 			scanModule.setName("S CVAL");
+			scanModule.setType(ScanModuleTypes.SAVE_CHANNEL_VALUES);
 			monitor.done();
 			return Status.OK_STATUS;
 		}
