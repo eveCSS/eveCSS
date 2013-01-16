@@ -24,6 +24,7 @@ import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.util.io.*;
 
 /**
@@ -391,6 +392,10 @@ public class DefaultsManager {
 		}
 		for (Chain ch : scanDescription.getChains()) {
 			for (ScanModule sm : ch.getScanModules()) {
+				if (!sm.getType().equals(ScanModuleTypes.CLASSIC)) {
+					LOGGER.debug("omitting scan module of type " + sm.getType());
+					continue;
+				}
 				for (Axis axis : sm.getAxes()) {
 					this.defaults.updateAxis(DefaultsManager
 							.getDefaultsAxis(axis));
