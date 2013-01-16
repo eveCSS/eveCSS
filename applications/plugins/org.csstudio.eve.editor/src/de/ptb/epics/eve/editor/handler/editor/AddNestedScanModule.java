@@ -60,7 +60,8 @@ public class AddNestedScanModule extends AbstractHandler {
 			CreateScanModule createCmd = new CreateScanModule(
 					scanModule.getChain(), new Rectangle(
 							scanModule.getX() + 130, scanModule.getY() + 100,
-							scanModule.getWidth(), scanModule.getHeight()));
+							scanModule.getWidth(), scanModule.getHeight()),
+					scanModule.getType());
 			Command connCmd = new CreateSMConnection(scanModule,
 					createCmd.getScanModule(), Connector.NESTED);
 			compositeCmd = createCmd.chain(connCmd);

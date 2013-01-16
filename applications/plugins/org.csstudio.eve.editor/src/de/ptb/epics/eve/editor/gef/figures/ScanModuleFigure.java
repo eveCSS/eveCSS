@@ -8,11 +8,14 @@ import org.eclipse.draw2d.XYAnchor;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.data.scandescription.Connector;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
+import de.ptb.epics.eve.editor.Activator;
 
 /**
  * 
@@ -33,6 +36,8 @@ public class ScanModuleFigure extends Shape {
 	private boolean selected_primary;
 	private boolean contains_errors;
 	
+	private ScanModuleTypes type;
+	
 	private boolean appended_feedback;
 	private boolean nested_feedback;
 	private boolean parent_feedback;
@@ -46,17 +51,21 @@ public class ScanModuleFigure extends Shape {
 	 * Constructor.
 	 * 
 	 * @param name the name of the scan module
+	 * @param type the scan module type
 	 * @param x the x coordinate of its initial position
 	 * @param y the y coordinate of its initial position
 	 * @param width (initial) width of the figure
 	 * @param height (initial) height of the figure
 	 */
-	public ScanModuleFigure(String name, int x, int y, int width, int height) {
+	public ScanModuleFigure(String name, ScanModuleTypes type, int x, int y,
+			int width, int height) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		
+		this.type = type;
 		
 		this.selected_primary = false;
 		this.contains_errors = false;
@@ -165,6 +174,13 @@ public class ScanModuleFigure extends Shape {
 	}
 
 	/**
+	 * @param type the scan module type
+	 */
+	public void setType(ScanModuleTypes type) {
+		this.type = type;
+	}
+	
+	/**
 	 * @param contains_errors the contains_errors to set
 	 */
 	public void setContains_errors(boolean contains_errors) {
@@ -264,8 +280,28 @@ public class ScanModuleFigure extends Shape {
 		graphics.drawPath(path);
 		
 		// draw scan module name
-		graphics.drawText(
+		if (this.type.equals(ScanModuleTypes.CLASSIC)) {
+			graphics.drawText(
 				this.name, this.getLocation().x + 5, this.getLocation().y + 8);
+		} else if (this.type.equals(ScanModuleTypes.SAVE_AXIS_POSITIONS)) {
+			Image save = Activator.getDefault().getImageRegistry().get("SAVE");
+			Image axis = Activator.getDefault().getImageRegistry().get("AXIS");
+			graphics.drawImage(save, 
+					new Point(this.x + this.width/2 - save.getBounds().width - 3,
+							this.y + this.height/2 - save.getBounds().height/2));
+			graphics.drawImage(axis, 
+					new Point(this.x + this.width/2 + 3, 
+							this.y + this.height/2 - save.getBounds().height/2));
+		} else if (this.type.equals(ScanModuleTypes.SAVE_CHANNEL_VALUES)) {
+			Image save = Activator.getDefault().getImageRegistry().get("SAVE");
+			Image channel = Activator.getDefault().getImageRegistry().get("CHANNEL");
+			graphics.drawImage(save, 
+					new Point(this.x + this.width/2 - save.getBounds().width - 3,
+							this.y + this.height/2 - save.getBounds().height/2));
+			graphics.drawImage(channel, 
+					new Point(this.x + this.width/2 + 3, 
+							this.y + this.height/2 - save.getBounds().height/2));
+		}
 		
 		// restore old clipping
 		graphics.setClip(oldClipping);

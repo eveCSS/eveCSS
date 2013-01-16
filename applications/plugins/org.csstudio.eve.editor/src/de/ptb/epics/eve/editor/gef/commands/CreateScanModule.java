@@ -6,6 +6,7 @@ import org.eclipse.gef.commands.Command;
 
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 
 /**
  * @author Marcus Michalsky
@@ -25,12 +26,14 @@ public class CreateScanModule extends Command {
 	 * 
 	 * @param chain the parent
 	 * @param bounds the bounds
+	 * @param type the scan module type
 	 */
-	public CreateScanModule(Chain chain, Rectangle bounds) {
+	public CreateScanModule(Chain chain, Rectangle bounds, ScanModuleTypes type) {
 		this.chain = chain;
 		this.bounds = bounds;
 		int id = this.chain.getAvailableScanModuleId();
 		this.scanModule = new ScanModule(id);
+		this.scanModule.setType(type);
 	}
 	
 	/**
@@ -41,8 +44,19 @@ public class CreateScanModule extends Command {
 		logger.debug("execute");
 		this.scanModule.setX(this.bounds.x);
 		this.scanModule.setY(this.bounds.y);
-		this.scanModule.setName("SM "
-				+ Integer.toString(this.scanModule.getId()));
+		String name = "";
+		switch (this.scanModule.getType()) {
+		case CLASSIC:
+			name = "SM " + Integer.toString(this.scanModule.getId());
+			break;
+		case SAVE_AXIS_POSITIONS:
+			name = "S APOS";
+			break;
+		case SAVE_CHANNEL_VALUES:
+			name = "S CVAL";
+			break;
+		}
+		this.scanModule.setName(name);
 		this.chain.add(this.scanModule);
 	}
 	

@@ -14,6 +14,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
 import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
 import de.ptb.epics.eve.editor.gef.commands.CreateSEConnection;
@@ -67,7 +68,8 @@ public class AddAppendedScanModule extends AbstractHandler {
 				CreateScanModule createCmd = new CreateScanModule(
 						scanModule.getChain(), new Rectangle(
 								scanModule.getX() + 130, scanModule.getY(),
-								scanModule.getWidth(), scanModule.getHeight()));
+								scanModule.getWidth(), scanModule.getHeight()),
+						scanModule.getType());
 				Command connCmd = new CreateSMConnection(scanModule,
 						createCmd.getScanModule(), Connector.APPENDED);
 				compositeCmd = createCmd.chain(connCmd);
@@ -76,7 +78,7 @@ public class AddAppendedScanModule extends AbstractHandler {
 						startEvent.getChain(), new Rectangle(
 								startEvent.getX() + 130, startEvent.getY(),
 								ScanModule.default_width,
-								ScanModule.default_height));
+								ScanModule.default_height), ScanModuleTypes.CLASSIC);
 				Command connCmd = new CreateSEConnection(startEvent,
 						createCmd.getScanModule());
 				compositeCmd = createCmd.chain(connCmd);

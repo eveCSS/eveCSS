@@ -413,5 +413,7 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, "icons/maximize.gif").createImage());
 		imagereg.put("RESTORE", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/thin_restore_view.gif").createImage());
+		imagereg.put("SAVE", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/save_edit.gif").createImage());
 	}
 }

@@ -12,6 +12,7 @@ import org.eclipse.gef.requests.CreateRequest;
 
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.editor.gef.commands.CreateScanModule;
 import de.ptb.epics.eve.editor.gef.commands.MoveScanModule;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
@@ -54,11 +55,18 @@ public class ChainLayoutEditPolicy extends XYLayoutEditPolicy {
 	 */
 	@Override
 	protected Command getCreateCommand(CreateRequest request) {
-		logger.debug("type = " + request.getNewObjectType());
-		Object childClass = request.getNewObjectType();
-		if (childClass == ScanModule.class) {
+		if (request.getNewObjectType().equals(ScanModuleTypes.CLASSIC)) {
 			return new CreateScanModule((Chain) this.getHost().getModel(),
-					(Rectangle) this.getConstraintFor(request));
+					(Rectangle) this.getConstraintFor(request), 
+					ScanModuleTypes.CLASSIC);
+		} else if (request.getNewObjectType().equals(ScanModuleTypes.SAVE_AXIS_POSITIONS)) {
+			return new CreateScanModule((Chain) this.getHost().getModel(),
+					(Rectangle) this.getConstraintFor(request), 
+					ScanModuleTypes.SAVE_AXIS_POSITIONS);
+		} else if (request.getNewObjectType().equals(ScanModuleTypes.SAVE_CHANNEL_VALUES)) {
+			return new CreateScanModule((Chain) this.getHost().getModel(),
+					(Rectangle) this.getConstraintFor(request), 
+					ScanModuleTypes.SAVE_CHANNEL_VALUES);
 		}
 		return null;
 	}
