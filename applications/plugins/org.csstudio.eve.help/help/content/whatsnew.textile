@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.8
+
+* [Feature] incremented schema version to 2.2
+
 h2(eveTopic). Version 1.7
 
 * [Feature] incremented schema version to 2.1 due to changes in the data type of parent in scanmodule (now allowing negative integers representing orphan scan modules)

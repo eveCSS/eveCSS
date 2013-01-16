@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.8
+
+* [Feature] set default plot buffer size to 500
+
 h2(eveTopic). Version 1.7
 
 * [Bug Fix] fixed a bug where a select box for discrete values was editable

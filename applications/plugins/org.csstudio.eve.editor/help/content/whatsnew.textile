@@ -1,5 +1,19 @@
 h1(eveTopic). What's New ?
 
+h2(eveTopic). Version 1.8
+
+* [Feature] select all on focus for text inputs
+* [Feature] redesigned @ScanModuleView@
+* [Feature] added channel property __deferred trigger__, "read more":/help/topic/de.ptb.epics.eve.editor/help/content/concepts/detectorchannels.html
+* [Feature] changed default point style when plot window is created from NONE to POINT
+* [Feature] changed data file path default from @data@ to @daten@
+* [Feature] previously defined values of devices are now remembered and set as default (except for plugins)
+* [Feature] added GEF Creation Tools @Save Axes Positions@ and @Save Channel Values@
+
+* [Bug Fix] fixed a bug where settings of a plot axis were accidently been removed when the detector was changed
+* [Bug Fix] fixed a bug where multiple instances of fill option jobs could be run in parallel
+* [Bug Fix] fixed a bug where a normalize channel was requested of a non existing second plot axis due to missing initialization
+
 h2(eveTopic). Version 1.7
 
 * GEF (Graphical Editor)
