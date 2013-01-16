@@ -22,44 +22,39 @@ public class DefaultChannelTest {
 	 * Tests whether a new instance of DefaultChannel has not set its average 
 	 * count.
 	 */
-	@Test(expected=NullPointerException.class)
 	public void testAverageCountNotSet() {
-		this.channel.getAverageCount();
+		assertNull(this.channel.getAverageCount());
 	}
 	
 	/**
 	 * Tests whether a new instance of DefaultChannel has not set its max 
 	 * deviation.
 	 */
-	@Test(expected=NullPointerException.class)
 	public void testMaxDeviationNotSet() {
-		this.channel.getMaxDeviation();
+		assertNull(this.channel.getMaxDeviation());
 	}
 	
 	/**
 	 * Tests whether a new instance of DefaultChannel has not set its minimum.
 	 */
-	@Test(expected=NullPointerException.class)
 	public void testMinimumNotSet() {
-		this.channel.getMinimum();
+		assertNull(this.channel.getMinimum());
 	}
 	
 	/**
 	 * Tests whether a new instance of DefaultChannel has not set its max 
 	 * attempts.
 	 */
-	@Test(expected=NullPointerException.class)
 	public void testMaxAttemptsNotSet() {
-		this.channel.getMaxAttempts();
+		assertNull(this.channel.getMaxAttempts());
 	}
 	
 	/**
 	 * Tests whether a new instance of DefaultChannel has not set its normalize 
 	 * channel.
 	 */
-	@Test(expected=NullPointerException.class)
 	public void testNormalizeChannelNotSet() {
-		this.channel.getNormalizeId();
+		assertNull(this.channel.getNormalizeId());
 	}
 	
 	/**

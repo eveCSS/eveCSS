@@ -195,46 +195,19 @@ public class DefaultsManager {
 			LOGGER.debug("transfering defaults for "
 					+ to.getAbstractDevice().getID());
 		}
-		try {
-			to.setAverageCount(from.getAverageCount());
-		} catch (NullPointerException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("no default for average count of "
-						+ to.getAbstractDevice().getID());
-			}
-		}
-		try {
+		to.setAverageCount(from.getAverageCount());
+		if (from.getMaxAttempts() != null) {
 			to.setMaxAttempts(from.getMaxAttempts());
-		} catch (NullPointerException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("no default for max attempts of "
-						+ to.getAbstractDevice().getID());
-			}
 		}
-		try {
+		if (from.getMaxDeviation() != null) {
 			to.setMaxDeviation(from.getMaxDeviation());
-		} catch (NullPointerException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("no default for max deviation of "
-						+ to.getAbstractDevice().getID());
-			}
 		}
-		try {
+		if (from.getMinimum() != null) {
 			to.setMinimum(from.getMinimum());
-		} catch (NullPointerException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("no default for minimum of "
-						+ to.getAbstractDevice().getID());
-			}
 		}
-		try {
+		if (from.getNormalizeId() != null) {
 			to.setNormalizeChannel(measuringStation.getDetectorChannelById(from
 					.getNormalizeId()));
-		} catch (NullPointerException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("no default for normalize channel of "
-						+ to.getAbstractDevice().getID());
-			}
 		}
 		to.setDeferred(from.isDeferred());
 	}
@@ -367,10 +340,21 @@ public class DefaultsManager {
 	public static DefaultsChannel getDefaultsChannel(Channel channel) {
 		DefaultsChannel defaultsChannel = new DefaultsChannel();
 		defaultsChannel.setId(channel.getDetectorChannel().getID());
-		defaultsChannel.setAverageCount(channel.getAverageCount());
-		defaultsChannel.setMaxAttempts(channel.getMaxAttempts());
-		defaultsChannel.setMinimum(channel.getMinimum());
-		defaultsChannel.setMaxDeviation(channel.getMaxDeviation());
+		if (channel.getAverageCount() != 0) {
+			defaultsChannel.setAverageCount(channel.getAverageCount());
+		}
+		if (channel.getMaxAttempts() != -1
+				&& channel.getMaxAttempts() != Integer.MIN_VALUE) {
+			defaultsChannel.setMaxAttempts(channel.getMaxAttempts());
+		}
+		if (channel.getMinimum() != Double.NaN
+				&& channel.getMinimum() != Double.NEGATIVE_INFINITY) {
+			defaultsChannel.setMinimum(channel.getMinimum());
+		}
+		if (channel.getMaxDeviation() != Double.NaN
+				&& channel.getMaxDeviation() != Double.NEGATIVE_INFINITY) {
+			defaultsChannel.setMaxDeviation(channel.getMaxDeviation());
+		}
 		defaultsChannel.setDeferred(channel.isDeferred());
 		if (channel.getNormalizeChannel() != null) {
 			defaultsChannel.setNormalizeId(channel.getNormalizeChannel().getID());
@@ -401,8 +385,8 @@ public class DefaultsManager {
 							.getDefaultsAxis(axis));
 				}
 				for (Channel channel : sm.getChannels()) {
-					// this.defaults.updateChannel(DefaultsManager
-						//	.getDefaultsChannel(channel));
+					 this.defaults.updateChannel(DefaultsManager
+							.getDefaultsChannel(channel));
 				}
 			}
 		}
