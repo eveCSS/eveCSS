@@ -28,11 +28,12 @@ public class DeleteConnection extends Command {
 		this.type = "";
 		this.event = null;
 		this.source = null;
-		this.target = null;
 		this.target = this.connector.getChildScanModule();
 		if (this.connector.getParentEvent() != null) {
+			// connection is StartEvent->ScanModule
 			this.event = this.connector.getParentEvent();
 		} else if (this.connector.getParentScanModule() != null) {
+			// connection is ScanModule->ScanModule
 			this.source = this.connector.getParentScanModule();
 			if (this.source.getAppended() != null && this.source.getAppended().
 					getChildScanModule() == target) {

@@ -20,9 +20,9 @@ public class MoveScanModule extends Command {
 	private ChangeBoundsRequest request;
 	
 	/**
-	 * Constructor.
-	 * 
-	 * @param box the current bounding box
+	 * @param scanModule
+	 * @param contraint
+	 * @param request
 	 */
 	public MoveScanModule(ScanModule scanModule, Rectangle contraint,
 			ChangeBoundsRequest request) {

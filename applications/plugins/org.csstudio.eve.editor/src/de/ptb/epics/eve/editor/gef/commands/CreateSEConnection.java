@@ -1,6 +1,5 @@
 package de.ptb.epics.eve.editor.gef.commands;
 
-import org.apache.log4j.Logger;
 import org.eclipse.gef.commands.Command;
 
 import de.ptb.epics.eve.data.scandescription.Connector;
@@ -12,10 +11,6 @@ import de.ptb.epics.eve.data.scandescription.StartEvent;
  * @since 1.6
  */
 public class CreateSEConnection extends Command {
-
-	private static Logger logger = Logger.getLogger(CreateSEConnection.class
-			.getName());
-	
 	private StartEvent source;
 	private ScanModule target;
 	private Connector conn;
@@ -49,9 +44,7 @@ public class CreateSEConnection extends Command {
 	 */
 	@Override
 	public void execute() {
-		logger.debug("execute");
-		this.source.setConnector(conn);
-		this.target.setParent(conn);
+		this.redo();
 	}
 	
 	/**
@@ -59,7 +52,6 @@ public class CreateSEConnection extends Command {
 	 */
 	@Override
 	public void undo() {
-		logger.debug("undo");
 		this.source.setConnector(null);
 		this.target.setParent(null);
 	}
@@ -69,7 +61,6 @@ public class CreateSEConnection extends Command {
 	 */
 	@Override
 	public void redo() {
-		logger.debug("redo");
 		this.source.setConnector(conn);
 		this.target.setParent(conn);
 	}

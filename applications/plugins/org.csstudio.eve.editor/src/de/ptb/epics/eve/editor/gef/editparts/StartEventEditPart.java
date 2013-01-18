@@ -9,11 +9,13 @@ import org.apache.log4j.Logger;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import de.ptb.epics.eve.data.scandescription.StartEvent;
+import de.ptb.epics.eve.editor.gef.editpolicies.StartEventGraphicalNodeEditPolicy;
 import de.ptb.epics.eve.editor.gef.figures.StartEventFigure;
 
 /**
@@ -96,6 +98,8 @@ public class StartEventEditPart extends AbstractGraphicalEditPart implements
 	 */
 	@Override
 	protected void createEditPolicies() {
+		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE,
+				new StartEventGraphicalNodeEditPolicy());
 	}
 	
 	/**

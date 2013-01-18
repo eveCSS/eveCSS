@@ -6,6 +6,7 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.XYAnchor;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 
@@ -28,6 +29,8 @@ public class StartEventFigure extends Figure {
 	private int height;
 	private int diameter;
 	
+	private StartEventFigure self;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -45,6 +48,7 @@ public class StartEventFigure extends Figure {
 		this.setSize(this.width, this.height);
 		this.setLocation(new Point(this.x, this.y));
 		this.sourceAnchor = null;
+		this.self = this;
 	}
 	
 	/**
@@ -83,7 +87,16 @@ public class StartEventFigure extends Figure {
 		if (this.sourceAnchor == null) {
 			this.sourceAnchor = new XYAnchor(new Point(
 					(this.getLocation().x + width) / 2 + this.diameter/2,
-					this.getLocation().y + this.diameter/2));
+					this.getLocation().y + this.diameter/2)) {
+				@Override
+				public Point getLocation(Point reference) {
+					Rectangle bounds = Rectangle.SINGLETON;
+					bounds.setBounds(self.getBounds());
+					self.translateToAbsolute(bounds);
+					return new Point(bounds.x + bounds.width/2, 
+							bounds.y + diameter/2);
+				}
+			};
 		}
 		return this.sourceAnchor;
 	}

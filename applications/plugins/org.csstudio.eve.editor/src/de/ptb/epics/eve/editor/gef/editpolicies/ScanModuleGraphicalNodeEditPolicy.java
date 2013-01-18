@@ -60,7 +60,11 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 			connectionCmd.setTargetModule(target);
 			return connectionCmd;
 		} else if (startCmd instanceof CreateSEConnection) {
-			// TODO 
+			ScanModule target = ((ScanModuleEditPart) request
+					.getTargetEditPart()).getModel();
+			CreateSEConnection connectionCmd = (CreateSEConnection)startCmd;
+			connectionCmd.setTargetModule(target);
+			return connectionCmd;
 		}
 		return null;
 	}

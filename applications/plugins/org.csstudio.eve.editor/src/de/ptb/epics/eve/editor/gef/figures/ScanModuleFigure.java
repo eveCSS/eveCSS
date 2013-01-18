@@ -47,6 +47,8 @@ public class ScanModuleFigure extends Shape {
 	private XYAnchor appendedAnchor;
 	private XYAnchor nestedAnchor;
 	
+	private Shape self;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -77,6 +79,8 @@ public class ScanModuleFigure extends Shape {
 		this.setOpaque(true);
 		this.setSize(this.width, this.height);
 		this.setLocation(new Point(this.x, this.y));
+		
+		this.self = this;
 	}
 
 	/**
@@ -321,7 +325,16 @@ public class ScanModuleFigure extends Shape {
 	public XYAnchor getAppendedAnchor() {
 		if (this.appendedAnchor == null) {
 			this.appendedAnchor = new XYAnchor(new Point(this.x + this.width,
-					this.y + this.height / 2));
+					this.y + this.height / 2)) {
+				@Override
+				public Point getLocation(Point reference) {
+					Rectangle bounds = Rectangle.SINGLETON;
+					bounds.setBounds(self.getBounds());
+					self.translateToAbsolute(bounds);
+					return new Point(bounds.x + bounds.width, bounds.y
+							+ bounds.height / 2);
+				}
+			};
 		}
 		return appendedAnchor;
 	}
@@ -334,7 +347,16 @@ public class ScanModuleFigure extends Shape {
 	public XYAnchor getNestedAnchor() {
 		if (this.nestedAnchor == null) {
 			this.nestedAnchor = new XYAnchor(new Point(this.x + this.width / 2,
-					this.y + this.height));
+					this.y + this.height)) {
+				@Override
+				public Point getLocation(Point reference) {
+					Rectangle bounds = Rectangle.SINGLETON;
+					bounds.setBounds(self.getBounds());
+					self.translateToAbsolute(bounds);
+				return new Point(bounds.x + bounds.width / 2, bounds.y
+						+ bounds.height);
+				}
+			};
 		}
 		return nestedAnchor;
 	}
@@ -347,7 +369,15 @@ public class ScanModuleFigure extends Shape {
 	public XYAnchor getTargetAnchor() {
 		if (this.targetAnchor == null) {
 			this.targetAnchor = new XYAnchor(new Point(this.x, this.y
-					+ this.height / 2));
+					+ this.height / 2)){
+				@Override
+				public Point getLocation(Point reference) {
+					Rectangle bounds = Rectangle.SINGLETON;
+					bounds.setBounds(self.getBounds());
+					self.translateToAbsolute(bounds);
+					return new Point(bounds.x, bounds.y + bounds.height/2);
+				}
+			};
 		}
 		return targetAnchor;
 	}
