@@ -10,7 +10,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Logger;
 
+import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.Motor;
+import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
@@ -1256,6 +1261,58 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			PropertyChangeListener listener) {
 		this.propertyChangeSupport.removePropertyChangeListener(
 				propertyName, listener);
+	}
+	
+	/**
+	 * Adds all available motor axes of the given device definition to the 
+	 * scan module setting each to motion disabled.
+	 * 
+	 * @param measuringStation the device definition containing the axes
+	 * @since 1.9
+	 */
+	public void saveAllAxisPositions(IMeasuringStation measuringStation) {
+		// get available motor axes
+		List<MotorAxis> motorAxes = new ArrayList<MotorAxis>();
+		for(Motor m : measuringStation.getMotors()) {
+			for(MotorAxis ma : m.getAxes()) {
+				motorAxes.add(ma);
+			}
+		}
+		// create axes
+		for(MotorAxis ma : motorAxes) {
+			final Axis axis = new Axis(this);
+			axis.setMotorAxis(ma);
+			axis.setStepfunction(Stepfunctions.PLUGIN);
+			PlugIn motionDisabled = measuringStation
+					.getPluginByName("MotionDisabled");
+			axis.setPluginController(new PluginController(motionDisabled));
+			axis.getPluginController().setPlugin(motionDisabled);
+			this.add(axis);
+		}
+	}
+	
+	/**
+	 * Adds all available detector channels of the given device definition to 
+	 * the scan module setting each to average count 1.
+	 * 
+	 * @param measuringStation the device definition containing the channels
+	 * @since 1.9
+	 */
+	public void saveAllChannelValues(IMeasuringStation measuringStation) {
+		// get available channels
+		List<DetectorChannel> detectorChannels = new ArrayList<DetectorChannel>();
+		for (Detector det : measuringStation.getDetectors()) {
+			for (DetectorChannel ch : det.getChannels()) {
+				detectorChannels.add(ch);
+			}
+		}
+		// creating channels
+		for (DetectorChannel ch : detectorChannels) {
+			Channel channel = new Channel(this);
+			channel.setDetectorChannel(ch);
+			channel.setAverageCount(1);
+			this.add(channel);
+		}
 	}
 	
 	/**

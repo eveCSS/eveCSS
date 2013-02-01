@@ -7,6 +7,7 @@ import org.eclipse.gef.commands.Command;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
+import de.ptb.epics.eve.editor.jobs.filloptions.SaveAllAxisPositions;
 
 /**
  * @author Marcus Michalsky
@@ -44,6 +45,7 @@ public class CreateScanModule extends Command {
 		logger.debug("execute");
 		this.scanModule.setX(this.bounds.x);
 		this.scanModule.setY(this.bounds.y);
+		this.chain.add(this.scanModule);
 		String name = "";
 		switch (this.scanModule.getType()) {
 		case CLASSIC:
@@ -51,13 +53,16 @@ public class CreateScanModule extends Command {
 			break;
 		case SAVE_AXIS_POSITIONS:
 			name = "S APOS";
+			this.scanModule.saveAllAxisPositions(this.chain
+					.getScanDescription().getMeasuringStation());
 			break;
 		case SAVE_CHANNEL_VALUES:
 			name = "S CVAL";
+			this.scanModule.saveAllChannelValues(this.chain
+					.getScanDescription().getMeasuringStation());
 			break;
 		}
 		this.scanModule.setName(name);
-		this.chain.add(this.scanModule);
 	}
 	
 	/**
