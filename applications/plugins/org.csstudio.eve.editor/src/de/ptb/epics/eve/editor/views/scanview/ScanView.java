@@ -277,6 +277,9 @@ public class ScanView extends ViewPart implements IEditorView,
 		String tooltip = "The file name where the data should be saved.\n " +
 						"The following macros can be used:\n" + 
 						"${WEEK} : calendar week\n" + 
+						"${YEAR} : year as yyyy" + 
+						"${MONTH} : month as MM" + 
+						"${DAY} : day as dd" +
 						"${DATE} : date as yyyyMMdd (e.g., 20111231)\n" + 
 						"${DATE-} : date as yyyy-MM-dd (e.g., 2011-12-31)\n" + 
 						"${TIME} : time as HHmmss\n" +
