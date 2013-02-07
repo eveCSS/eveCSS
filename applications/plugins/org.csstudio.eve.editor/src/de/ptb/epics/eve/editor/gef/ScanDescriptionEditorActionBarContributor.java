@@ -5,9 +5,13 @@ import org.eclipse.gef.ui.actions.DeleteRetargetAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.RedoRetargetAction;
 import org.eclipse.gef.ui.actions.UndoRetargetAction;
+import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.ActionFactory;
+
+import de.ptb.epics.eve.editor.Activator;
 
 /**
  * @author Marcus Michalsky
@@ -30,8 +34,16 @@ public class ScanDescriptionEditorActionBarContributor extends
 		//toolBarManager.add(getAction(ActionFactory.UNDO.getId()));
 		//toolBarManager.add(getAction(ActionFactory.REDO.getId()));
 		//toolBarManager.add(getAction(ActionFactory.DELETE.getId()));
-		// toolBarManager.add(new Separator());
-		// toolBarManager.add(new ZoomComboContributionItem(getPage())); // TODO Zoom
+		//toolBarManager.add(new Separator());
+		toolBarManager.add(new ZoomComboContributionItem(getPage()) {
+			@Override
+			public boolean isVisible() {
+				return Activator.getDefault().getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage()
+						.getPerspective().getId().equals("EveEditorPerpective");
+			}
+		});
+			
 	}
 
 	/**
