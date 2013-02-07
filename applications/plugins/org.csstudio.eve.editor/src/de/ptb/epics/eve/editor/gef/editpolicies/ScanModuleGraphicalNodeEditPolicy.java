@@ -76,6 +76,8 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 	protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
 		String type = ((ScanModuleFigure) this.scanModuleEditPart.getFigure())
 				.getConnectionType(request.getLocation());
+		logger.debug("Location: (" + request.getLocation().x + ", "
+				+ request.getLocation().y + ")");
 		if (type.equals(Connector.APPENDED)) {
 			if (this.scanModule.getAppended() != null) {
 				return null;

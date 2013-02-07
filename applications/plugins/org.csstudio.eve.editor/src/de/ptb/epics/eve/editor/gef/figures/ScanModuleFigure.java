@@ -142,9 +142,22 @@ public class ScanModuleFigure extends Shape {
 	 * Empty String otherwise.
 	 */
 	public String getConnectionType(Point p) {
-		if (p.x < this.x + this.width && p.x > this.x + 2*this.width/3) {
+		Rectangle bounds = Rectangle.SINGLETON;
+		bounds.setLocation(p.x, p.y);
+		self.translateToRelative(bounds);
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("SM Location: (" + this.x + ", " + this.y + ")");
+			logger.debug("Location (absolute): (" + p.x + ", " + p.y + ")");
+			logger.debug("Location (relative): (" + bounds.x + ", " + bounds.y
+					+ ")");
+		}
+		
+		if (bounds.x < this.x + this.width
+				&& bounds.x > this.x + 2 * this.width / 3) {
 			return Connector.APPENDED;
-		} else if (p.y < this.y + this.height && p.y > this.y + this.height/2) {
+		} else if (bounds.y < this.y + this.height
+				&& bounds.y > this.y + this.height / 2) {
 			return Connector.NESTED;
 		}
 		return "";
