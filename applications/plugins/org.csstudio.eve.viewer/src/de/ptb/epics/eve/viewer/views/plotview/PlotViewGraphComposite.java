@@ -36,6 +36,8 @@ public class PlotViewGraphComposite extends Composite implements
 	private String motorId;
 	private boolean detector1normalized;
 	private boolean detector2normalized;
+	private String detector1normalizedId;
+	private String detector2normalizedId;
 	private int detector1PosCount;
 	private int detector2PosCount;
 	private int posCount;
@@ -166,17 +168,20 @@ public class PlotViewGraphComposite extends Composite implements
 		timestamp_det2 = null;
 
 		traceNameForDet1 = detector1Name;
+		detector1normalizedId = detector1Id;
 		if (detector1normalized) {
-			traceNameForDet1 += " / "
-					+ plotWindow.getYAxes().get(0).getNormalizeChannel()
-							.getName();
+			String normalizeId = plotWindow.getYAxes().get(0).getNormalizeChannel().getID();
+			String normalizeName = plotWindow.getYAxes().get(0).getNormalizeChannel().getName();
+			traceNameForDet1 += " / " + normalizeName;
+			detector1normalizedId = detector1Id + "__" + normalizeId;
 		}
-
+		detector2normalizedId = detector2Id;
 		traceNameForDet2 = detector2Name;
 		if (detector2normalized) {
-			traceNameForDet2 += " / "
-					+ plotWindow.getYAxes().get(1).getNormalizeChannel()
-							.getName();
+			String normalizeId = plotWindow.getYAxes().get(1).getNormalizeChannel().getID();
+			String normalizeName = plotWindow.getYAxes().get(1).getNormalizeChannel().getName();
+			traceNameForDet1 += " / " + normalizeName;
+			detector2normalizedId = detector2Id + "__" + normalizeId;
 		}
 
 		// update first y axis
@@ -289,86 +294,62 @@ public class PlotViewGraphComposite extends Composite implements
 
 		// are we still in the same scan module of the same chain ?
 		if ((measurementData.getChainId() == chid)
-				&& (measurementData.getScanModuleId() == smid)) {
+				&& (measurementData.getScanModuleId() == smid)
+				&& (measurementData.getDataModifier() == DataModifier.UNMODIFIED
+				|| measurementData.getDataModifier() == DataModifier.NORMALIZED)) {
 			// since measurementDataTransmitted each time ANY data is
 			// transmitted we have to distinguish it
 
 			// detector 1 data ?
 			if (this.detector1Id != null
-					&& this.detector1Id.equals(measurementData.getName())) {
+					&& this.detector1normalizedId.equals(measurementData.getName())) {
 				detector1PosCount = measurementData.getPositionCounter();
 				DataType datatype = measurementData.getDataType();
 
-				if (!detector1normalized
-						&& measurementData.getDataModifier() == DataModifier.UNMODIFIED) {
-					switch (datatype) {
-					case INT32:
-						y1value = ((Integer) measurementData.getValues().get(0))
-								.doubleValue();
-						detector1HasData = true;
-						break;
-					case DOUBLE:
-						y1value = (Double) measurementData.getValues().get(0);
-						detector1HasData = true;
-						break;
-					case DATETIME:
-						timestamp_det1 = new TimeStamp(
-								measurementData.getGerenalTimeStamp(),
-								measurementData.getNanoseconds());
-						detector1HasData = true;
-						break;
-					default:
-						break;
-					}
-				} else if (detector1normalized
-						&& measurementData.getDataModifier() == DataModifier.NORMALIZED) {
-					switch (datatype) {
-					case DOUBLE:
-						y1value = (Double) measurementData.getValues().get(0);
-						detector1HasData = true;
-						break;
-					default:
-						break;
-					}
+				switch (datatype) {
+				case INT32:
+					y1value = ((Integer) measurementData.getValues().get(0))
+					.doubleValue();
+					detector1HasData = true;
+					break;
+				case DOUBLE:
+					y1value = (Double) measurementData.getValues().get(0);
+					detector1HasData = true;
+					break;
+				case DATETIME:
+					timestamp_det1 = new TimeStamp(
+							measurementData.getGerenalTimeStamp(),
+							measurementData.getNanoseconds());
+					detector1HasData = true;
+					break;
+				default:
+					break;
 				}
 			}
 			// detector 2 data ?
 			if (this.detector2Id != null
-					&& this.detector2Id.equals(measurementData.getName())) {
+					&& this.detector2normalizedId.equals(measurementData.getName())) {
 				detector2PosCount = measurementData.getPositionCounter();
 				DataType datatype = measurementData.getDataType();
 
-				if (!detector2normalized
-						&& measurementData.getDataModifier() == DataModifier.UNMODIFIED) {
-					switch (datatype) {
-					case INT32:
-						y2value = ((Integer) measurementData.getValues().get(0))
-								.doubleValue();
-						detector2HasData = true;
-						break;
-					case DOUBLE:
-						y2value = (Double) measurementData.getValues().get(0);
-						detector2HasData = true;
-						break;
-					case DATETIME:
-						timestamp_det2 = new TimeStamp(
-								measurementData.getGerenalTimeStamp(),
-								measurementData.getNanoseconds());
-						detector2HasData = true;
-						break;
-					default:
-						break;
-					}
-				} else if (detector2normalized
-						&& measurementData.getDataModifier() == DataModifier.NORMALIZED) {
-					switch (datatype) {
-					case DOUBLE:
-						y2value = (Double) measurementData.getValues().get(0);
-						detector2HasData = true;
-						break;
-					default:
-						break;
-					}
+				switch (datatype) {
+				case INT32:
+					y2value = ((Integer) measurementData.getValues().get(0))
+					.doubleValue();
+					detector2HasData = true;
+					break;
+				case DOUBLE:
+					y2value = (Double) measurementData.getValues().get(0);
+					detector2HasData = true;
+					break;
+				case DATETIME:
+					timestamp_det2 = new TimeStamp(
+							measurementData.getGerenalTimeStamp(),
+							measurementData.getNanoseconds());
+					detector2HasData = true;
+					break;
+				default:
+					break;
 				}
 			}
 			// motor data ?

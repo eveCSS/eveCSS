@@ -204,14 +204,16 @@ public class PlotViewDetectorComposite extends Composite {
 			normalizeAxis1 = 
 				(plotWindow.getYAxes().get(0).getNormalizeChannel() != null);
 			
-			createContent(1, chid, smid, tableViewerDet1, motorPv, motorId, 
-						  detector1Id);
-			if(!normalizeAxis1)
+			if(normalizeAxis1){
+				String normalizeId = plotWindow.getYAxes().get(0).getNormalizeChannel().getID();
+				String normalizeName = plotWindow.getYAxes().get(0).getNormalizeChannel().getName();
+				createContent(1, chid, smid, tableViewerDet1, motorPv, motorId, detector1Id + "__" + normalizeId);
+				tableViewerDet1.getTable().getColumn(1).setText(detector1Name + " / " + normalizeName);
+			}
+			else {
+				createContent(1, chid, smid, tableViewerDet1, motorPv, motorId, detector1Id);
 				tableViewerDet1.getTable().getColumn(1).setText(detector1Name);
-			else
-				tableViewerDet1.getTable().getColumn(1).setText(detector1Name + 
-						" / " + plotWindow.getYAxes().get(0).
-											getNormalizeChannel().getName());
+			}
 			tableViewerDet1.getTable().getColumn(2).setText(motorName);
 			tableViewerDet1.refresh();
 			tableViewerDet1.getTable().setVisible(true);
@@ -222,15 +224,19 @@ public class PlotViewDetectorComposite extends Composite {
 			normalizeAxis2 = 
 				(plotWindow.getYAxes().get(1).getNormalizeChannel() != null);
 				
+			if(normalizeAxis2){
+				String normalizeId = plotWindow.getYAxes().get(1).getNormalizeChannel().getID();
+				String normalizeName = plotWindow.getYAxes().get(1).getNormalizeChannel().getName();
+				createContent(2, chid, smid, tableViewerDet2, motorPv, motorId, detector2Id + "__" + normalizeId);
+				tableViewerDet2.getTable().getColumn(1).setText(detector2Name + " / " + normalizeName);
+			}
+			else {
+				createContent(2, chid, smid, tableViewerDet2, motorPv, motorId, detector2Id);
+				tableViewerDet2.getTable().getColumn(1).setText(detector2Name);
+			}
 			createContent(2, chid, smid, tableViewerDet2, motorPv, motorId, 
 						  detector2Id);
 			
-			if(!normalizeAxis2)
-				tableViewerDet2.getTable().getColumn(1).setText(detector2Name);
-			else
-				tableViewerDet2.getTable().getColumn(1).setText(detector2Name + 
-						" / " + plotWindow.getYAxes().get(1).
-											getNormalizeChannel().getName());
 			tableViewerDet2.getTable().getColumn(2).setText(motorName);
 			tableViewerDet2.refresh();
 			tableViewerDet2.getTable().setVisible(true);
