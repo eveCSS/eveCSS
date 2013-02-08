@@ -1152,6 +1152,17 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData.horizontalAlignment = GridData.FILL;
 				smText.setLayoutData(gridData);
 				
+				Label numOfMeasurementsLabel = new Label(chainShell,SWT.NONE);
+				numOfMeasurementsLabel.setText("Number of Measurements:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				numOfMeasurementsLabel.setLayoutData(gridData);
+				Label numOfMeasurementsText = new Label(chainShell,SWT.NONE);
+				numOfMeasurementsText.setText(""+displayChain.getScanModuleById(aktSM).getValueCount());
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				numOfMeasurementsText.setLayoutData(gridData);
+				
 				Label trigDelLabel = new Label(chainShell,SWT.NONE);
 				trigDelLabel.setText("Trigger delay:");
 				gridData = new GridData();
@@ -1174,32 +1185,37 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData.horizontalAlignment = GridData.FILL;
 				settleText.setLayoutData(gridData);
 				
-				Label confLabel = new Label(chainShell,SWT.NONE);
-				confLabel.setText("Confirm Trigger:");
+				Label confLabelMot = new Label(chainShell,SWT.NONE);
+				confLabelMot.setText("Confirm Trigger Motors:");
 				gridData = new GridData();
 				gridData.horizontalAlignment = GridData.FILL;
-				confLabel.setLayoutData(gridData);
-				Label confText = new Label(chainShell,SWT.NONE);
+				confLabelMot.setLayoutData(gridData);
+				Label confTextMot = new Label(chainShell,SWT.NONE);
 				if (displayChain.getScanModuleById(aktSM).isTriggerConfirmAxis()) {
-					confText.setText(" YES ");
+					confTextMot.setText(" YES ");
 				}
 				else {
-					confText.setText(" NO ");
+					confTextMot.setText(" NO ");
 				}
 				gridData = new GridData();
 				gridData.horizontalAlignment = GridData.FILL;
-				confText.setLayoutData(gridData);
+				confTextMot.setLayoutData(gridData);
 				
-				Label saveMotLabel = new Label(chainShell,SWT.NONE);
-				saveMotLabel.setText("Save all motorpositions:");
+				Label confLabelDet = new Label(chainShell,SWT.NONE);
+				confLabelDet.setText("Confirm Trigger Detectors:");
 				gridData = new GridData();
 				gridData.horizontalAlignment = GridData.FILL;
-				saveMotLabel.setLayoutData(gridData);
-				Label saveMotText = new Label(chainShell,SWT.NONE);
-				// TODO remove Label
+				confLabelDet.setLayoutData(gridData);
+				Label confTextDet = new Label(chainShell,SWT.NONE);
+				if (displayChain.getScanModuleById(aktSM).isTriggerConfirmChannel()) {
+					confTextDet.setText(" YES ");
+				}
+				else {
+					confTextDet.setText(" NO ");
+				}
 				gridData = new GridData();
 				gridData.horizontalAlignment = GridData.FILL;
-				saveMotText.setLayoutData(gridData);
+				confTextDet.setLayoutData(gridData);
 				
 				// Tabelle für die Motor Axes erzeugen
 				gridData = new GridData();
