@@ -7,7 +7,6 @@ import org.eclipse.gef.commands.Command;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
-import de.ptb.epics.eve.editor.jobs.filloptions.SaveAllAxisPositions;
 
 /**
  * @author Marcus Michalsky

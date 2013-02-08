@@ -24,9 +24,7 @@ public class ScanDescriptionEditPart extends AbstractGraphicalEditPart {
 			.getLogger(ScanDescriptionEditPart.class.getName());
 	
 	/**
-	 * Constructor.
-	 * 
-	 * @param scanDescription 
+	 * @param scanDescription the corresponding model
 	 */
 	public ScanDescriptionEditPart(ScanDescription scanDescription) {
 		this.setModel(scanDescription);
@@ -45,6 +43,8 @@ public class ScanDescriptionEditPart extends AbstractGraphicalEditPart {
 
 	/**
 	 * Returns the model of this edit part.
+	 * 
+	 * @return the model
 	 */
 	public ScanDescription getModel() {
 		return (ScanDescription) super.getModel();
@@ -73,10 +73,12 @@ public class ScanDescriptionEditPart extends AbstractGraphicalEditPart {
 				new RootComponentEditPolicy());
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean understandsRequest(Request request) {
 		logger.debug(request.getType());
-		// TODO Auto-generated method stub
 		return super.understandsRequest(request);
 	}
 }
