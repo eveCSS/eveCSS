@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.editor.gef.editpolicies;
 
 import org.apache.log4j.Logger;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
@@ -10,11 +11,13 @@ import org.eclipse.gef.requests.ReconnectRequest;
 
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.StartEvent;
 import de.ptb.epics.eve.editor.gef.commands.CreateSEConnection;
 import de.ptb.epics.eve.editor.gef.commands.CreateSMConnection;
 import de.ptb.epics.eve.editor.gef.commands.DeleteConnection;
 import de.ptb.epics.eve.editor.gef.editparts.ConnectionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
+import de.ptb.epics.eve.editor.gef.editparts.StartEventEditPart;
 import de.ptb.epics.eve.editor.gef.figures.ScanModuleFigure;
 
 /**
@@ -44,8 +47,8 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 	 */
 	@Override
 	protected Command getConnectionCompleteCommand(CreateConnectionRequest request) {
-		Command startCmd = request.getStartCommand();
-		if (startCmd instanceof CreateSMConnection) {
+		EditPart sourceEditPart = request.getSourceEditPart();
+		if (sourceEditPart instanceof ScanModuleEditPart) {
 			ScanModule target = ((ScanModuleEditPart) request
 					.getTargetEditPart()).getModel();
 			ScanModule source = ((ScanModuleEditPart) request
@@ -56,15 +59,19 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 			if (target.getParent() != null) {
 				return null;
 			}
-			CreateSMConnection connectionCmd = (CreateSMConnection)startCmd;
+			CreateSMConnection connectionCmd = (CreateSMConnection) request
+					.getStartCommand();
 			connectionCmd.setTargetModule(target);
 			return connectionCmd;
-		} else if (startCmd instanceof CreateSEConnection) {
+		} else if (sourceEditPart instanceof StartEventEditPart) {
 			ScanModule target = ((ScanModuleEditPart) request
 					.getTargetEditPart()).getModel();
-			CreateSEConnection connectionCmd = (CreateSEConnection)startCmd;
-			connectionCmd.setTargetModule(target);
-			return connectionCmd;
+			StartEvent source = ((StartEventEditPart) request
+					.getSourceEditPart()).getModel();
+			if (target.getParent() != null) {
+				return null;
+			}
+			return new CreateSEConnection(source, target);
 		}
 		return null;
 	}
@@ -74,6 +81,7 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 	 */
 	@Override
 	protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
+		logger.debug("GETCONNECTIONCREATE SM GNodeEPol");
 		String type = ((ScanModuleFigure) this.scanModuleEditPart.getFigure())
 				.getConnectionType(request.getLocation());
 		logger.debug("Location: (" + request.getLocation().x + ", "
@@ -172,13 +180,22 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 					RequestConstants.REQ_CONNECTION_END)) {
 				ScanModuleEditPart target = (ScanModuleEditPart) 
 						((CreateConnectionRequest) request).getTargetEditPart();
-				ScanModuleEditPart source = (ScanModuleEditPart) 
-						((CreateConnectionRequest) request).getSourceEditPart();
-				if (source != target && target.getModel().getParent() == null) {
-					figure.setParent_feedback(true);
-					logger.debug("parent feedback");
-				} else {
-					logger.debug("no parent possible");
+				EditPart source = ((CreateConnectionRequest) request)
+						.getSourceEditPart();
+				if (source instanceof ScanModuleEditPart) {
+					if (source != target && target.getModel().getParent() == null) {
+						figure.setParent_feedback(true);
+						logger.debug("parent feedback");
+					} else {
+						logger.debug("no parent possible");
+					}
+				} else if (source instanceof StartEventEditPart) {
+					if (target.getModel().getParent() == null) {
+						figure.setParent_feedback(true);
+						logger.debug("parent feedback");
+					} else {
+						logger.debug("no parent possible");
+					}
 				}
 			}
 			this.scanModuleEditPart.getFigure().repaint();

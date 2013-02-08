@@ -20,9 +20,9 @@ public class MoveScanModule extends Command {
 	private ChangeBoundsRequest request;
 	
 	/**
-	 * @param scanModule
-	 * @param contraint
-	 * @param request
+	 * @param scanModule the scan module to be moved
+	 * @param contraint the constraint
+	 * @param request the request
 	 */
 	public MoveScanModule(ScanModule scanModule, Rectangle contraint,
 			ChangeBoundsRequest request) {
@@ -52,6 +52,9 @@ public class MoveScanModule extends Command {
 		this.scanModule.setY(this.oldBox.y);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void redo() {
 		this.scanModule.setX(this.box.x);

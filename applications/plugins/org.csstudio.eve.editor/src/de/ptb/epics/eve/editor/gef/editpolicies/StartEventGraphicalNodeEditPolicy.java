@@ -14,7 +14,7 @@ import de.ptb.epics.eve.editor.gef.editparts.StartEventEditPart;
  * @since 1.9
  */
 public class StartEventGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -28,9 +28,12 @@ public class StartEventGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 	 */
 	@Override
 	protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
-		StartEvent startEvent = ((StartEventEditPart) request
+		StartEvent source = ((StartEventEditPart) request
 				.getTargetEditPart()).getModel();
-		return new CreateSEConnection(startEvent, null);
+		if (source.getConnector() != null) {
+			return null;
+		}
+		return new CreateSEConnection(source, null);
 	}
 
 	/**
