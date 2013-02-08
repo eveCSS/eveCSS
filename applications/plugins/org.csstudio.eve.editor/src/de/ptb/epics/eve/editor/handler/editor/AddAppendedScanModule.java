@@ -69,7 +69,7 @@ public class AddAppendedScanModule extends AbstractHandler {
 						scanModule.getChain(), new Rectangle(
 								scanModule.getX() + 130, scanModule.getY(),
 								scanModule.getWidth(), scanModule.getHeight()),
-						scanModule.getType());
+						ScanModuleTypes.CLASSIC);
 				Command connCmd = new CreateSMConnection(scanModule,
 						createCmd.getScanModule(), Connector.APPENDED);
 				compositeCmd = createCmd.chain(connCmd);

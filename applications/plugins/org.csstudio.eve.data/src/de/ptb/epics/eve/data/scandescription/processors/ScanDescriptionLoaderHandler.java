@@ -1510,6 +1510,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_PARENT_READ:
 			if (qName.equals("parent")) {
+				if (this.currentRelationReminder.getParent() == 0) {
+					// TODO
+				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 			}
 			break;
@@ -2102,6 +2105,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		// set the start event or
 		// define a default start event for chains without startevent tag
 		// add connectors
+		
 		for (Chain loopChain : this.chainList) {
 			Event startEvent;
 			Iterator<ControlEvent> chainStartEventIt = loopChain
@@ -2120,14 +2124,16 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			se.setChain(loopChain);
 			se.setEvent(startEvent);
 			loopChain.setStartEvent(se);
-			for (ScanModule loopScanModule : loopChain.getScanModules()) {
-				if (loopScanModule.getParent() == null) {
+			
+			// determine the scan module with parent 0 if any
+			// which is appended to the start event
+			for(ScanModulRelationReminder reminder : this.relationReminders) {
+				if (reminder.getParent() == 0) {
 					Connector connector = new Connector();
 					connector.setParentEvent(se);
-					connector.setChildScanModule(loopScanModule);
+					connector.setChildScanModule(reminder.getScanModul());
 					se.setConnector(connector);
-					loopScanModule.setParent(connector);
-					break;
+					reminder.getScanModul().setParent(connector);
 				}
 			}
 		}

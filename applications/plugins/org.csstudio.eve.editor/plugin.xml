@@ -249,6 +249,29 @@
                </visibleWhen>
             </command>
          </toolbar>
+         <toolbar
+               id="de.ptb.epics.eve.editor.toolbar.zoom">
+            <command
+                  commandId="org.eclipse.gef.zoom_in"
+                  icon="icons/zoom_plus.gif"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="org.eclipse.gef.zoom_out"
+                  icon="icons/zoom_minus.gif"
+                  style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </visibleWhen>
+            </command>
+         </toolbar>
       </menuContribution>
       <menuContribution
             locationURI="popup:de.ptb.epics.eve.editor.views.eventcomposite.tablepopup">

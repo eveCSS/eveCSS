@@ -17,6 +17,9 @@ p. The __Filename__ defines the name of the data file. You can use the macros sh
 table(eveRefTable).
 |_. Macro |_. Description|
 |_. ${WEEK} |_. calendar week|
+|_. ${YEAR} |_. year as yyyy|
+|_. ${MONTH} |_. month as MM|
+|_. ${DAY} |_. day as dd|
 |_. ${DATE} |_. date as yyyyMMdd (e.g., 20111231)|
 |_. ${DATE-} |_. date as yyyy-MM-dd (e.g., 2011-12-31)|
 |_. ${TIME} |_. time as HHmmss|

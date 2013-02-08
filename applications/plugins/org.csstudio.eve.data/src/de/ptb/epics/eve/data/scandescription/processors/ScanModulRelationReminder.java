@@ -1,19 +1,13 @@
-/*******************************************************************************
- * Copyright (c) 2001, 2007 Physikalisch Technische Bundesanstalt.
- * All rights reserved.
- * 
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
 package de.ptb.epics.eve.data.scandescription.processors;
 
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 
 /**
- * This class represents a relation between two scan modules an is used during the loading of a scan description.
+ * This class represents a relation between two scan modules an is used during
+ * the loading of a scan description.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
- *
+ * 
  */
 public class ScanModulRelationReminder {
 
@@ -21,28 +15,29 @@ public class ScanModulRelationReminder {
 	 * The scan module.
 	 */
 	private ScanModule scanModul;
-	
+
 	/**
 	 * the id of the parent scan module.
 	 */
 	private int parent;
-	
+
 	/**
 	 * The id of the the appended scan module.
 	 */
 	private int appended;
-	
+
 	/**
 	 * The id of the nested scan module.
 	 */
 	private int nested;
-	
+
 	/**
 	 * This constructor creates a new reminder.
 	 * 
-	 * @param scanModul The scan module.
+	 * @param scanModul
+	 *            The scan module.
 	 */
-	public ScanModulRelationReminder( final ScanModule scanModul ) {
+	public ScanModulRelationReminder(final ScanModule scanModul) {
 		this.scanModul = scanModul;
 	}
 
@@ -58,9 +53,10 @@ public class ScanModulRelationReminder {
 	/**
 	 * This method sets the id of the appended scan module.
 	 * 
-	 * @param appended The id of the appended scan module.
+	 * @param appended
+	 *            The id of the appended scan module.
 	 */
-	public void setAppended( final int appended ) {
+	public void setAppended(final int appended) {
 		this.appended = appended;
 	}
 
@@ -76,9 +72,10 @@ public class ScanModulRelationReminder {
 	/**
 	 * This method sets the id of the nested scan module.
 	 * 
-	 * @param nested The id of the nested scan module.
+	 * @param nested
+	 *            The id of the nested scan module.
 	 */
-	public void setNested( final int nested ) {
+	public void setNested(final int nested) {
 		this.nested = nested;
 	}
 
@@ -94,9 +91,10 @@ public class ScanModulRelationReminder {
 	/**
 	 * This method sets the id of the parent scan module.
 	 * 
-	 * @param parent The id of the parent scan module.
+	 * @param parent
+	 *            The id of the parent scan module.
 	 */
-	public void setParent( final int parent ) {
+	public void setParent(final int parent) {
 		this.parent = parent;
 	}
 
@@ -109,14 +107,13 @@ public class ScanModulRelationReminder {
 		return this.scanModul;
 	}
 
-	
 	/**
 	 * This method sets the scan module.
 	 * 
-	 * @param scanModul The scan module.
+	 * @param scanModul
+	 *            The scan module.
 	 */
-	public void setScanModul( final ScanModule scanModul ) {
+	public void setScanModul(final ScanModule scanModul) {
 		this.scanModul = scanModul;
 	}
-	
 }

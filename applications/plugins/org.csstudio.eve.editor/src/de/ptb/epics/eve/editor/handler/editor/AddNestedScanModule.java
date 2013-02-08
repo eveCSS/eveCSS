@@ -14,6 +14,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
 import de.ptb.epics.eve.editor.gef.commands.CreateSMConnection;
 import de.ptb.epics.eve.editor.gef.commands.CreateScanModule;
@@ -61,7 +62,7 @@ public class AddNestedScanModule extends AbstractHandler {
 					scanModule.getChain(), new Rectangle(
 							scanModule.getX() + 130, scanModule.getY() + 100,
 							scanModule.getWidth(), scanModule.getHeight()),
-					scanModule.getType());
+					ScanModuleTypes.CLASSIC);
 			Command connCmd = new CreateSMConnection(scanModule,
 					createCmd.getScanModule(), Connector.NESTED);
 			compositeCmd = createCmd.chain(connCmd);
