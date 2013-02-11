@@ -22,8 +22,10 @@ public class Request {
 	/**
 	 * Constructor.
 	 * 
-	 * @param genericRequestCommand the request command
-	 * @param ecp1Client the engine client
+	 * @param genericRequestCommand
+	 *            the request command
+	 * @param ecp1Client
+	 *            the engine client
 	 */
 	public Request(final GenericRequestCommand genericRequestCommand,
 			final ECP1Client ecp1Client) {
@@ -72,8 +74,9 @@ public class Request {
 	/**
 	 * Sends a boolean answer (i.e. yes or no).
 	 * 
-	 * @param yes <code>true</code> to answer with <i>YES</i>, 
-	 * 			<code>false</code> to answer with <i>NO</i>
+	 * @param yes
+	 *            <code>true</code> to answer with <i>YES</i>,
+	 *            <code>false</code> to answer with <i>NO</i>
 	 */
 	public void sendYesNoAnswer(final boolean yes) {
 		if (this.requestType != RequestType.YES_NO) {
@@ -90,8 +93,9 @@ public class Request {
 	/**
 	 * Sends a boolean answer (i.e. approve or decline).
 	 * 
-	 * @param ok <code>true</code> to answer <i>OK</i>, 
-	 * 			<code>false</code to answer with <i>CANCEL</i>
+	 * @param ok
+	 *            <code>true</code> to answer <i>OK</i>, <code>false</code to
+	 *            answer with <i>CANCEL</i>
 	 */
 	public void sendOkCancelAnswer(final boolean ok) {
 		if (this.requestType != RequestType.OK_CANCEL) {
@@ -109,7 +113,8 @@ public class Request {
 	/**
 	 * Sends a trigger answer.
 	 * 
-	 * @param ok unused
+	 * @param ok
+	 *            unused
 	 */
 	public void sendTriggerAnswer(final boolean ok) {
 		if (this.requestType != RequestType.TRIGGER) {
@@ -128,7 +133,8 @@ public class Request {
 	/**
 	 * Sends a (32 bit) integer answer.
 	 * 
-	 * @param value the integer to send
+	 * @param value
+	 *            the integer to send
 	 */
 	public void sendInt32Answer(final int value) {
 		if (this.requestType != RequestType.INT32) {
@@ -145,7 +151,8 @@ public class Request {
 	/**
 	 * Sends a (32 bit) floating point answer.
 	 * 
-	 * @param value the float to send
+	 * @param value
+	 *            the float to send
 	 */
 	public void sendFloat32Answer(final float value) {
 		if (this.requestType != RequestType.FLOAT32) {
@@ -163,7 +170,8 @@ public class Request {
 	/**
 	 * Sends a text answer.
 	 * 
-	 * @param text the text to send
+	 * @param text
+	 *            the text to send
 	 */
 	public void sendTextAnswer(final String text) {
 		if (this.requestType != RequestType.TEXT) {

@@ -36,8 +36,7 @@ public class MeasurementDataCommand implements IECP1Command {
 	private int gerenalTimeStamp;
 	private int nanoseconds;
 	private List<?> values;
-	
-	
+
 	public MeasurementDataCommand(int chid, int smid, int positionCounter,
 			final DataType dataType, final DataModifier dataModifier,
 			final EpicsSeverity epicsSeverity, final EpicsStatus epicsStatus,
@@ -243,27 +242,24 @@ public class MeasurementDataCommand implements IECP1Command {
 		return this.values.iterator();
 	}
 
-	
-	
-	
 	public byte[] getByteArray() throws IOException {
 		final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		final DataOutputStream dataOutputStream = new DataOutputStream(
 				byteArrayOutputStream);
-	
+
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
 		;
 		dataOutputStream.writeChar(MeasurementDataCommand.COMMAND_TYPE_ID);
-	
+
 		int length = 28;
 		length += 12; // smid, chid, positionCounter
-	
+
 		final byte[] nameBuffer = this.name
 				.getBytes(IECP1Command.STRING_ENCODING);
-	
+
 		length += nameBuffer.length;
-	
+
 		byte[][] strings = new byte[this.values.size()][];
 		switch (this.dataType) {
 		case INT8:
@@ -272,16 +268,16 @@ public class MeasurementDataCommand implements IECP1Command {
 		case INT16:
 			length += this.values.size() * 2;
 			break;
-	
+
 		case INT32:
 		case FLOAT:
 			length += this.values.size() * 4;
 			break;
-	
+
 		case DOUBLE:
 			length += this.values.size() * 8;
 			break;
-	
+
 		case STRING:
 			length += this.values.size();
 			for (int i = 0; i < this.values.size(); ++i) {
@@ -290,23 +286,23 @@ public class MeasurementDataCommand implements IECP1Command {
 				length += strings[i].length;
 			}
 			break;
-	
+
 		}
-	
+
 		dataOutputStream.writeInt(length);
 		dataOutputStream.writeInt(chid);
 		dataOutputStream.writeInt(smid);
 		dataOutputStream.writeInt(positionCounter);
-	
+
 		dataOutputStream.writeChar(0);
 		dataOutputStream.writeByte(0);
 		dataOutputStream.writeByte(DataType.dataTypeToByte(this.dataType));
-	
+
 		dataOutputStream.writeChar(0);
 		dataOutputStream.writeByte(0);
 		dataOutputStream.writeByte(DataModifier
 				.dataModifyerToByte(this.dataModifier));
-	
+
 		dataOutputStream.writeByte(EpicsSeverity
 				.epicsSeverityToByte(this.epicsSeverity));
 		dataOutputStream.writeByte(EpicsStatus
@@ -314,19 +310,19 @@ public class MeasurementDataCommand implements IECP1Command {
 		dataOutputStream.writeByte(0);
 		dataOutputStream.writeByte(AcquisitionStatus
 				.acquisitionStatusToByte(this.acquisitionStatus));
-	
+
 		dataOutputStream.writeInt(this.gerenalTimeStamp);
 		dataOutputStream.writeInt(this.nanoseconds);
-	
+
 		if (this.name.length() != 0) {
 			dataOutputStream.writeInt(nameBuffer.length);
 			dataOutputStream.write(nameBuffer);
 		} else {
 			dataOutputStream.writeInt(0xffffffff);
 		}
-	
+
 		dataOutputStream.writeInt(this.values.size());
-	
+
 		switch (this.dataType) {
 		case INT8:
 			for (int i = 0; i < this.values.size(); ++i) {
@@ -339,26 +335,26 @@ public class MeasurementDataCommand implements IECP1Command {
 						.get(i));
 			}
 			break;
-	
+
 		case INT32:
 			for (int i = 0; i < this.values.size(); ++i) {
 				dataOutputStream.writeInt(((List<Integer>) this.values).get(i));
 			}
 			break;
-	
+
 		case FLOAT:
 			for (int i = 0; i < this.values.size(); ++i) {
 				dataOutputStream.writeFloat(((List<Float>) this.values).get(i));
 			}
 			break;
-	
+
 		case DOUBLE:
 			for (int i = 0; i < this.values.size(); ++i) {
 				dataOutputStream.writeDouble(((List<Double>) this.values)
 						.get(i));
 			}
 			break;
-	
+
 		case STRING:
 			length += this.values.size();
 			for (int i = 0; i < strings.length; ++i) {
@@ -370,11 +366,11 @@ public class MeasurementDataCommand implements IECP1Command {
 				}
 			}
 			break;
-	
+
 		}
-	
+
 		dataOutputStream.close();
-	
+
 		return byteArrayOutputStream.toByteArray();
 	}
 

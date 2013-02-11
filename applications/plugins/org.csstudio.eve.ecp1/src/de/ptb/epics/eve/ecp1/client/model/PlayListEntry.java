@@ -5,10 +5,12 @@ public class PlayListEntry {
 	private int id;
 	private String name;
 	private String author;
-	
-	public PlayListEntry( final de.ptb.epics.eve.ecp1.commands.PlayListEntry playListEntry ) {
-		if( playListEntry == null ) {
-			throw new IllegalArgumentException( "The parameter 'playListEntry' must not be null!" );
+
+	public PlayListEntry(
+			final de.ptb.epics.eve.ecp1.commands.PlayListEntry playListEntry) {
+		if (playListEntry == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'playListEntry' must not be null!");
 		}
 		this.id = playListEntry.getId();
 		this.name = playListEntry.getName();
@@ -26,5 +28,4 @@ public class PlayListEntry {
 	public String getAuthor() {
 		return this.author;
 	}
-	
 }
