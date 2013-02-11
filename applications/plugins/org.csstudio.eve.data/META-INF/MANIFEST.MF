@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Data
 Bundle-SymbolicName: de.ptb.epics.eve.data;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.10.0
 Export-Package: de.ptb.epics.eve.data,
  de.ptb.epics.eve.data.measuringstation,
  de.ptb.epics.eve.data.measuringstation.exceptions,
@@ -24,3 +24,4 @@ Import-Package: de.ptb.epics.eve.util.io,
 Require-Bundle: org.eclipse.swt;bundle-version="3.7.1",
  org.csstudio.swt.xygraph;bundle-version="1.0.1",
  org.csstudio.platform.libs.log4j;bundle-version="1.2.16"
+Bundle-Vendor: PTB
