@@ -19,11 +19,10 @@ public class FileNameValidator implements IValidator {
 	public IStatus validate(Object value) {
 		String filename = String.valueOf(value);
 		File file = new File(filename);
-		if (file.exists()) {
-			return ValidationStatus.warning("File already exists!");
-		}
 		if (filename.isEmpty()) {
 			return ValidationStatus.error("Providing a file name is mandatory!");
+		} else if (!file.exists()) {
+			return ValidationStatus.warning("File does not exist!");
 		}
 		return ValidationStatus.ok();
 	}
