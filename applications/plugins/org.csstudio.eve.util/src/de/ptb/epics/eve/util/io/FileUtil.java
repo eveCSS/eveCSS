@@ -1,12 +1,16 @@
 package de.ptb.epics.eve.util.io;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Marcus Michalsky
@@ -66,5 +70,23 @@ public class FileUtil {
 		} finally {
 			stream.close();
 		}
+	}
+	
+	/**
+	 * 
+	 * @param path
+	 * @return
+	 * @throws IOException
+	 */
+	public static List<String> readLines(String path) throws IOException {
+		List<String> result = new ArrayList<String>();
+		FileInputStream stream = new FileInputStream(new File(path));
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream,
+				Charset.forName("UTF-8")));
+		String line;
+		while((line = br.readLine()) != null) {
+			result.add(line);
+		}
+		return result;
 	}
 }
