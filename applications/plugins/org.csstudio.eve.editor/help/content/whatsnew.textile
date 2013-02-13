@@ -1,5 +1,17 @@
 h1(eveTopic). What's New ?
 
+h2(eveTopic). Version 1.9
+
+* [Feature] Added data filename macros for year, month and day
+* [Feature] Added zoom capability to the GEF Editor
+
+* [Bug Fix] fixed a bug where the connections in the GEF Editor were corrupted after scrolling
+* [Bug Fix] fixed a bug where adding a scan module to a scan module of type other than classic caused the added scan module to be of the same type
+* [Bug Fix] fixed a bug where non-classic type scan modules were not filled as intended during creation
+* [Bug Fix] fixed a bug where the scan module appended to the start event was not saved properly
+* [Bug Fix] fixed a bug where the connection create tool could not be used with the start event as source
+* [Bug Fix] fixed a bug where the validation feedback of a given file name (axis positions) was not correct
+
 h2(eveTopic). Version 1.8
 
 * [Feature] select all on focus for text inputs
