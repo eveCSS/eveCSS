@@ -19,7 +19,7 @@ import de.ptb.epics.eve.util.io.FileUtil;
 public class FileUtilTest {
 	
 	/**
-	 * 
+	 * Tests whether an UTF-8 encoded file is read.
 	 */
 	@Test
 	public void testReadFile() {
@@ -32,7 +32,7 @@ public class FileUtilTest {
 	}
 	
 	/**
-	 * 
+	 * Tests whether reading a non-UTF-8 encoded file fails as expected.
 	 */
 	@Test
 	public void testReadFileFail() {
@@ -46,7 +46,8 @@ public class FileUtilTest {
 	}
 	
 	/**
-	 * 
+	 * Tests whether the carriage return and line feed characters are 
+	 * recognized.
 	 */
 	@Test
 	public void testReadLines() {

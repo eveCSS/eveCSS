@@ -49,13 +49,14 @@ public class FileUtil {
 	}
 	
 	/**
+	 * Reads a file into a String.
 	 * 
-	 * 
-	 * Thanks to http://stackoverflow.com/a/326440 (referenced 2013-02-13)
-	 * 
-	 * @param path
-	 * @return
-	 * @throws IOException
+	 * @param path the path to the file
+	 * @return the contents of the file
+	 * @throws IOException see {@link java.io.FileInputStream}
+	 * @see "http://stackoverflow.com/a/326440"
+	 * @author Marcus Michalsky
+	 * @since 1.10
 	 */
 	public static String readFile(String path) throws IOException {
 		FileInputStream stream = new FileInputStream(new File(path));
@@ -73,10 +74,13 @@ public class FileUtil {
 	}
 	
 	/**
+	 * Reads the lines of a file into a list of Strings.
 	 * 
-	 * @param path
-	 * @return
-	 * @throws IOException
+	 * @param path the path to the file (expected character set is UTF-8)
+	 * @return a list of Strings representing the lines of the given file
+	 * @throws IOException see {@link java.io.FileInputStream}
+	 * @author Marcus Michalsky
+	 * @since 1.10
 	 */
 	public static List<String> readLines(String path) throws IOException {
 		List<String> result = new ArrayList<String>();
