@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: de.ptb.epics.eve.util.tests
+Bundle-Version: 1.10.0
+Bundle-Vendor: PTB
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: de.ptb.epics.eve.util;bundle-version="1.10.0",
+ org.junit

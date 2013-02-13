@@ -32,6 +32,7 @@
         <pathelement path="org.csstudio.eve.data/bin" />
         <pathelement path="org.csstudio.eve.resources/bin" />
         <pathelement path="org.csstudio.eve.util/bin" />
+        <pathelement path="org.csstudio.eve.util.tests/bin" />
         <pathelement path="${css_app_dir}/org.csstudio.swt.xygraph/bin" />
         <pathelement path="${css_core_dir}/org.csstudio.platform.libs.log4j" />
       </classpath>
@@ -41,6 +42,9 @@
 
       <batchtest todir="${doc_dir}/tests/test-results">
         <fileset dir="org.csstudio.eve.data.tests/src">
+          <include name="**/*Test.java" />
+        </fileset>
+        <fileset dir="org.csstudio.eve.util.tests/src">
           <include name="**/*Test.java" />
         </fileset>
       </batchtest>

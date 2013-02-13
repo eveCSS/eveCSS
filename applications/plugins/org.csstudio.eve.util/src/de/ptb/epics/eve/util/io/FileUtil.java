@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 
 /**
  * @author Marcus Michalsky
@@ -39,6 +41,30 @@ public class FileUtil {
 			if (destination != null) {
 				destination.close();
 			}
+		}
+	}
+	
+	/**
+	 * 
+	 * 
+	 * Thanks to http://stackoverflow.com/a/326440 (referenced 2013-02-13)
+	 * 
+	 * @param path
+	 * @return
+	 * @throws IOException
+	 */
+	public static String readFile(String path) throws IOException {
+		FileInputStream stream = new FileInputStream(new File(path));
+		try {
+			FileChannel fc = stream.getChannel();
+			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0,
+					fc.size());
+			if (Charset.isSupported("UTF-8")) {
+				return Charset.forName("UTF-8").decode(bb).toString();
+			}
+			return Charset.defaultCharset().decode(bb).toString();
+		} finally {
+			stream.close();
 		}
 	}
 }
