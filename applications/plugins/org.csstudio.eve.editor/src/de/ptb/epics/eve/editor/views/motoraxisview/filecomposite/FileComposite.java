@@ -86,10 +86,8 @@ public class FileComposite extends MotorAxisViewComposite {
 		searchButtonSelectionListener = new SearchButtonSelectionListener();
 		this.searchButton.addSelectionListener(searchButtonSelectionListener);
 		
-		/*
 		this.createViewer(this);
 		this.createColumns(this);
-		*/
 		
 		this.fileMode = null;
 	}
