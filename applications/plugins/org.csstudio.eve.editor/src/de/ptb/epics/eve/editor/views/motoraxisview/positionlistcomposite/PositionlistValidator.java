@@ -4,6 +4,8 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
+import de.ptb.epics.eve.util.io.StringUtil;
+
 /**
  * @author Marcus Michalsky
  * @since 1.7
@@ -26,10 +28,9 @@ public class PositionlistValidator implements IValidator {
 	}
 	
 	/*
-	 * future implementations could check, if a reasonable string is given
+	 * 
 	 */
 	private boolean isValid(String list) {
-		// TODO provide implementation
-		return true;
+		return StringUtil.isPositionList(list);
 	}
 }
