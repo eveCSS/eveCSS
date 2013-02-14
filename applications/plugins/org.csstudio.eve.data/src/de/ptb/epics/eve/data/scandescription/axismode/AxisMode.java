@@ -69,6 +69,16 @@ public abstract class AxisMode implements IModelErrorProvider {
 	}
 
 	/**
+	 * Returns the number of motor positions of the corresponding axis.
+	 * 
+	 * @return the number of motor positions of the corresponding axis or 
+	 * 		<code>null</code> if calculation is not possible
+	 * @author Marcus Michalsky
+	 * @since 1.10
+	 */
+	public abstract Integer getPositionCount();
+	
+	/**
 	 * @param listener the listener to add
 	 * @see {@link java.beans.PropertyChangeSupport#addPropertyChangeListener(PropertyChangeListener)}
 	 */

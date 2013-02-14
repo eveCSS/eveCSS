@@ -25,7 +25,6 @@ import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.views.PluginControllerComposite;
-import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisViewComposite;
 
 /**
  * <code>MotorAxisPluginComposite</code> is a composite to input plug in values
@@ -129,7 +128,6 @@ public class PluginComposite extends Composite {
 	 * @param scanModule
 	 */
 	public void setAxis(final Axis axis, final ScanModule scanModule) {
-		
 		removeListeners();
 		
 		this.axis = axis;
