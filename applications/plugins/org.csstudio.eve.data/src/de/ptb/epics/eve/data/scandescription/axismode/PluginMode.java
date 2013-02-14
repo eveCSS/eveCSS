@@ -68,6 +68,15 @@ public class PluginMode extends AxisMode implements IModelUpdateListener {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public Integer getPositionCount() {
+		// TODO Not supported yet
+		return null;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
 	}
 }

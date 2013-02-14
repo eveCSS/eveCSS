@@ -47,6 +47,17 @@ public class PositionlistMode extends AxisMode {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public Integer getPositionCount() {
+		if (positionList == null) {
+			return null;
+		}
+		return this.positionList.split(",").length;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public List<IModelError> getModelErrors() {
 		List<IModelError> errors = new ArrayList<IModelError>();
 		if (this.positionList == null || this.positionList.equals("")) {

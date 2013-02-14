@@ -51,15 +51,15 @@ public class FileUtil {
 	/**
 	 * Reads a file into a String.
 	 * 
-	 * @param path the path to the file
+	 * @param file the file
 	 * @return the contents of the file
 	 * @throws IOException see {@link java.io.FileInputStream}
 	 * @see "http://stackoverflow.com/a/326440"
 	 * @author Marcus Michalsky
 	 * @since 1.10
 	 */
-	public static String readFile(String path) throws IOException {
-		FileInputStream stream = new FileInputStream(new File(path));
+	public static String readFile(File file) throws IOException {
+		FileInputStream stream = new FileInputStream(file);
 		try {
 			FileChannel fc = stream.getChannel();
 			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0,
@@ -74,22 +74,28 @@ public class FileUtil {
 	}
 	
 	/**
-	 * Reads the lines of a file into a list of Strings.
+	 * Reads the lines of a file into a list of Strings. Empty lines 
+	 * are removed from the result.
 	 * 
-	 * @param path the path to the file (expected character set is UTF-8)
+	 * @param file the file (expected character set is UTF-8)
 	 * @return a list of Strings representing the lines of the given file
 	 * @throws IOException see {@link java.io.FileInputStream}
 	 * @author Marcus Michalsky
 	 * @since 1.10
 	 */
-	public static List<String> readLines(String path) throws IOException {
+	public static List<String> readLines(File file) throws IOException {
 		List<String> result = new ArrayList<String>();
-		FileInputStream stream = new FileInputStream(new File(path));
+		FileInputStream stream = new FileInputStream(file);
 		BufferedReader br = new BufferedReader(new InputStreamReader(stream,
 				Charset.forName("UTF-8")));
 		String line;
 		while((line = br.readLine()) != null) {
 			result.add(line);
+		}
+		for (String s : result) {
+			if (s.equals("")) {
+				result.remove(s);
+			}
 		}
 		return result;
 	}

@@ -197,18 +197,20 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 	 * 
 	 */
 	private void countPositions() {
-		if(positionlistText.getText().isEmpty()) {
-			this.positionCountLabel.setText("0 positions");
+		if (this.positionlistMode.getPositionCount() == null) {
+			this.positionCountLabel.setText("calculation not possible");
 		} else {
-			int count = positionlistText.getText().split(",").length;
-			if(count == 1) {
+			switch (this.positionlistMode.getPositionCount()) {
+			case 0:
+				this.positionCountLabel.setText("0 positions");
+				break;
+			case 1:
 				this.positionCountLabel.setText("1 position");
-				LOGGER.debug("1 position");
-			} else {
-				this.positionCountLabel.setText(count + " positions");
-				if(LOGGER.isDebugEnabled()) {
-					LOGGER.debug(count + " positions");
-				}
+				break;
+			default:
+				this.positionCountLabel.setText(this.positionlistMode
+						.getPositionCount() + " positions");
+				break;
 			}
 		}
 		this.positionCountLabel.getParent().layout();

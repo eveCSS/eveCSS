@@ -245,6 +245,14 @@ public abstract class AddMultiplyMode<T extends Object> extends AxisMode {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public Integer getPositionCount() {
+		return new Double(Math.ceil(this.stepcount)).intValue();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public List<IModelError> getModelErrors() {
 		// there should be always some default value, all succeeding values 
 		// are only written to the model if they are valid, so there should 

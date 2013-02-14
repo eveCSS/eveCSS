@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.data.scandescription.axismode;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
+import de.ptb.epics.eve.util.io.FileUtil;
 
 /**
  * @author Marcus Michalsky
@@ -42,6 +44,21 @@ public class FileMode extends AxisMode {
 				this.file, this.file = file);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Integer getPositionCount() {
+		if (!this.file.exists()) {
+			return null;
+		}
+		try {
+			return FileUtil.readLines(this.file).size();
+		} catch (IOException e) {
+			return null;
+		}
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
