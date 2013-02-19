@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Util
 Bundle-SymbolicName: de.ptb.epics.eve.util
-Bundle-Version: 1.10.0
+Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.csstudio.utility.pv;bundle-version="3.0.0",
  org.csstudio.utility.pvmanager;bundle-version="1.0.0",

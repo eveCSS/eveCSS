@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Css" id="org.csstudio.eve.product.product" application="org.csstudio.eve.product.application" version="1.10.0" useFeatures="true" includeLaunchers="true">
+<product name="Css" id="org.csstudio.eve.product.product" application="org.csstudio.eve.product.application" version="1.9.0" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.csstudio.eve.product/icons/about.gif"/>
@@ -60,9 +60,9 @@ See http://ics-web.sns.ornl.gov/css
    </plugins>
 
    <features>
-      <feature id="org.csstudio.eve.applications.feature" version="1.10.0"/>
-      <feature id="org.csstudio.eve.core.feature" version="1.10.0"/>
-      <feature id="org.csstudio.eve.eclipse.feature" version="1.10.0"/>
+      <feature id="org.csstudio.eve.applications.feature" version="1.0.0"/>
+      <feature id="org.csstudio.eve.core.feature" version="1.0.0"/>
+      <feature id="org.csstudio.eve.eclipse.feature" version="1.0.0"/>
    </features>
 
 
