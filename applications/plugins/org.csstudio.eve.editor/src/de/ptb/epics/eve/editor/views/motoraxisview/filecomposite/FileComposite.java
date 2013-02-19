@@ -9,6 +9,8 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.events.FocusEvent;
@@ -50,6 +52,8 @@ public class FileComposite extends MotorAxisViewComposite {
 	private Button searchButton;
 	private SearchButtonSelectionListener searchButtonSelectionListener;
 	
+	private TableViewer viewer;
+	
 	/**
 	 * Constructs a <code>MotorAxisFileComposite</code>.
 	 * 
@@ -82,9 +86,44 @@ public class FileComposite extends MotorAxisViewComposite {
 		searchButtonSelectionListener = new SearchButtonSelectionListener();
 		this.searchButton.addSelectionListener(searchButtonSelectionListener);
 		
+		this.createViewer(this);
+		this.createColumns(this);
+		
 		this.fileMode = null;
 	}
 
+	private void createViewer(final Composite parent) {
+		this.viewer = new TableViewer(parent, SWT.BORDER);
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 3;
+		this.viewer.getTable().setLayoutData(gridData);
+		this.viewer.getTable().setHeaderVisible(true);
+	}
+	
+	private void createColumns(final Composite parent) {
+		TableViewerColumn countColumn = new TableViewerColumn(this.viewer,
+				SWT.CENTER);
+		countColumn.getColumn().setText("# points");
+		countColumn.getColumn().setWidth(80);
+		
+		TableViewerColumn minColumn = new TableViewerColumn(this.viewer, 
+				SWT.RIGHT);
+		minColumn.getColumn().setText("Minimum");
+		minColumn.getColumn().setWidth(80);
+		
+		TableViewerColumn maxColumn = new TableViewerColumn(this.viewer, 
+				SWT.RIGHT);
+		maxColumn.getColumn().setText("Maximum");
+		maxColumn.getColumn().setWidth(80);
+		
+		TableViewerColumn emptyColumn = new TableViewerColumn(this.viewer, 
+				SWT.NONE);
+		emptyColumn.getColumn().setText("");
+		emptyColumn.getColumn().setWidth(10);
+	}
+	
 	/**
 	 * calculate the height to see all entries of this composite
 	 * 
