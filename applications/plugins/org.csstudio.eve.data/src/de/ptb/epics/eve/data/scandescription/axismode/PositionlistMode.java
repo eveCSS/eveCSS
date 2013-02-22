@@ -51,6 +51,9 @@ public class PositionlistMode extends AxisMode {
 		if (positionList == null) {
 			return null;
 		}
+		if (positionList.endsWith(",")) {
+			return null;
+		}
 		return this.positionList.split(",").length;
 	}
 	

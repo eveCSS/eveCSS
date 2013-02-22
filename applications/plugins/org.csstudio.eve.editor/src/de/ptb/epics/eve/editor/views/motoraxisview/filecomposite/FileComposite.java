@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views.motoraxisview.filecomposite;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 
 import org.apache.log4j.Logger;
@@ -8,6 +10,7 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -36,7 +39,8 @@ import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisViewComposite;
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class FileComposite extends MotorAxisViewComposite {
+public class FileComposite extends MotorAxisViewComposite implements
+		PropertyChangeListener {
 
 	private static Logger LOGGER = 
 			Logger.getLogger(FileComposite.class.getName());
@@ -48,6 +52,8 @@ public class FileComposite extends MotorAxisViewComposite {
 	private Binding filenameBinding;
 	private IObservableValue fileNameModelObservable;
 	private IObservableValue fileNameGUIObservable;
+	private ISWTObservableValue fileNameGUIDelayedObservable;
+	private ControlDecorationSupport filenameTextControlDecoration;
 	
 	private Button searchButton;
 	private SearchButtonSelectionListener searchButtonSelectionListener;
@@ -88,6 +94,9 @@ public class FileComposite extends MotorAxisViewComposite {
 		
 		this.createViewer(this);
 		this.createColumns(this);
+		this.viewer.setContentProvider(new FileNameTableContentProvider());
+		this.viewer.setLabelProvider(new FileNameTableLabelProvider());
+		this.viewer.getTable().setEnabled(false);
 		
 		this.fileMode = null;
 	}
@@ -98,6 +107,7 @@ public class FileComposite extends MotorAxisViewComposite {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalSpan = 3;
+		gridData.heightHint = 40;
 		this.viewer.getTable().setLayoutData(gridData);
 		this.viewer.getTable().setHeaderVisible(true);
 	}
@@ -111,12 +121,12 @@ public class FileComposite extends MotorAxisViewComposite {
 		TableViewerColumn minColumn = new TableViewerColumn(this.viewer, 
 				SWT.RIGHT);
 		minColumn.getColumn().setText("Minimum");
-		minColumn.getColumn().setWidth(80);
+		minColumn.getColumn().setWidth(120);
 		
 		TableViewerColumn maxColumn = new TableViewerColumn(this.viewer, 
 				SWT.RIGHT);
 		maxColumn.getColumn().setText("Maximum");
-		maxColumn.getColumn().setWidth(80);
+		maxColumn.getColumn().setWidth(120);
 		
 		TableViewerColumn emptyColumn = new TableViewerColumn(this.viewer, 
 				SWT.NONE);
@@ -130,7 +140,8 @@ public class FileComposite extends MotorAxisViewComposite {
 	 * @return the needed height of Composite to see all entries
 	 */
 	public int getTargetHeight() {
-		return (filenameText.getBounds().y + filenameText.getBounds().height + 5);
+		return (filenameText.getBounds().y + filenameText.getBounds().height
+				+ viewer.getTable().getBounds().height + 10);
 	}
 
 	/**
@@ -139,7 +150,7 @@ public class FileComposite extends MotorAxisViewComposite {
 	 * @return the needed width of Composite to see all entries
 	 */
 	public int getTargetWidth() {
-		return (filenameText.getBounds().x + filenameText.getBounds().width + 5);
+		return (filenameText.getBounds().x + filenameText.getBounds().width + 10);
 	}
 	
 	/**
@@ -157,6 +168,10 @@ public class FileComposite extends MotorAxisViewComposite {
 		}
 		this.fileMode = ((FileMode)axis.getMode());
 		this.createBinding();
+		this.fileMode.getAxis().getMotorAxis()
+				.addPropertyChangeListener("highlimit", this);
+		this.fileMode.getAxis().getMotorAxis()
+				.addPropertyChangeListener("lowlimit", this);
 	}
 	
 	/**
@@ -171,13 +186,17 @@ public class FileComposite extends MotorAxisViewComposite {
 		UpdateValueStrategy targetToModel = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		targetToModel.setConverter(new FileNameTargetToModelConverter());
-		targetToModel.setAfterGetValidator(new FileNameValidator());
+		targetToModel.setAfterGetValidator(new FileNameValidator(this.fileMode
+				.getAxis(), this.viewer));
 		UpdateValueStrategy modelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		modelToTarget.setConverter(new FileNameModelToTargetConverter());
-		filenameBinding = context.bindValue(fileNameGUIObservable,
+		this.fileNameGUIDelayedObservable = SWTObservables.observeDelayedValue(
+				500, (ISWTObservableValue) this.fileNameGUIObservable);
+		filenameBinding = context.bindValue(fileNameGUIDelayedObservable,
 				fileNameModelObservable, targetToModel, modelToTarget);
-		ControlDecorationSupport.create(filenameBinding, SWT.LEFT);
+		this.filenameTextControlDecoration = ControlDecorationSupport.create(
+				filenameBinding, SWT.LEFT);
 	}
 	
 	/**
@@ -186,12 +205,25 @@ public class FileComposite extends MotorAxisViewComposite {
 	protected void reset() {
 		LOGGER.debug("reset");
 		if (this.fileMode != null) {
+			if (this.filenameTextControlDecoration != null) {
+				this.filenameTextControlDecoration.dispose();
+			}
 			this.context.removeBinding(this.filenameBinding);
 			this.filenameBinding.dispose();
 			this.fileNameModelObservable.dispose();
+			this.fileNameGUIDelayedObservable.dispose();
 			this.fileNameGUIObservable.dispose();
+			
+			this.fileMode.getAxis().getMotorAxis()
+					.removePropertyChangeListener("highlimit", this);
+			this.fileMode.getAxis().getMotorAxis()
+					.removePropertyChangeListener("lowlimit", this);
 		}
 		this.fileMode = null;
+		this.viewer.setInput(null);
+		this.filenameText.setText("");
+		this.viewer.getTable().setEnabled(false);
+		this.redraw();
 	}
 	
 	// **********************************************************************
@@ -236,8 +268,7 @@ public class FileComposite extends MotorAxisViewComposite {
 				// dialog was cancelled
 				return;
 			}
-			filenameText.setText(name);
-			fileMode.setFile(new File(name));
+			 filenameText.setText(name);
 		}
 	}
 	
@@ -262,7 +293,20 @@ public class FileComposite extends MotorAxisViewComposite {
 		public void focusLost(FocusEvent e) {
 			if (filenameText.getText().isEmpty()) {
 				filenameBinding.updateModelToTarget();
+				filenameBinding.validateTargetToModel();
+				filenameBinding.validateModelToTarget();
 			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals("highlimit") || 
+				e.getPropertyName().equals("lowlimit")) {
+			this.filenameBinding.updateTargetToModel();
 		}
 	}
 }

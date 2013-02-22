@@ -52,6 +52,7 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 	private Binding positionlistBinding;
 	private IObservableValue positionlistModelObservable;
 	private IObservableValue positionlistGUIObservable;
+	private ControlDecorationSupport positionlistControlDecorationSupport;
 	
 	private Label positionCountLabel;
 	
@@ -145,6 +146,10 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 				PositionlistMode.POSITIONLIST_PROP, this);
 		this.createBinding();
 		this.countPositions();
+		this.positionlistMode.getAxis().getMotorAxis()
+				.addPropertyChangeListener("highlimit", this);
+		this.positionlistMode.getAxis().getMotorAxis()
+				.addPropertyChangeListener("lowlimit", this);
 	}
 
 	/**
@@ -158,12 +163,14 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 				this.positionlistText, SWT.Modify);
 		UpdateValueStrategy targetToModel = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
-		targetToModel.setAfterGetValidator(new PositionlistValidator());
+		targetToModel.setAfterGetValidator(new PositionlistValidator(
+				this.positionlistMode.getAxis()));
 		UpdateValueStrategy modelToTarget = new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE);
 		this.positionlistBinding = context.bindValue(positionlistGUIObservable,
 				positionlistModelObservable, targetToModel, modelToTarget);
-		ControlDecorationSupport.create(positionlistBinding, SWT.LEFT);
+		this.positionlistControlDecorationSupport = ControlDecorationSupport.
+				create(positionlistBinding, SWT.LEFT);
 	}
 	
 	/**
@@ -173,14 +180,22 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 	protected void reset() {
 		LOGGER.debug("reset");
 		if (this.positionlistMode != null) {
+			if (this.positionlistControlDecorationSupport != null) {
+				this.positionlistControlDecorationSupport.dispose();
+			}
 			this.context.removeBinding(this.positionlistBinding);
 			this.positionlistBinding.dispose();
 			this.positionlistModelObservable.dispose();
 			this.positionlistGUIObservable.dispose();
 			this.positionlistMode.removePropertyChangeListener(this);
+			this.positionlistMode.getAxis().getMotorAxis()
+					.removePropertyChangeListener("highlimit", this);
+			this.positionlistMode.getAxis().getMotorAxis()
+					.removePropertyChangeListener("lowlimit", this);
 		}
 		this.positionlistMode = null;
 		this.positionCountLabel.setText("0 positions");
+		this.redraw();
 	}
 	
 	/**
@@ -190,6 +205,9 @@ public class PositionlistComposite extends MotorAxisViewComposite implements
 	public void propertyChange(PropertyChangeEvent e) {
 		if (e.getPropertyName().equals(PositionlistMode.POSITIONLIST_PROP)) {
 			this.countPositions();
+		} else if (e.getPropertyName().equals("highlimit") || 
+				e.getPropertyName().equals("lowlimit")) {
+			this.positionlistBinding.updateTargetToModel();
 		}
 	}
 
