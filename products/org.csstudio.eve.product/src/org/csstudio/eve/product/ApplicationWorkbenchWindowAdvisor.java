@@ -1,10 +1,12 @@
 package org.csstudio.eve.product;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
+import org.osgi.framework.Version;
 
 /**
  * <code>ApplicationWorkbenchWindowAdvisor</code>.
@@ -15,8 +17,6 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 	/**
-	 * Constructor.
-	 * 
 	 * @param configurer
 	 */
 	public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
@@ -43,6 +43,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setShowStatusLine(true);
 		configurer.setShowFastViewBars(true);
 		configurer.setShowProgressIndicator(true);
-		configurer.setTitle("Control System Studio"); //$NON-NLS-1$
+		Version version = Platform.getProduct().getDefiningBundle().getVersion();
+		configurer.setTitle("eveCSS v" + version.getMajor() + "."
+				+ version.getMinor());
 	}
 }

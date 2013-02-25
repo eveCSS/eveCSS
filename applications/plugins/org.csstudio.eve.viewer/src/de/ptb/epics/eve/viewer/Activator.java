@@ -20,10 +20,12 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Version;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
@@ -46,7 +48,9 @@ public class Activator extends AbstractUIPlugin {
 	
 	private static Logger logger = Logger.getLogger(Activator.class.getName());
 	
+	private IPerspectiveListener eveViewerPerspectiveListener;
 	private WorkbenchListener workbenchListener;
+	private String defaultWindowTitle;
 	
 	private final MessagesContainer messagesContainer;
 	private final XMLFileDispatcher xmlFileDispatcher;
@@ -71,12 +75,21 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public Activator() {
 		plugin = this;
+		try {
+			Version version = Platform.getProduct().getDefiningBundle()
+					.getVersion();
+			this.defaultWindowTitle = "eveCSS v" + version.getMajor() + "."
+					+ version.getMinor();
+		} catch (NullPointerException e) {
+			this.defaultWindowTitle = "eveCSS";
+		}
 		this.ecp1Client = new ECP1Client();
 		this.messagesContainer = new MessagesContainer();
 		this.xmlFileDispatcher = new XMLFileDispatcher();
 		this.engineErrorReader = new EngineErrorReader();
 		this.chainStatusAnalyzer = new ChainStatusAnalyzer();
 		
+		this.eveViewerPerspectiveListener = new EveViewerPerspectiveListener();
 		this.workbenchListener = new WorkbenchListener();
 	}
 
@@ -102,6 +115,8 @@ public class Activator extends AbstractUIPlugin {
 		this.requestProcessor = new RequestProcessor(Display.getCurrent());
 		this.ecp1Client.addRequestListener(this.requestProcessor);
 		
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
+			 addPerspectiveListener(this.eveViewerPerspectiveListener);
 		PlatformUI.getWorkbench().addWorkbenchListener(workbenchListener);
 	}
 
@@ -123,6 +138,14 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	/**
+	 * 
+	 * @return windowTitle
+	 */
+	public String getDefaultWindowTitle() {
+		return this.defaultWindowTitle;
+	}
+	
 	/**
 	 * 
 	 * @return the root directory

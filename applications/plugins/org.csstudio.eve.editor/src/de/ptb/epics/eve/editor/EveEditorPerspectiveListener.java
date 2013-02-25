@@ -31,19 +31,14 @@ public class EveEditorPerspectiveListener implements IPerspectiveListener {
 			final String name = Activator.getDefault().getMeasuringStation()
 					.getName() == null ? "" : Activator.getDefault()
 					.getMeasuringStation().getName();
-			page.getWorkbenchWindow()
-					.getShell()
-					.setText(
-							Activator.getDefault().getDefaultWindowTitle()
-									+ " - "
-									+ name
-									+ " (v"
-									+ Activator.getDefault()
-											.getMeasuringStation().getVersion()
-									+ ")");
-		} else {
-			page.getWorkbenchWindow().getShell()
-					.setText(Activator.getDefault().getDefaultWindowTitle());
+			page.getWorkbenchWindow().getShell().setText(
+				Activator.getDefault().getDefaultWindowTitle()
+					+ " - "
+					+ name
+					+ " (XML v"
+					+ Activator.getDefault()
+					.getMeasuringStation().getVersion()
+					+ ")");
 		}
 	}
 

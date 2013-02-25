@@ -16,6 +16,7 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Version;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
@@ -61,19 +62,27 @@ public class Activator extends AbstractUIPlugin {
 	private String rootDir;
 	private boolean debug;
 	
-	private final String defaultWindowTitle = "Control System Studio";
-	
 	// 
 	private EveEditorPerspectiveListener eveEditorPerspectiveListener;
 	
 	// used to handle save on close
 	private WorkbenchListener workbenchListener;
 	
+	private String defaultWindowTitle;
+	
 	/**
 	 * The constructor
 	 */
 	public Activator() {
 		plugin = this;
+		try {
+			Version version = Platform.getProduct().getDefiningBundle()
+					.getVersion();
+			this.defaultWindowTitle = "eveCSS v" + version.getMajor() + "."
+					+ version.getMinor();
+		} catch (NullPointerException e) {
+			this.defaultWindowTitle = "eveCSS";
+		}
 		eveEditorPerspectiveListener = new EveEditorPerspectiveListener();
 		workbenchListener = new WorkbenchListener();
 	}
@@ -100,7 +109,6 @@ public class Activator extends AbstractUIPlugin {
 		
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
 				addPerspectiveListener(eveEditorPerspectiveListener);
-		
 		PlatformUI.getWorkbench().addWorkbenchListener(workbenchListener);
 	}
 
@@ -123,6 +131,14 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
+	}
+	
+	/**
+	 * 
+	 * @return windowTitle
+	 */
+	public String getDefaultWindowTitle() {
+		return this.defaultWindowTitle;
 	}
 	
 	/**
@@ -156,14 +172,6 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public DefaultsManager getDefaults() {
 		return this.defaultsManager;
-	}
-	
-	/**
-	 * 
-	 * @return windowTitle
-	 */
-	public String getDefaultWindowTitle() {
-		return this.defaultWindowTitle;
 	}
 	
 	/*
