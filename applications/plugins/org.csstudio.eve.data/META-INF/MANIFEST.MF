@@ -23,5 +23,5 @@ Import-Package: de.ptb.epics.eve.util.io,
  org.eclipse.jface.viewers
 Require-Bundle: org.eclipse.swt;bundle-version="3.7.1",
  org.csstudio.swt.xygraph;bundle-version="1.0.1",
- org.csstudio.platform.libs.log4j;bundle-version="1.2.16"
+ org.apache.log4j;bundle-version="1.2.16"
 Bundle-Vendor: PTB

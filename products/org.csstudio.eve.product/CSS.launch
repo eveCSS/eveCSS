@@ -4,7 +4,7 @@
 <booleanAttribute key="append.args" value="true"/>
 <booleanAttribute key="askclear" value="true"/>
 <booleanAttribute key="automaticAdd" value="true"/>
-<booleanAttribute key="automaticValidate" value="false"/>
+<booleanAttribute key="automaticValidate" value="true"/>
 <stringAttribute key="bootstrap" value=""/>
 <stringAttribute key="checked" value="[NONE]"/>
 <booleanAttribute key="clearConfig" value="false"/>
@@ -19,14 +19,12 @@
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
 <mapEntry key="no_proxy" value="127.0.0.1,localhost"/>
 </mapAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -eve.root /home/scherr/mp_neu/eveDir -eve.debug 1 -data /home/scherr/mp_neu/eve/workspace"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -clean -eve.root ${system_property:user.home}/eve -eve.debug 1 -data ${system_property:user.home}/eve/workspace/test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.5 -XX:MaxPermSize=256m -Xms40m -Xmx512m"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.csstudio.eve.product.product"/>
 <setAttribute key="selected_features">
-<setEntry value="org.csstudio.core.feature:default"/>
-<setEntry value="org.csstudio.core.util.feature:default"/>
 <setEntry value="org.csstudio.eve.applications.feature:default"/>
 <setEntry value="org.csstudio.eve.core.feature:default"/>
 <setEntry value="org.csstudio.eve.eclipse.feature:default"/>

@@ -5,7 +5,7 @@ Bundle-SymbolicName: de.ptb.epics.eve.resources;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: de.ptb.epics.eve.resources.Activator
 Require-Bundle: org.eclipse.core.runtime,
- org.csstudio.platform.libs.log4j;bundle-version="1.2.16"
+ org.apache.log4j;bundle-version="1.2.16"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: de.ptb.epics.eve.resources
