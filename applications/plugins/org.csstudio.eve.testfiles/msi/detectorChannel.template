@@ -1,7 +1,0 @@
-            <channel>
-                <name>$(Name)</name>
-                <id>$(PV)</id>
-                <read>
-                    <access method="GETCB" transport="ca" type="double">$(PV).VAL</access>
-                </read>
-            </channel>
