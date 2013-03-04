@@ -5,7 +5,7 @@
 	</description>
 
 	<property environment="env" />
-	<property name="build.path" location="${env.BUILD_URL}" />
+	<property name="build.path" location="${env.WORKSPACE}/../builds/${env.BUILD_ID}" />
 	<property name="workspace" location="${env.WORKSPACE}" />
 	<property name="platform" location="/messung/eve/java" />
 
