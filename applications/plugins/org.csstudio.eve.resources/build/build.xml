@@ -52,7 +52,7 @@
 
 	<target name="fetching config" description="">
 		<mkdir dir="${build.path}/config" />
-		<copy todir="${build.path}/config" file="${workspace}/repo/applications/plugins/de.ptb.epics.eve.resources/build/build.xml" />
+		<copy todir="${build.path}/config" file="${workspace}/repo/applications/plugins/org.csstudio.eve.resources/build/build.properties" />
 	</target>
 
 	<target name="pde build" depends="fetching sources, fetching jars, fetching config">
