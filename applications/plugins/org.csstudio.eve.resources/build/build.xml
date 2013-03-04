@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="test">
+<project default="test" basedir="${BUILD_URL}">
 
 	<target name="test">
+		<echo message="${BUILD_URL}" />
+		<echo message="${WORKSPACE}" />
 		<echo message="Hello World!" />
 		<mkdir dir="test" />
 	</target>
