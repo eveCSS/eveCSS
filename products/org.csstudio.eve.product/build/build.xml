@@ -56,6 +56,7 @@
 	</target>
 
 	<target name="pde build" depends="fetching sources, fetching jars, fetching config">
+		<property name="buildFolder" value="${build.path}" />
 		<exec executable="${platform}/Eclipse/eclipse-rcp/eclipse" failonerror="true">
 			<arg value="-application" />
 			<arg value="org.eclipse.ant.core.antRunner" />
