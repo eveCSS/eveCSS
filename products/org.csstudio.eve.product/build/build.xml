@@ -64,6 +64,7 @@
 			<arg value="${platform}/Eclipse/eclipse-rcp/plugins/org.eclipse.pde.build_3.7.0.v20111116-2009/scripts/productBuild/productBuild.xml" />
 			<arg value="-consolelog" />
 			<arg value="-Dbuilder=${build.path}/config" />
+			<arg value="-DbuildFolder=${build.path}" />
 		</exec>
 	</target>
 </project>
