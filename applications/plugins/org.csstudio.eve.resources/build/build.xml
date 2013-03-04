@@ -56,6 +56,13 @@
 	</target>
 
 	<target name="pde build" depends="fetching sources, fetching jars, fetching config">
-
+		<exec executable="${platform}/Eclipse/eclipse-rcp/eclipse">
+			<arg value="-application" />
+			<arg value="org.eclipse.ant.core.antRunner" />
+			<arg value="-buildfile" />
+			<arg value="${platform}/Eclipse/eclipse-rcp/plugins/org.eclipse.pde.build_3.7.0.v20111116-2009/scripts/productBuild/productBuild.xml" />
+			<arg value="-consolelog" />
+			<arg value="-Dbuilder=${build.path}/config" />
+		</exec>
 	</target>
 </project>
