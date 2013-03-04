@@ -3,5 +3,6 @@
 
 	<target name="test">
 		<echo message="Hello World!" />
+		<mkdir dir="test" />
 	</target>
 </project>
