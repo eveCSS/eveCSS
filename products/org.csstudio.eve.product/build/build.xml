@@ -52,11 +52,11 @@
 
 	<target name="fetching config" description="">
 		<mkdir dir="${build.path}/config" />
-		<copy todir="${build.path}/config" file="${workspace}/repo/applications/plugins/org.csstudio.eve.resources/build/build.properties" />
+		<copy todir="${build.path}/config" file="${workspace}/repo/products/org.csstudio.eve.product/build/build.properties" />
 	</target>
 
 	<target name="pde build" depends="fetching sources, fetching jars, fetching config">
-		<exec executable="${platform}/Eclipse/eclipse-rcp/eclipse">
+		<exec executable="${platform}/Eclipse/eclipse-rcp/eclipse" failonerror="true">
 			<arg value="-application" />
 			<arg value="org.eclipse.ant.core.antRunner" />
 			<arg value="-buildfile" />
