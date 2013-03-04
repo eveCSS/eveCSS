@@ -1,12 +1,61 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="test" basedir="${env.BUILD_URL}">
-	
+<project default="pde build" basedir="../../../../">
+
+	<description>
+	</description>
+
 	<property environment="env" />
-	
-	<target name="test">		
-		<echo message="${env.BUILD_URL}" />
-		<echo message="${env.WORKSPACE}" />
-		<echo message="Hello World!" />
-		<mkdir dir="test" />
+	<property name="build.path" location="${env.BUILD_URL}" />
+	<property name="workspace" location="${env.WORKSPACE}" />
+	<property name="platform" location="/messung/eve/java" />
+
+	<target name="fetching jars" description="">
+		<mkdir dir="${build.path}/base" />
+		<mkdir dir="${build.path}/base/features" />
+		<mkdir dir="${build.path}/base/plugins" />
+
+		<copy todir="${build.path}/base/features">
+			<fileset dir="${platform}/Eclipse/eclipse-rcp/features" />
+			<fileset dir="${platform}/Eclipse/eclipse-delta-pack/features" />
+			<fileset dir="${platform}/Eclipse/swtbot/features" />
+			<fileset dir="${platform}/CSS/css/features" />
+		</copy>
+
+		<copy todir="${build.path}/base/plugins">
+			<fileset dir="${platform}/Eclipse/eclipse-rcp/plugins" />
+			<fileset dir="${platform}/Eclipse/eclipse-delta-pack/plugins" />
+			<fileset dir="${platform}/Eclipse/swtbot/plugins" />
+			<fileset dir="${platform}/CSS/css/plugins" />
+		</copy>
+	</target>
+
+	<target name="fetching sources" description="">
+		<mkdir dir="${build.path}/build" />
+		<mkdir dir="${build.path}/build/features" />
+		<mkdir dir="${build.path}/build/plugins" />
+
+		<copy todir="${build.path}/build/features">
+			<fileset dir="${workspace}/repo/applications/plugins">
+				<include name="*.feature/**" />
+			</fileset>
+		</copy>
+
+		<copy todir="${build.path}/build/plugins">
+			<fileset dir="${workspace}/repo/applications/plugins">
+				<exclude name="*.feature/**" />
+			</fileset>
+			<fileset dir="${workspace}/repo/products">
+				<include name="org.csstudio.eve.product/**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="fetching config" description="">
+		<mkdir dir="${build.path}/config" />
+		<copy todir="${build.path}/config" file="${workspace}/repo/applications/plugins/de.ptb.epics.eve.resources/build/build.xml" />
+	</target>
+
+	<target name="pde build" depends="fetching sources, fetching jars, fetching config">
+
 	</target>
 </project>
