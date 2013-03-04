@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="test" basedir="${env.BUILD_URL}">
-
-	<property environment="env"/>
+<project default="test">
 	
-	<target name="test">
+	<property environment="env" />
+	
+	<target name="test">		
 		<echo message="${env.BUILD_URL}" />
 		<echo message="${env.WORKSPACE}" />
 		<echo message="Hello World!" />
