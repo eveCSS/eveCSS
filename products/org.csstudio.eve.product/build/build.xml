@@ -70,6 +70,7 @@
 			<arg value="-DbuildFolder=${build.path}" />
 			<arg value="-DbuildTime=${current.time}" />
 		</exec>
+		<antcall target="clean up" />
 	</target>
 	
 	<target name="clean up">
