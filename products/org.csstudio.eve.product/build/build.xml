@@ -87,7 +87,7 @@
 		<copy todir="${workspace}/bin">
 			<fileset dir="${build.path}/build">
 				<include name="**/*.zip" />
-				<include name="eveCSS*/compilelogs" />
+				<include name="eveCSS*/compilelogs/**" />
 			</fileset>
 		</copy>
 		<delete dir="${build.path}/base" />
