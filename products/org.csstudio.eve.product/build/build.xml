@@ -83,7 +83,8 @@
 		<mkdir dir="${workspace}/bin" />
 	</target>
 		
-	<target name="clean up" depends="createbindir">
+	<target name="clean up">
+		<mkdir dir="${workspace}/bin" />
 		<copy todir="${workspace}/bin">
 			<fileset dir="${build.path}/build">
 				<include name="**/*.zip" />
