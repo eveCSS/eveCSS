@@ -73,12 +73,21 @@
 		<antcall target="clean up" />
 	</target>
 	
-	<target name="clean up">
-		<mkdir dir="${build.path}/bin" />
-		<copy todir="${build.path}/bin">
+	<target name="checkbindir">
+		<condition property="bindir.exists">
+			<available file="${workspace}/bin" type="dir" />
+		</condition>
+	</target>
+	
+	<target name="createbindir" if="checkbindir" depends="checkbindir">
+		<mkdir dir="${workspace}/bin" />
+	</target>
+		
+	<target name="clean up" depends="createbindir">
+		<copy todir="${workspace}/bin">
 			<fileset dir="${build.path}/build">
 				<include name="**/*.zip" />
-				<include name="compilelogs/**" />
+				<include name="*compilelogs/**" />
 			</fileset>
 		</copy>
 		<delete dir="${build.path}/base" />
