@@ -3,7 +3,7 @@
 	<!-- base dir is repository checkout dir -->
 
 	<description>
-	  	Ant File for Building JavaDoc
+		Ant File for Building JavaDoc
 	</description>
 
 	<property name="platform" location="/messung/eve/java" />
