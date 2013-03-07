@@ -581,7 +581,7 @@ public class CommonTableElement {
 			
 			if(movedonePv != null) {
 				String moveStatus = movedonePv.getValue();
-				if ((moveStatus != null) && (moveStatus != "")) {
+				if ((moveStatus != null) && (!moveStatus.isEmpty())) {
 					int moveStatusInt = (int) Double.parseDouble(moveStatus);
 					if (moveStatusInt == 0)
 						return "Moving";
