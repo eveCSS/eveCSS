@@ -7,14 +7,24 @@ package de.ptb.epics.eve.viewer.preferences;
 public class PreferenceConstants {
 
 	/**
-	 * @since 1.4
+	 * @since 1.10
 	 */
-	public static final String P_DEFAULT_ENGINE_ADDRESS = "engineAddressPort";
+	public static final String P_DEFAULT_ENGINE_ADDRESS = "engineAddress";
+	
+	/**
+	 * @since 1.10
+	 */
+	public static final String P_DEFAULT_ENGINE_PORT = "enginePort";
 	
 	/**
 	 * @since 1.4
 	 */
 	public static final String P_DEFAULT_ENGINE_LOCATION = "engineLocation";
+	
+	/**
+	 * @since 1.10
+	 */
+	public static final String P_DEFAULT_ENGINE_PARAMETERS = "engineParameters";
 	
 	/**
 	 * 

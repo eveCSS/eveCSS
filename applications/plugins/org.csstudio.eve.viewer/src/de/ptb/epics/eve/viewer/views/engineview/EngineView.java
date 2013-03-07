@@ -433,8 +433,10 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	 * 
 	 */
 	private void setConnectionStatus(ConnectionStatus status) {
-		final String engineString = Activator.getDefault().getPreferenceStore().
+		final String engineHost = Activator.getDefault().getPreferenceStore().
 				getString(PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
+		final Integer enginePort = Activator.getDefault().getPreferenceStore()
+				.getInt(PreferenceConstants.P_DEFAULT_ENGINE_PORT);
 		switch(status) {
 			case CONNECTED:		// engine stuff
 								this.startButton.setEnabled(false);
@@ -442,7 +444,8 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 								this.connectButton.setEnabled(false);
 								this.disconnectButton.setEnabled(true);
 								this.statusLabel.setText("connected to " + 
-										engineString);
+										engineHost + ":" + 
+										Integer.toString(enginePort));
 								// scan stuff
 								this.scanLabel.setEnabled(true);
 								this.autoPlayToggleButton.setEnabled(true);

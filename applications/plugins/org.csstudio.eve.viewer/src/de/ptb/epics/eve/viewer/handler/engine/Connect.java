@@ -35,45 +35,30 @@ public class Connect extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
 		if(!Activator.getDefault().getEcp1Client().isRunning()) {
-			int port = 0;
-			String EngineString = Activator.getDefault().getPreferenceStore().
+			
+			String EngineHost = Activator.getDefault().getPreferenceStore().
 					getString(PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
 
-			int index  = EngineString.lastIndexOf(":");
-			if (index != -1) {
-				port = Integer.parseInt(EngineString.substring(index + 1));
-				EngineString = EngineString.substring(0, index);
-			}
+			Integer EnginePort = Activator.getDefault().getPreferenceStore()
+					.getInt(PreferenceConstants.P_DEFAULT_ENGINE_PORT);
 			
-			if((port > 0) && (EngineString.length() > 1)) {
-				Activator.getDefault().getMessagesContainer().addMessage(
-					new ViewerMessage(Levels.INFO,
-						"Trying to connect to: " + EngineString + 
-						" (Port: " + port + ")."));
-				try {
-					java.net.InetAddress localMachine = 
+			try {
+				java.net.InetAddress localMachine = 
 						java.net.InetAddress.getLocalHost();
 					Activator.getDefault().getEcp1Client().connect(
-							new InetSocketAddress(EngineString, port), 
+							new InetSocketAddress(EngineHost, EnginePort), 
 							System.getProperty("user.name")+"@"+
 								localMachine.getHostName());
 					Activator.getDefault().getMessagesContainer().addMessage(
 						new ViewerMessage(Levels.INFO, 
-							"Connection established to: " + EngineString + "."));
-				} catch(final IOException e) {
-					Activator.getDefault().getMessagesContainer().addMessage(
-						new ViewerMessage(Levels.ERROR, 
-							"Cannot establish connection! " + e.getMessage() + "."));
-					logger.error(e.getMessage(), e);
-				}
-			} else {
+							"Connection established to: " + EngineHost + ":" + 
+									Integer.toString(EnginePort) + "."));
+			} catch(IOException e) {
 				Activator.getDefault().getMessagesContainer().addMessage(
-						new ViewerMessage(Levels.ERROR, 
-						"Could not establish connection! Please provide a " +
-						"valid address in CSS -> Preferences... -> " +
-						"CSS Applications -> Eve"));
-				logger.warn("Could not establish connection to engine due to " +
-						"errors in the preferences.");
+						new ViewerMessage(Levels.ERROR,
+								"Cannot establish connection! "
+										+ e.getMessage() + "."));
+				logger.error(e.getMessage(), e);
 			}
 		}
 		return null;
