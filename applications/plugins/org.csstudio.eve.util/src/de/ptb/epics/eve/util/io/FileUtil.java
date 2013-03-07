@@ -90,11 +90,8 @@ public class FileUtil {
 				Charset.forName("UTF-8")));
 		String line;
 		while((line = br.readLine()) != null) {
-			result.add(line);
-		}
-		for (String s : result) {
-			if (s.equals("")) {
-				result.remove(s);
+			if (!line.isEmpty()) {
+				result.add(line);
 			}
 		}
 		return result;
