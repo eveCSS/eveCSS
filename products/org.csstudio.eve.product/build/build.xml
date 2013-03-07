@@ -75,6 +75,7 @@
 	</target>
 		
 	<target name="clean up">
+		<delete dir="${workspace}/bin" />
 		<mkdir dir="${workspace}/bin" />
 		<copy todir="${workspace}/bin">
 			<fileset dir="${build.path}/build">
