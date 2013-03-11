@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;
@@ -44,6 +45,8 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 
 	private DirectEditManager directEditManager;
 	
+	private Label positionCountLabel;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -51,6 +54,14 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	 */
 	public ScanModuleEditPart(ScanModule scanModule) {
 		this.setModel(scanModule);
+		this.positionCountLabel = new Label();
+		Integer positionCount = scanModule.getPositionCount();
+		if (positionCount == null) {
+			this.positionCountLabel.setText("# Positions: N/A");
+		} else {
+			this.positionCountLabel.setText("# Positions: " + 
+					Integer.toString(positionCount));
+		}
 	}
 	
 	/**
@@ -167,6 +178,11 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 				sm.getHeight());
 		((GraphicalEditPart) this.getParent()).setLayoutConstraint(this,
 				this.getFigure(), bounds);
+		if (this.positionCountLabel == null) {
+			this.getFigure().setToolTip(null);
+		} else {
+			this.getFigure().setToolTip(this.positionCountLabel);
+		}
 	}
 	
 	/**
@@ -309,6 +325,10 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 		if (!this.getModel().getModelErrors().isEmpty()) {
 			((ScanModuleFigure)this.getFigure()).setContains_errors(true);
 		}
+		String positions = (this.getModel().getPositionCount() == null)
+				? "N/A" 
+				: Integer.toString(this.getModel().getPositionCount());
+		this.positionCountLabel.setText("# Positions: " + positions);
 		this.getFigure().repaint();
 	}
 }

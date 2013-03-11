@@ -246,7 +246,7 @@ public abstract class AddMultiplyMode<T extends Object> extends AxisMode {
 	 */
 	@Override
 	public Integer getPositionCount() {
-		return new Double(Math.ceil(this.stepcount)).intValue();
+		return new Double(Math.ceil(this.stepcount)).intValue() + 1;
 	}
 	
 	/**

@@ -98,6 +98,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	// control event manager for pause events
 	private ControlEventManager pauseControlEventManager;
 	
+	private Integer positionCount;
+	
 	// chain comment
 	private String comment;
 	
@@ -112,6 +114,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	/** */
 	public static final String SCANMODULE_REMOVED_PROP = 
 			"Chain.SCANMODULE_REMOVED_PROP";
+	
+	public static final String CHAIN_POSITION_COUNT_PROP = "positionCount";
 	
 	/**
 	 * Constructs a <code>ScanDescription</code> with the given id.
@@ -156,6 +160,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.stopControlEventManager.addModelUpdateListener(this);
 		this.redoControlEventManager.addModelUpdateListener(this);
 		this.pauseControlEventManager.addModelUpdateListener(this);
+		
+		this.positionCount = null;
 		
 		this.comment = "";
 		this.saveScanDescription = false;
@@ -222,6 +228,70 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 			i++;
 		}
 		return i;
+	}
+	
+	/**
+	 * Returns the number of motor positions. Note that this value is updated 
+	 * only by invoking {@link #calculatePositionCount()} due to performance 
+	 * reasons.
+	 * 
+	 * @return the number of motor positions (as last calculated) or 
+	 * 			<code>null</code> if calculation was not possible
+	 * @author Marcus Michalsky
+	 * @since 1.10
+	 */
+	public Integer getPositionCount() {
+		return this.positionCount;
+	}
+	
+	/**
+	 * (Re-)calculates the number of motor positions which can be retrieved by 
+	 * {@link #getPositionCount()}.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.10
+	 */
+	public void calculatePositionCount() {
+		if (this.getStartEvent().getConnector() == null) {
+			this.positionCount = null;
+			return;
+		}
+		ScanModule first = 
+				this.getStartEvent().getConnector().getChildScanModule();
+		this.propertyChangeSupport.firePropertyChange(
+				Chain.CHAIN_POSITION_COUNT_PROP, this.positionCount,
+				this.positionCount = this.calculatePositionCount(first));
+	}
+	
+	/*
+	 * Double recursive calculation of motor positions in the chain tree.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.10
+	 */
+	private Integer calculatePositionCount(ScanModule subChainHead) {
+		try {
+			if (subChainHead.getAppended() == null
+					&& subChainHead.getNested() == null) {
+				return subChainHead.getPositionCount();
+			} else if (subChainHead.getAppended() == null) {
+				return subChainHead.getPositionCount()
+						* this.calculatePositionCount(subChainHead
+								.getNested().getChildScanModule());
+			} else if (subChainHead.getNested() == null) {
+				return subChainHead.getPositionCount()
+						+ this.calculatePositionCount(subChainHead.getAppended()
+								.getChildScanModule());
+			} else {
+				return subChainHead.getPositionCount()
+						* this.calculatePositionCount(subChainHead
+								.getNested().getChildScanModule())
+						+ this.calculatePositionCount(subChainHead.getAppended()
+								.getChildScanModule());
+			}
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**

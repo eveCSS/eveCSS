@@ -8,13 +8,17 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
+import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
+import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
+import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.gef.editpolicies.StartEventGraphicalNodeEditPolicy;
 import de.ptb.epics.eve.editor.gef.figures.StartEventFigure;
 
@@ -23,10 +27,12 @@ import de.ptb.epics.eve.editor.gef.figures.StartEventFigure;
  * @since 1.6
  */
 public class StartEventEditPart extends AbstractGraphicalEditPart implements
-		NodeEditPart, PropertyChangeListener {
+		NodeEditPart, PropertyChangeListener, IModelUpdateListener {
 
 	private static Logger logger = Logger.getLogger(StartEventEditPart.class
 			.getName());
+	
+	private Label positionCountLabel;
 	
 	/**
 	 * Constructor.
@@ -35,6 +41,15 @@ public class StartEventEditPart extends AbstractGraphicalEditPart implements
 	 */
 	public StartEventEditPart(StartEvent event) {
 		this.setModel(event);
+		this.positionCountLabel = new Label();
+		this.getModel().getChain().calculatePositionCount();
+		Integer positionCount = this.getModel().getChain().getPositionCount();
+		if (positionCount == null) {
+			this.positionCountLabel.setText("# Positions: N/A");
+		} else {
+			this.positionCountLabel.setText("# Positions: " + 
+					Integer.toString(positionCount));
+		}
 	}
 	
 	/**
@@ -46,6 +61,10 @@ public class StartEventEditPart extends AbstractGraphicalEditPart implements
 		this.getModel().addPropertyChangeListener(StartEvent.Y_PROP, this);
 		this.getModel()
 				.addPropertyChangeListener(StartEvent.CONNECT_PROP, this);
+		
+		this.getModel().getChain().addPropertyChangeListener(
+				Chain.CHAIN_POSITION_COUNT_PROP, this);
+		this.getModel().getChain().addModelUpdateListener(this);
 		super.activate();
 	}
 	
@@ -58,6 +77,10 @@ public class StartEventEditPart extends AbstractGraphicalEditPart implements
 		this.getModel().removePropertyChangeListener(StartEvent.Y_PROP, this);
 		this.getModel().removePropertyChangeListener(StartEvent.CONNECT_PROP,
 				this);
+		
+		this.getModel().getChain().removePropertyChangeListener(
+				Chain.CHAIN_POSITION_COUNT_PROP, this);
+		this.getModel().getChain().removeModelUpdateListener(this);
 		super.deactivate();
 	}
 	
@@ -70,6 +93,19 @@ public class StartEventEditPart extends AbstractGraphicalEditPart implements
 				this.getModel().getX(), this.getModel().getY());
 	}
 
+	/**
+	 * 
+	 */
+	@Override
+	protected void refreshVisuals() {
+		if (this.positionCountLabel == null) {
+			this.getFigure().setToolTip(null);
+		} else {
+			this.getFigure().setToolTip(this.positionCountLabel);
+		}
+		super.refreshVisuals();
+	}
+	
 	/**
 	 * Returns the model element.
 	 * 
@@ -149,7 +185,21 @@ public class StartEventEditPart extends AbstractGraphicalEditPart implements
 			((StartEventFigure)this.getFigure()).setY((Integer)e.getNewValue());
 		} else if (e.getPropertyName().equals(StartEvent.CONNECT_PROP)) {
 			this.refreshSourceConnections();
+		} else if (e.getPropertyName().equals(Chain.CHAIN_POSITION_COUNT_PROP)) {
+			String positions = (this.getModel().getChain().getPositionCount() == null) 
+					? "N/A"
+					: Integer.toString(this.getModel().getChain()
+							.getPositionCount());
+			this.positionCountLabel.setText("# Positions: " + positions);
 		}
 		this.refreshVisuals();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
+		this.positionCountLabel.setText("# Positions: N/A");
 	}
 }

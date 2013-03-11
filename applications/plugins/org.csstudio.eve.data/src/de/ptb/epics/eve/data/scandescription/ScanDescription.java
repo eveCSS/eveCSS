@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.data.scandescription;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -63,6 +65,13 @@ public class ScanDescription implements IModelUpdateProvider,
 	// the measuring station used by this scan description.
 	private final IMeasuringStation measuringStation;
 	
+	private boolean dirty;
+	
+	/** */
+	public static final String DIRTY_PROP = "dirty";
+	
+	private PropertyChangeSupport propertyChangeSupport;
+	
 	/**
 	 * Constructs a <code>ScanDescription</code> and adds the S0 start event
 	 * to it's event list.
@@ -81,6 +90,7 @@ public class ScanDescription implements IModelUpdateProvider,
 		s0.setName("Start");
 		this.add(s0);
 		this.measuringStation = measuringStation;
+		this.dirty = false;
 	}
 
 	/**
@@ -328,7 +338,21 @@ public class ScanDescription implements IModelUpdateProvider,
 	public IMeasuringStation getMeasuringStation() {
 		return this.measuringStation;
 	}
-	
+
+	/**
+	 * @return the dirty
+	 */
+	public boolean isDirty() {
+		return dirty;
+	}
+
+	/**
+	 * @param dirty the dirty to set
+	 */
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
+	}
+
 	/**
 	 * {@inheritDoc} 
 	 */
@@ -338,7 +362,6 @@ public class ScanDescription implements IModelUpdateProvider,
 			if(modelUpdateEvent != null) {
 				logger.debug(modelUpdateEvent.getSender());
 			}
-			logger.debug("null");
 		}
 		updateListeners();
 	}
@@ -386,5 +409,31 @@ public class ScanDescription implements IModelUpdateProvider,
 		while(it.hasNext()) {
 			it.next().updateEvent(new ModelUpdateEvent(this, null));
 		}
+	}
+	
+	/**
+	 * Delegate.
+	 * 
+	 * @param propertyName
+	 * @param listener
+	 * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(String, PropertyChangeListener)
+	 */
+	public void addPropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		this.propertyChangeSupport.addPropertyChangeListener(propertyName,
+				listener);
+	}
+
+	/**
+	 * Delegate.
+	 * 
+	 * @param propertyName
+	 * @param listener
+	 * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(String, PropertyChangeListener)
+	 */
+	public void removePropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		this.propertyChangeSupport.removePropertyChangeListener(propertyName,
+				listener);
 	}
 }

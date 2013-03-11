@@ -62,9 +62,9 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 		button.addSelectionListener(new ButtonSelectionListener());
 		
 		String rootdir = Activator.getDefault().getRootDirectory();
-		File file = new File(rootdir + "scml/");
+		File file = new File(rootdir + "eve/scml/");
 		if(file.exists()) {
-			fileText.insert(rootdir + "scml/");
+			fileText.insert(rootdir + "eve/scml/");
 		} else {
 			fileText.insert(rootdir);
 		}
@@ -160,9 +160,9 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 		public void widgetSelected(SelectionEvent e) {
 			String filePath;
 			String rootdir = Activator.getDefault().getRootDirectory();
-			File file = new File(rootdir + "scml/");
+			File file = new File(rootdir + "eve/scml/");
 			if(file.exists()) {
-				filePath = rootdir + "scml/";
+				filePath = rootdir + "eve/scml/";
 			} else {
 				filePath = rootdir;
 			}
@@ -171,6 +171,7 @@ public class NewScanDescriptionWizardPage extends WizardPage {
 			// show a file dialog
 			final FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
 			dialog.setFilterPath(filePath);
+			dialog.setFileName(filePath);
 			String[] extensions = {"*.scml"};
 			dialog.setFilterExtensions(extensions);
 			final String fileName = dialog.open();

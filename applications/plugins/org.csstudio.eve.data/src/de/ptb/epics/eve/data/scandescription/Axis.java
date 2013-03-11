@@ -361,7 +361,7 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	 * 
 	 * @param stop
 	 */
-	@SuppressWarnings("javadoc")
+	@SuppressWarnings("unchecked")
 	public void setStop(Date stop) {
 		if (!this.getType().equals(DataTypes.DATETIME)) {
 			return;

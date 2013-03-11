@@ -49,6 +49,7 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.progress.IProgressService;
 import org.xml.sax.SAXException;
 
+import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
@@ -58,7 +59,6 @@ import de.ptb.epics.eve.editor.dialogs.lostdevices.LostDevicesDialog;
 import de.ptb.epics.eve.editor.jobs.file.Save;
 
 /**
- * 
  * @author Marcus Michalsky
  * @since 1.6
  */
@@ -161,6 +161,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 			monitor.done();
 		}
 		Activator.getDefault().saveDefaults(this.scanDescription);
+		this.updatePositionCounts();
 	}
 	
 	/**
@@ -207,6 +208,16 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		saveJob.schedule();
 		
 		Activator.getDefault().saveDefaults(this.scanDescription);
+		this.updatePositionCounts();
+	}
+	
+	/*
+	 * 
+	 */
+	private void updatePositionCounts() {
+		for (Chain chain : this.scanDescription.getChains()) {
+			chain.calculatePositionCount();
+		}
 	}
 	
 	/**
@@ -395,6 +406,9 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		return ScanDescriptionEditorPaletteFactory.createPalette();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected PaletteViewerProvider createPaletteViewerProvider() {
 		return new PaletteViewerProvider(getEditDomain()) {

@@ -29,6 +29,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateList
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
+import de.ptb.epics.eve.util.math.statistics.DescriptiveStats;
+
 /**
  * This class represents a scan module.
  * 
@@ -1413,5 +1415,32 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		count += this.plotWindows.size();
 		
 		return count;
+	}
+	
+	/**
+	 * Returns the number of motor positions.
+	 * 
+	 * @return the number of motor positions or <code>null</code> if 
+	 * 			calculation is not possible
+	 * @author Marcus Michalsky
+	 * @since 1.10
+	 */
+	public Integer getPositionCount() {
+		// a main axis defines the global position count (of a scan module)
+		if (this.getMainAxis() != null) {
+			return this.getMainAxis().getMode().getPositionCount();
+		}
+		List<Double> positionCounts = new ArrayList<Double>();
+		for (Axis axis : this.getAxes()) {
+			// if any axis position count is not available -> abort
+			if (axis.getMode().getPositionCount() == null) {
+				return null;
+			}
+			positionCounts.add(axis.getMode().getPositionCount().doubleValue());
+		}
+		DescriptiveStats stats = new DescriptiveStats(positionCounts);
+		stats.calculateStats();
+		// no main axis, no uncalculatable axes -> return max
+		return stats.getMaximum().intValue();
 	}
 }
