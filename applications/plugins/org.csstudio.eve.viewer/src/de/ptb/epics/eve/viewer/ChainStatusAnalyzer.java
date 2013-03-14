@@ -48,28 +48,11 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 	@Override
 	public void engineStatusChanged(EngineStatus engineStatus, String xmlName,
 			int repeatCount) {
-
 		logger.debug(engineStatus);
-
 		
-//		if (engineStatus == EngineStatus.LOADING_XML) {
-//			this.resetChainList();
-//		} else if (engineStatus == EngineStatus.IDLE_XML_LOADED) {
-//			for (IUpdateListener iul : this.updateListener) {
-//				iul.setLoadedScmlFile(xmlName);
-//				if (engineStatus == EngineStatus.IDLE_XML_LOADED) {
-//					iul.fillEngineStatus(engineStatus, repeatCount);
-//				}
-//			}
-			
-		if (engineStatus == EngineStatus.LOADING_XML
-				|| engineStatus == EngineStatus.IDLE_XML_LOADED) {
-			// Es wird gerade ein neues XML-File geladen, ChainStatusListe
-			// löschen
-
-			if (engineStatus == EngineStatus.LOADING_XML)
-				this.resetChainList();
-
+		if (engineStatus == EngineStatus.LOADING_XML) {
+			this.resetChainList();
+		} else if (engineStatus == EngineStatus.IDLE_XML_LOADED) {
 			for (IUpdateListener iul : this.updateListener) {
 				iul.setLoadedScmlFile(xmlName);
 				if (engineStatus == EngineStatus.IDLE_XML_LOADED) {
@@ -241,6 +224,9 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 					for (int j = 0; j < scanModules.size(); ++j) {
 						if (scanModules.get(j).getId() == chainStatusCommand
 								.getScanModulId()) {
+							// Über die Listen die hier gefüllt werden, werden nur die Zustände in der
+							// Tabelle der Engine View gesetzt. Die Knöpfe wie Play usw. werden
+							// nur in der EngineView gesetzt!
 							this.initializingScanModules.remove(scanModules
 									.get(j));
 							this.executingScanModules

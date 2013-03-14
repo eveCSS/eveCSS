@@ -504,7 +504,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	private void setChainStatus(ChainStatus status) {
 		switch(status) {
 			case SM_PAUSED:	this.playButton.setEnabled(true);
-//							this.pauseButton.setEnabled(false);
 							this.stopButton.setEnabled(true);
 							this.skipButton.setEnabled(true);
 							this.haltButton.setEnabled(true);
