@@ -504,13 +504,19 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	private void setChainStatus(ChainStatus status) {
 		switch(status) {
 			case SM_PAUSED:	this.playButton.setEnabled(true);
-							this.pauseButton.setEnabled(false);
+//							this.pauseButton.setEnabled(false);
 							this.stopButton.setEnabled(true);
 							this.skipButton.setEnabled(true);
 							this.haltButton.setEnabled(true);
 							break;
+			case EXECUTING_SM: 	this.playButton.setEnabled(false);
+								this.pauseButton.setEnabled(true);
+								this.stopButton.setEnabled(true);
+								this.skipButton.setEnabled(true);
+								this.haltButton.setEnabled(true);
+								break;
 		}
-	}
+	}	
 	
 	/*
 	 * 
@@ -631,6 +637,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	 * {@inheritDoc}
 	 */
 	public void setLoadedScmlFile(final String filename) {
+		logger.debug("loaded scml File: " + filename);
 		// der Name des geladenen scml-Files wird angezeigt
 		this.loadedScmlText.getDisplay().syncExec( new Runnable() {
 			@Override public void run() {
@@ -647,7 +654,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		logger.debug(engineStatus);
 		
 		setCurrentRepeatCount(repeatCount);
-	
+
 		switch(engineStatus) {
 			case IDLE_NO_XML_LOADED:
 				this.playButton.getDisplay().syncExec(new Runnable() {

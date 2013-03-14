@@ -511,6 +511,7 @@ public class ECP1Client {
 								final EngineStatusCommand engineStatusCommand = 
 										(EngineStatusCommand) command;
 								for (IEngineStatusListener esl : engineStatusListener) {
+logger.debug("XmlName: " + engineStatusCommand.getXmlName());
 									esl.engineStatusChanged(
 										engineStatusCommand.getEngineStatus(), 
 										engineStatusCommand.getXmlName(), 

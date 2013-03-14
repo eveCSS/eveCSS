@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
@@ -13,6 +15,8 @@ import de.ptb.epics.eve.ecp1.types.EngineStatus;
 
 public class ChainStatusAnalyzer implements IEngineStatusListener,
 		IChainStatusListener {
+
+	private static Logger logger = Logger.getLogger(ChainStatusAnalyzer.class.getName());
 
 	private final List<Chain> idleChains;
 	private final List<Chain> runningChains;
@@ -45,11 +49,26 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 	public void engineStatusChanged(EngineStatus engineStatus, String xmlName,
 			int repeatCount) {
 
+		logger.debug(engineStatus);
+
+		
+//		if (engineStatus == EngineStatus.LOADING_XML) {
+//			this.resetChainList();
+//		} else if (engineStatus == EngineStatus.IDLE_XML_LOADED) {
+//			for (IUpdateListener iul : this.updateListener) {
+//				iul.setLoadedScmlFile(xmlName);
+//				if (engineStatus == EngineStatus.IDLE_XML_LOADED) {
+//					iul.fillEngineStatus(engineStatus, repeatCount);
+//				}
+//			}
+			
 		if (engineStatus == EngineStatus.LOADING_XML
 				|| engineStatus == EngineStatus.IDLE_XML_LOADED) {
 			// Es wird gerade ein neues XML-File geladen, ChainStatusListe
 			// löschen
-			this.resetChainList();
+
+			if (engineStatus == EngineStatus.LOADING_XML)
+				this.resetChainList();
 
 			for (IUpdateListener iul : this.updateListener) {
 				iul.setLoadedScmlFile(xmlName);
@@ -100,6 +119,8 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 		}
 		List<Chain> chains = null;
 
+		logger.debug(chainStatusCommand.getChainStatus());
+		
 		switch (chainStatusCommand.getChainStatus()) {
 		case IDLE:
 			chains = Activator.getDefault().getCurrentScanDescription()
