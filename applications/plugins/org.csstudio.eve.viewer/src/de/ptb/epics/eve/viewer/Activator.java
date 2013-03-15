@@ -324,21 +324,41 @@ public class Activator extends AbstractUIPlugin {
 	/*
 	 * 
 	 */
-	private void configureLogging() {
-		String pathToConfigFile = new String();
-		if(debug) {
-			pathToConfigFile = rootDir + "eve/logger-debug.xml";
+	private void configureLogging() throws Exception {
+		// setting property so that the log4j configuration file can access it
+		System.setProperty("eve.logdir", rootDir + "eve/log");
+		Version eveVersion = Platform.getProduct().getDefiningBundle()
+				.getVersion();
+		System.setProperty("eve.version", eveVersion.getMajor() + "."
+				+ eveVersion.getMinor());
+		
+		String pathToConfigFile = rootDir + "eve/logger-debug.xml";
+		if (debug) {
+			// the logging configuration is taken from the eve root if present
+			// or included default otherwise
+			if (new File(pathToConfigFile).exists()) {
+				DOMConfigurator.configure(pathToConfigFile);
+				logger.debug("found debug logging configuration in eve root");
+			} else {
+				File debugConf = de.ptb.epics.eve.resources.Activator
+						.getLoggerConfiguration(true);
+				if (debugConf == null) {
+					String message = "debug logging conf could not be loaded!";
+					logger.fatal(message);
+					throw new Exception(message);
+				}
+				DOMConfigurator.configure(debugConf.getAbsolutePath());
+				logger.debug("no debug logging configuration found -> using default");
+			}
 		} else {
-			pathToConfigFile = rootDir + "eve/logger.xml";
-		}
-		File file = new File(pathToConfigFile);
-		if(file.exists()) {
-			// setting property so that the log4j configuration file can access it
-			System.setProperty("eve.logdir", rootDir + "eve/log");
-			DOMConfigurator.configure(pathToConfigFile);
-		} else {
-			logger.warn("Could not initialize logging. " + 
-					"Path to log configuration not found!");
+			File appConf = de.ptb.epics.eve.resources.Activator
+					.getLoggerConfiguration(false);
+			if (appConf == null) {
+				String message = "app logging conf could not be loaded!";
+				logger.fatal(message);
+				throw new Exception(message);
+			}
+			DOMConfigurator.configure(appConf.getAbsolutePath());
 		}
 	}
 	
