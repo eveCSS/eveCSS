@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+		<param name="threshold" value="DEBUG" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] %c: %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="dataDailyAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="threshold" value="DEBUG" />
+		<param name="datePattern" value="'.'yyyy-MM-dd" />
+		<param name="file"
+			value="${eve.logdir}/${eve.version}/${user.name}/de.ptb.epics.eve.data.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] %c#%M: %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="ecp1DailyAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="threshold" value="DEBUG" />
+		<param name="datePattern" value="'.'yyyy-MM-dd" />
+		<param name="file"
+			value="${eve.logdir}/${eve.version}/${user.name}/de.ptb.epics.eve.ecp1.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] %c#%M: %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="editorDailyAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="threshold" value="DEBUG" />
+		<param name="datePattern" value="'.'yyyy-MM-dd" />
+		<param name="file"
+			value="${eve.logdir}/${eve.version}/${user.name}/de.ptb.epics.eve.editor.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] %c#%M: %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="SelectionDailyAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="threshold" value="DEBUG" />
+		<param name="datePattern" value="'.'yyyy-MM-dd" />
+		<param name="file"
+			value="${eve.logdir}/${eve.version}/${user.name}/de.ptb.epics.eve.editor.selection.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] %c{2}#%M: %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="GEFDailyAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="threshold" value="DEBUG" />
+		<param name="datePattern" value="'.'yyyy-MM-dd" />
+		<param name="file"
+			value="${eve.logdir}/${eve.version}/${user.name}/de.ptb.epics.eve.editor.gef.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] %c{2}#%M: %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="viewerDailyAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="threshold" value="DEBUG" />
+		<param name="datePattern" value="'.'yyyy-MM-dd" />
+		<param name="file"
+			value="${eve.logdir}/${eve.version}/${user.name}/de.ptb.epics.eve.viewer.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] %c#%M: %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="PlotDailyAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="threshold" value="DEBUG" />
+		<param name="datePattern" value="'.'yyyy-MM-dd" />
+		<param name="file"
+			value="${eve.logdir}/${eve.version}/${user.name}/de.ptb.epics.eve.viewer.plot.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] %c{2}#%M: %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="PVDailyAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="threshold" value="DEBUG" />
+		<param name="datePattern" value="'.'yyyy-MM-dd" />
+		<param name="file"
+			value="${eve.logdir}/${eve.version}/${user.name}/de.ptb.epics.eve.util.pv.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] %c{2}#%M: %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="eclipseDailyAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="threshold" value="DEBUG" />
+		<param name="datePattern" value="'.'yyyy-MM-dd" />
+		<param name="file" value="${eve.logdir}/${eve.version}/${user.name}/eclipse.log" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] %c#%M: %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="socketHubAppender" class="org.apache.log4j.net.SocketHubAppender">
+		<param name="threshold" value="DEBUG" />
+		<param name="Port" value="4445" />
+		<param name="locationInfo" value="true" />
+	</appender>
+
+	<appender name="lf5" class="org.apache.log4j.lf5.LF5Appender">
+		<param name="MaxNumberOfRecords" value="1000" />
+	</appender>
+
+	<logger name="de.ptb.epics.eve.data">
+		<level value="DEBUG" />
+		<appender-ref ref="dataDailyAppender" />
+	</logger>
+
+	<logger name="de.ptb.epics.eve.ecp1">
+		<level value="DEBUG" />
+		<appender-ref ref="ecp1DailyAppender" />
+	</logger>
+
+	<logger name="de.ptb.epics.eve.editor">
+		<level value="DEBUG" />
+		<appender-ref ref="editorDailyAppender" />
+	</logger>
+
+	<logger name="de.ptb.epics.eve.editor.gef" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="GEFDailyAppender" />
+	</logger>
+
+	<logger name="de.ptb.epics.eve.editor.logging" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="eclipseDailyAppender" />
+	</logger>
+
+	<logger name="de.ptb.epics.eve.editor.SelectionTracker" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="SelectionDailyAppender" />
+	</logger>
+
+	<logger name="de.ptb.epics.eve.util.pv" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="PVDailyAppender" />
+	</logger>
+
+	<logger name="de.ptb.epics.eve.viewer">
+		<level value="DEBUG" />
+		<appender-ref ref="viewerDailyAppender" />
+	</logger>
+
+	<logger name="de.ptb.epics.eve.viewer.plot" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="PlotDailyAppender" />
+	</logger>
+
+	<logger name="de.ptb.epics.eve">
+		<level value="DEBUG" />
+		<appender-ref ref="lf5" />
+	</logger>
+
+	<root>
+		<priority value="DEBUG" />
+		<appender-ref ref="consoleAppender" />
+		<appender-ref ref="socketHubAppender" />
+	</root>
+
+</log4j:configuration>

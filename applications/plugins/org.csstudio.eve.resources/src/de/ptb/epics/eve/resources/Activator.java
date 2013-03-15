@@ -25,7 +25,7 @@ public class Activator implements BundleActivator {
 
 	private static BundleContext context;
 	private static Activator plugin;
-	
+
 	/**
 	 * Constructor
 	 */
@@ -106,6 +106,34 @@ public class Activator implements BundleActivator {
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
+		return null;
+	}
+	
+	/**
+	 * Returns the logging configuration either for debug or production.
+	 * 
+	 * @param debug <code>true</code> if debug mode, <code>false</code> otherwise
+	 * @return the logging configuration or <code>null</code> if an error occurred
+	 */
+	public static File getLoggerConfiguration(boolean debug) {
+		try {
+			URL url;
+			if (debug) {
+				url = new URL(
+					"platform:/plugin/de.ptb.epics.eve.resources/cfg/logger-debug.xml");
+			} else {
+				url = new URL(
+					"platform:/plugin/de.ptb.epics.eve.resources/cfg/logger.xml");
+			}
+			File file = new File(FileLocator.toFileURL(url).toURI());
+			return file;
+		} catch (MalformedURLException e) {
+			logger.error(e.getMessage(), e);
+		} catch (URISyntaxException e) {
+			logger.error(e.getMessage(), e);
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+		} 
 		return null;
 	}
 }
