@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="test" basedir="../../../">
+	<!-- base dir is repository checkout dir -->
+
+	<description>
+		Ant File for JUnit Tests
+	</description>
+
+	<property environment="env" />
+	<property name="build.path" location="${env.WORKSPACE}/../builds/${env.BUILD_ID}" />
+	<property name="workspace" location="${env.WORKSPACE}" />
+	<property name="platform" location="/messung/eve/java" />
+
+	<target name="test-compile">
+		<delete dir="${env.WORKSPACE}/tests" />
+		<mkdir dir="${env.WORKSPACE}/tests" />
+		<mkdir dir="${env.WORKSPACE}/tests/bin" />
+		<mkdir dir="${env.WORKSPACE}/tests/src" />
+		<mkdir dir="${env.WORKSPACE}/tests/build" />
+		<unzip src="${env.WORKSPACE}/bin/eveCSS/eveCSS-linux.gtk.x86.zip" 
+				dest="${env.WORKSPACE}/tests/bin" />
+		<copy todir="${env.WORKSPACE}/tests/src">
+			<fileset dir="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.data.tests" />
+			<fileset dir="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.util.tests" />
+		</copy>
+		
+		<javac srcdir="${env.WORKSPACE}/tests/src/org.csstudio.eve.util.tests/src"
+				destdir="${env.WORKSPACE}/tests/bin/"
+				sorce="1.5"
+				target="1.5"
+				debug="on">
+			<classpath>
+				
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="test" depends="test-compile">
+		<delete dir="${platform}/doc/tests/test-results" />
+		<mkdir dir="${platform}/doc/tests/test-results" />
+
+		<junit fork="true" forkmode="perBatch" haltonfailure="false"
+				failureproperty="test.failed">
+			
+			<classpath>
+				<pathelement path="${classpath}"/>
+				<fileset dir="${platform}/eclipse-rcp/plugins">
+					<include name="**/*.jar" />
+				</fileset>
+				<fileset dir="${platform}/CSS/css/plugins">
+					<include name="**/*.jar"
+				</fileset>
+				
+				
+				
+				
+        
+        <pathelement path="org.csstudio.eve.data.tests/bin" />
+        <pathelement path="org.csstudio.eve.data/bin" />
+        <pathelement path="org.csstudio.eve.resources/bin" />
+        <pathelement path="org.csstudio.eve.util/bin" />
+        <pathelement path="org.csstudio.eve.util.tests/bin" />
+      	<pathelement path="org.csstudio.eve.util/lib/commons-math3-3.1.1.jar" />
+        <pathelement path="${css_app_dir}/org.csstudio.swt.xygraph/bin" />
+        <pathelement path="${css_core_dir}/org.csstudio.platform.libs.log4j" />
+			</classpath>
+			
+			<formatter type="brief" usefile="false" />
+			<formatter type="xml" />
+		</junit>
+	</target>
+</project>
