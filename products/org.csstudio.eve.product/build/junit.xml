@@ -40,7 +40,9 @@
 
 	<target name="test" depends="test-compile">
 		<mkdir dir="${env.WORKSPACE}/tests/doc" />
-
+		<copy file="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.data.tests/log4j-conf.xml" 
+				todir="${env.WORKSPACE}/tests/build/"/> 
+		
 		<junit fork="yes" forkmode="perBatch" haltonfailure="false" failureproperty="failed">
 			<classpath>
 				<fileset dir="${env.WORKSPACE}/tests/bin/eveCSS">
