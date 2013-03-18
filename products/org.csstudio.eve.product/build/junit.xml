@@ -48,7 +48,7 @@
 					<include name="**/*.jar" />
 				</fileset>
 				<fileset dir="${platform}/CSS/css/plugins">
-					<include name="**/*.jar"
+					<include name="**/*.jar" />
 				</fileset>
 				
 				
