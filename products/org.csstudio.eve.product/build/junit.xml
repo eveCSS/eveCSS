@@ -41,13 +41,14 @@
 	<target name="test" depends="test-compile">
 		<mkdir dir="${env.WORKSPACE}/tests/doc" />
 
-		<junit fork="true" forkmode="perBatch" haltonfailure="false"
-			failureproperty="test.failed">
+		<junit haltonfailure="false" failureproperty="failed">
 			<classpath>
-				<fileset dir="${env.WORKSPACE}/tests/bin">
+				<fileset dir="${env.WORKSPACE}/tests/bin/eveCSS">
 					<include name="**/*.jar" />
 				</fileset>
-				<fileset dir="${env.WORKSPACE}/tests/build/" />
+				<fileset dir="${env.WORKSPACE}/tests/build/">
+					<include name="**/*.class" />
+				</fileset>
 				<pathelement
 					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.util/lib/commons-math3-3.1.1.jar" />
 			</classpath>
@@ -55,11 +56,12 @@
 			<formatter type="brief" usefile="false" />
 			<formatter type="xml" />
 
-			<batchtest todir="${env.WORKSPACE}/tests/results">
-				<fileset dir="${env.WORKSPACE}/tests/build/">
-					<include name="**/*Test.class" />
+			<batchtest fork="yes" forkmode="perBatch" todir="${env.WORKSPACE}/tests/results">
+				<fileset dir="${env.WORKSPACE}/tests/src">
+					<include name="**/*Test.java" />
 				</fileset>
 			</batchtest>
 		</junit>
+		<fail message="TEST FAILURE" if="failed" />
 	</target>
 </project>
