@@ -46,9 +46,6 @@
 				<fileset dir="${env.WORKSPACE}/tests/bin/eveCSS">
 					<include name="**/*.jar" />
 				</fileset>
-				<fileset dir="${platform}/Eclipse/eclipse-rcp/plugins">
-					<include name="**/*.jar" />
-				</fileset>
 				<pathelement path="${env.WORKSPACE}/tests/build/" />
 				<pathelement
 					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.util/lib/commons-math3-3.1.1.jar" />
@@ -58,7 +55,7 @@
 			<formatter type="xml" />
 
 			<batchtest todir="${env.WORKSPACE}/tests/results">
-				<fileset dir="${env.WORKSPACE}/tests/src">
+				<fileset dir="${env.WORKSPACE}/tests/src/src">
 					<include name="**/*Test.java" />
 				</fileset>
 			</batchtest>
