@@ -17,6 +17,7 @@
 		<mkdir dir="${env.WORKSPACE}/tests/bin" />
 		<mkdir dir="${env.WORKSPACE}/tests/src" />
 		<mkdir dir="${env.WORKSPACE}/tests/build" />
+		<mkdir dir="${env.WORKSPACE}/tests/results" />
 		<unzip src="${env.WORKSPACE}/bin/eveCSS/eveCSS-linux.gtk.x86.zip" 
 				dest="${env.WORKSPACE}/tests/bin" />
 		<copy todir="${env.WORKSPACE}/tests/src">
@@ -25,7 +26,7 @@
 		</copy>
 		
 		<javac srcdir="${env.WORKSPACE}/tests/src/src"
-				destdir="${env.WORKSPACE}/tests/bin/"
+				destdir="${env.WORKSPACE}/tests/build/"
 				source="1.5"
 				target="1.5"
 				debug="on">
@@ -38,37 +39,30 @@
 	</target>
 
 	<target name="test" depends="test-compile">
-		<delete dir="${platform}/doc/tests/test-results" />
-		<mkdir dir="${platform}/doc/tests/test-results" />
+		<mkdir dir="${env.WORKSPACE}/tests/doc" />
 
 		<junit fork="true" forkmode="perBatch" haltonfailure="false"
-				failureproperty="test.failed">
-			
+			failureproperty="test.failed">
 			<classpath>
-				<pathelement path="${classpath}"/>
-				<fileset dir="${platform}/eclipse-rcp/plugins">
+				<fileset dir="${env.WORKSPACE}/tests/bin">
 					<include name="**/*.jar" />
 				</fileset>
-				<fileset dir="${platform}/CSS/css/plugins">
-					<include name="**/*.jar" />
-				</fileset>
-				
-				
-				
-				
-        
-        <pathelement path="org.csstudio.eve.data.tests/bin" />
-        <pathelement path="org.csstudio.eve.data/bin" />
-        <pathelement path="org.csstudio.eve.resources/bin" />
-        <pathelement path="org.csstudio.eve.util/bin" />
-        <pathelement path="org.csstudio.eve.util.tests/bin" />
-      	<pathelement path="org.csstudio.eve.util/lib/commons-math3-3.1.1.jar" />
-        <pathelement path="${css_app_dir}/org.csstudio.swt.xygraph/bin" />
-        <pathelement path="${css_core_dir}/org.csstudio.platform.libs.log4j" />
+				<fileset dir="${env.WORKSPACE}/tests/build/" />
+				<pathelement
+					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.util/lib/commons-math3-3.1.1.jar" />
 			</classpath>
-			
+
 			<formatter type="brief" usefile="false" />
 			<formatter type="xml" />
+
+			<batchtest todir="${env.WORKSPACE}/tests/results">
+				<fileset dir="${env.WORKSPACE}/tests/build/org.csstudio.eve.data.tests/src">
+					<include name="**/*Test.java" />
+				</fileset>
+				<fileset dir="${env.WORKSPACE}/tests/build/org.csstudio.eve.util.tests/src">
+					<include name="**/*Test.java" />
+				</fileset>
+			</batchtest>
 		</junit>
 	</target>
 </project>
