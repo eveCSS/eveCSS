@@ -56,8 +56,8 @@
 			<formatter type="xml" />
 
 			<batchtest todir="${env.WORKSPACE}/tests/results">
-				<fileset dir="${env.WORKSPACE}/tests/src/src">
-					<include name="**/*Test.java" />
+				<fileset dir="${env.WORKSPACE}/tests/build/">
+					<include name="**/*Test.class" />
 				</fileset>
 			</batchtest>
 		</junit>
