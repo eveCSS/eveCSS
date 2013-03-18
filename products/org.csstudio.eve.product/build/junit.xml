@@ -46,9 +46,7 @@
 				<fileset dir="${env.WORKSPACE}/tests/bin/eveCSS">
 					<include name="**/*.jar" />
 				</fileset>
-				<fileset dir="${env.WORKSPACE}/tests/build/">
-					<include name="**/*.class" />
-				</fileset>
+				<pathelement path="${env.WORKSPACE}/tests/build" />
 				<pathelement
 					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.util/lib/commons-math3-3.1.1.jar" />
 			</classpath>
