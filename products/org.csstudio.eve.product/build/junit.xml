@@ -24,19 +24,7 @@
 			<fileset dir="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.util.tests" />
 		</copy>
 		
-		<javac srcdir="${env.WORKSPACE}/tests/src/org.csstudio.eve.util.tests/src"
-				destdir="${env.WORKSPACE}/tests/bin/"
-				source="1.5"
-				target="1.5"
-				debug="on">
-			<classpath>
-				<fileset dir="${env.WORKSPACE}/tests/bin">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-		</javac>
-		
-		<javac srcdir="${env.WORKSPACE}/tests/src/org.csstudio.eve.data.tests/src"
+		<javac srcdir="${env.WORKSPACE}/tests/src/src"
 				destdir="${env.WORKSPACE}/tests/bin/"
 				source="1.5"
 				target="1.5"
