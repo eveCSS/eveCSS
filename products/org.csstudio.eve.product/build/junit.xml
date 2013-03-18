@@ -41,7 +41,7 @@
 	<target name="test" depends="test-compile">
 		<mkdir dir="${env.WORKSPACE}/tests/doc" />
 
-		<junit haltonfailure="false" failureproperty="failed">
+		<junit fork="yes" forkmode="perBatch" haltonfailure="false" failureproperty="failed">
 			<classpath>
 				<fileset dir="${env.WORKSPACE}/tests/bin/eveCSS">
 					<include name="**/*.jar" />
@@ -56,7 +56,7 @@
 			<formatter type="brief" usefile="false" />
 			<formatter type="xml" />
 
-			<batchtest fork="yes" forkmode="perBatch" todir="${env.WORKSPACE}/tests/results">
+			<batchtest todir="${env.WORKSPACE}/tests/results">
 				<fileset dir="${env.WORKSPACE}/tests/src">
 					<include name="**/*Test.java" />
 				</fileset>
