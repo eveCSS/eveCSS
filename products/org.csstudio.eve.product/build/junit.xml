@@ -56,10 +56,7 @@
 			<formatter type="xml" />
 
 			<batchtest todir="${env.WORKSPACE}/tests/results">
-				<fileset dir="${env.WORKSPACE}/tests/build/org.csstudio.eve.data.tests/src">
-					<include name="**/*Test.java" />
-				</fileset>
-				<fileset dir="${env.WORKSPACE}/tests/build/org.csstudio.eve.util.tests/src">
+				<fileset dir="${env.WORKSPACE}/tests/src/src">
 					<include name="**/*Test.java" />
 				</fileset>
 			</batchtest>
