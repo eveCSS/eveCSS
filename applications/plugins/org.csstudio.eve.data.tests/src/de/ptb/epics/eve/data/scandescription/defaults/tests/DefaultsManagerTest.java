@@ -18,7 +18,6 @@ import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxis;
 import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
-import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 /**
  * @author Marcus Michalsky
@@ -210,7 +209,6 @@ public class DefaultsManagerTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		Configurator.configureLogging();
 		DefaultsManagerTest.defaultsManager =  new DefaultsManager();
 		DefaultsManagerTest.defaultsManager.init(new File(
 				"defaults/defaults.xml"), new File("defaults/defaults.xsd"));

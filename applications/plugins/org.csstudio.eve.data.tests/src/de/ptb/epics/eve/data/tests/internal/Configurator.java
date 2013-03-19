@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
@@ -25,11 +23,6 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
  */
 public class Configurator {
 
-	private static Logger logger = 
-			Logger.getLogger(Configurator.class.getName());
-	
-	private static boolean configured = false;
-	
 	/**
 	 * Returns all available 
 	 * {@link de.ptb.epics.eve.data.measuringstation.IMeasuringStation}s.
@@ -82,11 +75,14 @@ public class Configurator {
 			measuringStationLoader.load(trfa);
 			stations.add(measuringStationLoader.getMeasuringStation());
 		} catch (ParserConfigurationException e) {
-			logger.error(e.getMessage(), e);
+			System.err.println(e.getMessage());
+			return null;
 		} catch (SAXException e) {
-			logger.error(e.getMessage(), e);
+			System.err.println(e.getMessage());
+			return null;
 		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+			System.err.println(e.getMessage());
+			return null;
 		}
 		return stations;
 	}
@@ -107,16 +103,6 @@ public class Configurator {
 		ch.add(sm);
 		sd.add(ch);
 		return sd;
-	}
-	
-	/**
-	 * Loads the Log4j configuration.
-	 */
-	public static void configureLogging() {
-		if(!configured) {
-			DOMConfigurator.configure("log4j-conf.xml");
-			configured = true;
-		}
 	}
 	
 	/**

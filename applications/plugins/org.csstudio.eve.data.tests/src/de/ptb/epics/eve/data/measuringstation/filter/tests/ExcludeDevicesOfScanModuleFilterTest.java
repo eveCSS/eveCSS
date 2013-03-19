@@ -1,33 +1,23 @@
 package de.ptb.epics.eve.data.measuringstation.filter.tests;
 
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
-
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.IOException;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.log4j.Logger;
-import org.apache.log4j.RollingFileAppender;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilter;
-import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 /**
  * <code>ExcludeDevicesOfScanModuleFilterTest</code> contains 
@@ -38,10 +28,6 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  * @since 0.4.1
  */
 public class ExcludeDevicesOfScanModuleFilterTest {
-	
-	private static Logger logger = 
-		Logger.getLogger(ExcludeDevicesOfScanModuleFilterTest.class.getName());
-	
 	private static File schemaFile;
 	private static File descriptionFile;
 	private static IMeasuringStation measuringStation;
@@ -55,10 +41,7 @@ public class ExcludeDevicesOfScanModuleFilterTest {
 	 */
 	@Ignore("has to be updated")
 	@Test
-	public void testExcludeAxis()
-	{
-		
-		
+	public void testExcludeAxis() {
 		// create a measuring station with filtered axes
 		filteredMeasuringStation = new ExcludeDevicesOfScanModuleFilter(
 				true, false, false, false, false);
@@ -108,8 +91,7 @@ public class ExcludeDevicesOfScanModuleFilterTest {
 	 */
 	@Ignore("has to be updated")
 	@Test
-	public void testExcludeChannel()
-	{
+	public void testExcludeChannel() {
 		// create a measuring station with filtered channels
 		filteredMeasuringStation = new ExcludeDevicesOfScanModuleFilter(
 				false, true, false, false, false);
@@ -161,12 +143,6 @@ public class ExcludeDevicesOfScanModuleFilterTest {
 	 */
 	@BeforeClass
 	public static void runBeforeClass() {
-		
-		Configurator.configureLogging();
-		
-		((RollingFileAppender)logger.getAppender(
-				"ExcludeDevicesOfScanModuleFilterTestAppender")).rollOver();
-		
 		// run for one time before all test cases
 		schemaFile = new File("xml/scml.xsd");
 		/*descriptionFile = new File("xml/test.xml");
@@ -187,37 +163,29 @@ public class ExcludeDevicesOfScanModuleFilterTest {
 		measuringStation = measuringStationLoader.getMeasuringStation();
 		
 		assertNotNull(measuringStation);*/
-		classSetUp(logger);
 	}
 	
 	/**
 	 * test wide setup method
 	 */
 	@Before
-	public void beforeEveryTest()
-	{
-		testSetUp(logger);
+	public void beforeEveryTest() {
 	}
 	
 	/**
 	 * test wide tear down method
 	 */
 	@After
-	public void afterEveryTest()
-	{
+	public void afterEveryTest() {
 		filteredMeasuringStation = null;
-		testTearDown(logger);
 	}
 	
 	/**
 	 * class wide tear down method
 	 */
 	@AfterClass
-	public static void afterClass()
-	{
+	public static void afterClass() {
 		schemaFile = null;
 		descriptionFile = null;
-		
-		classTearDown(logger);
 	}
 }

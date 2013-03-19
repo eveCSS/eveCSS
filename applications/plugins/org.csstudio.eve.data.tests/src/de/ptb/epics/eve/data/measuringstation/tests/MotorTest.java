@@ -1,13 +1,9 @@
 package de.ptb.epics.eve.data.measuringstation.tests;
 
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
-
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.RollingFileAppender;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -27,9 +23,6 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  * @since 0.4.1
  */
 public class MotorTest {
-
-	private static Logger logger = Logger.getLogger(MotorTest.class.getName());
-
 	private static List<IMeasuringStation> stations;
 	
 	/**
@@ -39,25 +32,16 @@ public class MotorTest {
 	 */
 	@Test
 	public void testCloneEquals() {
-		
-		log_start(logger, "testCloneEquals()");
-		
 		for(IMeasuringStation measuringStation : stations) {
 			for(Motor m : measuringStation.getMotors()) {
-				logger.info("Testing motor " + deviceString(m));
-				
 				Motor clone = (Motor) m.clone();
 				
 				assertEquals(m, m);
 				assertEquals(clone, clone);
 				assertEquals(m, clone);
 				assertEquals(clone, m);
-				logger.info("Motor " + deviceString(m) + 
-							" and its clone are equal");
 			}
 		}
-		
-		log_end(logger, "testCloneEquals()");
 	}
 	
 	// **********************************************************************
@@ -70,18 +54,11 @@ public class MotorTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		
-		Configurator.configureLogging();
-		
-		((RollingFileAppender)logger.
-				getAppender("MotorTestAppender")).rollOver();
-		
 		stations = Configurator.getMeasuringStations();
 		
 		for(IMeasuringStation ims : stations) {
 			assertNotNull(ims);
 		}
-		classSetUp(logger);
 	}
 
 	/**
@@ -89,7 +66,6 @@ public class MotorTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() {
-		classTearDown(logger);
 	}
 
 	/**
@@ -97,8 +73,6 @@ public class MotorTest {
 	 */
 	@Before
 	public void setUp() {
-		
-		testSetUp(logger);
 	}
 
 	/**
@@ -106,6 +80,5 @@ public class MotorTest {
 	 */
 	@After
 	public void tearDown() {
-		testTearDown(logger);
 	}
 }

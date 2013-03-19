@@ -1,13 +1,9 @@
 package de.ptb.epics.eve.data.measuringstation.tests;
 
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
-
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.RollingFileAppender;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -28,10 +24,6 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  * @since 0.4.1
  */
 public class MotorAxisTest {
-
-	private static Logger logger = 
-			Logger.getLogger(MotorAxisTest.class.getName());
-
 	private static List<IMeasuringStation> stations;
 	
 	/**
@@ -40,29 +32,19 @@ public class MotorAxisTest {
 	 * {@link de.ptb.epics.eve.data.measuringstation.MotorAxis#equals(Object)}.
 	 */
 	@Test
-	public void testCloneEquals()
-	{
-		log_start(logger, "testCloneEquals()");
-		
+	public void testCloneEquals() {
 		for(IMeasuringStation measuringStation : stations) {
-			logger.info("Testing station " + measuringStation.getName());
 			for(Motor m : measuringStation.getMotors()) {
 				for(MotorAxis ma : m.getAxes()) {
-					logger.info("Testing axis " + deviceString(ma));
-				
 					MotorAxis clone = (MotorAxis) ma.clone();
 				
 					assertEquals(ma,ma);
 					assertEquals(clone,clone);
 					assertEquals(ma,clone);
 					assertEquals(clone,ma);
-					logger.info("Motor Axis " + deviceString(ma) + 
-								" and its clone are equal");
 				}
 			}
 		}
-		
-		log_end(logger, "testCloneEquals()");
 	}
 	
 	// **********************************************************************
@@ -70,23 +52,15 @@ public class MotorAxisTest {
 	// **********************************************************************
 	
 	/**
-	 * Initializes logging and loads the measuring station (Class wide setup 
-	 * method of the test).
+	 * Class wide setup method of the test
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		
-		Configurator.configureLogging();
-		
-		((RollingFileAppender)logger.
-				getAppender("MotorAxisTestAppender")).rollOver();
-		
 		stations = Configurator.getMeasuringStations();
 		
 		for(IMeasuringStation ims : stations) {
 			assertNotNull(ims);
 		}
-		classSetUp(logger);
 	}
 
 	/**
@@ -94,7 +68,6 @@ public class MotorAxisTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() {
-		classTearDown(logger);
 	}
 
 	/**
@@ -102,8 +75,6 @@ public class MotorAxisTest {
 	 */
 	@Before
 	public void setUp() {
-		
-		testSetUp(logger);
 	}
 
 	/**
@@ -111,6 +82,5 @@ public class MotorAxisTest {
 	 */
 	@After
 	public void tearDown() {
-		testTearDown(logger);
-	}	
+	}
 }

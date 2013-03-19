@@ -1,12 +1,9 @@
 package de.ptb.epics.eve.data.measuringstation.tests;
 
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
 import static org.junit.Assert.*;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.RollingFileAppender;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -22,10 +19,6 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  * @since 0.4.1
  */
 public class DeviceTest {
-
-	private static Logger logger = 
-			Logger.getLogger(DeviceTest.class.getName());
-
 	private static List<IMeasuringStation> stations;
 	
 	/**
@@ -33,24 +26,14 @@ public class DeviceTest {
 	 */
 	@Test
 	public void testClone() {
-		log_start(logger, "testClone()");
-		
 		for(IMeasuringStation measuringStation : stations) {
-			
-			log_station(logger, measuringStation);
-			
 			for(Device device : measuringStation.getDevices()) {
-				logger.info("Testing device " + deviceString(device));
-				
 				Device clone = (Device)device.clone();
 				
 				// check inherited properties from AbstractPrepostScanDevice
 				assertEquals(device.getClassName(), clone.getClassName());
-				logger.debug("class names are equal (" + device.getClassName() + ")");
 				assertEquals(device.getDisplaygroup(), clone.getDisplaygroup());
-				logger.debug("displaygroups are equal (" + device.getDisplaygroup() + ")");
 				assertEquals(device.getValue(), clone.getValue());
-				logger.debug("values are equal");
 				
 				// check inherited properties from AbstractDevice
 				assertEquals(device.getName(), clone.getName());
@@ -66,13 +49,9 @@ public class DeviceTest {
 				// (options should not have options)
 				
 				// parent AbstractDevice
-				
-				logger.debug("-----");
 			}
 			
 		}
-		
-		log_end(logger, "testClone()");
 	}
 	
 	/**
@@ -81,30 +60,17 @@ public class DeviceTest {
 	 * {@link de.ptb.epics.eve.data.measuringstation.Device#equals(Object)}.
 	 */
 	@Test
-	public void testCloneEquals()
-	{
-		log_start(logger, "testCloneEquals()");
-		
+	public void testCloneEquals() {
 		for(IMeasuringStation measuringStation : stations) {
-		
-			log_station(logger, measuringStation);
-			
 			for(Device d : measuringStation.getDevices()) {
-				
-				logger.info("Testing device " + deviceString(d));
-					
 				Device clone = (Device) d.clone();
 					
 				assertEquals(d,d);
 				assertEquals(clone,clone);
 				assertEquals(d,clone);
 				assertEquals(clone,d);
-				logger.info("Device " + deviceString(d) + 
-							" and its clone are equal");
-				
 			}
 		}
-		log_end(logger, "testCloneEquals()");
 	}
 	
 	// **********************************************************************
@@ -117,17 +83,11 @@ public class DeviceTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		Configurator.configureLogging();
-		
-		((RollingFileAppender)logger.
-				getAppender("DeviceTestAppender")).rollOver();
-		
 		stations = Configurator.getMeasuringStations();
 		
 		for(IMeasuringStation ims : stations) {
 			assertNotNull(ims);
 		}
-		classSetUp(logger);
 	}
 
 	/**
@@ -135,7 +95,6 @@ public class DeviceTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() {
-		classTearDown(logger);
 	}
 
 	/**
@@ -143,7 +102,6 @@ public class DeviceTest {
 	 */
 	@Before
 	public void setUp() {
-		testSetUp(logger);
 	}
 
 	/**
@@ -151,6 +109,5 @@ public class DeviceTest {
 	 */
 	@After
 	public void tearDown() {
-		testTearDown(logger);
 	}
 }

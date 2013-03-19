@@ -1,13 +1,10 @@
 package de.ptb.epics.eve.data.scandescription.tests;
 
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
-
 import java.io.File;
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,13 +15,9 @@ import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
-import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 public class ScanDescriptionTest {
-	
-	private static Logger logger = 
-			Logger.getLogger(ScanDescriptionTest.class.getName());
-	
+
 	private ScanDescription scanDescription;
 	
 	/**
@@ -62,13 +55,10 @@ public class ScanDescriptionTest {
 	/* ******************************************************************** */
 	
 	/**
-	 * Initializes logging (Class wide setup 
-	 * method of the test).
+	 * Class wide setup method of the test
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		Configurator.configureLogging();
-		classSetUp(logger);
 	}
 	
 	/**
@@ -76,7 +66,6 @@ public class ScanDescriptionTest {
 	 */
 	@Before
 	public void setUp() {
-		testSetUp(logger);
 		this.scanDescription = createScanDescription();
 	}
 	
@@ -85,7 +74,6 @@ public class ScanDescriptionTest {
 	 */
 	@After
 	public void tearDown() {
-		testTearDown(logger);
 	}
 	
 	/**
@@ -93,6 +81,5 @@ public class ScanDescriptionTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() {
-		classTearDown(logger);
 	}
 }

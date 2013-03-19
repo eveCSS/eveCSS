@@ -2,9 +2,6 @@ package de.ptb.epics.eve.data.scandescription.tests;
 
 import static org.junit.Assert.*;
 
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
-
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,7 +15,6 @@ import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
 import de.ptb.epics.eve.data.scandescription.errors.AxisErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
-import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 /**
  * <code>AxisTest</code> 
@@ -27,9 +23,6 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  * @since 0.4.1
  */
 public class AxisTest {
-
-	private static Logger logger = Logger.getLogger(AxisTest.class.getName());
-	
 	private Axis axis;
 	
 	/**
@@ -38,8 +31,6 @@ public class AxisTest {
 	@Test
 	@Ignore("Obsolete (see Feature #591)")
 	public void testGetModelErrorsStepFunctionsAdd() {
-		log_start(logger, "testGetModelErrors");
-		
 		// before modification, no errors should be present
 		assertTrue(axis.getModelErrors().isEmpty());
 		
@@ -79,8 +70,6 @@ public class AxisTest {
 		
 		// stepcount == -1 should produce an error, but when is it set to -1 ? 
 		// only in the GUI ? // TODO
-		
-		log_end(logger, "testGetModelErrors");
 	}
 	
 	// ***********************************************************************
@@ -91,7 +80,6 @@ public class AxisTest {
 	 */
 	@BeforeClass
 	public static void runBeforeClass() {
-		Configurator.configureLogging();
 	}
 	
 	/**

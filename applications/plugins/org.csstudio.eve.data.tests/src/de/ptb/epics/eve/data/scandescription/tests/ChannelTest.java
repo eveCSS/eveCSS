@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -14,16 +13,12 @@ import org.junit.Test;
 
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 /**
  * @author Marcus Michalsky
  * @since 1.3
  */
 public class ChannelTest implements PropertyChangeListener {
-
-	private static Logger logger = Logger.getLogger(ChannelTest.class.getName());
-	
 	private Channel channel;
 	
 	// indicators for PropertyChangeSupportTest
@@ -96,11 +91,10 @@ public class ChannelTest implements PropertyChangeListener {
 	// ***********************************************************************
 
 	/**
-	 * Initializes logging (Class wide setup method of the test).
+	 * Class wide setup method of the test
 	 */
 	@BeforeClass
 	public static void runBeforeClass() {
-		Configurator.configureLogging();
 	}
 
 	/**

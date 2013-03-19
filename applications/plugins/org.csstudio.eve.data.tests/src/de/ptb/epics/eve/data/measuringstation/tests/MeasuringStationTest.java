@@ -1,12 +1,9 @@
 package de.ptb.epics.eve.data.measuringstation.tests;
 
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
 import static org.junit.Assert.*;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.RollingFileAppender;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -26,10 +23,6 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  * @since 0.4.1
  */
 public class MeasuringStationTest {
-
-	private static Logger logger = 
-		Logger.getLogger(MeasuringStationTest.class.getName());
-
 	private static List<IMeasuringStation> stations;
 
 	/**
@@ -38,13 +31,8 @@ public class MeasuringStationTest {
 	 */
 	@Ignore("Not implemented yet")
 	@Test
-	public void testCompareXMLandJava()
-	{
-		log_start(logger, "testCompareXMLandJava()");
+	public void testCompareXMLandJava() {
 		
-		
-		
-		log_end(logger, "testCompareXMLandJava()");
 	}
 	
 	// ***********************************************************************
@@ -57,44 +45,31 @@ public class MeasuringStationTest {
 	 */
 	@BeforeClass
 	public static void runBeforeClass() {
-		
-		Configurator.configureLogging();
-		
-		((RollingFileAppender)logger.
-				getAppender("MeasuringStationTestAppender")).rollOver();
-		
 		stations = Configurator.getMeasuringStations();
 		
 		for(IMeasuringStation ims : stations) {
 			assertNotNull(ims);
 		}
-		classSetUp(logger);
 	}
 	
 	/**
 	 * test wide set up method
 	 */
 	@Before
-	public void beforeEveryTest()
-	{
-		testSetUp(logger);
+	public void beforeEveryTest() {
 	}
 	
 	/**
 	 * test wide tear down method
 	 */
 	@After
-	public void afterEveryTest()
-	{
-		testTearDown(logger);
+	public void afterEveryTest() {
 	}
 	
 	/**
 	 * class wide tear down method
 	 */
 	@AfterClass
-	public static void afterClass()
-	{
-		classTearDown(logger);
+	public static void afterClass() {
 	}
 }

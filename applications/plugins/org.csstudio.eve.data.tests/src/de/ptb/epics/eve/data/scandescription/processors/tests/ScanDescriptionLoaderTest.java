@@ -1,17 +1,11 @@
 package de.ptb.epics.eve.data.scandescription.processors.tests;
 
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
-
-import org.apache.log4j.Logger;
-import org.apache.log4j.RollingFileAppender;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 /**
  * 
@@ -20,9 +14,6 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  * @since 1.1
  */
 public class ScanDescriptionLoaderTest {
-	
-	private static Logger logger = 
-			Logger.getLogger(ScanDescriptionLoaderTest.class.getName());
 	
 	/**
 	 * 
@@ -38,17 +29,10 @@ public class ScanDescriptionLoaderTest {
 	// **********************************************************************
 	
 	/**
-	 * Initializes logging and loads the measuring station (Class wide setup 
-	 * method of the test).
+	 * Class wide setup method of the test
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		Configurator.configureLogging();
-		
-		((RollingFileAppender)logger.
-				getAppender("ScanDescriptionLoaderTestAppender")).rollOver();
-
-		classSetUp(logger);
 	}
 	
 	/**
@@ -56,7 +40,6 @@ public class ScanDescriptionLoaderTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() {
-		classTearDown(logger);
 	}
 	
 	/**
@@ -64,7 +47,6 @@ public class ScanDescriptionLoaderTest {
 	 */
 	@Before
 	public void setUp() {
-		testSetUp(logger);
 	}
 	
 	/**
@@ -72,6 +54,5 @@ public class ScanDescriptionLoaderTest {
 	 */
 	@After
 	public void tearDown() {
-		testTearDown(logger);
 	}
 }

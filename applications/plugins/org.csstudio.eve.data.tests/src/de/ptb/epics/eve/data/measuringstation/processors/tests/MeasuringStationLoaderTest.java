@@ -1,6 +1,5 @@
 package de.ptb.epics.eve.data.measuringstation.processors.tests;
 
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
@@ -11,8 +10,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.RollingFileAppender;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -35,9 +32,6 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  */
 public class MeasuringStationLoaderTest {
 
-	private static Logger logger = 
-			Logger.getLogger(MeasuringStationLoaderTest.class.getName());
-	
 	private static List<IMeasuringStation> stations;
 	
 	/**
@@ -50,15 +44,9 @@ public class MeasuringStationLoaderTest {
 	 */
 	@Test
 	public void testUniqueIDs() {
-		
-		log_start(logger, "testUniqueIDs");
-		
 		int count = 0;
 		
 		for(IMeasuringStation ims : stations) {
-			
-			logger.info("Testing station " + ims.getName());
-			
 			String station = ims.getLoadedFileName();
 			
 			// get document builder factory
@@ -74,11 +62,11 @@ public class MeasuringStationLoaderTest {
 				// get dom parse tree
 				document = builder.parse(station);
 			} catch (ParserConfigurationException e) {
-				logger.error(e.getMessage(), e);
+				System.err.println(e.getMessage());
 			} catch (SAXException e) {
-				logger.error(e.getMessage(), e);
+				System.err.println(e.getMessage());
 			} catch (IOException e) {
-				logger.error(e.getMessage(), e);
+				System.err.println(e.getMessage());
 			}
 			
 			if(document != null) {
@@ -93,73 +81,50 @@ public class MeasuringStationLoaderTest {
 				
 				java.util.Collections.sort(idNames);
 				
-				logger.debug("Testing ids of: " + ims.getLoadedFileName());
-				
 				count = 0;
 				
 				for(int i = 0; i < idNames.size()-1; i++) {
 					if(idNames.get(i).equals(idNames.get(i+1))) {
-						logger.debug("duplicate id found: " + idNames.get(i));
 						count++;
 					}
 				}
-				
-				logger.debug("-----> Found " + count + " duplicates.");
-				
-				logger.debug("****************************************");
 			}
 			assertTrue(count == 0);
 		}
-		
-		log_end(logger, "testUniqueIDs");
 	}
 	
 	// *********************************************************************
 	
 	/**
-	 * Initializes logging and loads the measuring stations (Class wide setup 
-	 * method of the test).
+	 * Class wide setup method of the test
 	 */
 	@BeforeClass
 	public static void runBeforeClass() {
-		
-		Configurator.configureLogging();
-		
-		((RollingFileAppender)logger.
-				getAppender("MeasuringStationLoaderTestAppender")).rollOver();
-		
 		stations = Configurator.getMeasuringStations();
 		
 		for(IMeasuringStation ims : stations) {
 			assertNotNull(ims);
 		}
-		classSetUp(logger);
 	}
 	
 	/**
 	 * test wide set up method
 	 */
 	@Before
-	public void beforeEveryTest()
-	{
-		testSetUp(logger);
+	public void beforeEveryTest() {
 	}
 	
 	/**
 	 * test wide tear down method
 	 */
 	@After
-	public void afterEveryTest()
-	{
-		testTearDown(logger);
+	public void afterEveryTest() {
 	}
 	
 	/**
 	 * class wide tear down method
 	 */
 	@AfterClass
-	public static void afterClass()
-	{
-		classTearDown(logger);
+	public static void afterClass() {
 	}
 }

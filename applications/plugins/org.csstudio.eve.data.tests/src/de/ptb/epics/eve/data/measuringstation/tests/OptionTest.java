@@ -4,10 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import static de.ptb.epics.eve.data.tests.internal.LogFileStringGenerator.*;
-
-import org.apache.log4j.Logger;
-import org.apache.log4j.RollingFileAppender;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -29,9 +25,6 @@ import de.ptb.epics.eve.data.tests.internal.Configurator;
  * @since 0.4.1
  */
 public class OptionTest {
-	
-	private static Logger logger = Logger.getLogger(OptionTest.class.getName());
-	
 	private static List<IMeasuringStation> stations;
 	
 	/**
@@ -41,27 +34,17 @@ public class OptionTest {
 	 */
 	@Test
 	public final void testCloneEquals() {
-		log_start(logger, "testEquals");
-		
 		for(IMeasuringStation measuringStation : stations) {
 			for(Motor m : measuringStation.getMotors()) {
 				for(MotorAxis ma : m.getAxes()) {
 					for(Option o : ma.getOptions()) {
-						logger.info("Testing option " + deviceString(o) + 
-									" of motor axis " + deviceString(ma));
-					
 						Option clone = (Option)o.clone();
 						assertTrue(o.equals(clone));
 						assertTrue(clone.equals(o));
-					
-						logger.info("option " + deviceString(o) + 
-									" and its clone are equal");
 					}
 				}
 			}
 		}
-		
-		log_end(logger, "testEquals");
 	}
 
 	// **********************************************************************
@@ -74,18 +57,10 @@ public class OptionTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		
-		Configurator.configureLogging();
-		
-		((RollingFileAppender)logger.
-				getAppender("OptionTestAppender")).rollOver();
-		
 		stations = Configurator.getMeasuringStations();
-		
 		for(IMeasuringStation ims : stations) {
 			assertNotNull(ims);
 		}
-		classSetUp(logger);
 	}
 
 	/**
@@ -93,7 +68,6 @@ public class OptionTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() {
-		classTearDown(logger);
 	}
 
 	/**
@@ -101,7 +75,6 @@ public class OptionTest {
 	 */
 	@Before
 	public void setUp() {
-		testSetUp(logger);
 	}
 
 	/**
@@ -109,6 +82,5 @@ public class OptionTest {
 	 */
 	@After
 	public void tearDown() {
-		testTearDown(logger);
 	}
 }

@@ -2,25 +2,21 @@ package de.ptb.epics.eve.data.scandescription.tests;
 
 import static org.junit.Assert.*;
 
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 public class ScanModuleTest {
-	
-	private static Logger logger = 
-			Logger.getLogger(ScanModuleTest.class.getName());
-	
 	private ScanModule scanModule;
 	private Axis axis;
 	
+	@Ignore
 	@Test
 	public void foo() {
 		
@@ -34,7 +30,6 @@ public class ScanModuleTest {
 	 */
 	@BeforeClass
 	public static void runBeforeClass() {
-		Configurator.configureLogging();
 	}
 	
 	/**
