@@ -9,9 +9,10 @@
 	<property name="platform" location="/messung/eve/java" />
 
 	<target name="javadoc">
-
+		<delete dir="${env.WORKSPACE}/javadoc" />
+		<mkdir dir="${env.WORKSPACE}/javadoc" />
 		<javadoc 
-			destdir="${platform}/doc/api/eveCSS/" 
+			destdir="${env.WORKSPACE}/javadoc" 
 			access="public" 
 			author="true" 
 			version="true" 
