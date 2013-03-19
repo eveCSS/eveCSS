@@ -48,8 +48,9 @@ public class Configurator {
 		File sx700 = new File("xml/sx700.xml");
 		File test = new File("xml/test.xml");
 		File trfa = new File("xml/trfa.xml");
-		
+		/*
 		try {
+			
 			measuringStationLoader.load(bigref);
 			stations.add(measuringStationLoader.getMeasuringStation());
 			measuringStationLoader.load(euvr);
@@ -83,7 +84,7 @@ public class Configurator {
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 			return null;
-		}
+		}*/
 		return stations;
 	}
 	
