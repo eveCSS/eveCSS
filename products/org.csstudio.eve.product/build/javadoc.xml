@@ -67,7 +67,8 @@
 	<group title="NMP &lt;-&gt; ECP" packages="de.ptb.epics.eve.ecp1*" />
 	<group title="EVE Editor" packages="de.ptb.epics.eve.editor*" />
 	<group title="EVE Viewer" packages="de.ptb.epics.eve.viewer*" />
-
+	<group title="EVE Utilities" packages="de.ptb.epics.eve.util*" />
+			
 	<group title="Tests" packages="de.ptb.epics.eve.data.measuringstation.filter.tests*,de.ptb.epics.eve.data.measuringstation.tests*,de.ptb.epics.eve.data.tests*,de.ptb.epics.eve.data.tests.internal.*,de.ptb.epics.eve.data.scandescription.tests*,de.ptb.epics.eve.data.measuringstation.processors.tests*,de.ptb.epics.eve.data.scandescription.processors.tests*,de.ptb.epics.eve.editor.tests*" />
 
 	<group title="apache" packages="org.apache.*" />
