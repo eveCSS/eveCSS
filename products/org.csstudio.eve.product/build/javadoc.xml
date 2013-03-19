@@ -6,6 +6,7 @@
 		Ant File for Building JavaDoc
 	</description>
 
+	<property environment="env" />
 	<property name="platform" location="/messung/eve/java" />
 
 	<target name="javadoc">
