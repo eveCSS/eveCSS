@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.ptb.epics.eve.util.io.FileUtil;
@@ -27,6 +28,7 @@ public class FileUtilTest {
 	/**
 	 * Tests whether an UTF-8 encoded file is read.
 	 */
+	@Ignore
 	@Test
 	public void testReadFile() {
 		try {
@@ -41,6 +43,7 @@ public class FileUtilTest {
 	/**
 	 * Tests whether reading a non-UTF-8 encoded file fails as expected.
 	 */
+	@Ignore
 	@Test
 	public void testReadFileFail() {
 		String file;
@@ -57,6 +60,7 @@ public class FileUtilTest {
 	 * Tests whether the carriage return and line feed characters are
 	 * recognized.
 	 */
+	@Ignore
 	@Test
 	public void testReadLines() {
 		try {
