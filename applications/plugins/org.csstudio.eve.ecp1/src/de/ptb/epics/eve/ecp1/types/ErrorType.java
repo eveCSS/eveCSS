@@ -35,7 +35,12 @@ public enum ErrorType {
 	TIMEOUT,
 	
 	/** */
-	FILENAME;
+	FILENAME,
+	
+	/** 
+	 * @since 1.10
+	 */
+	MAX_POS_COUNT;
 	
 	/**
 	 * Returns the character code of the given 
@@ -67,6 +72,8 @@ public enum ErrorType {
 				return 0x0009;
 			case FILENAME:
 				return 0x000A;
+			case MAX_POS_COUNT:
+				return 0x000B;
 		}
 		return Character.MAX_VALUE;
 	}
@@ -101,6 +108,8 @@ public enum ErrorType {
 				return ErrorType.TIMEOUT;
 			case 0x000A:
 				return ErrorType.FILENAME;
+			case 0x000B:
+				return ErrorType.MAX_POS_COUNT;
 		}
 		return null;
 	}

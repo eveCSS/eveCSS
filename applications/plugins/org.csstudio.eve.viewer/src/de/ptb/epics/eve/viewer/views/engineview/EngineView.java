@@ -86,6 +86,8 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	private Text commentText;
 	private Button commentSendButton;
 
+	private ProgressBarComposite progressBarComposite;
+	
 	private Table statusTable;
 	//TODO: ShellTable ist auf 10 Einträge vordefiniert,
 	// besser eine LinkedList machen, damit beliebig viele Einträge existieren können
@@ -282,6 +284,15 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		this.commentSendButton.addSelectionListener(
 				new CommentSendButtonSelectionListener());
 		
+		this.progressBarComposite = new ProgressBarComposite(top, SWT.BORDER, 
+				Activator.getDefault().getEcp1Client().isRunning());
+		gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 4;
+		gridData.grabExcessHorizontalSpace = true;
+		this.progressBarComposite.setLayoutData(gridData);
+		
 		// Tabelle für die Statuswerte erzeugen
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -309,6 +320,15 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		
 		// SelectionListener um zu erkennen, wann eine Zeile selektiert wird
 		this.statusTable.addSelectionListener(new StatusTableSelectionListener());
+		
+		Activator.getDefault().getEcp1Client()
+				.addEngineStatusListener(progressBarComposite);
+		Activator.getDefault().getEcp1Client()
+				.addErrorListener(progressBarComposite);
+		Activator.getDefault().getEcp1Client()
+				.addConnectionStateListener(progressBarComposite);
+		Activator.getDefault().getEcp1Client()
+				.addChainStatusListener(progressBarComposite);
 		
 		Activator.getDefault().getChainStatusAnalyzer().addUpdateListener(this);
 		Activator.getDefault().getEcp1Client().addErrorListener(this);
