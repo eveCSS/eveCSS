@@ -6,6 +6,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.databinding.Binding;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
+import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.viewers.ISelection;
@@ -34,8 +42,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.ExpandBar;
@@ -46,6 +52,7 @@ import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.measuringstation.PluginParameter;
 import de.ptb.epics.eve.data.scandescription.Chain;
+import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.errors.ChainError;
 import de.ptb.epics.eve.data.scandescription.errors.ChainErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -145,16 +152,12 @@ public class ScanView extends ViewPart implements IEditorView,
 	
 	private Label repeatCountLabel;
 	private Text repeatCountText;
-	private RepeatCountTextVerifyListener repeatCountTextVerifyListener;
-	private RepeatCountTextModifiedListener repeatCountTextModifiedListener;
 	// ***** end of: Widgets of Save Options ********
 	
-	
-	// ***** Widgets of Comment *******	
+		// ***** Widgets of Comment *******	
 	private Text commentInput;
 	private CommentInputModifiedListener commentInputModifiedListener;
 	// *** end of: Widgets of Comment *****
-	
 	
 	// ***** Widgets of Events *******	
 	public CTabFolder eventsTabFolder;
@@ -176,6 +179,16 @@ public class ScanView extends ViewPart implements IEditorView,
 	private Image errorImage;
 	private Image eventErrorImage;
 	
+	private DataBindingContext context;
+
+	private ISelectionProvider selectionProvider;
+	
+	private IObservableValue selectionObservable;
+	
+	private IObservableValue repeatCountTargetObservable;
+	private IObservableValue repeatCountModelObservable;
+	private Binding repeatCountBinding;
+
 	// Delegates
 	private EditorViewPerspectiveListener perspectiveListener;
 	private SelectionProviderWrapper selectionProviderWrapper;
@@ -353,21 +366,11 @@ public class ScanView extends ViewPart implements IEditorView,
 		this.repeatCountText.setToolTipText(
 				"the number of times the scan will be repeated");
 		gridData = new GridData();
-		gridData.horizontalSpan = 3;
 		this.repeatCountText.setLayoutData(gridData);
-		repeatCountTextVerifyListener = new RepeatCountTextVerifyListener();
-		this.repeatCountText.addVerifyListener(repeatCountTextVerifyListener);
-		repeatCountTextModifiedListener = new RepeatCountTextModifiedListener();
-		this.repeatCountText.addModifyListener(repeatCountTextModifiedListener);
-		this.repeatCountText.addFocusListener(
-				new TextSelectAllFocusListener(this.repeatCountText));
-		this.repeatCountText.addMouseListener(
-				new TextSelectAllMouseListener(this.repeatCountText));
-		this.repeatCountText.addFocusListener(new FocusAdapter() {
-			@Override public void focusLost(FocusEvent e) {
-				repeatCountText.setSelection(0,0);
-			}
-		});
+		this.repeatCountText.addFocusListener(new TextSelectAllFocusListener(
+				this.repeatCountText));
+		this.repeatCountText.addMouseListener(new TextSelectAllMouseListener(
+				this.repeatCountText));
 		
 		// add expand item to the expander
 		this.saveOptionsExpandItem = new ExpandItem(this.bar, SWT.NONE, 0);
@@ -468,6 +471,8 @@ public class ScanView extends ViewPart implements IEditorView,
 		
 		top.setVisible(false);
 		
+		this.bindValues();
+		
 		// the selection service only accepts one selection provider per view,
 		// since we have four tables capable of providing selections a wrapper 
 		// handles them and registers the active one with the global selection 
@@ -484,6 +489,33 @@ public class ScanView extends ViewPart implements IEditorView,
 		perspectiveListener = new EditorViewPerspectiveListener(this);
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
 				addPerspectiveListener(perspectiveListener);
+	}
+	
+	/*
+	 * 
+	 */
+	private void bindValues() {
+		this.context = new DataBindingContext();
+		
+		this.selectionProvider = new ScanSelectionProvider();
+		this.selectionObservable = ViewersObservables
+				.observeSingleSelection(selectionProvider);
+		
+		this.repeatCountTargetObservable = SWTObservables
+				.observeText(this.repeatCountText, SWT.Modify);
+		this.repeatCountModelObservable = BeansObservables.observeDetailValue(
+				selectionObservable, ScanDescription.class,
+				ScanDescription.REPEAT_COUNT_PROP, Integer.class);
+		UpdateValueStrategy repeatCountTargetToModelStrategy = 
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
+		repeatCountTargetToModelStrategy
+				.setAfterGetValidator(new RepeatCountValidator());
+		this.repeatCountBinding = context.bindValue(repeatCountTargetObservable,
+				repeatCountModelObservable, repeatCountTargetToModelStrategy,
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		ControlDecorationSupport.create(this.repeatCountBinding, SWT.LEFT);
+		this.repeatCountText.addFocusListener(new TextFocusListener(
+				this.repeatCountText));		
 	}
 	
 	// ************************************************************************
@@ -657,8 +689,6 @@ public class ScanView extends ViewPart implements IEditorView,
 	private void addListeners() {
 		this.fileFormatCombo.addSelectionListener(fileFormatComboSelectionListener);
 		this.filenameInput.addModifyListener(fileNameInputModifiedListener);
-		this.repeatCountText.addVerifyListener(repeatCountTextVerifyListener);
-		this.repeatCountText.addModifyListener(repeatCountTextModifiedListener);
 		this.commentInput.addModifyListener(commentInputModifiedListener);
 		
 		this.saveScanDescriptionCheckBox.addSelectionListener(
@@ -676,9 +706,6 @@ public class ScanView extends ViewPart implements IEditorView,
 		this.fileFormatCombo.removeSelectionListener(
 				fileFormatComboSelectionListener);
 		this.filenameInput.removeModifyListener(fileNameInputModifiedListener);
-		this.repeatCountText.removeVerifyListener(repeatCountTextVerifyListener);
-		this.repeatCountText.removeModifyListener(
-				repeatCountTextModifiedListener);
 		this.commentInput.removeModifyListener(commentInputModifiedListener);
 		
 		this.saveScanDescriptionCheckBox.removeSelectionListener(
@@ -733,16 +760,12 @@ public class ScanView extends ViewPart implements IEditorView,
 			this.autoIncrementCheckBox.setSelection(
 					this.currentChain.isAutoNumber());
 			
-			this.repeatCountText.setText(Integer.toString(
-					this.currentChain.getScanDescription().getRepeatCount()));
-			
 			this.commentInput.setText(this.currentChain.getComment());
 			this.commentInput.setSelection(
 					this.currentChain.getComment().length());
 			
-			
-					this.pauseEventComposite.setControlEventManager(
-						this.currentChain.getPauseControlEventManager());
+			this.pauseEventComposite.setControlEventManager(
+					this.currentChain.getPauseControlEventManager());
 			
 			if (this.redoEventComposite.getControlEventManager() != 
 				this.currentChain.getRedoControlEventManager()) {
@@ -766,7 +789,6 @@ public class ScanView extends ViewPart implements IEditorView,
 			this.saveScanDescriptionCheckBox.setSelection(false);
 			this.confirmSaveCheckBox.setSelection(false);
 			this.autoIncrementCheckBox.setSelection(false);
-			this.repeatCountText.setText("");
 			this.commentInput.setText("");
 			
 			this.pauseEventComposite.setControlEventManager(null);
@@ -779,6 +801,32 @@ public class ScanView extends ViewPart implements IEditorView,
 		}
 		addListeners();
 		
+	}
+
+	/**
+	 * @author Marcus Michalsky
+	 * @since 1.10
+	 */
+	private class TextFocusListener extends FocusAdapter {
+
+		private Text widget;
+
+		/**
+		 * @param widget the widget to observe
+		 */
+		public TextFocusListener(Text widget) {
+			this.widget = widget;
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void focusLost(FocusEvent e) {
+			if (this.widget == repeatCountText) {
+				repeatCountBinding.updateModelToTarget();
+			}
+		}
 	}
 
 	/**
@@ -1009,56 +1057,7 @@ public class ScanView extends ViewPart implements IEditorView,
 			currentChain.setAutoNumber(autoIncrementCheckBox.getSelection());
 		}
 	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.VerifyListener} of 
-	 * <code>repeatCountText</code>.
-	 * 
-	 * @author Marcus Michalsky
-	 * @since 1.1
-	 */
-	private class RepeatCountTextVerifyListener implements VerifyListener {
 		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void verifyText(VerifyEvent e) {
-			switch (e.keyCode) {
-				case SWT.BS:			// Backspace
-				case SWT.DEL:			// Delete
-				case SWT.HOME:			// Home
-				case SWT.END:			// End
-				case SWT.ARROW_LEFT:	// Left arrow
-				case SWT.ARROW_RIGHT:	// Right arrow
-				return;
-			}
-			
-			e.doit = e.text.matches("[0-9]+");
-		}
-	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of
-	 * <code>repeatCountText</code>.
-	 */
-	private class RepeatCountTextModifiedListener implements ModifyListener {
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modifyText(ModifyEvent e) {
-			try {
-				currentChain.getScanDescription().setRepeatCount(
-						Integer.parseInt(repeatCountText.getText()));
-			} catch(final NumberFormatException ex) {
-				currentChain.getScanDescription().setRepeatCount(0);
-				repeatCountText.setText("0");
-			}
-		}
-	}
-	
 	/**
 	 * {@link org.eclipse.swt.events.ModifyListener} of
 	 * <code>commentInput</code>.
