@@ -48,7 +48,6 @@ public class PlotView extends ViewPart {
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		
 		parent.setLayout(new FillLayout());
 		
 		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
@@ -60,9 +59,9 @@ public class PlotView extends ViewPart {
 		this.top.setLayout(gridLayout);
 
 		sc.setContent(this.top);
-        sc.setExpandHorizontal(true);
-        sc.setExpandVertical(true);
-        
+		sc.setExpandHorizontal(true);
+		sc.setExpandVertical(true);
+
 		// in the left column we put our plotGraphComposite (the xy plot)
 		plotGraphComposite = new PlotViewGraphComposite(top, SWT.NONE);
 		// in the right column we put the statistics tables
@@ -77,8 +76,6 @@ public class PlotView extends ViewPart {
 		this.plotDetectorComposite.setLayoutData(gridData);
 		
 		// finally a description and name are added
-		this.setContentDescription(this.getTitle() + " " + 
-								    this.getViewSite().getSecondaryId());
 		this.setPartName("Plot " + this.getViewSite().getSecondaryId());
 	}
 

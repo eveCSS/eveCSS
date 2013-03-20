@@ -133,22 +133,22 @@
 		<appender-ref ref="editorDailyAppender" />
 	</logger>
 
-	<logger name="de.ptb.epics.eve.editor.gef" additivity="false">
+	<logger name="de.ptb.epics.eve.editor.gef">
 		<level value="DEBUG" />
 		<appender-ref ref="GEFDailyAppender" />
 	</logger>
 
-	<logger name="de.ptb.epics.eve.editor.logging" additivity="false">
+	<logger name="de.ptb.epics.eve.editor.logging">
 		<level value="DEBUG" />
 		<appender-ref ref="eclipseDailyAppender" />
 	</logger>
 
-	<logger name="de.ptb.epics.eve.editor.SelectionTracker" additivity="false">
+	<logger name="de.ptb.epics.eve.editor.SelectionTracker">
 		<level value="DEBUG" />
 		<appender-ref ref="SelectionDailyAppender" />
 	</logger>
 
-	<logger name="de.ptb.epics.eve.util.pv" additivity="false">
+	<logger name="de.ptb.epics.eve.util.pv">
 		<level value="DEBUG" />
 		<appender-ref ref="PVDailyAppender" />
 	</logger>
@@ -158,7 +158,7 @@
 		<appender-ref ref="viewerDailyAppender" />
 	</logger>
 
-	<logger name="de.ptb.epics.eve.viewer.plot" additivity="false">
+	<logger name="de.ptb.epics.eve.viewer.plot">
 		<level value="DEBUG" />
 		<appender-ref ref="PlotDailyAppender" />
 	</logger>

@@ -11,10 +11,12 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
+import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 import de.ptb.epics.eve.ecp1.types.DataModifier;
 import de.ptb.epics.eve.ecp1.types.DataType;
+import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.plot.XYPlot;
 
@@ -26,7 +28,7 @@ import de.ptb.epics.eve.viewer.plot.XYPlot;
  * @author Marcus Michalsky
  */
 public class PlotViewGraphComposite extends Composite implements
-		IMeasurementDataListener {
+		IMeasurementDataListener, IEngineStatusListener {
 
 	private static Logger logger = Logger
 			.getLogger(PlotViewGraphComposite.class);
@@ -67,9 +69,6 @@ public class PlotViewGraphComposite extends Composite implements
 	 */
 	public PlotViewGraphComposite(Composite parent, int style) {
 		super(parent, style);
-
-		// this composite wants to be informed if new data is available...
-		Activator.getDefault().getEcp1Client().addMeasurementDataListener(this);
 
 		final GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
@@ -121,6 +120,7 @@ public class PlotViewGraphComposite extends Composite implements
 		// XXX get rid of parameters, 9 is too much !
 		// do not clean if plot has "isInit=false" AND detectors and motors are
 		// still the same
+		
 		if ((this.motorId == motorId) && (this.detector1Id == detector1Id)
 				&& (this.detector2Id == detector2Id)) {
 			if (plotWindow.isInit())
@@ -218,6 +218,9 @@ public class PlotViewGraphComposite extends Composite implements
 		canvas.redraw();
 		this.layout();
 		this.redraw();
+		
+		Activator.getDefault().getEcp1Client().addMeasurementDataListener(this);
+		Activator.getDefault().getEcp1Client().addEngineStatusListener(this);
 	}
 
 	/**
@@ -227,6 +230,7 @@ public class PlotViewGraphComposite extends Composite implements
 	public void dispose() {
 		Activator.getDefault().getEcp1Client()
 				.removeMeasurementDataListener(this);
+		Activator.getDefault().getEcp1Client().removeEngineStatusListener(this);
 		xyPlot.erase();
 		// super.dispose();
 	}
@@ -442,4 +446,16 @@ public class PlotViewGraphComposite extends Composite implements
 			});
 		}
 	} // end of measurementDataTransmitted
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void engineStatusChanged(EngineStatus engineStatus, String xmlName,
+			int repeatCount) {
+		if (EngineStatus.IDLE_NO_XML_LOADED.equals(engineStatus)) {
+			Activator.getDefault().getEcp1Client()
+					.removeMeasurementDataListener(this);
+		}
+	}
 }

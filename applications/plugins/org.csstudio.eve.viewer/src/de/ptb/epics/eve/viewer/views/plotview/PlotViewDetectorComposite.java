@@ -136,10 +136,9 @@ public class PlotViewDetectorComposite extends Composite {
 				new TableViewerColumn(tableViewer, SWT.NONE);
 		gotoColumn.getColumn().setText("GoTo");
 		gotoColumn.setEditingSupport(new EditingSupport(tableViewer) {
-			
 			@Override
 			protected void setValue(Object element, Object value) {
-			}			
+			}
 			@Override
 			protected Object getValue(Object element) {
 				return null;
@@ -199,50 +198,54 @@ public class PlotViewDetectorComposite extends Composite {
 						String detector1Name, String detector2Id, 
 						String detector2Name) {
 		
-		if (detector1Id != null)
-		{
-			normalizeAxis1 = 
-				(plotWindow.getYAxes().get(0).getNormalizeChannel() != null);
-			
-			if(normalizeAxis1){
-				String normalizeId = plotWindow.getYAxes().get(0).getNormalizeChannel().getID();
-				String normalizeName = plotWindow.getYAxes().get(0).getNormalizeChannel().getName();
-				createContent(1, chid, smid, tableViewerDet1, motorPv, motorId, detector1Id + "__" + normalizeId);
-				tableViewerDet1.getTable().getColumn(1).setText(detector1Name + " / " + normalizeName);
-			}
-			else {
-				createContent(1, chid, smid, tableViewerDet1, motorPv, motorId, detector1Id);
+		if (detector1Id != null) {
+			normalizeAxis1 = (plotWindow.getYAxes().get(0)
+					.getNormalizeChannel() != null);
+
+			if (normalizeAxis1) {
+				String normalizeId = plotWindow.getYAxes().get(0)
+						.getNormalizeChannel().getID();
+				String normalizeName = plotWindow.getYAxes().get(0)
+						.getNormalizeChannel().getName();
+				createContent(1, chid, smid, tableViewerDet1, motorPv, motorId,
+						detector1Id + "__" + normalizeId);
+				tableViewerDet1.getTable().getColumn(1)
+						.setText(detector1Name + " / " + normalizeName);
+			} else {
+				createContent(1, chid, smid, tableViewerDet1, motorPv, motorId,
+						detector1Id);
 				tableViewerDet1.getTable().getColumn(1).setText(detector1Name);
 			}
 			tableViewerDet1.getTable().getColumn(2).setText(motorName);
 			tableViewerDet1.refresh();
 			tableViewerDet1.getTable().setVisible(true);
 		}
-		
-		if (detector2Id != null)
-		{
-			normalizeAxis2 = 
-				(plotWindow.getYAxes().get(1).getNormalizeChannel() != null);
-				
-			if(normalizeAxis2){
-				String normalizeId = plotWindow.getYAxes().get(1).getNormalizeChannel().getID();
-				String normalizeName = plotWindow.getYAxes().get(1).getNormalizeChannel().getName();
-				createContent(2, chid, smid, tableViewerDet2, motorPv, motorId, detector2Id + "__" + normalizeId);
-				tableViewerDet2.getTable().getColumn(1).setText(detector2Name + " / " + normalizeName);
-			}
-			else {
-				createContent(2, chid, smid, tableViewerDet2, motorPv, motorId, detector2Id);
+
+		if (detector2Id != null) {
+			normalizeAxis2 = (plotWindow.getYAxes().get(1)
+					.getNormalizeChannel() != null);
+
+			if (normalizeAxis2) {
+				String normalizeId = plotWindow.getYAxes().get(1)
+						.getNormalizeChannel().getID();
+				String normalizeName = plotWindow.getYAxes().get(1)
+						.getNormalizeChannel().getName();
+				createContent(2, chid, smid, tableViewerDet2, motorPv, motorId,
+						detector2Id + "__" + normalizeId);
+				tableViewerDet2.getTable().getColumn(1)
+						.setText(detector2Name + " / " + normalizeName);
+			} else {
+				createContent(2, chid, smid, tableViewerDet2, motorPv, motorId,
+						detector2Id);
 				tableViewerDet2.getTable().getColumn(1).setText(detector2Name);
 			}
-			createContent(2, chid, smid, tableViewerDet2, motorPv, motorId, 
-						  detector2Id);
-			
+			createContent(2, chid, smid, tableViewerDet2, motorPv, motorId,
+					detector2Id);
+
 			tableViewerDet2.getTable().getColumn(2).setText(motorName);
 			tableViewerDet2.refresh();
 			tableViewerDet2.getTable().setVisible(true);
-		}
-		else
-		{
+		} else {
 			// detector2Id is null => hide second table
 			tableViewerDet2.getTable().setVisible(false);
 		}

@@ -496,10 +496,6 @@ public class ECP1Client {
 					try {
 						dataInputStream.skip(6);
 						final char commandId = dataInputStream.readChar();
-						if (logger.isDebugEnabled()) {
-							logger.debug("command id: " + 
-									Integer.toHexString(commandId));
-						}
 						Constructor<? extends IECP1Command> commandConstructor = 
 								commands.get(commandId);
 						if (commandConstructor != null) {

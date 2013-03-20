@@ -8,9 +8,11 @@ import org.eclipse.jface.viewers.TableViewer;
 
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;
 import de.ptb.epics.eve.ecp1.client.model.MeasurementData;
 import de.ptb.epics.eve.ecp1.types.DataType;
+import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.viewer.Activator;
 
 /**
@@ -21,7 +23,8 @@ import de.ptb.epics.eve.viewer.Activator;
  * @author ?
  * @author Marcus Michalsky
  */
-public class MathTableElement implements IMeasurementDataListener {
+public class MathTableElement implements IMeasurementDataListener,
+		IEngineStatusListener {
 	
 	private static Logger logger = Logger.getLogger(
 			MathTableElement.class.getName());
@@ -36,7 +39,7 @@ public class MathTableElement implements IMeasurementDataListener {
 	private String position;
 	private Object rawPosition;
 	private String motorId;
-
+	
 	/**
 	 * Constructs a <code>MathTableElement</code>.
 	 * 
@@ -65,15 +68,26 @@ public class MathTableElement implements IMeasurementDataListener {
 		// add the constructed math table element to the listener of the engine, 
 		// so that it is notified, when new data has arrived
 		Activator.getDefault().getEcp1Client().addMeasurementDataListener(this);
+		Activator.getDefault().getEcp1Client().addEngineStatusListener(this);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
+	protected void finalize() throws Throwable {
+		Activator.getDefault().getEcp1Client().removeEngineStatusListener(this);
+		super.finalize();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void measurementDataTransmitted(MeasurementData measurementData) {
-		
-		if ((measurementData == null) || (detectorId == null)) return;
+		if ((measurementData == null) || (detectorId == null)) {
+			return;
+		}
 		
 		// are we still in the same chain and scan module ?
 		if (measurementData.getChainId() == chid && 
@@ -99,6 +113,20 @@ public class MathTableElement implements IMeasurementDataListener {
 		}
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void engineStatusChanged(EngineStatus engineStatus, String xmlName,
+			int repeatCount) {
+		if (EngineStatus.IDLE_NO_XML_LOADED.equals(engineStatus)) {
+			Activator.getDefault().getEcp1Client()
+					.removeMeasurementDataListener(this);
+			Activator.getDefault().getEcp1Client()
+					.removeEngineStatusListener(this);
+		}
+	}
+
 	/*
 	 * called by measurementDataTransmitted to convert the data
 	 */

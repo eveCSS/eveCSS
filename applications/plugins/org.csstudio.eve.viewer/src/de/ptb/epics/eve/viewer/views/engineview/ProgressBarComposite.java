@@ -183,9 +183,7 @@ public class ProgressBarComposite extends Composite implements
 			if (!progressBar.getEnabled()) {
 				return;
 			}
-			
-			LOGGER.debug("paint");
-			
+
 			/*
 			 * calculates the length of the progress bar. 
 			 * the ratio of the label text that overlaps with it 
