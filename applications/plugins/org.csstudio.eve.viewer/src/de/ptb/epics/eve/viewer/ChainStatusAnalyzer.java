@@ -20,6 +20,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 
 	private final List<Chain> idleChains;
 	private final List<Chain> runningChains;
+	private final List<Chain> pausedChains;
 	private final List<Chain> exitedChains;
 	private final List<ScanModule> initializingScanModules;
 	private final List<ScanModule> executingScanModules;
@@ -33,6 +34,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 
 		this.idleChains = new ArrayList<Chain>();
 		this.runningChains = new ArrayList<Chain>();
+		this.pausedChains = new ArrayList<Chain>();
 		this.exitedChains = new ArrayList<Chain>();
 
 		this.initializingScanModules = new ArrayList<ScanModule>();
@@ -112,6 +114,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 				if (chains.get(i).getId() == chainStatusCommand.getChainId()) {
 					this.idleChains.add(chains.get(i));
 					this.runningChains.remove(chains.get(i));
+					this.pausedChains.remove(chains.get(i));
 					this.exitedChains.remove(chains.get(i));
 					break;
 				}
@@ -308,6 +311,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 				if (chains.get(i).getId() == chainStatusCommand.getChainId()) {
 					this.idleChains.remove(chains.get(i));
 					this.runningChains.remove(chains.get(i));
+					this.pausedChains.remove(chains.get(i));
 					this.exitedChains.add(chains.get(i));
 				}
 			}
@@ -321,6 +325,20 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 			}
 			break;
 
+		case CHAIN_PAUSED:
+			chains = Activator.getDefault().getCurrentScanDescription()
+			.getChains();
+
+			chains = Activator.getDefault().getCurrentScanDescription()
+					.getChains();
+			for (int i = 0; i < chains.size(); ++i) {
+				if (chains.get(i).getId() == chainStatusCommand.getChainId()) {
+					this.pausedChains.add(chains.get(i));
+					this.runningChains.remove(chains.get(i));
+				}
+			}
+			break;
+			
 		}
 		final Iterator<IUpdateListener> it = this.updateListener.iterator();
 		while (it.hasNext()) {

@@ -32,7 +32,10 @@ public enum ChainStatus {
 	EXITING_CHAIN,
 	
 	/** all data of the chain has been saved */
-	STORAGE_DONE;
+	STORAGE_DONE,
+
+	/** chain is paused */
+	CHAIN_PAUSED;
 	
 	/**
 	 * Returns the byte code of the given 
@@ -60,6 +63,8 @@ public enum ChainStatus {
 				return 0x07;
 			case STORAGE_DONE:
 				return 0x08;
+			case CHAIN_PAUSED:
+				return 0x09;
 			case UNKNOWN:
 				return Byte.MAX_VALUE;
 		}
@@ -92,6 +97,8 @@ public enum ChainStatus {
 				return ChainStatus.EXITING_CHAIN;
 			case 0x08:
 				return ChainStatus.STORAGE_DONE;
+			case 0x09:
+				return ChainStatus.CHAIN_PAUSED;
 		}
 		return ChainStatus.UNKNOWN;
 	}

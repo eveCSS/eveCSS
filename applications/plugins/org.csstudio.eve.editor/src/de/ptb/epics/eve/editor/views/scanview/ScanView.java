@@ -437,21 +437,21 @@ public class ScanView extends ViewPart implements IEditorView,
 				ControlEventTypes.CONTROL_EVENT, this);
 		
 		this.pauseTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
-		this.pauseTabItem.setText("Pause");
+		this.pauseTabItem.setText(" Pause ");
 		this.pauseTabItem.setControl(pauseEventComposite);
 		this.pauseTabItem.setToolTipText("Event to pause an resume this scan");
 		this.redoTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
-		this.redoTabItem.setText("Redo");
+		this.redoTabItem.setText(" Redo ");
 		this.redoTabItem.setControl(redoEventComposite);
 		this.redoTabItem.setToolTipText(
 				"Repeat the current scan point, if redo event occurs");
 		this.breakTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
-		this.breakTabItem.setText("Break");
+		this.breakTabItem.setText(" Skip ");
 		this.breakTabItem.setControl(breakEventComposite);
 		this.breakTabItem.setToolTipText(
 				"Finish the current scan module and continue with next");
 		this.stopTabItem = new CTabItem(eventsTabFolder, SWT.FLAT);
-		this.stopTabItem.setText("Stop");
+		this.stopTabItem.setText(" Stop ");
 		this.stopTabItem.setControl(stopEventComposite);
 		this.stopTabItem.setToolTipText("Stop this scan");
 		

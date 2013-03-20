@@ -457,7 +457,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 				.setToolTipText("Repeat the last acquisition, if redo event occurs");
 		this.redoEventsTabItem.setControl(redoEventComposite);
 		this.breakEventsTabItem = new CTabItem(eventsTabFolder, SWT.NONE);
-		this.breakEventsTabItem.setText(" Break ");
+		this.breakEventsTabItem.setText(" Skip ");
 		this.breakEventsTabItem
 				.setToolTipText("Finish this scan module and continue with next");
 		this.breakEventsTabItem.setControl(breakEventComposite);
