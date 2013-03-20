@@ -40,6 +40,9 @@ public class ScanDescription implements IModelUpdateProvider,
 	 * Schema version of the output.
 	 */
 	public static final String outputVersion = "2.2";
+
+	/** */
+	public static final String REPEAT_COUNT_PROP = "repeatCount";
 	
 	// version of the scan description.
 	private int inputVersion;
@@ -91,6 +94,7 @@ public class ScanDescription implements IModelUpdateProvider,
 		this.add(s0);
 		this.measuringStation = measuringStation;
 		this.dirty = false;
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
 	/**
@@ -242,7 +246,7 @@ public class ScanDescription implements IModelUpdateProvider,
 	 * @param repeatCount the scan will be repeated repeatCount times
 	 */
 	public void setRepeatCount(final int repeatCount) {
-		this.repeatCount = repeatCount;
+		this.propertyChangeSupport.firePropertyChange(REPEAT_COUNT_PROP, this.repeatCount, this.repeatCount=repeatCount);
 		updateListeners();
 	}
 	
