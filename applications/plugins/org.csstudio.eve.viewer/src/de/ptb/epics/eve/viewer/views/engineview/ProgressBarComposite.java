@@ -193,8 +193,17 @@ public class ProgressBarComposite extends Composite implements
 			 */
 			Point point = progressBar.getSize();
 
+			StringBuffer percentage = new StringBuffer();
+			
+			if (maxPositions != 0) {
+				percentage.append(" (");
+				percentage.append((int)Math.ceil((float) currentPosition
+						/ (float) maxPositions * 100));
+				percentage.append(" %)");
+			}
 			String position = Integer.toString(currentPosition) + " / " + 
-					Integer.toString(maxPositions);
+					Integer.toString(maxPositions) + " positions" + 
+					percentage.toString();
 			
 			FontMetrics fontMetrics = e.gc.getFontMetrics();
 			int width = fontMetrics.getAverageCharWidth() * position.length();
