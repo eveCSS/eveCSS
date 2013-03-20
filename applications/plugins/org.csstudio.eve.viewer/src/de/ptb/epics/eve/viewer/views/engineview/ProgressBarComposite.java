@@ -146,10 +146,10 @@ public class ProgressBarComposite extends Composite implements
 				if (connected) {
 					if (EngineStatus.IDLE_XML_LOADED.equals(engineStatus)) {
 						progressBar.setEnabled(true);
+						currentPosition = 0;
 						LOGGER.debug("new Scan -> enable ProgressBar");
 					} else if (EngineStatus.IDLE_NO_XML_LOADED.equals(engineStatus)) {
 						progressBar.setEnabled(false);
-						currentPosition = 0;
 						LOGGER.debug("no Scan -> disable ProgressBar");
 					}
 				} else {
