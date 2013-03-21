@@ -47,9 +47,8 @@ public class RequestProcessor implements IRequestListener {
 	@Override
 	public void request(final Request request) {
 		// TODO: nur für die Case Fälle YES_NO, OK_CANCEL und TRIGGER werden
-		// eigene MessageDialoge
-		// geöffnet die dann auch geschlossen werden können, wenn ein request
-		// von einem anderen Programm
+		// eigene MessageDialoge geöffnet die dann auch geschlossen werden
+		// können, wenn ein request von einem anderen Programm
 		// verursacht wird.
 
 		LOGGER.debug("request -> type: " + request.getRequestText());
@@ -258,5 +257,4 @@ public class RequestProcessor implements IRequestListener {
 		}
 		;
 	}
-
 }
