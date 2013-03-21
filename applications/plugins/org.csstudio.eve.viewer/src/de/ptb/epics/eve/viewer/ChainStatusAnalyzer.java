@@ -82,12 +82,9 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 
 	public void chainStatusChanged(final ChainStatusCommand chainStatusCommand) {
 
-		if (Activator.getDefault().getCurrentScanDescription() == null) {
-			// TODO: Nach Umstellung der Meldungen darf die ScanDescription
-			// nicht mehr null sein 13.12.10 Hartmut
-			// dann kann auch fillStatusTable aus
-			// ...epics/eve/viewer/IUpdateListener.java ausgetragen werden
+		logger.debug(chainStatusCommand.getChainStatus());
 
+		if (Activator.getDefault().getCurrentScanDescription() == null) {
 			switch (chainStatusCommand.getChainStatus()) {
 			case STARTING_SM:
 				final Iterator<IUpdateListener> it = this.updateListener
@@ -103,8 +100,6 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 			return;
 		}
 		List<Chain> chains = null;
-
-		logger.debug(chainStatusCommand.getChainStatus());
 		
 		switch (chainStatusCommand.getChainStatus()) {
 		case IDLE:
@@ -168,50 +163,11 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 								// chain i noch nicht in der Liste vorhanden
 								this.runningChains.add(scanModules.get(j)
 										.getChain());
+								this.pausedChains.remove(scanModules.get(j)
+										.getChain());
 							}
 							;
-							// this.runningChains.add( scanModules.get( j
-							// ).getChain() );
-							// System.out.println("      chain " + i +
-							// " zur running Liste hinzugefügt");
 						}
-						// final PlotWindow[] plotWindows = scanModules.get( j
-						// ).getPlotWindows();
-						// for( int k = 0; k < plotWindows.length; ++k ) {
-						// System.out.println( "Verarbeite Plot Fenster: " +
-						// plotWindows[i].getId() );
-						// final PlotWindow plotWindow = plotWindows[k];
-						// Activator.getDefault().getWorkbench().getDisplay().syncExec(
-						// new Runnable() {
-						//
-						// public void run() {
-						//
-						// IViewReference[] ref =
-						// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart().getSite().getPage().getViewReferences();
-						// PlotView view = null;
-						// for( int l = 0; l < ref.length; ++l ) {
-						// if( ref[l].getId().equals( PlotView.ID ) ) {
-						// view = (PlotView)ref[l].getPart( false );
-						// if( view.getId() == -1 ) {
-						// view.setId( plotWindow.getId() );
-						// view.setPlotWindow( plotWindow );
-						// break;
-						// } else if( view.getId() == plotWindow.getId() ) {
-						// view.setPlotWindow( plotWindow );
-						// break;
-						// }
-						// view = null;
-						// }
-						// if( view == null ) {
-						// // Neuen View erzeugen
-						// }
-						// }
-						//
-						// }
-						//
-						// });
-						//
-						// }
 					}
 				}
 			}
@@ -238,9 +194,9 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 							this.waitingScanModules.remove(scanModules.get(j));
 							this.exitedScanModules.remove(scanModules.get(j));
 
-							this.idleChains.add(scanModules.get(j).getChain());
-							this.runningChains.remove(scanModules.get(j)
-									.getChain());
+//							this.idleChains.add(scanModules.get(j).getChain());
+//							this.runningChains.remove(scanModules.get(j)
+//									.getChain());
 						}
 					}
 				}
@@ -291,13 +247,6 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 							this.pausedScanModules.remove(scanModules.get(j));
 							this.waitingScanModules.remove(scanModules.get(j));
 							this.exitedScanModules.add(scanModules.get(j));
-
-							// Dadurch das ein SM beendet ist, ist nicht auch
-							// die chain beendet
-							// this.idleChains.add( scanModules.get( j
-							// ).getChain() );
-							// this.runningChains.remove( scanModules.get( j
-							// ).getChain() );
 						}
 					}
 				}
@@ -327,10 +276,9 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 
 		case CHAIN_PAUSED:
 			chains = Activator.getDefault().getCurrentScanDescription()
-			.getChains();
-
-			chains = Activator.getDefault().getCurrentScanDescription()
 					.getChains();
+//			for (Chain chain: Activator.getDefault().getCurrentScanDescription()
+//					.getChains())
 			for (int i = 0; i < chains.size(); ++i) {
 				if (chains.get(i).getId() == chainStatusCommand.getChainId()) {
 					this.pausedChains.add(chains.get(i));
@@ -363,6 +311,10 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 		return new ArrayList<Chain>(this.runningChains);
 	}
 
+	public List<Chain> getPausedChains() {
+		return new ArrayList<Chain>(this.pausedChains);
+	}
+
 	public List<Chain> getExitedChains() {
 		return new ArrayList<Chain>(this.exitedChains);
 	}
@@ -390,6 +342,7 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 	private void resetChainList() {
 		this.idleChains.clear();
 		this.runningChains.clear();
+		this.pausedChains.clear();
 		this.exitedChains.clear();
 
 		this.executingScanModules.clear();
