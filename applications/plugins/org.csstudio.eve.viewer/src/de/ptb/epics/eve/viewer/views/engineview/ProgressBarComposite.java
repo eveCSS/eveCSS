@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -11,6 +13,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
+import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;
@@ -39,6 +42,8 @@ public class ProgressBarComposite extends Composite implements
 	private boolean connected;
 	private EngineStatus engineStatus;
 	
+	private Font font;
+	
 	/**
 	 * @param parent the parent
 	 * @param style the style
@@ -62,6 +67,10 @@ public class ProgressBarComposite extends Composite implements
 		
 		this.connected = connected;
 		this.engineStatus = null;
+		
+		FontData fdata = Display.getCurrent().getSystemFont().getFontData()[0];
+		fdata.setStyle(SWT.BOLD);
+		this.font = new Font(Display.getCurrent(), fdata);
 	}
 
 	/**
@@ -203,6 +212,9 @@ public class ProgressBarComposite extends Composite implements
 			int width = fontMetrics.getAverageCharWidth() * position.length();
 			int height = fontMetrics.getHeight();
 			e.gc.setClipping(e.gc.getClipping());
+			e.gc.setAntialias(SWT.ON);
+			e.gc.setTextAntialias(SWT.ON);
+			e.gc.setFont(font);
 			e.gc.setForeground(Display.getCurrent().getSystemColor(
 					SWT.COLOR_BLACK));
 			e.gc.drawString(position, (point.x - width) / 2,
