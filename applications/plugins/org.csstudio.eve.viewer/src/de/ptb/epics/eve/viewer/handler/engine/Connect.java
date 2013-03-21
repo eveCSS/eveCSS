@@ -3,7 +3,6 @@ package de.ptb.epics.eve.viewer.handler.engine;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import org.apache.log4j.Logger;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -24,9 +23,6 @@ import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
  * @author Marcus Michalsky
  */
 public class Connect extends AbstractHandler {
-
-	private static Logger logger = 
-			Logger.getLogger(Connect.class.getName());
 
 	/**
 	 * {@inheritDoc}
@@ -58,7 +54,6 @@ public class Connect extends AbstractHandler {
 						new ViewerMessage(Levels.ERROR,
 								"Cannot establish connection! "
 										+ e.getMessage() + "."));
-				logger.error(e.getMessage(), e);
 			}
 		}
 		return null;

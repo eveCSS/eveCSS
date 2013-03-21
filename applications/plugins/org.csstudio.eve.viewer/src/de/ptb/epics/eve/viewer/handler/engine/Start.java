@@ -1,8 +1,9 @@
 package de.ptb.epics.eve.viewer.handler.engine;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -64,20 +65,13 @@ public class Start extends AbstractHandler {
 		logger.debug("EngineParameters (after substitution): " + engineParameters);
 		
 		List<String> parameters = new ArrayList<String>();
-		parameters.add("-p");
-		parameters.add(Integer.toString(enginePort));
+		parameters.add(engineLocation.trim());
 		for (String s : engineParameters.split(" ")) {
 			parameters.add(s.trim());
 		}
-		
-		logger.debug("# parameters: " + parameters.size());
-		
-		Object[] parametersArray = parameters.toArray();
-		String[] stringArray = Arrays.copyOf(parametersArray,
-				parametersArray.length, String[].class); 
-		
-		Runtime runtime = Runtime.getRuntime();
-		
+		parameters.add("-p");
+		parameters.add(Integer.toString(enginePort));
+
 		try {
 			if(engineLocation.isEmpty()) {
 				String message = 
@@ -86,16 +80,28 @@ public class Start extends AbstractHandler {
 				Activator.getDefault().getMessagesContainer().addMessage(
 						new ViewerMessage(Levels.ERROR, message));
 			} else {
-				runtime.exec(engineLocation, stringArray, null);
+				ProcessBuilder pb = new ProcessBuilder(parameters);
+				pb.redirectErrorStream(true);
+				pb.environment().put("LD_LIBRARY_PATH",
+						"/soft/epics/base-3.14.12.1/lib/linux-x86:/messung/eve/lib/linux-x86");
+				/*Process p = */pb.start();
+				/*BufferedReader br = new BufferedReader(
+						new InputStreamReader(p.getInputStream()));
+				String line;
+				while ((line = br.readLine()) != null) {
+					logger.debug("[Engine]" + line);
+				}
+				br.close();
+				br = null;*/
+				
 				if (logger.isDebugEnabled()) {
 					StringBuffer buff = new StringBuffer();
 					buff.append(" ");
-					for (String s : stringArray) {
+					for (String s : parameters) {
 						buff.append(s);
 						buff.append(" ");
 					}
-					logger.debug("executed " + engineLocation + " "
-							+ buff.toString());
+					logger.debug("executed " + buff.toString());
 				}
 				String message = "started engine process at: " + engineHost +
 				"(Port: " + enginePort + ")";
