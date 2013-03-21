@@ -357,9 +357,13 @@ public class PVWrapper {
 			
 			propertyChangeSupport.firePropertyChange("value", pvValue,
 					pvValue = valueFormat.format(newVal));
+			if (newVal == null) {
+				return;
+			}
 			propertyChangeSupport.firePropertyChange("status", pvStatus, 
 					pvStatus = ValueUtil.alarmOf(pv.getValue()).
 									getAlarmSeverity());
+			
 			Exception e = pv.lastException();
 			if(e != null) {
 				logger.warn(e.getMessage(), e);
