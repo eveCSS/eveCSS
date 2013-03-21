@@ -116,9 +116,9 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 			this.scanDescription = scanDescriptionLoader.getScanDescription();
 
 			if (scanDescriptionLoader.getLostDevices() != null) {
-				Shell shell = getSite().getShell();
-				LostDevicesDialog dialog = 
-						new LostDevicesDialog(shell, scanDescriptionLoader);
+				LostDevicesDialog dialog = new LostDevicesDialog(PlatformUI
+						.getWorkbench().getModalDialogShellProvider()
+						.getShell(), scanDescriptionLoader);
 				dialog.open();
 				this.dirty = true;
 			}
