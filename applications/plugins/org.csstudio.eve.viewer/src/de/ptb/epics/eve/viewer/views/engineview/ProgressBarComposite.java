@@ -73,11 +73,7 @@ public class ProgressBarComposite extends Composite implements
 		this.progressBar.getDisplay().syncExec(new Runnable() {
 			@Override public void run() {
 				currentPosition = finalCommand.getPositionCounter();
-				if (currentPosition == -1) {
-					// magic number indicating end
-					progressBar.setSelection(maxPositions);
-					LOGGER.debug("Scan complete -> max position");
-				} else {
+				if (currentPosition >= 0) {
 					progressBar.setSelection(currentPosition);
 					LOGGER.debug("Current Position: " + currentPosition);
 				}
