@@ -1,5 +1,13 @@
 h1(eveTopic). What's New ?
 
+h2(eveTopic). Version 1.10
+
+* [Feature] positions in a position file/list are now validated and counted
+* [Feature] the number of positions per scan module / chain is now calculated (and shown via tool tip)
+
+* [Bug Fix] fixed a bug where reading a data file containing empty lines led to an error
+* [Bug Fix] the lost devices dialog is now shown in a centered position to its parent
+
 h2(eveTopic). Version 1.9
 
 * [Feature] Added data filename macros for year, month and day

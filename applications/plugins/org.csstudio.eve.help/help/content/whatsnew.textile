@@ -1,5 +1,11 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.10
+
+* [Feature] the version of eveCSS is now shown in the title bar
+* [Feature] eveCSS 1.10 is now based on CSS 3.1
+* [Feature] the logger configuration is now integrated (no longer expected in eve.root)
+
 h2(eveTopic). Version 1.8
 
 * [Feature] incremented schema version to 2.2

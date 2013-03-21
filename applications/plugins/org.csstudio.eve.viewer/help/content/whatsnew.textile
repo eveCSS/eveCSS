@@ -1,5 +1,13 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.10
+
+* [Feature] the engine version to be used is now configurable via preferences
+* [Feature] the progress of a scan is now shown in a progress bar
+
+* [Bug Fix] fixed a bug where an existing plot window accidently continued drawing points on a new scan (when the same devices where used)
+* [Bug Fix] Message dialogs are now shown in a centered position of their parent
+
 h2(eveTopic). Version 1.8
 
 * [Feature] set default plot buffer size to 500
