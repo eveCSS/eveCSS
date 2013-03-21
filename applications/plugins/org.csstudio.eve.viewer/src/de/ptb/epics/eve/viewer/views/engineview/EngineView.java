@@ -382,6 +382,9 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				} else if(Activator.getDefault().getChainStatusAnalyzer().
 						getExitedChains().contains(ch)) {
 					fillStatusTable(ch.getId(), -1, "exited", remainTime);	
+				} else if(Activator.getDefault().getChainStatusAnalyzer().
+						getPausedChains().contains(ch)) {
+					fillStatusTable(ch.getId(), -1, "paused", remainTime);	
 				} else {
 					fillStatusTable(ch.getId(), -1, "idle", remainTime);
 				}
@@ -534,6 +537,11 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 								this.skipButton.setEnabled(true);
 								this.haltButton.setEnabled(true);
 								break;
+			case CHAIN_PAUSED:	this.playButton.setEnabled(true);
+								this.stopButton.setEnabled(true);
+								this.skipButton.setEnabled(true);
+								this.haltButton.setEnabled(true);
+			break;
 		}
 	}	
 	
