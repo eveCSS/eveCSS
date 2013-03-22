@@ -118,6 +118,7 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 	 */
 	@Override
 	protected Command getReconnectTargetCommand(ReconnectRequest request) {
+		/*
 		if (!(request.getTarget() instanceof ScanModuleEditPart)) {
 			return null;
 		}
@@ -142,7 +143,7 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 					.chain(new CreateSMConnection(conn.getModel()
 							.getParentScanModule(), target.getModel(),
 							Connector.NESTED));
-		}
+		}*/
 		return null;
 	}
 	
