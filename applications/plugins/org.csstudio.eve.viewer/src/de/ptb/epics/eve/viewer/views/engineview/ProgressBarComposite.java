@@ -81,8 +81,8 @@ public class ProgressBarComposite extends Composite implements
 		final ChainStatusCommand finalCommand = chainStatusCommand;
 		this.progressBar.getDisplay().syncExec(new Runnable() {
 			@Override public void run() {
-				currentPosition = finalCommand.getPositionCounter();
-				if (currentPosition >= 0) {
+				if (finalCommand.getPositionCounter() >= 0) {
+					currentPosition = finalCommand.getPositionCounter();
 					progressBar.setSelection(currentPosition);
 					LOGGER.debug("Current Position: " + currentPosition);
 				}
