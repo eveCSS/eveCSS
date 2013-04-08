@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.ide.FileStoreEditorInput;
@@ -42,8 +43,9 @@ public class HandOver extends AbstractHandler {
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		
 		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
+		IEditorPart editor = window.getActivePage().getActiveEditor();
 		
-		if(window.getActivePage().getActiveEditor() == null) {
+		if(editor == null) {
 			logger.warn("No Editor found. Dispatch of Scan Description canceled.");
 			return null;
 		}
@@ -53,13 +55,9 @@ public class HandOver extends AbstractHandler {
 		final boolean switchPerspective = Boolean.parseBoolean(event.getParameter(
 				"de.ptb.epics.eve.editor.command.handover.switchPerspective"));
 		
-		// check if the scan description which should be handed over has 
-		// unsaved changes
-		final boolean isDirty = window.getActivePage().getActiveEditor().isDirty();
-		
 		// if there are unsaved changes, inform the user
-		if(isDirty) {
-			String filename = window.getActivePage().getActiveEditor().getTitle();
+		if(editor.isDirty()) {
+			String filename = editor.getTitle();
 			
 			boolean confirm = MessageDialog.openConfirm(null, "Unsaved Changes",
 					filename + " has been modified. Save Changes ?");
@@ -72,8 +70,10 @@ public class HandOver extends AbstractHandler {
 		
 		// save changes
 		NullProgressMonitor monitor = new NullProgressMonitor();
-		window.getActivePage().getActiveEditor().
-				doSave(monitor);
+		
+		if (editor.isDirty()) {
+			editor.doSave(monitor);
+		}
 		
 		// Obtain the Platform job manager to sync with save job
 		IJobManager manager = Job.getJobManager();
@@ -87,18 +87,14 @@ public class HandOver extends AbstractHandler {
 			throw new ExecutionException(e1.getMessage());
 		}
 		
-		if (monitor.isCanceled()) {
-			throw new ExecutionException("");
-		}
-		
 		// if it is still dirty (save unsuccessful) don't switch perspective
-		if(window.getActivePage().getActiveEditor().isDirty()) {
+		if(editor.isDirty()) {
 			throw new ExecutionException("");
 		}
 		
 		// determine filename
 		final ScanDescriptionEditor graphicalEditor = 
-				(ScanDescriptionEditor) window.getActivePage().getActiveEditor();
+				(ScanDescriptionEditor) editor;
 			
 		final FileStoreEditorInput editorInput = 
 				(FileStoreEditorInput)graphicalEditor.getEditorInput();	
