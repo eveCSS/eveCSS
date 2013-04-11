@@ -109,7 +109,7 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 	 */
 	@Override
 	protected Command getReconnectSourceCommand(ReconnectRequest request) {
-		// TODO Auto-generated method stub
+		// TODO reconnect source
 		return null;
 	}
 
@@ -118,7 +118,6 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 	 */
 	@Override
 	protected Command getReconnectTargetCommand(ReconnectRequest request) {
-		/*
 		if (!(request.getTarget() instanceof ScanModuleEditPart)) {
 			return null;
 		}
@@ -129,8 +128,14 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 			return null;
 		}
 		if (conn.getModel().getParentEvent() != null) {
-			// TODO createSEconn
+			return new DeleteConnection(conn.getModel())
+					.chain(new CreateSEConnection(conn.getModel()
+							.getParentEvent(), target.getModel()));
 		} else {
+			ScanModuleEditPart source = (ScanModuleEditPart) conn.getSource();
+			if (target == source) {
+				return null;
+			}
 			if (conn.getModel().getParentScanModule().getAppended() != null
 					&& conn.getModel().getParentScanModule().getAppended() == 
 						conn.getModel()) {
@@ -143,8 +148,7 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 					.chain(new CreateSMConnection(conn.getModel()
 							.getParentScanModule(), target.getModel(),
 							Connector.NESTED));
-		}*/
-		return null;
+		}
 	}
 	
 	/**
@@ -200,6 +204,23 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 				}
 			}
 			this.scanModuleEditPart.getFigure().repaint();
+		} else if (request instanceof ReconnectRequest) {
+			if (request.getType().equals(RequestConstants.REQ_RECONNECT_SOURCE)) {
+				// TODO reconnect source feedback
+			} else if (request.getType().equals(
+					RequestConstants.REQ_RECONNECT_TARGET)) {
+				EditPart source = ((ReconnectRequest) request)
+						.getConnectionEditPart().getSource();
+				EditPart target = ((ReconnectRequest) request).getTarget();
+				if (target instanceof ScanModuleEditPart) {
+					ScanModuleEditPart smep = (ScanModuleEditPart) target;
+					if (target != source && smep.getModel().getParent() == null) {
+						// new target is not the source and is not connected
+						((ScanModuleFigure) smep.getFigure())
+								.setParent_feedback(true);
+					}
+				}
+			}
 		}
 		super.showTargetFeedback(request);
 	}
@@ -217,6 +238,23 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 			figure.setNested_feedback(false);
 			figure.setParent_feedback(false);
 			this.scanModuleEditPart.getFigure().repaint();
+		} else if (request instanceof ReconnectRequest) {
+			if (request.getType().equals(RequestConstants.REQ_RECONNECT_SOURCE)) {
+				ScanModuleFigure figure = (ScanModuleFigure) 
+						((ScanModuleEditPart)((ReconnectRequest) request)
+						.getConnectionEditPart().getSource()).getFigure();
+				figure.setAppended_feedback(false);
+				figure.setNested_feedback(false);
+				figure.setParent_feedback(false);
+			} else if (request.getType().equals(
+					RequestConstants.REQ_RECONNECT_TARGET)) {
+				ScanModuleFigure figure = (ScanModuleFigure) 
+						((ScanModuleEditPart) ((ReconnectRequest) request)
+						.getTarget()).getFigure();
+				figure.setAppended_feedback(false);
+				figure.setNested_feedback(false);
+				figure.setParent_feedback(false);
+			}
 		}
 		super.eraseTargetFeedback(request);
 	}
