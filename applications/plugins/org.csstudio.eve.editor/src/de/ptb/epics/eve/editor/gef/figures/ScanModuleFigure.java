@@ -116,6 +116,7 @@ public class ScanModuleFigure extends Shape {
 	 */
 	public void setAppended_feedback(boolean appended_feedback) {
 		this.appended_feedback = appended_feedback;
+		this.repaint();
 	}
 
 	/**
@@ -123,6 +124,7 @@ public class ScanModuleFigure extends Shape {
 	 */
 	public void setNested_feedback(boolean nested_feedback) {
 		this.nested_feedback = nested_feedback;
+		this.repaint();
 	}
 
 	/**
@@ -130,6 +132,7 @@ public class ScanModuleFigure extends Shape {
 	 */
 	public void setParent_feedback(boolean parent_feedback) {
 		this.parent_feedback = parent_feedback;
+		this.repaint();
 	}
 
 	/**
