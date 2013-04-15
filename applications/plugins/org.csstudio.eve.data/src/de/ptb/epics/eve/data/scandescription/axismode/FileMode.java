@@ -49,7 +49,7 @@ public class FileMode extends AxisMode {
 	 */
 	@Override
 	public Integer getPositionCount() {
-		if (!this.file.exists()) {
+		if (this.file == null || !this.file.exists()) {
 			return null;
 		}
 		try {
