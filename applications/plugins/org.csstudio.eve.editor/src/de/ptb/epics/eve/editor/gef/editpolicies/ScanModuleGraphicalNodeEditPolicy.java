@@ -81,11 +81,8 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 	 */
 	@Override
 	protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
-		logger.debug("GETCONNECTIONCREATE SM GNodeEPol");
 		String type = ((ScanModuleFigure) this.scanModuleEditPart.getFigure())
 				.getConnectionType(request.getLocation());
-		logger.debug("Location: (" + request.getLocation().x + ", "
-				+ request.getLocation().y + ")");
 		if (type.equals(Connector.APPENDED)) {
 			if (this.scanModule.getAppended() != null) {
 				return null;
@@ -109,7 +106,27 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 	 */
 	@Override
 	protected Command getReconnectSourceCommand(ReconnectRequest request) {
-		// TODO reconnect source
+		ConnectionEditPart conn = (ConnectionEditPart)
+				request.getConnectionEditPart();
+		ScanModuleEditPart source = (ScanModuleEditPart)request.getTarget();
+		ScanModuleEditPart target = (ScanModuleEditPart)conn.getTarget();
+		String type = ((ScanModuleFigure) this.scanModuleEditPart.getFigure())
+				.getConnectionType(request.getLocation());
+		if (source == target || type.equals(Connector.APPENDED)
+				&& source.getModel().getAppended() != null
+				|| type.equals(Connector.NESTED)
+				&& source.getModel().getNested() != null) {
+			return null;
+		}
+		if (type.equals(Connector.APPENDED)) {
+			return new DeleteConnection(conn.getModel())
+					.chain(new CreateSMConnection(source.getModel(), target
+							.getModel(), Connector.APPENDED));
+		} else if (type.equals(Connector.NESTED)) {
+			return new DeleteConnection(conn.getModel())
+			.chain(new CreateSMConnection(source.getModel(), target
+					.getModel(), Connector.NESTED));
+		}
 		return null;
 	}
 
@@ -206,7 +223,34 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 			this.scanModuleEditPart.getFigure().repaint();
 		} else if (request instanceof ReconnectRequest) {
 			if (request.getType().equals(RequestConstants.REQ_RECONNECT_SOURCE)) {
-				// TODO reconnect source feedback
+				EditPart source = ((ReconnectRequest) request)
+						.getConnectionEditPart().getTarget();
+				EditPart target = ((ReconnectRequest) request).getTarget();
+				if (source == target) {
+					return;
+				}
+				ScanModuleFigure figure = (ScanModuleFigure) 
+						this.scanModuleEditPart.getFigure();
+				figure.setAppended_feedback(false);
+				figure.setNested_feedback(false);
+				figure.setParent_feedback(false);
+				String type = figure.getConnectionType(
+						((ReconnectRequest) request).getLocation());
+				if (type.equals(Connector.APPENDED)) {
+					if (this.scanModuleEditPart.getModel().getAppended() == null) {
+						figure.setAppended_feedback(true);
+						logger.debug("appended feedback");
+					} else {
+						logger.debug("no append possible");
+					}
+				} else if (type.equals(Connector.NESTED)) {
+					if (this.scanModuleEditPart.getModel().getNested() == null) {
+					figure.setNested_feedback(true);
+					logger.debug("nested feedback");
+					} else {
+						logger.debug("no append possible");
+					}
+				}
 			} else if (request.getType().equals(
 					RequestConstants.REQ_RECONNECT_TARGET)) {
 				EditPart source = ((ReconnectRequest) request)
@@ -240,12 +284,14 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 			this.scanModuleEditPart.getFigure().repaint();
 		} else if (request instanceof ReconnectRequest) {
 			if (request.getType().equals(RequestConstants.REQ_RECONNECT_SOURCE)) {
-				ScanModuleFigure figure = (ScanModuleFigure) 
-						((ScanModuleEditPart)((ReconnectRequest) request)
-						.getConnectionEditPart().getSource()).getFigure();
-				figure.setAppended_feedback(false);
-				figure.setNested_feedback(false);
-				figure.setParent_feedback(false);
+				EditPart target = ((ReconnectRequest) request).getTarget();
+				if (target instanceof ScanModuleEditPart) {
+					ScanModuleFigure figure = (ScanModuleFigure) 
+							((ScanModuleEditPart) target).getFigure();
+					figure.setAppended_feedback(false);
+					figure.setNested_feedback(false);
+					figure.setParent_feedback(false);
+				}
 			} else if (request.getType().equals(
 					RequestConstants.REQ_RECONNECT_TARGET)) {
 				ScanModuleFigure figure = (ScanModuleFigure) 
