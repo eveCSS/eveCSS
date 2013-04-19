@@ -1,6 +1,6 @@
 h1(eveTopic). Device Description
 
-p. A device description (file) is a collection of devices defined in XML. It is a list of motors and axes, detectors and channels, devices, options, plug ins and events. A device description file is required in order to run the EVE application.
+p. A device description (file) is a collection of devices defined in XML. It is a list of motors and axes, detectors and channels, devices, options, plug ins and events. A device description file is required in order to run the EVE application (a default one is provided for each test site). How to create custom device descriptions is described "here":/help/topic/de.ptb.epics.eve.help/help/content/tasks/createdevicedescription.html.
 
 h2(eveTopic). Motors & Motor Axes
 

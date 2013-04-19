@@ -1,0 +1,4 @@
+h1(eveTopic). Create a Scan Description in XML
+
+p. Instead of creating a scan description via the EveEditor it is also possible to create a device description in XML directly. In that case the XML document must conform to the defined "schema":PLUGINS_ROOT/de.ptb.epics.eve.resources/cfg/schema.xsd in order to be considered valid.
+__Keep in mind__ that when upgrading to a new version of eveCSS the XML schema version could also change.
