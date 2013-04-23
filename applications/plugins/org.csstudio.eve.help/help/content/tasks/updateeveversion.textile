@@ -1,0 +1,7 @@
+h1(eveTopic). Update eveCSS Version
+
+p. To change the version of eveCSS that should be used on your test site just type 
+
+p(code). @eveVersion <version_name>@
+
+p. from within your test site folder, where @<version_name>@ is the desired target version. Remember to "translate":/help/topic/de.ptb.epics.eve.help/help/content/tasks/createdevicedescription.html your @xsubst@ file (again).

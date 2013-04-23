@@ -1,9 +1,16 @@
 h1(eveTopic). Create a Device Description
 
-p. To avoid typing XML tags over and over again a device description is not created within XML itself but with the aid of a shell script called @eveDevices@. @eveDevices@ uses a macro substitution tool to create device definition files for EVE from simple user-created substitution files. 
+p. To avoid typing XML tags over and over again a device description is not created within XML itself but with the aid of a shell script called @eveBuild@. @eveBuild@ uses a macro substitution tool to create device definition files for EVE from simple user-created substitution files. 
 
 p. To create a device description (XML) from your substitution file (xsubst) named 'mydevices.xsubst' just type 
 
-p(code). @eveDevices mydevices.xsubst@
+p(code). @eveBuild mydevices.xsubst@
 
-p. By omitting the file argument the default file is taken. In both cases the directory the command is called from has to be the main directory of your test site, e.g. @/messung/test@. The name of the default file then would be @test.xsubst@. More information on the syntax of substitution files is given "here":/help/topic/de.ptb.epics.eve.help/help/content/reference/xmlmsisyntax.html.
+p. By omitting the file argument the default file is taken. In this case the directory the command is called from has to be the main directory of your test site, e.g. @/messung/test@. The name of the default file then would be @test.xsubst@. In detail, the script does
+
+* translate the given xsubst into XML
+* replaces occurences of '/' characters in id tags with '%' (EPICS PV name restrictions)
+* validates the resulting XML file with the current XML schema
+* searches for duplicate id tags
+
+p. More information on the syntax of substitution files is given "here":/help/topic/de.ptb.epics.eve.help/help/content/reference/xmlmsisyntax.html.

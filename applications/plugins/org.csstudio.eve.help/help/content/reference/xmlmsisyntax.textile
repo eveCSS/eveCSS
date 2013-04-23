@@ -1,15 +1,5 @@
 h1(eveTopic). __xmlmsi__ Argument Syntax
 
-h2(eveTopic). Command Syntax
-
-p(code). xmlmsi [-v] [-V] -I __includeDir__... [-o __outfile__] __substitutionfile__
-
-table(eveRefTable).
-| -v| verbose output|
-| -V| any undefined macro discovered in the template file (with no associated default value) is considered an error|
-| -I __includeDir__ | one or more include directories containing template files (__.xtmpl__)|
-| -o __outfile__ | output filename, if omitted default output filename (__substitutionfile__ filename with extension replaced by __.xml__) is used.|
-
 h2(eveTopic). Substitution File Syntax
 
 * Lines starting with a ==&#35;== are considered comments and will be ignored.
@@ -28,6 +18,16 @@ p. Template files may have any textual content. The following rules apply:
 * __substitute parameter="value"__ will substitute the macro ==&#36;=={__parameter__} with __value__
 
 p. More information on the syntax provides [1], a more detailed explanation gives [2].
+
+h2(eveTopic). Command Syntax
+
+p(code). xmlmsi [-v] [-V] -I __includeDir__... [-o __outfile__] __substitutionfile__
+
+table(eveRefTable).
+| -v| verbose output|
+| -V| any undefined macro discovered in the template file (with no associated default value) is considered an error|
+| -I __includeDir__ | one or more include directories containing template files (__.xtmpl__)|
+| -o __outfile__ | output filename, if omitted default output filename (__substitutionfile__ filename with extension replaced by __.xml__) is used.|
 
 <hr/>
 
