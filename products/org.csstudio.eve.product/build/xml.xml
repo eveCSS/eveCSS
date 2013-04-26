@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="git-archive" basedir="../../../../../"> 
+	<!-- base dir is jenkins project root-->
+
+	<description>
+	</description>
+	
+	<property environment="env" />
+	<property name="workspace" location="${env.WORKSPACE}" />
+	
+	<target name="git-archive">
+		<mkdir dir="${workspace}/bin/eveXML" />
+		<exec executable="git" dir="${workspace}/repo/" failonerror="true">
+			<arg value="archive" />
+			<arg value="--format" />
+			<arg value="zip" />
+			<arg value="--output" />
+			<arg value="${workspace}/bin/eveXML/xml.zip" />
+			<arg value="master" />
+		</exec>
+	</target>
+</project>
