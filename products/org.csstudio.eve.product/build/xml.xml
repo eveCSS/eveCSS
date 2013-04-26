@@ -15,7 +15,7 @@
 			<arg value="--format" />
 			<arg value="zip" />
 			<arg value="--output" />
-			<arg value="${workspace}/bin/eveXML/xml.zip" />
+			<arg value="${workspace}/bin/eveXML/xtmpl.zip" />
 			<arg value="master" />
 		</exec>
 	</target>
