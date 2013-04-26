@@ -80,6 +80,11 @@
             id="eveViewerCategory"
             name="EVE Viewer">
       </category>
+      <stickyView
+            closeable="true"
+            id="PlotView"
+            moveable="true">
+      </stickyView>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

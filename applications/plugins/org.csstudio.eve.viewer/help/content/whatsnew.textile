@@ -7,6 +7,7 @@ h2(eveTopic). Version 1.10
 
 * [Bug Fix] fixed a bug where an existing plot window accidently continued drawing points on a new scan (when the same devices where used)
 * [Bug Fix] Message dialogs are now shown in a centered position of their parent
+* [Bug Fix] the Plot View is now shown in all perspectives
 
 h2(eveTopic). Version 1.8
 
