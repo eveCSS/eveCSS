@@ -72,8 +72,7 @@ public class Activator implements BundleActivator {
 	 */
 	public static File getXMLSchema() {
 		try {
-			URL url;
-			url = new URL(
+			URL url = new URL(
 				"platform:/plugin/de.ptb.epics.eve.resources/cfg/schema.xsd");
 			File file = new File(FileLocator.toFileURL(url).toURI());
 			return file;

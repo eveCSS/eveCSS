@@ -1,4 +1,12 @@
-h1(eveTopic). What's New ?
+h1(eveTopic). Release Notes
+
+h2(eveTopic). Version 1.11
+
+* [Feature] It is now possible to reconnect source and target of connections in the GEF Editor
+* [Feature] Improved text entry behavior (by delaying the listeners for a short time period)
+
+* [Bug Fix] fixed a bug where the add to play list button eventually took the wrong file due to timing issues
+* [Bug Fix] removed a bug where setting a newly created motor to file mode caused an error
 
 h2(eveTopic). Version 1.10
 

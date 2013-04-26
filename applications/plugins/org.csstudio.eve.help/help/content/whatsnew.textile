@@ -1,5 +1,10 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.11
+
+* [Feature] test sites now decide when to "update":/help/topic/de.ptb.epics.eve.help/help/content/tasks/updateeveversion.html to a new version
+* [Feature] simplified "creation of device definition":/help/topic/de.ptb.epics.eve.help/help/content/tasks/createdevicedescription.html files
+
 h2(eveTopic). Version 1.10
 
 * [Feature] the version of eveCSS is now shown in the title bar
