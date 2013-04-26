@@ -9,8 +9,14 @@
 	<property name="workspace" location="${env.WORKSPACE}" />
 	
 	<target name="git-archive">
+		<delete dir="${workspace}/repoXML" />
+		<exec executable="git" dir="${workspace}">
+			<arg value="clone" />
+			<arg value="/soft/repo/git/eveXML" />
+			<arg value="repoXML" />
+		</exec>
 		<mkdir dir="${workspace}/bin/eveXML" />
-		<exec executable="git" dir="${workspace}/repo/" failonerror="true">
+		<exec executable="git" dir="${workspace}/repoXML/" failonerror="true">
 			<arg value="archive" />
 			<arg value="--format" />
 			<arg value="zip" />
