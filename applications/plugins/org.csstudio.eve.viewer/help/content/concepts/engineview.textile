@@ -29,12 +29,12 @@ p. In the __SCAN__ area are buttons to play the scan.
 
 table(eveRefTable).
 |_. Button |_. Description|
-|_. Play |_. The __Play__ Button is starting or continuing then scan|
-|_. Pause |_. The __Pause__ Button paused the scan|
-|_. Stop |_. The __Stop__ Button exiting the scan when the actual scan point is finished|
-|_. Skip |_. The __Skip__ Button staring the next scan module when the actual scan point is finished|
-|_. Halt |_. The __Halt__ Button terminate the scan. |
-|_. AutoPlay |_. __AutoPlay__ is a toggle Button and in state on the scans starting automatically|
+|_. Play | The __Play__ Button is starting or continuing then scan|
+|_. Pause | The __Pause__ Button paused the scan|
+|_. Stop | The __Stop__ Button exiting the scan when the actual scan point is finished|
+|_. Skip | The __Skip__ Button staring the next scan module when the actual scan point is finished|
+|_. Halt | The __Halt__ Button terminate the scan. |
+|_. AutoPlay | __AutoPlay__ is a toggle Button and in state on the scans starting automatically|
 
 h3(eveTopic). repeat count
 
