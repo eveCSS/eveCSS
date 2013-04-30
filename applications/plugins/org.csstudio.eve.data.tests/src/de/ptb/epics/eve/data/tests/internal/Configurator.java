@@ -2,11 +2,15 @@ package de.ptb.epics.eve.data.tests.internal;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.core.runtime.FileLocator;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
@@ -36,55 +40,34 @@ public class Configurator {
 		final MeasuringStationLoader measuringStationLoader = 
 			new MeasuringStationLoader(Configurator.getSchemaFile());
 		
-		File bigref = new File("xml/bigref.xml");
-		File euvr = new File("xml/euvr.xml");
-		File kmc = new File("xml/kmc.xml");
-		File newref = new File("xml/newref.xml");
-		File nrfa = new File("xml/nrfa.xml");
-		File oldref = new File("xml/oldref.xml");
-		File pgm = new File("xml/pgm.xml");
-		File qnim = new File("xml/qnim.xml");
-		File rfa = new File("xml/rfa.xml");
-		File sx700 = new File("xml/sx700.xml");
-		File test = new File("xml/test.xml");
-		File trfa = new File("xml/trfa.xml");
-		/*
+		List<File> files = new ArrayList<File>();
+		
 		try {
+			if (System.getenv("WORKSPACE") == null) {
+				System.out.println(Configurator.class.getClassLoader().getResource("../../xml/pgm.xml"));
+				String basedir = "../../";
+				files.add(new File(basedir + "pgm.xml"));
+			} else {
+				URL url = new URL(
+						"platform:/plugin/de.ptb.epics.eve.data.tests/xml/pgm.xml");
+				files.add(new File(FileLocator.toFileURL(url).toURI()));
+			}
 			
-			measuringStationLoader.load(bigref);
-			stations.add(measuringStationLoader.getMeasuringStation());
-			measuringStationLoader.load(euvr);
-			stations.add(measuringStationLoader.getMeasuringStation());
-			measuringStationLoader.load(kmc);
-			stations.add(measuringStationLoader.getMeasuringStation());
-			measuringStationLoader.load(newref);
-			stations.add(measuringStationLoader.getMeasuringStation());
-			measuringStationLoader.load(nrfa);
-			stations.add(measuringStationLoader.getMeasuringStation());
-			measuringStationLoader.load(oldref);
-			stations.add(measuringStationLoader.getMeasuringStation());
-			measuringStationLoader.load(pgm);
-			stations.add(measuringStationLoader.getMeasuringStation());
-			measuringStationLoader.load(qnim);
-			stations.add(measuringStationLoader.getMeasuringStation());
-			measuringStationLoader.load(rfa);
-			stations.add(measuringStationLoader.getMeasuringStation());
-			measuringStationLoader.load(sx700);
-			stations.add(measuringStationLoader.getMeasuringStation());
-			measuringStationLoader.load(test);
-			stations.add(measuringStationLoader.getMeasuringStation());
-			measuringStationLoader.load(trfa);
-			stations.add(measuringStationLoader.getMeasuringStation());
-		} catch (ParserConfigurationException e) {
-			System.err.println(e.getMessage());
-			return null;
-		} catch (SAXException e) {
-			System.err.println(e.getMessage());
-			return null;
+			for(File file : files) {
+				measuringStationLoader.load(file);
+				stations.add(measuringStationLoader.getMeasuringStation());
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println(e.getMessage());
-			return null;
-		}*/
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		}
 		return stations;
 	}
 	
@@ -112,7 +95,6 @@ public class Configurator {
 	 * @return the schema file
 	 */
 	public static File getSchemaFile() {
-		return new File(System.getenv("WORKSPACE") + 
-			"/repo/applications/plugins/org.csstudio.eve.resources/cfg/schema.xsd");
+		return de.ptb.epics.eve.resources.Activator.getXMLSchema();
 	}
 }
