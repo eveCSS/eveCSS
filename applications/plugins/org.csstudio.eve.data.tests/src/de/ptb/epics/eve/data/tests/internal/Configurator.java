@@ -95,6 +95,11 @@ public class Configurator {
 	 * @return the schema file
 	 */
 	public static File getSchemaFile() {
-		return null; //de.ptb.epics.eve.resources.Activator.getXMLSchema();
+		if (System.getenv("WORKSPACE") != null) {
+		return new File(System.getenv("WORKSPACE") + 
+				"/repo/applications/plugins/org.csstudio.eve.resources/cfg/");
+		} else {
+			 return de.ptb.epics.eve.resources.Activator.getXMLSchema();
+		}
 	}
 }
