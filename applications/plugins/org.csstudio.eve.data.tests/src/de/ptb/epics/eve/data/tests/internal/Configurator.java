@@ -95,6 +95,6 @@ public class Configurator {
 	 * @return the schema file
 	 */
 	public static File getSchemaFile() {
-		return de.ptb.epics.eve.resources.Activator.getXMLSchema();
+		return null; //de.ptb.epics.eve.resources.Activator.getXMLSchema();
 	}
 }
