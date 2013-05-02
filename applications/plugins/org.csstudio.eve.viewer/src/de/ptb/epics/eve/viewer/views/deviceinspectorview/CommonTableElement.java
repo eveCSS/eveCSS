@@ -582,9 +582,14 @@ public class CommonTableElement {
 			if(movedonePv != null) {
 				String moveStatus = movedonePv.getValue();
 				if ((moveStatus != null) && (!moveStatus.isEmpty())) {
-					int moveStatusInt = (int) Double.parseDouble(moveStatus);
-					if (moveStatusInt == 0)
-						return "Moving";
+					try {
+						int moveStatusInt = (int) Double.parseDouble(moveStatus);
+						if (moveStatusInt == 0) {
+							return "Moving";
+						}
+					} catch (NumberFormatException e) {
+						logger.error(e.getMessage(), e);
+					}
 				}
 			}
 			if(statusPv != null) {

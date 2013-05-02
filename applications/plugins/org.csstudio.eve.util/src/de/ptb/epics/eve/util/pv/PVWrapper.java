@@ -355,6 +355,11 @@ public class PVWrapper {
 			
 			Object newVal = pv.getValue();
 			
+			Exception e = pv.lastException();
+			if (e != null) {
+				logger.warn(pvName + ": " + e.getMessage(), e);
+			}
+			
 			propertyChangeSupport.firePropertyChange("value", pvValue,
 					pvValue = valueFormat.format(newVal));
 			if (newVal == null) {
@@ -364,10 +369,6 @@ public class PVWrapper {
 					pvStatus = ValueUtil.alarmOf(pv.getValue()).
 									getAlarmSeverity());
 			
-			Exception e = pv.lastException();
-			if(e != null) {
-				logger.warn(e.getMessage(), e);
-			}
 			if(logger.isDebugEnabled()) {
 				logger.debug("new value for '" + getName() + "' : " + 
 							valueFormat.format(newVal) + 
