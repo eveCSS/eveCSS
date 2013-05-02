@@ -190,14 +190,15 @@ public class XYPlot extends Figure {
 		xyGraph.primaryXAxis.setDateEnabled(timedata_x);
 		axis.setDateEnabled(timedata_y);
 
-		axis.setAutoScale(true);
+		// axis.setAutoScale(true);
 		xyGraph.addTrace(trace);
 		if (axis != xyGraph.primaryYAxis)
 			xyGraph.addAxis(axis);
 		traceMap.put(name, trace);
 		if ((traceMap.size() > 1) && (traceMap.size() % 2) == 0)
 			axis.setPrimarySide(false);
-
+		axis.setAutoScale(true);
+		
 		logger.debug("[" + this.hashCode() + "] Trace added - name: " + name
 				+ " , id: " + id);
 	}
