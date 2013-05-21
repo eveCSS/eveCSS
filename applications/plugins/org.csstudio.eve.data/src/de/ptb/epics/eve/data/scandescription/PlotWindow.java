@@ -2,6 +2,7 @@ package de.ptb.epics.eve.data.scandescription;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +33,10 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 				PropertyChangeListener {
 
+	public static final String NAME_PROP = "name";
+	
+	public static final String PREINIT_WINDOW_PROP = "init";
+	
 	// logging 
 	private static final Logger logger = 
 		Logger.getLogger(PlotWindow.class.getName());
@@ -60,6 +65,8 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	// parties interested in updates of the plot window
 	private List<IModelUpdateListener> updateListener;
 	
+	private PropertyChangeSupport propertyChangeSupport;
+	
 	/**
 	 * Constructs a new plot window. Notice that an id has to be set via 
 	 * {@link #setId(int)} afterwards.
@@ -82,6 +89,8 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 		this.updateListener = new ArrayList<IModelUpdateListener>();
 		this.yAxes = new ArrayList<YAxis>();
 		this.mode = PlotModes.LINEAR;
+		
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 	
 	/**
@@ -167,7 +176,8 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
-		this.name = name;
+		this.propertyChangeSupport.firePropertyChange(PlotWindow.NAME_PROP,
+				this.name, this.name = name);
 		updateListeners();
 	}
 
@@ -188,7 +198,8 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	 * 		   <code>false</code> otherwise
 	 */
 	public void setInit(final boolean init) {
-		this.init = init;
+		this.propertyChangeSupport.firePropertyChange(
+				PlotWindow.PREINIT_WINDOW_PROP, this.init, this.init = init);
 		updateListeners();
 	}
 	
@@ -454,5 +465,23 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 		for(IModelUpdateListener imul : list) {
 			imul.updateEvent(new ModelUpdateEvent(this, null));
 		}
+	}
+	
+	/**
+	 * @see {@link java.beans.PropertyChangeSupport#addPropertyChangeListener(String, PropertyChangeListener)}
+	 */
+	public void addPropertyChangeListener(String property,
+			PropertyChangeListener listener) {
+		this.propertyChangeSupport
+				.addPropertyChangeListener(property, listener);
+	}
+	
+	/**
+	 * @see {@link java.beans.PropertyChangeSupport#removePropertyChangeListener(String, PropertyChangeListener)
+	 */
+	public void removePropertyChangeListener(String property,
+			PropertyChangeListener listener) {
+		this.propertyChangeSupport.removePropertyChangeListener(property,
+				listener);
 	}
 }

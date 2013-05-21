@@ -6,6 +6,12 @@ import org.apache.log4j.Logger;
 import org.csstudio.swt.xygraph.figures.Trace.TraceType;
 import org.csstudio.swt.xygraph.figures.Trace.PointStyle;
 
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.preference.ColorFieldEditor;
@@ -30,8 +36,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -127,7 +131,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	
 	private Label nameLabel;
 	private Text nameText;
-	private NameTextModifyListener nameTextModifyListener;
 	
 	// GUI: Motor Axis: "Select-Box":<motor-name>
 	private Label motorAxisLabel;
@@ -138,8 +141,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	
 	// check box indicating whether the plot should be cleared before
 	private Button preInitWindowCheckBox;
-	private PreInitWindowCheckBoxSelectionListener 
-			preInitWindowCheckBoxSelectionListener;
 	
 	// GUI: Scale Type: "Select-Box":{linear,log} x
 	private Label scaleTypeLabel;
@@ -240,6 +241,17 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	// end of: elements for the second y axis composite	
 	// *********************************************
 	
+	private DataBindingContext context;
+	
+	private PlotWindowSelectionProvider selectionProvider;
+	private IObservableValue selectionObservable;
+	
+	private IObservableValue nameTargetObservable;
+	private IObservableValue nameModelObservable;
+	
+	private IObservableValue preinitWindowTargetObservable;
+	private IObservableValue preinitWindowModelObservable;
+	
 	private Image errorImage;
 	
 	private IMemento memento;
@@ -324,6 +336,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				this);
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.addPerspectiveListener(this.editorViewPerspectiveListener);
+		
+		this.createBinding();
 	}
 
 	/*
@@ -343,8 +357,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.horizontalIndent = 7;
 		this.nameText.setLayoutData(gridData);
-		this.nameTextModifyListener = new NameTextModifyListener();
-		this.nameText.addModifyListener(nameTextModifyListener);
 		this.nameText.addFocusListener(
 				new TextSelectAllFocusListener(this.nameText));
 		this.nameText.addMouseListener(
@@ -383,10 +395,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		gridData.horizontalSpan = 2;
 		this.preInitWindowCheckBox.setLayoutData(gridData);
 		this.preInitWindowCheckBox.setText("Preinit Window");
-		this.preInitWindowCheckBoxSelectionListener = 
-				new PreInitWindowCheckBoxSelectionListener();
-		this.preInitWindowCheckBox.addSelectionListener(
-				preInitWindowCheckBoxSelectionListener);
 		
 		// GUI: Scale Type: <Combo>
 		this.scaleTypeLabel = new Label(this.xAxisComposite, SWT.NONE);
@@ -711,6 +719,36 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				yAxis2ScaleTypeComboBoxSelectionListener);
 	}
 	
+	/*
+	 * 
+	 */
+	private void createBinding() {
+		this.context = new DataBindingContext();
+
+		this.selectionProvider = new PlotWindowSelectionProvider();
+		this.selectionObservable = ViewersObservables
+				.observeSingleSelection(selectionProvider);
+		
+		this.nameModelObservable = BeansObservables.observeDetailValue(
+				selectionObservable, PlotWindow.class, PlotWindow.NAME_PROP,
+				String.class);
+		this.nameTargetObservable = SWTObservables.observeText(this.nameText,
+				SWT.Modify);
+		this.context.bindValue(nameTargetObservable, nameModelObservable,
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		
+		this.preinitWindowModelObservable = BeansObservables.observeDetailValue(
+				selectionObservable, PlotWindow.class, 
+				PlotWindow.PREINIT_WINDOW_PROP, Boolean.class);
+		this.preinitWindowTargetObservable = SWTObservables.observeSelection(
+				this.preInitWindowCheckBox);
+		this.context.bindValue(preinitWindowTargetObservable,
+				preinitWindowModelObservable, new UpdateValueStrategy(
+						UpdateValueStrategy.POLICY_UPDATE),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+	}
+	
 	// ************************************************************************
 	// ********************** end of createPartControl ************************
 	// ************************************************************************
@@ -911,11 +949,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	 * 
 	 */
 	private void addListeners() {
-		nameText.addModifyListener(nameTextModifyListener);
 		motorAxisComboBox.addSelectionListener(
 				motorAxisComboBoxSelectionListener);
-		preInitWindowCheckBox.addSelectionListener(
-				preInitWindowCheckBoxSelectionListener);
 		scaleTypeComboBox.addSelectionListener(
 				scaleTypeComboBoxSelectionListener);
 		
@@ -954,11 +989,8 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	 * 
 	 */
 	private void removeListeners() {
-		nameText.removeModifyListener(nameTextModifyListener);
 		motorAxisComboBox.removeSelectionListener(
 				motorAxisComboBoxSelectionListener);
-		preInitWindowCheckBox.removeSelectionListener(
-				preInitWindowCheckBoxSelectionListener);
 		scaleTypeComboBox.removeSelectionListener(
 				scaleTypeComboBoxSelectionListener);
 		
@@ -1082,9 +1114,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 			// determine the number of yAxis of the plot
 			int axes_count = plotWindow.getYAxisAmount();
 			
-			// General
-			this.nameText.setText(plotWindow.getName());
-			
 			// depending on the axes count -> set reference(s) to the axis/axes
 			switch(axes_count) {
 				case 0: yAxis1 = null;
@@ -1104,9 +1133,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				this.motorAxisComboBox.setText(
 							plotWindow.getXAxis().getName());
 			}
-			
-			// set the selection of the check box according to the given model
-			this.preInitWindowCheckBox.setSelection(this.plotWindow.isInit());
 			
 			// set the plot mode according to the given model
 			this.scaleTypeComboBox.setText(
@@ -1275,23 +1301,6 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	// ************************************************************************
 	// ******************************* listeners ******************************
 	// ************************************************************************
-
-	/**
-	 * {@link org.eclipse.swt.events.ModifyListener} of nameText.
-	 * 
-	 * @author Marcus Michalsky
-	 * @since 1.2
-	 */
-	private class NameTextModifyListener implements ModifyListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void modifyText(ModifyEvent e) {
-			plotWindow.setName(nameText.getText());
-		}
-	}
 	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
@@ -1316,30 +1325,7 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 					.getSelectionIndex()].getMotorAxis());
 		}
 	}
-	
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of 
-	 * <code>preInitWindowCheckBox</code>.
-	 */
-	private class PreInitWindowCheckBoxSelectionListener implements
-			SelectionListener {
 
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(final SelectionEvent e) {
-			plotWindow.setInit(preInitWindowCheckBox.getSelection());
-		}
-	}
-	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>scaleTypeComboBox</code>.
