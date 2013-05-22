@@ -429,6 +429,23 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	}
 	
 	/**
+	 * {@inheritDoc}
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (this.normalizeChannel == null) {
+			return;
+		}
+		if (e.getPropertyName().equals(ScanModule.CHANNELS_PROP)) {
+			if (!((List<Channel>)e.getNewValue()).contains(this.normalizeChannel)) {
+				// normalize channel has been deleted -> remove
+				this.setNormalizeChannel(null);
+			}
+		}
+	}
+
+	/**
 	 * See 
 	 * {@link java.beans.PropertyChangeSupport#addPropertyChangeListener(String, PropertyChangeListener)}.
 	 * 
@@ -452,22 +469,5 @@ public class Channel extends AbstractMainPhaseBehavior implements
 			PropertyChangeListener listener) {
 		this.propertyChangeSupport.removePropertyChangeListener(propertyName,
 				listener);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public void propertyChange(PropertyChangeEvent e) {
-		if (this.normalizeChannel == null) {
-			return;
-		}
-		if (e.getPropertyName().equals(ScanModule.CHANNELS_PROP)) {
-			if (!((List<Channel>)e.getNewValue()).contains(this.normalizeChannel)) {
-				// normalize channel has been deleted -> remove
-			}
-			this.setNormalizeChannel(null);
-		}
 	}
 }

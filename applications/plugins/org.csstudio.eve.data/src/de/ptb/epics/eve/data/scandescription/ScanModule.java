@@ -322,7 +322,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public void add(final Channel channel) {
 		channel.addModelUpdateListener(this);
-		channel.addPropertyChangeListener("normalizeChannel", this);
 		this.channels.add(channel);
 		this.propertyChangeSupport.firePropertyChange(ScanModule.CHANNELS_PROP,
 				null, this.channels);
@@ -417,7 +416,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 
 		// 1. log off listener
 		channel.removeModelUpdateListener(this);
-		channel.removePropertyChangeListener("normalizeChannel", this);
 		// channel no longer needs to listen to changes
 		this.propertyChangeSupport.removePropertyChangeListener(
 				ScanModule.CHANNELS_PROP, channel);
@@ -1225,16 +1223,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 					((AddMultiplyMode<?>) axis.getMode())
 							.matchMainAxis(this.mainAxis);
 				}
-			}
-		} else if (e.getPropertyName().equals("normalizeChannel")) {
-			if(e.getNewValue() != null) {
-				return;
-			}
-			// the plot windows are only informed if the normalize channel 
-			// was deleted
-			for(PlotWindow plotWindow : this.plotWindows) {
-				plotWindow.normalizeChannelChanged((Channel)e.getSource(), 
-						(DetectorChannel)e.getOldValue());
 			}
 		}
 	}
