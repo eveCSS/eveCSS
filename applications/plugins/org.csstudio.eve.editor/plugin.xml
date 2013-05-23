@@ -27,9 +27,16 @@
       <view
             category="eveEditorCategory"
             class="de.ptb.epics.eve.editor.views.scanview.ScanView"
-            icon="icons/devices/chain.gif"
             id="de.ptb.epics.eve.editor.views.ScanView"
-            name="%view.name"
+            name="Scan View"
+            restorable="true">
+      </view>
+      <view
+            category="eveEditorCategory"
+            class="de.ptb.epics.eve.editor.views.chainview.ChainView"
+            icon="icons/devices/chain.gif"
+            id="de.ptb.epics.eve.editor.views.ChainView"
+            name="Chain View"
             restorable="true">
       </view>
       <view

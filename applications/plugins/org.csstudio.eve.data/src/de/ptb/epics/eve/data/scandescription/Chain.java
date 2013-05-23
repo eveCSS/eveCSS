@@ -31,6 +31,28 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
  */
 public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModelErrorProvider {
 	
+	/** */
+	public static final String SCANMODULE_ADDED_PROP = 
+			"Chain.SCANMODULE_ADDED_PROP";
+	/** */
+	public static final String SCANMODULE_REMOVED_PROP = 
+			"Chain.SCANMODULE_REMOVED_PROP";
+	
+	/** */
+	public static final String POSITION_COUNT_PROP = "positionCount";
+	
+	/** */
+	public static final String SAVE_SCAN_DESCRIPTION_PROP = "saveScanDescription";
+	
+	/** */
+	public static final String CONFIRM_SAVE_PROP = "confirmSave";
+	
+	/** */
+	public static final String AUTO_INCREMENT_PROP = "autoNumber";
+	
+	/** */
+	public static final String COMMENT_PROP = "comment";
+	
 	private static Logger logger = Logger.getLogger(Chain.class.getName());
 	
 	// unique id of the chain
@@ -107,15 +129,6 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	private boolean saveScanDescription;
 	
 	private PropertyChangeSupport propertyChangeSupport;
-	
-	/** */
-	public static final String SCANMODULE_ADDED_PROP = 
-			"Chain.SCANMODULE_ADDED_PROP";
-	/** */
-	public static final String SCANMODULE_REMOVED_PROP = 
-			"Chain.SCANMODULE_REMOVED_PROP";
-	
-	public static final String CHAIN_POSITION_COUNT_PROP = "positionCount";
 	
 	/**
 	 * Constructs a <code>ScanDescription</code> with the given id.
@@ -259,7 +272,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		ScanModule first = 
 				this.getStartEvent().getConnector().getChildScanModule();
 		this.propertyChangeSupport.firePropertyChange(
-				Chain.CHAIN_POSITION_COUNT_PROP, this.positionCount,
+				Chain.POSITION_COUNT_PROP, this.positionCount,
 				this.positionCount = this.calculatePositionCount(first));
 	}
 	
@@ -404,7 +417,9 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * 		should be saved in the results file, <code>false</code> otherwise
 	 */
 	public void setSaveScanDescription(final boolean saveScanDescription) {
-		this.saveScanDescription = saveScanDescription;
+		this.propertyChangeSupport.firePropertyChange(
+				Chain.SAVE_SCAN_DESCRIPTION_PROP, this.saveScanDescription,
+				this.saveScanDescription = saveScanDescription);
 		updateListeners();
 	}
 	
@@ -425,7 +440,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * 						<code>false</code> otherwise
 	 */
 	public void setConfirmSave(final boolean confirmSave) {
-		this.confirmSave = confirmSave;
+		this.propertyChangeSupport.firePropertyChange(Chain.CONFIRM_SAVE_PROP,
+				this.confirmSave, this.confirmSave = confirmSave);
 		updateListeners();
 	}
 	
@@ -446,7 +462,9 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * 					should be used, <code>false</code> otherwise
 	 */
 	public void setAutoNumber(final boolean autoNumber) {
-		this.autoNumber = autoNumber;
+		this.propertyChangeSupport.firePropertyChange(
+				Chain.AUTO_INCREMENT_PROP, this.autoNumber,
+				this.autoNumber = autoNumber);
 		updateListeners();
 	}
 	
@@ -471,7 +489,9 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 			throw new IllegalArgumentException(
 					"The parameter 'comment' must not be null!");
 		}
-		this.comment = comment;
+		this.propertyChangeSupport.firePropertyChange(Chain.COMMENT_PROP,
+				this.comment, this.comment = comment);
+		logger.debug("comment set");
 		updateListeners();
 	}
 	

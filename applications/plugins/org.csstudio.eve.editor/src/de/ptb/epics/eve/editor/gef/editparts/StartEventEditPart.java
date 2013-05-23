@@ -63,7 +63,7 @@ public class StartEventEditPart extends AbstractGraphicalEditPart implements
 				.addPropertyChangeListener(StartEvent.CONNECT_PROP, this);
 		
 		this.getModel().getChain().addPropertyChangeListener(
-				Chain.CHAIN_POSITION_COUNT_PROP, this);
+				Chain.POSITION_COUNT_PROP, this);
 		this.getModel().getChain().addModelUpdateListener(this);
 		super.activate();
 	}
@@ -79,7 +79,7 @@ public class StartEventEditPart extends AbstractGraphicalEditPart implements
 				this);
 		
 		this.getModel().getChain().removePropertyChangeListener(
-				Chain.CHAIN_POSITION_COUNT_PROP, this);
+				Chain.POSITION_COUNT_PROP, this);
 		this.getModel().getChain().removeModelUpdateListener(this);
 		super.deactivate();
 	}
@@ -185,7 +185,7 @@ public class StartEventEditPart extends AbstractGraphicalEditPart implements
 			((StartEventFigure)this.getFigure()).setY((Integer)e.getNewValue());
 		} else if (e.getPropertyName().equals(StartEvent.CONNECT_PROP)) {
 			this.refreshSourceConnections();
-		} else if (e.getPropertyName().equals(Chain.CHAIN_POSITION_COUNT_PROP)) {
+		} else if (e.getPropertyName().equals(Chain.POSITION_COUNT_PROP)) {
 			String positions = (this.getModel().getChain().getPositionCount() == null) 
 					? "N/A"
 					: Integer.toString(this.getModel().getChain()
