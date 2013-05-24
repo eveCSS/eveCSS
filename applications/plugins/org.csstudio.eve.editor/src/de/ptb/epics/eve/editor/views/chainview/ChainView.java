@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
@@ -22,8 +21,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -67,8 +64,6 @@ import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
 import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
 import de.ptb.epics.eve.util.jface.SelectionProviderWrapper;
-import de.ptb.epics.eve.util.swt.TextSelectAllFocusListener;
-import de.ptb.epics.eve.util.swt.TextSelectAllMouseListener;
 
 /**
  * @author Marcus Michalsky
@@ -107,7 +102,8 @@ public class ChainView extends ViewPart implements IEditorView,
 	private FileFormatComboSelectionListener fileFormatComboSelectionListener;
 
 	private Button fileFormatOptionsButton;
-	private FileFormatOptionsButtonSelectionListener fileFormatOptionsButtonSelectionListener;
+	private FileFormatOptionsButtonSelectionListener 
+			fileFormatOptionsButtonSelectionListener;
 
 	private Label filenameLabel;
 
@@ -840,14 +836,8 @@ public class ChainView extends ViewPart implements IEditorView,
 			final String filePath;
 
 			if (currentChain.getSaveFilename() != null
-					&& !currentChain.getSaveFilename().isEmpty()) { // there
-																	// already
-																	// is a
-																	// filename
-																	// (and
-																	// path) ->
-																	// show the
-																	// path
+					&& !currentChain.getSaveFilename().isEmpty()) { 
+				// there already is a filename (and path) -> show the path
 				lastSeperatorIndex = currentChain.getSaveFilename()
 						.lastIndexOf(File.separatorChar);
 				filePath = currentChain.getSaveFilename().substring(0,

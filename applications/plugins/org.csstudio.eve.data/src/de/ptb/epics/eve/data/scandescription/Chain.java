@@ -42,6 +42,9 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	public static final String POSITION_COUNT_PROP = "positionCount";
 	
 	/** */
+	public static final String FILE_NAME_PROP ="saveFilename";
+	
+	/** */
 	public static final String SAVE_SCAN_DESCRIPTION_PROP = "saveScanDescription";
 	
 	/** */
@@ -396,7 +399,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 			throw new IllegalArgumentException(
 					"The parameter 'saveFilename' must not be null!");
 		}
-		this.saveFilename = saveFilename;
+		this.propertyChangeSupport.firePropertyChange(Chain.FILE_NAME_PROP,
+				this.saveFilename, this.saveFilename = saveFilename);
 		updateListeners();
 	}
 	

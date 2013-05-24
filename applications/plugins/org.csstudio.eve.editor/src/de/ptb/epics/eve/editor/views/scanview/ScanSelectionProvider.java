@@ -9,6 +9,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 
+import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
+import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.util.rcp.SingleSelectionProvider;
 
@@ -41,12 +43,21 @@ public class ScanSelectionProvider extends SingleSelectionProvider {
 		if (sel.size() != 1) {
 			return;
 		}
-		if (!(sel.getFirstElement() instanceof ScanModuleEditPart)) {
+		ISelection modelSelection = null;
+		if ((sel.getFirstElement() instanceof ScanModuleEditPart)) {
+			modelSelection = new StructuredSelection(
+					((ScanModuleEditPart) sel.getFirstElement()).getModel()
+							.getChain().getScanDescription());
+		} else if ((sel.getFirstElement() instanceof ChainEditPart)) {
+			modelSelection = new StructuredSelection(
+					((ChainEditPart) sel.getFirstElement()).getModel()
+							.getScanDescription());
+		} else if ((sel.getFirstElement() instanceof ScanDescriptionEditPart)) {
+			modelSelection = new StructuredSelection(
+					((ScanDescriptionEditPart)sel.getFirstElement()).getModel());
+		} else {
 			return;
 		}
-		ISelection modelSelection = new StructuredSelection(
-				((ScanModuleEditPart) sel.getFirstElement()).getModel()
-						.getChain().getScanDescription());
 		this.currentSelection = modelSelection;
 		for (ISelectionChangedListener listener : this.listeners) {
 			listener.selectionChanged(new SelectionChangedEvent(this,
