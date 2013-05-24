@@ -27,6 +27,7 @@
       <view
             category="eveEditorCategory"
             class="de.ptb.epics.eve.editor.views.scanview.ScanView"
+            icon="icons/devices/scan.gif"
             id="de.ptb.epics.eve.editor.views.ScanView"
             name="Scan View"
             restorable="true">
