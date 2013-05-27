@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.editor;
 
+import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
@@ -51,5 +52,9 @@ public class EveEditorPerspective implements IPerspectiveFactory {
 		layout.addView(PlotWindowView.ID, 
 				IPageLayout.BOTTOM, 0.40f, DetectorChannelView.ID);
 		layout.getViewLayout(PlotWindowView.ID).setCloseable(false);
+		
+		IFolderLayout plotViewFolder = layout.createFolder("PlotViewFolder", 
+				IPageLayout.BOTTOM, 0.60f, editorArea);
+		plotViewFolder.addPlaceholder("PlotView:*");
 	}
 }
