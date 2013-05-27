@@ -11,7 +11,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.scandescription.Chain;
+import de.ptb.epics.eve.data.scandescription.ControlEvent;
 
 /**
  * 
@@ -103,6 +105,7 @@ public class ChainTest implements PropertyChangeListener {
 	@Before
 	public void setUp() {
 		this.chain = new Chain(1);
+		this.chain.addStartEvent(new ControlEvent(EventTypes.SCHEDULE));
 	}
 	
 	/**
