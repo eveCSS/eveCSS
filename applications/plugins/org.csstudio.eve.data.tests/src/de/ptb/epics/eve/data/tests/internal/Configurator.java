@@ -32,6 +32,16 @@ public class Configurator {
 	}
 	
 	/**
+	 * 
+	 * @return
+	 * @author Marcus Michalsky
+	 * @since 1.12
+	 */
+	public static IMeasuringStation getMeasuringStation() {
+		return Configurator.createMeasuringStation();
+	}
+	
+	/**
 	 * Returns a {@link de.ptb.epics.eve.data.scandescription.ScanDescription} 
 	 * containing one {@link de.ptb.epics.eve.data.scandescription.Chain} and 
 	 * one {@link de.ptb.epics.eve.data.scandescription.ScanModule}.

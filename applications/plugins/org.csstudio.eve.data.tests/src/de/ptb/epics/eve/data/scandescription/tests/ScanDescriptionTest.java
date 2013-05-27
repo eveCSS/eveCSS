@@ -1,55 +1,53 @@
 package de.ptb.epics.eve.data.scandescription.tests;
 
-import java.io.File;
-import java.io.IOException;
+import static org.junit.Assert.*;
 
-import javax.xml.parsers.ParserConfigurationException;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
-import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
+import de.ptb.epics.eve.data.tests.internal.Configurator;
 
-public class ScanDescriptionTest {
+public class ScanDescriptionTest implements PropertyChangeListener {
 
 	private ScanDescription scanDescription;
+	
+	// indicators for PropertyChangeSupportTest
+	private boolean repeatCount;
 	
 	/**
 	 * 
 	 */
-	@Ignore("Not implemented yet!")
 	@Test
-	public void testModelUpdate() {
+	public void testPropertyChangeSupport() {
+		// initialize indicators
+		this.repeatCount = false;
 		
+		// listen to properties
+		this.scanDescription.addPropertyChangeListener(
+				ScanDescription.REPEAT_COUNT_PROP, this);
+		
+		// manipulate properties
+		this.scanDescription.setRepeatCount(1);
+		
+		// check whether the manipulation was notified
+		assertTrue(this.repeatCount);
 	}
 	
-	/*
-	 * 
+	/**
+	 * {@inheritDoc}
 	 */
-	private ScanDescription createScanDescription() {
-		
-		File schemaFile = new File("xml/scml.xsd");
-		
-		final MeasuringStationLoader measuringStationLoader = 
-				new MeasuringStationLoader(schemaFile);
-		try {
-			measuringStationLoader.load(new File("xml/test.xml"));
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace(); return null;
-		} catch (SAXException e) {
-			e.printStackTrace(); return null;
-		} catch (IOException e) {
-			e.printStackTrace(); return null;
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals(ScanDescription.REPEAT_COUNT_PROP)) {
+			this.repeatCount = true;
 		}
-		ScanDescription scanDescription = new ScanDescription(
-				measuringStationLoader.getMeasuringStation());
-		return scanDescription;
 	}
 	
 	/* ******************************************************************** */
@@ -66,7 +64,8 @@ public class ScanDescriptionTest {
 	 */
 	@Before
 	public void setUp() {
-		this.scanDescription = createScanDescription();
+		this.scanDescription = new ScanDescription(
+				Configurator.getMeasuringStation());
 	}
 	
 	/**
