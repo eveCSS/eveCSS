@@ -12,9 +12,9 @@ public class ModelBuilder {
 	public static Motor createMotorWithAxisAndOptions() {
 		Motor m = ModelBuilder.createMotor("Motor1");
 		m.add(ModelBuilder.createOption("Motor1-Option1"));
-		//MotorAxis ma = ModelBuilder.createMotorAxis("Motor1-Axis1");
-		// ma.add(ModelBuilder.createOption("Motor1-Axis1-Option1"));
-		//m.add(ma);
+		MotorAxis ma = ModelBuilder.createMotorAxis("Motor1-Axis1");
+		ma.add(ModelBuilder.createOption("Motor1-Axis1-Option1"));
+		m.add(ma);
 		return m;
 	}
 	
