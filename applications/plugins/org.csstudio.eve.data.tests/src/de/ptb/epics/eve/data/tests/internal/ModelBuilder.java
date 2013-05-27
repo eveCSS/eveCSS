@@ -1,27 +1,38 @@
 package de.ptb.epics.eve.data.tests.internal;
 
-import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
-import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.Motor;
+import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.data.measuringstation.Option;
 
-/**
- * 
- * @author Marcus Michalsky
- * @since 1.12
- */
 public class ModelBuilder {
-	
-	/**
-	 * 
-	 * @return
-	 */
-	protected static IMeasuringStation createMeasuringStation() {
-		MeasuringStation ims = new MeasuringStation();
-		ims.setLoadedFileName("JUNIT");
-		ims.setVersion("2.2");
-		ims.setSchemaFileName(null);
-		
-		return ims;
+
+	protected static Motor createMotorWithAxisAndOptions() {
+		Motor m = ModelBuilder.createMotor("Motor1");
+		m.add(ModelBuilder.createOption("Motor1-Option1"));
+		MotorAxis ma = ModelBuilder.createMotorAxis("Motor1-Axis1");
+		ma.add(ModelBuilder.createOption("Motor1-Axis1-Option1"));
+		m.add(ma);
+		return m;
 	}
 	
+	protected static Motor createMotor(String id) {
+		Motor m = new Motor();
+		m.setId(id);
+		
+		return m;
+	}
 	
+	protected static MotorAxis createMotorAxis(String id) {
+		MotorAxis ma = new MotorAxis();
+		ma.setId(id);
+		
+		return ma;
+	}
+	
+	protected static Option createOption(String id) {
+		Option o = new Option();
+		o.setId(id);
+		
+		return o;
+	}
 }

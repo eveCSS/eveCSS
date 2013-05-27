@@ -1,20 +1,11 @@
 package de.ptb.epics.eve.data.tests.internal;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.eclipse.core.runtime.FileLocator;
-import org.xml.sax.SAXException;
-
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
-import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
+import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
@@ -36,39 +27,7 @@ public class Configurator {
 	 */
 	public static List<IMeasuringStation> getMeasuringStations() {
 		List<IMeasuringStation> stations = new ArrayList<IMeasuringStation>();
-		
-		final MeasuringStationLoader measuringStationLoader = 
-			new MeasuringStationLoader(Configurator.getSchemaFile());
-		
-		List<File> files = new ArrayList<File>();
-		/*
-		try {
-			if (System.getenv("WORKSPACE") == null) {
-				System.out.println(Configurator.class.getClassLoader().getResource("../../xml/pgm.xml"));
-				String basedir = "../../";
-				files.add(new File(basedir + "pgm.xml"));
-			} else {
-				URL url = new URL(
-						"platform:/plugin/de.ptb.epics.eve.data.tests/xml/pgm.xml");
-				files.add(new File(FileLocator.toFileURL(url).toURI()));
-			}
-			
-			for(File file : files) {
-				measuringStationLoader.load(file);
-				stations.add(measuringStationLoader.getMeasuringStation());
-			}
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		}*/
-		stations.add(ModelBuilder.createMeasuringStation());
+		stations.add(Configurator.createMeasuringStation());
 		return stations;
 	}
 	
@@ -96,7 +55,26 @@ public class Configurator {
 	 * @return the schema file
 	 */
 	public static File getSchemaFile() {
+		// NOTE: works only when run with Jenkins...
+		// see also: https://wiki.jenkins-ci.org/display/JENKINS/Building+a+software+project#Buildingasoftwareproject-JenkinsSetEnvironmentVariables
 		return new File(System.getenv("WORKSPACE") + 
 			"/repo/applications/plugins/org.csstudio.eve.resources/cfg/schema.xsd");
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * @author Marcus Michalsky
+	 * @since 1.12
+	 */
+	protected static IMeasuringStation createMeasuringStation() {
+		MeasuringStation ims = new MeasuringStation();
+		ims.setLoadedFileName("JUNIT");
+		ims.setVersion("2.2");
+		ims.setSchemaFileName(Configurator.getSchemaFile().getAbsolutePath());
+		
+		ims.add(ModelBuilder.createMotorWithAxisAndOptions());
+		
+		return ims;
 	}
 }
