@@ -41,7 +41,7 @@ public class Configurator {
 			new MeasuringStationLoader(Configurator.getSchemaFile());
 		
 		List<File> files = new ArrayList<File>();
-		
+		/*
 		try {
 			if (System.getenv("WORKSPACE") == null) {
 				System.out.println(Configurator.class.getClassLoader().getResource("../../xml/pgm.xml"));
@@ -67,7 +67,8 @@ public class Configurator {
 			e.printStackTrace();
 		} catch (SAXException e) {
 			e.printStackTrace();
-		}
+		}*/
+		stations.add(ModelBuilder.createMeasuringStation());
 		return stations;
 	}
 	
