@@ -53,6 +53,7 @@ public class NormalizeEditingSupport extends EditingSupport {
 			channels.add(ch.getDetectorChannel());
 			channelStrings.add(ch.getDetectorChannel().getName());
 		}
+		channelStrings.add("none");
 		return new ComboBoxCellEditor(this.viewer.getTable(), 
 				channelStrings.toArray(new String[0]), SWT.READ_ONLY) {
 			@Override protected void focusLost() {
@@ -71,7 +72,7 @@ public class NormalizeEditingSupport extends EditingSupport {
 	protected boolean canEdit(Object element) {
 		return true;
 	}
-
+ 
 	/**
 	 * {@inheritDoc}
 	 */
@@ -90,11 +91,23 @@ public class NormalizeEditingSupport extends EditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 		final Positioning positioning = (Positioning)element;
-		DetectorChannel ch = channels.get((Integer)value);
-		positioning.setNormalization(ch);
-		if(logger.isDebugEnabled()) {
-			logger.debug("set normalization " + ch.getName() + " for positioning " 
+
+		if (channels.size() > (Integer)value) {
+			// ein echter Channel wurde ausgewählt
+			DetectorChannel ch = channels.get((Integer)value);
+			positioning.setNormalization(ch);
+			if(logger.isDebugEnabled()) {
+				logger.debug("set normalization " + ch.getName() + " for positioning " 
 					+ positioning.getMotorAxis().getName());
+			}
+		}
+		else {
+			// none wurde ausgewählt
+			positioning.setNormalization(null);
+			if(logger.isDebugEnabled()) {
+				logger.debug("set no normalization for positioning " 
+					+ positioning.getMotorAxis().getName());
+			}
 		}
 	}
 }
