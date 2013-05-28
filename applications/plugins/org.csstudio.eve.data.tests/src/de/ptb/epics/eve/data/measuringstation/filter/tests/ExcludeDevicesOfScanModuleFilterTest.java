@@ -2,8 +2,6 @@ package de.ptb.epics.eve.data.measuringstation.filter.tests;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,6 +16,7 @@ import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleF
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.tests.internal.Configurator;
 
 /**
  * <code>ExcludeDevicesOfScanModuleFilterTest</code> contains 
@@ -28,8 +27,6 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
  * @since 0.4.1
  */
 public class ExcludeDevicesOfScanModuleFilterTest {
-	private static File schemaFile;
-	private static File descriptionFile;
 	private static IMeasuringStation measuringStation;
 	
 	private ExcludeDevicesOfScanModuleFilter filteredMeasuringStation;
@@ -144,25 +141,8 @@ public class ExcludeDevicesOfScanModuleFilterTest {
 	@BeforeClass
 	public static void runBeforeClass() {
 		// run for one time before all test cases
-		schemaFile = new File("xml/scml.xsd");
-		/*descriptionFile = new File("xml/test.xml");
-		
-		final MeasuringStationLoader measuringStationLoader = 
-			new MeasuringStationLoader(schemaFile);
-		
-		try {
-			measuringStationLoader.load(descriptionFile);
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		measuringStation = measuringStationLoader.getMeasuringStation();
-		
-		assertNotNull(measuringStation);*/
+		measuringStation = Configurator.getMeasuringStations().get(0);
+		assertNotNull(measuringStation);
 	}
 	
 	/**
@@ -185,7 +165,5 @@ public class ExcludeDevicesOfScanModuleFilterTest {
 	 */
 	@AfterClass
 	public static void afterClass() {
-		schemaFile = null;
-		descriptionFile = null;
 	}
 }

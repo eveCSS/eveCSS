@@ -17,9 +17,9 @@ import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.editor.views.chainview.ChainView;
 import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
-import de.ptb.epics.eve.editor.views.scanview.ScanView;
 
 /**
  * Default handler of the remove all events command.
@@ -53,8 +53,8 @@ public class RemoveAllEvents implements IHandler {
 		}
 		
 		if (activePart.getSite().getId().equals(
-				"de.ptb.epics.eve.editor.views.ScanView")) {
-			Chain chain = ((ScanView)HandlerUtil.getActivePart(event)).
+				"de.ptb.epics.eve.editor.views.ChainView")) {
+			Chain chain = ((ChainView)HandlerUtil.getActivePart(event)).
 				getCurrentChain();
 			if (eventImpact.equals(EventImpacts.PAUSE)) {
 				chain.getPauseControlEventManager().removeAllControlEvents();

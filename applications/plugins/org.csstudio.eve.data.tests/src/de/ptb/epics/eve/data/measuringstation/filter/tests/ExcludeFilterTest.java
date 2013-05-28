@@ -48,74 +48,59 @@ public class ExcludeFilterTest {
 	 */
 	@Test
 	public void testExcludeIncludeMotor() {
-		for(IMeasuringStation measuringStation : stations) {
+		for (IMeasuringStation measuringStation : stations) {
 			ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
 			filteredMeasuringStation.setSource(measuringStation);
 			assertNotNull(filteredMeasuringStation);
-			
-		for(Motor m : measuringStation.getMotors()) {
-			// the motor should be found
-			assertTrue(isMotor(filteredMeasuringStation, m));
-			// its options should be found
-			for(Option o : m.getOptions()) {
-				assertTrue(isOption(filteredMeasuringStation, o));
-			}
-			// its axis should also be found
-			for(MotorAxis ma : m.getAxes()) {
-				assertTrue(isMotorAxis(filteredMeasuringStation, ma));
-				
-				// axis options should be found as well
-				for(Option o : ma.getOptions()) {
+
+			for (Motor m : measuringStation.getMotors()) {
+				// the motor should be found
+				assertTrue(isMotor(filteredMeasuringStation, m));
+				// its options should be found
+				for (Option o : m.getOptions()) {
 					assertTrue(isOption(filteredMeasuringStation, o));
 				}
-			}
-			
-			// ***
-			
-			// exclude the motor
-			filteredMeasuringStation.exclude(m);
-
-			// now the motor shouldn't be found anymore
-			assertFalse(isMotor(filteredMeasuringStation, m));
-
-			// its options shouldn't be found
-			for(Option o : m.getOptions()) {
-				assertFalse(isOption(filteredMeasuringStation, o));
-			}
-
-			// all axes of the motor also shouldn't be found
-			for(MotorAxis ma : m.getAxes()) {
-				assertFalse(isMotorAxis(filteredMeasuringStation, ma));
-				
-				// axis options shouldn't be found as well
-				for(Option o : ma.getOptions()) {
+				// its axis should also be found
+				for (MotorAxis ma : m.getAxes()) {
+					assertTrue(isMotorAxis(filteredMeasuringStation, ma));
+					// axis options should be found as well
+					for (Option o : ma.getOptions()) {
+						assertTrue(isOption(filteredMeasuringStation, o));
+					}
+				}
+				// exclude the motor
+				filteredMeasuringStation.exclude(m);
+				// now the motor shouldn't be found anymore
+				assertFalse(isMotor(filteredMeasuringStation, m));
+				// its options shouldn't be found
+				for (Option o : m.getOptions()) {
 					assertFalse(isOption(filteredMeasuringStation, o));
 				}
-			}
-			
-			// ***"
-			
-			// include the motor
-			filteredMeasuringStation.include(m);
-			
-			// now the motor should be found again
-			assertTrue(isMotor(filteredMeasuringStation, m));
-			
-			// its options should be found
-			for(Option o : m.getOptions()) {
-				assertTrue(isOption(filteredMeasuringStation, o));
-			}
-
-			// all axes of the motor also should be back
-			for(MotorAxis ma : m.getAxes()) {
-				assertTrue(isMotorAxis(filteredMeasuringStation, ma));
-
-				// axis options should be found as well
-				for(Option o : ma.getOptions()) {
+				// all axes of the motor also shouldn't be found
+				for (MotorAxis ma : m.getAxes()) {
+					assertFalse(isMotorAxis(filteredMeasuringStation, ma));
+					// axis options shouldn't be found as well
+					for (Option o : ma.getOptions()) {
+						assertFalse(isOption(filteredMeasuringStation, o));
+					}
+				}
+				// include the motor
+				filteredMeasuringStation.include(m);
+				// now the motor should be found again
+				assertTrue(isMotor(filteredMeasuringStation, m));
+				// its options should be found
+				for (Option o : m.getOptions()) {
 					assertTrue(isOption(filteredMeasuringStation, o));
 				}
+				// all axes of the motor also should be back
+				for (MotorAxis ma : m.getAxes()) {
+					assertTrue(isMotorAxis(filteredMeasuringStation, ma));
+					// axis options should be found as well
+					for (Option o : ma.getOptions()) {
+						assertTrue(isOption(filteredMeasuringStation, o));
+					}
+				}
 			}
-		}
 		}
 	}
 	

@@ -1,8 +1,10 @@
 package de.ptb.epics.eve.editor;
 
+import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
+import de.ptb.epics.eve.editor.views.chainview.ChainView;
 import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.errorview.ErrorView;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView;
@@ -37,7 +39,10 @@ public class EveEditorPerspective implements IPerspectiveFactory {
 		layout.addView(ErrorView.ID, IPageLayout.BOTTOM , 0.8f, editorArea);
 		layout.getViewLayout(ErrorView.ID).setCloseable(false);
 		
-		layout.addView(ScanModuleView.ID, IPageLayout.BOTTOM, 0.40f, ScanView.ID);
+		layout.addView(ChainView.ID, IPageLayout.BOTTOM, 0.20f, ScanView.ID);
+		layout.getViewLayout(ChainView.ID).setCloseable(false);
+		
+		layout.addView(ScanModuleView.ID, IPageLayout.BOTTOM, 0.40f, ChainView.ID);
 		layout.getViewLayout(ScanModuleView.ID).setCloseable(false);
 		
 		layout.addView(DetectorChannelView.ID, 
@@ -47,5 +52,9 @@ public class EveEditorPerspective implements IPerspectiveFactory {
 		layout.addView(PlotWindowView.ID, 
 				IPageLayout.BOTTOM, 0.40f, DetectorChannelView.ID);
 		layout.getViewLayout(PlotWindowView.ID).setCloseable(false);
+		
+		IFolderLayout plotViewFolder = layout.createFolder("PlotViewFolder", 
+				IPageLayout.BOTTOM, 0.60f, editorArea);
+		plotViewFolder.addPlaceholder("PlotView:*");
 	}
 }

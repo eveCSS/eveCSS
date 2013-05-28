@@ -402,24 +402,6 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 			updateListeners();
 		}
 	}
-
-	/**
-	 * 
-	 * @param channel
-	 * @param oldChannel
-	 * @param newChannel
-	 */
-	protected void normalizeChannelChanged(Channel channel,
-			DetectorChannel normalizeChannel) {
-		for(YAxis yAxis : this.yAxes) {
-			if (yAxis.getDetectorChannel().equals(channel.getDetectorChannel())) {
-				if (yAxis.getNormalizeChannel() != null && 
-					yAxis.getNormalizeChannel().equals(normalizeChannel)) {
-						yAxis.setNormalizeChannel(null);
-				}
-			}
-		}
-	}
 	
 	/**
 	 * {@inheritDoc}

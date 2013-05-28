@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
+import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
@@ -62,6 +63,9 @@ public class ScanDescription implements IModelUpdateProvider,
 	// the events of the scan description.
 	private Map<String, Event> eventsMap;
 	
+	// options that should be monitored
+	private List<Option> monitors;
+	
 	// the listeners that will be notified if something changed.
 	private List<IModelUpdateListener> modelUpdateListener;
 	
@@ -94,6 +98,7 @@ public class ScanDescription implements IModelUpdateProvider,
 		this.add(s0);
 		this.measuringStation = measuringStation;
 		this.dirty = false;
+		this.monitors = new ArrayList<Option>();
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
@@ -246,7 +251,8 @@ public class ScanDescription implements IModelUpdateProvider,
 	 * @param repeatCount the scan will be repeated repeatCount times
 	 */
 	public void setRepeatCount(final int repeatCount) {
-		this.propertyChangeSupport.firePropertyChange(REPEAT_COUNT_PROP, this.repeatCount, this.repeatCount=repeatCount);
+		this.propertyChangeSupport.firePropertyChange(REPEAT_COUNT_PROP, 
+				this.repeatCount, this.repeatCount=repeatCount);
 		updateListeners();
 	}
 	
@@ -356,7 +362,25 @@ public class ScanDescription implements IModelUpdateProvider,
 	public void setDirty(boolean dirty) {
 		this.dirty = dirty;
 	}
-
+	
+	/**
+	 * Adds an option to the list of monitors
+	 * @param option the option to add
+	 * @since 1.12
+	 */
+	public void addMonitor(Option option) {
+		this.monitors.add(option);
+	}
+	
+	/**
+	 * Removes an option to the list of monitors
+	 * @param option the option to remove
+	 * @since 1.12
+	 */
+	public void removeMonitor(Option option) {
+		this.monitors.remove(option);
+	}
+	
 	/**
 	 * {@inheritDoc} 
 	 */

@@ -17,9 +17,9 @@ import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
+import de.ptb.epics.eve.editor.views.chainview.ChainView;
 import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
-import de.ptb.epics.eve.editor.views.scanview.ScanView;
 
 /**
  * <code>AddEvent</code> is the default command handler for the 
@@ -63,8 +63,8 @@ public class AddEvent implements IHandler {
 					getActiveEditor()).getContent().getEventById(eventId);
 		}
 		
-		if (activePart.equals("de.ptb.epics.eve.editor.views.ScanView")) {
-			Chain chain = ((ScanView)HandlerUtil.getActivePart(executionEvent)).
+		if (activePart.equals("de.ptb.epics.eve.editor.views.ChainView")) {
+			Chain chain = ((ChainView)HandlerUtil.getActivePart(executionEvent)).
 					getCurrentChain();
 			if (eventImpact.equals(EventImpacts.PAUSE)) {
 				chain.getPauseControlEventManager().addControlEvent(

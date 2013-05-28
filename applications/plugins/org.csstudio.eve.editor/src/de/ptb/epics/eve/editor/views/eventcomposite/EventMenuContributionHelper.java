@@ -5,9 +5,9 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.views.chainview.ChainView;
 import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
-import de.ptb.epics.eve.editor.views.scanview.ScanView;
 
 /**
  * <code>EventMenuContributionHelper</code>.
@@ -43,8 +43,8 @@ public class EventMenuContributionHelper {
 	 */
 	public static EventImpacts determineEventImpact() {
 		IViewPart activePart = getActiveViewPart();
-		if(activePart instanceof ScanView) {
-			int index = ((ScanView)activePart).eventsTabFolder.
+		if(activePart instanceof ChainView) {
+			int index = ((ChainView)activePart).eventsTabFolder.
 					getSelectionIndex();
 			switch(index) {
 				case 0: return EventImpacts.PAUSE;

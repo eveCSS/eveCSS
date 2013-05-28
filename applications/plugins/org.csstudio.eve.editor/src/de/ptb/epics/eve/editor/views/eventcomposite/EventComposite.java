@@ -18,8 +18,8 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
+import de.ptb.epics.eve.editor.views.chainview.ChainView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
-import de.ptb.epics.eve.editor.views.scanview.ScanView;
 
 /**
  * <code>EventComposite</code>.
@@ -193,8 +193,8 @@ public class EventComposite extends Composite {
 		public void focusGained(FocusEvent e) {
 			if (parentView instanceof ScanModuleView) {
 				((ScanModuleView)parentView).setSelectionProvider(tableViewer);
-			} else if (parentView instanceof ScanView) {
-				((ScanView)parentView).setSelectionProvider(tableViewer);
+			} else if (parentView instanceof ChainView) {
+				((ChainView)parentView).setSelectionProvider(tableViewer);
 			}
 		}
 		
