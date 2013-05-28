@@ -269,7 +269,9 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public void calculatePositionCount() {
 		if (this.getStartEvent().getConnector() == null) {
-			this.positionCount = null;
+			this.propertyChangeSupport.firePropertyChange(
+					Chain.POSITION_COUNT_PROP, this.positionCount,
+					this.positionCount = null);
 			return;
 		}
 		ScanModule first = 
