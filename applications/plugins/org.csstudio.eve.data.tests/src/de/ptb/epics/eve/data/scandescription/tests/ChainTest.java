@@ -14,7 +14,7 @@ import org.junit.Test;
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.Chain;
-import de.ptb.epics.eve.data.scandescription.ControlEvent;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
 
 /**
@@ -64,7 +64,7 @@ public class ChainTest implements PropertyChangeListener {
 		this.chain.setComment("comment");
 		
 		// check whether the manipulation was notified
-		//assertTrue(this.positionCount);
+		assertTrue(this.positionCount);
 		assertTrue(this.saveFileName);
 		assertTrue(this.saveScanDescription);
 		assertTrue(this.confirmSave);
@@ -109,6 +109,9 @@ public class ChainTest implements PropertyChangeListener {
 		this.chain = new Chain(1);
 		this.chain.setStartEvent(new StartEvent(new Event(
 				EventTypes.SCHEDULE), chain));
+		ScanModule sm = new ScanModule(1);
+		sm.setName("SM1");
+		this.chain.add(sm);
 	}
 	
 	/**
