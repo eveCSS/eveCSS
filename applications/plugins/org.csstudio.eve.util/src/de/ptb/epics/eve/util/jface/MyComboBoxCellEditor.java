@@ -20,16 +20,13 @@ import org.eclipse.swt.widgets.Control;
  * <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=285612">285612</a>, 
  * <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=230398">230398</a>, 
  * <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=54989">54989</a>.
- * 
+ * <p>
  * <b>Use with Caution:</b> Neither the assumption that the event times are 
  * equal nor the assumption that the selection listener is always notified last 
  * could be verified via public API documentation!
  * 
  * @author Marcus Michalsky
  * @since 1.12
- * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=285612
- * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=230398
- * @see https://bugs.eclipse.org/bugs/show_bug.cgi?id=54989
  */
 public class MyComboBoxCellEditor extends ComboBoxCellEditor {
 	
