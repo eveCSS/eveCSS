@@ -1,5 +1,13 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.12
+
+* [Feature] Introduced the Scan View (remember to reset the editor perspective)
+* [Feature] Improved overall usability of text input fields, especially for the comment (Chain View)
+
+* [Bug Fix] fixed a bug where a normalized channel was accidently reset in the plot window view when it was previously set in the detector channel view and afterwards set to none
+* [Bug Fix] fixed a bug where a once set normalize channel of a positioning could not be removed anymore (except by deleting and recreating the whole positioning)
+
 h2(eveTopic). Version 1.11
 
 * [Feature] It is now possible to reconnect source and target of connections in the GEF Editor

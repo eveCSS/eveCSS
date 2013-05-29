@@ -1,5 +1,10 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.12
+
+* [Bug Fix] fixed a bug where a plot did not draw more than one y axis anymore after updating to CSS v3.1
+* [Bug Fix] fixed a bug where process variables of type DBR_Short and DBR_Float could not be read anymore after updating to CSS v3.1
+
 h2(eveTopic). Version 1.11
 
 * [Bug Fix] the Plot View is now shown in all perspectives
