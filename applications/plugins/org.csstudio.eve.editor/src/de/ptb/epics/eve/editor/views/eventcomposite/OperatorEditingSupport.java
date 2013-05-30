@@ -5,15 +5,14 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.SWT;
 
 import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
+import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
 
 /**
  * {@link org.eclipse.jface.viewers.EditingSupport} for the operator column.
@@ -53,15 +52,8 @@ public class OperatorEditingSupport extends EditingSupport {
 				typeToString(DataTypes.getPossibleComparisonTypes(type))) {
 			comparisonTypes.add(s);
 		}
-		return new ComboBoxCellEditor(this.viewer.getTable(), 
-				this.comparisonTypes.toArray(new String[0]), SWT.READ_ONLY) {
-			@Override protected void focusLost() {
-				if(isActivated()) {
-					fireCancelEditor();
-				}
-				deactivate();
-			}
-		};
+		return new MyComboBoxCellEditor(this.viewer.getTable(), 
+				this.comparisonTypes.toArray(new String[0]));
 	}
 
 	/**

@@ -5,14 +5,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.swt.SWT;
 
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
+import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
 
 /**
  * {@link org.eclipse.jface.viewers.EditingSupport} for the limit column.
@@ -49,19 +48,11 @@ public class LimitEditingSupport extends EditingSupport {
 			this.discreteValues = new ArrayList<String>();
 			this.discreteValues.addAll(ce.getEvent().getMonitor().getDataType().
 							getDiscreteValues());
-			return new ComboBoxCellEditor(this.viewer.getTable(), 
-					this.discreteValues.toArray(new String[0]), SWT.READ_ONLY) {
-				@Override protected void focusLost() {
-					if(isActivated()) {
-						fireCancelEditor();
-					}
-					deactivate();
-				}
-			};
-		} 
+			return new MyComboBoxCellEditor(this.viewer.getTable(), 
+					this.discreteValues.toArray(new String[0]));
+		}
 		TextCellEditor editor = new TextCellEditor(this.viewer.getTable()) {
-			@Override
-			protected void focusLost() {
+			@Override protected void focusLost() {
 				if (isActivated()) {
 					fireCancelEditor();
 				}

@@ -6,14 +6,13 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.SWT;
 
 import de.ptb.epics.eve.data.EventActions;
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
+import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
 
 /**
  * {@link org.eclipse.jface.viewers.EditingSupport} for the pause column.
@@ -52,15 +51,8 @@ public class PauseEditingSupport extends EditingSupport {
 		if(!((PauseEvent)element).getEventType().equals(EventTypes.MONITOR)) {
 			this.eventActions.remove(new String("ONOFF"));
 		}
-		return new ComboBoxCellEditor(this.viewer.getTable(), 
-				eventActions.toArray(new String[0]), SWT.READ_ONLY) {
-			@Override protected void focusLost() {
-				if(isActivated()) {
-					fireCancelEditor();
-				}
-				deactivate();
-			}
-		};
+		return new MyComboBoxCellEditor(this.viewer.getTable(), 
+				eventActions.toArray(new String[0]));
 	}
 
 	/**

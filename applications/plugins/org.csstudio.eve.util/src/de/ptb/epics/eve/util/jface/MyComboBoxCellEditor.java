@@ -15,6 +15,8 @@ import org.eclipse.swt.widgets.Control;
 /**
  * Differs in behavior from {@link org.eclipse.jface.viewers.ComboBoxCellEditor} 
  * in the way that a selected value (mouse click) will be applied immediately.
+ * Also if the editor loses focus and is activated editing is canceled.
+ * The Editor is read-only.
  * <p>
  * It addresses the discomfort mentioned in feature #757 and Eclipse Bugs 
  * <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=285612">285612</a>, 
@@ -36,7 +38,7 @@ public class MyComboBoxCellEditor extends ComboBoxCellEditor {
 	 * @param parent the parent
 	 * @param items the items
 	 */
-	protected MyComboBoxCellEditor(Composite parent, String[] items) {
+	public MyComboBoxCellEditor(Composite parent, String[] items) {
 		super(parent, items, SWT.READ_ONLY);
 		setActivationStyle(DROP_DOWN_ON_MOUSE_ACTIVATION);
 	}
@@ -80,5 +82,16 @@ public class MyComboBoxCellEditor extends ComboBoxCellEditor {
 			});
 		}
 		return comboBox;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void focusLost() {
+		if(isActivated()) {
+			fireCancelEditor();
+		}
+		deactivate();
 	}
 }
