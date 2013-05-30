@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.12
+
+* [Feature] changed default behavior of combo boxes used in tables
+
 h2(eveTopic). Version 1.11
 
 * [Feature] test sites now decide when to "update":/help/topic/de.ptb.epics.eve.help/help/content/tasks/updateeveversion.html to a new version

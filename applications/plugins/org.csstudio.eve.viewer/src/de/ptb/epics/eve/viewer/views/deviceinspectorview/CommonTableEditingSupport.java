@@ -1,11 +1,11 @@
 package de.ptb.epics.eve.viewer.views.deviceinspectorview;
 
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.swt.SWT;
+
+import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
 
 /**
  * <code>CommonTableEditingSupport</code> is the 
@@ -69,15 +69,8 @@ public class CommonTableEditingSupport extends EditingSupport {
 		
 		if (ctb.getCellEditor(column) == null) {
 			if (ctb.isDiscrete(column)) {
-				ctb.setCellEditor(new ComboBoxCellEditor(viewer.getTable(), 
-						ctb.getSelectStrings(column), SWT.READ_ONLY) {
-					@Override protected void focusLost() {
-						if(isActivated()) {
-							fireCancelEditor();
-						}
-						deactivate();
-					}
-				}, column);
+				ctb.setCellEditor(new MyComboBoxCellEditor(viewer.getTable(), 
+						ctb.getSelectStrings(column)), column);
 			} else {
 				TextCellEditor textCellEditor = 
 						new TextCellEditor(viewer.getTable()) {
@@ -101,7 +94,7 @@ public class CommonTableEditingSupport extends EditingSupport {
 	protected Object getValue(Object element) {
 		CommonTableElement ctb = (CommonTableElement) element;
 		CellEditor ceditor = ctb.getCellEditor(column);
-		if (ceditor instanceof ComboBoxCellEditor) {
+		if (ceditor instanceof MyComboBoxCellEditor) {
 			int count = 0;
 			String currentVal = ctb.getValue(column);
 			for (String selection : ctb.getSelectStrings(column)) {

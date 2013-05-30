@@ -2,11 +2,11 @@ package de.ptb.epics.eve.viewer.views.deviceoptionsview;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.swt.SWT;
+
+import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
 
 /**
  * <code>ValueColumnEditingSupprt</code>.
@@ -39,16 +39,8 @@ public class ValueColumnEditingSupport extends EditingSupport {
 		OptionPV opv = (OptionPV)element;
 		
 		if(opv.isDiscrete()) {
-			return new ComboBoxCellEditor(this.viewer.getTable(), 
-									opv.getDiscreteValues(), SWT.READ_ONLY) {
-				@Override protected void focusLost() {
-					if(isActivated()) {
-						fireCancelEditor();
-					}
-					deactivate();
-					viewer.refresh();
-				}
-			};
+			return new MyComboBoxCellEditor(this.viewer.getTable(), 
+									opv.getDiscreteValues());
 		} else {
 			return new TextCellEditor(viewer.getTable()) {
 				@Override protected void focusLost() {
