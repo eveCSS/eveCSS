@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.swt.SWT;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Postscan;
+import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
 
 /**
  * {@link org.eclipse.jface.viewers.EditingSupport} for the value column.
@@ -53,15 +52,8 @@ public class ValueEditingSupport extends EditingSupport {
 				discreteValues.addAll(postscan.getAbstractPrePostscanDevice().
 						getValue().getDiscreteValues());
 			}
-			return new ComboBoxCellEditor(this.viewer.getTable(), 
-					discreteValues.toArray(new String[0]), SWT.READ_ONLY) {
-				@Override protected void focusLost() {
-					if(isActivated()) {
-						fireCancelEditor();
-					}
-					deactivate();
-				}
-			};
+			return new MyComboBoxCellEditor(this.viewer.getTable(), 
+					discreteValues.toArray(new String[0]));
 		} else {
 			return new TextCellEditor(this.viewer.getTable()) {
 				@Override protected void focusLost() {

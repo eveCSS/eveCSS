@@ -80,12 +80,10 @@ public class ParamEditingSupport extends EditingSupport {
 		return positioning.getPluginController();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.EditingSupport#setValue(java.lang.Object, java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void setValue(Object element, Object value) {
-		// TODO Auto-generated method stub
-
 	}
 }

@@ -5,15 +5,14 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.SWT;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
 
 /**
  * {@link org.eclipse.jface.viewers.EditingSupport} for the normalize column.
@@ -54,15 +53,8 @@ public class NormalizeEditingSupport extends EditingSupport {
 			channelStrings.add(ch.getDetectorChannel().getName());
 		}
 		channelStrings.add("none");
-		return new ComboBoxCellEditor(this.viewer.getTable(), 
-				channelStrings.toArray(new String[0]), SWT.READ_ONLY) {
-			@Override protected void focusLost() {
-				if(isActivated()) {
-					fireCancelEditor();
-				}
-				deactivate();
-			}
-		};
+		return new MyComboBoxCellEditor(this.viewer.getTable(), 
+				channelStrings.toArray(new String[0]));
 	}
 
 	/**

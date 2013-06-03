@@ -5,15 +5,14 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.SWT;
 
 import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Positioning;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
 
 /**
  * {@link org.eclipse.jface.viewers.EditingSupport} for the plugin column.
@@ -51,15 +50,8 @@ public class PluginEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected CellEditor getCellEditor(Object element) {
-		return new ComboBoxCellEditor(viewer.getTable(), 
-				this.plugins.toArray(new String[0]), SWT.READ_ONLY) {
-			@Override protected void focusLost() {
-				if(isActivated()) {
-					fireCancelEditor();
-				}
-				deactivate();
-			}
-		};
+		return new MyComboBoxCellEditor(viewer.getTable(), 
+				this.plugins.toArray(new String[0]));
 	}
 
 	/**
