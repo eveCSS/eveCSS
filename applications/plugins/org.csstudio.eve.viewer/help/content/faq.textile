@@ -1,0 +1,11 @@
+h1(eveTopic). Frequently Asked Questions
+
+{toc}
+
+h3(eveFAQquestion). Why the data file does contain e.g. 11 points if the the stepcount is 9.23 ?
+
+p. If the calculation of stepcount is a non integer value, e.g. 9.23, it means that there are 9 "full" steps plus one shorter or "non-full" step. In general the amount of steps taken is the shown value rounded up to the next integer.
+
+h3(eveFAQquestion). How is the center calculated ?
+
+p. The algorithm "scans" the graph by starting from both ends moving in direction to the maximum until they reach the half maximum (FWHM). The mid point of those two points is the center.

@@ -18,7 +18,9 @@
       </topic>
       <topic href="help/content/whatsnew.html" label="What&apos;s New">
       </topic>
-      <topic label="Legal">
+      <topic href="help/content/faq.html" label="Frequently Asked Questions">
+      </topic>
+      <topic label="Topic">
       </topic>
    </topic>
 </toc>
