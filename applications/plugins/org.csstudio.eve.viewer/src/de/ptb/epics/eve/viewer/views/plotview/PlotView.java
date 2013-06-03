@@ -75,6 +75,13 @@ public class PlotView extends ViewPart {
 		gridData.verticalAlignment = SWT.FILL;
 		this.plotDetectorComposite.setLayoutData(gridData);
 		
+		gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalAlignment = SWT.FILL;
+		gridData.verticalAlignment = SWT.FILL;
+		this.plotGraphComposite.setLayoutData(gridData);
+		
 		// finally a description and name are added
 		this.setPartName("Plot " + this.getViewSite().getSecondaryId());
 	}
