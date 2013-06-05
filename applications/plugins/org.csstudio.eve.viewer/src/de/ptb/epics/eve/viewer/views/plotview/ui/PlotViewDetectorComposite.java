@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.plotview;
+package de.ptb.epics.eve.viewer.views.plotview.ui;
 
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.CellEditor;
@@ -15,8 +15,8 @@ import org.eclipse.swt.widgets.Composite;
 
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.plot.MathFunction;
-import de.ptb.epics.eve.viewer.plot.MathTableElement;
+import de.ptb.epics.eve.viewer.views.plotview.MathFunction;
+import de.ptb.epics.eve.viewer.views.plotview.MathTableElement;
 
 /**
  * <code>PlotDetectorComposite</code> is a composite containing two tables 

@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.plotview;
+package de.ptb.epics.eve.viewer.views.plotview.ui;
 
 import gov.aps.jca.dbr.TimeStamp;
 
@@ -18,7 +18,7 @@ import de.ptb.epics.eve.ecp1.types.DataModifier;
 import de.ptb.epics.eve.ecp1.types.DataType;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.plot.XYPlot;
+import de.ptb.epics.eve.viewer.views.plotview.XYPlot;
 
 /**
  * <code>plotGraphComposite</code> contains the xy-plot and is located in the

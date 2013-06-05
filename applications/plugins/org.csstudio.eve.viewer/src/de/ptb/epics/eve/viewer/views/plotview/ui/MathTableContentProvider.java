@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.plotview;
+package de.ptb.epics.eve.viewer.views.plotview.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 
-import de.ptb.epics.eve.viewer.plot.MathTableElement;
+import de.ptb.epics.eve.viewer.views.plotview.MathTableElement;
 
 /**
  * 
@@ -55,7 +55,7 @@ public class MathTableContentProvider implements IStructuredContentProvider {
 	
 	/**
 	 * Adds an element to the content provider.
-	 * @param element the {@link de.ptb.epics.eve.viewer.plot.MathTableElement}
+	 * @param element the {@link de.ptb.epics.eve.viewer.views.plotview.MathTableElement}
 	 * 	  	  that should be added
 	 */
 	public void addElement(MathTableElement element){

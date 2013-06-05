@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.plot;
+package de.ptb.epics.eve.viewer.views.plotview;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;

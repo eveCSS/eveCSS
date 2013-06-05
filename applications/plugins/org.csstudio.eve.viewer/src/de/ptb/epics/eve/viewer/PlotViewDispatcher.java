@@ -17,7 +17,7 @@ import de.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.types.ChainStatus;
 import de.ptb.epics.eve.ecp1.types.EngineStatus;
-import de.ptb.epics.eve.viewer.views.plotview.PlotView;
+import de.ptb.epics.eve.viewer.views.plotview.ui.PlotView;
 
 /**
  * <code>PlotViewDispatcher</code>.

@@ -63,7 +63,7 @@
       <view
             allowMultiple="true"
             category="eveViewerCategory"
-            class="de.ptb.epics.eve.viewer.views.plotview.PlotView"
+            class="de.ptb.epics.eve.viewer.views.plotview.ui.PlotView"
             icon="icons/variable_tab.gif"
             id="PlotView"
             name="%view.name.5"/>

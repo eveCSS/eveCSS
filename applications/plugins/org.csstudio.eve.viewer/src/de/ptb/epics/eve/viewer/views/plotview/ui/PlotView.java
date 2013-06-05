@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.plotview;
+package de.ptb.epics.eve.viewer.views.plotview.ui;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;

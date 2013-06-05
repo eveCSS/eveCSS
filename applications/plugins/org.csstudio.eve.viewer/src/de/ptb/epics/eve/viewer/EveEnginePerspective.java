@@ -4,7 +4,7 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import de.ptb.epics.eve.viewer.views.plotview.PlotView;
+import de.ptb.epics.eve.viewer.views.plotview.ui.PlotView;
 
 /**
  * <code>EveEnginePerspective</code> is the factory for the engine perspective.

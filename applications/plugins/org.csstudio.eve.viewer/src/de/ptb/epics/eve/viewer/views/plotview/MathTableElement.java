@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.plot;
+package de.ptb.epics.eve.viewer.views.plotview;
 
 import java.util.Formatter;
 import java.util.Locale;
@@ -18,7 +18,7 @@ import de.ptb.epics.eve.viewer.Activator;
 /**
  * <code>MathTableElement</code> represents an entry (row) of the tables 
  * contained in 
- * {@link de.ptb.epics.eve.viewer.views.plotview.PlotViewDetectorComposite}.
+ * {@link de.ptb.epics.eve.viewer.views.plotview.ui.PlotViewDetectorComposite}.
  * 
  * @author ?
  * @author Marcus Michalsky
