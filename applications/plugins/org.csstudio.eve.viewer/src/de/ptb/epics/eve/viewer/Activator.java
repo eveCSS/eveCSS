@@ -35,6 +35,7 @@ import de.ptb.epics.eve.ecp1.client.ECP1Client;
 import de.ptb.epics.eve.ecp1.debug.ECP1ClientLogger;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.messages.MessagesContainer;
+import de.ptb.epics.eve.viewer.views.plotview.PlotDispatcher;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -54,7 +55,8 @@ public class Activator extends AbstractUIPlugin {
 	private String defaultWindowTitle;
 	
 	private final MessagesContainer messagesContainer;
-	private final XMLFileDispatcher xmlFileDispatcher;
+	private final XMLDispatcher xmlFileDispatcher;
+	private final PlotDispatcher plotDispatcher;
 	private final EngineErrorReader engineErrorReader;
 	private final ChainStatusAnalyzer chainStatusAnalyzer;
 	private IMeasuringStation measuringStation;
@@ -87,7 +89,8 @@ public class Activator extends AbstractUIPlugin {
 		}
 		this.ecp1Client = new ECP1Client();
 		this.messagesContainer = new MessagesContainer();
-		this.xmlFileDispatcher = new XMLFileDispatcher();
+		this.xmlFileDispatcher = new XMLDispatcher();
+		this.plotDispatcher = new PlotDispatcher();
 		this.engineErrorReader = new EngineErrorReader();
 		this.chainStatusAnalyzer = new ChainStatusAnalyzer();
 		
@@ -111,6 +114,8 @@ public class Activator extends AbstractUIPlugin {
 		
 		this.ecp1Client.getPlayListController().addNewXMLFileListener(
 				this.xmlFileDispatcher);
+		this.xmlFileDispatcher.addPropertyChangeListener(
+				XMLDispatcher.SCAN_DESCRIPTION_PROP, plotDispatcher);
 		this.ecp1Client.addErrorListener(this.engineErrorReader);
 		this.ecp1Client.addEngineStatusListener(this.chainStatusAnalyzer);
 		this.ecp1Client.addChainStatusListener(this.chainStatusAnalyzer);
@@ -221,7 +226,7 @@ public class Activator extends AbstractUIPlugin {
 	 * 
 	 * @return
 	 */
-	public XMLFileDispatcher getXMLFileDispatcher() {
+	public XMLDispatcher getXMLFileDispatcher() {
 		return this.xmlFileDispatcher;
 	}
 	

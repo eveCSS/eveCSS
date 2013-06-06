@@ -10,7 +10,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 
-import de.ptb.epics.eve.viewer.XMLFileDispatcher;
+import de.ptb.epics.eve.viewer.XMLDispatcher;
 import de.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;
 import de.ptb.epics.eve.viewer.messages.MessagesContainer;
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
@@ -123,7 +123,7 @@ public class ContentProvider implements IStructuredContentProvider,
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
-		if (o instanceof XMLFileDispatcher) {
+		if (o instanceof XMLDispatcher) {
 			if (this.messagesContainer.getMessageCount() > 200) {
 				this.messagesContainer.clear();
 				logger.debug("new scan arrived & msg count > 200 -> clear all");
