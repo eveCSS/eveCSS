@@ -5,8 +5,6 @@ import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 
-import java.util.Observable;
-
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
@@ -29,7 +27,7 @@ import de.ptb.epics.eve.ecp1.client.interfaces.INewXMLFileListener;
  * @author Marcus Michalsky
  * @since 1.13
  */
-public class XMLDispatcher extends Observable implements INewXMLFileListener {
+public class XMLDispatcher implements INewXMLFileListener {
 	
 	/** */
 	public static final String DEVICE_DEFINITION_PROP = "measuringStation";
@@ -45,7 +43,7 @@ public class XMLDispatcher extends Observable implements INewXMLFileListener {
 	
 	private PropertyChangeSupport propertyChangeSupport;
 	
-	private PlotViewDispatcher plotViewDispatcher;
+	private PlotViewDispatcher plotViewDispatcher; // TODO remove
 
 	/**
 	 * Constructs a <code>XMLFileDispatcher</code>.
@@ -80,8 +78,6 @@ public class XMLDispatcher extends Observable implements INewXMLFileListener {
 							propertyChangeSupport.firePropertyChange(
 									XMLDispatcher.DEVICE_DEFINITION_PROP,
 									measuringStation, measuringStation = ims);
-						setChanged();
-						notifyObservers(measuringStation);
 					}
 				}
 			);
@@ -98,7 +94,7 @@ public class XMLDispatcher extends Observable implements INewXMLFileListener {
 							propertyChangeSupport.firePropertyChange(
 									XMLDispatcher.SCAN_DESCRIPTION_PROP,
 									scanDescription, scanDescription = sd);
-						plotViewDispatcher.setScanDescription(scanDescription);
+						plotViewDispatcher.setScanDescription(scanDescription); // TODO remove
 					}
 				}
 			);

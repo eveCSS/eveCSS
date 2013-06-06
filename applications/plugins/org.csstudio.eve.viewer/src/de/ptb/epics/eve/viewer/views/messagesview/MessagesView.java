@@ -13,6 +13,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.viewer.Activator;
+import de.ptb.epics.eve.viewer.XMLDispatcher;
 import de.ptb.epics.eve.viewer.messages.TypeViewerComparator;
 
 /**
@@ -84,8 +85,8 @@ public final class MessagesView extends ViewPart {
 		this.tableViewer.setLabelProvider(new LabelProvider());
 		
 		// if a new scan arrives, old messages are removed
-		Activator.getDefault().getXMLFileDispatcher()
-				.addObserver(cp);
+		Activator.getDefault().getXMLFileDispatcher().addPropertyChangeListener(
+				XMLDispatcher.DEVICE_DEFINITION_PROP, cp);
 
 		// the MessageContainer is the input object of the table viewer
 		this.tableViewer.setInput(Activator.getDefault().
@@ -109,7 +110,6 @@ public final class MessagesView extends ViewPart {
 		this.sort = this.memento.getBoolean("sort") != null 
 					? this.memento.getBoolean("sort")
 					: false;
-
 
 		if (this.sort) {
 			tableViewer.getTable().getColumn(2).setImage(sortImage);

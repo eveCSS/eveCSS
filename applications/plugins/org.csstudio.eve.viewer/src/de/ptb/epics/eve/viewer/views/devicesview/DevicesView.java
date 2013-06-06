@@ -1,9 +1,9 @@
 package de.ptb.epics.eve.viewer.views.devicesview;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.Command;
@@ -44,6 +44,7 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.MessageSource;
+import de.ptb.epics.eve.viewer.XMLDispatcher;
 import de.ptb.epics.eve.viewer.messages.Levels;
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
@@ -57,7 +58,7 @@ import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
  * @author ?
  * @author Marcus Michalsky
  */
-public final class DevicesView extends ViewPart implements Observer {
+public final class DevicesView extends ViewPart implements PropertyChangeListener {
 
 	/** the unique identifier of this view */
 	public static final String ID = "DevicesView";
@@ -153,7 +154,10 @@ public final class DevicesView extends ViewPart implements Observer {
 		} else {
 			// the DevicesView of the Engine Perspective holds the the 
 			// measuringStation currently active in the engine...
-			Activator.getDefault().getXMLFileDispatcher().addObserver(this);
+			Activator
+					.getDefault().getXMLFileDispatcher()
+					.addPropertyChangeListener(
+							XMLDispatcher.DEVICE_DEFINITION_PROP, this);
 			logger.debug("observer added");
 		}
 		
@@ -283,12 +287,15 @@ public final class DevicesView extends ViewPart implements Observer {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @since 1.1
+	 * @since 1.13
 	 */
 	@Override
-	public void update(Observable o, Object arg) {
-		this.setMeasuringStation((IMeasuringStation)arg);
-		logger.debug("new measuring station set");
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals(XMLDispatcher.DEVICE_DEFINITION_PROP)) {
+			if (e.getNewValue() instanceof IMeasuringStation) {
+				this.setMeasuringStation((IMeasuringStation)e.getNewValue());
+			}
+		}
 	}
 	
 	// ************************* DnD *****************************************

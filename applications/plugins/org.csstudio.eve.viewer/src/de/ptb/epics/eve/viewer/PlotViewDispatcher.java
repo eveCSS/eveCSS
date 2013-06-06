@@ -101,7 +101,7 @@ public class PlotViewDispatcher implements
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 							.getActivePage().showView(PlotView.ID, 
-							windowId.toString(), IWorkbenchPage.VIEW_ACTIVATE);
+							windowId.toString(), IWorkbenchPage.VIEW_ACTIVATE); // TODO use return value
 				} catch (Exception e) {
 					logger.error(e.getMessage(), e);
 				}

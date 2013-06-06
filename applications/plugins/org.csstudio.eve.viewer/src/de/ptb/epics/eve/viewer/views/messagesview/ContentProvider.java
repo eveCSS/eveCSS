@@ -1,7 +1,7 @@
 package de.ptb.epics.eve.viewer.views.messagesview;
 
-import java.util.Observable;
-import java.util.Observer;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -10,6 +10,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.viewer.XMLDispatcher;
 import de.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;
 import de.ptb.epics.eve.viewer.messages.MessagesContainer;
@@ -21,7 +22,7 @@ import de.ptb.epics.eve.viewer.messages.ViewerMessage;
  * @author Marcus Michalsky
  */
 public class ContentProvider implements IStructuredContentProvider,
-		IMessagesContainerUpdateListener, Observer {
+		IMessagesContainerUpdateListener, PropertyChangeListener {
 
 	private static Logger logger = Logger.getLogger(ContentProvider.class
 			.getName());
@@ -68,15 +69,12 @@ public class ContentProvider implements IStructuredContentProvider,
 	@Override
 	public void update() {
 		if (!viewer.getControl().isDisposed()) {
-			
 			// TODO this is a severe performance killer
 			// do not switch to syncExec and do not do viewer.refresh()
 			// use a tableviewer with  viewer.update() or viewer.add() instead!
 			
 			this.viewer.getControl().getDisplay().asyncExec( new Runnable() {
-	
-				@Override
-				public void run() {
+				@Override public void run() {
 					if (!viewer.getControl().isDisposed()) viewer.refresh();
 					setColumnWidth();
 				}
@@ -120,15 +118,19 @@ public class ContentProvider implements IStructuredContentProvider,
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 1.13
 	 */
 	@Override
-	public void update(Observable o, Object arg) {
-		if (o instanceof XMLDispatcher) {
-			if (this.messagesContainer.getMessageCount() > 200) {
-				this.messagesContainer.clear();
-				logger.debug("new scan arrived & msg count > 200 -> clear all");
-			} else {
-				logger.debug("new scan arrived but lt 200 msgs -> ignore");
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals(XMLDispatcher.DEVICE_DEFINITION_PROP)) {
+			if (e.getNewValue() instanceof IMeasuringStation) {
+				if (this.messagesContainer.getMessageCount() > 200) {
+					this.messagesContainer.clear();
+					logger.debug("new scan arrived & msg count > 200 -> clear all");
+				} else {
+					logger.debug("new scan arrived but lt 200 msgs -> ignore");
+				}
 			}
 		}
 	}

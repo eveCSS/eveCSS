@@ -411,18 +411,6 @@ public class Activator extends AbstractUIPlugin {
 		File measuringStationDescriptionFile = 
 				new File(measuringStationDescription);
 		
-		// now we know the location of the measuring station description
-		// -> checking schema file
-		
-		/* in older versions the schema file was in the eve.root directory...
-		File pathToSchemaFile = new File(rootDir + "eve/schema.xsd");
-		if(!pathToSchemaFile.exists()) {
-			schemaFile = null;
-			return;
-		}
-		schemaFile = pathToSchemaFile;
-		*/
-		
 		schemaFile = de.ptb.epics.eve.resources.Activator.getXMLSchema();
 		if(schemaFile == null) {
 			String message = "Could not load schema file!";
