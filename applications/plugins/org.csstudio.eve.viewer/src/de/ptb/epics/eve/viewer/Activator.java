@@ -32,6 +32,7 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.ecp1.client.ECP1Client;
+import de.ptb.epics.eve.ecp1.debug.ECP1ClientLogger;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
 import de.ptb.epics.eve.viewer.messages.MessagesContainer;
 
@@ -63,6 +64,7 @@ public class Activator extends AbstractUIPlugin {
 	private ScanDescription currentScanDescription;
 	
 	private ECP1Client ecp1Client;
+	private ECP1ClientLogger ecpLogger;
 	
 	private RequestProcessor requestProcessor;
 
@@ -350,6 +352,13 @@ public class Activator extends AbstractUIPlugin {
 				DOMConfigurator.configure(debugConf.getAbsolutePath());
 				logger.debug("no debug logging configuration found -> using default");
 			}
+			this.ecpLogger = new ECP1ClientLogger();
+			this.ecp1Client.addChainStatusListener(ecpLogger);
+			this.ecp1Client.addConnectionStateListener(ecpLogger);
+			this.ecp1Client.addEngineStatusListener(ecpLogger);
+			this.ecp1Client.addErrorListener(ecpLogger);
+			this.ecp1Client.addMeasurementDataListener(ecpLogger);
+			this.ecp1Client.addRequestListener(ecpLogger);
 		} else {
 			File appConf = de.ptb.epics.eve.resources.Activator
 					.getLoggerConfiguration(false);
