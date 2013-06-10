@@ -50,6 +50,11 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	 * Constructs a <code>YAxis</code>.
 	 */
 	public YAxis() {
+		this.detectorChannel = null;
+		this.normalizeChannel = null;
+		this.linestyle = null;
+		this.markstyle = null;
+		this.color = null;
 		this.updateListener = new ArrayList<IModelUpdateListener>();
 	}
 	
@@ -237,5 +242,46 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 		for(IModelUpdateListener imul : list) {
 			imul.updateEvent(new ModelUpdateEvent(this, null));
 		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object other) {
+		if (other == null) {
+			return false;
+		}
+		if (other == this) {
+			return true;
+		}
+		YAxis yAxis = (YAxis) other;
+		if (this.detectorChannel == null) {
+			if (yAxis.getDetectorChannel() != null) {
+				return false;
+			}
+		} else if (!this.detectorChannel.equals(yAxis.getDetectorChannel())) {
+			return false;
+		}
+		if (this.normalizeChannel == null) {
+			if (yAxis.getNormalizeChannel() != null) {
+				return false;
+			}
+		} else if (!this.normalizeChannel.equals(yAxis.getNormalizeChannel())) {
+			return false;
+		}
+		if (!this.mode.equals(yAxis.getMode())) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		// TODO
+		return super.hashCode();
 	}
 }
