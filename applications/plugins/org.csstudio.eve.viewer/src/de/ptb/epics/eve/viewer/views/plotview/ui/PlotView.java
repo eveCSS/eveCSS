@@ -2,16 +2,29 @@ package de.ptb.epics.eve.viewer.views.plotview.ui;
 
 import org.apache.log4j.Logger;
 import org.eclipse.draw2d.LightweightSystem;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
+import de.ptb.epics.eve.data.scandescription.YAxis;
+import de.ptb.epics.eve.viewer.Activator;
+import de.ptb.epics.eve.viewer.views.plotview.MathTableElement;
 import de.ptb.epics.eve.viewer.views.plotview.XyPlot;
 
 /**
@@ -27,47 +40,143 @@ public class PlotView extends ViewPart {
 
 	private static Logger LOGGER = Logger.getLogger(PlotView.class);
 	
-	// the composite for the statistics tables
-	private PlotViewDetectorComposite plotDetectorComposite;
-
-	private ScrolledComposite sc = null;
-	private Composite top = null;
+	private SashForm sashForm;
 	
-	private XyPlot xyPlot = null;
+	private XyPlot xyPlot;
+	
+	TabItem itemAxis1;
+	TabItem itemAxis2;
+	
+	private Image gotoIcon;
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
+		gotoIcon = Activator.getDefault().getImageRegistry().get("GREENGO12");
+		
 		parent.setLayout(new FillLayout());
-		this.sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
-		this.top = new Composite(sc, SWT.NONE);
-		final GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 2;
-		this.top.setLayout(gridLayout);
-		sc.setContent(this.top);
-		sc.setExpandHorizontal(true);
-		sc.setExpandVertical(true);
-
-		Canvas canvas = new Canvas(top, SWT.NONE);
+		sashForm = new SashForm(parent, SWT.HORIZONTAL);
+		sashForm.SASH_WIDTH = 2;
+		
+		Canvas canvas = new Canvas(sashForm, SWT.BORDER);
 		// use LightweightSystem to create the bridge between SWT and draw2D
 		final LightweightSystem lws = new LightweightSystem(canvas);
 		// set it as the content of LightwightSystem
 		xyPlot = new XyPlot();
 		lws.setContents(xyPlot);
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gridData.minimumWidth = 400;
-		gridData.minimumHeight = 300;
-		canvas.setLayoutData(gridData);
-
-		plotDetectorComposite = new PlotViewDetectorComposite(top, SWT.NONE);
-		gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		this.plotDetectorComposite.setLayoutData(gridData);
 		
+		TabFolder tabFolder = new TabFolder(sashForm, SWT.BORDER);
+		itemAxis1 = new TabItem(tabFolder, SWT.NONE);
+		itemAxis1.setText("Tab1");
+		Composite table1Composite = new Composite(tabFolder, SWT.NONE);
+		table1Composite.setLayout(new FillLayout());
+		itemAxis1.setControl(table1Composite);
+		TableViewer table1Viewer = this.createTable(table1Composite);
+		
+		itemAxis2 = new TabItem(tabFolder, SWT.NONE);
+		itemAxis2.setText("Tab2");
+		Composite table2Composite = new Composite(tabFolder, SWT.NONE);
+		table2Composite.setLayout(new FillLayout());
+		itemAxis2.setControl(table2Composite);
+		TableViewer table2Viewer = this.createTable(table2Composite);
+
+
+
 		this.setPartName("Plot: " + this.getViewSite().getSecondaryId());
 	}
 
+	/*
+	 * 
+	 */
+	private TableViewer createTable(Composite parent) {
+		TableViewer tableViewer = new TableViewer(parent, SWT.BORDER
+				| SWT.FULL_SELECTION);
+		
+		tableViewer.getTable().setHeaderVisible(true);
+		tableViewer.getTable().setLinesVisible(true);
+		
+		// the first column is a vertical header column
+		TableViewerColumn nameColumn = new TableViewerColumn(tableViewer,
+				SWT.NONE);
+		nameColumn.getColumn().setText("");
+		nameColumn.getColumn().setWidth(85);
+		nameColumn.setLabelProvider(new ColumnLabelProvider() {
+			public String getText(Object element) {
+				return ((MathTableElement) element).getName();
+			}
+		});
+
+		// the second column contains the statistics for the detector channel
+		TableViewerColumn valueColumn = new TableViewerColumn(tableViewer,
+				SWT.NONE);
+		valueColumn.getColumn().setText("Channel");
+		valueColumn.getColumn().setWidth(140);
+		valueColumn.setLabelProvider(new ColumnLabelProvider() {
+			public String getText(Object element) {
+				return ((MathTableElement) element).getValue();
+			}
+		});
+		
+		// the third column contains the positions of the motor axis where the
+		// corresponding statistical value was detected
+		TableViewerColumn motorColumn = new TableViewerColumn(tableViewer,
+				SWT.NONE);
+		motorColumn.getColumn().setText("Axis");
+		motorColumn.getColumn().setWidth(100);
+		motorColumn.setLabelProvider(new ColumnLabelProvider() {
+			public String getText(Object element) {
+				return ((MathTableElement) element).getPosition();
+			}
+		});
+		
+		// the fourth column contains the goto icons
+		// if you click on this icon the motor moves to the position indicated
+		// in the third column (same row)
+		TableViewerColumn gotoColumn = new TableViewerColumn(tableViewer,
+				SWT.NONE);
+		gotoColumn.getColumn().setText("GoTo");
+		gotoColumn.getColumn().setWidth(22);
+		gotoColumn.setEditingSupport(new EditingSupport(tableViewer) {
+			@Override
+			protected void setValue(Object element, Object value) {
+			}
+			@Override
+			protected Object getValue(Object element) {
+				return null;
+			}			
+			@Override
+			protected CellEditor getCellEditor(Object element) {
+				return null;
+			}
+			@Override
+			protected boolean canEdit(Object element) {
+				((MathTableElement)element).gotoPos();
+				return false;
+			}
+		});
+		gotoColumn.setLabelProvider(new ColumnLabelProvider() {
+			public Image getImage(Object element) {
+				if (((MathTableElement)element).drawIcon()) 
+					return gotoIcon;
+				else
+					return null;
+			}
+			public String getText(Object element) {
+				return null;
+			}
+		});
+		
+		// provide content for the table
+		MathTableContentProvider contentProvider = new MathTableContentProvider(
+				tableViewer);
+		tableViewer.setContentProvider(contentProvider);
+		tableViewer.setInput(contentProvider);
+		
+		return tableViewer;
+	}
+	
 	/**
 	 * 
 	 * @param plotWindow
@@ -76,7 +185,34 @@ public class PlotView extends ViewPart {
 	public void setPlotWindow(PlotWindow plotWindow) {
 		// delegate to XyPlot
 		this.xyPlot.setPlotWindow(plotWindow);
+		
+		YAxis yAxis1 = plotWindow.getYAxes().get(0);
+		if (yAxis1.getNormalizeChannel() != null) {
+			itemAxis1.setText(yAxis1.getNormalizeChannel().getName() + "/"
+					+ yAxis1.getDetectorChannel().getName());
+		} else {
+			itemAxis1.setText(yAxis1.getDetectorChannel().getName());
+		}
+		if (plotWindow.getYAxisAmount() > 1) {
+			YAxis yAxis2 = plotWindow.getYAxes().get(1);
+			if (yAxis2.getNormalizeChannel() != null) {
+				itemAxis2.setText(yAxis2.getNormalizeChannel().getName() + "/" 
+					+ yAxis2.getDetectorChannel().getName());
+			} else {
+				itemAxis2.setText(yAxis2.getDetectorChannel().getName());
+			}
+		} else {
+			itemAxis2.setText("-");
+		}
+		
 		LOGGER.debug("initializing plot window with id " + plotWindow.getId());
+	}
+	
+	/*
+	 * 
+	 */
+	private void fillTable(TableViewer tableViewer) {
+		
 	}
 	
 	/**
@@ -92,6 +228,6 @@ public class PlotView extends ViewPart {
 	 */
 	@Override
 	public void setFocus() {
-		this.top.setFocus();
+		this.sashForm.setFocus();
 	}
 }
