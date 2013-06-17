@@ -116,6 +116,7 @@ public class Activator extends AbstractUIPlugin {
 				this.xmlFileDispatcher);
 		this.xmlFileDispatcher.addPropertyChangeListener(
 				XMLDispatcher.SCAN_DESCRIPTION_PROP, plotDispatcher);
+		this.ecp1Client.addChainStatusListener(plotDispatcher);
 		this.ecp1Client.addErrorListener(this.engineErrorReader);
 		this.ecp1Client.addEngineStatusListener(this.chainStatusAnalyzer);
 		this.ecp1Client.addChainStatusListener(this.chainStatusAnalyzer);
@@ -226,7 +227,7 @@ public class Activator extends AbstractUIPlugin {
 	 * 
 	 * @return
 	 */
-	public XMLDispatcher getXMLFileDispatcher() {
+	public XMLDispatcher getXMLDispatcher() {
 		return this.xmlFileDispatcher;
 	}
 	
@@ -249,6 +250,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
+	 * Should be used with great care. Maybe not thread safe!
 	 * 
 	 * @return
 	 */

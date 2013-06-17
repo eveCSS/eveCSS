@@ -33,7 +33,7 @@ public class MeasurementDataCommand implements IECP1Command {
 	private int positionCounter;
 	private EpicsSeverity epicsSeverity;
 	private EpicsStatus epicsStatus;
-	private int gerenalTimeStamp;
+	private int generalTimeStamp;
 	private int nanoseconds;
 	private List<?> values;
 
@@ -50,7 +50,7 @@ public class MeasurementDataCommand implements IECP1Command {
 		this.epicsSeverity = epicsSeverity;
 		this.epicsStatus = epicsStatus;
 		this.acquisitionStatus = acquisitionStatus;
-		this.gerenalTimeStamp = gerenalTimeStamp;
+		this.generalTimeStamp = gerenalTimeStamp;
 		this.nanoseconds = nanoseconds;
 		this.name = name;
 		switch (this.dataType) {
@@ -114,7 +114,7 @@ public class MeasurementDataCommand implements IECP1Command {
 		dataInputStream.readByte();
 		this.acquisitionStatus = AcquisitionStatus
 				.byteToAcquisitionStatus(dataInputStream.readByte());
-		this.gerenalTimeStamp = dataInputStream.readInt();
+		this.generalTimeStamp = dataInputStream.readInt();
 		this.nanoseconds = dataInputStream.readInt();
 		final int lengthOfName = dataInputStream.readInt();
 		if (lengthOfName != 0xffffffff) {
@@ -311,7 +311,7 @@ public class MeasurementDataCommand implements IECP1Command {
 		dataOutputStream.writeByte(AcquisitionStatus
 				.acquisitionStatusToByte(this.acquisitionStatus));
 
-		dataOutputStream.writeInt(this.gerenalTimeStamp);
+		dataOutputStream.writeInt(this.generalTimeStamp);
 		dataOutputStream.writeInt(this.nanoseconds);
 
 		if (this.name.length() != 0) {
@@ -468,12 +468,12 @@ public class MeasurementDataCommand implements IECP1Command {
 		this.epicsStatus = epicsStatus;
 	}
 
-	public int getGerenalTimeStamp() {
-		return this.gerenalTimeStamp;
+	public int getGeneralTimeStamp() {
+		return this.generalTimeStamp;
 	}
 
-	public void setGerenalTimeStamp(final int gerenalTimeStamp) {
-		this.gerenalTimeStamp = gerenalTimeStamp;
+	public void setGerenalTimeStamp(final int generalTimeStamp) {
+		this.generalTimeStamp = generalTimeStamp;
 	}
 
 	public int getNanoseconds() {

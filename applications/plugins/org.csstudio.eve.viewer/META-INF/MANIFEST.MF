@@ -25,4 +25,5 @@ Bundle-ClassPath: de.ptb.epics.ecp1.client.jar,
  .
 Bundle-ActivationPolicy: lazy
 Import-Package: de.ptb.epics.eve.util.jface,
+ de.ptb.epics.eve.util.math.statistics,
  de.ptb.epics.eve.util.pv

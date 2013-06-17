@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="Error" size="1392,593" id="" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D313030302064652E7074622E65706963732E6576652E656370312F6D6D696368616C73">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.1/@sourceConnections.0" name="IErrorListener" location="420,30" size="243,93" id="de.ptb.epics.eve.ecp1.client.interfaces/IErrorListener" runTimeClassModel="errorOccured(Lde.ptb.epics.eve.ecp1.client.model.Error;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="149,18">
+      <children xsi:type="editmodel:MethodEditModel" name="errorOccured" id="de.ptb.epics.eve.ecp1.client.interfaces/IErrorListener#errorOccured(Lde.ptb.epics.eve.ecp1.client.model.Error;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client.interfaces/IErrorListener-Soyatec::Import->de.ptb.epics.eve.ecp1.client.model/Error" source="//@children.0" target="//@children.2" targetEnd="//@children.0/@sourceConnections.0/@children.2" label="//@children.0/@sourceConnections.0/@children.0" sourceEnd="//@children.0/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="128,93" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="114,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ECP1Client" location="45,30" size="316,116" id="de.ptb.epics.eve.ecp1.client/ECP1Client" runTimeClassModel="getLoginName(),removeRequestListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IRequestListener;),removeMeasurementDataListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;),removeErrorListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;),addEngineStatusListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;),errorListener,getPlayListController(),addChainStatusListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;),ECP1Client(),addRequestListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IRequestListener;),addMeasurementDataListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IMeasurementDataListener;),removeChainStatusListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;),isRunning(),playListController,addConnectionStateListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;),connect(Ljava.net.SocketAddress;Ljava.lang.String;),removeEngineStatusListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IEngineStatusListener;),removeConnectionStateListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IConnectionStateListener;),getPlayController(),addErrorListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;),playController,addToOutQueue(Lde.ptb.epics.eve.ecp1.commands.IECP1Command;),disconnect(),loginName">
+    <children xsi:type="editmodel:CompartmentEditModel" size="234,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="errorListener" id="de.ptb.epics.eve.ecp1.client/ECP1Client#errorListener"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="293,36">
+      <children xsi:type="editmodel:MethodEditModel" name="addErrorListener" id="de.ptb.epics.eve.ecp1.client/ECP1Client#addErrorListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeErrorListener" id="de.ptb.epics.eve.ecp1.client/ECP1Client#removeErrorListener(Lde.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client/ECP1Client-Soyatec::Import->de.ptb.epics.eve.ecp1.client.interfaces/IErrorListener" source="//@children.1" target="//@children.0" targetEnd="//@children.1/@sourceConnections.0/@children.2" label="//@children.1/@sourceConnections.0/@children.0" sourceEnd="//@children.1/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="316,46" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,46"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.0" name="Error" location="434,180" size="229,170" id="de.ptb.epics.eve.ecp1.client.model/Error" runTimeClassModel="getErrorSeverity(),getGerenalTimeStamp(),getErrorFacility(),getErrorType(),getText(),getNanoseconds(),Error(Lde.ptb.epics.eve.ecp1.commands.ErrorCommand;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="206,108">
+      <children xsi:type="editmodel:MethodEditModel" name="getErrorFacility" id="de.ptb.epics.eve.ecp1.client.model/Error#getErrorFacility()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getErrorSeverity" id="de.ptb.epics.eve.ecp1.client.model/Error#getErrorSeverity()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getErrorType" id="de.ptb.epics.eve.ecp1.client.model/Error#getErrorType()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getText" id="de.ptb.epics.eve.ecp1.client.model/Error#getText()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getGerenalTimeStamp" id="de.ptb.epics.eve.ecp1.client.model/Error#getGerenalTimeStamp()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getNanoseconds" id="de.ptb.epics.eve.ecp1.client.model/Error#getNanoseconds()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client.model/Error-Soyatec::Import->de.ptb.epics.eve.ecp1.types/ErrorFacility" source="//@children.2" target="//@children.3" targetEnd="//@children.2/@sourceConnections.0/@children.2" label="//@children.2/@sourceConnections.0/@children.0" sourceEnd="//@children.2/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="229,84" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,234"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client.model/Error-Soyatec::Import->de.ptb.epics.eve.ecp1.types/ErrorSeverity" source="//@children.2" target="//@children.4" targetEnd="//@children.2/@sourceConnections.1/@children.2" label="//@children.2/@sourceConnections.1/@children.0" sourceEnd="//@children.2/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="229,11" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,161"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client.model/Error-Soyatec::Import->de.ptb.epics.eve.ecp1.types/ErrorType" source="//@children.2" target="//@children.5" targetEnd="//@children.2/@sourceConnections.2/@children.2" label="//@children.2/@sourceConnections.2/@children.0" sourceEnd="//@children.2/@sourceConnections.2/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Import»" size="51,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,84" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="229,84"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.2/@sourceConnections.0" name="ErrorFacility" location="945,30" size="183,371" id="de.ptb.epics.eve.ecp1.types/ErrorFacility" runTimeClassModel="byteToErrorFacility(B),MHUB%,MFILTER%,SC_CHAIN%,CA_TRANS%,SMDEVICE%,CPARSER%,SCANMOD%,errorFacilityToByte(Lde.ptb.epics.eve.ecp1.types.ErrorFacility;),XMLPARSE%,NETWORK%,UNKNOWN%,EVENT%,PLAYLIST%,STORAGE%,MATH%,MANAGER%,POSCALC%,LTIMER%">
+    <children xsi:type="editmodel:CompartmentEditModel" size="77,306">
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="CA_TRANS" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#CA_TRANS%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="CPARSER" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#CPARSER%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="EVENT" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#EVENT%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="LTIMER" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#LTIMER%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MANAGER" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#MANAGER%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MATH" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#MATH%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MFILTER" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#MFILTER%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MHUB" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#MHUB%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="NETWORK" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#NETWORK%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="PLAYLIST" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#PLAYLIST%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="POSCALC" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#POSCALC%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="SCANMOD" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#SCANMOD%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="SC_CHAIN" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#SC_CHAIN%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="SMDEVICE" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#SMDEVICE%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="STORAGE" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#STORAGE%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="UNKNOWN" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#UNKNOWN%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="XMLPARSE" id="de.ptb.epics.eve.ecp1.types/ErrorFacility#XMLPARSE%"/>
+    </children>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.2/@sourceConnections.1" name="ErrorSeverity" location="735,30" size="183,173" id="de.ptb.epics.eve.ecp1.types/ErrorSeverity" runTimeClassModel="SYSTEM%,DEBUG%,ERROR%,FATAL%,MINOR%,INFO%">
+    <children xsi:type="editmodel:CompartmentEditModel" size="65,108">
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="ERROR" id="de.ptb.epics.eve.ecp1.types/ErrorSeverity#ERROR%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MINOR" id="de.ptb.epics.eve.ecp1.types/ErrorSeverity#MINOR%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="INFO" id="de.ptb.epics.eve.ecp1.types/ErrorSeverity#INFO%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="FATAL" id="de.ptb.epics.eve.ecp1.types/ErrorSeverity#FATAL%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="DEBUG" id="de.ptb.epics.eve.ecp1.types/ErrorSeverity#DEBUG%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="SYSTEM" id="de.ptb.epics.eve.ecp1.types/ErrorSeverity#SYSTEM%"/>
+    </children>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:EnumerationEditModel" targetConnections="//@children.2/@sourceConnections.2" name="ErrorType" location="132,180" size="229,263" id="de.ptb.epics.eve.ecp1.types/ErrorType">
+    <children xsi:type="editmodel:CompartmentEditModel" size="206,198">
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MALFORMED_COMMAND" id="de.ptb.epics.eve.ecp1.types/ErrorType#MALFORMED_COMMAND%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="UNABLE_TO_LOAD_PLUGIN" id="de.ptb.epics.eve.ecp1.types/ErrorType#UNABLE_TO_LOAD_PLUGIN%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MAX_POS_COUNT" id="de.ptb.epics.eve.ecp1.types/ErrorType#MAX_POS_COUNT%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="XML_SYNTAX_ERROR" id="de.ptb.epics.eve.ecp1.types/ErrorType#XML_SYNTAX_ERROR%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="FILENAME" id="de.ptb.epics.eve.ecp1.types/ErrorType#FILENAME%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="TIMEOUT" id="de.ptb.epics.eve.ecp1.types/ErrorType#TIMEOUT%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="FEATURE_NOT_IMPLEMENTED" id="de.ptb.epics.eve.ecp1.types/ErrorType#FEATURE_NOT_IMPLEMENTED%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="UNABLE_TO_EXECUTE_COMMAND" id="de.ptb.epics.eve.ecp1.types/ErrorType#UNABLE_TO_EXECUTE_COMMAND%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MESSAGEFILTER_LOW_LIMIT" id="de.ptb.epics.eve.ecp1.types/ErrorType#MESSAGEFILTER_LOW_LIMIT%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="NETWORK_ERROR" id="de.ptb.epics.eve.ecp1.types/ErrorType#NETWORK_ERROR%"/>
+      <children xsi:type="editmodel:EnumerationLiteralEditModel" name="MESSAGEFILTER_HIGH_LIMIT" id="de.ptb.epics.eve.ecp1.types/ErrorType#MESSAGEFILTER_HIGH_LIMIT%"/>
+    </children>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=1;Product=eUML2" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>

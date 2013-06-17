@@ -105,6 +105,7 @@ public class ScanView extends ViewPart implements IEditorView,
 				this.repeatCountText));
 		GridData gridData = new GridData();
 		gridData.horizontalIndent = 7;
+		gridData.widthHint = 40;
 		this.repeatCountText.setLayoutData(gridData);
 		
 		this.top.setVisible(false);

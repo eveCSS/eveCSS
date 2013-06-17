@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="de.ptb.epics.eve.viewer.XMLDispatcher" size="990,871" id="de.ptb.epics.eve.viewer" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D313030302064652E7074622E65706963732E6576652E7669657765722F6D6D696368616C73">
+  <children xsi:type="editmodel:ClassEditModel" name="XMLDispatcher" location="89,285" size="546,139" id="de.ptb.epics.eve.viewer/XMLDispatcher" runTimeClassModel="newXMLFileReceived([B),dEVICE_DEFINITION_PROP,addPropertyChangeListener(Ljava.lang.String;Ljava.beans.PropertyChangeListener;),sCAN_DESCRIPTION_PROP,removePropertyChangeListener(Ljava.lang.String;Ljava.beans.PropertyChangeListener;),XMLDispatcher()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="209,36">
+      <children xsi:type="editmodel:AttributeEditModel" name="dEVICE_DEFINITION_PROP" id="de.ptb.epics.eve.viewer/XMLDispatcher#dEVICE_DEFINITION_PROP"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="sCAN_DESCRIPTION_PROP" id="de.ptb.epics.eve.viewer/XMLDispatcher#sCAN_DESCRIPTION_PROP"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="523,54">
+      <children xsi:type="editmodel:MethodEditModel" name="newXMLFileReceived" id="de.ptb.epics.eve.viewer/XMLDispatcher#newXMLFileReceived([B)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addPropertyChangeListener" id="de.ptb.epics.eve.viewer/XMLDispatcher#addPropertyChangeListener(Ljava.lang.String;Ljava.beans.PropertyChangeListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removePropertyChangeListener" id="de.ptb.epics.eve.viewer/XMLDispatcher#removePropertyChangeListener(Ljava.lang.String;Ljava.beans.PropertyChangeListener;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.ecp1.client.interfaces/INewXMLFileListener&lt;-de.ptb.epics.eve.viewer/XMLDispatcher" source="//@children.0" target="//@children.1" targetEnd="//@children.0/@sourceConnections.0/@children.1" sourceEnd="//@children.0/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="121,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="121,93"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer/XMLDispatcher-Standard::Instantiate->java.beans/PropertyChangeSupport" source="//@children.0" target="//@children.4" targetEnd="//@children.0/@sourceConnections.1/@children.2" label="//@children.0/@sourceConnections.1/@children.0" sourceEnd="//@children.0/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Instantiate»" size="74,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="408,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="137,116"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterNames="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.0/@sourceConnections.0" name="INewXMLFileListener" location="89,120" size="243,93" id="de.ptb.epics.eve.ecp1.client.interfaces/INewXMLFileListener">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="144,18">
+      <children xsi:type="editmodel:MethodEditModel" name="newXMLFileReceived" id="de.ptb.epics.eve.ecp1.client.interfaces/INewXMLFileListener#newXMLFileReceived([B)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="PlotDispatcher" location="826,344" size="280,80" id="de.ptb.epics.eve.viewer.views.plotview/PlotDispatcher" runTimeClassModel="propertyChange(Ljava.beans.PropertyChangeEvent;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="257,18">
+      <children xsi:type="editmodel:MethodEditModel" name="propertyChange" id="de.ptb.epics.eve.viewer.views.plotview/PlotDispatcher#propertyChange(Ljava.beans.PropertyChangeEvent;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.views.plotview/PlotDispatcher-Soyatec::Implement->java.beans/PropertyChangeListener" source="//@children.2" target="//@children.3" targetEnd="//@children.2/@sourceConnections.0/@children.2" label="//@children.2/@sourceConnections.0/@children.0" sourceEnd="//@children.2/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Implement»" size="74,13" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="139,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="110,93"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.0" name="PropertyChangeListener" location="855,165" size="221,93" id="java.beans/PropertyChangeListener">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="122,18">
+      <children xsi:type="editmodel:MethodEditModel" name="propertyChange" id="java.beans/PropertyChangeListener#propertyChange(Ljava.beans.PropertyChangeEvent;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.1" name="PropertyChangeSupport" location="360,120" size="402,116" id="java.beans/PropertyChangeSupport" runTimeClassModel="addPropertyChangeListener(Ljava.beans.PropertyChangeListener;),PropertyChangeSupport(Ljava.lang.Object;),firePropertyChange(Ljava.lang.String;II),getPropertyChangeListeners(Ljava.lang.String;),addPropertyChangeListener(Ljava.lang.String;Ljava.beans.PropertyChangeListener;),removePropertyChangeListener(Ljava.beans.PropertyChangeListener;),firePropertyChange(Ljava.lang.String;ZZ),hasListeners(Ljava.lang.String;),firePropertyChange(Ljava.lang.String;Ljava.lang.Object;Ljava.lang.Object;),&lt;clinit>(),removePropertyChangeListener(Ljava.lang.String;Ljava.beans.PropertyChangeListener;),fireIndexedPropertyChange(Ljava.lang.String;ILjava.lang.Object;Ljava.lang.Object;),getPropertyChangeListeners(),fireIndexedPropertyChange(Ljava.lang.String;IZZ),firePropertyChange(Ljava.beans.PropertyChangeEvent;),serialVersionUID,fireIndexedPropertyChange(Ljava.lang.String;III)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="379,54">
+      <children xsi:type="editmodel:MethodEditModel" name="addPropertyChangeListener" id="java.beans/PropertyChangeSupport#addPropertyChangeListener(Ljava.lang.String;Ljava.beans.PropertyChangeListener;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="firePropertyChange" id="java.beans/PropertyChangeSupport#firePropertyChange(Ljava.lang.String;Ljava.lang.Object;Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removePropertyChangeListener" id="java.beans/PropertyChangeSupport#removePropertyChangeListener(Ljava.lang.String;Ljava.beans.PropertyChangeListener;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsReturnType="true" showMethodsParameterNames="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=5;Product=eUML2" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>

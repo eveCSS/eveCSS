@@ -155,7 +155,7 @@ public final class DevicesView extends ViewPart implements PropertyChangeListene
 			// the DevicesView of the Engine Perspective holds the the 
 			// measuringStation currently active in the engine...
 			Activator
-					.getDefault().getXMLFileDispatcher()
+					.getDefault().getXMLDispatcher()
 					.addPropertyChangeListener(
 							XMLDispatcher.DEVICE_DEFINITION_PROP, this);
 			logger.debug("observer added");

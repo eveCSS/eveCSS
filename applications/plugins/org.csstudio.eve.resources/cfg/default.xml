@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
+	xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<location>DEFAULT</location>
+	<version>2.2</version>
+	<plugins>
+		<plugin type="save">
+			<name>ASCII</name>
+			<location></location>
+			<parameter name="format" datatype="string" default="ASCII"></parameter>
+			<parameter name="suffix" datatype="string" default="txt"></parameter>
+			<parameter name="extent" datatype="int" default="0"></parameter>
+		</plugin>
+		<plugin type="save">
+			<name>HDF5</name>
+			<location>/messung/eve/lib/linux-x86/libhdf5plugin.so</location>
+			<parameter name="format" datatype="string" default="HDF5"></parameter>
+			<parameter name="suffix" datatype="string" default="h5"></parameter>
+			<parameter name="extent" datatype="int" default="0"></parameter>
+		</plugin>
+		<plugin type="save">
+			<name>Do not save</name>
+			<location>nosave</location>
+		</plugin>
+		<plugin type="position">
+			<name>MotionDisabled</name>
+			<location>/path/to/referenceadd</location>
+		</plugin>
+		<plugin type="position">
+			<name>ReferenceAdd</name>
+			<location>/path/to/referenceadd</location>
+			<parameter name="summand" datatype="double" mandatory="true"></parameter>
+			<parameter name="referenceaxis" datatype="axisid"
+				mandatory="true"></parameter>
+		</plugin>
+		<plugin type="position">
+			<name>ReferenceMultiply</name>
+			<location>/path/to/referenceadd</location>
+			<parameter name="factor" datatype="double" mandatory="true"></parameter>
+			<parameter name="referenceaxis" datatype="axisid"
+				mandatory="true"></parameter>
+		</plugin>
+		<plugin type="postscanpositioning">
+			<name>PEAK</name>
+			<location>/path/to/plugin3</location>
+		</plugin>
+		<plugin type="postscanpositioning">
+			<name>CENTER</name>
+			<location>/path/to/plugin3</location>
+		</plugin>
+		<plugin type="postscanpositioning">
+			<name>MAX</name>
+			<location>/path/to/plugin3</location>
+		</plugin>
+		<plugin type="postscanpositioning">
+			<name>MIN</name>
+			<location>/path/to/plugin3</location>
+		</plugin>
+		<plugin type="postscanpositioning">
+			<name>EDGE</name>
+			<location>/path/to/plugin3</location>
+		</plugin>
+	</plugins>
+	<detectors>
+		<detector>
+			<class>Timer</class>
+			<name></name>
+			<id>detMsecTime</id>
+			<channel>
+				<class></class>
+				<name>msec Time</name>
+				<id>Timer1-det-int</id>
+				<read>
+					<access monitor="false" method="GETCB" transport="local"
+						type="int">Timer</access>
+				</read>
+			</channel>
+		</detector>
+		<detector>
+			<class>Timer</class>
+			<name></name>
+			<id>detDateTime</id>
+			<channel>
+				<class></class>
+				<name>date Time</name>
+				<id>Timer1-det-date</id>
+				<read>
+					<access monitor="false" method="GETCB" transport="local"
+						type="datetime">Timer</access>
+				</read>
+			</channel>
+		</detector>
+		<detector>
+			<class>Ringstrom</class>
+			<name>Ring_1</name>
+			<id>bIICurrent:Mnt1basic</id>
+			<channel>
+				<class></class>
+				<name>Ring_1</name>
+				<id>bIICurrent:Mnt1chan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">bIICurrent:Mnt1.VAL</access>
+				</read>
+				<unit>
+					<access method="GETPUT" transport="ca" type="string">bIICurrent:Mnt1.EGU</access>
+				</unit>
+			</channel>
+			<option>
+				<name>Severity</name>
+				<id>DetbIICurrent:Mnt1.SEVR</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt1.SEVR</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+			<option>
+				<name>Status</name>
+				<id>DetbIICurrent:Mnt1.STAT</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt1.STAT</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+		</detector>
+		<detector>
+			<class>Ringstrom</class>
+			<name>Ring_2</name>
+			<id>bIICurrent:Mnt2basic</id>
+			<channel>
+				<class></class>
+				<name>Ring_2</name>
+				<id>bIICurrent:Mnt2chan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">bIICurrent:Mnt2.VAL</access>
+				</read>
+				<unit>
+					<access method="GETPUT" transport="ca" type="string">bIICurrent:Mnt2.EGU</access>
+				</unit>
+			</channel>
+			<option>
+				<name>Severity</name>
+				<id>DetbIICurrent:Mnt2.SEVR</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt2.SEVR</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+			<option>
+				<name>Status</name>
+				<id>DetbIICurrent:Mnt2.STAT</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt2.STAT</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+		</detector>
+		<detector>
+			<class>Ringstrom</class>
+			<name>Lebensdauer_1</name>
+			<id>bIICurrent:Mnt1lifeTimebasic</id>
+			<channel>
+				<class></class>
+				<name>Lebensdauer_1</name>
+				<id>bIICurrent:Mnt1lifeTimechan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">bIICurrent:Mnt1lifeTime.VAL</access>
+				</read>
+				<unit>
+					<access method="GETPUT" transport="ca" type="string">bIICurrent:Mnt1lifeTime.EGU</access>
+				</unit>
+			</channel>
+			<option>
+				<name>Severity</name>
+				<id>DetbIICurrent:Mnt1lifeTime.SEVR</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt1lifeTime.SEVR</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+			<option>
+				<name>Status</name>
+				<id>DetbIICurrent:Mnt1lifeTime.STAT</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt1lifeTime.STAT</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+		</detector>
+		<detector>
+			<class>Ringstrom</class>
+			<name>Lebensdauer_2</name>
+			<id>bIICurrent:Mnt2lifeTimebasic</id>
+			<!-- channel, to be included by detectors -->
+			<channel>
+				<class></class>
+				<name>Lebensdauer_2</name>
+				<id>bIICurrent:Mnt2lifeTimechan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">bIICurrent:Mnt2lifeTime.VAL</access>
+				</read>
+				<unit>
+					<access method="GETPUT" transport="ca" type="string">bIICurrent:Mnt2lifeTime.EGU</access>
+				</unit>
+			</channel>
+			<option>
+				<name>Severity</name>
+				<id>DetbIICurrent:Mnt2lifeTime.SEVR</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt2lifeTime.SEVR</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+			<option>
+				<name>Status</name>
+				<id>DetbIICurrent:Mnt2lifeTime.STAT</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt2lifeTime.STAT</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+		</detector>
+		<detector>
+			<class>Ringstrom</class>
+			<name>Bessy_Ringstrom</name>
+			<id>MDIZ3T5G:currentbasic</id>
+			<!-- channel, to be included by detectors -->
+			<channel>
+				<class></class>
+				<name>Bessy_Ringstrom</name>
+				<id>MDIZ3T5G:currentchan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">MDIZ3T5G:current.VAL</access>
+				</read>
+				<unit>
+					<access method="GETPUT" transport="ca" type="string">MDIZ3T5G:current.EGU</access>
+				</unit>
+			</channel>
+			<option>
+				<name>Severity</name>
+				<id>DetMDIZ3T5G:current.SEVR</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">MDIZ3T5G:current.SEVR</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+			<option>
+				<name>Status</name>
+				<id>DetMDIZ3T5G:current.STAT</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">MDIZ3T5G:current.STAT</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+		</detector>
+		<detector>
+			<class>Ringstrom</class>
+			<name>Bessy_Lebensdauer</name>
+			<id>MDIZ3T5G:lt10basic</id>
+			<!-- channel, to be included by detectors -->
+			<channel>
+				<class></class>
+				<name>Bessy_Lebensdauer</name>
+				<id>MDIZ3T5G:lt10chan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">MDIZ3T5G:lt10.VAL</access>
+				</read>
+				<unit>
+					<access method="GETPUT" transport="ca" type="string">MDIZ3T5G:lt10.EGU</access>
+				</unit>
+			</channel>
+			<option>
+				<name>Severity</name>
+				<id>DetMDIZ3T5G:lt10.SEVR</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">MDIZ3T5G:lt10.SEVR</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+			<option>
+				<name>Status</name>
+				<id>DetMDIZ3T5G:lt10.STAT</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">MDIZ3T5G:lt10.STAT</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+		</detector>
+		<detector>
+			<class>Ringstrom_abs_di</class>
+			<name>Ring_3</name>
+			<id>bIICurrent:Mnt3basic</id>
+			<!-- channel, to be included by detectors -->
+			<channel>
+				<class></class>
+				<name>Ring_3</name>
+				<id>bIICurrent:Mnt3chan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">bIICurrent:Mnt3.VAL</access>
+				</read>
+				<unit>
+					<access method="GETPUT" transport="ca" type="string">bIICurrent:Mnt3.EGU</access>
+				</unit>
+			</channel>
+			<option>
+				<name>Severity</name>
+				<id>DetbIICurrent:Mnt3.SEVR</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt3.SEVR</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+			<option>
+				<name>Status</name>
+				<id>DetbIICurrent:Mnt3.STAT</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt3.STAT</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+		</detector>
+		<detector>
+			<class>Ringstrom_abs_di</class>
+			<name>Ring_4</name>
+			<id>bIICurrent:Mnt4basic</id>
+			<channel>
+				<class></class>
+				<name>Ring_4</name>
+				<id>bIICurrent:Mnt4chan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">bIICurrent:Mnt4.VAL</access>
+				</read>
+				<unit>
+					<access method="GETPUT" transport="ca" type="string">bIICurrent:Mnt4.EGU</access>
+				</unit>
+			</channel>
+			<option>
+				<name>Severity</name>
+				<id>DetbIICurrent:Mnt4.SEVR</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt4.SEVR</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+			<option>
+				<name>Status</name>
+				<id>DetbIICurrent:Mnt4.STAT</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt4.STAT</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+		</detector>
+		<detector>
+			<class>Ringstrom_abs_di</class>
+			<name>Lebensdauer_3</name>
+			<id>bIICurrent:Mnt3lifeTimebasic</id>
+			<channel>
+				<class></class>
+				<name>Lebensdauer_3</name>
+				<id>bIICurrent:Mnt3lifeTimechan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">bIICurrent:Mnt3lifeTime.VAL</access>
+				</read>
+				<unit>
+					<access method="GETPUT" transport="ca" type="string">bIICurrent:Mnt3lifeTime.EGU</access>
+				</unit>
+			</channel>
+			<option>
+				<name>Severity</name>
+				<id>DetbIICurrent:Mnt3lifeTime.SEVR</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt3lifeTime.SEVR</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+			<option>
+				<name>Status</name>
+				<id>DetbIICurrent:Mnt3lifeTime.STAT</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt3lifeTime.STAT</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+		</detector>
+		<detector>
+			<class>Ringstrom_abs_di</class>
+			<name>Lebensdauer_4</name>
+			<id>bIICurrent:Mnt4lifeTimebasic</id>
+			<channel>
+				<class></class>
+				<name>Lebensdauer_4</name>
+				<id>bIICurrent:Mnt4lifeTimechan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">bIICurrent:Mnt4lifeTime.VAL</access>
+				</read>
+				<unit>
+					<access method="GETPUT" transport="ca" type="string">bIICurrent:Mnt4lifeTime.EGU</access>
+				</unit>
+			</channel>
+			<option>
+				<name>Severity</name>
+				<id>DetbIICurrent:Mnt4lifeTime.SEVR</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt4lifeTime.SEVR</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+			<option>
+				<name>Status</name>
+				<id>DetbIICurrent:Mnt4lifeTime.STAT</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt4lifeTime.STAT</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+		</detector>
+		<detector>
+			<class>Ringstrom_abs_di</class>
+			<name>fastLifeTime_3</name>
+			<id>bIICurrent:Mnt3fastLifeTimebasic</id>
+			<channel>
+				<class></class>
+				<name>fastLifeTime_3</name>
+				<id>bIICurrent:Mnt3fastLifeTimechan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">bIICurrent:Mnt3fastLifeTime.VAL</access>
+				</read>
+				<unit>
+					<access method="GETPUT" transport="ca" type="string">bIICurrent:Mnt3fastLifeTime.EGU</access>
+				</unit>
+			</channel>
+			<option>
+				<name>Severity</name>
+				<id>DetbIICurrent:Mnt3fastLifeTime.SEVR</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt3fastLifeTime.SEVR</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+			<option>
+				<name>Status</name>
+				<id>DetbIICurrent:Mnt3fastLifeTime.STAT</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt3fastLifeTime.STAT</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+		</detector>
+		<detector>
+			<class>Ringstrom_abs_di</class>
+			<name>fastLifeTime_4</name>
+			<id>bIICurrent:Mnt4fastLifeTimebasic</id>
+			<!-- channel, to be included by detectors -->
+			<channel>
+				<class></class>
+				<name>fastLifeTime_4</name>
+				<id>bIICurrent:Mnt4fastLifeTimechan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">bIICurrent:Mnt4fastLifeTime.VAL</access>
+				</read>
+				<unit>
+					<access method="GETPUT" transport="ca" type="string">bIICurrent:Mnt4fastLifeTime.EGU</access>
+				</unit>
+			</channel>
+			<option>
+				<name>Severity</name>
+				<id>DetbIICurrent:Mnt4fastLifeTime.SEVR</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt4fastLifeTime.SEVR</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+			<option>
+				<name>Status</name>
+				<id>DetbIICurrent:Mnt4fastLifeTime.STAT</id>
+				<value>
+					<access method="GETCB" transport="ca" type="string">bIICurrent:Mnt4fastLifeTime.STAT</access>
+				</value>
+				<displaygroup>detail</displaygroup>
+			</option>
+		</detector>
+		<detector>
+			<class>Ringstrom_roh</class>
+			<name>Ring_1_roh</name>
+			<id>bIICurrent:Mnt1collectData.VALDbasic</id>
+			<!-- channel without unit, to be included by detetctors -->
+			<channel>
+				<class></class>
+				<name>Ring_1_roh</name>
+				<id>bIICurrent:Mnt1collectData.VALDchan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">bIICurrent:Mnt1collectData.VALD.VAL</access>
+				</read>
+			</channel>
+		</detector>
+		<detector>
+			<class>Ringstrom_roh</class>
+			<name>Ring_2_roh</name>
+			<id>bIICurrent:Mnt2collectData.VALDbasic</id>
+			<!-- channel without unit, to be included by detetctors -->
+			<channel>
+				<class></class>
+				<name>Ring_2_roh</name>
+				<id>bIICurrent:Mnt2collectData.VALDchan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">bIICurrent:Mnt2collectData.VALD.VAL</access>
+				</read>
+			</channel>
+		</detector>
+		<detector>
+			<class>Ringstrom_roh</class>
+			<name>Ring_3_roh</name>
+			<id>bIICurrent:Mnt3collectData.VALDbasic</id>
+			<!-- channel without unit, to be included by detetctors -->
+			<channel>
+				<class></class>
+				<name>Ring_3_roh</name>
+				<id>bIICurrent:Mnt3collectData.VALDchan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">bIICurrent:Mnt3collectData.VALD.VAL</access>
+				</read>
+			</channel>
+		</detector>
+		<detector>
+			<class>Ringstrom_roh</class>
+			<name>Ring_4_roh</name>
+			<id>bIICurrent:Mnt4collectData.VALDbasic</id>
+			<!-- channel without unit, to be included by detetctors -->
+			<channel>
+				<class></class>
+				<name>Ring_4_roh</name>
+				<id>bIICurrent:Mnt4collectData.VALDchan1</id>
+				<read>
+					<access monitor="true" method="GETCB" transport="ca" type="double">bIICurrent:Mnt4collectData.VALD.VAL</access>
+				</read>
+			</channel>
+		</detector>
+	</detectors>
+	<!-- motor section -->
+	<motors>
+		<motor>
+			<class>Timer</class>
+			<name></name>
+			<id>motMsecTimer</id>
+			<axis>
+				<class></class>
+				<name>msec Timer</name>
+				<id>Timer1-mot-int</id>
+				<goto>
+					<access method="PUTCB" transport="local" type="int">Timer</access>
+				</goto>
+				<position>
+					<access method="GETCB" transport="local" type="int">Timer</access>
+				</position>
+				<stop>
+					<access method="PUT" transport="local" type="int">Timer</access>
+					<value type="OnOff">0</value>
+				</stop>
+			</axis>
+		</motor>
+		<motor>
+			<class>Timer</class>
+			<name></name>
+			<id>motDateTimer</id>
+			<axis>
+				<class></class>
+				<name>date Timer</name>
+				<id>Timer1-mot-date</id>
+				<goto>
+					<access method="PUTCB" transport="local" type="datetime">Timer</access>
+				</goto>
+				<position>
+					<access method="GETCB" transport="local" type="datetime">Timer</access>
+				</position>
+				<stop>
+					<access method="PUT" transport="local" type="int">Timer</access>
+					<value type="OnOff">0</value>
+				</stop>
+			</axis>
+		</motor>
+		<!-- counter as motor -->
+		<motor>
+			<class>Counter</class>
+			<name></name>
+			<id>Counter1</id>
+			<axis>
+				<class></class>
+				<name>Counter</name>
+				<id>Counter-mot</id>
+				<goto>
+					<access method="PUTCB" transport="local" type="int">Counter</access>
+				</goto>
+				<position>
+					<access method="GETCB" transport="local" type="int">Counter</access>
+				</position>
+				<stop>
+					<access method="PUT" transport="local" type="int">Counter</access>
+					<value type="OnOff">0</value>
+				</stop>
+			</axis>
+		</motor>
+	</motors>
+	<!-- device section -->
+	<devices>
+		<device>
+			<class></class>
+			<name>TOPUP</name>
+			<id>bIICurrent:Mnt1topupLatch</id>
+			<value>
+				<access monitor="true" method="GETCB" transport="ca" type="double">bIICurrent:Mnt1topupLatch</access>
+			</value>
+		</device>
+	</devices>
+	<!-- smselection section and closing tag -->
+	<smselection>
+		<stepfunction>Add,Multiply,File,Plugin,Positionlist</stepfunction>
+		<smtype>classic, advanced</smtype>
+	</smselection>
+</tns:scml>

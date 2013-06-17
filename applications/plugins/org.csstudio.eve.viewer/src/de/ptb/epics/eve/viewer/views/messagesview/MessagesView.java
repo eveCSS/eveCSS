@@ -85,7 +85,7 @@ public final class MessagesView extends ViewPart {
 		this.tableViewer.setLabelProvider(new LabelProvider());
 		
 		// if a new scan arrives, old messages are removed
-		Activator.getDefault().getXMLFileDispatcher().addPropertyChangeListener(
+		Activator.getDefault().getXMLDispatcher().addPropertyChangeListener(
 				XMLDispatcher.DEVICE_DEFINITION_PROP, cp);
 
 		// the MessageContainer is the input object of the table viewer

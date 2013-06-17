@@ -24,7 +24,7 @@ public final class MeasurementData {
 	private DataModifier dataModifier;
 	private EpicsSeverity epicsSeverity;
 	private EpicsStatus epicsStatus;
-	private int gerenalTimeStamp;
+	private int generalTimeStamp;
 	private int nanoseconds;
 	private int positionCounter;
 	private List<?> values;
@@ -43,7 +43,7 @@ public final class MeasurementData {
 		this.epicsSeverity = measurementDataCommand.getEpicsSeverity();
 		this.epicsStatus = measurementDataCommand.getEpicsStatus();
 		this.acquisitionStatus = measurementDataCommand.getAcquisitionStatus();
-		this.gerenalTimeStamp = measurementDataCommand.getGerenalTimeStamp();
+		this.generalTimeStamp = measurementDataCommand.getGeneralTimeStamp();
 		this.nanoseconds = measurementDataCommand.getNanoseconds();
 		this.name = measurementDataCommand.getName();
 
@@ -153,8 +153,8 @@ public final class MeasurementData {
 		return this.epicsStatus;
 	}
 
-	public final int getGerenalTimeStamp() {
-		return this.gerenalTimeStamp;
+	public final int getGeneralTimeStamp() {
+		return this.generalTimeStamp;
 	}
 
 	public final int getNanoseconds() {

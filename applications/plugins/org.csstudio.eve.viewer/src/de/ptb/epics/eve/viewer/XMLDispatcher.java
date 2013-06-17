@@ -10,7 +10,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
-
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
@@ -22,17 +21,17 @@ import de.ptb.epics.eve.ecp1.client.interfaces.INewXMLFileListener;
  * interested parties 
  * (registered by {@link #addPropertyChangeListener(String, PropertyChangeListener)}) 
  * about it. Either {@link #DEVICE_DEFINITION_PROP} or 
- * {@link #SCAN_DESCRIPTION_PROP} are available.
+ * {@link #SCAN_DESCRIPTION_PROP} (or both) are available.
  * 
  * @author Marcus Michalsky
  * @since 1.13
  */
 public class XMLDispatcher implements INewXMLFileListener {
 	
-	/** */
+	/** device definition property */
 	public static final String DEVICE_DEFINITION_PROP = "measuringStation";
 	
-	/** */
+	/** scan description property */
 	public static final String SCAN_DESCRIPTION_PROP = "scanDescription";
 	
 	private static Logger logger = 
@@ -42,17 +41,14 @@ public class XMLDispatcher implements INewXMLFileListener {
 	private ScanDescription scanDescription;
 	
 	private PropertyChangeSupport propertyChangeSupport;
-	
-	private PlotViewDispatcher plotViewDispatcher; // TODO remove
 
 	/**
-	 * Constructs a <code>XMLFileDispatcher</code>.
+	 * Initializes property change support.
 	 */
 	public XMLDispatcher() {
 		this.measuringStation = null;
 		this.scanDescription = null;
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
-		this.plotViewDispatcher = new PlotViewDispatcher(); // TODO remove and add as listener
 	}
 
 	/**
@@ -71,7 +67,6 @@ public class XMLDispatcher implements INewXMLFileListener {
 					new MeasuringStationLoader(schemaFile);
 			final IMeasuringStation ims = 
 					measuringStationLoader.loadFromByteArray(xmlData);
-			
 			Activator.getDefault().getWorkbench().getDisplay().syncExec(
 				new Runnable() {
 					@Override public void run() {
@@ -87,14 +82,16 @@ public class XMLDispatcher implements INewXMLFileListener {
 			scanDescriptionLoader.loadFromByteArray(xmlData);
 			final ScanDescription sd = 
 					scanDescriptionLoader.getScanDescription();
-			Activator.getDefault().setCurrentScanDescription(sd);
+			Activator.getDefault().setCurrentScanDescription(sd); // should be removed...
+			// ... interested parties should use the listener mechanism
+			// using Activator.getDefault().getCurrentScanDescription maybe 
+			// is not thread safe !
 			Activator.getDefault().getWorkbench().getDisplay().syncExec(
 				new Runnable() {
 					@Override public void run() {
 							propertyChangeSupport.firePropertyChange(
 									XMLDispatcher.SCAN_DESCRIPTION_PROP,
 									scanDescription, scanDescription = sd);
-						plotViewDispatcher.setScanDescription(scanDescription); // TODO remove
 					}
 				}
 			);

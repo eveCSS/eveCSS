@@ -38,6 +38,7 @@ public class ECP1ClientLogger implements IEngineStatusListener,
 				" | Chain: " + measurementData.getChainId() + 
 				" | SM: " + measurementData.getScanModuleId() + 
 				" | PosCnt: " + measurementData.getPositionCounter() +
+				" | Name: " + measurementData.getName() + 
 				" | Type: " + measurementData.getDataType() +
 				" | " + measurementData.getValues().get(0)
 				);
