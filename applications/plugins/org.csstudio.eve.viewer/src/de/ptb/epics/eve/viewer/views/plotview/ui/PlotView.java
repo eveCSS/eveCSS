@@ -4,17 +4,13 @@ import org.apache.log4j.Logger;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TabFolder;
@@ -24,6 +20,7 @@ import org.eclipse.ui.part.ViewPart;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.YAxis;
 import de.ptb.epics.eve.viewer.Activator;
+import de.ptb.epics.eve.viewer.views.plotview.MathFunction;
 import de.ptb.epics.eve.viewer.views.plotview.MathTableElement;
 import de.ptb.epics.eve.viewer.views.plotview.XyPlot;
 
@@ -44,6 +41,8 @@ public class PlotView extends ViewPart {
 	
 	private XyPlot xyPlot;
 	
+	TableViewer table1Viewer;
+	TableViewer table2Viewer;
 	TabItem itemAxis1;
 	TabItem itemAxis2;
 	
@@ -73,17 +72,17 @@ public class PlotView extends ViewPart {
 		Composite table1Composite = new Composite(tabFolder, SWT.NONE);
 		table1Composite.setLayout(new FillLayout());
 		itemAxis1.setControl(table1Composite);
-		TableViewer table1Viewer = this.createTable(table1Composite);
+		table1Viewer = this.createTable(table1Composite);
 		
 		itemAxis2 = new TabItem(tabFolder, SWT.NONE);
 		itemAxis2.setText("Tab2");
 		Composite table2Composite = new Composite(tabFolder, SWT.NONE);
 		table2Composite.setLayout(new FillLayout());
 		itemAxis2.setControl(table2Composite);
-		TableViewer table2Viewer = this.createTable(table2Composite);
+		table2Viewer = this.createTable(table2Composite);
 
-
-
+		sashForm.setWeights(new int[] {2,1});
+		
 		this.setPartName("Plot: " + this.getViewSite().getSecondaryId());
 	}
 
@@ -186,20 +185,33 @@ public class PlotView extends ViewPart {
 		// delegate to XyPlot
 		this.xyPlot.setPlotWindow(plotWindow);
 		
+		((MathTableContentProvider) table1Viewer.getContentProvider()).clear();
+		((MathTableContentProvider) table2Viewer.getContentProvider()).clear();
+		
 		YAxis yAxis1 = plotWindow.getYAxes().get(0);
 		if (yAxis1.getNormalizeChannel() != null) {
 			itemAxis1.setText(yAxis1.getNormalizeChannel().getName() + "/"
 					+ yAxis1.getDetectorChannel().getName());
+			fillTable(table1Viewer, plotWindow, yAxis1.getNormalizeChannel()
+					.getID() + "/" + yAxis1.getDetectorChannel().getID(), true);
 		} else {
 			itemAxis1.setText(yAxis1.getDetectorChannel().getName());
+			fillTable(table1Viewer, plotWindow, yAxis1.getDetectorChannel()
+					.getID(), false);
 		}
 		if (plotWindow.getYAxisAmount() > 1) {
 			YAxis yAxis2 = plotWindow.getYAxes().get(1);
 			if (yAxis2.getNormalizeChannel() != null) {
-				itemAxis2.setText(yAxis2.getNormalizeChannel().getName() + "/" 
-					+ yAxis2.getDetectorChannel().getName());
+				itemAxis2.setText(yAxis2.getNormalizeChannel().getName()
+						+ "/" + yAxis2.getDetectorChannel().getName());
+				fillTable(table2Viewer, plotWindow, yAxis2
+						.getNormalizeChannel().getID()
+						+ "/"
+						+ yAxis2.getDetectorChannel().getID(), true);
 			} else {
 				itemAxis2.setText(yAxis2.getDetectorChannel().getName());
+				fillTable(table2Viewer, plotWindow, yAxis2.getDetectorChannel()
+						.getID(), false);
 			}
 		} else {
 			itemAxis2.setText("-");
@@ -211,8 +223,56 @@ public class PlotView extends ViewPart {
 	/*
 	 * 
 	 */
-	private void fillTable(TableViewer tableViewer) {
+	private void fillTable(TableViewer tableViewer, PlotWindow plotWindow,
+			String detectorId, boolean normalized) {
+		// create a content provider for the table...
+		MathTableContentProvider contentProvider = 
+				(MathTableContentProvider) tableViewer.getContentProvider();
+
+		final int chid = plotWindow.getScanModule().getChain().getId();
+		final int smid = plotWindow.getScanModule().getId();
+		final String motorId = plotWindow.getXAxis().getID();
+		final String motorPv = plotWindow.getXAxis().getGoto().getAccess()
+				.getVariableID();
 		
+		MathTableElement element;
+		if (normalized) {
+			element = new MathTableElement(chid, smid, tableViewer, 
+					MathFunction.NORMALIZED, motorPv, motorId, detectorId);
+				contentProvider.addElement(element);
+		} else {
+			element = new MathTableElement(chid, smid, tableViewer,
+					MathFunction.UNMODIFIED, motorPv, motorId, detectorId);
+			contentProvider.addElement(element);
+		}
+
+		element = new MathTableElement(chid, smid, tableViewer,
+				MathFunction.MINIMUM, motorPv, motorId, detectorId);
+		contentProvider.addElement(element);
+
+		element = new MathTableElement(chid, smid, tableViewer,
+				MathFunction.MAXIMUM, motorPv, motorId, detectorId);
+		contentProvider.addElement(element);
+
+		element = new MathTableElement(chid, smid, tableViewer,
+				MathFunction.CENTER, motorPv, motorId, detectorId);
+		contentProvider.addElement(element);
+
+		element = new MathTableElement(chid, smid, tableViewer,
+				MathFunction.EDGE, motorPv, motorId, detectorId);
+		contentProvider.addElement(element);
+
+		element = new MathTableElement(chid, smid, tableViewer,
+				MathFunction.AVERAGE, motorPv, motorId, detectorId);
+		contentProvider.addElement(element);
+
+		element = new MathTableElement(chid, smid, tableViewer,
+				MathFunction.DEVIATION, motorPv, motorId, detectorId);
+		contentProvider.addElement(element);
+
+		element = new MathTableElement(chid, smid, tableViewer,
+				MathFunction.FWHM, motorPv, motorId, detectorId);
+		contentProvider.addElement(element);
 	}
 	
 	/**

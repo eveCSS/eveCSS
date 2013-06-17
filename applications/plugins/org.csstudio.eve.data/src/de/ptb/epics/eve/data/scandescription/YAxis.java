@@ -176,6 +176,15 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	}
 
 	/**
+	 * Returns whether the axis is normalized.
+	 * 
+	 * @return <code>true</code> if axis normalized, <code>false</code> otherwise
+	 */
+	public boolean isNormalized() {
+		return this.normalizeChannel != null;
+	}
+	
+	/**
 	 * Returns the detector channel used for normalization.
 	 * 
 	 * @return the detector channel used for normalization

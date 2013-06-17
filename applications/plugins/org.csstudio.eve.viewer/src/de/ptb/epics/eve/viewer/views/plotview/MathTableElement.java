@@ -71,6 +71,8 @@ public class MathTableElement implements IMeasurementDataListener,
 		Activator.getDefault().getEcp1Client().addEngineStatusListener(this);
 	}
 
+	
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -236,7 +238,8 @@ public class MathTableElement implements IMeasurementDataListener,
 	 * @return the position of the motor where the value was measured
 	 */
 	public String getPosition() {
-		if ((mathFunction == MathFunction.UNMODIFIED) || (mathFunction == MathFunction.NORMALIZED) || drawIcon()) {
+		if ((mathFunction == MathFunction.UNMODIFIED)
+				|| (mathFunction == MathFunction.NORMALIZED) || drawIcon()) {
 			return position;
 		}
 		return null;
