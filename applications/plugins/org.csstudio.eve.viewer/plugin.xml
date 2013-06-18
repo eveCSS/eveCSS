@@ -267,6 +267,20 @@
             id="de.ptb.epics.eve.viewer.messagesview.save"
             name="Save Messages">
       </command>
+      <category
+            id="de.ptb.epics.eve.viewer.views.plotview"
+            name="PlotView">
+      </category>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.plotview"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.plot.ToggleStatistics"
+            id="de.ptb.epics.eve.viewer.views.plotview.togglestats"
+            name="Toggle Statistics">
+         <state
+               class="org.eclipse.ui.handlers.RegistryToggleState:true"
+               id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -543,6 +557,15 @@
                icon="icons/save_edit.gif"
                label="Save Messages to File"
                style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:PlotView">
+         <command
+               commandId="de.ptb.epics.eve.viewer.views.plotview.togglestats"
+               icon="icons/datasheet.gif"
+               label="toggle statistics"
+               style="toggle">
          </command>
       </menuContribution>
    </extension>

@@ -1,6 +1,8 @@
 package de.ptb.epics.eve.viewer.views.plotview.ui;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.State;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -15,6 +17,11 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
@@ -31,7 +38,6 @@ import de.ptb.epics.eve.viewer.views.plotview.XyPlot;
  * @author Marcus Michalsky
  */
 public class PlotView extends ViewPart {
-	
 	/** the unique identifier of this view */
 	public static final String ID = "PlotView";
 
@@ -39,6 +45,7 @@ public class PlotView extends ViewPart {
 	
 	private SashForm sashForm;
 	
+	private Canvas canvas;
 	private XyPlot xyPlot;
 	
 	TableViewer table1Viewer;
@@ -46,7 +53,21 @@ public class PlotView extends ViewPart {
 	TabItem itemAxis1;
 	TabItem itemAxis2;
 	
+	private boolean showStats;
+	
 	private Image gotoIcon;
+	
+	// saves/restores user defined settings
+	private IMemento memento;
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		this.memento = memento;
+		super.init(site, memento);
+	}
 	
 	/**
 	 * {@inheritDoc}
@@ -59,7 +80,7 @@ public class PlotView extends ViewPart {
 		sashForm = new SashForm(parent, SWT.HORIZONTAL);
 		sashForm.SASH_WIDTH = 2;
 		
-		Canvas canvas = new Canvas(sashForm, SWT.BORDER);
+		canvas = new Canvas(sashForm, SWT.BORDER);
 		// use LightweightSystem to create the bridge between SWT and draw2D
 		final LightweightSystem lws = new LightweightSystem(canvas);
 		// set it as the content of LightwightSystem
@@ -80,10 +101,10 @@ public class PlotView extends ViewPart {
 		table2Composite.setLayout(new FillLayout());
 		itemAxis2.setControl(table2Composite);
 		table2Viewer = this.createTable(table2Composite);
-
-		sashForm.setWeights(new int[] {2,1});
 		
 		this.setPartName("Plot: " + this.getViewSite().getSecondaryId());
+		
+		this.restoreState();
 	}
 
 	/*
@@ -283,10 +304,72 @@ public class PlotView extends ViewPart {
 	}
 	
 	/**
+	 * Sets whether the statistics tables are shown.
+	 * <p>
+	 * The state is saved in the memento.
+	 */
+	public void showStatistics(boolean show) {
+		if (show) {
+			this.showStats = true;
+			this.sashForm.setMaximizedControl(null);
+		} else {
+			this.showStats = false;
+			this.sashForm.setMaximizedControl(this.canvas);
+		}
+		
+		/*
+		ICommandService commandService =
+				(ICommandService) PlatformUI.getWorkbench()
+					.getService(ICommandService.class);
+		Command toggleCommand = commandService.getCommand(
+			"de.ptb.epics.eve.viewer.views.plotview.togglestats");
+	
+		State state = toggleCommand.getState
+			("de.ptb.epics.eve.viewer.views.plotview.togglestats.togglestate");
+	
+		state.setValue(this.showStats);
+		
+		commandService.refreshElements(toggleCommand.getId(), null);*/
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void setFocus() {
 		this.sashForm.setFocus();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void saveState(IMemento memento) {
+		memento.putBoolean("showStats", this.showStats);
+		// save composite heights
+		memento.putInteger("plotWeight", sashForm.getWeights()[0]);
+		memento.putInteger("statsWeight", sashForm.getWeights()[1]);
+	}
+	
+	/*
+	 * 
+	 */
+	private void restoreState() {
+		if(this.memento == null) return; // nothing saved
+		
+		// restore sash weights
+		int plotWeight = this.memento.getInteger("plotWeight") == null
+				? 2
+				: this.memento.getInteger("plotWeight");
+		int statsWeight = this.memento.getInteger("statsWeight") == null
+				? 1
+				: this.memento.getInteger("statsWeight");
+		this.sashForm.setWeights(new int[] {plotWeight, statsWeight});
+		
+		// restore show statistics property and state
+		this.showStats = memento.getBoolean("showStats") == null
+				? true
+				: memento.getBoolean("showStats");
+		this.showStatistics(this.showStats);
 	}
 }
