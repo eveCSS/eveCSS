@@ -93,7 +93,7 @@ public class XyPlot extends Figure {
 			YAxis yAxis = plotWindow.getYAxes().get(i);
 			Axis axis = null;
 			
-			boolean normalized = (yAxis.getNormalizeChannel() != null); 
+			boolean normalized = yAxis.isNormalized(); 
 			
 			TraceInfo traceInfo = new TraceInfo();
 			traceInfo.setMotorId(plotWindow.getXAxis().getID());

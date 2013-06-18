@@ -190,10 +190,10 @@ public class PlotView extends ViewPart {
 		
 		YAxis yAxis1 = plotWindow.getYAxes().get(0);
 		if (yAxis1.getNormalizeChannel() != null) {
-			itemAxis1.setText(yAxis1.getNormalizeChannel().getName() + "/"
-					+ yAxis1.getDetectorChannel().getName());
-			fillTable(table1Viewer, plotWindow, yAxis1.getNormalizeChannel()
-					.getID() + "/" + yAxis1.getDetectorChannel().getID(), true);
+			itemAxis1.setText(yAxis1.getDetectorChannel().getName() + "/"
+					+ yAxis1.getNormalizeChannel().getName());
+			fillTable(table1Viewer, plotWindow, yAxis1.getDetectorChannel()
+					.getID() + "__" + yAxis1.getNormalizeChannel().getID(), true);
 		} else {
 			itemAxis1.setText(yAxis1.getDetectorChannel().getName());
 			fillTable(table1Viewer, plotWindow, yAxis1.getDetectorChannel()
@@ -202,12 +202,11 @@ public class PlotView extends ViewPart {
 		if (plotWindow.getYAxisAmount() > 1) {
 			YAxis yAxis2 = plotWindow.getYAxes().get(1);
 			if (yAxis2.getNormalizeChannel() != null) {
-				itemAxis2.setText(yAxis2.getNormalizeChannel().getName()
-						+ "/" + yAxis2.getDetectorChannel().getName());
+				itemAxis2.setText(yAxis2.getDetectorChannel().getName()
+						+ "/" + yAxis2.getNormalizeChannel().getName());
 				fillTable(table2Viewer, plotWindow, yAxis2
-						.getNormalizeChannel().getID()
-						+ "/"
-						+ yAxis2.getDetectorChannel().getID(), true);
+						.getDetectorChannel().getID() + "__"
+						+ yAxis2.getNormalizeChannel().getID(), true);
 			} else {
 				itemAxis2.setText(yAxis2.getDetectorChannel().getName());
 				fillTable(table2Viewer, plotWindow, yAxis2.getDetectorChannel()

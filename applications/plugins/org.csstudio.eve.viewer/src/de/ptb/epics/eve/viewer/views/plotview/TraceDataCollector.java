@@ -76,9 +76,6 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	@Override
 	public void measurementDataTransmitted(MeasurementData measurementData) {
-		if (!measurementData.getDataModifier().equals(traceInfo.getModifier())) {
-			return;
-		}
 		if (measurementData.getName().equals(traceInfo.getMotorId())) {
 			this.motorPosCount++;
 			switch (measurementData.getDataType()) {
@@ -107,6 +104,9 @@ public class TraceDataCollector implements IDataProvider,
 				break;
 			}
 			this.checkForData();
+		}
+		if (!measurementData.getDataModifier().equals(traceInfo.getModifier())) {
+			return;
 		}
 		if ((this.traceInfo.getModifier().equals(DataModifier.UNMODIFIED) && 
 				measurementData.getName().equals(traceInfo.getDetectorId()))
