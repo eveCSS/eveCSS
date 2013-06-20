@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.MDC;
 import org.csstudio.swt.xygraph.figures.Axis;
 import org.csstudio.swt.xygraph.figures.ToolbarArmedXYGraph;
 import org.csstudio.swt.xygraph.figures.Trace;
@@ -96,6 +95,8 @@ public class XyPlot extends Figure {
 			boolean normalized = yAxis.isNormalized(); 
 			
 			TraceInfo traceInfo = new TraceInfo();
+			traceInfo.setPlotId(plotWindow.getId());
+			traceInfo.setPlotName(plotWindow.getName());
 			traceInfo.setMotorId(plotWindow.getXAxis().getID());
 			traceInfo.setDetectorId(yAxis.getDetectorChannel().getID());
 			traceInfo.setNormalizeId(

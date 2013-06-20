@@ -7,6 +7,8 @@ import de.ptb.epics.eve.ecp1.types.DataModifier;
  * @since 1.13
  */
 public class TraceInfo {
+	private int plotId;
+	private String plotName;
 	private String motorId;
 	private String detectorId;
 	private String normalizeId;
@@ -16,10 +18,40 @@ public class TraceInfo {
 	 * 
 	 */
 	public TraceInfo() {
+		this.plotId = 0;
+		this.plotName = "";
 		this.motorId = "";
 		this.detectorId = "";
 		this.normalizeId = "";
 		this.modifier = DataModifier.UNMODIFIED;
+	}
+	
+	/**
+	 * @return the plotId
+	 */
+	public int getPlotId() {
+		return plotId;
+	}
+
+	/**
+	 * @param plotId the plotId to set
+	 */
+	public void setPlotId(int plotId) {
+		this.plotId = plotId;
+	}
+
+	/**
+	 * @return the plotName
+	 */
+	public String getPlotName() {
+		return plotName;
+	}
+
+	/**
+	 * @param plotName the plotName to set
+	 */
+	public void setPlotName(String plotName) {
+		this.plotName = plotName;
 	}
 
 	/**

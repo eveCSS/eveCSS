@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="de.ptb.epics.eve.viewer.views.plotview.collections" size="1913,1273" id="de.ptb.epics.eve.viewer.views.plotview" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D313030302064652E7074622E65706963732E6576652E7669657765722F6D6D696368616C73">
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.3/@sourceConnections.0 //@children.5/@sourceConnections.1" name="List" location="432,435" size="330,525" id="java.util/List" runTimeClassModel="containsAll(Ljava.util.Collection;),addAll(Ljava.util.Collection;),subList(II),toArray([LT;),indexOf(Ljava.lang.Object;),lastIndexOf(Ljava.lang.Object;),contains(Ljava.lang.Object;),size(),iterator(),set(ILE;),retainAll(Ljava.util.Collection;),addAll(ILjava.util.Collection;),add(ILE;),listIterator(I),toArray(),listIterator(),get(I),clear(),removeAll(Ljava.util.Collection;),add(LE;),isEmpty(),hashCode(),equals(Ljava.lang.Object;),remove(I),remove(Ljava.lang.Object;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="307,450">
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="java.util/List#add(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="java.util/List#add(ILE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addAll" id="java.util/List#addAll(ILjava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addAll" id="java.util/List#addAll(Ljava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clear" id="java.util/List#clear()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="contains" id="java.util/List#contains(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="containsAll" id="java.util/List#containsAll(Ljava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="java.util/List#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="get" id="java.util/List#get(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="java.util/List#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="indexOf" id="java.util/List#indexOf(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isEmpty" id="java.util/List#isEmpty()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="iterator" id="java.util/List#iterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="lastIndexOf" id="java.util/List#lastIndexOf(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="listIterator" id="java.util/List#listIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="listIterator" id="java.util/List#listIterator(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="java.util/List#remove(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="java.util/List#remove(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeAll" id="java.util/List#removeAll(Ljava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="retainAll" id="java.util/List#retainAll(Ljava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="set" id="java.util/List#set(ILE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="size" id="java.util/List#size()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="subList" id="java.util/List#subList(II)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toArray" id="java.util/List#toArray([LT;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toArray" id="java.util/List#toArray()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.1/@sourceConnections.0" autoLocated="true" id="java.util/Collection&lt;-java.util/List" source="//@children.0" target="//@children.6" targetEnd="//@children.0/@sourceConnections.0/@children.1" sourceEnd="//@children.0/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="165,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="147,345" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Name" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.0" name="Queue" location="1259,448" size="155,183" id="java.util/Queue" runTimeClassModel="remove(),poll(),add(LE;),element(),peek(),offer(LE;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="132,108">
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="java.util/Queue#add(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="element" id="java.util/Queue#element()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="offer" id="java.util/Queue#offer(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="peek" id="java.util/Queue#peek()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="poll" id="java.util/Queue#poll()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="java.util/Queue#remove()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="java.util/Collection&lt;-java.util/Queue" source="//@children.1" target="//@children.0/@sourceConnections.0" targetEnd="//@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.1/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="77,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="-56,-123" attachSource="true"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Name" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.5/@sourceConnections.0 //@children.4/@sourceConnections.0" name="Deque" location="1259,687" size="289,561" id="java.util/Deque" runTimeClassModel="push(LE;),removeLast(),offerLast(LE;),getLast(),size(),element(),iterator(),getFirst(),remove(),poll(),peekLast(),add(LE;),pollFirst(),removeLastOccurrence(Ljava.lang.Object;),remove(Ljava.lang.Object;),offerFirst(LE;),peekFirst(),pollLast(),contains(Ljava.lang.Object;),offer(LE;),removeFirstOccurrence(Ljava.lang.Object;),addLast(LE;),addFirst(LE;),descendingIterator(),removeFirst(),pop(),peek()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="266,486">
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="java.util/Deque#add(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addFirst" id="java.util/Deque#addFirst(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addLast" id="java.util/Deque#addLast(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="contains" id="java.util/Deque#contains(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="descendingIterator" id="java.util/Deque#descendingIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="element" id="java.util/Deque#element()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getFirst" id="java.util/Deque#getFirst()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLast" id="java.util/Deque#getLast()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="iterator" id="java.util/Deque#iterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="offer" id="java.util/Deque#offer(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="offerFirst" id="java.util/Deque#offerFirst(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="offerLast" id="java.util/Deque#offerLast(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="peek" id="java.util/Deque#peek()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="peekFirst" id="java.util/Deque#peekFirst()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="peekLast" id="java.util/Deque#peekLast()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="poll" id="java.util/Deque#poll()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="pollFirst" id="java.util/Deque#pollFirst()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="pollLast" id="java.util/Deque#pollLast()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="pop" id="java.util/Deque#pop()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="push" id="java.util/Deque#push(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="java.util/Deque#remove()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="java.util/Deque#remove(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeFirst" id="java.util/Deque#removeFirst()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeFirstOccurrence" id="java.util/Deque#removeFirstOccurrence(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeLast" id="java.util/Deque#removeLast()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeLastOccurrence" id="java.util/Deque#removeLastOccurrence(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="size" id="java.util/Deque#size()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="java.util/Queue&lt;-java.util/Deque" source="//@children.2" target="//@children.1" targetEnd="//@children.2/@sourceConnections.0/@children.1" sourceEnd="//@children.2/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="77,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="77,183"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Name" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ArrayList" location="59,434" size="330,566" id="java.util/ArrayList" runTimeClassModel="subList(II),lastIndexOf(Ljava.lang.Object;),indexOf(Ljava.lang.Object;),size(),iterator(),add(ILE;),removeAll(Ljava.util.Collection;),clear(),add(LE;),subListRangeCheck(III),ArrayList(),ArrayList(Ljava.util.Collection;),ArrayList(I),remove(Ljava.lang.Object;),ensureCapacity(I),addAll(Ljava.util.Collection;),toArray([LT;),contains(Ljava.lang.Object;),trimToSize(),set(ILE;),retainAll(Ljava.util.Collection;),size,addAll(ILjava.util.Collection;),listIterator(I),toArray(),listIterator(),get(I),clone(),isEmpty(),elementData(I),remove(I)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="307,504">
+      <children xsi:type="editmodel:MethodEditModel" name="ArrayList" id="java.util/ArrayList#ArrayList()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ArrayList" id="java.util/ArrayList#ArrayList(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ArrayList" id="java.util/ArrayList#ArrayList(Ljava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="java.util/ArrayList#add(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="java.util/ArrayList#add(ILE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addAll" id="java.util/ArrayList#addAll(ILjava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addAll" id="java.util/ArrayList#addAll(Ljava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clear" id="java.util/ArrayList#clear()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="java.util/ArrayList#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="contains" id="java.util/ArrayList#contains(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ensureCapacity" id="java.util/ArrayList#ensureCapacity(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="get" id="java.util/ArrayList#get(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="indexOf" id="java.util/ArrayList#indexOf(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isEmpty" id="java.util/ArrayList#isEmpty()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="iterator" id="java.util/ArrayList#iterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="lastIndexOf" id="java.util/ArrayList#lastIndexOf(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="listIterator" id="java.util/ArrayList#listIterator(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="listIterator" id="java.util/ArrayList#listIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="java.util/ArrayList#remove(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="java.util/ArrayList#remove(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeAll" id="java.util/ArrayList#removeAll(Ljava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="retainAll" id="java.util/ArrayList#retainAll(Ljava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="set" id="java.util/ArrayList#set(ILE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="size" id="java.util/ArrayList#size()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="subList" id="java.util/ArrayList#subList(II)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toArray" id="java.util/ArrayList#toArray()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toArray" id="java.util/ArrayList#toArray([LT;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="trimToSize" id="java.util/ArrayList#trimToSize()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="java.util/List&lt;-java.util/ArrayList" source="//@children.3" target="//@children.0" targetEnd="//@children.3/@sourceConnections.0/@children.1" sourceEnd="//@children.3/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="330,263" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,262" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Name" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="ArrayDeque" location="1604,525" size="289,728" id="java.util/ArrayDeque" runTimeClassModel="push(LE;),$assertionsDisabled,ArrayDeque(Ljava.util.Collection;),removeLast(),offerLast(LE;),getLast(),&lt;clinit>(),size(),iterator(),element(),getFirst(),remove(),ArrayDeque(),peekLast(),poll(),clear(),add(LE;),pollFirst(),removeLastOccurrence(Ljava.lang.Object;),remove(Ljava.lang.Object;),offerFirst(LE;),toArray([LT;),peekFirst(),pollLast(),contains(Ljava.lang.Object;),offer(LE;),toArray(),removeFirstOccurrence(Ljava.lang.Object;),addLast(LE;),addFirst(LE;),clone(),ArrayDeque(I),isEmpty(),descendingIterator(),removeFirst(),peek(),pop()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="189,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="$assertionsDisabled" id="java.util/ArrayDeque#$assertionsDisabled"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="266,648">
+      <children xsi:type="editmodel:MethodEditModel" name="ArrayDeque" id="java.util/ArrayDeque#ArrayDeque()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ArrayDeque" id="java.util/ArrayDeque#ArrayDeque(Ljava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ArrayDeque" id="java.util/ArrayDeque#ArrayDeque(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="java.util/ArrayDeque#add(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addFirst" id="java.util/ArrayDeque#addFirst(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addLast" id="java.util/ArrayDeque#addLast(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clear" id="java.util/ArrayDeque#clear()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="java.util/ArrayDeque#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="java.util/ArrayDeque#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="contains" id="java.util/ArrayDeque#contains(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="descendingIterator" id="java.util/ArrayDeque#descendingIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="element" id="java.util/ArrayDeque#element()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getFirst" id="java.util/ArrayDeque#getFirst()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLast" id="java.util/ArrayDeque#getLast()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isEmpty" id="java.util/ArrayDeque#isEmpty()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="iterator" id="java.util/ArrayDeque#iterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="offer" id="java.util/ArrayDeque#offer(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="offerFirst" id="java.util/ArrayDeque#offerFirst(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="offerLast" id="java.util/ArrayDeque#offerLast(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="peek" id="java.util/ArrayDeque#peek()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="peekFirst" id="java.util/ArrayDeque#peekFirst()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="peekLast" id="java.util/ArrayDeque#peekLast()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="poll" id="java.util/ArrayDeque#poll()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="pollFirst" id="java.util/ArrayDeque#pollFirst()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="pollLast" id="java.util/ArrayDeque#pollLast()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="pop" id="java.util/ArrayDeque#pop()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="push" id="java.util/ArrayDeque#push(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="java.util/ArrayDeque#remove(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="java.util/ArrayDeque#remove()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeFirst" id="java.util/ArrayDeque#removeFirst()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeFirstOccurrence" id="java.util/ArrayDeque#removeFirstOccurrence(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeLast" id="java.util/ArrayDeque#removeLast()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeLastOccurrence" id="java.util/ArrayDeque#removeLastOccurrence(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="size" id="java.util/ArrayDeque#size()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toArray" id="java.util/ArrayDeque#toArray()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toArray" id="java.util/ArrayDeque#toArray([LT;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="java.util/Deque&lt;-java.util/ArrayDeque" source="//@children.4" target="//@children.2" targetEnd="//@children.4/@sourceConnections.0/@children.1" sourceEnd="//@children.4/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,403" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="289,241" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Name" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="LinkedList" location="869,449" size="330,800" id="java.util/LinkedList" runTimeClassModel="push(LE;),last,indexOf(Ljava.lang.Object;),lastIndexOf(Ljava.lang.Object;),removeLast(),offerLast(LE;),size(),getLast(),element(),linkLast(LE;),getFirst(),add(ILE;),remove(),poll(),peekLast(),clear(),add(LE;),pollFirst(),removeLastOccurrence(Ljava.lang.Object;),remove(Ljava.lang.Object;),addAll(Ljava.util.Collection;),offerFirst(LE;),toArray([LT;),peekFirst(),pollLast(),contains(Ljava.lang.Object;),node(I),set(ILE;),LinkedList(),offer(LE;),size,addAll(ILjava.util.Collection;),unlink(Ljava.util.LinkedList.Node;),toArray(),listIterator(I),removeFirstOccurrence(Ljava.lang.Object;),get(I),linkBefore(LE;Ljava.util.LinkedList.Node;),addLast(LE;),LinkedList(Ljava.util.Collection;),addFirst(LE;),clone(),descendingIterator(),removeFirst(),remove(I),pop(),peek(),first">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="307,738">
+      <children xsi:type="editmodel:MethodEditModel" name="LinkedList" id="java.util/LinkedList#LinkedList()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="LinkedList" id="java.util/LinkedList#LinkedList(Ljava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="java.util/LinkedList#add(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="java.util/LinkedList#add(ILE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addAll" id="java.util/LinkedList#addAll(ILjava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addAll" id="java.util/LinkedList#addAll(Ljava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addFirst" id="java.util/LinkedList#addFirst(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addLast" id="java.util/LinkedList#addLast(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clear" id="java.util/LinkedList#clear()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clone" id="java.util/LinkedList#clone()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="contains" id="java.util/LinkedList#contains(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="descendingIterator" id="java.util/LinkedList#descendingIterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="element" id="java.util/LinkedList#element()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="get" id="java.util/LinkedList#get(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getFirst" id="java.util/LinkedList#getFirst()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLast" id="java.util/LinkedList#getLast()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="indexOf" id="java.util/LinkedList#indexOf(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="lastIndexOf" id="java.util/LinkedList#lastIndexOf(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="listIterator" id="java.util/LinkedList#listIterator(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="offer" id="java.util/LinkedList#offer(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="offerFirst" id="java.util/LinkedList#offerFirst(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="offerLast" id="java.util/LinkedList#offerLast(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="peek" id="java.util/LinkedList#peek()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="peekFirst" id="java.util/LinkedList#peekFirst()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="peekLast" id="java.util/LinkedList#peekLast()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="poll" id="java.util/LinkedList#poll()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="pollFirst" id="java.util/LinkedList#pollFirst()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="pollLast" id="java.util/LinkedList#pollLast()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="pop" id="java.util/LinkedList#pop()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="push" id="java.util/LinkedList#push(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="java.util/LinkedList#remove(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="java.util/LinkedList#remove(I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="java.util/LinkedList#remove()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeFirst" id="java.util/LinkedList#removeFirst()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeFirstOccurrence" id="java.util/LinkedList#removeFirstOccurrence(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeLast" id="java.util/LinkedList#removeLast()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeLastOccurrence" id="java.util/LinkedList#removeLastOccurrence(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="set" id="java.util/LinkedList#set(ILE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="size" id="java.util/LinkedList#size()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toArray" id="java.util/LinkedList#toArray()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toArray" id="java.util/LinkedList#toArray([LT;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="java.util/Deque&lt;-java.util/LinkedList" source="//@children.5" target="//@children.2" targetEnd="//@children.5/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="330,518" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,280" anchorKind="FixedAtEdge"/>
+      <bendpoints location="409,1627" secondRelativeDimension="77,803" firstRelativeDimension="9,-24"/>
+      <bendpoints location="409,849" secondRelativeDimension="9,25" firstRelativeDimension="101,-801"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="java.util/List&lt;-java.util/LinkedList" source="//@children.5" target="//@children.0" targetEnd="//@children.5/@sourceConnections.1/@children.1" sourceEnd="//@children.5/@sourceConnections.1/@children.0" connectionRouterKind="Manhattan" anchorType="ChopBox">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,343" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="330,319"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Name" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.0/@sourceConnections.0" name="Collection" location="612,29" size="294,345" id="java.util/Collection" runTimeClassModel="containsAll(Ljava.util.Collection;),addAll(Ljava.util.Collection;),toArray([LT;),contains(Ljava.lang.Object;),size(),iterator(),retainAll(Ljava.util.Collection;),toArray(),clear(),removeAll(Ljava.util.Collection;),add(LE;),isEmpty(),equals(Ljava.lang.Object;),hashCode(),remove(Ljava.lang.Object;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="271,270">
+      <children xsi:type="editmodel:MethodEditModel" name="add" id="java.util/Collection#add(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addAll" id="java.util/Collection#addAll(Ljava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="clear" id="java.util/Collection#clear()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="contains" id="java.util/Collection#contains(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="containsAll" id="java.util/Collection#containsAll(Ljava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="equals" id="java.util/Collection#equals(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="hashCode" id="java.util/Collection#hashCode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="isEmpty" id="java.util/Collection#isEmpty()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="iterator" id="java.util/Collection#iterator()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="remove" id="java.util/Collection#remove(Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeAll" id="java.util/Collection#removeAll(Ljava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="retainAll" id="java.util/Collection#retainAll(Ljava.util.Collection;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="size" id="java.util/Collection#size()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toArray" id="java.util/Collection#toArray()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toArray" id="java.util/Collection#toArray([LT;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="java.lang/Iterable&lt;-java.util/Collection" source="//@children.6" target="//@children.7" targetEnd="//@children.6/@sourceConnections.0/@children.1" sourceEnd="//@children.6/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,47" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="171,46"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Name" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.6/@sourceConnections.0" name="Iterable" location="376,30" size="171,93" id="java.lang/Iterable" runTimeClassModel="iterator()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="148,18">
+      <children xsi:type="editmodel:MethodEditModel" name="iterator" id="java.lang/Iterable#iterator()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsReturnType="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=1;Product=eUML2" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>

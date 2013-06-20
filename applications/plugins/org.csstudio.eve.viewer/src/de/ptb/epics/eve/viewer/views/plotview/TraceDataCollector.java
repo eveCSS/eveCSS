@@ -2,11 +2,12 @@ package de.ptb.epics.eve.viewer.views.plotview;
 
 import gov.aps.jca.dbr.TimeStamp;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.csstudio.swt.xygraph.dataprovider.CircularBuffer;
 import org.csstudio.swt.xygraph.dataprovider.IDataProvider;
 import org.csstudio.swt.xygraph.dataprovider.IDataProviderListener;
 import org.csstudio.swt.xygraph.dataprovider.ISample;
@@ -30,7 +31,7 @@ public class TraceDataCollector implements IDataProvider,
 	private List<IDataProviderListener> listeners;
 	private TraceInfo traceInfo;
 	private int size;
-	private List<Sample> data;
+	private CircularBuffer<Sample> data;
 	
 	private int motorPosCount;
 	private int detectorPosCount;
@@ -67,8 +68,8 @@ public class TraceDataCollector implements IDataProvider,
 		this.sampleSizeOfLastUpdate = 0;
 		this.timeOfLastSample = this.calendar.getTimeInMillis();
 		
-		this.data = new ArrayList<Sample>(this.size);
-		this.listeners = new ArrayList<IDataProviderListener>();
+		this.data = new CircularBuffer<Sample>(this.size);
+		this.listeners = new LinkedList<IDataProviderListener>();
 	}
 	
 	/**
@@ -77,7 +78,7 @@ public class TraceDataCollector implements IDataProvider,
 	@Override
 	public void measurementDataTransmitted(MeasurementData measurementData) {
 		if (measurementData.getName().equals(traceInfo.getMotorId())) {
-			this.motorPosCount++;
+			this.motorPosCount = measurementData.getPositionCounter();
 			switch (measurementData.getDataType()) {
 			case INT8:
 			case INT16:
@@ -112,7 +113,7 @@ public class TraceDataCollector implements IDataProvider,
 				measurementData.getName().equals(traceInfo.getDetectorId()))
 			|| (this.traceInfo.getModifier().equals(DataModifier.NORMALIZED) && 
 				measurementData.getName().equals(this.traceInfo.getNormalizeId()))) {
-			this.detectorPosCount++;
+			this.detectorPosCount = measurementData.getPositionCounter();
 			switch (measurementData.getDataType()) {
 			case INT8:
 			case INT16:
@@ -148,7 +149,14 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	private void checkForData() {
 		if (this.motorPosCount == this.detectorPosCount) {
-			this.data.add(new Sample(this.motorValue, this.detectorValue));
+			Sample sample = new Sample(this.motorValue, this.detectorValue);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Plot " + this.traceInfo.getPlotId() + " ("
+						+ this.traceInfo.getPlotName() + "): Pos: "
+						+ this.motorPosCount + " (" + sample.getXValue() + ", "
+						+ sample.getYValue() + ")");
+			}
+			this.data.add(sample);
 			
 			if (this.motorValue < this.xMin) {
 				this.xMin = this.motorValue;
@@ -190,7 +198,7 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	@Override
 	public ISample getSample(int i) {
-		return this.data.get(i);
+		return this.data.getElement(i);
 	}
 
 	/**

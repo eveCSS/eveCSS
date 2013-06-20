@@ -1,8 +1,6 @@
 package de.ptb.epics.eve.viewer.views.plotview.ui;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.commands.Command;
-import org.eclipse.core.commands.State;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -20,8 +18,6 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
@@ -89,14 +85,14 @@ public class PlotView extends ViewPart {
 		
 		TabFolder tabFolder = new TabFolder(sashForm, SWT.BORDER);
 		itemAxis1 = new TabItem(tabFolder, SWT.NONE);
-		itemAxis1.setText("Tab1");
+		itemAxis1.setText("-");
 		Composite table1Composite = new Composite(tabFolder, SWT.NONE);
 		table1Composite.setLayout(new FillLayout());
 		itemAxis1.setControl(table1Composite);
 		table1Viewer = this.createTable(table1Composite);
 		
 		itemAxis2 = new TabItem(tabFolder, SWT.NONE);
-		itemAxis2.setText("Tab2");
+		itemAxis2.setText("-");
 		Composite table2Composite = new Composite(tabFolder, SWT.NONE);
 		table2Composite.setLayout(new FillLayout());
 		itemAxis2.setControl(table2Composite);
@@ -214,11 +210,11 @@ public class PlotView extends ViewPart {
 			itemAxis1.setText(yAxis1.getDetectorChannel().getName() + "/"
 					+ yAxis1.getNormalizeChannel().getName());
 			fillTable(table1Viewer, plotWindow, yAxis1.getDetectorChannel()
-					.getID() + "__" + yAxis1.getNormalizeChannel().getID(), true);
+					.getID() + "__" + yAxis1.getNormalizeChannel().getID(), true, 1);
 		} else {
 			itemAxis1.setText(yAxis1.getDetectorChannel().getName());
 			fillTable(table1Viewer, plotWindow, yAxis1.getDetectorChannel()
-					.getID(), false);
+					.getID(), false, 1);
 		}
 		if (plotWindow.getYAxisAmount() > 1) {
 			YAxis yAxis2 = plotWindow.getYAxes().get(1);
@@ -227,11 +223,11 @@ public class PlotView extends ViewPart {
 						+ "/" + yAxis2.getNormalizeChannel().getName());
 				fillTable(table2Viewer, plotWindow, yAxis2
 						.getDetectorChannel().getID() + "__"
-						+ yAxis2.getNormalizeChannel().getID(), true);
+						+ yAxis2.getNormalizeChannel().getID(), true, 2);
 			} else {
 				itemAxis2.setText(yAxis2.getDetectorChannel().getName());
 				fillTable(table2Viewer, plotWindow, yAxis2.getDetectorChannel()
-						.getID(), false);
+						.getID(), false, 2);
 			}
 		} else {
 			itemAxis2.setText("-");
@@ -244,7 +240,7 @@ public class PlotView extends ViewPart {
 	 * 
 	 */
 	private void fillTable(TableViewer tableViewer, PlotWindow plotWindow,
-			String detectorId, boolean normalized) {
+			String detectorId, boolean normalized, int axis) {
 		// create a content provider for the table...
 		MathTableContentProvider contentProvider = 
 				(MathTableContentProvider) tableViewer.getContentProvider();
@@ -254,6 +250,32 @@ public class PlotView extends ViewPart {
 		final String motorId = plotWindow.getXAxis().getID();
 		final String motorPv = plotWindow.getXAxis().getGoto().getAccess()
 				.getVariableID();
+		
+		// renaming table columns
+		tableViewer.getTable().getColumn(2)
+				.setText(plotWindow.getXAxis().getName());
+		tableViewer.getTable().getColumn(2)
+				.setToolTipText(plotWindow.getXAxis().getName());
+		String columnName = "Channel";
+		if (axis == 1) {
+			YAxis yAxis = plotWindow.getYAxes().get(0);
+			if (normalized) {
+				columnName = yAxis.getDetectorChannel().getName() + "/"
+						+ yAxis.getNormalizeChannel().getName();
+			} else {
+				columnName = yAxis.getDetectorChannel().getName();
+			}
+		} else if (axis == 2) {
+			YAxis yAxis = plotWindow.getYAxes().get(1);
+			if (normalized) {
+				columnName = yAxis.getDetectorChannel().getName() + "/"
+						+ yAxis.getNormalizeChannel().getName();
+			} else {
+				columnName = yAxis.getDetectorChannel().getName();
+			}
+		}
+		tableViewer.getTable().getColumn(1).setText(columnName);
+		tableViewer.getTable().getColumn(1).setToolTipText(columnName);
 		
 		MathTableElement element;
 		if (normalized) {
@@ -316,20 +338,6 @@ public class PlotView extends ViewPart {
 			this.showStats = false;
 			this.sashForm.setMaximizedControl(this.canvas);
 		}
-		
-		/*
-		ICommandService commandService =
-				(ICommandService) PlatformUI.getWorkbench()
-					.getService(ICommandService.class);
-		Command toggleCommand = commandService.getCommand(
-			"de.ptb.epics.eve.viewer.views.plotview.togglestats");
-	
-		State state = toggleCommand.getState
-			("de.ptb.epics.eve.viewer.views.plotview.togglestats.togglestate");
-	
-		state.setValue(this.showStats);
-		
-		commandService.refreshElements(toggleCommand.getId(), null);*/
 	}
 	
 	/**
@@ -338,6 +346,8 @@ public class PlotView extends ViewPart {
 	@Override
 	public void setFocus() {
 		this.sashForm.setFocus();
+		
+		
 	}
 	
 	/**
