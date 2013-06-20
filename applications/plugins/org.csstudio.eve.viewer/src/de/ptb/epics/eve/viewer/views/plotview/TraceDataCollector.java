@@ -2,6 +2,7 @@ package de.ptb.epics.eve.viewer.views.plotview;
 
 import gov.aps.jca.dbr.TimeStamp;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class TraceDataCollector implements IDataProvider,
 	private List<IDataProviderListener> listeners;
 	private TraceInfo traceInfo;
 	private int size;
-	private CircularBuffer<Sample> data;
+	private List<Sample> data;
 	
 	private int motorPosCount;
 	private int detectorPosCount;
@@ -68,7 +69,7 @@ public class TraceDataCollector implements IDataProvider,
 		this.sampleSizeOfLastUpdate = 0;
 		this.timeOfLastSample = this.calendar.getTimeInMillis();
 		
-		this.data = new CircularBuffer<Sample>(this.size);
+		this.data = new ArrayList<Sample>(this.size);
 		this.listeners = new LinkedList<IDataProviderListener>();
 	}
 	
@@ -198,7 +199,7 @@ public class TraceDataCollector implements IDataProvider,
 	 */
 	@Override
 	public ISample getSample(int i) {
-		return this.data.getElement(i);
+		return this.data.get(i);
 	}
 
 	/**

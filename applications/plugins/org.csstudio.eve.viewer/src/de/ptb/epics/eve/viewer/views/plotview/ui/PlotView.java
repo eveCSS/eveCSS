@@ -346,8 +346,6 @@ public class PlotView extends ViewPart {
 	@Override
 	public void setFocus() {
 		this.sashForm.setFocus();
-		
-		
 	}
 	
 	/**
