@@ -61,6 +61,13 @@ public class XyPlot extends Figure {
 			this.xyGraph.setTitle(plotWindow.getName());
 			this.initXAxis(plotWindow);
 			this.initYAxes(plotWindow);
+		} else {
+			for (TraceDataCollector coll : this.collectors) {
+				Activator.getDefault().getEcp1Client()
+						.addMeasurementDataListener(coll);
+			}
+			LOGGER.debug("PlotWindow " + plotWindow.getId() 
+					+ ": no init -> reenable listeners");
 		}
 		LOGGER.debug("PlotWindow " + plotWindow.getId() + " set");
 	}
@@ -201,9 +208,16 @@ public class XyPlot extends Figure {
 		if (!this.currentPlotWindow.getXAxis().equals(plotWindow.getXAxis())) {
 			return true;
 		}
+		// are there any "conflicting" axes ?
+		// is there a "new" axis ? (Ticket # 749 case 4)
 		for (YAxis yAxis : plotWindow.getYAxes()) {
-			// are there any "conflicting" axes ?
 			if (!this.currentPlotWindow.getYAxes().contains(yAxis)) {
+				return true;
+			}
+		}
+		// is any axis gone ? (Ticket # 749 case 1, 2)
+		for (YAxis yAxis : this.currentPlotWindow.getYAxes()) {
+			if (!plotWindow.getYAxes().contains(yAxis)) {
 				return true;
 			}
 		}
