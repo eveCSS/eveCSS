@@ -1,6 +1,8 @@
 package de.ptb.epics.eve.viewer.views.plotview.ui;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.State;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -18,6 +20,8 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
@@ -101,6 +105,7 @@ public class PlotView extends ViewPart {
 		this.setPartName("Plot: " + this.getViewSite().getSecondaryId());
 		
 		this.restoreState();
+		this.refreshToggleButton();
 	}
 
 	/*
@@ -351,6 +356,23 @@ public class PlotView extends ViewPart {
 	@Override
 	public void setFocus() {
 		this.sashForm.setFocus();
+		this.refreshToggleButton();
+	}
+	
+	/*
+	 * 
+	 */
+	private void refreshToggleButton() {
+		ICommandService commandService = (ICommandService) PlatformUI
+				.getWorkbench().getService(ICommandService.class);
+		Command toggleCommand = commandService
+				.getCommand("de.ptb.epics.eve.viewer.views.plotview.togglestats");
+
+		State state = toggleCommand
+				.getState("org.eclipse.ui.commands.toggleState");
+
+		state.setValue(this.showStats);
+		commandService.refreshElements(toggleCommand.getId(), null);
 	}
 	
 	/**
