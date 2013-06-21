@@ -119,6 +119,7 @@ public class PlotView extends ViewPart {
 		nameColumn.getColumn().setText("");
 		nameColumn.getColumn().setWidth(85);
 		nameColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) {
 				return ((MathTableElement) element).getName();
 			}
@@ -130,6 +131,7 @@ public class PlotView extends ViewPart {
 		valueColumn.getColumn().setText("Channel");
 		valueColumn.getColumn().setWidth(140);
 		valueColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) {
 				return ((MathTableElement) element).getValue();
 			}
@@ -142,6 +144,7 @@ public class PlotView extends ViewPart {
 		motorColumn.getColumn().setText("Axis");
 		motorColumn.getColumn().setWidth(100);
 		motorColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public String getText(Object element) {
 				return ((MathTableElement) element).getPosition();
 			}
@@ -173,12 +176,14 @@ public class PlotView extends ViewPart {
 			}
 		});
 		gotoColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
 			public Image getImage(Object element) {
 				if (((MathTableElement)element).drawIcon()) 
 					return gotoIcon;
 				else
 					return null;
 			}
+			@Override
 			public String getText(Object element) {
 				return null;
 			}

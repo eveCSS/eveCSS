@@ -62,11 +62,6 @@ public class XyPlot extends Figure {
 			this.initXAxis(plotWindow);
 			this.initYAxes(plotWindow);
 		}
-		for (TraceDataCollector coll : this.collectors) {
-			Activator.getDefault().getEcp1Client()
-					.addMeasurementDataListener(coll);
-		}
-		// MDC.put("plot_id", plotWindow.getId()); // TODO test
 		LOGGER.debug("PlotWindow " + plotWindow.getId() + " set");
 	}
 	
@@ -82,13 +77,21 @@ public class XyPlot extends Figure {
 			this.xyGraph.primaryXAxis.setTimeUnit(Calendar.MILLISECOND);
 		}
 		this.xyGraph.primaryXAxis.setDateEnabled(timedata_x);
+		switch (this.currentPlotWindow.getMode()) {
+		case LINEAR:
+			this.xyGraph.primaryXAxis.setLogScale(false);
+			break;
+		case LOG:
+			this.xyGraph.primaryXAxis.setLogScale(true);
+			break;
+		}
 	}
 	
 	/*
 	 * 
 	 */
 	private void initYAxes(PlotWindow plotWindow) {
-		for (int i=0; i<plotWindow.getYAxes().size(); i++) {
+		for (int i = 0; i < plotWindow.getYAxes().size(); i++) {
 			YAxis yAxis = plotWindow.getYAxes().get(i);
 			Axis axis = null;
 			
@@ -125,6 +128,14 @@ public class XyPlot extends Figure {
 				}
 				axis.setTickLableSide(LabelSide.Secondary);
 				this.xyGraph.addAxis(axis);
+			}
+			switch (yAxis.getMode()) {
+			case LINEAR:
+				axis.setLogScale(false);
+				break;
+			case LOG:
+				axis.setLogScale(true);
+				break;
 			}
 			if (yAxis.getDetectorChannel().getRead().getType()
 					.equals(DataTypes.DATETIME)) {

@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.csstudio.swt.xygraph.dataprovider.CircularBuffer;
 import org.csstudio.swt.xygraph.dataprovider.IDataProvider;
 import org.csstudio.swt.xygraph.dataprovider.IDataProviderListener;
 import org.csstudio.swt.xygraph.dataprovider.ISample;
@@ -65,7 +64,7 @@ public class TraceDataCollector implements IDataProvider,
 		this.xMax = this.yMax = Double.NEGATIVE_INFINITY;
 		
 		this.calendar = Calendar.getInstance();
-		this.updateStrategy = new TimeAndSampleSizeUpdateStrategy(500);
+		this.updateStrategy = new TimeAndSampleSizeUpdateStrategy(1000);
 		this.sampleSizeOfLastUpdate = 0;
 		this.timeOfLastSample = this.calendar.getTimeInMillis();
 		
@@ -153,7 +152,11 @@ public class TraceDataCollector implements IDataProvider,
 			Sample sample = new Sample(this.motorValue, this.detectorValue);
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Plot " + this.traceInfo.getPlotId() + " ("
-						+ this.traceInfo.getPlotName() + "): Pos: "
+						+ this.traceInfo.getPlotName() + ") - " 
+						+ (this.traceInfo.getNormalizeId() != "" 
+							? this.traceInfo.getNormalizeId() 
+							: this.traceInfo.getDetectorId())
+						+ ": Pos: "
 						+ this.motorPosCount + " (" + sample.getXValue() + ", "
 						+ sample.getYValue() + ")");
 			}
