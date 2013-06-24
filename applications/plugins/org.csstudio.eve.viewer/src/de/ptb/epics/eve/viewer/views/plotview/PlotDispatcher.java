@@ -18,6 +18,7 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
 import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
 import de.ptb.epics.eve.ecp1.types.ChainStatus;
+import de.ptb.epics.eve.util.data.Pair;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.XMLDispatcher;
 import de.ptb.epics.eve.viewer.views.plotview.ui.PlotView;
@@ -35,6 +36,7 @@ public class PlotDispatcher implements PropertyChangeListener,
 
 	private ScanDescription scanDescription = null;
 	private List<PlotView> plotViews = new ArrayList<PlotView>();
+	private List<Pair<Integer, Integer>> initializedModules;
 	
 	/**
 	 * {@inheritDoc}
@@ -44,6 +46,7 @@ public class PlotDispatcher implements PropertyChangeListener,
 		if (e.getPropertyName().equals(XMLDispatcher.SCAN_DESCRIPTION_PROP)) {
 			if (e.getNewValue() instanceof ScanDescription) {
 				this.scanDescription = (ScanDescription)e.getNewValue();
+				this.initializedModules = new ArrayList<Pair<Integer, Integer>>();
 				LOGGER.debug("new scan description received");
 			}
 		}
@@ -70,6 +73,16 @@ public class PlotDispatcher implements PropertyChangeListener,
 			if (sm == null) {
 				return;
 			}
+			if (this.initializedModules.contains(
+					new Pair<Integer, Integer>(chain.getId(), sm.getId()))) {
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("SM " + sm.getId() + " (Chain "
+							+ chain.getId() + ") already initialized");
+				}
+				return;
+			}
+			this.initializedModules.add(new Pair<Integer, Integer>(chain
+					.getId(), sm.getId()));
 			Activator.getDefault().getWorkbench().getDisplay()
 					.syncExec(new Runnable() {
 						@Override
@@ -90,6 +103,8 @@ public class PlotDispatcher implements PropertyChangeListener,
 			if (sm == null) {
 				return;
 			}
+			this.initializedModules.remove(new Pair<Integer, Integer>(chain
+					.getId(), sm.getId()));
 			LOGGER.debug("finishing SM " + sm.getId() + " (Chain "
 					+ chain.getId() + ")");
 			for (final PlotView plotView : this.plotViews) {
