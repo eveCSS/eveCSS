@@ -294,10 +294,17 @@ public class DefaultsManager {
 			defaultsAxis.setMainAxis(axis.isMainAxis());
 			switch(axis.getType()) {
 			case DATETIME:
-				defaultsAxis.setStartStopStepType(DataTypes.DATETIME);
-				defaultsAxis.setStart((Date)axis.getStart());
-				defaultsAxis.setStop((Date)axis.getStop());
-				defaultsAxis.setStepwidth((Date)axis.getStepwidth());
+				if (axis.getPositionMode().equals(PositionMode.ABSOLUTE)) {
+					defaultsAxis.setStartStopStepType(DataTypes.DATETIME);
+					defaultsAxis.setStart((Date) axis.getStart());
+					defaultsAxis.setStop((Date) axis.getStop());
+					defaultsAxis.setStepwidth((Date) axis.getStepwidth());
+				} else {
+					defaultsAxis.setStartStopStepType(DataTypes.DATETIME);
+					defaultsAxis.setStart((Duration)axis.getStart());
+					defaultsAxis.setStop((Duration)axis.getStop());
+					defaultsAxis.setStepwidth((Duration)axis.getStepwidth());
+				}
 				break;
 			case DOUBLE:
 				defaultsAxis.setStartStopStepType(DataTypes.DOUBLE);
