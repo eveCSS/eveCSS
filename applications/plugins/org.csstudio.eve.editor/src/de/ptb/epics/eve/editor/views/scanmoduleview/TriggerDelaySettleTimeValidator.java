@@ -30,9 +30,9 @@ public class TriggerDelaySettleTimeValidator implements IValidator {
 		}
 		try {
 			double d = Double.parseDouble(val);
-			if (d <= 0.0) {
+			if (d < 0.0) {
 				return ValidationStatus.error(this.message + 
-						" must be positive!");
+						" must be non negative!");
 			}
 			return ValidationStatus.ok();
 		} catch (NumberFormatException e) {
