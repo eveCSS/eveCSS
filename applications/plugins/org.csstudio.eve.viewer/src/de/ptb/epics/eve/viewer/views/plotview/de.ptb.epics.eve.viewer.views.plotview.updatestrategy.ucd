@@ -8,19 +8,19 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterNames="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="SampleSizeUpdateStrategy" location="60,255" size="592,67" id="de.ptb.epics.eve.viewer.views.plotview/SampleSizeUpdateStrategy" runTimeClassModel="update(JII)">
+  <children xsi:type="editmodel:ClassEditModel" name="SampleSizeUpdateStrategy" location="300,210" size="592,67" id="de.ptb.epics.eve.viewer.views.plotview/SampleSizeUpdateStrategy" runTimeClassModel="update(JII)">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="569,18">
       <children xsi:type="editmodel:MethodEditModel" name="update" id="de.ptb.epics.eve.viewer.views.plotview/SampleSizeUpdateStrategy#update(JII)"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="de.ptb.epics.eve.viewer.views.plotview/UpdateStrategy&lt;-de.ptb.epics.eve.viewer.views.plotview/SampleSizeUpdateStrategy" source="//@children.1" target="//@children.0" targetEnd="//@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.1/@sourceConnections.0/@children.0" connectionRouterKind="Manhattan">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="287,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="497,0" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="152,80"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterNames="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="TimeUpdateStrategy" location="645,255" size="592,85" id="de.ptb.epics.eve.viewer.views.plotview/TimeUpdateStrategy" runTimeClassModel="TimeUpdateStrategy(J),update(JII)">
+  <children xsi:type="editmodel:ClassEditModel" name="TimeUpdateStrategy" location="945,210" size="592,85" id="de.ptb.epics.eve.viewer.views.plotview/TimeUpdateStrategy" runTimeClassModel="TimeUpdateStrategy(J),update(JII)">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="569,36">
       <children xsi:type="editmodel:MethodEditModel" name="TimeUpdateStrategy" id="de.ptb.epics.eve.viewer.views.plotview/TimeUpdateStrategy#TimeUpdateStrategy(J)"/>
@@ -28,12 +28,12 @@
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.views.plotview/UpdateStrategy&lt;-de.ptb.epics.eve.viewer.views.plotview/TimeUpdateStrategy" source="//@children.2" target="//@children.0" targetEnd="//@children.2/@sourceConnections.0/@children.1" sourceEnd="//@children.2/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="296,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="296,80"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="145,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="445,80"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterNames="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="TimeAndSampleSizeUpdateStrategy" location="1245,255" size="592,85" id="de.ptb.epics.eve.viewer.views.plotview/TimeAndSampleSizeUpdateStrategy" runTimeClassModel="update(JII),TimeAndSampleSizeUpdateStrategy(J)">
+  <children xsi:type="editmodel:ClassEditModel" name="TimeAndSampleSizeUpdateStrategy" location="645,315" size="592,85" id="de.ptb.epics.eve.viewer.views.plotview/TimeAndSampleSizeUpdateStrategy" runTimeClassModel="update(JII),TimeAndSampleSizeUpdateStrategy(J)">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="569,36">
       <children xsi:type="editmodel:MethodEditModel" name="TimeAndSampleSizeUpdateStrategy" id="de.ptb.epics.eve.viewer.views.plotview/TimeAndSampleSizeUpdateStrategy#TimeAndSampleSizeUpdateStrategy(J)"/>
@@ -42,11 +42,11 @@
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="de.ptb.epics.eve.viewer.views.plotview/UpdateStrategy&lt;-de.ptb.epics.eve.viewer.views.plotview/TimeAndSampleSizeUpdateStrategy" source="//@children.3" target="//@children.0" targetEnd="//@children.3/@sourceConnections.0/@children.1" sourceEnd="//@children.3/@sourceConnections.0/@children.0" connectionRouterKind="Manhattan">
       <children xsi:type="editmodel:AssociationEndEditModel" location="282,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="436,80"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="284,80"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterNames="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="TraceDataCollector" location="90,45" size="313,85" id="de.ptb.epics.eve.viewer.views.plotview/TraceDataCollector" runTimeClassModel="isChronological(),getSize(),getYDataMinMax(),setUpdateStratety(Lde.ptb.epics.eve.viewer.views.plotview.UpdateStrategy;),getXDataMinMax(),TraceDataCollector(ILde.ptb.epics.eve.viewer.views.plotview.TraceInfo;),addDataProviderListener(Lorg.csstudio.swt.xygraph.dataprovider.IDataProviderListener;),publish(),removeDataProviderListener(Lorg.csstudio.swt.xygraph.dataprovider.IDataProviderListener;),size,measurementDataTransmitted(Lde.ptb.epics.eve.ecp1.client.model.MeasurementData;),getSample(I),updateStrategy">
+  <children xsi:type="editmodel:ClassEditModel" name="TraceDataCollector" location="135,42" size="313,85" id="de.ptb.epics.eve.viewer.views.plotview/TraceDataCollector" runTimeClassModel="measurementDataTransmitted(Lde.ptb.epics.eve.ecp1.client.model.MeasurementData;),isChronological(),getYDataMinMax(),getSize(),setUpdateStratety(Lde.ptb.epics.eve.viewer.views.plotview.UpdateStrategy;),getSample(I),getXDataMinMax(),addDataProviderListener(Lorg.csstudio.swt.xygraph.dataprovider.IDataProviderListener;),TraceDataCollector(ILde.ptb.epics.eve.viewer.views.plotview.TraceInfo;),publish(),removeDataProviderListener(Lorg.csstudio.swt.xygraph.dataprovider.IDataProviderListener;),size">
     <children xsi:type="editmodel:CompartmentEditModel" size="201,18">
       <children xsi:type="editmodel:AttributeEditModel" name="updateStrategy" id="de.ptb.epics.eve.viewer.views.plotview/TraceDataCollector#updateStrategy"/>
     </children>
@@ -54,9 +54,9 @@
       <children xsi:type="editmodel:MethodEditModel" name="setUpdateStratety" id="de.ptb.epics.eve.viewer.views.plotview/TraceDataCollector#setUpdateStratety(Lde.ptb.epics.eve.viewer.views.plotview.UpdateStrategy;)"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.views.plotview/TraceDataCollector->Soyatec::Import" source="//@children.4" target="//@children.0" targetEnd="//@children.4/@sourceConnections.0/@children.2" label="//@children.4/@sourceConnections.0/@children.0" sourceEnd="//@children.4/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="de.ptb.epics.eve.viewer.views.plotview/TraceDataCollector-Standard::Call->de.ptb.epics.eve.viewer.views.plotview/UpdateStrategy*de.ptb.epics.eve.viewer.views.plotview/TraceDataCollector-Soyatec::Import->de.ptb.epics.eve.viewer.views.plotview/UpdateStrategy" source="//@children.4" target="//@children.0" targetEnd="//@children.4/@sourceConnections.0/@children.2" label="//@children.4/@sourceConnections.0/@children.0" sourceEnd="//@children.4/@sourceConnections.0/@children.1" connectionRouterKind="Manual">
       <children xsi:type="editmodel:WireLabelEditModel" name="«Import, Call»" size="80,13" anchorKind="MiddlePart"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="313,40" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="313,43" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel" location="0,40"/>
     </sourceConnections>
     <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterNames="true" showMethodsParameterKinds="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
