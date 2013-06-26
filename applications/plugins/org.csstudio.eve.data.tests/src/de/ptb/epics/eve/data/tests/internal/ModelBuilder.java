@@ -1,7 +1,10 @@
 package de.ptb.epics.eve.data.tests.internal;
 
+import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.MethodTypes;
+import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.measuringstation.Access;
+import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Function;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
@@ -17,16 +20,16 @@ public class ModelBuilder {
 		m.add(ma);
 		return m;
 	}
-	
+
 	public static Motor createMotor(String id) {
 		Motor m = new Motor();
 		m.setId(id);
 		m.setName(id);
 		m.setClassName("MotorClass");
-		
+
 		return m;
 	}
-	
+
 	public static MotorAxis createMotorAxis(String id) {
 		MotorAxis ma = new MotorAxis();
 		ma.setId(id);
@@ -34,7 +37,7 @@ public class ModelBuilder {
 		ma.setClassName("MotorAxisClass");
 		return ma;
 	}
-	
+
 	public static Option createOption(String id) {
 		Option o = new Option();
 		o.setId(id);
@@ -42,5 +45,17 @@ public class ModelBuilder {
 		o.setClassName("OptionClass");
 		o.setValue(new Function(new Access(MethodTypes.GET)));
 		return o;
+	}
+
+	public static Device createDevice(String id) {
+		Device device = new Device();
+		device.setId(id);
+		device.setName(id);
+		device.setClassName("DeviceClass");
+		Access access = new Access("accessVarId", DataTypes.STRING, 0,
+				MethodTypes.GET, TransportTypes.LOCAL, 0);
+		Function function = new Function(access);
+		device.setValue(function);
+		return device;
 	}
 }

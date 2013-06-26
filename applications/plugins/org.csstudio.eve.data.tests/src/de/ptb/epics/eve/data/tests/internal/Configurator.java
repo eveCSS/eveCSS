@@ -84,6 +84,7 @@ public class Configurator {
 		ims.setSchemaFileName(Configurator.getSchemaFile().getAbsolutePath());
 		
 		ims.add(ModelBuilder.createMotorWithAxisAndOptions());
+		ims.add(ModelBuilder.createDevice("testDevice"));
 		
 		return ims;
 	}

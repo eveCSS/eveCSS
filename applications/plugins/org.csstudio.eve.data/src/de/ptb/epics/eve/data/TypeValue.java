@@ -119,22 +119,26 @@ public class TypeValue {
 		isDiscrete = false;
 		if(values == null) return;
 		
-		if (((type == DataTypes.INT)||(type == DataTypes.DOUBLE)) && values.contains("to")) {
+		if (((type == DataTypes.INT) || (type == DataTypes.DOUBLE))
+				&& values.contains("to")) {
 			// we have a range
-			String[] splits = values.split( "to" );
-			if (splits.length == 2){
-				hasRange=true;
+			String[] splits = values.split("to");
+			if (splits.length == 2) {
+				hasRange = true;
 				try {
-					if (type == DataTypes.INT){
-						elements.add(Integer.toString(Integer.parseInt(splits[0].trim())));
-						elements.add(Integer.toString(Integer.parseInt(splits[1].trim())));
+					if (type == DataTypes.INT) {
+						elements.add(Integer.toString(Integer
+								.parseInt(splits[0].trim())));
+						elements.add(Integer.toString(Integer
+								.parseInt(splits[1].trim())));
+					} else {
+						elements.add(Double.toString(Double
+								.parseDouble(splits[0].trim())));
+						elements.add(Double.toString(Double
+								.parseDouble(splits[1].trim())));
 					}
-					else {
-						elements.add(Double.toString(Double.parseDouble(splits[0].trim())));
-						elements.add(Double.toString(Double.parseDouble(splits[1].trim())));
-					}
-				} catch(final NumberFormatException e) {
-					hasRange=false;
+				} catch (final NumberFormatException e) {
+					hasRange = false;
 				}
 			}
 		}
@@ -200,9 +204,7 @@ public class TypeValue {
 	 * @return a formatted string or null
 	 */
 	public String formatValue(String value) {
-		
 		String returnString = DataTypes.formatValue(type, value);
-
 		if (returnString != null){
 			if (isDiscrete) {
 				if (!elements.contains(returnString))
@@ -213,15 +215,15 @@ public class TypeValue {
 					Integer intval = Integer.parseInt(returnString);
 					if (!((Integer.parseInt(elements.get(0)) <= intval) && 
 							(Integer.parseInt(elements.get(1)) >= intval))) {
-						returnString = null;					
+						returnString = null;
 					}
 				}
 				else if (type == DataTypes.DOUBLE){
 					Double dblval = Double.parseDouble(returnString);
 					if (!((Double.parseDouble(elements.get(0)) <= dblval) && 
 							(Double.parseDouble(elements.get(1)) >= dblval))) {
-						returnString = null;					
-					}			
+						returnString = null;
+					}
 				}
 			}
 		}
@@ -236,7 +238,6 @@ public class TypeValue {
 	 * @return a formatted string or null
 	 */
 	public String formatValueDefault(String value) {
-		
 		String returnString = formatValue(value);
 		if (returnString == null){
 			if (isDiscrete || hasRange)
@@ -255,7 +256,6 @@ public class TypeValue {
 	 * @return a default value
 	 */
 	public String getDefaultValue() {
-
 		if (isDiscrete || hasRange)
 			return elements.get(0);
 		else {
@@ -290,35 +290,35 @@ public class TypeValue {
 	 * 			<code>false</code> otherwise
 	 */
 	@Override
-	public boolean equals( final Object obj ) {
-		if( this == obj ) {
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
 		}
-		if( obj == null ) {
+		if (obj == null) {
 			return false;
 		}
-		if( getClass() != obj.getClass() ) {
+		if (getClass() != obj.getClass()) {
 			return false;
 		}
 		final TypeValue other = (TypeValue) obj;
-		if( elements == null ) {
-			if( other.elements != null ) {
+		if (elements == null) {
+			if (other.elements != null) {
 				return false;
 			}
-		} else if( !elements.equals( other.elements ) ) {
+		} else if (!elements.equals(other.elements)) {
 			return false;
 		}
-		if( hasRange != other.hasRange ) {
+		if (hasRange != other.hasRange) {
 			return false;
 		}
-		if( isDiscrete != other.isDiscrete ) {
+		if (isDiscrete != other.isDiscrete) {
 			return false;
 		}
-		if( type == null ) {
-			if( other.type != null ) {
+		if (type == null) {
+			if (other.type != null) {
 				return false;
 			}
-		} else if( !type.equals(other.type ) ) {
+		} else if (!type.equals(other.type)) {
 			return false;
 		}
 		return true;

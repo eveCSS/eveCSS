@@ -362,7 +362,7 @@ public class Access {
 			if(other.variableID != null) {
 				return false;
 			}
-		} else if(!variableID.equals( other.variableID)) {
+		} else if(!variableID.equals(other.variableID)) {
 			return false;
 		}
 		return true;
