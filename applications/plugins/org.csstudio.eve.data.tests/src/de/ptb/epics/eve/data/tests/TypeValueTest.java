@@ -12,6 +12,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import de.ptb.epics.eve.data.TypeValue;
+import de.ptb.epics.eve.data.measuringstation.Detector;
+import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
@@ -134,12 +136,21 @@ public class TypeValueTest {
 							TypeValue clone = (TypeValue)value.clone();
 							assertTrue(value.equals(clone));
 							assertTrue(clone.equals(value));
-						} else {
 						}
 					}
 				}
 			}
-			// TODO Detectors ? , Devices ? , etc ?
+			for (Detector d : measuringStation.getDetectors()) {
+				// TODO
+			}
+			for (Device dev : measuringStation.getDevices()) {
+				if (dev.getValue().getValue() != null) {
+					TypeValue value = dev.getValue().getValue();
+					TypeValue clone = (TypeValue)value.clone();
+					assertTrue(value.equals(clone));
+					assertTrue (clone.equals(value));
+				}
+			}
 		}
 	}
 	
@@ -183,6 +194,16 @@ public class TypeValueTest {
 							assertTrue(clone.equals(value));
 						}
 					}
+				}
+			}
+			for (Detector d : measuringStation.getDetectors()) {
+				// TODO
+			}
+			for (Device dev : measuringStation.getDevices()) {
+				TypeValue typeValue = dev.getValue().getValue();
+				if (typeValue != null) {
+					TypeValue cloneValue = dev.getValue().getValue();
+					assertEquals(typeValue, cloneValue);
 				}
 			}
 		}
