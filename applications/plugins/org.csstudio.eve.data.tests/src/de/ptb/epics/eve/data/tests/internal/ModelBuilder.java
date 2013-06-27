@@ -3,6 +3,7 @@ package de.ptb.epics.eve.data.tests.internal;
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.MethodTypes;
 import de.ptb.epics.eve.data.TransportTypes;
+import de.ptb.epics.eve.data.TypeValue;
 import de.ptb.epics.eve.data.measuringstation.Access;
 import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Function;
@@ -54,7 +55,8 @@ public class ModelBuilder {
 		device.setClassName("DeviceClass");
 		Access access = new Access("accessVarId", DataTypes.STRING, 0,
 				MethodTypes.GET, TransportTypes.LOCAL, 0);
-		Function function = new Function(access);
+		TypeValue typeValue = new TypeValue(DataTypes.STRING, "open, close");
+		Function function = new Function(access, typeValue);
 		device.setValue(function);
 		return device;
 	}
