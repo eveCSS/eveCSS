@@ -1,5 +1,10 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.13
+
+* [Bug Fix] Trigger Delay now accepts 0 as input
+* [Bug Fix] removed a bug where a scan description containing an axis with relative time could not be saved
+
 h2(eveTopic). Version 1.12
 
 * [Feature] Introduced the Scan View (remember to reset the editor perspective)

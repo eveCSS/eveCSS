@@ -1,5 +1,13 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.13
+
+* [Feature] improved performance of plots
+* [Feature] plot statistics are now hideable
+
+* [Bug Fix] the plot widget now expands (and shrinks) with window size
+* [Bug Fix] removed a bug where a device with discrete values could be added twice to the device inspector
+
 h2(eveTopic). Version 1.12
 
 * [Bug Fix] fixed a bug where a plot did not draw more than one y axis anymore after updating to CSS v3.1
