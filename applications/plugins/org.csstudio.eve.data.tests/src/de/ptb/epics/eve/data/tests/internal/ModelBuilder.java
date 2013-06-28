@@ -54,7 +54,7 @@ public class ModelBuilder {
 		device.setName(id);
 		device.setClassName("DeviceClass");
 		Access access = new Access("accessVarId", DataTypes.STRING, 0,
-				MethodTypes.GET, TransportTypes.LOCAL, 0);
+				MethodTypes.GETCB, TransportTypes.CA, 0);
 		TypeValue typeValue = new TypeValue(DataTypes.STRING, "open, close");
 		Function function = new Function(access, typeValue);
 		device.setValue(function);
