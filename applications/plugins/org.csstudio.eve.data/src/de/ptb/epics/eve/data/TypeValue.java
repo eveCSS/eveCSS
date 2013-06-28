@@ -146,8 +146,9 @@ public class TypeValue {
 			// we have discrete values
 			String[] splits = values.split( "," );
 			for (String string : splits){
-				string.trim().replace("\"", "");
-				if (string.length() > 0) elements.add(string);
+				// string.trim().replace("\"", "");
+				if (string.length() > 0)
+					elements.add(string.trim().replace("\"", ""));
 			}
 			if (elements.size() > 0) isDiscrete = true;
 		}
