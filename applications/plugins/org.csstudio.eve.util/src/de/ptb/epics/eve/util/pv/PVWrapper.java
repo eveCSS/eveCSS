@@ -9,18 +9,18 @@ import org.apache.log4j.Logger;
 import org.csstudio.utility.pv.PV;
 import org.csstudio.utility.pv.PVFactory;
 import org.epics.pvmanager.*;
-import org.epics.pvmanager.data.AlarmSeverity;
+/*import org.epics.pvmanager.data.AlarmSeverity;
 import org.epics.pvmanager.data.SimpleValueFormat;
 import org.epics.pvmanager.data.VEnum;
 import org.epics.pvmanager.data.ValueFormat;
-import org.epics.pvmanager.data.ValueUtil;
+import org.epics.pvmanager.data.ValueUtil;*/
 
 
 import de.ptb.epics.eve.preferences.Activator;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
 
 import static org.epics.pvmanager.ExpressionLanguage.*;
-import static org.epics.pvmanager.util.TimeDuration.*;
+/*import static org.epics.pvmanager.util.TimeDuration.*;*/
 import static org.csstudio.utility.pvmanager.ui.SWTUtil.*;
 
 /**
@@ -56,7 +56,7 @@ public class PVWrapper {
 	private String pvValue;
 	
 	// the severity of the process variable (status)
-	private AlarmSeverity pvStatus;
+	// private AlarmSeverity pvStatus;// TODO
 	
 	// indicates whether the process variable is discrete
 	private boolean isDiscrete;
@@ -76,10 +76,10 @@ public class PVWrapper {
 	private int pvUpdateInterval;
 	
 	// helper to format process variable objects
-	private ValueFormat valueFormat;
+	// private ValueFormat valueFormat; // TODO
 	
 	// listener for process variable updates
-	private ReadListener readListener;
+	// private ReadListener readListener; // TODO
 	
 	// listener for process variable writes
 	//private WriteListener writeListener;
@@ -105,7 +105,7 @@ public class PVWrapper {
 	public PVWrapper(String pvname) {
 		this.pvName = pvname;
 		this.pvValue = "";
-		this.pvStatus = AlarmSeverity.UNDEFINED;
+		// this.pvStatus = AlarmSeverity.UNDEFINED; // TODO
 		this.isConnected = false;
 		this.isDiscrete = false;
 		this.discreteValues = new ArrayList<String>(0);
@@ -127,7 +127,7 @@ public class PVWrapper {
 							getInt(PreferenceConstants.P_PV_UPDATE_INTERVAL);
 		
 		// get a pv instance from the factory
-		this.pv = PVManager.readAndWrite(channel(pvname)).
+		/*this.pv = PVManager.readAndWrite(channel(pvname)).
 							notifyOn(swtThread()).
 							asynchWriteAndReadEvery(ms(pvUpdateInterval));
 		
@@ -144,7 +144,7 @@ public class PVWrapper {
 		this.valueFormat.setNumberFormat(new PVNumberFormat("##0.00000E00"));
 				//new DecimalFormat("##0.00000E00", symbols));
 		
-		this.propertyChangeSupport = new PropertyChangeSupport(this);
+		this.propertyChangeSupport = new PropertyChangeSupport(this);*/
 	}
 	
 	/**
@@ -182,7 +182,7 @@ public class PVWrapper {
 		if (this.triggerPV != null) {
 			this.triggerPV.stop();
 		}
-		this.pv.removePVReaderListener(this.readListener);
+		// this.pv.removePVReaderListener(this.readListener); // TODO
 		//this.pv.removePVWriterListener(this.writeListener);
 		this.pv.close();
 		this.isConnected = false;
@@ -216,7 +216,7 @@ public class PVWrapper {
 	 * @return {@link org.epics.pvmanager.PV#getValue()}
 	 */
 	public Double getRawValue() {
-		return ValueUtil.numericValueOf(this.pv.getValue());
+		return null; // return ValueUtil.numericValueOf(this.pv.getValue()); // TODO
 	}
 	
 	/**
@@ -227,9 +227,9 @@ public class PVWrapper {
 	 * @return the status (severity) of the process variable
 	 * @see {@link org.epics.pvmanager.data.AlarmSeverity}
 	 */
-	public AlarmSeverity getStatus() {
+	/* public AlarmSeverity getStatus() {
 		return this.pvStatus;
-	}
+	} */
 	
 	/**
 	 * Checks whether the process variable is discrete.
@@ -344,12 +344,10 @@ public class PVWrapper {
 	 * @author Marcus Michalsky
 	 * @since 1.1
 	 */
-	private class ReadListener implements PVReaderListener {
+	// private class ReadListener implements PVReaderListener {
 		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
+		
+	/*	@Override
 		public void pvChanged() {
 			isConnected = true;
 			
@@ -398,8 +396,8 @@ public class PVWrapper {
 				propertyChangeSupport.firePropertyChange("discreteValues",
 						null, discreteValues);
 			}
-		}
-	}
+		} */
+//	}
 	
 	/**
 	 * <code>WriteListener</code> is the 
@@ -411,12 +409,9 @@ public class PVWrapper {
 	 * @author Marcus Michalsky
 	 * @since 1.1
 	 */
-	private class WriteListener implements PVWriterListener {
+//	private class WriteListener implements PVWriterListener {
 		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
+	/*	@Override
 		public void pvWritten() {
 			Exception lastException = pv.lastWriteException();
 			if (lastException instanceof WriteFailException) {
@@ -424,7 +419,7 @@ public class PVWrapper {
 				isReadOnly = true;
 			}
 		}
-	}
+	}*/
 	
 	/**
 	 * Part of the workaround.
