@@ -54,6 +54,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
+import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
@@ -1075,6 +1076,9 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 				}
 			} else if (o instanceof ChainEditPart) {
 				logger.debug("selection is ChainEditPart: " + o);
+				setPlotWindow(null);
+			} else if (o instanceof ScanDescriptionEditPart) {
+				logger.debug("selection is ScanDescriptionEditPart: " + o);
 				setPlotWindow(null);
 			} else {
 				logger.debug("unknown selection -> ignore");
