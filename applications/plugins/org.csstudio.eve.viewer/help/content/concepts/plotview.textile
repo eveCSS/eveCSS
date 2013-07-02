@@ -1,0 +1,73 @@
+h1(eveTopic). Plot View
+
+p. The Plot View is the view to see the measured data of the running scan. In the left side you see the online plot and on the right the results.
+
+h2(eveTopic). Online Plot
+
+p. In the __OnlinePlot__ area you see the state of the engine. On the left side is the y-Axis1 range an on the right side the y-Axis2 range.
+
+h3(eveTopic). initialize of the plot
+
+p. The plot will be initialized, if the __Preinit Window__ Button is selected.
+
+p. When the __Preinit Window__ Button is off the plot shows the points of more than one scan Module if possible. The Table shows different scans and their effects in the plot
+
+table(eveRefTable).
+|_. Scan-Nr. |_. ScanModul |_. x-Axis |_. y-Axis1 |_. y-Axis2 |_. pre init? |
+| 1 | SM1 | PP_Motor1 | Channel00 / Ring1 | Channel00 |  |
+|   | SM2 | PP_Motor1 | Channel00 / Ring1 | ---      | pre init, because y-Axis2 different |
+| 2 | SM1 | PP_Motor1 | Channel00 / Ring1 | Lifetime1 |  |
+|   | SM2 | PP_Motor1 | Channel00 / Ring1 | ---      | pre init, because y-Axis2 different |
+| 3 | SM1 | PP_Motor1 | Channel00 / Ring1 | Lifetime1 |  |
+|   | SM2 | PP_Motor1 | Channel00 / Ring1 | Lifetime1      | no pre init, plot continues  |
+| 4 | SM1 | PP_Motor1 | Channel00 / Ring1 | none |  |
+|   | SM2 | PP_Motor1 | Channel00 / Ring1 | Lifetime1      | pre init, because y-Axis2 different |
+| 5 | SM1 | PP_Motor1 | Channel00 / Ring1 | none |  |
+|   | SM2 | PP_Motor1 | Channel00         | none      | pre init, because y-Axis1 different |
+| 6 | SM1 | PP_Motor1 | Channel00 / Ring1 | none |  |
+|   | SM2 | PP_Motor1 | Ring1             | none      | pre init, because y-Axis1 different |
+
+
+h2(eveTopic). Results
+
+p. The __RESULTS__ area is a table with calculated values of the plot and buttons to move the motor axis to the calculated value.
+
+table(eveRefTable).
+|_. Value |_. y-Axis |_. x-Axis |_. GoTo
+|_. Normalized | last y-Axis value of the plot| last x-Axis value of the scan| |
+|_. Minimum | minimum y-Axis value of the plot| x-Axis position of the y-Axis value| goto x-Axis position|
+|_. Maximum | maximum y-Axis value of the plot| x-Axis position of the y-Axis value| goto x-Axis position|
+|_. Center | y-Axis value of the center position| Center position of the plot | goto Center position|
+|_. Edge | y-Axis value of the edge position| Edge position of the plot | goto Edge position|
+|_. Average | average of the y-Axis values| --- | --- |
+|_. Deviation | deviation of the y-Axis values| --- | --- |
+|_. FWHM | full width half maximum of the y-Axis values| --- | --- |
+
+h3(eveTopic). Minimum
+
+p. The __Minimum__ is the minimum of the y-Axis values in the plot. The x-Axis position is the associated position of the y-Axis value.
+
+h3(eveTopic). Maximum
+
+p. The __Maximum__ is the maximum of the y-Axis values in the plot. The x-Axis position is the associated position of the y-Axis value.
+
+h3(eveTopic). Center
+
+p. The __Center__ is the center position of the x-Axis and their associated y-Axis value.
+
+h3(eveTopic). Edge
+
+p. The __Edge__ is the edge position of the x-Axis and their associated y-Axis value.
+
+h3(eveTopic). Average
+
+p. The __Average__ is the average of the y-Axis values in the plot.
+
+h3(eveTopic). Deviation
+
+p. The __Deviation__ is the deviation of the y-Axis values in the plot.
+
+h3(eveTopic). FWHM
+
+p. The __FWHM__ is the full width half maximum of the y-Axis values in the plot.
+
