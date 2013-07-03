@@ -151,16 +151,16 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void propertyChange(PropertyChangeEvent e) {
+	public void propertyChange(final PropertyChangeEvent e) {
 		if (e.getPropertyName().equals("position")) {
 			this.position = e.getNewValue().toString();
 		} else if (e.getPropertyName().equals("lowlimit")) {
-			this.llmText.setText(e.getNewValue().toString());
+					llmText.setText(e.getNewValue().toString());
 		} else if (e.getPropertyName().equals("highlimit")) {
-			this.hlmText.setText(e.getNewValue().toString());
+					hlmText.setText(e.getNewValue().toString());
 		}
-		this.calculateBarValue();
-		this.progressBar.redraw();
+		calculateBarValue();
+		progressBar.redraw();
 	}
 	
 	/*
@@ -172,7 +172,7 @@ public class CAComposite extends Composite implements PropertyChangeListener {
 	 * => P = W * 100 / G
 	 */
 	private void calculateBarValue() {
-		this.progressBar.setEnabled(true);
+		progressBar.setEnabled(true);
 		try {
 			Double min = this.currentAxis.getMotorAxis().getChannelAccess()
 					.getLowLimit();

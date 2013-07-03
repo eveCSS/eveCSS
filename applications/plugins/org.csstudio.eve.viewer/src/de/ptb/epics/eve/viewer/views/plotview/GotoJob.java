@@ -54,7 +54,7 @@ public class GotoJob extends Job {
 			// Step 2: (wait for) connect pv (10 tries)
 			monitor.subTask("Connecting PV");
 			int i = 0;
-			while(!pv.isConnected() && ! pv.isConnected2() && i++ < 10) {
+			while(!pv.isConnected() && i++ < 10) {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {

@@ -8,7 +8,8 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.graphics.Color;
-// import org.epics.pvmanager.data.AlarmSeverity; // TODO
+
+import org.epics.vtype.AlarmSeverity;
 
 import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
@@ -455,7 +456,7 @@ public class CommonTableElement {
 	 * @return
 	 */
 	public Color getSeverityColor(String property) {
-		/* AlarmSeverity status = AlarmSeverity.UNDEFINED; 
+		AlarmSeverity status = AlarmSeverity.UNDEFINED; 
 		if ((property.equals("value")) && (valuePv != null)) {
 			String statusVal = getValue("status");
 			if (statusVal.equals("Moving")) {
@@ -494,8 +495,7 @@ public class CommonTableElement {
 			case UNDEFINED: color = "COLOR_PV_INITIAL"; break;
 		}
 		
-		return Activator.getDefault().getColor(color);*/
-		return null;
+		return Activator.getDefault().getColor(color);
 	}
 
 	/**

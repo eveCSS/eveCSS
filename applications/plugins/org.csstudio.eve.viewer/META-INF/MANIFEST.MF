@@ -18,7 +18,9 @@ Require-Bundle: de.ptb.epics.eve.data;bundle-version="1.0.0",
  org.csstudio.utility.pvmanager;bundle-version="1.0.0",
  de.ptb.epics.eve.editor,
  de.ptb.epics.eve.resources;bundle-version="1.0.0",
- org.apache.log4j;bundle-version="1.2.16"
+ org.apache.log4j;bundle-version="1.2.16",
+ org.epics.util;bundle-version="0.2.2",
+ org.epics.vtype;bundle-version="2.1.0"
 Eclipse-LazyStart: true
 Bundle-ClassPath: de.ptb.epics.ecp1.client.jar,
  de.ptb.epics.ecp1.intern.jar,
