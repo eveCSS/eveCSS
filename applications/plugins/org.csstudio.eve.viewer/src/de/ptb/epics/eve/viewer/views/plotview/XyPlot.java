@@ -13,6 +13,7 @@ import org.csstudio.swt.xygraph.linearscale.AbstractScale.LabelSide;
 import org.csstudio.swt.xygraph.linearscale.Range;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
@@ -148,6 +149,7 @@ public class XyPlot extends Figure {
 					.equals(DataTypes.DATETIME)) {
 				axis.setDateEnabled(true);
 			}
+			axis.setAutoScale(true);
 			if (!normalized) {
 				this.addTrace(yAxis.getDetectorChannel().getName(), axis,
 						yAxis, traceInfo);
@@ -174,7 +176,7 @@ public class XyPlot extends Figure {
 				collector);
 		this.collectors.add(collector);
 		trace.setAntiAliasing(true);
-		trace.setForegroundColor(new Color(null, model.getColor()));
+		trace.setTraceColor(new Color(Display.getDefault(), model.getColor()));
 		trace.setPointStyle(model.getMarkstyle());
 		trace.setTraceType(model.getLinestyle());
 		this.xyGraph.addTrace(trace);
