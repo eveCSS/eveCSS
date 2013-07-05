@@ -177,6 +177,7 @@ public class TraceDataCollector implements IDataProvider,
 					sampleSizeOfLastUpdate, this.data.size())) {
 				this.timeOfLastSample = Calendar.getInstance().getTimeInMillis();
 				this.sampleSizeOfLastUpdate = this.data.size();
+				LOGGER.debug("publish data");
 				this.publish();
 			}
 		}
