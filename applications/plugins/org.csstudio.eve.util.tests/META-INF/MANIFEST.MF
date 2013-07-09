@@ -6,4 +6,5 @@ Bundle-Version: 1.0.0
 Bundle-Vendor: PTB
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: de.ptb.epics.eve.util,
+ org.junit,
  org.junit

@@ -13,7 +13,6 @@ public class SampleSizeUpdateStrategy implements UpdateStrategy {
 	public boolean update(long timeOfLastSample, int sampleSizeOfLastUpdate,
 			int sampleSize) {
 		/*
-		 * /----- nacheinander in den Plot geschrieben. /
 		 * /----- ab 500 Punkten werden je 10 Punkte geplottet /
 		 * /----- ab 2500 Punkten werden je 50 Punkte geplottet /
 		 * /----- ab 5000 Punkten werden je 100 Punkte geplottet /
