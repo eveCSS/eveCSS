@@ -3,7 +3,7 @@
   targetNamespace="http://www.ptb.de/epics/SCML" 
   xmlns:tns="http://www.ptb.de/epics/SCML">
 
-  <!-- schema version 2.2
+  <!-- schema version 2.3
        please increase version number on every modification
        If the corresponding XML-file of the previous schema version is still
        valid with the current schema version, change the minor version number only -->

@@ -40,7 +40,7 @@ public class ScanDescription implements IModelUpdateProvider,
 	/**
 	 * Schema version of the output.
 	 */
-	public static final String outputVersion = "2.2";
+	public static final String outputVersion = "2.3";
 
 	/** */
 	public static final String REPEAT_COUNT_PROP = "repeatCount";
