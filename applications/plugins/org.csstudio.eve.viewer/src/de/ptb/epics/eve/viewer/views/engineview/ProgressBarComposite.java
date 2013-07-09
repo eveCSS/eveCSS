@@ -119,10 +119,8 @@ public class ProgressBarComposite extends Composite implements
 	@Override
 	public void engineStatusChanged(EngineStatus engineStatus, String xmlName,
 			int repeatCount) {
-		if (engineStatus.equals(EngineStatus.IDLE_XML_LOADED)) {
-			this.engineStatus = engineStatus;
-			this.refreshStatus();
-		}
+		this.engineStatus = engineStatus;
+		this.refreshStatus();
 	}
 
 	/**
