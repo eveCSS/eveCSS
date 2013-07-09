@@ -30,7 +30,7 @@
         <element name="devices" minOccurs="0">
           <complexType>
             <sequence>
-              <element name="device" type="tns:device" maxOccurs="unbounded"></element>
+              <element name="device" type="tns:device" minOccurs="0" maxOccurs="unbounded"></element>
             </sequence>
           </complexType>
         </element>
@@ -161,7 +161,7 @@
 
   <complexType name="scanmodules">
     <sequence>
-      <element name="scanmodule" type="tns:scanmodule" maxOccurs="unbounded"></element>
+      <element name="scanmodule" type="tns:scanmodule" minOccurs="0" maxOccurs="unbounded"></element>
     </sequence>
   </complexType>
    
@@ -212,7 +212,7 @@
 
   <complexType name="motors">
     <sequence>
-      <element name="motor" type="tns:motor" maxOccurs="unbounded"></element>
+      <element name="motor" type="tns:motor" minOccurs="0" maxOccurs="unbounded"></element>
     </sequence>
   </complexType>
    
@@ -223,7 +223,7 @@
       <element name="id" type="tns:identifier"></element>
       <element name="trigger" type="tns:access" minOccurs="0"></element>
       <element name="unit" type="tns:unit" minOccurs="0"></element>
-      <element name="axis" type="tns:axis" maxOccurs="unbounded"></element>
+      <element name="axis" type="tns:axis" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"></element>
     </sequence>
   </complexType>
@@ -283,7 +283,7 @@
 
   <complexType name="detectors">
     <sequence>
-      <element name="detector" type="tns:detector" maxOccurs="unbounded"></element>   
+      <element name="detector" type="tns:detector" minOccurs="0" maxOccurs="unbounded"></element>
     </sequence>
   </complexType>
    
@@ -296,7 +296,7 @@
       <element name="trigger" type="tns:access" minOccurs="0"></element>
       <element name="stop" type="tns:access" minOccurs="0"></element>
       <element name="status" type="tns:access" minOccurs="0"></element>
-      <element name="channel" type="tns:channel" maxOccurs="unbounded"></element>
+      <element name="channel" type="tns:channel" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="option" type="tns:option" minOccurs="0" maxOccurs="unbounded"></element>
     </sequence>
   </complexType>
