@@ -34,6 +34,7 @@ import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.ecp1.client.ECP1Client;
 import de.ptb.epics.eve.ecp1.debug.ECP1ClientLogger;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
+import de.ptb.epics.eve.viewer.debug.PollInQueueSize;
 import de.ptb.epics.eve.viewer.messages.MessagesContainer;
 import de.ptb.epics.eve.viewer.views.plotview.PlotDispatcher;
 
@@ -126,6 +127,10 @@ public class Activator extends AbstractUIPlugin {
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
 			 addPerspectiveListener(this.eveViewerPerspectiveListener);
 		PlatformUI.getWorkbench().addWorkbenchListener(workbenchListener);
+		
+		if (logger.isDebugEnabled()) {
+			new Thread(new PollInQueueSize()).start();
+		}
 	}
 
 	/**

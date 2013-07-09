@@ -307,6 +307,14 @@ public class ECP1Client {
 	}
 	
 	/**
+	 * Returns the number of elements in the in queue
+	 * @return the number of elements in the in queue
+	 */
+	public int getInQueueSize() {
+		return this.inQueue.size();
+	}
+	
+	/**
 	 * Returns the play controller.
 	 * 
 	 * @return the play controller
