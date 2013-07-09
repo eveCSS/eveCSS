@@ -118,8 +118,10 @@ public class ProgressBarComposite extends Composite implements
 	@Override
 	public void engineStatusChanged(EngineStatus engineStatus, String xmlName,
 			int repeatCount) {
-		this.engineStatus = engineStatus;
-		this.refreshStatus();
+		if (engineStatus.equals(EngineStatus.IDLE_XML_LOADED)) {
+			this.engineStatus = engineStatus;
+			this.refreshStatus();
+		}
 	}
 
 	/**
@@ -139,6 +141,7 @@ public class ProgressBarComposite extends Composite implements
 	public void stackDisconnected() {
 		LOGGER.debug("Engine disconnected");
 		this.connected = false;
+		this.engineStatus = EngineStatus.IDLE_NO_XML_LOADED;
 		this.refreshStatus();
 	}
 	
