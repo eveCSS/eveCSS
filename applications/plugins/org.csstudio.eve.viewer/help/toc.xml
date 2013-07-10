@@ -18,9 +18,9 @@
       </topic>
       <topic href="help/content/whatsnew.html" label="What&apos;s New">
       </topic>
-      <topic href="help/content/faq.html" label="Frequently Asked Questions">
+      <topic href="help/content/knownbugs.html" label="Known Bugs">
       </topic>
-      <topic label="Topic">
+      <topic href="help/content/faq.html" label="Frequently Asked Questions">
       </topic>
    </topic>
 </toc>

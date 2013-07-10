@@ -1,0 +1,10 @@
+h1(eveTopic). Known Bugs
+
+{toc}
+
+h3(eveKnownBug). (#244) Device Inspector opened by Window -> Show View -> Other... -> EVE Viewer -> Device Inspector does not accept devices added per double click.
+
+p. If all previous Device Inspector Views were closed and a new one is added via the above mentioned Window menu it won't accept device by double clicking them in the Devices View.
+
+p. __Workaround:__ Open a Device Inspector by the above mentioned method. Then add another one with the toolbar button. Close the first one. Use the second one.
+

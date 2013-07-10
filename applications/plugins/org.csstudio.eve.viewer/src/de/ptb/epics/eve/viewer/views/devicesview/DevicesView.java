@@ -435,6 +435,11 @@ public final class DevicesView extends ViewPart implements PropertyChangeListene
 			DeviceInspectorView deviceInspectorView = null;
 			for(IViewReference ivr : ref) {
 				if(ivr.getId().equals(DeviceInspectorView.ID)) {
+					if (DeviceInspectorView.activeDeviceInspectorView == null || 
+							ivr.getSecondaryId() == null) {
+						// bug #244
+						continue;
+					}
 					if(DeviceInspectorView.activeDeviceInspectorView.equals(
 							ivr.getSecondaryId())) {
 						deviceInspectorView = (DeviceInspectorView)
