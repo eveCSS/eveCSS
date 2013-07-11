@@ -8,3 +8,12 @@ p. If all previous Device Inspector Views were closed and a new one is added via
 
 p. __Workaround:__ Open a Device Inspector by the above mentioned method. Then add another one with the toolbar button. Close the first one. Use the second one.
 
+h3(eveKnownBug). (#523) No file name in Engine View under certain circumstances
+
+p. If the following conditions are met, no file name is given in the engine view for the current scan:
+
+* an engine process is running
+* eveCSS is started showing the EVE Editor perspective
+* a scan is send to the engine via the "Add to playlist and switch to Engine Perspective" button
+
+p. __Workaround:__ Disconnect and Reconnect the engine via the respective buttons.
