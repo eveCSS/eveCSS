@@ -39,7 +39,7 @@ public class MenuTest {
 	@Test
 	public void testCreateNewScanDescription() throws Exception {
 		bot.menu("File").menu("New").click();
-		
+		bot.sleep(1000);
 		SWTBotShell shell = bot.shell("New");
 		shell.activate();
 		bot.tree().select("Scan Description");
@@ -74,6 +74,7 @@ public class MenuTest {
 	@BeforeClass
 	public static void beforeClass() throws Exception {
 		bot = new SWTWorkbenchBot();
+		bot.sleep(1000);
 		bot.viewByTitle("Welcome").close();
 		bot.menu("CSS").menu("Editors").menu("EveEditor").click();
 		bot.sleep(1000);
