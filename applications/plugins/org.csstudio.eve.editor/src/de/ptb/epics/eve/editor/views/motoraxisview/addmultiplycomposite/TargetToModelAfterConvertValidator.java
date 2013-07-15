@@ -5,6 +5,7 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
+import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.measuringstation.MotorAxisChannelAccess;
 import de.ptb.epics.eve.data.scandescription.Axis;
 
@@ -30,6 +31,11 @@ public class TargetToModelAfterConvertValidator implements IValidator {
 	 */
 	@Override
 	public IStatus validate(Object value) {
+		if (axis.getMotorAxis().getGoto().getAccess().getTransport()
+				.equals(TransportTypes.LOCAL)) {
+			// skip validation for local variables
+			return ValidationStatus.ok();
+		}
 		MotorAxisChannelAccess ca = null;
 		Double mPos = null;
 		if (this.axis.getMotorAxis().getChannelAccess() != null) {
