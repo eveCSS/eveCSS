@@ -52,6 +52,24 @@ public class Option extends AbstractPrePostscanDevice {
 	}
 
 	/**
+	 * An Option has no options.
+	 * Always returns false.
+	 */
+	@Override
+	public boolean add(Option option) {
+		return false;
+	}
+	
+	/**
+	 * An Option has no options.
+	 * Always returns false.
+	 */
+	@Override
+	public boolean remove(Option option) {
+		return false;
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
