@@ -1,12 +1,8 @@
 package de.ptb.epics.eve.viewer;
 
 import java.io.File;
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Platform;
@@ -26,14 +22,13 @@ import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Version;
-import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
-import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.ecp1.client.ECP1Client;
 import de.ptb.epics.eve.ecp1.debug.ECP1ClientLogger;
-import de.ptb.epics.eve.preferences.PreferenceConstants;
+import de.ptb.epics.eve.resources.init.Parameters;
+import de.ptb.epics.eve.resources.init.Startup;
 import de.ptb.epics.eve.viewer.debug.PollInQueueSize;
 import de.ptb.epics.eve.viewer.messages.MessagesContainer;
 import de.ptb.epics.eve.viewer.views.plotview.PlotDispatcher;
@@ -72,8 +67,7 @@ public class Activator extends AbstractUIPlugin {
 	private RequestProcessor requestProcessor;
 
 	private File schemaFile;
-	private String rootDir;
-	private boolean debug;
+	private Parameters startupParams;
 	
 	/**
 	 * The constructor
@@ -106,10 +100,19 @@ public class Activator extends AbstractUIPlugin {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		
-		readStartupParameters();
-		checkRootDir();
-		configureLogging();
-		loadMeasuringStation();
+		startupParams = Startup.readStartupParameters();
+		if (startupParams.useDefaultDevices()) {
+			Startup.configureLogging("/tmp/eve/", startupParams.isDebug(), logger);
+			logger.info("No 'eve.root' given, logging to '/tmp/eve/'");
+		} else {
+			Startup.checkRootDir(startupParams.getRootDir());
+			Startup.configureLogging(startupParams.getRootDir(), 
+					startupParams.isDebug(), logger);
+		}
+		this.schemaFile = Startup.loadSchemaFile(logger);
+		this.measuringStation = Startup.loadMeasuringStation(
+				startupParams.getRootDir(), schemaFile, logger);
+		
 		loadColorsAndFonts();
 		startupReport();
 		
@@ -123,6 +126,16 @@ public class Activator extends AbstractUIPlugin {
 		this.ecp1Client.addChainStatusListener(this.chainStatusAnalyzer);
 		this.requestProcessor = new RequestProcessor(Display.getCurrent());
 		this.ecp1Client.addRequestListener(this.requestProcessor);
+		
+		if (startupParams.isDebug()) {
+			this.ecpLogger = new ECP1ClientLogger();
+			this.ecp1Client.addChainStatusListener(ecpLogger);
+			this.ecp1Client.addConnectionStateListener(ecpLogger);
+			this.ecp1Client.addEngineStatusListener(ecpLogger);
+			this.ecp1Client.addErrorListener(ecpLogger);
+			this.ecp1Client.addMeasurementDataListener(ecpLogger);
+			this.ecp1Client.addRequestListener(ecpLogger);
+		} 
 		
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
 			 addPerspectiveListener(this.eveViewerPerspectiveListener);
@@ -164,7 +177,7 @@ public class Activator extends AbstractUIPlugin {
 	 * @return the root directory
 	 */
 	public String getRootDirectory() {
-		return rootDir;
+		return this.startupParams.getRootDir();
 	}
 	
 	/**
@@ -291,168 +304,14 @@ public class Activator extends AbstractUIPlugin {
 			}
 		}
 	}
-
-	/*
-	 * 
-	 */
-	private void readStartupParameters() throws Exception {
-		String[] args = Platform.getCommandLineArgs();
-		rootDir = "";
-		debug = false;
-		int i = 0;
-		while (i < args.length) {
-			if (args[i].equals("-eve.root")) {
-				i++;
-				rootDir = args[i];
-			}
-			if (args[i].equals("-eve.debug")) {
-				i++;
-				debug = args[i].equals("1") ? true : false;
-			}
-			i++;
-		}
-		if (rootDir.isEmpty()) {
-			String message = "parameter 'eve.root' not found!";
-			logger.fatal(message);
-			throw new Exception(message);
-		}
-	}
-	
-	/*
-	 * Checks whether the directory (given by parameter -eve.root) contains a 
-	 * folder named eve.
-	 */
-	private void checkRootDir() throws Exception {
-		if(!rootDir.endsWith("/")) {
-			rootDir += "/";
-		}
-		String path = rootDir;
-		File file = new File(path + "eve/");
-		if(!file.exists()) {
-			String message = "Root Directory not found!";
-			logger.fatal(message);
-			throw new Exception(message);
-		}
-	}
-	
-	/*
-	 * 
-	 */
-	private void configureLogging() throws Exception {
-		// setting property so that the log4j configuration file can access it
-		System.setProperty("eve.logdir", rootDir + "eve/log");
-		Version eveVersion = Platform.getProduct().getDefiningBundle()
-				.getVersion();
-		System.setProperty("eve.version", eveVersion.getMajor() + "."
-				+ eveVersion.getMinor());
-		
-		String pathToConfigFile = rootDir + "eve/logger-debug.xml";
-		if (debug) {
-			// the logging configuration is taken from the eve root if present
-			// or included default otherwise
-			if (new File(pathToConfigFile).exists()) {
-				DOMConfigurator.configure(pathToConfigFile);
-				logger.debug("found debug logging configuration in eve root");
-			} else {
-				File debugConf = de.ptb.epics.eve.resources.Activator
-						.getLoggerConfiguration(true);
-				if (debugConf == null) {
-					String message = "debug logging conf could not be loaded!";
-					logger.fatal(message);
-					throw new Exception(message);
-				}
-				DOMConfigurator.configure(debugConf.getAbsolutePath());
-				logger.debug("no debug logging configuration found -> using default");
-			}
-			this.ecpLogger = new ECP1ClientLogger();
-			this.ecp1Client.addChainStatusListener(ecpLogger);
-			this.ecp1Client.addConnectionStateListener(ecpLogger);
-			this.ecp1Client.addEngineStatusListener(ecpLogger);
-			this.ecp1Client.addErrorListener(ecpLogger);
-			this.ecp1Client.addMeasurementDataListener(ecpLogger);
-			this.ecp1Client.addRequestListener(ecpLogger);
-		} else {
-			File appConf = de.ptb.epics.eve.resources.Activator
-					.getLoggerConfiguration(false);
-			if (appConf == null) {
-				String message = "app logging conf could not be loaded!";
-				logger.fatal(message);
-				throw new Exception(message);
-			}
-			DOMConfigurator.configure(appConf.getAbsolutePath());
-		}
-	}
-	
-	/*
-	 * 
-	 */
-	private void loadMeasuringStation() throws Exception {
-		String measuringStationDescription = new String();
-		
-		// get entry stored in the preferences
-		final String preferencesEntry = de.ptb.epics.eve.preferences.Activator.
-				getDefault().getPreferenceStore().getString(
-				PreferenceConstants.P_DEFAULT_MEASURING_STATION_DESCRIPTION);
-		
-		if(preferencesEntry.isEmpty()) {
-			File pathToDefaultMeasuringStation = 
-				new File(rootDir + "eve/default.xml");
-			if(!pathToDefaultMeasuringStation.exists()) {
-				String message = "Could not find 'default.xml' in 'eve.root'!";
-				logger.fatal(message);
-				throw new Exception(message);
-			}
-			measuringStationDescription = rootDir + "eve/default.xml";
-		} else {
-			File measuringStationFile = new File(preferencesEntry);
-			if(!measuringStationFile.exists()) {
-				// preferences entry present, but target does not exist
-				String message = "Could not find device definition file at " + 
-						measuringStationFile;
-				logger.fatal(message);
-				throw new Exception(message);
-			}
-			measuringStationDescription = preferencesEntry;
-		}
-		
-		File measuringStationDescriptionFile = 
-				new File(measuringStationDescription);
-		
-		schemaFile = de.ptb.epics.eve.resources.Activator.getXMLSchema();
-		if(schemaFile == null) {
-			String message = "Could not load schema file!";
-			logger.fatal(message);
-			throw new Exception(message);
-		}
-		
-		// measuring station and schema present -> start loading
-		try {
-			final MeasuringStationLoader measuringStationLoader = 
-					new MeasuringStationLoader(schemaFile);
-			measuringStationLoader.load(measuringStationDescriptionFile);
-			measuringStation = measuringStationLoader.getMeasuringStation();
-		} catch (IllegalArgumentException e) {
-			measuringStation = null;
-			logger.fatal(e.getMessage(), e);
-		} catch (ParserConfigurationException e) {
-			measuringStation = null;
-			logger.fatal(e.getMessage(), e);
-		} catch (SAXException e) {
-			measuringStation = null;
-			logger.fatal(e.getMessage(), e);
-		} catch (IOException e) {
-			measuringStation = null;
-			logger.fatal(e.getMessage(), e);
-		}
-	}
 	
 	/*
 	 * 
 	 */
 	private void startupReport() {
 		if(logger.isInfoEnabled()) {
-			logger.info("debug mode: " + debug);
-			logger.info("root directory: " + rootDir);
+			logger.info("debug mode: " + startupParams.isDebug());
+			logger.info("root directory: " + startupParams.getRootDir());
 			logger.info("measuring station: " + 
 					measuringStation.getLoadedFileName());
 			logger.info("schema file: " + 

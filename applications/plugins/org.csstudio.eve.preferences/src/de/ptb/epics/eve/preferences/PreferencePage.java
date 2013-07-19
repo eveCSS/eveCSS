@@ -37,8 +37,8 @@ public class PreferencePage extends FieldEditorPreferencePage
 		File file = new File(rootdir + "eve/");
 		if(file.exists()) {
 			stationFileFieldEditor.setFilterPath(file);
-		} else {
-			stationFileFieldEditor.setFilterPath(new File(rootdir));
+		} else if (rootdir != null) {
+				stationFileFieldEditor.setFilterPath(new File(rootdir));
 		}
 		file = null;
 		addField(stationFileFieldEditor);

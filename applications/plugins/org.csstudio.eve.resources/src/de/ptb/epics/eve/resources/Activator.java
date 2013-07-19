@@ -65,6 +65,22 @@ public class Activator implements BundleActivator {
 		Activator.context = null;
 	}
 	
+	public static File getDefaultDeviceDefinition() {
+		try {
+			URL url = new URL(
+				"platform:/plugin/de.ptb.epics.eve.resources/cfg/default.xml");
+			File file = new File(FileLocator.toFileURL(url).toURI());
+			return file;
+		} catch (MalformedURLException e1) {
+			logger.error(e1.getMessage(), e1);
+		} catch (URISyntaxException e) {
+			logger.error(e.getMessage(), e);
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+		}
+		return null;
+	}
+	
 	/**
 	 * Returns the XML schema definition.
 	 * 

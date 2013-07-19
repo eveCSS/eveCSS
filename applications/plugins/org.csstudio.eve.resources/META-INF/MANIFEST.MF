@@ -5,8 +5,13 @@ Bundle-SymbolicName: de.ptb.epics.eve.resources;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: de.ptb.epics.eve.resources.Activator
 Require-Bundle: org.eclipse.core.runtime,
- org.apache.log4j;bundle-version="1.2.16"
+ org.apache.log4j;bundle-version="1.2.16",
+ org.eclipse.ui;bundle-version="3.7.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: de.ptb.epics.eve.resources
+Export-Package: de.ptb.epics.eve.resources,
+ de.ptb.epics.eve.resources.init
 Bundle-Vendor: PTB
+Import-Package: de.ptb.epics.eve.data.measuringstation,
+ de.ptb.epics.eve.data.measuringstation.processors,
+ de.ptb.epics.eve.preferences

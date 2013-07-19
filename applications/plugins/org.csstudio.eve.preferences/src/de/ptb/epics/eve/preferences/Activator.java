@@ -31,9 +31,10 @@ public class Activator extends AbstractUIPlugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		this.rootDir = null;
 		readStartupParameters();
 		if(!checkRootDir()) {
-			throw new Exception("Preferences plugin could not be started");
+			this.rootDir = null;
 		}
 		plugin = this;
 	}
@@ -88,6 +89,9 @@ public class Activator extends AbstractUIPlugin {
 	 * 			eve, <code>false</code> otherwise
 	 */
 	private boolean checkRootDir() {
+		if (rootDir == null) {
+			return false;
+		}
 		if(!rootDir.endsWith("/")) rootDir += "/";
 		String path = rootDir;
 		File file = new File(path + "eve/");
