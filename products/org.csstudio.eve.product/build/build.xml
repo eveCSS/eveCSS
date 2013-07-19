@@ -49,8 +49,6 @@
 				<include name="org.csstudio.eve.product/**" />
 			</fileset>
 		</copy>
-		
-		<delete dir="${workspace}/repo/applications/plugins/org.csstudio.eve.data.tests" />
 	</target>
 	
 	<target name="fetching config" description="">
