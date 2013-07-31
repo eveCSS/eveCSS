@@ -53,11 +53,11 @@ public class Startup {
 	}
 	
 	/**
-	 * Verifies the given root directory. If and only if "<rootDir>/eve/" exists 
-	 * the method returns normally. Otherwise an Exception is thrown.
+	 * Verifies the given root directory. If and only if <code>&lt;rootDir&gt;/eve/</code> exists 
+	 * the method returns normally. Otherwise an exception is thrown.
 	 * 
 	 * @param path the root dir path
-	 * @throws Exception if "<rootDir>/eve/" does not exist
+	 * @throws Exception if <code>&lt;rootDir&gt;/eve/</code> does not exist
 	 */
 	public static void checkRootDir(String rootDir) throws Exception {
 		String path = new String(rootDir);
@@ -74,7 +74,7 @@ public class Startup {
 	/**
 	 * Configures logging either for debugging (<code>debug == true</code>) or 
 	 * release (<code>debug == false</code>). If <code>debug == true</code> the 
-	 * logging configuration at "<rootDir>/eve/logger-debug.xml" will be used.
+	 * logging configuration at <code>&lt;rootDir&gt;/eve/logger-debug.xml</code> will be used.
 	 * If none is found an integrated default configuration is used. 
 	 * Release logging always used the integrated configuration.
 	 * 
@@ -144,7 +144,7 @@ public class Startup {
 	 * (<code>null</code>) a default device definition will be returned.
 	 * Otherwise the device definition at the location set in the preferences 
 	 * is used. If there is no preferences entry the device definition at 
-	 * "<rootDir>/eve/default.xml" is loaded.
+	 * <code>&lt;rootDir&gt;/eve/default.xml</code> is loaded.
 	 * Returns <code>null</code> if a load error occured.
 	 * 
 	 * @param rootDir the eve root directory path
@@ -152,7 +152,7 @@ public class Startup {
 	 * @return the loaded measuring station or <code>null</code> if a load error occured
 	 * @throws Exception if "rootDir" is not <code>null</code> and one of the following conditions is met:
 	 * 		<ul>
-	 * 			<li>no preferences entry, <code><rootDir>/eve/defaults.xml</code> does not exist</li>
+	 * 			<li>no preferences entry, <code>&lt;rootDir&gt;/eve/defaults.xml</code> does not exist</li>
 	 * 			<li>preferences entry is not a valid target</li>
 	 * 		</ul>
 	 */
