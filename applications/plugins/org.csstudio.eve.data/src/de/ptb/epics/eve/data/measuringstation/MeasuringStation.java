@@ -319,8 +319,9 @@ public class MeasuringStation implements IMeasuringStation {
 			}
 		} 
 		
-		if ((className == null) || className.length() < 1) 
+		if ((className == null) || className.length() < 1) {
 			return;
+		}
 		
 		List<AbstractDevice> adlist;
 		if (classMap.containsKey(className)){

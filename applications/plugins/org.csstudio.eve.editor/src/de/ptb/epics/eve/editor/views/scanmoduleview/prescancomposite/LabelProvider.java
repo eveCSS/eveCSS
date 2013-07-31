@@ -52,7 +52,9 @@ public class LabelProvider implements ITableLabelProvider {
 
 		switch (colIndex) {
 		case 1:
-			if(pos.isDevice()) return pos.getAbstractDevice().getName();
+			if(pos.isDevice()) {
+				return pos.getAbstractDevice().getName();
+			}
 			return pos.getAbstractDevice().getParent().getName() + " "
 					+ (char) 187 + " "
 					+ ((Prescan) prescan).getAbstractDevice().getName();

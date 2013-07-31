@@ -93,7 +93,9 @@ public class TypeValue {
 		
 		int count = 0;
 		for (String string : elements){
-			if (count > 0) returnString.append(token);
+			if (count > 0) {
+				returnString.append(token);
+			}
 			returnString.append(string);
 			++count;
 		}
@@ -114,10 +116,11 @@ public class TypeValue {
 	 * 			</ul>
 	 */
 	public void setValues(final String values) {
-
 		hasRange = false;
 		isDiscrete = false;
-		if(values == null) return;
+		if(values == null) {
+			return;
+		}
 		
 		if (((type == DataTypes.INT) || (type == DataTypes.DOUBLE))
 				&& values.contains("to")) {
@@ -147,12 +150,15 @@ public class TypeValue {
 			String[] splits = values.split( "," );
 			for (String string : splits){
 				// string.trim().replace("\"", "");
-				if (string.length() > 0)
+				if (string.length() > 0) {
 					elements.add(string.trim().replace("\"", ""));
+				}
 			}
-			if (elements.size() > 0) isDiscrete = true;
+			if (elements.size() > 0) {
+				isDiscrete = true;
+			}
 		}
-		else if (values.length() > 0){
+		else if (values.length() > 0) {
 			elements.add(values);
 		}
 	}
@@ -177,10 +183,11 @@ public class TypeValue {
 	 */
 	public List<String> getDiscreteValues() {
 
-		if(isDiscrete)
+		if(isDiscrete) {
 			return new ArrayList<String>(elements);
-		else
+		} else {
 			return null;
+		}
 	}
 	
 	/**

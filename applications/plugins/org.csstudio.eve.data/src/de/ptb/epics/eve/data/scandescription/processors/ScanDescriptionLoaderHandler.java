@@ -2141,12 +2141,15 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		// TODO Tidy up
 		// TODO events for the dectector list is not handled
 		for (ControlEvent controlEvent : this.controlEventList) {
-			if (controlEvent.getEventType() == EventTypes.SCHEDULE)
+			if (controlEvent.getEventType() == EventTypes.SCHEDULE) {
 				break;
-			if (controlEvent.getEventType() == EventTypes.DETECTOR)
+			}
+			if (controlEvent.getEventType() == EventTypes.DETECTOR) {
 				break;
-			if (controlEvent.getEvent() == null)
+			}
+			if (controlEvent.getEvent() == null) {
 				break;
+			}
 
 			MonitorEvent monEvent = controlEvent.getEvent().getMonitor();
 
@@ -2185,8 +2188,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		// --- Looking for chains with the same id
 		Chain[] chains = this.scanDescription.getChains().toArray(new Chain[0]);
 		for (int i = 0; i < chains.length; ++i) {
-			if (chains[i] == null)
+			if (chains[i] == null) {
 				continue;
+			}
 			int id = chains[i].getId();
 			for (int j = i + 1; j < chains.length; ++j) {
 				if ((chains[j] != null) && chains[j].getId() == id) {

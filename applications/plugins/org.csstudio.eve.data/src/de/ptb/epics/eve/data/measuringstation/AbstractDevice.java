@@ -1,7 +1,6 @@
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -102,8 +101,9 @@ public abstract class AbstractDevice implements Comparable<AbstractDevice> {
 		
 			if (this.parent!=null) {
 				if (this.parent.parent!=null) {
-					if (!this.parent.parent.getName().equals(""))
+					if (!this.parent.parent.getName().equals("")) {
 						fullIdentifyer.append( this.parent.parent.getName());
+					}
 				}
 				if (!this.parent.getName().equals("")){
 					if (!fullIdentifyer.toString().equals( "" )) {
@@ -142,7 +142,9 @@ public abstract class AbstractDevice implements Comparable<AbstractDevice> {
 	 * @return the name of the device or its id if the name is empty
 	 */
 	public String getName() {
-		if(this.name.equals("")) return this.id;
+		if(this.name.equals("")) {
+			return this.id;
+		}
 		return this.name;
 	}
 	
@@ -301,9 +303,10 @@ public abstract class AbstractDevice implements Comparable<AbstractDevice> {
 	 */
 	protected void setParent(final AbstractDevice parent) 
 								throws ParentNotAllowedException {
-		if ( parent != null)
+		if ( parent != null) {
 			this.parent = parent;
-			// TODO nothing is thrown here, but a throw is declared
+		}
+		// TODO nothing is thrown here, but a throw is declared
 	}
 
 	/**
@@ -327,14 +330,17 @@ public abstract class AbstractDevice implements Comparable<AbstractDevice> {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		if(this == obj)
+		if(this == obj) {
 			return true;
+		}
 		
-		if(obj == null) 
+		if(obj == null) {
 			return false;
+		}
 		
-		if(getClass() != obj.getClass())
+		if(getClass() != obj.getClass()) {
 			return false;
+		}
 		
 		final AbstractDevice other = (AbstractDevice)obj;
 		

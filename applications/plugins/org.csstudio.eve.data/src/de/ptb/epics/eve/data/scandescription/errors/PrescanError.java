@@ -6,32 +6,29 @@ import de.ptb.epics.eve.data.scandescription.AbstractPrescanBehavior;
  * This class describes a model error of a prescan.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
- *
+ * 
  */
 public class PrescanError implements IModelError {
-
-	/**
-	 * The prescan where the error occurred.
-	 */
 	private final AbstractPrescanBehavior prescanBahavior;
-	
-	/**
-	 * The type of the error.
-	 */
 	private final PrescanErrorTypes errorType;
-	
+
 	/**
 	 * This constructor creates a new error for a prescan.
 	 * 
-	 * @param prescanBahavior The prescan. Must not be 'null'
-	 * @param errorType The error type. Must not be 'null'!
+	 * @param prescanBahavior
+	 *            The prescan. Must not be 'null'
+	 * @param errorType
+	 *            The error type. Must not be 'null'!
 	 */
-	public PrescanError( final AbstractPrescanBehavior prescanBahavior, final PrescanErrorTypes errorType ) {
-		if( prescanBahavior == null ) {
-			throw new IllegalArgumentException( "The parameter 'prescanBahavior' must not be null!" );
+	public PrescanError(final AbstractPrescanBehavior prescanBahavior,
+			final PrescanErrorTypes errorType) {
+		if (prescanBahavior == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'prescanBahavior' must not be null!");
 		}
-		if( errorType == null ) {
-			throw new IllegalArgumentException( "The parameter 'errorType' must not be null!" );
+		if (errorType == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'errorType' must not be null!");
 		}
 		this.prescanBahavior = prescanBahavior;
 		this.errorType = errorType;
@@ -55,9 +52,8 @@ public class PrescanError implements IModelError {
 		return this.errorType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
@@ -65,60 +61,63 @@ public class PrescanError implements IModelError {
 		int result = 1;
 		result = prime * result
 				+ ((errorType == null) ? 0 : errorType.hashCode());
-		result = prime
-				* result
-				+ ((prescanBahavior == null) ? 0 : prescanBahavior
-						.hashCode());
+		result = prime * result
+				+ ((prescanBahavior == null) ? 0 : prescanBahavior.hashCode());
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		PrescanError other = (PrescanError) obj;
 		if (errorType == null) {
-			if (other.errorType != null)
+			if (other.errorType != null) {
 				return false;
-		} else if (!errorType.equals(other.errorType))
+			}
+		} else if (!errorType.equals(other.errorType)) {
 			return false;
+		}
 		if (prescanBahavior == null) {
-			if (other.prescanBahavior != null)
+			if (other.prescanBahavior != null) {
 				return false;
-		} else if (!prescanBahavior.equals(other.prescanBahavior))
+			}
+		} else if (!prescanBahavior.equals(other.prescanBahavior)) {
 			return false;
+		}
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
-		return "PrescanError [errorType=" + errorType + ", prescanBahavior=" + prescanBahavior + "]";
+		return "PrescanError [errorType=" + errorType + ", prescanBahavior="
+				+ prescanBahavior + "]";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelError#getErrorMessage()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String getErrorMessage() {
-		return "Error in prescan " + this.prescanBahavior + " because " + this.errorType;
+		return "Error in prescan " + this.prescanBahavior + " because "
+				+ this.errorType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelError#getErrorName()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String getErrorName() {

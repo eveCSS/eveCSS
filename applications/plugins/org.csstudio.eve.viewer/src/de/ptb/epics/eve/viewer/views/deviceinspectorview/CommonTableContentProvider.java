@@ -70,7 +70,9 @@ public class CommonTableContentProvider implements IStructuredContentProvider {
 	 * 			<code>false</code> otherwise
 	 */
 	public boolean addElement(CommonTableElement element) {
-		if (element == null) return false;
+		if (element == null) {
+			return false;
+		}
 		for (CommonTableElement cte : elements) {
 			if (cte.getAbstractDevice().equals(element.getAbstractDevice())) {
 				element.dispose();
@@ -88,7 +90,9 @@ public class CommonTableContentProvider implements IStructuredContentProvider {
 	 * @param element the element that should be removed
 	 */
 	public void removeElement(Object element) {
-		if (element == null) return;
+		if (element == null) {
+			return;
+		}
 		((CommonTableElement)element).dispose();
 		if (elements.contains(element)) {
 			elements.remove(element);

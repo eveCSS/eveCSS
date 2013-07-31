@@ -5,18 +5,9 @@ import de.ptb.epics.eve.data.scandescription.Positioning;
 /**
  * This class represents an error that occurred in a positioning.
  * @author   Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
- * @uml.dependency   supplier="de.ptb.epics.eve.data.scandescription.errors.IModelError"
  */
 public class PositioningError implements IModelError {
-
-	/**
-	 * The positioning where the error occurred.
-	 */
 	private final Positioning positioning;
-	
-	/**
-	 * The type of the error.
-	 */
 	private final PositioningErrorTypes errorType;
 	
 	/**
@@ -25,12 +16,15 @@ public class PositioningError implements IModelError {
 	 * @param positioning The positioning where the error occurred. Must not be null!
 	 * @param errorType The type of the error. Must not be null!
 	 */
-	public PositioningError( final Positioning positioning, final PositioningErrorTypes errorType ) {
-		if( positioning == null ) {
-			throw new IllegalArgumentException( "The parameter 'positioning' must not be null!" );
+	public PositioningError(final Positioning positioning,
+			final PositioningErrorTypes errorType) {
+		if (positioning == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'positioning' must not be null!");
 		}
-		if( errorType == null ) {
-			throw new IllegalArgumentException( "The parameter 'errorType' must not be null!" );
+		if (errorType == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'errorType' must not be null!");
 		}
 		this.positioning = positioning;
 		this.errorType = errorType;
@@ -54,9 +48,8 @@ public class PositioningError implements IModelError {
 		return this.errorType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
@@ -69,35 +62,40 @@ public class PositioningError implements IModelError {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		PositioningError other = (PositioningError) obj;
 		if (errorType == null) {
-			if (other.errorType != null)
+			if (other.errorType != null) {
 				return false;
-		} else if (!errorType.equals(other.errorType))
+			}
+		} else if (!errorType.equals(other.errorType)) {
 			return false;
+		}
 		if (positioning == null) {
-			if (other.positioning != null)
+			if (other.positioning != null) {
 				return false;
-		} else if (!positioning.equals(other.positioning))
+			}
+		} else if (!positioning.equals(other.positioning)) {
 			return false;
+		}
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
@@ -106,22 +104,20 @@ public class PositioningError implements IModelError {
 	}
 
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelError#getErrorMessage()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String getErrorMessage() {
-		return "Error in positioning " + this.positioning + " because " + this.errorType;
+		return "Error in positioning " + this.positioning + " because " + 
+				this.errorType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelError#getErrorName()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String getErrorName() {
 		return "Positioning Error";
 	}
-	
 }

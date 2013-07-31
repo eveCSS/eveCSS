@@ -85,7 +85,9 @@ public class Event implements Comparable<Event> {
 			scanModuleId = 0;
 			monitor = null;
 			incident = ScheduleIncident.END;
-			if (this.type == EventTypes.SCHEDULE) name = getID();
+			if (this.type == EventTypes.SCHEDULE) {
+				name = getID();
+			}
 		}
 	}
 
@@ -242,9 +244,10 @@ public class Event implements Comparable<Event> {
 	 */
 	public String getID() {
 		String returnString = null;
-		if (this.type == EventTypes.MONITOR){
-			if (monitor != null) 
+		if (this.type == EventTypes.MONITOR) {
+			if (monitor != null) {
 				return monitor.getID();
+			}
 		}
 		else if (this.type == EventTypes.SCHEDULE) {
 			String incidentTag;
@@ -285,7 +288,9 @@ public class Event implements Comparable<Event> {
 			throw new IllegalArgumentException(
 					"The parameter 'id' must not be null!");
 		}
-		if (this.type == EventTypes.MONITOR) monitor.setId(id);
+		if (this.type == EventTypes.MONITOR) {
+			monitor.setId(id);
+		}
 	}
 
 	/**
@@ -317,8 +322,10 @@ public class Event implements Comparable<Event> {
 					"The parameter 'type' must not be null!");
 		}
 		this.type = type;
-		if (this.type == EventTypes.MONITOR){
-			if (monitor == null) monitor = new MonitorEvent();
+		if (this.type == EventTypes.MONITOR) {
+			if (monitor == null) {
+				monitor = new MonitorEvent();
+			}
 		}
 		else {
 			chainId = 0;
@@ -341,8 +348,9 @@ public class Event implements Comparable<Event> {
 			throw new IllegalArgumentException(
 					"unable to set Null Access or type is schedule");
 		}
-		if (monitor != null)
+		if (monitor != null) {
 			monitor.setAccess(access);
+		}
 	}
 
 	/**

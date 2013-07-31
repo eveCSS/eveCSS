@@ -262,9 +262,10 @@ public class CommonTableElement {
 			if (realDevice.getUnit() != null){
 				if (realDevice.getUnit().getAccess() != null) {
 					if (realDevice.getUnit().getAccess().getTransport() == 
-							TransportTypes.CA)
+							TransportTypes.CA) {
 						unitPv = new CommonTableElementPV(realDevice.getUnit().
 								getAccess().getVariableID(), this);
+					}
 				} else {
 					unit = realDevice.getUnit().getValue();
 				}
@@ -283,19 +284,45 @@ public class CommonTableElement {
 	 * 
 	 */
 	public void dispose() {
-		if (valuePv != null) valuePv.disconnect();
-		if (gotoPv != null) gotoPv.disconnect();
-		if (unitPv != null) unitPv.disconnect();
-		if (statusPv != null) statusPv.disconnect();
-		if (movedonePv != null) movedonePv.disconnect();
-		if (stopPv != null) stopPv.disconnect();
-		if (triggerPv != null) triggerPv.disconnect();
-		if (tweakvaluePv != null) tweakvaluePv.disconnect();
-		if (tweakforwardPv != null) tweakforwardPv.disconnect();
-		if (tweakreversePv != null) tweakreversePv.disconnect();
-		if (offsetPv != null) offsetPv.disconnect();
-		if (softHighLimitPv != null) softHighLimitPv.disconnect();
-		if (softLowLimitPv != null) softLowLimitPv.disconnect();
+		if (valuePv != null) {
+			valuePv.disconnect();
+		}
+		if (gotoPv != null) {
+			gotoPv.disconnect();
+		}
+		if (unitPv != null) {
+			unitPv.disconnect();
+		}
+		if (statusPv != null) {
+			statusPv.disconnect();
+		}
+		if (movedonePv != null) {
+			movedonePv.disconnect();
+		}
+		if (stopPv != null) {
+			stopPv.disconnect();
+		}
+		if (triggerPv != null) {
+			triggerPv.disconnect();
+		}
+		if (tweakvaluePv != null) {
+			tweakvaluePv.disconnect();
+		}
+		if (tweakforwardPv != null) {
+			tweakforwardPv.disconnect();
+		}
+		if (tweakreversePv != null) {
+			tweakreversePv.disconnect();
+		}
+		if (offsetPv != null) {
+			offsetPv.disconnect();
+		}
+		if (softHighLimitPv != null) {
+			softHighLimitPv.disconnect();
+		}
+		if (softLowLimitPv != null) {
+			softLowLimitPv.disconnect();
+		}
 		cellEditorHash.clear();
 	}
 	
@@ -494,7 +521,6 @@ public class CommonTableElement {
 			case NONE: color = "COLOR_PV_OK"; break;
 			case UNDEFINED: color = "COLOR_PV_INITIAL"; break;
 		}
-		
 		return Activator.getDefault().getColor(color);
 	}
 
@@ -506,12 +532,14 @@ public class CommonTableElement {
 	public String[] getSelectStrings(String property) {
 		if (isDiscrete(property)){
 			if (property.equals("value")){
-				if ((valuePv != null) && valuePv.isDiscrete()) 
+				if ((valuePv != null) && valuePv.isDiscrete()) {
 					return valuePv.getDiscreteValues();
+				}
 			}
 			else if (property.equals("goto")){
-				if ((gotoPv != null) && gotoPv.isDiscrete()) 
+				if ((gotoPv != null) && gotoPv.isDiscrete()) {
 					return gotoPv.getDiscreteValues();
+				}
 			}
 		}
 		return new ArrayList<String>().toArray(new String[0]);
@@ -521,10 +549,11 @@ public class CommonTableElement {
 	 * 
 	 */
 	public void update() {
-
 		final CommonTableElement thisCommonTableElement = this;
-		if (!initialized) return;
-		if (!viewer.getControl().isDisposed()){
+		if (!initialized) {
+			return;
+		}
+		if (!viewer.getControl().isDisposed()) {
 			viewer.getControl().getDisplay().asyncExec(new Runnable() {
 				
 				@Override
@@ -564,13 +593,13 @@ public class CommonTableElement {
 	 * @return
 	 */
 	public String getValue(String property) {
-		if (property.equals("goto") && (gotoPv != null))
+		if (property.equals("goto") && (gotoPv != null)) {
 			return gotoPv.getValue();
-		else if (property.equals("engine") && (engine != null))
+		} else if (property.equals("engine") && (engine != null)) {
 			return engine.getValue();
-		else if (property.equals( "name"))
+		} else if (property.equals( "name")) {
 			return name;
-		else if (property.equals("value") && (valuePv != null)) {
+		} else if (property.equals("value") && (valuePv != null)) {
 			return valuePv.getValue();
 		} else if (property.equals("status")) {
 			if (device instanceof DetectorChannel) {
@@ -636,26 +665,25 @@ public class CommonTableElement {
 	 */
 	public void setValue(Object value, String column) {
 		String newValue = "";
-		if (getCellEditor(column) instanceof ComboBoxCellEditor){
+		if (getCellEditor(column) instanceof ComboBoxCellEditor) {
 			int index = 0;
 			String[] items = ((ComboBoxCellEditor)getCellEditor(column)).
 					getItems();
 			if (value instanceof Integer) index = ((Integer)value).intValue();
 			if (items.length > index) newValue = items[index];
-		}
-		else if (value instanceof String)
+		} else if (value instanceof String) {
 			newValue = (String) value;
+		}
 
 		if (column.equals("goto") && (gotoPv != null)) {
 			gotoPv.setValue(newValue);
-		}
-		else if (column.equals("value") && (valuePv != null))
+		} else if (column.equals("value") && (valuePv != null)) {
 			valuePv.setValue(newValue);
-		else if (column.equals("unit") && (unitPv != null))
+		} else if (column.equals("unit") && (unitPv != null)) {
 			unitPv.setValue(newValue);
-		else if (column.equals("tweakvalue") && (tweakvaluePv != null))
+		} else if (column.equals("tweakvalue") && (tweakvaluePv != null)) {
 			tweakvaluePv.setValue(newValue);
-		else if (column.equals("define") && (offsetPv != null)) {
+		} else if (column.equals("define") && (offsetPv != null)) {
 			// this is a define of the motor position
 			// first, remember softHighLimit and softLowLimit
 			String softHighLimit = softHighLimitPv.getValue();
@@ -683,7 +711,6 @@ public class CommonTableElement {
 	 */
 	public void trigger() {
 		if (triggerPv != null && triggerPv.isConnected()) {
-
 			if (device.getClass().getSimpleName().equals("DetectorChannel")) {
 				// device is a DetectorChannel
 				DetectorChannel channel = (DetectorChannel)device;

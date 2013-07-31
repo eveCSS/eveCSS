@@ -44,10 +44,9 @@ public class CommonTableElementEngineData implements IMeasurementDataListener {
 	 */
 	@Override
 	public void measurementDataTransmitted(final MeasurementData measurementData) {
-
-		if (!isActive) return;
-		if (measurementData == null) return;
-		if (dataId == null) return;
+		if (!isActive || measurementData == null || dataId == null) {
+			return;
+		}
 		
 		if (this.dataId.equals(measurementData.getName()) && 
 			(measurementData.getDataModifier() == datamodifier)) {

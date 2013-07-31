@@ -333,19 +333,22 @@ public class PluginParameter {
 			if(this.type == PluginDataType.INT) {
 				int val = Integer.parseInt(value);
 				while(it.hasNext()) {
-					if(Integer.parseInt(it.next()) == val)
+					if(Integer.parseInt(it.next()) == val) {
 						return true;
+					}
 				}
 			} else if(this.type == PluginDataType.DOUBLE) {
 				double val = Double.parseDouble(value);
 				while(it.hasNext()) {
-					if(Double.parseDouble(it.next()) == val)
+					if(Double.parseDouble(it.next()) == val) {
 						return true;
+					}
 				}
 			} else {
 				while(it.hasNext()) {
-					if(it.next().equals(value))
+					if(it.next().equals(value)) {
 						return true;
+					}
 				}
 			}
 			
@@ -440,5 +443,5 @@ public class PluginParameter {
 			return false;
 		}
 		return true;
-	}	
+	}
 }

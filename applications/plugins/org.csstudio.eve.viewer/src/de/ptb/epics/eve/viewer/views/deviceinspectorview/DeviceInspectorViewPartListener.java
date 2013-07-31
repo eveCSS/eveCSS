@@ -74,7 +74,9 @@ public class DeviceInspectorViewPartListener implements IPartListener2 {
 	 */
 	@Override
 	public void partVisible(IWorkbenchPartReference partRef) {
-		if(!partRef.getId().equals("DeviceInspectorView")) return;
+		if(!partRef.getId().equals("DeviceInspectorView")) {
+			return;
+		}
 		DeviceInspectorView.activeDeviceInspectorView = 
 			((IViewReference)partRef).getView(false).
 			getViewSite().getSecondaryId();
