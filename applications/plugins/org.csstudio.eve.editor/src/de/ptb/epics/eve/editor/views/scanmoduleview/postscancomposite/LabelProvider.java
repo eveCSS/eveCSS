@@ -50,7 +50,9 @@ public class LabelProvider implements ITableLabelProvider {
 		final Postscan pos = (Postscan) postscan;
 		switch (colIndex) {
 		case 1: // device column
-			if(pos.isDevice()) return pos.getAbstractDevice().getName();
+			if(pos.isDevice()) {
+				return pos.getAbstractDevice().getName();
+			}
 			return pos.getAbstractDevice().getParent().getName() + " "
 					+ (char) 187 + " " + pos.getAbstractDevice().getName();
 		case 2: // value column
@@ -58,30 +60,33 @@ public class LabelProvider implements ITableLabelProvider {
 					.equals(DataTypes.ONOFF)) {
 				String[] werte = pos.getAbstractPrePostscanDevice().getValue()
 						.getDiscreteValues().toArray(new String[0]);
-				if (werte[0].equals(pos.getValue()))
+				if (werte[0].equals(pos.getValue())) {
 					// Erster Eintrag ist gesetzt, On anzeigen
 					return "On";
-				else if (werte[1].equals(pos.getValue()))
+				} else if (werte[1].equals(pos.getValue())){
 					// Zweiter Eintrag ist gesetzt, Off anzeigen
 					return "Off";
-				else
+				} else {
 					return "";
+				}
 			} else if (pos.getAbstractPrePostscanDevice().getValue().getType()
 					.equals(DataTypes.OPENCLOSE)) {
 				// Datentyp OPENCLOSE vorhanden, als Value wird Open oder Close
 				// gesetzt
 				String[] werte = pos.getAbstractPrePostscanDevice().getValue()
 						.getDiscreteValues().toArray(new String[0]);
-				if (werte[0].equals(pos.getValue()))
+				if (werte[0].equals(pos.getValue())) {
 					// Erster Eintrag ist gesetzt, Open anzeigen
 					return "Open";
-				else if (werte[1].equals(pos.getValue()))
+				} else if (werte[1].equals(pos.getValue())) {
 					// Zweiter Eintrag ist gesetzt, Close anzeigen
 					return "Close";
-				else
+				} else {
 					return "";
-			} else
+				}
+			} else {
 				return (pos.getValue() != null) ? pos.getValue() : "";
+			}
 		case 3:
 			return Boolean.toString(pos.isReset());
 		}

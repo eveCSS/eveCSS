@@ -68,7 +68,9 @@ public class PluginControllerContentProvider implements IModelUpdateListener,
 	 */
 	@Override
 	public void dispose() {
-		if(pluginController == null) return;
+		if(pluginController == null) {
+			return;
+		}
 		pluginController.removeModelUpdateListener(this);
 	}
 }

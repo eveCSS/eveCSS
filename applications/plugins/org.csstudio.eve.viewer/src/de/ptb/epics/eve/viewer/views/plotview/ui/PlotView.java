@@ -390,7 +390,10 @@ public class PlotView extends ViewPart {
 	 * 
 	 */
 	private void restoreState() {
-		if(this.memento == null) return; // nothing saved
+		if(this.memento == null) {
+			// nothing saved
+			return;
+		}
 		
 		// restore sash weights
 		int plotWeight = this.memento.getInteger("plotWeight") == null

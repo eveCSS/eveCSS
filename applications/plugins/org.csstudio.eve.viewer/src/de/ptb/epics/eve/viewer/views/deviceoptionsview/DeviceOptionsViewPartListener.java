@@ -74,7 +74,9 @@ public class DeviceOptionsViewPartListener implements IPartListener2 {
 	 */
 	@Override
 	public void partVisible(IWorkbenchPartReference partRef) {
-		if(!partRef.getId().equals("DeviceOptionsView")) return;
+		if(!partRef.getId().equals("DeviceOptionsView")) {
+			return;
+		}
 		DeviceOptionsView.activeDeviceOptionsView = 
 			((IViewReference)partRef).getView(false).
 			getViewSite().getSecondaryId();

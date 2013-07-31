@@ -92,7 +92,9 @@ public class ContentProvider implements IStructuredContentProvider, PropertyChan
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		logger.debug("Prop change in " + ((OptionPV)evt.getSource()).getName());
-		if(!evt.getPropertyName().equals("value")) return;
+		if(!evt.getPropertyName().equals("value")) {
+			return;
+		}
 		if(!((TableViewer)viewer).isCellEditorActive()) {
 			viewer.refresh();
 		}

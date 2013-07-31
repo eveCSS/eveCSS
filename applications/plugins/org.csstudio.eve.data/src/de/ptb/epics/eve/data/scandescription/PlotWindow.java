@@ -394,10 +394,12 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 					}
 				}
 			}
-			if (wegAxis1 != null)
+			if (wegAxis1 != null) {
 				this.removeYAxis(wegAxis1);
-			if (wegAxis2 != null)
+			}
+			if (wegAxis2 != null) {
 				this.removeYAxis(wegAxis2);
+			}
 			
 			updateListeners();
 		}

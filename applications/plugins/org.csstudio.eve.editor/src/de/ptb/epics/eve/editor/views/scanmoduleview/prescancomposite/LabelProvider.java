@@ -75,16 +75,18 @@ public class LabelProvider implements ITableLabelProvider {
 				// OPENCLOSE -> als Value wird Open oder Close gesetzt
 				String[] werte = pos.getAbstractPrePostscanDevice().getValue()
 						.getDiscreteValues().toArray(new String[0]);
-				if (werte[0].equals(pos.getValue()))
+				if (werte[0].equals(pos.getValue())) {
 					// Erster Eintrag ist gesetzt, Open anzeigen
 					return "Open";
-				else if (werte[1].equals(pos.getValue()))
+				} else if (werte[1].equals(pos.getValue())) {
 					// Zweiter Eintrag ist gesetzt, Close anzeigen
 					return "Close";
-				else
+				} else {
 					return null;
-			} else
+				}
+			} else {
 				return (pos.getValue() != null) ? pos.getValue() : null;
+			}
 		}
 		return null;
 	}

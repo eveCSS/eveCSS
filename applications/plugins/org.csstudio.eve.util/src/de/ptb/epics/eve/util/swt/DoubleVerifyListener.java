@@ -36,8 +36,9 @@ public class DoubleVerifyListener implements VerifyListener {
 			if (e.character == '.') {
 				// character . is a valid character, if he is not in the
 				// old string
-				if (oldText.contains("."))
+				if (oldText.contains(".")) {
 					e.doit = false;
+				}
 			} else if (e.character == '-') {
 				// character - is a valid character as first sign and
 				// after an e
@@ -58,8 +59,9 @@ public class DoubleVerifyListener implements VerifyListener {
 			} else if (e.character == 'e' || e.character == 'E') {
 				// character e/E is a valid character, if he is not in the
 				// old string
-				if (oldText.contains("e") || oldText.contains("E"))
+				if (oldText.contains("e") || oldText.contains("E")) {
 					e.doit = false;
+				}
 			} else {
 				e.doit = false; // disallow the action
 			}

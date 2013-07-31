@@ -134,7 +134,9 @@ public class MathTableElement implements IMeasurementDataListener,
 	 */
 	private String convert(MeasurementData mData, int element) {
 		
-		if (mData.getValues().size() <= element) return "error";
+		if (mData.getValues().size() <= element) {
+			return "error";
+		}
 		
 		if (mData.getDataType() == DataType.DOUBLE || 
 			mData.getDataType() == DataType.FLOAT) {
@@ -175,7 +177,9 @@ public class MathTableElement implements IMeasurementDataListener,
 	 * 
 	 */
 	public void gotoPos() {
-		if (motorPv == null) return;
+		if (motorPv == null) {
+			return;
+		}
 		MotorAxis ma = Activator.getDefault().getMeasuringStation().
 				getMotorAxisById(motorId);
 		String triggerPv = null;

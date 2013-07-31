@@ -47,7 +47,9 @@ public class EditorViewPerspectiveListener implements IPerspectiveListener {
 			IPerspectiveDescriptor perspective, String changeId) {
 		// if the program is being closed -> do nothing
 		// (otherwise page references would lead to null pointers)
-		if(page.getWorkbenchWindow().getActivePage() == null) return;
+		if(page.getWorkbenchWindow().getActivePage() == null) {
+			return;
+		}
 		
 		// if a new editor is opened, previously shown content has to be 
 		// cleared
@@ -56,7 +58,9 @@ public class EditorViewPerspectiveListener implements IPerspectiveListener {
 		}
 		
 		// only update if no editor is open anymore
-		if(page.getEditorReferences().length > 0) return;
+		if(page.getEditorReferences().length > 0) {
+			return;
+		}
 		// Note: resetting views generally did not work, because the activation 
 		// event of the editor/selection triggered before this event, 
 		// such that the views were set with the new content and afterwards 

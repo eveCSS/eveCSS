@@ -93,7 +93,9 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 		
 		this.memento = memento;
 		
-		if(memento == null) return;
+		if(memento == null){
+			return;
+		}
 		
 		final String identifier = memento.getString("device");
 		if(identifier != null && !identifier.isEmpty()) {
@@ -332,7 +334,10 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	 * saved in the memento.
 	 */
 	private void restoreState() {
-		if(memento == null) return; // nothing saved
+		if(memento == null) {
+			// nothing saved
+			return;
+		}
 		
 		// restore sorting
 		tableViewerSortState = 

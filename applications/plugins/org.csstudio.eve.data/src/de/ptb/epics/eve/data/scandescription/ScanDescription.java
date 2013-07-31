@@ -185,8 +185,9 @@ public class ScanDescription implements IModelUpdateProvider,
 		for (ControlEvent cevent : eventList) {
 			Event embeddedEvent = cevent.getEvent();
 			if (embeddedEvent != null){
-				if (embeddedEvent == event) 
+				if (embeddedEvent == event) {
 					cevent.updateEvent(new ModelUpdateEvent(this, null));
+				}
 			}
 		}
 		return returnValue;
@@ -205,9 +206,10 @@ public class ScanDescription implements IModelUpdateProvider,
 		// if a controlEvent uses the event, remove the ControlEvent
 		for(ControlEvent cevent : eventList) {
 			final Event embeddedEvent = cevent.getEvent();
-			if(embeddedEvent != null){
-				if(embeddedEvent == event) 
+			if(embeddedEvent != null) {
+				if(embeddedEvent == event) {
 					manager.removeControlEvent(cevent);
+				}
 			}
 		}
 	}
@@ -275,7 +277,9 @@ public class ScanDescription implements IModelUpdateProvider,
 	public Chain getChain(int chainId) {
 		Chain retChain = null;
 		for (Chain chain : this.chains) {
-			if (chain.getId() == chainId) retChain = chain;
+			if (chain.getId() == chainId) {
+				retChain = chain;
+			}
 		}
 		return retChain;
 	}
