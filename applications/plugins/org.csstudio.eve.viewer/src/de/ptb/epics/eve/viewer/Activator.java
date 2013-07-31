@@ -102,7 +102,7 @@ public class Activator extends AbstractUIPlugin {
 		
 		startupParams = Startup.readStartupParameters();
 		if (startupParams.useDefaultDevices()) {
-			Startup.configureLogging("/tmp/eve/", startupParams.isDebug(), logger);
+			Startup.configureLogging("/tmp/", startupParams.isDebug(), logger);
 			logger.info("No 'eve.root' given, logging to '/tmp/eve/'");
 		} else {
 			Startup.checkRootDir(startupParams.getRootDir());

@@ -90,7 +90,7 @@ public class Activator extends AbstractUIPlugin {
 		
 		startupParams = Startup.readStartupParameters();
 		if (startupParams.useDefaultDevices()) {
-			Startup.configureLogging("/tmp/eve/", startupParams.isDebug(), logger);
+			Startup.configureLogging("/tmp/", startupParams.isDebug(), logger);
 			logger.info("No 'eve.root' given, logging to '/tmp/eve/'");
 		} else {
 			Startup.checkRootDir(startupParams.getRootDir());
@@ -104,7 +104,7 @@ public class Activator extends AbstractUIPlugin {
 		this.excludeFilter = new ExcludeFilter();
 		this.excludeFilter.setSource(this.measuringStation);
 		
-		loadColorsAndFonts();
+		loadImagesColorsAndFonts();
 		loadDefaults();
 		startupReport();
 		
@@ -240,7 +240,7 @@ public class Activator extends AbstractUIPlugin {
 		}
 	}
 	
-	private void loadColorsAndFonts() {
+	private void loadImagesColorsAndFonts() {
 		ImageRegistry imagereg = getImageRegistry();
 		imagereg.put("MOTOR", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/devices/motor.gif").createImage());
