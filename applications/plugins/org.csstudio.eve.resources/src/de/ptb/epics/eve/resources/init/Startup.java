@@ -16,14 +16,20 @@ import de.ptb.epics.eve.data.measuringstation.processors.MeasuringStationLoader;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
 
 /**
+ * Collection of routines used by different plug-ins during startup for 
+ * initialization.
+ * 
  * @author Marcus Michalsky
  * @since 1.14
  */
 public class Startup {
 	
 	/**
+	 * Reads the startup parameters from the eclipse platform and returns them 
+	 * encapsulated in a {@link de.ptb.epics.eve.resources.init.Parameters}
+	 * object.
 	 * 
-	 * @return
+	 * @return the startup parameters
 	 */
 	public static Parameters readStartupParameters() {
 		String[] args = Platform.getCommandLineArgs();
@@ -47,9 +53,11 @@ public class Startup {
 	}
 	
 	/**
+	 * Verifies the given root directory. If and only if "<rootDir>/eve/" exists 
+	 * the method returns normally. Otherwise an Exception is thrown.
 	 * 
-	 * @param path
-	 * @throws Exception
+	 * @param path the root dir path
+	 * @throws Exception if "<rootDir>/eve/" does not exist
 	 */
 	public static void checkRootDir(String rootDir) throws Exception {
 		String path = new String(rootDir);
@@ -64,9 +72,16 @@ public class Startup {
 	}
 	
 	/**
+	 * Configures logging either for debugging (<code>debug == true</code>) or 
+	 * release (<code>debug == false</code>). If <code>debug == true</code> the 
+	 * logging configuration at "<rootDir>/eve/logger-debug.xml" will be used.
+	 * If none is found an integrated default configuration is used. 
+	 * Release logging always used the integrated configuration.
 	 * 
-	 * @param path
-	 * @throws Exception
+	 * @param rootDir the eve root path where the custom debug configuration is located
+	 * @param debug <code>true</code> for debugging, <code>false</code> for release
+	 * @param logger the logger to log messages to
+	 * @throws Exception if the internal configuration could not be loaded
 	 */
 	public static void configureLogging(String rootDir, boolean debug,
 			Logger logger) throws Exception {
@@ -107,6 +122,13 @@ public class Startup {
 		}
 	}
 	
+	/**
+	 * Loads the (integrated) schema file.
+	 * 
+	 * @param logger the logger to log messages to
+	 * @return the loaded schema file
+	 * @throws Exception if schema could not be loaded
+	 */
 	public static File loadSchemaFile(Logger logger) throws Exception {
 		File schemaFile = de.ptb.epics.eve.resources.Activator.getXMLSchema();
 		if(schemaFile == null) {
@@ -118,11 +140,21 @@ public class Startup {
 	}
 	
 	/**
+	 * Loads the device definition file. If no root directory is given 
+	 * (<code>null</code>) a default device definition will be returned.
+	 * Otherwise the device definition at the location set in the preferences 
+	 * is used. If there is no preferences entry the device definition at 
+	 * "<rootDir>/eve/default.xml" is loaded.
+	 * Returns <code>null</code> if a load error occured.
 	 * 
-	 * @param rootDir
-	 * @param logger
-	 * @return
-	 * @throws Exception 
+	 * @param rootDir the eve root directory path
+	 * @param logger the logger messages should go to
+	 * @return the loaded measuring station or <code>null</code> if a load error occured
+	 * @throws Exception if "rootDir" is not <code>null</code> and one of the following conditions is met:
+	 * 		<ul>
+	 * 			<li>no preferences entry, <code><rootDir>/eve/defaults.xml</code> does not exist</li>
+	 * 			<li>preferences entry is not a valid target</li>
+	 * 		</ul>
 	 */
 	public static IMeasuringStation loadMeasuringStation(String rootDir, 
 			File schema, Logger logger) throws Exception {

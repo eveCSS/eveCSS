@@ -1,6 +1,9 @@
 package de.ptb.epics.eve.resources.init;
 
 /**
+ * Encapsulates startup parameters into a single object.
+ * A parameter which is not set is <code>null</code> or false.
+ * 
  * @author Marcus Michalsky
  * @since 1.14
  */
