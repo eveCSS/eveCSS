@@ -974,11 +974,11 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				for(Channel ch : sm.getChannels()) {
 					usedDetectorChannels.add(ch.getDetectorChannel());
 					
-					List<ControlEvent> ch_events = new ArrayList<ControlEvent>();
-					ch_events.addAll(ch.getRedoControlEventManager().
+					List<ControlEvent> chEvents = new ArrayList<ControlEvent>();
+					chEvents.addAll(ch.getRedoControlEventManager().
 							getControlEventsList());
 					
-					for(ControlEvent ce : ch_events) {
+					for(ControlEvent ce : chEvents) {
 						AbstractDevice dev = this.getAbstractDeviceById(
 								ce.getDeviceId());
 						if (dev instanceof MotorAxis) {
@@ -1197,11 +1197,11 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		for(Detector d : allDetectors) {
 			for(DetectorChannel ch : d.getChannels()) {
 				if(!(usedDetectorChannels.contains(ch))) {
-					boolean option_used = false;
+					boolean optionUsed = false;
 					for(Option o : ch.getOptions()) {
 						if(usedOptions.contains(o)) {
 							// option is used, set flag
-							option_used = true;
+							optionUsed = true;
 						} else {
 							// option not used -> exclude
 							exclude(o);
@@ -1212,7 +1212,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					
 					// if any option is used, the flag is set, 
 					// if not -> exclude channel
-					if(!option_used) {
+					if(!optionUsed) {
 						exclude(ch);
 						logger.debug("Detector Channel " + d.getName() + 
 								":" + ch.getName() + " not used -> exclude");
@@ -1263,11 +1263,11 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		// iterate over all devices ->
 		for(Device device : allDevices) {
 			if(!(usedDevices.contains(device))) {
-				boolean option_used = false;
+				boolean optionUsed = false;
 				for(Option o : device.getOptions()) {
 					if(usedOptions.contains(o)) {
 						// option is used, set flag
-						option_used = true;
+						optionUsed = true;
 					} else {
 						// option not used -> exclude
 						exclude(o);
@@ -1278,7 +1278,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				
 				// if any option is used, the flag is set, 
 				// if not -> exclude device
-				if(!option_used) {
+				if(!optionUsed) {
 					exclude(device);
 					logger.debug("Device " + device.getID() + " (" +
 							device.getName() + ") not used -> exclude");
