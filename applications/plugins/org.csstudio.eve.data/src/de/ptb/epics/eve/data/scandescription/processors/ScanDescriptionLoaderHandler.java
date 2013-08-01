@@ -1257,12 +1257,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case YAXIS_COLOR_NEXT:
 			final String colorBuffer = textBuffer.toString();
 
-			String red_hex = colorBuffer.substring(0, 2);
-			int red = Integer.parseInt(red_hex, 16);
-			String green_hex = colorBuffer.substring(2, 4);
-			int green = Integer.parseInt(green_hex, 16);
-			String blue_hex = colorBuffer.substring(4);
-			int blue = Integer.parseInt(blue_hex, 16);
+			String redHex = colorBuffer.substring(0, 2);
+			int red = Integer.parseInt(redHex, 16);
+			String greenHex = colorBuffer.substring(2, 4);
+			int green = Integer.parseInt(greenHex, 16);
+			String blueHex = colorBuffer.substring(4);
+			int blue = Integer.parseInt(blueHex, 16);
 
 			if (colorBuffer.length() == 6) {
 				this.currentYAxis.setColor(new RGB(red, green, blue));

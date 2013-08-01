@@ -46,63 +46,91 @@ public class PluginControllerCellModifyer implements ICellModifier {
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean canModify(final Object element, final String property) {
-		if( property.equals("option")) {
+		if (property.equals("option")) {
 			return false;
-		} else if(property.equals("value")) {
-			Map.Entry<String, String> entry = ((Map.Entry< String, String >)element);
-			PluginController pluginController = (PluginController)this.tableViewer.getInput();
-			final Iterator< PluginParameter > it = pluginController.getPlugin().getParameters().iterator();
+		} else if (property.equals("value")) {
+			Map.Entry<String, String> entry = ((Map.Entry<String, String>) element);
+			PluginController pluginController = (PluginController) this.tableViewer
+					.getInput();
+			final Iterator<PluginParameter> it = pluginController.getPlugin()
+					.getParameters().iterator();
 			PluginParameter pluginParameter = null;
-			while( it.hasNext() ) {
+			while (it.hasNext()) {
 				pluginParameter = it.next();
-				if( pluginParameter.getName().equals( entry.getKey() ) ) {
+				if (pluginParameter.getName().equals(entry.getKey())) {
 					break;
 				}
 				pluginParameter = null;
 			}
-			
-			if( pluginParameter != null ) {
-				if( pluginParameter.getType() == PluginDataType.AXISID ) {
+
+			if (pluginParameter != null) {
+				if (pluginParameter.getType() == PluginDataType.AXISID) {
 					this.tableViewer.getCellEditors()[1].dispose();
-					// hier kommen nur die Achsen zur Auswahl die im scanModul gewählt sind
-					ScanModule scanModul = (ScanModule)((PluginController)this.tableViewer.getInput()).getScanModule();
-					if ( scanModul != null) {
-						Axis[] cur_axis = scanModul.getAxes();
-						String[] cur_feld = new String[cur_axis.length];
-						for (int i=0; i<cur_axis.length; ++i) {
-							cur_feld[i] = cur_axis[i].getMotorAxis().getFullIdentifyer();
+					// hier kommen nur die Achsen zur Auswahl die im scanModul
+					// gewählt sind
+					ScanModule scanModul = (ScanModule) ((PluginController) this.tableViewer
+							.getInput()).getScanModule();
+					if (scanModul != null) {
+						Axis[] currentAxis = scanModul.getAxes();
+						String[] currentField = new String[currentAxis.length];
+						for (int i = 0; i < currentAxis.length; ++i) {
+							currentField[i] = currentAxis[i].getMotorAxis()
+									.getFullIdentifyer();
 						}
-						this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor( this.tableViewer.getTable(), cur_feld, SWT.READ_ONLY );
+						this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor(
+								this.tableViewer.getTable(), currentField,
+								SWT.READ_ONLY);
+					} else {
+						// Falls kein scanModul gesetzt ist, werden alle Achsen
+						// zur Auswahl gestellt
+						this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor(
+								this.tableViewer.getTable(), Activator
+										.getDefault().getMeasuringStation()
+										.getAxisFullIdentifyer()
+										.toArray(new String[0]), SWT.READ_ONLY);
 					}
-					else {
-						// Falls kein scanModul gesetzt ist, werden alle Achsen zur Auswahl gestellt
-						this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor( this.tableViewer.getTable(), Activator.getDefault().getMeasuringStation().getAxisFullIdentifyer().toArray( new String[0] ), SWT.READ_ONLY );
-					}
-				} else if( pluginParameter.getType() == PluginDataType.CHANNELID ) {
+				} else if (pluginParameter.getType() == PluginDataType.CHANNELID) {
 					this.tableViewer.getCellEditors()[1].dispose();
-					// hier kommen nur die Channels zur Auswahl die im scanModul gewählt sind
-					ScanModule scanModul = (ScanModule)((PluginController)this.tableViewer.getInput()).getScanModule();
-					if ( scanModul != null) {
-						Channel[] cur_channel = scanModul.getChannels();
-						String[] cur_feld = new String[cur_channel.length];
-						for (int i=0; i<cur_channel.length; ++i) {
-							cur_feld[i] = cur_channel[i].getDetectorChannel().getFullIdentifyer();
+					// hier kommen nur die Channels zur Auswahl die im scanModul
+					// gewählt sind
+					ScanModule scanModul = (ScanModule) ((PluginController) this.tableViewer
+							.getInput()).getScanModule();
+					if (scanModul != null) {
+						Channel[] currentChannel = scanModul.getChannels();
+						String[] currentField = new String[currentChannel.length];
+						for (int i = 0; i < currentChannel.length; ++i) {
+							currentField[i] = currentChannel[i]
+									.getDetectorChannel().getFullIdentifyer();
 						}
-						this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor( this.tableViewer.getTable(), cur_feld, SWT.READ_ONLY );
+						this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor(
+								this.tableViewer.getTable(), currentField,
+								SWT.READ_ONLY);
+					} else {
+						// Falls kein scanModul gesetzt ist, werden alle
+						// Channels zur Auswahl gestellt
+						this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor(
+								this.tableViewer.getTable(), Activator
+										.getDefault().getMeasuringStation()
+										.getChannelsFullIdentifyer()
+										.toArray(new String[0]), SWT.READ_ONLY);
 					}
-					else {
-						// Falls kein scanModul gesetzt ist, werden alle Channels zur Auswahl gestellt
-						this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor( this.tableViewer.getTable(), Activator.getDefault().getMeasuringStation().getChannelsFullIdentifyer().toArray( new String[0] ), SWT.READ_ONLY );
-					}
-				} else if( pluginParameter.getType() == PluginDataType.DEVICEID ) {
+				} else if (pluginParameter.getType() == PluginDataType.DEVICEID) {
 					this.tableViewer.getCellEditors()[1].dispose();
-					this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor( this.tableViewer.getTable(), Activator.getDefault().getMeasuringStation().getPrePostScanDevicesFullIdentifyer().toArray( new String[0] ), SWT.READ_ONLY );
-				} else if( pluginParameter.isDiscrete() ) {
+					this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor(
+							this.tableViewer.getTable(), Activator.getDefault()
+									.getMeasuringStation()
+									.getPrePostScanDevicesFullIdentifyer()
+									.toArray(new String[0]), SWT.READ_ONLY);
+				} else if (pluginParameter.isDiscrete()) {
 					this.tableViewer.getCellEditors()[1].dispose();
-					this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor( this.tableViewer.getTable(), pluginParameter.getDiscreteValues().toArray( new String[0] ), SWT.READ_ONLY );
+					this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor(
+							this.tableViewer.getTable(),
+							pluginParameter.getDiscreteValues().toArray(
+									new String[0]), SWT.READ_ONLY);
 				} else {
 					this.tableViewer.getCellEditors()[1].dispose();
-					this.tableViewer.getCellEditors()[1] = new TextCellEditor( this.tableViewer.getTable() );
+					this.tableViewer.getCellEditors()[1] = new TextCellEditor(
+							this.tableViewer.getTable());
 				}
 			} else {
 				return false;

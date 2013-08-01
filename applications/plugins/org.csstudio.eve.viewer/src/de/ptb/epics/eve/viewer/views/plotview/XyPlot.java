@@ -78,13 +78,13 @@ public class XyPlot extends Figure {
 	 */
 	private void initXAxis(PlotWindow plotWindow) {
 		this.xyGraph.primaryXAxis.setTitle(plotWindow.getXAxis().getName());
-		boolean timedata_x = (Activator.getDefault().getMeasuringStation()
+		boolean timedataX = (Activator.getDefault().getMeasuringStation()
 				.getMotorAxisById(plotWindow.getXAxis().getID()).getType() 
 				== DataTypes.DATETIME);
-		if (timedata_x) {
+		if (timedataX) {
 			this.xyGraph.primaryXAxis.setTimeUnit(Calendar.MILLISECOND);
 		}
-		this.xyGraph.primaryXAxis.setDateEnabled(timedata_x);
+		this.xyGraph.primaryXAxis.setDateEnabled(timedataX);
 		switch (this.currentPlotWindow.getMode()) {
 		case LINEAR:
 			this.xyGraph.primaryXAxis.setLogScale(false);

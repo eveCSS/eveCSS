@@ -622,11 +622,11 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		this.plotComposite.setScanModule(this.currentScanModule);
 
 		// get the selected tab
-		int selection_index = this.actionsTabFolder.getSelectionIndex();
-		if (selection_index == -1) {
+		int selectionIndex = this.actionsTabFolder.getSelectionIndex();
+		if (selectionIndex == -1) {
 			this.actionsTabFolder.setSelection(0);
 		} else {
-			this.actionsTabFolder.setSelection(selection_index);
+			this.actionsTabFolder.setSelection(selectionIndex);
 		}
 
 		if (this.currentScanModule != null) {

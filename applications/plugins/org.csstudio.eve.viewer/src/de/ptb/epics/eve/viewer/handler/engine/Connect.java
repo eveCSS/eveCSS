@@ -32,23 +32,23 @@ public class Connect extends AbstractHandler {
 		
 		if(!Activator.getDefault().getEcp1Client().isRunning()) {
 			
-			String EngineHost = Activator.getDefault().getPreferenceStore().
+			String engineHost = Activator.getDefault().getPreferenceStore().
 					getString(PreferenceConstants.P_DEFAULT_ENGINE_ADDRESS);
 
-			Integer EnginePort = Activator.getDefault().getPreferenceStore()
+			Integer enginePort = Activator.getDefault().getPreferenceStore()
 					.getInt(PreferenceConstants.P_DEFAULT_ENGINE_PORT);
 			
 			try {
 				java.net.InetAddress localMachine = 
 						java.net.InetAddress.getLocalHost();
 					Activator.getDefault().getEcp1Client().connect(
-							new InetSocketAddress(EngineHost, EnginePort), 
+							new InetSocketAddress(engineHost, enginePort), 
 							System.getProperty("user.name")+"@"+
 								localMachine.getHostName());
 					Activator.getDefault().getMessagesContainer().addMessage(
 						new ViewerMessage(Levels.INFO, 
-							"Connection established to: " + EngineHost + ":" + 
-									Integer.toString(EnginePort) + "."));
+							"Connection established to: " + engineHost + ":" + 
+									Integer.toString(enginePort) + "."));
 			} catch(IOException e) {
 				Activator.getDefault().getMessagesContainer().addMessage(
 						new ViewerMessage(Levels.ERROR,

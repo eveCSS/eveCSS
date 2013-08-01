@@ -31,9 +31,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 public class PluginController implements IModelErrorProvider,
 		IModelUpdateProvider {
 
-	/*
-	 * The plug in to control.
-	 */
+	/* The plug in to control. */
 	private PlugIn plugin;
 
 	/*
@@ -185,14 +183,14 @@ public class PluginController implements IModelErrorProvider,
 			if (currentPluginParameter.getType().toString().equals("AXISID")) {
 				// aus dem scanModul wird der erste Wert des Plugins erzeugt!
 				if (scanModule != null) {
-					Axis[] cur_axis = scanModule.getAxes();
-					String[] cur_feld = new String[cur_axis.length];
-					for (int i = 0; i < cur_axis.length; ++i) {
-						cur_feld[i] = cur_axis[i].getMotorAxis()
+					Axis[] currentAxis = scanModule.getAxes();
+					String[] currentField = new String[currentAxis.length];
+					for (int i = 0; i < currentAxis.length; ++i) {
+						currentField[i] = currentAxis[i].getMotorAxis()
 								.getFullIdentifyer();
 					}
 					this.values.put(currentPluginParameter.getName(),
-							cur_feld[0]);
+							currentField[0]);
 				} else {
 					this.values.put(currentPluginParameter.getName(),
 							currentPluginParameter.getDefaultValue());

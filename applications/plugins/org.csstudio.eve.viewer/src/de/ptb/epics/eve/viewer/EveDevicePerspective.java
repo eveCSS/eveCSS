@@ -23,24 +23,24 @@ public class EveDevicePerspective implements IPerspectiveFactory {
 	public void createInitialLayout(final IPageLayout layout) {
 		layout.setEditorAreaVisible(false);
 		
-		String sec_id = String.valueOf(System.nanoTime());
+		String secId = String.valueOf(System.nanoTime());
 		
 		IFolderLayout deviceInspectorFolder = 
 				layout.createFolder("DeviceInspectorFolder", 
 				IPageLayout.RIGHT, 1.00f, IPageLayout.ID_EDITOR_AREA);
 		deviceInspectorFolder.addPlaceholder("DeviceInspectorView:*");	
-		deviceInspectorFolder.addView("DeviceInspectorView:" + sec_id);
+		deviceInspectorFolder.addView("DeviceInspectorView:" + secId);
 		
 		IFolderLayout deviceOptionsFolder = 
 				layout.createFolder("DeviceOptionsFolder", 
-				IPageLayout.RIGHT, 0.66f, "DeviceInspectorView:" + sec_id);
-		deviceOptionsFolder.addView("DeviceOptionsView:" + sec_id);
+				IPageLayout.RIGHT, 0.66f, "DeviceInspectorView:" + secId);
+		deviceOptionsFolder.addView("DeviceOptionsView:" + secId);
 
 		layout.addView("MessagesView", 
-				IPageLayout.BOTTOM, 0.85f, "DeviceInspectorView:" + sec_id);
+				IPageLayout.BOTTOM, 0.85f, "DeviceInspectorView:" + secId);
 
 		layout.addView("LocalDevicesView", 
-				IPageLayout.LEFT, 0.25f, "DeviceInspectorView:" + sec_id);
+				IPageLayout.LEFT, 0.25f, "DeviceInspectorView:" + secId);
 		
 	}
 }
