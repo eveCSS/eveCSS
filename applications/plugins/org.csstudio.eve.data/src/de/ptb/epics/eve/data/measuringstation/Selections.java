@@ -46,7 +46,11 @@ public class Selections {
 	 * @param smtypes A Array, that is holding all scan module types.
 	 */
 	public void setSmtypes(final String[] smtypes) {
-		this.smtypes = smtypes;
+		if (smtypes == null) {
+			this.smtypes = new String[0];
+		} else {
+			this.smtypes = Arrays.copyOf(smtypes, smtypes.length);
+		}
 	}
 
 	/**
@@ -55,7 +59,12 @@ public class Selections {
 	 * @param stepfunctions A Array, that is holding all step functions.
 	 */
 	public void setStepfunctions(final String[] stepfunctions) {
-		this.stepfunctions = stepfunctions;
+		if (stepfunctions == null) {
+			this.stepfunctions = new String[0];
+		} else {
+			this.stepfunctions = Arrays.copyOf(stepfunctions,
+					stepfunctions.length);
+		}
 	}
 
 	/**
