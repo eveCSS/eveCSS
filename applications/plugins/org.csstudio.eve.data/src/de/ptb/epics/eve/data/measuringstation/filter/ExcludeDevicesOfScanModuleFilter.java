@@ -286,15 +286,15 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 		Motor currentMotor = null;
 		MotorAxis currentAxis = null;
 		Iterator<MotorAxis> axisIterator = null;
-		while( motorIterator.hasNext() ) {
+		while (motorIterator.hasNext()) {
 			currentMotor = motorIterator.next();
-			if( this.excludeList.contains( currentMotor ) ) {
+			if (this.excludeList.contains(currentMotor)) {
 				continue;
 			}
 			axisIterator = currentMotor.axisIterator();
-			while( axisIterator.hasNext() ) {
+			while (axisIterator.hasNext()) {
 				currentAxis = axisIterator.next();
-				if( this.excludeList.contains( currentAxis ) ) {
+				if (this.excludeList.contains(currentAxis)) {
 					continue;
 				}
 				int i = 0;
@@ -302,9 +302,9 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 					final String test = iterator.next();
 					if (currentAxis.getFullIdentifyer().compareToIgnoreCase(test) > 0){
 						i++;
-					}
-					else
+					} else {
 						break;
+					}
 				}
 				identifier.add(i, currentAxis.getFullIdentifyer());
 			}
@@ -325,10 +325,11 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 			if( this.excludeList.contains( currentDetector ) ) {
 				continue;
 			}
-			Iterator<DetectorChannel> channelIterator = currentDetector.channelIterator();
-			while( channelIterator.hasNext() ) {
+			Iterator<DetectorChannel> channelIterator = currentDetector
+					.channelIterator();
+			while (channelIterator.hasNext()) {
 				DetectorChannel currentChannel = channelIterator.next();
-				if( this.excludeList.contains( currentChannel ) ) {
+				if (this.excludeList.contains(currentChannel)) {
 					continue;
 				}
 				int i = 0;
@@ -336,9 +337,9 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 					final String test = iterator.next();
 					if (currentDetector.getFullIdentifyer().compareToIgnoreCase(test) > 0 ){
 						i++;
-					}
-					else
+					} else {
 						break;
+					}
 				}
 				identifier.add(i, currentChannel.getFullIdentifyer());
 			}
@@ -356,81 +357,79 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 		
 		List<String> identifier = new ArrayList<String>();
 		Iterator<Device> deviceIterator = this.devices.iterator();
-		while( deviceIterator.hasNext() ) {
+		while (deviceIterator.hasNext()) {
 			Device currentDevice = deviceIterator.next();
-			if( this.excludeList.contains( currentDevice ) ) {
+			if (this.excludeList.contains(currentDevice)) {
 				continue;
 			}
-			
-			identifier.add( currentDevice.getFullIdentifyer());
+
+			identifier.add(currentDevice.getFullIdentifyer());
 		}
-		
+
 		Iterator<Motor> motorIterator = this.motors.iterator();
-		while( motorIterator.hasNext() ) {
+		while (motorIterator.hasNext()) {
 			Motor currentMotor = motorIterator.next();
-			if( this.excludeList.contains( currentMotor ) ) {
+			if (this.excludeList.contains(currentMotor)) {
 				continue;
 			}
 			Iterator<Option> optionIterator = currentMotor.optionIterator();
-			while( optionIterator.hasNext() ) {
+			while (optionIterator.hasNext()) {
 				Option currentOption = optionIterator.next();
-				if( this.excludeList.contains( currentOption ) ) {
+				if (this.excludeList.contains(currentOption)) {
 					continue;
 				}
-				
-				identifier.add( currentOption.getFullIdentifyer());
+				identifier.add(currentOption.getFullIdentifyer());
 			}
-			
+
 			Iterator<MotorAxis> axisIterator = currentMotor.axisIterator();
-			while( axisIterator.hasNext() ) {
+			while (axisIterator.hasNext()) {
 				MotorAxis currentAxis = axisIterator.next();
-				if( this.excludeList.contains( currentAxis ) ) {
+				if (this.excludeList.contains(currentAxis)) {
 					continue;
 				}
-				Iterator<Option> optionIterator2 = currentAxis.getOptions().iterator();
-				while( optionIterator2.hasNext() ) {
+				Iterator<Option> optionIterator2 = currentAxis.getOptions()
+						.iterator();
+				while (optionIterator2.hasNext()) {
 					Option currentOption = optionIterator2.next();
-					if( this.excludeList.contains( currentOption ) ) {
+					if (this.excludeList.contains(currentOption)) {
 						continue;
 					}
-					
-					identifier.add( currentOption.getFullIdentifyer());
+					identifier.add(currentOption.getFullIdentifyer());
 				}
 			}
 		}
-		
+
 		Iterator<Detector> detectorIterator = this.detectors.iterator();
-		while( detectorIterator.hasNext() ) {
+		while (detectorIterator.hasNext()) {
 			Detector currentDetector = detectorIterator.next();
-			if( this.excludeList.contains( currentDetector ) ) {
+			if (this.excludeList.contains(currentDetector)) {
 				continue;
 			}
-			Iterator<Option> optionIterator = currentDetector.getOptions().iterator();
-			while( optionIterator.hasNext() ) {
+			Iterator<Option> optionIterator = currentDetector.getOptions()
+					.iterator();
+			while (optionIterator.hasNext()) {
 				Option currentOption = optionIterator.next();
-				if( this.excludeList.contains( currentOption ) ) {
+				if (this.excludeList.contains(currentOption)) {
 					continue;
 				}
-				
-				identifier.add( currentOption.getFullIdentifyer());
+				identifier.add(currentOption.getFullIdentifyer());
 			}
-			
-			Iterator<DetectorChannel> channelsIterator = currentDetector.channelIterator();
-			while( channelsIterator.hasNext() ) {
+
+			Iterator<DetectorChannel> channelsIterator = currentDetector
+					.channelIterator();
+			while (channelsIterator.hasNext()) {
 				DetectorChannel currentChannel = channelsIterator.next();
-				if( this.excludeList.contains( currentChannel ) ) {
+				if (this.excludeList.contains(currentChannel)) {
 					continue;
 				}
-				Iterator<Option> optionIterator2 = currentChannel.getOptions().iterator();
-				while( optionIterator2.hasNext() ) {
+				Iterator<Option> optionIterator2 = currentChannel.getOptions()
+						.iterator();
+				while (optionIterator2.hasNext()) {
 					Option currentOption = optionIterator2.next();
-					identifier.add( currentOption.getFullIdentifyer());
+					identifier.add(currentOption.getFullIdentifyer());
 				}
 			}
 		}
-		
-		System.out.println( "Dauer: " + (System.nanoTime() - begin ) );
-		System.out.println( "Size: " + identifier.size() );
 		return identifier;
 	}
 	
@@ -481,28 +480,34 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 		}
 		
 		Iterator<Detector> detectorIterator = this.detectors.iterator();
-		while( detectorIterator.hasNext() ) {
+		while (detectorIterator.hasNext()) {
 			final Detector currentDetector = detectorIterator.next();
-			if( currentDetector.getFullIdentifyer().equals( identifier ) ) {
+			if (currentDetector.getFullIdentifyer().equals(identifier)) {
 				return currentDetector;
 			} else {
-				Iterator<Option> optionIterator = currentDetector.getOptions().iterator();
-				while( optionIterator.hasNext() ) {
+				Iterator<Option> optionIterator = currentDetector.getOptions()
+						.iterator();
+				while (optionIterator.hasNext()) {
 					final Option currentOption = optionIterator.next();
-					if( currentOption.getFullIdentifyer().equals( identifier ) ) {
+					if (currentOption.getFullIdentifyer().equals(identifier)) {
 						return currentOption;
 					}
 				}
-				Iterator<DetectorChannel> detectorChannelIterator = currentDetector.channelIterator();
-				while( detectorChannelIterator.hasNext() ) {
-					final DetectorChannel currentDetectorChannel = detectorChannelIterator.next();
-					if( currentDetectorChannel.getFullIdentifyer().equals( identifier ) ) {
+				Iterator<DetectorChannel> detectorChannelIterator = currentDetector
+						.channelIterator();
+				while (detectorChannelIterator.hasNext()) {
+					final DetectorChannel currentDetectorChannel = detectorChannelIterator
+							.next();
+					if (currentDetectorChannel.getFullIdentifyer().equals(
+							identifier)) {
 						return currentDetectorChannel;
 					}
-					Iterator<Option> optionIterator2 = currentDetectorChannel.getOptions().iterator();
-					while( optionIterator2.hasNext() ) {
+					Iterator<Option> optionIterator2 = currentDetectorChannel
+							.getOptions().iterator();
+					while (optionIterator2.hasNext()) {
 						final Option currentOption = optionIterator2.next();
-						if( currentOption.getFullIdentifyer().equals( identifier ) ) {
+						if (currentOption.getFullIdentifyer()
+								.equals(identifier)) {
 							return currentOption;
 						}
 					}
@@ -622,96 +627,97 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 							m.remove( (MotorAxis)d );				// Wenn ja, Axis vom Motor entfernen
 						}
 					}
-					this.motors.add( m );
+					this.motors.add(m);
 				}
 			}
 			
-			for( final Detector detector : this.getSource().getDetectors() ) {
-				if( !this.excludeList.contains( detector ) ) {
-					final Detector m = (Detector)detector.clone();
-					for( final AbstractDevice d : this.excludeList ) {
-						if( d instanceof DetectorChannel ) {
-							m.remove( (DetectorChannel)d );
+			for (final Detector detector : this.getSource().getDetectors()) {
+				if (!this.excludeList.contains(detector)) {
+					final Detector m = (Detector) detector.clone();
+					for (final AbstractDevice d : this.excludeList) {
+						if (d instanceof DetectorChannel) {
+							m.remove((DetectorChannel) d);
 						}
 					}
-					this.detectors.add( m );
+					this.detectors.add(m);
 				}
 			}
-			
-			this.selections.setSmtypes( this.getSource().getSelections().getSmtypes() );
-			this.selections.setStepfunctions( this.getSource().getSelections().getStepfunctions() );
-			
-			for( final PlugIn plugIn : this.plugins ) {
-				this.pluginsMap.put( plugIn.getName(), plugIn );
+
+			this.selections.setSmtypes(this.getSource().getSelections()
+					.getSmtypes());
+			this.selections.setStepfunctions(this.getSource().getSelections()
+					.getStepfunctions());
+
+			for (final PlugIn plugIn : this.plugins) {
+				this.pluginsMap.put(plugIn.getName(), plugIn);
 			}
-			
-			for( final Motor motor : this.motors ) {
-				
-				for( final Option option : motor.getOptions() ) {
-					if( !this.excludeList.contains( option ) ) {
-						this.prePostscanDeviceMap.put( option.getID(), option );
-					}
-					else {
+
+			for (final Motor motor : this.motors) {
+
+				for (final Option option : motor.getOptions()) {
+					if (!this.excludeList.contains(option)) {
+						this.prePostscanDeviceMap.put(option.getID(), option);
+					} else {
 						motor.remove(option);
 					}
 				}
 
-				for( final MotorAxis motorAxis : motor.getAxes() ) {
+				for (final MotorAxis motorAxis : motor.getAxes()) {
 
-					if( !this.excludeList.contains( motorAxis ) ) {
-						this.motorAxisMap.put( motorAxis.getID(), motorAxis );
-						for( final Option option : motorAxis.getOptions() ) {
-							if( !this.excludeList.contains( option ) ) {
-								this.prePostscanDeviceMap.put( option.getID(), option );
-							}
-							else {
+					if (!this.excludeList.contains(motorAxis)) {
+						this.motorAxisMap.put(motorAxis.getID(), motorAxis);
+						for (final Option option : motorAxis.getOptions()) {
+							if (!this.excludeList.contains(option)) {
+								this.prePostscanDeviceMap.put(option.getID(),
+										option);
+							} else {
 								motorAxis.remove(option);
 							}
 						}
 					}
 				}
 			}
-			
-			for( final Detector detector : this.detectors ) {
-				for( final Option option : detector.getOptions() ) {
-					if ( !this.excludeList.contains(option)) {
-						this.prePostscanDeviceMap.put( option.getID(), option );
-					}
-					else {
+
+			for (final Detector detector : this.detectors) {
+				for (final Option option : detector.getOptions()) {
+					if (!this.excludeList.contains(option)) {
+						this.prePostscanDeviceMap.put(option.getID(), option);
+					} else {
 						detector.remove(option);
 					}
 				}
-				for( final DetectorChannel detectorChannel : detector.getChannels() ) {
-					if( !this.excludeList.contains( detectorChannel ) ) {
-						this.detectorChannelsMap.put( detectorChannel.getID(), detectorChannel );
-						for( final Option option : detectorChannel.getOptions() ) {
-							if ( !this.excludeList.contains(option)) {
-								this.prePostscanDeviceMap.put( option.getID(), option );
-							}
-							else {
+				for (final DetectorChannel detectorChannel : detector
+						.getChannels()) {
+					if (!this.excludeList.contains(detectorChannel)) {
+						this.detectorChannelsMap.put(detectorChannel.getID(),
+								detectorChannel);
+						for (final Option option : detectorChannel.getOptions()) {
+							if (!this.excludeList.contains(option)) {
+								this.prePostscanDeviceMap.put(option.getID(),
+										option);
+							} else {
 								detectorChannel.remove(option);
 							}
 						}
 					}
 				}
 			}
-			
-			for(final Device device : this.devices) {
+
+			for (final Device device : this.devices) {
 				this.prePostscanDeviceMap.put(device.getID(), device);
 			}
-			
+
 			buildClassMap();
-			
-			
-			for(final Event event : this.events) {
+
+			for (final Event event : this.events) {
 				this.eventsMap.put(event.getID(), event);
 			}
-			
+
 		}
-		
-		for(final IModelUpdateListener modelUpdateListener : this.modelUpdateListener) {
+
+		for (final IModelUpdateListener modelUpdateListener : this.modelUpdateListener) {
 			modelUpdateListener.updateEvent(new ModelUpdateEvent(this, null));
-		}	
+		}
 	}
 	
 	/**
@@ -738,36 +744,39 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 	 */
 	private void buildClassMap() {
 		this.classMap.clear();
-		
-		for( final Motor motor : this.motors ) {
-			if( motor.getClassName() != null && !motor.getClassName().equals( "" ) ) {
-				List< AbstractDevice > devices = null;
-				if( this.classMap.containsKey( motor.getClassName() ) ) {
-					devices = this.classMap.get( motor.getClassName() );
+
+		for (final Motor motor : this.motors) {
+			if (motor.getClassName() != null
+					&& !motor.getClassName().equals("")) {
+				List<AbstractDevice> devices = null;
+				if (this.classMap.containsKey(motor.getClassName())) {
+					devices = this.classMap.get(motor.getClassName());
 				} else {
-					devices = new ArrayList< AbstractDevice >();
-					this.classMap.put( motor.getClassName(), devices );
+					devices = new ArrayList<AbstractDevice>();
+					this.classMap.put(motor.getClassName(), devices);
 				}
-				devices.add( motor );
+				devices.add(motor);
 			}
-			for( final MotorAxis motorAxis : motor.getAxes() ) {
-				List< AbstractDevice > devices = null;
-				if( motorAxis.getClassName() != null && !motorAxis.getClassName().equals( "" ) ) {
-					if( this.classMap.containsKey( motorAxis.getClassName() ) ) {
-						devices = this.classMap.get( motorAxis.getClassName() );
+			for (final MotorAxis motorAxis : motor.getAxes()) {
+				List<AbstractDevice> devices = null;
+				if (motorAxis.getClassName() != null
+						&& !motorAxis.getClassName().equals("")) {
+					if (this.classMap.containsKey(motorAxis.getClassName())) {
+						devices = this.classMap.get(motorAxis.getClassName());
 					} else {
-						devices = new ArrayList< AbstractDevice >();
-						this.classMap.put( motorAxis.getClassName(), devices );
+						devices = new ArrayList<AbstractDevice>();
+						this.classMap.put(motorAxis.getClassName(), devices);
 					}
-					devices.add( motorAxis );
+					devices.add(motorAxis);
 				}
 			}
 		}
-		
-		for(final Detector detector : this.detectors) {
-			if(detector.getClassName() != null && !detector.getClassName().equals("")) {
+
+		for (final Detector detector : this.detectors) {
+			if (detector.getClassName() != null
+					&& !detector.getClassName().equals("")) {
 				List<AbstractDevice> devices = null;
-				if(this.classMap.containsKey(detector.getClassName())) {
+				if (this.classMap.containsKey(detector.getClassName())) {
 					devices = this.classMap.get(detector.getClassName());
 				} else {
 					devices = new ArrayList<AbstractDevice>();
@@ -775,24 +784,29 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 				}
 				devices.add(detector);
 			}
-			for(final DetectorChannel detectorChannel : detector.getChannels()) {
+			for (final DetectorChannel detectorChannel : detector.getChannels()) {
 				List<AbstractDevice> devices = null;
-				if(detectorChannel.getClassName() != null && !detectorChannel.getClassName().equals("")) {
-					if(this.classMap.containsKey(detectorChannel.getClassName())) {
-						devices = this.classMap.get(detectorChannel.getClassName());
+				if (detectorChannel.getClassName() != null
+						&& !detectorChannel.getClassName().equals("")) {
+					if (this.classMap.containsKey(detectorChannel
+							.getClassName())) {
+						devices = this.classMap.get(detectorChannel
+								.getClassName());
 					} else {
 						devices = new ArrayList<AbstractDevice>();
-						this.classMap.put(detectorChannel.getClassName(), devices);
+						this.classMap.put(detectorChannel.getClassName(),
+								devices);
 					}
 					devices.add(detectorChannel);
 				}
 			}
 		}
 
-		for(final Device device : this.devices) {
-			if(device.getClassName() != null && !device.getClassName().equals("")) {
+		for (final Device device : this.devices) {
+			if (device.getClassName() != null
+					&& !device.getClassName().equals("")) {
 				List<AbstractDevice> devices = null;
-				if(this.classMap.containsKey(device.getClassName())) {
+				if (this.classMap.containsKey(device.getClassName())) {
 					devices = this.classMap.get(device.getClassName());
 				} else {
 					devices = new ArrayList<AbstractDevice>();

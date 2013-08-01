@@ -195,11 +195,11 @@ public class Function {
 	 * 			<code>false</code> otherwise
 	 */
 	public boolean isReadOnly() {
-		// TODO comment JavaDoc
-		if (access != null)
+		if (access != null) {
 			return access.isReadOnly();
-		else
+		} else {
 			return false;
+		}
 	}
 
 	/**

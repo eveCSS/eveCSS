@@ -1264,10 +1264,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			String blue_hex = colorBuffer.substring(4);
 			int blue = Integer.parseInt(blue_hex, 16);
 
-			if (colorBuffer.length() == 6)
+			if (colorBuffer.length() == 6) {
 				this.currentYAxis.setColor(new RGB(red, green, blue));
-			else
+			} else {
 				this.currentYAxis.setColor(new RGB(0, 0, 0));
+			}
 
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_COLOR_READ;
 			break;

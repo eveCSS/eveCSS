@@ -261,10 +261,11 @@ public enum DataTypes {
 			final String value) {
 
 		String returnString = formatValue(type, value);
-		if (returnString != null)
+		if (returnString != null) {
 			return returnString;
-		else
+		} else {
 			return getDefaultValue(type);
+		}
 	}
 
 	/**

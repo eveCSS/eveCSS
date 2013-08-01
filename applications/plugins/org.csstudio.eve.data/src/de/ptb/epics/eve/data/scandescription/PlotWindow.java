@@ -386,10 +386,11 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 							yAxis.setNormalizeChannel(null);
 						} else {
 							yAxis.setDetectorChannel(null);
-							if (wegAxis1 == null)
+							if (wegAxis1 == null) {
 								wegAxis1 = yAxis;
-							else
+							} else {
 								wegAxis2 = yAxis;
+							}
 						}
 					}
 				}

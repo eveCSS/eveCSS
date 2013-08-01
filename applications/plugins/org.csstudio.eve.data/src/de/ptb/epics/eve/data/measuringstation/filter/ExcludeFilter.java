@@ -260,8 +260,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					if (currentAxis.getFullIdentifyer().compareToIgnoreCase(
 							test) > 0) {
 						i++;
-					} else
+					} else {
 						break;
+					}
 				}
 				identifier.add(i, currentAxis.getFullIdentifyer());
 			}
@@ -295,8 +296,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					if (currentDetector.getFullIdentifyer()
 							.compareToIgnoreCase(test) > 0) {
 						i++;
-					} else
+					} else {
 						break;
+					}
 				}
 				identifier.add(i, currentChannel.getFullIdentifyer());
 			}
@@ -321,8 +323,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				final String test = iterator.next();
 				if (currentDevice.getFullIdentifyer().compareToIgnoreCase(test) > 0) {
 					i++;
-				} else
+				} else {
 					break;
+				}
 			}
 			identifier.add(i, currentDevice.getFullIdentifyer());
 		}
@@ -346,8 +349,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					if (currentOption.getFullIdentifyer().compareToIgnoreCase(
 							test) > 0) {
 						i++;
-					} else
+					} else {
 						break;
+					}
 				}
 				identifier.add(i, currentOption.getFullIdentifyer());
 			}
@@ -372,8 +376,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 						if (currentOption.getFullIdentifyer()
 								.compareToIgnoreCase(test) > 0) {
 							i++;
-						} else
+						} else {
 							break;
+						}
 					}
 					identifier.add(i, currentOption.getFullIdentifyer());
 				}
@@ -400,8 +405,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					if (currentOption.getFullIdentifyer().compareToIgnoreCase(
 							test) > 0) {
 						i++;
-					} else
+					} else {
 						break;
+					}
 				}
 				identifier.add(i, currentOption.getFullIdentifyer());
 			}
@@ -427,8 +433,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 						if (currentOption.getFullIdentifyer()
 								.compareToIgnoreCase(test) > 0) {
 							i++;
-						} else
+						} else {
 							break;
+						}
 					}
 					identifier.add(i, currentOption.getFullIdentifyer());
 				}
@@ -518,7 +525,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				return currentDevice;
 			}
 		}
-			
 		return null;
 	}
 	
@@ -629,7 +635,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-	
 		// clear everything
 		this.events.clear();
 		this.plugins.clear();
@@ -647,7 +652,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	
 		// a source measuring station must be set !
 		if(this.getSource() != null) {
-			
 			// include all events (no filtering)
 			this.events.addAll(this.getSource().getEvents());
 			

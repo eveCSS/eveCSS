@@ -193,12 +193,14 @@ public class PluginController implements IModelErrorProvider,
 					}
 					this.values.put(currentPluginParameter.getName(),
 							cur_feld[0]);
-				} else
+				} else {
 					this.values.put(currentPluginParameter.getName(),
 							currentPluginParameter.getDefaultValue());
-			} else
+				}
+			} else {
 				this.values.put(currentPluginParameter.getName(),
 						currentPluginParameter.getDefaultValue());
+			}
 		}
 		this.defaultFlag = true;
 	}

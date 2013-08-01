@@ -462,22 +462,21 @@ public class MeasuringStation implements IMeasuringStation {
 		Motor currentMotor = null;
 		MotorAxis currentAxis = null;
 		Iterator<MotorAxis> axisIterator = null;
-		while( motorIterator.hasNext() ) {
+		while (motorIterator.hasNext()) {
 			currentMotor = motorIterator.next();
 			axisIterator = currentMotor.axisIterator();
-			while( axisIterator.hasNext() ) {
+			while (axisIterator.hasNext()) {
 				currentAxis = axisIterator.next();
 				int i = 0;
 				for (Iterator<String> iterator = identifier.iterator(); 
-					 iterator.hasNext();) 
-				{
+					 iterator.hasNext();) {
 					final String test = iterator.next();
 					if (currentAxis.getFullIdentifyer().
 							compareToIgnoreCase(test) > 0) {
 						i++;
-					}
-					else
+					} else {
 						break;
+					}
 				}
 				identifier.add(i, currentAxis.getFullIdentifyer());
 			}
@@ -501,15 +500,14 @@ public class MeasuringStation implements IMeasuringStation {
 				DetectorChannel currentChannel = channelIterator.next();
 				int i = 0;
 				for (Iterator<String> iterator = identifier.iterator(); 
-					 iterator.hasNext();) 
-				{
+					 iterator.hasNext();) {
 					final String test = iterator.next();
 					if (currentDetector.getFullIdentifyer().
 							compareToIgnoreCase(test) > 0) {
 						i++;
-					}
-					else
+					} else {
 						break;
+					}
 				}
 				identifier.add(i, currentChannel.getFullIdentifyer());
 			}
@@ -528,15 +526,14 @@ public class MeasuringStation implements IMeasuringStation {
 			Device currentDevice = deviceIterator.next();
 			int i = 0;
 			for (Iterator<String> iterator = identifier.iterator(); 
-				 iterator.hasNext();) 
-			{
+				 iterator.hasNext();) {
 				final String test = iterator.next();
 				if (currentDevice.getFullIdentifyer().
 						compareToIgnoreCase(test) > 0) {
 					i++;
-				}
-				else
+				} else {
 					break;
+				}
 			}
 			identifier.add(i, currentDevice.getFullIdentifyer());
 		}
@@ -550,15 +547,14 @@ public class MeasuringStation implements IMeasuringStation {
 				Option currentOption = optionIterator.next();
 				int i = 0;
 				for (Iterator<String> iterator = identifier.iterator(); 
-					 iterator.hasNext();) 
-				{
+					 iterator.hasNext();) {
 					final String test = iterator.next();
 					if (currentOption.getFullIdentifyer().
 							compareToIgnoreCase(test) > 0) {
 						i++;
-					}
-					else
+					} else {
 						break;
+					}
 				}
 				identifier.add(i, currentOption.getFullIdentifyer());
 			}
@@ -573,15 +569,14 @@ public class MeasuringStation implements IMeasuringStation {
 					Option currentOption = optionIterator2.next();
 					int i = 0;
 					for (Iterator<String> iterator = identifier.iterator(); 
-						 iterator.hasNext();) 
-					{
+						 iterator.hasNext();) {
 						final String test = iterator.next();
 						if (currentOption.getFullIdentifyer().
 								compareToIgnoreCase(test) > 0) {
 							i++;
-						}
-						else
+						} else {
 							break;
+						}
 					}
 					identifier.add(i, currentOption.getFullIdentifyer());
 				}
@@ -598,15 +593,14 @@ public class MeasuringStation implements IMeasuringStation {
 				Option currentOption = optionIterator.next();
 				int i = 0;
 				for (Iterator<String> iterator = identifier.iterator(); 
-					 iterator.hasNext();) 
-				{
+					 iterator.hasNext();) {
 					final String test = iterator.next();
 					if (currentOption.getFullIdentifyer().
 							compareToIgnoreCase(test) > 0) {
 						i++;
-					}
-					else
+					} else {
 						break;
+					}
 				}
 				identifier.add(i, currentOption.getFullIdentifyer());
 			}
@@ -622,14 +616,14 @@ public class MeasuringStation implements IMeasuringStation {
 					Option currentOption = optionIterator2.next();
 					int i = 0;
 					for (Iterator<String> iterator = identifier.iterator(); 
-						 iterator.hasNext();){
+						 iterator.hasNext();) {
 						final String test = iterator.next();
 						if (currentOption.getFullIdentifyer().
 								compareToIgnoreCase(test) > 0) {
 							i++;
-						}
-						else
+						} else {
 							break;
+						}
 					}
 					identifier.add(i, currentOption.getFullIdentifyer());
 				}
@@ -727,7 +721,7 @@ public class MeasuringStation implements IMeasuringStation {
 				return currentDevice;
 			}
 		}
-		return null;	
+		return null;
 	}
 	
 	/**
@@ -743,10 +737,11 @@ public class MeasuringStation implements IMeasuringStation {
 	 */
 	@Override
 	public List<AbstractDevice> getDeviceList(String classname) {
-		if (classMap.containsKey(classname))
+		if (classMap.containsKey(classname)) {
 			return classMap.get(classname);
-		else
+		} else {
 			return null;
+		}
 	}
 	
 	// ************************************************************************

@@ -198,10 +198,11 @@ public class TypeValue {
 	 * 			<code>false</code> otherwise.
 	 */
 	public boolean isValuePossible(final String value) {
-		if (formatValue(value) == null)
+		if (formatValue(value) == null) {
 			return false;
-		else
+		} else {
 			return true;
+		}
 	}
 
 	/**
@@ -247,11 +248,12 @@ public class TypeValue {
 	 */
 	public String formatValueDefault(String value) {
 		String returnString = formatValue(value);
-		if (returnString == null){
-			if (isDiscrete || hasRange)
+		if (returnString == null) {
+			if (isDiscrete || hasRange) {
 				returnString = elements.get(0);
-			else
+			} else {
 				returnString = DataTypes.formatValueDefault(type, value);
+			}
 		}
 		return returnString;
 	}
@@ -264,13 +266,14 @@ public class TypeValue {
 	 * @return a default value
 	 */
 	public String getDefaultValue() {
-		if (isDiscrete || hasRange)
+		if (isDiscrete || hasRange) {
 			return elements.get(0);
-		else {
-			if (elements.size() > 0)
+		} else {
+			if (elements.size() > 0) {
 				return elements.get(0);
-			else
+			} else {
 				return DataTypes.getDefaultValue(type);
+			}
 		}
 	}
 
