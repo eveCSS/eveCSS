@@ -2,13 +2,13 @@ package de.ptb.epics.eve.viewer.views.deviceinspectorview;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.graphics.Color;
-
 import org.epics.vtype.AlarmSeverity;
 
 import de.ptb.epics.eve.data.TransportTypes;
@@ -56,7 +56,7 @@ public class CommonTableElement {
 	private String unit;
 	private CommonTableElementEngineData engine;
 	private boolean initialized = false;
-	private HashMap<String, CellEditor> cellEditorHash;
+	private Map<String, CellEditor> cellEditorHash;
 	
 	private TransportTypes type;
 	
