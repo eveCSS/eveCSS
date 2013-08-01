@@ -200,9 +200,8 @@ public class TypeValue {
 	public boolean isValuePossible(final String value) {
 		if (formatValue(value) == null) {
 			return false;
-		} else {
-			return true;
 		}
+		return true;
 	}
 
 	/**
