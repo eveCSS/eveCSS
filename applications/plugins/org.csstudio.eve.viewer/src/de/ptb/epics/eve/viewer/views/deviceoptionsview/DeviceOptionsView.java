@@ -118,7 +118,7 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 		
 		// initialize the table (viewer)
 		createViewer(parent);
-		createColumns(parent, optionsTable);
+		createColumns();
 		this.optionsTable.getTable().setHeaderVisible(true);
 		this.optionsTable.getTable().setLinesVisible(true);
 		this.optionsTableContentProvider = new ContentProvider();
@@ -182,14 +182,14 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 	/*
 	 * helper for createPartControl
 	 */
-	private void createColumns(final Composite parent, final TableViewer viewer) {
+	private void createColumns() {
 		
 		// Enable tooltips
 		ColumnViewerToolTipSupport.enableFor(
-				optionsTable, ToolTip.NO_RECREATE);
+				this.optionsTable, ToolTip.NO_RECREATE);
 		
 		final TableViewerColumn optionViewerColumn = 
-				new TableViewerColumn(viewer, SWT.NONE);
+				new TableViewerColumn(this.optionsTable, SWT.NONE);
 		final TableColumn optionColumn = optionViewerColumn.getColumn();
 		optionColumn.setText("Option");
 		optionColumn.setWidth(150);
@@ -200,7 +200,7 @@ public class DeviceOptionsView extends ViewPart implements ISelectionListener {
 		optionColumn.addSelectionListener(optionColumnSelectionListener);
 		
 		final TableViewerColumn valueViewerColumn = 
-				new TableViewerColumn(viewer, SWT.NONE);
+				new TableViewerColumn(this.optionsTable, SWT.NONE);
 		final TableColumn valueColumn = valueViewerColumn.getColumn();
 		valueColumn.setText("Value");
 		valueColumn.setWidth(70);

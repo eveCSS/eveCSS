@@ -93,7 +93,7 @@ public class FileComposite extends MotorAxisViewComposite implements
 		this.searchButton.addSelectionListener(searchButtonSelectionListener);
 		
 		this.createViewer(this);
-		this.createColumns(this);
+		this.createColumns();
 		this.viewer.setContentProvider(new FileNameTableContentProvider());
 		this.viewer.setLabelProvider(new FileNameTableLabelProvider());
 		this.viewer.getTable().setEnabled(false);
@@ -112,7 +112,7 @@ public class FileComposite extends MotorAxisViewComposite implements
 		this.viewer.getTable().setHeaderVisible(true);
 	}
 	
-	private void createColumns(final Composite parent) {
+	private void createColumns() {
 		TableViewerColumn countColumn = new TableViewerColumn(this.viewer,
 				SWT.CENTER);
 		countColumn.getColumn().setText("# points");

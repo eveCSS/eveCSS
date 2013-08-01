@@ -49,7 +49,7 @@ public class PlotComposite extends ActionComposite {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		this.tableViewer.getTable().setLayoutData(gridData);
-		createColumns(this.tableViewer);
+		createColumns();
 		this.tableViewer.getTable().setHeaderVisible(true);
 		this.tableViewer.getTable().setLinesVisible(true);
 		this.tableViewer.setContentProvider(new ContentProvider());
@@ -72,7 +72,7 @@ public class PlotComposite extends ActionComposite {
 	/*
 	 * 
 	 */
-	private void createColumns(TableViewer viewer) {
+	private void createColumns() {
 		TableViewerColumn delColumn = new TableViewerColumn(
 				this.tableViewer, SWT.CENTER);
 		delColumn.getColumn().setText("");
