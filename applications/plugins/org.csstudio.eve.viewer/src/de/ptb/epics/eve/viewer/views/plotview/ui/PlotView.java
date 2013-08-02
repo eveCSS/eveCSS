@@ -48,10 +48,10 @@ public class PlotView extends ViewPart {
 	private Canvas canvas;
 	private XyPlot xyPlot;
 	
-	TableViewer table1Viewer;
-	TableViewer table2Viewer;
-	TabItem itemAxis1;
-	TabItem itemAxis2;
+	private TableViewer table1Viewer;
+	private TableViewer table2Viewer;
+	private TabItem itemAxis1;
+	private TabItem itemAxis2;
 	
 	private boolean showStats;
 	

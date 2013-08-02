@@ -39,15 +39,15 @@ public class MenuContribution extends CompoundContributionItem {
 	private static Logger logger = Logger.getLogger(MenuContribution.class
 			.getName());
 
-	final ImageDescriptor classImage = ImageDescriptor
+	private final ImageDescriptor classImage = ImageDescriptor
 			.createFromImage(Activator.getDefault().getImageRegistry()
 					.get("CLASS"));
-	final ImageDescriptor motorImage = ImageDescriptor
+	private final ImageDescriptor motorImage = ImageDescriptor
 			.createFromImage(Activator.getDefault().getImageRegistry()
 					.get("MOTOR"));
-	final ImageDescriptor axisImage = ImageDescriptor.createFromImage(Activator
+	private final ImageDescriptor axisImage = ImageDescriptor.createFromImage(Activator
 			.getDefault().getImageRegistry().get("AXIS"));
-	final ImageDescriptor motorsAxesImage = ImageDescriptor
+	private final ImageDescriptor motorsAxesImage = ImageDescriptor
 			.createFromImage(Activator.getDefault().getImageRegistry()
 					.get("MOTORSAXES"));
 

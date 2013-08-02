@@ -39,16 +39,16 @@ public class MenuContribution extends CompoundContributionItem {
 	private static Logger logger = Logger.getLogger(MenuContribution.class
 			.getName());
 
-	final ImageDescriptor classImage = ImageDescriptor
+	private final ImageDescriptor classImage = ImageDescriptor
 			.createFromImage(Activator.getDefault().getImageRegistry()
 					.get("CLASS"));
-	final ImageDescriptor detectorImage = ImageDescriptor
+	private final ImageDescriptor detectorImage = ImageDescriptor
 			.createFromImage(Activator.getDefault().getImageRegistry()
 					.get("DETECTOR"));
-	final ImageDescriptor channelImage = ImageDescriptor
+	private final ImageDescriptor channelImage = ImageDescriptor
 			.createFromImage(Activator.getDefault().getImageRegistry()
 					.get("CHANNEL"));
-	final ImageDescriptor detectorsAndChannelsImage = ImageDescriptor
+	private final ImageDescriptor detectorsAndChannelsImage = ImageDescriptor
 			.createFromImage(Activator.getDefault().getImageRegistry()
 					.get("DETECTORSCHANNELS"));
 

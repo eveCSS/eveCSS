@@ -35,8 +35,8 @@ public class FilterDialog extends TitleAreaDialog {
 	private ShowEngineMessagesButtonSelectionListener
 			showEngineMessagesButtonSelectionListener;
 	
-	Slider slider;
-	SliderSelectionListener sliderSelectionListener;
+	private Slider slider;
+	private SliderSelectionListener sliderSelectionListener;
 	
 	private boolean showApplicationMessages;
 	private boolean showEngineMessages;

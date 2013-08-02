@@ -33,17 +33,17 @@ public class TypeValue {
 	/**
 	 * we have a range constraint
 	 */
-	boolean hasRange;
+	private boolean hasRange;
 	
 	/**
 	 * value must be one of a set of discrete values
 	 */
-	boolean isDiscrete;
+	private boolean isDiscrete;
 
 	/**
 	 * string list containing the discrete values or the range borders
 	 */
-	List<String> elements;
+	private List<String> elements;
 
 	/**
 	 * Used if a TypeValue object should be initialized that
