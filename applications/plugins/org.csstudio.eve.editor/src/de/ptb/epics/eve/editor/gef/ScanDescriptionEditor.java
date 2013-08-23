@@ -38,7 +38,6 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
@@ -95,7 +94,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 										(FileStoreEditorInput)input;
 		final File scanDescriptionFile = new File(fileStoreEditorInput.getURI());
 		
-		if (scanDescriptionFile.isFile() == true) {
+		if (scanDescriptionFile.isFile()) {
 			if (scanDescriptionFile.length() == 0) {
 				// file exists but is empty -> do not read
 				throw new PartInitException("File is empty!");

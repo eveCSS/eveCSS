@@ -17,7 +17,7 @@ public class DoubleVerifyListener implements VerifyListener {
 	 */
 	@Override
 	public void verifyText(VerifyEvent e) {
-		if (e.doit == false) {
+		if (!e.doit) {
 			return;
 		}
 		
