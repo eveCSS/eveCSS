@@ -34,13 +34,13 @@ public class ScanModuleFigure extends Shape {
 	private int height;
 	
 	private boolean selectedPrimary;
-	private boolean containsErrors;
+	private boolean contains_errors;
 	
 	private ScanModuleTypes type;
 	
-	private boolean appendedFeedback;
-	private boolean nestedFeedback;
-	private boolean parentFeedback;
+	private boolean appended_feedback;
+	private boolean nested_feedback;
+	private boolean parent_feedback;
 	
 	// anchor points for incoming, outgoing and nested modules
 	private XYAnchor targetAnchor;
@@ -70,10 +70,10 @@ public class ScanModuleFigure extends Shape {
 		this.type = type;
 		
 		this.selectedPrimary = false;
-		this.containsErrors = false;
-		this.appendedFeedback = false;
-		this.nestedFeedback = false;
-		this.parentFeedback = false;
+		this.contains_errors = false;
+		this.appended_feedback = false;
+		this.nested_feedback = false;
+		this.parent_feedback = false;
 		
 		this.setBackgroundColor(ColorConstants.white);
 		this.setOpaque(true);
@@ -112,26 +112,26 @@ public class ScanModuleFigure extends Shape {
 	}
 	
 	/**
-	 * @param appendedFeedback the appended_feedback to set
+	 * @param appended_feedback the appended_feedback to set
 	 */
-	public void setAppendedFeedback(boolean appendedFeedback) {
-		this.appendedFeedback = appendedFeedback;
+	public void setAppended_feedback(boolean appended_feedback) {
+		this.appended_feedback = appended_feedback;
 		this.repaint();
 	}
 
 	/**
-	 * @param nestedFeedback the nested_feedback to set
+	 * @param nested_feedback the nested_feedback to set
 	 */
-	public void setNestedFeedback(boolean nestedFeedback) {
-		this.nestedFeedback = nestedFeedback;
+	public void setNested_feedback(boolean nested_feedback) {
+		this.nested_feedback = nested_feedback;
 		this.repaint();
 	}
 
 	/**
-	 * @param parentFeedback the parent_feedback to set
+	 * @param parent_feedback the parent_feedback to set
 	 */
-	public void setParentFeedback(boolean parentFeedback) {
-		this.parentFeedback = parentFeedback;
+	public void setParent_feedback(boolean parent_feedback) {
+		this.parent_feedback = parent_feedback;
 		this.repaint();
 	}
 
@@ -201,10 +201,10 @@ public class ScanModuleFigure extends Shape {
 	}
 	
 	/**
-	 * @param containsErrors the contains_errors to set
+	 * @param contains_errors the contains_errors to set
 	 */
-	public void setContainsErrors(boolean containsErrors) {
-		this.containsErrors = containsErrors;
+	public void setContains_errors(boolean contains_errors) {
+		this.contains_errors = contains_errors;
 	}
 
 	/**
@@ -262,20 +262,20 @@ public class ScanModuleFigure extends Shape {
 		graphics.fillGradient(this.bounds, true);
 		
 		// red error bar if module contains errors
-		if(containsErrors) {
+		if(contains_errors) {
 			graphics.setForegroundColor(ColorConstants.white);
 			graphics.setBackgroundColor(ColorConstants.red);
 			graphics.fillGradient(getLocation().x, getLocation().y, 
 								this.bounds.width, 5, false);
 		}
 		
-		if (this.appendedFeedback) {
+		if (this.appended_feedback) {
 			graphics.setForegroundColor(ColorConstants.lightGray);
 			graphics.setBackgroundColor(ColorConstants.black);
 			graphics.fillGradient(new Rectangle(this.x + 6* this.width/7,
 					this.y, this.width/7, this.height), false);
 		}
-		if (this.nestedFeedback) {
+		if (this.nested_feedback) {
 			if (selectedPrimary) {
 				graphics.setForegroundColor(ColorConstants.white);
 				graphics.setBackgroundColor(ColorConstants.darkGray);
@@ -286,7 +286,7 @@ public class ScanModuleFigure extends Shape {
 			graphics.fillGradient(new Rectangle(this.x,
 					this.y + 3*this.height/4, this.width, this.height/4), true);
 		}
-		if (this.parentFeedback) {
+		if (this.parent_feedback) {
 			graphics.setForegroundColor(ColorConstants.black);
 			graphics.setBackgroundColor(ColorConstants.lightGray);
 			graphics.fillGradient(new Rectangle(this.x,
