@@ -42,7 +42,7 @@ import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisViewComposite;
 public class FileComposite extends MotorAxisViewComposite implements
 		PropertyChangeListener {
 
-	private static Logger LOGGER = 
+	private static final Logger LOGGER = 
 			Logger.getLogger(FileComposite.class.getName());
 	
 	private FileMode fileMode;

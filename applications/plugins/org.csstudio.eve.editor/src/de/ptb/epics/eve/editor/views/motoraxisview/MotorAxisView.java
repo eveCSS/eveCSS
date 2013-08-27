@@ -55,7 +55,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 		"de.ptb.epics.eve.editor.views.MotorAxisView";
 
 	// logging
-	private static Logger LOGGER = 
+	private static final Logger LOGGER = 
 		Logger.getLogger(MotorAxisView.class.getName());
 	
 	// *******************************************************************

@@ -41,7 +41,7 @@ public class PlotView extends ViewPart {
 	/** the unique identifier of this view */
 	public static final String ID = "PlotView";
 
-	private static Logger LOGGER = Logger.getLogger(PlotView.class);
+	private static final Logger LOGGER = Logger.getLogger(PlotView.class);
 	
 	private SashForm sashForm;
 	

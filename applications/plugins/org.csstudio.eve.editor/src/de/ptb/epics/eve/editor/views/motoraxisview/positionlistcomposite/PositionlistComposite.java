@@ -40,7 +40,7 @@ import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisViewComposite;
 public class PositionlistComposite extends MotorAxisViewComposite implements
 		PropertyChangeListener {
 	
-	private static Logger LOGGER = 
+	private static final Logger LOGGER = 
 			Logger.getLogger(PositionlistComposite.class.getName());
 	
 	private PositionlistMode positionlistMode;

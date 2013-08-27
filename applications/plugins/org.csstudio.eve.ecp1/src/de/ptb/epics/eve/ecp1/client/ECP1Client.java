@@ -68,7 +68,8 @@ import de.ptb.epics.eve.ecp1.commands.PlayListCommand;
  */
 public class ECP1Client {
 	
-	private static Logger LOGGER = Logger.getLogger(ECP1Client.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(
+			ECP1Client.class.getName());
 
 	private ECP1Client ecp1Client;
 

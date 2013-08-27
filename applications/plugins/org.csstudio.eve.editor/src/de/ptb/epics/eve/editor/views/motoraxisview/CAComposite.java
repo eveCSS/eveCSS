@@ -30,7 +30,8 @@ import de.ptb.epics.eve.data.scandescription.Axis;
  */
 public class CAComposite extends Composite implements PropertyChangeListener {
 	
-	private static Logger LOGGER = Logger.getLogger(CAComposite.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(
+			CAComposite.class.getName());
 	
 	private Text llmText;
 	private ProgressBar progressBar;

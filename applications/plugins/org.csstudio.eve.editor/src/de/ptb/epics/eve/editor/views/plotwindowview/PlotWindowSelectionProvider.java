@@ -17,7 +17,7 @@ import de.ptb.epics.eve.util.rcp.SingleSelectionProvider;
  */
 public class PlotWindowSelectionProvider extends SingleSelectionProvider {
 
-	private static Logger LOGGER = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(PlotWindowSelectionProvider.class.getName());
 	
 	/**

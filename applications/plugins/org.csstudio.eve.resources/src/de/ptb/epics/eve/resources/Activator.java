@@ -21,7 +21,8 @@ public class Activator implements BundleActivator {
 	/** */
 	public static String PLUGIN_ID = "de.ptb.epics.eve.resources";
 
-	private static Logger logger = Logger.getLogger(Activator.class.getName());
+	private static final Logger logger = Logger.getLogger(
+			Activator.class.getName());
 
 	private static BundleContext context;
 	private static Activator plugin;

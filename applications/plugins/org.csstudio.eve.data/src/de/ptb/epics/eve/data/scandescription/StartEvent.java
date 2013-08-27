@@ -21,9 +21,9 @@ public class StartEvent {
 	public static final String CONNECT_PROP = "StartEvent.CONNECT_PROP";
 	
 	/** */
-	public static int default_x = 15;
+	public static int defaultX = 15;
 	/** */
-	public static int default_y = 15;
+	public static int defaultY = 15;
 	
 	private PropertyChangeSupport propertyChangeSupport;
 	
@@ -59,8 +59,8 @@ public class StartEvent {
 	public StartEvent() {
 		this.event = null;
 		this.chain = null;
-		this.x = StartEvent.default_x;
-		this.y = StartEvent.default_y;
+		this.x = StartEvent.defaultX;
+		this.y = StartEvent.defaultY;
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
@@ -75,8 +75,8 @@ public class StartEvent {
 	public StartEvent(final Event event, final Chain chain) {
 		this.event = event;
 		this.chain = chain;
-		this.x = StartEvent.default_x;
-		this.y = StartEvent.default_y;
+		this.x = StartEvent.defaultX;
+		this.y = StartEvent.defaultY;
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
