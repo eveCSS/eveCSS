@@ -177,22 +177,22 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 		if (request instanceof CreateConnectionRequest) {
 			ScanModuleFigure figure = (ScanModuleFigure) 
 					this.scanModuleEditPart.getFigure();
-			figure.setAppended_feedback(false);
-			figure.setNested_feedback(false);
-			figure.setParent_feedback(false);
+			figure.setAppendedFeedback(false);
+			figure.setNestedFeedback(false);
+			figure.setParentFeedback(false);
 			String type = figure.getConnectionType(
 					((CreateConnectionRequest) request).getLocation());
 			if (request.getType().equals(RequestConstants.REQ_CONNECTION_START)) {
 				if (type.equals(Connector.APPENDED)) {
 					if (this.scanModuleEditPart.getModel().getAppended() == null) {
-						figure.setAppended_feedback(true);
+						figure.setAppendedFeedback(true);
 						logger.debug("appended feedback");
 					} else {
 						logger.debug("no append possible");
 					}
 				} else if (type.equals(Connector.NESTED)) {
 					if (this.scanModuleEditPart.getModel().getNested() == null) {
-					figure.setNested_feedback(true);
+					figure.setNestedFeedback(true);
 					logger.debug("nested feedback");
 					} else {
 						logger.debug("no append possible");
@@ -206,14 +206,14 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 						.getSourceEditPart();
 				if (source instanceof ScanModuleEditPart) {
 					if (source != target && target.getModel().getParent() == null) {
-						figure.setParent_feedback(true);
+						figure.setParentFeedback(true);
 						logger.debug("parent feedback");
 					} else {
 						logger.debug("no parent possible");
 					}
 				} else if (source instanceof StartEventEditPart) {
 					if (target.getModel().getParent() == null) {
-						figure.setParent_feedback(true);
+						figure.setParentFeedback(true);
 						logger.debug("parent feedback");
 					} else {
 						logger.debug("no parent possible");
@@ -231,21 +231,21 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 				}
 				ScanModuleFigure figure = (ScanModuleFigure) 
 						this.scanModuleEditPart.getFigure();
-				figure.setAppended_feedback(false);
-				figure.setNested_feedback(false);
-				figure.setParent_feedback(false);
+				figure.setAppendedFeedback(false);
+				figure.setNestedFeedback(false);
+				figure.setParentFeedback(false);
 				String type = figure.getConnectionType(
 						((ReconnectRequest) request).getLocation());
 				if (type.equals(Connector.APPENDED)) {
 					if (this.scanModuleEditPart.getModel().getAppended() == null) {
-						figure.setAppended_feedback(true);
+						figure.setAppendedFeedback(true);
 						logger.debug("appended feedback");
 					} else {
 						logger.debug("no append possible");
 					}
 				} else if (type.equals(Connector.NESTED)) {
 					if (this.scanModuleEditPart.getModel().getNested() == null) {
-					figure.setNested_feedback(true);
+					figure.setNestedFeedback(true);
 					logger.debug("nested feedback");
 					} else {
 						logger.debug("no append possible");
@@ -261,7 +261,7 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 					if (target != source && smep.getModel().getParent() == null) {
 						// new target is not the source and is not connected
 						((ScanModuleFigure) smep.getFigure())
-								.setParent_feedback(true);
+								.setParentFeedback(true);
 					}
 				}
 			}
@@ -278,9 +278,9 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 			logger.debug("erase feedback");
 			ScanModuleFigure figure = (ScanModuleFigure) 
 					this.scanModuleEditPart.getFigure();
-			figure.setAppended_feedback(false);
-			figure.setNested_feedback(false);
-			figure.setParent_feedback(false);
+			figure.setAppendedFeedback(false);
+			figure.setNestedFeedback(false);
+			figure.setParentFeedback(false);
 			this.scanModuleEditPart.getFigure().repaint();
 		} else if (request instanceof ReconnectRequest) {
 			if (request.getType().equals(RequestConstants.REQ_RECONNECT_SOURCE)) {
@@ -288,18 +288,18 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 				if (target instanceof ScanModuleEditPart) {
 					ScanModuleFigure figure = (ScanModuleFigure) 
 							((ScanModuleEditPart) target).getFigure();
-					figure.setAppended_feedback(false);
-					figure.setNested_feedback(false);
-					figure.setParent_feedback(false);
+					figure.setAppendedFeedback(false);
+					figure.setNestedFeedback(false);
+					figure.setParentFeedback(false);
 				}
 			} else if (request.getType().equals(
 					RequestConstants.REQ_RECONNECT_TARGET)) {
 				ScanModuleFigure figure = (ScanModuleFigure) 
 						((ScanModuleEditPart) ((ReconnectRequest) request)
 						.getTarget()).getFigure();
-				figure.setAppended_feedback(false);
-				figure.setNested_feedback(false);
-				figure.setParent_feedback(false);
+				figure.setAppendedFeedback(false);
+				figure.setNestedFeedback(false);
+				figure.setParentFeedback(false);
 			}
 		}
 		super.eraseTargetFeedback(request);

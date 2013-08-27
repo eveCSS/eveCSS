@@ -321,9 +321,9 @@ public class ScanModuleEditPart extends AbstractGraphicalEditPart implements
 	 */
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
-		((ScanModuleFigure)this.getFigure()).setContains_errors(false);
+		((ScanModuleFigure)this.getFigure()).setContainsErrors(false);
 		if (!this.getModel().getModelErrors().isEmpty()) {
-			((ScanModuleFigure)this.getFigure()).setContains_errors(true);
+			((ScanModuleFigure)this.getFigure()).setContainsErrors(true);
 		}
 		String positions = (this.getModel().getPositionCount() == null)
 				? "N/A" 
