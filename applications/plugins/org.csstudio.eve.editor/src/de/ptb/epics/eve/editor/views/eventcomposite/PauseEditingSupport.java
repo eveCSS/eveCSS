@@ -49,7 +49,7 @@ public class PauseEditingSupport extends EditingSupport {
 			eventActions.add(action.toString());
 		}
 		if(!((PauseEvent)element).getEventType().equals(EventTypes.MONITOR)) {
-			this.eventActions.remove(new String("ONOFF"));
+			this.eventActions.remove("ONOFF");
 		}
 		return new MyComboBoxCellEditor(this.viewer.getTable(), 
 				eventActions.toArray(new String[0]));

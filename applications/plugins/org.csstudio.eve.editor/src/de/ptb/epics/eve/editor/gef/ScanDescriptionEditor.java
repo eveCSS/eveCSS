@@ -184,8 +184,8 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		// check dialog result
 		if(dialogName != null) {
 			// adjust filename to ".scml"
-			final int lastPoint = dialogName.lastIndexOf(".");
-			final int lastSep = dialogName.lastIndexOf("/");
+			final int lastPoint = dialogName.lastIndexOf('.');
+			final int lastSep = dialogName.lastIndexOf('/');
 			if ((lastPoint > 0) && (lastPoint > lastSep)) {
 				saveFileName = dialogName.substring(0, lastPoint) + ".scml";
 			} else {

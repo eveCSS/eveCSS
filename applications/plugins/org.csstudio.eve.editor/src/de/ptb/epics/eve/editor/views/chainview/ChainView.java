@@ -882,8 +882,8 @@ public class ChainView extends ViewPart implements IEditorView,
 							.get("suffix").toString();
 
 					// remove old suffix
-					final int lastPoint = name.lastIndexOf(".");
-					final int lastSep = name.lastIndexOf("/");
+					final int lastPoint = name.lastIndexOf('.');
+					final int lastSep = name.lastIndexOf('/');
 
 					if ((lastPoint > 0) && (lastPoint > lastSep)) {
 						filenameInput.setText(name.substring(0, lastPoint)
