@@ -1246,7 +1246,7 @@ public class ScanDescriptionSaver implements
 				try {
 					this.writeAxis(axis[i]);
 				} catch (Exception ex) {
-					ex.printStackTrace();
+					logger.error(ex.getMessage(), ex);
 				}
 			}
 

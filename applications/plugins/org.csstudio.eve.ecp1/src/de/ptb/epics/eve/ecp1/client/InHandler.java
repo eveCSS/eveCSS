@@ -6,8 +6,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Queue;
 
-public class InHandler implements Runnable {
+import org.apache.log4j.Logger;
 
+/**
+ * 
+ * @author ?
+ */
+public class InHandler implements Runnable {
+	public static final Logger LOGGER = Logger.getLogger(
+			InHandler.class.getName());
+	
 	private ECP1Client ecp1client;
 	private InputStream inputStream;
 	private Queue<byte[]> inQueue;
@@ -20,20 +28,22 @@ public class InHandler implements Runnable {
 		this.inQueue = inQueue;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void run() {
-
 		final byte[] headerBuffer = new byte[12];
 		final DataInputStream dataInputStream = new DataInputStream(
 				this.inputStream);
 
 		while (this.keepRunning) {
-
 			try {
 				dataInputStream.readFully(headerBuffer);
-				final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
-						headerBuffer);
-				final DataInputStream dataInputStreamForLength = new DataInputStream(
-						byteArrayInputStream);
+				final ByteArrayInputStream byteArrayInputStream = 
+						new ByteArrayInputStream(headerBuffer);
+				final DataInputStream dataInputStreamForLength = 
+						new DataInputStream(byteArrayInputStream);
 				dataInputStreamForLength.skip(8);
 				final int length = dataInputStreamForLength.readInt();
 
@@ -48,15 +58,13 @@ public class InHandler implements Runnable {
 				System.arraycopy(contentBuffer, 0, dataPackage, 12, length);
 
 				this.inQueue.add(dataPackage);
-
-			} catch (final IOException e) {
+			} catch (final IOException e) { // should use finally instead ?
 				try {
 					this.ecp1client.disconnect();
 				} catch (final IOException e1) {
-					e1.printStackTrace();
+					LOGGER.error(e1.getMessage(), e1);
 				}
 			}
-
 		}
 	}
 
