@@ -490,17 +490,13 @@ public class CommonTableElement {
 				return Activator.getDefault().getColor("COLOR_PV_MOVING");
 			}
 			status = valuePv.getStatus();
-		}
-		else if (property.equals("unit")) {
-			if (unitPv != null) status = unitPv.getStatus();
-		}
-		else if (property.equals("goto")) {
-			if (gotoPv != null) status = gotoPv.getStatus();
-		}
-		else if (property.equals("tweakvalue")) {
-			if (tweakvaluePv != null) status = tweakvaluePv.getStatus();
-		}
-		else if ((property.equals("status")) && (statusPv != null)) {
+		} else if (property.equals("unit") && unitPv != null) {
+				status = unitPv.getStatus();
+		} else if (property.equals("goto") && gotoPv != null) {
+				status = gotoPv.getStatus();
+		} else if (property.equals("tweakvalue") && tweakvaluePv != null) {
+				status = tweakvaluePv.getStatus();
+		} else if ((property.equals("status")) && (statusPv != null)) {
 			String statusVal = getValue("status");
 			if (statusVal.equals("Moving")) {
 				return Activator.getDefault().getColor("COLOR_PV_MOVING");
@@ -511,15 +507,24 @@ public class CommonTableElement {
 				status = AlarmSeverity.NONE;
 			}
 		}
-
 		String color = "COLOR_PV_INITIAL";
 		
 		switch(status) {
-			case INVALID: color = "COLOR_PV_INVALID"; break;
-			case MAJOR: color = "COLOR_PV_MAJOR"; break;
-			case MINOR: color = "COLOR_PV_MINOR"; break;
-			case NONE: color = "COLOR_PV_OK"; break;
-			case UNDEFINED: color = "COLOR_PV_INITIAL"; break;
+			case INVALID: 
+				color = "COLOR_PV_INVALID"; 
+				break;
+			case MAJOR: 
+				color = "COLOR_PV_MAJOR"; 
+				break;
+			case MINOR: 
+				color = "COLOR_PV_MINOR"; 
+				break;
+			case NONE: 
+				color = "COLOR_PV_OK"; 
+				break;
+			case UNDEFINED: 
+				color = "COLOR_PV_INITIAL"; 
+				break;
 		}
 		return Activator.getDefault().getColor(color);
 	}
@@ -530,13 +535,12 @@ public class CommonTableElement {
 	 * @return
 	 */
 	public String[] getSelectStrings(String property) {
-		if (isDiscrete(property)){
-			if (property.equals("value")){
+		if (isDiscrete(property)) {
+			if (property.equals("value")) {
 				if ((valuePv != null) && valuePv.isDiscrete()) {
 					return valuePv.getDiscreteValues();
 				}
-			}
-			else if (property.equals("goto")){
+			} else if (property.equals("goto")) {
 				if ((gotoPv != null) && gotoPv.isDiscrete()) {
 					return gotoPv.getDiscreteValues();
 				}
@@ -555,7 +559,6 @@ public class CommonTableElement {
 		}
 		if (!viewer.getControl().isDisposed()) {
 			viewer.getControl().getDisplay().asyncExec(new Runnable() {
-				
 				@Override
 				public void run() {
 					if (!viewer.getControl().isDisposed()) {
@@ -643,8 +646,7 @@ public class CommonTableElement {
 					return valueString;
 				}
 			}
-		}
-		else if (property.equals("unit")) {
+		} else if (property.equals("unit")) {
 			if (unitPv != null) {
 				return unitPv.getValue();
 			}
@@ -653,8 +655,9 @@ public class CommonTableElement {
 		else if (property.equals("tweakvalue") && (tweakvaluePv != null)) {
 			return tweakvaluePv.getValue();
 		}
-		else if (property.equals("define") && (offsetPv != null))
+		else if (property.equals("define") && (offsetPv != null)) {
 			return "";
+		}
 		return "";
 	}
 
@@ -669,8 +672,12 @@ public class CommonTableElement {
 			int index = 0;
 			String[] items = ((ComboBoxCellEditor)getCellEditor(column)).
 					getItems();
-			if (value instanceof Integer) index = ((Integer)value).intValue();
-			if (items.length > index) newValue = items[index];
+			if (value instanceof Integer) {
+				index = ((Integer)value).intValue();
+			}
+			if (items.length > index) {
+				newValue = items[index];
+			}
 		} else if (value instanceof String) {
 			newValue = (String) value;
 		}
@@ -714,16 +721,17 @@ public class CommonTableElement {
 			if (device.getClass().getSimpleName().equals("DetectorChannel")) {
 				// device is a DetectorChannel
 				DetectorChannel channel = (DetectorChannel)device;
-				if (channel.getTrigger() != null) {
-					if (channel.getTrigger().getValue() != null)
+				if (channel.getTrigger() != null &&
+					channel.getTrigger().getValue() != null) {
 						triggerPv.setValue(channel.getTrigger().getValue().
 								getDefaultValue());
 				} else {
 					// triggerPv is the detector of the channel
 					Detector detector = channel.getDetector();
-					if (detector.getTrigger().getValue() != null)
+					if (detector.getTrigger().getValue() != null) {
 						triggerPv.setValue(detector.getTrigger().getValue().
 								getDefaultValue());
+					}
 				}
 			} 
 		}
@@ -783,8 +791,7 @@ public class CommonTableElement {
 				tweakforwardPv.setValue(
 					motorAxis.getTweakForward().getValue().getDefaultValue());
 			}
-		}
-		else if(!forward && (tweakreversePv != null) && 
+		} else if(!forward && (tweakreversePv != null) && 
 				tweakreversePv.isConnected()) {
 			MotorAxis motorAxis = (MotorAxis)device;
 			if (motorAxis.getTweakReverse().getValue() != null) {

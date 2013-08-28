@@ -213,20 +213,19 @@ public class TypeValue {
 	 */
 	public String formatValue(String value) {
 		String returnString = DataTypes.formatValue(type, value);
-		if (returnString != null){
+		if (returnString != null) {
 			if (isDiscrete) {
-				if (!elements.contains(returnString))
+				if (!elements.contains(returnString)) {
 					returnString = null;
-			}
-			else if (hasRange){
-				if (type == DataTypes.INT){
+				}
+			} else if (hasRange) {
+				if (type == DataTypes.INT) {
 					Integer intval = Integer.parseInt(returnString);
 					if (!((Integer.parseInt(elements.get(0)) <= intval) && 
 							(Integer.parseInt(elements.get(1)) >= intval))) {
 						returnString = null;
 					}
-				}
-				else if (type == DataTypes.DOUBLE){
+				} else if (type == DataTypes.DOUBLE){
 					Double dblval = Double.parseDouble(returnString);
 					if (!((Double.parseDouble(elements.get(0)) <= dblval) && 
 							(Double.parseDouble(elements.get(1)) >= dblval))) {
