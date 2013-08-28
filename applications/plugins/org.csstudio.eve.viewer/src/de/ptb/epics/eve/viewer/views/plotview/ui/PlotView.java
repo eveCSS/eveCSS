@@ -169,7 +169,7 @@ public class PlotView extends ViewPart {
 			@Override
 			protected Object getValue(Object element) {
 				return null;
-			}			
+			}
 			@Override
 			protected CellEditor getCellEditor(Object element) {
 				return null;
@@ -183,10 +183,11 @@ public class PlotView extends ViewPart {
 		gotoColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public Image getImage(Object element) {
-				if (((MathTableElement)element).drawIcon()) 
+				if (((MathTableElement)element).drawIcon()) {
 					return gotoIcon;
-				else
+				} else {
 					return null;
+				}
 			}
 			@Override
 			public String getText(Object element) {

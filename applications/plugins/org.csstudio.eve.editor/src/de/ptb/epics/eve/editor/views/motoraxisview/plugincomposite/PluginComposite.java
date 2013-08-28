@@ -229,31 +229,28 @@ public class PluginComposite extends Composite {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			
-			if(axis != null) { 
-				PlugIn plugin = Activator.getDefault().getMeasuringStation().
-									getPluginByName(pluginCombo.getText());
-				
-				if(plugin != null)
+			if (axis != null) {
+				PlugIn plugin = Activator.getDefault().getMeasuringStation()
+						.getPluginByName(pluginCombo.getText());
+
+				if (plugin != null) {
 					logger.debug("Plugin: " + plugin.getName());
-				else
+				} else {
 					logger.debug("Plugin: null");
-				
-				
-				if(axis.getPluginController() == null)
-				{
-					axis.setPluginController(new PluginController(plugin));
-					logger.debug("filled with default ? " + 
-							axis.getPluginController().isFilledWithDefault());
 				}
-				
-				
-				if(axis.getPluginController().getPlugin() != plugin) {
+
+				if (axis.getPluginController() == null) {
+					axis.setPluginController(new PluginController(plugin));
+					logger.debug("filled with default ? "
+							+ axis.getPluginController().isFilledWithDefault());
+				}
+
+				if (axis.getPluginController().getPlugin() != plugin) {
 					axis.getPluginController().setPlugin(plugin);
 				}
-					pluginControllerComposite.setPluginController(
-							axis.getPluginController());
-					pluginControllerComposite.setScanModule(scanModule);
+				pluginControllerComposite.setPluginController(axis
+						.getPluginController());
+				pluginControllerComposite.setScanModule(scanModule);
 			}
 			checkForErrors();
 		}

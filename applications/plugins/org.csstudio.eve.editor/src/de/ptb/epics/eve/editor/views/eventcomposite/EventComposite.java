@@ -144,14 +144,13 @@ public class EventComposite extends Composite {
 	 */
 	public void setControlEventManager(
 			final ControlEventManager controlEventManager) {
-		if(controlEventManager != null)
+		if(controlEventManager != null) {
 			logger.debug("set control event manager (" +
 						 controlEventManager.hashCode() + ")");
-		else
+		} else {
 			logger.debug("set control event manager (null)");
-		
+		}
 		this.controlEventManager = controlEventManager;
-		
 		this.tableViewer.setInput(controlEventManager);
 		
 		if (this.isVisible() && this.parentView instanceof ScanModuleView) {

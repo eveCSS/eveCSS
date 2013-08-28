@@ -64,14 +64,15 @@ public class LabelProvider implements ITableLabelProvider {
 				// ONOFF -> als Value wird On oder Off gesetzt
 				String[] werte = pos.getAbstractPrePostscanDevice().getValue()
 						.getDiscreteValues().toArray(new String[0]);
-				if (werte[0].equals(pos.getValue()))
+				if (werte[0].equals(pos.getValue())) {
 					// Erster Eintrag ist gesetzt, On anzeigen
 					return "On";
-				else if (werte[1].equals(pos.getValue()))
+				} else if (werte[1].equals(pos.getValue())) {
 					// Zweiter Eintrag ist gesetzt, Off anzeigen
 					return "Off";
-				else
+				} else {
 					return null;
+				}
 			} else if (pos.getAbstractPrePostscanDevice().getValue().getType()
 					.equals(DataTypes.OPENCLOSE)) {
 				// OPENCLOSE -> als Value wird Open oder Close gesetzt
