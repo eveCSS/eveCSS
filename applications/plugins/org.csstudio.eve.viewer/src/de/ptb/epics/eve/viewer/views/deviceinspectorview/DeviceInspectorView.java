@@ -175,7 +175,9 @@ public class DeviceInspectorView extends ViewPart {
 		
 		devices = new ArrayList<AbstractDevice>();
 		
-		if(memento == null) return;
+		if(memento == null) {
+			return;
+		}
 		
 		// restore table items
 		String devicesString = memento.getString("devices");
@@ -1255,7 +1257,10 @@ public class DeviceInspectorView extends ViewPart {
 	 * saved in the memento.
 	 */
 	private void restoreState() {
-		if(memento == null) return; // nothing saved
+		if(memento == null) {
+			// nothing saved
+			return;
+		}
 		
 		// restore part name (view title)
 		if(memento.getString("partName") != null) {

@@ -139,7 +139,9 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 				}
 			});
 		}
-		if(!overwrite) return;
+		if(!overwrite) {
+			return;
+		}
 		
 		final IMeasuringStation measuringStation =  
 				Activator.getDefault().getMeasuringStation();

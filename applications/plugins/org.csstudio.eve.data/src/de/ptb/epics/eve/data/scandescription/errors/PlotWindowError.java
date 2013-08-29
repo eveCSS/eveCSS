@@ -9,15 +9,7 @@ import de.ptb.epics.eve.data.scandescription.PlotWindow;
  *
  */
 public class PlotWindowError implements IModelError {
-
-	/**
-	 * The plotWindow where the error occurred.
-	 */
 	private final PlotWindow plotWindow;
-	
-	/**
-	 * The type of the error.
-	 */
 	private final PlotWindowErrorTypes errorType;
 	
 	/**
@@ -26,12 +18,15 @@ public class PlotWindowError implements IModelError {
 	 * @param plotWindowBahavior The plotWindow. Must not be 'null'
 	 * @param errorType The error type. Must not be 'null'!
 	 */
-	public PlotWindowError( final PlotWindow plotWindow, final PlotWindowErrorTypes errorType ) {
-		if( plotWindow == null ) {
-			throw new IllegalArgumentException( "The parameter 'plotWindow' must not be null!" );
+	public PlotWindowError(final PlotWindow plotWindow,
+			final PlotWindowErrorTypes errorType) {
+		if (plotWindow == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'plotWindow' must not be null!");
 		}
-		if( errorType == null ) {
-			throw new IllegalArgumentException( "The parameter 'errorType' must not be null!" );
+		if (errorType == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'errorType' must not be null!");
 		}
 		this.plotWindow = plotWindow;
 		this.errorType = errorType;
@@ -55,66 +50,72 @@ public class PlotWindowError implements IModelError {
 		return this.errorType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((errorType == null) ? 0 : errorType.hashCode());
-		result = prime * result + ((plotWindow == null) ? 0 : plotWindow.hashCode());
+		result = prime * result
+				+ ((errorType == null) ? 0 : errorType.hashCode());
+		result = prime * result
+				+ ((plotWindow == null) ? 0 : plotWindow.hashCode());
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		PlotWindowError other = (PlotWindowError) obj;
 		if (errorType == null) {
-			if (other.errorType != null)
+			if (other.errorType != null) {
 				return false;
-		} else if (!errorType.equals(other.errorType))
+			}
+		} else if (!errorType.equals(other.errorType)) {
 			return false;
+		}
 		if (plotWindow == null) {
-			if (other.plotWindow != null)
+			if (other.plotWindow != null) {
 				return false;
-		} else if (!plotWindow.equals(other.plotWindow))
+			}
+		} else if (!plotWindow.equals(other.plotWindow)) {
 			return false;
+		}
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
-		return "PlotWindowError [errorType=" + errorType + ", plotWindow=" + plotWindow + "]";
+		return "PlotWindowError [errorType=" + errorType + ", plotWindow=" + 
+				plotWindow + "]";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelError#getErrorMessage()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String getErrorMessage() {
-		return "Error in plotWindow " + this.plotWindow + " because " + this.errorType;
+		return "Error in plotWindow " + this.plotWindow + " because " + 
+				this.errorType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelError#getErrorName()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String getErrorName() {

@@ -41,17 +41,17 @@ public class PlotView extends ViewPart {
 	/** the unique identifier of this view */
 	public static final String ID = "PlotView";
 
-	private static Logger LOGGER = Logger.getLogger(PlotView.class);
+	private static final Logger LOGGER = Logger.getLogger(PlotView.class);
 	
 	private SashForm sashForm;
 	
 	private Canvas canvas;
 	private XyPlot xyPlot;
 	
-	TableViewer table1Viewer;
-	TableViewer table2Viewer;
-	TabItem itemAxis1;
-	TabItem itemAxis2;
+	private TableViewer table1Viewer;
+	private TableViewer table2Viewer;
+	private TabItem itemAxis1;
+	private TabItem itemAxis2;
 	
 	private boolean showStats;
 	
@@ -169,7 +169,7 @@ public class PlotView extends ViewPart {
 			@Override
 			protected Object getValue(Object element) {
 				return null;
-			}			
+			}
 			@Override
 			protected CellEditor getCellEditor(Object element) {
 				return null;
@@ -183,10 +183,11 @@ public class PlotView extends ViewPart {
 		gotoColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public Image getImage(Object element) {
-				if (((MathTableElement)element).drawIcon()) 
+				if (((MathTableElement)element).drawIcon()) {
 					return gotoIcon;
-				else
+				} else {
 					return null;
+				}
 			}
 			@Override
 			public String getText(Object element) {
@@ -390,7 +391,10 @@ public class PlotView extends ViewPart {
 	 * 
 	 */
 	private void restoreState() {
-		if(this.memento == null) return; // nothing saved
+		if(this.memento == null) {
+			// nothing saved
+			return;
+		}
 		
 		// restore sash weights
 		int plotWeight = this.memento.getInteger("plotWeight") == null

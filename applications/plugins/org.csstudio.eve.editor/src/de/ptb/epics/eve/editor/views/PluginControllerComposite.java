@@ -122,7 +122,8 @@ public class PluginControllerComposite extends Composite {
 	 */
 	public void setScanModule(final ScanModule scanModule) {
 		this.scanModule = scanModule;
-		if(pluginController != null)
+		if(pluginController != null) {
 			pluginController.setScanModule(scanModule);
+		}
 	}
 }

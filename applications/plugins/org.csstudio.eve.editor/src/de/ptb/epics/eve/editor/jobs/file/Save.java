@@ -139,10 +139,10 @@ public class Save extends Job {
 	 */
 	private void calculateSavings() throws FileNotFoundException {
 		File tempFile = new File((filename + ".temp"));
-		final FileOutputStream os_temp = new FileOutputStream(tempFile);
+		final FileOutputStream osTemp = new FileOutputStream(tempFile);
 		// save the whole file without filtering
 		final ScanDescriptionSaver scanDescriptionSaverFull = 
-			new ScanDescriptionSaver(os_temp, 
+			new ScanDescriptionSaver(osTemp, 
 				scanDescription.getMeasuringStation(), this.scanDescription);
 		scanDescriptionSaverFull.save();
 		// get the size of the unfiltered file

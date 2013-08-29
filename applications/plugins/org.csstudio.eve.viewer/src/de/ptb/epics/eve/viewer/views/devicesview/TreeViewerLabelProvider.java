@@ -26,25 +26,21 @@ import de.ptb.epics.eve.viewer.Activator;
  */
 public class TreeViewerLabelProvider implements ILabelProvider {
 
-	final Image motorImage = 
+	private final Image motorImage = 
 			Activator.getDefault().getImageRegistry().get("MOTOR");
-	final Image axisImage = 
+	private final Image axisImage = 
 			Activator.getDefault().getImageRegistry().get("AXIS");
-	final Image detectorImage = 
+	private final Image detectorImage = 
 			Activator.getDefault().getImageRegistry().get("DETECTOR");
-	final Image channelImage = 
+	private final Image channelImage = 
 			Activator.getDefault().getImageRegistry().get("CHANNEL");
-	final Image classImage = 
+	private final Image classImage = 
 			Activator.getDefault().getImageRegistry().get("CLASS");
-	final Image motorsImage = 
-			Activator.getDefault().getImageRegistry().get("MOTORS");
-	final Image detectorsImage =
-			Activator.getDefault().getImageRegistry().get("DETECTORS");
-	final Image devicesImage = 
+	private final Image devicesImage = 
 			Activator.getDefault().getImageRegistry().get("DEVICES");
-	final Image motorsAxesImage = 
+	private final Image motorsAxesImage = 
 			Activator.getDefault().getImageRegistry().get("MOTORSAXES");
-	final Image detectorsChannelsImage = 
+	private final Image detectorsChannelsImage = 
 			Activator.getDefault().getImageRegistry().get("DETECTORSCHANNELS");
 	
 	/**
@@ -87,7 +83,9 @@ public class TreeViewerLabelProvider implements ILabelProvider {
 	@Override
 	public String getText(final Object element) {
 		if(element instanceof List<?>) {
-			if(((List<Object>)element).size() == 0) return null;
+			if(((List<Object>)element).size() == 0) {
+				return null;
+			}
 			Object obj = ((List<Object>)element).get(0);
 			if(obj instanceof Motor || obj instanceof MotorAxis) {
 				return "Motors & Axes";
@@ -101,7 +99,9 @@ public class TreeViewerLabelProvider implements ILabelProvider {
 		} else if(element instanceof AbstractDevice) {
 			final AbstractDevice device = (AbstractDevice)element;
 			String label = device.getName();
-			if (label.length() == 0) label = device.getID();
+			if (label.length() == 0) {
+				label = device.getID();
+			}
 			return label;
 		}
 		return null;

@@ -847,21 +847,25 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	 * widgets of given axis.
 	 */
 	private void updateColorsAxis(int axis) {
-		RGB model_rgb = new RGB(0,0,0);
+		RGB modelRgb = new RGB(0,0,0);
 		
 		if(axis == 1) {
-			model_rgb = yAxis1.getColor();
+			modelRgb = yAxis1.getColor();
 		}
 		if(axis == 2) {
-			model_rgb = yAxis2.getColor();
+			modelRgb = yAxis2.getColor();
 		}
 		
 		// our predefined colors
 		String[] items = {"black", "red", "green", "blue", 
 						  "pink", "purple", "custom..."};
 		
-		if(axis == 1) yAxis1ColorComboBox.setItems(items); 
-		if(axis == 2) yAxis2ColorComboBox.setItems(items); 
+		if(axis == 1) {
+			yAxis1ColorComboBox.setItems(items); 
+		}
+		if(axis == 2) {
+			yAxis2ColorComboBox.setItems(items); 
+		}
 		
 		// our predefined colors as RGB values...
 		RGB black = new RGB(0,0,0);
@@ -871,38 +875,70 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		RGB pink = new RGB(255,0,255);
 		RGB purple = new RGB(128,0,128);
 		
-		if(model_rgb == null) model_rgb = black;
+		if(modelRgb == null) {
+			modelRgb = black;
+		}
 		
 		// if the current RGB value equals one of the predefined colors, update 
 		// select box accordingly
-		if(model_rgb.equals(black)) {
-			if(axis == 1) yAxis1ColorComboBox.select(0);
-			if(axis == 2) yAxis2ColorComboBox.select(0);
-		} else if(model_rgb.equals(red)) {
-			if(axis == 1) yAxis1ColorComboBox.select(1);
-			if(axis == 2) yAxis2ColorComboBox.select(1);
-		} else if(model_rgb.equals(green)) {
-			if(axis == 1) yAxis1ColorComboBox.select(2);
-			if(axis == 2) yAxis2ColorComboBox.select(2);
-		} else if(model_rgb.equals(blue)) {
-			if(axis == 1) yAxis1ColorComboBox.select(3);
-			if(axis == 2) yAxis2ColorComboBox.select(3);
-		} else if(model_rgb.equals(pink)) {
-			if(axis == 1) yAxis1ColorComboBox.select(4);
-			if(axis == 2) yAxis2ColorComboBox.select(4);
-		} else if(model_rgb.equals(purple)) {
-			if(axis == 1) yAxis1ColorComboBox.select(5);
-			if(axis == 2) yAxis2ColorComboBox.select(5);
+		if(modelRgb.equals(black)) {
+			if(axis == 1) {
+				yAxis1ColorComboBox.select(0);
+			}
+			if(axis == 2) {
+				yAxis2ColorComboBox.select(0);
+			}
+		} else if(modelRgb.equals(red)) {
+			if(axis == 1) {
+				yAxis1ColorComboBox.select(1);
+			}
+			if(axis == 2) {
+				yAxis2ColorComboBox.select(1);
+			}
+		} else if(modelRgb.equals(green)) {
+			if(axis == 1) {
+				yAxis1ColorComboBox.select(2);
+			}
+			if(axis == 2) {
+				yAxis2ColorComboBox.select(2);
+			}
+		} else if(modelRgb.equals(blue)) {
+			if(axis == 1) {
+				yAxis1ColorComboBox.select(3);
+			}
+			if(axis == 2) {
+				yAxis2ColorComboBox.select(3);
+			}
+		} else if(modelRgb.equals(pink)) {
+			if(axis == 1) {
+				yAxis1ColorComboBox.select(4);
+			}
+			if(axis == 2) {
+				yAxis2ColorComboBox.select(4);
+			}
+		} else if(modelRgb.equals(purple)) {
+			if(axis == 1) {
+				yAxis1ColorComboBox.select(5);
+			}
+			if(axis == 2) {
+				yAxis2ColorComboBox.select(5);
+			}
 		} else { // custom...
-			if(axis == 1) yAxis1ColorComboBox.select(6);
-			if(axis == 2) yAxis2ColorComboBox.select(6);
+			if(axis == 1) {
+				yAxis1ColorComboBox.select(6);
+			}
+			if(axis == 2) {
+				yAxis2ColorComboBox.select(6);
+			}
 		}	
 		
 		// change color of color field editor to current RGB value
-		if(axis == 1) 
-			yAxis1ColorFieldEditor.getColorSelector().setColorValue(model_rgb);
-		if(axis == 2)
-			yAxis2ColorFieldEditor.getColorSelector().setColorValue(model_rgb);
+		if(axis == 1) {
+			yAxis1ColorFieldEditor.getColorSelector().setColorValue(modelRgb);
+		}
+		if(axis == 2) {
+			yAxis2ColorFieldEditor.getColorSelector().setColorValue(modelRgb);
+		}
 	}
 	
 	/*
@@ -910,32 +946,58 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 	 * the color selected in the select box.
 	 */
 	private void updateColorField(int axis) {
-		String selected_color_as_text = "";
-		if(axis == 1) selected_color_as_text = yAxis1ColorComboBox.getText();
-		if(axis == 2) selected_color_as_text = yAxis2ColorComboBox.getText();
+		String selectedColorAsText = "";
+		if(axis == 1) {
+			selectedColorAsText = yAxis1ColorComboBox.getText();
+		}
+		if(axis == 2) {
+			selectedColorAsText = yAxis2ColorComboBox.getText();
+		}
 		
-		RGB selected_color = null;
+		RGB selectedColor = null;
 
-		if(selected_color_as_text == "black") selected_color = new RGB(0,0,0);
-		if(selected_color_as_text == "red" )  selected_color = new RGB(255,0,0);
-		if(selected_color_as_text == "green") selected_color = new RGB(0,128,0);
-		if(selected_color_as_text == "blue")  selected_color = new RGB(0,0,255);
-		if(selected_color_as_text == "pink")  selected_color = new RGB(255,0,255);
-		if(selected_color_as_text == "purple")selected_color = new RGB(128,0,128);
-		if(selected_color_as_text == "custom...")
+		if(selectedColorAsText == "black") {
+			selectedColor = new RGB(0,0,0);
+		}
+		if(selectedColorAsText == "red" ) {
+			selectedColor = new RGB(255,0,0);
+		}
+		if(selectedColorAsText == "green") {
+			selectedColor = new RGB(0,128,0);
+		}
+		if(selectedColorAsText == "blue")  {
+			selectedColor = new RGB(0,0,255);
+		}
+		if(selectedColorAsText == "pink") {
+			selectedColor = new RGB(255,0,255);
+		}
+		if(selectedColorAsText == "purple") {
+			selectedColor = new RGB(128,0,128);
+		}
+		if(selectedColorAsText == "custom...")
 		{
-			if(axis == 1) selected_color = 
-				yAxis1ColorFieldEditor.getColorSelector().getColorValue();
-			if(axis == 2) selected_color = 
-				yAxis2ColorFieldEditor.getColorSelector().getColorValue();
+			if(axis == 1) {
+				selectedColor = yAxis1ColorFieldEditor.getColorSelector().
+						getColorValue();
+			}
+			if(axis == 2) {
+				selectedColor =  yAxis2ColorFieldEditor.getColorSelector().
+						getColorValue();
+			}
 		}
 		// just in case...
-		if(selected_color == null) selected_color = new RGB(0,0,0);
+		if(selectedColor == null) {
+			selectedColor = new RGB(0,0,0);
+		}
 		
-		if(axis == 1) yAxis1ColorFieldEditor.getColorSelector().
-											setColorValue(selected_color);
-		if(axis == 2) yAxis2ColorFieldEditor.getColorSelector().
-											setColorValue(selected_color);
+		if(axis == 1) {
+			yAxis1ColorFieldEditor.getColorSelector().setColorValue(
+					selectedColor);
+		}
+		if(axis == 2) {
+			yAxis2ColorFieldEditor.getColorSelector().setColorValue(
+					selectedColor);
+		}
 	}
 
 	/**
@@ -1116,10 +1178,10 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 			// set view title
 			this.setPartName(this.plotWindow.getName()+ ":" + this.plotWindow.getId());
 			// determine the number of yAxis of the plot
-			int axes_count = plotWindow.getYAxisAmount();
+			int axesCount = plotWindow.getYAxisAmount();
 			
 			// depending on the axes count -> set reference(s) to the axis/axes
-			switch(axes_count) {
+			switch(axesCount) {
 				case 0: yAxis1 = null;
 						yAxis2 = null;
 						break;

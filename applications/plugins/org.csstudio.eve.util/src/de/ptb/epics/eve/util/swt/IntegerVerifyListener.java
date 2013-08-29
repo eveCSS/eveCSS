@@ -16,7 +16,7 @@ public class IntegerVerifyListener implements VerifyListener {
 	 */
 	@Override
 	public void verifyText(VerifyEvent e) {
-		if (e.doit == false) {
+		if (!e.doit) {
 			return;
 		}
 

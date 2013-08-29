@@ -33,7 +33,7 @@ public class MenuContribution extends CompoundContributionItem {
 	private static Logger logger = Logger.getLogger(MenuContribution.class
 			.getName());
 	
-	final ImageDescriptor axisImage = ImageDescriptor.createFromImage(
+	private final ImageDescriptor axisImage = ImageDescriptor.createFromImage(
 			Activator.getDefault().
 			getImageRegistry().get("AXIS"));
 	

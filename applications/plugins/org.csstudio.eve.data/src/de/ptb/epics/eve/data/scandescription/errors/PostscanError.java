@@ -9,15 +9,7 @@ import de.ptb.epics.eve.data.scandescription.AbstractPostscanBehavior;
  *
  */
 public class PostscanError implements IModelError {
-
-	/**
-	 * The postscan where the error occurred.
-	 */
 	private final AbstractPostscanBehavior postscanBahavior;
-	
-	/**
-	 * The type of the error.
-	 */
 	private final PostscanErrorTypes errorType;
 	
 	/**
@@ -26,12 +18,15 @@ public class PostscanError implements IModelError {
 	 * @param postscanBahavior The postscan. Must not be 'null'
 	 * @param errorType The error type. Must not be 'null'!
 	 */
-	public PostscanError( final AbstractPostscanBehavior postscanBahavior, final PostscanErrorTypes errorType ) {
-		if( postscanBahavior == null ) {
-			throw new IllegalArgumentException( "The parameter 'postscanBahavior' must not be null!" );
+	public PostscanError(final AbstractPostscanBehavior postscanBahavior,
+			final PostscanErrorTypes errorType) {
+		if (postscanBahavior == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'postscanBahavior' must not be null!");
 		}
-		if( errorType == null ) {
-			throw new IllegalArgumentException( "The parameter 'errorType' must not be null!" );
+		if (errorType == null) {
+			throw new IllegalArgumentException(
+					"The parameter 'errorType' must not be null!");
 		}
 		this.postscanBahavior = postscanBahavior;
 		this.errorType = errorType;
@@ -55,9 +50,8 @@ public class PostscanError implements IModelError {
 		return this.errorType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public int hashCode() {
@@ -72,53 +66,58 @@ public class PostscanError implements IModelError {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		PostscanError other = (PostscanError) obj;
 		if (errorType == null) {
-			if (other.errorType != null)
+			if (other.errorType != null) {
 				return false;
-		} else if (!errorType.equals(other.errorType))
+			}
+		} else if (!errorType.equals(other.errorType)) {
 			return false;
+		}
 		if (postscanBahavior == null) {
-			if (other.postscanBahavior != null)
+			if (other.postscanBahavior != null) {
 				return false;
-		} else if (!postscanBahavior.equals(other.postscanBahavior))
+			}
+		} else if (!postscanBahavior.equals(other.postscanBahavior)) {
 			return false;
+		}
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
-		return "PostscanError [errorType=" + errorType + ", postscanBahavior=" + postscanBahavior + "]";
+		return "PostscanError [errorType=" + errorType + ", postscanBahavior=" + 
+				postscanBahavior + "]";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelError#getErrorMessage()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String getErrorMessage() {
-		return "Error in postscan " + this.postscanBahavior + " because " + this.errorType;
+		return "Error in postscan " + this.postscanBahavior + " because " + 
+				this.errorType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.ptb.epics.eve.data.scandescription.errors.IModelError#getErrorName()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String getErrorName() {

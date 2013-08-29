@@ -328,16 +328,18 @@ public class ScanDescriptionSaver implements
 			this.contentHandler.startElement("", "device", "device", this.atts);
 			this.atts.clear();
 			this.contentHandler.startElement("", "class", "class", this.atts);
-			if (device.getClassName() != null)
+			if (device.getClassName() != null) {
 				this.contentHandler.characters(device.getClassName()
 						.toCharArray(), 0, device.getClassName().length());
+			}
 			this.contentHandler.endElement("", "class", "class");
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "name", "name", this.atts);
-			if (device.getName() != null)
+			if (device.getName() != null) {
 				this.contentHandler.characters(device.getName().toCharArray(),
 						0, device.getName().length());
+			}
 			this.contentHandler.endElement("", "name", "name");
 
 			this.atts.clear();
@@ -404,16 +406,18 @@ public class ScanDescriptionSaver implements
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "class", "class", this.atts);
-			if (motor.getClassName() != null)
+			if (motor.getClassName() != null) {
 				this.contentHandler.characters(motor.getClassName()
 						.toCharArray(), 0, motor.getClassName().length());
+			}
 			this.contentHandler.endElement("", "class", "class");
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "name", "name", this.atts);
-			if (motor.getName() != null)
+			if (motor.getName() != null) {
 				this.contentHandler.characters(motor.getName().toCharArray(),
 						0, motor.getName().length());
+			}
 			this.contentHandler.endElement("", "name", "name");
 
 			this.atts.clear();
@@ -459,15 +463,17 @@ public class ScanDescriptionSaver implements
 			
 			this.atts.clear();
 			this.contentHandler.startElement("", "class", "class", this.atts);
-			if (axis.getClassName() != null)
+			if (axis.getClassName() != null) {
 				this.contentHandler.characters(axis.getClassName()
 						.toCharArray(), 0, axis.getClassName().length());
+			}
 			this.contentHandler.endElement("", "class", "class");
 
 			this.contentHandler.startElement("", "name", "name", this.atts);
-			if (axis.getName() != null)
+			if (axis.getName() != null) {
 				this.contentHandler.characters(axis.getName().toCharArray(), 0,
 						axis.getName().length());
+			}
 			this.contentHandler.endElement("", "name", "name");
 
 			this.atts.clear();
@@ -564,17 +570,19 @@ public class ScanDescriptionSaver implements
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "class", "class", this.atts);
-			if (detector.getClassName() != null)
+			if (detector.getClassName() != null) {
 				this.contentHandler.characters(detector.getClassName()
 						.toCharArray(), 0, detector.getClassName().length());
+			}
 			this.contentHandler.endElement("", "class", "class");
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "name", "name", this.atts);
-			if (detector.getName() != null)
+			if (detector.getName() != null) {
 				this.contentHandler.characters(
 						detector.getName().toCharArray(), 0, detector.getName()
 								.length());
+			}
 			this.contentHandler.endElement("", "name", "name");
 
 			this.atts.clear();
@@ -622,15 +630,17 @@ public class ScanDescriptionSaver implements
 			this.atts.clear();
 
 			this.contentHandler.startElement("", "class", "class", this.atts);
-			if (channel.getClassName() != null)
+			if (channel.getClassName() != null) {
 				this.contentHandler.characters(channel.getClassName()
 						.toCharArray(), 0, channel.getClassName().length());
+			}
 			this.contentHandler.endElement("", "class", "class");
 
 			this.contentHandler.startElement("", "name", "name", this.atts);
-			if (channel.getName() != null)
+			if (channel.getName() != null) {
 				this.contentHandler.characters(channel.getName().toCharArray(),
 						0, channel.getName().length());
+			}
 			this.contentHandler.endElement("", "name", "name");
 
 			this.atts.clear();
@@ -780,7 +790,6 @@ public class ScanDescriptionSaver implements
 					((typeValue.getValues() != null) ? typeValue.getValues()
 							: "").length());
 			this.contentHandler.endElement("", name, name);
-
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);
 			return false;
@@ -1206,7 +1215,7 @@ public class ScanDescriptionSaver implements
 				try {
 					this.writeAxis(axis[i]);
 				} catch (Exception ex) {
-					ex.printStackTrace();
+					logger.error(ex.getMessage(), ex);
 				}
 			}
 

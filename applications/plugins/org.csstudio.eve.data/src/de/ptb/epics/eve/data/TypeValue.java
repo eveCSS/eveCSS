@@ -33,17 +33,17 @@ public class TypeValue {
 	/**
 	 * we have a range constraint
 	 */
-	boolean hasRange;
+	private boolean hasRange;
 	
 	/**
 	 * value must be one of a set of discrete values
 	 */
-	boolean isDiscrete;
+	private boolean isDiscrete;
 
 	/**
 	 * string list containing the discrete values or the range borders
 	 */
-	List<String> elements;
+	private List<String> elements;
 
 	/**
 	 * Used if a TypeValue object should be initialized that
@@ -93,7 +93,9 @@ public class TypeValue {
 		
 		int count = 0;
 		for (String string : elements){
-			if (count > 0) returnString.append(token);
+			if (count > 0) {
+				returnString.append(token);
+			}
 			returnString.append(string);
 			++count;
 		}
@@ -114,10 +116,11 @@ public class TypeValue {
 	 * 			</ul>
 	 */
 	public void setValues(final String values) {
-
 		hasRange = false;
 		isDiscrete = false;
-		if(values == null) return;
+		if(values == null) {
+			return;
+		}
 		
 		if (((type == DataTypes.INT) || (type == DataTypes.DOUBLE))
 				&& values.contains("to")) {
@@ -147,12 +150,15 @@ public class TypeValue {
 			String[] splits = values.split( "," );
 			for (String string : splits){
 				// string.trim().replace("\"", "");
-				if (string.length() > 0)
+				if (string.length() > 0) {
 					elements.add(string.trim().replace("\"", ""));
+				}
 			}
-			if (elements.size() > 0) isDiscrete = true;
+			if (elements.size() > 0) {
+				isDiscrete = true;
+			}
 		}
-		else if (values.length() > 0){
+		else if (values.length() > 0) {
 			elements.add(values);
 		}
 	}
@@ -177,10 +183,11 @@ public class TypeValue {
 	 */
 	public List<String> getDiscreteValues() {
 
-		if(isDiscrete)
+		if(isDiscrete) {
 			return new ArrayList<String>(elements);
-		else
+		} else {
 			return null;
+		}
 	}
 	
 	/**
@@ -191,10 +198,10 @@ public class TypeValue {
 	 * 			<code>false</code> otherwise.
 	 */
 	public boolean isValuePossible(final String value) {
-		if (formatValue(value) == null)
+		if (formatValue(value) == null) {
 			return false;
-		else
-			return true;
+		}
+		return true;
 	}
 
 	/**
@@ -206,20 +213,19 @@ public class TypeValue {
 	 */
 	public String formatValue(String value) {
 		String returnString = DataTypes.formatValue(type, value);
-		if (returnString != null){
+		if (returnString != null) {
 			if (isDiscrete) {
-				if (!elements.contains(returnString))
+				if (!elements.contains(returnString)) {
 					returnString = null;
-			}
-			else if (hasRange){
-				if (type == DataTypes.INT){
+				}
+			} else if (hasRange) {
+				if (type == DataTypes.INT) {
 					Integer intval = Integer.parseInt(returnString);
 					if (!((Integer.parseInt(elements.get(0)) <= intval) && 
 							(Integer.parseInt(elements.get(1)) >= intval))) {
 						returnString = null;
 					}
-				}
-				else if (type == DataTypes.DOUBLE){
+				} else if (type == DataTypes.DOUBLE){
 					Double dblval = Double.parseDouble(returnString);
 					if (!((Double.parseDouble(elements.get(0)) <= dblval) && 
 							(Double.parseDouble(elements.get(1)) >= dblval))) {
@@ -240,11 +246,12 @@ public class TypeValue {
 	 */
 	public String formatValueDefault(String value) {
 		String returnString = formatValue(value);
-		if (returnString == null){
-			if (isDiscrete || hasRange)
+		if (returnString == null) {
+			if (isDiscrete || hasRange) {
 				returnString = elements.get(0);
-			else
+			} else {
 				returnString = DataTypes.formatValueDefault(type, value);
+			}
 		}
 		return returnString;
 	}
@@ -257,13 +264,14 @@ public class TypeValue {
 	 * @return a default value
 	 */
 	public String getDefaultValue() {
-		if (isDiscrete || hasRange)
+		if (isDiscrete || hasRange) {
 			return elements.get(0);
-		else {
-			if (elements.size() > 0)
+		} else {
+			if (elements.size() > 0) {
 				return elements.get(0);
-			else
+			} else {
 				return DataTypes.getDefaultValue(type);
+			}
 		}
 	}
 

@@ -77,8 +77,8 @@ public class AddAppendedScanModule extends AbstractHandler {
 				CreateScanModule createCmd = new CreateScanModule(
 						startEvent.getChain(), new Rectangle(
 								startEvent.getX() + 130, startEvent.getY(),
-								ScanModule.default_width,
-								ScanModule.default_height), ScanModuleTypes.CLASSIC);
+								ScanModule.defaultWidth,
+								ScanModule.defaultHeight), ScanModuleTypes.CLASSIC);
 				Command connCmd = new CreateSEConnection(startEvent,
 						createCmd.getScanModule());
 				compositeCmd = createCmd.chain(connCmd);

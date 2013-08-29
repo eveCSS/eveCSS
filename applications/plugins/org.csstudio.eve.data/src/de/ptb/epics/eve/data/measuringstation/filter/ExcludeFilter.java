@@ -260,8 +260,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					if (currentAxis.getFullIdentifyer().compareToIgnoreCase(
 							test) > 0) {
 						i++;
-					} else
+					} else {
 						break;
+					}
 				}
 				identifier.add(i, currentAxis.getFullIdentifyer());
 			}
@@ -295,8 +296,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					if (currentDetector.getFullIdentifyer()
 							.compareToIgnoreCase(test) > 0) {
 						i++;
-					} else
+					} else {
 						break;
+					}
 				}
 				identifier.add(i, currentChannel.getFullIdentifyer());
 			}
@@ -321,8 +323,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				final String test = iterator.next();
 				if (currentDevice.getFullIdentifyer().compareToIgnoreCase(test) > 0) {
 					i++;
-				} else
+				} else {
 					break;
+				}
 			}
 			identifier.add(i, currentDevice.getFullIdentifyer());
 		}
@@ -346,8 +349,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					if (currentOption.getFullIdentifyer().compareToIgnoreCase(
 							test) > 0) {
 						i++;
-					} else
+					} else {
 						break;
+					}
 				}
 				identifier.add(i, currentOption.getFullIdentifyer());
 			}
@@ -372,8 +376,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 						if (currentOption.getFullIdentifyer()
 								.compareToIgnoreCase(test) > 0) {
 							i++;
-						} else
+						} else {
 							break;
+						}
 					}
 					identifier.add(i, currentOption.getFullIdentifyer());
 				}
@@ -400,8 +405,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					if (currentOption.getFullIdentifyer().compareToIgnoreCase(
 							test) > 0) {
 						i++;
-					} else
+					} else {
 						break;
+					}
 				}
 				identifier.add(i, currentOption.getFullIdentifyer());
 			}
@@ -427,8 +433,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 						if (currentOption.getFullIdentifyer()
 								.compareToIgnoreCase(test) > 0) {
 							i++;
-						} else
+						} else {
 							break;
+						}
 					}
 					identifier.add(i, currentOption.getFullIdentifyer());
 				}
@@ -442,83 +449,92 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	 * @throws IllegalArgumentException if the argument is <code>null</code> or 
 	 * 		   an empty {@link java.lang.String}
 	 */
-	public AbstractDevice getAbstractDeviceByFullIdentifyer(final String identifier) {
-		if(identifier == null) {
+	public AbstractDevice getAbstractDeviceByFullIdentifyer(
+			final String identifier) {
+		if (identifier == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'identifier' must not be null!");
-		} else if( identifier.equals( "" ) ) {
+		} else if (identifier.equals("")) {
 			throw new IllegalArgumentException(
 					"The parameter 'identifier' must not be a empty string!");
 		}
-		
+
 		Iterator<Motor> motorIterator = this.motors.iterator();
-		while( motorIterator.hasNext() ) {
+		while (motorIterator.hasNext()) {
 			final Motor currentMotor = motorIterator.next();
-			if( currentMotor.getFullIdentifyer().equals( identifier ) ) {
+			if (currentMotor.getFullIdentifyer().equals(identifier)) {
 				return currentMotor;
 			} else {
 				Iterator<Option> optionIterator = currentMotor.optionIterator();
-				while( optionIterator.hasNext() ) {
+				while (optionIterator.hasNext()) {
 					final Option currentOption = optionIterator.next();
-					if( currentOption.getFullIdentifyer().equals( identifier ) ) {
+					if (currentOption.getFullIdentifyer().equals(identifier)) {
 						return currentOption;
 					}
 				}
-				Iterator<MotorAxis> motorAxisIterator = currentMotor.axisIterator();
-				while( motorAxisIterator.hasNext() ) {
+				Iterator<MotorAxis> motorAxisIterator = currentMotor
+						.axisIterator();
+				while (motorAxisIterator.hasNext()) {
 					final MotorAxis currentMotorAxis = motorAxisIterator.next();
-					if( currentMotorAxis.getFullIdentifyer().equals( identifier ) ) {
+					if (currentMotorAxis.getFullIdentifyer().equals(identifier)) {
 						return currentMotorAxis;
 					}
-					Iterator<Option> optionIterator2 = currentMotorAxis.getOptions().iterator();
-					while( optionIterator2.hasNext() ) {
+					Iterator<Option> optionIterator2 = currentMotorAxis
+							.getOptions().iterator();
+					while (optionIterator2.hasNext()) {
 						final Option currentOption = optionIterator2.next();
-						if( currentOption.getFullIdentifyer().equals( identifier ) ) {
+						if (currentOption.getFullIdentifyer()
+								.equals(identifier)) {
 							return currentOption;
 						}
 					}
 				}
 			}
 		}
-		
+
 		Iterator<Detector> detectorIterator = this.detectors.iterator();
-		while( detectorIterator.hasNext() ) {
+		while (detectorIterator.hasNext()) {
 			final Detector currentDetector = detectorIterator.next();
-			if( currentDetector.getFullIdentifyer().equals( identifier ) ) {
+			if (currentDetector.getFullIdentifyer().equals(identifier)) {
 				return currentDetector;
 			} else {
-				Iterator<Option> optionIterator = currentDetector.getOptions().iterator();
-				while( optionIterator.hasNext() ) {
+				Iterator<Option> optionIterator = currentDetector.getOptions()
+						.iterator();
+				while (optionIterator.hasNext()) {
 					final Option currentOption = optionIterator.next();
-					if( currentOption.getFullIdentifyer().equals( identifier ) ) {
+					if (currentOption.getFullIdentifyer().equals(identifier)) {
 						return currentOption;
 					}
 				}
-				Iterator<DetectorChannel> detectorChannelIterator = currentDetector.channelIterator();
-				while( detectorChannelIterator.hasNext() ) {
-					final DetectorChannel currentDetectorChannel = detectorChannelIterator.next();
-					if( currentDetectorChannel.getFullIdentifyer().equals( identifier ) ) {
+				Iterator<DetectorChannel> detectorChannelIterator = currentDetector
+						.channelIterator();
+				while (detectorChannelIterator.hasNext()) {
+					final DetectorChannel currentDetectorChannel = detectorChannelIterator
+							.next();
+					if (currentDetectorChannel.getFullIdentifyer().equals(
+							identifier)) {
 						return currentDetectorChannel;
 					}
-					Iterator<Option> optionIterator2 = currentDetectorChannel.getOptions().iterator();
-					while( optionIterator2.hasNext() ) {
+					Iterator<Option> optionIterator2 = currentDetectorChannel
+							.getOptions().iterator();
+					while (optionIterator2.hasNext()) {
 						final Option currentOption = optionIterator2.next();
-						if( currentOption.getFullIdentifyer().equals( identifier ) ) {
+						if (currentOption.getFullIdentifyer()
+								.equals(identifier)) {
 							return currentOption;
 						}
 					}
 				}
 			}
 		}
-		
+
 		Iterator<Device> deviceIterator = this.devices.iterator();
-		while( deviceIterator.hasNext() ) {
+		while (deviceIterator.hasNext()) {
 			final Device currentDevice = deviceIterator.next();
-			if( currentDevice.getFullIdentifyer().equals( identifier ) ) {
+			if (currentDevice.getFullIdentifyer().equals(identifier)) {
 				return currentDevice;
 			}
 		}
-			
 		return null;
 	}
 	
@@ -629,7 +645,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-	
 		// clear everything
 		this.events.clear();
 		this.plugins.clear();
@@ -647,7 +662,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	
 		// a source measuring station must be set !
 		if(this.getSource() != null) {
-			
 			// include all events (no filtering)
 			this.events.addAll(this.getSource().getEvents());
 			
@@ -933,18 +947,18 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		filterInProgress = true;
 		
 		// all available motors
-		List<Motor> all_motors = getSource().getMotors();
+		List<Motor> allMotors = getSource().getMotors();
 		// all available detectors
-		List<Detector> all_detectors = getSource().getDetectors();
+		List<Detector> allDetectors = getSource().getDetectors();
 		// all available devices
-		List<Device> all_devices = getSource().getDevices();
+		List<Device> allDevices = getSource().getDevices();
 		
 		// Sets to add used devices to
-		HashSet<MotorAxis> used_motor_axes = new HashSet<MotorAxis>();
-		HashSet<DetectorChannel> used_detector_channels = 
+		HashSet<MotorAxis> usedMotorAxes = new HashSet<MotorAxis>();
+		HashSet<DetectorChannel> usedDetectorChannels = 
 				new HashSet<DetectorChannel>();
-		HashSet<Device> used_devices = new HashSet<Device>();
-		HashSet<Option> used_options = new HashSet<Option>();
+		HashSet<Device> usedDevices = new HashSet<Device>();
+		HashSet<Option> usedOptions = new HashSet<Option>();
 		
 		
 		// iterate through chains to identify used devices
@@ -953,28 +967,28 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			for(ScanModule sm : chain.getScanModules()) {
 				// iterate axes
 				for(Axis a : sm.getAxes()) {
-					used_motor_axes.add(a.getMotorAxis());
+					usedMotorAxes.add(a.getMotorAxis());
 				}
 				
 				// iterate channels
 				for(Channel ch : sm.getChannels()) {
-					used_detector_channels.add(ch.getDetectorChannel());
+					usedDetectorChannels.add(ch.getDetectorChannel());
 					
-					List<ControlEvent> ch_events = new ArrayList<ControlEvent>();
-					ch_events.addAll(ch.getRedoControlEventManager().
+					List<ControlEvent> chEvents = new ArrayList<ControlEvent>();
+					chEvents.addAll(ch.getRedoControlEventManager().
 							getControlEventsList());
 					
-					for(ControlEvent ce : ch_events) {
+					for(ControlEvent ce : chEvents) {
 						AbstractDevice dev = this.getAbstractDeviceById(
 								ce.getDeviceId());
 						if (dev instanceof MotorAxis) {
-							used_motor_axes.add((MotorAxis)dev);
+							usedMotorAxes.add((MotorAxis)dev);
 						} else if (dev instanceof DetectorChannel) {
-							used_detector_channels.add((DetectorChannel)dev);
+							usedDetectorChannels.add((DetectorChannel)dev);
 						} else if (dev instanceof Device) {
-							used_devices.add((Device)dev);
+							usedDevices.add((Device)dev);
 						} else if (dev instanceof Option) {
-							used_options.add((Option)dev);
+							usedOptions.add((Option)dev);
 						}
 					}
 				}
@@ -984,10 +998,10 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					String id = prescan.getAbstractDevice().getID();
 					
 					if(prescan.isOption()) {
-						used_options.add((Option)prescan.getAbstractDevice());
+						usedOptions.add((Option)prescan.getAbstractDevice());
 					}
 					if(prescan.isDevice()) {
-						used_devices.add((Device)getSource().
+						usedDevices.add((Device)getSource().
 								getPrePostscanDeviceById(id));
 					}
 				}
@@ -997,68 +1011,68 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					String id = postscan.getAbstractDevice().getID();
 					
 					if(postscan.isOption()) {
-						used_options.add((Option)postscan.getAbstractDevice());
+						usedOptions.add((Option)postscan.getAbstractDevice());
 					}
 					if(postscan.isDevice()) {
-						used_devices.add((Device)getSource().
+						usedDevices.add((Device)getSource().
 								getPrePostscanDeviceById(id));
 					}
 				}
 				
 				for(Positioning positioning : sm.getPositionings()) {
-					used_motor_axes.add(positioning.getMotorAxis());
-					used_detector_channels.add(positioning.
+					usedMotorAxes.add(positioning.getMotorAxis());
+					usedDetectorChannels.add(positioning.
 							getDetectorChannel());
 				}
 				
 				// events of the scan module
-				List<ControlEvent> sm_events = new ArrayList<ControlEvent>();
-				sm_events.addAll(sm.getPauseControlEventManager().
+				List<ControlEvent> smEvents = new ArrayList<ControlEvent>();
+				smEvents.addAll(sm.getPauseControlEventManager().
 						getControlEventsList());
-				sm_events.addAll(sm.getRedoControlEventManager()
+				smEvents.addAll(sm.getRedoControlEventManager()
 						.getControlEventsList());
-				sm_events.addAll(sm.getBreakControlEventManager().
+				smEvents.addAll(sm.getBreakControlEventManager().
 						getControlEventsList());
-				sm_events.addAll(sm.getTriggerControlEventManager().
+				smEvents.addAll(sm.getTriggerControlEventManager().
 						getControlEventsList());
 				
-				for(ControlEvent ce : sm_events) {
+				for(ControlEvent ce : smEvents) {
 					AbstractDevice dev = this.getAbstractDeviceById(
 							ce.getDeviceId());
 					if (dev instanceof MotorAxis) {
-						used_motor_axes.add((MotorAxis)dev);
+						usedMotorAxes.add((MotorAxis)dev);
 					} else if (dev instanceof DetectorChannel) {
-						used_detector_channels.add((DetectorChannel)dev);
+						usedDetectorChannels.add((DetectorChannel)dev);
 					} else if (dev instanceof Device) {
-						used_devices.add((Device)dev);
+						usedDevices.add((Device)dev);
 					} else if (dev instanceof Option) {
-						used_options.add((Option)dev);
+						usedOptions.add((Option)dev);
 					}
 				}
 			}
 			
 			// events of the chain
-			List<ControlEvent> chain_events = new ArrayList<ControlEvent>();
-			chain_events.addAll(chain.getPauseControlEventManager().
+			List<ControlEvent> chainEvents = new ArrayList<ControlEvent>();
+			chainEvents.addAll(chain.getPauseControlEventManager().
 					getControlEventsList());
-			chain_events.addAll(chain.getRedoControlEventManager().
+			chainEvents.addAll(chain.getRedoControlEventManager().
 					getControlEventsList());
-			chain_events.addAll(chain.getBreakControlEventManager().
+			chainEvents.addAll(chain.getBreakControlEventManager().
 					getControlEventsList());
-			chain_events.addAll(chain.getStopControlEventManager().
+			chainEvents.addAll(chain.getStopControlEventManager().
 					getControlEventsList());
 			
-			for(ControlEvent ce : chain_events) {
+			for(ControlEvent ce : chainEvents) {
 				AbstractDevice dev = this.getAbstractDeviceById(
 						ce.getDeviceId());
 				if (dev instanceof MotorAxis) {
-					used_motor_axes.add((MotorAxis)dev);
+					usedMotorAxes.add((MotorAxis)dev);
 				} else if (dev instanceof DetectorChannel) {
-					used_detector_channels.add((DetectorChannel)dev);
+					usedDetectorChannels.add((DetectorChannel)dev);
 				} else if (dev instanceof Device) {
-					used_devices.add((Device)dev);
+					usedDevices.add((Device)dev);
 				} else if (dev instanceof Option) {
-					used_options.add((Option)dev);
+					usedOptions.add((Option)dev);
 				}
 			}
 		}
@@ -1067,13 +1081,13 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		for(Detector d : this.getSource().getDetectors()) {
 			for(Option o : d.getOptions()) {
 				if(o.isMonitor()) {
-					used_options.add(o);
+					usedOptions.add(o);
 				}
 			}
 			for(DetectorChannel ch : d.getChannels()) {
 				for(Option o : ch.getOptions()) {
 					if(o.isMonitor()) {
-						used_options.add(o);
+						usedOptions.add(o);
 					}
 				}
 			}
@@ -1082,13 +1096,13 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		for(Motor m : this.getSource().getMotors()) {
 			for(Option o : m.getOptions()) {
 				if(o.isMonitor()) {
-					used_options.add(o);
+					usedOptions.add(o);
 				}
 			}
 			for(MotorAxis ma : m.getAxes()) {
 				for(Option o : ma.getOptions()) {
 					if(o.isMonitor()) {
-						used_options.add(o);
+						usedOptions.add(o);
 					}
 				}
 			}
@@ -1097,7 +1111,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		for(Device dev : this.getSource().getDevices()) {
 			for(Option o : dev.getOptions()) {
 				if(o.isMonitor()) {
-					used_options.add(o);
+					usedOptions.add(o);
 				}
 			}
 		}
@@ -1108,14 +1122,14 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		// are used by checking its presence in the used_sets...
 		
 		// iterate over available motors -> exclude their axes if not used
-		for(Motor m : all_motors) {
+		for(Motor m : allMotors) {
 			for(MotorAxis ma : m.getAxes()) {
-				if(!(used_motor_axes.contains(ma))) {
-					boolean option_used = false;
+				if(!(usedMotorAxes.contains(ma))) {
+					boolean optionUsed = false;
 					for(Option o : ma.getOptions()) {
-						if(used_options.contains(o)) {
+						if(usedOptions.contains(o)) {
 							// option is used, set flag
-							option_used = true;
+							optionUsed = true;
 						} else {
 							// option not used -> exclude
 							exclude(o);
@@ -1126,7 +1140,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					
 					// if any option is used, the flag was set, 
 					// if not -> exclude axis
-					if(!option_used) {
+					if(!optionUsed) {
 						exclude(ma);
 						logger.debug("Axis " + m.getName() + ":" + 
 									ma.getName() + 
@@ -1139,7 +1153,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				} else {
 					// motor axis is used -> exclude unused options
 					for(Option o : ma.getOptions()) {
-						if(!used_options.contains(o)) {
+						if(!usedOptions.contains(o)) {
 							exclude(o);
 							logger.debug("Option " + ma.getName() + ":" + 
 									o.getName() + " not used -> exclude");
@@ -1149,7 +1163,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				
 				// exclude unused motor options as well
 				for(Option o : m.getOptions()) {
-					if(!used_options.contains(o)) {
+					if(!usedOptions.contains(o)) {
 						exclude(o);
 						logger.debug("Option " + m.getName() + ":" + 
 								o.getName() + " not used -> exclude");
@@ -1160,19 +1174,19 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		
 		// check for motors with no axes AND no options -> exclude them
 		Motors:
-		for(Motor m : all_motors) {
+		for(Motor m : allMotors) {
 			for(MotorAxis ma : m.getAxes()) {
-				if(used_motor_axes.contains(ma)) {
+				if(usedMotorAxes.contains(ma)) {
 					continue Motors;
 				}
 				for(Option axisOption : ma.getOptions()) {
-					if(used_options.contains(axisOption)) {
+					if(usedOptions.contains(axisOption)) {
 						continue Motors;
 					}
 				}
 			}
 			for(Option motorOption : m.getOptions()) {
-				if(used_options.contains(motorOption)) {
+				if(usedOptions.contains(motorOption)) {
 					continue Motors;
 				}
 			}
@@ -1180,14 +1194,14 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		}
 		
 		// iterate over available detectors -> exclude their channels if not used
-		for(Detector d : all_detectors) {
+		for(Detector d : allDetectors) {
 			for(DetectorChannel ch : d.getChannels()) {
-				if(!(used_detector_channels.contains(ch))) {
-					boolean option_used = false;
+				if(!(usedDetectorChannels.contains(ch))) {
+					boolean optionUsed = false;
 					for(Option o : ch.getOptions()) {
-						if(used_options.contains(o)) {
+						if(usedOptions.contains(o)) {
 							// option is used, set flag
-							option_used = true;
+							optionUsed = true;
 						} else {
 							// option not used -> exclude
 							exclude(o);
@@ -1198,7 +1212,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					
 					// if any option is used, the flag is set, 
 					// if not -> exclude channel
-					if(!option_used) {
+					if(!optionUsed) {
 						exclude(ch);
 						logger.debug("Detector Channel " + d.getName() + 
 								":" + ch.getName() + " not used -> exclude");
@@ -1206,7 +1220,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				} else {
 					// detector channel is used -> exclude unused options
 					for(Option o : ch.getOptions()) {
-						if(!used_options.contains(o)) {
+						if(!usedOptions.contains(o)) {
 							exclude(o);
 							logger.debug("Option " + ch.getName() + ":" + 
 									o.getName() + " not used -> exclude");
@@ -1217,7 +1231,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			
 			// exclude unused options as well
 			for(Option o : d.getOptions()) {
-				if(!used_options.contains(o)) {
+				if(!usedOptions.contains(o)) {
 					exclude(o);
 					logger.debug("Option " + d.getName() + ":" + 
 							o.getName() + " not used -> exclude");
@@ -1227,19 +1241,19 @@ public class ExcludeFilter extends MeasuringStationFilter {
 		
 		// check for detectors with no channels -> exclude them
 		Detectors:
-			for(Detector d : all_detectors) {
+			for(Detector d : allDetectors) {
 				for(DetectorChannel ch : d.getChannels()) {
-					if(used_detector_channels.contains(ch)) {
+					if(usedDetectorChannels.contains(ch)) {
 						continue Detectors;
 					}
 					for(Option channelOption : ch.getOptions()) {
-						if(used_options.contains(channelOption)) {
+						if(usedOptions.contains(channelOption)) {
 							continue Detectors;
 						}
 					}
 				}
 				for(Option detectorOption : d.getOptions()) {
-					if(used_options.contains(detectorOption)) {
+					if(usedOptions.contains(detectorOption)) {
 						continue Detectors;
 					}
 				}
@@ -1247,13 +1261,13 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			}
 		
 		// iterate over all devices ->
-		for(Device device : all_devices) {
-			if(!(used_devices.contains(device))) {
-				boolean option_used = false;
+		for(Device device : allDevices) {
+			if(!(usedDevices.contains(device))) {
+				boolean optionUsed = false;
 				for(Option o : device.getOptions()) {
-					if(used_options.contains(o)) {
+					if(usedOptions.contains(o)) {
 						// option is used, set flag
-						option_used = true;
+						optionUsed = true;
 					} else {
 						// option not used -> exclude
 						exclude(o);
@@ -1264,7 +1278,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				
 				// if any option is used, the flag is set, 
 				// if not -> exclude device
-				if(!option_used) {
+				if(!optionUsed) {
 					exclude(device);
 					logger.debug("Device " + device.getID() + " (" +
 							device.getName() + ") not used -> exclude");
@@ -1272,7 +1286,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			} else {
 				// device is used -> exclude unused options
 				for(Option o : device.getOptions()) {
-					if(!used_options.contains(o)) {
+					if(!usedOptions.contains(o)) {
 						exclude(o);
 						logger.debug("Option " + device.getName() + ":" + 
 								o.getName() + " not used -> exclude");

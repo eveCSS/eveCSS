@@ -102,7 +102,7 @@ public class Activator extends AbstractUIPlugin {
 		
 		startupParams = Startup.readStartupParameters();
 		if (startupParams.useDefaultDevices()) {
-			Startup.configureLogging("/tmp/eve/", startupParams.isDebug(), logger);
+			Startup.configureLogging("/tmp/", startupParams.isDebug(), logger);
 			logger.info("No 'eve.root' given, logging to '/tmp/eve/'");
 		} else {
 			Startup.checkRootDir(startupParams.getRootDir());
@@ -333,7 +333,9 @@ public class Activator extends AbstractUIPlugin {
 		FontData[] fontData = defaultFont.getFontData();
 		// Use a smaller font if system font is higher 11
 		for (int i = 0; i < fontData.length; i++) {
-			if (fontData[i].getHeight() > 11) fontData[i].setHeight(11);
+			if (fontData[i].getHeight() > 11) {
+				fontData[i].setHeight(11);
+			}
 		}
 		fontreg.put("VIEWERFONT", fontData);
 		colorreg.put("COLOR_PV_INITIAL", 

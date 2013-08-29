@@ -92,7 +92,9 @@ public class Activator extends AbstractUIPlugin {
 		if (rootDir == null) {
 			return false;
 		}
-		if(!rootDir.endsWith("/")) rootDir += "/";
+		if(!rootDir.endsWith("/")) {
+			rootDir += "/";
+		}
 		String path = rootDir;
 		File file = new File(path + "eve/");
 		if(!file.exists()) {

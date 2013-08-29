@@ -24,16 +24,16 @@ public final class EveEnginePerspective implements IPerspectiveFactory {
 	public void createInitialLayout(final IPageLayout layout) {
 		layout.setEditorAreaVisible(false);
 		
-		String sec_id = String.valueOf(System.nanoTime());
+		String secId = String.valueOf(System.nanoTime());
 		
 		IFolderLayout deviceInspectorFolder = layout.createFolder(
 				"DeviceInspectorFolder", 
 				IPageLayout.RIGHT, 1.00f, IPageLayout.ID_EDITOR_AREA);
 		deviceInspectorFolder.addPlaceholder("DeviceInspectorView:*");
-		deviceInspectorFolder.addView("DeviceInspectorView:" + sec_id);
+		deviceInspectorFolder.addView("DeviceInspectorView:" + secId);
 		
 		layout.addView("DevicesView", IPageLayout.LEFT, 0.40f, 
-				"DeviceInspectorView:" + sec_id);
+				"DeviceInspectorView:" + secId);
 		
 		layout.addView("MessagesView", IPageLayout.BOTTOM, 0.80f, 
 				"DevicesView");
@@ -43,13 +43,13 @@ public final class EveEnginePerspective implements IPerspectiveFactory {
 		layout.addView("EngineView", IPageLayout.BOTTOM, 0.5f, "PlayListView");
 		
 		IFolderLayout plotViewFolder = layout.createFolder("PlotViewFolder", 
-				IPageLayout.TOP, 0.50f, "DeviceInspectorView:" + sec_id);
+				IPageLayout.TOP, 0.50f, "DeviceInspectorView:" + secId);
 		plotViewFolder.addPlaceholder(PlotView.ID+":*");
 		
 		IFolderLayout deviceOptionsFolder = layout.createFolder(
 				"DeviceOptionsFolder", 
-				IPageLayout.RIGHT, 0.75f, "DeviceInspectorView:" + sec_id);
-		deviceOptionsFolder.addView("DeviceOptionsView:" + sec_id);
+				IPageLayout.RIGHT, 0.75f, "DeviceInspectorView:" + secId);
+		deviceOptionsFolder.addView("DeviceOptionsView:" + secId);
 
 		layout.getViewLayout("PlayListView").setCloseable(false);
 		layout.getViewLayout("EngineView").setCloseable(false);

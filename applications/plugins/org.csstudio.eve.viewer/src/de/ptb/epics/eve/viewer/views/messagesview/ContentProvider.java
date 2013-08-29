@@ -75,7 +75,9 @@ public class ContentProvider implements IStructuredContentProvider,
 			
 			this.viewer.getControl().getDisplay().asyncExec( new Runnable() {
 				@Override public void run() {
-					if (!viewer.getControl().isDisposed()) viewer.refresh();
+					if (!viewer.getControl().isDisposed()) {
+						viewer.refresh();
+					}
 					setColumnWidth();
 				}
 				

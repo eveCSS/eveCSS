@@ -46,7 +46,8 @@ public class PVWrapper {
 	public static final String DISCRETE_VALUES = "discreteValues";
 	
 	// logging
-	private static Logger LOGGER = Logger.getLogger(PVWrapper.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(
+			PVWrapper.class.getName());
 	
 	// the wrapped process variable
 	private org.epics.pvmanager.PV<Object,Object> pv;

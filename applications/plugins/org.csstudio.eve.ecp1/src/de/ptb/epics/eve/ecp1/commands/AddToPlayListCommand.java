@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 import de.ptb.epics.eve.ecp1.intern.exceptions.AbstractRestoreECP1CommandException;
 import de.ptb.epics.eve.ecp1.intern.exceptions.WrongStartTagException;
@@ -35,7 +36,7 @@ public class AddToPlayListCommand implements IECP1Command {
 		}
 		this.name = name;
 		this.author = author;
-		this.xmlData = xmlData;
+		this.xmlData = Arrays.copyOf(xmlData, xmlData.length);
 	}
 
 	public AddToPlayListCommand(final byte[] byteArray) throws IOException,
@@ -181,6 +182,6 @@ public class AddToPlayListCommand implements IECP1Command {
 			throw new IllegalArgumentException(
 					"The paramter 'xmlData' must not be null!");
 		}
-		this.xmlData = xmlData;
+		this.xmlData = Arrays.copyOf(xmlData, xmlData.length);
 	}
 }

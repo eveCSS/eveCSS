@@ -1288,17 +1288,18 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case YAXIS_COLOR_NEXT:
 			final String colorBuffer = textBuffer.toString();
 
-			String red_hex = colorBuffer.substring(0, 2);
-			int red = Integer.parseInt(red_hex, 16);
-			String green_hex = colorBuffer.substring(2, 4);
-			int green = Integer.parseInt(green_hex, 16);
-			String blue_hex = colorBuffer.substring(4);
-			int blue = Integer.parseInt(blue_hex, 16);
+			String redHex = colorBuffer.substring(0, 2);
+			int red = Integer.parseInt(redHex, 16);
+			String greenHex = colorBuffer.substring(2, 4);
+			int green = Integer.parseInt(greenHex, 16);
+			String blueHex = colorBuffer.substring(4);
+			int blue = Integer.parseInt(blueHex, 16);
 
-			if (colorBuffer.length() == 6)
+			if (colorBuffer.length() == 6) {
 				this.currentYAxis.setColor(new RGB(red, green, blue));
-			else
+			} else {
 				this.currentYAxis.setColor(new RGB(0, 0, 0));
+			}
 
 			this.subState = ScanDescriptionLoaderSubStates.YAXIS_COLOR_READ;
 			break;
@@ -1461,14 +1462,14 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				boolean idOK = false;
 
 				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK == true) {
+				if (idOK) {
 					this.currentChain
 							.addPauseEvent((PauseEvent) this.currentControlEvent);
 				}
 
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK == true) {
+				if (idOK) {
 					controlEventList.add(this.currentControlEvent);
 				}
 			}
@@ -1479,13 +1480,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				boolean idOK = false;
 
 				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK == true) {
+				if (idOK) {
 					this.currentChain.addRedoEvent(this.currentControlEvent);
 				}
 
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK == true) {
+				if (idOK) {
 					controlEventList.add(this.currentControlEvent);
 				}
 			}
@@ -1496,13 +1497,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				boolean idOK = false;
 
 				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK == true) {
+				if (idOK) {
 					this.currentChain.addBreakEvent(this.currentControlEvent);
 				}
 
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK == true) {
+				if (idOK) {
 					controlEventList.add(this.currentControlEvent);
 				}
 			}
@@ -1513,13 +1514,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				boolean idOK = false;
 
 				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK == true) {
+				if (idOK) {
 					this.currentChain.addStopEvent(this.currentControlEvent);
 				}
 
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK == true) {
+				if (idOK) {
 					controlEventList.add(this.currentControlEvent);
 				}
 			}
@@ -1618,14 +1619,14 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				boolean idOK = false;
 
 				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK == true) {
+				if (idOK) {
 					this.currentScanModule
 							.addTriggerEvent(this.currentControlEvent);
 				}
 
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK == true) {
+				if (idOK) {
 					controlEventList.add(this.currentControlEvent);
 				}
 			}
@@ -1636,14 +1637,14 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				boolean idOK = false;
 
 				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK == true) {
+				if (idOK) {
 					this.currentScanModule
 							.addRedoEvent(this.currentControlEvent);
 				}
 
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK == true) {
+				if (idOK) {
 					controlEventList.add(this.currentControlEvent);
 				}
 			}
@@ -1654,14 +1655,14 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				boolean idOK = false;
 
 				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK == true) {
+				if (idOK) {
 					this.currentScanModule
 							.addBreakEvent(this.currentControlEvent);
 				}
 
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK == true) {
+				if (idOK) {
 					controlEventList.add(this.currentControlEvent);
 				}
 			}
@@ -1675,14 +1676,14 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				// PauseEvent???
 
 				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK == true) {
+				if (idOK) {
 					this.currentScanModule
 							.addPauseEvent((PauseEvent) this.currentControlEvent);
 				}
 
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK == true) {
+				if (idOK) {
 					controlEventList.add(this.currentControlEvent);
 				}
 			}
@@ -1789,14 +1790,14 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				boolean idOK = false;
 
 				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK == true) {
+				if (idOK) {
 					this.currentChannel.addRedoEvent(this.currentControlEvent);
 				}
 
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 
-				if (idOK == true) {
+				if (idOK) {
 					// RedoEvent wird nur hinzugefügt, wenn DetectorChannel auch
 					// vorhanden
 					controlEventList.add(this.currentControlEvent);
@@ -2202,12 +2203,15 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		// TODO Tidy up
 		// TODO events for the dectector list is not handled
 		for (ControlEvent controlEvent : this.controlEventList) {
-			if (controlEvent.getEventType() == EventTypes.SCHEDULE)
+			if (controlEvent.getEventType() == EventTypes.SCHEDULE) {
 				break;
-			if (controlEvent.getEventType() == EventTypes.DETECTOR)
+			}
+			if (controlEvent.getEventType() == EventTypes.DETECTOR) {
 				break;
-			if (controlEvent.getEvent() == null)
+			}
+			if (controlEvent.getEvent() == null) {
 				break;
+			}
 
 			MonitorEvent monEvent = controlEvent.getEvent().getMonitor();
 
@@ -2246,8 +2250,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		// --- Looking for chains with the same id
 		Chain[] chains = this.scanDescription.getChains().toArray(new Chain[0]);
 		for (int i = 0; i < chains.length; ++i) {
-			if (chains[i] == null)
+			if (chains[i] == null) {
 				continue;
+			}
 			int id = chains[i].getId();
 			for (int j = i + 1; j < chains.length; ++j) {
 				if ((chains[j] != null) && chains[j].getId() == id) {

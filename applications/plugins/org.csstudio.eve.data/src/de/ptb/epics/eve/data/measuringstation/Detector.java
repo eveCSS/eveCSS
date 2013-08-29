@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedException;
 
 /**
@@ -16,7 +18,9 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  * @author Marcus Michalsky
  */
 public class Detector extends AbstractMainPhaseDevice {
-
+	public static final Logger LOGGER = Logger.getLogger(
+			Detector.class.getName());
+	
 	private Function stop;
 	private Function status;
 	
@@ -102,7 +106,7 @@ public class Detector extends AbstractMainPhaseDevice {
 		try {
 			detectorChannel.setParent(this);
 		} catch (ParentNotAllowedException e) {
-			e.printStackTrace();
+			LOGGER.warn(e.getMessage(), e);
 			return false;
 		}
 		return channels.add(detectorChannel);
@@ -126,7 +130,7 @@ public class Detector extends AbstractMainPhaseDevice {
 			try {
 				detectorChannel.setParent(null);
 			} catch (ParentNotAllowedException e) {
-				e.printStackTrace();
+				LOGGER.warn(e.getMessage(), e);
 				return false;
 			}
 		}

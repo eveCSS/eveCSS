@@ -41,37 +41,37 @@ public class MenuContribution extends CompoundContributionItem {
 
 	private static Logger logger = Logger.getLogger(MenuContribution.class
 			.getName());
-	
-	final ImageDescriptor classImage = ImageDescriptor.createFromImage(
-			Activator.getDefault().
-			getImageRegistry().get("CLASS"));
-	final ImageDescriptor motorImage = ImageDescriptor.createFromImage(
-			Activator.getDefault().
-			getImageRegistry().get("MOTOR"));
-	final ImageDescriptor axisImage = ImageDescriptor.createFromImage(
-			Activator.getDefault().
-			getImageRegistry().get("AXIS"));
-	final ImageDescriptor detectorImage = ImageDescriptor.createFromImage(
-			Activator.getDefault().
-			getImageRegistry().get("DETECTOR"));
-	final ImageDescriptor channelImage = ImageDescriptor.createFromImage(
-			Activator.getDefault().
-			getImageRegistry().get("CHANNEL"));
-	final ImageDescriptor deviceImage = ImageDescriptor.createFromImage(
-			Activator.getDefault().
-			getImageRegistry().get("DEVICE"));
-	final ImageDescriptor optionImage = ImageDescriptor.createFromImage(
-			Activator.getDefault().
-			getImageRegistry().get("OPTION"));
-	final ImageDescriptor motorsAxesImage = ImageDescriptor
+
+	private final ImageDescriptor classImage = ImageDescriptor
+			.createFromImage(Activator.getDefault().getImageRegistry()
+					.get("CLASS"));
+	private final ImageDescriptor motorImage = ImageDescriptor
+			.createFromImage(Activator.getDefault().getImageRegistry()
+					.get("MOTOR"));
+	private final ImageDescriptor axisImage = ImageDescriptor
+			.createFromImage(Activator.getDefault().getImageRegistry()
+					.get("AXIS"));
+	private final ImageDescriptor detectorImage = ImageDescriptor
+			.createFromImage(Activator.getDefault().getImageRegistry()
+					.get("DETECTOR"));
+	private final ImageDescriptor channelImage = ImageDescriptor
+			.createFromImage(Activator.getDefault().getImageRegistry()
+					.get("CHANNEL"));
+	private final ImageDescriptor deviceImage = ImageDescriptor
+			.createFromImage(Activator.getDefault().getImageRegistry()
+					.get("DEVICE"));
+	private final ImageDescriptor optionImage = ImageDescriptor
+			.createFromImage(Activator.getDefault().getImageRegistry()
+					.get("OPTION"));
+	private final ImageDescriptor motorsAxesImage = ImageDescriptor
 			.createFromImage(Activator.getDefault().getImageRegistry()
 					.get("MOTORSAXES"));
-	final ImageDescriptor detectorsAndChannelsImage = ImageDescriptor
+	private final ImageDescriptor detectorsAndChannelsImage = ImageDescriptor
 			.createFromImage(Activator.getDefault().getImageRegistry()
 					.get("DETECTORSCHANNELS"));
-	final ImageDescriptor devicesImage = ImageDescriptor.createFromImage(
-			Activator.getDefault().
-			getImageRegistry().get("DEVICES"));
+	private final ImageDescriptor devicesImage = ImageDescriptor
+			.createFromImage(Activator.getDefault().getImageRegistry()
+					.get("DEVICES"));
 	
 	/**
 	 * {@inheritDoc}

@@ -80,11 +80,11 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 		final List<ViewerMessage> returnList = new ArrayList<ViewerMessage>();
 		
 		for(ViewerMessage message : this.messages) {
-			if (this.showApplicationMessages == false && 
+			if (!this.showApplicationMessages && 
 				message.getMessageSource().equals(MessageSource.VIEWER)) {
 					continue;
 			}
-			if (this.showEngineMessages == false && 
+			if (!this.showEngineMessages && 
 				!message.getMessageSource().equals(MessageSource.VIEWER)) {
 					continue;
 			}

@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 import de.ptb.epics.eve.ecp1.intern.exceptions.AbstractRestoreECP1CommandException;
 import de.ptb.epics.eve.ecp1.intern.exceptions.WrongStartTagException;
@@ -41,7 +42,7 @@ public class CurrentXMLCommand implements IECP1Command {
 		}
 		this.xmlName = xmlName;
 		this.xmlAuthor = xmlAuthor;
-		this.xmlData = xmlData;
+		this.xmlData = Arrays.copyOf(xmlData, xmlData.length);
 	}
 
 	public CurrentXMLCommand(final byte[] byteArray) throws IOException,

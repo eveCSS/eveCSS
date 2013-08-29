@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.editor.handler;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
@@ -18,6 +19,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
  */
 public class Start implements IHandler {
 
+	public static final Logger LOGGER = Logger.getLogger(Start.class.getName());
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -28,7 +31,7 @@ public class Start implements IHandler {
 				showPerspective("EveEditorPerpective", 
 				HandlerUtil.getActiveWorkbenchWindow(event));
 		} catch (WorkbenchException e) {
-			e.printStackTrace();
+			LOGGER.error(e.getMessage(), e);
 		}
 		return null;
 	}

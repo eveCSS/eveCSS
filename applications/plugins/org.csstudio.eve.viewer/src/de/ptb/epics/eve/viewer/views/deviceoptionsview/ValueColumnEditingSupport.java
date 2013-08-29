@@ -73,7 +73,9 @@ public class ValueColumnEditingSupport extends EditingSupport {
 			int count = 0;
 			String val = opv.getValue();
 			for(String s : opv.getDiscreteValues()) {
-				if(s.equals(val)) return count;
+				if(s.equals(val)) {
+					return count;
+				}
 				count++;
 			}
 			return 0;

@@ -13,7 +13,7 @@ public class PollInQueueSize implements Runnable {
 	private static final Logger LOGGER = Logger.getLogger(PollInQueueSize.class
 			.getName());
 	
-	boolean finished = false;
+	private boolean finished = false;
 	
 	/**
 	 * {@inheritDoc}

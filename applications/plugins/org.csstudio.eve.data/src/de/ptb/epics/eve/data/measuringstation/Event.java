@@ -85,7 +85,9 @@ public class Event implements Comparable<Event> {
 			scanModuleId = 0;
 			monitor = null;
 			incident = ScheduleIncident.END;
-			if (this.type == EventTypes.SCHEDULE) name = getID();
+			if (this.type == EventTypes.SCHEDULE) {
+				name = getID();
+			}
 		}
 	}
 
@@ -163,14 +165,15 @@ public class Event implements Comparable<Event> {
 	 * 			<code>event</code>. Never returns null.
 	 */
 	public String getName() {
-		if (this.type == EventTypes.MONITOR)
+		if (this.type == EventTypes.MONITOR) {
 			return this.monitor.getName();
-		else if (this.type == EventTypes.DETECTOR)
+		} else if (this.type == EventTypes.DETECTOR) {
 			return getNameID();
-		else if (this.type == EventTypes.SCHEDULE)
+		} else if (this.type == EventTypes.SCHEDULE) {
 			return getNameID();
-		else
+		} else {
 			return this.name;
+		}
 	}
 
 	/**
@@ -190,17 +193,18 @@ public class Event implements Comparable<Event> {
 				returnString = monitor.getName();
 				if (returnString != null) {
 					returnString += " ( " + monitor.getID() + " )";
-				}
-				else
+				} else {
 					returnString = "( " + monitor.getID() + " )";
+				}
 			}
 		}
 		else if (this.type == EventTypes.SCHEDULE) {
 			String incidentTag;
-			if (incident == ScheduleIncident.END) 
+			if (incident == ScheduleIncident.END) {
 				incidentTag = "E";
-			else
+			} else {
 				incidentTag = "S";
+			}
 			return "Schedule ( S-" + String.valueOf(chainId) + "-" + 
 					String.valueOf(scanModuleId) + "-" + incidentTag + " )";
 		}
@@ -215,16 +219,16 @@ public class Event implements Comparable<Event> {
 					if (returnString != null) {
 						returnString += " ";
 						returnString += name;
-					}
-					else
+					} else {
 						returnString = name;
+					}
 				}
 			}
 			if (returnString != null) {
 				returnString += " ( D-";
-			}
-			else
+			} else {
 				returnString = "( D-";
+			}
 			returnString += String.valueOf(chainId) + "-" + 
 						String.valueOf(scanModuleId) + "-" + detectorId + " )";
 		}
@@ -242,16 +246,18 @@ public class Event implements Comparable<Event> {
 	 */
 	public String getID() {
 		String returnString = null;
-		if (this.type == EventTypes.MONITOR){
-			if (monitor != null) 
+		if (this.type == EventTypes.MONITOR) {
+			if (monitor != null) {
 				return monitor.getID();
+			}
 		}
 		else if (this.type == EventTypes.SCHEDULE) {
 			String incidentTag;
-			if (incident == ScheduleIncident.END) 
+			if (incident == ScheduleIncident.END) {
 				incidentTag = "E";
-			else
+			} else {
 				incidentTag = "S";
+			}
 			return "S-" + String.valueOf(chainId) + "-" + 
 					String.valueOf(scanModuleId) + "-" + incidentTag;
 		}
@@ -285,7 +291,9 @@ public class Event implements Comparable<Event> {
 			throw new IllegalArgumentException(
 					"The parameter 'id' must not be null!");
 		}
-		if (this.type == EventTypes.MONITOR) monitor.setId(id);
+		if (this.type == EventTypes.MONITOR) {
+			monitor.setId(id);
+		}
 	}
 
 	/**
@@ -299,10 +307,11 @@ public class Event implements Comparable<Event> {
 			throw new IllegalArgumentException(
 					"The parameter 'name' must not be null!");
 		}
-		if (this.type == EventTypes.MONITOR)
+		if (this.type == EventTypes.MONITOR) {
 			monitor.setName(name);
-		else
+		} else {
 			this.name = name;
+		}
 	}
 
 	/**
@@ -317,10 +326,11 @@ public class Event implements Comparable<Event> {
 					"The parameter 'type' must not be null!");
 		}
 		this.type = type;
-		if (this.type == EventTypes.MONITOR){
-			if (monitor == null) monitor = new MonitorEvent();
-		}
-		else {
+		if (this.type == EventTypes.MONITOR) {
+			if (monitor == null) {
+				monitor = new MonitorEvent();
+			}
+		} else {
 			chainId = 0;
 			scanModuleId = 0;
 			monitor = null;
@@ -341,8 +351,9 @@ public class Event implements Comparable<Event> {
 			throw new IllegalArgumentException(
 					"unable to set Null Access or type is schedule");
 		}
-		if (monitor != null)
+		if (monitor != null) {
 			monitor.setAccess(access);
+		}
 	}
 
 	/**
@@ -398,8 +409,8 @@ public class Event implements Comparable<Event> {
 	 * 
 	 * @param incidentString
 	 */
-	public void setScheduleIncident( final String incidentString ){
-		if( incidentString.equals( "Schedule" ) ) {
+	public void setScheduleIncident(final String incidentString) {
+		if (incidentString.equals("Schedule")) {
 			incident = ScheduleIncident.START;
 		} else {
 			incident = ScheduleIncident.END;

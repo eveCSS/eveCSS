@@ -68,7 +68,8 @@ import de.ptb.epics.eve.ecp1.commands.PlayListCommand;
  */
 public class ECP1Client {
 	
-	private static Logger logger = Logger.getLogger(ECP1Client.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(
+			ECP1Client.class.getName());
 
 	private ECP1Client ecp1Client;
 
@@ -169,8 +170,8 @@ public class ECP1Client {
 				Class<? extends IECP1Command> classObject = (Class<? extends IECP1Command>) Class
 						.forName(className);
 				if (!ecp1CommandInterface.isAssignableFrom(classObject)) {
-					System.err.println("Error: " + className
-							+ " is not implementing IECP1Command!");
+					LOGGER.error(className + 
+							" is not implementing IECP1Command!");
 					continue;
 				}
 				final Field commandTypeIDField = classObject
@@ -181,34 +182,26 @@ public class ECP1Client {
 				if (this.commands.get(id) == null) {
 					this.commands.put(id, constructor);
 				} else {
-					System.err.println("Error: "
-							+ className
+					LOGGER.error(className
 							+ " and "
 							+ this.commands.get(id).getDeclaringClass()
 									.getName() + "does have the same id = "
 							+ Integer.toHexString(id) + "!");
 				}
-				// System.out.println( "The ID for " + className + " is " +
-				// Integer.toHexString(id) + "!" );
 			} catch (final ClassNotFoundException exception) {
-				System.err
-						.println("Error: Can't find Class " + className + "!");
-			} catch (final SecurityException exception) {
-				exception.printStackTrace();
-			} catch (final NoSuchFieldException exception) {
-				System.err
-						.println("Error: Can't find static Field COMMAND_TYPE_ID in "
+				LOGGER.error("Error: Can't find Class " + className + "!");
+			} catch (final SecurityException e) {
+				LOGGER.error(e.getMessage(), e);
+			} catch (final NoSuchFieldException e) {
+				LOGGER.error("Error: Can't find static Field COMMAND_TYPE_ID in "
 								+ className + "!");
-			} catch (final IllegalArgumentException exception) {
-				// TODO Auto-generated catch block
-				exception.printStackTrace();
-			} catch (final IllegalAccessException exception) {
-				// TODO Auto-generated catch block
-				exception.printStackTrace();
-			} catch (final NoSuchMethodException exception) {
-				System.err
-						.println("Error: Can't find Constructor for byte Array as Parameter in "
-								+ className + "!");
+			} catch (final IllegalArgumentException e) {
+				LOGGER.error(e.getMessage(), e);
+			} catch (final IllegalAccessException e) {
+				LOGGER.error(e.getMessage(), e);
+			} catch (final NoSuchMethodException e) {
+				LOGGER.error("Error: Can't find Constructor for byte Array as Parameter in "
+						+ className + "!");
 			}
 		}
 		
@@ -231,7 +224,7 @@ public class ECP1Client {
 		try {
 			this.socket.connect(socketAddress);
 		} catch (IOException e) {
-			logger.warn(e.getMessage(), e);
+			LOGGER.warn(e.getMessage(), e);
 			throw e;
 		}
 
@@ -575,30 +568,30 @@ public class ECP1Client {
 									}
 								}
 							} else {
-								logger.error(
+								LOGGER.error(
 										"Undispatchable Package with the Type "
 										+ command.getClass().getName());
 							}
 						} else {
-							logger.error("Unknown package type with the id: "
+							LOGGER.error("Unknown package type with the id: "
 									+ Integer.toHexString(commandId));
 						}
 					} catch (final IOException e) {
-						logger.error(e.getMessage(), e);
+						LOGGER.error(e.getMessage(), e);
 					} catch (final IllegalArgumentException e) {
-						logger.error(e.getMessage(), e);
+						LOGGER.error(e.getMessage(), e);
 					} catch (final InstantiationException e) {
-						logger.error(e.getMessage(), e);
+						LOGGER.error(e.getMessage(), e);
 					} catch (final IllegalAccessException e) {
-						logger.error(e.getMessage(), e);
+						LOGGER.error(e.getMessage(), e);
 					} catch (final InvocationTargetException e) {
-						logger.error(e.getMessage(), e);
+						LOGGER.error(e.getMessage(), e);
 					}
 				} else {
 					try {
 						Thread.sleep(10);
 					} catch (final InterruptedException e) {
-						logger.warn(e.getMessage(), e);
+						LOGGER.warn(e.getMessage(), e);
 					}
 				}
 			}

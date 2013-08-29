@@ -55,7 +55,9 @@ public class CommonTableEditingSupport extends EditingSupport {
 			((CommonTableElement) element).tweak(false);
 		} else {
 			CommonTableElement ctb = (CommonTableElement) element;
-			if (!ctb.isReadonly(column) && ctb.isConnected(column))return true;
+			if (!ctb.isReadonly(column) && ctb.isConnected(column)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -98,7 +100,9 @@ public class CommonTableEditingSupport extends EditingSupport {
 			int count = 0;
 			String currentVal = ctb.getValue(column);
 			for (String selection : ctb.getSelectStrings(column)) {
-				if (selection.startsWith(currentVal)) return count;
+				if (selection.startsWith(currentVal)) {
+					return count;
+				}
 				++count;
 			}
 			return 0;

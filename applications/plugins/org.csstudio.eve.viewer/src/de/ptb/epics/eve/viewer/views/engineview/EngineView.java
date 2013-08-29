@@ -649,7 +649,9 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 					tableItem.setText( 0, " "+chainId);
 					if (scanModuleId == -1) {
 						tableItem.setText( 1, " ");
-						if (remainTime > -1) tableItem.setText( 3, ""+remainTime);
+						if (remainTime > -1) {
+							tableItem.setText( 3, ""+remainTime);
+						}
 					}
 					else {
 						tableItem.setText( 1, " "+scanModuleId);
@@ -705,8 +707,9 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 						// alte Info-Fenster des letzten XML-Files werden gelöscht
 						for ( int j=0; j<10; j++) {
 							if (shellTable[j] != null) {
-								if (!shellTable[j].isDisposed())
+								if (!shellTable[j].isDisposed()) {
 									shellTable[j].dispose();
+								}
 							}
 						}
 					}

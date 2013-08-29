@@ -33,7 +33,7 @@ public class ScanModuleFigure extends Shape {
 	private int width;
 	private int height;
 	
-	private boolean selected_primary;
+	private boolean selectedPrimary;
 	private boolean contains_errors;
 	
 	private ScanModuleTypes type;
@@ -69,7 +69,7 @@ public class ScanModuleFigure extends Shape {
 		
 		this.type = type;
 		
-		this.selected_primary = false;
+		this.selectedPrimary = false;
 		this.contains_errors = false;
 		this.appended_feedback = false;
 		this.nested_feedback = false;
@@ -189,7 +189,7 @@ public class ScanModuleFigure extends Shape {
 	 */
 	public void setSelected(boolean selected) {
 		logger.debug(this.name + " is primary ?: " + Boolean.toString(selected));
-		this.selected_primary = selected;
+		this.selectedPrimary = selected;
 		this.repaint();
 	}
 
@@ -218,7 +218,7 @@ public class ScanModuleFigure extends Shape {
 		graphics.setTextAntialias(SWT.ON);
 		
 		Display display = PlatformUI.getWorkbench().getDisplay();
-		if(selected_primary) {
+		if(selectedPrimary) {
 			// if it is active (selected) -> change color
 			graphics.setForegroundColor(ColorConstants.titleGradient);
 			graphics.setBackgroundColor(ColorConstants.white);
@@ -232,30 +232,30 @@ public class ScanModuleFigure extends Shape {
 		Rectangle oldClipping = graphics.getClip(new Rectangle());
 
 		Path path = new Path(display);
-		int spline_control_point = 8;
+		int splineControlPoint = 8;
 		
-		path.moveTo(this.bounds.width + this.bounds.x - spline_control_point, 
+		path.moveTo(this.bounds.width + this.bounds.x - splineControlPoint, 
 					this.bounds.y);
 		path.quadTo(this.bounds.width + this.bounds.x, this.bounds.y, 
 					this.bounds.width + this.bounds.x, this.bounds.y + 
-					spline_control_point);
+					splineControlPoint);
 		// right
 		path.lineTo(this.bounds.width + this.bounds.x, 
-					this.bounds.y + this.bounds.height - spline_control_point);
+					this.bounds.y + this.bounds.height - splineControlPoint);
 		path.quadTo(this.bounds.width + this.bounds.x, 
 					this.bounds.y + this.bounds.height, 
-					this.bounds.width + this.bounds.x - spline_control_point, 
+					this.bounds.width + this.bounds.x - splineControlPoint, 
 					this.bounds.y + this.bounds.height);
 		// bottom
-		path.lineTo(this.bounds.x + spline_control_point, 
+		path.lineTo(this.bounds.x + splineControlPoint, 
 					this.bounds.y + this.bounds.height);
 		path.quadTo(this.bounds.x, this.bounds.y + this.bounds.height, 
 					this.bounds.x, this.bounds.y + this.bounds.height - 
-					spline_control_point);
+					splineControlPoint);
 		// left
-		path.lineTo(this.bounds.x, this.bounds.y + spline_control_point);
+		path.lineTo(this.bounds.x, this.bounds.y + splineControlPoint);
 		path.quadTo(this.bounds.x, this.bounds.y, 
-					this.bounds.x + spline_control_point, this.bounds.y);
+					this.bounds.x + splineControlPoint, this.bounds.y);
 		// top
 		path.close();
 		graphics.setClip(path);
@@ -276,7 +276,7 @@ public class ScanModuleFigure extends Shape {
 					this.y, this.width/7, this.height), false);
 		}
 		if (this.nested_feedback) {
-			if (selected_primary) {
+			if (selectedPrimary) {
 				graphics.setForegroundColor(ColorConstants.white);
 				graphics.setBackgroundColor(ColorConstants.darkGray);
 			} else {
