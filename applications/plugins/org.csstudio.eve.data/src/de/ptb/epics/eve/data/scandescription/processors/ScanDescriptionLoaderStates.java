@@ -34,6 +34,11 @@ public enum ScanDescriptionLoaderStates {
 	REPEATCOUNT_READ,
 
 	/**
+	 * This state indicates the monitor options are loading.
+	 */
+	MONITOROPTIONS_LOADING,
+
+	/**
 	 * indicates that a scan is loading
 	 */
 	SCAN_LOADING,
