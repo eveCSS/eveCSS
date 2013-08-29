@@ -15,7 +15,8 @@ import de.ptb.epics.eve.viewer.views.plotview.MathTableElement;
  * @author Marcus Michalsky
  */
 public class MathTableContentProvider implements IStructuredContentProvider {
-
+	// TODO very weird use of content provider.
+	// use setInput of TableViewer !
 	private TableViewer tableViewer;
 	private List<MathTableElement> elements;
 
@@ -43,6 +44,7 @@ public class MathTableContentProvider implements IStructuredContentProvider {
 	 */
 	@Override
 	public void dispose() {
+		tableViewer.setInput(null);
 		elements.clear();
 	}
 

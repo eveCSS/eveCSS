@@ -257,10 +257,10 @@ public class XyPlot extends Figure {
 		}
 	}
 	
-	/*
+	/**
 	 * 
 	 */
-	private void clear() {
+	public void clear() {
 		for (TraceDataCollector coll : this.collectors) {
 			Activator.getDefault().getEcp1Client()
 					.removeMeasurementDataListener(coll);
@@ -269,6 +269,7 @@ public class XyPlot extends Figure {
 			this.xyGraph.erase();
 		}
 		this.collectors.clear();
+		this.currentPlotWindow = null;
 	}
 	
 	/**

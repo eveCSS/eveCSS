@@ -411,4 +411,13 @@ public class PlotView extends ViewPart {
 				: memento.getBoolean("showStats");
 		this.showStatistics(this.showStats);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() {
+		this.xyPlot.clear();
+		super.dispose();
+	}
 }
