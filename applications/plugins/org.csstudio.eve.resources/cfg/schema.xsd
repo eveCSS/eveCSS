@@ -3,7 +3,7 @@
   targetNamespace="http://www.ptb.de/epics/SCML" 
   xmlns:tns="http://www.ptb.de/epics/SCML">
 
-  <!-- schema version 2.3
+  <!-- schema version 2.4
        please increase version number on every modification
        If the corresponding XML-file of the previous schema version is still
        valid with the current schema version, change the minor version number only -->
@@ -65,6 +65,7 @@
     <sequence>
       <element name="id" type="tns:identifier" minOccurs="0" maxOccurs="unbounded"></element>
     </sequence>
+    <attribute name="type" type="string" default="none"></attribute>
   </complexType>
 
   <group name="fileGroup">

@@ -15,9 +15,13 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -26,8 +30,11 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
+import de.ptb.epics.eve.data.scandescription.MonitorOption;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.dialogs.monitoroptions.MonitorOptionDialog;
 import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
@@ -51,6 +58,7 @@ public class ScanView extends ViewPart implements IEditorView,
 	// logging
 	private static Logger logger = Logger.getLogger(ScanView.class.getName());
 	
+	private IMeasuringStation measuringStation;
 	private ScanDescription currentScanDescription;
 	
 	// the utmost composite (which contains all elements)
@@ -58,6 +66,12 @@ public class ScanView extends ViewPart implements IEditorView,
 	
 	private Label repeatCountLabel;
 	private Text repeatCountText;
+
+	private Label monitorOptionsLabel;
+	private Combo monitorOptionsCombo;
+
+	private Button editButton;
+	private EditButtonSelectionListener editButtonSelectionListener;
 	
 	private DataBindingContext context;
 	private ISelectionProvider selectionProvider;
@@ -66,7 +80,14 @@ public class ScanView extends ViewPart implements IEditorView,
 	private IObservableValue repeatCountTargetObservable;
 	private IObservableValue repeatCountModelObservable;
 	private Binding repeatCountBinding;
-	
+
+	private IObservableValue monitorOptionTargetObservable;
+	private IObservableValue monitorOptionModelObservable;
+	private Binding monitorOptionBinding;
+
+	private MonitorOptionsComboSelectionListener 
+			monitorOptionsComboSelectionListener;
+
 	// Delegates
 	private EditorViewPerspectiveListener perspectiveListener;
 	
@@ -89,7 +110,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		
 		// top composite
 		this.top = new Composite(parent, SWT.NONE);
-		this.top.setLayout(new GridLayout(2, false));
+		this.top.setLayout(new GridLayout(3, false));
 		
 		this.repeatCountLabel = new Label(this.top, SWT.NONE);
 		this.repeatCountLabel.setText("Repeat Count:");
@@ -104,10 +125,27 @@ public class ScanView extends ViewPart implements IEditorView,
 		this.repeatCountText.addMouseListener(new TextSelectAllMouseListener(
 				this.repeatCountText));
 		GridData gridData = new GridData();
-		gridData.horizontalIndent = 7;
 		gridData.widthHint = 40;
+		gridData.horizontalSpan = 2;
 		this.repeatCountText.setLayoutData(gridData);
-		
+
+		this.monitorOptionsLabel = new Label(this.top, SWT.NONE);
+		this.monitorOptionsLabel.setText("Monitor Options:");
+
+		this.monitorOptionsCombo = new Combo(this.top, SWT.READ_ONLY);
+		this.monitorOptionsCombo.setItems(MonitorOption.getPossibleMonitorOptions());
+		this.monitorOptionsComboSelectionListener = 
+				new MonitorOptionsComboSelectionListener();
+		this.monitorOptionsCombo.addSelectionListener(
+				monitorOptionsComboSelectionListener);
+		// end of: step function elements
+
+		// Edit button
+		this.editButton = new Button(this.top, SWT.NONE);
+		this.editButton.setText(" Edit ");
+		editButtonSelectionListener = new EditButtonSelectionListener();
+		this.editButton.addSelectionListener(editButtonSelectionListener);
+
 		this.top.setVisible(false);
 		
 		// listen to selection changes (if a chain (or one of its scan modules)
@@ -142,6 +180,23 @@ public class ScanView extends ViewPart implements IEditorView,
 				targetToModelStrategy, new UpdateValueStrategy(
 						UpdateValueStrategy.POLICY_UPDATE));
 		ControlDecorationSupport.create(repeatCountBinding, SWT.LEFT);
+
+		// data binding for monitor options
+		this.monitorOptionTargetObservable = SWTObservables
+				.observeSelection(this.monitorOptionsCombo);
+
+		this.monitorOptionModelObservable = BeansObservables.observeDetailValue(
+				selectionObservable, ScanDescription.class, 
+				ScanDescription.MONITOR_OPTION_PROP, MonitorOption.class);
+
+// Hartmut 15.8.13: Es wird erstmal kein binding gesetzt, da es noch 
+// Fehlermeldungen gibt
+//		this.monitorOptionBinding = this.context.bindValue(
+//		this.context.bindValue(
+//				monitorOptionTargetObservable, monitorOptionModelObservable, 
+//				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE),
+//				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		
 	}
 	
 	/*
@@ -156,11 +211,24 @@ public class ScanView extends ViewPart implements IEditorView,
 			this.setPartName("Scan: " + PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getActivePage()
 					.getActiveEditor().getTitle());
+			// das soll später über das Binding erfolgen!
+			this.monitorOptionsCombo.setText(
+				MonitorOption.typeToString(
+				this.currentScanDescription.getMonitorOption()));
 			this.top.setVisible(true);
 		}
 		
 	}
 
+	/**
+	 * Returns the currently active scan description.
+	 * 
+	 * @return the scan description
+	 */
+	public ScanDescription getCurrentScanDescription() {
+		return currentScanDescription;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -192,10 +260,11 @@ public class ScanView extends ViewPart implements IEditorView,
 			setCurrentScanDescription((((StartEventEditPart) o).getModel())
 					.getChain().getScanDescription());
 		} else if (o instanceof ChainEditPart) {
-			logger.debug("selection is ScanDescriptionEditPart: " + o);
+			logger.debug("selection is ChainEditPart: " + o);
 			setCurrentScanDescription(((ChainEditPart) o).getModel()
 					.getScanDescription());
 		} else if (o instanceof ScanDescriptionEditPart) {
+			logger.debug("selection is ScanDescriptionEditPart: " + o);
 			setCurrentScanDescription(((ScanDescriptionEditPart) o).getModel());
 		}else {
 			logger.debug("selection other than ScanDescription -> ignore: " + o);
@@ -244,4 +313,79 @@ public class ScanView extends ViewPart implements IEditorView,
 			}
 		}
 	}
+
+	/**
+	 * {@link org.eclipse.swt.events.SelectionListener} of StepFunctionCombo.
+	 */
+	private class MonitorOptionsComboSelectionListener implements 
+					SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			if(currentScanDescription != null) {
+				measuringStation = Activator.getDefault().getMeasuringStation();
+				
+				currentScanDescription.setMonitorOption(
+						MonitorOption.stringToType(monitorOptionsCombo.getText()));
+
+				// Hier fehlen jetzt noch die Aktionen für all, involved...
+				switch (currentScanDescription.getMonitorOption()) {
+					case ALL:
+						// es werden alle Optionen hinzugefügt,
+						// die in der Messplatzbeschreibung stehen
+						currentScanDescription.addAllMonitor();
+						break;
+					case INVOLVED:
+						break;
+					case MEASURINGSTATION:
+						// es werden alle Optionen hinzugefügt, bei denen
+						// monitor="true" in der Messplatzbeschreibung steht
+						currentScanDescription.addMpMonitor();
+						break;
+					case NONE:
+						currentScanDescription.removeAllMonitor();
+						break;
+				}
+			
+			}
+		}
+	}
+	
+
+	/**
+	 * {@link org.eclipse.swt.events.SelectionListener} of
+	 * <code>savePluginOptionsButton</code>.
+	 */
+	private class EditButtonSelectionListener implements
+			SelectionListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			MonitorOptionDialog dialog = new MonitorOptionDialog(null,
+					currentScanDescription);
+			dialog.setBlockOnOpen(true);
+			dialog.open();
+		}
+	}
+
 }

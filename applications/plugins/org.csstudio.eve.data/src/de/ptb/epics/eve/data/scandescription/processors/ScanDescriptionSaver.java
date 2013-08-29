@@ -44,6 +44,7 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
+import de.ptb.epics.eve.data.scandescription.MonitorOption;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.PluginController;
@@ -254,40 +255,18 @@ public class ScanDescriptionSaver implements
 		boolean successful = true;
 		try {
 			this.atts.clear();
+			this.atts.addAttribute("", "type", "type", "CDATA",
+					"" + MonitorOption.typeToString(scanDescription.getMonitorOption()));
 			this.contentHandler.startElement("", "monitoroptions",
 					"monitoroptions", this.atts);
-
-			for (Detector d : this.measuringStation.getDetectors()) {
-				for (Option o : d.getOptions()) {
-					if(!o.isMonitor()) continue;
-					successful = this.writeId(o.getID());
-				}
-				for (DetectorChannel ch : d.getChannels()) {
-					for (Option o : ch.getOptions()) {
-						if(!o.isMonitor()) continue;
-						successful = this.writeId(o.getID());
-					}
-				}
+			// hier wird jetzt die Liste der Monitor Options
+			// geschrieben ohne darauf zu achten, wie die
+			// Einstellung von Monitor Options ist.
+			// Hartmut 29.8.13
+			for (Option o : this.scanDescription.getMonitors()) {
+				successful = this.writeId(o.getID());
 			}
-			for (Motor m : this.measuringStation.getMotors()) {
-				for (Option o : m.getOptions()) {
-					if(!o.isMonitor()) continue;
-					successful = this.writeId(o.getID());
-				}
-				for (MotorAxis ma : m.getAxes()) {
-					for (Option o : ma.getOptions()) {
-						if(!o.isMonitor()) continue;
-						successful = this.writeId(o.getID());
-					}
-				}
-			}
-			for (Device dev : this.measuringStation.getDevices()) {
-				for (Option o : dev.getOptions()) {
-					if(!o.isMonitor()) continue;
-					successful = this.writeId(o.getID());
-				}
-			}
-
+			
 			this.contentHandler.endElement("", "monitordevices",
 					"monitordevices");
 		} catch (SAXException e) {

@@ -30,16 +30,19 @@ import de.ptb.epics.eve.data.PlotModes;
 import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.TypeValue;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
+import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
 import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.MonitorEvent;
+import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
+import de.ptb.epics.eve.data.scandescription.MonitorOption;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.PluginController;
@@ -201,8 +204,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						.getValue("id")));
 				this.chainList.add(this.currentChain);
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
+			} else if (qName.equals("monitoroptions")) {
+				this.scanDescription.setMonitorOption(
+						MonitorOption.stringToType(atts.getValue("type")));
+				this.state = ScanDescriptionLoaderStates.MONITOROPTIONS_LOADING;
+				this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_LOADING;
 			}
-			
+
 		case CHAIN_LOADING:
 			if (qName.equals("comment")) {
 				this.state = ScanDescriptionLoaderStates.CHAIN_COMMENT_NEXT;
@@ -594,6 +602,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentParameterName = atts.getValue("name");
 			}
 			break;
+
+		case MONITOROPTIONS_ID_LOADING:
+			if (qName.equals("id")) {
+				this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_NEXT;
+			}
+			break;
+		
 		}
 	}
 
@@ -1095,6 +1110,22 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSITIONING_NORMALIZE_ID_READ;
 			break;
 
+
+		case CHAIN_SAVEPLUGINCONTROLLER_LOADING:
+			if (qName.equals("saveplugin")) {
+				this.currentPluginController = null;
+				this.subState = ScanDescriptionLoaderSubStates.NONE;
+				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
+			}
+			break;
+
+		case MONITOROPTIONS_LOADING:
+			if (qName.equals("monitoroptions")) {
+				// Hier ist jetzt die Liste der Monitor Options fertig!
+				this.subState = ScanDescriptionLoaderSubStates.NONE;
+				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
+			}
+			break;
 		}
 
 		switch (this.subState) {
@@ -1296,6 +1327,29 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						textBuffer.toString());
 			}
 			this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_PARAMETER_READ;
+			break;
+
+		case MONITOROPTIONS_ID_NEXT:
+			if (qName.equals("id")) {
+				// Hier wird jetzt die Liste erweitert
+				final Option option = new Option();
+				option.setId(textBuffer.toString());
+				AbstractPrePostscanDevice monOption = this.measuringStation.getPrePostscanDeviceById(textBuffer.toString());
+				if (monOption != null) {
+					option.setClassName(monOption.getClassName());
+					option.setName(monOption.getName());
+					option.setDisplaygroup(monOption.getDisplaygroup());
+					option.setValue(monOption.getValue());
+					this.scanDescription.addMonitor(option);
+				}
+				else {
+					// TODO: Hier muss noch ein Extra Fenster aufgemacht werden
+					// mit dem Hinweise, welche Optionen nicht mehr
+					// vorhanden sind!
+					System.out.println("MonitorOption " + textBuffer.toString() + " nicht mehr vorhanden");
+				}
+			}
+			this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_READ;
 			break;
 		}
 
@@ -1956,6 +2010,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 			}
 			break;
+
 		}
 
 		switch (this.subState) {
@@ -2072,7 +2127,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.subState = ScanDescriptionLoaderSubStates.PLUGIN_CONTROLLER_LOADING;
 			}
 			break;
-		}
+
+		case MONITOROPTIONS_ID_READ:
+			if (qName.equals("id")) {
+				this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_LOADING;
+			}
+			break;
+}
 	}
 
 	/**
