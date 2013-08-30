@@ -205,8 +205,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.chainList.add(this.currentChain);
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			} else if (qName.equals("monitoroptions")) {
-				this.scanDescription.setMonitorOption(
+				if (atts.getValue("type") == null) {
+					this.scanDescription.setMonitorOption(MonitorOption.NONE);
+				} else {
+					this.scanDescription.setMonitorOption(
 						MonitorOption.stringToType(atts.getValue("type")));
+				}
 				this.state = ScanDescriptionLoaderStates.MONITOROPTIONS_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_LOADING;
 			}
