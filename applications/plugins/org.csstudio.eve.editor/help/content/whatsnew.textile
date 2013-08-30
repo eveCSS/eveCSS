@@ -1,5 +1,13 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.14
+
+* [Feature] the list of options that are monitored is now editable
+
+* [Bug Fix] removed a bug where some views were not reset when a scan module was deleted
+* [Bug Fix] saving an "empty" scan description no longer violates the schema definition
+* [Bug Fix] the motor axis view no longer shows warnings for axes of type local (pseudo motors, e.g. msecTimer, Counter)
+
 h2(eveTopic). Version 1.13
 
 * [Bug Fix] Trigger Delay now accepts 0 as input

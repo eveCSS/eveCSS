@@ -1,5 +1,12 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.14
+
+* [Bug Fix] fixed missing/false plot auto scale behavior
+* [Bug Fix] the progress bar no longer shows a position count although no scan is loaded
+* [Bug Fix] fixed a bug where a device could not be added to a newly created Device Inspector (see known bugs help section for further details)
+* [Bug Fix] fixed some plot code that could create memory leaks
+
 h2(eveTopic). Version 1.13
 
 * [Feature] improved performance of plots

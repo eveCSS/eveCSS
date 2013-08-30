@@ -1,5 +1,15 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.14 
+
+* [Feature] eveCSS is now based on CSS 3.2.7
+* [Feature] PV access now uses PV Manager 2.x API (without workarounds)
+* [Feature] added CSS PV Files Viewer View
+* [Feature] added PV Manager System data source (see CSS Core Help for more info)
+* [Feature] incremented schema version to 2.3
+
+* [Bug Fix] added EPICS_CA_MAX_ARRAY_BYTES environment variable entry to the VM
+
 h2(eveTopic). Version 1.12
 
 * [Feature] changed default behavior of combo boxes used in tables
