@@ -18,6 +18,7 @@ public enum MonitorOption {
 	
 	/**
 	 * All Options of the devices which are involved in the scan.
+	 * with the setting monitor="true"
 	 */
 	@XmlEnumValue("involved")
 	INVOLVED,
@@ -29,7 +30,14 @@ public enum MonitorOption {
 	NONE,
 
 	/**
-	 * All Options of the measurement.xml File will be monitored.
+	 * The Options are editable.
+	 */
+	@XmlEnumValue("custom")
+	CUSTOM,
+
+	/**
+	 * All Options of the measurement.xml File will be monitored
+	 * with the setting monitor="true"
 	 */
 	@XmlEnumValue("measuringstation")
 	MEASURINGSTATION;
@@ -44,6 +52,8 @@ public enum MonitorOption {
 		switch(monitorOption) {
 			case ALL:
 				return "all";
+			case CUSTOM:
+				return "custom";
 			case INVOLVED:
 				return "involved";
 			case NONE:
@@ -72,6 +82,9 @@ public enum MonitorOption {
 		if( name.equals("all")) {
 			return MonitorOption.ALL;
 		}
+		if( name.equals("custom")) {
+			return MonitorOption.CUSTOM;
+		}
 		if( name.equals("involved")) {
 			return MonitorOption.INVOLVED;
 		}
@@ -90,7 +103,10 @@ public enum MonitorOption {
 	 * @return all available monitor options
 	 */
 	public static String[] getPossibleMonitorOptions() {
-		final String[] values = {"all", "involved", "none", "measuringstation"}; 
+		// TODO: in der Version 1.14 gibt es noch icht custom und involved, da es
+		// da noch ein paar Dinge zu bearbeiten sind 
+		final String[] values = {"all", "none", "measuringstation"}; 
+//		final String[] values = {"all", "custom", "involved", "none", "measuringstation"}; 
 		return values;
 	}
 }

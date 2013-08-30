@@ -21,6 +21,8 @@ import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Option;
+import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
+import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
@@ -482,6 +484,65 @@ public class ScanDescription implements IModelUpdateProvider,
 				this.monitors.add(o);
 			}
 		}
+	}
+
+	/**
+	 * Adds all options of the scan devices to the list of 
+	 * monitors which are marked in the
+	 * messplatz.xml File with monitor="true"
+	 * @since 1.14
+	 */
+	public void addInvolvedMonitor() {
+		// first, clear List
+		this.monitors.clear();
+		// add option to list
+		// do the filtering
+
+				
+		System.out.println("\n\tListe der involved Options wird erstellt");
+		System.out.println("\t\tZustand der Auswahl: " + this.getMonitorOption().name());
+		ExcludeFilter measuringStation2 = new ExcludeFilter();
+		measuringStation2.setSource(this.getMeasuringStation());
+		measuringStation2.excludeUnusedDevices(this);
+		
+		for (Detector d : measuringStation2.getDetectors()) {
+			System.out.println("Detector: " + d.getName());
+			for (Option o : d.getOptions()) {
+				if(!o.isMonitor()) continue;
+				this.monitors.add(o);
+			}
+			for (DetectorChannel ch : d.getChannels()) {
+				for (Option o : ch.getOptions()) {
+					if(!o.isMonitor()) continue;
+					this.monitors.add(o);
+				}
+			}
+		}		
+
+		for (Motor m : measuringStation2.getMotors()) {
+			for (Option o : m.getOptions()) {
+				if(!o.isMonitor()) continue;
+				this.monitors.add(o);
+			}
+			for (MotorAxis ma : m.getAxes()) {
+				for (Option o : ma.getOptions()) {
+					if(!o.isMonitor()) continue;
+					this.monitors.add(o);
+				}
+			}
+		}
+
+		for (Device dev : measuringStation2.getDevices()) {
+			for (Option o : dev.getOptions()) {
+				if(!o.isMonitor()) continue;
+				this.monitors.add(o);
+			}
+		}
+
+		for (Option o : this.monitors) {
+			System.out.println("Option : " + o.getParent().getName() + " " + o.getName());
+		}
+	
 	}
 
 	/**

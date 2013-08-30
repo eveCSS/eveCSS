@@ -333,7 +333,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			if(currentScanDescription != null) {
-				measuringStation = Activator.getDefault().getMeasuringStation();
+//				measuringStation = Activator.getDefault().getMeasuringStation();
 				
 				currentScanDescription.setMonitorOption(
 						MonitorOption.stringToType(monitorOptionsCombo.getText()));
@@ -346,6 +346,9 @@ public class ScanView extends ViewPart implements IEditorView,
 						currentScanDescription.addAllMonitor();
 						break;
 					case INVOLVED:
+						// es werden alle Optionen aus dem Scan hinzugefügt, bei denen
+						// monitor="true" in der Messplatzbeschreibung steht
+						currentScanDescription.addInvolvedMonitor();
 						break;
 					case MEASURINGSTATION:
 						// es werden alle Optionen hinzugefügt, bei denen

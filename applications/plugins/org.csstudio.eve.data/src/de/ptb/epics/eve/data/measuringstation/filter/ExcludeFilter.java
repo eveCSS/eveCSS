@@ -1295,6 +1295,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			}
 		}
 		filterInProgress = false;
+		
 		updateEvent(null);
 	}
 	
