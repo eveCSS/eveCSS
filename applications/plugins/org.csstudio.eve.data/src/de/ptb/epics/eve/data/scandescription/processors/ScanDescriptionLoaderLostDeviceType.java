@@ -11,6 +11,11 @@ public enum ScanDescriptionLoaderLostDeviceType {
 	/** */
 	DETECTOR_CHANNEL_ID_NOT_FOUND, 
 	
+	/**
+	 * @since 1.15
+	 */
+	PRE_POST_SCAN_DEVICE_ID_NOT_FOUND,
+	
 	/** */
 	PLUGIN_NOT_FOUND, 
 	

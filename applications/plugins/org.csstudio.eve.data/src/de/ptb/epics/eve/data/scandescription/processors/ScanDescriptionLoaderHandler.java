@@ -748,28 +748,37 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 			
 		case CHAIN_SCANMODULE_PRESCAN_ID_NEXT:
-			try {
+			if (this.measuringStation.getPrePostscanDeviceById(textBuffer
+					.toString()) != null) {
 				this.currentPrescan
 						.setAbstractPrePostscanDevice(this.measuringStation
 								.getPrePostscanDeviceById(textBuffer.toString()));
-			} catch (IllegalArgumentException e) {
-				logger.error(e.getMessage(), e);
+			} else {
+				this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
+						ScanDescriptionLoaderLostDeviceType.
+						PRE_POST_SCAN_DEVICE_ID_NOT_FOUND, 
+						"Prescan-Device '" + textBuffer.toString() + 
+						"' has been removed."));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PRESCAN_ID_READ;
 			break;
-
+			
 		case CHAIN_SCANMODULE_PRESCAN_VALUE_NEXT:
 			this.currentPrescan.setValue(textBuffer.toString());
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PRESCAN_VALUE_READ;
 			break;
 
 		case CHAIN_SCANMODULE_POSTSCAN_ID_NEXT:
-			try {
+			if (this.measuringStation.getPrePostscanDeviceById(textBuffer.toString()) != null) {	
 				this.currentPostscan
-						.setAbstractPrePostscanDevice(this.measuringStation
-								.getPrePostscanDeviceById(textBuffer.toString()));
-			} catch (IllegalArgumentException e) {
-				logger.error(e.getMessage(), e);
+				.setAbstractPrePostscanDevice(this.measuringStation
+						.getPrePostscanDeviceById(textBuffer.toString()));
+			} else {
+				this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
+						ScanDescriptionLoaderLostDeviceType.
+						PRE_POST_SCAN_DEVICE_ID_NOT_FOUND, 
+						"Postscan-Device '" + textBuffer.toString() + 
+						"' has been removed."));
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_POSTSCAN_ID_READ;
 			break;
