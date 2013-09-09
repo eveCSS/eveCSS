@@ -15,7 +15,9 @@ public enum ScanDescriptionLoaderLostDeviceType {
 	 * @since 1.15
 	 */
 	PRE_POST_SCAN_DEVICE_ID_NOT_FOUND,
-	
+	MONITOR_OPTION_ID_NOT_FOUND,
+	MONITOR_OPTION_ID_FAILED_IN_LIST,
+
 	/** */
 	PLUGIN_NOT_FOUND, 
 	

@@ -15,6 +15,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
@@ -128,7 +130,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		this.repeatCountText.setLayoutData(gridData);
 
 		this.monitorOptionsLabel = new Label(this.top, SWT.NONE);
-		this.monitorOptionsLabel.setText("Monitor Options:");
+		this.monitorOptionsLabel.setText("Monitored Devices:");
 
 		this.monitorOptionsCombo = new Combo(this.top, SWT.READ_ONLY);
 		this.monitorOptionsCombo.setItems(MonitorOption.getPossibleMonitorOptions());
@@ -206,9 +208,12 @@ public class ScanView extends ViewPart implements IEditorView,
 			this.setPartName("Scan View");
 			this.top.setVisible(false);
 		} else {
-			this.setPartName("Scan: " + PlatformUI.getWorkbench()
+			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+					.getActivePage()!= null) {
+				this.setPartName("Scan: " + PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getActivePage()
 					.getActiveEditor().getTitle());
+			}
 			// das soll später über das Binding erfolgen!
 			this.monitorOptionsCombo.setText(
 				MonitorOption.typeToString(
@@ -336,22 +341,20 @@ public class ScanView extends ViewPart implements IEditorView,
 				currentScanDescription.setMonitorOption(
 						MonitorOption.stringToType(monitorOptionsCombo.getText()));
 
-				// Hier fehlen jetzt noch die Aktionen für all, involved...
 				switch (currentScanDescription.getMonitorOption()) {
-					case ALL:
-						// es werden alle Optionen hinzugefügt,
-						// die in der Messplatzbeschreibung stehen
-						currentScanDescription.addAllMonitor();
+					case AS_IN_DEVICE_DEFINITION:
+						// es werden alle Optionen hinzugefügt, bei denen
+						// monitor="true" in der Messplatzbeschreibung steht
+						currentScanDescription.addMpMonitor();
 						break;
-					case INVOLVED:
+					case USED_IN_SCAN:
 						// es werden alle Optionen aus dem Scan hinzugefügt, bei denen
 						// monitor="true" in der Messplatzbeschreibung steht
 						currentScanDescription.addInvolvedMonitor();
 						break;
-					case MEASURINGSTATION:
-						// es werden alle Optionen hinzugefügt, bei denen
-						// monitor="true" in der Messplatzbeschreibung steht
-						currentScanDescription.addMpMonitor();
+					case CUSTOM:
+						// Die Optionen sind editierbar!
+						// Die Liste wird nicht automatisch geändert
 						break;
 					case NONE:
 						currentScanDescription.removeAllMonitor();
@@ -384,6 +387,10 @@ public class ScanView extends ViewPart implements IEditorView,
 		public void widgetSelected(SelectionEvent e) {
 			MonitorOptionDialog dialog = new MonitorOptionDialog(null,
 					currentScanDescription);
+			currentScanDescription.setMonitorOption(MonitorOption.CUSTOM);
+			monitorOptionsCombo.setText(
+					MonitorOption.typeToString(
+					currentScanDescription.getMonitorOption()));
 			dialog.setBlockOnOpen(true);
 			dialog.open();
 		}

@@ -31,10 +31,14 @@ import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.TypeValue;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
+import de.ptb.epics.eve.data.measuringstation.Detector;
+import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.MonitorEvent;
+import de.ptb.epics.eve.data.measuringstation.Motor;
+import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Axis;
@@ -206,7 +210,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			} else if (qName.equals("monitoroptions")) {
 				if (atts.getValue("type") == null) {
-					this.scanDescription.setMonitorOption(MonitorOption.NONE);
+					this.scanDescription.setMonitorOption(MonitorOption.CUSTOM);					
+	System.out.println("\nDie MonitorOption wurde auf CUSTOM gesetzt");
 				} else {
 					this.scanDescription.setMonitorOption(
 						MonitorOption.stringToType(atts.getValue("type")));
@@ -1135,8 +1140,51 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case MONITOROPTIONS_LOADING:
 			if (qName.equals("monitoroptions")) {
 				// Hier ist jetzt die Liste der Monitor Options fertig!
+System.out.println("\nDie Liste der MonitorOptions ist fertig!");
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
+				// Die Optionen müssen bei AS_IN_DEVICE_DEFINITION
+				// unter Umständen erweitert werden.
+				if (MonitorOption.AS_IN_DEVICE_DEFINITION.equals(scanDescription.getMonitorOption())) {
+					System.out.println("\tMonitor Option = " + MonitorOption.AS_IN_DEVICE_DEFINITION);
+					System.out.println("\tListe muss überprüft werden");
+
+					for (Detector d : measuringStation.getDetectors()) {
+						for (Option o : d.getOptions()) {
+							if(o.isMonitor()) {
+								addFailedMonitorToList(o);
+							}
+						}
+						for (DetectorChannel ch : d.getChannels()) {
+							for (Option o : ch.getOptions()) {
+								if(o.isMonitor()) {
+									addFailedMonitorToList(o);
+								}
+							}
+						}						
+					}
+					for (Motor m : measuringStation.getMotors()) {
+						for (Option o : m.getOptions()) {
+							if(o.isMonitor()) {
+								addFailedMonitorToList(o);
+							}
+						}
+						for (MotorAxis ma : m.getAxes()) {
+							for (Option o : ma.getOptions()) {
+								if(o.isMonitor()) {
+									addFailedMonitorToList(o);
+								}
+							}
+						}
+					}
+					for (Device dev : measuringStation.getDevices()) {
+						for (Option o : dev.getOptions()) {
+							if(o.isMonitor()) {
+								addFailedMonitorToList(o);
+							}
+						}
+					}
+				}
 			}
 			break;
 		}
@@ -1357,10 +1405,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					this.scanDescription.addMonitor(option);
 				}
 				else {
-					// TODO: Hier muss noch ein Extra Fenster aufgemacht werden
-					// mit dem Hinweise, welche Optionen nicht mehr
-					// vorhanden sind!
-					System.out.println("MonitorOption " + textBuffer.toString() + " nicht mehr vorhanden");
+					// Option ID nicht mehr am Messplatz vorhanden
+					this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
+							ScanDescriptionLoaderLostDeviceType.
+							MONITOR_OPTION_ID_NOT_FOUND, 
+							"Monitor-Device '" + textBuffer.toString() + 
+							"' has been removed."));
 				}
 			}
 			this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_READ;
@@ -2148,6 +2198,28 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 }
+	}
+
+	// 
+	/**
+	 * This method add an option to the list of monitored options
+	 * if the option is not in the list.
+	 * 
+	 * @return The loaded scan description.
+	 */
+	private void addFailedMonitorToList(Option o) {
+		if (scanDescription.getMonitors().contains(o)) {
+			// Monitor schon vorhanden
+		} else {
+			// Monitor kommt neu hinzu
+			scanDescription.addMonitor(o);
+			// Monitor in den Dialog der Informationen aufnehmen
+			this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
+					ScanDescriptionLoaderLostDeviceType.
+					MONITOR_OPTION_ID_FAILED_IN_LIST, 
+					"Monitor-Device '" + o.getID().toString() + 
+					"' added to the list of monitored devices."));
+		}
 	}
 
 	/**
