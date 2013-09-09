@@ -21,8 +21,11 @@ public class PollInQueueSize implements Runnable {
 	@Override
 	public void run() {
 		while (!finished) {
-			LOGGER.debug("In Queue Size: " + Activator.getDefault().
-					getEcp1Client().getInQueueSize());
+			int queueSize = Activator.getDefault().getEcp1Client()
+					.getInQueueSize();
+			if (queueSize > 0) {
+				LOGGER.debug("In Queue Size: " + queueSize);
+			}
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
