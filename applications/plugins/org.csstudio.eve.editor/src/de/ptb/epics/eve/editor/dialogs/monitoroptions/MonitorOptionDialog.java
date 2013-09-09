@@ -108,7 +108,7 @@ public class MonitorOptionDialog extends TitleAreaDialog {
 		
 		this.createViewer(container);
 		
-		this.setTitle("Monitor Options " + 
+		this.setTitle("Monitored Devices: " + 
 				scanDescription.getMonitorOption().name() + " is selected");
 		this.setMessage("");
 
