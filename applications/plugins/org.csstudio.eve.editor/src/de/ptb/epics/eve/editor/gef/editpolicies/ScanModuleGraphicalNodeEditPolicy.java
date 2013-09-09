@@ -26,7 +26,7 @@ import de.ptb.epics.eve.editor.gef.figures.ScanModuleFigure;
  */
 public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 
-	private static Logger logger = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(ScanModuleGraphicalNodeEditPolicy.class.getName());
 	
 	private ScanModule scanModule;
@@ -173,7 +173,7 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 	 */
 	@Override
 	public void showTargetFeedback(Request request) {
-		logger.debug("Request: " + request.getType().toString());
+		LOGGER.debug("Request: " + request.getType().toString());
 		if (request instanceof CreateConnectionRequest) {
 			ScanModuleFigure figure = (ScanModuleFigure) 
 					this.scanModuleEditPart.getFigure();
@@ -186,16 +186,16 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 				if (type.equals(Connector.APPENDED)) {
 					if (this.scanModuleEditPart.getModel().getAppended() == null) {
 						figure.setAppended_feedback(true);
-						logger.debug("appended feedback");
+						LOGGER.debug("appended feedback");
 					} else {
-						logger.debug("no append possible");
+						LOGGER.debug("no append possible");
 					}
 				} else if (type.equals(Connector.NESTED)) {
 					if (this.scanModuleEditPart.getModel().getNested() == null) {
 					figure.setNested_feedback(true);
-					logger.debug("nested feedback");
+					LOGGER.debug("nested feedback");
 					} else {
-						logger.debug("no append possible");
+						LOGGER.debug("no append possible");
 					}
 				}
 			} else if (request.getType().equals(
@@ -207,16 +207,16 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 				if (source instanceof ScanModuleEditPart) {
 					if (source != target && target.getModel().getParent() == null) {
 						figure.setParent_feedback(true);
-						logger.debug("parent feedback");
+						LOGGER.debug("parent feedback");
 					} else {
-						logger.debug("no parent possible");
+						LOGGER.debug("no parent possible");
 					}
 				} else if (source instanceof StartEventEditPart) {
 					if (target.getModel().getParent() == null) {
 						figure.setParent_feedback(true);
-						logger.debug("parent feedback");
+						LOGGER.debug("parent feedback");
 					} else {
-						logger.debug("no parent possible");
+						LOGGER.debug("no parent possible");
 					}
 				}
 			}
@@ -239,16 +239,16 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 				if (type.equals(Connector.APPENDED)) {
 					if (this.scanModuleEditPart.getModel().getAppended() == null) {
 						figure.setAppended_feedback(true);
-						logger.debug("appended feedback");
+						LOGGER.debug("appended feedback");
 					} else {
-						logger.debug("no append possible");
+						LOGGER.debug("no append possible");
 					}
 				} else if (type.equals(Connector.NESTED)) {
 					if (this.scanModuleEditPart.getModel().getNested() == null) {
 					figure.setNested_feedback(true);
-					logger.debug("nested feedback");
+					LOGGER.debug("nested feedback");
 					} else {
-						logger.debug("no append possible");
+						LOGGER.debug("no append possible");
 					}
 				}
 			} else if (request.getType().equals(
@@ -275,7 +275,7 @@ public class ScanModuleGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 	@Override
 	public void eraseTargetFeedback(Request request) {
 		if (request instanceof CreateConnectionRequest) {
-			logger.debug("erase feedback");
+			LOGGER.debug("erase feedback");
 			ScanModuleFigure figure = (ScanModuleFigure) 
 					this.scanModuleEditPart.getFigure();
 			figure.setAppended_feedback(false);

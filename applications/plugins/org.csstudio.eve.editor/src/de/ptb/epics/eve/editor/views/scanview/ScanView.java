@@ -30,7 +30,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.MonitorOption;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.editor.Activator;
@@ -58,7 +57,6 @@ public class ScanView extends ViewPart implements IEditorView,
 	// logging
 	private static Logger logger = Logger.getLogger(ScanView.class.getName());
 	
-	private IMeasuringStation measuringStation;
 	private ScanDescription currentScanDescription;
 	
 	// the utmost composite (which contains all elements)
