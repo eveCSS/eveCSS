@@ -2,7 +2,8 @@ package de.ptb.epics.eve.resources.init;
 
 /**
  * Encapsulates startup parameters into a single object.
- * A parameter which is not set is <code>null</code> or false.
+ * A parameter which is not set is <code>null</code> or false, 
+ * except for the root directory, which then returns a default.
  * 
  * @author Marcus Michalsky
  * @since 1.14
@@ -17,10 +18,14 @@ public class Parameters {
 	}
 
 	/**
+	 * Returns the root directory.
+	 * 
 	 * @return the rootDir
 	 */
 	public String getRootDir() {
-		return this.rootDir;
+		return this.useDefaultDevices() 
+				? System.getProperty("user.home") 
+				: this.rootDir;
 	}
 
 	/**

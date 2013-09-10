@@ -46,7 +46,7 @@ public class Startup {
 			}
 			i++;
 		}
-		if (params.getRootDir() != null && !params.getRootDir().endsWith("/")) {
+		if (!params.useDefaultDevices() && !params.getRootDir().endsWith("/")) {
 			params.setRootDir(params.getRootDir() + "/");
 		}
 		return params;
@@ -147,7 +147,6 @@ public class Startup {
 	 * <code>&lt;rootDir&gt;/eve/default.xml</code> is loaded.
 	 * Returns <code>null</code> if a load error occured.
 	 * 
-	 * @param rootDir the eve root directory path
 	 * @param logger the logger messages should go to
 	 * @return the loaded measuring station or <code>null</code> if a load error occured
 	 * @throws Exception if "rootDir" is not <code>null</code> and one of the following conditions is met:
@@ -156,13 +155,15 @@ public class Startup {
 	 * 			<li>preferences entry is not a valid target</li>
 	 * 		</ul>
 	 */
-	public static IMeasuringStation loadMeasuringStation(String rootDir, 
-			File schema, Logger logger) throws Exception {
+	public static IMeasuringStation loadMeasuringStation(Logger logger) 
+			throws Exception {
 		IMeasuringStation measuringStation = null;
 		File deviceDefinition = null;
 		
+		Parameters params = Startup.readStartupParameters();
+		
 		// if no eve.root is given, use internal default definition
-		if (rootDir == null) {
+		if (params.useDefaultDevices()) {
 			deviceDefinition = de.ptb.epics.eve.resources.Activator.
 					getDefaultDeviceDefinition();
 			logger.info("No 'eve.root' given, using default device definition");
@@ -174,13 +175,14 @@ public class Startup {
 			
 			if(preferencesEntry.isEmpty()) {
 				File pathToDefaultMeasuringStation = 
-						new File(rootDir + "eve/default.xml");
+						new File(params.getRootDir() + "eve/default.xml");
 				if(!pathToDefaultMeasuringStation.exists()) {
 					String message = "Could not find 'default.xml' in 'eve.root'!";
 					logger.fatal(message);
 					throw new Exception(message);
 				}
-				deviceDefinition = new File(rootDir + "eve/default.xml");
+				deviceDefinition = new File(params.getRootDir() + 
+						"eve/default.xml");
 			} else {
 				File measuringStationFile = new File(preferencesEntry);
 				if(!measuringStationFile.exists()) {
@@ -203,7 +205,7 @@ public class Startup {
 		
 		try {
 			final MeasuringStationLoader measuringStationLoader = 
-					new MeasuringStationLoader(schema);
+					new MeasuringStationLoader(Startup.loadSchemaFile(logger));
 			measuringStationLoader.load(deviceDefinition);
 			measuringStation = measuringStationLoader.getMeasuringStation();
 		} catch (IllegalArgumentException e) {
