@@ -90,134 +90,92 @@
 				</read>
 			</channel>
 		</detector>
-
 		<detector>
 			<class>excas</class>
-			<name>jane</name>
-			<id>eve:janevalue</id>
+			<name>excas detector</name>
+			<id>eve:excasvalue</id>
 			<channel>
 				<class></class>
-				<name>jane</name>
+				<name>eveJane</name>
 				<id>eve:janechan1</id>
 				<read>
-					<access method="GETCB" transport="ca" type="double">eve:jane
+					<access method="GETPUT" transport="ca" type="double">eve:jane
 					</access>
 				</read>
 			</channel>
-		</detector>
-
-		<detector>
-			<class>excas</class>
-			<name>fred</name>
-			<id>eve:fredvalue</id>
 			<channel>
 				<class></class>
-				<name>fred</name>
+				<name>eveFred</name>
 				<id>eve:fredchan1</id>
 				<read>
-					<access method="GETCB" transport="ca" type="double">eve:fred
+					<access method="GETPUT" transport="ca" type="double">eve:fred
 					</access>
 				</read>
 			</channel>
-		</detector>
-
-		<detector>
-			<class>excas</class>
-			<name>janet</name>
-			<id>eve:janetvalue</id>
 			<channel>
 				<class></class>
-				<name>janet</name>
+				<name>eveJanet</name>
 				<id>eve:janetchan1</id>
 				<read>
-					<access method="GETCB" transport="ca" type="double">eve:janet
+					<access method="GETPUTCB" transport="ca" type="double">eve:janet
 					</access>
 				</read>
 			</channel>
-		</detector>
-
-		<detector>
-			<class>excas</class>
-			<name>freddy</name>
-			<id>eve:freddyvalue</id>
 			<channel>
 				<class></class>
-				<name>freddy</name>
+				<name>eveFreddy</name>
 				<id>eve:freddychan1</id>
 				<read>
-					<access method="GETCB" transport="ca" type="double">eve:freddy
+					<access method="GETPUTCB" transport="ca" type="double">eve:freddy
 					</access>
 				</read>
 			</channel>
-		</detector>
-
-		<detector>
-			<class>excas</class>
-			<name>alan</name>
-			<id>eve:alanvalue</id>
 			<channel>
 				<class></class>
-				<name>alan</name>
+				<name>eveAlan</name>
 				<id>eve:alanchan1</id>
 				<read>
-					<access monitor="true" method="GETCB" transport="ca" type="double">eve:alan
+					<access method="GETPUT" transport="ca" type="double">eve:alan
 					</access>
 				</read>
 			</channel>
-		</detector>
-
-		<detector>
-			<class>excas</class>
-			<name>albert</name>
-			<id>eve:albertvalue</id>
 			<channel>
 				<class></class>
-				<name>albert</name>
+				<name>eveAlbert</name>
 				<id>eve:albertchan1</id>
 				<read>
-					<access method="GETCB" transport="ca" type="double">eve:albert
+					<access method="GETPUT" transport="ca" type="double">eve:albert
 					</access>
 				</read>
 			</channel>
-		</detector>
-		
-		<detector>
-			<class>excas</class>
-			<name>bill</name>
-			<id>eve:billvalue</id>
 			<channel>
 				<class></class>
-				<name>bill</name>
+				<name>eveBill</name>
 				<id>eve:billchan1</id>
 				<read>
-					<access method="GETCB" transport="ca" type="double">eve:bill
+					<access method="GETPUT" transport="ca" type="double">eve:bill
+					</access>
+				</read>
+			</channel>
+			<channel>
+				<class></class>
+				<name>eveBilly</name>
+				<id>eve:billychan1</id>
+				<read>
+					<access method="GETPUTCB" transport="ca" type="double">eve:billy
+					</access>
+				</read>
+			</channel>
+			<channel>
+				<class></class>
+				<name>eveBloaty</name>
+				<id>eve:bloatychan1</id>
+				<read>
+					<access method="GETPUT" transport="ca" type="double">eve:bloaty
 					</access>
 				</read>
 			</channel>
 		</detector>
-
-
-		<!-- basic detector (must include a channel) without unit, read only the 
-			value of the PV -->
-		
-		<!-- basic detector (must include a channel) without unit, read only the 
-			value of the PV -->
-
-		<!-- basic detector (must include a channel) without unit, read only the 
-			value of the PV -->
-
-		<!-- basic detector (must include a channel) without unit, read only the 
-			value of the PV -->
-
-		<!-- basic detector (must include a channel) without unit, read only the 
-			value of the PV -->
-		
-
-		<!-- basic detector (must include a channel) without unit, read only the 
-			value of the PV -->
-
-
-
 	</detectors>
 	<!-- motor section -->
 	<motors>
@@ -269,7 +227,7 @@
 			<axis>
 				<class></class>
 				<name>Counter</name>
-				<id>Counter-mot</id>
+				<id>Counter</id>
 				<goto>
 					<access method="PUTCB" transport="local" type="int">Counter
 					</access>
@@ -289,18 +247,20 @@
 	<devices>
 		<device>
 			<class>excas</class>
-			<name>EVE Boot</name>
+			<name>eveBoot</name>
 			<id>eve:bootdev</id>
 			<value>
-				<access method="GETCB" transport="ca" type="double">eve:boot</access>
+				<access method="GETPUT" transport="ca" type="OnOff">eve:boot</access>
+				<value type="OnOff">0</value>
 			</value>
 		</device>
 		<device>
 			<class>excas</class>
-			<name>EVE Booty</name>
+			<name>eveBooty</name>
 			<id>eve:bootydev</id>
 			<value>
-				<access method="GETCB" transport="ca" type="double">eve:booty</access>
+				<access method="GETPUTCB" transport="ca" type="OnOff">eve:booty</access>
+				<value type="OnOff">0</value>
 			</value>
 		</device>
 	</devices>
