@@ -88,7 +88,7 @@ public class ValueEditingSupport extends EditingSupport {
 				} else if (prescan.getValue().equals("Off")) {
 					return 1;
 				} else {
-					return "";
+					return 0;
 				}
 			} else if (prescan.getAbstractPrePostscanDevice().getValue().
 					getType().equals(DataTypes.OPENCLOSE)) {
@@ -97,7 +97,7 @@ public class ValueEditingSupport extends EditingSupport {
 				} else if (prescan.getValue().equals("Close")) {
 					return 1;
 				} else {
-					return "";
+					return 0;
 				}
 			} else {
 				return prescan.getAbstractPrePostscanDevice().getValue().
