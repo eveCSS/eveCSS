@@ -251,7 +251,7 @@
 			<id>eve:bootdev</id>
 			<value>
 				<access method="GETPUT" transport="ca" type="OnOff">eve:boot</access>
-				<value type="OnOff">0</value>
+				<value type="OnOff">On,Off</value>
 			</value>
 		</device>
 		<device>
@@ -260,7 +260,7 @@
 			<id>eve:bootydev</id>
 			<value>
 				<access method="GETPUTCB" transport="ca" type="OnOff">eve:booty</access>
-				<value type="OnOff">0</value>
+				<value type="OnOff">On,Off</value>
 			</value>
 		</device>
 	</devices>
