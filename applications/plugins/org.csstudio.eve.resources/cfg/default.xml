@@ -91,8 +91,8 @@
 			</channel>
 		</detector>
 		<detector>
-			<class>excas</class>
-			<name>excas detector</name>
+			<class>EPICS</class>
+			<name>excas</name>
 			<id>eve:excasvalue</id>
 			<channel>
 				<class></class>
@@ -176,6 +176,133 @@
 				</read>
 			</channel>
 		</detector>
+		<detector>
+			<class>Data Sources</class>
+			<name>System</name>
+			<id>eve:sys</id>
+			<channel>
+				<class></class>
+				<name>time</name>
+				<id>sys:time</id>
+				<read>
+					<access method="GET" transport="ca" type="datetime">sys://time
+					</access>
+				</read>
+			</channel>
+			<channel>
+				<class></class>
+				<name>free_mb</name>
+				<id>sys:freeMb</id>
+				<read>
+					<access method="GET" transport="ca" type="double">sys://free_mb
+					</access>
+				</read>
+			</channel>
+			<channel>
+				<class></class>
+				<name>used_mb</name>
+				<id>sys:usedMb</id>
+				<read>
+					<access method="GET" transport="ca" type="double">sys://used_mb
+					</access>
+				</read>
+			</channel>
+			<channel>
+				<class></class>
+				<name>max_mb</name>
+				<id>sys:maxMb</id>
+				<read>
+					<access method="GET" transport="ca" type="double">sys://max_mb
+					</access>
+				</read>
+			</channel>
+			<channel>
+				<class></class>
+				<name>user</name>
+				<id>sys:user</id>
+				<read>
+					<access method="GET" transport="ca" type="string">sys://user
+					</access>
+				</read>
+			</channel>
+			<channel>
+				<class></class>
+				<name>host</name>
+				<id>sys:hostname</id>
+				<read>
+					<access method="GET" transport="ca" type="string">sys://host_name
+					</access>
+				</read>
+			</channel>
+			<channel>
+				<class></class>
+				<name>qualified host</name>
+				<id>sys:qualifiedHostName</id>
+				<read>
+					<access method="GET" transport="ca" type="string">sys://qualified_host_name
+					</access>
+				</read>
+			</channel>
+		</detector>
+		<detector>
+			<class>Data Sources</class>
+			<name>Simulation</name>
+			<id>eve:sim</id>
+			<channel>
+				<class></class>
+				<name>Gaussian Noise</name>
+				<id>sim:gaussianNoise</id>
+				<read>
+					<access method="GET" transport="ca" type="double">sim://gaussianNoise
+					</access>
+				</read>
+			</channel>
+			<channel>
+				<class></class>
+				<name>Gaussian Waveform</name>
+				<id>sim:gaussianWaveform</id>
+				<read>
+					<access method="GET" transport="ca" type="double">sim://gaussianWaveform
+					</access>
+				</read>
+			</channel>
+			<channel>
+				<class></class>
+				<name>Sine Waveform</name>
+				<id>sim:sineWaveform</id>
+				<read>
+					<access method="GET" transport="ca" type="double">sim://sineWaveform
+					</access>
+				</read>
+			</channel>
+			<channel>
+				<class></class>
+				<name>Square Waveform</name>
+				<id>sim:squareWaveform</id>
+				<read>
+					<access method="GET" transport="ca" type="double">sim://squareWaveform
+					</access>
+				</read>
+			</channel>
+			<channel>
+				<class></class>
+				<name>Sawtooth Waveform</name>
+				<id>sim:sawtoothWaveform</id>
+				<read>
+					<access method="GET" transport="ca" type="double">sim://sawtoothWaveform
+					</access>
+				</read>
+			</channel>
+			<channel>
+				<class></class>
+				<name>Ramp</name>
+				<id>sim:ramp</id>
+				<read>
+					<access method="GET" transport="ca" type="double">sim://ramp
+					</access>
+				</read>
+			</channel>
+		</detector>
 	</detectors>
 	<!-- motor section -->
 	<motors>
@@ -246,7 +373,7 @@
 	<!-- device section -->
 	<devices>
 		<device>
-			<class>excas</class>
+			<class>EPICS</class>
 			<name>eveBoot</name>
 			<id>eve:bootdev</id>
 			<value>
@@ -255,7 +382,7 @@
 			</value>
 		</device>
 		<device>
-			<class>excas</class>
+			<class>EPICS</class>
 			<name>eveBooty</name>
 			<id>eve:bootydev</id>
 			<value>
