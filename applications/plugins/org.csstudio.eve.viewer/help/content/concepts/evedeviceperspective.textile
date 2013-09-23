@@ -1,12 +1,7 @@
 h1(eveTopic). EveDevice Perspective
 
-p. The image below shows an overview of the EveDevice Perspective.
+p. The EveDevice perspective contains four views. Three which interact with each other and one showing different kinds of messages. The image below shows an overview of the EveDevice perspective.
 
 !(eveImage)../../img/concepts/evedeviceperspective-overview.png(EveDevice Perspective Overview)!
 
-table(eveRefTable).
-| 1| Local Devices View| available devices arranged in a tree (by class)|
-| 2| Device Inspector View| allows monitoring and manipulation of devices|
-| 3| Device Options View| shows options of a selected device|
-| 4| Messages View| messages from multiple sources are displayed here|
-
+p. Devices present in the current "device definition":/help/topic/de.ptb.epics.eve.help/help/content/concepts/devicedescription.html which are shown in the "Local Devices":localdevicesview.html view (1) can be added to the "Device Inspector":deviceinspector.html (2) for monitoring and/or manipulation. Additional properties, i.e. options, are available in the "Options View":optionsview.html (3). Warnings and notifications of wrong inputs are shown in the "Messages View":messagesview.html (4).
