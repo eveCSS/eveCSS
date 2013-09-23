@@ -1,3 +1,3 @@
 h1(eveTopic). Overview
 
-The EVE Viewer plug in consists of two parts. The first ("EveDevice Perspective":concepts/evedeviceperspective.html) is a device manager which offers features to display and manipulate different aspects (process variables) of devices. The second ("EveEngine Perspective":concepts/eveengineperspective.html) allows the execution (and simultaneous plotting of the results) of scan descriptions (created by the "EVE Editor":/help/topic/de.ptb.epics.eve.editor/help/content/overview.html). 
+The EVE Viewer plug in consists of two parts. 1) The "EveDevice Perspective":concepts/evedeviceperspective.html is a device manager which offers features to display and manipulate devices, e.g. displaying current or moving a motor. 2) The "EveEngine Perspective":concepts/eveengineperspective.html allows execution and monitoring of scan descriptions created by the "EVE Editor":/help/topic/de.ptb.epics.eve.editor/help/content/overview.html.
