@@ -3,7 +3,6 @@ package de.ptb.epics.eve.viewer.views.messagesview;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
@@ -30,16 +29,16 @@ public class LabelProvider implements ITableLabelProvider {
 						getImage("DEBUG");
 			case ERROR:
 				return PlatformUI.getWorkbench().getSharedImages()
-						.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+						.getImage("ERROR");
 			case FATAL:
 				return PlatformUI.getWorkbench().getSharedImages().
 						getImage("FATAL");
 			case INFO:
 				return PlatformUI.getWorkbench().getSharedImages()
-						.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+						.getImage("INFO");
 			case MINOR:
 				return PlatformUI.getWorkbench().getSharedImages()
-						.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+						.getImage("WARNING");
 			case SYSTEM:
 				return PlatformUI.getWorkbench().getSharedImages().
 						getImage("SYSTEM");
