@@ -1,2 +1,11 @@
-h1(eveTopic). Options View
+h1(eveTopic). Device Options View
 
+p. The Device Options view shows all available options of a device selected either in the "(Local) Devices View":localdevicesview.html or in (one of) the "Device Inspector View(s)":deviceinspectorview.html. Below is an example showing options of a selected motor axes:
+
+!(eveImage)../../img/concepts/deviceoptionsview.png(Device Options View)!
+
+p. If necessary the table could be sorted by name by clicking on the "Option" column. With each click the table toggles one step forward through the states unsorted &rarr; ascending &rarr; descending. An icon in the column header shows the currently active sort state (no icon is shown if unsorted):
+
+!(eveImage)../../img/concepts/deviceoptionsview-sort.png(Device Options View - Sorted)!
+
+p. Options that are modifiable can be manipulated by clicking on the value. Depending on the data type a suitable editor opens.

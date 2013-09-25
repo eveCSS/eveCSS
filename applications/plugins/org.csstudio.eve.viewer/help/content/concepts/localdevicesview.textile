@@ -1,6 +1,6 @@
 h1(eveTopic). (Local) Devices View
 
-p. The (Local) Devices View shows all available devices[1] in a hierarchy. The topmost level contains classes and containers for devices without a class. The "location a device appears":../reference/deviceclasses.html can be "customized":/help/topic/de.ptb.epics.eve.help/help/content/tasks/createdevicedescription.html. A sample composition is shown in the following figure:
+p. The (Local) Devices View shows all available devices[1] in a hierarchy. The topmost level contains classes and containers for devices without a class. The "location a device appears":../reference/deviceclasses.html in can be "customized":/help/topic/de.ptb.epics.eve.help/help/content/tasks/createdevicedescription.html. A sample composition is shown in the following figure:
 
 !(eveImage)../../img/concepts/devicesview.png(Devices View)!
 

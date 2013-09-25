@@ -6,6 +6,8 @@ p. The Device Inspector view is highly customizable. The following figure shows 
 
 !(eveImage)../../img/concepts/deviceinspectorview.png(Device Inspector View)!
 
+p. The figure also shows the ==<a href="http://www.aps.anl.gov/epics/EpicsDocumentation/ExtensionsManuals/AlarmHandler/ALHUserGuide/ALHUserGuide.html#2_4_2" target="_blank">EPICS Alarm Severity</a>== for "Gaussian Noise" and "Ramp". The color code is defined "here":../reference/severitycolors.html .
+
 p. The toolbar offers commands to add and remove all devices of a certain type[1]. It is also possible to open additional Device Inspector views (and rename them). Together with the option to maximize a device table several scenarios are imaginable. One would be to separate the devices by type:
 
 !(eveImage)../../img/concepts/deviceinspectorview-multiple.png(multiple Device Inspector Views - Example)!
