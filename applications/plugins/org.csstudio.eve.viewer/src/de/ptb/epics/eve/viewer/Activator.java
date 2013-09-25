@@ -452,7 +452,7 @@ public class Activator extends AbstractUIPlugin {
 		imagereg.put("INFO", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/information.gif").createImage());
 		imagereg.put("WARNING", imageDescriptorFromPlugin(
-				PLUGIN_ID, "icons/minor.gif").createImage());
+				PLUGIN_ID, "icons/warning_obj.gif").createImage());
 		imagereg.put("SORTARROW", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/view_menu.gif").createImage());
 	}
