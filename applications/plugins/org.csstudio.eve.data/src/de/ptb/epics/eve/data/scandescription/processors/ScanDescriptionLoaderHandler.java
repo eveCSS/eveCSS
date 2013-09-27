@@ -210,8 +210,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			} else if (qName.equals("monitoroptions")) {
 				if (atts.getValue("type") == null) {
-					this.scanDescription.setMonitorOption(MonitorOption.CUSTOM);					
-	System.out.println("\nDie MonitorOption wurde auf CUSTOM gesetzt");
+					this.scanDescription.setMonitorOption(MonitorOption.CUSTOM);
 				} else {
 					this.scanDescription.setMonitorOption(
 						MonitorOption.stringToType(atts.getValue("type")));
@@ -1140,15 +1139,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case MONITOROPTIONS_LOADING:
 			if (qName.equals("monitoroptions")) {
 				// Hier ist jetzt die Liste der Monitor Options fertig!
-System.out.println("\nDie Liste der MonitorOptions ist fertig!");
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
 				// Die Optionen müssen bei AS_IN_DEVICE_DEFINITION
 				// unter Umständen erweitert werden.
 				if (MonitorOption.AS_IN_DEVICE_DEFINITION.equals(scanDescription.getMonitorOption())) {
-					System.out.println("\tMonitor Option = " + MonitorOption.AS_IN_DEVICE_DEFINITION);
-					System.out.println("\tListe muss überprüft werden");
-
 					for (Detector d : measuringStation.getDetectors()) {
 						for (Option o : d.getOptions()) {
 							if(o.isMonitor()) {

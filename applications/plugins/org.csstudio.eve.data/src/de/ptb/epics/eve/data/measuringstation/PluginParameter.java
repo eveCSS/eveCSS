@@ -358,8 +358,6 @@ public class PluginParameter {
 				this.values = null;
 				return true;
 			}
-			System.err.println(this.values);
-			System.err.println(value);
 			if(this.type == PluginDataType.INT) {
 				if(Integer.parseInt(value) > Integer.parseInt(values[0]) && 
 				   Integer.parseInt(value) < Integer.parseInt(values[1])) {

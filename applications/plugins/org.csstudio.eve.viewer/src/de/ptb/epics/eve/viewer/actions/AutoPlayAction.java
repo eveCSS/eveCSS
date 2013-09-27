@@ -11,39 +11,36 @@ import de.ptb.epics.eve.viewer.Activator;
 
 public class AutoPlayAction implements IWorkbenchWindowActionDelegate {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void init(IWorkbenchWindow window) {
-		// TODO Auto-generated method stub
-
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void run(IAction action) {
-
-		
-		System.out.println("PlayListController: " + Activator.getDefault().getEcp1Client().getPlayListController().toString());
-		
-		
 		if (Activator.getDefault().getEcp1Client().getPlayListController().isAutoplay()) {
-			System.out.println("Autoplay wird ausgeschaltet");
 			Activator.getDefault().getEcp1Client().getPlayListController().setAutoplay(false);
-		}
-		else {
-			System.out.println("Autoplay wird eingeschaltet");
+		} else {
 			Activator.getDefault().getEcp1Client().getPlayListController().setAutoplay(true);
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
-		// TODO Auto-generated method stub
-
 	}
-
 }
