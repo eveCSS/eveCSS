@@ -100,8 +100,9 @@ public class ValueEditingSupport extends EditingSupport {
 					return 0;
 				}
 			} else {
-				return prescan.getAbstractPrePostscanDevice().getValue().
-					getDiscreteValues().indexOf(element);
+				int index = prescan.getAbstractPrePostscanDevice().getValue().
+						getDiscreteValues().indexOf(prescan.getValue());
+				return index == -1 ? 0 : index;
 			}
 		} else {
 			return prescan.getValue();

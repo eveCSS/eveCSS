@@ -37,12 +37,15 @@ public class ScanDescriptionEditorActionBarContributor extends
 		toolBarManager.add(new ZoomComboContributionItem(getPage()) {
 			@Override
 			public boolean isVisible() {
+				if (Activator.getDefault().getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage() == null) {
+					return false;
+				}
 				return Activator.getDefault().getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage()
 						.getPerspective().getId().equals("EveEditorPerpective");
 			}
 		});
-			
 	}
 
 	/**

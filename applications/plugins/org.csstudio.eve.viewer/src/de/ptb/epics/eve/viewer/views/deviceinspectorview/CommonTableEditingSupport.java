@@ -69,7 +69,7 @@ public class CommonTableEditingSupport extends EditingSupport {
 	protected CellEditor getCellEditor(Object element) {
 		CommonTableElement ctb = (CommonTableElement) element;
 		
-		if (ctb.getCellEditor(column) == null) {
+		//if (ctb.getCellEditor(column) == null) {
 			if (ctb.isDiscrete(column)) {
 				ctb.setCellEditor(new MyComboBoxCellEditor(viewer.getTable(), 
 						ctb.getSelectStrings(column)), column);
@@ -85,7 +85,7 @@ public class CommonTableEditingSupport extends EditingSupport {
 				};
 				ctb.setCellEditor(textCellEditor, column);
 			}
-		}
+		//}
 		return ctb.getCellEditor(column);
 	}
 
