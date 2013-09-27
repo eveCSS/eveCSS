@@ -1,5 +1,13 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.15
+
+* [Feature] added/revised several Help topics
+
+* [Bug Fix] Missing pre-/postscan devices are now detected and handled properly
+* [Bug Fix] fixed a bug where a null pointer occured when editing the value field of pre-/postscan entries
+* [Bug Fix] fixed a bug where a combo box editor did close immediately after opening it (pre-/postscan entries)
+
 h2(eveTopic). Version 1.14
 
 * [Feature] the list of options that are monitored is now editable

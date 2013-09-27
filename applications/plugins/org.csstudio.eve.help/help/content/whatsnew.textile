@@ -1,5 +1,11 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.15
+
+* [Feature] revised default device definition file (loaded if no <i>eve.root</i> is given)
+
+* [Bug Fix] fixed faulty behavior when <i>eve.root</i> is not set
+
 h2(eveTopic). Version 1.14 
 
 * [Feature] eveCSS is now based on CSS 3.2.7
