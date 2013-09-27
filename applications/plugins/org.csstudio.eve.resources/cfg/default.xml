@@ -369,6 +369,2906 @@
 				</stop>
 			</axis>
 		</motor>
+		<!-- real motor -->
+		<motor>
+			<class>EPICS</class>
+			<name>SimulationMotor1</name>
+			<id>SimulationMotor1</id>
+			<axis>
+				<class></class>
+				<name>Demo_Motor1</name>
+				<id>MtSim:eve00000</id>
+				<goto>
+					<access method="GETPUTCB" transport="ca" type="double"
+						timeout="300.0">MtSim:eve00000</access>
+				</goto>
+				<position>
+					<access monitor="true" method="GETCB" transport="ca" type="double">MtSim:eve00000.RBV
+					</access>
+				</position>
+				<stop>
+					<access method="PUT" transport="ca" type="int">MtSim:eve00000.STOP
+					</access>
+					<value type="int">1</value>
+				</stop>
+				<highlimit>
+					<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.HLM
+					</access>
+				</highlimit>
+				<lowlimit>
+					<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.LLM
+					</access>
+				</lowlimit>
+				<status>
+					<access method="GETCB" transport="ca" type="int">MtSim:eve00000.MSTA
+					</access>
+				</status>
+				<movedone>
+					<access method="GETCB" transport="ca" type="int">MtSim:eve00000.DMOV
+					</access>
+				</movedone>
+				<unit>
+					<access method="GETPUTCB" transport="ca" type="string">MtSim:eve00000.EGU
+					</access>
+				</unit>
+				<deadband>
+					<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00000.RDBD
+					</access>
+				</deadband>
+				<offset>
+					<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00000.OFF
+					</access>
+				</offset>
+				<tweakvalue>
+					<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00000.TWV
+					</access>
+				</tweakvalue>
+				<tweakforward>
+					<access method="PUT" transport="ca" type="int">MtSim:eve00000.TWF
+					</access>
+					<value type="int">1</value>
+				</tweakforward>
+				<tweakreverse>
+					<access method="PUT" transport="ca" type="int">MtSim:eve00000.TWR
+					</access>
+					<value type="int">1</value>
+				</tweakreverse>
+				<option>
+					<name>Goto Position</name>
+					<id>MtSim:eve00000.VAL</id>
+					<value>
+						<access method="GETPUTCB" type="double" transport="ca"
+							timeout="300.0">MtSim:eve00000.VAL</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Position Readback</name>
+					<id>MtSim:eve00000.RBV</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00000.RBV
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Velocity</name>
+					<id>MtSim:eve00000.VELO</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.VELO
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Soft High Limit</name>
+					<id>MtSim:eve00000.HLM</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.HLM
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Soft Low Limit</name>
+					<id>MtSim:eve00000.LLM</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.LLM
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Offset</name>
+					<id>MtSim:eve00000.OFF</id>
+					<value>
+						<access method="GETPUTCB" type="double" transport="ca">MtSim:eve00000.OFF
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Dial Value</name>
+					<id>MtSim:eve00000.DVAL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.DVAL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Acceleration</name>
+					<id>MtSim:eve00000.ACCL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.ACCL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Motor Resolution</name>
+					<id>MtSim:eve00000.MRES</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.MRES
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Encoder Resolution</name>
+					<id>MtSim:eve00000.ERES</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.ERES
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Use Encoder</name>
+					<id>MtSim:eve00000.UEIP</id>
+					<value>
+						<access method="GETPUT" type="string" transport="ca">MtSim:eve00000.UEIP
+						</access>
+						<value type="string">No,Yes</value>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Resolution</name>
+					<id>MtSim:eve00000.RRES</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.RRES
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Use Readback</name>
+					<id>MtSim:eve00000.URIP</id>
+					<value>
+						<access method="GETPUT" type="string" transport="ca">MtSim:eve00000.URIP
+						</access>
+						<value type="string">No,Yes</value>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Base Velocity</name>
+					<id>MtSim:eve00000.VBAS</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.VBAS
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Retry Deadband</name>
+					<id>MtSim:eve00000.RDBD</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.RDBD
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Motor Status</name>
+					<id>MtSim:eve00000.MSTA</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00000.MSTA
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Retry Count</name>
+					<id>MtSim:eve00000.RCNT</id>
+					<value>
+						<access monitor="true" method="GETCB" type="double"
+							transport="ca">MtSim:eve00000.RCNT</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Severity</name>
+					<id>MtSim:eve00000.SEVR</id>
+					<value>
+						<access method="GETCB" type="string" transport="ca">MtSim:eve00000.SEVR
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Status</name>
+					<id>MtSim:eve00000.STAT</id>
+					<value>
+						<access method="GETCB" type="string" transport="ca">MtSim:eve00000.STAT
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Goto Steps</name>
+					<id>MtSim:eve00000.RVAL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.RVAL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Steps</name>
+					<id>MtSim:eve00000.RRBV</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00000.RRBV
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Motor Steps</name>
+					<id>MtSim:eve00000.RMP</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00000.RMP
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Encoder Steps</name>
+					<id>MtSim:eve00000.REP</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00000.REP
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Position Mode</name>
+					<id>MtSim:eve00000.SET</id>
+					<value>
+						<access method="GETPUTCB" type="string" transport="ca">MtSim:eve00000.SET
+						</access>
+						<value type="string">Use,Set</value>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Move Fraction</name>
+					<id>MtSim:eve00000.FRAC</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.FRAC
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Link</name>
+					<id>MtSim:eve00000.RDBL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.RDBL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Delay</name>
+					<id>MtSim:eve00000.DLY</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.DLY
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Backlash Distance</name>
+					<id>MtSim:eve00000.BDST</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.BDST
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Backlash Velocity</name>
+					<id>MtSim:eve00000.BVEL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.BVEL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Backlash Acceleration</name>
+					<id>MtSim:eve00000.BACC</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.BACC
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Home Run foreward</name>
+					<id>MtSim:eve00000.HOMF</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.HOMF
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Home Run backward</name>
+					<id>MtSim:eve00000.HOMR</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.HOMR
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Home Run Velocity</name>
+					<id>MtSim:eve00000.HVEL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.HVEL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+			</axis>
+			<axis>
+				<class></class>
+				<name>Demo_Motor2</name>
+				<id>MtSim:eve00001</id>
+				<goto>
+					<access method="GETPUTCB" transport="ca" type="double"
+						timeout="300.0">MtSim:eve00001</access>
+				</goto>
+				<position>
+					<access monitor="true" method="GETCB" transport="ca" type="double">MtSim:eve00001.RBV
+					</access>
+				</position>
+				<stop>
+					<access method="PUT" transport="ca" type="int">MtSim:eve00001.STOP
+					</access>
+					<value type="int">1</value>
+				</stop>
+				<highlimit>
+					<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.HLM
+					</access>
+				</highlimit>
+				<lowlimit>
+					<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.LLM
+					</access>
+				</lowlimit>
+				<status>
+					<access method="GETCB" transport="ca" type="int">MtSim:eve00001.MSTA
+					</access>
+				</status>
+				<movedone>
+					<access method="GETCB" transport="ca" type="int">MtSim:eve00001.DMOV
+					</access>
+				</movedone>
+				<unit>
+					<access method="GETPUTCB" transport="ca" type="string">MtSim:eve00001.EGU
+					</access>
+				</unit>
+				<deadband>
+					<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00001.RDBD
+					</access>
+				</deadband>
+				<offset>
+					<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00001.OFF
+					</access>
+				</offset>
+				<tweakvalue>
+					<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00001.TWV
+					</access>
+				</tweakvalue>
+				<tweakforward>
+					<access method="PUT" transport="ca" type="int">MtSim:eve00001.TWF
+					</access>
+					<value type="int">1</value>
+				</tweakforward>
+				<tweakreverse>
+					<access method="PUT" transport="ca" type="int">MtSim:eve00001.TWR
+					</access>
+					<value type="int">1</value>
+				</tweakreverse>
+				<option>
+					<name>Goto Position</name>
+					<id>MtSim:eve00001.VAL</id>
+					<value>
+						<access method="GETPUTCB" type="double" transport="ca"
+							timeout="300.0">MtSim:eve00001.VAL</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Position Readback</name>
+					<id>MtSim:eve00001.RBV</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00001.RBV
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Velocity</name>
+					<id>MtSim:eve00001.VELO</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.VELO
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Soft High Limit</name>
+					<id>MtSim:eve00001.HLM</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.HLM
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Soft Low Limit</name>
+					<id>MtSim:eve00001.LLM</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.LLM
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Offset</name>
+					<id>MtSim:eve00001.OFF</id>
+					<value>
+						<access method="GETPUTCB" type="double" transport="ca">MtSim:eve00001.OFF
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Dial Value</name>
+					<id>MtSim:eve00001.DVAL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.DVAL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Acceleration</name>
+					<id>MtSim:eve00001.ACCL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.ACCL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Motor Resolution</name>
+					<id>MtSim:eve00001.MRES</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.MRES
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Encoder Resolution</name>
+					<id>MtSim:eve00001.ERES</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.ERES
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Use Encoder</name>
+					<id>MtSim:eve00001.UEIP</id>
+					<value>
+						<access method="GETPUT" type="string" transport="ca">MtSim:eve00001.UEIP
+						</access>
+						<value type="string">No,Yes</value>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Resolution</name>
+					<id>MtSim:eve00001.RRES</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.RRES
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Use Readback</name>
+					<id>MtSim:eve00001.URIP</id>
+					<value>
+						<access method="GETPUT" type="string" transport="ca">MtSim:eve00001.URIP
+						</access>
+						<value type="string">No,Yes</value>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Base Velocity</name>
+					<id>MtSim:eve00001.VBAS</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.VBAS
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Retry Deadband</name>
+					<id>MtSim:eve00001.RDBD</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.RDBD
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Motor Status</name>
+					<id>MtSim:eve00001.MSTA</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00001.MSTA
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Retry Count</name>
+					<id>MtSim:eve00001.RCNT</id>
+					<value>
+						<access monitor="true" method="GETCB" type="double"
+							transport="ca">MtSim:eve00001.RCNT</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Severity</name>
+					<id>MtSim:eve00001.SEVR</id>
+					<value>
+						<access method="GETCB" type="string" transport="ca">MtSim:eve00001.SEVR
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Status</name>
+					<id>MtSim:eve00001.STAT</id>
+					<value>
+						<access method="GETCB" type="string" transport="ca">MtSim:eve00001.STAT
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Goto Steps</name>
+					<id>MtSim:eve00001.RVAL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.RVAL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Steps</name>
+					<id>MtSim:eve00001.RRBV</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00001.RRBV
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Motor Steps</name>
+					<id>MtSim:eve00001.RMP</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00001.RMP
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Encoder Steps</name>
+					<id>MtSim:eve00001.REP</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00001.REP
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Position Mode</name>
+					<id>MtSim:eve00001.SET</id>
+					<value>
+						<access method="GETPUTCB" type="string" transport="ca">MtSim:eve00001.SET
+						</access>
+						<value type="string">Use,Set</value>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Move Fraction</name>
+					<id>MtSim:eve00001.FRAC</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.FRAC
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Link</name>
+					<id>MtSim:eve00001.RDBL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.RDBL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Delay</name>
+					<id>MtSim:eve00001.DLY</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.DLY
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Backlash Distance</name>
+					<id>MtSim:eve00001.BDST</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.BDST
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Backlash Velocity</name>
+					<id>MtSim:eve00001.BVEL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.BVEL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Backlash Acceleration</name>
+					<id>MtSim:eve00001.BACC</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.BACC
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Home Run foreward</name>
+					<id>MtSim:eve00001.HOMF</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.HOMF
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Home Run backward</name>
+					<id>MtSim:eve00001.HOMR</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.HOMR
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Home Run Velocity</name>
+					<id>MtSim:eve00001.HVEL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.HVEL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+			</axis>
+			<axis>
+				<class></class>
+				<name>Demo_Motor3</name>
+				<id>MtSim:eve00002</id>
+				<goto>
+					<access method="GETPUTCB" transport="ca" type="double"
+						timeout="300.0">MtSim:eve00002</access>
+				</goto>
+				<position>
+					<access monitor="true" method="GETCB" transport="ca" type="double">MtSim:eve00002.RBV
+					</access>
+				</position>
+				<stop>
+					<access method="PUT" transport="ca" type="int">MtSim:eve00002.STOP
+					</access>
+					<value type="int">1</value>
+				</stop>
+				<highlimit>
+					<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.HLM
+					</access>
+				</highlimit>
+				<lowlimit>
+					<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.LLM
+					</access>
+				</lowlimit>
+				<status>
+					<access method="GETCB" transport="ca" type="int">MtSim:eve00002.MSTA
+					</access>
+				</status>
+				<movedone>
+					<access method="GETCB" transport="ca" type="int">MtSim:eve00002.DMOV
+					</access>
+				</movedone>
+				<unit>
+					<access method="GETPUTCB" transport="ca" type="string">MtSim:eve00002.EGU
+					</access>
+				</unit>
+				<deadband>
+					<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00002.RDBD
+					</access>
+				</deadband>
+				<offset>
+					<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00002.OFF
+					</access>
+				</offset>
+				<tweakvalue>
+					<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00002.TWV
+					</access>
+				</tweakvalue>
+				<tweakforward>
+					<access method="PUT" transport="ca" type="int">MtSim:eve00002.TWF
+					</access>
+					<value type="int">1</value>
+				</tweakforward>
+				<tweakreverse>
+					<access method="PUT" transport="ca" type="int">MtSim:eve00002.TWR
+					</access>
+					<value type="int">1</value>
+				</tweakreverse>
+				<option>
+					<name>Goto Position</name>
+					<id>MtSim:eve00002.VAL</id>
+					<value>
+						<access method="GETPUTCB" type="double" transport="ca"
+							timeout="300.0">MtSim:eve00002.VAL</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Position Readback</name>
+					<id>MtSim:eve00002.RBV</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00002.RBV
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Velocity</name>
+					<id>MtSim:eve00002.VELO</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.VELO
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Soft High Limit</name>
+					<id>MtSim:eve00002.HLM</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.HLM
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Soft Low Limit</name>
+					<id>MtSim:eve00002.LLM</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.LLM
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Offset</name>
+					<id>MtSim:eve00002.OFF</id>
+					<value>
+						<access method="GETPUTCB" type="double" transport="ca">MtSim:eve00002.OFF
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Dial Value</name>
+					<id>MtSim:eve00002.DVAL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.DVAL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Acceleration</name>
+					<id>MtSim:eve00002.ACCL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.ACCL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Motor Resolution</name>
+					<id>MtSim:eve00002.MRES</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.MRES
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Encoder Resolution</name>
+					<id>MtSim:eve00002.ERES</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.ERES
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Use Encoder</name>
+					<id>MtSim:eve00002.UEIP</id>
+					<value>
+						<access method="GETPUT" type="string" transport="ca">MtSim:eve00002.UEIP
+						</access>
+						<value type="string">No,Yes</value>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Resolution</name>
+					<id>MtSim:eve00002.RRES</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.RRES
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+					<!-- real motor -->
+					<motor>
+						<class>Motors</class>
+						<name>SimulationMotor1</name>
+						<id>SimulationMotor1</id>
+						<axis>
+							<class></class>
+							<name>Demo_Motor1</name>
+							<id>MtSim:eve00000</id>
+							<goto>
+								<access method="GETPUTCB" transport="ca" type="double"
+									timeout="300.0">MtSim:eve00000</access>
+							</goto>
+							<position>
+								<access monitor="true" method="GETCB" transport="ca"
+									type="double">
+									MtSim:eve00000.RBV
+								</access>
+							</position>
+							<stop>
+								<access method="PUT" transport="ca" type="int">MtSim:eve00000.STOP
+								</access>
+								<value type="int">1</value>
+							</stop>
+							<highlimit>
+								<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.HLM
+								</access>
+							</highlimit>
+							<lowlimit>
+								<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.LLM
+								</access>
+							</lowlimit>
+							<status>
+								<access method="GETCB" transport="ca" type="int">MtSim:eve00000.MSTA
+								</access>
+							</status>
+							<movedone>
+								<access method="GETCB" transport="ca" type="int">MtSim:eve00000.DMOV
+								</access>
+							</movedone>
+							<unit>
+								<access method="GETPUTCB" transport="ca" type="string">MtSim:eve00000.EGU
+								</access>
+							</unit>
+							<deadband>
+								<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00000.RDBD
+								</access>
+							</deadband>
+							<offset>
+								<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00000.OFF
+								</access>
+							</offset>
+							<tweakvalue>
+								<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00000.TWV
+								</access>
+							</tweakvalue>
+							<tweakforward>
+								<access method="PUT" transport="ca" type="int">MtSim:eve00000.TWF
+								</access>
+								<value type="int">1</value>
+							</tweakforward>
+							<tweakreverse>
+								<access method="PUT" transport="ca" type="int">MtSim:eve00000.TWR
+								</access>
+								<value type="int">1</value>
+							</tweakreverse>
+							<option>
+								<name>Goto Position</name>
+								<id>MtSim:eve00000.VAL</id>
+								<value>
+									<access method="GETPUTCB" type="double" transport="ca"
+										timeout="300.0">MtSim:eve00000.VAL</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Position Readback</name>
+								<id>MtSim:eve00000.RBV</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00000.RBV
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Velocity</name>
+								<id>MtSim:eve00000.VELO</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.VELO
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Soft High Limit</name>
+								<id>MtSim:eve00000.HLM</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.HLM
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Soft Low Limit</name>
+								<id>MtSim:eve00000.LLM</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.LLM
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Offset</name>
+								<id>MtSim:eve00000.OFF</id>
+								<value>
+									<access method="GETPUTCB" type="double" transport="ca">MtSim:eve00000.OFF
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Dial Value</name>
+								<id>MtSim:eve00000.DVAL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.DVAL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Acceleration</name>
+								<id>MtSim:eve00000.ACCL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.ACCL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Motor Resolution</name>
+								<id>MtSim:eve00000.MRES</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.MRES
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Encoder Resolution</name>
+								<id>MtSim:eve00000.ERES</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.ERES
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Use Encoder</name>
+								<id>MtSim:eve00000.UEIP</id>
+								<value>
+									<access method="GETPUT" type="string" transport="ca">MtSim:eve00000.UEIP
+									</access>
+									<value type="string">No,Yes</value>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Resolution</name>
+								<id>MtSim:eve00000.RRES</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.RRES
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Use Readback</name>
+								<id>MtSim:eve00000.URIP</id>
+								<value>
+									<access method="GETPUT" type="string" transport="ca">MtSim:eve00000.URIP
+									</access>
+									<value type="string">No,Yes</value>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Base Velocity</name>
+								<id>MtSim:eve00000.VBAS</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.VBAS
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Retry Deadband</name>
+								<id>MtSim:eve00000.RDBD</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.RDBD
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Motor Status</name>
+								<id>MtSim:eve00000.MSTA</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00000.MSTA
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Retry Count</name>
+								<id>MtSim:eve00000.RCNT</id>
+								<value>
+									<access monitor="true" method="GETCB" type="double"
+										transport="ca">MtSim:eve00000.RCNT</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Severity</name>
+								<id>MtSim:eve00000.SEVR</id>
+								<value>
+									<access method="GETCB" type="string" transport="ca">MtSim:eve00000.SEVR
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Status</name>
+								<id>MtSim:eve00000.STAT</id>
+								<value>
+									<access method="GETCB" type="string" transport="ca">MtSim:eve00000.STAT
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Goto Steps</name>
+								<id>MtSim:eve00000.RVAL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.RVAL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Steps</name>
+								<id>MtSim:eve00000.RRBV</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00000.RRBV
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Motor Steps</name>
+								<id>MtSim:eve00000.RMP</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00000.RMP
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Encoder Steps</name>
+								<id>MtSim:eve00000.REP</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00000.REP
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Position Mode</name>
+								<id>MtSim:eve00000.SET</id>
+								<value>
+									<access method="GETPUTCB" type="string" transport="ca">MtSim:eve00000.SET
+									</access>
+									<value type="string">Use,Set</value>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Move Fraction</name>
+								<id>MtSim:eve00000.FRAC</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.FRAC
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Link</name>
+								<id>MtSim:eve00000.RDBL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.RDBL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Delay</name>
+								<id>MtSim:eve00000.DLY</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.DLY
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Backlash Distance</name>
+								<id>MtSim:eve00000.BDST</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.BDST
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Backlash Velocity</name>
+								<id>MtSim:eve00000.BVEL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.BVEL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Backlash Acceleration</name>
+								<id>MtSim:eve00000.BACC</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.BACC
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Home Run foreward</name>
+								<id>MtSim:eve00000.HOMF</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.HOMF
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Home Run backward</name>
+								<id>MtSim:eve00000.HOMR</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.HOMR
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Home Run Velocity</name>
+								<id>MtSim:eve00000.HVEL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00000.HVEL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+						</axis>
+						<axis>
+							<class></class>
+							<name>Demo_Motor2</name>
+							<id>MtSim:eve00001</id>
+							<goto>
+								<access method="GETPUTCB" transport="ca" type="double"
+									timeout="300.0">MtSim:eve00001</access>
+							</goto>
+							<position>
+								<access monitor="true" method="GETCB" transport="ca"
+									type="double">
+									MtSim:eve00001.RBV
+								</access>
+							</position>
+							<stop>
+								<access method="PUT" transport="ca" type="int">MtSim:eve00001.STOP
+								</access>
+								<value type="int">1</value>
+							</stop>
+							<highlimit>
+								<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.HLM
+								</access>
+							</highlimit>
+							<lowlimit>
+								<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.LLM
+								</access>
+							</lowlimit>
+							<status>
+								<access method="GETCB" transport="ca" type="int">MtSim:eve00001.MSTA
+								</access>
+							</status>
+							<movedone>
+								<access method="GETCB" transport="ca" type="int">MtSim:eve00001.DMOV
+								</access>
+							</movedone>
+							<unit>
+								<access method="GETPUTCB" transport="ca" type="string">MtSim:eve00001.EGU
+								</access>
+							</unit>
+							<deadband>
+								<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00001.RDBD
+								</access>
+							</deadband>
+							<offset>
+								<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00001.OFF
+								</access>
+							</offset>
+							<tweakvalue>
+								<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00001.TWV
+								</access>
+							</tweakvalue>
+							<tweakforward>
+								<access method="PUT" transport="ca" type="int">MtSim:eve00001.TWF
+								</access>
+								<value type="int">1</value>
+							</tweakforward>
+							<tweakreverse>
+								<access method="PUT" transport="ca" type="int">MtSim:eve00001.TWR
+								</access>
+								<value type="int">1</value>
+							</tweakreverse>
+							<option>
+								<name>Goto Position</name>
+								<id>MtSim:eve00001.VAL</id>
+								<value>
+									<access method="GETPUTCB" type="double" transport="ca"
+										timeout="300.0">MtSim:eve00001.VAL</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Position Readback</name>
+								<id>MtSim:eve00001.RBV</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00001.RBV
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Velocity</name>
+								<id>MtSim:eve00001.VELO</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.VELO
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Soft High Limit</name>
+								<id>MtSim:eve00001.HLM</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.HLM
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Soft Low Limit</name>
+								<id>MtSim:eve00001.LLM</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.LLM
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Offset</name>
+								<id>MtSim:eve00001.OFF</id>
+								<value>
+									<access method="GETPUTCB" type="double" transport="ca">MtSim:eve00001.OFF
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Dial Value</name>
+								<id>MtSim:eve00001.DVAL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.DVAL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Acceleration</name>
+								<id>MtSim:eve00001.ACCL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.ACCL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Motor Resolution</name>
+								<id>MtSim:eve00001.MRES</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.MRES
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Encoder Resolution</name>
+								<id>MtSim:eve00001.ERES</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.ERES
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Use Encoder</name>
+								<id>MtSim:eve00001.UEIP</id>
+								<value>
+									<access method="GETPUT" type="string" transport="ca">MtSim:eve00001.UEIP
+									</access>
+									<value type="string">No,Yes</value>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Resolution</name>
+								<id>MtSim:eve00001.RRES</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.RRES
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Use Readback</name>
+								<id>MtSim:eve00001.URIP</id>
+								<value>
+									<access method="GETPUT" type="string" transport="ca">MtSim:eve00001.URIP
+									</access>
+									<value type="string">No,Yes</value>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Base Velocity</name>
+								<id>MtSim:eve00001.VBAS</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.VBAS
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Retry Deadband</name>
+								<id>MtSim:eve00001.RDBD</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.RDBD
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Motor Status</name>
+								<id>MtSim:eve00001.MSTA</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00001.MSTA
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Retry Count</name>
+								<id>MtSim:eve00001.RCNT</id>
+								<value>
+									<access monitor="true" method="GETCB" type="double"
+										transport="ca">MtSim:eve00001.RCNT</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Severity</name>
+								<id>MtSim:eve00001.SEVR</id>
+								<value>
+									<access method="GETCB" type="string" transport="ca">MtSim:eve00001.SEVR
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Status</name>
+								<id>MtSim:eve00001.STAT</id>
+								<value>
+									<access method="GETCB" type="string" transport="ca">MtSim:eve00001.STAT
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Goto Steps</name>
+								<id>MtSim:eve00001.RVAL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.RVAL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Steps</name>
+								<id>MtSim:eve00001.RRBV</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00001.RRBV
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Motor Steps</name>
+								<id>MtSim:eve00001.RMP</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00001.RMP
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Encoder Steps</name>
+								<id>MtSim:eve00001.REP</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00001.REP
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Position Mode</name>
+								<id>MtSim:eve00001.SET</id>
+								<value>
+									<access method="GETPUTCB" type="string" transport="ca">MtSim:eve00001.SET
+									</access>
+									<value type="string">Use,Set</value>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Move Fraction</name>
+								<id>MtSim:eve00001.FRAC</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.FRAC
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Link</name>
+								<id>MtSim:eve00001.RDBL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.RDBL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Delay</name>
+								<id>MtSim:eve00001.DLY</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.DLY
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Backlash Distance</name>
+								<id>MtSim:eve00001.BDST</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.BDST
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Backlash Velocity</name>
+								<id>MtSim:eve00001.BVEL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.BVEL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Backlash Acceleration</name>
+								<id>MtSim:eve00001.BACC</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.BACC
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Home Run foreward</name>
+								<id>MtSim:eve00001.HOMF</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.HOMF
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Home Run backward</name>
+								<id>MtSim:eve00001.HOMR</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.HOMR
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Home Run Velocity</name>
+								<id>MtSim:eve00001.HVEL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00001.HVEL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+						</axis>
+						<axis>
+							<class></class>
+							<name>Demo_Motor3</name>
+							<id>MtSim:eve00002</id>
+							<goto>
+								<access method="GETPUTCB" transport="ca" type="double"
+									timeout="300.0">MtSim:eve00002</access>
+							</goto>
+							<position>
+								<access monitor="true" method="GETCB" transport="ca"
+									type="double">
+									MtSim:eve00002.RBV
+								</access>
+							</position>
+							<stop>
+								<access method="PUT" transport="ca" type="int">MtSim:eve00002.STOP
+								</access>
+								<value type="int">1</value>
+							</stop>
+							<highlimit>
+								<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.HLM
+								</access>
+							</highlimit>
+							<lowlimit>
+								<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.LLM
+								</access>
+							</lowlimit>
+							<status>
+								<access method="GETCB" transport="ca" type="int">MtSim:eve00002.MSTA
+								</access>
+							</status>
+							<movedone>
+								<access method="GETCB" transport="ca" type="int">MtSim:eve00002.DMOV
+								</access>
+							</movedone>
+							<unit>
+								<access method="GETPUTCB" transport="ca" type="string">MtSim:eve00002.EGU
+								</access>
+							</unit>
+							<deadband>
+								<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00002.RDBD
+								</access>
+							</deadband>
+							<offset>
+								<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00002.OFF
+								</access>
+							</offset>
+							<tweakvalue>
+								<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00002.TWV
+								</access>
+							</tweakvalue>
+							<tweakforward>
+								<access method="PUT" transport="ca" type="int">MtSim:eve00002.TWF
+								</access>
+								<value type="int">1</value>
+							</tweakforward>
+							<tweakreverse>
+								<access method="PUT" transport="ca" type="int">MtSim:eve00002.TWR
+								</access>
+								<value type="int">1</value>
+							</tweakreverse>
+							<option>
+								<name>Goto Position</name>
+								<id>MtSim:eve00002.VAL</id>
+								<value>
+									<access method="GETPUTCB" type="double" transport="ca"
+										timeout="300.0">MtSim:eve00002.VAL</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Position Readback</name>
+								<id>MtSim:eve00002.RBV</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00002.RBV
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Velocity</name>
+								<id>MtSim:eve00002.VELO</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.VELO
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Soft High Limit</name>
+								<id>MtSim:eve00002.HLM</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.HLM
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Soft Low Limit</name>
+								<id>MtSim:eve00002.LLM</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.LLM
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Offset</name>
+								<id>MtSim:eve00002.OFF</id>
+								<value>
+									<access method="GETPUTCB" type="double" transport="ca">MtSim:eve00002.OFF
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Dial Value</name>
+								<id>MtSim:eve00002.DVAL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.DVAL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Acceleration</name>
+								<id>MtSim:eve00002.ACCL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.ACCL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Motor Resolution</name>
+								<id>MtSim:eve00002.MRES</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.MRES
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Encoder Resolution</name>
+								<id>MtSim:eve00002.ERES</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.ERES
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Use Encoder</name>
+								<id>MtSim:eve00002.UEIP</id>
+								<value>
+									<access method="GETPUT" type="string" transport="ca">MtSim:eve00002.UEIP
+									</access>
+									<value type="string">No,Yes</value>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Resolution</name>
+								<id>MtSim:eve00002.RRES</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.RRES
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Use Readback</name>
+								<id>MtSim:eve00002.URIP</id>
+								<value>
+									<access method="GETPUT" type="string" transport="ca">MtSim:eve00002.URIP
+									</access>
+									<value type="string">No,Yes</value>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Base Velocity</name>
+								<id>MtSim:eve00002.VBAS</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.VBAS
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Retry Deadband</name>
+								<id>MtSim:eve00002.RDBD</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.RDBD
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Motor Status</name>
+								<id>MtSim:eve00002.MSTA</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00002.MSTA
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Retry Count</name>
+								<id>MtSim:eve00002.RCNT</id>
+								<value>
+									<access monitor="true" method="GETCB" type="double"
+										transport="ca">MtSim:eve00002.RCNT</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Severity</name>
+								<id>MtSim:eve00002.SEVR</id>
+								<value>
+									<access method="GETCB" type="string" transport="ca">MtSim:eve00002.SEVR
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Status</name>
+								<id>MtSim:eve00002.STAT</id>
+								<value>
+									<access method="GETCB" type="string" transport="ca">MtSim:eve00002.STAT
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Goto Steps</name>
+								<id>MtSim:eve00002.RVAL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.RVAL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Steps</name>
+								<id>MtSim:eve00002.RRBV</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00002.RRBV
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Motor Steps</name>
+								<id>MtSim:eve00002.RMP</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00002.RMP
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Encoder Steps</name>
+								<id>MtSim:eve00002.REP</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00002.REP
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Position Mode</name>
+								<id>MtSim:eve00002.SET</id>
+								<value>
+									<access method="GETPUTCB" type="string" transport="ca">MtSim:eve00002.SET
+									</access>
+									<value type="string">Use,Set</value>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Move Fraction</name>
+								<id>MtSim:eve00002.FRAC</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.FRAC
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Link</name>
+								<id>MtSim:eve00002.RDBL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.RDBL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Delay</name>
+								<id>MtSim:eve00002.DLY</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.DLY
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Backlash Distance</name>
+								<id>MtSim:eve00002.BDST</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.BDST
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Backlash Velocity</name>
+								<id>MtSim:eve00002.BVEL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.BVEL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Backlash Acceleration</name>
+								<id>MtSim:eve00002.BACC</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.BACC
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Home Run foreward</name>
+								<id>MtSim:eve00002.HOMF</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.HOMF
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Home Run backward</name>
+								<id>MtSim:eve00002.HOMR</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.HOMR
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Home Run Velocity</name>
+								<id>MtSim:eve00002.HVEL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.HVEL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+						</axis>
+						<axis>
+							<class></class>
+							<name>Demo_Motor4</name>
+							<id>MtSim:eve00003</id>
+							<goto>
+								<access method="GETPUTCB" transport="ca" type="double"
+									timeout="300.0">MtSim:eve00003</access>
+							</goto>
+							<position>
+								<access monitor="true" method="GETCB" transport="ca"
+									type="double">
+									MtSim:eve00003.RBV
+								</access>
+							</position>
+							<stop>
+								<access method="PUT" transport="ca" type="int">MtSim:eve00003.STOP
+								</access>
+								<value type="int">1</value>
+							</stop>
+							<highlimit>
+								<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.HLM
+								</access>
+							</highlimit>
+							<lowlimit>
+								<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.LLM
+								</access>
+							</lowlimit>
+							<status>
+								<access method="GETCB" transport="ca" type="int">MtSim:eve00003.MSTA
+								</access>
+							</status>
+							<movedone>
+								<access method="GETCB" transport="ca" type="int">MtSim:eve00003.DMOV
+								</access>
+							</movedone>
+							<unit>
+								<access method="GETPUTCB" transport="ca" type="string">MtSim:eve00003.EGU
+								</access>
+							</unit>
+							<deadband>
+								<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00003.RDBD
+								</access>
+							</deadband>
+							<offset>
+								<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00003.OFF
+								</access>
+							</offset>
+							<tweakvalue>
+								<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00003.TWV
+								</access>
+							</tweakvalue>
+							<tweakforward>
+								<access method="PUT" transport="ca" type="int">MtSim:eve00003.TWF
+								</access>
+								<value type="int">1</value>
+							</tweakforward>
+							<tweakreverse>
+								<access method="PUT" transport="ca" type="int">MtSim:eve00003.TWR
+								</access>
+								<value type="int">1</value>
+							</tweakreverse>
+							<option>
+								<name>Goto Position</name>
+								<id>MtSim:eve00003.VAL</id>
+								<value>
+									<access method="GETPUTCB" type="double" transport="ca"
+										timeout="300.0">MtSim:eve00003.VAL</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Position Readback</name>
+								<id>MtSim:eve00003.RBV</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00003.RBV
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Velocity</name>
+								<id>MtSim:eve00003.VELO</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.VELO
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Soft High Limit</name>
+								<id>MtSim:eve00003.HLM</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.HLM
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Soft Low Limit</name>
+								<id>MtSim:eve00003.LLM</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.LLM
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Offset</name>
+								<id>MtSim:eve00003.OFF</id>
+								<value>
+									<access method="GETPUTCB" type="double" transport="ca">MtSim:eve00003.OFF
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Dial Value</name>
+								<id>MtSim:eve00003.DVAL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.DVAL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Acceleration</name>
+								<id>MtSim:eve00003.ACCL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.ACCL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Motor Resolution</name>
+								<id>MtSim:eve00003.MRES</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.MRES
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Encoder Resolution</name>
+								<id>MtSim:eve00003.ERES</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.ERES
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Use Encoder</name>
+								<id>MtSim:eve00003.UEIP</id>
+								<value>
+									<access method="GETPUT" type="string" transport="ca">MtSim:eve00003.UEIP
+									</access>
+									<value type="string">No,Yes</value>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Resolution</name>
+								<id>MtSim:eve00003.RRES</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.RRES
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Use Readback</name>
+								<id>MtSim:eve00003.URIP</id>
+								<value>
+									<access method="GETPUT" type="string" transport="ca">MtSim:eve00003.URIP
+									</access>
+									<value type="string">No,Yes</value>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Base Velocity</name>
+								<id>MtSim:eve00003.VBAS</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.VBAS
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Retry Deadband</name>
+								<id>MtSim:eve00003.RDBD</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.RDBD
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Motor Status</name>
+								<id>MtSim:eve00003.MSTA</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00003.MSTA
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option monitor="true">
+								<name>Retry Count</name>
+								<id>MtSim:eve00003.RCNT</id>
+								<value>
+									<access monitor="true" method="GETCB" type="double"
+										transport="ca">MtSim:eve00003.RCNT</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Severity</name>
+								<id>MtSim:eve00003.SEVR</id>
+								<value>
+									<access method="GETCB" type="string" transport="ca">MtSim:eve00003.SEVR
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Status</name>
+								<id>MtSim:eve00003.STAT</id>
+								<value>
+									<access method="GETCB" type="string" transport="ca">MtSim:eve00003.STAT
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Goto Steps</name>
+								<id>MtSim:eve00003.RVAL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.RVAL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Steps</name>
+								<id>MtSim:eve00003.RRBV</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00003.RRBV
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Motor Steps</name>
+								<id>MtSim:eve00003.RMP</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00003.RMP
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Encoder Steps</name>
+								<id>MtSim:eve00003.REP</id>
+								<value>
+									<access method="GETCB" type="double" transport="ca">MtSim:eve00003.REP
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Position Mode</name>
+								<id>MtSim:eve00003.SET</id>
+								<value>
+									<access method="GETPUTCB" type="string" transport="ca">MtSim:eve00003.SET
+									</access>
+									<value type="string">Use,Set</value>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Move Fraction</name>
+								<id>MtSim:eve00003.FRAC</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.FRAC
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Link</name>
+								<id>MtSim:eve00003.RDBL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.RDBL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Readback Delay</name>
+								<id>MtSim:eve00003.DLY</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.DLY
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Backlash Distance</name>
+								<id>MtSim:eve00003.BDST</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.BDST
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Backlash Velocity</name>
+								<id>MtSim:eve00003.BVEL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.BVEL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Backlash Acceleration</name>
+								<id>MtSim:eve00003.BACC</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.BACC
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Home Run foreward</name>
+								<id>MtSim:eve00003.HOMF</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.HOMF
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Home Run backward</name>
+								<id>MtSim:eve00003.HOMR</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.HOMR
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+							<option>
+								<name>Home Run Velocity</name>
+								<id>MtSim:eve00003.HVEL</id>
+								<value>
+									<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.HVEL
+									</access>
+								</value>
+								<displaygroup>summary</displaygroup>
+							</option>
+						</axis>
+					</motor>
+				</option>
+				<option>
+					<name>Use Readback</name>
+					<id>MtSim:eve00002.URIP</id>
+					<value>
+						<access method="GETPUT" type="string" transport="ca">MtSim:eve00002.URIP
+						</access>
+						<value type="string">No,Yes</value>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Base Velocity</name>
+					<id>MtSim:eve00002.VBAS</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.VBAS
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Retry Deadband</name>
+					<id>MtSim:eve00002.RDBD</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.RDBD
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Motor Status</name>
+					<id>MtSim:eve00002.MSTA</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00002.MSTA
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Retry Count</name>
+					<id>MtSim:eve00002.RCNT</id>
+					<value>
+						<access monitor="true" method="GETCB" type="double"
+							transport="ca">MtSim:eve00002.RCNT</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Severity</name>
+					<id>MtSim:eve00002.SEVR</id>
+					<value>
+						<access method="GETCB" type="string" transport="ca">MtSim:eve00002.SEVR
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Status</name>
+					<id>MtSim:eve00002.STAT</id>
+					<value>
+						<access method="GETCB" type="string" transport="ca">MtSim:eve00002.STAT
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Goto Steps</name>
+					<id>MtSim:eve00002.RVAL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.RVAL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Steps</name>
+					<id>MtSim:eve00002.RRBV</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00002.RRBV
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Motor Steps</name>
+					<id>MtSim:eve00002.RMP</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00002.RMP
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Encoder Steps</name>
+					<id>MtSim:eve00002.REP</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00002.REP
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Position Mode</name>
+					<id>MtSim:eve00002.SET</id>
+					<value>
+						<access method="GETPUTCB" type="string" transport="ca">MtSim:eve00002.SET
+						</access>
+						<value type="string">Use,Set</value>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Move Fraction</name>
+					<id>MtSim:eve00002.FRAC</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.FRAC
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Link</name>
+					<id>MtSim:eve00002.RDBL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.RDBL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Delay</name>
+					<id>MtSim:eve00002.DLY</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.DLY
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Backlash Distance</name>
+					<id>MtSim:eve00002.BDST</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.BDST
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Backlash Velocity</name>
+					<id>MtSim:eve00002.BVEL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.BVEL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Backlash Acceleration</name>
+					<id>MtSim:eve00002.BACC</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.BACC
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Home Run foreward</name>
+					<id>MtSim:eve00002.HOMF</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.HOMF
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Home Run backward</name>
+					<id>MtSim:eve00002.HOMR</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.HOMR
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Home Run Velocity</name>
+					<id>MtSim:eve00002.HVEL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00002.HVEL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+			</axis>
+			<axis>
+				<class></class>
+				<name>Demo_Motor4</name>
+				<id>MtSim:eve00003</id>
+				<goto>
+					<access method="GETPUTCB" transport="ca" type="double"
+						timeout="300.0">MtSim:eve00003</access>
+				</goto>
+				<position>
+					<access monitor="true" method="GETCB" transport="ca" type="double">MtSim:eve00003.RBV
+					</access>
+				</position>
+				<stop>
+					<access method="PUT" transport="ca" type="int">MtSim:eve00003.STOP
+					</access>
+					<value type="int">1</value>
+				</stop>
+				<highlimit>
+					<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.HLM
+					</access>
+				</highlimit>
+				<lowlimit>
+					<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.LLM
+					</access>
+				</lowlimit>
+				<status>
+					<access method="GETCB" transport="ca" type="int">MtSim:eve00003.MSTA
+					</access>
+				</status>
+				<movedone>
+					<access method="GETCB" transport="ca" type="int">MtSim:eve00003.DMOV
+					</access>
+				</movedone>
+				<unit>
+					<access method="GETPUTCB" transport="ca" type="string">MtSim:eve00003.EGU
+					</access>
+				</unit>
+				<deadband>
+					<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00003.RDBD
+					</access>
+				</deadband>
+				<offset>
+					<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00003.OFF
+					</access>
+				</offset>
+				<tweakvalue>
+					<access method="GETPUTCB" transport="ca" type="double">MtSim:eve00003.TWV
+					</access>
+				</tweakvalue>
+				<tweakforward>
+					<access method="PUT" transport="ca" type="int">MtSim:eve00003.TWF
+					</access>
+					<value type="int">1</value>
+				</tweakforward>
+				<tweakreverse>
+					<access method="PUT" transport="ca" type="int">MtSim:eve00003.TWR
+					</access>
+					<value type="int">1</value>
+				</tweakreverse>
+				<option>
+					<name>Goto Position</name>
+					<id>MtSim:eve00003.VAL</id>
+					<value>
+						<access method="GETPUTCB" type="double" transport="ca"
+							timeout="300.0">MtSim:eve00003.VAL</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Position Readback</name>
+					<id>MtSim:eve00003.RBV</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00003.RBV
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Velocity</name>
+					<id>MtSim:eve00003.VELO</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.VELO
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Soft High Limit</name>
+					<id>MtSim:eve00003.HLM</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.HLM
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Soft Low Limit</name>
+					<id>MtSim:eve00003.LLM</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.LLM
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Offset</name>
+					<id>MtSim:eve00003.OFF</id>
+					<value>
+						<access method="GETPUTCB" type="double" transport="ca">MtSim:eve00003.OFF
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Dial Value</name>
+					<id>MtSim:eve00003.DVAL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.DVAL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Acceleration</name>
+					<id>MtSim:eve00003.ACCL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.ACCL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Motor Resolution</name>
+					<id>MtSim:eve00003.MRES</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.MRES
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Encoder Resolution</name>
+					<id>MtSim:eve00003.ERES</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.ERES
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Use Encoder</name>
+					<id>MtSim:eve00003.UEIP</id>
+					<value>
+						<access method="GETPUT" type="string" transport="ca">MtSim:eve00003.UEIP
+						</access>
+						<value type="string">No,Yes</value>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Resolution</name>
+					<id>MtSim:eve00003.RRES</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.RRES
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Use Readback</name>
+					<id>MtSim:eve00003.URIP</id>
+					<value>
+						<access method="GETPUT" type="string" transport="ca">MtSim:eve00003.URIP
+						</access>
+						<value type="string">No,Yes</value>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Base Velocity</name>
+					<id>MtSim:eve00003.VBAS</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.VBAS
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Retry Deadband</name>
+					<id>MtSim:eve00003.RDBD</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.RDBD
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Motor Status</name>
+					<id>MtSim:eve00003.MSTA</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00003.MSTA
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option monitor="true">
+					<name>Retry Count</name>
+					<id>MtSim:eve00003.RCNT</id>
+					<value>
+						<access monitor="true" method="GETCB" type="double"
+							transport="ca">MtSim:eve00003.RCNT</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Severity</name>
+					<id>MtSim:eve00003.SEVR</id>
+					<value>
+						<access method="GETCB" type="string" transport="ca">MtSim:eve00003.SEVR
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Status</name>
+					<id>MtSim:eve00003.STAT</id>
+					<value>
+						<access method="GETCB" type="string" transport="ca">MtSim:eve00003.STAT
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Goto Steps</name>
+					<id>MtSim:eve00003.RVAL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.RVAL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Steps</name>
+					<id>MtSim:eve00003.RRBV</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00003.RRBV
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Motor Steps</name>
+					<id>MtSim:eve00003.RMP</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00003.RMP
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Encoder Steps</name>
+					<id>MtSim:eve00003.REP</id>
+					<value>
+						<access method="GETCB" type="double" transport="ca">MtSim:eve00003.REP
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Position Mode</name>
+					<id>MtSim:eve00003.SET</id>
+					<value>
+						<access method="GETPUTCB" type="string" transport="ca">MtSim:eve00003.SET
+						</access>
+						<value type="string">Use,Set</value>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Move Fraction</name>
+					<id>MtSim:eve00003.FRAC</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.FRAC
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Link</name>
+					<id>MtSim:eve00003.RDBL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.RDBL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Readback Delay</name>
+					<id>MtSim:eve00003.DLY</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.DLY
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Backlash Distance</name>
+					<id>MtSim:eve00003.BDST</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.BDST
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Backlash Velocity</name>
+					<id>MtSim:eve00003.BVEL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.BVEL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Backlash Acceleration</name>
+					<id>MtSim:eve00003.BACC</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.BACC
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Home Run foreward</name>
+					<id>MtSim:eve00003.HOMF</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.HOMF
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Home Run backward</name>
+					<id>MtSim:eve00003.HOMR</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.HOMR
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+				<option>
+					<name>Home Run Velocity</name>
+					<id>MtSim:eve00003.HVEL</id>
+					<value>
+						<access method="GETPUT" type="double" transport="ca">MtSim:eve00003.HVEL
+						</access>
+					</value>
+					<displaygroup>summary</displaygroup>
+				</option>
+			</axis>
+		</motor>
 	</motors>
 	<!-- device section -->
 	<devices>
@@ -386,7 +3286,8 @@
 			<name>eveBooty</name>
 			<id>eve:bootydev</id>
 			<value>
-				<access method="GETPUTCB" transport="ca" type="OnOff">eve:booty</access>
+				<access method="GETPUTCB" transport="ca" type="OnOff">eve:booty
+				</access>
 				<value type="OnOff">On,Off</value>
 			</value>
 		</device>
