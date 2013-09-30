@@ -5,6 +5,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.PlatformUI;
 
+import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 
 /**
@@ -25,23 +26,17 @@ public class LabelProvider implements ITableLabelProvider {
 			ViewerMessage message = (ViewerMessage) element;
 			switch(message.getMessageType()) {
 			case DEBUG:
-				return PlatformUI.getWorkbench().getSharedImages().
-						getImage("DEBUG");
+				return Activator.getDefault().getImageRegistry().get("DEBUG");
 			case ERROR:
-				return PlatformUI.getWorkbench().getSharedImages()
-						.getImage("ERROR");
+				return Activator.getDefault().getImageRegistry().get("ERROR");
 			case FATAL:
-				return PlatformUI.getWorkbench().getSharedImages().
-						getImage("FATAL");
+				return Activator.getDefault().getImageRegistry().get("FATAL");
 			case INFO:
-				return PlatformUI.getWorkbench().getSharedImages()
-						.getImage("INFO");
+				return Activator.getDefault().getImageRegistry().get("INFO");
 			case MINOR:
-				return PlatformUI.getWorkbench().getSharedImages()
-						.getImage("WARNING");
+				return Activator.getDefault().getImageRegistry().get("WARNING");
 			case SYSTEM:
-				return PlatformUI.getWorkbench().getSharedImages().
-						getImage("SYSTEM");
+				return Activator.getDefault().getImageRegistry().get("SYSTEM");
 			}
 		}
 		return null;
