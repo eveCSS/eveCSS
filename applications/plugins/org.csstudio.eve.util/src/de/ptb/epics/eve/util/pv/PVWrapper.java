@@ -302,6 +302,15 @@ public class PVWrapper {
 	}
 
 	/**
+	 * @see {@link java.beans.PropertyChangeSupport#removePropertyChangeListener(String, PropertyChangeListener)}
+	 */
+	public void removePropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		propertyChangeSupport.removePropertyChangeListener(propertyName,
+				listener);
+	}
+	
+	/**
 	 * Removes the listener (regardless of the property).
 	 * 
 	 * @param listener the listener that should be removed.

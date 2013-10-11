@@ -31,7 +31,8 @@ public class CommonTableElementPV extends PVWrapper implements PropertyChangeLis
 		super(pvname);
 		this.commonTableElement = tableElement;
 		
-		this.addPropertyChangeListener("value", this);
+		this.addPropertyChangeListener(PVWrapper.VALUE, this);
+		this.addPropertyChangeListener(PVWrapper.CONNECTION_STATUS, this);
 	}
 	
 	/**
@@ -47,7 +48,8 @@ public class CommonTableElementPV extends PVWrapper implements PropertyChangeLis
 		super(pvname, triggerPv);
 		this.commonTableElement = tableElement;
 		
-		this.addPropertyChangeListener("value", this);
+		this.addPropertyChangeListener(PVWrapper.VALUE, this);
+		this.addPropertyChangeListener(PVWrapper.CONNECTION_STATUS, this);
 	}
 	
 	/**
@@ -55,8 +57,20 @@ public class CommonTableElementPV extends PVWrapper implements PropertyChangeLis
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if(evt.getPropertyName().equals("value")) {
+		if(evt.getPropertyName().equals(PVWrapper.VALUE)) {
+			commonTableElement.update();
+		} else if (evt.getPropertyName().equals(PVWrapper.CONNECTION_STATUS)) {
 			commonTableElement.update();
 		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void disconnect() {
+		this.removePropertyChangeListener(PVWrapper.VALUE, this);
+		this.removePropertyChangeListener(PVWrapper.CONNECTION_STATUS, this);
+		super.disconnect();
 	}
 }
