@@ -69,6 +69,10 @@ public class Activator extends AbstractUIPlugin {
 	private File schemaFile;
 	private Parameters startupParams;
 	
+	// queue poll debug
+	PollInQueueSize pollInQueueSize;
+	Thread pollInQueueSizeThread;
+	
 	/**
 	 * The constructor
 	 */
@@ -141,7 +145,9 @@ public class Activator extends AbstractUIPlugin {
 		PlatformUI.getWorkbench().addWorkbenchListener(workbenchListener);
 		
 		if (logger.isDebugEnabled()) {
-			new Thread(new PollInQueueSize()).start();
+			this.pollInQueueSize = new PollInQueueSize();
+			this.pollInQueueSizeThread = new Thread(this.pollInQueueSize);
+			this.pollInQueueSizeThread.start();
 		}
 	}
 
@@ -150,6 +156,10 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	@Override
 	public void stop(final BundleContext context) throws Exception {
+		if (logger.isDebugEnabled()) {
+			this.pollInQueueSize.stop();
+			this.pollInQueueSizeThread.join(5000);
+		}
 		plugin = null;
 		super.stop(context);
 	}
