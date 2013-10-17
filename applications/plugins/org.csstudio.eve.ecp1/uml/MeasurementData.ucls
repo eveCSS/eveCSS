@@ -49,7 +49,7 @@
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </enumeration>  
   <enumeration id="6" language="java" name="de.ptb.epics.eve.ecp1.types.EpicsSeverity" project="de.ptb.epics.eve.ecp1" 
@@ -59,7 +59,7 @@
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </enumeration>  
   <enumeration id="7" language="java" name="de.ptb.epics.eve.ecp1.types.EpicsStatus" project="de.ptb.epics.eve.ecp1" 
@@ -68,7 +68,7 @@
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </enumeration>  
   <enumeration id="8" language="java" name="de.ptb.epics.eve.ecp1.types.DataType" project="de.ptb.epics.eve.ecp1" 
@@ -77,16 +77,16 @@
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </enumeration>  
   <enumeration id="9" language="java" name="de.ptb.epics.eve.ecp1.types.DataModifier" project="de.ptb.epics.eve.ecp1" 
     file="/de.ptb.epics.eve.ecp1/src/de/ptb/epics/eve/ecp1/types/DataModifier.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1242" y="680"/>    
+    <position height="-1" width="-1" x="1222" y="678"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </enumeration>  
   <class id="10" language="java" name="de.ptb.epics.eve.viewer.Activator" project="de.ptb.epics.eve.viewer" 
@@ -98,100 +98,100 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <dependency id="11">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="1"/>  
-  </dependency>  
-  <association id="12">    
+  <association id="11">    
     <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="13" name="ecp1Client"/>      
-      <multiplicity id="14" minimum="0" maximum="1"/>    
+      <attribute id="12" name="plugin"/>      
+      <multiplicity id="13" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="15">    
+  <association id="14">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="16" name="epicsStatus"/>      
-      <multiplicity id="17" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="18">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="19" name="acquisitionStatus"/>      
-      <multiplicity id="20" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="21">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="22" name="measurementDataListener">        
-        <position height="16" width="134" x="419" y="343"/>      
-      </attribute>      
-      <multiplicity id="23" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="24">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="25" name="dataModifier"/>      
-      <multiplicity id="26" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="27">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="28" name="dataType"/>      
-      <multiplicity id="29" minimum="0" maximum="1"/>    
+      <attribute id="15" name="dataType"/>      
+      <multiplicity id="16" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="30">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="31" name="dispatchHandler"/>      
-      <multiplicity id="32" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="33">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="34" name="ecp1Client"/>      
-      <multiplicity id="35" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="36">    
+  <association id="17">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="37" name="epicsSeverity">        
+      <attribute id="18" name="epicsStatus"/>      
+      <multiplicity id="19" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="20">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="21" name="epicsSeverity">        
         <position height="16" width="74" x="1049" y="255"/>      
       </attribute>      
-      <multiplicity id="38" minimum="0" maximum="1"/>    
+      <multiplicity id="22" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="39">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="4"/>  
-  </dependency>  
-  <nesting id="40">    
+  <association id="23">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="24" name="ecp1Client"/>      
+      <multiplicity id="25" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="26">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="3"/>  
   </nesting>  
+  <association id="27">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="28" name="dataModifier"/>      
+      <multiplicity id="29" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="30">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <association id="31">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="32" name="dispatchHandler"/>      
+      <multiplicity id="33" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="34">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <association id="35">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="36" name="measurementDataListener">        
+        <position height="16" width="134" x="419" y="343"/>      
+      </attribute>      
+      <multiplicity id="37" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="38">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="39" name="acquisitionStatus"/>      
+      <multiplicity id="40" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <association id="41">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="42" name="plugin"/>      
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="42" name="ecp1Client"/>      
       <multiplicity id="43" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
+    <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
