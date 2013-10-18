@@ -124,14 +124,6 @@ public class DetectorChannel extends AbstractMainPhaseDevice {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
