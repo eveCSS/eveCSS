@@ -19,7 +19,7 @@ import org.osgi.framework.BundleContext;
 public class Activator implements BundleActivator {
 
 	/** */
-	public static String PLUGIN_ID = "de.ptb.epics.eve.resources";
+	public static final String PLUGIN_ID = "de.ptb.epics.eve.resources";
 
 	private static final Logger logger = Logger.getLogger(
 			Activator.class.getName());
