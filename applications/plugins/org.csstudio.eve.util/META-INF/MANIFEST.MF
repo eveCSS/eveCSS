@@ -18,12 +18,19 @@ Export-Package: de.ptb.epics.eve.util;uses:="org.eclipse.ui.plugin",
  de.ptb.epics.eve.util.jface;uses:="org.eclipse.jface.viewers",
  de.ptb.epics.eve.util.math;uses:="javax.xml.datatype",
  de.ptb.epics.eve.util.math.statistics,
+ de.ptb.epics.eve.util.pdf,
  de.ptb.epics.eve.util.pv;uses:="org.epics.pvmanager.data",
  de.ptb.epics.eve.util.rcp;uses:="org.eclipse.ui,org.eclipse.jface.viewers",
  de.ptb.epics.eve.util.swt;uses:="org.eclipse.swt.events,org.eclipse.swt.widgets"
-Import-Package: de.ptb.epics.eve.preferences
+Import-Package: de.ptb.epics.eve.preferences,
+ org.csstudio.swt.xygraph.figures,
+ org.eclipse.draw2d,
+ org.eclipse.draw2d.geometry
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.ptb.epics.eve.util.Activator
 Bundle-Vendor: PTB
 Bundle-ClassPath: lib/commons-math3-3.1.1.jar,
+ lib/pdfbox-1.8.2.jar,
+ lib/fontbox-1.8.2.jar,
+ lib/commons-logging-1.1.3.jar,
  .

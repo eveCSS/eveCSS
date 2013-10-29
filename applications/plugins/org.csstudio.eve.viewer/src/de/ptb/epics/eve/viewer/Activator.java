@@ -158,7 +158,7 @@ public class Activator extends AbstractUIPlugin {
 	public void stop(final BundleContext context) throws Exception {
 		if (logger.isDebugEnabled()) {
 			this.pollInQueueSize.stop();
-			this.pollInQueueSizeThread.join(5000);
+			this.pollInQueueSizeThread.join(3000);
 		}
 		plugin = null;
 		super.stop(context);

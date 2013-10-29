@@ -40,6 +40,14 @@ public class MathTableContentProvider implements IStructuredContentProvider {
 	}
 
 	/**
+	 * 
+	 * @return
+	 */
+	public List<MathTableElement> getElements() {
+		return this.elements;
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override

@@ -228,6 +228,15 @@ public class MathTableElement implements IMeasurementDataListener,
 	}
 
 	/**
+	 * Returns the function type
+	 * @return the function type
+	 * @since 1.16
+	 */
+	public MathFunction getType() {
+		return this.mathFunction;
+	}
+	
+	/**
 	 * Returns the value of the element.
 	 * 
 	 * @return the value of the element
@@ -247,5 +256,19 @@ public class MathTableElement implements IMeasurementDataListener,
 			return position;
 		}
 		return null;
+	}
+
+	/**
+	 * @return the detectorId
+	 */
+	public String getDetectorId() {
+		return detectorId;
+	}
+
+	/**
+	 * @return the motorId
+	 */
+	public String getMotorId() {
+		return motorId;
 	}
 }

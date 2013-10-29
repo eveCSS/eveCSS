@@ -55,6 +55,8 @@ public class ScanDescription implements IModelUpdateProvider,
 	/** */
 	public static final String MONITOR_OPTION_PROP ="monitorOption";
 
+	private String fileName;
+	
 	// version of the scan description.
 	private int inputVersion;
 	
@@ -112,6 +114,7 @@ public class ScanDescription implements IModelUpdateProvider,
 		Event s0 = new Event(EventTypes.SCHEDULE);
 		s0.setName("Start");
 		this.add(s0);
+		this.fileName = "";
 		this.measuringStation = measuringStation;
 		this.dirty = false;
 		this.monitorOption = MonitorOption.NONE;
@@ -232,6 +235,20 @@ public class ScanDescription implements IModelUpdateProvider,
 			}
 		}
 	}
+	/**
+	 * @return the fileName
+	 */
+	public String getFileName() {
+		return fileName;
+	}
+
+	/**
+	 * @param fileName the fileName to set
+	 */
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
 	/**
 	 * Returns the version of the scan description.
 	 * 

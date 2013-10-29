@@ -559,10 +559,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		autoPlayToggleButton.setSelection(autoPlay);
 	}
 	
-	/* ******************************************************************** */
-	/* ********************** IChainStatusListener ************************ */
-	/* ******************************************************************** */
-	
 	/**
 	 * {@inheritDoc}
 	 */

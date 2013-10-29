@@ -1,5 +1,8 @@
 package de.ptb.epics.eve.viewer.views.plotview.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.State;
@@ -26,7 +29,13 @@ import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.YAxis;
+import de.ptb.epics.eve.ecp1.client.interfaces.IChainStatusListener;
+import de.ptb.epics.eve.ecp1.commands.ChainStatusCommand;
+import de.ptb.epics.eve.ecp1.types.ChainStatus;
+import de.ptb.epics.eve.ecp1.types.EngineStatus;
+import de.ptb.epics.eve.util.pdf.PlotStats;
 import de.ptb.epics.eve.viewer.Activator;
+import de.ptb.epics.eve.viewer.IUpdateListener;
 import de.ptb.epics.eve.viewer.views.plotview.MathFunction;
 import de.ptb.epics.eve.viewer.views.plotview.MathTableElement;
 import de.ptb.epics.eve.viewer.views.plotview.XyPlot;
@@ -37,7 +46,7 @@ import de.ptb.epics.eve.viewer.views.plotview.XyPlot;
  * 
  * @author Marcus Michalsky
  */
-public class PlotView extends ViewPart {
+public class PlotView extends ViewPart implements IChainStatusListener, IUpdateListener {
 	/** the unique identifier of this view */
 	public static final String ID = "PlotView";
 
@@ -54,6 +63,9 @@ public class PlotView extends ViewPart {
 	private TabItem itemAxis2;
 	
 	private boolean showStats;
+	
+	private String loadedScmlFile;
+	private String bufferedScmlFile;
 	
 	private Image gotoIcon;
 	
@@ -103,6 +115,12 @@ public class PlotView extends ViewPart {
 		table2Viewer = this.createTable(table2Composite);
 		
 		this.setPartName("Plot: " + this.getViewSite().getSecondaryId());
+		
+		this.loadedScmlFile = "unknown";
+		this.bufferedScmlFile = "unknown";
+		
+		Activator.getDefault().getChainStatusAnalyzer().addUpdateListener(this);
+		Activator.getDefault().getEcp1Client().addChainStatusListener(this);
 		
 		this.restoreState();
 		this.refreshToggleButton();
@@ -337,6 +355,22 @@ public class PlotView extends ViewPart {
 	}
 	
 	/**
+	 * 
+	 * @return
+	 */
+	public XyPlot getPlotFigure() {
+		return this.xyPlot;
+	}
+	
+	/**
+	 * Returns the currently loaded SCML file.
+	 * @return the currently loaded SCML file
+	 */
+	public String getLoadedScmlFile() {
+		return this.loadedScmlFile;
+	}
+	
+	/**
 	 * Sets whether the statistics tables are shown.
 	 * <p>
 	 * The state is saved in the memento.
@@ -351,13 +385,90 @@ public class PlotView extends ViewPart {
 		}
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setFocus() {
-		this.sashForm.setFocus();
-		this.refreshToggleButton();
+	public List<PlotStats> getPlotStatistics() {
+		List<PlotStats> plotStatList = new ArrayList<PlotStats>();
+		plotStatList.add(this.getStats(((MathTableContentProvider) table1Viewer
+				.getContentProvider()).getElements()));
+		plotStatList.add(this.getStats(((MathTableContentProvider) table2Viewer
+				.getContentProvider()).getElements()));
+		return plotStatList;
+	}
+	
+	private PlotStats getStats(List<MathTableElement> elements) {
+		PlotStats stats = new PlotStats();
+		for (MathTableElement element : elements) {
+			stats.setMotorName(Activator.getDefault().getMeasuringStation()
+					.getMotorAxisById(element.getMotorId()).getName());
+			stats.setDetectorName(Activator.getDefault().getMeasuringStation()
+					.getDetectorChannelById(element.getDetectorId()).getName());
+			switch (element.getType()) {
+			case AVERAGE:
+				if (element.getPosition() != null) {
+					stats.getAverage().setL(element.getPosition());
+				}
+				if (element.getValue() != null) {
+					stats.getAverage().setR(element.getValue());
+				}
+				break;
+			case CENTER:
+				if (element.getPosition() != null) {
+					stats.getCenter().setL(element.getPosition());
+				}
+				if (element.getValue() != null) {
+					stats.getCenter().setR(element.getValue());
+				}
+				break;
+			case DEVIATION:
+				if (element.getPosition() != null) {
+					stats.getDeviation().setL(element.getPosition());
+				}
+				if (element.getValue() != null) {
+					stats.getDeviation().setR(element.getValue());
+				}
+				break;
+			case EDGE:
+				if (element.getPosition() != null) {
+					stats.getEdge().setL(element.getPosition());
+				}
+				if (element.getValue() != null) {
+					stats.getEdge().setR(element.getValue());
+				}
+				break;
+			case FWHM:
+				if (element.getPosition() != null) {
+					stats.getFullWidthHalfMinimum().setL(element.getPosition());
+				}
+				if (element.getValue() != null) {
+					stats.getFullWidthHalfMinimum().setR(element.getValue());
+				}
+				break;
+			case MAXIMUM:
+				if (element.getPosition() != null) {
+					stats.getMaximum().setL(element.getPosition());
+				}
+				if (element.getValue() != null) {
+					stats.getMaximum().setR(element.getValue());
+				}
+				break;
+			case MINIMUM:
+				if (element.getPosition() != null) {
+					stats.getMinimum().setL(element.getPosition());
+				}
+				if (element.getValue() != null) {
+					stats.getMinimum().setR(element.getValue());
+				}
+				break;
+			case NORMALIZED:
+			case PEAK:
+			case SUM:
+			case UNKNOWN:
+			case UNMODIFIED:
+				break;
+			default:
+				break;
+			}
+		}
+		return stats;
 	}
 	
 	/*
@@ -376,6 +487,15 @@ public class PlotView extends ViewPart {
 		commandService.refreshElements(toggleCommand.getId(), null);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setFocus() {
+		this.sashForm.setFocus();
+		this.refreshToggleButton();
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -417,7 +537,70 @@ public class PlotView extends ViewPart {
 	 */
 	@Override
 	public void dispose() {
+		Activator.getDefault().getChainStatusAnalyzer().removeUpdateListener(this);
+		Activator.getDefault().getEcp1Client().removeChainStatusListener(this);
 		this.xyPlot.clear();
 		super.dispose();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setLoadedScmlFile(String name) {
+		this.bufferedScmlFile = name;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void updateOccured(int remainTime) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void clearStatusTable() {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void fillStatusTable(int chainId, int scanModuleId, String status,
+			int remainTime) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void fillEngineStatus(EngineStatus engineStatus, int repeatCount) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setAutoPlayStatus(boolean autoPlayStatus) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void disableSendToFile() {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void chainStatusChanged(ChainStatusCommand chainStatusCommand) {
+		if (chainStatusCommand.getChainStatus().equals(ChainStatus.EXECUTING_SM)) {
+			this.loadedScmlFile = this.bufferedScmlFile;
+		}
 	}
 }
