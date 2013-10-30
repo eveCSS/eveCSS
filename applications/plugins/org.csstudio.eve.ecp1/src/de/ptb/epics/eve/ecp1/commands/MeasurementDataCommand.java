@@ -248,7 +248,7 @@ public class MeasurementDataCommand implements IECP1Command {
 
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
-		;
+		
 		dataOutputStream.writeChar(MeasurementDataCommand.COMMAND_TYPE_ID);
 
 		int length = 28;

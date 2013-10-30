@@ -81,7 +81,7 @@ public class PlayListCommand implements IECP1Command {
 
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
-		;
+		
 		dataOutputStream.writeChar(PlayListCommand.COMMAND_TYPE_ID);
 		int length = 4;
 		final byte[][] entriesBytes = new byte[this.entries.size()][];

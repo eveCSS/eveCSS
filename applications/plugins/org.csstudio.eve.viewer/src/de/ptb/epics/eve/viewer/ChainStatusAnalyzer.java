@@ -166,7 +166,6 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 								this.pausedChains.remove(scanModules.get(j)
 										.getChain());
 							}
-							;
 						}
 					}
 				}

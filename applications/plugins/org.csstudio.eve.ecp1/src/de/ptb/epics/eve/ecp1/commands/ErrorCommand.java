@@ -90,7 +90,7 @@ public class ErrorCommand implements IECP1Command {
 
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
-		;
+		
 		dataOutputStream.writeChar(ErrorCommand.COMMAND_TYPE_ID);
 		final byte[] textBuffer = this.text
 				.getBytes(IECP1Command.STRING_ENCODING);
