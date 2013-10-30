@@ -7,22 +7,22 @@ public interface IECP1Command {
 	/**
 	 * 
 	 */
-	static final int START_TAG = 0x0d0f0d0a;
+	final int START_TAG = 0x0d0f0d0a;
 	
 	/**
 	 * 
 	 */
-	static final char VERSION = 0x0100;
+	final char VERSION = 0x0100;
 	
 	/**
 	 * 
 	 */
-	static final int PLAYLISTMAXENTRIES = 500;
+	final int PLAYLISTMAXENTRIES = 500;
 	
 	/**
 	 * 
 	 */
-	static final String STRING_ENCODING = "UTF-16BE";
+	final String STRING_ENCODING = "UTF-16BE";
 	
 	/**
 	 * 

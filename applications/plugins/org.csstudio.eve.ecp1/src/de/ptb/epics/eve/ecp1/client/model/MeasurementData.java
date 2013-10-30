@@ -121,7 +121,7 @@ public final class MeasurementData {
 
 	}
 
-	public final String getName() {
+	public String getName() {
 		return this.name;
 	}
 
@@ -133,31 +133,31 @@ public final class MeasurementData {
 		return this.smid;
 	}
 
-	public final AcquisitionStatus getAcquisitionStatus() {
+	public AcquisitionStatus getAcquisitionStatus() {
 		return this.acquisitionStatus;
 	}
 
-	public final DataType getDataType() {
+	public DataType getDataType() {
 		return this.dataType;
 	}
 
-	public final DataModifier getDataModifier() {
+	public DataModifier getDataModifier() {
 		return this.dataModifier;
 	}
 
-	public final EpicsSeverity getEpicsSeverity() {
+	public EpicsSeverity getEpicsSeverity() {
 		return this.epicsSeverity;
 	}
 
-	public final EpicsStatus getEpicsStatus() {
+	public EpicsStatus getEpicsStatus() {
 		return this.epicsStatus;
 	}
 
-	public final int getGeneralTimeStamp() {
+	public int getGeneralTimeStamp() {
 		return this.generalTimeStamp;
 	}
 
-	public final int getNanoseconds() {
+	public int getNanoseconds() {
 		return this.nanoseconds;
 	}
 
@@ -165,7 +165,7 @@ public final class MeasurementData {
 		return this.positionCounter;
 	}
 
-	public final List<?> getValues() {
+	public List<?> getValues() {
 		return this.values;
 	}
 }
