@@ -41,7 +41,7 @@
       </view>
       <view
             category="eveViewerCategory"
-            class="de.ptb.epics.eve.viewer.views.messagesview.MessagesView"
+            class="de.ptb.epics.eve.viewer.views.messagesview.ui.MessagesView"
             icon="icons/showwarn_tsk.gif"
             id="MessagesView"
             name="%view.name.2">

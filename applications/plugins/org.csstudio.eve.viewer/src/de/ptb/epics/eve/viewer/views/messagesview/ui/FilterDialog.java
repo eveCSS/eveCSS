@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.messagesview;
+package de.ptb.epics.eve.viewer.views.messagesview.ui;
 
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -16,13 +16,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Slider;
 
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.messages.Levels;
-import de.ptb.epics.eve.viewer.messages.MessagesContainer;
-import de.ptb.epics.eve.viewer.messages.Sources;
+import de.ptb.epics.eve.viewer.views.messages.Levels;
+import de.ptb.epics.eve.viewer.views.messages.MessagesContainer;
+import de.ptb.epics.eve.viewer.views.messages.Sources;
 
 /**
  * Dialog for choosing the sources messages should be shown from.
- * Choices are {@link de.ptb.epics.eve.viewer.messages.Sources}.
+ * Choices are {@link de.ptb.epics.eve.viewer.views.messages.Sources}.
  * 
  * @author Marcus Michalsky
  * @since 1.4
@@ -187,10 +187,10 @@ public class FilterDialog extends TitleAreaDialog {
 	}
 	
 	/**
-	 * Returns the level (as in {@link de.ptb.epics.eve.viewer.messages.Levels}) 
+	 * Returns the level (as in {@link de.ptb.epics.eve.viewer.views.messages.Levels}) 
 	 * of the dialog.
 	 * 
-	 * @return the level (as in {@link de.ptb.epics.eve.viewer.messages.Levels})
+	 * @return the level (as in {@link de.ptb.epics.eve.viewer.views.messages.Levels})
 	 */
 	public Levels getLevel() {
 		return this.level;

@@ -9,10 +9,10 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.messages.MessagesContainer;
-import de.ptb.epics.eve.viewer.messages.Sources;
-import de.ptb.epics.eve.viewer.views.messagesview.MessagesView;
-import de.ptb.epics.eve.viewer.views.messagesview.FilterDialog;
+import de.ptb.epics.eve.viewer.views.messages.MessagesContainer;
+import de.ptb.epics.eve.viewer.views.messages.Sources;
+import de.ptb.epics.eve.viewer.views.messagesview.ui.FilterDialog;
+import de.ptb.epics.eve.viewer.views.messagesview.ui.MessagesView;
 
 /**
  * @author Marcus Michalsky

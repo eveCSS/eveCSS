@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.messagesview;
+package de.ptb.epics.eve.viewer.views.messagesview.ui;
 
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -6,7 +6,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.PlatformUI;
 
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
 
 /**
  * <code>MessagesTableLabelProvider</code> is the label provider for the table 

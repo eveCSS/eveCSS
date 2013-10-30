@@ -13,12 +13,12 @@ public interface IModelError {
 	 * 
 	 * @return A printable name of the error. Should not return 'null'.
 	 */
-	public String getErrorName();
+	String getErrorName();
 	
 	/**
 	 * This method returns a printable message of the error.
 	 * 
 	 * @return A printable message of the error. Should not return 'null'
 	 */
-	public String getErrorMessage();
+	String getErrorMessage();
 }

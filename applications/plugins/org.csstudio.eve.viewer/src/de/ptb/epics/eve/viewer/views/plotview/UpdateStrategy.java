@@ -13,6 +13,6 @@ public interface UpdateStrategy {
 	 * @param sampleSize
 	 * @return
 	 */
-	public boolean update(long timeOfLastSample, int sampleSizeOfLastUpdate,
+	boolean update(long timeOfLastSample, int sampleSizeOfLastUpdate,
 			int sampleSize);
 }

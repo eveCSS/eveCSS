@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.messages;
+package de.ptb.epics.eve.viewer.views.messages;
 
 import gov.aps.jca.dbr.TimeStamp;
 

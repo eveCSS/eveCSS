@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.messages;
+package de.ptb.epics.eve.viewer.views.messages;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,11 +46,11 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 	}
 	
 	/**
-	 * Adds a {@link de.ptb.epics.eve.viewer.messages.ViewerMessage} to the 
+	 * Adds a {@link de.ptb.epics.eve.viewer.views.messages.ViewerMessage} to the 
 	 * message container.
 	 * 
 	 * @param viewerMessage the 
-	 * 		  {@link de.ptb.epics.eve.viewer.messages.ViewerMessage}
+	 * 		  {@link de.ptb.epics.eve.viewer.views.messages.ViewerMessage}
 	 */
 	public synchronized void addMessage(final ViewerMessage viewerMessage) {
 		this.messages.add(0, viewerMessage);
@@ -74,7 +74,7 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 	/**
 	 * Returns a list of viewer messages.
 	 *  
-	 * @return a list of {@link de.ptb.epics.eve.viewer.messages.ViewerMessage}s
+	 * @return a list of {@link de.ptb.epics.eve.viewer.views.messages.ViewerMessage}s
 	 */
 	public synchronized List<ViewerMessage> getList() {
 		final List<ViewerMessage> returnList = new ArrayList<ViewerMessage>();
@@ -99,7 +99,7 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 
 	/**
 	 * Sets whether messages from the given 
-	 * {@link de.ptb.epics.eve.viewer.messages.Sources} should be shown.
+	 * {@link de.ptb.epics.eve.viewer.views.messages.Sources} should be shown.
 	 * 
 	 * @param source the source to set
 	 * @param selected <code>true</code> if messages from the given source 
@@ -124,7 +124,7 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 	
 	/**
 	 * Checks whether messages from the given
-	 * {@link de.ptb.epics.eve.viewer.messages.Sources} are shown.
+	 * {@link de.ptb.epics.eve.viewer.views.messages.Sources} are shown.
 	 * 
 	 * @param source the source to check
 	 * @return <code>true</code> if messages from the given source are shown, 
@@ -142,7 +142,7 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 	
 	/**
 	 * Sets  whether messages of level given by 
-	 * {@link de.ptb.epics.eve.viewer.messages.Levels} (and below) should be 
+	 * {@link de.ptb.epics.eve.viewer.views.messages.Levels} (and below) should be 
 	 * shown.
 	 * 
 	 * @param level the level to set
@@ -157,9 +157,9 @@ public class MessagesContainer implements IMessagesContainerUpdateProvider {
 	}
 
 	/**
-	 * Returns the level as in {@link de.ptb.epics.eve.viewer.messages.Levels}.
+	 * Returns the level as in {@link de.ptb.epics.eve.viewer.views.messages.Levels}.
 	 * 
-	 * @return the level as in {@link de.ptb.epics.eve.viewer.messages.Levels}
+	 * @return the level as in {@link de.ptb.epics.eve.viewer.views.messages.Levels}
 	 */
 	public Levels getLevel() {
 		return this.level;

@@ -20,5 +20,5 @@ public interface IScanDescriptionReceiver {
 	 *			<code>true</code> if perspective activation is requested,
 	 *			<code>false</code> otherwise
 	 */
-	public void scanDescriptionReceived(File location, boolean switchPerspective);
+	void scanDescriptionReceived(File location, boolean switchPerspective);
 }

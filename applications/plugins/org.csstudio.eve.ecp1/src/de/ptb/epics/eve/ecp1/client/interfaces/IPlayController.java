@@ -2,17 +2,39 @@ package de.ptb.epics.eve.ecp1.client.interfaces;
 
 public interface IPlayController {
 
-	public void start();
+	/**
+	 * 
+	 */
+	void start();
 
-	public void stop();
+	/**
+	 * 
+	 */
+	void stop();
 
-	public void pause();
+	/**
+	 * 
+	 */
+	void pause();
 
-	public void breakExecution();
+	/**
+	 * 
+	 */
+	void breakExecution();
 
-	public void halt();
+	/**
+	 * 
+	 */
+	void halt();
 
-	public void shutdownEngine();
+	/**
+	 * 
+	 */
+	void shutdownEngine();
 
-	public void addLiveComment(final String liveComment);
+	/**
+	 * 
+	 * @param liveComment
+	 */
+	void addLiveComment(final String liveComment);
 }

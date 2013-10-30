@@ -8,9 +8,9 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.messages.Levels;
-import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
+import de.ptb.epics.eve.viewer.views.messages.Levels;
+import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
 
 /**
  * <code>ConnectCommandHandler</code> is the default command handler of the 

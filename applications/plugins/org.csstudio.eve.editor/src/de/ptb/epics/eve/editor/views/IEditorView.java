@@ -12,8 +12,9 @@ package de.ptb.epics.eve.editor.views;
  * @see {@link de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener}
  */
 public interface IEditorView {
+	
 	/**
 	 * Resets its contents to reestablish its initial state.
 	 */
-	public void reset();
+	void reset();
 }

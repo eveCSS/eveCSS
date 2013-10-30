@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.messages;
+package de.ptb.epics.eve.viewer.views.messages;
 
 import de.ptb.epics.eve.ecp1.types.ErrorSeverity;
 
@@ -42,12 +42,12 @@ public enum Levels {
 	
 	/**
 	 * Converts an {@link de.ptb.epics.eve.ecp1.types.ErrorSeverity} into its 
-	 * corresponding {@link de.ptb.epics.eve.viewer.messages.Levels}. 
+	 * corresponding {@link de.ptb.epics.eve.viewer.views.messages.Levels}. 
 	 * 
 	 * @param errorSeverity the 
 	 * 		  {@link de.ptb.epics.eve.ecp1.types.ErrorSeverity}
 	 * @return the corresponding 
-	 *         {@link de.ptb.epics.eve.viewer.messages.Levels}
+	 *         {@link de.ptb.epics.eve.viewer.views.messages.Levels}
 	 */
 	public static Levels convertFromErrorSeverity(
 			final ErrorSeverity errorSeverity) {

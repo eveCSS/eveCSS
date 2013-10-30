@@ -16,5 +16,5 @@ public interface IModelUpdateListener {
 	 * @param modelUpdateEvent the 
 	 * 		  {@link de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent}
 	 */
-	public void updateEvent(final ModelUpdateEvent modelUpdateEvent);	
+	void updateEvent(final ModelUpdateEvent modelUpdateEvent);
 }

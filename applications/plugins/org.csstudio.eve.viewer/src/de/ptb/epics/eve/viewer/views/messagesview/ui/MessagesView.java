@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.messagesview;
+package de.ptb.epics.eve.viewer.views.messagesview.ui;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -14,7 +14,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.XMLDispatcher;
-import de.ptb.epics.eve.viewer.messages.TypeViewerComparator;
+import de.ptb.epics.eve.viewer.views.messages.TypeViewerComparator;
 
 /**
  * 

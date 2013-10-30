@@ -1,8 +1,6 @@
 package de.ptb.epics.eve.viewer.handler.engine;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,10 +15,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.messages.Levels;
-import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 import de.ptb.epics.eve.viewer.preferences.EngineExecMacros;
 import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
+import de.ptb.epics.eve.viewer.views.messages.Levels;
+import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
 
 /**
  * <code>Start</code> is the default command handler of the engine start 

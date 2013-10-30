@@ -30,7 +30,7 @@ import de.ptb.epics.eve.ecp1.debug.ECP1ClientLogger;
 import de.ptb.epics.eve.resources.init.Parameters;
 import de.ptb.epics.eve.resources.init.Startup;
 import de.ptb.epics.eve.viewer.debug.PollInQueueSize;
-import de.ptb.epics.eve.viewer.messages.MessagesContainer;
+import de.ptb.epics.eve.viewer.views.messages.MessagesContainer;
 import de.ptb.epics.eve.viewer.views.plotview.PlotDispatcher;
 
 /**
@@ -259,7 +259,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 	
 	/**
-	 * Returns the {@link de.ptb.epics.eve.viewer.messages.MessagesContainer} 
+	 * Returns the {@link de.ptb.epics.eve.viewer.views.messages.MessagesContainer} 
 	 * used to collect messages of several types from different sources.
 	 * 
 	 * @return the messages container of the viewer

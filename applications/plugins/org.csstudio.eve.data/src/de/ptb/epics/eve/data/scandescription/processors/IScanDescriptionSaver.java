@@ -18,8 +18,7 @@ public interface IScanDescriptionSaver {
 	 * @param measuringStation the measuring station.
 	 * <dt><b>Precondition:</b><dd> the argument is not <code>null</code>
 	 */
-	public void setMeasuringStationDescription(
-			final IMeasuringStation measuringStation);
+	void setMeasuringStationDescription(final IMeasuringStation measuringStation);
 	
 	/**
 	 * Returns the measuring station the scan description resulted from.
@@ -27,7 +26,7 @@ public interface IScanDescriptionSaver {
 	 * @return the measuring station the scan description resulted from
 	 * <dt><b>Postcondition:</b><dd> the return value is not <code>null</code>
 	 */
-	public IMeasuringStation getMeasuringStationDescription();
+	IMeasuringStation getMeasuringStationDescription();
 	
 	/**
 	 * Sets the scan description that should be saved.
@@ -35,7 +34,7 @@ public interface IScanDescriptionSaver {
 	 * @param scanDescription the scan description that should be saved. 
 	 * <dt><b>Precondition:</b><dd> the argument is not <code>null</code>
 	 */
-	public void setScanDescription(final ScanDescription scanDescription);
+	void setScanDescription(final ScanDescription scanDescription);
 	
 	/**
 	 * Returns the scan description that should be saved.
@@ -43,7 +42,7 @@ public interface IScanDescriptionSaver {
 	 * @return the scan description that should be saved
 	 * <dt><b>Postcondition:</b><dd> the return value is not <code>null</code> 
 	 */
-	public ScanDescription getScanDescription();
+	ScanDescription getScanDescription();
 	
 	/**
 	 * Saves the scan description.
@@ -51,5 +50,5 @@ public interface IScanDescriptionSaver {
 	 * @return <code>true</code> if the scan description has been saved, 
 	 * 			<code>false</code> otherwise
 	 */
-	public boolean save();	
+	boolean save();
 }

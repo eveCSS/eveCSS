@@ -1,8 +1,8 @@
-package de.ptb.epics.eve.viewer.messages;
+package de.ptb.epics.eve.viewer.views.messages;
 
 /**
  * <code>IMessagesContainerUpdateProvider</code> should be implemented by 
- * {@link de.ptb.epics.eve.viewer.messages.MessagesContainer} which need the 
+ * {@link de.ptb.epics.eve.viewer.views.messages.MessagesContainer} which need the 
  * ability to inform interested parties about changes (e.g. incoming messages).
  * 
  * @author ?
@@ -15,19 +15,19 @@ public interface IMessagesContainerUpdateProvider {
 	 * message arrived.
 	 * 
 	 * @param listener the 
-	 * {@link de.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener}
+	 * {@link de.ptb.epics.eve.viewer.views.messages.IMessagesContainerUpdateListener}
 	 * that should be added
 	 */
-	public void addMessagesContainerUpdateListener( 
+	void addMessagesContainerUpdateListener( 
 			final IMessagesContainerUpdateListener listener);
 	
 	/**
 	 * Removes an Update Listener form the message container update provider.
 	 * 
 	 * @param listener the 
-	 * {@link de.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener}
+	 * {@link de.ptb.epics.eve.viewer.views.messages.IMessagesContainerUpdateListener}
 	 * that should be removed
 	 */
-	public void removeMessagesContainerUpdateListener(
+	void removeMessagesContainerUpdateListener(
 			final IMessagesContainerUpdateListener listener);
 }

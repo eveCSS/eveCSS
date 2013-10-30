@@ -26,8 +26,8 @@ import de.ptb.epics.eve.viewer.actions.AddFileToPlayListAction;
 import de.ptb.epics.eve.viewer.actions.MoveFileDownInPlayListAction;
 import de.ptb.epics.eve.viewer.actions.MoveFileUpInPlayListAction;
 import de.ptb.epics.eve.viewer.actions.RemoveFileFromPlayListAction;
-import de.ptb.epics.eve.viewer.messages.Levels;
-import de.ptb.epics.eve.viewer.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.messages.Levels;
+import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
 
 /**
  * <code>PlayListView</code>.

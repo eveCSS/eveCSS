@@ -10,11 +10,11 @@ public interface IPlayListListener {
 	 * 
 	 * @param playListController
 	 */
-	public void playListHasChanged(final IPlayListController playListController);
+	void playListHasChanged(final IPlayListController playListController);
 
 	/**
 	 * 
 	 * @param playListController
 	 */
-	public void autoPlayHasChanged(final IPlayListController playListController);
+	void autoPlayHasChanged(final IPlayListController playListController);
 }

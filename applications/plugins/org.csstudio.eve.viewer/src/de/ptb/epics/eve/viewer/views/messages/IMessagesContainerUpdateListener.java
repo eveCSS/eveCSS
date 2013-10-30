@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.messages;
+package de.ptb.epics.eve.viewer.views.messages;
 
 /**
  * <code>IMessagesContainerUpdateListener</code> 
@@ -11,14 +11,14 @@ public interface IMessagesContainerUpdateListener {
 	/**
 	 *  ? update ?
 	 */
-	public void update();
+	void update();
 
 	/**
 	 * Gets called by the 
-	 * {@link de.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateProvider} 
+	 * {@link de.ptb.epics.eve.viewer.views.messages.IMessagesContainerUpdateProvider} 
 	 * the implementing object is registered to when a new message arrived.
 	 * 
 	 * @param viewerMessage the newly arrived message
 	 */
-	public void addElement(ViewerMessage viewerMessage);
+	void addElement(ViewerMessage viewerMessage);
 }

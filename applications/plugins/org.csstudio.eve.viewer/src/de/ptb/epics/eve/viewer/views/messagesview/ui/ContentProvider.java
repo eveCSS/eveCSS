@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.messagesview;
+package de.ptb.epics.eve.viewer.views.messagesview.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -12,9 +12,9 @@ import org.eclipse.swt.graphics.GC;
 
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.viewer.XMLDispatcher;
-import de.ptb.epics.eve.viewer.messages.IMessagesContainerUpdateListener;
-import de.ptb.epics.eve.viewer.messages.MessagesContainer;
-import de.ptb.epics.eve.viewer.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.messages.IMessagesContainerUpdateListener;
+import de.ptb.epics.eve.viewer.views.messages.MessagesContainer;
+import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
 
 /**
  * 
