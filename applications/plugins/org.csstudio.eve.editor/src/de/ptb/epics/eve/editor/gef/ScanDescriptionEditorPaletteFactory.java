@@ -19,8 +19,11 @@ import de.ptb.epics.eve.editor.Activator;
  * @author Marcus Michalsky
  * @since 1.6
  */
-public class ScanDescriptionEditorPaletteFactory {
+public final class ScanDescriptionEditorPaletteFactory {
 
+	private ScanDescriptionEditorPaletteFactory() {
+	}
+	
 	/**
 	 * Returns the palette root
 	 * 

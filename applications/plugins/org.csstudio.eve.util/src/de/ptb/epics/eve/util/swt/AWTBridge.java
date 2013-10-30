@@ -30,8 +30,11 @@ import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.graphics.*;
 
-public class AWTBridge {
+public final class AWTBridge {
 
+	private AWTBridge() {
+	}
+	
 	public static BufferedImage convertToAWT(ImageData data) {
 		ColorModel colorModel = null;
 		PaletteData palette = data.palette;
