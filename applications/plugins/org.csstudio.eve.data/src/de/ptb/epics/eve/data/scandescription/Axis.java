@@ -77,7 +77,8 @@ public class Axis extends AbstractMainPhaseBehavior implements
 			this.setStepfunction(Stepfunctions.POSITIONLIST);
 			StringBuffer sb = new StringBuffer();
 			for (String s : axis.getGoto().getDiscreteValues()) {
-				sb.append(s + ",");
+				sb.append(s);
+				sb.append(",");
 			}
 			this.setPositionlist(sb.substring(0, sb.length() - 1));
 			

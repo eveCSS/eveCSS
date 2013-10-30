@@ -345,19 +345,24 @@ public final class DevicesView extends ViewPart implements PropertyChangeListene
 				// add prefixes defining the type of the device
 				for(TreeItem item : items) {
 					if(item.getData() instanceof Motor) {
-						data.append("M" + ((AbstractDevice)item.getData()).
+						data.append("M");
+						data.append(((AbstractDevice)item.getData()).
 								getFullIdentifyer());
 					} else if(item.getData() instanceof MotorAxis) {
-						data.append("A" + ((AbstractDevice)item.getData()).
+						data.append("A");
+						data.append(((AbstractDevice)item.getData()).
 								getFullIdentifyer());
 					} else if(item.getData() instanceof Detector) {
-						data.append("D" + ((AbstractDevice)item.getData()).
+						data.append("D");
+						data.append(((AbstractDevice)item.getData()).
 								getFullIdentifyer());
 					} else if(item.getData() instanceof DetectorChannel) {
-						data.append("C" + ((AbstractDevice)item.getData()).
+						data.append("C");
+						data.append(((AbstractDevice)item.getData()).
 								getFullIdentifyer());
 					} else if(item.getData() instanceof Device) {
-						data.append("d" + ((AbstractDevice)item.getData()).
+						data.append("d");
+						data.append(((AbstractDevice)item.getData()).
 								getFullIdentifyer());
 					} else if(item.getData() instanceof List<?>) {
 						
