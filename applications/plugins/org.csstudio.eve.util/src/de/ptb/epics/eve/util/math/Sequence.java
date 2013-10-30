@@ -19,7 +19,10 @@ import org.apache.log4j.Logger;
  * @author Marcus Michalsky
  * @since 1.7
  */
-public class Sequence {
+public final class Sequence {
+	
+	private Sequence() {
+	}
 	
 	private static final Logger LOGGER = Logger.getLogger(Sequence.class
 			.getName());

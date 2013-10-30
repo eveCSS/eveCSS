@@ -25,7 +25,10 @@ import org.eclipse.core.runtime.Status;
  * @author Marcus Michalsky
  * @since 1.16
  */
-public class PDFCreator {
+public final class PDFCreator {
+	
+	private PDFCreator() {
+	}
 	
 	private static final Logger LOGGER = Logger.getLogger(PDFCreator.class
 			.getName());

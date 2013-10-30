@@ -9,6 +9,9 @@ import org.apache.commons.math3.geometry.partitioning.Region;
  */
 public final class Range {
 	
+	private Range() {
+	}
+	
 	/**
 	 * Checks whether a given value is in the interval constructed by the bounds 
 	 * given.

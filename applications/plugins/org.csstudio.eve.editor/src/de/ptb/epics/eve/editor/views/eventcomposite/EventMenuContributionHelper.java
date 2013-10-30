@@ -15,7 +15,10 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
  * @author Marcus Michalsky
  * @since 1.1
  */
-public class EventMenuContributionHelper {
+public final class EventMenuContributionHelper {
+	
+	private EventMenuContributionHelper() {
+	}
 	
 	/**
 	 * Returns the active {@link org.eclipse.ui.IViewPart} if any or

@@ -22,7 +22,10 @@ import de.ptb.epics.eve.preferences.PreferenceConstants;
  * @author Marcus Michalsky
  * @since 1.14
  */
-public class Startup {
+public final class Startup {
+	
+	private Startup() {
+	}
 	
 	/**
 	 * Reads the startup parameters from the eclipse platform and returns them 
