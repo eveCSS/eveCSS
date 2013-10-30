@@ -203,13 +203,16 @@ public class AWTBridge {
 		frame.setVisible(true);
 		shell.open();
 		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
+			if (!display.readAndDispatch()) {
 				display.sleep();
+			}
 		}
-		if (swtImage != null)
+		if (swtImage != null) {
 			swtImage.dispose();
-		if (swtImage2 != null)
+		}
+		if (swtImage2 != null) {
 			swtImage.dispose();
+		}
 		frame.dispose();
 		display.dispose();
 		/*
