@@ -94,6 +94,7 @@ public class FileUtil {
 				result.add(line);
 			}
 		}
+		br.close();
 		return result;
 	}
 }
