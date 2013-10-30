@@ -70,7 +70,6 @@ public enum PositionMode {
 	 * @return all available position modes
 	 */
 	public static String[] getPossiblePositionModes() {
-		final String[] values = {"relative", "absolute"}; 
-		return values;
+		return new String[] {"relative", "absolute"}; 
 	}
 }

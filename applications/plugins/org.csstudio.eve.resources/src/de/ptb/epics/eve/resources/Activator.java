@@ -70,8 +70,7 @@ public class Activator implements BundleActivator {
 		try {
 			URL url = new URL(
 				"platform:/plugin/de.ptb.epics.eve.resources/cfg/default.xml");
-			File file = new File(FileLocator.toFileURL(url).toURI());
-			return file;
+			return new File(FileLocator.toFileURL(url).toURI());
 		} catch (MalformedURLException e1) {
 			logger.error(e1.getMessage(), e1);
 		} catch (URISyntaxException e) {
@@ -91,8 +90,7 @@ public class Activator implements BundleActivator {
 		try {
 			URL url = new URL(
 				"platform:/plugin/de.ptb.epics.eve.resources/cfg/schema.xsd");
-			File file = new File(FileLocator.toFileURL(url).toURI());
-			return file;
+			return new File(FileLocator.toFileURL(url).toURI());
 		} catch (MalformedURLException e1) {
 			logger.error(e1.getMessage(), e1);
 		} catch (URISyntaxException e) {
@@ -113,8 +111,7 @@ public class Activator implements BundleActivator {
 			URL url;
 			url = new URL(
 				"platform:/plugin/de.ptb.epics.eve.resources/cfg/defaults.xsd");
-			File file = new File(FileLocator.toFileURL(url).toURI());
-			return file;
+			return new File(FileLocator.toFileURL(url).toURI());
 		} catch (MalformedURLException e1) {
 			logger.error(e1.getMessage(), e1);
 		} catch (URISyntaxException e) {
@@ -141,8 +138,7 @@ public class Activator implements BundleActivator {
 				url = new URL(
 					"platform:/plugin/de.ptb.epics.eve.resources/cfg/logger.xml");
 			}
-			File file = new File(FileLocator.toFileURL(url).toURI());
-			return file;
+			return  new File(FileLocator.toFileURL(url).toURI());
 		} catch (MalformedURLException e) {
 			logger.error(e.getMessage(), e);
 		} catch (URISyntaxException e) {
