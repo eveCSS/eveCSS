@@ -153,7 +153,7 @@ public class TraceDataCollector implements IDataProvider,
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Plot " + this.traceInfo.getPlotId() + " ("
 						+ this.traceInfo.getPlotName() + ") - " 
-						+ (this.traceInfo.getNormalizeId() != "" 
+						+ (!this.traceInfo.getNormalizeId().isEmpty() 
 							? this.traceInfo.getNormalizeId() 
 							: this.traceInfo.getDetectorId())
 						+ ": Pos: "
