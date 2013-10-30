@@ -227,7 +227,7 @@ public enum DataTypes {
 					Integer secs = dseconds.intValue();
 					int hours = secs / 3600;
 					int minutes = secs / 60 - hours * 60;
-					dseconds -= new Integer(hours * 3600 + minutes * 60)
+					dseconds -=  Integer.valueOf(hours * 3600 + minutes * 60)
 							.doubleValue();
 					secs %= 60;
 					if (dseconds > secs.doubleValue()) {
@@ -284,9 +284,9 @@ public enum DataTypes {
 		case OPENCLOSE:
 			return "CLOSE";
 		case INT:
-			return new Integer(0).toString();
+			return "0";
 		case DOUBLE:
-			return new Double(0.0).toString();
+			return "0.0";
 		case STRING:
 			return "<unknown>";
 		case DATETIME:

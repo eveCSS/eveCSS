@@ -154,8 +154,8 @@ public enum PluginDataType {
 		
 		case ONOFF:		return "OFF";
 		case OPENCLOSE:	return "CLOSE";		
-		case INT:		return new Integer(0).toString();
-		case DOUBLE:	return new Double(0.0).toString();
+		case INT:		return "0";
+		case DOUBLE:	return "0.0";
 		case STRING:	return "<unknown>";
 		case AXISID:	return "";
 		case CHANNELID:	return "";

@@ -156,7 +156,7 @@ public class MeasurementDataCommand implements IECP1Command {
 
 		case INT32:
 			for (int i = 0; i < dataCount; ++i) {
-				this.add(new Integer(dataInputStream.readInt()));
+				this.add(Integer.valueOf(dataInputStream.readInt()));
 			}
 			break;
 
