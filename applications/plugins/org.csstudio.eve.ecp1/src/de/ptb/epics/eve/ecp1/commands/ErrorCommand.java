@@ -64,7 +64,6 @@ public class ErrorCommand implements IECP1Command {
 					ErrorCommand.COMMAND_TYPE_ID);
 		}
 
-		final int length = dataInputStream.readInt();
 		this.gerenalTimeStamp = dataInputStream.readInt();
 		this.nanoseconds = dataInputStream.readInt();
 		this.errorSeverity = ErrorSeverity.byteToErrorSeverity(dataInputStream

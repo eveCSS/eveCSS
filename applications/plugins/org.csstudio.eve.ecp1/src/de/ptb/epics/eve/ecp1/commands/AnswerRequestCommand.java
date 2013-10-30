@@ -84,8 +84,6 @@ public class AnswerRequestCommand implements IECP1Command {
 					AnswerRequestCommand.COMMAND_TYPE_ID);
 		}
 
-		final int length = dataInputStream.readInt();
-
 		this.requestId = dataInputStream.readInt();
 
 		dataInputStream.readChar();

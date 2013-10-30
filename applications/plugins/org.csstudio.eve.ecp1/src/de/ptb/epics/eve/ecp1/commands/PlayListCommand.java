@@ -52,7 +52,6 @@ public class PlayListCommand implements IECP1Command {
 					PlayListCommand.COMMAND_TYPE_ID);
 		}
 
-		final int length = dataInputStream.readInt();
 		final int amount = dataInputStream.readInt();
 		for (int i = 0; i < amount; ++i) {
 			final int id = dataInputStream.readInt();
