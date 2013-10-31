@@ -21,7 +21,6 @@ import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Option;
-import de.ptb.epics.eve.data.measuringstation.filter.ExcludeDevicesOfScanModuleFilterManualUpdate;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
@@ -92,9 +91,6 @@ public class ScanDescription implements IModelUpdateProvider,
 	
 	private PropertyChangeSupport propertyChangeSupport;
 
-	// The PluginController for the Monitored Options
-	private final PluginController monitorOptionController;
-
 	/**
 	 * Constructs a <code>ScanDescription</code> and adds the S0 start event
 	 * to it's event list.
@@ -117,8 +113,6 @@ public class ScanDescription implements IModelUpdateProvider,
 		this.monitorOption = MonitorOption.NONE;
 		this.monitors = new ArrayList<Option>();
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
-		this.monitorOptionController = new PluginController();
-		this.monitorOptionController.addModelUpdateListener(this);
 	}
 
 	/**
@@ -490,7 +484,7 @@ public class ScanDescription implements IModelUpdateProvider,
 	 * Adds all options of the scan devices to the list of 
 	 * monitors which are marked in the
 	 * messplatz.xml File with monitor="true"
-	 * @since 1.14
+	 * @since 1.15
 	 */
 	public void addInvolvedMonitor() {
 		// first, clear List
@@ -498,18 +492,26 @@ public class ScanDescription implements IModelUpdateProvider,
 		// add option to list
 		// do the filtering
 
-				
-		System.out.println("\n\tListe der involved Options wird erstellt");
-		System.out.println("\t\tZustand der Auswahl: " + this.getMonitorOption().name());
+		if(logger.isDebugEnabled()) {
+			logger.debug("ScanDescription "
+					+ this.getMonitorOption().name() + " selected.");
+		}
 		ExcludeFilter measuringStation2 = new ExcludeFilter();
 		measuringStation2.setSource(this.getMeasuringStation());
 		measuringStation2.excludeUnusedDevices(this);
 		
 		for (Detector d : measuringStation2.getDetectors()) {
-			System.out.println("Detector: " + d.getName());
+			if(logger.isDebugEnabled()) {
+				logger.debug("Detector "
+						+ d.getName() + " is used in Scan");
+			}
 			for (Option o : d.getOptions()) {
 				if(!o.isMonitor()) continue;
 				this.monitors.add(o);
+				if(logger.isDebugEnabled()) {
+					logger.debug("Option of Detector "
+							+ d.getName() + ": " + o.toString());
+				}
 			}
 			for (DetectorChannel ch : d.getChannels()) {
 				for (Option o : ch.getOptions()) {
@@ -538,11 +540,6 @@ public class ScanDescription implements IModelUpdateProvider,
 				this.monitors.add(o);
 			}
 		}
-
-		for (Option o : this.monitors) {
-			System.out.println("Option : " + o.getParent().getName() + " " + o.getName());
-		}
-	
 	}
 
 	/**
@@ -668,13 +665,4 @@ public class ScanDescription implements IModelUpdateProvider,
 				listener);
 	}
 
-	/**
-	 * Returns the {@link de.ptb.epics.eve.data.scandescription.PluginController}.
-	 * 
-	 * @return the {@link de.ptb.epics.eve.data.scandescription.PluginController}
-	 */
-	public PluginController getMonitorOptionController() {
-		return this.monitorOptionController;
-	}
-	
 }

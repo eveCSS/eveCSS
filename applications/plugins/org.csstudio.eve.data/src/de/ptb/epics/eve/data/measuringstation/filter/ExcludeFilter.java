@@ -47,6 +47,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * 
  * @author ?
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class ExcludeFilter extends MeasuringStationFilter {
 
@@ -1077,43 +1078,142 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			}
 		}
 		
-		// add all options with monitor="true" to the list of used options
-		for(Detector d : this.getSource().getDetectors()) {
-			for(Option o : d.getOptions()) {
-				if(o.isMonitor()) {
-					usedOptions.add(o);
-				}
-			}
-			for(DetectorChannel ch : d.getChannels()) {
-				for(Option o : ch.getOptions()) {
-					if(o.isMonitor()) {
-						usedOptions.add(o);
+
+		switch (scandescription.getMonitorOption()) {
+			case AS_IN_DEVICE_DEFINITION:
+				// add all options with monitor="true" to the list of used options
+				for(Detector d : this.getSource().getDetectors()) {
+					for(Option o : d.getOptions()) {
+						if(o.isMonitor()) {
+							usedOptions.add(o);
+						}
+					}
+					for(DetectorChannel ch : d.getChannels()) {
+						for(Option o : ch.getOptions()) {
+							if(o.isMonitor()) {
+								usedOptions.add(o);
+							}
+						}
 					}
 				}
-			}
-		}
-		
-		for(Motor m : this.getSource().getMotors()) {
-			for(Option o : m.getOptions()) {
-				if(o.isMonitor()) {
-					usedOptions.add(o);
-				}
-			}
-			for(MotorAxis ma : m.getAxes()) {
-				for(Option o : ma.getOptions()) {
-					if(o.isMonitor()) {
-						usedOptions.add(o);
+				
+				for(Motor m : this.getSource().getMotors()) {
+					for(Option o : m.getOptions()) {
+						if(o.isMonitor()) {
+							usedOptions.add(o);
+						}
+					}
+					for(MotorAxis ma : m.getAxes()) {
+						for(Option o : ma.getOptions()) {
+							if(o.isMonitor()) {
+								usedOptions.add(o);
+							}
+						}
 					}
 				}
-			}
-		}
-		
-		for(Device dev : this.getSource().getDevices()) {
-			for(Option o : dev.getOptions()) {
-				if(o.isMonitor()) {
-					usedOptions.add(o);
+				
+				for(Device dev : this.getSource().getDevices()) {
+
+					logger.debug("Device " + dev.getName() + " is used -> check Options");
+
+					for(Option o : dev.getOptions()) {
+						if(o.isMonitor()) {
+							usedOptions.add(o);
+						}
+						else {
+							logger.debug("Option " + dev.getName() + ":" + 
+			o.getName() + " has no monitor=true, not added to list");
+							
+						}
+					}
 				}
-			}
+				break;
+			case CUSTOM:
+				// Hier müssen alle Options als used markiert werden, die in
+				// der Liste der genutzten Optionen stehen.
+				break;
+			case NONE:
+				// Es werden keine Optionen geschrieben, also sind auch keine
+				// usedOptions hinzuzufügen.
+				break;
+			case USED_IN_SCAN:
+				// add all options with monitor="true" to the list of used options
+				// of devices wich are used in the scan
+				for(Chain chain : scandescription.getChains()) {
+					// iterate through each scan module of the chain
+					for(ScanModule sm : chain.getScanModules()) {
+						// iterate axes
+						for(Axis a : sm.getAxes()) {
+							// add Options of Axis if monitor=true
+							for(Option o : a.getMotorAxis().getOptions()) {
+								if(o.isMonitor()) {
+									usedOptions.add(o);
+								}
+							}
+							// add Options of Motor from Axis if monitor=true
+							for(Option o : a.getMotorAxis().getMotor().getOptions()) {
+								if(o.isMonitor()) {
+									usedOptions.add(o);
+								}
+							}
+						}
+						for(Channel ch : sm.getChannels()) {
+							// add Options of Channel if monitor=true
+							for(Option o : ch.getDetectorChannel().getOptions()) {
+								if(o.isMonitor()) {
+									usedOptions.add(o);
+								}
+							}
+							// add Options of Detector from Channel if monitor=true
+							for(Option o : ch.getDetectorChannel().getDetector().getOptions()) {
+								if(o.isMonitor()) {
+									usedOptions.add(o);
+								}
+							}
+						}
+
+						// iterate prescans
+						for(Prescan prescan : sm.getPrescans()) {
+							// add Prescan Option if monitor=true
+							if(prescan.isOption()) {
+								usedOptions.add((Option)prescan.getAbstractDevice());
+								Option o = (Option)prescan.getAbstractDevice();
+								if(o.isMonitor()) {
+									usedOptions.add(o);
+								}
+							}
+							// add Options of Prescan Device if monitor=true
+							if(prescan.isDevice()) {
+								for(Option o : prescan.getAbstractDevice().getOptions()) {
+									if(o.isMonitor()) {
+										usedOptions.add(o);
+									}
+								}
+							}
+						}
+
+						// iterate postcans
+						for(Postscan postscan : sm.getPostscans()) {
+							// add Postscan Option if monitor=true
+							if(postscan.isOption()) {
+								usedOptions.add((Option)postscan.getAbstractDevice());
+								Option o = (Option)postscan.getAbstractDevice();
+								if(o.isMonitor()) {
+									usedOptions.add(o);
+								}
+							}
+							// add Options of Postscan Device if monitor=true
+							if(postscan.isDevice()) {
+								for(Option o : postscan.getAbstractDevice().getOptions()) {
+									if(o.isMonitor()) {
+										usedOptions.add(o);
+									}
+								}
+							}
+						}
+					}
+				}
+				break;
 		}
 		
 		// *******************************************************************
@@ -1268,11 +1368,13 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					if(usedOptions.contains(o)) {
 						// option is used, set flag
 						optionUsed = true;
+						logger.debug("Option " + device.getName() + ":" + 
+								o.getName() + " is used -> nicht wegnehmen");
 					} else {
 						// option not used -> exclude
 						exclude(o);
 						logger.debug("Option " + device.getName() + ":" + 
-								o.getName() + " not used -> exclude");
+								o.getName() + " not used -> exclude = weg damit");
 					}
 				}
 				
@@ -1284,6 +1386,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 							device.getName() + ") not used -> exclude");
 				}
 			} else {
+				logger.debug("Device " + device.getName() + " is used -> Optionen kontrollieren");
 				// device is used -> exclude unused options
 				for(Option o : device.getOptions()) {
 					if(!usedOptions.contains(o)) {

@@ -259,10 +259,19 @@ public class ScanDescriptionSaver implements
 					"" + MonitorOption.typeToString(scanDescription.getMonitorOption()));
 			this.contentHandler.startElement("", "monitoroptions",
 					"monitoroptions", this.atts);
-			// hier wird jetzt die Liste der Monitor Options
-			// geschrieben ohne darauf zu achten, wie die
-			// Einstellung von Monitor Options ist.
-			// Hartmut 29.8.13
+
+			switch (this.getScanDescription().getMonitorOption()) {
+			case AS_IN_DEVICE_DEFINITION:
+			case CUSTOM:
+			case NONE:
+				// list of monitored options is ok
+				break;
+			case USED_IN_SCAN:
+				// update list of monitored options
+				this.getScanDescription().addInvolvedMonitor();
+				break;
+			}
+								
 			for (Option o : this.scanDescription.getMonitors()) {
 				successful = this.writeId(o.getID());
 			}
