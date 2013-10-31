@@ -98,8 +98,10 @@ public class MonitorOptionDialog extends SelectionDialog {
 		Composite container = new Composite(area, SWT.NONE);
 
 		GridData gridData = new GridData();
-		gridData.widthHint = 600;
-		gridData.heightHint = 300;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
 		container.setLayoutData(gridData);
 
 		GridLayout gridLayout = new GridLayout();
