@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.editor.dialogs.monitoroptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -66,7 +67,10 @@ public class TreeViewerContentProvider
 		
 		// add all classes as elements
 		if (!measuringStation.getClassNameList().isEmpty()) {
-			returnList.addAll(measuringStation.getClassNameList());
+			List<String> setAsList = new ArrayList<String>(
+					measuringStation.getClassNameList());
+			Collections.sort(setAsList);
+			returnList.addAll(setAsList);
 		}
 		
 		if(!motorsWithoutClassName.isEmpty()) {
