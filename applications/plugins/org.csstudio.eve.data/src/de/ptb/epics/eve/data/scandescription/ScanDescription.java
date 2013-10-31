@@ -509,25 +509,19 @@ public class ScanDescription implements IModelUpdateProvider,
 		// add option to list
 		// do the filtering
 
-<<<<<<< HEAD
 		if(logger.isDebugEnabled()) {
 			logger.debug("ScanDescription "
 					+ this.getMonitorOption().name() + " selected.");
 		}
-=======
->>>>>>> branch 'master' of file:////soft/repo/git/eveCSS
 		ExcludeFilter measuringStation2 = new ExcludeFilter();
 		measuringStation2.setSource(this.getMeasuringStation());
 		measuringStation2.excludeUnusedDevices(this);
 		
 		for (Detector d : measuringStation2.getDetectors()) {
-<<<<<<< HEAD
 			if(logger.isDebugEnabled()) {
 				logger.debug("Detector "
 						+ d.getName() + " is used in Scan");
 			}
-=======
->>>>>>> branch 'master' of file:////soft/repo/git/eveCSS
 			for (Option o : d.getOptions()) {
 				if(!o.isMonitor()) continue;
 				this.monitors.add(o);
