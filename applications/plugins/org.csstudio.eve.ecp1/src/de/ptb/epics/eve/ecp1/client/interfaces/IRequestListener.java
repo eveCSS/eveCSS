@@ -17,7 +17,7 @@ public interface IRequestListener {
 	 *
 	 * @param request the request
 	 */
-	public void request(final Request request);
+	void request(final Request request);
 
 	/**
 	 * Gets called to cancel outstanding requests (another answer of a 
@@ -25,5 +25,5 @@ public interface IRequestListener {
 	 * 
 	 * @param request the request
 	 */
-	public void cancelRequest(final Request request);
+	void cancelRequest(final Request request);
 }

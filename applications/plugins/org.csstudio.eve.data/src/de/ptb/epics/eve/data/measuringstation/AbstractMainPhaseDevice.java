@@ -84,18 +84,6 @@ public abstract class AbstractMainPhaseDevice extends AbstractDevice {
 	}
 	
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void setParent(final AbstractDevice parent) 
-								throws ParentNotAllowedException {
-		// TODO describe/explain exception thrown super doesn't throw anything!
-		// It will throw a ParentNotAllowedException
-		// if there is passed a wrong device type
-		super.setParent(parent);
-	}
-	
-	/**
 	 * Returns the class name of the device.
 	 * 
 	 * @return a <code>String</code> containing the name of the class of 

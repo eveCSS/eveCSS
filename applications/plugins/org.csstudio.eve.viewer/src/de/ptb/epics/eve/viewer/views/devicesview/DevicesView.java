@@ -41,13 +41,12 @@ import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
-
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.MessageSource;
 import de.ptb.epics.eve.viewer.XMLDispatcher;
-import de.ptb.epics.eve.viewer.messages.Levels;
-import de.ptb.epics.eve.viewer.messages.ViewerMessage;
 import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
+import de.ptb.epics.eve.viewer.views.messages.Levels;
+import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
 
 /**
  * <code>DevicesView</code> visualizes available 
@@ -345,19 +344,24 @@ public final class DevicesView extends ViewPart implements PropertyChangeListene
 				// add prefixes defining the type of the device
 				for(TreeItem item : items) {
 					if(item.getData() instanceof Motor) {
-						data.append("M" + ((AbstractDevice)item.getData()).
+						data.append("M");
+						data.append(((AbstractDevice)item.getData()).
 								getFullIdentifyer());
 					} else if(item.getData() instanceof MotorAxis) {
-						data.append("A" + ((AbstractDevice)item.getData()).
+						data.append("A");
+						data.append(((AbstractDevice)item.getData()).
 								getFullIdentifyer());
 					} else if(item.getData() instanceof Detector) {
-						data.append("D" + ((AbstractDevice)item.getData()).
+						data.append("D");
+						data.append(((AbstractDevice)item.getData()).
 								getFullIdentifyer());
 					} else if(item.getData() instanceof DetectorChannel) {
-						data.append("C" + ((AbstractDevice)item.getData()).
+						data.append("C");
+						data.append(((AbstractDevice)item.getData()).
 								getFullIdentifyer());
 					} else if(item.getData() instanceof Device) {
-						data.append("d" + ((AbstractDevice)item.getData()).
+						data.append("d");
+						data.append(((AbstractDevice)item.getData()).
 								getFullIdentifyer());
 					} else if(item.getData() instanceof List<?>) {
 						

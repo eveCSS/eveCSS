@@ -210,7 +210,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 			} else if (qName.equals("monitoroptions")) {
 				if (atts.getValue("type") == null) {
+<<<<<<< HEAD
 					this.scanDescription.setMonitorOption(MonitorOption.CUSTOM);					
+=======
+					this.scanDescription.setMonitorOption(MonitorOption.CUSTOM);
+>>>>>>> branch 'master' of file:////soft/repo/git/eveCSS
 				} else {
 					this.scanDescription.setMonitorOption(
 						MonitorOption.stringToType(atts.getValue("type")));

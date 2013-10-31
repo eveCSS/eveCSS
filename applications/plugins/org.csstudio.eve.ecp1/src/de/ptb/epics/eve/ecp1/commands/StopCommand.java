@@ -65,7 +65,7 @@ public class StopCommand implements IECP1Command {
 
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
-		;
+		
 		dataOutputStream.writeChar(StopCommand.COMMAND_TYPE_ID);
 		dataOutputStream.writeInt(0);
 

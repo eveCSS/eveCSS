@@ -88,7 +88,7 @@ public class ValueEditingSupport extends EditingSupport {
 				} else if (prescan.getValue().equals("Off")) {
 					return 1;
 				} else {
-					return "";
+					return 0;
 				}
 			} else if (prescan.getAbstractPrePostscanDevice().getValue().
 					getType().equals(DataTypes.OPENCLOSE)) {
@@ -97,11 +97,12 @@ public class ValueEditingSupport extends EditingSupport {
 				} else if (prescan.getValue().equals("Close")) {
 					return 1;
 				} else {
-					return "";
+					return 0;
 				}
 			} else {
-				return prescan.getAbstractPrePostscanDevice().getValue().
-					getDiscreteValues().indexOf(element);
+				int index = prescan.getAbstractPrePostscanDevice().getValue().
+						getDiscreteValues().indexOf(prescan.getValue());
+				return index == -1 ? 0 : index;
 			}
 		} else {
 			return prescan.getValue();

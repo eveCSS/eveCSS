@@ -68,7 +68,7 @@ public class ReorderPlayListCommand implements IECP1Command {
 
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
-		;
+		
 		dataOutputStream.writeChar(ReorderPlayListCommand.COMMAND_TYPE_ID);
 
 		dataOutputStream.writeInt(8);

@@ -149,8 +149,8 @@ public class ScanDescriptionLoader {
 		saxParser.parse(this.fileToLoad, handler);
 
 		this.scanDescription = handler.getScanDescription();
+		this.scanDescription.setFileName(this.fileToLoad.getName());
 		this.lostDevicesList = handler.getLostDevices();
-
 	}
 
 	/**

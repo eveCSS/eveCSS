@@ -91,7 +91,7 @@ public class ChainStatusCommand implements IECP1Command {
 
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
-		;
+		
 		dataOutputStream.writeChar(ChainStatusCommand.COMMAND_TYPE_ID);
 		dataOutputStream.writeInt(40);
 		dataOutputStream.writeLong(this.timestamp);

@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.15
+
+* [Feature] added/revised several Help topics
+
 h2(eveTopic). Version 1.14
 
 * [Bug Fix] fixed missing/false plot auto scale behavior

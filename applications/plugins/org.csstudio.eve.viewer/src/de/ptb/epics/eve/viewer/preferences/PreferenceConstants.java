@@ -4,8 +4,11 @@ package de.ptb.epics.eve.viewer.preferences;
  * 
  * @author Marcus Michalsky
  */
-public class PreferenceConstants {
+public final class PreferenceConstants {
 
+	private PreferenceConstants() {
+	}
+	
 	/**
 	 * @since 1.10
 	 */

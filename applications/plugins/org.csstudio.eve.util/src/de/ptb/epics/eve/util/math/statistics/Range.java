@@ -7,7 +7,10 @@ import org.apache.commons.math3.geometry.partitioning.Region;
  * @author Marcus Michalsky
  * @since 1.10
  */
-public class Range {
+public final class Range {
+	
+	private Range() {
+	}
 	
 	/**
 	 * Checks whether a given value is in the interval constructed by the bounds 

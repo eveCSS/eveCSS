@@ -9,10 +9,10 @@ public interface IConnectionStateListener {
 	/**
 	 * Gets called if the engine gets connected.
 	 */
-	public void stackConnected();
+	void stackConnected();
 	
 	/**
 	 * Gets called if the engine gets disconnected.
 	 */
-	public void stackDisconnected();
+	void stackDisconnected();
 }

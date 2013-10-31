@@ -13,5 +13,5 @@ public interface IChainStatusListener {
 	 * 
 	 * @param chainStatusCommand the chain status command
 	 */
-	public void chainStatusChanged(final ChainStatusCommand chainStatusCommand);
+	void chainStatusChanged(final ChainStatusCommand chainStatusCommand);
 }

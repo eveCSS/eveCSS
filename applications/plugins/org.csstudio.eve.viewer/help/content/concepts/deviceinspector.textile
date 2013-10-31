@@ -1,0 +1,29 @@
+h1(eveTopic). Device Inspector View
+
+p. The Device Inspector view is the center of the EveDevice perspective. Devices added to it can be monitored and manipulated. After adding a device, depending on its type, certain connections to process variables are established to monitor it (e.g. a read back value of a detector channel or a goto position of a motor axis). If the process variable is writable it can also be modified (e.g. moving a motor axis or switching a discrete device from on to off or vice versa).
+
+p. The Device Inspector view is highly customizable. The following figure shows an example of a Device Inspector view in its default state (filled with devices):
+
+!(eveImage)../../img/concepts/deviceinspectorview.png(Device Inspector View)!
+
+p. The figure also shows the ==<a href="http://www.aps.anl.gov/epics/EpicsDocumentation/ExtensionsManuals/AlarmHandler/ALHUserGuide/ALHUserGuide.html#2_4_2" target="_blank">EPICS Alarm Severity</a>== for "Gaussian Noise" and "Ramp". The color code is defined "here":../reference/severitycolors.html .
+
+p. The toolbar offers commands to add and remove all devices of a certain type[1]. It is also possible to open additional Device Inspector views (and rename them). Together with the option to maximize a device table several scenarios are imaginable. One would be to separate the devices by type:
+
+!(eveImage)../../img/concepts/deviceinspectorview-multiple.png(multiple Device Inspector Views - Example)!
+
+p. Another example would be to group them by class:
+
+!(eveImage)../../img/concepts/deviceinspectorview-multiple2.png(multiple Device Inspector Views - Example 2)!
+
+p. If your table grows to large to search for an entry you can sort it by name by clicking on the respective column:
+
+!(eveImage)../../img/concepts/deviceinspectorview-sort.png(Device Inspector Views - Sorted Example)!
+
+p. The first click will sort the rows by name ascending. Another click sorts them descending and a third click reestablishes to "unsorted" state. More precisely you can toggle through the states unsorted &rarr; ascending &rarr; descending, which are represented by an icon in the column header (except for unsorted).
+
+p. __Note__ that when closing the application it remembers the position and contents of the Device Inspector views as long as you stay in the same workspace. When starting the application all connections are reestablished.
+
+<hr/>
+
+fn1. Adding all devices should be used with caution.

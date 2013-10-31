@@ -478,14 +478,6 @@ public class MotorAxis extends AbstractMainPhaseDevice {
 		this.channelAccess.disconnect();
 		logger.debug("disconnected");
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
 
 	/**
 	 * Returns the channel access delegate or <code>null</code> if not 

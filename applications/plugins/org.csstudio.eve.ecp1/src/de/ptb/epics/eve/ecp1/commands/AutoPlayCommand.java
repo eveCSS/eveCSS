@@ -79,7 +79,7 @@ public class AutoPlayCommand implements IECP1Command {
 
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
-		;
+		
 		dataOutputStream.writeChar(AutoPlayCommand.COMMAND_TYPE_ID);
 		dataOutputStream.writeInt(4);
 		if (this.autoplay) {

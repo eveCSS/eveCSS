@@ -41,7 +41,7 @@
       </view>
       <view
             category="eveViewerCategory"
-            class="de.ptb.epics.eve.viewer.views.messagesview.MessagesView"
+            class="de.ptb.epics.eve.viewer.views.messagesview.ui.MessagesView"
             icon="icons/showwarn_tsk.gif"
             id="MessagesView"
             name="%view.name.2">
@@ -280,6 +280,12 @@
                class="org.eclipse.ui.handlers.RegistryToggleState:true"
                id="org.eclipse.ui.commands.toggleState">
          </state>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.plotview"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.plot.ExportPDF"
+            id="de.ptb.epics.eve.viewer.views.plotview.exportpdf"
+            name="Export PDF">
       </command>
    </extension>
    <extension
@@ -566,6 +572,12 @@
                icon="icons/datasheet.gif"
                label="toggle statistics"
                style="toggle">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.views.plotview.exportpdf"
+               icon="platform:/plugin/org.eclipse.pde.runtime/icons/obj16/save_image_as_obj.gif"
+               label="Save as PDF"
+               style="push">
          </command>
       </menuContribution>
    </extension>

@@ -66,8 +66,6 @@ public class AddToPlayListCommand implements IECP1Command {
 					AddToPlayListCommand.COMMAND_TYPE_ID);
 		}
 
-		final int length = dataInputStream.readInt();
-
 		final int nameLength = dataInputStream.readInt();
 		if (nameLength != 0xffffffff) {
 			final byte[] nameByteArray = new byte[nameLength];
@@ -104,7 +102,7 @@ public class AddToPlayListCommand implements IECP1Command {
 
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
-		;
+		
 		dataOutputStream.writeChar(AddToPlayListCommand.COMMAND_TYPE_ID);
 
 		final byte[] nameByteBuffer = this.name

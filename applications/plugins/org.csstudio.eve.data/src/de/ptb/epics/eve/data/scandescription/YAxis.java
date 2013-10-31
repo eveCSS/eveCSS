@@ -284,13 +284,4 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 		}
 		return true;
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		// TODO
-		return super.hashCode();
-	}
 }

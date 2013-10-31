@@ -5,7 +5,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener;
 import de.ptb.epics.eve.ecp1.client.model.Error;
-import de.ptb.epics.eve.viewer.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
 
 public class EngineErrorReader implements IErrorListener {
 	public void errorOccured(final Error error) {

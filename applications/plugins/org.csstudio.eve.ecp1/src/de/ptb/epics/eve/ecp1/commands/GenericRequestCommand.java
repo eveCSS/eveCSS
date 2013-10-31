@@ -58,8 +58,6 @@ public class GenericRequestCommand implements IECP1Command {
 					GenericRequestCommand.COMMAND_TYPE_ID);
 		}
 
-		final int length = dataInputStream.readInt();
-
 		this.requestId = dataInputStream.readInt();
 		dataInputStream.readChar();
 		dataInputStream.readByte();
@@ -86,7 +84,7 @@ public class GenericRequestCommand implements IECP1Command {
 
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
-		;
+		
 		dataOutputStream.writeChar(GenericRequestCommand.COMMAND_TYPE_ID);
 
 		final byte[] requestTextBuffer = this.requestText

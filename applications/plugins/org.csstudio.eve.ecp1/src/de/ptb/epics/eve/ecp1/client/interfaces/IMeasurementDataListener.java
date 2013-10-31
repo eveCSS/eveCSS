@@ -15,5 +15,5 @@ public interface IMeasurementDataListener {
 	 * @param measurementData the 
 	 * 		  {@link de.ptb.epics.eve.ecp1.client.model.MeasurementData}
 	 */
-	public void measurementDataTransmitted(final MeasurementData measurementData);
+	void measurementDataTransmitted(final MeasurementData measurementData);
 }

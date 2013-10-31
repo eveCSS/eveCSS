@@ -84,8 +84,6 @@ public class AnswerRequestCommand implements IECP1Command {
 					AnswerRequestCommand.COMMAND_TYPE_ID);
 		}
 
-		final int length = dataInputStream.readInt();
-
 		this.requestId = dataInputStream.readInt();
 
 		dataInputStream.readChar();
@@ -125,7 +123,7 @@ public class AnswerRequestCommand implements IECP1Command {
 
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
-		;
+		
 		dataOutputStream.writeChar(AnswerRequestCommand.COMMAND_TYPE_ID);
 
 		switch (this.requestType) {

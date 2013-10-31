@@ -66,7 +66,7 @@ public class EndProgramCommand implements IECP1Command {
 
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
-		;
+		
 		dataOutputStream.writeChar(EndProgramCommand.COMMAND_TYPE_ID);
 		dataOutputStream.writeInt(0);
 

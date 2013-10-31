@@ -8,8 +8,8 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import de.ptb.epics.eve.ecp1.client.model.PlayListEntry;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.MessageSource;
-import de.ptb.epics.eve.viewer.messages.Levels;
-import de.ptb.epics.eve.viewer.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.messages.Levels;
+import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
 import de.ptb.epics.eve.viewer.views.playlistview.PlayListView;
 
 public class RemoveFileFromPlayListAction extends Action implements IWorkbenchAction {

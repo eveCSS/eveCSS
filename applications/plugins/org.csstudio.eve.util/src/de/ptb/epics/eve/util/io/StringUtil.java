@@ -7,8 +7,11 @@ import java.util.List;
  * @author Marcus Michalsky
  * @since 1.10
  */
-public class StringUtil {
+public final class StringUtil {
 
+	private StringUtil() {
+	}
+	
 	/**
 	 * Checks whether a given String contains a list of double values with 
 	 * comma as delimiter.

@@ -18,7 +18,7 @@ public interface IModelUpdateProvider {
 	 * 		   added
 	 * @return <code>true</code> if the update listener has been added
 	 */
-	public boolean addModelUpdateListener(
+	boolean addModelUpdateListener(
 			final IModelUpdateListener modelUpdateListener);
 	
 	/**
@@ -29,6 +29,6 @@ public interface IModelUpdateProvider {
 	 * 		  removed
 	 * @return <code>true</code> if the update listener has been added
 	 */
-	public boolean removeModelUpdateListener(
-			final IModelUpdateListener modelUpdateListener);	
+	boolean removeModelUpdateListener(
+			final IModelUpdateListener modelUpdateListener);
 }

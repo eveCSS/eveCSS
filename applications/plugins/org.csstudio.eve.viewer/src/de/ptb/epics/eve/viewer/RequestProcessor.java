@@ -252,9 +252,7 @@ public class RequestProcessor implements IRequestListener {
 				}
 			});
 			break;
-
 		}
 		}
-		;
 	}
 }

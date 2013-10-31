@@ -6,19 +6,19 @@
    </topic>
    <topic href="help/content/concepts/eveengineperspective.html" label="EveEngine Perspective">
    </topic>
-   <topic label="Playlist View">
+   <topic href="help/content/concepts/localdevicesview.html" label="Local Devices View">
+   </topic>
+   <topic href="help/content/concepts/deviceinspector.html" label="Device Inspector View">
+   </topic>
+   <topic href="help/content/concepts/optionsview.html" label="Device Options View">
+   </topic>
+   <topic href="help/content/concepts/messagesview.html" label="Messages View">
+   </topic>
+   <topic href="help/content/concepts/playlistview.html" label="Playlist View">
    </topic>
    <topic href="help/content/concepts/engineview.html" label="Engine View">
    </topic>
-   <topic label="Messages View">
-   </topic>
    <topic href="help/content/concepts/plotview.html" label="Plot View">
-   </topic>
-   <topic label="Devices View">
-   </topic>
-   <topic label="Device Inspector View">
-   </topic>
-   <topic label="Device Options View">
    </topic>
 
 </toc>

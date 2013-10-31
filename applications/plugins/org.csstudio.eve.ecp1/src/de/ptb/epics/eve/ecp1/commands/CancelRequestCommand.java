@@ -68,7 +68,7 @@ public class CancelRequestCommand implements IECP1Command {
 
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
-		;
+		
 		dataOutputStream.writeChar(CancelRequestCommand.COMMAND_TYPE_ID);
 		dataOutputStream.writeInt(4);
 		dataOutputStream.writeInt(this.requestId);

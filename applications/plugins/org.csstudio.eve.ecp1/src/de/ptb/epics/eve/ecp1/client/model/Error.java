@@ -43,7 +43,7 @@ public final class Error {
 	 * 
 	 * @return the facility of the error
 	 */
-	public final ErrorFacility getErrorFacility() {
+	public ErrorFacility getErrorFacility() {
 		return this.errorFacility;
 	}
 
@@ -54,7 +54,7 @@ public final class Error {
 	 * @return the error severity as in 
 	 * 		{@link de.ptb.epics.eve.ecp1.types.ErrorSeverity}
 	 */
-	public final ErrorSeverity getErrorSeverity() {
+	public ErrorSeverity getErrorSeverity() {
 		return this.errorSeverity;
 	}
 
@@ -65,7 +65,7 @@ public final class Error {
 	 * @return the error type as in 
 	 * 			{@link de.ptb.epics.eve.ecp1.types.ErrorType}
 	 */
-	public final ErrorType getErrorType() {
+	public ErrorType getErrorType() {
 		return this.errorType;
 	}
 
@@ -74,7 +74,7 @@ public final class Error {
 	 * 
 	 * @return the error text
 	 */
-	public final String getText() {
+	public String getText() {
 		return this.text;
 	}
 	
@@ -83,7 +83,7 @@ public final class Error {
 	 * 
 	 * @return the time stamp
 	 */
-	public final int getGerenalTimeStamp() {
+	public int getGerenalTimeStamp() {
 		return this.gerenalTimeStamp;
 	}
 
@@ -92,7 +92,7 @@ public final class Error {
 	 * 
 	 * @return the nanoseconds
 	 */
-	public final int getNanoseconds() {
+	public int getNanoseconds() {
 		return this.nanoseconds;
 	}
 }

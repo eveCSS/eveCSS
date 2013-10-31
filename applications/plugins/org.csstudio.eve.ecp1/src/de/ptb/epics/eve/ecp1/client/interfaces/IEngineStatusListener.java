@@ -16,6 +16,6 @@ public interface IEngineStatusListener {
 	 * @param xmlName the name of the xml file
 	 * @param repeatCount the repeat count
 	 */
-	public void engineStatusChanged(final EngineStatus engineStatus,
+	void engineStatusChanged(final EngineStatus engineStatus,
 			final String xmlName, final int repeatCount);
 }

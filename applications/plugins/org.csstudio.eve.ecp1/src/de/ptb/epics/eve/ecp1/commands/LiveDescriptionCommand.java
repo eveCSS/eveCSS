@@ -56,8 +56,6 @@ public class LiveDescriptionCommand implements IECP1Command {
 					LiveDescriptionCommand.COMMAND_TYPE_ID);
 		}
 
-		final int length = dataInputStream.readInt();
-
 		final int lenghtOfText = dataInputStream.readInt();
 
 		if (lenghtOfText == 0xffffffff) {
@@ -78,7 +76,7 @@ public class LiveDescriptionCommand implements IECP1Command {
 
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
-		;
+		
 		dataOutputStream.writeChar(LiveDescriptionCommand.COMMAND_TYPE_ID);
 		if (this.liveDescription.length() == 0) {
 			dataOutputStream.writeInt(4);

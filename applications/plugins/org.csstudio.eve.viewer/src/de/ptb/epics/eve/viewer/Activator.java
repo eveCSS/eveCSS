@@ -30,7 +30,7 @@ import de.ptb.epics.eve.ecp1.debug.ECP1ClientLogger;
 import de.ptb.epics.eve.resources.init.Parameters;
 import de.ptb.epics.eve.resources.init.Startup;
 import de.ptb.epics.eve.viewer.debug.PollInQueueSize;
-import de.ptb.epics.eve.viewer.messages.MessagesContainer;
+import de.ptb.epics.eve.viewer.views.messages.MessagesContainer;
 import de.ptb.epics.eve.viewer.views.plotview.PlotDispatcher;
 
 /**
@@ -68,6 +68,10 @@ public class Activator extends AbstractUIPlugin {
 
 	private File schemaFile;
 	private Parameters startupParams;
+	
+	// queue poll debug
+	PollInQueueSize pollInQueueSize;
+	Thread pollInQueueSizeThread;
 	
 	/**
 	 * The constructor
@@ -110,8 +114,7 @@ public class Activator extends AbstractUIPlugin {
 					startupParams.isDebug(), logger);
 		}
 		this.schemaFile = Startup.loadSchemaFile(logger);
-		this.measuringStation = Startup.loadMeasuringStation(
-				startupParams.getRootDir(), schemaFile, logger);
+		this.measuringStation = Startup.loadMeasuringStation(logger);
 		
 		loadColorsAndFonts();
 		startupReport();
@@ -142,7 +145,9 @@ public class Activator extends AbstractUIPlugin {
 		PlatformUI.getWorkbench().addWorkbenchListener(workbenchListener);
 		
 		if (logger.isDebugEnabled()) {
-			new Thread(new PollInQueueSize()).start();
+			this.pollInQueueSize = new PollInQueueSize();
+			this.pollInQueueSizeThread = new Thread(this.pollInQueueSize);
+			this.pollInQueueSizeThread.start();
 		}
 	}
 
@@ -151,6 +156,10 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	@Override
 	public void stop(final BundleContext context) throws Exception {
+		if (logger.isDebugEnabled()) {
+			this.pollInQueueSize.stop();
+			this.pollInQueueSizeThread.join(3000);
+		}
 		plugin = null;
 		super.stop(context);
 	}
@@ -250,7 +259,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 	
 	/**
-	 * Returns the {@link de.ptb.epics.eve.viewer.messages.MessagesContainer} 
+	 * Returns the {@link de.ptb.epics.eve.viewer.views.messages.MessagesContainer} 
 	 * used to collect messages of several types from different sources.
 	 * 
 	 * @return the messages container of the viewer
@@ -311,6 +320,7 @@ public class Activator extends AbstractUIPlugin {
 	private void startupReport() {
 		if(logger.isInfoEnabled()) {
 			logger.info("debug mode: " + startupParams.isDebug());
+			logger.info("eve.root set: " + !startupParams.useDefaultDevices());
 			logger.info("root directory: " + startupParams.getRootDir());
 			logger.info("measuring station: " + 
 					measuringStation.getLoadedFileName());
@@ -447,6 +457,12 @@ public class Activator extends AbstractUIPlugin {
 				PLUGIN_ID, "icons/fatalerror_obj.gif").createImage());
 		imagereg.put("SYSTEM", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/build_exec.gif").createImage());
+		imagereg.put("ERROR", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/error.gif").createImage());
+		imagereg.put("INFO", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/information.gif").createImage());
+		imagereg.put("WARNING", imageDescriptorFromPlugin(
+				PLUGIN_ID, "icons/warning_obj.gif").createImage());
 		imagereg.put("SORTARROW", imageDescriptorFromPlugin(
 				PLUGIN_ID, "icons/view_menu.gif").createImage());
 	}

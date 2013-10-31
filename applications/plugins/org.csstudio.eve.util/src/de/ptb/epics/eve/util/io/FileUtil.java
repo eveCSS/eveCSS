@@ -16,11 +16,13 @@ import java.util.List;
  * @author Marcus Michalsky
  * @since 1.8
  */
-public class FileUtil {
+public final class FileUtil {
 	/*
-	 * Note: could be more elegant (replaced) with Java 7.
 	 * See http://stackoverflow.com/questions/106770/standard-concise-way-to-copy-a-file-in-java
 	 */
+	
+	private FileUtil() {
+	}
 	
 	/**
 	 * @param sourceFile the source
@@ -94,6 +96,7 @@ public class FileUtil {
 				result.add(line);
 			}
 		}
+		br.close();
 		return result;
 	}
 }

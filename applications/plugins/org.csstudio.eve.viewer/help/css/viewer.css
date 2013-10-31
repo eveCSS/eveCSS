@@ -34,14 +34,18 @@ p {
 	font-style: italic;
 	display: inline;
 	padding-left: 20px;
-	background: url(../img/misc/unknown_obj.gif) no-repeat;
+	background: url('../img/misc/unknown_obj.gif') no-repeat;
 }
 
 .eveKnownBug {
 	font-style: italic;
 	display: inline;
 	padding-left: 20px;
-	background: url(../img/misc/debug_view.gif) no-repeat;
+	background: url('../img/misc/debug_view.gif') no-repeat;
+}
+
+.textCenter {
+	text-align: center;
 }
 
 .DarkGreen {

@@ -92,7 +92,7 @@ public class ValueEditingSupport extends EditingSupport {
 				} else if (postscan.getValue().equals("Off")) {
 					return 1;
 				} else {
-					return "";
+					return 0;
 				}
 			} else if (postscan.getAbstractPrePostscanDevice().getValue().
 					getType().equals(DataTypes.OPENCLOSE)) {
@@ -101,11 +101,12 @@ public class ValueEditingSupport extends EditingSupport {
 				} else if (postscan.getValue().equals("Close")) {
 					return 1;
 				} else {
-					return "";
+					return 0;
 				}
 			} else {
-				return postscan.getAbstractPrePostscanDevice().getValue().
-					getDiscreteValues().indexOf(element);
+				int index = postscan.getAbstractPrePostscanDevice().getValue().
+						getDiscreteValues().indexOf(postscan.getValue());
+				return index == -1 ? 0 : index;
 			}
 		} else {
 			return postscan.getValue();

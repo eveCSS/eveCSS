@@ -9,31 +9,84 @@ import de.ptb.epics.eve.ecp1.client.model.PlayListEntry;
 
 public interface IPlayListController {
 
-	public void addLocalFile(final File file) throws IOException;
+	/**
+	 * 
+	 * @param file
+	 * @throws IOException
+	 */
+	void addLocalFile(final File file) throws IOException;
 
-	public void addLocalFile(final String filename) throws IOException;
+	/**
+	 * 
+	 * @param filename
+	 * @throws IOException
+	 */
+	void addLocalFile(final String filename) throws IOException;
 
-	public void addFromInputStream(final InputStream inputStream,
+	/**
+	 * 
+	 * @param inputStream
+	 * @param name
+	 * @throws IOException
+	 */
+	void addFromInputStream(final InputStream inputStream,
 			final String name) throws IOException;
 
-	public void removePlayListEntry(final PlayListEntry playListEntry);
+	/**
+	 * 
+	 * @param playListEntry
+	 */
+	void removePlayListEntry(final PlayListEntry playListEntry);
 
-	public boolean isAutoplay();
+	/**
+	 * 
+	 * @return
+	 */
+	boolean isAutoplay();
 
-	public void setAutoplay(final boolean autoplay);
+	/**
+	 * 
+	 * @param autoplay
+	 */
+	void setAutoplay(final boolean autoplay);
 
-	public void addPlayListListener(final IPlayListListener playListListener);
+	/**
+	 * 
+	 * @param playListListener
+	 */
+	void addPlayListListener(final IPlayListListener playListListener);
 
-	public void removePlayListListener(final IPlayListListener playListListener);
+	/**
+	 * 
+	 * @param playListListener
+	 */
+	void removePlayListListener(final IPlayListListener playListListener);
 
-	public void movePlayListEntry(final PlayListEntry playListEntry,
+	/**
+	 * 
+	 * @param playListEntry
+	 * @param steps
+	 */
+	void movePlayListEntry(final PlayListEntry playListEntry,
 			final int steps);
 
-	public List<PlayListEntry> getEntries();
+	/**
+	 * 
+	 * @return
+	 */
+	List<PlayListEntry> getEntries();
 
-	public void addNewXMLFileListener(
+	/**
+	 * 
+	 * @param newXMLFileListener
+	 */
+	void addNewXMLFileListener(
 			final INewXMLFileListener newXMLFileListener);
 
-	public void removeNewXMLFileListener(
+	/**
+	 * 
+	 * @param newXMLFileListener
+	 */
+	void removeNewXMLFileListener(
 			final INewXMLFileListener newXMLFileListener);
 }

@@ -96,7 +96,6 @@ public class MeasurementDataCommand implements IECP1Command {
 					MeasurementDataCommand.COMMAND_TYPE_ID);
 		}
 
-		final int length = dataInputStream.readInt();
 		chid = dataInputStream.readInt();
 		smid = dataInputStream.readInt();
 		positionCounter = dataInputStream.readInt();
@@ -156,7 +155,7 @@ public class MeasurementDataCommand implements IECP1Command {
 
 		case INT32:
 			for (int i = 0; i < dataCount; ++i) {
-				this.add(new Integer(dataInputStream.readInt()));
+				this.add(Integer.valueOf(dataInputStream.readInt()));
 			}
 			break;
 
@@ -249,7 +248,7 @@ public class MeasurementDataCommand implements IECP1Command {
 
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
-		;
+		
 		dataOutputStream.writeChar(MeasurementDataCommand.COMMAND_TYPE_ID);
 
 		int length = 28;

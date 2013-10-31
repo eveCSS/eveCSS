@@ -13,5 +13,5 @@ public interface IModelErrorProvider {
 	 * 
 	 * @return The errors of this and all sub entities.
 	 */
-	public List<IModelError> getModelErrors();
+	List<IModelError> getModelErrors();
 }

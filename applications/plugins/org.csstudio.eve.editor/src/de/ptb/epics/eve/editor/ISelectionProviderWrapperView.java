@@ -26,5 +26,5 @@ public interface ISelectionProviderWrapperView {
 	 * @param selectionProvider the selection provider that should be the 
 	 * 		active one
 	 */
-	public void setSelectionProvider(ISelectionProvider selectionProvider);
+	void setSelectionProvider(ISelectionProvider selectionProvider);
 }

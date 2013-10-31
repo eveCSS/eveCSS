@@ -1,5 +1,17 @@
 h1(eveTopic). Getting Started
 
-p. Depending on "what you want to do":overview.html (monitor/manipulate devices or execute scans) either activate the "EveDevice":concepts/evedeviceperspective.html or "EveEngine":concepts/eveengineperspective.html Perspective by clicking on the respective button at the top of the window (see following image for illustration).
+h2(eveTopic). EveDevice
 
-!(eveImage)../img/gettingstarted-perspectives.png(EVE Viewer Perspectives)!
+p. To monitor and/or manipulate devices activate the "EveDevice":concepts/evedeviceperspective.html  Perspective:
+
+!(eveImage)../img/gettingstarted-perspectives-evedevice.png(EveDevice Perspective)!
+
+p. Then you can begin "adding devices":tasks/adddevicetodeviceinspector.html to the Device Inspector.
+
+h2(eveTopic). EveEngine
+
+p. To execute a scan activate the "EveEngine":concepts/eveengineperspective.html Perspective:
+
+!(eveImage)../img/gettingstarted-perspectives-eveengine.png(EveEngine Perspective)!
+
+p. Afterwards you can "add a scan to the playlist":tasks/addscantoplaylist.html which should be executed.

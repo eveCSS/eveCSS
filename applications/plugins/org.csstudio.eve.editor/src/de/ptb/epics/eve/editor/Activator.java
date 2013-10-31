@@ -98,8 +98,7 @@ public class Activator extends AbstractUIPlugin {
 					startupParams.isDebug(), logger);
 		}
 		this.schemaFile = Startup.loadSchemaFile(logger);
-		this.measuringStation = Startup.loadMeasuringStation(
-				startupParams.getRootDir(), schemaFile, logger);
+		this.measuringStation = Startup.loadMeasuringStation(logger);
 		
 		this.excludeFilter = new ExcludeFilter();
 		this.excludeFilter.setSource(this.measuringStation);
@@ -226,6 +225,7 @@ public class Activator extends AbstractUIPlugin {
 	private void startupReport() {
 		if(logger.isInfoEnabled()) {
 			logger.info("debug mode: " + startupParams.isDebug());
+			logger.info("eve.root set: " + !startupParams.useDefaultDevices());
 			logger.info("root directory: " + startupParams.getRootDir());
 			logger.info("measuring station: " + 
 				((MeasuringStation)measuringStation).getName() + " (" +

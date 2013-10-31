@@ -1,14 +1,11 @@
 h1(eveTopic). EveEngine Perspective
 
-p. The image below shows an overview of the EveEngine Perspective.
+p. The EveEngine perspective consists of views to monitor scans running in the "engine":/help/topic/de.ptb.epics.eve.help/help/content/concepts/engine.html.The image below shows an overview of the EveEngine Perspective:
 
 !(eveImage)../../img/concepts/eveengineperspective-overview.png(EveEngine Perspective Overview)!
 
-table(eveRefTable).
-| 1| Playlist View| contains queued scans|
-| 2| Engine View| shows engine status and contains controls|
-| 3| Messages View| messages from multiple sources are displayed here|
-| 4| Plot View| measurement visualization and statistics|
-| 5| Devices View| devices used in the currently executed scan arranged in a tree (by class)|
-| 6| Device Inspector View| allows monitoring and manipulation of devices|
-| 7| Device Options View| shows options of a selected device|
+p. The "Playlist View":playlistview.html (1) shows scans added to the engine which are queued for execution. Scans waiting in the playlist are executed according to the FIFO (first in first out) principle. The currently executing scan is show in the "Engine View":engineview.html (2) which also contains elements to manipulate the execution. For scans containing plot definitions one or more "Plot Views" are shown (4).
+
+p. Additionally to the execution elements the EveEngine perspective contains the same set of views which are found in the "EveDevice Perspective":evedeviceperspective.html with one difference: the devices available in the Devices View are only those participating in the currently executing scan.
+
+p. __Keep in mind__ that once a device is added to the device inspector it remains there even if the scan it belonged to is no longer executing.

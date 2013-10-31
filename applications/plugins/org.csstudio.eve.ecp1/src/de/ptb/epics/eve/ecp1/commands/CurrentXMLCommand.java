@@ -72,8 +72,6 @@ public class CurrentXMLCommand implements IECP1Command {
 					CurrentXMLCommand.COMMAND_TYPE_ID);
 		}
 
-		final int length = dataInputStream.readInt();
-
 		final int xmlNameLength = dataInputStream.readInt();
 		if (xmlNameLength != 0xffffffff) {
 			final byte[] xmlNameBuffer = new byte[xmlNameLength];
@@ -111,7 +109,7 @@ public class CurrentXMLCommand implements IECP1Command {
 
 		dataOutputStream.writeInt(IECP1Command.START_TAG);
 		dataOutputStream.writeChar(IECP1Command.VERSION);
-		;
+		
 		dataOutputStream.writeChar(CurrentXMLCommand.COMMAND_TYPE_ID);
 
 		final byte[] xmlNameBuffer = this.xmlName

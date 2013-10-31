@@ -1,7 +1,6 @@
 package de.ptb.epics.eve.editor.gef.editpolicies;
 
 import org.apache.log4j.Logger;
-import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy;
 import org.eclipse.gef.requests.CreateConnectionRequest;
@@ -39,8 +38,10 @@ public class StartEventGraphicalNodeEditPolicy extends GraphicalNodeEditPolicy {
 		StartEvent source = ((StartEventEditPart) request
 				.getTargetEditPart()).getModel();
 		if (source.getConnector() != null) {
+			LOGGER.debug("source connector occupied");
 			return null;
 		}
+		LOGGER.debug("valid source");
 		return new CreateSEConnection(source, null);
 	}
 

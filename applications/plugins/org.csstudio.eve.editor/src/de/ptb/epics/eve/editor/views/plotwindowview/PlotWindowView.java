@@ -956,26 +956,25 @@ public class PlotWindowView extends ViewPart implements IEditorView,
 		
 		RGB selectedColor = null;
 
-		if(selectedColorAsText == "black") {
+		if(selectedColorAsText.equals("black")) {
 			selectedColor = new RGB(0,0,0);
 		}
-		if(selectedColorAsText == "red" ) {
+		if(selectedColorAsText.equals("red")) {
 			selectedColor = new RGB(255,0,0);
 		}
-		if(selectedColorAsText == "green") {
+		if(selectedColorAsText.equals("green")) {
 			selectedColor = new RGB(0,128,0);
 		}
-		if(selectedColorAsText == "blue")  {
+		if(selectedColorAsText.equals("blue")) {
 			selectedColor = new RGB(0,0,255);
 		}
-		if(selectedColorAsText == "pink") {
+		if(selectedColorAsText.equals("pink")) {
 			selectedColor = new RGB(255,0,255);
 		}
-		if(selectedColorAsText == "purple") {
+		if(selectedColorAsText.equals("purple")) {
 			selectedColor = new RGB(128,0,128);
 		}
-		if(selectedColorAsText == "custom...")
-		{
+		if(selectedColorAsText.equals("custom...")) {
 			if(axis == 1) {
 				selectedColor = yAxis1ColorFieldEditor.getColorSelector().
 						getColorValue();

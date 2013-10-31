@@ -11,6 +11,5 @@ public interface IErrorListener {
 	 * 
 	 * @param error the error that occurred.
 	 */
-	public void errorOccured(
-			final de.ptb.epics.eve.ecp1.client.model.Error error);
+	void errorOccured(final de.ptb.epics.eve.ecp1.client.model.Error error);
 }

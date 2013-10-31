@@ -21,7 +21,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * @return a {@link java.util.List} of available 
 	 * 			{@link de.ptb.epics.eve.data.measuringstation.Detector}s
 	 */
-	public abstract List<Detector> getDetectors();
+	List<Detector> getDetectors();
 
 	/**
 	 * Returns a {@link java.util.List} of available 
@@ -30,7 +30,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * @return a {@link java.util.List} of available
 	 * 			{@link de.ptb.epics.eve.data.measuringstation.Device}s
 	 */
-	public abstract List<Device> getDevices();
+	List<Device> getDevices();
 
 	/**
 	 * Returns a {@link java.util.List} of available 
@@ -39,7 +39,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * @return a {@link java.util.List} of available 
 	 * 			{@link de.ptb.epics.eve.data.measuringstation.Event}s
 	 */
-	public abstract List<Event> getEvents();
+	List<Event> getEvents();
 
 	/**
 	 * Returns a {@link java.util.List} of available
@@ -47,7 +47,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * @return a {@link java.util.List} of available
 	 * 			{@link de.ptb.epics.eve.data.measuringstation.Motor}s
 	 */
-	public abstract List<Motor> getMotors();
+	List<Motor> getMotors();
 
 	/**
 	 * Returns a {@link java.util.List} of available 
@@ -56,7 +56,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * @return a {@link java.util.List} of available
 	 * 			{@link de.ptb.epics.eve.data.measuringstation.PlugIn}s
 	 */
-	public abstract List<PlugIn> getPlugins();
+	List<PlugIn> getPlugins();
 
 	/**
 	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.Selections} of 
@@ -64,7 +64,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * 
 	 * @return the {@link de.ptb.epics.eve.data.measuringstation.Selections}
 	 */
-	public abstract Selections getSelections();
+	Selections getSelections();
 
 	/**
 	 * Returns the version of the measuring station description.
@@ -72,7 +72,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * @return the version of the measuring station or <code>null</code> if 
 	 * 		   none is set
 	 */
-	public abstract String getVersion();
+	String getVersion();
 
 	/**
 	 * Returns the file name containing the description of the measuring 
@@ -80,7 +80,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * 
 	 * @return the file name containing the description of the measuring station
 	 */
-	public abstract String getLoadedFileName();
+	String getLoadedFileName();
 
 	/**
 	 * Returns the file name of the schema file used to validate the measuring 
@@ -88,14 +88,14 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * 
 	 * @return the file name of the schema file used for validation
 	 */
-	public abstract String getSchemaFileName();
+	String getSchemaFileName();
 
 	/**
 	 * Returns the name of the measuring station.
 	 * 
 	 * @return the name of the measuring station
 	 */
-	public abstract String getName();
+	String getName();
 	
 	/**
 	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.PlugIn} with 
@@ -107,7 +107,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * @return the {@link de.ptb.epics.eve.data.measuringstation.PlugIn} with 
 	 * 		   the given name or <code>null> if not found
 	 */
-	public abstract PlugIn getPluginByName(final String name);
+	PlugIn getPluginByName(final String name);
 
 	/**
 	 * Returns the 
@@ -121,7 +121,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * {@link de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice} 
 	 *  		with the given id or <code>null</code> if not found
 	 */
-	public abstract AbstractPrePostscanDevice getPrePostscanDeviceById(
+	AbstractPrePostscanDevice getPrePostscanDeviceById(
 			final String id);
 
 	/**
@@ -134,7 +134,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * @return the {@link de.ptb.epics.eve.data.measuringstation.MotorAxis}
 	 * 		   with the given id or <code>null</code> if not found
 	 */
-	public abstract MotorAxis getMotorAxisById(final String id);
+	MotorAxis getMotorAxisById(final String id);
 
 	/**
 	 * Returns the 
@@ -148,7 +148,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * 		{@link de.ptb.epics.eve.data.measuringstation.DetectorChannel} with 
 	 * 		the given id or <code>null</code> if not found.
 	 */
-	public abstract DetectorChannel getDetectorChannelById(final String id);
+	DetectorChannel getDetectorChannelById(final String id);
 
 	/**
 	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.Event} with 
@@ -160,7 +160,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * @return the {@link de.ptb.epics.eve.data.measuringstation.Event} with 
 	 * 		   the given id or <code>null</code> if not found
 	 */
-	public abstract Event getEventById(final String id);
+	Event getEventById(final String id);
 
 	/**
 	 * Returns a {@link java.util.List} of axis identifiers of the measuring 
@@ -169,7 +169,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * @return A {@link java.util.List} of axis identifiers of the measuring
 	 * 		   station.
 	 */
-	public abstract List<String> getAxisFullIdentifyer();
+	List<String> getAxisFullIdentifyer();
 
 	/**
 	 * Returns a {@link java.util.List} of channel identifiers of the measuring 
@@ -178,7 +178,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * @return a {@link java.util.List} of channel identifiers of the measuring 
 	 * 			station.
 	 */
-	public abstract List<String> getChannelsFullIdentifyer();
+	List<String> getChannelsFullIdentifyer();
 
 	/**
 	 * Returns a {@link java.util.List} of pre/post-scan identifiers of the 
@@ -187,7 +187,7 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * @return a {@link java.util.List} of pre/post-scan identifiers of the 
 	 * 			measuring station.
 	 */
-	public abstract List<String> getPrePostScanDevicesFullIdentifyer();
+	List<String> getPrePostScanDevicesFullIdentifyer();
 
 	/**
 	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} 
@@ -199,15 +199,14 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * @return the {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} 
 	 * 			with the given identifier or <code>null</code> if not found.
 	 */
-	public abstract AbstractDevice getAbstractDeviceByFullIdentifyer(
-			final String identifier);
+	AbstractDevice getAbstractDeviceByFullIdentifyer(final String identifier);
 
 	/**
 	 * Returns a {@link java.util.Set} of available class names.
 	 * 
 	 * @return a {@link java.util.Set} of available class names
 	 */
-	public abstract Set<String> getClassNameList();
+	Set<String> getClassNameList();
 
 	/**
 	 * Returns a {@link java.util.List} of devices available in the class with 
@@ -218,5 +217,5 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * @return a {@link java.util.List} of devices available in the class with 
 	 * 		   the given class name
 	 */
-	public abstract List<AbstractDevice> getDeviceList(String classname);
+	List<AbstractDevice> getDeviceList(String classname);
 }

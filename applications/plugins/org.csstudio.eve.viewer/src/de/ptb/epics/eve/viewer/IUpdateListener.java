@@ -4,12 +4,47 @@ import de.ptb.epics.eve.ecp1.types.EngineStatus;
 
 public interface IUpdateListener {
 	
-	public void updateOccured(int remainTime);
-	public void clearStatusTable();
-	public void fillStatusTable(int chainId, int scanModuleId, String status, int remainTime);
-	public void setLoadedScmlFile(String name);
-	public void fillEngineStatus(EngineStatus engineStatus, int repeatCount);
-	public void setAutoPlayStatus(boolean autoPlayStatus);
-	public void disableSendToFile();
-
+	/**
+	 * 
+	 * @param remainTime
+	 */
+	void updateOccured(int remainTime);
+	
+	/**
+	 * 
+	 */
+	void clearStatusTable();
+	
+	/**
+	 * 
+	 * @param chainId
+	 * @param scanModuleId
+	 * @param status
+	 * @param remainTime
+	 */
+	void fillStatusTable(int chainId, int scanModuleId, String status, int remainTime);
+	
+	/**
+	 * 
+	 * @param name
+	 */
+	void setLoadedScmlFile(String name);
+	
+	/**
+	 * 
+	 * @param engineStatus
+	 * @param repeatCount
+	 */
+	void fillEngineStatus(EngineStatus engineStatus, int repeatCount);
+	
+	/**
+	 * 
+	 * @param autoPlayStatus
+	 */
+	void setAutoPlayStatus(boolean autoPlayStatus);
+	
+	/**
+	 * 
+	 */
+	void disableSendToFile();
 }

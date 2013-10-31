@@ -54,6 +54,8 @@ public class ScanDescription implements IModelUpdateProvider,
 	/** */
 	public static final String MONITOR_OPTION_PROP ="monitorOption";
 
+	private String fileName;
+	
 	// version of the scan description.
 	private int inputVersion;
 	
@@ -108,6 +110,7 @@ public class ScanDescription implements IModelUpdateProvider,
 		Event s0 = new Event(EventTypes.SCHEDULE);
 		s0.setName("Start");
 		this.add(s0);
+		this.fileName = "";
 		this.measuringStation = measuringStation;
 		this.dirty = false;
 		this.monitorOption = MonitorOption.NONE;
@@ -226,6 +229,20 @@ public class ScanDescription implements IModelUpdateProvider,
 			}
 		}
 	}
+	/**
+	 * @return the fileName
+	 */
+	public String getFileName() {
+		return fileName;
+	}
+
+	/**
+	 * @param fileName the fileName to set
+	 */
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
 	/**
 	 * Returns the version of the scan description.
 	 * 
@@ -492,19 +509,25 @@ public class ScanDescription implements IModelUpdateProvider,
 		// add option to list
 		// do the filtering
 
+<<<<<<< HEAD
 		if(logger.isDebugEnabled()) {
 			logger.debug("ScanDescription "
 					+ this.getMonitorOption().name() + " selected.");
 		}
+=======
+>>>>>>> branch 'master' of file:////soft/repo/git/eveCSS
 		ExcludeFilter measuringStation2 = new ExcludeFilter();
 		measuringStation2.setSource(this.getMeasuringStation());
 		measuringStation2.excludeUnusedDevices(this);
 		
 		for (Detector d : measuringStation2.getDetectors()) {
+<<<<<<< HEAD
 			if(logger.isDebugEnabled()) {
 				logger.debug("Detector "
 						+ d.getName() + " is used in Scan");
 			}
+=======
+>>>>>>> branch 'master' of file:////soft/repo/git/eveCSS
 			for (Option o : d.getOptions()) {
 				if(!o.isMonitor()) continue;
 				this.monitors.add(o);

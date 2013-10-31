@@ -251,9 +251,9 @@ public class XyPlot extends Figure {
 	 */
 	public void finish() {
 		for (TraceDataCollector coll : this.collectors) {
-			coll.publish();
 			Activator.getDefault().getEcp1Client()
 					.removeMeasurementDataListener(coll);
+			coll.publish();
 		}
 	}
 	
@@ -270,6 +270,16 @@ public class XyPlot extends Figure {
 		}
 		this.collectors.clear();
 		this.currentPlotWindow = null;
+	}
+	
+	/**
+	 * Returns the graph of the XY Figure.
+	 * <p>
+	 * @return the graph of the XY Figure
+	 * @since 1.16
+	 */
+	public XYGraph getGraph() {
+		return this.xyGraph;
 	}
 	
 	/**
