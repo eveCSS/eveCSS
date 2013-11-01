@@ -111,7 +111,7 @@ public final class PDFCreator {
 			monitor.subTask("creating fonts");
 			
 			PDFont font = PDType1Font.HELVETICA;
-			PDFont font_bold = PDType1Font.HELVETICA_BOLD;
+			PDFont fontBold = PDType1Font.HELVETICA_BOLD;
 			
 			float fontSize = 12.0f;
 			float lineHeight = 25;
@@ -134,7 +134,7 @@ public final class PDFCreator {
 			contentStream.concatenate2CTM(0, 1, -1, 0, pageWidth, 0);
 			
 			contentStream.beginText();
-			contentStream.setFont(font_bold, 14);
+			contentStream.setFont(fontBold, 14);
 			contentStream.moveTextPositionByAmount(margin, table1HeadY);
 			contentStream.drawString((scanDescription == null) ? "noName"
 					: scanDescription + " - "
@@ -152,13 +152,13 @@ public final class PDFCreator {
 				monitor.subTask("creating first table");
 				PlotStats stats1 = statList.get(0);
 				contentStream.beginText();
-				contentStream.setFont(font_bold, fontSize);
+				contentStream.setFont(fontBold, fontSize);
 				contentStream.moveTextPositionByAmount(tableCol2X, table1HeadY);
 				contentStream.drawString(stats1.getDetectorName());
 				contentStream.endText();
 				
 				contentStream.beginText();
-				contentStream.setFont(font_bold, fontSize);
+				contentStream.setFont(fontBold, fontSize);
 				contentStream.moveTextPositionByAmount(tableCol3X, table1HeadY);
 				contentStream.drawString(stats1.getMotorName());
 				contentStream.endText();
@@ -236,13 +236,13 @@ public final class PDFCreator {
 				monitor.subTask("creating second table");
 				PlotStats stats2 = statList.get(1);
 				contentStream.beginText();
-				contentStream.setFont(font_bold, fontSize);
+				contentStream.setFont(fontBold, fontSize);
 				contentStream.moveTextPositionByAmount(tableCol2X, table2HeadY);
 				contentStream.drawString(stats2.getDetectorName());
 				contentStream.endText();
 				
 				contentStream.beginText();
-				contentStream.setFont(font_bold, fontSize);
+				contentStream.setFont(fontBold, fontSize);
 				contentStream.moveTextPositionByAmount(tableCol3X, table2HeadY);
 				contentStream.drawString(stats2.getMotorName());
 				contentStream.endText();
