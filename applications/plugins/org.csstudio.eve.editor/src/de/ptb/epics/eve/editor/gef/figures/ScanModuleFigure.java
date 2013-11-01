@@ -112,26 +112,26 @@ public class ScanModuleFigure extends Shape {
 	}
 	
 	/**
-	 * @param appended_feedback the appended_feedback to set
+	 * @param appendedFeedback the appended_feedback to set
 	 */
-	public void setAppended_feedback(boolean appended_feedback) {
-		this.appendedFeedback = appended_feedback;
+	public void setAppendedFeedback(boolean appendedFeedback) {
+		this.appendedFeedback = appendedFeedback;
 		this.repaint();
 	}
 
 	/**
-	 * @param nested_feedback the nested_feedback to set
+	 * @param nestedFeedback the nested_feedback to set
 	 */
-	public void setNested_feedback(boolean nested_feedback) {
-		this.nestedFeedback = nested_feedback;
+	public void setNestedFeedback(boolean nestedFeedback) {
+		this.nestedFeedback = nestedFeedback;
 		this.repaint();
 	}
 
 	/**
-	 * @param parent_feedback the parent_feedback to set
+	 * @param parentFeedback the parent_feedback to set
 	 */
-	public void setParent_feedback(boolean parent_feedback) {
-		this.parentFeedback = parent_feedback;
+	public void setParentFeedback(boolean parentFeedback) {
+		this.parentFeedback = parentFeedback;
 		this.repaint();
 	}
 
@@ -201,10 +201,10 @@ public class ScanModuleFigure extends Shape {
 	}
 	
 	/**
-	 * @param contains_errors the contains_errors to set
+	 * @param containsErrors the contains_errors to set
 	 */
-	public void setContains_errors(boolean contains_errors) {
-		this.containsErrors = contains_errors;
+	public void setContainsErrors(boolean containsErrors) {
+		this.containsErrors = containsErrors;
 	}
 
 	/**
