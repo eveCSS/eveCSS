@@ -27,7 +27,7 @@ public class ViewerMessage implements Comparable<ViewerMessage> {
 	private TimeStamp timestamp;
 	// the difference between epics and unix epoch in seconds
 	// epics epoch is 1990/01/01 and unix is 1970/01/01
-	private final long epoch_diff_secs = 631152000;
+	private static final long EPOCH_DIFF_SECS = 631152000;
 	// the source of the message
 	private final MessageSource messageSource;
 	// the type of the message
@@ -85,8 +85,8 @@ public class ViewerMessage implements Comparable<ViewerMessage> {
 	public ViewerMessage(final Calendar cal, final MessageSource messageSource,
 			final Levels messageType, final String message) {
 		this(messageSource, messageType, message);
-		this.timestamp = new TimeStamp(cal.getTimeInMillis() - epoch_diff_secs
-				* 1000.0);
+		this.timestamp = new TimeStamp(cal.getTimeInMillis()
+				- ViewerMessage.EPOCH_DIFF_SECS * 1000.0);
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class ViewerMessage implements Comparable<ViewerMessage> {
 				Levels.convertFromErrorSeverity(error.getErrorSeverity()),
 				error.getText());
 		this.timestamp = new TimeStamp(error.getGerenalTimeStamp()
-				- epoch_diff_secs, error.getNanoseconds());
+				- ViewerMessage.EPOCH_DIFF_SECS, error.getNanoseconds());
 	}
 
 	/**

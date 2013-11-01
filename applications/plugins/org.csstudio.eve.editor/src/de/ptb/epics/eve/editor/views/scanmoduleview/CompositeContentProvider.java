@@ -23,7 +23,7 @@ public abstract class CompositeContentProvider implements
 		IStructuredContentProvider, IModelUpdateListener {
 
 	private TableViewer currentViewer;
-	private int element_count;
+	private int elementCount;
 
 	/**
 	 * {@inheritDoc}
@@ -32,17 +32,17 @@ public abstract class CompositeContentProvider implements
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
 		this.currentViewer.refresh();
 		final int itemCount = this.currentViewer.getTable().getItemCount();
-		if (currentViewer.getTable().getItemCount() > element_count) {
+		if (currentViewer.getTable().getItemCount() > elementCount) {
 			// element added -> select it
 			currentViewer.setSelection(
 					new StructuredSelection(currentViewer
 							.getElementAt(itemCount - 1)), true);
-		} else if (itemCount < element_count && itemCount > 0) {
+		} else if (itemCount < elementCount && itemCount > 0) {
 			// element removed, but still >= 1 present -> select the first
 			this.currentViewer.setSelection(new StructuredSelection(
 					this.currentViewer.getElementAt(0)), true);
 		}
-		element_count = currentViewer.getTable().getItemCount();
+		elementCount = currentViewer.getTable().getItemCount();
 	}
 
 	/**
@@ -63,7 +63,7 @@ public abstract class CompositeContentProvider implements
 		}
 		if (newInput != null) {
 			((ScanModule) newInput).addModelUpdateListener(this);
-			element_count = this.currentViewer.getTable().getItemCount();
+			elementCount = this.currentViewer.getTable().getItemCount();
 		}
 	}
 }
