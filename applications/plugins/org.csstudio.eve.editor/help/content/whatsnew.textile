@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.16
+
+* [Feature] monitor option improvements
+
 h2(eveTopic). Version 1.15
 
 * [Feature] added/revised several Help topics

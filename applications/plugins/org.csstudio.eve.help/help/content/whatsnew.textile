@@ -1,5 +1,10 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.16
+
+* [Bug Fix] fixed corrupt default device definition XML file
+* [Bug Fix] removed potential memory leak in File IO
+
 h2(eveTopic). Version 1.15
 
 * [Feature] revised default device definition file (loaded if no <i>eve.root</i> is given)

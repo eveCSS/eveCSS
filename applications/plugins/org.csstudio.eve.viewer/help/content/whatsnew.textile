@@ -1,5 +1,11 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.16
+
+* [Feature] the plot view (including statistics) can now be saved as PDF
+
+* [Bug Fix] fixed a bug where the Device Inspector did not recognize if a PV was disconnected.
+
 h2(eveTopic). Version 1.15
 
 * [Feature] added/revised several Help topics
