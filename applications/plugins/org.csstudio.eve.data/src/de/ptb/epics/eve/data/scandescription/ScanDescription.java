@@ -465,12 +465,16 @@ public class ScanDescription implements IModelUpdateProvider,
 
 		for (Detector d : measuringStation.getDetectors()) {
 			for (Option o : d.getOptions()) {
-				if(!o.isMonitor()) continue;
+				if(!o.isMonitor()) {
+					continue;
+				}
 				this.monitors.add(o);
 			}
 			for (DetectorChannel ch : d.getChannels()) {
 				for (Option o : ch.getOptions()) {
-					if(!o.isMonitor()) continue;
+					if(!o.isMonitor()) {
+						continue;
+					}
 					this.monitors.add(o);
 				}
 			}
@@ -478,12 +482,16 @@ public class ScanDescription implements IModelUpdateProvider,
 
 		for (Motor m : measuringStation.getMotors()) {
 			for (Option o : m.getOptions()) {
-				if(!o.isMonitor()) continue;
+				if(!o.isMonitor()) {
+					continue;
+				}
 				this.monitors.add(o);
 			}
 			for (MotorAxis ma : m.getAxes()) {
 				for (Option o : ma.getOptions()) {
-					if(!o.isMonitor()) continue;
+					if(!o.isMonitor()) {
+						continue;
+					}
 					this.monitors.add(o);
 				}
 			}
@@ -491,7 +499,9 @@ public class ScanDescription implements IModelUpdateProvider,
 
 		for (Device dev : measuringStation.getDevices()) {
 			for (Option o : dev.getOptions()) {
-				if(!o.isMonitor()) continue;
+				if(!o.isMonitor()) {
+					continue;
+				}
 				this.monitors.add(o);
 			}
 		}
@@ -523,7 +533,9 @@ public class ScanDescription implements IModelUpdateProvider,
 						+ d.getName() + " is used in Scan");
 			}
 			for (Option o : d.getOptions()) {
-				if(!o.isMonitor()) continue;
+				if(!o.isMonitor()) {
+					continue;
+				}
 				this.monitors.add(o);
 				if(logger.isDebugEnabled()) {
 					logger.debug("Option of Detector "
@@ -532,7 +544,9 @@ public class ScanDescription implements IModelUpdateProvider,
 			}
 			for (DetectorChannel ch : d.getChannels()) {
 				for (Option o : ch.getOptions()) {
-					if(!o.isMonitor()) continue;
+					if(!o.isMonitor()) {
+						continue;
+					}
 					this.monitors.add(o);
 				}
 			}
@@ -540,12 +554,16 @@ public class ScanDescription implements IModelUpdateProvider,
 
 		for (Motor m : measuringStation2.getMotors()) {
 			for (Option o : m.getOptions()) {
-				if(!o.isMonitor()) continue;
+				if(!o.isMonitor()) {
+					continue;
+				}
 				this.monitors.add(o);
 			}
 			for (MotorAxis ma : m.getAxes()) {
 				for (Option o : ma.getOptions()) {
-					if(!o.isMonitor()) continue;
+					if(!o.isMonitor()) {
+						continue;
+					}
 					this.monitors.add(o);
 				}
 			}
@@ -553,7 +571,9 @@ public class ScanDescription implements IModelUpdateProvider,
 
 		for (Device dev : measuringStation2.getDevices()) {
 			for (Option o : dev.getOptions()) {
-				if(!o.isMonitor()) continue;
+				if(!o.isMonitor()) {
+					continue;
+				}
 				this.monitors.add(o);
 			}
 		}

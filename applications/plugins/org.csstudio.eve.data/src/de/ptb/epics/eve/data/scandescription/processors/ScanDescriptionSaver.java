@@ -748,9 +748,10 @@ public class ScanDescriptionSaver implements
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "name", "name", this.atts);
-			if (option.getName() != null)
+			if (option.getName() != null) {
 				this.contentHandler.characters(option.getName().toCharArray(),
 						0, option.getName().length());
+			}
 			this.contentHandler.endElement("", "name", "name");
 
 			this.atts.clear();
@@ -1245,8 +1246,9 @@ public class ScanDescriptionSaver implements
 
 			PlotWindow[] plotWindows = scanModule.getPlotWindows();
 			for (int i = 0; i < plotWindows.length; ++i) {
-				if (plotWindows[i].getXAxis() != null)
+				if (plotWindows[i].getXAxis() != null) {
 					this.writePlotWindow(plotWindows[i]);
+				}
 			}
 
 			this.contentHandler.endElement("", "scanmodule", "scanmodule");
@@ -1495,12 +1497,15 @@ public class ScanDescriptionSaver implements
 				String red = Integer.toHexString(color.red);
 				String green = Integer.toHexString(color.green);
 				String blue = Integer.toHexString(color.blue);
-				if (red.length() == 1)
+				if (red.length() == 1) {
 					red = "0" + red;
-				if (green.length() == 1)
+				}
+				if (green.length() == 1) {
 					green = "0" + green;
-				if (blue.length() == 1)
+				}
+				if (blue.length() == 1) {
 					blue = "0" + blue;
+				}
 
 				String sColor = red + green + blue;
 				this.contentHandler.characters(sColor.toCharArray(), 0,
@@ -1573,9 +1578,10 @@ public class ScanDescriptionSaver implements
 								.getAccess().getType())));
 				this.contentHandler.startElement("", "value", "value",
 						this.atts);
-				if (postscan.getValue() != null)
+				if (postscan.getValue() != null) {
 					this.contentHandler.characters(postscan.getValue()
 							.toCharArray(), 0, postscan.getValue().length());
+				}
 				this.contentHandler.endElement("", "value", "value");
 			}
 
@@ -1984,8 +1990,9 @@ public class ScanDescriptionSaver implements
 				this.contentHandler.startElement("", "incident", "incident",
 						this.atts);
 				String incident = "End";
-				if (controlEvent.getEvent().getScheduleIncident() == Event.ScheduleIncident.START)
+				if (controlEvent.getEvent().getScheduleIncident() == Event.ScheduleIncident.START) {
 					incident = "Start";
+				}
 				this.contentHandler.characters(incident.toCharArray(), 0,
 						incident.length());
 				this.contentHandler.endElement("", "incident", "incident");

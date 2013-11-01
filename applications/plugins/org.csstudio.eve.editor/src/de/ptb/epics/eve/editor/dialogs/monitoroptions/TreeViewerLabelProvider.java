@@ -83,7 +83,9 @@ public class TreeViewerLabelProvider implements ILabelProvider {
 	@Override
 	public String getText(final Object element) {
 		if(element instanceof List<?>) {
-			if(((List<Object>)element).size() == 0) return null;
+			if(((List<Object>)element).size() == 0) {
+				return null;
+			}
 			Object obj = ((List<Object>)element).get(0);
 			if(obj instanceof Motor || obj instanceof MotorAxis) {
 				return "Motors & Axes";
@@ -97,7 +99,9 @@ public class TreeViewerLabelProvider implements ILabelProvider {
 		} else if(element instanceof AbstractDevice) {
 			final AbstractDevice device = (AbstractDevice)element;
 			String label = device.getName();
-			if (label.length() == 0) label = device.getID();
+			if (label.length() == 0) {
+				label = device.getID();
+			}
 			return label;
 		}
 		return null;
