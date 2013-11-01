@@ -64,6 +64,9 @@ public class ErrorCommand implements IECP1Command {
 					ErrorCommand.COMMAND_TYPE_ID);
 		}
 
+		// TODO: Length is never read, but the readInt() is necessary !!!!
+		// for unknown reason
+		final int length = dataInputStream.readInt();
 		this.gerenalTimeStamp = dataInputStream.readInt();
 		this.nanoseconds = dataInputStream.readInt();
 		this.errorSeverity = ErrorSeverity.byteToErrorSeverity(dataInputStream

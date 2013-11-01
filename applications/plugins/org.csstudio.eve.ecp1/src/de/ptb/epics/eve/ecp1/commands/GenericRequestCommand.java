@@ -58,6 +58,10 @@ public class GenericRequestCommand implements IECP1Command {
 					GenericRequestCommand.COMMAND_TYPE_ID);
 		}
 
+		// TODO: Length is never read, but the readInt() is necessary !!!!
+		// for unknown reason
+		final int length = dataInputStream.readInt();
+
 		this.requestId = dataInputStream.readInt();
 		dataInputStream.readChar();
 		dataInputStream.readByte();

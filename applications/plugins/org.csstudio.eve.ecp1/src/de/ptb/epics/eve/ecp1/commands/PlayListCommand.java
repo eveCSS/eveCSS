@@ -52,6 +52,9 @@ public class PlayListCommand implements IECP1Command {
 					PlayListCommand.COMMAND_TYPE_ID);
 		}
 
+		// TODO: Length is never read, but the readInt() is necessary !!!!
+		// for unknown reason
+		final int length = dataInputStream.readInt();
 		final int amount = dataInputStream.readInt();
 		for (int i = 0; i < amount; ++i) {
 			final int id = dataInputStream.readInt();

@@ -66,6 +66,10 @@ public class AddToPlayListCommand implements IECP1Command {
 					AddToPlayListCommand.COMMAND_TYPE_ID);
 		}
 
+		// TODO: Length is never read, but the readInt() is necessary !!!!
+		// for unknown reason
+		final int length = dataInputStream.readInt();
+
 		final int nameLength = dataInputStream.readInt();
 		if (nameLength != 0xffffffff) {
 			final byte[] nameByteArray = new byte[nameLength];

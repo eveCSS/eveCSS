@@ -72,6 +72,10 @@ public class CurrentXMLCommand implements IECP1Command {
 					CurrentXMLCommand.COMMAND_TYPE_ID);
 		}
 
+		// TODO: Length is never read, but the readInt() is necessary !!!!
+		// for unknown reason
+		final int length = dataInputStream.readInt();
+
 		final int xmlNameLength = dataInputStream.readInt();
 		if (xmlNameLength != 0xffffffff) {
 			final byte[] xmlNameBuffer = new byte[xmlNameLength];

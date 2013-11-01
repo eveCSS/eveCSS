@@ -56,6 +56,10 @@ public class LiveDescriptionCommand implements IECP1Command {
 					LiveDescriptionCommand.COMMAND_TYPE_ID);
 		}
 
+		// TODO: Length is never read, but the readInt() is necessary !!!!
+		// for unknown reason
+		final int length = dataInputStream.readInt();
+
 		final int lenghtOfText = dataInputStream.readInt();
 
 		if (lenghtOfText == 0xffffffff) {

@@ -96,6 +96,9 @@ public class MeasurementDataCommand implements IECP1Command {
 					MeasurementDataCommand.COMMAND_TYPE_ID);
 		}
 
+		// TODO: Length is never read, but the readInt() is necessary !!!!
+		// for unknown reason
+		final int length = dataInputStream.readInt();
 		chid = dataInputStream.readInt();
 		smid = dataInputStream.readInt();
 		positionCounter = dataInputStream.readInt();
