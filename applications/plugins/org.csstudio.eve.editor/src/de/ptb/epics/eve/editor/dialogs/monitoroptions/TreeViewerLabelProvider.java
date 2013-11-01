@@ -26,25 +26,21 @@ import de.ptb.epics.eve.editor.Activator;
  */
 public class TreeViewerLabelProvider implements ILabelProvider {
 
-	final Image motorImage = 
+	private final Image motorImage = 
 			Activator.getDefault().getImageRegistry().get("MOTOR");
-	final Image axisImage = 
+	private final Image axisImage = 
 			Activator.getDefault().getImageRegistry().get("AXIS");
-	final Image detectorImage = 
+	private final Image detectorImage = 
 			Activator.getDefault().getImageRegistry().get("DETECTOR");
-	final Image channelImage = 
+	private final Image channelImage = 
 			Activator.getDefault().getImageRegistry().get("CHANNEL");
-	final Image classImage = 
+	private final Image classImage = 
 			Activator.getDefault().getImageRegistry().get("CLASS");
-	final Image motorsImage = 
-			Activator.getDefault().getImageRegistry().get("MOTORS");
-	final Image detectorsImage =
-			Activator.getDefault().getImageRegistry().get("DETECTORS");
-	final Image devicesImage = 
+	private final Image devicesImage = 
 			Activator.getDefault().getImageRegistry().get("DEVICES");
-	final Image motorsAxesImage = 
+	private final Image motorsAxesImage = 
 			Activator.getDefault().getImageRegistry().get("MOTORSAXES");
-	final Image detectorsChannelsImage = 
+	private final Image detectorsChannelsImage = 
 			Activator.getDefault().getImageRegistry().get("DETECTORSCHANNELS");
 	
 	/**

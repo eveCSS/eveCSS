@@ -70,8 +70,8 @@ public class Activator extends AbstractUIPlugin {
 	private Parameters startupParams;
 	
 	// queue poll debug
-	PollInQueueSize pollInQueueSize;
-	Thread pollInQueueSizeThread;
+	private PollInQueueSize pollInQueueSize;
+	private Thread pollInQueueSizeThread;
 	
 	/**
 	 * The constructor

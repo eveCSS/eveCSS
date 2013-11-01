@@ -80,9 +80,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public static final String TYPE_PROP = "type";
 	
 	/** */
-	public static int defaultWidth = 70;
+	public static final int DEFAULT_WIDTH = 70;
 	/** */
-	public static int defaultHeight = 30;
+	public static final int DEFAULT_HEIGHT = 30;
 	
 	// the id of the scan module
 	private int id;
@@ -225,8 +225,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		
 		this.positionings = new ArrayList<Positioning>();
 
-		this.width = ScanModule.defaultWidth;
-		this.height = ScanModule.defaultHeight;
+		this.width = ScanModule.DEFAULT_WIDTH;
+		this.height = ScanModule.DEFAULT_HEIGHT;
 		
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
