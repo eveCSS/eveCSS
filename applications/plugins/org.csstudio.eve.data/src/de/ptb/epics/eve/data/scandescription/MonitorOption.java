@@ -92,7 +92,7 @@ public enum MonitorOption {
 	 * @return all available monitor options
 	 */
 	public static String[] getPossibleMonitorOptions() {
-		final String[] values = {"none", "used in scan", "as in device definition", "custom"}; 
-		return values;
+		return new String[] { "none", "used in scan",
+				"as in device definition", "custom" };
 	}
 }
