@@ -2439,10 +2439,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	 * @return The loaded scan description.
 	 */
 	public List<ScanDescriptionLoaderLostDeviceMessage> getLostDevices() {
-		if (this.lostDevices != null)
+		if (this.lostDevices != null) {
 			return this.lostDevices;
-		else
+		} else {
 			return null;
+		}
 	}
 
 	/**
