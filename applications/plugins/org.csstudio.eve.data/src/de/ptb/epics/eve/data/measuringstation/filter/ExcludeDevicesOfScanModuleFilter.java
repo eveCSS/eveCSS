@@ -352,9 +352,6 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 	 */
 	@Override
 	public List<String> getPrePostScanDevicesFullIdentifyer() {
-		
-		long begin = System.nanoTime();
-		
 		List<String> identifier = new ArrayList<String>();
 		Iterator<Device> deviceIterator = this.devices.iterator();
 		while (deviceIterator.hasNext()) {
