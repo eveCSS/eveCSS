@@ -201,7 +201,7 @@ public class ScanDescription implements IModelUpdateProvider,
 		for (ControlEvent cevent : eventList) {
 			Event embeddedEvent = cevent.getEvent();
 			if (embeddedEvent != null){
-				if (embeddedEvent == event) {
+				if (embeddedEvent.equals(event)) {
 					cevent.updateEvent(new ModelUpdateEvent(this, null));
 				}
 			}
@@ -223,7 +223,7 @@ public class ScanDescription implements IModelUpdateProvider,
 		for(ControlEvent cevent : eventList) {
 			final Event embeddedEvent = cevent.getEvent();
 			if(embeddedEvent != null) {
-				if(embeddedEvent == event) {
+				if(embeddedEvent.equals(event)) {
 					manager.removeControlEvent(cevent);
 				}
 			}
