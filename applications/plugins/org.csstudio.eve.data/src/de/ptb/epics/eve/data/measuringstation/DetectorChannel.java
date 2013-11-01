@@ -8,7 +8,7 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
  */
-public class DetectorChannel extends AbstractMainPhaseDevice {
+public class DetectorChannel extends AbstractMainPhaseDevice implements Cloneable {
 	
 	/**
 	 * The Function from which the value of this detector channel is read from.

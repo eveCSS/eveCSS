@@ -9,7 +9,7 @@ import java.util.List;
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
  */
-public class Option extends AbstractPrePostscanDevice {
+public class Option extends AbstractPrePostscanDevice implements Cloneable {
 
 	private boolean monitor;
 	

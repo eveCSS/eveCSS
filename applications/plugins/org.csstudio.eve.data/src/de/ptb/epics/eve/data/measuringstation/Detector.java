@@ -17,7 +17,7 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
  */
-public class Detector extends AbstractMainPhaseDevice {
+public class Detector extends AbstractMainPhaseDevice implements Cloneable {
 	public static final Logger LOGGER = Logger.getLogger(
 			Detector.class.getName());
 	

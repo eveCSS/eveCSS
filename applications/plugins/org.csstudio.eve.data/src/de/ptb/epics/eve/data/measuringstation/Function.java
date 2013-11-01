@@ -13,7 +13,7 @@ import de.ptb.epics.eve.data.TypeValue;
  * @author Stephan Rehfeld <stephan.rehfeld( -at- )ptb.de>
  *
  */
-public class Function {
+public class Function implements Cloneable {
 
 	/**
 	 * The Access of the function.

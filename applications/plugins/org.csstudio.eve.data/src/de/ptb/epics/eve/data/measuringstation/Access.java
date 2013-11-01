@@ -10,7 +10,7 @@ import de.ptb.epics.eve.data.TransportTypes;
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
  */
-public class Access {
+public class Access implements Cloneable {
 	
 	// the method type
 	private MethodTypes method;

@@ -14,7 +14,7 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  * @see de.ptb.epics.eve.data.measuringstation.MotorAxis
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  */
-public class Motor extends AbstractMainPhaseDevice {
+public class Motor extends AbstractMainPhaseDevice implements Cloneable {
 
 	// a List holding all axis of this motor
 	private List<MotorAxis> axis;

@@ -8,7 +8,7 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
  */
-public class Device extends AbstractPrePostscanDevice {
+public class Device extends AbstractPrePostscanDevice implements Cloneable {
 
 	/**
 	 * This method is just overriding the getParent Method of AbstractDevice,

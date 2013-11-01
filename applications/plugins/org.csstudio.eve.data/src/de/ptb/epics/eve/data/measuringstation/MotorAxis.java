@@ -14,7 +14,7 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  * @author Marcus Michalsky
  * @author Hartmut Scherr
  */
-public class MotorAxis extends AbstractMainPhaseDevice {
+public class MotorAxis extends AbstractMainPhaseDevice implements Cloneable {
 
 	private static Logger logger = Logger.getLogger(MotorAxis.class.getName());
 	

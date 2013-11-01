@@ -7,7 +7,7 @@ package de.ptb.epics.eve.data.measuringstation;
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version 1.2
  */
-public class Unit {
+public class Unit implements Cloneable {
 
 	/**
 	 * This attribute is holding the value of the unit (lbs. m, mm, ft., etc.).

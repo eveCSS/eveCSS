@@ -13,7 +13,7 @@ import java.util.List;
  * @author  Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @version  1.4
  */
-public class TypeValue {
+public class TypeValue implements Cloneable {
 
 	/*
 	 * The basic primitive data type on which this definition based. 
