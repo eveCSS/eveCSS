@@ -73,9 +73,12 @@ public class MonitorOptionDialog extends SelectionDialog {
 	private Image descending;
 
 	// sorting
-	private OptionsTableNameColumnSelectionListener optionsTableNameColumnSelectionListener;
+	private OptionsTableOptionNameColumnSelectionListener optionsTableOptionNameColumnSelectionListener;
+	private OptionsTableDeviceNameColumnSelectionListener optionsTableDeviceNameColumnSelectionListener;
 	private TableViewerComparator optionsTableViewerComparator;
+	private DeviceTableViewerComparator deviceTableViewerComparator;
 	private int optionsTableSortState; // 0 no sort, 1 asc, 2 desc
+	private int deviceTableSortState; // 0 no sort, 1 asc, 2 desc
 
 	/**
 	 * Constructor.
@@ -173,11 +176,16 @@ public class MonitorOptionDialog extends SelectionDialog {
 		ascending =	 de.ptb.epics.eve.util.Activator.getDefault().getImageRegistry().get("SORT_ASCENDING");
 		descending = de.ptb.epics.eve.util.Activator.getDefault().getImageRegistry().get("SORT_DESCENDING");
 
-		optionsTableNameColumnSelectionListener = 
-				new OptionsTableNameColumnSelectionListener();
+		optionsTableOptionNameColumnSelectionListener = 
+				new OptionsTableOptionNameColumnSelectionListener();
 		optionsTableSortState = 0;
 
+		optionsTableDeviceNameColumnSelectionListener = 
+				new OptionsTableDeviceNameColumnSelectionListener();
+		deviceTableSortState = 0;
+
 		optionsTableViewerComparator = new TableViewerComparator();
+		deviceTableViewerComparator = new DeviceTableViewerComparator();
 
 		createColumns(parent, optionsTable);
 		
@@ -208,7 +216,6 @@ public class MonitorOptionDialog extends SelectionDialog {
 		// check box column wird angelegt
 		final TableViewerColumn selColumn =
 				new TableViewerColumn(viewer, SWT.NONE);
-//		selColumn.getColumn().setText("Select");
 		selColumn.getColumn().setWidth(20);
 		selColumn.setEditingSupport(new SelColumnEditingSupport(
 				viewer, scanDescription));
@@ -239,7 +246,7 @@ public class MonitorOptionDialog extends SelectionDialog {
 		optionColumn.setWidth(120);
 		optionColumn.setResizable(true);
 
-		optionColumn.addSelectionListener(optionsTableNameColumnSelectionListener);
+		optionColumn.addSelectionListener(optionsTableOptionNameColumnSelectionListener);
 		
 		optionViewerColumn.setLabelProvider(new ColumnLabelProvider(){
 			@Override
@@ -247,7 +254,7 @@ public class MonitorOptionDialog extends SelectionDialog {
 				return ((Option)element).getName();
 			}
 		});
-		
+
 		// column for device name wird angelegt
 		final TableViewerColumn deviceViewerColumn = 
 				new TableViewerColumn(viewer, SWT.NONE);
@@ -255,13 +262,14 @@ public class MonitorOptionDialog extends SelectionDialog {
 		deviceColumn.setText("Device Name");
 		deviceColumn.setWidth(120);
 		deviceColumn.setResizable(true);
+		deviceColumn.addSelectionListener(optionsTableDeviceNameColumnSelectionListener);
 		deviceViewerColumn.setLabelProvider(new ColumnLabelProvider(){
 			@Override
 			public String getText(Object element) {
 				return ((Option)element).getParent().getName();
 			}
 		});
-
+		
 	}
 	
 	/**
@@ -299,11 +307,10 @@ public class MonitorOptionDialog extends SelectionDialog {
 	
 	/**
 	 * 
-	 * 
 	 * @author Hartmut Scherr
 	 * @since 1.16
 	 */
-	class OptionsTableNameColumnSelectionListener implements SelectionListener {
+	class OptionsTableOptionNameColumnSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -318,7 +325,7 @@ public class MonitorOptionDialog extends SelectionDialog {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			logger.debug("option name column clicked");
-			logger.debug("old table sort state: " + optionsTableSortState);
+			logger.debug("old option table sort state: " + optionsTableSortState);
 			switch(optionsTableSortState) {
 				case 0: // was no sorting -> now ascending
 						optionsTableViewerComparator.setDirection(
@@ -340,11 +347,65 @@ public class MonitorOptionDialog extends SelectionDialog {
 						optionsTable.getTable().getColumn(1).setImage(null);
 						break;
 			}
+			// no sorting of device name column
+			optionsTable.getTable().getColumn(2).setImage(null);
+			deviceTableSortState = 0;
 			// set is {0,1,2}
 			// if it becomes 3 it has to be 0 again
 			// but before the state has to be increased to the new state
 			optionsTableSortState = ++optionsTableSortState % 3;
 			logger.debug("new options table sort state: " + optionsTableSortState);
+		}
+	}
+
+	/**
+	 * 
+	 * @author Hartmut Scherr
+	 * @since 1.16
+	 */
+	class OptionsTableDeviceNameColumnSelectionListener implements SelectionListener {
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			logger.debug("device name column clicked");
+			logger.debug("old device table sort state: " + deviceTableSortState);
+			switch(deviceTableSortState) {
+				case 0: // was no sorting -> now ascending
+						deviceTableViewerComparator.setDirection(
+								TableViewerComparator.ASCENDING);
+						optionsTable.setComparator(deviceTableViewerComparator);
+						optionsTable.getTable().getColumn(2).setImage(ascending);
+						break;
+				case 1: // was ascending -> now descending
+						deviceTableViewerComparator.setDirection(
+								TableViewerComparator.DESCENDING);
+						optionsTable.setComparator(deviceTableViewerComparator);
+						optionsTable.refresh();
+						optionsTable.getTable().getColumn(2).setImage(descending);
+						break;
+				case 2: // was descending -> now no sorting
+						optionsTable.setComparator(null);
+						optionsTable.getTable().getColumn(2).setImage(null);
+						break;
+			}
+			// no sorting of option name column
+			optionsTable.getTable().getColumn(1).setImage(null);
+			optionsTableSortState = 0;
+			// set is {0,1,2}
+			// if it becomes 3 it has to be 0 again
+			// but before the state has to be increased to the new state
+			deviceTableSortState = ++deviceTableSortState % 3;
+			logger.debug("new device table sort state: " + deviceTableSortState);
 		}
 	}
 }

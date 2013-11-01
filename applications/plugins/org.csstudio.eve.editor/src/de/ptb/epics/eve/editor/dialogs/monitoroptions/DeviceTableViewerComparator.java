@@ -9,7 +9,7 @@ import de.ptb.epics.eve.util.jface.ViewerComparator;
  * @author Hartmut Scherr
  * @since 1.16
  */
-public class TableViewerComparator extends ViewerComparator {
+public class DeviceTableViewerComparator extends ViewerComparator {
 
 	/**
 	 * {@inheritDoc}
@@ -17,6 +17,7 @@ public class TableViewerComparator extends ViewerComparator {
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
-		return direction * ((Option) e1).compareTo((Option)e2);
+		return direction * (((Option)e1).getParent().getName()).compareTo
+				(((Option)e2).getParent().getName());
 	}
 }
