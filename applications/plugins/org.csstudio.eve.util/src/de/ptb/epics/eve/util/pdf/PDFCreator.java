@@ -72,12 +72,27 @@ public final class PDFCreator {
 			int table1HeadY = 560;
 			int table2HeadY = (int)pdfPageSize.getWidth()/2-10;
 			
-			int plotWidth = tableCol1X - 15 - (int)margin;
-			float plotXRatio = image.getWidth() / plotWidth;
-			int plotHeight = (int)(image.getHeight() * plotXRatio);
+			float aspectRatio = (float)image.getWidth() / image.getHeight();
 			
-			if (plotHeight > pdfPageSize.getWidth() - headerHeight - 2 * margin) {
-				plotHeight = (int) (pdfPageSize.getWidth() - headerHeight - 2 * margin);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("image dimensions: width: " + image.getWidth()
+						+ " , height: " + image.getHeight());
+				LOGGER.debug("aspect ratio is :" + aspectRatio);
+			}
+			
+			int plotWidth = tableCol1X - 15 - (int)margin;
+			int plotHeight = (int)(plotWidth / aspectRatio);
+			
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("scaled image dimensions: width: " + plotWidth
+						+ " , height: " + plotHeight);
+			}
+			
+			if (plotHeight > pdfPageSize.getHeight() - headerHeight - 2 * margin) {
+				plotHeight = (int) (pdfPageSize.getHeight() - headerHeight - 2 * margin);
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("plot height exceeds margin, scaling down");
+				}
 			}
 			
 			monitor.worked(1);
