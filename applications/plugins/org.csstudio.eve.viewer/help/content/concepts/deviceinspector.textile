@@ -16,11 +16,11 @@ p. Another example would be to group them by class:
 
 !(eveImage)../../img/concepts/deviceinspectorview-multiple2.png(multiple Device Inspector Views - Example 2)!
 
-p. If your table grows to large to search for an entry you can sort it by name by clicking on the respective column:
+p. If your table grows too large to search for an entry you can sort it by name by clicking on the respective column:
 
 !(eveImage)../../img/concepts/deviceinspectorview-sort.png(Device Inspector Views - Sorted Example)!
 
-p. The first click will sort the rows by name ascending. Another click sorts them descending and a third click reestablishes to "unsorted" state. More precisely you can toggle through the states unsorted &rarr; ascending &rarr; descending, which are represented by an icon in the column header (except for unsorted).
+p. The first click will sort the rows by name ascending. Another click sorts them descending and a third click reestablishes the "unsorted" state. More precisely you can toggle through the states unsorted &rarr; ascending &rarr; descending, which are represented by an icon in the column header (except for unsorted).
 
 p. __Note__ that when closing the application it remembers the position and contents of the Device Inspector views as long as you stay in the same workspace. When starting the application all connections are reestablished.
 

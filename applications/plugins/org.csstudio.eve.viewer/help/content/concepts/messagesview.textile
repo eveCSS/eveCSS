@@ -14,4 +14,4 @@ p. The toolbar commands allow to clear the list of messages, save them in a text
 
 p. __Note__ that although a message is not shown, it is present in the Messages view memory. If later on the filter settings are changed they eventually become visible.
 
-p. __Note__ that messages of type !../../../icons/build_exc.gif(debug icon)! are not affected by the filter (they have no severity).
+p. __Note__ that messages of type !../../../icons/build_exec.gif(system icon)! system are not affected by the filter (they have no severity).
