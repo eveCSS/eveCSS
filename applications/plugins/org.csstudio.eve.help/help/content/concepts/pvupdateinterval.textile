@@ -2,7 +2,7 @@ h1(eveTopic). PV Update Interval
 
 p. The interval between process variable updates (in the GUI) is specified via the preferences. The value shown in the user interface will be updated up to x times where x is the given value.
  
-p. The default is set to 1000ms. Values from 250ms to 60000ms are valid. If the interval is set too high (250ms) and there are many active connections (e.g. multiple device inspector views with a decent amount of entries) the response time of the application could decrease.
+p. The default is set to 1000ms. Values from 250ms to 60000ms are valid. If the interval is set too high (250ms) and there are many active connections (e.g. multiple device inspector views with a decent amount of entries) the response time of the application could increase.
 
 p. To set the interval use the menu "Edit->Preferences..." and navigate to "Display->EVE Viewer". After entering the desired value (which must be in the range mentioned above) click "OK".
 
