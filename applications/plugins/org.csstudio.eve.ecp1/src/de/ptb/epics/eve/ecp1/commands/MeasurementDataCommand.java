@@ -57,7 +57,7 @@ public class MeasurementDataCommand implements IECP1Command {
 		case INT8:
 			this.values = new ArrayList<Byte>();
 		case INT16:
-			this.values = new ArrayList<Character>();
+			this.values = new ArrayList<Short>();
 		case INT32:
 			this.values = new ArrayList<Integer>();
 		case FLOAT:
@@ -131,7 +131,7 @@ public class MeasurementDataCommand implements IECP1Command {
 		case INT8:
 			this.values = new ArrayList<Byte>();
 		case INT16:
-			this.values = new ArrayList<Character>();
+			this.values = new ArrayList<Short>();
 		case INT32:
 			this.values = new ArrayList<Integer>();
 		case FLOAT:
@@ -152,7 +152,7 @@ public class MeasurementDataCommand implements IECP1Command {
 
 		case INT16:
 			for (int i = 0; i < dataCount; ++i) {
-				this.add(new Character(dataInputStream.readChar()));
+				this.add(new Short(dataInputStream.readShort()));
 			}
 			break;
 
@@ -212,7 +212,7 @@ public class MeasurementDataCommand implements IECP1Command {
 			((List<Byte>) this.values).add((Byte) value);
 			break;
 		case INT16:
-			((List<Character>) this.values).add((Character) value);
+			((List<Short>) this.values).add((Short) value);
 			break;
 		case INT32:
 			((List<Integer>) this.values).add((Integer) value);
