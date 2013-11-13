@@ -270,8 +270,8 @@ public class DeviceInspectorView extends ViewPart {
 		motorLabel = new Label(motorAxesComposite, SWT.NONE);
 		motorLabel.setText("Motor Axes:");
 		
-		axisTableViewer = 
-				new TableViewer(motorAxesComposite, SWT.BORDER | SWT.V_SCROLL);
+		axisTableViewer = new TableViewer(motorAxesComposite, SWT.BORDER
+				| SWT.V_SCROLL | SWT.FULL_SELECTION);
 		GridData gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		gridData.minimumHeight = 25;
@@ -295,7 +295,6 @@ public class DeviceInspectorView extends ViewPart {
 		axisTableFocusListener = new AxisTableFocusListener();
 		axisTableViewer.getTable().addFocusListener(axisTableFocusListener);
 		
-		Transfer[] types = new Transfer[] {TextTransfer.getInstance()};
 		// drag source for item reordering
 		/* DragSource axisTableDragSource = 
 				new DragSource(axisTableViewer.getTable(), DND.DROP_MOVE);
@@ -305,14 +304,14 @@ public class DeviceInspectorView extends ViewPart {
 		axisTableDragSource.addDragListener(axisTableDragSourceListener); */ // TODO
 		
 		// a drop target receives data in a Drag and Drop operation
-		/* DropTarget axisTableDropTarget = new DropTarget(
+		DropTarget axisTableDropTarget = new DropTarget(
 				axisTableViewer.getTable(), DND.DROP_COPY | DND.DROP_MOVE);
 		Transfer[] types = new Transfer[] {TextTransfer.getInstance()};
 		axisTableDropTarget.setTransfer(types);
 		axisTableDropTargetListener = new AxisTableDropTargetListener();
 		axisTableDropTarget.addDropListener(axisTableDropTargetListener);
 		axisTableDropTarget.setDropTargetEffect(
-				new TableDropTargetEffect(axisTableViewer.getTable())); */
+				new TableDropTargetEffect(axisTableViewer.getTable()));
 		
 		// create context menu
 		MenuManager axisTableMenuManager = new MenuManager();
@@ -343,8 +342,8 @@ public class DeviceInspectorView extends ViewPart {
 		channelLabel = new Label(detectorChannelsComposite, SWT.NONE);
 		channelLabel.setText("Detector Channels:");
 		
-		channelTableViewer = new TableViewer(
-				detectorChannelsComposite, SWT.BORDER | SWT.V_SCROLL);
+		channelTableViewer = new TableViewer(detectorChannelsComposite,
+				SWT.BORDER | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		gridData.grabExcessHorizontalSpace = true;
@@ -405,8 +404,8 @@ public class DeviceInspectorView extends ViewPart {
 		deviceLabel = new Label(devicesComposite, SWT.NONE);
 		deviceLabel.setText("Devices:");
 		
-		deviceTableViewer = new TableViewer(
-				devicesComposite, SWT.BORDER | SWT.V_SCROLL);
+		deviceTableViewer = new TableViewer(devicesComposite, SWT.BORDER
+				| SWT.V_SCROLL | SWT.FULL_SELECTION);
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		gridData.grabExcessHorizontalSpace = true;
