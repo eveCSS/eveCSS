@@ -295,6 +295,7 @@ public class DeviceInspectorView extends ViewPart {
 		axisTableFocusListener = new AxisTableFocusListener();
 		axisTableViewer.getTable().addFocusListener(axisTableFocusListener);
 		
+		Transfer[] types = new Transfer[] {TextTransfer.getInstance()};
 		// drag source for item reordering
 		/* DragSource axisTableDragSource = 
 				new DragSource(axisTableViewer.getTable(), DND.DROP_MOVE);
@@ -304,14 +305,14 @@ public class DeviceInspectorView extends ViewPart {
 		axisTableDragSource.addDragListener(axisTableDragSourceListener); */ // TODO
 		
 		// a drop target receives data in a Drag and Drop operation
-		DropTarget axisTableDropTarget = new DropTarget(
+		/* DropTarget axisTableDropTarget = new DropTarget(
 				axisTableViewer.getTable(), DND.DROP_COPY | DND.DROP_MOVE);
 		Transfer[] types = new Transfer[] {TextTransfer.getInstance()};
 		axisTableDropTarget.setTransfer(types);
 		axisTableDropTargetListener = new AxisTableDropTargetListener();
 		axisTableDropTarget.addDropListener(axisTableDropTargetListener);
 		axisTableDropTarget.setDropTargetEffect(
-				new TableDropTargetEffect(axisTableViewer.getTable()));
+				new TableDropTargetEffect(axisTableViewer.getTable())); */
 		
 		// create context menu
 		MenuManager axisTableMenuManager = new MenuManager();
