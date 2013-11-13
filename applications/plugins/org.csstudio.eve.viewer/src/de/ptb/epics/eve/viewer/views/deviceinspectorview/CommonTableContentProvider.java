@@ -12,7 +12,7 @@ import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 /**
  * <code>CommonTableContentProvider</code> is a content provider for the table 
  * viewers defined in 
- * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView}.
+ * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView}.
  * 
  * @author ?
  * @author Marcus Michalsky

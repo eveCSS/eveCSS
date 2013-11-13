@@ -8,7 +8,7 @@ import de.ptb.epics.eve.util.jface.ViewerComparator;
 /**
  * <code>TableViewerComparator</code> is the comparator used by the table 
  * viewers of the 
- * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView}.
+ * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView}.
  * It allows sorting by name in ascending and descending order.
  * 
  * @author Marcus Michalsky

@@ -7,14 +7,14 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView;
 
 /**
  * <code>ClearDetectorChannelsTable</code> is the default command handler of the 
  * <code>clearChannels</code> command. 
  * <p>
  * It removes all elements from the detector channels table of the active 
- * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView}.
+ * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView}.
  * 
  * @author Marcus Michalsky
  * @since 0.4.2

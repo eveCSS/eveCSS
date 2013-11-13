@@ -6,7 +6,7 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView;
 
 /**
  * <code>ResetDeviceInspectorCommandHandler</code> is the default command 

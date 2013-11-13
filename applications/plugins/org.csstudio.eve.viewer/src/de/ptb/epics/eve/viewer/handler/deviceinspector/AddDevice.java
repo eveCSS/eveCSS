@@ -16,14 +16,14 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView;
 
 /**
  * <code>AddDevice</code> is the default command handler of the add device 
  * command.
  * <p>
  * It adds all devices provided by the selection service to the tables of the 
- * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView} 
+ * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView} 
  * with the secondary id given by the mandatory parameter of the command.
  * 
  * @author Marcus Michalsky

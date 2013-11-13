@@ -10,14 +10,14 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView;
 
 /**
  * <code>NewDeviceInspectorCommandHandler</code> is the default command handler 
  * of the <code>NewDeviceInspectorCommand</code>. 
  * <p>
  * Opens an input dialog where the user can enter a name. A new 
- * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView} 
+ * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView} 
  * is created and its title set to the user input.
  * 
  * @author Marcus Michalsky

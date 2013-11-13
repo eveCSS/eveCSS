@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.deviceinspectorview;
+package de.ptb.epics.eve.viewer.views.deviceinspectorview.ui;
 
 import org.apache.log4j.Logger;
 import org.eclipse.ui.IPartListener2;
@@ -9,7 +9,7 @@ import org.eclipse.ui.IWorkbenchPartReference;
  * <code>DeviceInspectorViewPartListener</code> listens to changes in parts.
  * <p>
  *  Used to update the currently active 
- * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView}.
+ * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView}.
  * If such a part is made visible, it is set as the current one.
  * 
  * @author Marcus Michalsky

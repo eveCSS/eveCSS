@@ -11,7 +11,7 @@ import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
  * <code>CommonTableEditingSupport</code> is the 
  * {@link org.eclipse.jface.viewers.EditingSupport} for the table viewers 
  * defined in 
- * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView}.
+ * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView}.
  * 
  * @author ?
  * @author Marcus Michalsky

@@ -44,7 +44,8 @@ import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.MessageSource;
 import de.ptb.epics.eve.viewer.XMLDispatcher;
-import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.DragNDropPrefix;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView;
 import de.ptb.epics.eve.viewer.views.messages.Levels;
 import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
 
@@ -101,7 +102,6 @@ public final class DevicesView extends ViewPart implements PropertyChangeListene
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		
 		measuringStation = Activator.getDefault().getMeasuringStation();
 		if(measuringStation == null) {
 			final Label errorLabel = new Label(parent, SWT.NONE);
@@ -109,7 +109,6 @@ public final class DevicesView extends ViewPart implements PropertyChangeListene
 					"Please check Preferences!");
 			return;
 		}
-		
 		final FillLayout fillLayout = new FillLayout();
 		parent.setLayout(fillLayout);
 		
@@ -139,7 +138,7 @@ public final class DevicesView extends ViewPart implements PropertyChangeListene
 		
 		// set this tree viewer as a source for drag n drop (drop in inspector)
 		this.source = new DragSource(
-				this.treeViewer.getTree(), DND.DROP_COPY | DND.DROP_MOVE);
+				this.treeViewer.getTree(), DND.DROP_COPY);
 		Transfer[] types = new Transfer[] {TextTransfer.getInstance()};
 		source.setTransfer(types);
 		source.addDragListener(new DragSourceDragListener());
@@ -151,7 +150,7 @@ public final class DevicesView extends ViewPart implements PropertyChangeListene
 		if(this.getPartName().equals("Local Devices")) {
 			setMeasuringStation(measuringStation);
 		} else {
-			// the DevicesView of the Engine Perspective holds the the 
+			// the DevicesView of the Engine Perspective holds the 
 			// measuringStation currently active in the engine...
 			Activator
 					.getDefault().getXMLDispatcher()
@@ -297,8 +296,6 @@ public final class DevicesView extends ViewPart implements PropertyChangeListene
 		}
 	}
 	
-	// ************************* DnD *****************************************
-
 	/**
 	 * 
 	 * @author Marcus Michalsky
@@ -331,53 +328,46 @@ public final class DevicesView extends ViewPart implements PropertyChangeListene
 		@SuppressWarnings("unchecked")
 		@Override
 		public void dragSetData(final DragSourceEvent event) {
-			
 			// provide the data of the requested type
-			
 			if(TextTransfer.getInstance().isSupportedType(event.dataType)) {
 				TreeItem[] items = treeViewer.getTree().getSelection();
 				StringBuffer data = new StringBuffer();
 				int count = 0;
-				
-				// build the string that is transfered to the drop target
-				
+				// build the string that is transfered to the drop target, 
 				// add prefixes defining the type of the device
 				for(TreeItem item : items) {
 					if(item.getData() instanceof Motor) {
-						data.append("M");
+						data.append(DragNDropPrefix.MOTOR.toString());
 						data.append(((AbstractDevice)item.getData()).
 								getFullIdentifyer());
 					} else if(item.getData() instanceof MotorAxis) {
-						data.append("A");
+						data.append(DragNDropPrefix.MOTOR_AXIS.toString());
 						data.append(((AbstractDevice)item.getData()).
 								getFullIdentifyer());
 					} else if(item.getData() instanceof Detector) {
-						data.append("D");
+						data.append(DragNDropPrefix.DETECTOR.toString());
 						data.append(((AbstractDevice)item.getData()).
 								getFullIdentifyer());
 					} else if(item.getData() instanceof DetectorChannel) {
-						data.append("C");
+						data.append(DragNDropPrefix.DETECTOR_CHANNEL.toString());
 						data.append(((AbstractDevice)item.getData()).
 								getFullIdentifyer());
 					} else if(item.getData() instanceof Device) {
-						data.append("d");
+						data.append(DragNDropPrefix.DEVICE.toString());
 						data.append(((AbstractDevice)item.getData()).
 								getFullIdentifyer());
 					} else if(item.getData() instanceof List<?>) {
-						
 						int countB = 0;
-						
 						for(Object o : (List<Object>)item.getData()) {
 							if(o instanceof Motor) {
-								data.append("M");
+								data.append(DragNDropPrefix.MOTOR.toString());
 							} else if(o instanceof Detector) {
-								data.append("D");
+								data.append(DragNDropPrefix.DETECTOR.toString());
 							} else if(o instanceof Device) {
-								data.append("d");
+								data.append(DragNDropPrefix.DEVICE.toString());
 							}
 							data.append(((AbstractDevice)o).
 									getFullIdentifyer());
-							
 							countB++;
 							if(countB != ((List<Object>)item.getData()).size() ||
 									((List<Object>)item.getData()).size() == 1) {
@@ -385,18 +375,15 @@ public final class DevicesView extends ViewPart implements PropertyChangeListene
 							}
 						}
 					}
-					
 					count++;
-					if(count != items.length && 
-					   !(item.getData() instanceof List<?>)) {
+					if (count != items.length
+							&& !(item.getData() instanceof List<?>)) {
 						data.append(",");
 					}
 				}
-				
 				if(logger.isDebugEnabled()) {
 					logger.debug("DragSource: " + data.toString());
 				}
-				
 				event.data = data.toString();
 			}
 		}
@@ -413,10 +400,6 @@ public final class DevicesView extends ViewPart implements PropertyChangeListene
 			treeViewer.getTree().deselectAll();
 		}
 	}
-	
-	// ***********************************************************************
-	// **************************** Listener *********************************
-	// ***********************************************************************
 	
 	/**
 	 * 

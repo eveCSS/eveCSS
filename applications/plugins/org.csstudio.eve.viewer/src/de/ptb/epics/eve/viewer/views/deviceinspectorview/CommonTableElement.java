@@ -26,7 +26,7 @@ import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
 /**
  * <code>CommonTableElement</code> is an element (row entry) of the tables 
  * defined in the
- * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView}.
+ * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView}.
  * 
  * @author ?
  * @author Marcus Michalsky
@@ -34,7 +34,7 @@ import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
  */
 public class CommonTableElement {
 
-	private static Logger logger = 
+	private static Logger LOGGER = 
 			Logger.getLogger(CommonTableElement.class.getName());
 	
 	private AbstractDevice device;
@@ -69,7 +69,6 @@ public class CommonTableElement {
 	 * @param viewer the viewer the element is contained in
 	 */
 	public CommonTableElement(AbstractDevice abstractdevice, TableViewer viewer) {
-
 		this.device = abstractdevice;
 		this.viewer = viewer;
 		name = abstractdevice.getName();
@@ -621,7 +620,7 @@ public class CommonTableElement {
 							return "Moving";
 						}
 					} catch (NumberFormatException e) {
-						logger.error(e.getMessage(), e);
+						LOGGER.error(e.getMessage(), e);
 					}
 				}
 			}

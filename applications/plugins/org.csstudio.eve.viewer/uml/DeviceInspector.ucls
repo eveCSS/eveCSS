@@ -2,9 +2,9 @@
 <class-diagram version="1.1.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true">  
   <class id="1" language="java" 
-    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView.AxisTableFocusListener" 
+    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView.AxisTableFocusListener" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/DeviceInspectorView.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/DeviceInspectorView.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1302" y="81"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -14,9 +14,9 @@
     </display>  
   </class>  
   <class id="2" language="java" 
-    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView.DeviceTableNameColumnSelectionListener" 
+    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView.DeviceTableNameColumnSelectionListener" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/DeviceInspectorView.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/DeviceInspectorView.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1309" y="1353"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -26,9 +26,9 @@
     </display>  
   </class>  
   <class id="3" language="java" 
-    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView.DeviceTableDropTargetListener" 
+    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView.DeviceTableDropTargetListener" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/DeviceInspectorView.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/DeviceInspectorView.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1452" y="923"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -38,9 +38,9 @@
     </display>  
   </class>  
   <class id="4" language="java" 
-    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView.MotorIconMouseListener" 
+    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView.MotorIconMouseListener" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/DeviceInspectorView.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/DeviceInspectorView.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1435" y="479"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -50,9 +50,9 @@
     </display>  
   </class>  
   <class id="5" language="java" 
-    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView.ChannelTableNameColumnSelectionListener" 
+    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView.ChannelTableNameColumnSelectionListener" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/DeviceInspectorView.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/DeviceInspectorView.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1390" y="1175"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -62,9 +62,9 @@
     </display>  
   </class>  
   <class id="6" language="java" 
-    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView.DeviceIconMouseListener" 
+    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView.DeviceIconMouseListener" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/DeviceInspectorView.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/DeviceInspectorView.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1436" y="655"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -74,9 +74,9 @@
     </display>  
   </class>  
   <class id="7" language="java" 
-    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView.AxisTableDropTargetListener" 
+    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView.AxisTableDropTargetListener" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/DeviceInspectorView.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/DeviceInspectorView.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1449" y="778"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -86,9 +86,9 @@
     </display>  
   </class>  
   <class id="8" language="java" 
-    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView.AxisTableColumnEditorActivationListener" 
+    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView.AxisTableColumnEditorActivationListener" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/DeviceInspectorView.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/DeviceInspectorView.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="844" y="1437"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -98,9 +98,9 @@
     </display>  
   </class>  
   <class id="9" language="java" 
-    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView.DetectorIconMouseListener" 
+    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView.DetectorIconMouseListener" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/DeviceInspectorView.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/DeviceInspectorView.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1436" y="572"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -110,9 +110,9 @@
     </display>  
   </class>  
   <class id="10" language="java" 
-    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView.DeviceTableFocusListener" 
+    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView.DeviceTableFocusListener" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/DeviceInspectorView.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/DeviceInspectorView.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1515" y="259"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -122,9 +122,9 @@
     </display>  
   </class>  
   <class id="11" language="java" 
-    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView.AxisTableNameColumnSelectionListener" 
+    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView.AxisTableNameColumnSelectionListener" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/DeviceInspectorView.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/DeviceInspectorView.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1494" y="1091"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -134,9 +134,9 @@
     </display>  
   </class>  
   <class id="12" language="java" 
-    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView.ChannelTableFocusListener" 
+    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView.ChannelTableFocusListener" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/DeviceInspectorView.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/DeviceInspectorView.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1423" y="169"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -145,9 +145,9 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView" 
+  <class id="13" language="java" name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/DeviceInspectorView.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/DeviceInspectorView.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="986" y="657"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -157,9 +157,9 @@
     </display>  
   </class>  
   <class id="14" language="java" 
-    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView.ChannelTableDropTargetListener" 
+    name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView.ChannelTableDropTargetListener" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/DeviceInspectorView.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/DeviceInspectorView.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1451" y="851"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 

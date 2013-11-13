@@ -10,14 +10,14 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView;
 
 /**
  * <code>AddAllAxes</code> is the default command handler of the addAllAxes 
  * command.
  * It adds all axes available in the current measuring station to the table 
  * in the active 
- * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView}.
+ * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView}.
  * 
  * @author Marcus Michalsky
  * @since 0.4.2

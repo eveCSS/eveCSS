@@ -12,7 +12,7 @@ import org.eclipse.ui.actions.CompoundContributionItem;
 import org.eclipse.ui.menus.CommandContributionItem;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
 
-import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView;
 
 /**
  * <code>AddToDeviceInspectorSubmenuContribution</code> is a dynamic context 
@@ -20,7 +20,7 @@ import de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView;
  * {@link de.ptb.epics.eve.viewer.views.devicesview.DevicesView}.
  * <p>
  * The context menu shows all available 
- * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView}s 
+ * {@link de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView}s 
  * a device could be added to. This set must be determined dynamically.
  * 
  * @author Marcus Michalsky

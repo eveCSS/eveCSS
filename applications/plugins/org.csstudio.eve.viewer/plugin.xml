@@ -49,7 +49,7 @@
       <view
             allowMultiple="true"
             category="eveViewerCategory"
-            class="de.ptb.epics.eve.viewer.views.deviceinspectorview.DeviceInspectorView"
+            class="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView"
             icon="icons/read_obj.gif"
             id="DeviceInspectorView"
             name="%view.name.3"/>

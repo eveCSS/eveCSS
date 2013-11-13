@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.deviceinspectorview;
+package de.ptb.epics.eve.viewer.views.deviceinspectorview.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,9 @@ import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
@@ -36,6 +39,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPartService;
 import org.eclipse.ui.ISharedImages;
@@ -54,6 +58,11 @@ import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.util.jface.SelectionProviderWrapper;
 import de.ptb.epics.eve.viewer.Activator;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableContentProvider;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableEditingSupport;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.DragNDropPrefix;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.TableViewerComparator;
 
 /**
  * <code>DeviceInspectorView</code> presents a selection of devices separated in 
@@ -66,10 +75,14 @@ import de.ptb.epics.eve.viewer.Activator;
  */
 public class DeviceInspectorView extends ViewPart {
 
-	/** the public identifier of this view */
+	/** 
+	 * the public identifier of this view 
+	 */
 	public static final String ID = "DeviceInspectorView";
 	
-	/** the secondary id of the <code>DeviceInspectorView</code> that is shown */
+	/** 
+	 * the secondary id of the <code>DeviceInspectorView</code> that is shown 
+	 */
 	public static String activeDeviceInspectorView = "";
 	
 	private static Logger logger = 
@@ -85,6 +98,7 @@ public class DeviceInspectorView extends ViewPart {
 	private Label motorLabel;
 	private TableViewer axisTableViewer;
 	private CommonTableContentProvider axisTableContentProvider;
+	private AxisTableDragSourceListener axisTableDragSourceListener;
 	private AxisTableDropTargetListener axisTableDropTargetListener;
 	private AxisTableFocusListener axisTableFocusListener;
 	
@@ -101,6 +115,7 @@ public class DeviceInspectorView extends ViewPart {
 	private Label channelLabel;
 	private TableViewer channelTableViewer;
 	private CommonTableContentProvider channelTableContentProvider;
+	private ChannelTableDragSourceListener channelTableDragSourceListener;
 	private ChannelTableDropTargetListener channelTableDropTargetListener;
 	private ChannelTableFocusListener channelTableFocusListener;
 	
@@ -117,6 +132,7 @@ public class DeviceInspectorView extends ViewPart {
 	private Label deviceLabel;
 	private TableViewer deviceTableViewer;
 	private CommonTableContentProvider deviceTableContentProvider;
+	private DeviceTableDragSourceListener deviceTableDragSourceListener;
 	private DeviceTableDropTargetListener deviceTableDropTargetListener;
 	private DeviceTableFocusListener deviceTableFocusListener;
 	
@@ -126,6 +142,8 @@ public class DeviceInspectorView extends ViewPart {
 	private int deviceTableSortState;
 	
 	private List<AbstractDevice> devices;
+	
+	
 	
 	// the selection service only accepts one selection provider per view,
 	// since we have three tables capable of providing selections a wrapper 
@@ -277,11 +295,18 @@ public class DeviceInspectorView extends ViewPart {
 		axisTableFocusListener = new AxisTableFocusListener();
 		axisTableViewer.getTable().addFocusListener(axisTableFocusListener);
 		
+		// drag source for item reordering
+		/* DragSource axisTableDragSource = 
+				new DragSource(axisTableViewer.getTable(), DND.DROP_MOVE);
+		Transfer[] types = new Transfer[] {TextTransfer.getInstance()};
+		axisTableDragSource.setTransfer(types);
+		axisTableDragSourceListener = new AxisTableDragSourceListener();
+		axisTableDragSource.addDragListener(axisTableDragSourceListener); */ // TODO
+		
 		// a drop target receives data in a Drag and Drop operation
-		DropTarget axisTableDropTarget = 
-				new DropTarget(axisTableViewer.getTable(), DND.DROP_COPY);
-		final TextTransfer textTransfer = TextTransfer.getInstance();
-		final Transfer[] types = new Transfer[] {textTransfer};
+		DropTarget axisTableDropTarget = new DropTarget(
+				axisTableViewer.getTable(), DND.DROP_COPY | DND.DROP_MOVE);
+		Transfer[] types = new Transfer[] {TextTransfer.getInstance()};
 		axisTableDropTarget.setTransfer(types);
 		axisTableDropTargetListener = new AxisTableDropTargetListener();
 		axisTableDropTarget.addDropListener(axisTableDropTargetListener);
@@ -1369,11 +1394,7 @@ public class DeviceInspectorView extends ViewPart {
 		
 		super.dispose();
 	}
-	
-	// ***********************************************************************
-	// **************************** Listener *********************************
-	// ***********************************************************************
-	
+
 	/**
 	 * 
 	 */
@@ -1482,13 +1503,253 @@ public class DeviceInspectorView extends ViewPart {
 		public void mouseUp(MouseEvent e) {	
 		}
 	}
-	
-	// ******************** DropListener *************************
+
+	/**
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.17
+	 */
+	private class AxisTableDragSourceListener implements DragSourceListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void dragStart(DragSourceEvent event) {
+			if (logger.isDebugEnabled()) {
+				for (TableItem item : axisTableViewer.getTable().getSelection()) {
+					logger.debug(item.getData() + " selected");
+				}
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void dragSetData(DragSourceEvent event) {
+			// provide the data of the requested type
+			if(TextTransfer.getInstance().isSupportedType(event.dataType)) {
+				TableItem[] items = axisTableViewer.getTable().getSelection();
+				StringBuffer data = new StringBuffer();
+				int count = 0;
+				// build the string that is transfered to the drop target
+				
+				// add prefix to mark for reordering
+				for (TableItem item : items) {
+					if (item.getData() instanceof CommonTableElement) {
+						data.append(DragNDropPrefix.MOVE.toString());
+						data.append(((CommonTableElement) item.getData())
+								.getAbstractDevice().getID());
+					}
+					count++;
+					if(count != items.length) {
+						data.append(",");
+					}
+				}
+				
+				if(logger.isDebugEnabled()) {
+					logger.debug("DragSource: " + data.toString());
+				}
+				
+				event.data = data.toString();
+			} else {
+				logger.error("Drag n Drop not supported on used platform.");
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void dragFinished(DragSourceEvent event) {
+			axisTableViewer.getTable().deselectAll();
+		}
+	}
 	
 	/**
 	 * 
 	 */
-	class AxisTableDropTargetListener implements DropTargetListener {
+	private class AxisTableDropTargetListener implements DropTargetListener {
+		
+		/** 
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void dragEnter(DropTargetEvent event) {
+			if ((event.operations & DND.DROP_COPY) != 0) {
+				event.detail = DND.DROP_COPY;
+				event.feedback = DND.FEEDBACK_SCROLL;
+			} else if ((event.operations & DND.DROP_MOVE) != 0) {
+				if (axisTableSortState != 0) {
+					event.detail = DND.DROP_NONE;
+					event.feedback = DND.FEEDBACK_NONE;
+					return;
+				}
+				event.detail = DND.DROP_MOVE;
+				event.feedback = DND.FEEDBACK_INSERT_AFTER;
+			} else {
+				event.detail = DND.DROP_NONE;
+				event.feedback = DND.FEEDBACK_NONE;
+			}
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void dragOver(DropTargetEvent event) {
+			if ((event.operations & DND.DROP_COPY) != 0) {
+				// TODO check if right/wrong table (but event.data -> null)
+				event.detail = DND.DROP_COPY;
+				event.feedback = DND.FEEDBACK_SCROLL;
+			} else if ((event.operations & DND.DROP_MOVE) != 0) {
+				if (axisTableSortState != 0) {
+					event.detail = DND.DROP_NONE;
+					event.feedback = DND.FEEDBACK_NONE;
+					return;
+				}
+				event.detail = DND.DROP_MOVE;
+				event.feedback = DND.FEEDBACK_INSERT_AFTER | DND.FEEDBACK_SCROLL;
+			} else {
+				event.detail = DND.DROP_NONE;
+				event.feedback = DND.FEEDBACK_NONE;
+			}
+		}
+		
+		/** 
+		 * {@inheritDoc} 
+		 */
+		@Override 
+		public void dragOperationChanged(DropTargetEvent event) {
+		}
+
+		/** 
+		 * {@inheritDoc} 
+		 */
+		@Override 
+		public void dragLeave(DropTargetEvent event) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void dropAccept(DropTargetEvent event) {
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void drop(DropTargetEvent event) {
+			if((event.operations & DND.DROP_COPY) != 0) {
+				if(logger.isDebugEnabled()) {
+					logger.debug("drop data: " + event.data);
+				}
+				
+				IMeasuringStation measuringstation = getSite().getPage().
+						getPerspective().getId().equals("EveDevicePerspective")
+						? Activator.getDefault().getMeasuringStation()
+						: Activator.getDefault().getCurrentScanDescription().
+								getMeasuringStation();
+				
+				boolean refuse = true;
+				
+				for(String s : ((String)event.data).split(",")) {
+					if(s.startsWith(DragNDropPrefix.MOTOR.toString())) {
+						// String contains a motor -> add each axis
+						Motor m = (Motor) measuringstation.
+								getAbstractDeviceByFullIdentifyer(
+										s.substring(1, s.length()));
+						if(m != null) {
+							for(MotorAxis ma : m.getAxes()) {
+								if(ma.getClassName().isEmpty()) {
+									addMotorAxisEntry(ma);
+								}
+							}
+						}
+						refuse = false;
+					} else if(s.startsWith(DragNDropPrefix.MOTOR_AXIS.toString())) {
+						// String contains a motor axis -> add it
+						MotorAxis ma = (MotorAxis) measuringstation.
+								getAbstractDeviceByFullIdentifyer(
+										s.substring(1, s.length()));
+						addMotorAxisEntry(ma);
+						refuse = false;
+					}
+				}
+				
+				if(refuse) {
+					logger.debug("Drop refused");
+					event.detail = DND.DROP_NONE;
+				}
+			} else if ((event.operations & DND.DROP_MOVE) != 0) {
+				if (axisTableSortState != 0) {
+					event.detail = DND.DROP_NONE;
+					event.feedback = DND.FEEDBACK_NONE;
+					return;
+				}
+				if (event.item instanceof TableItem) {
+					TableItem insertAfter = (TableItem) event.item;
+					List<String> elements = 
+							new ArrayList<String>();
+					for (TableItem item : axisTableViewer.getTable()
+							.getSelection()) {
+						if (item.getData() instanceof CommonTableElement) {
+							elements.add(((CommonTableElement) item.getData())
+									.getAbstractDevice().getID());
+						}
+					}
+					
+					//TODO list of device ids, which have to be moved to "insertAfter"
+				}
+				logger.debug("moving item");
+			} else {
+				event.detail = DND.DROP_NONE;
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.17
+	 */
+	private class ChannelTableDragSourceListener implements DragSourceListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void dragStart(DragSourceEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void dragSetData(DragSourceEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void dragFinished(DragSourceEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	private class ChannelTableDropTargetListener implements DropTargetListener {
 		
 		/** 
 		 * {@inheritDoc} 
@@ -1548,108 +1809,11 @@ public class DeviceInspectorView extends ViewPart {
 					? Activator.getDefault().getMeasuringStation()
 					: Activator.getDefault().getCurrentScanDescription().
 							getMeasuringStation();
-			
-			boolean refuse = true;
-			
-			for(String s : ((String)event.data).split(",")) {
-				if(s.startsWith("M")) {
-					// String contains a motor -> add each axis
-					Motor m = (Motor) measuringstation.
-							getAbstractDeviceByFullIdentifyer(
-									s.substring(1, s.length()));
-					if(m != null) {
-						for(MotorAxis ma : m.getAxes()) {
-							if(ma.getClassName().isEmpty()) {
-								addMotorAxisEntry(ma);
-							}
-						}
-					}
-					refuse = false;
-				} else if(s.startsWith("A")) {
-					// String contains a motor axis -> add it
-					MotorAxis ma = (MotorAxis) measuringstation.
-							getAbstractDeviceByFullIdentifyer(
-									s.substring(1, s.length()));
-					addMotorAxisEntry(ma);
-					refuse = false;
-				}
-			}
-			
-			if(refuse) {
-				logger.debug("Drop refused");
-				event.detail = DND.DROP_NONE;
-			}
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	class ChannelTableDropTargetListener implements DropTargetListener {
-		
-		/** 
-		 * {@inheritDoc} 
-		 */
-		@Override
-		public void dragEnter(DropTargetEvent event) {
-			if((event.operations & DND.DROP_COPY) != 0) {
-				event.detail = DND.DROP_COPY;
-				event.feedback = DND.FEEDBACK_SCROLL;
-			} else {
-				event.detail = DND.DROP_NONE;
-				event.feedback = DND.FEEDBACK_NONE;
-			}
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dragOver(DropTargetEvent event) {
-			event.detail = DND.DROP_COPY;
-			event.feedback = DND.FEEDBACK_SCROLL; // | DND.FEEDBACK_INSERT_AFTER;
-		}
-		
-		/** 
-		 * {@inheritDoc} 
-		 */
-		@Override 
-		public void dragOperationChanged(DropTargetEvent event) {
-		}
-
-		/** 
-		 * {@inheritDoc} 
-		 */
-		@Override 
-		public void dragLeave(DropTargetEvent event) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dropAccept(DropTargetEvent event) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void drop(DropTargetEvent event) {
-			if(logger.isDebugEnabled()) {
-				logger.debug("drop data: " + event.data);
-			}
-			
-			IMeasuringStation measuringstation = getSite().getPage().
-					getPerspective().getId().equals("EveDevicePerspective")
-					? Activator.getDefault().getMeasuringStation()
-					: Activator.getDefault().getCurrentScanDescription().
-							getMeasuringStation();
 
 			boolean refuse = true;
 			
 			for(String s : ((String)event.data).split(",")) {
-				if(s.startsWith("D")) {
+				if(s.startsWith(DragNDropPrefix.DETECTOR.toString())) {
 					// String contains a detector -> add its channels
 					Detector d = (Detector) measuringstation.
 							getAbstractDeviceByFullIdentifyer(
@@ -1662,7 +1826,7 @@ public class DeviceInspectorView extends ViewPart {
 						}
 					}
 					refuse = false;
-				} else if(s.startsWith("C")) {
+				} else if(s.startsWith(DragNDropPrefix.DETECTOR_CHANNEL.toString())) {
 					// String contains a detector channel -> add it
 					DetectorChannel ch = (DetectorChannel) measuringstation.
 					getAbstractDeviceByFullIdentifyer(
@@ -1681,8 +1845,43 @@ public class DeviceInspectorView extends ViewPart {
 	
 	/**
 	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.17
 	 */
-	class DeviceTableDropTargetListener implements DropTargetListener {
+	private class DeviceTableDragSourceListener implements DragSourceListener {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void dragStart(DragSourceEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void dragSetData(DragSourceEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void dragFinished(DragSourceEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	private class DeviceTableDropTargetListener implements DropTargetListener {
 		
 		/** 
 		 * {@inheritDoc} 
@@ -1746,7 +1945,7 @@ public class DeviceInspectorView extends ViewPart {
 			boolean refuse = true;
 			
 			for(String s : ((String)event.data).split(",")) {
-				if(s.startsWith("d")) {
+				if(s.startsWith(DragNDropPrefix.DEVICE.toString())) {
 					// String contains a device -> add it
 					Device d = (Device) measuringstation.
 							getAbstractDeviceByFullIdentifyer(
@@ -1765,12 +1964,10 @@ public class DeviceInspectorView extends ViewPart {
 		}
 	}
 	
-	// *********************** FocusListener *****************************
-	
 	/**
 	 * 
 	 */
-	class AxisTableFocusListener implements FocusListener {
+	private class AxisTableFocusListener implements FocusListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1792,7 +1989,7 @@ public class DeviceInspectorView extends ViewPart {
 	/**
 	 * 
 	 */
-	class ChannelTableFocusListener implements FocusListener {
+	private class ChannelTableFocusListener implements FocusListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1814,7 +2011,7 @@ public class DeviceInspectorView extends ViewPart {
 	/**
 	 * 
 	 */
-	class DeviceTableFocusListener implements FocusListener {
+	private class DeviceTableFocusListener implements FocusListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1833,15 +2030,13 @@ public class DeviceInspectorView extends ViewPart {
 		}
 	}
 	
-	// **********************
-	
 	/**
 	 * 
 	 * 
 	 * @author Marcus Michalsky
 	 * @since 0.4.2
 	 */
-	class AxisTableNameColumnSelectionListener implements SelectionListener {
+	private class AxisTableNameColumnSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1892,7 +2087,7 @@ public class DeviceInspectorView extends ViewPart {
 	 * @author Marcus Michalsky
 	 * @since 0.4.2
 	 */
-	class ChannelTableNameColumnSelectionListener implements SelectionListener {
+	private class ChannelTableNameColumnSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1943,7 +2138,7 @@ public class DeviceInspectorView extends ViewPart {
 	 * @author Marcus Michalsky
 	 * @since 0.4.2
 	 */
-	class DeviceTableNameColumnSelectionListener implements SelectionListener {
+	private class DeviceTableNameColumnSelectionListener implements SelectionListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1988,12 +2183,10 @@ public class DeviceInspectorView extends ViewPart {
 		}
 	}
 	
-	// ******************************
-	
 	/**
 	 * 
 	 */
-	class AxisTableColumnEditorActivationListener 
+	private class AxisTableColumnEditorActivationListener 
 								extends ColumnViewerEditorActivationListener {
 		
 		/**
