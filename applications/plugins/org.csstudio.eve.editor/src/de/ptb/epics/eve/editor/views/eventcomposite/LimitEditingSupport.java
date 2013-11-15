@@ -83,7 +83,7 @@ public class LimitEditingSupport extends EditingSupport {
 	protected Object getValue(Object element) {
 		ControlEvent ce = (ControlEvent)element;
 		if (ce.getEvent().getMonitor().getDataType().isDiscrete()) {
-			return discreteValues.indexOf(ce);
+			return discreteValues.indexOf(ce.getLimit().getValue());
 		} else {
 			return ce.getLimit().getValue();
 		}
