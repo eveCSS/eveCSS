@@ -91,7 +91,8 @@ public class ChainStatusAnalyzer implements IEngineStatusListener,
 						.iterator();
 				while (it.hasNext()) {
 					it.next().fillStatusTable(chainStatusCommand.getChainId(),
-							chainStatusCommand.getScanModulId(), "initialized",
+							chainStatusCommand.getScanModulId(), 
+							" ", "initialized",
 							chainStatusCommand.getRemainingTime());
 				}
 				break;

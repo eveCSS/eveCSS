@@ -22,7 +22,7 @@ public interface IUpdateListener {
 	 * @param status
 	 * @param remainTime
 	 */
-	void fillStatusTable(int chainId, int scanModuleId, String status, int remainTime);
+	void fillStatusTable(int chainId, int scanModuleId, String smName, String status, int remainTime);
 	
 	/**
 	 * 

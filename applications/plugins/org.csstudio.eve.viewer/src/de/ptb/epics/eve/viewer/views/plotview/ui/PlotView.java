@@ -569,7 +569,7 @@ public class PlotView extends ViewPart implements IChainStatusListener, IUpdateL
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void fillStatusTable(int chainId, int scanModuleId, String status,
+	public void fillStatusTable(int chainId, int scanModuleId, String smName, String status,
 			int remainTime) {
 	}
 

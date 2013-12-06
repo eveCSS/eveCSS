@@ -309,14 +309,17 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		tableColumn.setWidth(50);
 		tableColumn.setText("Chain");
 		TableColumn tableColumn1 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn1.setWidth(100);
-		tableColumn1.setText("Scan Module");
+		tableColumn1.setWidth(45);
+		tableColumn1.setText("SM ID");
 		TableColumn tableColumn2 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn2.setWidth(80);
-		tableColumn2.setText("Status");
+		tableColumn2.setWidth(100);
+		tableColumn2.setText("SM Name");
 		TableColumn tableColumn3 = new TableColumn(this.statusTable, SWT.NONE);
-		tableColumn3.setWidth(120);
-		tableColumn3.setText("remaining Time");
+		tableColumn3.setWidth(80);
+		tableColumn3.setText("Status");
+		TableColumn tableColumn4 = new TableColumn(this.statusTable, SWT.NONE);
+		tableColumn4.setWidth(120);
+		tableColumn4.setText("remaining Time");
 		
 		// SelectionListener um zu erkennen, wann eine Zeile selektiert wird
 		this.statusTable.addSelectionListener(new StatusTableSelectionListener());
@@ -378,15 +381,15 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				
 				if(Activator.getDefault().getChainStatusAnalyzer().
 						getRunningChains().contains(ch)) {
-					fillStatusTable(ch.getId(), -1, "running", remainTime);
+					fillStatusTable(ch.getId(), -1, " ", "running", remainTime);
 				} else if(Activator.getDefault().getChainStatusAnalyzer().
 						getExitedChains().contains(ch)) {
-					fillStatusTable(ch.getId(), -1, "exited", remainTime);	
+					fillStatusTable(ch.getId(), -1, " ", "exited", remainTime);	
 				} else if(Activator.getDefault().getChainStatusAnalyzer().
 						getPausedChains().contains(ch)) {
-					fillStatusTable(ch.getId(), -1, "paused", remainTime);	
+					fillStatusTable(ch.getId(), -1, " ", "paused", remainTime);	
 				} else {
-					fillStatusTable(ch.getId(), -1, "idle", remainTime);
+					fillStatusTable(ch.getId(), -1, " ", "idle", remainTime);
 				}
 				final List<ScanModule> scanModules = ch.getScanModules();
 				
@@ -394,7 +397,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 						getChainStatusAnalyzer().getExecutingScanModules();
 				for(final ScanModule scanModule : running) {
 					if(scanModules.contains(scanModule)) {
-						fillStatusTable(ch.getId(), scanModule.getId(), 
+						fillStatusTable(ch.getId(), scanModule.getId(), scanModule.getName(), 
 								"running", remainTime);
 					}
 				}
@@ -403,7 +406,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 						getChainStatusAnalyzer().getExitingScanModules();
 				for(final ScanModule scanModule : exited) {
 					if(scanModules.contains(scanModule)) {
-						fillStatusTable(ch.getId(), scanModule.getId(), 
+						fillStatusTable(ch.getId(), scanModule.getId(), scanModule.getName(),
 								"exited", remainTime);
 					}
 				}
@@ -412,7 +415,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 						getChainStatusAnalyzer().getInitializingScanModules();
 				for(final ScanModule scanModule : initialized) {
 					if(scanModules.contains(scanModule)) {
-						fillStatusTable(ch.getId(), scanModule.getId(), 
+						fillStatusTable(ch.getId(), scanModule.getId(), scanModule.getName(),
 								"initialized", remainTime);
 					}
 				}
@@ -421,7 +424,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 						getChainStatusAnalyzer().getPausedScanModules();
 				for(final ScanModule scanModule : paused) {
 					if(scanModules.contains( scanModule)) {
-						fillStatusTable(ch.getId(), scanModule.getId(), 
+						fillStatusTable(ch.getId(), scanModule.getId(), scanModule.getName(),
 								"paused", remainTime);
 					}
 				}
@@ -430,7 +433,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 						getChainStatusAnalyzer().getWaitingScanModules();
 				for(final ScanModule scanModule : waiting) {
 					if(scanModules.contains(scanModule)) {
-						fillStatusTable(ch.getId(), scanModule.getId(), 
+						fillStatusTable(ch.getId(), scanModule.getId(), scanModule.getName(),
 								"waiting for trigger", remainTime);
 					}
 				}
@@ -601,8 +604,8 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void fillStatusTable(final int chainId, final int scanModuleId, 
-			final String statString, final int remainTime) {
+	public void fillStatusTable(final int chainId, final int scanModuleId,
+			final String scanModuleName, final String statString, final int remainTime) {
 		// Wenn die scanModuleId -1 ist, wird eine Zeile geändert in der nur die chainId eingetragen ist
 	
 		this.statusTable.getDisplay().syncExec(new Runnable() {
@@ -631,9 +634,9 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 					if ( (chainId == cell0) && (scanModuleId == cell1)) {
 						// neuen Wert für die Zeile eintragen
 						neu = false;
-						rows[i].setText(2, statString);
+						rows[i].setText(3, statString);
 						if ((cell1 == -1) && (remainTime > -1)) {
-							rows[i].setText(3, ""+remainTime);
+							rows[i].setText(4, ""+remainTime);
 						}
 					}
 				}
@@ -645,14 +648,16 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 					tableItem.setText( 0, " "+chainId);
 					if (scanModuleId == -1) {
 						tableItem.setText( 1, " ");
+						tableItem.setText( 2, " ");
 						if (remainTime > -1) {
 							tableItem.setText( 3, ""+remainTime);
 						}
 					}
 					else {
 						tableItem.setText( 1, " "+scanModuleId);
+						tableItem.setText( 2, scanModuleName);
 					}
-					tableItem.setText( 2, statString);
+					tableItem.setText( 3, statString);
 				}
 			}
 		});
@@ -1413,4 +1418,5 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		CONNECTED,
 		DISCONNECTED
 	}
+
 }
