@@ -35,6 +35,7 @@ public class MathTableElement implements IMeasurementDataListener,
 	private String detectorId;
 	private int chid;
 	private int smid;
+	private int plotWindowId;
 	private TableViewer viewer;
 	private String position;
 	private Object rawPosition;
@@ -53,7 +54,7 @@ public class MathTableElement implements IMeasurementDataListener,
 	 */
 	public MathTableElement(int chid, int smid, TableViewer viewer, 
 							 MathFunction mathFunction, String motorPv, 
-							 String motorId, String detectorId) {
+							 String motorId, String detectorId, int plotWindowId) {
 		// set an initial value
 		value = " - ";
 		position = " - ";
@@ -64,6 +65,7 @@ public class MathTableElement implements IMeasurementDataListener,
 		this.motorPv = motorPv;
 		this.motorId = motorId;
 		this.detectorId = detectorId;
+		this.plotWindowId = plotWindowId;
 		
 		// add the constructed math table element to the listener of the engine, 
 		// so that it is notified, when new data has arrived
@@ -99,11 +101,13 @@ public class MathTableElement implements IMeasurementDataListener,
 				if ((mathFunction == MathFunction.UNMODIFIED) || 
 					(mathFunction == MathFunction.NORMALIZED)) {
 						value = convert(measurementData, 0);
-				} else {
+						doUpdate();
+				} else if (plotWindowId == measurementData.getPositionCounter()) {
+					// for this math algorithm  positionCounter contains the plotWindowId
 					position = convert(measurementData, 0);
 					value = convert(measurementData, 1);
+					doUpdate();
 				}
-				doUpdate();
 			}
 			else if(motorId.equals(measurementData.getName())) {
 				if ((mathFunction == MathFunction.UNMODIFIED) || 

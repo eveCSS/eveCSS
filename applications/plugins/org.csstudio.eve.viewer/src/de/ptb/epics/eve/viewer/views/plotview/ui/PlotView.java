@@ -279,6 +279,7 @@ public class PlotView extends ViewPart implements IChainStatusListener, IUpdateL
 		final String motorId = plotWindow.getXAxis().getID();
 		final String motorPv = plotWindow.getXAxis().getGoto().getAccess()
 				.getVariableID();
+		final int plotWindowId = plotWindow.getId();
 		
 		// renaming table columns
 		tableViewer.getTable().getColumn(2)
@@ -309,40 +310,40 @@ public class PlotView extends ViewPart implements IChainStatusListener, IUpdateL
 		MathTableElement element;
 		if (normalized) {
 			element = new MathTableElement(chid, smid, tableViewer, 
-					MathFunction.NORMALIZED, motorPv, motorId, detectorId);
+					MathFunction.NORMALIZED, motorPv, motorId, detectorId, plotWindowId);
 				contentProvider.addElement(element);
 		} else {
 			element = new MathTableElement(chid, smid, tableViewer,
-					MathFunction.UNMODIFIED, motorPv, motorId, detectorId);
+					MathFunction.UNMODIFIED, motorPv, motorId, detectorId, plotWindowId);
 			contentProvider.addElement(element);
 		}
 
 		element = new MathTableElement(chid, smid, tableViewer,
-				MathFunction.MINIMUM, motorPv, motorId, detectorId);
+				MathFunction.MINIMUM, motorPv, motorId, detectorId, plotWindowId);
 		contentProvider.addElement(element);
 
 		element = new MathTableElement(chid, smid, tableViewer,
-				MathFunction.MAXIMUM, motorPv, motorId, detectorId);
+				MathFunction.MAXIMUM, motorPv, motorId, detectorId, plotWindowId);
 		contentProvider.addElement(element);
 
 		element = new MathTableElement(chid, smid, tableViewer,
-				MathFunction.CENTER, motorPv, motorId, detectorId);
+				MathFunction.CENTER, motorPv, motorId, detectorId, plotWindowId);
 		contentProvider.addElement(element);
 
 		element = new MathTableElement(chid, smid, tableViewer,
-				MathFunction.EDGE, motorPv, motorId, detectorId);
+				MathFunction.EDGE, motorPv, motorId, detectorId, plotWindowId);
 		contentProvider.addElement(element);
 
 		element = new MathTableElement(chid, smid, tableViewer,
-				MathFunction.AVERAGE, motorPv, motorId, detectorId);
+				MathFunction.AVERAGE, motorPv, motorId, detectorId, plotWindowId);
 		contentProvider.addElement(element);
 
 		element = new MathTableElement(chid, smid, tableViewer,
-				MathFunction.DEVIATION, motorPv, motorId, detectorId);
+				MathFunction.DEVIATION, motorPv, motorId, detectorId, plotWindowId);
 		contentProvider.addElement(element);
 
 		element = new MathTableElement(chid, smid, tableViewer,
-				MathFunction.FWHM, motorPv, motorId, detectorId);
+				MathFunction.FWHM, motorPv, motorId, detectorId, plotWindowId);
 		contentProvider.addElement(element);
 	}
 	
