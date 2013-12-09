@@ -269,7 +269,7 @@ public class PlotView extends ViewPart implements IChainStatusListener, IUpdateL
 	 * 
 	 */
 	private void fillTable(TableViewer tableViewer, PlotWindow plotWindow,
-			String detectorId, boolean normalized, int axis) {
+				String detectorId, boolean normalized, int axis) {
 		// create a content provider for the table...
 		MathTableContentProvider contentProvider = 
 				(MathTableContentProvider) tableViewer.getContentProvider();

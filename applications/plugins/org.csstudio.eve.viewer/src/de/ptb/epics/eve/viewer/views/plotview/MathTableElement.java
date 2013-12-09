@@ -102,7 +102,7 @@ public class MathTableElement implements IMeasurementDataListener,
 					(mathFunction == MathFunction.NORMALIZED)) {
 						value = convert(measurementData, 0);
 						doUpdate();
-				} else if (plotWindowId == measurementData.getPositionCounter()) {
+				} else if (plotWindowId == measurementData.getPositionCounter() ) {
 					// for this math algorithm  positionCounter contains the plotWindowId
 					position = convert(measurementData, 0);
 					value = convert(measurementData, 1);
