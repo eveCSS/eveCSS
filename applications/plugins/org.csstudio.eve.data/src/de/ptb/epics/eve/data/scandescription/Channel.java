@@ -268,7 +268,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 */
 	public void setNormalizeChannel(DetectorChannel normalizeChannel) {
 		this.propertyChangeSupport.firePropertyChange("normalizeChannel", 
-			this.normalizeChannel, this.normalizeChannel = normalizeChannel);
+				this.normalizeChannel, this.normalizeChannel = normalizeChannel);
 		updateListeners();
 	}
 
@@ -437,6 +437,12 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		if (this.normalizeChannel == null) {
 			return;
 		}
+
+		if (this.getScanModule().sm_loading) {
+			// Scan is loading
+			return;
+		}
+
 		if (e.getPropertyName().equals(ScanModule.CHANNELS_PROP)) {
 			if (!((List<Channel>)e.getNewValue()).contains(this.normalizeChannel)) {
 				// normalize channel has been deleted -> remove

@@ -83,9 +83,7 @@ public class LimitEditingSupport extends EditingSupport {
 	protected Object getValue(Object element) {
 		ControlEvent ce = (ControlEvent)element;
 		if (ce.getEvent().getMonitor().getDataType().isDiscrete()) {
-// Zeile aus build #324 wieder entfernt, weil build nicht geht!
-//			return discreteValues.indexOf(ce.getLimit().getValue());
-			return discreteValues.indexOf(ce);
+			return discreteValues.indexOf(ce.getLimit().getValue());
 		} else {
 			return ce.getLimit().getValue();
 		}

@@ -306,6 +306,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (qName.equals("scanmodule")) {
 				this.currentScanModule = new ScanModule(Integer.parseInt(atts
 						.getValue("id")));
+				this.currentScanModule.sm_loading = true;
 				this.currentRelationReminder = new ScanModulRelationReminder(
 						this.currentScanModule);
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
@@ -1427,6 +1428,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case SCAN_LOADING:
 			if (qName.equals("scan")) {
 				this.state = ScanDescriptionLoaderStates.ROOT;
+
+				Iterator<ScanModule> scanModulIterator = this.currentChain
+						.getScanModules().iterator();
+				while (scanModulIterator.hasNext()) {
+					ScanModule scanModul = scanModulIterator.next();
+					scanModul.sm_loading = false;
+				}
 			}
 			
 		case REPEATCOUNT_READ:

@@ -175,6 +175,9 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		
 	// list that holds all Positionings
 	private List<Positioning> positionings;
+
+	// sm_loading is true, if the scan module is loading 
+	public boolean sm_loading;
 	
 	/**
 	 * Constructs a <code>ScanModule</code> with the given id.
