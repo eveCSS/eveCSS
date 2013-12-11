@@ -284,6 +284,8 @@ public class MonitorOptionDialog extends SelectionDialog {
 		public void selectionChanged(SelectionChangedEvent event) {
 			
 			ISelection sel = event.getSelection();
+
+			logger.debug("TreeViewerSelectionChangedListener: " + sel.toString());
 			
 			// Liste der AbstractDevices wird geleert bevor sie wieder mit den
 			// selektierten Einträgen gefüllt wird
@@ -294,11 +296,20 @@ public class MonitorOptionDialog extends SelectionDialog {
 			while (obj.hasNext()) {
 				Object o = obj.next();
 				if (o instanceof AbstractDevice) {
-					tableDevices.add((AbstractDevice)o);
+					// Selection of an abstract device
+					if (!tableDevices.contains((AbstractDevice)o)) {
+						tableDevices.add((AbstractDevice)o);
+					}
 				}
-				else {
-					// Selektion gehört zu einer Klasse und wird bisher nicht beachtet
-					// TODO: später sollen die Klassen auch beachtet werden
+				else if (o instanceof String) {
+					// Selection of a class
+					List<AbstractDevice> devices = 
+							measuringStation.getDeviceList((String)o);
+					for(AbstractDevice d : devices) {
+						if (!tableDevices.contains(d)) {
+							tableDevices.add(d);
+						}
+					}				
 				}
 			}
 			optionsTable.setInput(tableDevices);
