@@ -127,6 +127,9 @@ public class ContentProvider implements IStructuredContentProvider,
 	public void propertyChange(PropertyChangeEvent e) {
 		if (e.getPropertyName().equals(XMLDispatcher.DEVICE_DEFINITION_PROP)) {
 			if (e.getNewValue() instanceof IMeasuringStation) {
+				if (this.messagesContainer == null) {
+					return;
+				}
 				if (this.messagesContainer.getMessageCount() > 200) {
 					this.messagesContainer.clear();
 					logger.debug("new scan arrived & msg count > 200 -> clear all");
