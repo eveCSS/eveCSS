@@ -1113,24 +1113,63 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				}
 				
 				for(Device dev : this.getSource().getDevices()) {
-
 					logger.debug("Device " + dev.getName() + " is used -> check Options");
-
 					for(Option o : dev.getOptions()) {
 						if(o.isMonitor()) {
 							usedOptions.add(o);
 						}
 						else {
 							logger.debug("Option " + dev.getName() + ":" + 
-			o.getName() + " has no monitor=true, not added to list");
-							
+							o.getName() + " has no monitor=true, not added to list");
 						}
 					}
 				}
 				break;
 			case CUSTOM:
-				// Hier müssen alle Options als used markiert werden, die in
-				// der Liste der genutzten Optionen stehen.
+				// add all options which are in the list of monitored devices 
+				// to the list of used options
+				for(Detector d : this.getSource().getDetectors()) {
+					for(Option o : d.getOptions()) {
+						if (scandescription.getMonitors().contains(o)) {
+							usedOptions.add(o);
+						}
+					}
+					for(DetectorChannel ch : d.getChannels()) {
+						for(Option o : ch.getOptions()) {
+							if (scandescription.getMonitors().contains(o)) {
+								usedOptions.add(o);
+							}
+						}
+					}
+				}
+
+				for(Motor m : this.getSource().getMotors()) {
+					for(Option o : m.getOptions()) {
+						if (scandescription.getMonitors().contains(o)) {
+							usedOptions.add(o);
+						}
+					}
+					for(MotorAxis ma : m.getAxes()) {
+						for(Option o : ma.getOptions()) {
+							if (scandescription.getMonitors().contains(o)) {
+								usedOptions.add(o);
+							}
+						}
+					}
+				}
+				
+				for(Device dev : this.getSource().getDevices()) {
+					logger.debug("Device " + dev.getName() + " is used -> check Options");
+					for(Option o : dev.getOptions()) {
+						if (scandescription.getMonitors().contains(o)) {
+							usedOptions.add(o);
+						}
+						else {
+							logger.debug("Option " + dev.getName() + ":" + 
+							o.getName() + " has no monitor=true, not added to list");
+						}
+					}
+				}
 				break;
 			case NONE:
 				// Es werden keine Optionen geschrieben, also sind auch keine
