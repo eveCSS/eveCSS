@@ -82,7 +82,7 @@ public class Activator extends AbstractUIPlugin {
 			Version version = Platform.getProduct().getDefiningBundle()
 					.getVersion();
 			this.defaultWindowTitle = "eveCSS v" + version.getMajor() + "."
-					+ version.getMinor();
+					+ version.getMinor() + "." + version.getMicro();
 		} catch (NullPointerException e) {
 			this.defaultWindowTitle = "eveCSS";
 		}
