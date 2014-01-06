@@ -16,13 +16,14 @@
 			<arg value="repoXML" />
 		</exec>
 		<mkdir dir="${workspace}/bin/eveXML" />
+		<echo message="${use.branch}" />
 		<exec executable="git" dir="${workspace}/repoXML/" failonerror="true">
 			<arg value="archive" />
 			<arg value="--format" />
 			<arg value="zip" />
 			<arg value="--output" />
 			<arg value="${workspace}/bin/eveXML/xtmpl.zip" />
-			<arg value="release-1.17.x" />
+			<arg value="${use.branch}" />
 		</exec>
 	</target>
 </project>
