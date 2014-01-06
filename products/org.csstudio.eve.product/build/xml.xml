@@ -22,7 +22,7 @@
 			<arg value="zip" />
 			<arg value="--output" />
 			<arg value="${workspace}/bin/eveXML/xtmpl.zip" />
-			<arg value="master" />
+			<arg value="release-1.17.x" />
 		</exec>
 	</target>
 </project>
