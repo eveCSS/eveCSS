@@ -12,10 +12,11 @@
 		<delete dir="${workspace}/repoXML" />
 		<exec executable="git" dir="${workspace}">
 			<arg value="clone" />
+			<arg value="-b" />
+			<arg value="${use.branch}" />
 			<arg value="/soft/repo/git/eveXML" />
 			<arg value="repoXML" />
 		</exec>
-		<mkdir dir="${workspace}/bin/eveXML" />
 		<echo message="${use.branch}" />
 		<exec executable="git" dir="${workspace}/repoXML/" failonerror="true">
 			<arg value="archive" />
