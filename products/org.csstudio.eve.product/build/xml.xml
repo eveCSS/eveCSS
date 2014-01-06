@@ -12,6 +12,8 @@
 		<delete dir="${workspace}/repoXML" />
 		<exec executable="git" dir="${workspace}">
 			<arg value="clone" />
+			<arg value="-b" />
+			<arg value="${use.branch}" />
 			<arg value="/soft/repo/git/eveXML" />
 			<arg value="repoXML" />
 		</exec>
@@ -22,7 +24,7 @@
 			<arg value="zip" />
 			<arg value="--output" />
 			<arg value="${workspace}/bin/eveXML/xtmpl.zip" />
-			<arg value="master" />
+			<arg value="${use.branch}" />
 		</exec>
 	</target>
 </project>

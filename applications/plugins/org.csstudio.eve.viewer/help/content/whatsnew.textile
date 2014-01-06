@@ -1,5 +1,12 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.17
+
+* [Feature] The Engine View now also shows scan module names
+
+* [Bug Fix] fixed reading of PV values of type INT16 (short)
+* [Bug Fix] fixed calculation of plot statistics
+
 h2(eveTopic). Version 1.16
 
 * [Feature] the plot view (including statistics) can now be saved as PDF
