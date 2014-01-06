@@ -1,5 +1,13 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.17
+
+* [Feature] The Monitor Options Dialog now supports selection of classes
+
+* [Bug Fix] fixed a bug where devices were not monitored when "custom" was selected
+* [Bug Fix] fixed a bug where a normalize channel got lost while loading an scml file
+* [Bug Fix] fixed a bug where a combo box did not open properly (immediately closed) for discrete options
+
 h2(eveTopic). Version 1.16
 
 * [Feature] monitor option improvements
