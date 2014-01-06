@@ -17,7 +17,7 @@
 			<arg value="/soft/repo/git/eveXML" />
 			<arg value="repoXML" />
 		</exec>
-		<echo message="${use.branch}" />
+		<mkdir dir="${workspace}/bin/eveXML" />
 		<exec executable="git" dir="${workspace}/repoXML/" failonerror="true">
 			<arg value="archive" />
 			<arg value="--format" />
