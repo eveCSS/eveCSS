@@ -39,8 +39,8 @@ public abstract class CompositeContentProvider implements
 							.getElementAt(itemCount - 1)), true);
 		} else if (itemCount < elementCount && itemCount > 0) {
 			// element removed, but still >= 1 present -> select the first
-			this.currentViewer.setSelection(new StructuredSelection(
-					this.currentViewer.getElementAt(0)), true);
+		//	this.currentViewer.setSelection(new StructuredSelection(
+		//			this.currentViewer.getElementAt(0)), true);
 		}
 		elementCount = currentViewer.getTable().getItemCount();
 	}
