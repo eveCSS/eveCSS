@@ -1107,4 +1107,14 @@
             commandId="de.ptb.epics.eve.editor.command.addnested">
       </handler>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart"
+            class="de.ptb.epics.eve.editor.adapters.ScanModuleAdapterFactory">
+         <adapter
+               type="org.eclipse.ui.views.properties.IPropertySource">
+         </adapter>
+      </factory>
+   </extension>
 </plugin>
