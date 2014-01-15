@@ -30,13 +30,18 @@ import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerProvider;
+import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
+import org.eclipse.gef.ui.parts.TreeViewer;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -45,7 +50,9 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.FileStoreEditorInput;
+import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.progress.IProgressService;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.scandescription.Chain;
@@ -329,7 +336,9 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		if (type == ZoomManager.class) {
 			return ((ScalableFreeformRootEditPart) getGraphicalViewer()
 					.getRootEditPart()).getZoomManager();
-		} else if (type == CommandStack.class) {
+		} else if (type == IContentOutlinePage.class) {
+			return new OutlinePage();
+	 	} else if (type == CommandStack.class) {
 			return this.getEditDomain().getCommandStack();
 		} else if (type == EditDomain.class) {
 			return this.getEditDomain();
@@ -418,5 +427,41 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 						viewer));
 			}
 		};
+	}
+	
+	protected class OutlinePage extends ContentOutlinePage {
+		private SashForm sash;
+		
+		public OutlinePage() {
+			super(new TreeViewer());
+		}
+		
+		public void createControl(Composite parent) {
+			sash = new SashForm(parent, SWT.VERTICAL);
+			
+			getViewer().createControl(sash);
+			
+			getViewer().setEditDomain(getEditDomain());
+			getViewer().setEditPartFactory(
+					new ScanDescriptionEditorTreeEditPartFactory());
+			if (scanDescription != null) {
+				getViewer().setContents(scanDescription);
+			}
+			
+			getSelectionSynchronizer().addViewer(getViewer());
+		}
+		
+		public void init(IPageSite pageSite) {
+			super.init(pageSite);
+		}
+		
+		public Control getControl() {
+			return sash;
+		}
+		
+		public void dispose() {
+			getSelectionSynchronizer().removeViewer(getViewer());
+			super.dispose();
+		}
 	}
 }
