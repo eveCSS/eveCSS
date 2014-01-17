@@ -6,7 +6,10 @@ import java.util.List;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.swt.graphics.Image;
 
+import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.editor.Activator;
 
 /**
@@ -41,16 +44,45 @@ public class ScanModuleTreeEditPart extends AbstractTreeEditPart {
 	 */
 	@Override
 	protected String getText() {
+		StringBuffer s = new StringBuffer();
 		switch (((ScanModule)getModel()).getType()) {
 		case CLASSIC:
-			return ((ScanModule)getModel()).getName();
+			s.append(((ScanModule)getModel()).getName());
+			if (((ScanModule) getModel()).getAxes().length == 1
+					&& ((ScanModule) getModel()).getAxes()[0].getStepfunction()
+							.equals(Stepfunctions.ADD)) {
+				Axis axis = ((ScanModule) getModel()).getAxes()[0];
+				s.append(" (");
+				s.append(axis.getMotorAxis().getName());
+				s.append(": ");
+				s.append(axis.getStart());
+				s.append(" \u2192 ");
+				s.append(axis.getStop());
+				s.append(", Step: ");
+				s.append(axis.getStepwidth());
+				if (((ScanModule) getModel()).getChannels().length == 1) {
+					Channel channel = ((ScanModule) getModel()).getChannels()[0];
+					s.append(", ");
+					s.append(channel.getDetectorChannel().getName());
+					s.append(", ");
+					s.append("Average: ");
+					s.append(channel.getAverageCount());
+				}
+				
+				s.append(")");
+			}
+			break;
 		case SAVE_AXIS_POSITIONS:
-			return "Save Axis Positions";
+			s.append("Save Axis Positions");
+			break;
 		case SAVE_CHANNEL_VALUES:
-			return "Save Channel Values";
+			s.append("Save Channel Values");
+			break;
 		default:
-			return ((ScanModule)getModel()).getName();
+			s.append(((ScanModule)getModel()).getName());
+			break;
 		}
+		return s.toString();
 	}
 	
 	/**

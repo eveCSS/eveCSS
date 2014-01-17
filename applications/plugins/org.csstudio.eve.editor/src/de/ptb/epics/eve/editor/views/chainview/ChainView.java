@@ -10,6 +10,7 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.gef.EditPart;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
@@ -49,6 +50,7 @@ import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.measuringstation.PluginParameter;
 import de.ptb.epics.eve.data.scandescription.Chain;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.ChainError;
 import de.ptb.epics.eve.data.scandescription.errors.ChainErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -60,6 +62,7 @@ import de.ptb.epics.eve.editor.dialogs.PluginControllerDialog;
 import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.StartEventEditPart;
+import de.ptb.epics.eve.editor.gef.editparts.tree.ScanModuleTreeEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
 import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
@@ -618,13 +621,13 @@ public class ChainView extends ViewPart implements IEditorView,
 		// since at any given time this view can only display options of
 		// one device we take the first element of the selection
 		Object o = ((IStructuredSelection) selection).toList().get(0);
-		if (o instanceof ScanModuleEditPart) {
+		if (o instanceof ScanModuleEditPart || o instanceof ScanModuleTreeEditPart) {
 			// a scan module belongs to a chain -> show chain
 			if (logger.isDebugEnabled()) {
 				logger.debug("ScanModule "
-						+ ((ScanModuleEditPart) o).getModel() + " selected.");
+						+ ((ScanModule)((EditPart)o).getModel()) + " selected.");
 			}
-			setCurrentChain(((ScanModuleEditPart) o).getModel().getChain());
+			setCurrentChain(((ScanModule)((EditPart)o).getModel()).getChain());
 		} else if (o instanceof StartEventEditPart) {
 			// a start event belongs to a chain -> show chain
 			if (logger.isDebugEnabled()) {

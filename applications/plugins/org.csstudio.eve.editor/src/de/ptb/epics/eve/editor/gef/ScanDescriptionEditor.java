@@ -431,6 +431,8 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 	
 	protected class OutlinePage extends ContentOutlinePage {
 		private SashForm sash;
+		// private ScrollableThumbnail thumbnail;
+		// private DisposeListener disposeListener;
 		
 		public OutlinePage() {
 			super(new TreeViewer());
@@ -449,6 +451,28 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 			}
 			
 			getSelectionSynchronizer().addViewer(getViewer());
+			
+			// miniature view
+			/* Canvas canvas = new Canvas(sash, SWT.BORDER);
+			LightweightSystem lws = new LightweightSystem(canvas);
+			
+			thumbnail = new ScrollableThumbnail(
+					(FreeformViewport)((ScalableFreeformRootEditPart)getGraphicalViewer()
+							.getRootEditPart()).getFigure());
+			
+			lws.setContents(thumbnail);
+			
+			disposeListener = new DisposeListener() {
+				@Override
+				public void widgetDisposed(DisposeEvent e) {
+					if (thumbnail != null) {
+						thumbnail.deactivate();
+						thumbnail = null;
+					}
+				}
+			};
+			getGraphicalViewer().getControl().addDisposeListener(
+					disposeListener);*/
 		}
 		
 		public void init(IPageSite pageSite) {
@@ -461,6 +485,11 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		
 		public void dispose() {
 			getSelectionSynchronizer().removeViewer(getViewer());
+			/*if (getGraphicalViewer().getControl() != null &&
+					!getGraphicalViewer().getControl().isDisposed()) {
+				getGraphicalViewer().getControl().removeDisposeListener(
+						disposeListener);
+			}*/
 			super.dispose();
 		}
 	}

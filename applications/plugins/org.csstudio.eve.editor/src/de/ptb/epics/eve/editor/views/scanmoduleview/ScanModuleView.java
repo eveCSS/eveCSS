@@ -6,6 +6,7 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.gef.EditPart;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
@@ -55,6 +56,7 @@ import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
+import de.ptb.epics.eve.editor.gef.editparts.tree.ScanModuleTreeEditPart;
 import de.ptb.epics.eve.editor.views.EditorViewPerspectiveListener;
 import de.ptb.epics.eve.editor.views.IEditorView;
 import de.ptb.epics.eve.editor.views.eventcomposite.EventComposite;
@@ -792,15 +794,14 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 		Object o = structuredSelection.toList().get(
 				structuredSelection.size() - 1);
-		if (o instanceof ScanModuleEditPart) {
+		if (o instanceof ScanModuleEditPart || o instanceof ScanModuleTreeEditPart) {
 			// set new ScanModule
 			if (logger.isDebugEnabled()) {
 				logger.debug("ScanModule: "
-						+ ((ScanModuleEditPart) o).getModel().getId()
+						+ ((ScanModule)((EditPart)o).getModel()).getId()
 						+ " selected.");
 			}
-			final ScanModuleEditPart smep = (ScanModuleEditPart) o;
-			setCurrentScanModule(smep.getModel());
+			setCurrentScanModule((ScanModule)((EditPart)o).getModel());
 		} else if (o instanceof ChainEditPart) {
 			// clicking empty space in the editor
 			logger.debug("selection is ScanDescriptionEditPart: " + o);
