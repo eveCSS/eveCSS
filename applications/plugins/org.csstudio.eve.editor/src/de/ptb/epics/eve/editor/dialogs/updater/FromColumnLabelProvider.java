@@ -2,7 +2,7 @@ package de.ptb.epics.eve.editor.dialogs.updater;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import de.ptb.epics.eve.data.scandescription.updater.Patch;
+import de.ptb.epics.eve.data.scandescription.updater.AbstractModification;
 
 /**
  * @author Marcus Michalsky
@@ -15,6 +15,7 @@ public class FromColumnLabelProvider extends ColumnLabelProvider {
 	 */
 	@Override
 	public String getText(Object element) {
-		// TODO
+		return ((AbstractModification) element).belongsTo().getSourceVersion()
+				.toString();
 	}
 }

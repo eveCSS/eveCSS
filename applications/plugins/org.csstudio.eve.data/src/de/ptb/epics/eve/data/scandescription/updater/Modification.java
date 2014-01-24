@@ -7,9 +7,19 @@ import org.w3c.dom.Document;
  * @since 1.18
  */
 public interface Modification {
+	
 	/**
-	 * 
-	 * @param document
+	 * @return a change log text
+	 */
+	public String getChangeLog();
+	
+	/**
+	 * @return the patch it belongs to
+	 */
+	public Patch belongsTo();
+	
+	/**
+	 * @param document the document that should be modified
 	 */
 	public void modify(Document document);
 }

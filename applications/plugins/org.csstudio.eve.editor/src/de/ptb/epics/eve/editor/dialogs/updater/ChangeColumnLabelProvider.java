@@ -1,24 +1,20 @@
-/**
- * 
- */
 package de.ptb.epics.eve.editor.dialogs.updater;
 
-import org.eclipse.jface.viewers.CellLabelProvider;
-import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+
+import de.ptb.epics.eve.data.scandescription.updater.AbstractModification;
 
 /**
- * @author mmichals
- *
+ * @author Marcus Michalsky
+ * @since 1.18
  */
-public class ChangeColumnLabelProvider extends CLabelProvider {
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.CellLabelProvider#update(org.eclipse.jface.viewers.ViewerCell)
+public class ChangeColumnLabelProvider extends ColumnLabelProvider {
+	
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
-	public void update(ViewerCell cell) {
-		// TODO Auto-generated method stub
-
+	public String getText(Object element) {
+		return ((AbstractModification) element).getChangeLog();
 	}
-
 }

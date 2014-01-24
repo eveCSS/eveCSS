@@ -5,21 +5,32 @@ package de.ptb.epics.eve.data.scandescription.updater;
  * @since 1.18
  */
 public abstract class AbstractModification implements Modification {
-	private String changeLog;
-
+	private final Patch belongsTo;
+	private final String changeLog;
+	
 	/**
 	 * Constructor.
 	 * 
 	 * @param changeLog description of changes
 	 */
-	public AbstractModification(String changeLog) {
+	public AbstractModification(Patch patch, String changeLog) {
+		this.belongsTo = patch;
 		this.changeLog = changeLog;
 	}
 	
 	/**
-	 * @return the changeLog
+	 * {@inheritDoc}
 	 */
+	@Override
 	public String getChangeLog() {
-		return changeLog;
+		return this.changeLog;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Patch belongsTo() {
+		return this.belongsTo;
 	}
 }
