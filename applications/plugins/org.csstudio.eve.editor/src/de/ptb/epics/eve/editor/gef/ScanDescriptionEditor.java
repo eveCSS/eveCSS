@@ -60,6 +60,7 @@ import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.data.scandescription.updater.VersionTooOldException;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.dialogs.lostdevices.LostDevicesDialog;
 import de.ptb.epics.eve.editor.jobs.file.Save;
@@ -111,6 +112,17 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 			throw new PartInitException("File does not exist!");
 		}
 		
+		ScanDescriptionEditorFileLoader scmlUpdater = 
+				new ScanDescriptionEditorFileLoader();
+		File currentVersionScml;
+		try {
+			currentVersionScml = scmlUpdater.loadFile(scanDescriptionFile);
+		} catch (VersionTooOldException e) {
+			throw new PartInitException("File version is too old!");
+		}
+		
+		// TODO changeLog Dialog
+		
 		final ScanDescriptionLoader scanDescriptionLoader = 
 				new ScanDescriptionLoader(Activator.getDefault().
 													getMeasuringStation(), 
@@ -118,7 +130,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 										  			getSchemaFile());
 		this.dirty = false;
 		try {
-			scanDescriptionLoader.load(scanDescriptionFile);
+			scanDescriptionLoader.load(currentVersionScml);
 			this.scanDescription = scanDescriptionLoader.getScanDescription();
 
 			if (scanDescriptionLoader.getLostDevices() != null) {

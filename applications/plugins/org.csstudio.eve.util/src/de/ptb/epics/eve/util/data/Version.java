@@ -51,4 +51,12 @@ public class Version implements Comparable<Version> {
 			return this.major - other.major;
 		}
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return this.major + "." + this.minor;
+	}
 }
