@@ -540,7 +540,8 @@
   <simpleType name="smtype">
     <restriction base="string">
       <enumeration value="classic"></enumeration>
-      <enumeration value="advanced"></enumeration>
+      <enumeration value="save_axis_positions"></enumeration>
+      <enumeration value="save_channel_values"></enumeration>
     </restriction>
   </simpleType>
   
