@@ -9,8 +9,12 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
+import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxis;
 import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
 import de.ptb.epics.eve.editor.Activator;
@@ -36,19 +40,27 @@ public class AddAxis implements IHandler {
 		IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		if (activePart.getSite().getId()
 				.equals("de.ptb.epics.eve.editor.views.ScanModulView")) {
-			ScanModule sm = ((ScanModuleView) activePart)
+			ScanModule scanModule = ((ScanModuleView) activePart)
 					.getCurrentScanModule();
-			MotorAxis ma = sm.getChain().getScanDescription()
+			MotorAxis motorAxis = scanModule.getChain().getScanDescription()
 					.getMeasuringStation().getMotorAxisById(axisId);
-			Axis sma = new Axis(sm, ma);
-			DefaultsAxis defMa = Activator.getDefault().getDefaults()
-					.getAxis(ma.getID());
-			if (defMa != null) {
-				DefaultsManager.transferDefaults(defMa, sma);
+			Axis axis = new Axis(scanModule, motorAxis);
+			if (scanModule.getType() == ScanModuleTypes.SAVE_AXIS_POSITIONS) {
+				axis.setStepfunction(Stepfunctions.PLUGIN);
+				PlugIn motionDisabled = scanModule.getChain().getScanDescription().
+						getMeasuringStation().getPluginByName("MotionDisabled");
+				axis.setPluginController(new PluginController(motionDisabled));
+				axis.getPluginController().setPlugin(motionDisabled);
+			} else {
+				DefaultsAxis defMa = Activator.getDefault().getDefaults()
+						.getAxis(motorAxis.getID());
+				if (defMa != null) {
+					DefaultsManager.transferDefaults(defMa, axis);
+				}
 			}
-			sm.add(sma);
+			scanModule.add(axis);
 			if (logger.isDebugEnabled()) {
-				logger.debug("MotorAxis " + ma.getName() + " added.");
+				logger.debug("MotorAxis " + motorAxis.getName() + " added.");
 			}
 		} else {
 			logger.warn("Motor Axis was not added!");

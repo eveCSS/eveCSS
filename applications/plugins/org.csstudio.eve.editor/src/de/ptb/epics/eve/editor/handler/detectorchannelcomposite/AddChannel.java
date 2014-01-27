@@ -11,6 +11,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.defaults.DefaultsChannel;
 import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
 import de.ptb.epics.eve.editor.Activator;
@@ -25,35 +26,41 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 public class AddChannel implements IHandler {
 
 	private static Logger logger = Logger.getLogger(AddChannel.class.getName());
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		String channelId = event.getParameter(
-				"de.ptb.epics.eve.editor.command.addchannel.detectorchannelid");
+		String channelId = event
+				.getParameter("de.ptb.epics.eve.editor.command.addchannel.detectorchannelid");
 		IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		if (activePart.getSite().getId()
 				.equals("de.ptb.epics.eve.editor.views.ScanModulView")) {
-			ScanModule sm = ((ScanModuleView) activePart)
+			ScanModule scanModule = ((ScanModuleView) activePart)
 					.getCurrentScanModule();
-			DetectorChannel detCh = sm.getChain().getScanDescription()
-					.getMeasuringStation().getDetectorChannelById(channelId);
-			Channel ch = new Channel(sm, detCh);
-			DefaultsChannel defCh = Activator.getDefault().getDefaults()
-					.getChannel(detCh.getID());
-			if (defCh != null) {
-				DefaultsManager.transferDefaults(defCh, ch, 
-					sm.getChain().getScanDescription().getMeasuringStation());
+			DetectorChannel detChannel = scanModule.getChain()
+					.getScanDescription().getMeasuringStation()
+					.getDetectorChannelById(channelId);
+			Channel channel = new Channel(scanModule, detChannel);
+			if (!(scanModule.getType() == ScanModuleTypes.SAVE_CHANNEL_VALUES)) {
+				DefaultsChannel defCh = Activator.getDefault().getDefaults()
+						.getChannel(detChannel.getID());
+				if (defCh != null) {
+					DefaultsManager.transferDefaults(defCh, channel, scanModule
+							.getChain().getScanDescription()
+							.getMeasuringStation());
+				}
 			}
-			sm.add(ch);
+			scanModule.add(channel);
 			if (logger.isDebugEnabled()) {
-				logger.debug("Detector Channel " + detCh.getName() + " added.");
+				logger.debug("Detector Channel " + detChannel.getName()
+						+ " added.");
 			}
 		} else {
 			logger.warn("Detector Channel was not added!");
-			throw new ExecutionException("ScanModulView is not the active part!");
+			throw new ExecutionException(
+					"ScanModulView is not the active part!");
 		}
 		return null;
 	}
