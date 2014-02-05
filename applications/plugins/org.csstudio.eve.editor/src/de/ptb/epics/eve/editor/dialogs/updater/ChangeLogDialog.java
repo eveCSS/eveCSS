@@ -29,16 +29,31 @@ public class ChangeLogDialog extends TitleAreaDialog {
 	private List<Patch> patches;
 	private TableViewer viewer;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param parentShell the parent shell
+	 * @param patches the list of applied patches
+	 */
 	public ChangeLogDialog(final Shell parentShell, final List<Patch> patches) {
 		super(parentShell);
 		this.patches = patches;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
 		Composite container = new Composite(area, SWT.NONE);
-		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		container.setLayoutData(gridData);
 		
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
@@ -48,7 +63,7 @@ public class ChangeLogDialog extends TitleAreaDialog {
 		this.viewer.setInput(patches);
 		
 		this.setTitle("SCML file updated");
-		this.setMessage("Below is a list of changes made in order to update the loaded file to the current schema version. By saving the file the old file will be overwritten.", 
+		this.setMessage("Below is a list of changes made in order to update the loaded file to the current schema version. By saving the file the old file will be overwritten!", 
 				IMessageProvider.WARNING);
 		
 		return area;
@@ -74,8 +89,15 @@ public class ChangeLogDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(this.viewer.getTable().computeSize(
-				SWT.DEFAULT, SWT.DEFAULT).x + 20, 350); 
+		return new Point(600, 350); 
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected boolean isResizable() {
+		return true;
 	}
 	
 	/*
@@ -86,20 +108,20 @@ public class ChangeLogDialog extends TitleAreaDialog {
 		this.viewer.getTable().setHeaderVisible(true);
 		this.viewer.setContentProvider(new ContentProvider());
 		GridData gridData = new GridData();
-		gridData.minimumHeight = 150;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
-		gridData.verticalAlignment = SWT.TOP;
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
 		this.viewer.getTable().setLayoutData(gridData);
 		
 		TableViewerColumn fromColumn = new TableViewerColumn(viewer, SWT.LEFT);
 		fromColumn.getColumn().setText("From");
-		fromColumn.getColumn().setWidth(25);
+		fromColumn.getColumn().setWidth(45);
 		fromColumn.setLabelProvider(new FromColumnLabelProvider());
 		
 		TableViewerColumn toColumn = new TableViewerColumn(viewer, SWT.LEFT);
 		toColumn.getColumn().setText("To");
-		toColumn.getColumn().setWidth(25);
+		toColumn.getColumn().setWidth(35);
 		toColumn.setLabelProvider(new ToColumnLabelProvider());
 		
 		TableViewerColumn changeColumn = new TableViewerColumn(viewer, SWT.LEFT);

@@ -93,6 +93,9 @@ public class Save extends Job {
 			final ScanDescriptionSaver scanDescriptionSaver = 
 					new ScanDescriptionSaver(
 						os, measuringStation, this.scanDescription);
+			scanDescriptionSaver
+					.setVersion(de.ptb.epics.eve.resources.Activator
+							.getSchemaVersion().toString());
 			boolean success = scanDescriptionSaver.save();
 			if(success) {
 				logger.info("Save was successful.");
@@ -144,6 +147,8 @@ public class Save extends Job {
 		final ScanDescriptionSaver scanDescriptionSaverFull = 
 			new ScanDescriptionSaver(osTemp, 
 				scanDescription.getMeasuringStation(), this.scanDescription);
+		scanDescriptionSaverFull.setVersion(de.ptb.epics.eve.resources.Activator
+				.getSchemaVersion().toString());
 		scanDescriptionSaverFull.save();
 		// get the size of the unfiltered file
 		long full = tempFile.length();

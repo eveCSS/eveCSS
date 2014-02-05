@@ -72,6 +72,8 @@ public class ScanDescriptionSaver implements
 	private IMeasuringStation measuringStation;
 	private ScanDescription scanDescription;
 
+	private String version;
+	
 	/* 
 	 * An output stream to the destination where the scan description should be
 	 * written to.
@@ -106,6 +108,13 @@ public class ScanDescriptionSaver implements
 		this.destination = destination;
 		this.measuringStation = measuringStation;
 		this.scanDescription = scanDescription;
+	}
+	
+	/**
+	 * @param version the version to set
+	 */
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 	/**
@@ -208,9 +217,8 @@ public class ScanDescriptionSaver implements
 
 			this.atts.clear();
 			this.contentHandler.startElement("", "", "version", atts);
-			this.contentHandler.characters(
-					ScanDescription.outputVersion.toCharArray(), 0,
-					ScanDescription.outputVersion.length());
+			this.contentHandler.characters(this.version.toCharArray(), 0,
+					this.version.length());
 			this.contentHandler.endElement("", "", "version");
 			
 			this.atts.clear();
@@ -1144,6 +1152,14 @@ public class ScanDescriptionSaver implements
 				this.contentHandler.endElement("", "appended", "appended");
 			}
 
+			this.atts.clear();
+			this.contentHandler.startElement("", "storage", "storage",
+					this.atts);
+			this.contentHandler.characters(scanModule.getStorage().toString()
+					.toCharArray(), 0, scanModule.getStorage().toString()
+					.length());
+			this.contentHandler.endElement("", "storage", "storage");
+			
 			this.atts.clear();
 			this.contentHandler.startElement("", "valuecount", "valuecount",
 					this.atts);

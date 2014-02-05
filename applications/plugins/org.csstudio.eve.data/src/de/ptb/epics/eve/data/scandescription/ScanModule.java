@@ -79,6 +79,11 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	/** */
 	public static final String TYPE_PROP = "type";
 	
+	/**
+	 * @since 1.18
+	 */
+	public static final String STORAGE_PROP = "storage";
+	
 	/** */
 	public static final int DEFAULT_WIDTH = 70;
 	/** */
@@ -89,6 +94,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	
 	// the type of the scan module
 	private ScanModuleTypes type;
+	
+	private Storage storage;
 	
 	// the name of the scan module
 	private String name;
@@ -716,6 +723,22 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public void setType(final ScanModuleTypes type) {
 		this.propertyChangeSupport.firePropertyChange(ScanModule.TYPE_PROP,
 				this.type, this.type = type);
+		updateListeners();
+	}
+	
+	/**
+	 * @return the storage
+	 */
+	public Storage getStorage() {
+		return storage;
+	}
+
+	/**
+	 * @param storage the storage to set
+	 */
+	public void setStorage(Storage storage) {
+		this.propertyChangeSupport.firePropertyChange(ScanModule.STORAGE_PROP,
+				this.storage, this.storage = storage);
 		updateListeners();
 	}
 

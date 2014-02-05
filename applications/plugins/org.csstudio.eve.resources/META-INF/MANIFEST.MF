@@ -14,4 +14,5 @@ Export-Package: de.ptb.epics.eve.resources,
 Bundle-Vendor: PTB
 Import-Package: de.ptb.epics.eve.data.measuringstation,
  de.ptb.epics.eve.data.measuringstation.processors,
- de.ptb.epics.eve.preferences
+ de.ptb.epics.eve.preferences,
+ de.ptb.epics.eve.util.data

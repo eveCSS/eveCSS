@@ -6,10 +6,19 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
+
+import de.ptb.epics.eve.util.data.Version;
 
 /**
  * 
@@ -21,12 +30,14 @@ public class Activator implements BundleActivator {
 	/** */
 	public static final String PLUGIN_ID = "de.ptb.epics.eve.resources";
 
-	private static final Logger logger = Logger.getLogger(
+	private static final Logger LOGGER = Logger.getLogger(
 			Activator.class.getName());
 
 	private static BundleContext context;
 	private static Activator plugin;
 
+	private static Version schemaVersion;
+	
 	/**
 	 * Constructor
 	 */
@@ -72,11 +83,11 @@ public class Activator implements BundleActivator {
 				"platform:/plugin/de.ptb.epics.eve.resources/cfg/default.xml");
 			return new File(FileLocator.toFileURL(url).toURI());
 		} catch (MalformedURLException e1) {
-			logger.error(e1.getMessage(), e1);
+			LOGGER.error(e1.getMessage(), e1);
 		} catch (URISyntaxException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 		}
 		return null;
 	}
@@ -92,11 +103,47 @@ public class Activator implements BundleActivator {
 				"platform:/plugin/de.ptb.epics.eve.resources/cfg/schema.xsd");
 			return new File(FileLocator.toFileURL(url).toURI());
 		} catch (MalformedURLException e1) {
-			logger.error(e1.getMessage(), e1);
+			LOGGER.error(e1.getMessage(), e1);
 		} catch (URISyntaxException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
+		}
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static Version getSchemaVersion() {
+		if (schemaVersion != null) {
+			return schemaVersion;
+		}
+		try {
+			URL url = new URL(
+				"platform:/plugin/de.ptb.epics.eve.resources/cfg/schema.xsd");
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.parse(new File(FileLocator.toFileURL(
+					url).toURI()));
+			Node node = document.getElementsByTagName("schema").item(0);
+			String versionString = node.getAttributes().getNamedItem("version")
+					.getNodeValue();
+			schemaVersion = new Version(
+					Integer.parseInt(versionString.split("\\.")[0]), 
+					Integer.parseInt(versionString.split("\\.")[1]));
+			return schemaVersion;
+		} catch(ParserConfigurationException e) {
+			LOGGER.error(e.getMessage(), e);
+		} catch (MalformedURLException e) {
+			LOGGER.error(e.getMessage(), e);
+		} catch (SAXException e) {
+			LOGGER.error(e.getMessage(), e);
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+		} catch (URISyntaxException e) {
+			LOGGER.error(e.getMessage(), e);
 		}
 		return null;
 	}
@@ -113,11 +160,11 @@ public class Activator implements BundleActivator {
 				"platform:/plugin/de.ptb.epics.eve.resources/cfg/defaults.xsd");
 			return new File(FileLocator.toFileURL(url).toURI());
 		} catch (MalformedURLException e1) {
-			logger.error(e1.getMessage(), e1);
+			LOGGER.error(e1.getMessage(), e1);
 		} catch (URISyntaxException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 		}
 		return null;
 	}
@@ -140,11 +187,11 @@ public class Activator implements BundleActivator {
 			}
 			return  new File(FileLocator.toFileURL(url).toURI());
 		} catch (MalformedURLException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 		} catch (URISyntaxException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 		} 
 		return null;
 	}

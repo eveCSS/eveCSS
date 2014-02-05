@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import de.ptb.epics.eve.data.scandescription.updater.patches.Patch2o3T3o3;
 import de.ptb.epics.eve.util.data.Version;
 
 /**
@@ -36,6 +37,7 @@ public class Updater {
 	 */
 	private Updater() {
 		this.patches = new LinkedList<Patch>();
+		this.patches.add(Patch2o3T3o3.getInstance());
 		
 		// TODO add patches
 	}
@@ -74,9 +76,11 @@ public class Updater {
 		} else if (source.compareTo(new Version(2,2)) < 0) {
 			throw new VersionTooOldException();
 		} else if (source.compareTo(target) < 0) {
-			LOGGER.info("file version (" + source
+			if (LOGGER.isInfoEnabled()) { 
+				LOGGER.info("file version (" + source
 					+ ") older than current version (" + target
 					+ "), updating...");
+			}
 		}
 
 		for (Patch patch : this.patches) {

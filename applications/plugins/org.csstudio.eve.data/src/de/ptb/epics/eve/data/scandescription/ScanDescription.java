@@ -42,11 +42,6 @@ public class ScanDescription implements IModelUpdateProvider,
 	
 	private static Logger logger = 
 		Logger.getLogger(ScanDescription.class.getName());
-	
-	/**
-	 * Schema version of the output.
-	 */
-	public static final String outputVersion = "2.3";
 
 	/** */
 	public static final String REPEAT_COUNT_PROP = "repeatCount";

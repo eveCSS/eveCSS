@@ -63,6 +63,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 import de.ptb.epics.eve.data.scandescription.updater.VersionTooOldException;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.dialogs.lostdevices.LostDevicesDialog;
+import de.ptb.epics.eve.editor.dialogs.updater.ChangeLogDialog;
 import de.ptb.epics.eve.editor.jobs.file.Save;
 
 /**
@@ -121,14 +122,24 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 			throw new PartInitException("File version is too old!");
 		}
 		
-		// TODO changeLog Dialog
+		if (scmlUpdater.getChanges() != null && 
+				!scmlUpdater.getChanges().isEmpty()) {
+			ChangeLogDialog changeLogDialog = new ChangeLogDialog(PlatformUI
+						.getWorkbench().getModalDialogShellProvider()
+						.getShell(), scmlUpdater.getChanges());
+			changeLogDialog.open();
+			this.dirty = true;
+		} else {
+			this.dirty = false;
+		}
+		
 		
 		final ScanDescriptionLoader scanDescriptionLoader = 
 				new ScanDescriptionLoader(Activator.getDefault().
 													getMeasuringStation(), 
 										  Activator.getDefault().
 										  			getSchemaFile());
-		this.dirty = false;
+		
 		try {
 			scanDescriptionLoader.load(currentVersionScml);
 			this.scanDescription = scanDescriptionLoader.getScanDescription();

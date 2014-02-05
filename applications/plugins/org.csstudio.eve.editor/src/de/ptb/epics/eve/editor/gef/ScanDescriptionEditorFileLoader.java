@@ -2,6 +2,7 @@ package de.ptb.epics.eve.editor.gef;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,6 +20,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import de.ptb.epics.eve.data.scandescription.updater.Patch;
 import de.ptb.epics.eve.data.scandescription.updater.Updater;
 import de.ptb.epics.eve.data.scandescription.updater.VersionTooOldException;
 import de.ptb.epics.eve.util.data.Version;
@@ -31,6 +33,8 @@ import de.ptb.epics.eve.util.data.Version;
 public class ScanDescriptionEditorFileLoader {
 	private static final Logger LOGGER = Logger
 			.getLogger(ScanDescriptionEditorFileLoader.class.getName());
+	
+	private List<Patch> appliedPatches;
 	
 	/**
 	 * 
@@ -46,7 +50,8 @@ public class ScanDescriptionEditorFileLoader {
 			
 			Updater updater = Updater.getInstance();
 
-			updater.update(document, getCurrentSchemaVersion());
+			this.appliedPatches = updater.update(document,
+					getCurrentSchemaVersion());
 			
 			TransformerFactory tFactory = TransformerFactory.newInstance();
 			Transformer transformer = tFactory.newTransformer();
@@ -96,5 +101,14 @@ public class ScanDescriptionEditorFileLoader {
 			LOGGER.error(e.getMessage(), e);
 		}
 		return null;
+	}
+	
+	/**
+	 * Returns a list of patches applied during the update procedure.
+	 * 
+	 * @return a list of patches applied during the update procedure
+	 */
+	public List<Patch> getChanges() {
+		return this.appliedPatches;
 	}
 }

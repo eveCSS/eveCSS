@@ -2,10 +2,9 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" 
   targetNamespace="http://www.ptb.de/epics/SCML" 
   xmlns:tns="http://www.ptb.de/epics/SCML" 
-  version="2.3">
+  version="3.3">
 
-  <!-- schema version 2.3
-       please increase version number on every modification
+  <!-- please increase version number on every modification
        If the corresponding XML-file of the previous schema version is still
        valid with the current schema version, change the minor version number only -->
   <!-- Note:
@@ -176,6 +175,7 @@
       <element name="parent" type="integer"></element>
       <element name="nested" type="positiveInteger"  minOccurs="0"></element>
       <element name="appended" type="positiveInteger" minOccurs="0"></element>
+      <element name="storage" type="tns:smstorage" default="default"></element>
       <element name="valuecount" type="positiveInteger" default="1"></element>
       <element name="settletime" type="double" minOccurs="0"></element>
       <element name="triggerdelay" type="double" minOccurs="0"></element>
@@ -542,6 +542,14 @@
       <enumeration value="classic"></enumeration>
       <enumeration value="save_axis_positions"></enumeration>
       <enumeration value="save_channel_values"></enumeration>
+    </restriction>
+  </simpleType>
+  
+  <simpleType name="smstorage">
+    <restriction base="string">
+      <enumeration value="default"></enumeration>
+      <enumeration value="alternate"></enumeration>
+      <enumeration value="none"></enumeration>
     </restriction>
   </simpleType>
   

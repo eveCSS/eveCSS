@@ -19,11 +19,11 @@ public class Patch {
 	/**
 	 * Constructor.
 	 * 
-	 * @param source 
-	 * @param target 
-	 * @param modifications
+	 * @param source the source version of the patch
+	 * @param target the target version of the patch
+	 * @param modifications a list of modifications
 	 */
-	public Patch(Version source, Version target,
+	protected Patch(Version source, Version target,
 			List<Modification> modifications) {
 		this.sourceVersion = source;
 		this.targetVersion = target;
@@ -31,8 +31,9 @@ public class Patch {
 	}
 	
 	/**
+	 * Subsequently applies all modifications to the given document.
 	 * 
-	 * @param document
+	 * @param document the document the patch should be applied to
 	 */
 	public void execute(Document document) {
 		for (Modification mod : this.modifications) {
@@ -52,5 +53,12 @@ public class Patch {
 	 */
 	public Version getTargetVersion() {
 		return targetVersion;
+	}
+	
+	/**
+	 * @return a list of modifications executed by this patch
+	 */
+	public List<Modification> getModifications() {
+		return this.modifications;
 	}
 }
