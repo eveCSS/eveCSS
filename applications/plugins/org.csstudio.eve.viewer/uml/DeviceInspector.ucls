@@ -224,9 +224,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="20" language="java" name="de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableContentProvider" 
+  <class id="20" language="java" name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.CommonTableContentProvider" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/CommonTableContentProvider.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/CommonTableContentProvider.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="574" y="126"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -235,9 +235,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="21" language="java" name="de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableEditingSupport" 
+  <class id="21" language="java" name="de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.CommonTableEditingSupport" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/CommonTableEditingSupport.java" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/deviceinspectorview/ui/CommonTableEditingSupport.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="447" y="1412"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 

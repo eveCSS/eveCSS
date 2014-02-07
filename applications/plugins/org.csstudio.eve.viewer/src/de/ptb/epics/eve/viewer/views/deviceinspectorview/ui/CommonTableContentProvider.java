@@ -1,6 +1,7 @@
-package de.ptb.epics.eve.viewer.views.deviceinspectorview;
+package de.ptb.epics.eve.viewer.views.deviceinspectorview.ui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -8,6 +9,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement;
 
 /**
  * <code>CommonTableContentProvider</code> is a content provider for the table 
@@ -99,5 +101,42 @@ public class CommonTableContentProvider implements IStructuredContentProvider {
 			viewer.remove(element);
 			this.devices.remove(((CommonTableElement)element).getAbstractDevice());
 		}
+	}
+	
+	/**
+	 * Moves a given item to a given position.
+	 * 
+	 * @param dragItem the item to be moved
+	 * @param predecessor the item after which the drag item should be inserted
+	 * @throws IllegalArgumentException if either dragItem or predecessor are 
+	 * 			not found
+	 */
+	public void moveItem(CommonTableElement dragItem,
+			CommonTableElement predecessor) throws IllegalArgumentException {
+		int dragIndex = this.elements.indexOf(dragItem);
+		int predIndex = this.elements.indexOf(predecessor);
+		if (dragIndex == -1) {
+			throw new IllegalArgumentException("drag item not found.");
+		}
+		if (predIndex == -1) {
+			throw new IllegalArgumentException("predecessor not found.");
+		}
+		int dragIndexDevice = this.devices
+				.indexOf(dragItem.getAbstractDevice());
+		int predIndexDevice = this.devices.indexOf(predecessor
+				.getAbstractDevice());
+		if (dragIndex < predIndex) {
+			Collections.rotate(this.elements.subList(dragIndex, predIndex + 1),
+					-1);
+			Collections.rotate(
+					this.devices.subList(dragIndexDevice, predIndexDevice + 1),
+					-1);
+		} else if (dragIndex > predIndex) {
+			Collections.rotate(
+					this.elements.subList(predIndex + 1, dragIndex + 1), 1);
+			Collections.rotate(this.devices.subList(predIndexDevice + 1,
+					dragIndexDevice + 1), 1);
+		}
+		this.viewer.refresh();
 	}
 }

@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.deviceinspectorview;
+package de.ptb.epics.eve.viewer.views.deviceinspectorview.ui;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
@@ -6,6 +6,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 
 import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
+import de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement;
 
 /**
  * <code>CommonTableEditingSupport</code> is the 

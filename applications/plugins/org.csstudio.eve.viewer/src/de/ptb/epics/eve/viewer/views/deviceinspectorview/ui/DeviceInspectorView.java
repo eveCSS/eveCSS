@@ -18,11 +18,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
-import org.eclipse.swt.dnd.DragSourceEvent;
-import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
-import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.TableDropTargetEffect;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -58,8 +55,6 @@ import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.util.jface.SelectionProviderWrapper;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableContentProvider;
-import de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableEditingSupport;
 import de.ptb.epics.eve.viewer.views.deviceinspectorview.CommonTableElement;
 import de.ptb.epics.eve.viewer.views.deviceinspectorview.DragNDropPrefix;
 import de.ptb.epics.eve.viewer.views.deviceinspectorview.TableViewerComparator;
@@ -85,7 +80,7 @@ public class DeviceInspectorView extends ViewPart {
 	 */
 	public static String activeDeviceInspectorView = "";
 	
-	private static Logger logger = 
+	private static Logger LOGGER = 
 			Logger.getLogger(DeviceInspectorView.class.getName());
 
 	private SashForm sashForm;
@@ -98,7 +93,7 @@ public class DeviceInspectorView extends ViewPart {
 	private Label motorLabel;
 	private TableViewer axisTableViewer;
 	private CommonTableContentProvider axisTableContentProvider;
-	private AxisTableDragSourceListener axisTableDragSourceListener;
+	private CommonTableDragSourceListener axisTableDragSourceListener;
 	private AxisTableDropTargetListener axisTableDropTargetListener;
 	private AxisTableFocusListener axisTableFocusListener;
 	
@@ -115,7 +110,7 @@ public class DeviceInspectorView extends ViewPart {
 	private Label channelLabel;
 	private TableViewer channelTableViewer;
 	private CommonTableContentProvider channelTableContentProvider;
-	private ChannelTableDragSourceListener channelTableDragSourceListener;
+	private CommonTableDragSourceListener channelTableDragSourceListener;
 	private ChannelTableDropTargetListener channelTableDropTargetListener;
 	private ChannelTableFocusListener channelTableFocusListener;
 	
@@ -132,7 +127,7 @@ public class DeviceInspectorView extends ViewPart {
 	private Label deviceLabel;
 	private TableViewer deviceTableViewer;
 	private CommonTableContentProvider deviceTableContentProvider;
-	private DeviceTableDragSourceListener deviceTableDragSourceListener;
+	private CommonTableDragSourceListener deviceTableDragSourceListener;
 	private DeviceTableDropTargetListener deviceTableDropTargetListener;
 	private DeviceTableFocusListener deviceTableFocusListener;
 	
@@ -142,8 +137,6 @@ public class DeviceInspectorView extends ViewPart {
 	private int deviceTableSortState;
 	
 	private List<AbstractDevice> devices;
-	
-	
 	
 	// the selection service only accepts one selection provider per view,
 	// since we have three tables capable of providing selections a wrapper 
@@ -296,17 +289,18 @@ public class DeviceInspectorView extends ViewPart {
 		axisTableViewer.getTable().addFocusListener(axisTableFocusListener);
 		
 		// drag source for item reordering
-		/* DragSource axisTableDragSource = 
+		DragSource axisTableDragSource = 
 				new DragSource(axisTableViewer.getTable(), DND.DROP_MOVE);
 		Transfer[] types = new Transfer[] {TextTransfer.getInstance()};
 		axisTableDragSource.setTransfer(types);
-		axisTableDragSourceListener = new AxisTableDragSourceListener();
-		axisTableDragSource.addDragListener(axisTableDragSourceListener); */ // TODO
+		axisTableDragSourceListener = new CommonTableDragSourceListener(
+				axisTableViewer);
+		axisTableDragSource.addDragListener(axisTableDragSourceListener);
 		
 		// a drop target receives data in a Drag and Drop operation
 		DropTarget axisTableDropTarget = new DropTarget(
 				axisTableViewer.getTable(), DND.DROP_COPY | DND.DROP_MOVE);
-		Transfer[] types = new Transfer[] {TextTransfer.getInstance()};
+		types = new Transfer[] {TextTransfer.getInstance()};
 		axisTableDropTarget.setTransfer(types);
 		axisTableDropTargetListener = new AxisTableDropTargetListener();
 		axisTableDropTarget.addDropListener(axisTableDropTargetListener);
@@ -366,8 +360,17 @@ public class DeviceInspectorView extends ViewPart {
 		channelTableFocusListener = new ChannelTableFocusListener();
 		channelTableViewer.getTable().addFocusListener(channelTableFocusListener);
 		
-		DropTarget channelTableDropTarget = 
-			new DropTarget(channelTableViewer.getTable(), DND.DROP_COPY);
+		// drag source for item reordering
+		DragSource channelTableDragSource = new DragSource(
+				channelTableViewer.getTable(), DND.DROP_MOVE);
+		types = new Transfer[] { TextTransfer.getInstance() };
+		channelTableDragSource.setTransfer(types);
+		channelTableDragSourceListener = new CommonTableDragSourceListener(
+				channelTableViewer);
+		channelTableDragSource.addDragListener(channelTableDragSourceListener);
+		
+		DropTarget channelTableDropTarget = new DropTarget(
+				channelTableViewer.getTable(), DND.DROP_COPY | DND.DROP_MOVE);
 		channelTableDropTarget.setTransfer(types);
 		channelTableDropTargetListener = new ChannelTableDropTargetListener();
 		channelTableDropTarget.addDropListener(channelTableDropTargetListener);
@@ -428,8 +431,17 @@ public class DeviceInspectorView extends ViewPart {
 		deviceTableFocusListener = new DeviceTableFocusListener();
 		deviceTableViewer.getTable().addFocusListener(deviceTableFocusListener);
 		
-		DropTarget deviceTableDropTarget = 
-			new DropTarget(deviceTableViewer.getTable(), DND.DROP_COPY);
+		// drag source for item reordering
+		DragSource deviceTableDragSource = new DragSource(
+				deviceTableViewer.getTable(), DND.DROP_MOVE);
+		types = new Transfer[] { TextTransfer.getInstance() };
+		deviceTableDragSource.setTransfer(types);
+		deviceTableDragSourceListener = new CommonTableDragSourceListener(
+				deviceTableViewer);
+		deviceTableDragSource.addDragListener(deviceTableDragSourceListener);
+		
+		DropTarget deviceTableDropTarget = new DropTarget(
+				deviceTableViewer.getTable(), DND.DROP_COPY | DND.DROP_MOVE);
 		deviceTableDropTarget.setTransfer(types);
 		deviceTableDropTargetListener = new DeviceTableDropTargetListener();
 		deviceTableDropTarget.addDropListener(deviceTableDropTargetListener);
@@ -477,7 +489,7 @@ public class DeviceInspectorView extends ViewPart {
 		
 		axisTableColumnEditorActivationListener = 
 				new AxisTableColumnEditorActivationListener();
-		if(logger.isDebugEnabled()) {
+		if(LOGGER.isDebugEnabled()) {
 			axisTableViewer.getColumnViewerEditor().addEditorActivationListener(
 				axisTableColumnEditorActivationListener);
 		}
@@ -1233,7 +1245,6 @@ public class DeviceInspectorView extends ViewPart {
 	 */
 	@Override
 	public void saveState(final IMemento memento) {
-		
 		// save maximized states
 		memento.putBoolean(
 				"motorAxesCompositeMaximized", motorAxesCompositeMaximized);
@@ -1263,17 +1274,17 @@ public class DeviceInspectorView extends ViewPart {
 		// save part name (view title)
 		memento.putString("partName", this.getPartName());
 		
-		if(logger.isDebugEnabled()) {
-			logger.debug("saved Maximized States: " + 
+		if(LOGGER.isDebugEnabled()) {
+			LOGGER.debug("saved Maximized States: " + 
 					"MotorComp " + motorAxesCompositeMaximized + ", " + 
 					"DetComp " + detectorChannelsCompositeMaximized + ", " + 
 					"DevComp " + devicesCompositeMaximized);
 			
-			logger.debug("saved Weights: " + 
+			LOGGER.debug("saved Weights: " + 
 						"MotorComp " + sashForm.getWeights()[0] + ", " +
 						"DetComp " + sashForm.getWeights()[1] + ", " + 
 						"DevComp " + sashForm.getWeights()[2]);
-			logger.debug("saved devices: " + devicesString.toString());
+			LOGGER.debug("saved devices: " + devicesString.toString());
 		}
 	}
 	
@@ -1396,9 +1407,9 @@ public class DeviceInspectorView extends ViewPart {
 	}
 
 	/**
-	 * 
+	 * @author Marcus Michalsky
 	 */
-	class MotorIconMouseListener implements MouseListener {
+	private class MotorIconMouseListener implements MouseListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1431,9 +1442,9 @@ public class DeviceInspectorView extends ViewPart {
 	}
 	
 	/**
-	 *
+	 * @author Marcus Michalsky
 	 */
-	class DetectorIconMouseListener implements MouseListener {
+	private class DetectorIconMouseListener implements MouseListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1468,9 +1479,9 @@ public class DeviceInspectorView extends ViewPart {
 	}
 	
 	/**
-	 *
+	 * @author Marcus Michalsky
 	 */
-	class DeviceIconMouseListener implements MouseListener {
+	private class DeviceIconMouseListener implements MouseListener {
 		
 		/**
 		 * {@inheritDoc}
@@ -1503,139 +1514,18 @@ public class DeviceInspectorView extends ViewPart {
 		public void mouseUp(MouseEvent e) {	
 		}
 	}
-
-	/**
-	 * 
-	 * @author Marcus Michalsky
-	 * @since 1.17
-	 */
-	private class AxisTableDragSourceListener implements DragSourceListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dragStart(DragSourceEvent event) {
-			if (logger.isDebugEnabled()) {
-				for (TableItem item : axisTableViewer.getTable().getSelection()) {
-					logger.debug(item.getData() + " selected");
-				}
-			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dragSetData(DragSourceEvent event) {
-			// provide the data of the requested type
-			if(TextTransfer.getInstance().isSupportedType(event.dataType)) {
-				TableItem[] items = axisTableViewer.getTable().getSelection();
-				StringBuffer data = new StringBuffer();
-				int count = 0;
-				// build the string that is transfered to the drop target
-				
-				// add prefix to mark for reordering
-				for (TableItem item : items) {
-					if (item.getData() instanceof CommonTableElement) {
-						data.append(DragNDropPrefix.MOVE.toString());
-						data.append(((CommonTableElement) item.getData())
-								.getAbstractDevice().getID());
-					}
-					count++;
-					if(count != items.length) {
-						data.append(",");
-					}
-				}
-				
-				if(logger.isDebugEnabled()) {
-					logger.debug("DragSource: " + data.toString());
-				}
-				
-				event.data = data.toString();
-			} else {
-				logger.error("Drag n Drop not supported on used platform.");
-			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dragFinished(DragSourceEvent event) {
-			axisTableViewer.getTable().deselectAll();
-		}
-	}
 	
 	/**
-	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.18
 	 */
-	private class AxisTableDropTargetListener implements DropTargetListener {
-		
-		/** 
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dragEnter(DropTargetEvent event) {
-			if ((event.operations & DND.DROP_COPY) != 0) {
-				event.detail = DND.DROP_COPY;
-				event.feedback = DND.FEEDBACK_SCROLL;
-			} else if ((event.operations & DND.DROP_MOVE) != 0) {
-				if (axisTableSortState != 0) {
-					event.detail = DND.DROP_NONE;
-					event.feedback = DND.FEEDBACK_NONE;
-					return;
-				}
-				event.detail = DND.DROP_MOVE;
-				event.feedback = DND.FEEDBACK_INSERT_AFTER;
-			} else {
-				event.detail = DND.DROP_NONE;
-				event.feedback = DND.FEEDBACK_NONE;
-			}
-		}
+	private class AxisTableDropTargetListener extends CommonTableDropTargetListener {
 		
 		/**
-		 * {@inheritDoc}
+		 * Constructor.
 		 */
-		@Override
-		public void dragOver(DropTargetEvent event) {
-			if ((event.operations & DND.DROP_COPY) != 0) {
-				// TODO check if right/wrong table (but event.data -> null)
-				event.detail = DND.DROP_COPY;
-				event.feedback = DND.FEEDBACK_SCROLL;
-			} else if ((event.operations & DND.DROP_MOVE) != 0) {
-				if (axisTableSortState != 0) {
-					event.detail = DND.DROP_NONE;
-					event.feedback = DND.FEEDBACK_NONE;
-					return;
-				}
-				event.detail = DND.DROP_MOVE;
-				event.feedback = DND.FEEDBACK_INSERT_AFTER | DND.FEEDBACK_SCROLL;
-			} else {
-				event.detail = DND.DROP_NONE;
-				event.feedback = DND.FEEDBACK_NONE;
-			}
-		}
-		
-		/** 
-		 * {@inheritDoc} 
-		 */
-		@Override 
-		public void dragOperationChanged(DropTargetEvent event) {
-		}
-
-		/** 
-		 * {@inheritDoc} 
-		 */
-		@Override 
-		public void dragLeave(DropTargetEvent event) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dropAccept(DropTargetEvent event) {
+		public AxisTableDropTargetListener() {
+			super(axisTableViewer, axisTableSortState);
 		}
 		
 		/**
@@ -1644,8 +1534,8 @@ public class DeviceInspectorView extends ViewPart {
 		@Override
 		public void drop(DropTargetEvent event) {
 			if((event.operations & DND.DROP_COPY) != 0) {
-				if(logger.isDebugEnabled()) {
-					logger.debug("drop data: " + event.data);
+				if(LOGGER.isDebugEnabled()) {
+					LOGGER.debug("drop data: " + event.data);
 				}
 				
 				IMeasuringStation measuringstation = getSite().getPage().
@@ -1681,7 +1571,7 @@ public class DeviceInspectorView extends ViewPart {
 				}
 				
 				if(refuse) {
-					logger.debug("Drop refused");
+					LOGGER.debug("Drop refused");
 					event.detail = DND.DROP_NONE;
 				}
 			} else if ((event.operations & DND.DROP_MOVE) != 0) {
@@ -1691,20 +1581,8 @@ public class DeviceInspectorView extends ViewPart {
 					return;
 				}
 				if (event.item instanceof TableItem) {
-					TableItem insertAfter = (TableItem) event.item;
-					List<String> elements = 
-							new ArrayList<String>();
-					for (TableItem item : axisTableViewer.getTable()
-							.getSelection()) {
-						if (item.getData() instanceof CommonTableElement) {
-							elements.add(((CommonTableElement) item.getData())
-									.getAbstractDevice().getID());
-						}
-					}
-					
-					//TODO list of device ids, which have to be moved to "insertAfter"
+					super.move(event);
 				}
-				logger.debug("moving item");
 			} else {
 				event.detail = DND.DROP_NONE;
 			}
@@ -1712,219 +1590,88 @@ public class DeviceInspectorView extends ViewPart {
 	}
 	
 	/**
-	 * 
 	 * @author Marcus Michalsky
-	 * @since 1.17
+	 * @since 1.18
 	 */
-	private class ChannelTableDragSourceListener implements DragSourceListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dragStart(DragSourceEvent event) {
-			// TODO Auto-generated method stub
-			
+	private class ChannelTableDropTargetListener extends
+			CommonTableDropTargetListener {
+		
+		public ChannelTableDropTargetListener() {
+			super(channelTableViewer, channelTableSortState);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dragSetData(DragSourceEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dragFinished(DragSourceEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	private class ChannelTableDropTargetListener implements DropTargetListener {
-		
-		/** 
-		 * {@inheritDoc} 
-		 */
-		@Override
-		public void dragEnter(DropTargetEvent event) {
-			if((event.operations & DND.DROP_COPY) != 0) {
-				event.detail = DND.DROP_COPY;
-				event.feedback = DND.FEEDBACK_SCROLL;
-			} else {
-				event.detail = DND.DROP_NONE;
-				event.feedback = DND.FEEDBACK_NONE;
-			}
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dragOver(DropTargetEvent event) {
-			event.detail = DND.DROP_COPY;
-			event.feedback = DND.FEEDBACK_SCROLL;
-		}
-		
-		/** 
-		 * {@inheritDoc} 
-		 */
-		@Override 
-		public void dragOperationChanged(DropTargetEvent event) {
-		}
-
-		/** 
-		 * {@inheritDoc} 
-		 */
-		@Override 
-		public void dragLeave(DropTargetEvent event) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dropAccept(DropTargetEvent event) {
-		}
-		
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void drop(DropTargetEvent event) {
-			if(logger.isDebugEnabled()) {
-				logger.debug("drop data: " + event.data);
-			}
-			
-			IMeasuringStation measuringstation = getSite().getPage().
-					getPerspective().getId().equals("EveDevicePerspective")
-					? Activator.getDefault().getMeasuringStation()
-					: Activator.getDefault().getCurrentScanDescription().
-							getMeasuringStation();
+			if ((event.operations & DND.DROP_COPY) != 0) {
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("drop data: " + event.data);
+				}
 
-			boolean refuse = true;
-			
-			for(String s : ((String)event.data).split(",")) {
-				if(s.startsWith(DragNDropPrefix.DETECTOR.toString())) {
-					// String contains a detector -> add its channels
-					Detector d = (Detector) measuringstation.
-							getAbstractDeviceByFullIdentifyer(
-									s.substring(1, s.length()));
-					if(d != null) {
-						for(DetectorChannel ch : d.getChannels()) {
-							if(ch.getClassName().isEmpty()) {
-								addDetectorChannelEntry(ch);
+				IMeasuringStation measuringstation = getSite().getPage()
+						.getPerspective().getId()
+						.equals("EveDevicePerspective") ? Activator
+						.getDefault().getMeasuringStation() : Activator
+						.getDefault().getCurrentScanDescription()
+						.getMeasuringStation();
+
+				boolean refuse = true;
+
+				for (String s : ((String) event.data).split(",")) {
+					if (s.startsWith(DragNDropPrefix.DETECTOR.toString())) {
+						// String contains a detector -> add its channels
+						Detector d = (Detector) measuringstation
+								.getAbstractDeviceByFullIdentifyer(s.substring(
+										1, s.length()));
+						if (d != null) {
+							for (DetectorChannel ch : d.getChannels()) {
+								if (ch.getClassName().isEmpty()) {
+									addDetectorChannelEntry(ch);
+								}
 							}
 						}
+						refuse = false;
+					} else if (s.startsWith(DragNDropPrefix.DETECTOR_CHANNEL
+							.toString())) {
+						// String contains a detector channel -> add it
+						DetectorChannel ch = (DetectorChannel) measuringstation
+								.getAbstractDeviceByFullIdentifyer(s.substring(
+										1, s.length()));
+						addDetectorChannelEntry(ch);
+						refuse = false;
 					}
-					refuse = false;
-				} else if(s.startsWith(DragNDropPrefix.DETECTOR_CHANNEL.toString())) {
-					// String contains a detector channel -> add it
-					DetectorChannel ch = (DetectorChannel) measuringstation.
-					getAbstractDeviceByFullIdentifyer(
-							s.substring(1,s.length()));
-					addDetectorChannelEntry(ch);
-					refuse = false;
 				}
-			}
-			
-			if(refuse) {
-				logger.debug("Drop refused");
-				event.detail = DND.DROP_NONE;
-			}
-		}
-	}
-	
-	/**
-	 * 
-	 * @author Marcus Michalsky
-	 * @since 1.17
-	 */
-	private class DeviceTableDragSourceListener implements DragSourceListener {
 
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dragStart(DragSourceEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dragSetData(DragSourceEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dragFinished(DragSourceEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	private class DeviceTableDropTargetListener implements DropTargetListener {
-		
-		/** 
-		 * {@inheritDoc} 
-		 */
-		@Override
-		public void dragEnter(DropTargetEvent event) {
-			if((event.operations & DND.DROP_COPY) != 0) {
-				event.detail = DND.DROP_COPY;
-				event.feedback = DND.FEEDBACK_SCROLL;
+				if (refuse) {
+					LOGGER.debug("Drop refused");
+					event.detail = DND.DROP_NONE;
+				}
+			} else if ((event.operations & DND.DROP_MOVE) != 0) {
+				if (tableSortState != 0) {
+					event.detail = DND.DROP_NONE;
+					event.feedback = DND.FEEDBACK_NONE;
+					return;
+				}
+				if (event.item instanceof TableItem) {
+					super.move(event);
+				}
 			} else {
 				event.detail = DND.DROP_NONE;
-				event.feedback = DND.FEEDBACK_NONE;
 			}
 		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dragOver(DropTargetEvent event) {
-			event.detail = DND.DROP_COPY;
-			event.feedback = DND.FEEDBACK_SCROLL;
-		}
-		
-		/** 
-		 * {@inheritDoc} 
-		 */
-		@Override 
-		public void dragOperationChanged(DropTargetEvent event) {
-		}
+	}
+	
+	/**
+	 * @author Marcus Michalsky
+	 * @since 1.18
+	 */
+	private class DeviceTableDropTargetListener extends
+			CommonTableDropTargetListener {
 
-		/** 
-		 * {@inheritDoc} 
-		 */
-		@Override 
-		public void dragLeave(DropTargetEvent event) {
-		}
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void dropAccept(DropTargetEvent event) {
+		public DeviceTableDropTargetListener() {
+			super(deviceTableViewer, deviceTableSortState);
 		}
 		
 		/**
@@ -1932,40 +1679,54 @@ public class DeviceInspectorView extends ViewPart {
 		 */
 		@Override
 		public void drop(DropTargetEvent event) {
-			if(logger.isDebugEnabled()) {
-				logger.debug("drop data: " + event.data);
-			}
-			
-			IMeasuringStation measuringstation = getSite().getPage().
-					getPerspective().getId().equals("EveDevicePerspective")
-					? Activator.getDefault().getMeasuringStation()
-					: Activator.getDefault().getCurrentScanDescription().
-							getMeasuringStation();
-			
-			boolean refuse = true;
-			
-			for(String s : ((String)event.data).split(",")) {
-				if(s.startsWith(DragNDropPrefix.DEVICE.toString())) {
-					// String contains a device -> add it
-					Device d = (Device) measuringstation.
-							getAbstractDeviceByFullIdentifyer(
-									s.substring(1, s.length()));
-					if(d != null) {
-						addDeviceEntry(d);
-					}
-					refuse = false;
+			if ((event.operations & DND.DROP_COPY) != 0) {
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("drop data: " + event.data);
 				}
-			}
-			
-			if(refuse) {
-				logger.debug("Drop refused");
+
+				IMeasuringStation measuringstation = getSite().getPage()
+						.getPerspective().getId()
+						.equals("EveDevicePerspective") ? Activator
+						.getDefault().getMeasuringStation() : Activator
+						.getDefault().getCurrentScanDescription()
+						.getMeasuringStation();
+
+				boolean refuse = true;
+
+				for (String s : ((String) event.data).split(",")) {
+					if (s.startsWith(DragNDropPrefix.DEVICE.toString())) {
+						// String contains a device -> add it
+						Device d = (Device) measuringstation
+								.getAbstractDeviceByFullIdentifyer(s.substring(
+										1, s.length()));
+						if (d != null) {
+							addDeviceEntry(d);
+						}
+						refuse = false;
+					}
+				}
+
+				if (refuse) {
+					LOGGER.debug("Drop refused");
+					event.detail = DND.DROP_NONE;
+				}
+			} else if ((event.operations & DND.DROP_MOVE) != 0) {
+				if (axisTableSortState != 0) {
+					event.detail = DND.DROP_NONE;
+					event.feedback = DND.FEEDBACK_NONE;
+					return;
+				}
+				if (event.item instanceof TableItem) {
+					super.move(event);
+				}
+			} else {
 				event.detail = DND.DROP_NONE;
 			}
 		}
 	}
 	
 	/**
-	 * 
+	 * @author Marcus Michalsky
 	 */
 	private class AxisTableFocusListener implements FocusListener {
 		
@@ -1987,7 +1748,7 @@ public class DeviceInspectorView extends ViewPart {
 	}
 	
 	/**
-	 * 
+	 * @author Marcus Michalsky
 	 */
 	private class ChannelTableFocusListener implements FocusListener {
 		
@@ -2009,7 +1770,7 @@ public class DeviceInspectorView extends ViewPart {
 	}
 	
 	/**
-	 * 
+	 * @author Marcus Michalsky
 	 */
 	private class DeviceTableFocusListener implements FocusListener {
 		
@@ -2050,8 +1811,8 @@ public class DeviceInspectorView extends ViewPart {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			logger.debug("name column (axes table) clicked");
-			logger.debug("old axis table sort state: " + axisTableSortState);
+			LOGGER.debug("name column (axes table) clicked");
+			LOGGER.debug("old axis table sort state: " + axisTableSortState);
 			switch(axisTableSortState) {
 				case 0: // was no sorting -> now ascending
 						axisTableViewerComparator.setDirection(
@@ -2077,7 +1838,8 @@ public class DeviceInspectorView extends ViewPart {
 			// if it becomes 3 it has to be 0 again
 			// but before the state has to be increased to the new state
 			axisTableSortState = ++axisTableSortState % 3;
-			logger.debug("new axis table sort state: " + axisTableSortState);
+			axisTableDropTargetListener.setSortState(axisTableSortState);
+			LOGGER.debug("new axis table sort state: " + axisTableSortState);
 		}
 	}
 	
@@ -2101,8 +1863,8 @@ public class DeviceInspectorView extends ViewPart {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			logger.debug("name column (channels table) clicked");
-			logger.debug("old channels table sort state: " + channelTableSortState);
+			LOGGER.debug("name column (channels table) clicked");
+			LOGGER.debug("old channels table sort state: " + channelTableSortState);
 			switch(channelTableSortState) {
 				case 0: // was no sorting -> now ascending
 						channelTableViewerComparator.setDirection(
@@ -2128,7 +1890,8 @@ public class DeviceInspectorView extends ViewPart {
 			// if it becomes 3 it has to be 0 again
 			// but before the state has to be increased to the new state
 			channelTableSortState = ++channelTableSortState % 3;
-			logger.debug("new channel table sort state: " + channelTableSortState);
+			channelTableDropTargetListener.setSortState(channelTableSortState);
+			LOGGER.debug("new channel table sort state: " + channelTableSortState);
 		}
 	}
 	
@@ -2152,8 +1915,8 @@ public class DeviceInspectorView extends ViewPart {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			logger.debug("name column (devices table) clicked");
-			logger.debug("old devices table sort state: " + deviceTableSortState);
+			LOGGER.debug("name column (devices table) clicked");
+			LOGGER.debug("old devices table sort state: " + deviceTableSortState);
 			switch(deviceTableSortState) {
 				case 0: // was no sorting -> now ascending
 						deviceTableViewerComparator.setDirection(
@@ -2179,7 +1942,8 @@ public class DeviceInspectorView extends ViewPart {
 			// if it becomes 3 it has to be 0 again
 			// but before the state has to be increased to the new state
 			deviceTableSortState = ++deviceTableSortState % 3;
-			logger.debug("new device table sort state: " + deviceTableSortState);
+			deviceTableDropTargetListener.setSortState(deviceTableSortState);
+			LOGGER.debug("new device table sort state: " + deviceTableSortState);
 		}
 	}
 	
@@ -2195,7 +1959,7 @@ public class DeviceInspectorView extends ViewPart {
 		@Override
 		public void beforeEditorActivated(
 				ColumnViewerEditorActivationEvent event) {
-			logger.debug("before editor activated");
+			LOGGER.debug("before editor activated");
 		}
 		
 		/**
@@ -2204,7 +1968,7 @@ public class DeviceInspectorView extends ViewPart {
 		@Override
 		public void afterEditorActivated(
 				ColumnViewerEditorActivationEvent event) {
-			logger.debug("after editor activated");
+			LOGGER.debug("after editor activated");
 		}
 		
 		/**
@@ -2213,7 +1977,7 @@ public class DeviceInspectorView extends ViewPart {
 		@Override
 		public void beforeEditorDeactivated(
 				ColumnViewerEditorDeactivationEvent event) {
-			logger.debug("before editor deactivated");
+			LOGGER.debug("before editor deactivated");
 		}
 		
 		/**
@@ -2222,11 +1986,11 @@ public class DeviceInspectorView extends ViewPart {
 		@Override
 		public void afterEditorDeactivated(
 				ColumnViewerEditorDeactivationEvent event) {
-			logger.debug("after editor deactivated");
+			LOGGER.debug("after editor deactivated");
 			if(event.eventType == ColumnViewerEditorDeactivationEvent.EDITOR_CANCELED) {
-				logger.debug("(editor canceled)");
+				LOGGER.debug("(editor canceled)");
 			} else if(event.eventType == ColumnViewerEditorDeactivationEvent.EDITOR_SAVED) {
-				logger.debug("(editor saved)");
+				LOGGER.debug("(editor saved)");
 			}
 		}
 	}
