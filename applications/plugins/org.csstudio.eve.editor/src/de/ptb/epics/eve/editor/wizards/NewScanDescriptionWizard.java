@@ -164,9 +164,11 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 		try {
 			final FileOutputStream os = new FileOutputStream(file);
 			final ScanDescriptionSaver scanDescriptionSaver = 
-					new ScanDescriptionSaver(os, 
-															 measuringStation, 
-															 scanDescription);
+					new ScanDescriptionSaver(os, measuringStation, 
+							scanDescription);
+			scanDescriptionSaver
+					.setVersion(de.ptb.epics.eve.resources.Activator
+							.getSchemaVersion().toString());
 			scanDescriptionSaver.save();
 		} catch(final FileNotFoundException e1) {
 			logger.error(e1.getMessage(), e1);
