@@ -18,22 +18,22 @@ import de.ptb.epics.eve.util.data.Version;
  * @author Marcus Michalsky
  * @since 1.18
  */
-public class Patch2o3T3o3 extends Patch {
+public class Patch2o3T3o0 extends Patch {
 	
-	private static Patch2o3T3o3 INSTANCE;
+	private static Patch2o3T3o0 INSTANCE;
 	
-	private Patch2o3T3o3(Version source, Version target, 
+	private Patch2o3T3o0(Version source, Version target, 
 			List<Modification> modifications) {
 		super(source, target, modifications);
 		modifications.add(new Mod0(this));
 		modifications.add(new Mod1(this));
 	}
 	
-	public static Patch2o3T3o3 getInstance() {
+	public static Patch2o3T3o0 getInstance() {
 		if (INSTANCE == null) {
 			List<Modification> modifications = new LinkedList<Modification>();
 			
-			INSTANCE = new Patch2o3T3o3(new Version(2, 3), new Version(3, 3), 
+			INSTANCE = new Patch2o3T3o0(new Version(2, 3), new Version(3, 0), 
 				modifications);
 		}
 		return INSTANCE;
@@ -42,7 +42,7 @@ public class Patch2o3T3o3 extends Patch {
 	private class Mod0 extends AbstractModification {
 
 		public Mod0(Patch patch) {
-			super(patch, "setting scml version to 3.3");
+			super(patch, "setting scml version to 3.0");
 		}
 		
 		/**
@@ -52,7 +52,7 @@ public class Patch2o3T3o3 extends Patch {
 		public void modify(Document document) {
 			Node version = document.getElementsByTagName("version").item(0);
 			if (version.getNodeType() == Node.ELEMENT_NODE) {
-				((Text)version.getFirstChild()).setData("3.3");
+				((Text)version.getFirstChild()).setData("3.0");
 			}
 		}
 		

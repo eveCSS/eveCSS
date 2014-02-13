@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import de.ptb.epics.eve.data.scandescription.updater.patches.Patch2o3T3o3;
+import de.ptb.epics.eve.data.scandescription.updater.patches.Patch2o3T3o0;
 import de.ptb.epics.eve.util.data.Version;
 
 /**
@@ -37,7 +37,7 @@ public class Updater {
 	 */
 	private Updater() {
 		this.patches = new LinkedList<Patch>();
-		this.patches.add(Patch2o3T3o3.getInstance());
+		this.patches.add(Patch2o3T3o0.getInstance());
 		
 		// TODO add patches
 	}
