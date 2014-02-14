@@ -49,6 +49,8 @@
 				<pathelement path="${env.WORKSPACE}/tests/build/" />
 				<pathelement
 					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.util/lib/commons-math3-3.1.1.jar" />
+				<pathelement
+					path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.resources/cfg/" />
 			</classpath>
 
 			<formatter type="brief" usefile="false" />

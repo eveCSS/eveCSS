@@ -16,6 +16,3 @@ Import-Package: de.ptb.epics.eve.data.measuringstation,
  de.ptb.epics.eve.data.measuringstation.processors,
  de.ptb.epics.eve.preferences,
  de.ptb.epics.eve.util.data
-Bundle-ClassPath: cfg/,
- .
-Class-Path: cfg/
