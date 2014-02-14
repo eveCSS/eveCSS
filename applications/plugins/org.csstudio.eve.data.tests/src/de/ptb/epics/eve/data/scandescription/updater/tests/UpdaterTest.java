@@ -4,6 +4,8 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -13,8 +15,10 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.eclipse.core.runtime.FileLocator;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.scandescription.updater.Updater;
@@ -33,15 +37,29 @@ public class UpdaterTest {
 	 */
 	@Test
 	public void testUpdate() {
-		File testFile = de.ptb.epics.eve.resources.Activator.getSCMLTestFile();
-		
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder;
-		Version currentVersion = de.ptb.epics.eve.resources.Activator.
-				getSchemaVersion();
 		try {
+			URL url = new URL(
+					"platform:/plugin/de.ptb.epics.eve.resources/cfg/test.scml");
+			new File(FileLocator.toFileURL(url).toURI());
+			File testFile = de.ptb.epics.eve.resources.Activator
+					.getSCMLTestFile();
+
+			url = new URL(
+					"platform:/plugin/de.ptb.epics.eve.resources/cfg/schema.xsd");
+			DocumentBuilderFactory factory = DocumentBuilderFactory
+					.newInstance();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.parse(new File(FileLocator.toFileURL(
+					url).toURI()));
+			Node node = document.getElementsByTagName("schema").item(0);
+			String versionString = node.getAttributes().getNamedItem("version")
+					.getNodeValue();
+			Version currentVersion = new Version(Integer.parseInt(versionString
+					.split("\\.")[0]), Integer.parseInt(versionString
+					.split("\\.")[1]));
+			
 			builder = factory.newDocumentBuilder();
-			Document document = builder.parse(testFile);
+			document = builder.parse(testFile);
 			
 			Updater.getInstance().update(document, currentVersion);
 			
@@ -59,6 +77,8 @@ public class UpdaterTest {
 		} catch (IOException e) {
 			fail(e.getMessage());
 		} catch (VersionTooOldException e) {
+			fail(e.getMessage());
+		} catch (URISyntaxException e) {
 			fail(e.getMessage());
 		}
 	}
