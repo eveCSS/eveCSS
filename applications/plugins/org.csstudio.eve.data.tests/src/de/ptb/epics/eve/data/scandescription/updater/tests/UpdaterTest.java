@@ -4,7 +4,6 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.xml.XMLConstants;
@@ -15,8 +14,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -40,14 +37,13 @@ public class UpdaterTest {
 	public void testUpdate() {
 		try {
 			URL url = ClassLoader.getSystemResource("test.scml");
-			File testFile = new File(FileLocator.toFileURL(url).toURI());
+			File testFile = new File(url.getPath());
 
 			url = ClassLoader.getSystemResource("schema.xsd");
 			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.parse(new File(FileLocator.toFileURL(
-					url).toURI()));
+			Document document = builder.parse(new File(url.getPath()));
 			Node node = document.getElementsByTagName("schema").item(0);
 			String versionString = node.getAttributes().getNamedItem("version")
 					.getNodeValue();
@@ -73,8 +69,6 @@ public class UpdaterTest {
 		} catch (IOException e) {
 			fail(e.getMessage());
 		} catch (VersionTooOldException e) {
-			fail(e.getMessage());
-		} catch (URISyntaxException e) {
 			fail(e.getMessage());
 		}
 	}
