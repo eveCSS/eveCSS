@@ -42,11 +42,10 @@ public class UpdaterTest {
 					"/de/ptb/epics/eve/data/scandescription/updater/tests/UpdaterTest.class").getPath()
 					+ "/../../../../../../../../../../../org.csstudio.eve.resources/cfg/";
 			
-			URL url = new URL(
-					path + "test.scml");
+			URL url = new URL("file://" + path + "test.scml");
 			File testFile = new File(FileLocator.toFileURL(url).toURI());
 
-			url = new URL(path + "schema.xsd");
+			url = new URL("file://" + path + "schema.xsd");
 			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
