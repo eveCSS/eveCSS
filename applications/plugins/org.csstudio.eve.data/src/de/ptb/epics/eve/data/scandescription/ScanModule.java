@@ -214,6 +214,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.type = ScanModuleTypes.CLASSIC;
 		this.name = "";
 
+		this.storage = Storage.DEFAULT;
+		
 		this.triggerConfirmAxis = false;
 		this.triggerConfirmChannel = false;
 		

@@ -1,7 +1,5 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
-import java.util.Arrays;
-
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
