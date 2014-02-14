@@ -40,9 +40,7 @@ public class UpdaterTest {
 		try {
 			URL url = new URL(
 					"platform:/plugin/de.ptb.epics.eve.resources/cfg/test.scml");
-			new File(FileLocator.toFileURL(url).toURI());
-			File testFile = de.ptb.epics.eve.resources.Activator
-					.getSCMLTestFile();
+			File testFile = new File(FileLocator.toFileURL(url).toURI());
 
 			url = new URL(
 					"platform:/plugin/de.ptb.epics.eve.resources/cfg/schema.xsd");
@@ -66,8 +64,7 @@ public class UpdaterTest {
 			SchemaFactory schemaFactory = SchemaFactory
 					.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema schema = schemaFactory
-					.newSchema(de.ptb.epics.eve.resources.Activator
-							.getXMLSchema());
+					.newSchema(url);
 			
 			schema.newValidator().validate(new DOMSource(document));
 		} catch (ParserConfigurationException e) {
