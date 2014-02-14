@@ -1,0 +1,1084 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:scml xsi:schemaLocation="http://www.ptb.de/epics/SCML scml.xsd"
+    xmlns:tns="http://www.ptb.de/epics/SCML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <location>TEST</location>
+    <version>2.3</version>
+    <scan>
+        <repeatcount>0</repeatcount>
+        <chain id="1">
+            <savefilename>/home/mmichals/daten/2014/kw3/</savefilename>
+            <confirmsave>false</confirmsave>
+            <autonumber>true</autonumber>
+            <savescandescription>false</savescandescription>
+            <saveplugin name="HDF5">
+                <parameter name="location">/messung/eve/lib/linux-x86/libhdf5plugin.so</parameter>
+                <parameter name="format">HDF5</parameter>
+                <parameter name="suffix">h5</parameter>
+                <parameter name="extent">0</parameter>
+            </saveplugin>
+            <scanmodules>
+                <scanmodule id="1">
+                    <type>classic</type>
+                    <name>SM 1</name>
+                    <xpos>113</xpos>
+                    <ypos>49</ypos>
+                    <parent>0</parent>
+                    <nested>3</nested>
+                    <appended>2</appended>
+                    <valuecount>1</valuecount>
+                    <settletime>0.0</settletime>
+                    <triggerdelay>0.0</triggerdelay>
+                    <triggerconfirmaxis>false</triggerconfirmaxis>
+                    <triggerconfirmchannel>false</triggerconfirmchannel>
+                    <smaxis>
+                        <axisid>PPSMC:gw23715000</axisid>
+                        <stepfunction>Add</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <startstopstep>
+                            <start type="double">1.0</start>
+                            <stop type="double">10.0</stop>
+                            <stepwidth type="double">1.0</stepwidth>
+                            <ismainaxis>false</ismainaxis>
+                        </startstopstep>
+                    </smaxis>
+                    <smchannel>
+                        <channelid>bIICurrent:Mnt1chan1</channelid>
+                    </smchannel>
+                </scanmodule>
+                <scanmodule id="2">
+                    <type>classic</type>
+                    <name>SM 2</name>
+                    <xpos>243</xpos>
+                    <ypos>49</ypos>
+                    <parent>1</parent>
+                    <valuecount>1</valuecount>
+                    <settletime>0.0</settletime>
+                    <triggerdelay>0.0</triggerdelay>
+                    <triggerconfirmaxis>false</triggerconfirmaxis>
+                    <triggerconfirmchannel>false</triggerconfirmchannel>
+                </scanmodule>
+                <scanmodule id="3">
+                    <type>classic</type>
+                    <name>SM 3</name>
+                    <xpos>162</xpos>
+                    <ypos>114</ypos>
+                    <parent>1</parent>
+                    <nested>4</nested>
+                    <appended>5</appended>
+                    <valuecount>1</valuecount>
+                    <settletime>0.0</settletime>
+                    <triggerdelay>0.0</triggerdelay>
+                    <triggerconfirmaxis>false</triggerconfirmaxis>
+                    <triggerconfirmchannel>false</triggerconfirmchannel>
+                </scanmodule>
+                <scanmodule id="4">
+                    <type>classic</type>
+                    <name>SM 4</name>
+                    <xpos>163</xpos>
+                    <ypos>174</ypos>
+                    <parent>3</parent>
+                    <appended>7</appended>
+                    <valuecount>1</valuecount>
+                    <settletime>0.0</settletime>
+                    <triggerdelay>0.0</triggerdelay>
+                    <triggerconfirmaxis>false</triggerconfirmaxis>
+                    <triggerconfirmchannel>false</triggerconfirmchannel>
+                    <smchannel>
+                        <channelid>bIICurrent:Mnt1chan1</channelid>
+                        <averagecount>3</averagecount>
+                        <maxdeviation>1.0</maxdeviation>
+                    </smchannel>
+                </scanmodule>
+                <scanmodule id="5">
+                    <type>classic</type>
+                    <name>SM 5</name>
+                    <xpos>292</xpos>
+                    <ypos>114</ypos>
+                    <parent>3</parent>
+                    <appended>6</appended>
+                    <valuecount>1</valuecount>
+                    <settletime>0.0</settletime>
+                    <triggerdelay>0.0</triggerdelay>
+                    <triggerconfirmaxis>false</triggerconfirmaxis>
+                    <triggerconfirmchannel>false</triggerconfirmchannel>
+                </scanmodule>
+                <scanmodule id="6">
+                    <type>save_axis_positions</type>
+                    <name>S APOS</name>
+                    <xpos>356</xpos>
+                    <ypos>170</ypos>
+                    <parent>5</parent>
+                    <valuecount>1</valuecount>
+                    <settletime>0.0</settletime>
+                    <triggerdelay>0.0</triggerdelay>
+                    <triggerconfirmaxis>false</triggerconfirmaxis>
+                    <triggerconfirmchannel>false</triggerconfirmchannel>
+                    <smaxis>
+                        <axisid>Timer1-mot-int</axisid>
+                        <stepfunction>Plugin</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <plugin name="MotionDisabled">
+                            <parameter name="location">/path/to/referenceadd</parameter>
+                        </plugin>
+                    </smaxis>
+                    <smaxis>
+                        <axisid>Timer1-mot-date</axisid>
+                        <stepfunction>Plugin</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <plugin name="MotionDisabled">
+                            <parameter name="location">/path/to/referenceadd</parameter>
+                        </plugin>
+                    </smaxis>
+                    <smaxis>
+                        <axisid>Counter-mot</axisid>
+                        <stepfunction>Plugin</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <plugin name="MotionDisabled">
+                            <parameter name="location">/path/to/referenceadd</parameter>
+                        </plugin>
+                    </smaxis>
+                    <smaxis>
+                        <axisid>DiscPosPPSMC:gw23715000</axisid>
+                        <stepfunction>Plugin</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <plugin name="MotionDisabled">
+                            <parameter name="location">/path/to/referenceadd</parameter>
+                        </plugin>
+                    </smaxis>
+                    <smaxis>
+                        <axisid>DiscPosNumPPSMC:gw23715000</axisid>
+                        <stepfunction>Plugin</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <plugin name="MotionDisabled">
+                            <parameter name="location">/path/to/referenceadd</parameter>
+                        </plugin>
+                    </smaxis>
+                    <smaxis>
+                        <axisid>DiscPosPPSMC:gw23715001</axisid>
+                        <stepfunction>Plugin</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <plugin name="MotionDisabled">
+                            <parameter name="location">/path/to/referenceadd</parameter>
+                        </plugin>
+                    </smaxis>
+                    <smaxis>
+                        <axisid>DiscPosNumPPSMC:gw23715001</axisid>
+                        <stepfunction>Plugin</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <plugin name="MotionDisabled">
+                            <parameter name="location">/path/to/referenceadd</parameter>
+                        </plugin>
+                    </smaxis>
+                    <smaxis>
+                        <axisid>PPSMC:gw23715000</axisid>
+                        <stepfunction>Plugin</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <plugin name="MotionDisabled">
+                            <parameter name="location">/path/to/referenceadd</parameter>
+                        </plugin>
+                    </smaxis>
+                    <smaxis>
+                        <axisid>PPSMC:gw23715001</axisid>
+                        <stepfunction>Plugin</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <plugin name="MotionDisabled">
+                            <parameter name="location">/path/to/referenceadd</parameter>
+                        </plugin>
+                    </smaxis>
+                    <smaxis>
+                        <axisid>PPSMC:gw23715002</axisid>
+                        <stepfunction>Plugin</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <plugin name="MotionDisabled">
+                            <parameter name="location">/path/to/referenceadd</parameter>
+                        </plugin>
+                    </smaxis>
+                    <smaxis>
+                        <axisid>PPSMC:gw23715003</axisid>
+                        <stepfunction>Plugin</stepfunction>
+                        <positionmode>absolute</positionmode>
+                        <plugin name="MotionDisabled">
+                            <parameter name="location">/path/to/referenceadd</parameter>
+                        </plugin>
+                    </smaxis>
+                </scanmodule>
+                <scanmodule id="7">
+                    <type>save_channel_values</type>
+                    <name>S CVAL</name>
+                    <xpos>356</xpos>
+                    <ypos>217</ypos>
+                    <parent>4</parent>
+                    <valuecount>1</valuecount>
+                    <settletime>0.0</settletime>
+                    <triggerdelay>0.0</triggerdelay>
+                    <triggerconfirmaxis>false</triggerconfirmaxis>
+                    <triggerconfirmchannel>false</triggerconfirmchannel>
+                    <smchannel>
+                        <channelid>Timer1-det-int</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>Timer1-det-date</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>bIICurrent:Mnt1chan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>bIICurrent:Mnt2chan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>bIICurrent:Mnt1lifeTimechan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>bIICurrent:Mnt2lifeTimechan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>MDIZ3T5G:currentchan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>MDIZ3T5G:lt10chan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>bIICurrent:Mnt1collectData.VALDchan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>bIICurrent:Mnt2collectData.VALDchan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>bIICurrent:Mnt3collectData.VALDchan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>bIICurrent:Mnt4collectData.VALDchan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>K6517:rioc62800chan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>K6517:rioc62900chan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>H3458:rioc621chan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>H3458:rioc622chan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>bIICurrent:Mnt1slopechan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>bIICurrent:Mnt2slopechan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>P5000:gw2370700</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>P5000:gw2370701</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>O0974:2360901</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>A89410:specan01QROIpwrchan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>A89410:specan02QROIpwrchan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>BPMFFTZRP:rdFFTXchan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>BPMFFTZRP:rdFFTYchan1</channelid>
+                    </smchannel>
+                    <smchannel>
+                        <channelid>BPMFFTZRP:dFchan1</channelid>
+                    </smchannel>
+                </scanmodule>
+            </scanmodules>
+        </chain>
+        <monitoroptions type="none"/>
+    </scan>
+    <plugins>
+        <plugin type="save">
+            <name>ASCII</name>
+            <location></location>
+            <parameter name="format" datatype="string" default="ASCII" mandatory="false"></parameter>
+            <parameter name="suffix" datatype="string" default="txt" mandatory="false"></parameter>
+            <parameter name="extent" datatype="int" default="0" mandatory="false"></parameter>
+        </plugin>
+        <plugin type="save">
+            <name>HDF5</name>
+            <location>/messung/eve/lib/linux-x86/libhdf5plugin.so</location>
+            <parameter name="format" datatype="string" default="HDF5" mandatory="false"/>
+            <parameter name="suffix" datatype="string" default="h5" mandatory="false"/>
+            <parameter name="extent" datatype="int" default="0" mandatory="false"/>
+        </plugin>
+        <plugin type="save">
+            <name>Do not save</name>
+            <location>nosave</location>
+        </plugin>
+        <plugin type="position">
+            <name>MotionDisabled</name>
+            <location>/path/to/referenceadd</location>
+        </plugin>
+        <plugin type="position">
+            <name>ReferenceAdd</name>
+            <location>/path/to/referenceadd</location>
+            <parameter name="summand" datatype="double" default="0.0" mandatory="true"></parameter>
+            <parameter name="referenceaxis" datatype="axisid" default="" mandatory="true"></parameter>
+        </plugin>
+        <plugin type="position">
+            <name>ReferenceMultiply</name>
+            <location>/path/to/referenceadd</location>
+            <parameter name="factor" datatype="double" default="0.0" mandatory="true"></parameter>
+            <parameter name="referenceaxis" datatype="axisid" default="" mandatory="true"></parameter>
+        </plugin>
+        <plugin type="postscanpositioning">
+            <name>PEAK</name>
+            <location>/path/to/plugin3</location>
+        </plugin>
+        <plugin type="postscanpositioning">
+            <name>CENTER</name>
+            <location>/path/to/plugin3</location>
+        </plugin>
+        <plugin type="postscanpositioning">
+            <name>MAX</name>
+            <location>/path/to/plugin3</location>
+        </plugin>
+        <plugin type="postscanpositioning">
+            <name>MIN</name>
+            <location>/path/to/plugin3</location>
+        </plugin>
+        <plugin type="postscanpositioning">
+            <name>EDGE</name>
+            <location>/path/to/plugin3</location>
+        </plugin>
+    </plugins>
+    <detectors>
+        <detector>
+            <class>Timer</class>
+            <name>detMsecTime</name>
+            <id>detMsecTime</id>
+            <channel>
+                <class></class>
+                <name>msec Time</name>
+                <id>Timer1-det-int</id>
+                <read>
+                    <access method="GETCB" type="int" transport="local">Timer</access>
+                </read>
+            </channel>
+        </detector>
+        <detector>
+            <class>Timer</class>
+            <name>detDateTime</name>
+            <id>detDateTime</id>
+            <channel>
+                <class></class>
+                <name>date Time</name>
+                <id>Timer1-det-date</id>
+                <read>
+                    <access method="GETCB" type="datetime" transport="local">Timer</access>
+                </read>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom</class>
+            <name>Ring_1</name>
+            <id>bIICurrent:Mnt1basic</id>
+            <channel>
+                <class></class>
+                <name>Ring_1</name>
+                <id>bIICurrent:Mnt1chan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">bIICurrent:Mnt1.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">bIICurrent:Mnt1.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom</class>
+            <name>Ring_2</name>
+            <id>bIICurrent:Mnt2basic</id>
+            <channel>
+                <class></class>
+                <name>Ring_2</name>
+                <id>bIICurrent:Mnt2chan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">bIICurrent:Mnt2.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">bIICurrent:Mnt2.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom</class>
+            <name>Lebensdauer_1</name>
+            <id>bIICurrent:Mnt1lifeTimebasic</id>
+            <channel>
+                <class></class>
+                <name>Lebensdauer_1</name>
+                <id>bIICurrent:Mnt1lifeTimechan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">bIICurrent:Mnt1lifeTime.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">bIICurrent:Mnt1lifeTime.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom</class>
+            <name>Lebensdauer_2</name>
+            <id>bIICurrent:Mnt2lifeTimebasic</id>
+            <channel>
+                <class></class>
+                <name>Lebensdauer_2</name>
+                <id>bIICurrent:Mnt2lifeTimechan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">bIICurrent:Mnt2lifeTime.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">bIICurrent:Mnt2lifeTime.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom</class>
+            <name>Bessy_Ringstrom</name>
+            <id>MDIZ3T5G:currentbasic</id>
+            <channel>
+                <class></class>
+                <name>Bessy_Ringstrom</name>
+                <id>MDIZ3T5G:currentchan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">MDIZ3T5G:current.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">MDIZ3T5G:current.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom</class>
+            <name>Bessy_Lebensdauer</name>
+            <id>MDIZ3T5G:lt10basic</id>
+            <channel>
+                <class></class>
+                <name>Bessy_Lebensdauer</name>
+                <id>MDIZ3T5G:lt10chan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">MDIZ3T5G:lt10.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">MDIZ3T5G:lt10.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom_roh</class>
+            <name>Ring_1_roh</name>
+            <id>bIICurrent:Mnt1collectData.VALDbasic</id>
+            <channel>
+                <class></class>
+                <name>Ring_1_roh</name>
+                <id>bIICurrent:Mnt1collectData.VALDchan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">bIICurrent:Mnt1collectData.VALD.VAL</access>
+                </read>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom_roh</class>
+            <name>Ring_2_roh</name>
+            <id>bIICurrent:Mnt2collectData.VALDbasic</id>
+            <channel>
+                <class></class>
+                <name>Ring_2_roh</name>
+                <id>bIICurrent:Mnt2collectData.VALDchan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">bIICurrent:Mnt2collectData.VALD.VAL</access>
+                </read>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom_roh</class>
+            <name>Ring_3_roh</name>
+            <id>bIICurrent:Mnt3collectData.VALDbasic</id>
+            <channel>
+                <class></class>
+                <name>Ring_3_roh</name>
+                <id>bIICurrent:Mnt3collectData.VALDchan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">bIICurrent:Mnt3collectData.VALD.VAL</access>
+                </read>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom_roh</class>
+            <name>Ring_4_roh</name>
+            <id>bIICurrent:Mnt4collectData.VALDbasic</id>
+            <channel>
+                <class></class>
+                <name>Ring_4_roh</name>
+                <id>bIICurrent:Mnt4collectData.VALDchan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">bIICurrent:Mnt4collectData.VALD.VAL</access>
+                </read>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom_roh</class>
+            <name>AXUV_Diode</name>
+            <id>K6517:rioc62800basic</id>
+            <channel>
+                <class></class>
+                <name>AXUV_Diode</name>
+                <id>K6517:rioc62800chan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">K6517:rioc62800.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">K6517:rioc62800.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom_roh</class>
+            <name>SXUV_Diode</name>
+            <id>K6517:rioc62900basic</id>
+            <channel>
+                <class></class>
+                <name>SXUV_Diode</name>
+                <id>K6517:rioc62900chan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">K6517:rioc62900.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">K6517:rioc62900.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom_roh</class>
+            <name>RohMnt1</name>
+            <id>H3458:rioc621basic</id>
+            <channel>
+                <class></class>
+                <name>RohMnt1</name>
+                <id>H3458:rioc621chan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">H3458:rioc621.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">H3458:rioc621.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom_roh</class>
+            <name>RohMnt2</name>
+            <id>H3458:rioc622basic</id>
+            <channel>
+                <class></class>
+                <name>RohMnt2</name>
+                <id>H3458:rioc622chan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">H3458:rioc622.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">H3458:rioc622.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom_roh</class>
+            <name>SlopeMnt1</name>
+            <id>bIICurrent:Mnt1slopebasic</id>
+            <channel>
+                <class></class>
+                <name>SlopeMnt1</name>
+                <id>bIICurrent:Mnt1slopechan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">bIICurrent:Mnt1slope.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">bIICurrent:Mnt1slope.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ringstrom_roh</class>
+            <name>SlopeMnt2</name>
+            <id>bIICurrent:Mnt2slopebasic</id>
+            <channel>
+                <class></class>
+                <name>SlopeMnt2</name>
+                <id>bIICurrent:Mnt2slopechan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">bIICurrent:Mnt2slope.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">bIICurrent:Mnt2slope.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class>Prema5000</class>
+            <name>Prema5000</name>
+            <id>P5000:gw23707</id>
+            <channel>
+                <class>Prema5000</class>
+                <name>Channel00</name>
+                <id>P5000:gw2370700</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">P5000:gw2370700.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw2370700.EGU</access>
+                </unit>
+                <trigger>
+                    <access method="PUTCB" type="int" transport="ca" timeout="180.0">P5000:gw2370700.PROC</access>
+                    <value type="int">1</value>
+                </trigger>
+            </channel>
+            <channel>
+                <class>Prema5000</class>
+                <name>Channel01</name>
+                <id>P5000:gw2370701</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">P5000:gw2370701.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">P5000:gw2370701.EGU</access>
+                </unit>
+                <trigger>
+                    <access method="PUTCB" type="int" transport="ca" timeout="180.0">P5000:gw2370701.PROC</access>
+                    <value type="int">1</value>
+                </trigger>
+            </channel>
+        </detector>
+        <detector>
+            <class>Ortec0974</class>
+            <name>Ortec1</name>
+            <id>O0974:23609</id>
+            <trigger>
+                <access method="PUTCB" type="int" transport="ca" timeout="180.0">O0974:23609trigger.PROC</access>
+                <value type="int">1</value>
+            </trigger>
+            <channel>
+                <class></class>
+                <name>Ortec_Ch1</name>
+                <id>O0974:2360901</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">O0974:2360901.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">O0974:2360901.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class></class>
+            <name>VSA_ROI01</name>
+            <id>A89410:specan01QROIpwrbasic</id>
+            <channel>
+                <class></class>
+                <name>VSA_ROI01</name>
+                <id>A89410:specan01QROIpwrchan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">A89410:specan01QROIpwr.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">A89410:specan01QROIpwr.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class></class>
+            <name>VSA_ROI02</name>
+            <id>A89410:specan02QROIpwrbasic</id>
+            <channel>
+                <class></class>
+                <name>VSA_ROI02</name>
+                <id>A89410:specan02QROIpwrchan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">A89410:specan02QROIpwr.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">A89410:specan02QROIpwr.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class></class>
+            <name>BPMFFTStream_X</name>
+            <id>BPMFFTZRP:rdFFTXbasic</id>
+            <channel>
+                <class></class>
+                <name>BPMFFTStream_X</name>
+                <id>BPMFFTZRP:rdFFTXchan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">BPMFFTZRP:rdFFTX.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">BPMFFTZRP:rdFFTX.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class></class>
+            <name>BPMFFTStream_Y</name>
+            <id>BPMFFTZRP:rdFFTYbasic</id>
+            <channel>
+                <class></class>
+                <name>BPMFFTStream_Y</name>
+                <id>BPMFFTZRP:rdFFTYchan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">BPMFFTZRP:rdFFTY.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">BPMFFTZRP:rdFFTY.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+        <detector>
+            <class></class>
+            <name>BPMFFT_dF</name>
+            <id>BPMFFTZRP:dFbasic</id>
+            <channel>
+                <class></class>
+                <name>BPMFFT_dF</name>
+                <id>BPMFFTZRP:dFchan1</id>
+                <read>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">BPMFFTZRP:dF.VAL</access>
+                </read>
+                <unit>
+                    <access method="GETPUT" type="string" transport="ca">BPMFFTZRP:dF.EGU</access>
+                </unit>
+            </channel>
+        </detector>
+    </detectors>
+    <motors>
+        <motor>
+            <class>Timer</class>
+            <name>motMsecTimer</name>
+            <id>motMsecTimer</id>
+            <axis>
+                <class></class>
+                <name>msec Timer</name>
+                <id>Timer1-mot-int</id>
+                <goto>
+                    <access method="PUTCB" type="int" transport="local">Timer</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="int" transport="local">Timer</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="local">Timer</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
+        <motor>
+            <class>Timer</class>
+            <name>motDateTimer</name>
+            <id>motDateTimer</id>
+            <axis>
+                <class></class>
+                <name>date Timer</name>
+                <id>Timer1-mot-date</id>
+                <goto>
+                    <access method="PUTCB" type="datetime" transport="local">Timer</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="datetime" transport="local">Timer</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="local">Timer</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
+        <motor>
+            <class>Counter</class>
+            <name>Counter1</name>
+            <id>Counter1</id>
+            <axis>
+                <class></class>
+                <name>Counter</name>
+                <id>Counter-mot</id>
+                <goto>
+                    <access method="PUTCB" type="int" transport="local">Counter</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="int" transport="local">Counter</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="local">Counter</access>
+                    <value type="OnOff">0</value>
+                </stop>
+            </axis>
+        </motor>
+        <motor>
+            <class>PPMotor</class>
+            <name>PPSMC:gw23715</name>
+            <id>PPSMC:gw23715</id>
+            <axis>
+                <class>PPFilter</class>
+                <name>Filter_1</name>
+                <id>DiscPosPPSMC:gw23715000</id>
+                <goto>
+                    <access method="GETPUTCB" type="string"
+                        transport="ca" timeout="300.0">PPSMC:gw23715000_Mnu</access>
+                    <value type="string">Undefined, Pos1µ, Pos2µ, Pos3µ, Pos4, Pos5, Pos6, Pos7, Pos8, Pos9</value>
+                </goto>
+                <position>
+                    <access method="GETCB" type="string" transport="ca" monitor="true">PPSMC:gw23715000_MnuAct.SVAL</access>
+                    <value type="string">Undefined, Pos1µ, Pos2µ, Pos3µ, Pos4, Pos5, Pos6, Pos7, Pos8, Pos9</value>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715000_stop</access>
+                    <value type="int">1</value>
+                </stop>
+                <unit>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715000.EGU</access>
+                </unit>
+            </axis>
+            <axis>
+                <class>PPFilter</class>
+                <name>Filter_1_S</name>
+                <id>DiscPosNumPPSMC:gw23715000</id>
+                <goto>
+                    <access method="GETPUTCB" type="int" transport="ca" timeout="300.0">PPSMC:gw23715000_Mnu</access>
+                    <value type="int">1, 2, 3, 4, 5, 6, 7, 8, 9</value>
+                </goto>
+                <position>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">PPSMC:gw23715000_MnuO</access>
+                    <value type="int">1, 2, 3, 4, 5, 6, 7, 8, 9</value>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715000.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <unit>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715000.EGU</access>
+                </unit>
+            </axis>
+            <axis>
+                <class>PPFilter</class>
+                <name>Filter_2</name>
+                <id>DiscPosPPSMC:gw23715001</id>
+                <goto>
+                    <access method="GETPUTCB" type="string"
+                        transport="ca" timeout="300.0">PPSMC:gw23715001_Mnu</access>
+                    <value type="string">Undefined, Position eins, Position zwei, Position drei</value>
+                </goto>
+                <position>
+                    <access method="GETCB" type="string" transport="ca" monitor="true">PPSMC:gw23715001_MnuAct.SVAL</access>
+                    <value type="string">Undefined, Position eins, Position zwei, Position drei</value>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715001_stop</access>
+                    <value type="int">1</value>
+                </stop>
+                <unit>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715001.EGU</access>
+                </unit>
+            </axis>
+            <axis>
+                <class>PPFilter</class>
+                <name>Filter_2_S</name>
+                <id>DiscPosNumPPSMC:gw23715001</id>
+                <goto>
+                    <access method="GETPUTCB" type="int" transport="ca" timeout="300.0">PPSMC:gw23715001_Mnu</access>
+                    <value type="int">1, 2, 3</value>
+                </goto>
+                <position>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">PPSMC:gw23715001_MnuO</access>
+                    <value type="int">1, 2, 3</value>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715001.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <unit>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715001.EGU</access>
+                </unit>
+            </axis>
+            <axis>
+                <class></class>
+                <name>PP_Motor1</name>
+                <id>PPSMC:gw23715000</id>
+                <goto>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="300.0">PPSMC:gw23715000</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">PPSMC:gw23715000.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715000.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <highlimit>
+                    <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.HLM</access>
+                </highlimit>
+                <lowlimit>
+                    <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715000.LLM</access>
+                </lowlimit>
+                <unit>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715000.EGU</access>
+                </unit>
+                <deadband>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715000.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715000.OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715000.TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715000.TWF</access>
+                    <value type="int">1</value>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715000.TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>
+            </axis>
+            <axis>
+                <class></class>
+                <name>PP_Motor2</name>
+                <id>PPSMC:gw23715001</id>
+                <goto>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="300.0">PPSMC:gw23715001</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">PPSMC:gw23715001.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715001.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <highlimit>
+                    <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.HLM</access>
+                </highlimit>
+                <lowlimit>
+                    <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715001.LLM</access>
+                </lowlimit>
+                <unit>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715001.EGU</access>
+                </unit>
+                <deadband>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715001.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715001.OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715001.TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715001.TWF</access>
+                    <value type="int">1</value>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715001.TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>
+            </axis>
+            <axis>
+                <class></class>
+                <name>PP_Motor3</name>
+                <id>PPSMC:gw23715002</id>
+                <goto>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="300.0">PPSMC:gw23715002</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">PPSMC:gw23715002.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715002.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <highlimit>
+                    <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.HLM</access>
+                </highlimit>
+                <lowlimit>
+                    <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715002.LLM</access>
+                </lowlimit>
+                <unit>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715002.EGU</access>
+                </unit>
+                <deadband>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715002.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715002.OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715002.TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715002.TWF</access>
+                    <value type="int">1</value>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715002.TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>
+            </axis>
+            <axis>
+                <class></class>
+                <name>PP_Motor4</name>
+                <id>PPSMC:gw23715003</id>
+                <goto>
+                    <access method="GETPUTCB" type="double"
+                        transport="ca" timeout="300.0">PPSMC:gw23715003</access>
+                </goto>
+                <position>
+                    <access method="GETCB" type="double" transport="ca" monitor="true">PPSMC:gw23715003.RBV</access>
+                </position>
+                <stop>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715003.STOP</access>
+                    <value type="int">1</value>
+                </stop>
+                <highlimit>
+                    <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.HLM</access>
+                </highlimit>
+                <lowlimit>
+                    <access method="GETPUT" type="double" transport="ca">PPSMC:gw23715003.LLM</access>
+                </lowlimit>
+                <unit>
+                    <access method="GETPUTCB" type="string" transport="ca">PPSMC:gw23715003.EGU</access>
+                </unit>
+                <deadband>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715003.RDBD</access>
+                </deadband>
+                <offset>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715003.OFF</access>
+                </offset>
+                <tweakvalue>
+                    <access method="GETPUTCB" type="double" transport="ca">PPSMC:gw23715003.TWV</access>
+                </tweakvalue>
+                <tweakforward>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715003.TWF</access>
+                    <value type="int">1</value>
+                </tweakforward>
+                <tweakreverse>
+                    <access method="PUT" type="int" transport="ca">PPSMC:gw23715003.TWR</access>
+                    <value type="int">1</value>
+                </tweakreverse>
+            </axis>
+        </motor>
+    </motors>
+    <devices/>
+    <smselection>
+        <stepfunction>Add,Multiply,File,Plugin,Positionlist</stepfunction>
+        <smtype>classic, advanced</smtype>
+    </smselection>
+</tns:scml>

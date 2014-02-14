@@ -170,6 +170,29 @@ public class Activator implements BundleActivator {
 	}
 	
 	/**
+	 * Returns a scml file for testing.
+	 * 
+	 * @return a scml file for testing
+	 * @author Marcus Michalsky
+	 * @since 1.18
+	 */
+	public static File getSCMLTestFile() {
+		try {
+			URL url;
+			url = new URL(
+				"platform:/plugin/de.ptb.epics.eve.resources/cfg/test.scml");
+			return new File(FileLocator.toFileURL(url).toURI());
+		} catch (MalformedURLException e) {
+			LOGGER.error(e.getMessage(), e);
+		} catch (URISyntaxException e) {
+			LOGGER.error(e.getMessage(), e);
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+		return null;
+	}
+	
+	/**
 	 * Returns the logging configuration either for debug or production.
 	 * 
 	 * @param debug <code>true</code> if debug mode, <code>false</code> otherwise
