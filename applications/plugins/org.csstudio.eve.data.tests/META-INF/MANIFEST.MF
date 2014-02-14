@@ -7,6 +7,5 @@ Fragment-Host: de.ptb.epics.eve.data;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.junit4;bundle-version="4.5.0"
 Import-Package: de.ptb.epics.eve.data.measuringstation,
- de.ptb.epics.eve.resources,
- de.ptb.epics.eve.util.data
+ de.ptb.epics.eve.resources
 Bundle-Vendor: PTB
