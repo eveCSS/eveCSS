@@ -18,3 +18,4 @@ Import-Package: de.ptb.epics.eve.data.measuringstation,
  de.ptb.epics.eve.util.data
 Bundle-ClassPath: cfg/,
  .
+Class-Path: cfg/
