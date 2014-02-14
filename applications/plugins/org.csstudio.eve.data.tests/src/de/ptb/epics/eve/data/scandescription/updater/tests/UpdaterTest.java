@@ -38,12 +38,15 @@ public class UpdaterTest {
 	@Test
 	public void testUpdate() {
 		try {
+			String path = getClass().getResource(
+					"/de/ptb/epics/eve/data/scandescription/updater/tests/UpdaterTest.class").getPath()
+					+ "/../../../../../../../../../../../org.csstudio.eve.resources/cfg/";
+			
 			URL url = new URL(
-					"platform:/plugin/de.ptb.epics.eve.resources/cfg/test.scml");
+					path + "test.scml");
 			File testFile = new File(FileLocator.toFileURL(url).toURI());
 
-			url = new URL(
-					"platform:/plugin/de.ptb.epics.eve.resources/cfg/schema.xsd");
+			url = new URL(path + "schema.xsd");
 			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
