@@ -36,18 +36,13 @@ public class UpdaterTest {
 	 * Tests whether all included Updates are applied successfully by validating 
 	 * the result with the XML schema.
 	 */
-	@Ignore
 	@Test
 	public void testUpdate() {
 		try {
-			String path = getClass().getResource(
-					"/de/ptb/epics/eve/data/scandescription/updater/tests/UpdaterTest.class").getPath()
-					+ "/../../../../../../../../../../../org.csstudio.eve.resources/cfg/";
-			System.out.println(path);
-			URL url = new URL("file:/" + path + "/test.scml");
+			URL url = ClassLoader.getSystemResource("test.scml");
 			File testFile = new File(FileLocator.toFileURL(url).toURI());
 
-			url = new URL("file:/" + path + "/schema.xsd");
+			url = ClassLoader.getSystemResource("schema.xsd");
 			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
