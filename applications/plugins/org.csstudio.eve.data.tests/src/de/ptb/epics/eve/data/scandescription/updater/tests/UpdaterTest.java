@@ -40,13 +40,6 @@ public class UpdaterTest {
 
 			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
-			SchemaFactory schemaFactory = SchemaFactory
-					.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Schema schema = schemaFactory.newSchema(ClassLoader
-					.getSystemResource("schema.xsd"));
-			factory.setNamespaceAware(true);
-			factory.setSchema(schema);
-
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document document = builder.parse(new File(ClassLoader
 					.getSystemResource("schema.xsd").getFile()));
@@ -57,8 +50,15 @@ public class UpdaterTest {
 					.split("\\.")[0]), Integer.parseInt(versionString
 					.split("\\.")[1]));
 
-			builder.reset();
-
+			factory = DocumentBuilderFactory.newInstance();
+			SchemaFactory schemaFactory = SchemaFactory
+					.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			Schema schema = schemaFactory.newSchema(ClassLoader
+					.getSystemResource("schema.xsd"));
+			factory.setNamespaceAware(true);
+			factory.setSchema(schema);
+			builder = factory.newDocumentBuilder();
+			
 			document = builder.parse(testFile);
 
 			Updater.getInstance().update(document, currentVersion);
