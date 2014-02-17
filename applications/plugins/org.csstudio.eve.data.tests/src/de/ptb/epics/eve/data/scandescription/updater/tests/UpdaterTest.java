@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -18,6 +19,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import de.ptb.epics.eve.data.scandescription.updater.Modification;
+import de.ptb.epics.eve.data.scandescription.updater.Patch;
 import de.ptb.epics.eve.data.scandescription.updater.Updater;
 import de.ptb.epics.eve.data.scandescription.updater.VersionTooOldException;
 import de.ptb.epics.eve.util.data.Version;
@@ -61,8 +64,12 @@ public class UpdaterTest {
 			builder = factory.newDocumentBuilder();
 			document = builder.parse(testFile);
 
-			Updater.getInstance().update(document, currentVersion);
-
+			List<Patch> patches = Updater.getInstance().update(document, currentVersion);
+			for (Patch p : patches) {
+				for (Modification m : p.getModifications()) {
+					System.out.println(m.getChangeLog());
+				}
+			}
 			schema.newValidator().validate(new DOMSource(document));
 		} catch (ParserConfigurationException e) {
 			fail(e.getMessage());
