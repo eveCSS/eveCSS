@@ -4,19 +4,12 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
@@ -25,8 +18,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import de.ptb.epics.eve.data.scandescription.updater.Modification;
-import de.ptb.epics.eve.data.scandescription.updater.Patch;
 import de.ptb.epics.eve.data.scandescription.updater.Updater;
 import de.ptb.epics.eve.data.scandescription.updater.VersionTooOldException;
 import de.ptb.epics.eve.util.data.Version;
@@ -49,6 +40,13 @@ public class UpdaterTest {
 
 			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
+			SchemaFactory schemaFactory = SchemaFactory
+					.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			Schema schema = schemaFactory.newSchema(ClassLoader
+					.getSystemResource("schema.xsd"));
+			factory.setNamespaceAware(true);
+			factory.setSchema(schema);
+
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document document = builder.parse(new File(ClassLoader
 					.getSystemResource("schema.xsd").getFile()));
@@ -59,34 +57,13 @@ public class UpdaterTest {
 					.split("\\.")[0]), Integer.parseInt(versionString
 					.split("\\.")[1]));
 
-			SchemaFactory schemaFactory = SchemaFactory
-					.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Schema schema = schemaFactory.newSchema(ClassLoader
-					.getSystemResource("schema.xsd"));
-			
-			factory.setNamespaceAware(true);
-			factory.setSchema(schema);
-			
 			builder.reset();
+
 			document = builder.parse(testFile);
-			
-			List<Patch> patches = Updater.getInstance().update(document, 
-					currentVersion);
-			for (Patch p : patches) {
-				for (Modification m : p.getModifications()) {
-					System.out.println(m.getChangeLog());
-				}
-			}
-			
+
+			Updater.getInstance().update(document, currentVersion);
+
 			schema.newValidator().validate(new DOMSource(document));
-			
-			DOMSource domSource = new DOMSource(document);
-		       StringWriter writer = new StringWriter();
-		       StreamResult result = new StreamResult(writer);
-		       TransformerFactory tf = TransformerFactory.newInstance();
-		       Transformer transformer = tf.newTransformer();
-		       transformer.transform(domSource, result);
-		       System.out.println(writer.toString());
 		} catch (ParserConfigurationException e) {
 			fail(e.getMessage());
 		} catch (SAXException e) {
@@ -94,10 +71,6 @@ public class UpdaterTest {
 		} catch (IOException e) {
 			fail(e.getMessage());
 		} catch (VersionTooOldException e) {
-			fail(e.getMessage());
-		} catch (TransformerConfigurationException e) {
-			fail(e.getMessage());
-		} catch (TransformerException e) {
 			fail(e.getMessage());
 		}
 	}
