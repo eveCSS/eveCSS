@@ -50,15 +50,18 @@ public class UpdaterTest {
 					.split("\\.")[0]), Integer.parseInt(versionString
 					.split("\\.")[1]));
 
-			builder = factory.newDocumentBuilder();
-			document = builder.parse(testFile);
-
-			Updater.getInstance().update(document, currentVersion);
-
 			SchemaFactory schemaFactory = SchemaFactory
 					.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema schema = schemaFactory.newSchema(ClassLoader
 					.getSystemResource("schema.xsd"));
+			
+			factory.setNamespaceAware(true);
+			factory.setSchema(schema);
+			
+			builder = factory.newDocumentBuilder();
+			document = builder.parse(testFile);
+
+			Updater.getInstance().update(document, currentVersion);
 
 			schema.newValidator().validate(new DOMSource(document));
 		} catch (ParserConfigurationException e) {
