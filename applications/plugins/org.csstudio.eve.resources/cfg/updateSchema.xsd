@@ -2,8 +2,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" 
   targetNamespace="http://www.ptb.de/epics/SCML" 
   xmlns:tns="http://www.ptb.de/epics/SCML"
-  version="2.3"
-  elementFormDefault="qualified">
+  version="2.3">
 	
   <element name ="scml">
     <complexType>

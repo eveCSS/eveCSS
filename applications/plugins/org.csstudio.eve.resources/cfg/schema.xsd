@@ -2,8 +2,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" 
   targetNamespace="http://www.ptb.de/epics/SCML" 
   xmlns:tns="http://www.ptb.de/epics/SCML" 
-  version="3.0"
-  elementFormDefault="qualified">
+  version="3.0">
 
   <!-- please increase version number on every modification
        If the corresponding XML-file of the previous schema version is still

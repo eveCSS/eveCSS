@@ -9,7 +9,12 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
@@ -69,6 +74,17 @@ public class UpdaterTest {
 			schema.newValidator().validate(new DOMSource(document));
 
 			document.normalizeDocument();
+			
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(document);
+			//StreamResult result = new StreamResult(new File("file.xml"));
+	 
+			// Output to console for testing
+			StreamResult result = new StreamResult(System.out);
+	 
+			transformer.transform(source, result);
+			
 			schema.newValidator().validate(new DOMSource(document));
 		} catch (ParserConfigurationException e) {
 			fail(e.getMessage());
@@ -78,6 +94,10 @@ public class UpdaterTest {
 			fail(e.getMessage());
 		} catch (VersionTooOldException e) {
 			fail(e.getMessage());
+		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			e.printStackTrace();
 		}
 	}
 }
