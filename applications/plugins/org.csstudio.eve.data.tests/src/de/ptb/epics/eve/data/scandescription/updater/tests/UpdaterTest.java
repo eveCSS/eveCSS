@@ -78,8 +78,7 @@ public class UpdaterTest {
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(document);
-			StreamResult result = new StreamResult(File.createTempFile(
-					"eveJUnit", null)); // new File("file.xml"));
+			StreamResult result = new StreamResult(new File("/tmp/eveJUnit.xml"));
 	 
 			// Output to console for testing
 			// StreamResult result = new StreamResult(System.out);
