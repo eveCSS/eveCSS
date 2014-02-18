@@ -27,6 +27,7 @@ public class Patch2o3T3o0 extends Patch {
 		super(source, target, modifications);
 		modifications.add(new Mod0(this));
 		modifications.add(new Mod1(this));
+		modifications.add(new Mod2(this));
 	}
 	
 	public static Patch2o3T3o0 getInstance() {
@@ -83,6 +84,52 @@ public class Patch2o3T3o0 extends Patch {
 							scanModule.insertBefore(newElement, valueCount);
 							break;
 						}
+					}
+				}
+			}
+		}
+	}
+	
+	private class Mod2 extends AbstractModification {
+		
+		public Mod2(Patch patch) {
+			super(patch, "Replaced scan module type advanced");
+		}
+		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void modify(Document document) {
+			NodeList scanModules = document.getElementsByTagName("scanmodule");
+			Node smType = null;
+			int smAxisTags = 0;
+			int smChannelTags = 0;
+			for (int i = 0; i < scanModules.getLength(); i++) {
+				Node scanModule = scanModules.item(i);
+				if (scanModule.getNodeType() == Node.ELEMENT_NODE) {
+					int children = scanModule.getChildNodes().getLength();
+					smType = null;
+					smAxisTags = 0;
+					smChannelTags = 0;
+					for (int j = 0; j < children; j++) {
+						Node currentChild = scanModule.getChildNodes().item(j);
+						if (currentChild.getNodeName().equals("type")) {
+							smType = scanModule.getChildNodes().item(j);
+						} else if (currentChild.getNodeName().equals("smaxis")) {
+							smAxisTags++;
+						} else if (currentChild.getNodeName().equals("smchannel")) {
+							smChannelTags++;
+						}
+					}
+					if (smAxisTags > 0 && smAxisTags > smChannelTags) {
+						if (smType != null) {
+							smType.getFirstChild().setNodeValue(
+									"save_axis_positions");
+						}
+					} else if (smChannelTags > 0 && smChannelTags > smAxisTags) {
+						smType.getFirstChild().setNodeValue(
+								"save_channel_values");
 					}
 				}
 			}

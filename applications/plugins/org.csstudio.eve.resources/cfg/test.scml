@@ -103,7 +103,7 @@
                     <triggerconfirmchannel>false</triggerconfirmchannel>
                 </scanmodule>
                 <scanmodule id="6">
-                    <type>save_axis_positions</type>
+                    <type>advanced</type>
                     <name>S APOS</name>
                     <xpos>356</xpos>
                     <ypos>170</ypos>
@@ -203,7 +203,7 @@
                     </smaxis>
                 </scanmodule>
                 <scanmodule id="7">
-                    <type>save_channel_values</type>
+                    <type>advanced</type>
                     <name>S CVAL</name>
                     <xpos>356</xpos>
                     <ypos>217</ypos>
