@@ -3,7 +3,7 @@
   targetNamespace="http://www.ptb.de/epics/SCML" 
   xmlns:tns="http://www.ptb.de/epics/SCML"
   version="2.3"
-  elementFormDefault="qualified",>
+  elementFormDefault="qualified">
 	
   <element name ="scml">
     <complexType>
