@@ -53,16 +53,22 @@ public class UpdaterTest {
 			factory = DocumentBuilderFactory.newInstance();
 			SchemaFactory schemaFactory = SchemaFactory
 					.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Schema schema = schemaFactory.newSchema(ClassLoader
-					.getSystemResource("schema.xsd"));
+			Schema oldSchema = schemaFactory.newSchema(ClassLoader
+					.getSystemResource("updateSchema.xsd"));
 			factory.setNamespaceAware(true);
-			factory.setSchema(schema);
+			factory.setSchema(oldSchema);
 			builder = factory.newDocumentBuilder();
 			
 			document = builder.parse(testFile);
 
 			Updater.getInstance().update(document, currentVersion);
 
+			Schema schema = SchemaFactory.newInstance(
+					XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
+					ClassLoader.getSystemResource("schema.xsd"));
+			schema.newValidator().validate(new DOMSource(document));
+			
+			document.normalizeDocument();
 			schema.newValidator().validate(new DOMSource(document));
 		} catch (ParserConfigurationException e) {
 			fail(e.getMessage());
