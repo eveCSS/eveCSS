@@ -48,6 +48,8 @@ import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
  */
 public final class EngineView extends ViewPart implements IUpdateListener, 
 		IConnectionStateListener, IErrorListener, IChainStatusListener {
+	public EngineView() {
+	}
 
 	/** the public identifier of the view */
 	public static final String id = "EngineView";
@@ -340,7 +342,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		
 		Activator.getDefault().getEcp1Client().addChainStatusListener(this);
 		
-		// test whether the engine is already running (button enablement)
+		// test whether the engine is already running
 		if (Activator.getDefault().getEcp1Client().isRunning()) {
 			this.setConnectionStatus(ConnectionStatus.CONNECTED);
 		} else {
@@ -574,10 +576,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				}
 			});
 	}
-	
-	/* ******************************************************************** */
-	/* ************************* IUpdateListener ************************** */
-	/* ******************************************************************** */
 
 	/**
 	 * {@inheritDoc}
@@ -787,10 +785,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		});
 	}
 	
-	/* ******************************************************************** */
-	/* ******************** IConnectionStateListener ********************** */
-	/* ******************************************************************** */
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -815,10 +809,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		});
 	}
 
-	/* ******************************************************************** */
-	/* ************************* IErrorListener *************************** */
-	/* ******************************************************************** */
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -835,10 +825,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		}
 	}
 
-	/* ********************************************************************* */
-	/* *************************** Listeners ******************************* */
-	/* ********************************************************************* */
-	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of Start Button from
 	 * <code>EngineView</code>.
@@ -1150,17 +1136,18 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 			int aktSM;
 			if (rows[selection].getText(1).trim().equals("")) {
 				aktSM = 0;
-			}
-			else {
+			} else {
 				aktSM = Integer.parseInt(rows[selection].getText(1).trim());
 			}
 			
-			Chain displayChain = Activator.getDefault().getCurrentScanDescription().getChain(aktChain);
+			Chain displayChain = Activator.getDefault()
+					.getCurrentScanDescription().getChain(aktChain);
 			
 			if (aktSM > 0) {
 				// ScanModule Zeile wurde ausgewählt, ScanModule Infos anzeigen
 				
-				Display display = Activator.getDefault().getWorkbench().getDisplay();
+				Display display = Activator.getDefault().getWorkbench()
+						.getDisplay();
 				Shell chainShell = new Shell(display);
 				chainShell.setSize(600,400);
 				chainShell.setText("Scan Module Info");
@@ -1234,8 +1221,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				Label confTextMot = new Label(chainShell,SWT.NONE);
 				if (displayChain.getScanModuleById(aktSM).isTriggerConfirmAxis()) {
 					confTextMot.setText(" YES ");
-				}
-				else {
+				} else {
 					confTextMot.setText(" NO ");
 				}
 				gridData = new GridData();
@@ -1250,8 +1236,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				Label confTextDet = new Label(chainShell,SWT.NONE);
 				if (displayChain.getScanModuleById(aktSM).isTriggerConfirmChannel()) {
 					confTextDet.setText(" YES ");
-				}
-				else {
+				} else {
 					confTextDet.setText(" NO ");
 				}
 				gridData = new GridData();
@@ -1286,11 +1271,24 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				Axis[] axis = displayChain.getScanModuleById(aktSM).getAxes();
 				for (int i=0; i<axis.length; i++) {
 					// Neuer Tabelleneintrag muß gemacht werden
-					TableItem tableItem = new TableItem( motTable, 0 );
-					tableItem.setText( 0, axis[i].getAbstractDevice().getFullIdentifyer());
-					tableItem.setText( 1, axis[i].getStart().toString());
-					tableItem.setText( 2, axis[i].getStop().toString());
-					tableItem.setText( 3, axis[i].getStepwidth().toString());
+					switch (axis[i].getStepfunction()) {
+					case ADD:
+					case MULTIPLY:
+						TableItem tableItem = new TableItem( motTable, 0 );
+						tableItem.setText( 0, axis[i].getAbstractDevice().getFullIdentifyer());
+						tableItem.setText( 1, axis[i].getStart().toString());
+						tableItem.setText( 2, axis[i].getStop().toString());
+						tableItem.setText( 3, axis[i].getStepwidth().toString());
+						break;
+					case FILE:
+						break;
+					case PLUGIN:
+						break;
+					case POSITIONLIST:
+						break;
+					default:
+						break;
+					}
 				}
 	
 				// Tabelle für die Detector Channels erzeugen
