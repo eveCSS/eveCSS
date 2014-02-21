@@ -2,6 +2,10 @@ h1(eveTopic). Frequently Asked Questions
 
 {toc}
 
+h3(eveFAQquestion). The Editor state is dirty but File -> Save is disabled.
+
+p. Sometimes although a scan description in the editor is unsaved the File -> Save menu entries are not enabled. In order to save such a file you can either move a scan module a bit or click on another view. Either will trigger a re-evaluation of the menu entries.
+
 h3(eveFAQquestion). Why does the context menu contain a menu named "input methods" ?
 
 p. !(eveImage)../img/faq-inputmethods.png(input methods)!

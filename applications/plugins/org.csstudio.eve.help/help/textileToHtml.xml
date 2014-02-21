@@ -4,7 +4,7 @@
 		Ant File for Building help documents
 	</description>
 
-	<property name="eclipse_dir" location="/opt/eclipse/eclipse-rcp-indigo-SR2/eclipse" />
+	<property name="eclipse_dir" location="/opt/eclipse/eclipse/eclipse" />
 
 	<path id="wikitext.classpath">
 		<fileset dir="${eclipse_dir}/plugins">
