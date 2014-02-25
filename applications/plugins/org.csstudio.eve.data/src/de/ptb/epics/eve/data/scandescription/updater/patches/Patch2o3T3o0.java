@@ -9,6 +9,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
+import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.data.scandescription.updater.AbstractModification;
 import de.ptb.epics.eve.data.scandescription.updater.Modification;
 import de.ptb.epics.eve.data.scandescription.updater.Patch;
@@ -121,6 +122,10 @@ public class Patch2o3T3o0 extends Patch {
 						} else if (currentChild.getNodeName().equals("smchannel")) {
 							smChannelTags++;
 						}
+					}
+					if (smType.getFirstChild().getNodeValue()
+							.equals(ScanModuleTypes.CLASSIC.toString())) {
+						continue;
 					}
 					if (smAxisTags > 0 && smAxisTags > smChannelTags) {
 						if (smType != null) {
