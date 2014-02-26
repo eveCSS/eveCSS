@@ -22,6 +22,7 @@ public class CommonTableElementEngineData implements IMeasurementDataListener {
 	private Boolean isActive;
 	private String textvalue;
 	private CommonTableElement tableElement;
+	private Formatter formatter;
 	
 	/**
 	 * Constructs a <code>CommonTableElementEngineData</code<.
@@ -34,11 +35,24 @@ public class CommonTableElementEngineData implements IMeasurementDataListener {
 	public CommonTableElementEngineData(String dataId, CommonTableElement tableElement) {
 		this.dataId = dataId;
 		this.tableElement = tableElement;
+		this.formatter = new Formatter(
+				new Locale(Locale.ENGLISH.getCountry()));
 		Activator.getDefault().getEcp1Client().addMeasurementDataListener(this);
 		datamodifier = DataModifier.UNMODIFIED;
 		isActive = true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void finalize() throws Throwable {
+		Activator.getDefault().getEcp1Client()
+				.removeMeasurementDataListener(this);
+		this.formatter.close();
+		super.finalize();
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -53,8 +67,6 @@ public class CommonTableElementEngineData implements IMeasurementDataListener {
 			if ((measurementData.getDataType() == DataType.DOUBLE) || 
 				(measurementData.getDataType() == DataType.FLOAT)) {
 					Double value = (Double) measurementData.getValues().get(0);
-					Formatter formatter = new Formatter(
-							new Locale(Locale.ENGLISH.getCountry()));
 					textvalue = formatter.format("%12.4g", value).out().
 							toString();
 			} else {
