@@ -10,6 +10,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
+import de.ptb.epics.eve.data.scandescription.Storage;
 import de.ptb.epics.eve.data.scandescription.updater.AbstractModification;
 import de.ptb.epics.eve.data.scandescription.updater.Modification;
 import de.ptb.epics.eve.data.scandescription.updater.Patch;
@@ -104,6 +105,7 @@ public class Patch2o3T3o0 extends Patch {
 		public void modify(Document document) {
 			NodeList scanModules = document.getElementsByTagName("scanmodule");
 			Node smType = null;
+			Node storage = null;
 			int smAxisTags = 0;
 			int smChannelTags = 0;
 			for (int i = 0; i < scanModules.getLength(); i++) {
@@ -111,6 +113,7 @@ public class Patch2o3T3o0 extends Patch {
 				if (scanModule.getNodeType() == Node.ELEMENT_NODE) {
 					int children = scanModule.getChildNodes().getLength();
 					smType = null;
+					storage = null;
 					smAxisTags = 0;
 					smChannelTags = 0;
 					for (int j = 0; j < children; j++) {
@@ -121,6 +124,8 @@ public class Patch2o3T3o0 extends Patch {
 							smAxisTags++;
 						} else if (currentChild.getNodeName().equals("smchannel")) {
 							smChannelTags++;
+						} else if (currentChild.getNodeName().equals("storage")) {
+							storage = scanModule.getChildNodes().item(j);
 						}
 					}
 					if (smType.getFirstChild().getNodeValue()
@@ -132,9 +137,19 @@ public class Patch2o3T3o0 extends Patch {
 							smType.getFirstChild().setNodeValue(
 									"save_axis_positions");
 						}
+						if (storage != null) {
+							storage.getFirstChild().setNodeValue(
+									Storage.ALTERNATE.toString());
+						}
 					} else if (smChannelTags > 0 && smChannelTags > smAxisTags) {
-						smType.getFirstChild().setNodeValue(
-								"save_channel_values");
+						if (smType != null) {
+							smType.getFirstChild().setNodeValue(
+									"save_channel_values");
+							if (storage != null) {
+								storage.getFirstChild().setNodeValue(
+										Storage.ALTERNATE.toString());
+							}
+						}
 					}
 				}
 			}
