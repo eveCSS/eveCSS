@@ -60,6 +60,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.dialogs.PluginControllerDialog;
 import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
+import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.StartEventEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.tree.ScanModuleTreeEditPart;
@@ -637,6 +638,9 @@ public class ChainView extends ViewPart implements IEditorView,
 			}
 			setCurrentChain((((StartEventEditPart) o).getModel()).getChain());
 		} else if (o instanceof ChainEditPart) {
+			logger.debug("selection is ScanDescriptionEditPart: " + o);
+			setCurrentChain(null);
+		} else if (o instanceof ScanDescriptionEditPart) {
 			logger.debug("selection is ScanDescriptionEditPart: " + o);
 			setCurrentChain(null);
 		} else {
