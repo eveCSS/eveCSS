@@ -10,10 +10,10 @@ import de.ptb.epics.eve.data.MethodTypes;
 import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.TypeValue;
 import de.ptb.epics.eve.data.TransportTypes;
-
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
+import de.ptb.epics.eve.data.measuringstation.DisplayGroup;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.Function;
 import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
@@ -629,7 +629,8 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case DEVICE_DISPLAYGROUP_NEXT:
-			this.currentDevice.setDisplaygroup(textBuffer.toString());
+			this.currentDevice.setDisplaygroup(DisplayGroup.valueOf(textBuffer
+					.toString().toUpperCase()));
 			this.state = MeasuringStationLoaderStates.DEVICE_DISPLAYGROUP_READ;
 			break;
 
@@ -659,7 +660,8 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 			break;
 
 		case OPTION_DISPLAYGROUP_NEXT:
-			this.currentOption.setDisplaygroup(textBuffer.toString());
+			this.currentOption.setDisplaygroup(DisplayGroup.valueOf(textBuffer
+					.toString().toUpperCase()));
 			this.subState = MeasuringStationLoaderSubStates.OPTION_DISPLAYGROUP_READ;
 			break;
 

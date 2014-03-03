@@ -377,7 +377,8 @@ public class ScanDescriptionSaver implements
 				this.contentHandler.startElement("", "displaygroup",
 						"displaygroup", this.atts);
 				this.contentHandler.characters(device.getDisplaygroup()
-						.toCharArray(), 0, device.getDisplaygroup().length());
+						.toString().toCharArray(), 0, device.getDisplaygroup()
+						.toString().length());
 				this.contentHandler.endElement("", "displaygroup",
 						"displaygroup");
 			}
@@ -775,7 +776,8 @@ public class ScanDescriptionSaver implements
 				this.contentHandler.startElement("", "displaygroup",
 						"displaygroup", this.atts);
 				this.contentHandler.characters(option.getDisplaygroup()
-						.toCharArray(), 0, option.getDisplaygroup().length());
+						.toString().toCharArray(), 0, option.getDisplaygroup()
+						.toString().length());
 				this.contentHandler.endElement("", "displaygroup",
 						"displaygroup");
 			}

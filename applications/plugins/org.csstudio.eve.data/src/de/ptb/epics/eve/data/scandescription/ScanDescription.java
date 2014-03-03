@@ -672,8 +672,6 @@ public class ScanDescription implements IModelUpdateProvider,
 	}
 	
 	/**
-	 * Delegate.
-	 * 
 	 * @param propertyName
 	 * @param listener
 	 * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(String, PropertyChangeListener)
@@ -685,8 +683,6 @@ public class ScanDescription implements IModelUpdateProvider,
 	}
 
 	/**
-	 * Delegate.
-	 * 
 	 * @param propertyName
 	 * @param listener
 	 * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(String, PropertyChangeListener)

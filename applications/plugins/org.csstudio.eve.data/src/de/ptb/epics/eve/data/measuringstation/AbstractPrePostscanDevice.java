@@ -17,7 +17,7 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	/**
 	 * The display group.
 	 */
-	private String displaygroup;
+	private DisplayGroup displaygroup;
 	
 	/**
 	 * The function description.
@@ -39,11 +39,11 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	 * attributes.
 	 * 
 	 * @param className a <code>String</code> containing the class name
-	 * @param displaygroup a <code>String</code> containing the display group
+	 * @param displaygroup the display group
 	 * @param value a <code>Function</code>
 	 */
 	public AbstractPrePostscanDevice(final String className, 
-									  final String displaygroup,  
+									  final DisplayGroup displaygroup,  
 									  final Function value) {
 		super();
 		this.className = className;
@@ -63,9 +63,9 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	/**
 	 * Returns the display group.
 	 * 
-	 * @return A <code>String</code> containing the display group
+	 * @return the display group
 	 */
-	public String getDisplaygroup() {
+	public DisplayGroup getDisplaygroup() {
 		return this.displaygroup;
 	}
 	
@@ -81,9 +81,9 @@ public abstract class AbstractPrePostscanDevice extends AbstractDevice {
 	/**
 	 * Sets the display group.
 	 * 
-	 * @param displaygroup a <code>String</code> containing the display group
+	 * @param displaygroup the display group
 	 */
-	public void setDisplaygroup(final String displaygroup) {
+	public void setDisplaygroup(final DisplayGroup displaygroup) {
 		this.displaygroup = displaygroup;
 	}
 
