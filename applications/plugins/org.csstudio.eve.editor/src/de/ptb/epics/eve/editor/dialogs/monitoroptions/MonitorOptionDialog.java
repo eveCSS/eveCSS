@@ -75,8 +75,8 @@ public class MonitorOptionDialog extends SelectionDialog {
 	// sorting
 	private OptionsTableOptionNameColumnSelectionListener optionsTableOptionNameColumnSelectionListener;
 	private OptionsTableDeviceNameColumnSelectionListener optionsTableDeviceNameColumnSelectionListener;
-	private TableViewerComparator optionsTableViewerComparator;
-	private DeviceTableViewerComparator deviceTableViewerComparator;
+	private OptionColumnComparator optionsTableViewerComparator;
+	private DeviceColumnComparator deviceTableViewerComparator;
 	private int optionsTableSortState; // 0 no sort, 1 asc, 2 desc
 	private int deviceTableSortState; // 0 no sort, 1 asc, 2 desc
 
@@ -173,8 +173,10 @@ public class MonitorOptionDialog extends SelectionDialog {
 		this.optionsTable.setInput(this.tableDevices);
 		
 		// for sorting
-		ascending =	 de.ptb.epics.eve.util.Activator.getDefault().getImageRegistry().get("SORT_ASCENDING");
-		descending = de.ptb.epics.eve.util.Activator.getDefault().getImageRegistry().get("SORT_DESCENDING");
+		ascending = de.ptb.epics.eve.util.Activator.getDefault()
+				.getImageRegistry().get("SORT_ASCENDING");
+		descending = de.ptb.epics.eve.util.Activator.getDefault()
+				.getImageRegistry().get("SORT_DESCENDING");
 
 		optionsTableOptionNameColumnSelectionListener = 
 				new OptionsTableOptionNameColumnSelectionListener();
@@ -184,8 +186,8 @@ public class MonitorOptionDialog extends SelectionDialog {
 				new OptionsTableDeviceNameColumnSelectionListener();
 		deviceTableSortState = 0;
 
-		optionsTableViewerComparator = new TableViewerComparator();
-		deviceTableViewerComparator = new DeviceTableViewerComparator();
+		optionsTableViewerComparator = new OptionColumnComparator();
+		deviceTableViewerComparator = new DeviceColumnComparator();
 
 		createColumns(parent, optionsTable);
 		
@@ -340,14 +342,14 @@ public class MonitorOptionDialog extends SelectionDialog {
 			switch(optionsTableSortState) {
 				case 0: // was no sorting -> now ascending
 						optionsTableViewerComparator.setDirection(
-								TableViewerComparator.ASCENDING);
+								OptionColumnComparator.ASCENDING);
 						optionsTable.setComparator(optionsTableViewerComparator);
 						optionsTable.getTable().getColumn(1).
 								setImage(ascending);
 						break;
 				case 1: // was ascending -> now descending
 						optionsTableViewerComparator.setDirection(
-								TableViewerComparator.DESCENDING);
+								OptionColumnComparator.DESCENDING);
 						optionsTable.setComparator(optionsTableViewerComparator);
 						optionsTable.refresh();
 						optionsTable.getTable().getColumn(1).
@@ -393,13 +395,13 @@ public class MonitorOptionDialog extends SelectionDialog {
 			switch(deviceTableSortState) {
 				case 0: // was no sorting -> now ascending
 						deviceTableViewerComparator.setDirection(
-								TableViewerComparator.ASCENDING);
+								OptionColumnComparator.ASCENDING);
 						optionsTable.setComparator(deviceTableViewerComparator);
 						optionsTable.getTable().getColumn(2).setImage(ascending);
 						break;
 				case 1: // was ascending -> now descending
 						deviceTableViewerComparator.setDirection(
-								TableViewerComparator.DESCENDING);
+								OptionColumnComparator.DESCENDING);
 						optionsTable.setComparator(deviceTableViewerComparator);
 						optionsTable.refresh();
 						optionsTable.getTable().getColumn(2).setImage(descending);

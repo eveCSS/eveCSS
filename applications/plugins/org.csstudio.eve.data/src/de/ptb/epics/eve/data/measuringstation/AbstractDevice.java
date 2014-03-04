@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.data.measuringstation;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +17,8 @@ import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedExcepti
  */
 public abstract class AbstractDevice implements Comparable<AbstractDevice> {
 
+	public static final String ABSTRACT_DEVICE_NAME_PROP = "name";
+	
 	private String name;
 	private String id;
 	private Unit unit;
@@ -22,6 +26,8 @@ public abstract class AbstractDevice implements Comparable<AbstractDevice> {
 	private final List<Option> options;
 	private String fullIdentifier = null;
 
+	protected PropertyChangeSupport propertyChangeSupport;
+	
 	/**
 	 * Constructs a blank <code>AbstractDevice</code>.
 	 */
@@ -74,6 +80,7 @@ public abstract class AbstractDevice implements Comparable<AbstractDevice> {
 			throw new IllegalArgumentException(
 					"The parameter 'parent' had an illegal Type.", e);
 		}
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
 	/**
@@ -293,6 +300,8 @@ public abstract class AbstractDevice implements Comparable<AbstractDevice> {
 			throw new IllegalArgumentException(
 					"The parameters 'name' must not be null!");
 		}
+		this.propertyChangeSupport.firePropertyChange(
+				AbstractDevice.ABSTRACT_DEVICE_NAME_PROP, this.name, name);
 		this.name = name;
 	}
 
@@ -381,5 +390,17 @@ public abstract class AbstractDevice implements Comparable<AbstractDevice> {
 	public int compareTo(AbstractDevice other) {
 		return this.getName().toLowerCase()
 				.compareTo(other.getName().toLowerCase());
+	}
+	
+	public void addPropertyChangeListener(String propertyName,
+			PropertyChangeListener listener) {
+		this.propertyChangeSupport.addPropertyChangeListener(propertyName,
+				listener);
+	}
+	
+	public void removePropertyChangeListener(String propertyName, 
+			PropertyChangeListener listener) {
+		this.propertyChangeSupport.removePropertyChangeListener(propertyName,
+				listener);
 	}
 }

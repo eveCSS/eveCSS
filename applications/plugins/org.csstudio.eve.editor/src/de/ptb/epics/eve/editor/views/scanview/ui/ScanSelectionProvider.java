@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.editor.views.scanview;
+package de.ptb.epics.eve.editor.views.scanview.ui;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ISelection;
@@ -12,6 +12,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
+import de.ptb.epics.eve.editor.gef.editparts.StartEventEditPart;
 import de.ptb.epics.eve.util.rcp.SingleSelectionProvider;
 
 /**
@@ -55,6 +56,10 @@ public class ScanSelectionProvider extends SingleSelectionProvider {
 		} else if ((sel.getFirstElement() instanceof ScanDescriptionEditPart)) {
 			modelSelection = new StructuredSelection(
 					((ScanDescriptionEditPart)sel.getFirstElement()).getModel());
+		} else if ((sel.getFirstElement() instanceof StartEventEditPart)) {
+			modelSelection = new StructuredSelection(
+					((StartEventEditPart) sel.getFirstElement()).getModel()
+							.getChain().getScanDescription());
 		} else {
 			return;
 		}

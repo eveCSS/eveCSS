@@ -26,7 +26,7 @@
          point="org.eclipse.ui.views">
       <view
             category="eveEditorCategory"
-            class="de.ptb.epics.eve.editor.views.scanview.ScanView"
+            class="de.ptb.epics.eve.editor.views.scanview.ui.ScanView"
             icon="icons/devices/scan.gif"
             id="de.ptb.epics.eve.editor.views.ScanView"
             name="Scan View"

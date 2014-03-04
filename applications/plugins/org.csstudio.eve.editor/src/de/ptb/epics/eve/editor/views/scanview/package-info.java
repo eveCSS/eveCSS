@@ -1,6 +1,6 @@
 /**
  * Contains all elements of the 
- * {@link de.ptb.epics.eve.editor.views.scanview.ScanView}.
+ * {@link de.ptb.epics.eve.editor.views.scanview.ui.ScanView}.
  * 
  * @author Marcus Michalsky
  * @since 0.4.1

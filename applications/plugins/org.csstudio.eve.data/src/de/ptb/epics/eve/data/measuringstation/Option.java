@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class Option extends AbstractPrePostscanDevice implements Cloneable {
 
+	public static String OPTION_MONITOR_PROP = "monitor";
+	
 	private boolean monitor;
 	
 	/**
@@ -48,6 +50,8 @@ public class Option extends AbstractPrePostscanDevice implements Cloneable {
 	 * @param monitor the monitor to set
 	 */
 	public void setMonitor(boolean monitor) {
+		this.propertyChangeSupport.firePropertyChange(
+				Option.OPTION_MONITOR_PROP, this.monitor, monitor);
 		this.monitor = monitor;
 	}
 

@@ -10,7 +10,7 @@ import de.ptb.epics.eve.editor.views.errorview.ErrorView;
 import de.ptb.epics.eve.editor.views.motoraxisview.MotorAxisView;
 import de.ptb.epics.eve.editor.views.plotwindowview.PlotWindowView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
-import de.ptb.epics.eve.editor.views.scanview.ScanView;
+import de.ptb.epics.eve.editor.views.scanview.ui.ScanView;
 
 /**
  * <code>EveEditorPerspective</code> is the factory for the editor perspective.

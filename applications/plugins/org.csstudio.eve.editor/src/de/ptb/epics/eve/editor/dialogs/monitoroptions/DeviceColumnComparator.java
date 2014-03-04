@@ -9,7 +9,7 @@ import de.ptb.epics.eve.util.jface.ViewerComparator;
  * @author Hartmut Scherr
  * @since 1.16
  */
-public class DeviceTableViewerComparator extends ViewerComparator {
+public class DeviceColumnComparator extends ViewerComparator {
 
 	/**
 	 * {@inheritDoc}

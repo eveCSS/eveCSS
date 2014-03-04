@@ -3,9 +3,11 @@ package de.ptb.epics.eve.editor;
 import java.io.File;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.databinding.util.ILogger;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.ILogListener;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -113,6 +115,14 @@ public class Activator extends AbstractUIPlugin {
 			getWorkbench().getActiveWorkbenchWindow().getSelectionService().
 				addSelectionListener(new SelectionTracker());
 		}
+		
+		org.eclipse.core.databinding.util.Policy.setLog(new ILogger() {
+			
+			@Override
+			public void log(IStatus status) {
+				logger.debug(status.getMessage());
+			}
+		});
 		
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
 				addPerspectiveListener(eveEditorPerspectiveListener);

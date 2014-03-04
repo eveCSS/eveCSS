@@ -47,8 +47,11 @@ public class ScanDescription implements IModelUpdateProvider,
 	public static final String REPEAT_COUNT_PROP = "repeatCount";
 	
 	/** */
-	public static final String MONITOR_OPTION_PROP ="monitorOption";
+	public static final String MONITOR_OPTION_PROP = "monitorOption";
 
+	/** */
+	public static final String MONITOR_OPTIONS_LIST_PROP = "monitors";
+	
 	private String fileName;
 	
 	// version of the scan description.
@@ -429,6 +432,8 @@ public class ScanDescription implements IModelUpdateProvider,
 	 */
 	public void addMonitor(Option option) {
 		this.monitors.add(option);
+		this.propertyChangeSupport.firePropertyChange(
+				ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
 	}
 	
 	/**
@@ -438,6 +443,8 @@ public class ScanDescription implements IModelUpdateProvider,
 	 */
 	public void removeMonitor(Option option) {
 		this.monitors.remove(option);
+		this.propertyChangeSupport.firePropertyChange(
+				ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
 	}
 	
 	/**
@@ -446,6 +453,8 @@ public class ScanDescription implements IModelUpdateProvider,
 	 */
 	public void removeAllMonitor() {
 		this.monitors.clear();
+		this.propertyChangeSupport.firePropertyChange(
+				ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
 	}
 
 	/**
@@ -500,6 +509,9 @@ public class ScanDescription implements IModelUpdateProvider,
 				this.monitors.add(o);
 			}
 		}
+		
+		this.propertyChangeSupport.firePropertyChange(
+				ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
 	}
 
 	/**
@@ -572,6 +584,9 @@ public class ScanDescription implements IModelUpdateProvider,
 				this.monitors.add(o);
 			}
 		}
+		
+		this.propertyChangeSupport.firePropertyChange(
+				ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
 	}
 
 	/**
@@ -610,6 +625,9 @@ public class ScanDescription implements IModelUpdateProvider,
 				this.monitors.add(o);
 			}
 		}
+		
+		this.propertyChangeSupport.firePropertyChange(
+				ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
 	}
 
 	
@@ -672,8 +690,6 @@ public class ScanDescription implements IModelUpdateProvider,
 	}
 	
 	/**
-	 * @param propertyName
-	 * @param listener
 	 * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(String, PropertyChangeListener)
 	 */
 	public void addPropertyChangeListener(String propertyName,
@@ -683,8 +699,6 @@ public class ScanDescription implements IModelUpdateProvider,
 	}
 
 	/**
-	 * @param propertyName
-	 * @param listener
 	 * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(String, PropertyChangeListener)
 	 */
 	public void removePropertyChangeListener(String propertyName,
@@ -692,5 +706,4 @@ public class ScanDescription implements IModelUpdateProvider,
 		this.propertyChangeSupport.removePropertyChangeListener(propertyName,
 				listener);
 	}
-
 }
