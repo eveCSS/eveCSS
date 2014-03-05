@@ -166,7 +166,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		descending = de.ptb.epics.eve.util.Activator.getDefault()
 				.getImageRegistry().get("SORT_DESCENDING");
 		
-		this.createTable(this.top);
+		// this.createTable(this.top);
 
 		this.top.setVisible(false);
 
@@ -238,11 +238,11 @@ public class ScanView extends ViewPart implements IEditorView,
 						UpdateValueStrategy.POLICY_UPDATE));
 		ControlDecorationSupport.create(repeatCountBinding, SWT.LEFT);
 
-		ViewerSupport.bind(monitorOptionsTable,
+		/*ViewerSupport.bind(monitorOptionsTable,
 				BeansObservables
 				.observeDetailList(selectionObservable,
 						ScanDescription.MONITOR_OPTIONS_LIST_PROP, Option.class),
-				BeanProperties.values(new String[] {"", "name", "parent.name"}));
+				BeanProperties.values(new String[] {"", "name", "parent.name"}));*/
 	}
 
 	/*
