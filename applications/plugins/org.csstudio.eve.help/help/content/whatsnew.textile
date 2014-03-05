@@ -1,5 +1,11 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.18
+
+* [Feature] Scans now have the option to declare the location of the data in the data file (Scan Module Storage Option)
+
+* [Bug Fix] improved memory consumption by removing duplicate literals when loading a device definition
+
 h2(eveTopic). Version 1.16
 
 * [Bug Fix] fixed corrupt default device definition XML file

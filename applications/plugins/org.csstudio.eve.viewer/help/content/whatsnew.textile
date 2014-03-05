@@ -1,5 +1,11 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.18
+
+* [Feature] The Device Inspector now supports Drag and Drop (moving devices in a table)
+
+* [Bug Fix] fixed a bug where opening a detail dialog of a scan caused an error if certain axis were involved
+
 h2(eveTopic). Version 1.17
 
 * [Feature] The Engine View now also shows scan module names

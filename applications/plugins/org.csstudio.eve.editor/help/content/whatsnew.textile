@@ -1,5 +1,13 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.18
+
+* [Feature] It is now possible to load SCML files from earlier versions (at least v1.17)
+
+* [Bug Fix] fixed a bug where deleting a device caused selection of the last item
+* [Bug Fix] Adding axes or channels to "special" scan modules no longer sets their attributes depending on defaults
+* [Bug Fix] Monitors whose Parent is deleted/not available anymore are now removed
+
 h2(eveTopic). Version 1.17
 
 * [Feature] The Monitor Options Dialog now supports selection of classes
