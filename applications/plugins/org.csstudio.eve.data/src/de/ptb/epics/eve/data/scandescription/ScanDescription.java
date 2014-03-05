@@ -296,7 +296,7 @@ public class ScanDescription implements IModelUpdateProvider,
 	}
 
 	/**
-	 * Returns a list holding all monitors.
+	 * Returns a list (COPY !) holding all monitors.
 	 * 
 	 * @return a list holding all monitors.
 	 */
@@ -630,6 +630,21 @@ public class ScanDescription implements IModelUpdateProvider,
 				ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
 	}
 
+	/**
+	 * Checks the list of monitors for invalid entries and removes them.
+	 * <p>
+	 * Necessary due to devices lost during SCML file loading.
+	 */
+	public void checkMonitors() {
+		for (Option o : this.getMonitors()) {
+			if (o.getParent() == null) {
+				this.monitors.remove(o);
+				if (logger.isDebugEnabled()) {
+					logger.debug("removed orphaned monitor " + o.getName());
+				}
+			}
+		}
+	}
 	
 	/**
 	 * {@inheritDoc} 
