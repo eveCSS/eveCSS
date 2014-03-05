@@ -119,7 +119,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		try {
 			currentVersionScml = scmlUpdater.loadFile(scanDescriptionFile);
 		} catch (VersionTooOldException e) {
-			throw new PartInitException("File version is too old!");
+			throw new PartInitException("File version is too old (< 2.3)!");
 		}
 		
 		if (scmlUpdater.getChanges() != null && 
