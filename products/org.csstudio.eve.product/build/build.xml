@@ -29,8 +29,6 @@
 			<fileset dir="${platform}/Eclipse/swtbot/plugins" />
 			<fileset dir="${css}/plugins" />
 		</copy>
-		
-		<echo message="${css}" />
 	</target>
 
 	<target name="fetching sources" description="">
