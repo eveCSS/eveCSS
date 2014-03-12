@@ -9,6 +9,7 @@
 	<property name="build.path" location="${env.WORKSPACE}/../builds/${env.BUILD_ID}" />
 	<property name="workspace" location="${env.WORKSPACE}" />
 	<property name="platform" location="/messung/eve/java" />
+	<property name="css" location="${platform}/CSS/3.2.15" />
 
 	<target name="fetching jars" description="">
 		<mkdir dir="${build.path}/base" />
@@ -19,14 +20,14 @@
 			<fileset dir="${platform}/Eclipse/eclipse-rcp/features" />
 			<fileset dir="${platform}/Eclipse/eclipse-delta-pack/features" />
 			<fileset dir="${platform}/Eclipse/swtbot/features" />
-			<fileset dir="${platform}/CSS/css/features" />
+			<fileset dir="${css}/features" />
 		</copy>
 
 		<copy todir="${build.path}/base/plugins">
 			<fileset dir="${platform}/Eclipse/eclipse-rcp/plugins" />
 			<fileset dir="${platform}/Eclipse/eclipse-delta-pack/plugins" />
 			<fileset dir="${platform}/Eclipse/swtbot/plugins" />
-			<fileset dir="${platform}/CSS/css/plugins" />
+			<fileset dir="${css}/plugins" />
 		</copy>
 	</target>
 

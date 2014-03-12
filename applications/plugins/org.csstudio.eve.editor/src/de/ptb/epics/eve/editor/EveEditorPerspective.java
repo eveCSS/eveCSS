@@ -39,8 +39,8 @@ public class EveEditorPerspective implements IPerspectiveFactory {
 		layout.addView(ErrorView.ID, IPageLayout.BOTTOM , 0.67f, editorArea);
 		layout.getViewLayout(ErrorView.ID).setCloseable(false);
 		
-		layout.addStandaloneView(IPageLayout.ID_OUTLINE, true, IPageLayout.TOP,
-				0.67f, ErrorView.ID);
+		/*layout.addStandaloneView(IPageLayout.ID_OUTLINE, true, IPageLayout.TOP,
+				0.67f, ErrorView.ID);*/
 		
 		layout.addView(ChainView.ID, IPageLayout.BOTTOM, 0.20f, ScanView.ID);
 		layout.getViewLayout(ChainView.ID).setCloseable(false);

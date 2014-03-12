@@ -8,10 +8,7 @@ Bundle-Vendor: PTB
 Bundle-Localization: plugin
 Require-Bundle: de.ptb.epics.eve.data;bundle-version="1.0.0",
  de.ptb.epics.eve.ecp1,
- de.ptb.epics.eve.preferences;bundle-version="1.0.0",
- org.csstudio.utility.pv.epics;bundle-version="1.0.10",
  org.csstudio.swt.xygraph;bundle-version="1.0.1",
- org.eclipse.draw2d,
  org.eclipse.core.resources;bundle-version="3.5.1",
  org.eclipse.help.ui;bundle-version="3.4.1",
  org.csstudio.csdata;bundle-version="3.0.1",
@@ -19,9 +16,8 @@ Require-Bundle: de.ptb.epics.eve.data;bundle-version="1.0.0",
  de.ptb.epics.eve.editor,
  de.ptb.epics.eve.resources;bundle-version="1.0.0",
  org.apache.log4j;bundle-version="1.2.16",
- org.epics.util;bundle-version="0.2.2",
  org.epics.vtype;bundle-version="2.1.0",
- org.eclipse.pde.runtime;bundle-version="3.4.201"
+ org.csstudio.utility.pv.epics;bundle-version="3.1.4"
 Eclipse-LazyStart: true
 Bundle-ClassPath: de.ptb.epics.ecp1.client.jar,
  de.ptb.epics.ecp1.intern.jar,
@@ -29,8 +25,8 @@ Bundle-ClassPath: de.ptb.epics.ecp1.client.jar,
 Bundle-ActivationPolicy: lazy
 Import-Package: de.ptb.epics.eve.util.data,
  de.ptb.epics.eve.util.jface,
- de.ptb.epics.eve.util.math.statistics,
  de.ptb.epics.eve.util.pdf,
  de.ptb.epics.eve.util.pv,
  de.ptb.epics.eve.util.swt
 Export-Package: de.ptb.epics.eve.viewer.views.plotview
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

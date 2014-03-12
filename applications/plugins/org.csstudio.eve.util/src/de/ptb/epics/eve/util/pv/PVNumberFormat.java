@@ -41,6 +41,7 @@ public class PVNumberFormat extends DecimalFormat {
 		Formatter formatter = new Formatter(
 				new Locale(Locale.ENGLISH.getCountry()));
 		sb.append(formatter.format("%14.7g", number).out().toString().trim());
+		formatter.close();
 		return sb;
 	}
 
@@ -54,6 +55,7 @@ public class PVNumberFormat extends DecimalFormat {
 		Formatter formatter = new Formatter(
 				new Locale(Locale.ENGLISH.getCountry()));
 		sb.append(formatter.format("%d", number).out().toString().trim());
+		formatter.close();
 		return sb;
 	}
 
