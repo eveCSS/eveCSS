@@ -15,10 +15,8 @@ Export-Package: de.ptb.epics.eve.data,
  de.ptb.epics.eve.data.scandescription.processors,
  de.ptb.epics.eve.data.scandescription.updatenotification,
  de.ptb.epics.eve.data.scandescription.updater
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.apache.xml.serialize,
- org.eclipse.core.runtime;version="3.4.0",
- org.eclipse.jface.viewers
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: org.apache.xml.serialize
 Require-Bundle: org.eclipse.swt;bundle-version="3.7.1",
  org.csstudio.swt.xygraph;bundle-version="1.0.1",
  org.apache.log4j;bundle-version="1.2.16",
