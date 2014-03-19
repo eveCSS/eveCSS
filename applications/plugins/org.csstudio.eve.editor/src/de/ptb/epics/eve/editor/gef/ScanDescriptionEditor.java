@@ -26,6 +26,7 @@ import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
@@ -49,6 +50,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.progress.IProgressService;
@@ -64,6 +66,8 @@ import de.ptb.epics.eve.data.scandescription.updater.VersionTooOldException;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.dialogs.lostdevices.LostDevicesDialog;
 import de.ptb.epics.eve.editor.dialogs.updater.ChangeLogDialog;
+import de.ptb.epics.eve.editor.gef.actions.Copy;
+import de.ptb.epics.eve.editor.gef.actions.Paste;
 import de.ptb.epics.eve.editor.jobs.file.Save;
 
 /**
@@ -452,6 +456,21 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		};
 	}
 	
+	@Override
+	protected void createActions() {
+		super.createActions();
+		
+		ActionRegistry registry = getActionRegistry();
+		IAction action;
+		
+		action = new Copy(this);
+		registry.registerAction(action);
+		getSelectionActions().add(action.getId());
+		
+		action = new Paste(this);
+		registry.registerAction(action);
+	}
+	
 	protected class OutlinePage extends ContentOutlinePage {
 		private SashForm sash;
 		// private ScrollableThumbnail thumbnail;
@@ -498,14 +517,26 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 					disposeListener);*/
 		}
 		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
 		public void init(IPageSite pageSite) {
 			super.init(pageSite);
 		}
 		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
 		public Control getControl() {
 			return sash;
 		}
 		
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
 		public void dispose() {
 			getSelectionSynchronizer().removeViewer(getViewer());
 			/*if (getGraphicalViewer().getControl() != null &&

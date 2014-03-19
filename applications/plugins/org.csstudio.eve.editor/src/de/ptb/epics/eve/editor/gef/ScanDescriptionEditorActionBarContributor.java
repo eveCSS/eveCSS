@@ -30,10 +30,6 @@ public class ScanDescriptionEditorActionBarContributor extends
 	 */
 	@Override
 	public void contributeToToolBar(IToolBarManager toolBarManager) {
-		//toolBarManager.add(getAction(ActionFactory.UNDO.getId()));
-		//toolBarManager.add(getAction(ActionFactory.REDO.getId()));
-		//toolBarManager.add(getAction(ActionFactory.DELETE.getId()));
-		//toolBarManager.add(new Separator());
 		toolBarManager.add(new ZoomComboContributionItem(getPage()) {
 			@Override
 			public boolean isVisible() {
@@ -67,6 +63,9 @@ public class ScanDescriptionEditorActionBarContributor extends
 		addGlobalActionKey(ActionFactory.PRINT.getId());
 		addGlobalActionKey(GEFActionConstants.ZOOM_IN);
 		addGlobalActionKey(GEFActionConstants.ZOOM_OUT);
+		addGlobalActionKey(ActionFactory.PASTE.getId());
+		addGlobalActionKey(ActionFactory.COPY.getId());
+		addGlobalActionKey(ActionFactory.CUT.getId());
 	}
 	
 	/**

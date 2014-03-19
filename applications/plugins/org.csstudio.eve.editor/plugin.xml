@@ -248,6 +248,18 @@
                </visibleWhen>
             </command>
             <command
+                  commandId="org.eclipse.ui.edit.cut"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.edit.copy"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.edit.paste"
+                  style="push">
+            </command>
+            <command
                   commandId="org.eclipse.ui.edit.delete"
                   style="push">
                <visibleWhen>
@@ -584,6 +596,25 @@
          <command
                commandId="org.eclipse.ui.edit.redo"
                label="Redo"
+               style="push">
+         </command>
+         <separator
+               name="de.ptb.epics.eve.editor.gef.GraphicalEditor.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="org.eclipse.ui.edit.cut"
+               label="Cut"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.ui.edit.copy"
+               label="Copy"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.ui.edit.paste"
+               label="Paste"
                style="push">
          </command>
          <separator
