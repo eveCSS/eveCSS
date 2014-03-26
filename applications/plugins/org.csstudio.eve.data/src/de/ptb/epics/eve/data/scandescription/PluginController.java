@@ -79,6 +79,28 @@ public class PluginController implements IModelErrorProvider,
 	}
 
 	/**
+	 * Copy Constructor.
+	 * 
+	 * @param pluginController the plugin controller to be copied
+	 * @param scanModule the scan module the plug in will be added to
+	 * @return a copy of the given plugin controller
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public static PluginController newInstance(
+			PluginController pluginController, ScanModule scanModule) {
+		PluginController newPluginController = 
+				new PluginController(pluginController.getPlugin());
+		newPluginController.setScanModule(scanModule);
+		newPluginController.setValues(new HashMap<String, String>(
+				pluginController.getValues()));
+		if (pluginController.isFilledWithDefault()) {
+			newPluginController.fillWithDefaults();
+		}
+		return newPluginController;
+	}
+	
+	/**
 	 * Returns the current plug in to control.
 	 * 
 	 * @return the current plug in that is controlled by this controller
@@ -138,6 +160,24 @@ public class PluginController implements IModelErrorProvider,
 		return this.values.get(name);
 	}
 
+	/**
+	 * Returns the parameter value map.
+	 * 
+	 * @return parameter values
+	 */
+	public Map<String, String> getValues() {
+		return this.values;
+	}
+	
+	/**
+	 * Set parameter value map.
+	 * 
+	 * @param values parameter values
+	 */
+	public void setValues(Map<String, String> values) {
+		this.values = values;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

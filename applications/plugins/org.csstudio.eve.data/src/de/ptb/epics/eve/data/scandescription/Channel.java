@@ -130,6 +130,29 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	}
 
 	/**
+	 * Copy Constructor.
+	 * 
+	 * @param channel the channel to be copied
+	 * @param scanModule the scan module the channel will be added to
+	 * @return a copy of the given channel
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public static Channel newInstance(Channel channel, ScanModule scanModule) {
+		Channel newChannel = new Channel(scanModule, 
+				(DetectorChannel)channel.getAbstractDevice());
+		newChannel.setAverageCount(channel.getAverageCount());
+		newChannel.setMaxAttempts(channel.getMaxAttempts());
+		newChannel.setMaxDeviation(channel.getMaxDeviation());
+		newChannel.setMinimum(channel.getMinimum());
+		newChannel.setDeferred(channel.isDeferred());
+		// TODO normalize channel
+		// TODO repeat on redo ?
+		// TODO Redo Events
+		return newChannel;
+	}
+	
+	/**
 	 * Returns how often the detector should be read to make an average
 	 * result for the measuring.
 	 * 

@@ -141,6 +141,26 @@ public class Positioning extends AbstractBehavior implements
 	}
 
 	/**
+	 * Copy Constructor.
+	 * 
+	 * @param positioning the positioning to be copied
+	 * @param scanModule the scan module the positioning will belong to
+	 * @return a copy of the given positioning
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public static Positioning newInstance(Positioning positioning,
+			ScanModule scanModule) {
+		Positioning newPositioning = new Positioning(scanModule);
+		newPositioning.pluginController = PluginController.newInstance(
+				positioning.pluginController, scanModule);
+		newPositioning.setDetectorChannel(positioning.getDetectorChannel());
+		newPositioning.setNormalization(positioning.getNormalization());
+		newPositioning.setMotorAxis(positioning.getMotorAxis());
+		return newPositioning;
+	}
+	
+	/**
 	 * Returns the detector channel of the positioning.
 	 * 
 	 * @return the detector channel of the positioning.

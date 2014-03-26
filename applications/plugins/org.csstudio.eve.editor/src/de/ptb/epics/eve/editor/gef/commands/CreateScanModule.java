@@ -13,7 +13,6 @@ import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
  * @since 1.6
  */
 public class CreateScanModule extends Command {
-	
 	private static Logger logger = Logger.getLogger(CreateScanModule.class
 			.getName());
 	

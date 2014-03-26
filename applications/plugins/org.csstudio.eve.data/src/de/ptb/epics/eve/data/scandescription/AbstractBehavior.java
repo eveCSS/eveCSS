@@ -49,6 +49,26 @@ public abstract class AbstractBehavior implements IModelUpdateListener,
 	}
 
 	/**
+	 * Returns the scan module the axis is corresponding to.
+	 * 
+	 * @return the corresponding scan module
+	 */
+	public ScanModule getScanModule() {
+		return this.scanModule;
+	}
+
+	private void updateListeners() {
+		final CopyOnWriteArrayList<IModelUpdateListener> list = 
+			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
+		
+		Iterator<IModelUpdateListener> it = list.iterator();
+		
+		while(it.hasNext()) {
+			it.next().updateEvent(new ModelUpdateEvent(this, null));
+		}
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -72,25 +92,5 @@ public abstract class AbstractBehavior implements IModelUpdateListener,
 	public boolean removeModelUpdateListener(
 			final IModelUpdateListener modelUpdateListener) {
 		return this.modelUpdateListener.remove(modelUpdateListener);
-	}
-	
-	private void updateListeners() {
-		final CopyOnWriteArrayList<IModelUpdateListener> list = 
-			new CopyOnWriteArrayList<IModelUpdateListener>(this.modelUpdateListener);
-		
-		Iterator<IModelUpdateListener> it = list.iterator();
-		
-		while(it.hasNext()) {
-			it.next().updateEvent(new ModelUpdateEvent(this, null));
-		}
-	}
-
-	/**
-	 * Returns the scan module the axis is corresponding to.
-	 * 
-	 * @return the corresponding scan module
-	 */
-	public ScanModule getScanModule() {
-		return this.scanModule;
 	}
 }

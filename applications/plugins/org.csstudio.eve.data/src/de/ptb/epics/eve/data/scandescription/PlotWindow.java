@@ -130,6 +130,30 @@ public class PlotWindow implements IModelUpdateListener, IModelUpdateProvider,
 	}
 	
 	/**
+	 * Copy Constructor.
+	 * 
+	 * @param plotWindow the plot window to be copied
+	 * @param scanModule the scan module the plot window will be added to
+	 * @return a copy of the given plot window
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public static PlotWindow newInstance(PlotWindow plotWindow,
+			ScanModule scanModule) {
+		PlotWindow newWindow = new PlotWindow(scanModule);
+		newWindow.setId(scanModule.getChain().getScanDescription()
+				.getAvailablePlotId());
+		newWindow.setName(plotWindow.getName());
+		newWindow.setMode(plotWindow.getMode());
+		newWindow.setInit(plotWindow.isInit());
+		newWindow.setXAxis(plotWindow.getXAxis());
+		for (YAxis yAxis : plotWindow.getYAxes()) {
+			newWindow.addYAxis(YAxis.newInstance(yAxis));
+		}
+		return newWindow;
+	}
+	
+	/**
 	 * Returns the id of the plot window.
 	 * 
 	 * @return the id of the plot window

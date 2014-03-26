@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -131,6 +132,9 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	// indicates whether the scan description should be saved in the result file
 	private boolean saveScanDescription;
 	
+	private boolean reserveIds;
+	private List<Integer> reservedIds;
+	
 	private PropertyChangeSupport propertyChangeSupport;
 	
 	/**
@@ -182,6 +186,9 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.comment = "";
 		this.saveScanDescription = false;
 		this.autoNumber = true;
+		
+		this.reserveIds = false;
+		this.reservedIds = new LinkedList<Integer>();
 		
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
@@ -235,15 +242,46 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	}
 	
 	/**
+	 * Get an available id for a scan module. The ID is reserved until
+	 * {@link #resetReservedIds()} is called if reservation is set via 
+	 * {@link #setReserveIds(boolean)}.
+	 * <p>
+	 * Not Thread safe !
 	 * 
-	 * @return
+	 * @return an available id for a scan module
 	 */
 	public int getAvailableScanModuleId() {
 		int i = 1;
-		while(this.getScanModuleById(i) != null) {
+		while(this.getScanModuleById(i) != null ||
+				reservedIds.contains(i)) {
 			i++;
 		}
+		if (this.reserveIds) {
+			this.reservedIds.add(i);
+		}
 		return i;
+	}
+	
+	/**
+	 * Clears the list of reserved scan module IDs.
+	 * 
+	 * @since 1.19
+	 */
+	public void resetReservedIds() {
+		this.reservedIds.clear();
+	}
+	
+	/**
+	 * Sets whether IDs requested by {@link #getAvailableScanModuleId()} are 
+	 * reserved.
+	 * 
+	 * @param reserve <code>true</code> if IDs should be reserved, 
+	 * 		<code>false</code> otherwise
+	 * 
+	 * @since 1.19
+	 */
+	public void setReserveIds(boolean reserve) {
+		this.reserveIds = reserve;
 	}
 	
 	/**

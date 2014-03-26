@@ -90,6 +90,23 @@ public class Axis extends AbstractMainPhaseBehavior implements
 	}
 
 	/**
+	 * Copy Constructor.
+	 * 
+	 * @param axis the axis to be copied
+	 * @param scanModule the scanModule the axis will be added to
+	 * @return a copy of the given axis
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public static Axis newInstance(Axis axis, ScanModule scanModule) {
+		Axis newAxis = new Axis(scanModule, (MotorAxis)axis.getAbstractDevice());
+		newAxis.setStepfunction(axis.getStepfunction());
+		newAxis.setPositionMode(axis.getPositionMode());
+		newAxis.setMode(AxisMode.newInstance(axis.getMode(), newAxis));
+		return newAxis;
+	}
+	
+	/**
 	 * @return the stepfunction
 	 */
 	public Stepfunctions getStepfunction() {
@@ -175,6 +192,10 @@ public class Axis extends AbstractMainPhaseBehavior implements
 		return mode;
 	}
 
+	private void setMode(AxisMode mode) {
+		this.mode = mode;
+	}
+	
 	/**
 	 * 
 	 * @return

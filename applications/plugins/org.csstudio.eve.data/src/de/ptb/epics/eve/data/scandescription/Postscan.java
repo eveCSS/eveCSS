@@ -31,6 +31,22 @@ public class Postscan extends AbstractPostscanBehavior {
 		this.setAbstractPrePostscanDevice(dev);
 	}
 	
+	/**
+	 * Copy Constructor.
+	 * 
+	 * @param postscan the postscan to be copied
+	 * @return a copy of the given postscan
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public static Postscan newInstance(Postscan postscan) {
+		Postscan newPostscan = new Postscan(
+				postscan.getAbstractPrePostscanDevice());
+		newPostscan.setValue(postscan.getValue());
+		newPostscan.setReset(postscan.isReset());
+		return newPostscan;
+	}
+	
 	/*
 	 * indicates whether the value should be reset to the value it had when
 	 * the scan module started.

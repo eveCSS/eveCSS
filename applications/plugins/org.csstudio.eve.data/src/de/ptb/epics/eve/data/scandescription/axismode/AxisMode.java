@@ -2,9 +2,11 @@ package de.ptb.epics.eve.data.scandescription.axismode;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.Axis;
+import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 
@@ -59,6 +61,82 @@ public abstract class AxisMode implements IModelErrorProvider {
 		default: 
 			throw new IllegalArgumentException("Incorrect Stepfunction code");
 		}
+	}
+	
+	/**
+	 * Copy Constructor.
+	 * 
+	 * @param axisMode the axis mode to be copied
+	 * @param axis the axis the axis mode will belong to
+	 * @return a copy of the given axis mode
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public static AxisMode newInstance(AxisMode axisMode, Axis axis) {
+		AxisMode newMode = AxisMode.newMode(axis.getStepfunction(), axis);
+		
+		if (axisMode instanceof AddMultiplyModeInt) {
+			AddMultiplyModeInt axisModeInt = (AddMultiplyModeInt) axisMode;
+			AddMultiplyModeInt newModeInt = (AddMultiplyModeInt) newMode;
+			newModeInt.setAdjustParameter(axisModeInt.getAdjustParameter());
+			newModeInt.setAutoAdjust(axisModeInt.isAutoAdjust());
+			newModeInt.setMainAxis(axisModeInt.isMainAxis());
+			newModeInt.setStart(axisModeInt.getStart());
+			newModeInt.setStop(axisModeInt.getStop());
+			newModeInt.setStepwidth(axisModeInt.getStepwidth());
+			newModeInt.setStepcount(axisModeInt.getStepcount());
+		} else if (axisMode instanceof AddMultiplyModeDouble) {
+			AddMultiplyModeDouble axisModeDouble = 
+					(AddMultiplyModeDouble) axisMode;
+			AddMultiplyModeDouble newModeDouble = 
+					(AddMultiplyModeDouble) newMode;
+			newModeDouble.setAdjustParameter(axisModeDouble.getAdjustParameter());
+			newModeDouble.setAutoAdjust(axisModeDouble.isAutoAdjust());
+			newModeDouble.setMainAxis(axisModeDouble.isMainAxis());
+			newModeDouble.setStart(axisModeDouble.getStart());
+			newModeDouble.setStop(axisModeDouble.getStop());
+			newModeDouble.setStepwidth(axisModeDouble.getStepwidth());
+			newModeDouble.setStepcount(axisModeDouble.getStepcount());
+		} else if (axisMode instanceof AddMultiplyModeDate) {
+			AddMultiplyModeDate axisModeDate = (AddMultiplyModeDate) axisMode;
+			AddMultiplyModeDate newModeDate = (AddMultiplyModeDate) newMode;
+			newModeDate.setAdjustParameter(axisModeDate.getAdjustParameter());
+			newModeDate.setAutoAdjust(axisModeDate.isAutoAdjust());
+			newModeDate.setMainAxis(axisModeDate.isMainAxis());
+			newModeDate.setStart(axisModeDate.getStart());
+			newModeDate.setStop(axisModeDate.getStop());
+			newModeDate.setStepwidth(axisModeDate.getStepwidth());
+			newModeDate.setStepcount(axisModeDate.getStepcount());
+		} else if (axisMode instanceof AddMultiplyModeDuration) {
+			AddMultiplyModeDuration axisModeDuration = 
+					(AddMultiplyModeDuration) axisMode;
+			AddMultiplyModeDuration newModeDuration = 
+					(AddMultiplyModeDuration) newMode;
+			newModeDuration.setAdjustParameter(
+					axisModeDuration.getAdjustParameter());
+			newModeDuration.setAutoAdjust(axisModeDuration.isAutoAdjust());
+			newModeDuration.setMainAxis(axisModeDuration.isMainAxis());
+			newModeDuration.setStart(axisModeDuration.getStart());
+			newModeDuration.setStop(axisModeDuration.getStop());
+			newModeDuration.setStepwidth(axisModeDuration.getStepwidth());
+			newModeDuration.setStepcount(axisModeDuration.getStepcount());
+		} else if (axisMode instanceof FileMode) {
+			FileMode axisFileMode = (FileMode) axisMode;
+			FileMode newFileMode = (FileMode) newMode;
+			newFileMode.setFile(new File(axisFileMode.getFile().toURI()));
+		} else if (axisMode instanceof PluginMode) {
+			PluginMode axisPluginMode = (PluginMode) axisMode;
+			PluginMode newPluginMode = (PluginMode) newMode;
+			newPluginMode.setPluginController(PluginController.newInstance(
+				axisPluginMode.getPluginController(),axis.getScanModule()));
+		} else if (axisMode instanceof PositionlistMode) {
+			PositionlistMode axisPositionlistMode = (PositionlistMode) axisMode;
+			PositionlistMode newPositionlistMode = (PositionlistMode) newMode;
+			newPositionlistMode.setPositionList(axisPositionlistMode
+					.getPositionList());
+		}
+		
+		return newMode;
 	}
 	
 	/**

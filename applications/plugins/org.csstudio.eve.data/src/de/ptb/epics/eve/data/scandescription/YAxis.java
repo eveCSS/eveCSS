@@ -74,6 +74,25 @@ public class YAxis implements IModelUpdateListener, IModelUpdateProvider {
 	}
 	
 	/**
+	 * Copy Constructor.
+	 * 
+	 * @param yAxis the yaxis to be copied
+	 * @return a copy fo the given yaxis
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public static YAxis newInstance(YAxis yAxis) {
+		YAxis newYAxis = new YAxis(yAxis.getDetectorChannel());
+		newYAxis.setNormalizeChannel(yAxis.getNormalizeChannel());
+		newYAxis.setLinestyle(yAxis.getLinestyle());
+		newYAxis.setMarkstyle(yAxis.getMarkstyle());
+		newYAxis.setMode(yAxis.getMode());
+		newYAxis.setColor(new RGB(yAxis.getColor().red, yAxis.getColor().green,
+				yAxis.getColor().blue));
+		return newYAxis;
+	}
+	
+	/**
 	 * Returns the color of the line and mark points of the axis.
 	 * 
 	 * @return the color of the line and mark points
