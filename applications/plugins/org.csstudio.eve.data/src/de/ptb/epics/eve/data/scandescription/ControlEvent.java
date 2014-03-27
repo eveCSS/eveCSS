@@ -76,6 +76,22 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 	}
 	
 	/**
+	 * Copy Constructor.
+	 * 
+	 * @param controlEvent the control event to be copied
+	 * @return a copy of the given control event
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public static ControlEvent newInstance(ControlEvent controlEvent) {
+		ControlEvent newControlEvent = new ControlEvent(
+				controlEvent.getEventType(), controlEvent.getEvent(),
+				controlEvent.getEvent().getID());
+		newControlEvent.limit = Limit.newInstance(controlEvent.getLimit());
+		return newControlEvent;
+	}
+	
+	/**
 	 * Returns the type of the control event.
 	 * 
 	 * @return the type of the control event

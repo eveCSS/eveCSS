@@ -72,6 +72,22 @@ public class Limit implements IModelUpdateProvider {
 	}
 	
 	/**
+	 * Copy Constructor.
+	 * 
+	 * @param limit the limit to be copied
+	 * @return a copy of the given limit.
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public static Limit newInstance(Limit limit) {
+		Limit newLimit = new Limit();
+		newLimit.setType(limit.getType());
+		newLimit.setComparison(limit.getComparison());
+		newLimit.setValue(limit.getValue());
+		return newLimit;
+	}
+	
+	/**
 	 * Returns the operator.
 	 * 
 	 * @return the operator of the comparison.

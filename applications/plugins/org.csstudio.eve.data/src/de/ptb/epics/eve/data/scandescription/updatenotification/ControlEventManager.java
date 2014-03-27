@@ -19,7 +19,6 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
  * @author Marcus Michalsky
  */
 public class ControlEventManager implements IControlEventProvider, IModelErrorProvider {
-
 	private List<? extends ControlEvent> controlEventList;
 	private List<IModelUpdateListener> modelUpdateListener;
 	
@@ -102,6 +101,33 @@ public class ControlEventManager implements IControlEventProvider, IModelErrorPr
 		this.controlEventType = controlEventType;
 	}
 
+	/**
+	 * Copy Constructor.
+	 * 
+	 * @param controlEventManager the control event manager that should be copied
+	 * @param the list where to store events (XXX should be delegated)
+	 * @return a copy of the given control event manager
+	 */
+	public static ControlEventManager newInstance(
+			ControlEventManager controlEventManager, 
+					List<? extends ControlEvent> list) {
+		ControlEventManager newControlEventManager = new ControlEventManager(
+				list);
+		newControlEventManager.parentChain = controlEventManager
+				.getParentChain();
+		newControlEventManager.parentScanModule = controlEventManager
+				.getParentScanModule();
+		newControlEventManager.parentChannel = controlEventManager
+				.getParentChannel();
+		newControlEventManager.controlEventType = controlEventManager
+				.getControlEventType();
+		for (ControlEvent event : controlEventManager.getControlEventsList()) {
+			newControlEventManager.addControlEvent(ControlEvent
+					.newInstance(event));
+		}
+		return newControlEventManager;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
