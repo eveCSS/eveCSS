@@ -46,6 +46,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.GridData;
 
+import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
@@ -694,8 +695,8 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			this.detectorReadyEventCheckBox.setSelection(this.currentChannel
 					.getDetectorReadyEvent() != null);
 
-			this.redoEventComposite.setControlEventManager(this.currentChannel
-					.getRedoControlEventManager());
+			this.redoEventComposite.setEvents(this.currentChannel,
+					EventImpacts.REDO);
 
 			this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
@@ -760,7 +761,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 
 			this.detectorReadyEventCheckBox.setSelection(false);
 
-			this.redoEventComposite.setControlEventManager(null);
+			this.redoEventComposite.setEvents(this.currentChannel, null);
 
 			top.setVisible(false);
 		}

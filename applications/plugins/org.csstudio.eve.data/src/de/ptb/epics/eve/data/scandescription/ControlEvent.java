@@ -69,9 +69,11 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 		this.setId(id);
 
 		switch (this.eventType) {
-			case MONITOR:
-				this.limit.setType(event.getMonitor().getDataType().getType());
-				break;
+		case MONITOR:
+			this.limit.setType(event.getMonitor().getDataType().getType());
+			break;
+		default:
+			break;
 		}
 	}
 	
@@ -87,7 +89,10 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 		ControlEvent newControlEvent = new ControlEvent(
 				controlEvent.getEventType(), controlEvent.getEvent(),
 				controlEvent.getEvent().getID());
-		newControlEvent.limit = Limit.newInstance(controlEvent.getLimit());
+		newControlEvent.getLimit().setType(controlEvent.getLimit().getType());
+		newControlEvent.getLimit().setComparison(
+				controlEvent.getLimit().getComparison());
+		newControlEvent.getLimit().setValue(controlEvent.getLimit().getValue());
 		return newControlEvent;
 	}
 	

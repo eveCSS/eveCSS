@@ -41,7 +41,9 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 
+import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.Storage;
 import de.ptb.epics.eve.data.scandescription.errors.AxisError;
@@ -681,29 +683,11 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			if (this.eventsTabFolder.getSelection() == null) {
 				this.eventsTabFolder.setSelection(0);
 			}
-
-			this.triggerEventComposite
-					.setControlEventManager(this.currentScanModule
-							.getTriggerControlEventManager());
-			this.breakEventComposite
-					.setControlEventManager(this.currentScanModule
-							.getBreakControlEventManager());
-			this.redoEventComposite
-					.setControlEventManager(this.currentScanModule
-							.getRedoControlEventManager());
-			this.pauseEventComposite
-					.setControlEventManager(this.currentScanModule
-							.getPauseControlEventManager());
 		} else {
 			// no scan module selected -> reset contents
 			selectionProviderWrapper.setSelectionProvider(null);
 			
 			this.setPartName("No Scan Module selected");
-			
-			triggerEventComposite.setControlEventManager(null);
-			breakEventComposite.setControlEventManager(null);
-			redoEventComposite.setControlEventManager(null);
-			pauseEventComposite.setControlEventManager(null);
 			
 			top.setVisible(false);
 		}
@@ -781,29 +765,36 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		this.breakEventsTabItem.setImage(null);
 		this.triggerEventsTabItem.setImage(null);
 
-		if (this.currentScanModule.getPauseControlEventManager()
-				.getModelErrors().size() > 0) {
-			this.pauseEventsTabItem.setImage(PlatformUI.getWorkbench()
-					.getSharedImages()
-					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+		for (ControlEvent event : this.currentScanModule.getPauseEvents()) {
+			if (event.getModelErrors().size() > 0) {
+				this.pauseEventsTabItem.setImage(PlatformUI.getWorkbench()
+						.getSharedImages()
+						.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+			}
 		}
-		if (this.currentScanModule.getRedoControlEventManager()
-				.getModelErrors().size() > 0) {
-			this.redoEventsTabItem.setImage(PlatformUI.getWorkbench()
-					.getSharedImages()
-					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+		
+		for (ControlEvent event : this.currentScanModule.getRedoEvents()) {
+			if (event.getModelErrors().size() > 0) {
+				this.redoEventsTabItem.setImage(PlatformUI.getWorkbench()
+						.getSharedImages()
+						.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+			}
 		}
-		if (this.currentScanModule.getBreakControlEventManager()
-				.getModelErrors().size() > 0) {
-			this.breakEventsTabItem.setImage(PlatformUI.getWorkbench()
-					.getSharedImages()
-					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+		
+		for (ControlEvent event : this.currentScanModule.getBreakEvents()) {
+			if (event.getModelErrors().size() > 0) {
+				this.breakEventsTabItem.setImage(PlatformUI.getWorkbench()
+						.getSharedImages()
+						.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+			}
 		}
-		if (this.currentScanModule.getTriggerControlEventManager()
-				.getModelErrors().size() > 0) {
-			this.triggerEventsTabItem.setImage(PlatformUI.getWorkbench()
-					.getSharedImages()
-					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+		
+		for (ControlEvent event : this.currentScanModule.getTriggerEvents()) {
+			if (event.getModelErrors().size() > 0) {
+				this.triggerEventsTabItem.setImage(PlatformUI.getWorkbench()
+						.getSharedImages()
+						.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
+			}
 		}
 	}
 
@@ -872,7 +863,22 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 			} else {
 				this.appendScheduleEventCheckBox.setSelection(false);
 			}
+			
+			this.triggerEventComposite.setEvents(this.currentScanModule,
+					EventImpacts.TRIGGER);
+			this.breakEventComposite.setEvents(this.currentScanModule,
+					EventImpacts.BREAK);
+			this.redoEventComposite.setEvents(this.currentScanModule,
+					EventImpacts.REDO);
+			this.pauseEventComposite.setEvents(this.currentScanModule,
+					EventImpacts.PAUSE);
+			
 			checkForErrors();
+		} else {
+			triggerEventComposite.setEvents(this.currentScanModule, null);
+			breakEventComposite.setEvents(this.currentScanModule, null);
+			redoEventComposite.setEvents(this.currentScanModule, null);
+			pauseEventComposite.setEvents(this.currentScanModule, null);
 		}
 	}
 

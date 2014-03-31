@@ -1027,33 +1027,24 @@ public class ScanDescriptionSaver implements
 			}
 
 			// all events except the default start event are in startevent
-			Iterator<ControlEvent> controlEventIterator = chain
-					.getStartEventsIterator();
-			while (controlEventIterator.hasNext()) {
-				this.writeControlEvent(controlEventIterator.next(),
-						"startevent");
+			for (ControlEvent event : chain.getStartEvents()) {
+				this.writeControlEvent(event, "startevent");
 			}
 
-			final Iterator<PauseEvent> pauseEventIterator = chain
-					.getPauseEventsIterator();
-			while (pauseEventIterator.hasNext()) {
-				this.writeControlEvent(pauseEventIterator.next(), "pauseevent");
+			for (ControlEvent event : chain.getPauseEvents()) {
+				this.writeControlEvent(event, "pauseevent");
 			}
 
-			controlEventIterator = chain.getRedoEventsIterator();
-			while (controlEventIterator.hasNext()) {
-				this.writeControlEvent(controlEventIterator.next(), "redoevent");
+			for (ControlEvent event : chain.getRedoEvents()) {
+				this.writeControlEvent(event, "redoevent");
 			}
 
-			controlEventIterator = chain.getBreakEventsIterator();
-			while (controlEventIterator.hasNext()) {
-				this.writeControlEvent(controlEventIterator.next(),
-						"breakevent");
+			for (ControlEvent event : chain.getBreakEvents()) {
+				this.writeControlEvent(event, "breakevent");
 			}
 
-			controlEventIterator = chain.getStopEventsIterator();
-			while (controlEventIterator.hasNext()) {
-				this.writeControlEvent(controlEventIterator.next(), "stopevent");
+			for (ControlEvent event : chain.getStopEvents()) {
+				this.writeControlEvent(event, "stopevent");
 			}
 
 			this.atts.clear();
@@ -1209,30 +1200,22 @@ public class ScanDescriptionSaver implements
 			this.contentHandler.endElement("", "triggerconfirmchannel",
 					"triggerconfirmchannel");
 			
-			Iterator<ControlEvent> controlEventIterator = scanModule
-					.getTriggerEventsIterator();
-			while (controlEventIterator.hasNext()) {
-				this.writeControlEvent(controlEventIterator.next(),
-						"triggerevent");
+			for (ControlEvent event : scanModule.getTriggerEvents()) {
+				this.writeControlEvent(event, "triggerevent");
 			}
-
-			Iterator<PauseEvent> pauseEventIterator = scanModule
-					.getPauseEventsIterator();
-			while (pauseEventIterator.hasNext()) {
-				this.writeControlEvent(pauseEventIterator.next(), "pauseevent");
+			
+			for (ControlEvent event : scanModule.getPauseEvents()) {
+				this.writeControlEvent(event, "pauseevent");
 			}
-
-			controlEventIterator = scanModule.getRedoEventsIterator();
-			while (controlEventIterator.hasNext()) {
-				this.writeControlEvent(controlEventIterator.next(), "redoevent");
+			
+			for (ControlEvent event : scanModule.getRedoEvents()) {
+				this.writeControlEvent(event, "redoevent");
 			}
-
-			controlEventIterator = scanModule.getBreakEventsIterator();
-			while (controlEventIterator.hasNext()) {
-				this.writeControlEvent(controlEventIterator.next(),
-						"breakevent");
+			
+			for (ControlEvent event : scanModule.getBreakEvents()) {
+				this.writeControlEvent(event, "breakevent");
 			}
-
+			
 			Prescan[] prescans = scanModule.getPrescans();
 			for (int i = 0; i < prescans.length; ++i) {
 				this.writePrescan(prescans[i]);
@@ -1696,10 +1679,8 @@ public class ScanDescriptionSaver implements
 						"sendreadyevent");
 			}
 
-			Iterator<ControlEvent> controlEventIterator = channel
-					.getRedoEventsIterator();
-			while (controlEventIterator.hasNext()) {
-				this.writeControlEvent(controlEventIterator.next(), "redoevent");
+			for (ControlEvent event : channel.getRedoEvents()) {
+				this.writeControlEvent(event, "redoevent");
 			}
 
 			if (channel.isDeferred()) {

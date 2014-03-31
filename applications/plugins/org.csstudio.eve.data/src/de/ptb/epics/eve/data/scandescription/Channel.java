@@ -4,7 +4,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -16,8 +15,6 @@ import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessage;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessageEnum;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -33,6 +30,8 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		PropertyChangeListener {
 
 	private static Logger logger = Logger.getLogger(Channel.class.getName());
+	
+	public static final String REDO_EVENT_PROP = "redoEvent";
 	
 	// delegated observable
 	private PropertyChangeSupport propertyChangeSupport;
@@ -81,12 +80,6 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	private Event detectorReadyEvent;
 
 	/*
-	 * A list of the ControlEvents, that holds the configuration for the redo 
-	 * events.
-	 */
-	private List<ControlEvent> redoEvents;
-	
-	/*
 	 * This control event manager controls the redo events.
 	 */
 	private ControlEventManager redoControlEventManager;
@@ -111,9 +104,8 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		this.repeatOnRedo = false;
 		this.deferred = false;
 		this.normalizeChannel = null;
-		this.redoEvents = new ArrayList<ControlEvent>();
 		this.redoControlEventManager = new ControlEventManager(
-				this, this.redoEvents, ControlEventTypes.CONTROL_EVENT);
+				ControlEventTypes.CONTROL_EVENT);
 		this.redoControlEventManager.addModelUpdateListener(this);
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
@@ -146,9 +138,10 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		newChannel.setMaxDeviation(channel.getMaxDeviation());
 		newChannel.setMinimum(channel.getMinimum());
 		newChannel.setDeferred(channel.isDeferred());
-		// TODO normalize channel
-		// TODO repeat on redo ?
-		// TODO Redo Events
+		newChannel.setNormalizeChannel(channel.getNormalizeChannel());
+		for (ControlEvent event : channel.getRedoEvents()) {
+			newChannel.addRedoEvent(ControlEvent.newInstance(event));
+		}
 		return newChannel;
 	}
 	
@@ -245,6 +238,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 * Returns whether the channel should repeat on redo.
 	 * 
 	 * @return <code>true</code> if the channel repeats reading on a redo event.
+	 * @deprecated Attribute no longer used
 	 */
 	public boolean isRepeatOnRedo() {
 		return repeatOnRedo;
@@ -256,6 +250,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 * 
 	 * @param repeatOnRedo <code>true</code> if the detector read should be 
 	 * 		repeated, <code>false</code> otherwise
+	 * @deprecated Attribute no longer used
 	 */
 	public void setRepeatOnRedo(final boolean repeatOnRedo) {
 		this.propertyChangeSupport.firePropertyChange("repeatOnRedo",
@@ -296,21 +291,31 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	}
 
 	/**
+	 * Returns a list of redo events (original List).
+	 * 
+	 * @return a list of redo events (original list)
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public List<ControlEvent> getRedoEvents() {
+		return this.redoControlEventManager.getEvents();
+	}
+	
+	/**
 	 * Adds a redo event. 
 	 * 
 	 * @param redoEvent the redo event that should be added
 	 * @return <code>true</code> if the event has been added, 
 	 * 			<code>false</code> otherwise
+	 * @author Marcus Michalsky
+	 * @since 1.19
 	 */
 	public boolean addRedoEvent(final ControlEvent redoEvent) {
-		if(this.redoEvents.add(redoEvent)) {
-			updateListeners();
-			redoEvent.addModelUpdateListener(this.redoControlEventManager);
-			this.redoControlEventManager.updateEvent(new ModelUpdateEvent(this, 
-					new ControlEventMessage(redoEvent, 
-					ControlEventMessageEnum.ADDED)));
+		if (this.redoControlEventManager.addControlEvent(redoEvent)) {
+			this.propertyChangeSupport.firePropertyChange(Channel.REDO_EVENT_PROP,
+					null, redoEvent);
 			return true;
-		} 
+		}
 		return false;
 	}
 
@@ -320,29 +325,28 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 * @param redoEvent the redo event that should be removed
 	 * @return <code>true</code> if the event has been removed, 
 	 * 			<code>false</code> otherwise
+	 * @author Marcus Michalsky
+	 * @since 1.19
 	 */
 	public boolean removeRedoEvent(final ControlEvent redoEvent) {
-		if( this.redoEvents.remove(redoEvent)) {
-			updateListeners();
-			this.redoControlEventManager.updateEvent(new ModelUpdateEvent(this, 
-					new ControlEventMessage(redoEvent, 
-					ControlEventMessageEnum.REMOVED)));
-			redoEvent.removeModelUpdateListener(this.redoControlEventManager);
+		if (this.redoControlEventManager.removeEvent(redoEvent)) {
+			this.propertyChangeSupport.firePropertyChange(Channel.REDO_EVENT_PROP,
+					redoEvent, null);
 			return true;
-		} 
+		}
 		return false;
 	}
-
+	
 	/**
-	 * Returns an iterator of the redo events.
+	 * Removes all redo events.
 	 * 
-	 * @return an iterator of the redo events
-	 * @deprecated use {@link #getRedoControlEventManager()} and 
-	 * {@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager#getControlEventsList()} 
-	 * 			instead.
+	 * @author Marcus Michalsky
+	 * @since 1.19
 	 */
-	public Iterator<ControlEvent> getRedoEventsIterator() {
-		return this.redoEvents.iterator();
+	public void removeRedoEvents() {
+		this.redoControlEventManager.removeAllEvents();
+		this.propertyChangeSupport.firePropertyChange(Channel.REDO_EVENT_PROP,
+				this.redoControlEventManager.getEvents(), null);
 	}
 	
 	/**
@@ -412,7 +416,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		this.minimum = Double.NEGATIVE_INFINITY;
 		this.repeatOnRedo = false;
 		this.normalizeChannel = null;
-		this.redoControlEventManager.removeAllControlEvents();
+		this.redoControlEventManager.removeAllEvents();
 		logger.debug("Channel " + this.getDetectorChannel().getName()
 				+ " has been reset");
 	}

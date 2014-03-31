@@ -169,6 +169,9 @@ public class ScanDescription implements IModelUpdateProvider,
 		boolean returnValue = this.eventsMap.containsValue(event); // TODO return Value ???
 		updateListeners();
 		this.eventsMap.remove(event.getID());
+		// TODO
+		
+		/*
 		//TODO
 		// we loop through chains and collect all ControlEvents
 		// this should be done easier
@@ -184,7 +187,7 @@ public class ScanDescription implements IModelUpdateProvider,
 					loopChain.getRedoControlEventManager(), event);
 			removeControlEventIfNotInList(
 					loopChain.getPauseControlEventManager(), event);
-			for (ScanModule loopScanModule : loopChain.getScanModules()){
+			for (ScanModule loopScanModule : loopChain.getScanModules()) {
 				removeControlEventIfNotInList(
 						loopScanModule.getBreakControlEventManager(), event);
 				removeControlEventIfNotInList(
@@ -203,7 +206,7 @@ public class ScanDescription implements IModelUpdateProvider,
 					cevent.updateEvent(new ModelUpdateEvent(this, null));
 				}
 			}
-		}
+		}*/
 		return returnValue;
 	}
 
@@ -216,14 +219,12 @@ public class ScanDescription implements IModelUpdateProvider,
 	private void removeControlEventIfNotInList(
 			final ControlEventManager manager, final Event event) {
 		final List<? extends ControlEvent> eventList = 
-				manager.getControlEventsList();
+				manager.getEvents();
 		// if a controlEvent uses the event, remove the ControlEvent
 		for(ControlEvent cevent : eventList) {
 			final Event embeddedEvent = cevent.getEvent();
-			if(embeddedEvent != null) {
-				if(embeddedEvent.equals(event)) {
-					manager.removeControlEvent(cevent);
-				}
+			if(embeddedEvent != null && embeddedEvent.equals(event)) {
+					manager.removeEvent(cevent);
 			}
 		}
 	}

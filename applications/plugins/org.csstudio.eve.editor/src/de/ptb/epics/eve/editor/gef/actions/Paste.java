@@ -19,6 +19,7 @@ import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
 import de.ptb.epics.eve.editor.gef.commands.CopyScanModuleAxes;
 import de.ptb.epics.eve.editor.gef.commands.CopyScanModuleChannels;
+import de.ptb.epics.eve.editor.gef.commands.CopyScanModuleEvents;
 import de.ptb.epics.eve.editor.gef.commands.CopyScanModulePlotWindows;
 import de.ptb.epics.eve.editor.gef.commands.CopyScanModulePositionings;
 import de.ptb.epics.eve.editor.gef.commands.CopyScanModulePostScans;
@@ -109,6 +110,9 @@ public class Paste extends PasteTemplateAction {
 			CopyScanModulePlotWindows plotWindowCommand = 
 					new CopyScanModulePlotWindows(
 							sm, createCommand.getScanModule());
+			CopyScanModuleEvents eventCommand = 
+					new CopyScanModuleEvents(
+							sm, createCommand.getScanModule());
 			
 			pasteCommand.add(createCommand.
 					chain(propertiesCommand).
@@ -117,7 +121,8 @@ public class Paste extends PasteTemplateAction {
 					chain(prescanCommand).
 					chain(postscanCommand).
 					chain(positioningCommand).
-					chain(plotWindowCommand));
+					chain(plotWindowCommand).
+					chain(eventCommand));
 		}
 		
 		chain.resetReservedIds();

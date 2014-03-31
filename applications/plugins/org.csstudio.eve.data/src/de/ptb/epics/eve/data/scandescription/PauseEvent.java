@@ -61,6 +61,24 @@ public class PauseEvent extends ControlEvent {
 	}
 
 	/**
+	 * Copy Constructor.
+	 * 
+	 * @param event the event to be copied
+	 * @return a copy of the given event
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public static PauseEvent newInstance(PauseEvent event) {
+		PauseEvent newPauseEvent = new PauseEvent(event.getEventType(),
+				event.getEvent(), event.getId());
+		newPauseEvent.getLimit().setType(event.getLimit().getType());
+		newPauseEvent.getLimit().setComparison(event.getLimit().getComparison());
+		newPauseEvent.getLimit().setValue(event.getLimit().getValue());
+		newPauseEvent.eventAction = event.eventAction;
+		return newPauseEvent;
+	}
+	
+	/**
 	 * @return the eventAction
 	 * @since 1.2
 	 */

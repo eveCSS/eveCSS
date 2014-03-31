@@ -513,7 +513,7 @@ public class ExcludeFilterTest {
 				ScanDescription sd = Configurator.getBasicScanDescription(
 						measuringStation);
 				
-				sd.getChain(1).getPauseControlEventManager().addControlEvent(
+				sd.getChain(1).addPauseEvent(
 						new PauseEvent(EventTypes.MONITOR, e, 
 								e.getMonitor().getID()));
 				
@@ -532,7 +532,7 @@ public class ExcludeFilterTest {
 				ScanDescription sd = Configurator.getBasicScanDescription(
 						measuringStation);
 				
-				sd.getChain(1).getRedoControlEventManager().addControlEvent(
+				sd.getChain(1).addRedoEvent(
 						new ControlEvent(EventTypes.MONITOR, e, 
 								e.getMonitor().getID()));
 				
@@ -551,7 +551,7 @@ public class ExcludeFilterTest {
 				ScanDescription sd = Configurator.getBasicScanDescription(
 						measuringStation);
 				
-				sd.getChain(1).getBreakControlEventManager().addControlEvent(
+				sd.getChain(1).addBreakEvent(
 						new ControlEvent(EventTypes.MONITOR, e, 
 								e.getMonitor().getID()));
 				
@@ -561,7 +561,7 @@ public class ExcludeFilterTest {
 						getAbstractDeviceById(e.getID()));
 			}
 			
-			// event in stopk event manager of chain
+			// event in stop event manager of chain
 			for(Event e : measuringStation.getEvents()) {
 				ExcludeFilter filteredMeasuringStation = new ExcludeFilter();
 				filteredMeasuringStation.setSource(measuringStation);
@@ -570,7 +570,7 @@ public class ExcludeFilterTest {
 				ScanDescription sd = Configurator.getBasicScanDescription(
 						measuringStation);
 				
-				sd.getChain(1).getStopControlEventManager().addControlEvent(
+				sd.getChain(1).addStopEvent(
 						new ControlEvent(EventTypes.MONITOR, e, 
 								e.getMonitor().getID()));
 				
@@ -589,8 +589,8 @@ public class ExcludeFilterTest {
 				ScanDescription sd = Configurator.getBasicScanDescription(
 						measuringStation);
 				
-				sd.getChain(1).getScanModuleById(1).getPauseControlEventManager().
-						addControlEvent(new PauseEvent(EventTypes.MONITOR, e, 
+				sd.getChain(1).getScanModuleById(1).addPauseEvent(
+						new PauseEvent(EventTypes.MONITOR, e, 
 								e.getMonitor().getID()));
 				
 				filteredMeasuringStation.excludeUnusedDevices(sd);
@@ -608,8 +608,8 @@ public class ExcludeFilterTest {
 				ScanDescription sd = Configurator.getBasicScanDescription(
 						measuringStation);
 				
-				sd.getChain(1).getScanModuleById(1).getRedoControlEventManager().
-						addControlEvent(new ControlEvent(EventTypes.MONITOR, e, 
+				sd.getChain(1).getScanModuleById(1).addRedoEvent(
+						new ControlEvent(EventTypes.MONITOR, e, 
 								e.getMonitor().getID()));
 				
 				filteredMeasuringStation.excludeUnusedDevices(sd);
@@ -627,8 +627,8 @@ public class ExcludeFilterTest {
 				ScanDescription sd = Configurator.getBasicScanDescription(
 						measuringStation);
 				
-				sd.getChain(1).getScanModuleById(1).getBreakControlEventManager().
-						addControlEvent(new ControlEvent(EventTypes.MONITOR, e, 
+				sd.getChain(1).getScanModuleById(1).addBreakEvent(
+						new ControlEvent(EventTypes.MONITOR, e, 
 								e.getMonitor().getID()));
 				
 				filteredMeasuringStation.excludeUnusedDevices(sd);
@@ -646,8 +646,8 @@ public class ExcludeFilterTest {
 				ScanDescription sd = Configurator.getBasicScanDescription(
 						measuringStation);
 				
-				sd.getChain(1).getScanModuleById(1).getTriggerControlEventManager().
-						addControlEvent(new ControlEvent(EventTypes.MONITOR, e, 
+				sd.getChain(1).getScanModuleById(1).addTriggerEvent(
+						new ControlEvent(EventTypes.MONITOR, e, 
 								e.getMonitor().getID()));
 				
 				filteredMeasuringStation.excludeUnusedDevices(sd);

@@ -1,11 +1,13 @@
 package de.ptb.epics.eve.editor.views.eventcomposite;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.GridData;
@@ -15,7 +17,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
-import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
+import de.ptb.epics.eve.data.EventImpacts;
+import de.ptb.epics.eve.data.scandescription.Chain;
+import de.ptb.epics.eve.data.scandescription.Channel;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.editor.views.DelColumnEditingSupport;
 import de.ptb.epics.eve.editor.views.chainview.ChainView;
@@ -28,20 +33,22 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
  * @author Marcus Michalsky
  * @author Hartmut Scherr
  */
-public class EventComposite extends Composite {
-
+public class EventComposite extends Composite implements PropertyChangeListener {
 	private static Logger logger = 
 		Logger.getLogger(EventComposite.class.getName());
 
 	private IViewPart parentView;
 
 	private ControlEventTypes eventType;
-	private ControlEventManager controlEventManager;
 
 	private TableViewer tableViewer;
 	
 	private TableViewerFocusListener tableViewerFocusListener;
 
+	private Chain chain;
+	private ScanModule scanModule;
+	private Channel channel;
+	
 	/**
 	 * Constructs an <code>EventComposite</code>.
 	 * 
@@ -58,6 +65,10 @@ public class EventComposite extends Composite {
 		
 		this.eventType = eventType;	
 		this.parentView = parentView;
+		
+		this.chain = null;
+		this.scanModule = null;
+		this.chain = null;
 		
 		createViewer();
 	} // end of: Constructor
@@ -136,35 +147,132 @@ public class EventComposite extends Composite {
 			break;
 		}
 	}
-
+	
 	/**
-	 * Sets the control event manager.
 	 * 
-	 * @param controlEventManager the control event manager that should be set.
+	 * @param chain
+	 * @param type
+	 * @author Marcus Michalsky
+	 * @since 1.19
 	 */
-	public void setControlEventManager(
-			final ControlEventManager controlEventManager) {
-		if(controlEventManager != null) {
-			logger.debug("set control event manager (" +
-						 controlEventManager.hashCode() + ")");
-		} else {
-			logger.debug("set control event manager (null)");
+	public void setEvents(Chain chain, EventImpacts type) {
+		if (chain == null) {
+			if (this.chain == null) {
+				return;
+			}
+			this.chain.removePropertyChangeListener(Chain.BREAK_EVENT_PROP, this);
+			this.chain.removePropertyChangeListener(Chain.PAUSE_EVENT_PROP, this);
+			this.chain.removePropertyChangeListener(Chain.REDO_EVENT_PROP, this);
+			this.chain.removePropertyChangeListener(Chain.STOP_EVENT_PROP, this);
+			this.tableViewer.setInput(null);
+			this.chain = null;
+			return;
 		}
-		this.controlEventManager = controlEventManager;
-		this.tableViewer.setInput(controlEventManager);
-		
-		if (this.isVisible() && this.parentView instanceof ScanModuleView) {
-			((ScanModuleView)parentView).setSelectionProvider(tableViewer);
+		this.chain = chain;
+		switch(type) {
+		case BREAK:
+			this.tableViewer.setInput(chain.getBreakEvents());
+			chain.addPropertyChangeListener(Chain.BREAK_EVENT_PROP, this);
+			break;
+		case PAUSE:
+			this.tableViewer.setInput(chain.getPauseEvents());
+			chain.addPropertyChangeListener(Chain.PAUSE_EVENT_PROP, this);
+			break;
+		case REDO:
+			this.tableViewer.setInput(chain.getRedoEvents());
+			chain.addPropertyChangeListener(Chain.REDO_EVENT_PROP, this);
+			break;
+		case STOP:
+			this.tableViewer.setInput(chain.getStopEvents());
+			chain.addPropertyChangeListener(Chain.STOP_EVENT_PROP, this);
+			break;
+		default:
+			break;
 		}
 	}
 	
 	/**
-	 * Returns the control event manager.
+	 * Sets events of certain type for the scan module.
 	 * 
-	 * @return the control event manager
+	 * @param scanModule the scan module
+	 * @param type the event type (pass <code>null</code> to reset)
+	 * @author Marcus Michalsky
+	 * @since 1.19
 	 */
-	public ControlEventManager getControlEventManager() {
-		return this.controlEventManager;
+	public void setEvents(ScanModule scanModule, EventImpacts type) {
+		if (scanModule == null) {
+			if (this.scanModule == null) {
+				return;
+			}
+			this.scanModule.removePropertyChangeListener(
+					ScanModule.BREAK_EVENT_PROP, this);
+			this.scanModule.removePropertyChangeListener(
+					ScanModule.PAUSE_EVENT_PROP, this);
+			this.scanModule.removePropertyChangeListener(
+					ScanModule.REDO_EVENT_PROP, this);
+			this.scanModule.removePropertyChangeListener(
+					ScanModule.TRIGGER_EVENT_PROP, this);
+			this.tableViewer.setInput(null);
+			this.scanModule = null;
+			return;
+		}
+		this.scanModule = scanModule;
+		switch(type) {
+		case BREAK:
+			this.tableViewer.setInput(scanModule.getBreakEvents());
+			scanModule.addPropertyChangeListener(ScanModule.BREAK_EVENT_PROP,
+					this);
+			break;
+		case PAUSE:
+			this.tableViewer.setInput(scanModule.getPauseEvents());
+			scanModule.addPropertyChangeListener(ScanModule.PAUSE_EVENT_PROP,
+					this);
+			break;
+		case REDO:
+			this.tableViewer.setInput(scanModule.getRedoEvents());
+			scanModule.addPropertyChangeListener(ScanModule.REDO_EVENT_PROP,
+					this);
+			break;
+		case TRIGGER:
+			this.tableViewer.setInput(scanModule.getTriggerEvents());
+			scanModule.addPropertyChangeListener(ScanModule.TRIGGER_EVENT_PROP,
+					this);
+			break;
+		default:
+			break;
+		}
+		/*
+		if (this.isVisible()) {
+			((ScanModuleView)parentView).setSelectionProvider(tableViewer);
+		}*/
+	}
+	/**
+	 * Sets events of certain type for the channel.
+	 * 
+	 * @param channel the channel
+	 * @param type the event type (pass <code>null</code> to reset)
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public void setEvents(Channel channel, EventImpacts type) {
+		if (channel == null) {
+			if (this.channel == null) {
+				return;
+			}
+			this.channel.removePropertyChangeListener(Channel.REDO_EVENT_PROP, this);
+			this.tableViewer.setInput(null);
+			this.channel = null;
+			return;
+		}
+		this.channel = channel;
+		switch(type) {
+		case REDO:
+			this.tableViewer.setInput(channel.getRedoEvents());
+			channel.addPropertyChangeListener(Channel.REDO_EVENT_PROP, this);
+			break;
+		default:
+			break;
+		}
 	}
 	
 	/**
@@ -176,8 +284,14 @@ public class EventComposite extends Composite {
 		return this.tableViewer;
 	}
 	
-	/* ********************************************************************* */
-	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		this.tableViewer.refresh();
+	}
+
 	/**
 	 * 
 	 * @author Marcus Michalsky

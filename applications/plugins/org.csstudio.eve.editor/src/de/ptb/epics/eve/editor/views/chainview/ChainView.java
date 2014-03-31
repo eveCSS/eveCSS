@@ -46,10 +46,12 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.measuringstation.PluginParameter;
 import de.ptb.epics.eve.data.scandescription.Chain;
+import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.errors.ChainError;
 import de.ptb.epics.eve.data.scandescription.errors.ChainErrorTypes;
@@ -148,7 +150,7 @@ public class ChainView extends ViewPart implements IEditorView,
 
 	private ISelectionProvider selectionProvider;
 	private IObservableValue selectionObservable;
-
+	
 	private IObservableValue saveScanDescriptionTargetObservable;
 	private IObservableValue saveScanDescriptionModelObservable;
 
@@ -264,8 +266,10 @@ public class ChainView extends ViewPart implements IEditorView,
 		this.filenameInput = new Text(this.saveOptionsComposite, SWT.BORDER);
 		String tooltip = "The file name where the data should be saved.\n "
 				+ "The following macros can be used:\n"
-				+ "${WEEK} : calendar week\n" + "${YEAR} : year as yyyy"
-				+ "${MONTH} : month as MM" + "${DAY} : day as dd"
+				+ "${WEEK} : calendar week\n" 
+				+ "${YEAR} : year as yyyy\n"
+				+ "${MONTH} : month as MM\n" 
+				+ "${DAY} : day as dd\n"
 				+ "${DATE} : date as yyyyMMdd (e.g., 20111231)\n"
 				+ "${DATE-} : date as yyyy-MM-dd (e.g., 2011-12-31)\n"
 				+ "${TIME} : time as HHmmss\n"
@@ -589,21 +593,28 @@ public class ChainView extends ViewPart implements IEditorView,
 			}
 		}
 
-		if (this.currentChain.getPauseControlEventManager().getModelErrors()
-				.size() > 0) {
-			this.pauseTabItem.setImage(eventErrorImage);
+		for (ControlEvent event : this.currentChain.getPauseEvents()) {
+			if (event.getModelErrors().size() > 0) {
+				this.pauseTabItem.setImage(eventErrorImage);
+			}
 		}
-		if (this.currentChain.getBreakControlEventManager().getModelErrors()
-				.size() > 0) {
-			this.breakTabItem.setImage(eventErrorImage);
+		
+		for (ControlEvent event : this.currentChain.getBreakEvents()) {
+			if (event.getModelErrors().size() > 0) {
+				this.breakTabItem.setImage(eventErrorImage);
+			}
 		}
-		if (this.currentChain.getRedoControlEventManager().getModelErrors()
-				.size() > 0) {
-			this.redoTabItem.setImage(eventErrorImage);
+		
+		for (ControlEvent event : this.currentChain.getRedoEvents()) {
+			if (event.getModelErrors().size() > 0) {
+				this.redoTabItem.setImage(eventErrorImage);
+			}
 		}
-		if (this.currentChain.getStopControlEventManager().getModelErrors()
-				.size() > 0) {
-			this.stopTabItem.setImage(eventErrorImage);
+		
+		for (ControlEvent event : this.currentChain.getStopEvents()) {
+			if (event.getModelErrors().size() > 0) {
+				this.stopTabItem.setImage(eventErrorImage);
+			}
 		}
 	}
 
@@ -682,10 +693,6 @@ public class ChainView extends ViewPart implements IEditorView,
 		this.currentChain.addModelUpdateListener(this);
 	}
 
-	// ************************************************************************
-	// *************************** Listener ***********************************
-	// ************************************************************************
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -711,36 +718,24 @@ public class ChainView extends ViewPart implements IEditorView,
 						.length());
 			}
 
-			this.pauseEventComposite.setControlEventManager(this.currentChain
-					.getPauseControlEventManager());
-
-			if (this.redoEventComposite.getControlEventManager() != this.currentChain
-					.getRedoControlEventManager()) {
-				this.redoEventComposite
-						.setControlEventManager(this.currentChain
-								.getRedoControlEventManager());
-			}
-			if (this.breakEventComposite.getControlEventManager() != this.currentChain
-					.getRedoControlEventManager()) {
-				this.breakEventComposite
-						.setControlEventManager(this.currentChain
-								.getBreakControlEventManager());
-			}
-			if (this.stopEventComposite.getControlEventManager() != this.currentChain
-					.getStopControlEventManager()) {
-				this.stopEventComposite
-						.setControlEventManager(this.currentChain
-								.getStopControlEventManager());
-			}
+			this.pauseEventComposite.setEvents(this.currentChain,
+					EventImpacts.PAUSE);
+			this.redoEventComposite.setEvents(this.currentChain,
+					EventImpacts.REDO);
+			this.breakEventComposite.setEvents(this.currentChain,
+					EventImpacts.BREAK);
+			this.stopEventComposite.setEvents(this.currentChain,
+					EventImpacts.STOP);
+			
 			checkForErrors();
 		} else { // currentChain == null
 			this.fileFormatCombo.deselectAll();
 			this.filenameInput.setText("");
 
-			this.pauseEventComposite.setControlEventManager(null);
-			this.redoEventComposite.setControlEventManager(null);
-			this.breakEventComposite.setControlEventManager(null);
-			this.stopEventComposite.setControlEventManager(null);
+			this.pauseEventComposite.setEvents(this.currentChain, null);
+			this.redoEventComposite.setEvents(this.currentChain, null);
+			this.breakEventComposite.setEvents(this.currentChain, null);
+			this.stopEventComposite.setEvents(this.currentChain, null);
 
 			this.setPartName("No Chain selected");
 			this.top.setVisible(false);

@@ -4,7 +4,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -22,8 +21,6 @@ import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.errors.ScanModuleError;
 import de.ptb.epics.eve.data.scandescription.errors.ScanModuleErrorTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessage;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessageEnum;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider;
@@ -78,6 +75,14 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	
 	/** */
 	public static final String TYPE_PROP = "type";
+	
+	/**
+	 * @since 1.19
+	 */
+	public static final String TRIGGER_EVENT_PROP = "triggerEvent";
+	public static final String BREAK_EVENT_PROP = "breakEvent";
+	public static final String REDO_EVENT_PROP = "redoEvent";
+	public static final String PAUSE_EVENT_PROP = "pauseEvent";
 	
 	/**
 	 * @since 1.18
@@ -140,18 +145,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	// the connector to the parent element
 	private Connector parent;
 	
-	// list of ControlEvents for the trigger events
-	private List<ControlEvent> triggerEvents;
-	
-	// list of ControlEvents for the redo events
-	private List<ControlEvent> redoEvents;
-	
-	// list of ControlEvents for the break events
-	private List<ControlEvent> breakEvents;
-	
-	// list of PauseEvents for the pause events
-	private List<PauseEvent> pauseEvents;
-	
 	// The chain of the scan module
 	private Chain chain;
 	
@@ -207,10 +200,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.valueCount = 1;
 		this.settleTime = 0.0;
 		this.triggerDelay = 0.0;
-		this.triggerEvents = new ArrayList<ControlEvent>();
-		this.redoEvents = new ArrayList<ControlEvent>();
-		this.breakEvents = new ArrayList<ControlEvent>();
-		this.pauseEvents = new ArrayList<PauseEvent>();
 		this.type = ScanModuleTypes.CLASSIC;
 		this.name = "";
 
@@ -220,13 +209,13 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.triggerConfirmChannel = false;
 		
 		this.breakControlEventManager = new ControlEventManager(
-				this, this.breakEvents, ControlEventTypes.CONTROL_EVENT);
+				ControlEventTypes.CONTROL_EVENT);
 		this.redoControlEventManager = new ControlEventManager(
-				this, this.redoEvents, ControlEventTypes.CONTROL_EVENT);
+				ControlEventTypes.CONTROL_EVENT);
 		this.pauseControlEventManager = new ControlEventManager(
-				this, this.pauseEvents, ControlEventTypes.PAUSE_EVENT);
+				ControlEventTypes.PAUSE_EVENT);
 		this.triggerControlEventManager = new ControlEventManager(
-				this, this.triggerEvents, ControlEventTypes.CONTROL_EVENT);
+				ControlEventTypes.CONTROL_EVENT);
 		
 		this.breakControlEventManager.addModelUpdateListener(this);
 		this.redoControlEventManager.addModelUpdateListener(this);
@@ -830,153 +819,243 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	}
 
 	/**
-	 * Adds a pause event to the scan modul.
+	 * Returns a list of pause events (original list).
 	 * 
-	 * @param pauseEvent The pause event that should be added to the scan modul.
-	 * @return Gives back 'true' if the event has been added and false if not.
+	 * @return a list of pause events (original list)
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public List<ControlEvent> getPauseEvents() {
+		return this.pauseControlEventManager.getEvents();
+	}
+	
+	/**
+	 * Adds a pause event.
+	 * 
+	 * @param pauseEvent the pause event that should be added
+	 * @return <code>true</code> if the event was added, <code>false</code>
+	 * 		otherwise
+	 * @author Marcus Michalsky
+	 * @since 1.19
 	 */
 	public boolean addPauseEvent(final PauseEvent pauseEvent) {
-		if (this.pauseEvents.add(pauseEvent)) {
-			pauseEvent.addModelUpdateListener(this.pauseControlEventManager);
-			this.pauseControlEventManager.updateEvent(new ModelUpdateEvent(
-					this, new ControlEventMessage(pauseEvent, 
-					ControlEventMessageEnum.ADDED)));
-			return true;
-		} 
-		return false;
-	}
-	
-	/**
-	 * Removes a pause event from the scan modul.
-	 * 
-	 * @param pauseEvent The pause event that should be removed from the scan 
-	 * modul.
-	 * @return Gives back 'true' if the event has been removed and false if not.
-	 */
-	public boolean removePauseEvent(final PauseEvent pauseEvent) {
-		if (this.pauseEvents.remove(pauseEvent)) {
-			pauseEvent.removeModelUpdateListener(this.pauseControlEventManager);
-			this.pauseControlEventManager.updateEvent(new ModelUpdateEvent( 
-					this, new ControlEventMessage(pauseEvent, 
-					ControlEventMessageEnum.REMOVED)));
-			return true;
-		} 
-		return false;
-	}
-	
-	/**
-	 * Adds a break event to the scan modul.
-	 * 
-	 * @param breakEvent The break event that should be added to the scan modul.
-	 * @return Gives back 'true' if the event has been added and false if not.
-	 */
-	public boolean addBreakEvent(final ControlEvent breakEvent) {
-		if (this.breakEvents.add(breakEvent)) {
-			breakEvent.addModelUpdateListener(this.breakControlEventManager);
-			this.breakControlEventManager.updateEvent(new ModelUpdateEvent(
-					this, new ControlEventMessage(breakEvent, 
-					ControlEventMessageEnum.ADDED)));
-			return true;
-		} 
-		return false;
-	}
-	
-	/**
-	 * Removes a break event from the scan modul.
-	 * 
-	 * @param breakEvent The break event that should be removed from the scan 
-	 * modul.
-	 * @return Gives back 'true' if the event has been removed and false if not.
-	 */
-	public boolean removeBreakEvent(final ControlEvent breakEvent) {
-		if (this.breakEvents.remove(breakEvent)) {
-			breakEvent.removeModelUpdateListener(this.breakControlEventManager);
-			this.breakControlEventManager.updateEvent(new ModelUpdateEvent(
-					this, new ControlEventMessage(breakEvent, 
-					ControlEventMessageEnum.REMOVED)));
-			return true;
-		} 
-		return false;
-	}
-	
-	/**
-	 * Adds a redo event to the scan modul.
-	 * 
-	 * @param redoEvent The redo event that should be added to the scan modul.
-	 * @return Gives back 'true' if the event has been added and false if not.
-	 */
-	public boolean addRedoEvent(final ControlEvent redoEvent) {
-		if (this.redoEvents.add(redoEvent)) {
-// Die wesentlichen Aufgaben soll der EventManager übernehmen
-// 1.) Hinzufügen und entfernen eines Events
-// 2.) Listener im Model an und abmelden
-// Vom Prinzip her bleibt nur sowas wie diese Zeile übrig:
-//			this.redoControlEventManager.addControlEvent(redoEvent);
-//			updateListeners();
-			this.redoControlEventManager.updateEvent(new ModelUpdateEvent(
-					this, new ControlEventMessage(redoEvent, 
-					ControlEventMessageEnum.ADDED)));
-// auch in den eventManager:
-			redoEvent.addModelUpdateListener(this.redoControlEventManager);
-			return true;
-		} 
-		return false;
-	}
-	
-	/**
-	 * Removes a redo event from the scan modul.
-	 * 
-	 * @param redoEvent The redo event that should be removed from the scan 
-	 * modul.
-	 * @return Gives back 'true' if the event has been removed and false if not.
-	 */
-	public boolean removeRedoEvent(final ControlEvent redoEvent) {
-		if (this.redoEvents.remove(redoEvent)) {
-			this.redoControlEventManager.updateEvent(new ModelUpdateEvent(
-					this, new ControlEventMessage(redoEvent, 
-					ControlEventMessageEnum.REMOVED)));
-			redoEvent.removeModelUpdateListener(this.redoControlEventManager);
+		if (this.pauseControlEventManager.addControlEvent(pauseEvent)) {
+			this.propertyChangeSupport.firePropertyChange(
+					ScanModule.PAUSE_EVENT_PROP, null, pauseEvent);
 			return true;
 		}
 		return false;
 	}
 	
 	/**
-	 * Adds a trigger event to the scan modul.
+	 * Removes a pause event.
 	 * 
-	 * @param triggerEvent The trigger event that should be added to the scan 
-	 * modul.
-	 * @return Gives back 'true' if the event has been added and false if not.
+	 * @param pauseEvent the pause event that should be removed 
+	 * @return <code>true</code> if the event was removed, <code>false</code>
+	 * 		otherwise
+	 * @author Marcus Michalsky
+	 * @since 1.19
 	 */
-	public boolean addTriggerEvent(final ControlEvent triggerEvent) {
-		if (this.triggerEvents.add(triggerEvent)) {
-			this.triggerControlEventManager.updateEvent(new ModelUpdateEvent(
-					this, new ControlEventMessage(triggerEvent, 
-					ControlEventMessageEnum.ADDED)));
-			triggerEvent.addModelUpdateListener(
-					this.triggerControlEventManager);
+	public boolean removePauseEvent(final PauseEvent pauseEvent) {
+		if (this.pauseControlEventManager.removeEvent(pauseEvent)) {
+			this.propertyChangeSupport.firePropertyChange(
+					ScanModule.PAUSE_EVENT_PROP, pauseEvent, null);
 			return true;
-		} 
+		}
 		return false;
 	}
 	
 	/**
-	 * Removes a trigger event from the scan modul.
+	 * Removes all pause events.
 	 * 
-	 * @param triggerEvent The trigger event that should be removed from the 
-	 * scan modul.
-	 * @return Gives back 'true' if the event has been removed and false if not.
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public void removePauseEvents() {
+		this.pauseControlEventManager.removeAllEvents();
+		this.propertyChangeSupport.firePropertyChange(
+				ScanModule.PAUSE_EVENT_PROP,
+				this.pauseControlEventManager.getEvents(), null);
+	}
+	
+	/**
+	 * Returns a list of break events (original list).
+	 * 
+	 * @return a list of break events (original list)
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public List<ControlEvent> getBreakEvents() {
+		return this.breakControlEventManager.getEvents();
+	}
+	
+	/**
+	 * Adds a break event.
+	 * 
+	 * @param breakEvent the break event that should be added
+	 * @return <code>true</code> if the event was added, <code>false</code>
+	 * 		otherwise
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public boolean addBreakEvent(final ControlEvent breakEvent) {
+		if (this.breakControlEventManager.addControlEvent(breakEvent)) {
+			this.propertyChangeSupport.firePropertyChange(
+					ScanModule.BREAK_EVENT_PROP, null, breakEvent);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Removes a break event.
+	 * 
+	 * @param breakEvent the break event that should be removed 
+	 * @return <code>true</code> if the event was removed, <code>false</code>
+	 * 		otherwise
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public boolean removeBreakEvent(final ControlEvent breakEvent) {
+		if (this.breakControlEventManager.removeEvent(breakEvent)) {
+			this.propertyChangeSupport.firePropertyChange(
+					ScanModule.BREAK_EVENT_PROP, breakEvent, null);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Removes all break events.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public void removeBreakEvents() {
+		this.breakControlEventManager.removeAllEvents();
+		this.propertyChangeSupport.firePropertyChange(
+				ScanModule.BREAK_EVENT_PROP,
+				this.breakControlEventManager.getEvents(), null);
+	}
+	
+	/**
+	 * Returns a list of redo events.
+	 * 
+	 * @return a list of redo events
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public List<ControlEvent> getRedoEvents() {
+		return this.redoControlEventManager.getEvents();
+	}
+	
+	/**
+	 * Adds a redo event.
+	 * 
+	 * @param redoEvent the redo event that should be added
+	 * @return <code>true</code> if the event was added, <code>false</code>
+	 * 		otherwise
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public boolean addRedoEvent(final ControlEvent redoEvent) {
+		if (this.redoControlEventManager.addControlEvent(redoEvent)) {
+			this.propertyChangeSupport.firePropertyChange(
+					ScanModule.REDO_EVENT_PROP, null, redoEvent);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Removes a redo event.
+	 * 
+	 * @param redoEvent the redo event that should be removed
+	 * @return <code>true</code> if the event was removed, <code>false</code>
+	 * 		otherwise
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public boolean removeRedoEvent(final ControlEvent redoEvent) {
+		if (this.redoControlEventManager.removeEvent(redoEvent)) {
+			this.propertyChangeSupport.firePropertyChange(
+					ScanModule.REDO_EVENT_PROP, redoEvent, null);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Removes all redo events.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public void removeRedoEvents() {
+		this.redoControlEventManager.removeAllEvents();
+		this.propertyChangeSupport.firePropertyChange(
+				ScanModule.REDO_EVENT_PROP,
+				this.redoControlEventManager.getEvents(), null);
+	}
+	
+	/**
+	 * Returns a list of trigger events (original list).
+	 * 
+	 * @return a list of trigger events (original list)
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public List<ControlEvent> getTriggerEvents() {
+		return this.triggerControlEventManager.getEvents();
+	}
+	
+	/**
+	 * Adds a trigger event.
+	 * 
+	 * @param triggerEvent the trigger event that should be added
+	 * @return <code>true</code> if the event was added, <code>false</code>
+	 * 		otherwise
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public boolean addTriggerEvent(final ControlEvent triggerEvent) {
+		if (this.triggerControlEventManager.addControlEvent(triggerEvent)) {
+			this.propertyChangeSupport.firePropertyChange(
+					ScanModule.TRIGGER_EVENT_PROP, null, triggerEvent);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Removes a trigger event.
+	 * 
+	 * @param triggerEvent the trigger event that should be removed
+	 * @return <code>true</code> if the event was removed, <code>false</code>
+	 * 		otherwise
+	 * @author Marcus Michalsky
+	 * @since 1.19
 	 */
 	public boolean removeTriggerEvent(final ControlEvent triggerEvent) {
-		if (this.triggerEvents.remove(triggerEvent)) {
-			this.triggerControlEventManager.updateEvent(new ModelUpdateEvent(
-					this, new ControlEventMessage(triggerEvent, 
-					ControlEventMessageEnum.REMOVED)));
-			triggerEvent.removeModelUpdateListener(
-					this.triggerControlEventManager);
+		if (this.triggerControlEventManager.removeEvent(triggerEvent)) {
+			this.propertyChangeSupport.firePropertyChange(
+					ScanModule.TRIGGER_EVENT_PROP, triggerEvent, null);
 			return true;
-		} 
+		}
 		return false;
+	}
+	
+	/**
+	 * Removes all trigger events.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public void removeTriggerEvents() {
+		this.triggerControlEventManager.removeAllEvents();
+		this.propertyChangeSupport.firePropertyChange(
+				ScanModule.TRIGGER_EVENT_PROP,
+				this.triggerControlEventManager.getEvents(), null);
 	}
 	
 	/**
@@ -987,7 +1066,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 			the scan module, <code>false</code> otherwise
 	 */
 	public boolean isPauseEventOfScanModule(final PauseEvent controlEvent) {
-		return this.pauseEvents.contains(controlEvent);
+		return this.pauseControlEventManager.getEvents().contains(controlEvent);
 	}
 	
 	/**
@@ -999,7 +1078,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 			the scan module, <code>false</code> otherwise
 	 */
 	public boolean isRedoEventOfScanModule(final ControlEvent redoEvent) {
-		return this.redoEvents.contains(redoEvent);
+		return this.redoControlEventManager.getEvents().contains(redoEvent);
 	}
 	
 	/**
@@ -1011,7 +1090,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 			the scan module, <code>false</code> otherwise
 	 */
 	public boolean isBreakEventOfScanModule(final ControlEvent breakEvent) {
-		return this.breakEvents.contains(breakEvent);
+		return this.breakControlEventManager.getEvents().contains(breakEvent);
 	}
 	
 	/**
@@ -1023,7 +1102,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * 			of the scan module, <code>false</code> otherwise
 	 */
 	public boolean isTriggerEventOfScanModule(final ControlEvent triggerEvent) {
-		return this.triggerEvents.contains(triggerEvent);
+		return this.triggerControlEventManager.getEvents().contains(
+				triggerEvent);
 	}
 
 	
@@ -1044,93 +1124,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 				this.isTriggerEventOfScanModule(controlEvent);
 	}
 	
-	/**
-	 * Returns an {@link java.util.Iterator} ofthe pause events.
-	 * 
-	 * @return an {@link java.util.Iterator} of the pause events
-	 * @deprecated use {@link #getPauseControlEventManager()} and 
-	 * 	{@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager#getControlEventsList()}
-	 * in conjunction with the for each loop
-	 * @see <a href="http://docs.oracle.com/javase/1.5.0/docs/guide/language/foreach.html">oracle documentation</a>
-	 */
-	public Iterator<PauseEvent> getPauseEventsIterator() {
-		return this.pauseEvents.iterator();
-	}
-	
-	/**
-	 * Returns an {@link java.util.Iterator} of the break events.
-	 * 
-	 * @return an {@link java.util.Iterator} of the break events
-	 * @deprecated use {@link #getBreakControlEventManager()} and 
-	 * 	{@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager#getControlEventsList()}
-	 * in conjunction with the for each loop
-	 * @see <a href="http://docs.oracle.com/javase/1.5.0/docs/guide/language/foreach.html">oracle documentation</a>
-	 */
-	public Iterator<ControlEvent> getBreakEventsIterator() {
-		return this.breakEvents.iterator();
-	}
-	
-	/**
-	 * Returns an {@link java.util.Iterator} of the redo events.
-	 * 
-	 * @return an {@link java.util.Iterator} of the redo events
-	 * @deprecated use {@link #getRedoControlEventManager()} and 
-	 * 	{@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager#getControlEventsList()}
-	 * in conjunction with the for each loop
-	 * @see <a href="http://docs.oracle.com/javase/1.5.0/docs/guide/language/foreach.html">oracle documentation</a>
-	 */
-	public Iterator<ControlEvent> getRedoEventsIterator() {
-		return this.redoEvents.iterator();
-	}
-	/**
-	 * Returns an {@link java.util.Iterator} of the trigger events.
-	 * 
-	 * @return an {@link java.util.Iterator} of the trigger events
-	 * @deprecated use {@link #getTriggerControlEventManager()} and 
-	 * 	{@link de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager#getControlEventsList()}
-	 * in conjunction with the for each loop
-	 * @see <a href="http://docs.oracle.com/javase/1.5.0/docs/guide/language/foreach.html">oracle documentation</a>
-	 */
-	public Iterator<ControlEvent> getTriggerEventsIterator() {
-		return this.triggerEvents.iterator();
-	}
-
-	/**
-	 * Returns the control event manager of the break events.
-	 * 
-	 * @return the control event manager of the break events
-	 */
-	public ControlEventManager getBreakControlEventManager() {
-		return breakControlEventManager;
-	}
-
-	/**
-	 * Returns the control event manager of the pause events.
-	 * 
-	 * @return the control event manager of the pause events
-	 */
-	public ControlEventManager getPauseControlEventManager() {
-		return pauseControlEventManager;
-	}
-
-	/**
-	 * Returns the control event manager of the redo events.
-	 * 
-	 * @return the control event manager of the redo events
-	 */
-	public ControlEventManager getRedoControlEventManager() {
-		return redoControlEventManager;
-	}
-	
-	/**
-	 * Returns the control event manager of the trigger events.
-	 * 
-	 * @return the control event manager of the trigger events
-	 */
-	public ControlEventManager getTriggerControlEventManager() {
-		return triggerControlEventManager;
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */

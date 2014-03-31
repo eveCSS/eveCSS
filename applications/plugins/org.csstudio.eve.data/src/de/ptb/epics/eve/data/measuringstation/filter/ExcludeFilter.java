@@ -976,8 +976,7 @@ public class ExcludeFilter extends MeasuringStationFilter {
 					usedDetectorChannels.add(ch.getDetectorChannel());
 					
 					List<ControlEvent> chEvents = new ArrayList<ControlEvent>();
-					chEvents.addAll(ch.getRedoControlEventManager().
-							getControlEventsList());
+					chEvents.addAll(ch.getRedoEvents());
 					
 					for(ControlEvent ce : chEvents) {
 						AbstractDevice dev = this.getAbstractDeviceById(
@@ -1028,14 +1027,10 @@ public class ExcludeFilter extends MeasuringStationFilter {
 				
 				// events of the scan module
 				List<ControlEvent> smEvents = new ArrayList<ControlEvent>();
-				smEvents.addAll(sm.getPauseControlEventManager().
-						getControlEventsList());
-				smEvents.addAll(sm.getRedoControlEventManager()
-						.getControlEventsList());
-				smEvents.addAll(sm.getBreakControlEventManager().
-						getControlEventsList());
-				smEvents.addAll(sm.getTriggerControlEventManager().
-						getControlEventsList());
+				smEvents.addAll(sm.getPauseEvents());
+				smEvents.addAll(sm.getRedoEvents());
+				smEvents.addAll(sm.getBreakEvents());
+				smEvents.addAll(sm.getTriggerEvents());
 				
 				for(ControlEvent ce : smEvents) {
 					AbstractDevice dev = this.getAbstractDeviceById(
@@ -1054,14 +1049,10 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			
 			// events of the chain
 			List<ControlEvent> chainEvents = new ArrayList<ControlEvent>();
-			chainEvents.addAll(chain.getPauseControlEventManager().
-					getControlEventsList());
-			chainEvents.addAll(chain.getRedoControlEventManager().
-					getControlEventsList());
-			chainEvents.addAll(chain.getBreakControlEventManager().
-					getControlEventsList());
-			chainEvents.addAll(chain.getStopControlEventManager().
-					getControlEventsList());
+			chainEvents.addAll(chain.getPauseEvents());
+			chainEvents.addAll(chain.getRedoEvents());
+			chainEvents.addAll(chain.getBreakEvents());
+			chainEvents.addAll(chain.getStopEvents());
 			
 			for(ControlEvent ce : chainEvents) {
 				AbstractDevice dev = this.getAbstractDeviceById(

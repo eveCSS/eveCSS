@@ -14,11 +14,11 @@ import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
+import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.views.chainview.ChainView;
 import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
-
 import static de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContributionHelper.*;
 
 /**
@@ -59,41 +59,33 @@ public class RemoveEvent implements IHandler {
 			Chain chain = ((ChainView)HandlerUtil.getActivePart(event)).
 				getCurrentChain();
 			if (eventImpact.equals(EventImpacts.PAUSE)) {
-				chain.getPauseControlEventManager().removeControlEvent(
-						eventToRemove);
+				chain.removePauseEvent((PauseEvent)eventToRemove);
 			} else if (eventImpact.equals(EventImpacts.REDO)) {
-				chain.getRedoControlEventManager().removeControlEvent(
-						eventToRemove);
+				chain.removeRedoEvent(eventToRemove);
 			} else if (eventImpact.equals(EventImpacts.BREAK)) {
-				chain.getBreakControlEventManager().removeControlEvent(
-						eventToRemove);
+				chain.removeBreakEvent(eventToRemove);
 			} else if (eventImpact.equals(EventImpacts.STOP)) {
-				chain.getStopControlEventManager().removeControlEvent(
-						eventToRemove);
+				chain.removeStopEvent(eventToRemove);
 			}
 		} else if (activePart.getSite().getId().equals(
 				"de.ptb.epics.eve.editor.views.ScanModulView")) {
 			ScanModule scanModule = ((ScanModuleView)HandlerUtil.getActivePart(
 				event)).getCurrentScanModule();
 			if (eventImpact.equals(EventImpacts.PAUSE)) {
-				scanModule.getPauseControlEventManager().removeControlEvent(
-						eventToRemove);
+				scanModule.removePauseEvent((PauseEvent)eventToRemove);
 			} else if (eventImpact.equals(EventImpacts.REDO)) {
-				scanModule.getRedoControlEventManager().removeControlEvent(
-						eventToRemove);
+				scanModule.removeRedoEvent(eventToRemove);
 			} else if (eventImpact.equals(EventImpacts.BREAK)) {
-				scanModule.getBreakControlEventManager().removeControlEvent(
-						eventToRemove);
+				scanModule.removeBreakEvent(eventToRemove);
 			} else if (eventImpact.equals(EventImpacts.TRIGGER)) {
-				scanModule.getTriggerControlEventManager().removeControlEvent(
-						eventToRemove);
+				scanModule.removeTriggerEvent(eventToRemove);
 			}
 		} else if (activePart.getSite().getId().equals(
 				"de.ptb.epics.eve.editor.views.DetectorChannelView")) {
 			Channel ch = ((DetectorChannelView)HandlerUtil.getActivePart(
 				event)).getCurrentChannel();
 			if (eventImpact.equals(EventImpacts.REDO)) {
-				ch.getRedoControlEventManager().removeControlEvent(
+				ch.getRedoControlEventManager().removeEvent(
 						eventToRemove);
 			}
 		}

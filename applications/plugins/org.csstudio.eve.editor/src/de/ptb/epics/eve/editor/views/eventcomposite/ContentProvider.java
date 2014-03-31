@@ -1,40 +1,24 @@
 package de.ptb.epics.eve.editor.views.eventcomposite;
 
+import java.util.List;
+
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
-import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.data.scandescription.ControlEvent;
 
 /**
- * 
- * @author ?
  * @author Marcus Michalsky
  */
-public class ContentProvider implements IModelUpdateListener, 
-												IStructuredContentProvider {
-
-	/*
-	 * 
-	 */
-	private Viewer currentViewer;
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
-		this.currentViewer.refresh();
-	}
+public class ContentProvider implements IStructuredContentProvider {
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object[] getElements(final Object inputElement) {
-		ControlEventManager input = (ControlEventManager)inputElement;
-		return input.getControlEventsList().toArray();	
+		return ((List<ControlEvent>)inputElement).toArray();
 	}
 
 	/**
@@ -48,14 +32,6 @@ public class ContentProvider implements IModelUpdateListener,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void inputChanged(final Viewer viewer, final Object oldInput, 
-							 final Object newInput) {
-		if(oldInput != null) {
-			((ControlEventManager)oldInput).removeModelUpdateListener(this);
-		}
-		if(newInput != null) {
-			((ControlEventManager)newInput).addModelUpdateListener(this);
-		}
-		this.currentViewer = viewer;
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 	}
 }

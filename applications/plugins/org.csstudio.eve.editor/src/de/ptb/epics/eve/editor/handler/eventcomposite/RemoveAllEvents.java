@@ -57,33 +57,33 @@ public class RemoveAllEvents implements IHandler {
 			Chain chain = ((ChainView)HandlerUtil.getActivePart(event)).
 				getCurrentChain();
 			if (eventImpact.equals(EventImpacts.PAUSE)) {
-				chain.getPauseControlEventManager().removeAllControlEvents();
+				chain.removePauseEvents();
 			} else if (eventImpact.equals(EventImpacts.REDO)) {
-				chain.getRedoControlEventManager().removeAllControlEvents();
+				chain.removeRedoEvents();
 			} else if (eventImpact.equals(EventImpacts.BREAK)) {
-				chain.getBreakControlEventManager().removeAllControlEvents();
+				chain.removeBreakEvents();
 			} else if (eventImpact.equals(EventImpacts.STOP)) {
-				chain.getStopControlEventManager().removeAllControlEvents();
+				chain.removeStopEvents();
 			}
 		} else if (activePart.getSite().getId().equals(
 				"de.ptb.epics.eve.editor.views.ScanModulView")) {
 			ScanModule scanModule = ((ScanModuleView)HandlerUtil.getActivePart(
 				event)).getCurrentScanModule();
 			if (eventImpact.equals(EventImpacts.PAUSE)) {
-				scanModule.getPauseControlEventManager().removeAllControlEvents();
+				scanModule.removePauseEvents();
 			} else if (eventImpact.equals(EventImpacts.REDO)) {
-				scanModule.getRedoControlEventManager().removeAllControlEvents();
+				scanModule.removeRedoEvents();
 			} else if (eventImpact.equals(EventImpacts.BREAK)) {
-				scanModule.getBreakControlEventManager().removeAllControlEvents();
+				scanModule.removeBreakEvents();
 			} else if (eventImpact.equals(EventImpacts.TRIGGER)) {
-				scanModule.getTriggerControlEventManager().removeAllControlEvents();
+				scanModule.removeTriggerEvents();
 			}
 		} else if (activePart.getSite().getId().equals(
 				"de.ptb.epics.eve.editor.views.DetectorChannelView")) {
 			Channel ch = ((DetectorChannelView)HandlerUtil.getActivePart(
 				event)).getCurrentChannel();
 			if (eventImpact.equals(EventImpacts.REDO)) {
-				ch.getRedoControlEventManager().removeAllControlEvents();
+				ch.getRedoControlEventManager().removeAllEvents();
 			}
 		}
 		return null;

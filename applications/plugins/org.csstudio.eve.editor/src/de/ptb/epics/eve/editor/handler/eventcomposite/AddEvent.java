@@ -67,16 +67,16 @@ public class AddEvent implements IHandler {
 			Chain chain = ((ChainView)HandlerUtil.getActivePart(executionEvent)).
 					getCurrentChain();
 			if (eventImpact.equals(EventImpacts.PAUSE)) {
-				chain.getPauseControlEventManager().addControlEvent(
+				chain.addPauseEvent(
 						new PauseEvent(eventType, event, eventId));
 			} else if (eventImpact.equals(EventImpacts.REDO)) {
-				chain.getRedoControlEventManager().addControlEvent(
+				chain.addRedoEvent(
 						new ControlEvent(eventType, event, eventId));
 			} else if (eventImpact.equals(EventImpacts.BREAK)) {
-				chain.getBreakControlEventManager().addControlEvent(
+				chain.addBreakEvent(
 						new ControlEvent(eventType, event, eventId));
 			} else if (eventImpact.equals(EventImpacts.STOP)) {
-				chain.getStopControlEventManager().addControlEvent(
+				chain.addStopEvent(
 						new ControlEvent(eventType, event, eventId));
 			}
 		} else if(activePart.equals(
@@ -84,16 +84,16 @@ public class AddEvent implements IHandler {
 			ScanModule scanModule = ((ScanModuleView)HandlerUtil.getActivePart(
 					executionEvent)).getCurrentScanModule();
 			if (eventImpact.equals(EventImpacts.PAUSE)) {
-				scanModule.getPauseControlEventManager().addControlEvent(
+				scanModule.addPauseEvent(
 						new PauseEvent(eventType, event, eventId));
 			} else if (eventImpact.equals(EventImpacts.REDO)) {
-				scanModule.getRedoControlEventManager().addControlEvent(
+				scanModule.addRedoEvent(
 						new ControlEvent(eventType, event, eventId));
 			} else if (eventImpact.equals(EventImpacts.BREAK)) {
-				scanModule.getBreakControlEventManager().addControlEvent(
+				scanModule.addBreakEvent(
 						new ControlEvent(eventType, event, eventId));
 			} else if (eventImpact.equals(EventImpacts.TRIGGER)) {
-				scanModule.getTriggerControlEventManager().addControlEvent(
+				scanModule.addTriggerEvent(
 						new ControlEvent(eventType, event, eventId));
 			}
 		} else if(activePart.equals(

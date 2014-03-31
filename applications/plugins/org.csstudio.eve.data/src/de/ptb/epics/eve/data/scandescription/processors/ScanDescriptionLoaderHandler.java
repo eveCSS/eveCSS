@@ -2265,13 +2265,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		// set the start event or
 		// define a default start event for chains without startevent tag
 		// add connectors
-		
 		for (Chain loopChain : this.chainList) {
 			Event startEvent;
-			Iterator<ControlEvent> chainStartEventIt = loopChain
-					.getStartEventsIterator();
-			if (chainStartEventIt.hasNext()) {
-				startEvent = chainStartEventIt.next().getEvent();
+			List<ControlEvent> startEvents = loopChain.getStartEvents();
+			if (!startEvents.isEmpty()) {
+				startEvent = startEvents.get(0).getEvent();
 			} else {
 				startEvent = this.scanDescription.getDefaultStartEvent();
 			}
