@@ -33,7 +33,7 @@ public class Copy extends CopyTemplateAction {
 	public Copy(IEditorPart editor) {
 		super(editor);
 		setId(ActionFactory.COPY.getId());
-		setActionDefinitionId("org.eclipse.ui.edit.copy");  //$NON-NLS-1$
+		setActionDefinitionId("org.eclipse.ui.edit.copy"); //$NON-NLS-1$
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class Copy extends CopyTemplateAction {
 			new Refresh().run();
 		}
 	}
-
+	
 	private class Refresh implements Runnable {
 		@Override
 		public void run() {

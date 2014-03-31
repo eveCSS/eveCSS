@@ -27,6 +27,7 @@ import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
@@ -50,7 +51,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.contexts.IContextService;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.progress.IProgressService;
@@ -67,6 +68,7 @@ import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.dialogs.lostdevices.LostDevicesDialog;
 import de.ptb.epics.eve.editor.dialogs.updater.ChangeLogDialog;
 import de.ptb.epics.eve.editor.gef.actions.Copy;
+import de.ptb.epics.eve.editor.gef.actions.Cut;
 import de.ptb.epics.eve.editor.gef.actions.Paste;
 import de.ptb.epics.eve.editor.jobs.file.Save;
 
@@ -456,6 +458,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		};
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void createActions() {
 		super.createActions();
@@ -469,6 +472,11 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		
 		action = new Paste(this);
 		registry.registerAction(action);
+		
+		action = new Cut(this, (DeleteAction) registry.getAction(
+				ActionFactory.DELETE.getId()));
+		registry.registerAction(action);
+		getSelectionActions().add(action.getId());
 	}
 	
 	protected class OutlinePage extends ContentOutlinePage {
