@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.editor.gef.actions;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -13,9 +14,11 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 
 import de.ptb.epics.eve.data.scandescription.Chain;
+import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.gef.ClipboardContent;
 import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
 import de.ptb.epics.eve.editor.gef.commands.CopyScanModuleAxes;
 import de.ptb.epics.eve.editor.gef.commands.CopyScanModuleChannels;
@@ -25,6 +28,7 @@ import de.ptb.epics.eve.editor.gef.commands.CopyScanModulePositionings;
 import de.ptb.epics.eve.editor.gef.commands.CopyScanModulePostScans;
 import de.ptb.epics.eve.editor.gef.commands.CopyScanModulePreScans;
 import de.ptb.epics.eve.editor.gef.commands.CopyScanModuleProperties;
+import de.ptb.epics.eve.editor.gef.commands.CreateSMConnection;
 import de.ptb.epics.eve.editor.gef.commands.CreateScanModule;
 
 /**
@@ -61,7 +65,6 @@ public class Paste extends PasteTemplateAction {
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	protected Command createPasteCommand() {
 		LOGGER.debug("create paste command");
@@ -70,6 +73,7 @@ public class Paste extends PasteTemplateAction {
 			LOGGER.error("Paste not possible, Clipboard is empty!");
 			return null;
 		}
+		ClipboardContent clipboardContent = (ClipboardContent)o;
 		
 		CompoundCommand pasteCommand = new CompoundCommand();
 		
@@ -84,10 +88,16 @@ public class Paste extends PasteTemplateAction {
 				.get(0);
 		chain.setReserveIds(true);
 		
-		for (ScanModule sm : ((List<ScanModule>)o)) {
+		Map<ScanModule, ScanModule> smRelations = 
+				new HashMap<ScanModule, ScanModule>(
+						clipboardContent.getScanModules().size());
+		
+		for (ScanModule sm : clipboardContent.getScanModules()) {
 			LOGGER.debug("should clone and add SM " + sm.getName() + "here.");
 			CreateScanModule createCommand = new CreateScanModule(chain,
 					new Rectangle(100, 100, 0, 0), ScanModuleTypes.CLASSIC);
+			
+			smRelations.put(sm, createCommand.getScanModule());
 			
 			CopyScanModuleProperties propertiesCommand = 
 					new CopyScanModuleProperties(
@@ -123,6 +133,22 @@ public class Paste extends PasteTemplateAction {
 					chain(positioningCommand).
 					chain(plotWindowCommand).
 					chain(eventCommand));
+		}
+		
+		for (Connector conn : clipboardContent.getConnections()) {
+			ScanModule parent = conn.getParentScanModule();
+			ScanModule child = conn.getChildScanModule();
+			LOGGER.debug("Parent: " + parent.getName() + " , child: "
+					+ child.getName() + " , type: " + conn.getType());
+			if (smRelations.get(parent) != null && 
+					smRelations.get(child) != null) {
+				// both SMs of connection are in the clipboard
+				CreateSMConnection createConnectionCommand = 
+						new CreateSMConnection(
+								smRelations.get(parent), smRelations.get(child),
+								conn.getType());
+				pasteCommand.add(createConnectionCommand);
+			}
 		}
 		
 		chain.resetReservedIds();

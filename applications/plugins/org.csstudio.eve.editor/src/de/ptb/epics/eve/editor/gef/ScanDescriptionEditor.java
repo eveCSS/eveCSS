@@ -458,6 +458,9 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		};
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void createActions() {

@@ -112,4 +112,26 @@ public class Connector {
 	public boolean isParentScanModule() {
 		return this.parentScanModule != null;
 	}
+	
+	/**
+	 * Returns the "type" of the connection, i.e. if it is appended or nested.
+	 * TODO should be an ENUM
+	 * 
+	 * @return the type of the connection (appended or nested)
+	 * @since 1.19
+	 */
+	public String getType() {
+		if (parentEvent != null) {
+			return Connector.APPENDED;
+		}
+		if (parentScanModule != null) {
+			if (parentScanModule.getAppended() == this) {
+				return Connector.APPENDED;
+			}
+			if (parentScanModule.getNested() == this) {
+				return Connector.NESTED;
+			}
+		}
+		return null;
+	}
 }

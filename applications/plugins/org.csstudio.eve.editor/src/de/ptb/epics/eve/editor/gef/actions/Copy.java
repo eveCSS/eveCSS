@@ -1,7 +1,5 @@
 package de.ptb.epics.eve.editor.gef.actions;
 
-import java.util.LinkedList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.gef.ui.actions.ActionRegistry;
@@ -13,9 +11,11 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 
-import de.ptb.epics.eve.data.scandescription.ScanModule;
+import de.ptb.epics.eve.data.scandescription.Connector;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.gef.ClipboardContent;
 import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
+import de.ptb.epics.eve.editor.gef.editparts.ConnectionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
 
 /**
@@ -76,16 +76,32 @@ public class Copy extends CopyTemplateAction {
 			new Refresh().run();
 			return;
 		}
-		List<ScanModule> scanModules = new LinkedList<ScanModule>();
+		ClipboardContent clipboardContent = new ClipboardContent();
 		for (Object o : ((IStructuredSelection)selection).toList()) {
 			if (o instanceof ScanModuleEditPart) {
-				scanModules.add(((ScanModuleEditPart)o).getModel());
+				clipboardContent.getScanModules().add(
+						((ScanModuleEditPart)o).getModel());
 			}
-			Clipboard.getDefault().setContents(scanModules);
-			LOGGER.debug(scanModules.size() + 
-					" Scanmodule(s) detected and added to clipboard.");
-			new Refresh().run();
 		}
+		for (Object o : ((IStructuredSelection)selection).toList()) {
+			if (o instanceof ConnectionEditPart) {
+				Connector conn = ((ConnectionEditPart)o).getModel();
+				if (clipboardContent.getScanModules().contains(
+						conn.getParentScanModule())
+						&& clipboardContent.getScanModules().contains(
+								conn.getChildScanModule())) {
+					clipboardContent.getConnections().add(
+							((ConnectionEditPart) o).getModel());
+				}
+			}
+		}
+		
+		Clipboard.getDefault().setContents(clipboardContent);
+		LOGGER.debug(clipboardContent.getScanModules().size() + 
+				" Scanmodule(s) detected and added to clipboard.");
+		LOGGER.debug(clipboardContent.getConnections().size() + 
+				" Connection(s) detected and added to clipboard.");
+		new Refresh().run();
 	}
 	
 	private class Refresh implements Runnable {
