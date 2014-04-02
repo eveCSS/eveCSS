@@ -24,7 +24,7 @@ public class CreateScanModule extends Command {
 	 * Constructor.
 	 * 
 	 * @param chain the parent
-	 * @param bounds the bounds
+	 * @param bounds the bounds (can be <code>null</code>)
 	 * @param type the scan module type
 	 */
 	public CreateScanModule(Chain chain, Rectangle bounds, ScanModuleTypes type) {
@@ -41,8 +41,10 @@ public class CreateScanModule extends Command {
 	@Override
 	public void execute() {
 		logger.debug("execute");
-		this.scanModule.setX(this.bounds.x);
-		this.scanModule.setY(this.bounds.y);
+		if (this.bounds != null) {
+			this.scanModule.setX(this.bounds.x);
+			this.scanModule.setY(this.bounds.y);
+		}
 		this.chain.add(this.scanModule);
 		String name = "";
 		switch (this.scanModule.getType()) {

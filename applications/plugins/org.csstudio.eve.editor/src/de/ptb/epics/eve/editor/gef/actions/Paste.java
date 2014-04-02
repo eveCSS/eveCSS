@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.ui.actions.Clipboard;
 import org.eclipse.gef.ui.actions.PasteTemplateAction;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
@@ -92,10 +92,19 @@ public class Paste extends PasteTemplateAction {
 				new HashMap<ScanModule, ScanModule>(
 						clipboardContent.getScanModules().size());
 		
+		Point point = ((ScanDescriptionEditor)editor).getContextMenuPosition();
+		if (point == null) {
+			point = ((ScanDescriptionEditor)editor).getCursorPosition();
+		}
+		
 		for (ScanModule sm : clipboardContent.getScanModules()) {
 			LOGGER.debug("should clone and add SM " + sm.getName() + "here.");
 			CreateScanModule createCommand = new CreateScanModule(chain,
-					new Rectangle(100, 100, 0, 0), ScanModuleTypes.CLASSIC);
+					null, ScanModuleTypes.CLASSIC);
+			
+			createCommand.getScanModule().setX(point.x);
+			createCommand.getScanModule().setY(point.y);
+			LOGGER.debug("Paste Position: (" + point.x + ", " + point.y + ")");
 			
 			smRelations.put(sm, createCommand.getScanModule());
 			

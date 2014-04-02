@@ -14,6 +14,7 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPart;
@@ -42,8 +43,12 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.MenuDetectEvent;
+import org.eclipse.swt.events.MenuDetectListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -87,6 +92,8 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 	
 	private ScanDescription scanDescription;
 	
+	private Point contextMenuLocation;
+	
 	/**
 	 * Constructor.
 	 */
@@ -104,6 +111,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		this.setSite(site);
 		this.setInput(input);
 		this.setPartName(input.getName());
+		this.contextMenuLocation = null;
 		
 		final FileStoreEditorInput fileStoreEditorInput = 
 										(FileStoreEditorInput)input;
@@ -395,7 +403,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 	@Override
 	protected void configureGraphicalViewer() {
 		logger.trace("configureGraphicalViewer");
-		GraphicalViewer viewer = this.getGraphicalViewer();
+		final GraphicalViewer viewer = this.getGraphicalViewer();
 		viewer.setEditPartFactory(new ScanDescriptionEditorEditPartFactory());
 		// construct layered view for displaying FreeformFigures (zoomable)
 		ScalableFreeformRootEditPart root = new ScalableFreeformRootEditPart();
@@ -413,6 +421,12 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		IAction zoomOut = new ZoomOutAction(root.getZoomManager());
 		getActionRegistry().registerAction(zoomIn);
 		getActionRegistry().registerAction(zoomOut);
+		
+		viewer.getControl().addMenuDetectListener(new MenuDetectListener() {
+			@Override public void menuDetected(MenuDetectEvent e) {
+				contextMenuLocation = viewer.getControl().toControl(e.x, e.y);
+			}
+		});
 		
 		super.configureGraphicalViewer();
 	}
@@ -456,6 +470,36 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 						viewer));
 			}
 		};
+	}
+	
+	/**
+	 * Returns the current cursor position.
+	 * 
+	 * @return the current cursor position
+	 * @since 1.19
+	 */
+	public Point getCursorPosition() {
+		Display display = Display.getDefault();
+		Point point = getGraphicalViewer().getControl().toControl(
+				display.getCursorLocation());
+		FigureCanvas figureCanvas = (FigureCanvas) getGraphicalViewer()
+				.getControl();
+		org.eclipse.draw2d.geometry.Point location = figureCanvas.getViewport()
+				.getViewLocation();
+		point = new Point(point.x + location.x, point.y + location.y);
+		return point;
+	}
+	
+	/**
+	 * Returns the context menu position if any or <code>null</code>.
+	 * 
+	 * @return the context menu position or <code>null</code>
+	 * @since 1.19
+	 */
+	public Point getContextMenuPosition() {
+		Point menuPosition = this.contextMenuLocation;
+		this.contextMenuLocation = null;
+		return menuPosition;
 	}
 	
 	/**

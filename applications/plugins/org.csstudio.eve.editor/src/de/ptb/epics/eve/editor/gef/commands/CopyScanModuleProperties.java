@@ -17,8 +17,6 @@ public class CopyScanModuleProperties extends Command {
 	private ScanModule to;
 	
 	// old values
-	private int x;
-	private int y;
 	private ScanModuleTypes type;
 	private Storage storage;
 	private String name;
@@ -38,8 +36,6 @@ public class CopyScanModuleProperties extends Command {
 		this.from = from;
 		this.to = to;
 		
-		this.x = to.getX();
-		this.y = to.getY();
 		this.type = to.getType();
 		this.storage = to.getStorage();
 		this.name = to.getName();
@@ -55,8 +51,6 @@ public class CopyScanModuleProperties extends Command {
 	 */
 	@Override
 	public void execute() {
-		this.to.setX(this.from.getX());
-		this.to.setY(this.from.getY());
 		this.to.setType(this.from.getType());
 		this.to.setStorage(this.from.getStorage());
 		this.to.setName(this.from.getName() + " copy");
@@ -72,8 +66,6 @@ public class CopyScanModuleProperties extends Command {
 	 */
 	@Override
 	public void undo() {
-		this.to.setX(this.x);
-		this.to.setY(this.y);
 		this.to.setType(this.type);
 		this.to.setStorage(this.storage);
 		this.to.setName(this.name);
