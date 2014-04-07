@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: 
  PTB
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.swtbot.go,
  org.apache.log4j,
  de.ptb.epics.eve.data
