@@ -387,6 +387,10 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		return super.getAdapter(type);
 	}
 	
+	public GraphicalViewer getViewer() {
+		return this.getGraphicalViewer();
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

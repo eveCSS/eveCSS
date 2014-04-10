@@ -1,9 +1,14 @@
 package de.ptb.epics.eve.editor.gef.actions;
 
+import java.awt.Polygon;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.ui.actions.Clipboard;
@@ -30,6 +35,7 @@ import de.ptb.epics.eve.editor.gef.commands.CopyScanModulePreScans;
 import de.ptb.epics.eve.editor.gef.commands.CopyScanModuleProperties;
 import de.ptb.epics.eve.editor.gef.commands.CreateSMConnection;
 import de.ptb.epics.eve.editor.gef.commands.CreateScanModule;
+import de.ptb.epics.eve.util.math.geometry.Geometry;
 
 /**
  * @author Marcus Michalsky
@@ -95,10 +101,40 @@ public class Paste extends PasteTemplateAction {
 		Point point = ((ScanDescriptionEditor)editor).getContextMenuPosition();
 		if (point == null) {
 			point = ((ScanDescriptionEditor)editor).getCursorPosition();
+			
+			Viewport viewPort = (((FigureCanvas) ((ScanDescriptionEditor) editor)
+					.getViewer().getControl())).getViewport();
+			if (!viewPort.containsPoint(new org.eclipse.draw2d.geometry.Point(
+					point.x, point.y))) {
+				LOGGER.debug("Paste through Edit menu");
+				
+				List<java.awt.Point> points = new ArrayList<java.awt.Point>(chain
+						.getScanModules().size() * 4);
+				for (ScanModule scanModule : chain.getScanModules()) {
+					points.add(new java.awt.Point(scanModule.getX(), scanModule
+							.getY()));
+					points.add(new java.awt.Point(scanModule.getX()
+							+ ScanModule.DEFAULT_WIDTH, scanModule.getY()));
+					points.add(new java.awt.Point(scanModule.getX(), scanModule
+							.getY() + ScanModule.DEFAULT_HEIGHT));
+					points.add(new java.awt.Point(scanModule.getX()
+							+ ScanModule.DEFAULT_WIDTH, scanModule.getY()
+							+ ScanModule.DEFAULT_HEIGHT));
+				}
+				Polygon convexHull = Geometry.convexHull(points);
+				point = new Point(viewPort.getBounds().x
+						+ viewPort.getBounds().width / 2
+						- ScanModule.DEFAULT_WIDTH / 2,
+						convexHull.getBounds().y + 
+						convexHull.getBounds().height + 10);
+			} else {
+				LOGGER.debug("Paste trough CTRL+V");
+			}
+		} else {
+			LOGGER.debug("Paste through context menu.");
 		}
 		
 		for (ScanModule sm : clipboardContent.getScanModules()) {
-			LOGGER.debug("should clone and add SM " + sm.getName() + "here.");
 			CreateScanModule createCommand = new CreateScanModule(chain,
 					null, ScanModuleTypes.CLASSIC);
 			
