@@ -10,7 +10,7 @@
 <stringAttribute key="bootstrap" value=""/>
 <stringAttribute key="checked" value="[NONE]"/>
 <booleanAttribute key="clearConfig" value="false"/>
-<booleanAttribute key="clearws" value="false"/>
+<booleanAttribute key="clearws" value="true"/>
 <booleanAttribute key="clearwslog" value="false"/>
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/CSS SWTBot Recorder"/>
 <booleanAttribute key="default" value="false"/>
@@ -27,7 +27,7 @@
 <mapEntry key="[run]" value="org.eclipse.pde.ui.RuntimeWorkbench"/>
 </mapAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -eve.root ${system_property:user.home} -eve.debug 1 -data ${system_property:user.home}/eve/workspace/eclipse"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -eve.root ${system_property:user.home} -eve.debug 1 -data ${system_property:user.home}/eve/workspace/eclipse-swtbot"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.5 -Dorg.eclipse.swtbot.generator.enable=true -XX:MaxPermSize=256m -Xms40m -Xmx512m"/>
 <stringAttribute key="pde.version" value="3.3"/>
