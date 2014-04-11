@@ -85,6 +85,22 @@ public class PolarPoint extends Point implements Comparable<PolarPoint> {
 	}
 	
 	/**
+	 * Returns the y value of the topmost point (the one with the lowest y).
+	 * 
+	 * @param points the points to be considered
+	 * @return the y value of the topmost point
+	 */
+	public static int getTopmostY(List<PolarPoint> points) {
+		int y = Integer.MAX_VALUE;
+		for (PolarPoint point : points) {
+			if (point.y < y) {
+				y = point.y;
+			}
+		}
+		return y;
+	}
+	
+	/**
 	 * Computes the Cross Product of two points.
 	 * 
 	 * @param p1 point one

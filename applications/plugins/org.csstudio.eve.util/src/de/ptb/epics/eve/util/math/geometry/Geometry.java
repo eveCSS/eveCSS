@@ -4,8 +4,8 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.util.List;
 
+import de.ptb.epics.eve.util.math.geometry.convexhull.BoundingBoxConvexHullStrategy;
 import de.ptb.epics.eve.util.math.geometry.convexhull.ConvexHullStrategy;
-import de.ptb.epics.eve.util.math.geometry.convexhull.GrahamsScanConvexHullStrategy;
 
 /**
  * @author Marcus Michalsky
@@ -20,7 +20,8 @@ public class Geometry {
 	 * @return the convex hull of the given points
 	 */
 	public static Polygon convexHull(List<Point> points) {
-		ConvexHullStrategy strategy = new GrahamsScanConvexHullStrategy();
+		ConvexHullStrategy strategy = new BoundingBoxConvexHullStrategy();
+				// new GrahamsScanConvexHullStrategy();
 		return strategy.compute(points);
 	}
 }

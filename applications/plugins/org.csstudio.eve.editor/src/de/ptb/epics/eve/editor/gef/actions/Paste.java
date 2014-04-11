@@ -35,6 +35,7 @@ import de.ptb.epics.eve.editor.gef.commands.CopyScanModulePreScans;
 import de.ptb.epics.eve.editor.gef.commands.CopyScanModuleProperties;
 import de.ptb.epics.eve.editor.gef.commands.CreateSMConnection;
 import de.ptb.epics.eve.editor.gef.commands.CreateScanModule;
+import de.ptb.epics.eve.editor.gef.commands.SelectScanModules;
 import de.ptb.epics.eve.util.math.geometry.Geometry;
 
 /**
@@ -98,12 +99,13 @@ public class Paste extends PasteTemplateAction {
 				new HashMap<ScanModule, ScanModule>(
 						clipboardContent.getScanModules().size());
 		
+		Viewport viewPort = (((FigureCanvas) ((ScanDescriptionEditor) editor)
+				.getViewer().getControl())).getViewport();
+		
 		Point point = ((ScanDescriptionEditor)editor).getContextMenuPosition();
 		if (point == null) {
 			point = ((ScanDescriptionEditor)editor).getCursorPosition();
 			
-			Viewport viewPort = (((FigureCanvas) ((ScanDescriptionEditor) editor)
-					.getViewer().getControl())).getViewport();
 			if (!viewPort.containsPoint(new org.eclipse.draw2d.geometry.Point(
 					point.x, point.y))) {
 				LOGGER.debug("Paste through Edit menu");
@@ -126,7 +128,7 @@ public class Paste extends PasteTemplateAction {
 						+ viewPort.getBounds().width / 2
 						- ScanModule.DEFAULT_WIDTH / 2,
 						convexHull.getBounds().y + 
-						convexHull.getBounds().height + 10);
+						convexHull.getBounds().height);
 			} else {
 				LOGGER.debug("Paste trough CTRL+V");
 			}
@@ -134,13 +136,36 @@ public class Paste extends PasteTemplateAction {
 			LOGGER.debug("Paste through context menu.");
 		}
 		
+		List<ScanModule> pasteModules = new ArrayList<ScanModule>();
+		
+		List<java.awt.Point> points = new ArrayList<java.awt.Point>(
+				clipboardContent.getScanModules().size() * 4);
+		for (ScanModule scanModule : clipboardContent.getScanModules()) {
+			points.add(new java.awt.Point(scanModule.getX(), scanModule
+					.getY()));
+			points.add(new java.awt.Point(scanModule.getX()
+					+ ScanModule.DEFAULT_WIDTH, scanModule.getY()));
+			points.add(new java.awt.Point(scanModule.getX(), scanModule
+					.getY() + ScanModule.DEFAULT_HEIGHT));
+			points.add(new java.awt.Point(scanModule.getX()
+					+ ScanModule.DEFAULT_WIDTH, scanModule.getY()
+					+ ScanModule.DEFAULT_HEIGHT));
+		}
+		Polygon pasteHull = Geometry.convexHull(points);
+		
 		for (ScanModule sm : clipboardContent.getScanModules()) {
 			CreateScanModule createCommand = new CreateScanModule(chain,
 					null, ScanModuleTypes.CLASSIC);
 			
-			createCommand.getScanModule().setX(point.x);
-			createCommand.getScanModule().setY(point.y);
-			LOGGER.debug("Paste Position: (" + point.x + ", " + point.y + ")");
+			pasteModules.add(createCommand.getScanModule());
+			
+			Point relativeZero = new Point(
+					pasteHull.getBounds().getLocation().x, pasteHull
+							.getBounds().getLocation().y);
+			
+			createCommand.getScanModule().setX(sm.getX());
+			createCommand.getScanModule().setY(
+					sm.getY() + point.y + 10 - relativeZero.y);
 			
 			smRelations.put(sm, createCommand.getScanModule());
 			
@@ -195,6 +220,8 @@ public class Paste extends PasteTemplateAction {
 				pasteCommand.add(createConnectionCommand);
 			}
 		}
+		pasteCommand.add(new SelectScanModules((ScanDescriptionEditor) editor,
+				pasteModules));
 		
 		chain.resetReservedIds();
 		chain.setReserveIds(false);
