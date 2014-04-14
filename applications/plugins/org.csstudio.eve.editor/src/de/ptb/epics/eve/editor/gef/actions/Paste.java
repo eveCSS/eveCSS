@@ -74,7 +74,7 @@ public class Paste extends PasteTemplateAction {
 	 */
 	@Override
 	protected Command createPasteCommand() {
-		LOGGER.debug("create paste command");
+		// clipboard contents
 		Object o = Clipboard.getDefault().getContents();
 		if (o == null) {
 			LOGGER.error("Paste not possible, Clipboard is empty!");
@@ -82,76 +82,98 @@ public class Paste extends PasteTemplateAction {
 		}
 		ClipboardContent clipboardContent = (ClipboardContent)o;
 		
-		CompoundCommand pasteCommand = new CompoundCommand();
-		
-		IEditorPart editor = Activator.getDefault().getWorkbench()
+		// active editor
+		IEditorPart editorPart = Activator.getDefault().getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		if (!(editor instanceof ScanDescriptionEditor)) {
+		if (!(editorPart instanceof ScanDescriptionEditor)) {
 			LOGGER.error("No Editor active!");
 			return null;
 		}
+		ScanDescriptionEditor editor = (ScanDescriptionEditor)editorPart;
 		
-		Chain chain = ((ScanDescriptionEditor) editor).getContent().getChains()
-				.get(0);
+		// paste Command (composed of chained commands for each scan module)
+		CompoundCommand pasteCommand = new CompoundCommand();
+		
+		// the chain the editor is representing
+		Chain chain = editor.getContent().getChains().get(0);
 		chain.setReserveIds(true);
 		
+		// determine free (graphical) space to paste to
+		List<java.awt.Point> smPoints = new ArrayList<java.awt.Point>(chain
+				.getScanModules().size() * 4);
+		for (ScanModule scanModule : chain.getScanModules()) {
+			smPoints.add(new java.awt.Point(scanModule.getX(), scanModule
+					.getY()));
+			smPoints.add(new java.awt.Point(scanModule.getX()
+					+ ScanModule.DEFAULT_WIDTH, scanModule.getY()));
+			smPoints.add(new java.awt.Point(scanModule.getX(), scanModule
+					.getY() + ScanModule.DEFAULT_HEIGHT));
+			smPoints.add(new java.awt.Point(scanModule.getX()
+					+ ScanModule.DEFAULT_WIDTH, scanModule.getY()
+					+ ScanModule.DEFAULT_HEIGHT));
+		}
+		Polygon convexHullOfSMs = Geometry.convexHull(smPoints);
+		
+		// determine "bounding box" of SMs that should be pasted
+		List<java.awt.Point> smPastePoints = new ArrayList<java.awt.Point>(
+				clipboardContent.getScanModules().size() * 4);
+		for (ScanModule scanModule : clipboardContent.getScanModules()) {
+			smPastePoints.add(new java.awt.Point(scanModule.getX(), scanModule
+					.getY()));
+			smPastePoints.add(new java.awt.Point(scanModule.getX()
+					+ ScanModule.DEFAULT_WIDTH, scanModule.getY()));
+			smPastePoints.add(new java.awt.Point(scanModule.getX(), scanModule
+					.getY() + ScanModule.DEFAULT_HEIGHT));
+			smPastePoints.add(new java.awt.Point(scanModule.getX()
+					+ ScanModule.DEFAULT_WIDTH, scanModule.getY()
+					+ ScanModule.DEFAULT_HEIGHT));
+		}
+		Polygon convexHullOfPasteSMs = Geometry.convexHull(smPastePoints);
+		
+		// remember which pasted SM represents which "original" SM
+		// (necessary to paste connections between them)
 		Map<ScanModule, ScanModule> smRelations = 
 				new HashMap<ScanModule, ScanModule>(
 						clipboardContent.getScanModules().size());
 		
-		Viewport viewPort = (((FigureCanvas) ((ScanDescriptionEditor) editor)
+		// determine the part that is currently visible in the editor
+		Viewport viewPort = (((FigureCanvas) editor
 				.getViewer().getControl())).getViewport();
 		
-		Point point = ((ScanDescriptionEditor)editor).getContextMenuPosition();
-		if (point == null) {
-			point = ((ScanDescriptionEditor)editor).getCursorPosition();
-			
+		// determine paste origin (depends whether paste was triggered 
+		// through main menu, context menu or shortcut
+		Point pasteOrigin = new Point(0, 0);
+		Point contextMenuPosition = ((ScanDescriptionEditor)editor).
+				getContextMenuPosition();
+		if (contextMenuPosition == null) {
+			Point mousePosition = editor.getCursorPosition();
 			if (!viewPort.containsPoint(new org.eclipse.draw2d.geometry.Point(
-					point.x, point.y))) {
-				LOGGER.debug("Paste through Edit menu");
-				
-				List<java.awt.Point> points = new ArrayList<java.awt.Point>(chain
-						.getScanModules().size() * 4);
-				for (ScanModule scanModule : chain.getScanModules()) {
-					points.add(new java.awt.Point(scanModule.getX(), scanModule
-							.getY()));
-					points.add(new java.awt.Point(scanModule.getX()
-							+ ScanModule.DEFAULT_WIDTH, scanModule.getY()));
-					points.add(new java.awt.Point(scanModule.getX(), scanModule
-							.getY() + ScanModule.DEFAULT_HEIGHT));
-					points.add(new java.awt.Point(scanModule.getX()
-							+ ScanModule.DEFAULT_WIDTH, scanModule.getY()
-							+ ScanModule.DEFAULT_HEIGHT));
-				}
-				Polygon convexHull = Geometry.convexHull(points);
-				point = new Point(viewPort.getBounds().x
-						+ viewPort.getBounds().width / 2
-						- ScanModule.DEFAULT_WIDTH / 2,
-						convexHull.getBounds().y + 
-						convexHull.getBounds().height);
+					mousePosition.x, mousePosition.y))) {
+				LOGGER.debug("Paste through main menu");
+				// origin should be a reasonable position (e.g. not overlapping 
+				// existing modules)
+				pasteOrigin = new Point(convexHullOfPasteSMs.getBounds().x,
+						convexHullOfSMs.getBounds().y + 10 + 
+						convexHullOfSMs.getBounds().height);
+				// viewPort.getBounds().x + viewPort.getBounds().width / 2 - ScanModule.DEFAULT_WIDTH / 2
 			} else {
-				LOGGER.debug("Paste trough CTRL+V");
+				LOGGER.debug("Paste through shortcut (CTRL+V)");
+				// origin is the current mouse position
+				pasteOrigin = mousePosition;
 			}
 		} else {
-			LOGGER.debug("Paste through context menu.");
+			LOGGER.debug("Paste through context menu");
+			// origin is the top left point of the context menu
+			pasteOrigin = contextMenuPosition;
 		}
 		
+		// determine the upper left point of the bounding box of paste SMs
+		Point relativeZero = new Point(convexHullOfPasteSMs.getBounds()
+				.getLocation().x, convexHullOfPasteSMs.getBounds()
+				.getLocation().y);
+		
+		// creating create scan module commands
 		List<ScanModule> pasteModules = new ArrayList<ScanModule>();
-		
-		List<java.awt.Point> points = new ArrayList<java.awt.Point>(
-				clipboardContent.getScanModules().size() * 4);
-		for (ScanModule scanModule : clipboardContent.getScanModules()) {
-			points.add(new java.awt.Point(scanModule.getX(), scanModule
-					.getY()));
-			points.add(new java.awt.Point(scanModule.getX()
-					+ ScanModule.DEFAULT_WIDTH, scanModule.getY()));
-			points.add(new java.awt.Point(scanModule.getX(), scanModule
-					.getY() + ScanModule.DEFAULT_HEIGHT));
-			points.add(new java.awt.Point(scanModule.getX()
-					+ ScanModule.DEFAULT_WIDTH, scanModule.getY()
-					+ ScanModule.DEFAULT_HEIGHT));
-		}
-		Polygon pasteHull = Geometry.convexHull(points);
 		
 		for (ScanModule sm : clipboardContent.getScanModules()) {
 			CreateScanModule createCommand = new CreateScanModule(chain,
@@ -159,16 +181,16 @@ public class Paste extends PasteTemplateAction {
 			
 			pasteModules.add(createCommand.getScanModule());
 			
-			Point relativeZero = new Point(
-					pasteHull.getBounds().getLocation().x, pasteHull
-							.getBounds().getLocation().y);
-			
-			createCommand.getScanModule().setX(sm.getX());
+			// adjusting coordinates
+			createCommand.getScanModule().setX(
+					pasteOrigin.x + sm.getX() - relativeZero.x);
 			createCommand.getScanModule().setY(
-					sm.getY() + point.y + 10 - relativeZero.y);
+					pasteOrigin.y + sm.getY() - relativeZero.y);
 			
+			// save relation between "original" and paste scan module
 			smRelations.put(sm, createCommand.getScanModule());
 			
+			// creating "atomic" commands necessary to "clone" all attributes
 			CopyScanModuleProperties propertiesCommand = 
 					new CopyScanModuleProperties(
 							sm, createCommand.getScanModule());
@@ -194,6 +216,7 @@ public class Paste extends PasteTemplateAction {
 					new CopyScanModuleEvents(
 							sm, createCommand.getScanModule());
 			
+			// add chained command to compound command
 			pasteCommand.add(createCommand.
 					chain(propertiesCommand).
 					chain(axesCommand).
@@ -205,6 +228,7 @@ public class Paste extends PasteTemplateAction {
 					chain(eventCommand));
 		}
 		
+		// creating connection create commands
 		for (Connector conn : clipboardContent.getConnections()) {
 			ScanModule parent = conn.getParentScanModule();
 			ScanModule child = conn.getChildScanModule();
