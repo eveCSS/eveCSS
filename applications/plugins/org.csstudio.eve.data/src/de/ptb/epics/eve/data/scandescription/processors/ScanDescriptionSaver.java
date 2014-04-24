@@ -1668,7 +1668,7 @@ public class ScanDescriptionSaver implements
 						"normalize_id");
 			}
 
-			if (channel.hasReadyEvent()) {
+			if (scanDescription.isUsedAsEvent(channel)) {
 				this.atts.clear();
 				this.contentHandler.startElement("", "sendreadyevent",
 						"sendreadyevent", this.atts);

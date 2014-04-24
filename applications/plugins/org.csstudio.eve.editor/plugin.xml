@@ -886,6 +886,31 @@
                name="ActivePart"
                optional="false">
          </commandParameter>
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddEvent.chainId"
+               name="chainId"
+               optional="true">
+         </commandParameter>
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddEvent.scanModuleId"
+               name="scanModuleId"
+               optional="true">
+         </commandParameter>
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddEvent.detectorId"
+               name="detectorId"
+               optional="true">
+         </commandParameter>
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddEvent.detectorName"
+               name="detectorName"
+               optional="true">
+         </commandParameter>
+         <commandParameter
+               id="de.ptb.epics.eve.editor.command.AddEvent.parentName"
+               name="parentName"
+               optional="true">
+         </commandParameter>
       </command>
       <command
             categoryId="de.ptb.epics.eve.editor.views.eventcomposite.commands"

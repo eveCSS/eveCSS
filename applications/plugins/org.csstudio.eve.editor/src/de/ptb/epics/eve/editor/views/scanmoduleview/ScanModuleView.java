@@ -42,7 +42,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 
 import de.ptb.epics.eve.data.EventImpacts;
-import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.Storage;
@@ -148,10 +147,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	private EventComposite redoEventComposite;
 	private EventComposite breakEventComposite;
 	private EventComposite triggerEventComposite;
-
-	private Button appendScheduleEventCheckBox;
-	private AppendScheduleEventCheckBoxSelectionListener 
-			appendScheduleEventCheckBoxSelectionListener;
 
 	private SashForm sashForm;
 
@@ -492,17 +487,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		this.triggerEventsTabItem
 				.setToolTipText("Wait for trigger event before moving to next position");
 		this.triggerEventsTabItem.setControl(triggerEventComposite);
-
-		appendScheduleEventCheckBox = new Button(this.eventsComposite,
-				SWT.CHECK);
-		appendScheduleEventCheckBox.setText("Append Schedule Event");
-		gridData = new GridData();
-		gridData.horizontalSpan = 2;
-		appendScheduleEventCheckBox.setLayoutData(gridData);
-		this.appendScheduleEventCheckBoxSelectionListener = 
-				new AppendScheduleEventCheckBoxSelectionListener();
-		appendScheduleEventCheckBox.addSelectionListener(
-				appendScheduleEventCheckBoxSelectionListener);
 	}
 
 	/*
@@ -698,7 +682,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	 * 
 	 */
 	private void checkForErrors() {
-
 		// check errors in Actions Tab
 		this.motorAxisTab.setImage(null);
 		this.detectorChannelTab.setImage(null);
@@ -850,20 +833,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
 		if (this.currentScanModule != null) {
-			// TODO CheckBox for ScheduleIncident Start or End
-			// TODO understand
-			if (currentScanModule.getChain() != null) {
-				Event testEvent = new Event(currentScanModule.getChain()
-						.getId(), currentScanModule.getId(),
-						Event.ScheduleIncident.END);
-				this.appendScheduleEventCheckBox
-						.setSelection(this.currentScanModule.getChain()
-								.getScanDescription()
-								.getEventById(testEvent.getID()) != null);
-			} else {
-				this.appendScheduleEventCheckBox.setSelection(false);
-			}
-			
 			this.triggerEventComposite.setEvents(this.currentScanModule,
 					EventImpacts.TRIGGER);
 			this.breakEventComposite.setEvents(this.currentScanModule,
@@ -1076,49 +1045,6 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 						.setSelectionProvider(triggerEventComposite
 								.getTableViewer());
 				break;
-			}
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of
-	 * <code> appendScheduleEventCheckBox</code>.
-	 */
-	private class AppendScheduleEventCheckBoxSelectionListener implements
-			SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			Event scheduleEvent = new Event(currentScanModule.getChain()
-					.getId(), currentScanModule.getId(),
-					Event.ScheduleIncident.END);
-
-			if (appendScheduleEventCheckBox.getSelection()) {
-				if (currentScanModule.getChain().getScanDescription()
-						.getEventById(scheduleEvent.getID()) == null) {
-					currentScanModule.getChain().getScanDescription()
-							.add(scheduleEvent);
-				}
-			} else {
-				Event event = currentScanModule.getChain().getScanDescription()
-						.getEventById(scheduleEvent.getID());
-				if (event != null) {
-					// TODO
-					// check if this event is used by any ControlEvents
-					// and notify them, that we remove the event
-					currentScanModule.getChain().getScanDescription()
-							.remove(event);
-				}
 			}
 		}
 	}

@@ -4,10 +4,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Logger;
@@ -24,7 +22,6 @@ import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -66,11 +63,10 @@ public class ScanDescription implements IModelUpdateProvider,
 	// the number of times the scan is repeated.
 	private int repeatCount;
 	
+	private Event startEvent;
+	
 	// the chains of the scan description.
 	private List<Chain> chains;
-	
-	// the events of the scan description.
-	private Map<String, Event> eventsMap;
 	
 	// monitor options type
 	private MonitorOption monitorOption;
@@ -102,12 +98,10 @@ public class ScanDescription implements IModelUpdateProvider,
 		super();
 		this.chains = new ArrayList<Chain>();
 		//this.events = new ArrayList<Event>();
-		this.eventsMap = new HashMap<String, Event>();
 		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
 		// default start event
-		Event s0 = new Event(EventTypes.SCHEDULE);
-		s0.setName("Start");
-		this.add(s0);
+		startEvent = new Event(EventTypes.SCHEDULE);
+		startEvent.setName("Start");
 		this.fileName = "";
 		this.measuringStation = measuringStation;
 		this.dirty = false;
@@ -145,89 +139,6 @@ public class ScanDescription implements IModelUpdateProvider,
 		return returnValue;
 	}
 	
-	/**
-	 * Adds an event to the scan description. 
-	 * 
-	 * @param event the event that should be added
-	 * @return <code>true</code> if the event was added,
-	 * 		   <code>false</code> otherwise
-	 */
-	public boolean add(final Event event) {
-		this.eventsMap.put(event.getID(), event);
-		updateListeners();	
-		return true; // TODO always return true ?
-	}
-
-	/**
-	 * Removes an event from the scan description.
-	 * 
-	 * @param event the event that should be removed
-	 * @return <code>true</code> if the event has been removed,
-	 * 		   <code>false</code> otherwise
-	*/
-	public boolean remove(final Event event) {
-		boolean returnValue = this.eventsMap.containsValue(event); // TODO return Value ???
-		updateListeners();
-		this.eventsMap.remove(event.getID());
-		// TODO
-		
-		/*
-		//TODO
-		// we loop through chains and collect all ControlEvents
-		// this should be done easier
-		List<ControlEvent> eventList = new ArrayList<ControlEvent>();
-		for (Chain loopChain : chains) {
-			removeControlEventIfNotInList(
-					loopChain.getBreakControlEventManager(), event);
-			removeControlEventIfNotInList(
-					loopChain.getStartControlEventManager(), event);
-			removeControlEventIfNotInList(
-					loopChain.getStopControlEventManager(), event);
-			removeControlEventIfNotInList(
-					loopChain.getRedoControlEventManager(), event);
-			removeControlEventIfNotInList(
-					loopChain.getPauseControlEventManager(), event);
-			for (ScanModule loopScanModule : loopChain.getScanModules()) {
-				removeControlEventIfNotInList(
-						loopScanModule.getBreakControlEventManager(), event);
-				removeControlEventIfNotInList(
-						loopScanModule.getRedoControlEventManager(), event);
-				removeControlEventIfNotInList(
-						loopScanModule.getTriggerControlEventManager(), event);
-				removeControlEventIfNotInList(
-						loopScanModule.getPauseControlEventManager(), event);
-			}
-		}
-		// if a controlEvent uses the event, remove the ControlEvent
-		for (ControlEvent cevent : eventList) {
-			Event embeddedEvent = cevent.getEvent();
-			if (embeddedEvent != null){
-				if (embeddedEvent.equals(event)) {
-					cevent.updateEvent(new ModelUpdateEvent(this, null));
-				}
-			}
-		}*/
-		return returnValue;
-	}
-
-	/**
-	 * This method removes a control event if it is not longer in the list.
-	 * 
-	 * @param manager The control event manager.
-	 * @param event The event.
-	 */
-	private void removeControlEventIfNotInList(
-			final ControlEventManager manager, final Event event) {
-		final List<? extends ControlEvent> eventList = 
-				manager.getEvents();
-		// if a controlEvent uses the event, remove the ControlEvent
-		for(ControlEvent cevent : eventList) {
-			final Event embeddedEvent = cevent.getEvent();
-			if(embeddedEvent != null && embeddedEvent.equals(event)) {
-					manager.removeEvent(cevent);
-			}
-		}
-	}
 	/**
 	 * @return the fileName
 	 */
@@ -344,41 +255,13 @@ public class ScanDescription implements IModelUpdateProvider,
 	}
 
 	/**
-	 * Returns the event corresponding to the given id.
-	 * 
-	 * @param id id of an event
-	 * @return the event corresponding to the given id or
-	 * 		   <code>null</code> if none
-	 */
-	public Event getEventById(final String id) {
-		return this.eventsMap.get(id);
-	}
-	
-	/**
-	 * Convenience method 
-	 * 
-	 * @param id A id of a event.
-	 * @return true if successful
-	 */
-	public boolean removeEventById(final String id) {
-		return remove(getEventById(id));
-	}
-	/**
 	 * Returns a default start event for chains without start event tag
 	 * this is a hack to not break existing code
 	 * 
 	 * @return the default StartEvent
 	 */
-	public Event getDefaultStartEvent() { // TODO replace hack with real code ?
-		return this.getEventById("S-0-0-E");
-	}
-	/**
-	 * Returns a list holding all events.
-	 * 
-	 * @return a list holding all events
-	 */
-	public List<Event> getEvents() {
-		return new ArrayList<Event>(this.eventsMap.values());
+	public Event getDefaultStartEvent() {
+		return this.startEvent;
 	}
 	
 	/**
@@ -645,6 +528,79 @@ public class ScanDescription implements IModelUpdateProvider,
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Checks whether a detector ready event of a given channel is used
+	 * 
+	 * @param channel the channel of the detector ready event
+	 * @return <code>true</code> if a detector ready event of the given channel 
+	 * 		is used, <code>false</code> otherwise
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	public boolean isUsedAsEvent(Channel channel) {
+		for (Chain chain : this.chains) {
+			for (ControlEvent event : chain.getPauseEvents()) {
+				if (event.getEvent().getDetectorId()
+						.equals(channel.getAbstractDevice().getID())) {
+					return true;
+				}
+			}
+			for (ControlEvent event : chain.getRedoEvents()) {
+				if (event.getEvent().getDetectorId()
+						.equals(channel.getAbstractDevice().getID())) {
+					return true;
+				}
+			}
+			for (ControlEvent event : chain.getBreakEvents()) {
+				if (event.getEvent().getDetectorId()
+						.equals(channel.getAbstractDevice().getID())) {
+					return true;
+				}
+			}
+			for (ControlEvent event : chain.getStopEvents()) {
+				if (event.getEvent().getDetectorId()
+						.equals(channel.getAbstractDevice().getID())) {
+					return true;
+				}
+			}
+			for (ScanModule sm : chain.getScanModules()) {
+				for (ControlEvent event : sm.getPauseEvents()) {
+					if (event.getEvent().getDetectorId()
+							.equals(channel.getAbstractDevice().getID())) {
+						return true;
+					}
+				}
+				for (ControlEvent event : sm.getRedoEvents()) {
+					if (event.getEvent().getDetectorId()
+							.equals(channel.getAbstractDevice().getID())) {
+						return true;
+					}
+				}
+				for (ControlEvent event : sm.getBreakEvents()) {
+					if (event.getEvent().getDetectorId()
+							.equals(channel.getAbstractDevice().getID())) {
+						return true;
+					}
+				}
+				for (ControlEvent event : sm.getTriggerEvents()) {
+					if (event.getEvent().getDetectorId()
+							.equals(channel.getAbstractDevice().getID())) {
+						return true;
+					}
+				}
+				for (Channel smChannel : sm.getChannels()) {
+					for (ControlEvent event : smChannel.getRedoEvents()) {
+						if (event.getEvent().getDetectorId()
+								.equals(channel.getAbstractDevice().getID())) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 	
 	/**

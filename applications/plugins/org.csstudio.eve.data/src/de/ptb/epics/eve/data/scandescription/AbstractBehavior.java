@@ -18,7 +18,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author Marcus Michalsky
  */
 public abstract class AbstractBehavior implements IModelUpdateListener, 
-		IModelUpdateProvider, IModelErrorProvider {
+		IModelUpdateProvider, IModelErrorProvider, Comparable<AbstractBehavior> {
 
 	/**
 	 * This list contains all listener for update of this model object.
@@ -92,5 +92,14 @@ public abstract class AbstractBehavior implements IModelUpdateListener,
 	public boolean removeModelUpdateListener(
 			final IModelUpdateListener modelUpdateListener) {
 		return this.modelUpdateListener.remove(modelUpdateListener);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int compareTo(AbstractBehavior o) {
+		return this.getAbstractDevice().getName()
+				.compareTo(o.getAbstractDevice().getName());
 	}
 }

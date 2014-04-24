@@ -10,13 +10,13 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.measuringstation.Event.ScheduleIncident;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
 import de.ptb.epics.eve.editor.views.chainview.ChainView;
 import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
@@ -29,7 +29,6 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
  * @since 1.1
  */
 public class AddEvent implements IHandler {
-
 	private static Logger logger = Logger.getLogger(AddEvent.class.getName());
 	
 	/**
@@ -52,15 +51,33 @@ public class AddEvent implements IHandler {
 		logger.debug("EventImpact: "+ eventImpact);
 		logger.debug("activePart: "+ activePart);
 		
-		Event event;
+		Event event = null;
 		
 		if(eventType.equals(EventTypes.MONITOR)) {
 			event = Activator.getDefault().getMeasuringStation().
 			getEventById(eventId);
 		} else {
-			event = ((ScanDescriptionEditor)Activator.getDefault().
-					getWorkbench().getActiveWorkbenchWindow().getActivePage().
-					getActiveEditor()).getContent().getEventById(eventId);
+			int chainId = Integer.parseInt(executionEvent.getParameter(
+					"de.ptb.epics.eve.editor.command.AddEvent.chainId"));
+			int smId = Integer.parseInt(executionEvent.getParameter(
+					"de.ptb.epics.eve.editor.command.AddEvent.scanModuleId"));
+			if (eventType.equals(EventTypes.SCHEDULE)) {
+				event = new Event(chainId, smId, ScheduleIncident.END);
+			} else if (eventType.equals(EventTypes.DETECTOR)) {
+				String detectorId = executionEvent.getParameter(
+						"de.ptb.epics.eve.editor.command.AddEvent.detectorId");
+				String detectorName = executionEvent.getParameter(
+						"de.ptb.epics.eve.editor.command.AddEvent.detectorName");
+				String parentName = executionEvent.getParameter(
+						"de.ptb.epics.eve.editor.command.AddEvent.parentName");
+				
+				event = new Event(detectorId, parentName, detectorName,
+						chainId, smId);
+			}
+		}
+		
+		if (event == null) {
+			throw new ExecutionException("unknown event type");
 		}
 		
 		if (activePart.equals("de.ptb.epics.eve.editor.views.ChainView")) {

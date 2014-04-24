@@ -177,6 +177,16 @@ public class Event implements Comparable<Event> {
 	}
 
 	/**
+	 * Returns the detector id.
+	 * 
+	 * @return teh detector id
+	 * @since 1.19
+	 */
+	public String getDetectorId() {
+		return this.detectorId;
+	}
+	
+	/**
 	 * Returns the full id of the <code>Event</code>. If <code>Event</code> is a 
 	 * schedule event, it is generated from chainId, scanModuleId and incident 
 	 * S-&lt;chainId&gt;-&lt;scanModuleId&gt;-[S,E]
@@ -238,9 +248,9 @@ public class Event implements Comparable<Event> {
 	/**
 	 * Returns the id of the <code>Event</code>. If <code>Event</code> is a 
 	 * schedule event, it is generated from chainId, scanModuleId and incident 
-	 * S-<chainId>-<scanModuleId>-[S,E]
+	 * S-&lt;chainId&gt;-&lt;scanModuleId&gt;-[S,E]
 	 * If <code>Event</code> is a detector event, it is generated from chainId, 
-	 * scanModuleId and detector_id D-<chainId>-<scanModuleId>-<detectorid>
+	 * scanModuleId and detector_id D-&lt;chainId&gt;-&lt;scanModuleId&gt;-&lt;detectorid&gt;
 	 * 
 	 * @return id
 	 */

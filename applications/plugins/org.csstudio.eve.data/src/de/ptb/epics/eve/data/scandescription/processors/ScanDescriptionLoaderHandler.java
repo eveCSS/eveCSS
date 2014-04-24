@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -129,6 +130,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 	// The list of all control events
 	private List<ControlEvent> controlEventList;
+	private Map<String, Event> detectorReadyEventMap;
 
 	// A map from scan module id to scan module
 	private Map<Integer, ScanModule> idToScanModulMap;
@@ -173,6 +175,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		this.subState = ScanDescriptionLoaderSubStates.NONE;
 		this.chainList = new ArrayList<Chain>();
 		this.controlEventList = new ArrayList<ControlEvent>();
+		this.detectorReadyEventMap = new TreeMap<String, Event>();
 		this.relationReminders = new ArrayList<ScanModulRelationReminder>();
 
 		this.idToScanModulMap = new HashMap<Integer, ScanModule>();
@@ -1045,19 +1048,18 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_NEXT:
 			if (this.currentChannel.getAbstractDevice() != null) {
-				if (Boolean.parseBoolean(textBuffer.toString())) {
-					if (this.currentChannel.getAbstractDevice() != null) {
-						Event readyEvent = new Event(this.currentChannel
-								.getAbstractDevice().getID(),
-								this.currentChannel.getAbstractDevice()
-										.getParent().getName(),
-								this.currentChannel.getAbstractDevice()
-										.getName(), this.currentChain.getId(),
-								this.currentScanModule.getId());
-						this.currentChannel.setDetectorReadyEvent(readyEvent);
-						this.scanDescription.add(readyEvent);
-					}
-				}
+				Event readyEvent = new Event(this.currentChannel
+						.getAbstractDevice().getID(),
+						this.currentChannel.getAbstractDevice()
+								.getParent().getName(),
+						this.currentChannel.getAbstractDevice()
+								.getName(), this.currentChain.getId(),
+						this.currentScanModule.getId());
+				this.detectorReadyEventMap.put("D-" + currentChain.getId()
+						+ "-" + currentScanModule.getId() + "-"
+						+ currentChannel.getAbstractDevice().getID(),
+						readyEvent);
+				// TODO
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_READ;
 			break;
@@ -2244,17 +2246,19 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		// double events
 		for (ControlEvent controlEvent : this.controlEventList) {
 			if (controlEvent.getEventType() == EventTypes.SCHEDULE) {
-				this.scanDescription.add(controlEvent.getEvent());
+				/*this.scanDescription.add(controlEvent.getEvent());*/
 				String eventId = controlEvent.getEvent().getID();
 				controlEvent.setId(eventId);
-				controlEvent.setEvent(this.scanDescription
-						.getEventById(eventId));
+				/*controlEvent.setEvent(this.scanDescription
+						.getEventById(eventId));*/
 			} else {
 				controlEvent.setEvent(this.measuringStation
 						.getEventById(controlEvent.getId()));
 				if (controlEvent.getEvent() == null) {
-					controlEvent.setEvent(this.scanDescription
-							.getEventById(controlEvent.getId()));
+					controlEvent.setEvent(this.detectorReadyEventMap
+							.get(controlEvent.getId()));
+					/*controlEvent.setEvent(this.scanDescription
+							.getEventById(controlEvent.getId()));*/
 				}
 				if (controlEvent.getEvent() == null) {
 					logger.fatal("can't find event for id!");

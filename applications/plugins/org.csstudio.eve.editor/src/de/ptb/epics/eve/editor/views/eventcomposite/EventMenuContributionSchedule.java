@@ -16,10 +16,11 @@ import org.eclipse.ui.menus.CommandContributionItemParameter;
 import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
+import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
-
 import static de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContributionHelper.*;
 
 /**
@@ -29,7 +30,6 @@ import static de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContribution
  * @since 1.1
  */
 public class EventMenuContributionSchedule extends CompoundContributionItem {
-
 	private static Logger logger = Logger
 			.getLogger(EventMenuContributionSchedule.class.getName());
 
@@ -42,11 +42,48 @@ public class EventMenuContributionSchedule extends CompoundContributionItem {
 		ScanDescription sd = ((ScanDescriptionEditor) Activator.getDefault()
 				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActiveEditor()).getContent();
-		for (Event e : sd.getEvents()) {
-			if (e.getType().equals(EventTypes.SCHEDULE)) {
+		
+		{
+			Event startEvent = sd.getDefaultStartEvent();
+
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("de.ptb.epics.eve.editor.command.AddEvent.EventId",
+					startEvent.getID());
+			params.put("de.ptb.epics.eve.editor.command.AddEvent.EventType",
+					EventTypes.SCHEDULE.toString());
+			EventImpacts eventImpact = determineEventImpact();
+			if (eventImpact == null) {
+				logger.warn("EventImpact not found.");
+				return result.toArray(new IContributionItem[0]);
+			}
+			params.put("de.ptb.epics.eve.editor.command.AddEvent.EventImpact",
+					eventImpact.toString());
+			IViewPart activePart = getActiveViewPart();
+			if (activePart == null) {
+				logger.warn("active part is not a view.");
+				return result.toArray(new IContributionItem[0]);
+			}
+			params.put("de.ptb.epics.eve.editor.command.AddEvent.ActivePart",
+					activePart.getViewSite().getId());
+			params.put("de.ptb.epics.eve.editor.command.AddEvent.chainId", "0");
+			params.put("de.ptb.epics.eve.editor.command.AddEvent.scanModuleId", "0");
+			CommandContributionItemParameter p = new CommandContributionItemParameter(
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow(), "",
+					"de.ptb.epics.eve.editor.command.addevent", SWT.PUSH);
+			p.label = startEvent.getName();
+			p.parameters = params;
+			CommandContributionItem item = new CommandContributionItem(p);
+			item.setVisible(true);
+			result.add(item);
+		}
+		
+		for (Chain chain : sd.getChains()) {
+			for (ScanModule sm : chain.getScanModules()) {
+				String eventId = "S-" + chain.getId() + "-" + sm.getId() + "-"
+						+ "E";
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("de.ptb.epics.eve.editor.command.AddEvent.EventId",
-						e.getID());
+						eventId);
 				params.put(
 						"de.ptb.epics.eve.editor.command.AddEvent.EventType",
 						EventTypes.SCHEDULE.toString());
@@ -66,11 +103,16 @@ public class EventMenuContributionSchedule extends CompoundContributionItem {
 				params.put(
 						"de.ptb.epics.eve.editor.command.AddEvent.ActivePart",
 						activePart.getViewSite().getId());
+				params.put("de.ptb.epics.eve.editor.command.AddEvent.chainId",
+						String.valueOf(chain.getId()));
+				params.put(
+						"de.ptb.epics.eve.editor.command.AddEvent.scanModuleId",
+						String.valueOf(sm.getId()));
 				CommandContributionItemParameter p = new CommandContributionItemParameter(
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
 						"", "de.ptb.epics.eve.editor.command.addevent",
 						SWT.PUSH);
-				p.label = e.getName();
+				p.label = "Schedule " + "( " + eventId + " )";
 				p.parameters = params;
 				CommandContributionItem item = new CommandContributionItem(p);
 				item.setVisible(true);

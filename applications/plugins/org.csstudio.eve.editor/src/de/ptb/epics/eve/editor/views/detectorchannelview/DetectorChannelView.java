@@ -47,7 +47,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.GridData;
 
 import de.ptb.epics.eve.data.EventImpacts;
-import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventTypes;
@@ -155,9 +154,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	private Composite eventComposite;
 
 	private CTabItem redoEventTabItem;
-
-	private Button detectorReadyEventCheckBox;
-	private DetectorReadyEventCheckBoxSelectionListener detectorReadyEventCheckBoxSelectionListener;
 
 	private Image infoImage;
 
@@ -321,18 +317,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		this.eventComposite = new Composite(this.bar, SWT.NONE);
 		gridLayout = new GridLayout();
 		this.eventComposite.setLayout(gridLayout);
-
-		this.detectorReadyEventCheckBox = new Button(this.eventComposite,
-				SWT.CHECK);
-		this.detectorReadyEventCheckBox.setText("Send Detector Ready Event");
-		this.detectorReadyEventCheckBox
-				.setToolTipText("Mark to send detector ready event if channel is ready");
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		this.detectorReadyEventCheckBox.setLayoutData(gridData);
-		this.detectorReadyEventCheckBoxSelectionListener = new DetectorReadyEventCheckBoxSelectionListener();
-		this.detectorReadyEventCheckBox
-				.addSelectionListener(detectorReadyEventCheckBoxSelectionListener);
 
 		// Event Options Tab
 		eventsTabFolder = new CTabFolder(this.eventComposite, SWT.FLAT);
@@ -625,21 +609,14 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	private void addListeners() {
 		normalizeChannelCombo
 				.addSelectionListener(normalizeChannelComboSelectionListener);
-
-		detectorReadyEventCheckBox
-				.addSelectionListener(detectorReadyEventCheckBoxSelectionListener);
 	}
-
+	
 	/*
 	 * 
 	 */
 	private void removeListeners() {
 		normalizeChannelCombo
-				.removeSelectionListener(normalizeChannelComboSelectionListener);
-
-		detectorReadyEventCheckBox
-				.removeSelectionListener(detectorReadyEventCheckBoxSelectionListener);
-	}
+				.removeSelectionListener(normalizeChannelComboSelectionListener);}
 
 	private void suspendModelUpdateListener() {
 		this.currentChannel.removeModelUpdateListener(this);
@@ -691,10 +668,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 						.getNormalizeChannel().getName());
 			}
 
-			// set detector ready event check box
-			this.detectorReadyEventCheckBox.setSelection(this.currentChannel
-					.getDetectorReadyEvent() != null);
-
 			this.redoEventComposite.setEvents(this.currentChannel,
 					EventImpacts.REDO);
 
@@ -713,7 +686,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 			this.normalizeChannelLabel.setEnabled(true);
 			this.normalizeChannelCombo.setEnabled(true);
 			this.bar.setEnabled(true);
-			this.detectorReadyEventCheckBox.setEnabled(true);
 			this.eventsTabFolder.setEnabled(true);
 			this.redoEventComposite.getTableViewer().getTable()
 					.setEnabled(true);
@@ -748,7 +720,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 					this.normalizeChannelLabel.setEnabled(false);
 					this.normalizeChannelCombo.setEnabled(false);
 					this.bar.setEnabled(false);
-					this.detectorReadyEventCheckBox.setEnabled(false);
 
 					this.eventsTabFolder.setEnabled(false);
 					this.redoEventComposite.getTableViewer().getTable()
@@ -758,8 +729,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 		} else {
 			// this.currentChannel == null (no channel selected)
 			this.setPartName("No Detector Channel selected");
-
-			this.detectorReadyEventCheckBox.setSelection(false);
 
 			this.redoEventComposite.setEvents(this.currentChannel, null);
 
@@ -850,46 +819,6 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 				currentChannel.setNormalizeChannel(normCh.getDetectorChannel());
 			}
 			resumeModelUpdateListener();
-		}
-	}
-
-	/**
-	 * {@link org.eclipse.swt.events.SelectionListener} of
-	 * <code>detectorReadyEventCheckBox</code>.
-	 */
-	private class DetectorReadyEventCheckBoxSelectionListener implements
-			SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(final SelectionEvent e) {
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(final SelectionEvent e) {
-			LOGGER.debug("send detector ready event modified");
-			// we create an event and add it to the list if selected
-			// or remove the event with same id from the list if deselected
-			Event detReadyEvent = new Event(currentChannel.getAbstractDevice()
-					.getID(), currentChannel.getAbstractDevice().getParent()
-					.getName(), currentChannel.getAbstractDevice().getName(),
-					currentChannel.getScanModule().getChain().getId(),
-					currentChannel.getScanModule().getId());
-
-			if (detectorReadyEventCheckBox.getSelection()) {
-				currentChannel.getScanModule().getChain().getScanDescription()
-						.add(detReadyEvent);
-				currentChannel.setDetectorReadyEvent(detReadyEvent);
-			} else {
-				currentChannel.getScanModule().getChain().getScanDescription()
-						.removeEventById(detReadyEvent.getID());
-				currentChannel.setDetectorReadyEvent(null);
-			}
 		}
 	}
 

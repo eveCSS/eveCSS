@@ -153,7 +153,7 @@ public class NewScanDescriptionWizard extends Wizard implements INewWizard {
 								Calendar.getInstance().get(Calendar.YEAR) + "/" + 
 								"kw" + Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) + "/");
 		final StartEvent startEvent = 
-				new StartEvent(scanDescription.getEventById("S0") , chain);
+				new StartEvent(scanDescription.getDefaultStartEvent() , chain);
 		chain.setStartEvent(startEvent);
 		PlugIn plugin = measuringStation.getPluginByName("HDF5");
 		if (plugin != null) {

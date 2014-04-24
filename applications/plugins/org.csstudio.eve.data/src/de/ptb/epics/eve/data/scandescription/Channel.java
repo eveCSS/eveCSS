@@ -10,7 +10,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
-import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -73,11 +72,6 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	private DetectorChannel normalizeChannel;
 
 	private boolean deferred;
-	
-	/*
-	 * The detector ready event.
-	 */
-	private Event detectorReadyEvent;
 
 	/*
 	 * This control event manager controls the redo events.
@@ -347,35 +341,6 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		this.redoControlEventManager.removeAllEvents();
 		this.propertyChangeSupport.firePropertyChange(Channel.REDO_EVENT_PROP,
 				this.redoControlEventManager.getEvents(), null);
-	}
-	
-	/**
-	 * This method returns the detector ready event.
-	 * 
-	 * @return The detector ready event.
-	 */
-	public Event getDetectorReadyEvent() {
-		return detectorReadyEvent;
-	}
-	
-	/**
-	 * 
-	 * @return true if channel sends an ready event
-	 */
-	public Boolean hasReadyEvent() {
-		if (detectorReadyEvent != null){
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * 
-	 * @param detectorReadyEvent add a detectorReadyEvent
-	 */
-	public void setDetectorReadyEvent(final Event detectorReadyEvent) {
-		this.detectorReadyEvent = detectorReadyEvent;
-		updateListeners();
 	}
 
 	/**

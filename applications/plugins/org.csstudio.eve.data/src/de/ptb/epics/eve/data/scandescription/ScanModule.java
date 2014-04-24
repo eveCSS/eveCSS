@@ -407,14 +407,6 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param channel The channel behavior that should be removed.
 	 */
 	public void remove(final Channel channel) {
-		// falls es DetektorReadyEvents zu dem Channel gibt, werden diese 
-		// entfernt
-		if (channel.getDetectorReadyEvent() != null) {
-			channel.getScanModule().getChain().getScanDescription().
-					removeEventById(channel.getDetectorReadyEvent().getID());
-			channel.setDetectorReadyEvent(null);
-		}
-
 		// 1. log off listener
 		channel.removeModelUpdateListener(this);
 		// channel no longer needs to listen to changes
