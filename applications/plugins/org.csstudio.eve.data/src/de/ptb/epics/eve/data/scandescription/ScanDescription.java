@@ -542,24 +542,36 @@ public class ScanDescription implements IModelUpdateProvider,
 	public boolean isUsedAsEvent(Channel channel) {
 		for (Chain chain : this.chains) {
 			for (ControlEvent event : chain.getPauseEvents()) {
+				if (event.getEventType() != EventTypes.DETECTOR) {
+					continue;
+				}
 				if (event.getEvent().getDetectorId()
 						.equals(channel.getAbstractDevice().getID())) {
 					return true;
 				}
 			}
 			for (ControlEvent event : chain.getRedoEvents()) {
+				if (event.getEventType() != EventTypes.DETECTOR) {
+					continue;
+				}
 				if (event.getEvent().getDetectorId()
 						.equals(channel.getAbstractDevice().getID())) {
 					return true;
 				}
 			}
 			for (ControlEvent event : chain.getBreakEvents()) {
+				if (event.getEventType() != EventTypes.DETECTOR) {
+					continue;
+				}
 				if (event.getEvent().getDetectorId()
 						.equals(channel.getAbstractDevice().getID())) {
 					return true;
 				}
 			}
 			for (ControlEvent event : chain.getStopEvents()) {
+				if (event.getEventType() != EventTypes.DETECTOR) {
+					continue;
+				}
 				if (event.getEvent().getDetectorId()
 						.equals(channel.getAbstractDevice().getID())) {
 					return true;
@@ -567,24 +579,36 @@ public class ScanDescription implements IModelUpdateProvider,
 			}
 			for (ScanModule sm : chain.getScanModules()) {
 				for (ControlEvent event : sm.getPauseEvents()) {
+					if (event.getEventType() != EventTypes.DETECTOR) {
+						continue;
+					}
 					if (event.getEvent().getDetectorId()
 							.equals(channel.getAbstractDevice().getID())) {
 						return true;
 					}
 				}
 				for (ControlEvent event : sm.getRedoEvents()) {
+					if (event.getEventType() != EventTypes.DETECTOR) {
+						continue;
+					}
 					if (event.getEvent().getDetectorId()
 							.equals(channel.getAbstractDevice().getID())) {
 						return true;
 					}
 				}
 				for (ControlEvent event : sm.getBreakEvents()) {
+					if (event.getEventType() != EventTypes.DETECTOR) {
+						continue;
+					}
 					if (event.getEvent().getDetectorId()
 							.equals(channel.getAbstractDevice().getID())) {
 						return true;
 					}
 				}
 				for (ControlEvent event : sm.getTriggerEvents()) {
+					if (event.getEventType() != EventTypes.DETECTOR) {
+						continue;
+					}
 					if (event.getEvent().getDetectorId()
 							.equals(channel.getAbstractDevice().getID())) {
 						return true;
@@ -592,6 +616,9 @@ public class ScanDescription implements IModelUpdateProvider,
 				}
 				for (Channel smChannel : sm.getChannels()) {
 					for (ControlEvent event : smChannel.getRedoEvents()) {
+						if (event.getEventType() != EventTypes.DETECTOR) {
+							continue;
+						}
 						if (event.getEvent().getDetectorId()
 								.equals(channel.getAbstractDevice().getID())) {
 							return true;
