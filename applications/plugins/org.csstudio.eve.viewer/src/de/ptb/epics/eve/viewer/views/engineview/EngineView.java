@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -1131,7 +1132,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 			}
 			
 			final TableItem[] rows = statusTable.getItems();
-			
+
 			int aktChain = Integer.parseInt(rows[selection].getText(0).trim());
 			int aktSM;
 			if (rows[selection].getText(1).trim().equals("")) {
@@ -1149,15 +1150,16 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				Display display = Activator.getDefault().getWorkbench()
 						.getDisplay();
 				Shell chainShell = new Shell(display);
-				chainShell.setSize(600,400);
+				chainShell.setSize(650,400);
 				chainShell.setText("Scan Module Info");
 				
 				GridLayout gridLayout = new GridLayout();
-				gridLayout.numColumns = 2;
+				gridLayout.numColumns = 6;
 				GridData gridData;
 				
 				chainShell.setLayout(gridLayout);
-				
+
+				// 1. Zeile wird gefüllt
 				Label chainLabel = new Label(chainShell,SWT.NONE);
 				chainLabel.setText("Chain ID:");
 				gridData = new GridData();
@@ -1169,6 +1171,29 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData.horizontalAlignment = GridData.FILL;
 				chainText.setLayoutData(gridData);
 				
+				Label numOfMeasurementsLabel = new Label(chainShell,SWT.NONE);
+				numOfMeasurementsLabel.setText("No of Measurements:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				numOfMeasurementsLabel.setLayoutData(gridData);
+				Label numOfMeasurementsText = new Label(chainShell,SWT.NONE);
+				numOfMeasurementsText.setText(""+displayChain.getScanModuleById(aktSM).getValueCount());
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				numOfMeasurementsText.setLayoutData(gridData);
+
+				Label storageLabel = new Label(chainShell,SWT.NONE);
+				storageLabel.setText("Storage:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				storageLabel.setLayoutData(gridData);
+				Label storageText = new Label(chainShell,SWT.NONE);
+				storageText.setText(""+displayChain.getScanModuleById(aktSM).getStorage());
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				storageText.setLayoutData(gridData);
+				
+				// 2. Zeile wird gefüllt
 				Label smLabel = new Label(chainShell,SWT.NONE);
 				smLabel.setText("Scan Module ID:");
 				gridData = new GridData();
@@ -1179,20 +1204,9 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData = new GridData();
 				gridData.horizontalAlignment = GridData.FILL;
 				smText.setLayoutData(gridData);
-				
-				Label numOfMeasurementsLabel = new Label(chainShell,SWT.NONE);
-				numOfMeasurementsLabel.setText("Number of Measurements:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				numOfMeasurementsLabel.setLayoutData(gridData);
-				Label numOfMeasurementsText = new Label(chainShell,SWT.NONE);
-				numOfMeasurementsText.setText(""+displayChain.getScanModuleById(aktSM).getValueCount());
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				numOfMeasurementsText.setLayoutData(gridData);
-				
+
 				Label trigDelLabel = new Label(chainShell,SWT.NONE);
-				trigDelLabel.setText("Trigger delay:");
+				trigDelLabel.setText("Trigger Delay:");
 				gridData = new GridData();
 				gridData.horizontalAlignment = GridData.FILL;
 				trigDelLabel.setLayoutData(gridData);
@@ -1202,19 +1216,8 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData.horizontalAlignment = GridData.FILL;
 				trigDelText.setLayoutData(gridData);
 				
-				Label settleLabel = new Label(chainShell,SWT.NONE);
-				settleLabel.setText("Settletime:");
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				settleLabel.setLayoutData(gridData);
-				Label settleText = new Label(chainShell,SWT.NONE);
-				settleText.setText(""+displayChain.getScanModuleById(aktSM).getSettleTime());
-				gridData = new GridData();
-				gridData.horizontalAlignment = GridData.FILL;
-				settleText.setLayoutData(gridData);
-				
 				Label confLabelMot = new Label(chainShell,SWT.NONE);
-				confLabelMot.setText("Confirm Trigger Motors:");
+				confLabelMot.setText("Manual Trigger Motors:");
 				gridData = new GridData();
 				gridData.horizontalAlignment = GridData.FILL;
 				confLabelMot.setLayoutData(gridData);
@@ -1228,8 +1231,31 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData.horizontalAlignment = GridData.FILL;
 				confTextMot.setLayoutData(gridData);
 				
+				// 3. Zeile wird gefüllt
+				Label smName = new Label(chainShell,SWT.NONE);
+				smName.setText("Scan Module Name:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				smName.setLayoutData(gridData);
+				Label smNameText = new Label(chainShell,SWT.NONE);
+				smNameText.setText(rows[selection].getText(2));
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				smName.setLayoutData(gridData);
+				
+				Label settleLabel = new Label(chainShell,SWT.NONE);
+				settleLabel.setText("Settle Time:");
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				settleLabel.setLayoutData(gridData);
+				Label settleText = new Label(chainShell,SWT.NONE);
+				settleText.setText(""+displayChain.getScanModuleById(aktSM).getSettleTime());
+				gridData = new GridData();
+				gridData.horizontalAlignment = GridData.FILL;
+				settleText.setLayoutData(gridData);
+				
 				Label confLabelDet = new Label(chainShell,SWT.NONE);
-				confLabelDet.setText("Confirm Trigger Detectors:");
+				confLabelDet.setText("Manual Trigger Detectors:");
 				gridData = new GridData();
 				gridData.horizontalAlignment = GridData.FILL;
 				confLabelDet.setLayoutData(gridData);
@@ -1242,6 +1268,16 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData = new GridData();
 				gridData.horizontalAlignment = GridData.FILL;
 				confTextDet.setLayoutData(gridData);
+
+				SashForm sashForm = new SashForm(chainShell, SWT.VERTICAL);
+				sashForm.SASH_WIDTH = 4;
+				gridData = new GridData();
+				gridData.horizontalSpan = 6;
+				gridData.horizontalAlignment = GridData.FILL;
+				gridData.verticalAlignment = GridData.FILL;
+				gridData.grabExcessHorizontalSpace = true;
+				gridData.grabExcessVerticalSpace = true;
+				sashForm.setLayoutData(gridData);
 				
 				// Tabelle für die Motor Axes erzeugen
 				gridData = new GridData();
@@ -1251,22 +1287,25 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData.grabExcessHorizontalSpace = true;
 				gridData.grabExcessVerticalSpace = true;
 				
-				Table motTable = new Table(chainShell, SWT.NONE);
+				Table motTable = new Table(sashForm, SWT.NONE);
 				motTable.setHeaderVisible(true);
 				motTable.setLinesVisible(true);
 				motTable.setLayoutData(gridData);
 				TableColumn motColumn = new TableColumn(motTable, SWT.NONE);
-				motColumn.setWidth(250);
+				motColumn.setWidth(130);
 				motColumn.setText("Motor Axis");
 				TableColumn motColumn1 = new TableColumn(motTable, SWT.NONE);
 				motColumn1.setWidth(100);
-				motColumn1.setText("Start");
+				motColumn1.setText("Function");
 				TableColumn motColumn2 = new TableColumn(motTable, SWT.NONE);
-				motColumn2.setWidth(100);
-				motColumn2.setText("Stop");
+				motColumn2.setWidth(160);
+				motColumn2.setText("Start, Plugin, File");
 				TableColumn motColumn3 = new TableColumn(motTable, SWT.NONE);
-				motColumn3.setWidth(100);
-				motColumn3.setText("Stepwidth");
+				motColumn3.setWidth(80);
+				motColumn3.setText("Stop");
+				TableColumn motColumn4 = new TableColumn(motTable, SWT.NONE);
+				motColumn4.setWidth(80);
+				motColumn4.setText("Stepwidth");
 	
 				Axis[] axis = displayChain.getScanModuleById(aktSM).getAxes();
 				for (int i=0; i<axis.length; i++) {
@@ -1275,16 +1314,29 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 					case ADD:
 					case MULTIPLY:
 						TableItem tableItem = new TableItem( motTable, 0 );
-						tableItem.setText( 0, axis[i].getAbstractDevice().getFullIdentifyer());
-						tableItem.setText( 1, axis[i].getStart().toString());
-						tableItem.setText( 2, axis[i].getStop().toString());
-						tableItem.setText( 3, axis[i].getStepwidth().toString());
+						tableItem.setText( 0, axis[i].getAbstractDevice().getName());
+						tableItem.setText( 1, axis[i].getStepfunction().toString());
+						tableItem.setText( 2, axis[i].getStart().toString());
+						tableItem.setText( 3, axis[i].getStop().toString());
+						tableItem.setText( 4, axis[i].getStepwidth().toString());
 						break;
 					case FILE:
+						TableItem tableItemFile = new TableItem( motTable, 0 );
+						tableItemFile.setText( 0, axis[i].getAbstractDevice().getName());
+						tableItemFile.setText( 1, axis[i].getStepfunction().toString());
+						tableItemFile.setText( 2, axis[i].getFile().getAbsolutePath());
 						break;
 					case PLUGIN:
+						TableItem tableItemPlug = new TableItem( motTable, 0 );
+						tableItemPlug.setText( 0, axis[i].getAbstractDevice().getName());
+						tableItemPlug.setText( 1, axis[i].getStepfunction().toString());
+						tableItemPlug.setText( 2, axis[i].getPluginController().getPlugin().getName());
 						break;
 					case POSITIONLIST:
+						TableItem tableItemPos = new TableItem( motTable, 0 );
+						tableItemPos.setText( 0, axis[i].getAbstractDevice().getName());
+						tableItemPos.setText( 1, axis[i].getStepfunction().toString());
+						tableItemPos.setText( 2, axis[i].getPositionlist());
 						break;
 					default:
 						break;
@@ -1299,23 +1351,53 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				gridData.grabExcessHorizontalSpace = true;
 				gridData.grabExcessVerticalSpace = true;
 				
-				Table detTable = new Table(chainShell, SWT.NONE);
+				Table detTable = new Table(sashForm, SWT.NONE);
 				detTable.setHeaderVisible(true);
 				detTable.setLinesVisible(true);
 				detTable.setLayoutData(gridData);
 				TableColumn detColumn = new TableColumn(detTable, SWT.NONE);
-				detColumn.setWidth(250);
+				detColumn.setWidth(130);
 				detColumn.setText("Detector Channel");
 				TableColumn detColumn1 = new TableColumn(detTable, SWT.NONE);
-				detColumn1.setWidth(100);
+				detColumn1.setWidth(70);
 				detColumn1.setText("Average");
+				TableColumn detColumn2 = new TableColumn(detTable, SWT.NONE);
+				detColumn2.setWidth(70);
+				detColumn2.setText("Deferred");
+				TableColumn detColumn3 = new TableColumn(detTable, SWT.NONE);
+				detColumn3.setWidth(70);
+				detColumn3.setText("Max. Dev.");
+				TableColumn detColumn4 = new TableColumn(detTable, SWT.NONE);
+				detColumn4.setWidth(70);
+				detColumn4.setText("Minimum");
+				TableColumn detColumn5 = new TableColumn(detTable, SWT.NONE);
+				detColumn5.setWidth(100);
+				detColumn5.setText("Max. Attempts");
+				TableColumn detColumn6 = new TableColumn(detTable, SWT.NONE);
+				detColumn6.setWidth(100);
+				detColumn6.setText("Norm. Channel");
 				
 				Channel[] channels = displayChain.getScanModuleById(aktSM).getChannels();
 				for (int i=0; i<channels.length; i++) {
 					// Neuer Tabelleneintrag muß gemacht werden
 					TableItem tableItem = new TableItem( detTable, 0 );
-					tableItem.setText( 0, channels[i].getAbstractDevice().getFullIdentifyer());
+					tableItem.setText( 0, channels[i].getAbstractDevice().getName());
 					tableItem.setText( 1, "" + channels[i].getAverageCount());
+					tableItem.setText( 2, "" + channels[i].isDeferred());
+					Double d = channels[i].getMaxDeviation();
+					if (!d.isInfinite()) {
+						tableItem.setText( 3, "" + d);
+					}
+					d = channels[i].getMinimum();
+					if (!d.isInfinite()) {
+						tableItem.setText( 4, "" + d);
+					}
+					if (channels[i].getMaxAttempts() != Integer.MIN_VALUE) {
+						tableItem.setText( 5, "" + channels[i].getMaxAttempts());
+					}
+					if (channels[i].getNormalizeChannel() != null) {
+						tableItem.setText( 6, "" + channels[i].getNormalizeChannel().getName());
+					}
 				}
 				
 				chainShell.open();
