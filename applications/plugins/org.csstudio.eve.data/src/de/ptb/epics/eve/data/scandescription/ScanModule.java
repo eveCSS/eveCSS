@@ -723,6 +723,12 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param type The type of the scan modul.
 	 */
 	public void setType(final ScanModuleTypes type) {
+		if (type.equals(ScanModuleTypes.SAVE_AXIS_POSITIONS) ||
+				type.equals(ScanModuleTypes.SAVE_CHANNEL_VALUES)) {
+			this.setStorage(Storage.ALTERNATE);
+		} else if (type.equals(ScanModuleTypes.CLASSIC)) {
+			this.setStorage(Storage.DEFAULT);
+		}
 		this.propertyChangeSupport.firePropertyChange(ScanModule.TYPE_PROP,
 				this.type, this.type = type);
 		updateListeners();
