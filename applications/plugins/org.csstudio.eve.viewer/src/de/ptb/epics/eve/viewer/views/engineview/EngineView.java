@@ -92,8 +92,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	private ProgressBarComposite progressBarComposite;
 	
 	private Table statusTable;
-	//TODO: ShellTable ist auf 10 Einträge vordefiniert,
-	// besser eine LinkedList machen, damit beliebig viele Einträge existieren können
+	// Wenn nötig, wird shellTable[] im Programmablauf vergrößert
 	private Shell shellTable[] = new Shell[10];
 
 	private int repeatCount;
@@ -606,7 +605,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	public void fillStatusTable(final int chainId, final int scanModuleId,
 			final String scanModuleName, final String statString, final int remainTime) {
 		// Wenn die scanModuleId -1 ist, wird eine Zeile geändert in der nur die chainId eingetragen ist
-	
+
 		this.statusTable.getDisplay().syncExec(new Runnable() {
 			@Override public void run() {
 				// Die sichtbare Höhe wird auf 3 Zeilen eingestellt
@@ -643,7 +642,6 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 				if (neu) {
 					// neuer Tabelleneintrag muß gemacht werden
 					TableItem tableItem = new TableItem( statusTable, 0 );
-	
 					tableItem.setText( 0, " "+chainId);
 					if (scanModuleId == -1) {
 						tableItem.setText( 1, " ");
@@ -705,7 +703,7 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 						skipButton.setEnabled(false);
 						haltButton.setEnabled(true);
 						// alte Info-Fenster des letzten XML-Files werden gelöscht
-						for ( int j=0; j<10; j++) {
+						for ( int j=0; j<shellTable.length; j++) {
 							if (shellTable[j] != null) {
 								if (!shellTable[j].isDisposed()) {
 									shellTable[j].dispose();
@@ -1116,6 +1114,14 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 			// für die selektierte Zeile wird ein Info-Fenster angezeigt
 			// mit den Details der Chain oder des ScanModuls
 			int selection = statusTable.getSelectionIndex();
+			
+			// nachsehen ob es für diese selection schon eine shellTable gibt
+			if (selection >= shellTable.length) {
+				// shellTable muss vergrößert werden (auf 5 mehr als selection)
+				Shell tempShell[] = new Shell[selection+5];
+				System.arraycopy(shellTable, 0, tempShell, 0, shellTable.length);
+				shellTable = tempShell;
+			}
 			
 			// Überprüfen, ob Info schon da ist oder nicht.
 			// Wenn ja, Info wieder wegnehmen.
