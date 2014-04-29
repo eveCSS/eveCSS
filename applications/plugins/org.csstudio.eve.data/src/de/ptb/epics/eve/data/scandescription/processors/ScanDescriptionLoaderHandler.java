@@ -2252,6 +2252,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				/*controlEvent.setEvent(this.scanDescription
 						.getEventById(eventId));*/
 			} else {
+				logger.debug("**** " + controlEvent.getId());
 				controlEvent.setEvent(this.measuringStation
 						.getEventById(controlEvent.getId()));
 				if (controlEvent.getEvent() == null) {
@@ -2261,7 +2262,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 							.getEventById(controlEvent.getId()));*/
 				}
 				if (controlEvent.getEvent() == null) {
-					logger.fatal("can't find event for id!");
+					logger.fatal("can't find event for id: "
+							+ controlEvent.getId());
 				}
 			}
 		}

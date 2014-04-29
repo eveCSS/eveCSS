@@ -204,8 +204,7 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 			if (this.limit.getValue() == null || this.limit.getValue().isEmpty()) {
 				errorList.add(new ControlEventError(
 					this, ControlEventErrorTypes.MONITOR_LIMIT_NOT_SET));
-			}
-			else if(this.event.getMonitor().getAccess() != null && 
+			} else if(this.event.getMonitor().getAccess() != null && 
 					!this.event.getMonitor().getAccess().
 					isValuePossible(this.limit.getValue())) {
 				errorList.add(new ControlEventError(
