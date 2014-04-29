@@ -164,15 +164,26 @@ public class TraceDataCollector implements IDataProvider,
 			
 			if (this.motorValue < this.xMin) {
 				this.xMin = this.motorValue;
-			} else if (this.motorValue > this.xMax) {
+			} 
+			if (this.motorValue > this.xMax) {
 				this.xMax = this.motorValue;
 			}
 			if (this.detectorValue < this.yMin) {
 				this.yMin = this.detectorValue;
-			} else if (this.detectorValue > this.yMax) {
+			}
+			if (this.detectorValue > this.yMax) {
 				this.yMax = this.detectorValue;
 			}
 		
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("New Sample: (" + sample.getXValue() + ", " 
+						+ sample.getYValue() + ")");
+				LOGGER.debug("Current x-Range: (" + this.xMin + ", "
+						+ this.xMax + ")");
+				LOGGER.debug("Current y-Range: (" + this.yMin + ", "
+						+ this.yMax + ")");
+			}
+			
 			if (this.updateStrategy.update(timeOfLastSample,
 					sampleSizeOfLastUpdate, this.data.size())) {
 				this.timeOfLastSample = Calendar.getInstance().getTimeInMillis();
