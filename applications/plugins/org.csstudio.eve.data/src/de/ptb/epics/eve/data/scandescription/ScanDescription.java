@@ -575,7 +575,11 @@ public class ScanDescription implements IModelUpdateProvider,
 				continue;
 			}
 			if (e.getEvent().getDetectorId()
-					.equals(channel.getAbstractDevice().getID())) {
+					.equals(channel.getAbstractDevice().getID())
+					&& e.getEvent().getChainId() == channel.getScanModule()
+							.getChain().getId()
+					&& e.getEvent().getScanModuleId() == channel
+							.getScanModule().getId()) {
 				return true;
 			}
 		}
@@ -583,7 +587,7 @@ public class ScanDescription implements IModelUpdateProvider,
 	}
 	
 	/**
-	 * {@inheritDoc} 
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
