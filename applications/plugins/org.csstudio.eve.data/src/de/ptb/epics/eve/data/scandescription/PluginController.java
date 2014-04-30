@@ -227,7 +227,7 @@ public class PluginController implements IModelErrorProvider,
 					String[] currentField = new String[currentAxis.length];
 					for (int i = 0; i < currentAxis.length; ++i) {
 						currentField[i] = currentAxis[i].getMotorAxis()
-								.getFullIdentifyer();
+								.getName();
 					}
 					this.values.put(currentPluginParameter.getName(),
 							currentField[0]);

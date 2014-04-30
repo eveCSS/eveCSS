@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.data.measuringstation.filter;
 
+import de.ptb.epics.eve.data.measuringstation.AbstractMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
@@ -13,8 +14,9 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * 
  * @author Stephan Rehfeld
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
-public abstract class MeasuringStationFilter implements 
+public abstract class MeasuringStationFilter extends AbstractMeasuringStation implements 
 									IMeasuringStation, IModelUpdateListener {
 
 	// the measuring station the filter is based on

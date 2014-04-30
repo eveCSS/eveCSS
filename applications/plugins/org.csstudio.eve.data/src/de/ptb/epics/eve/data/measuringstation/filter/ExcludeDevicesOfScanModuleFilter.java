@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
+import de.ptb.epics.eve.data.measuringstation.AbstractMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
@@ -77,9 +78,6 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 	
 	// a Map, that makes all PlugIns available by their names
 	private final Map<String, PlugIn> pluginsMap;
-	
-	// a Map, that makes all motor axis available by their ids
-	private final Map<String, MotorAxis> motorAxisMap;
 	
 	// a Map. that makes all detector channels available by their ids
 	private final Map<String, DetectorChannel> detectorChannelsMap;
@@ -813,4 +811,23 @@ public class ExcludeDevicesOfScanModuleFilter extends MeasuringStationFilter {
 			}
 		}
 	}
+
+//	/**
+//	 * {@inheritDoc}
+//	 */
+//	@Override
+//	public Map<String, MotorAxis> getMotorAxes() {
+//
+//		final List<String> motorAxis = new ArrayList<String>();
+//
+//		System.out.println("______________________________________________________________________________________________");
+//		System.out.println("\nvorhandene MotorAxis:");
+//		for (String elem : this.motorAxisMap.keySet()) {
+//           MotorAxis s = this.motorAxisMap.get(elem);
+//            System.out.println(elem + " - " + s + " Name: " + s.getName());
+//            motorAxis.add(s.getName());
+//		} 
+//		return motorAxisMap;
+//	}
+
 }

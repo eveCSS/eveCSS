@@ -703,7 +703,7 @@ public class CommonTableElement {
 			Activator.getDefault().getMessagesContainer().addMessage(
 					new ViewerMessage(MessageSource.VIEWER, 
 							Levels.INFO, "Define " + 
-							motorAxis.getFullIdentifyer() + " from " +
+							motorAxis.getName() + " from " +
 							gotoPv.getValue() + " to " + newValue));
 			offsetPv.setValue(newOffset.toString());
 			// third, set old softHighLimit and softLowLimit
