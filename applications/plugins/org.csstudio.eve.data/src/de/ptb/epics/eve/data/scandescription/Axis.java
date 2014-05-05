@@ -262,9 +262,6 @@ public class Axis extends AbstractMainPhaseBehavior implements
 		((PluginMode)this.mode).setPluginController(plugin);
 	}
 	
-	
-	// TODO AddMultiply getter setter
-	
 	/**
 	 * 
 	 * @return
