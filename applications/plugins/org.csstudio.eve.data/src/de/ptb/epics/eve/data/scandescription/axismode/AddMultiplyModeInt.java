@@ -20,6 +20,10 @@ public class AddMultiplyModeInt extends AddMultiplyMode<Integer> {
 		this.start = Integer.valueOf(axis.getDefaultValue());
 		this.stop = Integer.valueOf(axis.getDefaultValue());
 		this.stepwidth = Integer.valueOf(axis.getDefaultValue());
+		
+		if (axis.getScanModule() != null) {
+			this.matchMainAxis(axis.getScanModule().getMainAxis());
+		}
 	}
 
 	/**

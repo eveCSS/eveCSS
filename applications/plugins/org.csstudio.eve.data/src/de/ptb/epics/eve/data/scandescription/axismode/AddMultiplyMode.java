@@ -52,11 +52,6 @@ public abstract class AddMultiplyMode<T extends Object> extends AxisMode {
 		this.mainAxis = false;
 		this.referenceAxis = null;
 		this.stepcount = new Double(Double.NaN);
-		if (axis.getScanModule() != null && 
-				axis.getScanModule().getMainAxis() != null) {
-			this.referenceAxis = axis.getScanModule().getMainAxis();
-			this.stepcount = this.referenceAxis.getStepcount();
-		}
 	}
 	
 	/**

@@ -30,6 +30,10 @@ public class AddMultiplyModeDuration extends AddMultiplyMode<Duration> {
 		} catch (DatatypeConfigurationException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
+		
+		if (axis.getScanModule() != null) {
+			this.matchMainAxis(axis.getScanModule().getMainAxis());
+		}
 	}
 
 	/**

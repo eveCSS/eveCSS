@@ -20,6 +20,10 @@ public class AddMultiplyModeDouble extends AddMultiplyMode<Double> {
 		this.start = new Double(axis.getDefaultValue());
 		this.stop = new Double(axis.getDefaultValue());
 		this.stepwidth = new Double(axis.getDefaultValue());
+		
+		if (axis.getScanModule() != null) {
+			this.matchMainAxis(axis.getScanModule().getMainAxis());
+		}
 	}
 
 	/**
