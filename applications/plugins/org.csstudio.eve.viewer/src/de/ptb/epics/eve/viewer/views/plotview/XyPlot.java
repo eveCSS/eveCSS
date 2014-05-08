@@ -242,8 +242,8 @@ public class XyPlot extends Figure {
 		this.xyGraph.primaryYAxis.setAutoScale(true);
 		this.xyGraph.primaryXAxis.setShowMajorGrid(true);
 		this.xyGraph.primaryYAxis.setShowMajorGrid(true);
-		this.xyGraph.primaryXAxis.setAutoScaleThreshold(0.01);
-		this.xyGraph.primaryYAxis.setAutoScaleThreshold(0);
+		this.xyGraph.primaryXAxis.setAutoScaleThreshold(0.1);
+		this.xyGraph.primaryYAxis.setAutoScaleThreshold(0.01);
 
 		toolbarArmedXYGraph = new ToolbarArmedXYGraph(xyGraph);
 		add(toolbarArmedXYGraph);

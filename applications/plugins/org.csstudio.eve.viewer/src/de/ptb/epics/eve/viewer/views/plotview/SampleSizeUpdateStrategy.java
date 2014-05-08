@@ -26,7 +26,9 @@ public class SampleSizeUpdateStrategy implements UpdateStrategy {
 			return (sampleSize -2500) % 50 == 0;
 		} else if (sampleSizeOfLastUpdate >= 500) {
 			return (sampleSize -500) % 10 == 0;
+		} else if (sampleSizeOfLastUpdate >= 100) {
+			return (sampleSize -100) % 5 == 0;
 		}
-		return false;
+		return true;
 	}
 }

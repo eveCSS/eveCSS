@@ -64,7 +64,7 @@ public class TraceDataCollector implements IDataProvider,
 		this.xMax = this.yMax = Double.NEGATIVE_INFINITY;
 		
 		this.calendar = Calendar.getInstance();
-		this.updateStrategy = new TimeAndSampleSizeUpdateStrategy(1000);
+		this.updateStrategy = new TimeAndSampleSizeUpdateStrategy(5000);
 		this.sampleSizeOfLastUpdate = 0;
 		this.timeOfLastSample = this.calendar.getTimeInMillis();
 		
