@@ -34,6 +34,10 @@ public class AddMultiplyModeDate extends AddMultiplyMode<Date> {
 		now.set(Calendar.HOUR, 0);
 		now.set(Calendar.MINUTE, 1);
 		this.stepwidth = now.getTime();
+		
+		if (axis.getScanModule() != null) {
+			this.matchMainAxis(axis.getScanModule().getMainAxis());
+		}
 	}
 
 	/**

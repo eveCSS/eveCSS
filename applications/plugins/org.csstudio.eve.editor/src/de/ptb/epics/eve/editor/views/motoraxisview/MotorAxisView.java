@@ -28,7 +28,8 @@ import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.PositionMode;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
-import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
+import de.ptb.epics.eve.data.scandescription.defaults.DefaultsAxis;
+import de.ptb.epics.eve.data.scandescription.defaults.DefaultsManager;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
@@ -58,20 +59,12 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 	// logging
 	private static final Logger LOGGER = 
 		Logger.getLogger(MotorAxisView.class.getName());
-	
-	// *******************************************************************
-	// ********************** underlying model ***************************
-	// *******************************************************************
-	
+
 	// the axis that should be presented
 	private Axis currentAxis;
 	
 	private ScanModule scanModule;
-	
-	// *******************************************************************
-	// ****************** end of: underlying model ***********************
-	// *******************************************************************
-	
+
 	// the utmost composite
 	private Composite top;
 	// Scrolled Composite wrapping top to enable scrolling
@@ -478,6 +471,12 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 				}
 				currentAxis.setStepfunction(Stepfunctions.getEnum(
 						stepFunctionCombo.getText()));
+				DefaultsAxis defMa = Activator.getDefault().getDefaults()
+						.getAxis(currentAxis.getMotorAxis().getID());
+				if (defMa != null && defMa.getStepfunction().equals(
+						currentAxis.getStepfunction())) {
+					DefaultsManager.transferDefaults(defMa, currentAxis);
+				}
 				setComposite();
 			}
 		}

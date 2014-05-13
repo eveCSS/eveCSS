@@ -34,7 +34,6 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class Axis extends AbstractMainPhaseBehavior implements
 		PropertyChangeListener {
-	
 	// logging
 	private static Logger logger = Logger.getLogger(Axis.class.getName());
 
@@ -261,9 +260,6 @@ public class Axis extends AbstractMainPhaseBehavior implements
 		}
 		((PluginMode)this.mode).setPluginController(plugin);
 	}
-	
-	
-	// TODO AddMultiply getter setter
 	
 	/**
 	 * 

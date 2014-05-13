@@ -489,7 +489,10 @@ public class ECP1Client {
 		@Override public void run() {
 			while (running) {
 				if (!inQueue.isEmpty()) {
+					// long before = System.nanoTime();
 					final byte[] packageArray = inQueue.poll();
+					// long after = System.nanoTime();
+					// LOGGER.debug("Poll Time: " + (after - before));
 					final ByteArrayInputStream byteArrayInputStream = 
 							new ByteArrayInputStream(packageArray);
 					final DataInputStream dataInputStream = new DataInputStream(

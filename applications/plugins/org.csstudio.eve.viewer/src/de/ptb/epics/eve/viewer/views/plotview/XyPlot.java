@@ -137,6 +137,7 @@ public class XyPlot extends Figure {
 				axis.setTickLableSide(LabelSide.Secondary);
 				this.xyGraph.addAxis(axis);
 			}
+			axis.setRange(new Range(0, 10));
 			switch (yAxis.getMode()) {
 			case LINEAR:
 				axis.setLogScale(false);
@@ -236,11 +237,13 @@ public class XyPlot extends Figure {
 		this.xyGraph.primaryXAxis.setTitle("x - axis");
 		this.xyGraph.primaryYAxis.setTitle("y - axis");
 		this.xyGraph.primaryXAxis.setRange(new Range(0, 10));
+		this.xyGraph.primaryYAxis.setRange(new Range(0, 10));
 		this.xyGraph.primaryXAxis.setAutoScale(true);
 		this.xyGraph.primaryYAxis.setAutoScale(true);
 		this.xyGraph.primaryXAxis.setShowMajorGrid(true);
 		this.xyGraph.primaryYAxis.setShowMajorGrid(true);
-		this.xyGraph.primaryXAxis.setAutoScaleThreshold(0.01);
+		this.xyGraph.primaryXAxis.setAutoScaleThreshold(0.1);
+		this.xyGraph.primaryYAxis.setAutoScaleThreshold(0.01);
 
 		toolbarArmedXYGraph = new ToolbarArmedXYGraph(xyGraph);
 		add(toolbarArmedXYGraph);

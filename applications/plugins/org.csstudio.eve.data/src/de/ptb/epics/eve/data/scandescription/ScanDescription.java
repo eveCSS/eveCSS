@@ -541,88 +541,22 @@ public class ScanDescription implements IModelUpdateProvider,
 	 */
 	public boolean isUsedAsEvent(Channel channel) {
 		for (Chain chain : this.chains) {
-			for (ControlEvent event : chain.getPauseEvents()) {
-				if (event.getEventType() != EventTypes.DETECTOR) {
-					continue;
-				}
-				if (event.getEvent().getDetectorId()
-						.equals(channel.getAbstractDevice().getID())) {
-					return true;
-				}
-			}
-			for (ControlEvent event : chain.getRedoEvents()) {
-				if (event.getEventType() != EventTypes.DETECTOR) {
-					continue;
-				}
-				if (event.getEvent().getDetectorId()
-						.equals(channel.getAbstractDevice().getID())) {
-					return true;
-				}
-			}
-			for (ControlEvent event : chain.getBreakEvents()) {
-				if (event.getEventType() != EventTypes.DETECTOR) {
-					continue;
-				}
-				if (event.getEvent().getDetectorId()
-						.equals(channel.getAbstractDevice().getID())) {
-					return true;
-				}
-			}
-			for (ControlEvent event : chain.getStopEvents()) {
-				if (event.getEventType() != EventTypes.DETECTOR) {
-					continue;
-				}
-				if (event.getEvent().getDetectorId()
-						.equals(channel.getAbstractDevice().getID())) {
-					return true;
-				}
+			if (isEventOfList(channel, chain.getPauseEvents()) ||
+					isEventOfList(channel, chain.getRedoEvents()) ||
+					isEventOfList(channel, chain.getBreakEvents()) ||
+					isEventOfList(channel, chain.getStopEvents())) {
+				return true;
 			}
 			for (ScanModule sm : chain.getScanModules()) {
-				for (ControlEvent event : sm.getPauseEvents()) {
-					if (event.getEventType() != EventTypes.DETECTOR) {
-						continue;
-					}
-					if (event.getEvent().getDetectorId()
-							.equals(channel.getAbstractDevice().getID())) {
-						return true;
-					}
-				}
-				for (ControlEvent event : sm.getRedoEvents()) {
-					if (event.getEventType() != EventTypes.DETECTOR) {
-						continue;
-					}
-					if (event.getEvent().getDetectorId()
-							.equals(channel.getAbstractDevice().getID())) {
-						return true;
-					}
-				}
-				for (ControlEvent event : sm.getBreakEvents()) {
-					if (event.getEventType() != EventTypes.DETECTOR) {
-						continue;
-					}
-					if (event.getEvent().getDetectorId()
-							.equals(channel.getAbstractDevice().getID())) {
-						return true;
-					}
-				}
-				for (ControlEvent event : sm.getTriggerEvents()) {
-					if (event.getEventType() != EventTypes.DETECTOR) {
-						continue;
-					}
-					if (event.getEvent().getDetectorId()
-							.equals(channel.getAbstractDevice().getID())) {
-						return true;
-					}
+				if (isEventOfList(channel, sm.getPauseEvents()) ||
+						isEventOfList(channel, sm.getRedoEvents()) ||
+						isEventOfList(channel, sm.getBreakEvents()) ||
+						isEventOfList(channel, sm.getTriggerEvents())) {
+					return true;
 				}
 				for (Channel smChannel : sm.getChannels()) {
-					for (ControlEvent event : smChannel.getRedoEvents()) {
-						if (event.getEventType() != EventTypes.DETECTOR) {
-							continue;
-						}
-						if (event.getEvent().getDetectorId()
-								.equals(channel.getAbstractDevice().getID())) {
-							return true;
-						}
+					if (isEventOfList(channel, smChannel.getRedoEvents())) {
+						return true;
 					}
 				}
 			}
@@ -630,8 +564,30 @@ public class ScanDescription implements IModelUpdateProvider,
 		return false;
 	}
 	
+	/*
+	 * Checks whether the given channel is used as (detector) event in the 
+	 * given list.
+	 * (Helper for #isUsedAsEvent(Channel))
+	 */
+	private boolean isEventOfList(Channel channel, List<ControlEvent> events) {
+		for (ControlEvent e : events) {
+			if (e.getEventType() != EventTypes.DETECTOR) {
+				continue;
+			}
+			if (e.getEvent().getDetectorId()
+					.equals(channel.getAbstractDevice().getID())
+					&& e.getEvent().getChainId() == channel.getScanModule()
+							.getChain().getId()
+					&& e.getEvent().getScanModuleId() == channel
+							.getScanModule().getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
-	 * {@inheritDoc} 
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void updateEvent(final ModelUpdateEvent modelUpdateEvent) {
