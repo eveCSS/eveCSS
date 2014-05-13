@@ -76,9 +76,6 @@ public class ExcludeFilter extends MeasuringStationFilter {
 	// a map of available plug ins (key = plug in name)
 	private final Map<String, PlugIn> pluginsMap;
 	
-	// a map of available motor axes (key = id)
-	private final Map<String, MotorAxis> motorAxisMap;
-	
 	// a map of available detector channels (key = id)
 	private final Map<String, DetectorChannel> detectorChannelsMap;
 	

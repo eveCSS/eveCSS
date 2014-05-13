@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider;
@@ -172,6 +173,15 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	List<String> getAxisFullIdentifyer();
 
 	/**
+	 * Returns a {@link java.util.Map} of motor axis of the measuring 
+	 * station.
+	 * 
+	 * @return A {@link java.util.Map} of motor axis of the measuring
+	 * 		   station.
+	 */
+	Map<String, MotorAxis> getMotorAxes();
+
+	/**
 	 * Returns a {@link java.util.List} of channel identifiers of the measuring 
 	 * station.
 	 * 
@@ -218,4 +228,5 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 * 		   the given class name
 	 */
 	List<AbstractDevice> getDeviceList(String classname);
+
 }

@@ -8,6 +8,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Item;
 
 import de.ptb.epics.eve.data.PluginDataType;
+import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.PluginParameter;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
@@ -15,7 +16,11 @@ import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -66,29 +71,21 @@ public class PluginControllerCellModifyer implements ICellModifier {
 			if (pluginParameter != null) {
 				if (pluginParameter.getType() == PluginDataType.AXISID) {
 					this.tableViewer.getCellEditors()[1].dispose();
-					// hier kommen nur die Achsen zur Auswahl die im scanModul
-					// gewählt sind
-					ScanModule scanModul = (ScanModule) ((PluginController) this.tableViewer
-							.getInput()).getScanModule();
-					if (scanModul != null) {
-						Axis[] currentAxis = scanModul.getAxes();
-						String[] currentField = new String[currentAxis.length];
-						for (int i = 0; i < currentAxis.length; ++i) {
-							currentField[i] = currentAxis[i].getMotorAxis()
-									.getFullIdentifyer();
-						}
-						this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor(
-								this.tableViewer.getTable(), currentField,
-								SWT.READ_ONLY);
-					} else {
-						// Falls kein scanModul gesetzt ist, werden alle Achsen
-						// zur Auswahl gestellt
-						this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor(
-								this.tableViewer.getTable(), Activator
-										.getDefault().getMeasuringStation()
-										.getAxisFullIdentifyer()
-										.toArray(new String[0]), SWT.READ_ONLY);
+					// Es wird aus der MotorAxisMap eine Collection der
+					// MotorAxis ausgelesen
+					Collection<MotorAxis> axes= Activator.getDefault()
+							.getMeasuringStation().getMotorAxes().values();
+
+					List<String> axesList = new LinkedList<>();
+					for (MotorAxis axis : axes) {
+						axesList.add(axis.getName());
 					}
+					Collections.sort(axesList);
+						
+					this.tableViewer.getCellEditors()[1] = new ComboBoxCellEditor(
+							this.tableViewer.getTable(), 
+							axesList.toArray(new String[0]), SWT.READ_ONLY);
+
 				} else if (pluginParameter.getType() == PluginDataType.CHANNELID) {
 					this.tableViewer.getCellEditors()[1].dispose();
 					// hier kommen nur die Channels zur Auswahl die im scanModul

@@ -16,8 +16,9 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateList
  *  
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
-public class MeasuringStation implements IMeasuringStation {
+public class MeasuringStation extends AbstractMeasuringStation{
 
 	// the version of the measuring station description
 	private String version;
@@ -47,7 +48,7 @@ public class MeasuringStation implements IMeasuringStation {
 	
 	// a List, that is holding all motors
 	private final List<Motor> motors;
-	
+
 	// a List, that is holding all detectors
 	private final List<Detector> detectors;
 	
@@ -59,9 +60,6 @@ public class MeasuringStation implements IMeasuringStation {
 	
 	// a Map, that makes all PlugIns available by their names
 	private final Map<String, PlugIn> pluginsMap;
-	
-	// a Map, that makes all motor axis available by their ids
-	private final Map<String, MotorAxis> motorAxisMap;
 	
 	// a Map. that makes all detector channels available by their ids
 	private final Map<String, DetectorChannel> detectorChannelsMap;
@@ -94,8 +92,6 @@ public class MeasuringStation implements IMeasuringStation {
 		this.classMap = new HashMap<String, List<AbstractDevice>>();
 		this.eventsMap = new HashMap<String, Event>();	
 	}
-	
-	// *************************
 	
 	/**
 	 * Sets the version of the measuring station description.
@@ -142,8 +138,6 @@ public class MeasuringStation implements IMeasuringStation {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	// *************************
 	
 	/**
 	 * Adds a {@link de.ptb.epics.eve.data.measuringstation.Detector} 
@@ -237,8 +231,6 @@ public class MeasuringStation implements IMeasuringStation {
 		return plugins.add(plugIn);
 	}
 	
-	// *************************
-
 	/**
 	 * Registers a {@link de.ptb.epics.eve.data.measuringstation.MotorAxis} at 
 	 * the measuring station. An axis registered this way can later be 
@@ -293,8 +285,6 @@ public class MeasuringStation implements IMeasuringStation {
 		}
 		this.prePostscanDeviceMap.put(option.getID(), option);
 	}
-	
-	// *************************
 	
 	/**
 	 * Adds an {@link de.ptb.epics.eve.data.measuringstation.AbstractDevice} 
@@ -433,7 +423,7 @@ public class MeasuringStation implements IMeasuringStation {
 	public MotorAxis getMotorAxisById(final String id) {
 		return this.motorAxisMap.get(id);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -765,4 +755,5 @@ public class MeasuringStation implements IMeasuringStation {
 			final IModelUpdateListener modelUpdateListener) {
 		return false;
 	}
+
 }
