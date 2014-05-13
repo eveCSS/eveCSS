@@ -21,7 +21,7 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public abstract class CompositeContentProvider implements
 		IStructuredContentProvider, IModelUpdateListener {
-
+	
 	private TableViewer currentViewer;
 	private int elementCount;
 
@@ -31,16 +31,12 @@ public abstract class CompositeContentProvider implements
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
 		this.currentViewer.refresh();
-		final int itemCount = this.currentViewer.getTable().getItemCount();
-		if (currentViewer.getTable().getItemCount() > elementCount) {
+		final int currentCount = this.currentViewer.getTable().getItemCount();
+		if (currentCount > elementCount) {
 			// element added -> select it
 			currentViewer.setSelection(
 					new StructuredSelection(currentViewer
-							.getElementAt(itemCount - 1)), true);
-		} else if (itemCount < elementCount && itemCount > 0) {
-			// element removed, but still >= 1 present -> select the first
-		//	this.currentViewer.setSelection(new StructuredSelection(
-		//			this.currentViewer.getElementAt(0)), true);
+							.getElementAt(currentCount - 1)), true);
 		}
 		elementCount = currentViewer.getTable().getItemCount();
 	}

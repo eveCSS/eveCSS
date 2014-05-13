@@ -41,7 +41,7 @@ public class RemoveAxis implements IHandler {
 					sm.remove((Axis)o);
 					if(logger.isDebugEnabled()) {
 						logger.debug("Axis " + ((Axis)o).getMotorAxis().
-							getName() + "removed");
+							getName() + " removed");
 					}
 				}
 			}

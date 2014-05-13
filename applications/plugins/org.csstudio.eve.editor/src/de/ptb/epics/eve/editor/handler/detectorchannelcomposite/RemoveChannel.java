@@ -42,7 +42,7 @@ public class RemoveChannel implements IHandler {
 					sm.remove((Channel)o);
 					if(logger.isDebugEnabled()) {
 						logger.debug("Channel " + ((Channel)o).getDetectorChannel().
-							getName() + "removed");
+							getName() + " removed");
 					}
 				}
 			}

@@ -670,9 +670,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		} else {
 			// no scan module selected -> reset contents
 			selectionProviderWrapper.setSelectionProvider(null);
-			
 			this.setPartName("No Scan Module selected");
-			
 			top.setVisible(false);
 		}
 		updateEvent(null);
