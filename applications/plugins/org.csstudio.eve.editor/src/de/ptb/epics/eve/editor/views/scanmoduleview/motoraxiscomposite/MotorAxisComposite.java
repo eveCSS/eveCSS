@@ -1,7 +1,11 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -23,6 +27,8 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.ActionComposite;
  * @author Hartmut Scherr
  */
 public class MotorAxisComposite extends ActionComposite {
+	private static final Logger LOGGER = Logger
+			.getLogger(MotorAxisComposite.class.getName());
 	
 	/**
 	 * Constructs a <code>MotorAxisComposite</code>.
@@ -37,6 +43,18 @@ public class MotorAxisComposite extends ActionComposite {
 		this.setLayout(new GridLayout());
 		this.tableViewerComparator = new TableViewerComparator();
 		createViewer();
+		
+		this.tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			
+			private boolean update;
+			
+			private ISelection lastSelection;
+			
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				LOGGER.debug("SELECTION: " + event.getSelection().toString());
+			}
+		});
 	}
 	
 	/*

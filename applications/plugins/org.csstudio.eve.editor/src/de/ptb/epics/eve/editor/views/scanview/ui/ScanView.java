@@ -4,10 +4,12 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.viewers.ViewerSupport;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -34,6 +36,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.scandescription.MonitorOption;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.editor.Activator;
@@ -163,7 +166,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		descending = de.ptb.epics.eve.util.Activator.getDefault()
 				.getImageRegistry().get("SORT_DESCENDING");
 		
-		// this.createTable(this.top);
+		this.createTable(this.top);
 
 		this.top.setVisible(false);
 
@@ -235,11 +238,11 @@ public class ScanView extends ViewPart implements IEditorView,
 						UpdateValueStrategy.POLICY_UPDATE));
 		ControlDecorationSupport.create(repeatCountBinding, SWT.LEFT);
 
-		/*ViewerSupport.bind(monitorOptionsTable,
+		ViewerSupport.bind(monitorOptionsTable,
 				BeansObservables
 				.observeDetailList(selectionObservable,
 						ScanDescription.MONITOR_OPTIONS_LIST_PROP, Option.class),
-				BeanProperties.values(new String[] {"", "name", "parent.name"}));*/
+				BeanProperties.values(new String[] {"", "name", "parent.name"}));
 	}
 
 	/*

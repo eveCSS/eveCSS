@@ -14,7 +14,6 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.util.Activator;
 import de.ptb.epics.eve.util.jface.ViewerComparator;
 
-
 /**
  * Prototype for Composites used in the actions tab.
  * <p>

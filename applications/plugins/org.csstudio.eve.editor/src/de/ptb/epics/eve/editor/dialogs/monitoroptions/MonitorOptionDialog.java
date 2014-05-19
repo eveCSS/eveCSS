@@ -19,7 +19,6 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.jface.window.Window;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -35,6 +34,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.dialogs.SelectionDialog;
 
+import de.ptb.epics.eve.data.measuringstation.Detector;
+import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.measuringstation.Device;
+import de.ptb.epics.eve.data.measuringstation.Motor;
+import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
@@ -280,43 +284,69 @@ public class MonitorOptionDialog extends SelectionDialog {
 	 * @author Hartmut Scherr
 	 * @since 1.14
 	 */
-	private class TreeViewerSelectionChangedListener implements ISelectionChangedListener {
+	private class TreeViewerSelectionChangedListener implements
+			ISelectionChangedListener {
 		
 		@Override
 		public void selectionChanged(SelectionChangedEvent event) {
-			
-			ISelection sel = event.getSelection();
-
-			logger.debug("TreeViewerSelectionChangedListener: " + sel.toString());
-			
-			// Liste der AbstractDevices wird geleert bevor sie wieder mit den
-			// selektierten Einträgen gefüllt wird
 			tableDevices.clear();
 
-			Iterator<Object> obj = ((IStructuredSelection)sel).toList().iterator();
-
-			while (obj.hasNext()) {
-				Object o = obj.next();
+			ISelection selection = event.getSelection();
+			
+			if (!(selection instanceof IStructuredSelection)) {
+				return;
+			}
+			
+			for (Object o : ((IStructuredSelection)selection).toList()) {
 				if (o instanceof AbstractDevice) {
-					// Selection of an abstract device
-					if (!tableDevices.contains((AbstractDevice)o)) {
-						tableDevices.add((AbstractDevice)o);
-					}
-				}
-				else if (o instanceof String) {
-					// Selection of a class
-					List<AbstractDevice> devices = 
-							measuringStation.getDeviceList((String)o);
-					for(AbstractDevice d : devices) {
-						if (!tableDevices.contains(d)) {
-							tableDevices.add(d);
+					AbstractDevice device = (AbstractDevice)o;
+					if (device instanceof Motor) {
+						for (MotorAxis axis : ((Motor)device).getAxes()) {
+							if (axis.getClassName().isEmpty() && 
+									!tableDevices.contains(axis)) {
+								tableDevices.add(axis);
+							}
 						}
-					}				
+					} else if (device instanceof Detector) {
+						for (DetectorChannel channel : ((Detector) device)
+								.getChannels()) {
+							if (channel.getClassName().isEmpty() && 
+									!tableDevices.contains(channel)) {
+								tableDevices.add(channel);
+							}
+						}
+					}
+					if (!tableDevices.contains(device)) {
+						tableDevices.add(device);
+					}
+				} else if (o instanceof String) {
+					for (AbstractDevice device : measuringStation
+							.getDeviceList((String) o)) {
+						if (device instanceof Motor) {
+							for (MotorAxis axis : ((Motor)device).getAxes()) {
+								if (axis.getClassName().isEmpty() && 
+										!tableDevices.contains(axis)) {
+									tableDevices.add(axis);
+								}
+							}
+						} else if (device instanceof Detector) {
+							for (DetectorChannel channel : ((Detector) device)
+									.getChannels()) {
+								if (channel.getClassName().isEmpty() && 
+										!tableDevices.contains(channel)) {
+									tableDevices.add(channel);
+								}
+							}
+						}
+						if (!tableDevices.contains(device)) {
+							tableDevices.add(device);
+						}
+					}
 				}
 			}
 			optionsTable.setInput(tableDevices);
 		}
-	}	
+	}
 	
 	/**
 	 * 
