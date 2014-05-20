@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.data.scandescription;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -11,15 +12,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.EventTypes;
-import de.ptb.epics.eve.data.measuringstation.Detector;
-import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
-import de.ptb.epics.eve.data.measuringstation.Motor;
-import de.ptb.epics.eve.data.measuringstation.MotorAxis;
-import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Option;
-import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
@@ -34,8 +29,8 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author Hartmut Scherr
  * @author Marcus Michalsky
  */
-public class ScanDescription implements IModelUpdateProvider, 
-									IModelUpdateListener, IModelErrorProvider {
+public class ScanDescription implements IModelUpdateProvider,
+		IModelUpdateListener, IModelErrorProvider, PropertyChangeListener {
 	
 	private static Logger logger = 
 		Logger.getLogger(ScanDescription.class.getName());
@@ -49,43 +44,31 @@ public class ScanDescription implements IModelUpdateProvider,
 	/** */
 	public static final String MONITOR_OPTIONS_LIST_PROP = "monitors";
 	
+	/** */
+	public static final String DIRTY_PROP = "dirty";
+	
 	private String fileName;
 	
 	// version of the scan description.
 	private int inputVersion;
-	
-	// the input revision.
 	private int inputRevision;
-	
-	// the input modification.
 	private int inputModification;
 	
-	// the number of times the scan is repeated.
 	private int repeatCount;
 	
 	private Event startEvent;
 	
-	// the chains of the scan description.
 	private List<Chain> chains;
 	
-	// monitor options type
-	private MonitorOption monitorOption;
-
-	// options that should be monitored
-	private List<Option> monitors;
-	
-	// the listeners that will be notified if something changed.
 	private List<IModelUpdateListener> modelUpdateListener;
 	
-	// the measuring station used by this scan description.
 	private final IMeasuringStation measuringStation;
 	
 	private boolean dirty;
 	
-	/** */
-	public static final String DIRTY_PROP = "dirty";
-	
 	private PropertyChangeSupport propertyChangeSupport;
+	
+	private MonitorDelegate monitors;
 
 	/**
 	 * Constructs a <code>ScanDescription</code> and adds the S0 start event
@@ -105,8 +88,9 @@ public class ScanDescription implements IModelUpdateProvider,
 		this.fileName = "";
 		this.measuringStation = measuringStation;
 		this.dirty = false;
-		this.monitorOption = MonitorOption.NONE;
-		this.monitors = new ArrayList<Option>();
+		this.monitors = new MonitorDelegate(this);
+		this.monitors.setType(MonitorOption.NONE);
+		this.monitors.addPropertyChangeListener(MonitorDelegate.TYPE_PROP, this);
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
@@ -208,22 +192,21 @@ public class ScanDescription implements IModelUpdateProvider,
 	}
 
 	/**
-	 * Returns a list (COPY !) holding all monitors.
+	 * Returns a list of monitored options.
 	 * 
-	 * @return a list holding all monitors.
+	 * @return a list of monitored options
 	 */
 	public List<Option> getMonitors() {
-		return new ArrayList<Option>(this.monitors);
+		return this.monitors.getMonitors();
 	}
 
 	/**
 	 * Returns the type of the monitor options.
-	 * @return 
 	 * 
 	 * @return a MonitorOption for the monitor option type.
 	 */
 	public MonitorOption getMonitorOption() {
-		return this.monitorOption;
+		return this.monitors.getType();
 	}
 
 	/**
@@ -232,8 +215,7 @@ public class ScanDescription implements IModelUpdateProvider,
 	 * specific by monitorOption
 	 */
 	public void setMonitorOption(final MonitorOption monitorOption) {
-		this.propertyChangeSupport.firePropertyChange(MONITOR_OPTION_PROP, 
-				this.monitorOption, this.monitorOption=monitorOption);
+		this.monitors.setType(monitorOption);
 		updateListeners();
 	}
 	
@@ -315,9 +297,13 @@ public class ScanDescription implements IModelUpdateProvider,
 	 * @since 1.12
 	 */
 	public void addMonitor(Option option) {
-		this.monitors.add(option);
-		this.propertyChangeSupport.firePropertyChange(
-				ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
+		try {
+			this.monitors.add(option);
+			this.propertyChangeSupport.firePropertyChange(
+					ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
+		} catch (UnsupportedOperationException e) {
+			logger.error("Monitor could not be added: " + e.getMessage());
+		}
 	}
 	
 	/**
@@ -326,192 +312,13 @@ public class ScanDescription implements IModelUpdateProvider,
 	 * @since 1.12
 	 */
 	public void removeMonitor(Option option) {
-		this.monitors.remove(option);
-		this.propertyChangeSupport.firePropertyChange(
-				ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
-	}
-	
-	/**
-	 * Removes all option to the list of monitors
-	 * @since 1.14
-	 */
-	public void removeAllMonitor() {
-		this.monitors.clear();
-		this.propertyChangeSupport.firePropertyChange(
-				ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
-	}
-
-	/**
-	 * Adds all options to the list of monitors which are marked in the
-	 * messplatz.xml File with monitor="true"
-	 * @since 1.14
-	 */
-	public void addMpMonitor() {
-		// first, clear List
-		this.monitors.clear();
-		// add option to list
-
-		for (Detector d : measuringStation.getDetectors()) {
-			for (Option o : d.getOptions()) {
-				if(!o.isMonitor()) {
-					continue;
-				}
-				this.monitors.add(o);
-			}
-			for (DetectorChannel ch : d.getChannels()) {
-				for (Option o : ch.getOptions()) {
-					if(!o.isMonitor()) {
-						continue;
-					}
-					this.monitors.add(o);
-				}
-			}
+		try {
+			this.monitors.remove(option);
+			this.propertyChangeSupport.firePropertyChange(
+					ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
+		} catch (UnsupportedOperationException e) {
+			logger.error("Monitor could not be added: " + e.getMessage());
 		}
-
-		for (Motor m : measuringStation.getMotors()) {
-			for (Option o : m.getOptions()) {
-				if(!o.isMonitor()) {
-					continue;
-				}
-				this.monitors.add(o);
-			}
-			for (MotorAxis ma : m.getAxes()) {
-				for (Option o : ma.getOptions()) {
-					if(!o.isMonitor()) {
-						continue;
-					}
-					this.monitors.add(o);
-				}
-			}
-		}
-
-		for (Device dev : measuringStation.getDevices()) {
-			for (Option o : dev.getOptions()) {
-				if(!o.isMonitor()) {
-					continue;
-				}
-				this.monitors.add(o);
-			}
-		}
-		
-		this.propertyChangeSupport.firePropertyChange(
-				ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
-	}
-
-	/**
-	 * Adds all options of the scan devices to the list of 
-	 * monitors which are marked in the
-	 * messplatz.xml File with monitor="true"
-	 * @since 1.15
-	 */
-	public void addInvolvedMonitor() {
-		// first, clear List
-		this.monitors.clear();
-		// add option to list
-		// do the filtering
-
-		if(logger.isDebugEnabled()) {
-			logger.debug("ScanDescription "
-					+ this.getMonitorOption().name() + " selected.");
-		}
-		ExcludeFilter measuringStation2 = new ExcludeFilter();
-		measuringStation2.setSource(this.getMeasuringStation());
-		measuringStation2.excludeUnusedDevices(this);
-		
-		for (Detector d : measuringStation2.getDetectors()) {
-			if(logger.isDebugEnabled()) {
-				logger.debug("Detector "
-						+ d.getName() + " is used in Scan");
-			}
-			for (Option o : d.getOptions()) {
-				if(!o.isMonitor()) {
-					continue;
-				}
-				this.monitors.add(o);
-				if(logger.isDebugEnabled()) {
-					logger.debug("Option of Detector "
-							+ d.getName() + ": " + o.toString());
-				}
-			}
-			for (DetectorChannel ch : d.getChannels()) {
-				for (Option o : ch.getOptions()) {
-					if(!o.isMonitor()) {
-						continue;
-					}
-					this.monitors.add(o);
-				}
-			}
-		}		
-
-		for (Motor m : measuringStation2.getMotors()) {
-			for (Option o : m.getOptions()) {
-				if(!o.isMonitor()) {
-					continue;
-				}
-				this.monitors.add(o);
-			}
-			for (MotorAxis ma : m.getAxes()) {
-				for (Option o : ma.getOptions()) {
-					if(!o.isMonitor()) {
-						continue;
-					}
-					this.monitors.add(o);
-				}
-			}
-		}
-
-		for (Device dev : measuringStation2.getDevices()) {
-			for (Option o : dev.getOptions()) {
-				if(!o.isMonitor()) {
-					continue;
-				}
-				this.monitors.add(o);
-			}
-		}
-		
-		this.propertyChangeSupport.firePropertyChange(
-				ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
-	}
-
-	/**
-	 * Adds all options of the messplatz.xml File to the list of monitors
-	 * @since 1.14
-	 */
-	public void addAllMonitor() {
-		// first, clear List
-		this.monitors.clear();
-		// add option to list
-
-		for (Detector d : measuringStation.getDetectors()) {
-			for (Option o : d.getOptions()) {
-				this.monitors.add(o);
-			}
-			for (DetectorChannel ch : d.getChannels()) {
-				for (Option o : ch.getOptions()) {
-					this.monitors.add(o);
-				}
-			}
-		}
-
-		for (Motor m : measuringStation.getMotors()) {
-			for (Option o : m.getOptions()) {
-				this.monitors.add(o);
-			}
-			for (MotorAxis ma : m.getAxes()) {
-				for (Option o : ma.getOptions()) {
-					this.monitors.add(o);
-				}
-			}
-		}
-
-		for (Device dev : measuringStation.getDevices()) {
-			for (Option o : dev.getOptions()) {
-				this.monitors.add(o);
-			}
-		}
-		
-		this.propertyChangeSupport.firePropertyChange(
-				ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
 	}
 
 	/**
@@ -519,8 +326,8 @@ public class ScanDescription implements IModelUpdateProvider,
 	 * <p>
 	 * Necessary due to devices lost during SCML file loading.
 	 */
-	public void checkMonitors() {
-		for (Option o : this.getMonitors()) {
+	public void checkForOrphanedMonitors() {
+		for (Option o : new CopyOnWriteArrayList<Option>(this.getMonitors())) {
 			if (o.getParent() == null) {
 				this.monitors.remove(o);
 				if (logger.isDebugEnabled()) {
@@ -660,5 +467,20 @@ public class ScanDescription implements IModelUpdateProvider,
 			PropertyChangeListener listener) {
 		this.propertyChangeSupport.removePropertyChangeListener(propertyName,
 				listener);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getSource() == this.monitors) {
+			this.propertyChangeSupport.firePropertyChange(
+					ScanDescription.MONITOR_OPTION_PROP, e.getOldValue(),
+					e.getNewValue());
+			this.propertyChangeSupport.firePropertyChange(
+					ScanDescription.MONITOR_OPTIONS_LIST_PROP, null,
+					this.getMonitors());
+		}
 	}
 }

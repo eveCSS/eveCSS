@@ -217,7 +217,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					this.scanDescription.setMonitorOption(MonitorOption.CUSTOM);
 				} else {
 					this.scanDescription.setMonitorOption(
-						MonitorOption.stringToType(atts.getValue("type")));
+							MonitorOption.stringToType(atts.getValue("type")));
 				}
 				this.state = ScanDescriptionLoaderStates.MONITOROPTIONS_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_LOADING;
@@ -1399,18 +1399,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case MONITOROPTIONS_ID_NEXT:
 			if (qName.equals("id")) {
-				// Hier wird jetzt die Liste erweitert
-				final Option option = new Option();
-				option.setId(textBuffer.toString());
 				AbstractPrePostscanDevice monOption = this.measuringStation.getPrePostscanDeviceById(textBuffer.toString());
-				if (monOption != null) {
-					option.setClassName(monOption.getClassName());
-					option.setName(monOption.getName());
-					option.setDisplaygroup(monOption.getDisplaygroup());
-					option.setValue(monOption.getValue());
+				if (monOption != null && monOption instanceof Option) {
+					Option option = (Option) ((Option)monOption).clone();
 					this.scanDescription.addMonitor(option);
-				}
-				else {
+				} else {
 					// Option ID nicht mehr am Messplatz vorhanden
 					this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
 							ScanDescriptionLoaderLostDeviceType.

@@ -3,6 +3,8 @@ package de.ptb.epics.eve.data.measuringstation;
 import java.util.Iterator;
 import java.util.List;
 
+import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedException;
+
 /**
  *  This class represents a motor axis of a device.
  * 
@@ -77,6 +79,19 @@ public class Option extends AbstractPrePostscanDevice implements Cloneable {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public void setParent(AbstractDevice parent)
+			throws ParentNotAllowedException {
+		try {
+			super.setParent(parent);
+		} catch (ParentNotAllowedException e) {
+			parent = null;
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Object clone() {
 		final Option option = new Option();
 
@@ -90,6 +105,11 @@ public class Option extends AbstractPrePostscanDevice implements Cloneable {
 		option.setUnit((Unit) (this.getUnit() != null ? this.getUnit().clone()
 				: null));
 		option.setMonitor(this.isMonitor());
+		try {
+			option.setParent(this.getParent());
+		} catch (ParentNotAllowedException e) {
+			// fail
+		}
 		return option;
 	}
 
