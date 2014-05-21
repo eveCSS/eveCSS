@@ -1243,7 +1243,20 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 							.matchMainAxis(this.mainAxis);
 				}
 			}
-		}
+		} else if (e.getPropertyName().equals(AddMultiplyMode.MAIN_AXIS_PROP)) {
+			// main axis property geändet obwohl kein AddMultiplyMode
+			
+			if (this.mainAxis != null) {
+				// remove Listener of old main axis
+				this.mainAxis.removePropertyChangeListener(
+						AddMultiplyMode.STEPCOUNT_PROP, this);
+			}
+			this.propertyChangeSupport.firePropertyChange(
+					ScanModule.MAIN_AXIS_PROP, this.mainAxis, this.mainAxis = null);
+			if (logger.isDebugEnabled()) {
+				logger.debug("Main Axis has been reset");
+			}
+		}	
 	}
 	
 	/**
