@@ -5,8 +5,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Logger;
@@ -391,6 +393,88 @@ public class ScanDescription implements IModelUpdateProvider,
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Returns all options of devices used in the scan.
+	 * <p>
+	 * Specific Scanmodules (e.g. save axes positions / save channel values) 
+	 * are ignored. 
+	 * 
+	 * @return all options of devices used in the scan
+	 * @since 1.19
+	 * @author Marcus Michalsky
+	 */
+	public List<Option> getMonitorOptions() {
+		Set<Option> monitors = new HashSet<Option>();
+		
+		for(Chain chain : this.getChains()) {
+			for(ScanModule sm : chain.getScanModules()) {
+				if (!sm.getType().equals(ScanModuleTypes.CLASSIC)) {
+					continue;
+				}
+			
+				for(Axis a : sm.getAxes()) {
+					for(Option o : a.getMotorAxis().getOptions()) {
+						if(o.isMonitor()) {
+							monitors.add(o);
+						}
+					}
+					for(Option o : a.getMotorAxis().getMotor().getOptions()) {
+						if(o.isMonitor()) {
+							monitors.add(o);
+						}
+					}
+				}
+				for(Channel ch : sm.getChannels()) {
+					for(Option o : ch.getDetectorChannel().getOptions()) {
+						if(o.isMonitor()) {
+							monitors.add(o);
+						}
+					}
+					for(Option o : ch.getDetectorChannel().getDetector().getOptions()) {
+						if(o.isMonitor()) {
+							monitors.add(o);
+						}
+					}
+				}
+				for(Prescan prescan : sm.getPrescans()) {
+					if(prescan.isOption()) {
+						monitors.add((Option)prescan.getAbstractDevice());
+						Option o = (Option)prescan.getAbstractDevice();
+						if(o.isMonitor()) {
+							monitors.add(o);
+						}
+					}
+					if(prescan.isDevice()) {
+						for(Option o : prescan.getAbstractDevice().getOptions()) {
+							if(o.isMonitor()) {
+								monitors.add(o);
+							}
+						}
+					}
+				}
+				for(Postscan postscan : sm.getPostscans()) {
+					if(postscan.isOption()) {
+						monitors.add((Option)postscan.getAbstractDevice());
+						Option o = (Option)postscan.getAbstractDevice();
+						if(o.isMonitor()) {
+							monitors.add(o);
+						}
+					}
+					if(postscan.isDevice()) {
+						for(Option o : postscan.getAbstractDevice().getOptions()) {
+							if(o.isMonitor()) {
+								monitors.add(o);
+							}
+						}
+					}
+				}
+			}
+		}
+		List<Option> monitorList = new ArrayList<Option>(monitors);
+		Collections.sort(monitorList);
+		return monitorList;
 	}
 	
 	/**

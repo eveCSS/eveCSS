@@ -32,14 +32,10 @@ import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.TypeValue;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
-import de.ptb.epics.eve.data.measuringstation.Detector;
-import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.MonitorEvent;
-import de.ptb.epics.eve.data.measuringstation.Motor;
-import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.scandescription.Axis;
@@ -219,8 +215,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					this.scanDescription.setMonitorOption(
 							MonitorOption.stringToType(atts.getValue("type")));
 				}
-				this.state = ScanDescriptionLoaderStates.MONITOROPTIONS_LOADING;
-				this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_LOADING;
+				if (this.scanDescription.getMonitorOption().equals(
+						MonitorOption.CUSTOM)) {
+					this.state = ScanDescriptionLoaderStates.MONITOROPTIONS_LOADING;
+					this.subState = ScanDescriptionLoaderSubStates.MONITOROPTIONS_ID_LOADING;
+				}
 			}
 
 		case CHAIN_LOADING:
@@ -1149,48 +1148,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case MONITOROPTIONS_LOADING:
 			if (qName.equals("monitoroptions")) {
-				// Hier ist jetzt die Liste der Monitor Options fertig!
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
 				this.state = ScanDescriptionLoaderStates.SCAN_LOADING;
-				// Die Optionen müssen bei AS_IN_DEVICE_DEFINITION
-				// unter Umständen erweitert werden.
-				if (MonitorOption.AS_IN_DEVICE_DEFINITION.equals(scanDescription.getMonitorOption())) {
-					for (Detector d : measuringStation.getDetectors()) {
-						for (Option o : d.getOptions()) {
-							if(o.isMonitor()) {
-								addFailedMonitorToList(o);
-							}
-						}
-						for (DetectorChannel ch : d.getChannels()) {
-							for (Option o : ch.getOptions()) {
-								if(o.isMonitor()) {
-									addFailedMonitorToList(o);
-								}
-							}
-						}						
-					}
-					for (Motor m : measuringStation.getMotors()) {
-						for (Option o : m.getOptions()) {
-							if(o.isMonitor()) {
-								addFailedMonitorToList(o);
-							}
-						}
-						for (MotorAxis ma : m.getAxes()) {
-							for (Option o : ma.getOptions()) {
-								if(o.isMonitor()) {
-									addFailedMonitorToList(o);
-								}
-							}
-						}
-					}
-					for (Device dev : measuringStation.getDevices()) {
-						for (Option o : dev.getOptions()) {
-							if(o.isMonitor()) {
-								addFailedMonitorToList(o);
-							}
-						}
-					}
-				}
 			}
 			break;
 		}
@@ -1399,13 +1358,13 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case MONITOROPTIONS_ID_NEXT:
 			if (qName.equals("id")) {
-				AbstractPrePostscanDevice monOption = this.measuringStation.getPrePostscanDeviceById(textBuffer.toString());
+				AbstractPrePostscanDevice monOption = this.measuringStation.
+						getPrePostscanDeviceById(textBuffer.toString());
 				if (monOption != null && monOption instanceof Option) {
-					Option option = (Option) ((Option)monOption).clone();
-					this.scanDescription.addMonitor(option);
+					this.scanDescription.addMonitor((Option)monOption);
 				} else {
-					// Option ID nicht mehr am Messplatz vorhanden
-					this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
+					this.lostDevices.add(
+						new ScanDescriptionLoaderLostDeviceMessage(
 							ScanDescriptionLoaderLostDeviceType.
 							MONITOR_OPTION_ID_NOT_FOUND, 
 							"Monitor-Device '" + textBuffer.toString() + 
@@ -1432,11 +1391,8 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			if (qName.equals("scan")) {
 				this.state = ScanDescriptionLoaderStates.ROOT;
 
-				Iterator<ScanModule> scanModulIterator = this.currentChain
-						.getScanModules().iterator();
-				while (scanModulIterator.hasNext()) {
-					ScanModule scanModul = scanModulIterator.next();
-					scanModul.sm_loading = false;
+				for (ScanModule sm : this.currentChain.getScanModules()) {
+					sm.sm_loading = false; // TODO public attribute ?!
 				}
 			}
 			
@@ -2206,28 +2162,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 			break;
 }
-	}
-
-	// 
-	/**
-	 * This method add an option to the list of monitored options
-	 * if the option is not in the list.
-	 * 
-	 * @return The loaded scan description.
-	 */
-	private void addFailedMonitorToList(Option o) {
-		if (scanDescription.getMonitors().contains(o)) {
-			// Monitor schon vorhanden
-		} else {
-			// Monitor kommt neu hinzu
-			scanDescription.addMonitor(o);
-			// Monitor in den Dialog der Informationen aufnehmen
-			this.lostDevices.add(new ScanDescriptionLoaderLostDeviceMessage(
-					ScanDescriptionLoaderLostDeviceType.
-					MONITOR_OPTION_ID_FAILED_IN_LIST, 
-					"Monitor-Device '" + o.getID().toString() + 
-					"' added to the list of monitored devices."));
-		}
 	}
 
 	/**

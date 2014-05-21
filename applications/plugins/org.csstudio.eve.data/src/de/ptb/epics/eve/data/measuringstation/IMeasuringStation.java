@@ -229,4 +229,10 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	 */
 	List<AbstractDevice> getDeviceList(String classname);
 
+	/**
+	 * Returns all options marked with monitor=true in the device definition.
+	 * 
+	 * @return all options marked with monitor=true
+	 */
+	List<Option> getMonitorOptions();
 }
