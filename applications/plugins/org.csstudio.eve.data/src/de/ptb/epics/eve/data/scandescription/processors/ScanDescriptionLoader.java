@@ -151,7 +151,7 @@ public class ScanDescriptionLoader {
 		this.scanDescription = handler.getScanDescription();
 		this.scanDescription.setFileName(this.fileToLoad.getName());
 		this.lostDevicesList = handler.getLostDevices();
-		this.scanDescription.checkMonitors();
+		this.scanDescription.checkForOrphanedMonitors();
 	}
 
 	/**

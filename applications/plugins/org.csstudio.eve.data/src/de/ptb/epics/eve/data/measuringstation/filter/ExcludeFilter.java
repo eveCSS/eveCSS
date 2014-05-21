@@ -1066,7 +1066,9 @@ public class ExcludeFilter extends MeasuringStationFilter {
 			}
 		}
 		
-
+		// // add monitor options
+		// usedOptions.addAll(scandescription.getMonitors());
+		
 		switch (scandescription.getMonitorOption()) {
 			case AS_IN_DEVICE_DEFINITION:
 				// add all options with monitor="true" to the list of used options

@@ -264,21 +264,9 @@ public class ScanDescriptionSaver implements
 		try {
 			this.atts.clear();
 			this.atts.addAttribute("", "type", "type", "CDATA",
-					"" + MonitorOption.typeToString(scanDescription.getMonitorOption()));
+					"" + scanDescription.getMonitorOption().toString());
 			this.contentHandler.startElement("", "monitoroptions",
 					"monitoroptions", this.atts);
-
-			switch (this.getScanDescription().getMonitorOption()) {
-			case AS_IN_DEVICE_DEFINITION:
-			case CUSTOM:
-			case NONE:
-				// list of monitored options is ok
-				break;
-			case USED_IN_SCAN:
-				// update list of monitored options
-				this.getScanDescription().addInvolvedMonitor();
-				break;
-			}
 								
 			for (Option o : this.scanDescription.getMonitors()) {
 				successful = this.writeId(o.getID());

@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.editor.views.scanview.ui;
 
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -11,6 +12,8 @@ import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.viewers.ViewerSupport;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -27,7 +30,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -76,7 +78,7 @@ public class ScanView extends ViewPart implements IEditorView,
 	private Text repeatCountText;
 
 	private Label monitorOptionsLabel;
-	private Combo monitorOptionsCombo;
+	private ComboViewer monitorOptionsCombo;
 
 	private Button editButton;
 	private EditButtonSelectionListener editButtonSelectionListener;
@@ -101,8 +103,10 @@ public class ScanView extends ViewPart implements IEditorView,
 	private IObservableValue repeatCountModelObservable;
 	private Binding repeatCountBinding;
 
-	private MonitorOptionsComboSelectionListener monitorOptionsComboSelectionListener;
-
+	private IObservableValue monitorOptionsComboTargetObservable;
+	private IObservableValue monitorOptionsComboModelObservable;
+	private Binding monitorOptionsBinding;
+	
 	// Delegates
 	private EditorViewPerspectiveListener perspectiveListener;
 
@@ -147,13 +151,10 @@ public class ScanView extends ViewPart implements IEditorView,
 		this.monitorOptionsLabel = new Label(this.top, SWT.NONE);
 		this.monitorOptionsLabel.setText("Monitored Devices:");
 
-		this.monitorOptionsCombo = new Combo(this.top, SWT.READ_ONLY);
-		this.monitorOptionsCombo.setItems(MonitorOption
-				.getPossibleMonitorOptions());
-		this.monitorOptionsComboSelectionListener = new MonitorOptionsComboSelectionListener();
-		this.monitorOptionsCombo
-				.addSelectionListener(monitorOptionsComboSelectionListener);
-		// end of: step function elements
+		this.monitorOptionsCombo = new ComboViewer(this.top, SWT.READ_ONLY);
+		this.monitorOptionsCombo.setContentProvider(ArrayContentProvider
+				.getInstance());
+		this.monitorOptionsCombo.setInput(MonitorOption.values());
 
 		// Edit button
 		this.editButton = new Button(this.top, SWT.NONE);
@@ -238,6 +239,19 @@ public class ScanView extends ViewPart implements IEditorView,
 						UpdateValueStrategy.POLICY_UPDATE));
 		ControlDecorationSupport.create(repeatCountBinding, SWT.LEFT);
 
+		this.monitorOptionsComboTargetObservable = ViewersObservables
+				.observeSingleSelection(monitorOptionsCombo);
+		this.monitorOptionsComboModelObservable = BeansObservables
+				.observeDetailValue(selectionObservable,
+						ScanDescription.MONITOR_OPTION_PROP,
+						MonitorOption.class);
+		this.monitorOptionsBinding = this.context.bindValue(
+				monitorOptionsComboTargetObservable,
+				monitorOptionsComboModelObservable, new UpdateValueStrategy(
+						UpdateValueStrategy.POLICY_UPDATE),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
+		this.monitorOptionsBinding.getClass();
+		
 		ViewerSupport.bind(monitorOptionsTable,
 				BeansObservables
 				.observeDetailList(selectionObservable,
@@ -261,9 +275,6 @@ public class ScanView extends ViewPart implements IEditorView,
 								.getActivePage().getActiveEditor().getTitle());
 			}
 
-			this.monitorOptionsCombo.setText(MonitorOption
-					.typeToString(this.currentScanDescription
-							.getMonitorOption()));
 			this.top.setVisible(true);
 		}
 	}
@@ -364,69 +375,6 @@ public class ScanView extends ViewPart implements IEditorView,
 
 	/**
 	 */
-	private class MonitorOptionsComboSelectionListener implements
-			SelectionListener {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			if (currentScanDescription != null) {
-
-				switch (currentScanDescription.getMonitorOption()) {
-				case USED_IN_SCAN:
-					// if scan is dirty, update list of montorOtions
-					// before changing list mode
-					if (Activator.getDefault().getWorkbench()
-							.getActiveWorkbenchWindow().getActivePage()
-							.getActiveEditor().isDirty()) {
-						currentScanDescription.addInvolvedMonitor();
-					}
-					break;
-				case CUSTOM:
-				case NONE:
-				case AS_IN_DEVICE_DEFINITION:
-					break;
-				}
-
-				// read new selection
-				currentScanDescription.setMonitorOption(MonitorOption
-						.stringToType(monitorOptionsCombo.getText()));
-
-				switch (currentScanDescription.getMonitorOption()) {
-				case AS_IN_DEVICE_DEFINITION:
-					// Adds all options to the list of monitors which are
-					// marked in the messplatz.xml File with monitor="true"
-					currentScanDescription.addMpMonitor();
-					break;
-				case USED_IN_SCAN:
-					// Adds all options of the devices which are used in
-					// the scan to the list of monitors which are marked
-					// in the messplatz.xml File with monitor="true"
-					currentScanDescription.addInvolvedMonitor();
-					break;
-				case CUSTOM:
-					// list of monitored devices is editable
-					break;
-				case NONE:
-					// list of monitored devices cleared
-					currentScanDescription.removeAllMonitor();
-					break;
-				}
-			}
-		}
-	}
-
-	/**
-	 */
 	private class EditButtonSelectionListener implements SelectionListener {
 
 		/**
@@ -441,29 +389,10 @@ public class ScanView extends ViewPart implements IEditorView,
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-
-			switch (currentScanDescription.getMonitorOption()) {
-			case USED_IN_SCAN:
-				// if scan is dirty, update list of montorOtions
-				// before editing monitor options
-				if (Activator.getDefault().getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage()
-						.getActiveEditor().isDirty()) {
-					currentScanDescription.addInvolvedMonitor();
-				}
-				break;
-			case CUSTOM:
-			case NONE:
-			case AS_IN_DEVICE_DEFINITION:
-				break;
-			}
-
 			MonitorOptionDialog dialog = new MonitorOptionDialog(PlatformUI
 					.getWorkbench().getActiveWorkbenchWindow().getShell(),
 					currentScanDescription);
 			currentScanDescription.setMonitorOption(MonitorOption.CUSTOM);
-			monitorOptionsCombo.setText(MonitorOption
-					.typeToString(currentScanDescription.getMonitorOption()));
 			dialog.setBlockOnOpen(true);
 			dialog.open();
 		}
@@ -471,6 +400,9 @@ public class ScanView extends ViewPart implements IEditorView,
 	
 	private class OptionColumnSelectionListener extends SelectionAdapter {
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			logger.debug("option column clicked");
@@ -509,6 +441,9 @@ public class ScanView extends ViewPart implements IEditorView,
 	
 	private class DeviceColumnSelectionListener extends SelectionAdapter {
 		
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			logger.debug("device name column clicked");
