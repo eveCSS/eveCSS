@@ -376,6 +376,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			if(((IStructuredSelection) selection).size() == 0) {
 				return;
 			}
+
 			// since at any given time this view can only display options of 
 			// one motor axis, we take the first element of the selection
 			Object o = ((IStructuredSelection) selection).toList().get(0);
