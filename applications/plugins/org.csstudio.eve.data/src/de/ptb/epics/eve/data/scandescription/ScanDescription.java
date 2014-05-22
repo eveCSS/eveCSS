@@ -82,7 +82,6 @@ public class ScanDescription implements IModelUpdateProvider,
 	public ScanDescription(final IMeasuringStation measuringStation) {
 		super();
 		this.chains = new ArrayList<Chain>();
-		//this.events = new ArrayList<Event>();
 		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
 		// default start event
 		startEvent = new Event(EventTypes.SCHEDULE);
