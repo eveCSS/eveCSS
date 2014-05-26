@@ -18,7 +18,7 @@
 		<mkdir dir="${env.WORKSPACE}/tests/src" />
 		<mkdir dir="${env.WORKSPACE}/tests/build" />
 		<mkdir dir="${env.WORKSPACE}/tests/results" />
-		<unzip src="${env.WORKSPACE}/bin/eveCSS/eveCSS-linux.gtk.x86.zip" 
+		<unzip src="${env.WORKSPACE}/bin/eveCSS/eveCSS-linux.gtk.x86_64.zip" 
 				dest="${env.WORKSPACE}/tests/bin" />
 		<copy todir="${env.WORKSPACE}/tests/src">
 			<fileset dir="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.data.tests" />
