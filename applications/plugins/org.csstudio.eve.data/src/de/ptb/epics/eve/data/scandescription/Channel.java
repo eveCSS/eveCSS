@@ -306,8 +306,8 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 */
 	public boolean addRedoEvent(final ControlEvent redoEvent) {
 		if (this.redoControlEventManager.addControlEvent(redoEvent)) {
-			this.propertyChangeSupport.firePropertyChange(Channel.REDO_EVENT_PROP,
-					null, redoEvent);
+			this.propertyChangeSupport.firePropertyChange(
+					Channel.REDO_EVENT_PROP, null, redoEvent);
 			return true;
 		}
 		return false;
@@ -324,8 +324,8 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 */
 	public boolean removeRedoEvent(final ControlEvent redoEvent) {
 		if (this.redoControlEventManager.removeEvent(redoEvent)) {
-			this.propertyChangeSupport.firePropertyChange(Channel.REDO_EVENT_PROP,
-					redoEvent, null);
+			this.propertyChangeSupport.firePropertyChange(
+					Channel.REDO_EVENT_PROP, redoEvent, null);
 			return true;
 		}
 		return false;

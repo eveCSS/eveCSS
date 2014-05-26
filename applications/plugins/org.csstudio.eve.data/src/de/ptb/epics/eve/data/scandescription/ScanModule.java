@@ -1514,7 +1514,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @author Marcus Michalsky
 	 * @see {@link javafx.collections.ObservableList}
 	 */
-	public void addChannelChangeListener(ListChangeListener<? super Channel> listener) {
+	public void addChannelChangeListener(ListChangeListener<? super Channel> 
+			listener) {
 		this.channels.addListener(listener);
 	}
 	
@@ -1525,7 +1526,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @since 1.19
 	 * @author Marcus Michalsky
 	 */
-	public void removeChannelChangeListener(ListChangeListener<? super Channel> listener) {
+	public void removeChannelChangeListener(ListChangeListener<? super Channel> 
+			listener) {
 		this.channels.removeListener(listener);
 	}
 }

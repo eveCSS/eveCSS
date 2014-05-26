@@ -185,8 +185,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		if (logger.isDebugEnabled()) {
 			this.addScanModuleChangeListener(new ListChangeListener<ScanModule>() {
 				@Override
-				public void onChanged(
-						javafx.collections.ListChangeListener.Change<? extends ScanModule> c) {
+				public void onChanged(javafx.collections.ListChangeListener.
+						Change<? extends ScanModule> c) {
 					while (c.next()) {
 						if (c.wasPermutated()) {
 							logger.debug("scan modules permutated");
@@ -1021,7 +1021,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * @author Marcus Michalsky
 	 * @see {@link javafx.collections.ObservableList}
 	 */
-	public void addScanModuleChangeListener(ListChangeListener<? super ScanModule> listener) {
+	public void addScanModuleChangeListener(
+			ListChangeListener<? super ScanModule> listener) {
 		this.scanModules.addListener(listener);
 	}
 	
@@ -1032,7 +1033,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 * @since 1.19
 	 * @author Marcus Michalsky
 	 */
-	public void removeScanModuleChangeListener(ListChangeListener<? super ScanModule> listener) {
+	public void removeScanModuleChangeListener(
+			ListChangeListener<? super ScanModule> listener) {
 		this.scanModules.removeListener(listener);
 	}
 }
