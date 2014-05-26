@@ -20,6 +20,7 @@
 		<mkdir dir="${env.WORKSPACE}/tests/results" />
 		<unzip src="${env.WORKSPACE}/bin/eveCSS/eveCSS-linux.gtk.x86_64.zip" 
 				dest="${env.WORKSPACE}/tests/bin" />
+		<copy todir="${env.WORKSPACE}/tests/bin" file="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.data/lib/jfxrt.jar" />
 		<copy todir="${env.WORKSPACE}/tests/src">
 			<fileset dir="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.data.tests" />
 			<fileset dir="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.util.tests" />
