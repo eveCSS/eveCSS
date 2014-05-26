@@ -242,6 +242,9 @@ public class XyPlot extends Figure {
 		this.xyGraph.primaryYAxis.setShowMajorGrid(true);
 		this.xyGraph.primaryXAxis.setAutoScaleThreshold(0);
 
+		if (toolbarArmedXYGraph != null) {
+				remove(toolbarArmedXYGraph);
+		}
 		toolbarArmedXYGraph = new ToolbarArmedXYGraph(xyGraph);
 		add(toolbarArmedXYGraph);
 	}
