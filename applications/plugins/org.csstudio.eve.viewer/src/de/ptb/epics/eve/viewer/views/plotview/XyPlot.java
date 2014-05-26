@@ -245,6 +245,9 @@ public class XyPlot extends Figure {
 		this.xyGraph.primaryXAxis.setAutoScaleThreshold(0.1);
 		this.xyGraph.primaryYAxis.setAutoScaleThreshold(0.01);
 
+		if (toolbarArmedXYGraph != null) {
+				remove(toolbarArmedXYGraph);
+		}
 		toolbarArmedXYGraph = new ToolbarArmedXYGraph(xyGraph);
 		add(toolbarArmedXYGraph);
 	}
