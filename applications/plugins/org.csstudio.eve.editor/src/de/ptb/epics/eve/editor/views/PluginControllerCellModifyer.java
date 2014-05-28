@@ -143,9 +143,11 @@ public class PluginControllerCellModifyer implements ICellModifier {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object getValue(final Object element, final String property) {
+System.out.println("getValue event im pluginControllerCellModifier");
 		if (property.equals("value")) {
 			Map.Entry<String, String> entry = 
 					((Map.Entry<String, String>)element);
+System.out.println("  entry.getValue: " + entry.getValue());
 			if(this.tableViewer.getCellEditors()[1] instanceof TextCellEditor) {
 				return (entry.getValue() == null) ? "" : entry.getValue();
 			} else if(this.tableViewer.getCellEditors()[1] instanceof ComboBoxCellEditor) {
@@ -167,9 +169,14 @@ public class PluginControllerCellModifyer implements ICellModifier {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void modify(final Object element, final String property, final Object value) {
+System.out.println("modify event im pluginControllerCellModifier, property: " + property);
 		if (property.equals("value")) {
 			Map.Entry<String, String> entry = 
 					((Map.Entry<String, String>)((Item)element).getData());
+
+
+System.out.println("   Option Name:" + ((Item)element).getText());
+
 			final PluginController pluginController = 
 					(PluginController)this.tableViewer.getInput();
 			if (value instanceof String) {
@@ -178,6 +185,37 @@ public class PluginControllerCellModifyer implements ICellModifier {
 				pluginController.set(entry.getKey(), ((ComboBoxCellEditor)
 						this.tableViewer.getCellEditors()[1]).
 						getItems()[(Integer)value]);
+
+				System.out.println("   Was wird gesetzt: "+ ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).getItems()[(Integer)value]);				
+// Hier wird der Eintrag zur referenceAxis gesetzt.
+// Wenn man weiß, das es die referenceAxis ist, soll hier nicht der Name der Axis sondern die ID 
+// weggeschrieben werden.
+
+System.out.println("   Was wird gesetzt: "+ (this.tableViewer.getCellEditors()[0]).toString());				
+System.out.println(" ViewerEditor: "+ this.tableViewer.getColumnViewerEditor().toString());
+
+System.out.println("   Was wird gesetzt: "+ (pluginController.getElements().toString()));				
+
+
+			// Es wird aus der MotorAxisMap eine Collection der
+			// MotorAxis ausgelesen
+			Collection<MotorAxis> axes= Activator.getDefault()
+								.getMeasuringStation().getMotorAxes().values();
+
+			String achse = ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).getItems()[(Integer)value];
+			
+			for (MotorAxis axis : axes) {
+				if (axis.getName().equals(achse)) {
+					System.out.println("Achse gefunden");
+					System.out.println("  ID: "+axis.getID());
+
+					pluginController.set(entry.getKey(), axis.getID());
+
+				
+				}
+			}
+
+
 			}
 		}
 	}

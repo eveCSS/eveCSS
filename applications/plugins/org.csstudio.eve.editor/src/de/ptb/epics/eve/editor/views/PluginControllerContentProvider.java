@@ -6,12 +6,14 @@ import org.eclipse.jface.viewers.Viewer;
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
+import de.ptb.epics.eve.editor.views.scanmoduleview.CompositeContentProvider;
 
 /**
  * <code>PluginControllerInputWrapper</code>.
  * 
  * @author ?
  */
+
 public class PluginControllerContentProvider implements IModelUpdateListener,
 													IStructuredContentProvider {
 
