@@ -55,7 +55,7 @@ public class AddEvent implements IHandler {
 		
 		if(eventType.equals(EventTypes.MONITOR)) {
 			event = Activator.getDefault().getMeasuringStation().
-			getEventById(eventId);
+					getEventById(eventId);
 		} else {
 			int chainId = Integer.parseInt(executionEvent.getParameter(
 					"de.ptb.epics.eve.editor.command.AddEvent.chainId"));
@@ -118,8 +118,7 @@ public class AddEvent implements IHandler {
 			Channel ch = ((DetectorChannelView)HandlerUtil.getActivePart(
 					executionEvent)).getCurrentChannel();
 			if (eventImpact.equals(EventImpacts.REDO)) {
-				ch.getRedoControlEventManager().addControlEvent(
-						new ControlEvent(eventType, event, eventId));
+				ch.addRedoEvent(new ControlEvent(eventType, event, eventId));
 			}
 		}
 		return null;

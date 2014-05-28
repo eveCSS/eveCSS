@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.measuringstation.Detector;
@@ -25,7 +29,6 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventType
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
-
 import de.ptb.epics.eve.util.math.statistics.DescriptiveStats;
 
 /**
@@ -125,7 +128,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	private List<Postscan> postscans;
 	
 	// a list containing all channels
-	private List<Channel> channels;
+	private ObservableList<Channel> channels;
 	
 	// a list containing all axes
 	private List<Axis> axes;
@@ -177,7 +180,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	private List<Positioning> positionings;
 
 	// sm_loading is true, if the scan module is loading 
-	public boolean sm_loading;
+	public boolean sm_loading; // TODO information hiding ?
 	
 	/**
 	 * Constructs a <code>ScanModule</code> with the given id.
@@ -193,7 +196,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.id = id;
 		this.prescans = new ArrayList<Prescan>();
 		this.postscans = new ArrayList<Postscan>();
-		this.channels = new ArrayList<Channel>();
+		this.channels = FXCollections.observableList(new ArrayList<Channel>());
 		this.axes = new ArrayList<Axis>();
 		this.mainAxis = null;
 		this.plotWindows = new ArrayList<PlotWindow>();
@@ -230,6 +233,35 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.height = ScanModule.DEFAULT_HEIGHT;
 		
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
+		
+		if (logger.isDebugEnabled()) {
+			this.addChannelChangeListener(new ListChangeListener<Channel>() {
+				@Override
+				public void onChanged(
+						javafx.collections.ListChangeListener.Change<? extends Channel> c) {
+					while (c.next()) {
+						if (c.wasPermutated()) {
+							logger.debug("channels permutated");
+						} else if (c.wasUpdated()) {
+							logger.debug("channel updated");
+						} else {
+							for (Channel ch : c.getRemoved()) {
+								logger.debug("channel '" 
+										+ ch.getDetectorChannel().getName() 
+										+ "' was removed from scan module '" 
+										+ ch.getScanModule().getName() + "'");
+							}
+							for (Channel ch : c.getAddedSubList()) {
+								logger.debug("channel '" 
+										+ ch.getDetectorChannel().getName() 
+										+ "' was added to scan module '" 
+										+ ch.getScanModule().getName() + "'");
+							}
+						}
+					}
+				}
+			});
+		}
 	}
 
 	/**
@@ -1465,5 +1497,37 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		stats.calculateStats();
 		// no main axis, no uncalculatable axes -> return max
 		return stats.getMaximum().intValue();
+	}
+	
+	/**
+	 * Add FXCollection listener to detect changes of channels.
+	 * <p>
+	 * A change can be one of the following:
+	 * <ul>
+	 * 	<li>a channel was updated</li>
+	 *  <li>one or more channels have been added</li>
+	 *  <li>one or more channels have been removed</li>
+	 * </ul>
+	 * 
+	 * @param listener the list change listener
+	 * @since 1.19
+	 * @author Marcus Michalsky
+	 * @see {@link javafx.collections.ObservableList}
+	 */
+	public void addChannelChangeListener(ListChangeListener<? super Channel> 
+			listener) {
+		this.channels.addListener(listener);
+	}
+	
+	/**
+	 * Remove FXCollection listener to no longer detect changes of channels
+	 * 
+	 * @param listener the list change listener
+	 * @since 1.19
+	 * @author Marcus Michalsky
+	 */
+	public void removeChannelChangeListener(ListChangeListener<? super Channel> 
+			listener) {
+		this.channels.removeListener(listener);
 	}
 }

@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventManager;
@@ -88,7 +92,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	private StartEvent startEvent;
 	
 	// holds all the scan modules
-	private List<ScanModule> scanModules;
+	private ObservableList<ScanModule> scanModules;
 	
 	// the scan description, that is the parent of this chain
 	private ScanDescription scanDescription;
@@ -140,7 +144,8 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 					"The parameter 'id' must be at least 1!");
 		}
 		this.id = id;
-		this.scanModules = new ArrayList<ScanModule>();
+		this.scanModules = FXCollections
+				.observableList(new ArrayList<ScanModule>());
 		this.scanModuleMap = new HashMap<Integer, ScanModule>();
 		this.saveFilename = "";
 		this.updateListener = new ArrayList<IModelUpdateListener>();
@@ -176,6 +181,31 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 		this.reservedIds = new LinkedList<Integer>();
 		
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
+		
+		if (logger.isDebugEnabled()) {
+			this.addScanModuleChangeListener(new ListChangeListener<ScanModule>() {
+				@Override
+				public void onChanged(javafx.collections.ListChangeListener.
+						Change<? extends ScanModule> c) {
+					while (c.next()) {
+						if (c.wasPermutated()) {
+							logger.debug("scan modules permutated");
+						} else if (c.wasUpdated()) {
+							logger.debug("scan module updated");
+						} else {
+							for (ScanModule sm : c.getRemoved()) {
+								logger.debug("scan module '" + sm.getName() 
+										+ "' was removed.");
+							}
+							for (ScanModule sm : c.getAddedSubList()) {
+								logger.debug("scan module '" + sm.getName() 
+										+ "' was added.");
+							}
+						}
+					}
+				}
+			});
+		}
 	}
 	
 	/**
@@ -974,5 +1004,37 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 			PropertyChangeListener listener) {
 		this.propertyChangeSupport.removePropertyChangeListener(property,
 				listener);
+	}
+	
+	/**
+	 * Add FXCollection listener to detect changes of scan modules.
+	 * <p>
+	 * A change can be one of the following:
+	 * <ul>
+	 * 	<li>a scan module was updated</li>
+	 *  <li>one or more scan modules have been added</li>
+	 *  <li>one or more scan modules have been removed</li>
+	 * </ul>
+	 * 
+	 * @param listener the list change listener
+	 * @since 1.19
+	 * @author Marcus Michalsky
+	 * @see {@link javafx.collections.ObservableList}
+	 */
+	public void addScanModuleChangeListener(
+			ListChangeListener<? super ScanModule> listener) {
+		this.scanModules.addListener(listener);
+	}
+	
+	/**
+	 * Remove FXCollection listener to no longer detect changes of scan modules
+	 * 
+	 * @param listener the list change listener
+	 * @since 1.19
+	 * @author Marcus Michalsky
+	 */
+	public void removeScanModuleChangeListener(
+			ListChangeListener<? super ScanModule> listener) {
+		this.scanModules.removeListener(listener);
 	}
 }

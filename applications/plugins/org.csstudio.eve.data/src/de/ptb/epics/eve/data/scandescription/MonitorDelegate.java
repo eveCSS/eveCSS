@@ -5,14 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ptb.epics.eve.data.measuringstation.Detector;
-import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
-import de.ptb.epics.eve.data.measuringstation.Device;
-import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
-import de.ptb.epics.eve.data.measuringstation.Motor;
-import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
-import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 
@@ -69,16 +62,17 @@ public class MonitorDelegate implements IModelUpdateListener {
 		
 		switch (type) {
 		case AS_IN_DEVICE_DEFINITION:
-			this.monitorDeviceDefinition();
+			this.monitors.addAll(this.delegator.getMeasuringStation()
+					.getMonitorOptions());
 			break;
 		case CUSTOM:
-			this.monitorCustom();
+			this.monitors.clear();
 			break;
 		case NONE:
-			this.monitorClear();
+			this.monitors.clear();
 			break;
 		case USED_IN_SCAN:
-			this.monitorScanDescription();
+			this.monitors.addAll(this.delegator.getMonitorOptions());
 			break;
 		default:
 			break;
@@ -86,114 +80,6 @@ public class MonitorDelegate implements IModelUpdateListener {
 		
 		this.propertyChangeSupport.firePropertyChange(
 				MonitorDelegate.TYPE_PROP, oldType, this.type);
-	}
-	
-	private void monitorClear() {
-		this.monitors.clear();
-	}
-	
-	private void monitorDeviceDefinition() {
-		this.monitorClear();
-		
-		IMeasuringStation measuringStation = this.delegator
-				.getMeasuringStation();
-		for (Detector d : measuringStation.getDetectors()) {
-			for (Option o : d.getOptions()) {
-				if(!o.isMonitor()) {
-					continue;
-				}
-				this.monitors.add(o);
-			}
-			for (DetectorChannel ch : d.getChannels()) {
-				for (Option o : ch.getOptions()) {
-					if(!o.isMonitor()) {
-						continue;
-					}
-					this.monitors.add(o);
-				}
-			}
-		}
-
-		for (Motor m : measuringStation.getMotors()) {
-			for (Option o : m.getOptions()) {
-				if(!o.isMonitor()) {
-					continue;
-				}
-				this.monitors.add(o);
-			}
-			for (MotorAxis ma : m.getAxes()) {
-				for (Option o : ma.getOptions()) {
-					if(!o.isMonitor()) {
-						continue;
-					}
-					this.monitors.add(o);
-				}
-			}
-		}
-
-		for (Device dev : measuringStation.getDevices()) {
-			for (Option o : dev.getOptions()) {
-				if(!o.isMonitor()) {
-					continue;
-				}
-				this.monitors.add(o);
-			}
-		}
-	}
-	
-	private void monitorScanDescription() {
-		this.monitorClear();
-		
-		ExcludeFilter filteredStation = new ExcludeFilter();
-		filteredStation.setSource(this.delegator.getMeasuringStation());
-		filteredStation.excludeUnusedDevices(this.delegator);
-		
-		for (Detector d : filteredStation.getDetectors()) {
-			for (Option o : d.getOptions()) {
-				if(!o.isMonitor()) {
-					continue;
-				}
-				this.monitors.add(o);
-			}
-			for (DetectorChannel ch : d.getChannels()) {
-				for (Option o : ch.getOptions()) {
-					if(!o.isMonitor()) {
-						continue;
-					}
-					this.monitors.add(o);
-				}
-			}
-		}		
-
-		for (Motor m : filteredStation.getMotors()) {
-			for (Option o : m.getOptions()) {
-				if(!o.isMonitor()) {
-					continue;
-				}
-				this.monitors.add(o);
-			}
-			for (MotorAxis ma : m.getAxes()) {
-				for (Option o : ma.getOptions()) {
-					if(!o.isMonitor()) {
-						continue;
-					}
-					this.monitors.add(o);
-				}
-			}
-		}
-
-		for (Device dev : filteredStation.getDevices()) {
-			for (Option o : dev.getOptions()) {
-				if(!o.isMonitor()) {
-					continue;
-				}
-				this.monitors.add(o);
-			}
-		}
-	}
-	
-	private void monitorCustom() {
-		this.monitorClear();
 	}
 	
 	/**
@@ -262,7 +148,8 @@ public class MonitorDelegate implements IModelUpdateListener {
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
 		if (this.type.equals(MonitorOption.USED_IN_SCAN)) {
-			this.monitorScanDescription();
+			this.monitors.clear();
+			this.monitors.addAll(this.delegator.getMonitorOptions());
 			this.propertyChangeSupport.firePropertyChange(
 					ScanDescription.MONITOR_OPTIONS_LIST_PROP, null, monitors);
 		}
