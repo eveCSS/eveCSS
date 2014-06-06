@@ -14,7 +14,7 @@ import de.ptb.epics.eve.data.measuringstation.Option;
  * @since 1.14
  */
 public class ContentProvider implements IStructuredContentProvider {
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -23,7 +23,7 @@ public class ContentProvider implements IStructuredContentProvider {
 	public Object[] getElements(Object inputElement) {
 		List<Option> options = new ArrayList<Option>();
 
-		for (AbstractDevice dev : (List<AbstractDevice>)inputElement ) {
+		for (AbstractDevice dev : (List<AbstractDevice>)inputElement) {
 			for (Option o : dev.getOptions()) {
 				options.add(o);
 			}
@@ -32,10 +32,11 @@ public class ContentProvider implements IStructuredContentProvider {
 		return options.toArray();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	/**
@@ -44,5 +45,4 @@ public class ContentProvider implements IStructuredContentProvider {
 	@Override
 	public void dispose() {	
 	}
-	
 }
