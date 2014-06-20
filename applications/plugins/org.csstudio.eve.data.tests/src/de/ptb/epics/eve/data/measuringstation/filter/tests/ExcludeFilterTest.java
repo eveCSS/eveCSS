@@ -11,11 +11,11 @@ import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
-import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;
+import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.measuringstation.filter.ExcludeFilter;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
@@ -515,12 +515,12 @@ public class ExcludeFilterTest {
 				
 				sd.getChain(1).addPauseEvent(
 						new PauseEvent(EventTypes.MONITOR, e, 
-								e.getMonitor().getID()));
+								e.getId()));
 				
 				filteredMeasuringStation.excludeUnusedDevices(sd);
 				
 				assertNotNull(filteredMeasuringStation.
-						getAbstractDeviceById(e.getID()));
+						getAbstractDeviceById(e.getId()));
 			}
 			
 			// event in redo event manager of chain
@@ -534,12 +534,12 @@ public class ExcludeFilterTest {
 				
 				sd.getChain(1).addRedoEvent(
 						new ControlEvent(EventTypes.MONITOR, e, 
-								e.getMonitor().getID()));
+								e.getId()));
 				
 				filteredMeasuringStation.excludeUnusedDevices(sd);
 				
 				assertNotNull(filteredMeasuringStation.
-						getAbstractDeviceById(e.getID()));
+						getAbstractDeviceById(e.getId()));
 			}
 			
 			// event in break event manager of chain
@@ -553,12 +553,12 @@ public class ExcludeFilterTest {
 				
 				sd.getChain(1).addBreakEvent(
 						new ControlEvent(EventTypes.MONITOR, e, 
-								e.getMonitor().getID()));
+								e.getId()));
 				
 				filteredMeasuringStation.excludeUnusedDevices(sd);
 				
 				assertNotNull(filteredMeasuringStation.
-						getAbstractDeviceById(e.getID()));
+						getAbstractDeviceById(e.getId()));
 			}
 			
 			// event in stop event manager of chain
@@ -572,12 +572,12 @@ public class ExcludeFilterTest {
 				
 				sd.getChain(1).addStopEvent(
 						new ControlEvent(EventTypes.MONITOR, e, 
-								e.getMonitor().getID()));
+								e.getId()));
 				
 				filteredMeasuringStation.excludeUnusedDevices(sd);
 				
 				assertNotNull(filteredMeasuringStation.
-						getAbstractDeviceById(e.getID()));
+						getAbstractDeviceById(e.getId()));
 			}
 			
 			// event in pause event manager of scan module
@@ -591,12 +591,12 @@ public class ExcludeFilterTest {
 				
 				sd.getChain(1).getScanModuleById(1).addPauseEvent(
 						new PauseEvent(EventTypes.MONITOR, e, 
-								e.getMonitor().getID()));
+								e.getId()));
 				
 				filteredMeasuringStation.excludeUnusedDevices(sd);
 				
 				assertNotNull(filteredMeasuringStation.
-						getAbstractDeviceById(e.getID()));
+						getAbstractDeviceById(e.getId()));
 			}
 			
 			// event in redo event manager of scan module
@@ -610,12 +610,12 @@ public class ExcludeFilterTest {
 				
 				sd.getChain(1).getScanModuleById(1).addRedoEvent(
 						new ControlEvent(EventTypes.MONITOR, e, 
-								e.getMonitor().getID()));
+								e.getId()));
 				
 				filteredMeasuringStation.excludeUnusedDevices(sd);
 				
 				assertNotNull(filteredMeasuringStation.
-						getAbstractDeviceById(e.getID()));
+						getAbstractDeviceById(e.getId()));
 			}
 			
 			// event in break event manager of scan module
@@ -629,12 +629,12 @@ public class ExcludeFilterTest {
 				
 				sd.getChain(1).getScanModuleById(1).addBreakEvent(
 						new ControlEvent(EventTypes.MONITOR, e, 
-								e.getMonitor().getID()));
+								e.getId()));
 				
 				filteredMeasuringStation.excludeUnusedDevices(sd);
 				
 				assertNotNull(filteredMeasuringStation.
-						getAbstractDeviceById(e.getID()));
+						getAbstractDeviceById(e.getId()));
 			}
 			
 			// event in trigger event manager of scan module
@@ -648,12 +648,12 @@ public class ExcludeFilterTest {
 				
 				sd.getChain(1).getScanModuleById(1).addTriggerEvent(
 						new ControlEvent(EventTypes.MONITOR, e, 
-								e.getMonitor().getID()));
+								e.getId()));
 				
 				filteredMeasuringStation.excludeUnusedDevices(sd);
 				
 				assertNotNull(filteredMeasuringStation.
-						getAbstractDeviceById(e.getID()));
+						getAbstractDeviceById(e.getId()));
 			}
 			
 			// event in redo event manager of detector
@@ -677,12 +677,12 @@ public class ExcludeFilterTest {
 				
 				chan.getRedoControlEventManager().addControlEvent(
 						new ControlEvent(EventTypes.MONITOR, e, 
-								e.getMonitor().getID()));
+								e.getId()));
 				
 				filteredMeasuringStation.excludeUnusedDevices(sd);
 				
 				assertNotNull(filteredMeasuringStation.
-						getAbstractDeviceById(e.getID()));
+						getAbstractDeviceById(e.getId()));
 			}
 		}
 	}

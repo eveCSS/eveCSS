@@ -6,8 +6,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
-import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.ComparisonTypes;
+import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
 
@@ -51,7 +51,7 @@ public class LabelProvider implements ITableLabelProvider {
 			returnValue = ce.getEvent().getName();
 			break;
 		case 2: // Operator column
-			if (ce.getEvent().getType() == EventTypes.MONITOR) {
+			if (ce.getEvent() instanceof MonitorEvent) {
 				returnValue = ComparisonTypes
 						.typeToString(((ControlEvent) controlEvent).getLimit()
 								.getComparison());
@@ -60,7 +60,7 @@ public class LabelProvider implements ITableLabelProvider {
 			}
 			break;
 		case 3: // Limit column
-			if (ce.getEvent().getType() == EventTypes.MONITOR) {
+			if (ce.getEvent() instanceof MonitorEvent) {
 				returnValue = ((ControlEvent) controlEvent).getLimit()
 						.getValue();
 			} else {

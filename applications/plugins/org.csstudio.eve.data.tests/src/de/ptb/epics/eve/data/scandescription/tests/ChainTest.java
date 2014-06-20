@@ -11,8 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.ptb.epics.eve.data.EventTypes;
-import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.StartEvent;
@@ -102,8 +101,11 @@ public class ChainTest implements PropertyChangeListener {
 	@Before
 	public void setUp() {
 		this.chain = new Chain(1);
-		this.chain.setStartEvent(new StartEvent(new Event(
-				EventTypes.SCHEDULE), chain));
+		Chain zeroChain = new Chain(0);
+		ScanModule zeroModule = new ScanModule(0);
+		zeroChain.add(zeroModule);
+		this.chain.setStartEvent(new StartEvent(new ScheduleEvent(zeroModule)
+				, chain));
 		ScanModule sm = new ScanModule(1);
 		sm.setName("SM1");
 		this.chain.add(sm);

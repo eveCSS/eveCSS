@@ -18,9 +18,8 @@ import org.eclipse.ui.menus.CommandContributionItemParameter;
 
 import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.data.EventTypes;
-import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.editor.Activator;
-
 import static de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContributionHelper.*;
 
 /**
@@ -68,7 +67,7 @@ public class EventMenuContributionMonitor extends CompoundContributionItem {
 		for (Event e : events) {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("de.ptb.epics.eve.editor.command.AddEvent.EventId",
-					e.getID());
+					e.getId());
 			params.put("de.ptb.epics.eve.editor.command.AddEvent.EventType",
 					EventTypes.MONITOR.toString());
 			EventImpacts eventImpact = determineEventImpact();

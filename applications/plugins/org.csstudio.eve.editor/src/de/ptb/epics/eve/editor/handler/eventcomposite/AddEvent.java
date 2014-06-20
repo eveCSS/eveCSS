@@ -9,8 +9,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.data.EventTypes;
-import de.ptb.epics.eve.data.measuringstation.Event;
-import de.ptb.epics.eve.data.measuringstation.Event.ScheduleIncident;
+import de.ptb.epics.eve.data.measuringstation.event.Event;
+import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
@@ -62,7 +62,9 @@ public class AddEvent implements IHandler {
 			int smId = Integer.parseInt(executionEvent.getParameter(
 					"de.ptb.epics.eve.editor.command.AddEvent.scanModuleId"));
 			if (eventType.equals(EventTypes.SCHEDULE)) {
-				event = new Event(chainId, smId, ScheduleIncident.END);
+				//Activator.getDefault().
+		//		event = new ScheduleEvent(scanModule); // TODO
+				//new Event(chainId, smId, ScheduleIncident.END);
 			} else if (eventType.equals(EventTypes.DETECTOR)) {
 				String detectorId = executionEvent.getParameter(
 						"de.ptb.epics.eve.editor.command.AddEvent.detectorId");
@@ -71,8 +73,8 @@ public class AddEvent implements IHandler {
 				String parentName = executionEvent.getParameter(
 						"de.ptb.epics.eve.editor.command.AddEvent.parentName");
 				
-				event = new Event(detectorId, parentName, detectorName,
-						chainId, smId);
+				event = null;//new Event(detectorId, parentName, detectorName,
+						//chainId, smId); // TODO
 			}
 		}
 		

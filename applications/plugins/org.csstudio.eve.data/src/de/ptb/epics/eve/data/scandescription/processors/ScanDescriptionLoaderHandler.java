@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javafx.util.Pair;
+
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
@@ -33,11 +35,14 @@ import de.ptb.epics.eve.data.TypeValue;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
 import de.ptb.epics.eve.data.measuringstation.Device;
-import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
-import de.ptb.epics.eve.data.measuringstation.MonitorEvent;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
+import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
+import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
+import de.ptb.epics.eve.data.measuringstation.event.Event;
+import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
+import de.ptb.epics.eve.data.measuringstation.event.ScheduleTime;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
@@ -58,6 +63,10 @@ import de.ptb.epics.eve.data.scandescription.StartEvent;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.data.scandescription.Storage;
 import de.ptb.epics.eve.data.scandescription.YAxis;
+import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAdaptee;
+import de.ptb.epics.eve.data.scandescription.processors.adaptees.DetectorEventAdapter;
+import de.ptb.epics.eve.data.scandescription.processors.adaptees.ScheduleEventAdaptee;
+import de.ptb.epics.eve.data.scandescription.processors.adaptees.ScheduleEventAdapter;
 
 /**
  * This class represents a load handler for SAX that loads a scan description
@@ -90,7 +99,15 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 	// The currently constructed control event
 	private ControlEvent currentControlEvent;
-
+	
+	private List<Pair<ControlEvent,ScheduleEventAdaptee>> scheduleEventPairs;
+	private List<Pair<ControlEvent,DetectorEventAdaptee>> detectorEventPairs;
+	
+	private ScheduleEventAdapter scheduleEventAdapter;
+	private ScheduleEventAdaptee currentScheduleEventAdaptee;
+	private DetectorEventAdapter detectorEventAdapter;
+	private DetectorEventAdaptee currentDetectorEventAdaptee;
+	
 	// The currently constructed scan module
 	private ScanModule currentScanModule;
 
@@ -178,6 +195,17 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		this.scanModulChainMap = new HashMap<ScanModule, Chain>();
 
 		this.lostDevices = new ArrayList<ScanDescriptionLoaderLostDeviceMessage>();
+		
+		this.scheduleEventAdapter = new ScheduleEventAdapter(
+				this.scanDescription);
+		this.currentScheduleEventAdaptee = null;
+		this.scheduleEventPairs = 
+				new ArrayList<Pair<ControlEvent, ScheduleEventAdaptee>>();
+		this.detectorEventAdapter = new DetectorEventAdapter(
+				this.scanDescription);
+		this.currentDetectorEventAdaptee = null;
+		this.detectorEventPairs = 
+				new ArrayList<Pair<ControlEvent, DetectorEventAdaptee>>();
 	}
 
 	/**
@@ -259,8 +287,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentControlEvent = new ControlEvent(
 						EventTypes.stringToType(atts.getValue("type")));
 				if (atts.getValue("type").equals("schedule")) {
+					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
-				} else { // Detector and Monitor
+				} else { // Detector and Monitor ??
+					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_STARTEVENT;
@@ -268,8 +298,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentControlEvent = new PauseEvent(
 						EventTypes.stringToType(atts.getValue("type")));
 				if (atts.getValue("type").equals("schedule")) {
+					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
 				} else { // Detector and Monitor
+					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_PAUSEEVENT;
@@ -277,8 +309,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentControlEvent = new ControlEvent(
 						EventTypes.stringToType(atts.getValue("type")));
 				if (atts.getValue("type").equals("schedule")) {
+					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
 				} else { // Detector and Monitor
+					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_REDOEVENT;
@@ -286,8 +320,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentControlEvent = new ControlEvent(
 						EventTypes.stringToType(atts.getValue("type")));
 				if (atts.getValue("type").equals("schedule")) {
+					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
 				} else { // Detector and Monitor
+					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_BREAKEVENT;
@@ -295,8 +331,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentControlEvent = new ControlEvent(
 						EventTypes.stringToType(atts.getValue("type")));
 				if (atts.getValue("type").equals("schedule")) {
+					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
 				} else { // Detector and Monitor
+					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_STOPEVENT;
@@ -347,8 +385,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentControlEvent = new ControlEvent(
 						EventTypes.stringToType(atts.getValue("type")));
 				if (atts.getValue("type").equals("schedule")) {
+					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
 				} else { // Detector and Monitor
+					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_TRIGGEREVENT;
@@ -356,8 +396,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentControlEvent = new ControlEvent(
 						EventTypes.stringToType(atts.getValue("type")));
 				if (atts.getValue("type").equals("schedule")) {
+					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
 				} else { // Detector and Monitor
+					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_BREAKEVENT;
@@ -365,8 +407,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentControlEvent = new ControlEvent(
 						EventTypes.stringToType(atts.getValue("type")));
 				if (atts.getValue("type").equals("schedule")) {
+					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
 				} else { // Detector and Monitor
+					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_REDOEVENT;
@@ -374,8 +418,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentControlEvent = new PauseEvent(
 						EventTypes.stringToType(atts.getValue("type")));
 				if (atts.getValue("type").equals("schedule")) {
+					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.PAUSESCHEDULEEVENT_LOADING;
 				} else { // Detector and Monitor
+					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.PAUSEMONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_PAUSEEVENT;
@@ -510,8 +556,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				this.currentControlEvent = new ControlEvent(
 						EventTypes.stringToType(atts.getValue("type")));
 				if (atts.getValue("type").equals("schedule")) {
+					this.currentScheduleEventAdaptee = new ScheduleEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.SCHEDULEEVENT_LOADING;
 				} else { // Detector and Monitor
+					this.currentDetectorEventAdaptee = new DetectorEventAdaptee();
 					this.subState = ScanDescriptionLoaderSubStates.MONITOREVENT_LOADING;
 				}
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_REDOEVENT;
@@ -1047,22 +1095,11 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_NEXT:
 			if (this.currentChannel.getAbstractDevice() != null) {
-				Event readyEvent = new Event(this.currentChannel
-						.getAbstractDevice().getID(),
-						this.currentChannel.getAbstractDevice()
-								.getParent().getName(),
-						this.currentChannel.getAbstractDevice()
-								.getName(), this.currentChain.getId(),
-						this.currentScanModule.getId());
-				this.detectorReadyEventMap.put("D-" + currentChain.getId()
-						+ "-" + currentScanModule.getId() + "-"
-						+ currentChannel.getAbstractDevice().getID(),
-						readyEvent);
-				// TODO
+				this.createEventPair();
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_READ;
 			break;
-
+			
 		case CHAIN_SCANMODULE_DETECTOR_DEFERRED_NEXT:
 			if (this.currentChannel.getAbstractDevice() != null) {
 				if (Boolean.parseBoolean(textBuffer.toString())) {
@@ -1157,6 +1194,14 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		switch (this.subState) {
 
 		case EVENT_ID_NEXT:
+			if (this.currentControlEvent.getEventType().equals(
+					EventTypes.DETECTOR)) {
+				this.currentDetectorEventAdaptee.setId(textBuffer.toString());
+			} else if (this.currentControlEvent.getEventType().equals(
+					EventTypes.MONITOR)) {
+				this.currentControlEvent.setEvent(this.measuringStation.
+						getEventById(textBuffer.toString()));
+			}
 			this.currentControlEvent.setId(textBuffer.toString());
 			this.subState = ScanDescriptionLoaderSubStates.EVENT_ID_READ;
 			break;
@@ -1167,25 +1212,32 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case EVENT_INCIDENT_NEXT:
-			this.currentControlEvent.getEvent().setScheduleIncident(
-					textBuffer.toString());
+			this.currentScheduleEventAdaptee.setScheduleTime(ScheduleTime
+					.stringToEnum(textBuffer.toString()));
 			this.subState = ScanDescriptionLoaderSubStates.EVENT_INCIDENT_READ;
 			break;
 
 		case EVENT_CHAINID_NEXT:
-			this.currentControlEvent.getEvent().setChainId(
+			this.currentScheduleEventAdaptee.setChainId(
 					Integer.parseInt(textBuffer.toString()));
 			this.subState = ScanDescriptionLoaderSubStates.EVENT_CHAINID_READ;
 			break;
 
 		case EVENT_SCANMODULEID_NEXT:
-			this.currentControlEvent.getEvent().setScanModuleId(
+			this.currentScheduleEventAdaptee.setScanModuleId(
 					Integer.parseInt(textBuffer.toString()));
 			this.subState = ScanDescriptionLoaderSubStates.EVENT_SCANMODULEID_READ;
 			break;
 
 		case PAUSEEVENT_ID_NEXT:
 			this.currentControlEvent.setId(textBuffer.toString());
+			if (this.currentControlEvent.getEventType().equals(EventTypes.DETECTOR)) {
+				this.currentDetectorEventAdaptee.setId(textBuffer.toString());
+			} else if (this.currentControlEvent.getEventType().equals(
+					EventTypes.MONITOR)) {
+				this.currentControlEvent.setEvent(this.measuringStation.
+						getEventById(textBuffer.toString()));
+			}
 			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_ID_READ;
 			break;
 
@@ -1196,20 +1248,20 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case PAUSEEVENT_INCIDENT_NEXT:
-			this.currentControlEvent.getEvent().setScheduleIncident(
-					textBuffer.toString());
+			this.currentScheduleEventAdaptee.setScheduleTime(ScheduleTime
+					.stringToEnum(textBuffer.toString()));
 			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_INCIDENT_READ;
 			break;
 
 		case PAUSEEVENT_CHAINID_NEXT:
-			this.currentControlEvent.getEvent().setChainId(
-					Integer.parseInt(textBuffer.toString()));
+			this.currentScheduleEventAdaptee.setChainId(Integer
+					.parseInt(textBuffer.toString()));
 			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_CHAINID_READ;
 			break;
 
 		case PAUSEEVENT_SCANMODULEID_NEXT:
-			this.currentControlEvent.getEvent().setScanModuleId(
-					Integer.parseInt(textBuffer.toString()));
+			this.currentScheduleEventAdaptee.setScanModuleId(Integer
+					.parseInt(textBuffer.toString()));
 			this.subState = ScanDescriptionLoaderSubStates.PAUSEEVENT_SCANMODULEID_READ;
 			break;
 
@@ -1476,78 +1528,46 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		case CHAIN_STARTEVENT:
 			if (qName.equals("startevent")) {
 				this.currentChain.addStartEvent(this.currentControlEvent);
+				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				controlEventList.add(this.currentControlEvent);
 			}
 			break;
 
 		case CHAIN_PAUSEEVENT:
 			if (qName.equals("pauseevent")) {
-				boolean idOK = false;
-
-				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK) {
-					this.currentChain
-							.addPauseEvent((PauseEvent) this.currentControlEvent);
-				}
-
+				this.currentChain.addPauseEvent((PauseEvent) 
+						this.currentControlEvent);
+				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK) {
-					controlEventList.add(this.currentControlEvent);
-				}
 			}
 			break;
 
 		case CHAIN_REDOEVENT:
 			if (qName.equals("redoevent")) {
-				boolean idOK = false;
-
-				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK) {
-					this.currentChain.addRedoEvent(this.currentControlEvent);
-				}
-
+				this.currentChain.addRedoEvent(this.currentControlEvent);
+				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK) {
-					controlEventList.add(this.currentControlEvent);
-				}
 			}
 			break;
 
 		case CHAIN_BREAKEVENT:
 			if (qName.equals("breakevent")) {
-				boolean idOK = false;
-
-				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK) {
-					this.currentChain.addBreakEvent(this.currentControlEvent);
-				}
-
+				this.currentChain.addBreakEvent(this.currentControlEvent);
+				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK) {
-					controlEventList.add(this.currentControlEvent);
-				}
 			}
 			break;
 
 		case CHAIN_STOPEVENT:
 			if (qName.equals("stopevent")) {
-				boolean idOK = false;
-
-				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK) {
-					this.currentChain.addStopEvent(this.currentControlEvent);
-				}
-
+				this.currentChain.addStopEvent(this.currentControlEvent);
+				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK) {
-					controlEventList.add(this.currentControlEvent);
-				}
 			}
 			break;
 
@@ -1647,72 +1667,38 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			
 		case CHAIN_SCANMODULE_TRIGGEREVENT:
 			if (qName.equals("triggerevent")) {
-				boolean idOK = false;
-
-				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK) {
-					this.currentScanModule
-							.addTriggerEvent(this.currentControlEvent);
-				}
-
+				this.currentScanModule.addTriggerEvent(this.currentControlEvent);
+				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK) {
-					controlEventList.add(this.currentControlEvent);
-				}
 			}
 			break;
 
 		case CHAIN_SCANMODULE_REDOEVENT:
 			if (qName.equals("redoevent")) {
-				boolean idOK = false;
-
-				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK) {
-					this.currentScanModule
-							.addRedoEvent(this.currentControlEvent);
-				}
-
+				this.currentScanModule.addRedoEvent(this.currentControlEvent);
+				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK) {
-					controlEventList.add(this.currentControlEvent);
-				}
 			}
 			break;
 
 		case CHAIN_SCANMODULE_BREAKEVENT:
 			if (qName.equals("breakevent")) {
-				boolean idOK = false;
-
-				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK) {
-					this.currentScanModule
-							.addBreakEvent(this.currentControlEvent);
-				}
-
+				this.currentScanModule.addBreakEvent(this.currentControlEvent);
+				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK) {
-					controlEventList.add(this.currentControlEvent);
-				}
 			}
 			break;
 
 		case CHAIN_SCANMODULE_PAUSEEVENT:
 			if (qName.equals("pauseevent")) {
-				boolean idOK = false;
-				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK) {
-					this.currentScanModule
-							.addPauseEvent((PauseEvent) this.currentControlEvent);
-				}
-
+				this.currentScanModule.addPauseEvent((PauseEvent) 
+						this.currentControlEvent);
+				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-				if (idOK) {
-					controlEventList.add(this.currentControlEvent);
-				}
 			}
 			break;
 
@@ -1813,22 +1799,10 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_DETECTOR_REDOEVENT:
 			if (qName.equals("redoevent")) {
-
-				boolean idOK = false;
-
-				idOK = eventIdAvailable(this.currentControlEvent);
-				if (idOK) {
-					this.currentChannel.addRedoEvent(this.currentControlEvent);
-				}
-
+				this.currentChannel.addRedoEvent(this.currentControlEvent);
+				this.createEventPair();
 				this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_LOADING;
 				this.subState = ScanDescriptionLoaderSubStates.NONE;
-
-				if (idOK) {
-					// RedoEvent wird nur hinzugefügt, wenn DetectorChannel auch
-					// vorhanden
-					controlEventList.add(this.currentControlEvent);
-				}
 			}
 			break;
 
@@ -2169,15 +2143,18 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	 */
 	@Override
 	public void endDocument() throws SAXException {
+		this.marshalEvents();
+		
+		
 		// register schedule controlEvents with scanDescription and remove
 		// double events
-		for (ControlEvent controlEvent : this.controlEventList) {
+	/*	for (ControlEvent controlEvent : this.controlEventList) {
 			if (controlEvent.getEventType() == EventTypes.SCHEDULE) {
-				/*this.scanDescription.add(controlEvent.getEvent());*/
-				String eventId = controlEvent.getEvent().getID();
+				//this.scanDescription.add(controlEvent.getEvent());
+				String eventId = controlEvent.getEvent().getId();
 				controlEvent.setId(eventId);
-				/*controlEvent.setEvent(this.scanDescription
-						.getEventById(eventId));*/
+				//controlEvent.setEvent(this.scanDescription
+					//	.getEventById(eventId));
 			} else {
 				logger.debug("**** " + controlEvent.getId());
 				controlEvent.setEvent(this.measuringStation
@@ -2185,15 +2162,15 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				if (controlEvent.getEvent() == null) {
 					controlEvent.setEvent(this.detectorReadyEventMap
 							.get(controlEvent.getId()));
-					/*controlEvent.setEvent(this.scanDescription
-							.getEventById(controlEvent.getId()));*/
+					//controlEvent.setEvent(this.scanDescription
+						//	.getEventById(controlEvent.getId()));
 				}
 				if (controlEvent.getEvent() == null) {
 					logger.fatal("can't find event for id: "
 							+ controlEvent.getId());
 				}
 			}
-		}
+		}*/
 
 		// set the start event or
 		// define a default start event for chains without startevent tag
@@ -2242,12 +2219,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 				break;
 			}
 
-			MonitorEvent monEvent = controlEvent.getEvent().getMonitor();
+			MonitorEvent monEvent = (MonitorEvent)controlEvent.getEvent();
 
-			if (!monEvent.getDataType().isValuePossible(
+			if (!monEvent.getTypeValue().isValuePossible(
 					controlEvent.getLimit().getValue())
 					|| !DataTypes.isComparisonTypePossible(monEvent
-							.getDataType().getType(), controlEvent.getLimit()
+							.getTypeValue().getType(), controlEvent.getLimit()
 							.getComparison())) {
 				Iterator<Chain> chainIterator = this.scanDescription
 						.getChains().iterator();
@@ -2268,7 +2245,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 				if (monEvent == null) {
 				} else if (!DataTypes.isComparisonTypePossible(monEvent
-						.getDataType().getType(), controlEvent.getLimit()
+						.getTypeValue().getType(), controlEvent.getLimit()
 						.getComparison())) {
 				} else {
 					// TODO check location for detector events
@@ -2406,7 +2383,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	 *            The current Event which will be checked.
 	 * @return true or false.
 	 */
-	public boolean eventIdAvailable(ControlEvent currentEvent) {
+	/*public boolean eventIdAvailable(ControlEvent currentEvent) {
 
 		boolean idOK = false;
 		String checkNeu = null;
@@ -2454,5 +2431,55 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 		}
 		return idOK;
+	}*/
+	
+	/*
+	 * During Execution it is not possible to create the event object itself
+	 * (schedule or detector) due to the eventually not loaded event source, 
+	 * i.e. a schedule event in scan module 1 should be triggered by scan 
+	 * module 2 but scan module 2 appears after scan module 1 in the XML file 
+	 * and thus couldn't be referenced at that time because it is not created 
+	 * by now.
+	 */
+	private void createEventPair() {
+		switch (this.currentControlEvent.getEventType()) {
+		case DETECTOR:
+			this.detectorEventPairs
+					.add(new Pair<ControlEvent, DetectorEventAdaptee>(
+							this.currentControlEvent,
+							this.currentDetectorEventAdaptee));
+			this.currentDetectorEventAdaptee = null;
+			break;
+		case MONITOR:
+			break;
+		case SCHEDULE:
+			this.scheduleEventPairs
+					.add(new Pair<ControlEvent, ScheduleEventAdaptee>(
+							this.currentControlEvent,
+							this.currentScheduleEventAdaptee));
+			this.currentScheduleEventAdaptee = null;
+			break;
+		default:
+			break;
+		}
+	}
+	
+	private void marshalEvents() {
+		for (Pair<ControlEvent, ScheduleEventAdaptee> pair : this.scheduleEventPairs) {
+			try {
+				pair.getKey().setEvent(
+						this.scheduleEventAdapter.marshal(pair.getValue()));
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+			}
+		}
+		for (Pair<ControlEvent, DetectorEventAdaptee> pair : this.detectorEventPairs) {
+			try {
+				pair.getKey().setEvent(
+						this.detectorEventAdapter.marshal(pair.getValue()));
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+			}
+		}
 	}
 }

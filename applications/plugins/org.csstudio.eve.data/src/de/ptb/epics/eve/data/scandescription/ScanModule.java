@@ -189,7 +189,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @throws IllegalArgumentException if <code>id</code> is less than 1
 	 */
 	public ScanModule(final int id) {
-		if(id < 1) {
+		if(id < 0) {
 			throw new IllegalArgumentException(
 					"The parameter 'id' must be larger than 0!");
 		}

@@ -9,7 +9,10 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 
-import de.ptb.epics.eve.data.EventTypes;
+import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
+import de.ptb.epics.eve.data.measuringstation.event.Event;
+import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
+import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
 
@@ -44,10 +47,10 @@ public class LimitEditingSupport extends EditingSupport {
 	@Override
 	protected CellEditor getCellEditor(Object element) {
 		ControlEvent ce = (ControlEvent)element;
-		if(ce.getEvent().getMonitor().getDataType().isDiscrete()) {
+		if(((MonitorEvent)ce.getEvent()).getTypeValue().isDiscrete()) {
 			this.discreteValues = new ArrayList<String>();
-			this.discreteValues.addAll(ce.getEvent().getMonitor().getDataType().
-							getDiscreteValues());
+			this.discreteValues.addAll(((MonitorEvent) ce.getEvent())
+					.getTypeValue().getDiscreteValues());
 			return new MyComboBoxCellEditor(this.viewer.getTable(), 
 					this.discreteValues.toArray(new String[0]));
 		}
@@ -69,8 +72,8 @@ public class LimitEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected boolean canEdit(Object element) {
-		EventTypes type = ((ControlEvent)element).getEvent().getType();
-		if (type == EventTypes.SCHEDULE || type == EventTypes.DETECTOR) {
+		Event event = ((ControlEvent)element).getEvent();
+		if (event instanceof ScheduleEvent || event instanceof DetectorEvent) {
 				return false;
 		}
 		return true;
@@ -82,7 +85,7 @@ public class LimitEditingSupport extends EditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 		ControlEvent ce = (ControlEvent)element;
-		if (ce.getEvent().getMonitor().getDataType().isDiscrete()) {
+		if (((MonitorEvent)ce.getEvent()).getTypeValue().isDiscrete()) {
 			return discreteValues.indexOf(ce.getLimit().getValue());
 		} else {
 			return ce.getLimit().getValue();
@@ -95,7 +98,7 @@ public class LimitEditingSupport extends EditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 		ControlEvent ce = (ControlEvent)element;
-		if (ce.getEvent().getMonitor().getDataType().isDiscrete()) {
+		if (((MonitorEvent)ce.getEvent()).getTypeValue().isDiscrete()) {
 			ce.getLimit().setValue(discreteValues.get((Integer)value));
 			if (logger.isDebugEnabled()) {
 				logger.debug("set limit of " + ce.getEvent().getName() + 

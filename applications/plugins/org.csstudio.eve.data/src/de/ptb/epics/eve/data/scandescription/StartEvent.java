@@ -3,7 +3,7 @@ package de.ptb.epics.eve.data.scandescription;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.measuringstation.event.Event;
 
 /**
  * This class represents the start event of a chain.

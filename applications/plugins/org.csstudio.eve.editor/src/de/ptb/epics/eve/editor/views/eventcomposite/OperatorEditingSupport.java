@@ -10,7 +10,10 @@ import org.eclipse.jface.viewers.TableViewer;
 
 import de.ptb.epics.eve.data.ComparisonTypes;
 import de.ptb.epics.eve.data.DataTypes;
-import de.ptb.epics.eve.data.EventTypes;
+import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
+import de.ptb.epics.eve.data.measuringstation.event.Event;
+import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
+import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.util.jface.MyComboBoxCellEditor;
 
@@ -45,8 +48,8 @@ public class OperatorEditingSupport extends EditingSupport {
 	@Override
 	protected CellEditor getCellEditor(Object element) {
 		
-		DataTypes type = ((ControlEvent)element).getEvent().getMonitor().
-				getDataType().getType();
+		DataTypes type = ((MonitorEvent) ((ControlEvent) element).getEvent())
+				.getTypeValue().getType();
 		this.comparisonTypes = new ArrayList<String>();
 		for(String s : ComparisonTypes.
 				typeToString(DataTypes.getPossibleComparisonTypes(type))) {
@@ -61,8 +64,8 @@ public class OperatorEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected boolean canEdit(Object element) {
-		EventTypes type = ((ControlEvent)element).getEvent().getType();
-		if (type == EventTypes.SCHEDULE || type == EventTypes.DETECTOR) {
+		Event event = ((ControlEvent)element).getEvent();
+		if (event instanceof ScheduleEvent || event instanceof DetectorEvent) {
 				return false;
 		}
 		return true;

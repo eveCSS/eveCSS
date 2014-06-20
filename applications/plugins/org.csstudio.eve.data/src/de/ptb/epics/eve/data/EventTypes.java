@@ -4,7 +4,7 @@ package de.ptb.epics.eve.data;
  * The event types used in the Application.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld( -at -) ptb.de>
- * @see de.ptb.epics.eve.data.measuringstation.Event
+ * @see de.ptb.epics.eve.data.measuringstation.event.Event
  */
 public enum EventTypes {
 

@@ -139,7 +139,7 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	 */
 	public Chain(final int id) {
 		super();
-		if(id < 1) {
+		if(id < 0) {
 			throw new IllegalArgumentException(
 					"The parameter 'id' must be at least 1!");
 		}

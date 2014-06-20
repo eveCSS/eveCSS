@@ -19,7 +19,8 @@ import org.eclipse.ui.menus.CommandContributionItemParameter;
 
 import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.data.EventTypes;
-import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
+import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
@@ -69,10 +70,7 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 						channelEvents = new LinkedList<Event>();
 						detectorEventsMap.put(channel, channelEvents);
 					}
-					channelEvents.add(new Event(channel.getAbstractDevice()
-							.getID(), channel.getAbstractDevice().getParent()
-							.getName(), channel.getAbstractDevice().getName(),
-							chain.getId(), sm.getId()));
+					channelEvents.add(new DetectorEvent(channel));
 				}
 			}
 		}
@@ -86,7 +84,7 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 			for (Event event : entry.getValue()) {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("de.ptb.epics.eve.editor.command.AddEvent.EventId",
-						event.getID());
+						event.getId());
 				params.put(
 						"de.ptb.epics.eve.editor.command.AddEvent.EventType",
 						EventTypes.DETECTOR.toString());
@@ -107,10 +105,12 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 						"de.ptb.epics.eve.editor.command.AddEvent.ActivePart",
 						activePart.getViewSite().getId());
 				params.put("de.ptb.epics.eve.editor.command.AddEvent.chainId",
-						String.valueOf(event.getChainId()));
+						String.valueOf(((DetectorEvent) event).getChannel()
+								.getScanModule().getChain().getId()));
 				params.put(
 						"de.ptb.epics.eve.editor.command.AddEvent.scanModuleId",
-						String.valueOf(event.getScanModuleId()));
+						String.valueOf(((DetectorEvent) event).getChannel()
+								.getScanModule().getId()));
 				params.put(
 						"de.ptb.epics.eve.editor.command.AddEvent.detectorId",
 						entry.getKey().getAbstractDevice().getID());
