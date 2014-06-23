@@ -31,6 +31,7 @@ public class MonitorEvent extends Event {
 		super();
 		this.access = ma.getPosition().getAccess();
 		this.typeValue = ma.getPosition().getValue();
+		this.adjustTypeValue();
 		this.id = ma.getID();
 		this.name = ma.getName() + " " + (char) 187 + " " + "Position";
 	}
@@ -44,6 +45,7 @@ public class MonitorEvent extends Event {
 		super();
 		this.access = ch.getRead().getAccess();
 		this.typeValue = ch.getRead().getValue();
+		this.adjustTypeValue();
 		this.id = ch.getID();
 		this.name = ch.getName() + " " + (char) 187 + " Value";
 	}
@@ -57,6 +59,7 @@ public class MonitorEvent extends Event {
 		super();
 		this.access = device.getValue().getAccess();
 		this.typeValue = device.getValue().getValue();
+		this.adjustTypeValue();
 		this.id = device.getID();
 		this.name = device.getName() + " " + (char) 187 + " Value";
 	}
@@ -70,10 +73,17 @@ public class MonitorEvent extends Event {
 		super();
 		this.access = option.getValue().getAccess();
 		this.typeValue = option.getValue().getValue();
+		this.adjustTypeValue();
 		this.id = option.getID();
 		this.name = option.getParent().getName() + 
 					" " + (char) 187 + " "+ 
 					option.getName();
+	}
+	
+	private void adjustTypeValue() {
+		if (this.typeValue == null) {
+			this.typeValue = new TypeValue(this.access.getType());
+		}
 	}
 	
 	/**
