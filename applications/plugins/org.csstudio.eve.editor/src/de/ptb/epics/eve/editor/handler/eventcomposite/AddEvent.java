@@ -5,18 +5,22 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.core.commands.ParameterValueConversionException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.data.EventTypes;
-import de.ptb.epics.eve.data.measuringstation.event.Event;
+import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
 import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
+import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
+import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.gef.ScanDescriptionEditor;
 import de.ptb.epics.eve.editor.views.chainview.ChainView;
 import de.ptb.epics.eve.editor.views.detectorchannelview.DetectorChannelView;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
@@ -53,29 +57,37 @@ public class AddEvent implements IHandler {
 		
 		Event event = null;
 		
-		if(eventType.equals(EventTypes.MONITOR)) {
+		ScanDescription sd = ((ScanDescriptionEditor) Activator.getDefault()
+				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getActiveEditor()).getContent();
+		
+		switch(eventType) {
+		case DETECTOR:
+			DetectorEventValueConverter detectorConv = 
+					new DetectorEventValueConverter(sd);
+			try {
+				event = (DetectorEvent)detectorConv.convertToObject(eventId);
+			} catch (ParameterValueConversionException e) {
+				logger.error(e.getMessage(), e);
+				throw new ExecutionException(e.getMessage(), e);
+			}
+			break;
+		case MONITOR:
 			event = Activator.getDefault().getMeasuringStation().
 					getEventById(eventId);
-		} else {
-			int chainId = Integer.parseInt(executionEvent.getParameter(
-					"de.ptb.epics.eve.editor.command.AddEvent.chainId"));
-			int smId = Integer.parseInt(executionEvent.getParameter(
-					"de.ptb.epics.eve.editor.command.AddEvent.scanModuleId"));
-			if (eventType.equals(EventTypes.SCHEDULE)) {
-				//Activator.getDefault().
-		//		event = new ScheduleEvent(scanModule); // TODO
-				//new Event(chainId, smId, ScheduleIncident.END);
-			} else if (eventType.equals(EventTypes.DETECTOR)) {
-				String detectorId = executionEvent.getParameter(
-						"de.ptb.epics.eve.editor.command.AddEvent.detectorId");
-				String detectorName = executionEvent.getParameter(
-						"de.ptb.epics.eve.editor.command.AddEvent.detectorName");
-				String parentName = executionEvent.getParameter(
-						"de.ptb.epics.eve.editor.command.AddEvent.parentName");
-				
-				event = null;//new Event(detectorId, parentName, detectorName,
-						//chainId, smId); // TODO
+			break;
+		case SCHEDULE:
+			ScheduleEventValueConverter scheduleConv = 
+					new ScheduleEventValueConverter(sd);
+			try {
+				event = (ScheduleEvent)scheduleConv.convertToObject(eventId);
+			} catch (ParameterValueConversionException e) {
+				logger.error(e.getMessage(), e);
+				throw new ExecutionException(e.getMessage(), e);
 			}
+			break;
+		default:
+			break;
 		}
 		
 		if (event == null) {

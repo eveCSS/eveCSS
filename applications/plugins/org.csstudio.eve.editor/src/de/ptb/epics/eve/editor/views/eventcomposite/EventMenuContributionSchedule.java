@@ -65,8 +65,6 @@ public class EventMenuContributionSchedule extends CompoundContributionItem {
 			}
 			params.put("de.ptb.epics.eve.editor.command.AddEvent.ActivePart",
 					activePart.getViewSite().getId());
-			params.put("de.ptb.epics.eve.editor.command.AddEvent.chainId", "0");
-			params.put("de.ptb.epics.eve.editor.command.AddEvent.scanModuleId", "0");
 			CommandContributionItemParameter p = new CommandContributionItemParameter(
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow(), "",
 					"de.ptb.epics.eve.editor.command.addevent", SWT.PUSH);
@@ -103,11 +101,6 @@ public class EventMenuContributionSchedule extends CompoundContributionItem {
 				params.put(
 						"de.ptb.epics.eve.editor.command.AddEvent.ActivePart",
 						activePart.getViewSite().getId());
-				params.put("de.ptb.epics.eve.editor.command.AddEvent.chainId",
-						String.valueOf(chain.getId()));
-				params.put(
-						"de.ptb.epics.eve.editor.command.AddEvent.scanModuleId",
-						String.valueOf(sm.getId()));
 				CommandContributionItemParameter p = new CommandContributionItemParameter(
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
 						"", "de.ptb.epics.eve.editor.command.addevent",

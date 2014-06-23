@@ -69,6 +69,9 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 		this.setEvent(event);
 		this.setId(id);
 
+		if (event instanceof MonitorEvent) {
+			this.limit.setType(((MonitorEvent)event).getTypeValue().getType());
+		}
 		/*
 		switch (this.eventType) {
 		case MONITOR:

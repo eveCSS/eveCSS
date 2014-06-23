@@ -29,7 +29,6 @@ import static de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContribution
  * @since 1.1
  */
 public class EventMenuContributionMonitor extends CompoundContributionItem {
-
 	private static Logger logger = Logger
 			.getLogger(EventMenuContributionMonitor.class.getName());
 

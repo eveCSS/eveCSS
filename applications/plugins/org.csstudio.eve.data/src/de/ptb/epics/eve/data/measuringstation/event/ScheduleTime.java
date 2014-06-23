@@ -12,7 +12,7 @@ public enum ScheduleTime {
 	START {
 		@Override 
 		public String toString() {
-			return "Start";
+			return "S";
 		}
 	},
 	
@@ -22,7 +22,7 @@ public enum ScheduleTime {
 	END {
 		@Override 
 		public String toString() {
-			return "End";
+			return "E";
 		}
 	};
 	

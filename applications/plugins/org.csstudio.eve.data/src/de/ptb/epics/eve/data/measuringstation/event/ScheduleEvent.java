@@ -54,6 +54,7 @@ public class ScheduleEvent extends ScanEvent {
 	 */
 	public void setScheduleTime(ScheduleTime scheduleTime) {
 		this.scheduleTime = scheduleTime;
+		//TODO change id...
 	}
 
 	/**

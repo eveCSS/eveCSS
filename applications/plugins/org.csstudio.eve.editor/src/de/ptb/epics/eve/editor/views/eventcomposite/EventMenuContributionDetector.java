@@ -37,7 +37,6 @@ import static de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContribution
  * @since 1.1
  */
 public class EventMenuContributionDetector extends CompoundContributionItem {
-
 	private static Logger logger = Logger
 			.getLogger(EventMenuContributionDetector.class.getName());
 
@@ -47,9 +46,6 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 	@Override
 	protected IContributionItem[] getContributionItems() {
 		ArrayList<IContributionItem> result = new ArrayList<IContributionItem>();
-		ScanDescription sd = ((ScanDescriptionEditor) Activator.getDefault()
-				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.getActiveEditor()).getContent();
 		
 		// create a (sorted) map, where each entry contains:
 		// - the channel as key (comparable)
@@ -57,7 +53,9 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 		// only modules of type classic will be considered
 		Map<Channel, List<Event>> detectorEventsMap = 
 				new TreeMap<Channel, List<Event>>();
-		
+		ScanDescription sd = ((ScanDescriptionEditor) Activator.getDefault()
+				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getActiveEditor()).getContent();
 		for (Chain chain : sd.getChains()) {
 			for (ScanModule sm : chain.getScanModules()) {
 				if (sm.getType() != ScanModuleTypes.CLASSIC) {
@@ -104,22 +102,6 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 				params.put(
 						"de.ptb.epics.eve.editor.command.AddEvent.ActivePart",
 						activePart.getViewSite().getId());
-				params.put("de.ptb.epics.eve.editor.command.AddEvent.chainId",
-						String.valueOf(((DetectorEvent) event).getChannel()
-								.getScanModule().getChain().getId()));
-				params.put(
-						"de.ptb.epics.eve.editor.command.AddEvent.scanModuleId",
-						String.valueOf(((DetectorEvent) event).getChannel()
-								.getScanModule().getId()));
-				params.put(
-						"de.ptb.epics.eve.editor.command.AddEvent.detectorId",
-						entry.getKey().getAbstractDevice().getID());
-				params.put(
-						"de.ptb.epics.eve.editor.command.AddEvent.detectorName",
-						entry.getKey().getAbstractDevice().getName());
-				params.put(
-						"de.ptb.epics.eve.editor.command.AddEvent.parentName",
-						entry.getKey().getAbstractDevice().getParent().getName());
 				CommandContributionItemParameter p = new CommandContributionItemParameter(
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
 						"", "de.ptb.epics.eve.editor.command.addevent",

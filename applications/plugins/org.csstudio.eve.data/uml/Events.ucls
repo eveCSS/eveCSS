@@ -156,7 +156,7 @@
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/measuringstation/event/ScheduleEvent.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="709" y="815"/>    
+    <position height="-1" width="-1" x="500" y="814"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -178,7 +178,7 @@
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/measuringstation/event/ScheduleTime.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="458" y="851"/>    
+    <position height="-1" width="-1" x="193" y="849"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -189,7 +189,7 @@
     project="de.ptb.epics.eve.data" 
     file="/de.ptb.epics.eve.data/src/de/ptb/epics/eve/data/measuringstation/event/DetectorEvent.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="893" y="540"/>    
+    <position height="-1" width="-1" x="760" y="833"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      

@@ -46,4 +46,20 @@ public class DetectorEvent extends ScanEvent {
 	public String getName() {
 		return this.name;
 	}
+	
+	/**
+	 * Returns the chain id the channel belongs to
+	 * @return the chain id the channel belongs to
+	 */
+	public int getChainId() {
+		return this.channel.getScanModule().getChain().getId();
+	}
+	
+	/**
+	 * Returns the scan module id the channel belongs to
+	 * @return the scan module id the channel belongs to
+	 */
+	public int getScanModuleId() {
+		return this.channel.getScanModule().getId();
+	}
 }
