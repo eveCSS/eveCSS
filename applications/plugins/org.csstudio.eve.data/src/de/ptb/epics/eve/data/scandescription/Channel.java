@@ -431,6 +431,14 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals(ScanEvent.VALID_PROP) &&
+				e.getNewValue().equals(Boolean.FALSE)) {
+			logger.debug(((ScanEvent)e.getSource()).getName() +
+					" (Det: " + this.getDetectorChannel().getName() + ") " +
+					" got invalid -> start removal");
+			this.removeInvalidScanEvents();
+		}
+		
 		if (this.normalizeChannel == null) {
 			return;
 		}
@@ -445,14 +453,6 @@ public class Channel extends AbstractMainPhaseBehavior implements
 				// normalize channel has been deleted -> remove
 				this.setNormalizeChannel(null);
 			}
-		}
-		
-		if (e.getPropertyName().equals(ScanEvent.VALID_PROP) &&
-				e.getNewValue().equals(Boolean.FALSE)) {
-			logger.debug(((ScanEvent)e.getSource()).getName() +
-					" (Det: " + this.getDetectorChannel().getName() + ") " +
-					" got invalid -> start removal");
-			this.removeInvalidScanEvents();
 		}
 	}
 
@@ -498,15 +498,35 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		}
 	}
 	
+	/**
+	 * Due to the late registration of ScanEvents (due to mutability) during 
+	 * scan description loading the control events don't register themselves 
+	 * via registerEventValidProperty(ControlEvent) because their events aren't
+	 * set at that time. So it must be triggered manually afterwards.
+	 * Usage of this function is therefore only necessary during scan description 
+	 * loading.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 * @see Redmine #1401 Comments #16,#17
+	 */
+	public void registerEventValidProperties() {
+		for (ControlEvent controlEvent : this.getRedoEvents()) {
+			this.registerEventValidProperty(controlEvent);
+		}
+	}
+	
 	private void removeInvalidScanEvents() {
 		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
 				this.getRedoEvents())) {
 			if (controlEvent.getEvent() instanceof ScanEvent &&
 					!((ScanEvent)controlEvent.getEvent()).isValid()) {
-				this.removeRedoEvent((PauseEvent)controlEvent);
+				this.removeRedoEvent(controlEvent);
 				logger.debug("Redo Event " + controlEvent.getEvent().getName()
 						+ " removed from channel "
-						+ this.getDetectorChannel().getName());
+						+ this.getDetectorChannel().getName() + 
+						"(Chain  " + this.getScanModule().getChain().getId() + 
+						", SM " + this.getScanModule().getId() + ")");
 			}
 		}
 	}

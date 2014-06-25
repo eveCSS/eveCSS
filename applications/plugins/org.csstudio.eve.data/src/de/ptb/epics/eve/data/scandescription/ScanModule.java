@@ -1565,6 +1565,33 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		}
 	}
 	
+	/**
+	 * Due to the late registration of ScanEvents (due to mutability) during 
+	 * scan description loading the control events don't register themselves 
+	 * via registerEventValidProperty(ControlEvent) because their events aren't
+	 * set at that time. So it must be triggered manually afterwards.
+	 * Usage of this function is therefore only necessary during scan description 
+	 * loading.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 * @see Redmine #1401 Comments #16,#17
+	 */
+	public void registerEventValidProperties() {
+		for (ControlEvent controlEvent : this.getPauseEvents()) {
+			this.registerEventValidProperty(controlEvent);
+		}
+		for (ControlEvent controlEvent : this.getRedoEvents()) {
+			this.registerEventValidProperty(controlEvent);
+		}
+		for (ControlEvent controlEvent : this.getBreakEvents()) {
+			this.registerEventValidProperty(controlEvent);
+		}
+		for (ControlEvent controlEvent : this.getTriggerEvents()) {
+			this.registerEventValidProperty(controlEvent);
+		}
+	}
+	
 	private void removeInvalidScanEvents() {
 		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
 				this.getPauseEvents())) {
@@ -1573,7 +1600,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 				this.removePauseEvent((PauseEvent)controlEvent);
 				logger.debug("Pause Event " + 
 						controlEvent.getEvent().getName() + 
-						" removed from sm " + this.getName());
+						" removed from sm " + this.getName() + 
+						" (Chain " + this.getChain().getId() + ") ");
 			}
 		}
 		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
@@ -1583,7 +1611,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 				this.removeRedoEvent(controlEvent);
 				logger.debug("Redo Event " + 
 						controlEvent.getEvent().getName() + 
-						" removed from sm " + this.getName());
+						" removed from sm " + this.getName() +
+						" (Chain " + this.getChain().getId() + ") ");
 			}
 		}
 		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
@@ -1593,7 +1622,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 				this.removeBreakEvent(controlEvent);
 				logger.debug("Break Event " + 
 						controlEvent.getEvent().getName() + 
-						" removed from sm " + this.getName());
+						" removed from sm " + this.getName() +
+						" (Chain " + this.getChain().getId() + ") ");
 			}
 		}
 		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
@@ -1603,7 +1633,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 				this.removeTriggerEvent(controlEvent);
 				logger.debug("Trigger Event " + 
 						controlEvent.getEvent().getName() + 
-						" removed from sm " + this.getName());
+						" removed from sm " + this.getName() +
+						" (Chain " + this.getChain().getId() + ") ");
 			}
 		}
 	}

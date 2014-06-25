@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javafx.util.Pair;
 
@@ -34,12 +33,9 @@ import de.ptb.epics.eve.data.PluginTypes;
 import de.ptb.epics.eve.data.TypeValue;
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.AbstractPrePostscanDevice;
-import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
-import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
-import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
 import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
 import de.ptb.epics.eve.data.measuringstation.event.ScheduleTime;
@@ -143,7 +139,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 	// The list of all control events
 	private List<ControlEvent> controlEventList;
-	private Map<String, Event> detectorReadyEventMap;
 
 	// A map from scan module id to scan module
 	private Map<Integer, ScanModule> idToScanModulMap;
@@ -188,7 +183,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		this.subState = ScanDescriptionLoaderSubStates.NONE;
 		this.chainList = new ArrayList<Chain>();
 		this.controlEventList = new ArrayList<ControlEvent>();
-		this.detectorReadyEventMap = new TreeMap<String, Event>();
 		this.relationReminders = new ArrayList<ScanModulRelationReminder>();
 
 		this.idToScanModulMap = new HashMap<Integer, ScanModule>();
@@ -2144,33 +2138,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	@Override
 	public void endDocument() throws SAXException {
 		this.marshalEvents();
-		
-		
-		// register schedule controlEvents with scanDescription and remove
-		// double events
-	/*	for (ControlEvent controlEvent : this.controlEventList) {
-			if (controlEvent.getEventType() == EventTypes.SCHEDULE) {
-				//this.scanDescription.add(controlEvent.getEvent());
-				String eventId = controlEvent.getEvent().getId();
-				controlEvent.setId(eventId);
-				//controlEvent.setEvent(this.scanDescription
-					//	.getEventById(eventId));
-			} else {
-				logger.debug("**** " + controlEvent.getId());
-				controlEvent.setEvent(this.measuringStation
-						.getEventById(controlEvent.getId()));
-				if (controlEvent.getEvent() == null) {
-					controlEvent.setEvent(this.detectorReadyEventMap
-							.get(controlEvent.getId()));
-					//controlEvent.setEvent(this.scanDescription
-						//	.getEventById(controlEvent.getId()));
-				}
-				if (controlEvent.getEvent() == null) {
-					logger.fatal("can't find event for id: "
-							+ controlEvent.getId());
-				}
-			}
-		}*/
 
 		// set the start event or
 		// define a default start event for chains without startevent tag
@@ -2206,6 +2173,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 		}
 
+		/*
 		// TODO Tidy up
 		// TODO events for the dectector list is not handled
 		for (ControlEvent controlEvent : this.controlEventList) {
@@ -2251,7 +2219,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					// TODO check location for detector events
 				}
 			}
-		}
+		}*/
 
 		// --- Looking for chains with the same id
 		Chain[] chains = this.scanDescription.getChains().toArray(new Chain[0]);
@@ -2375,63 +2343,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			return null;
 		}
 	}
-
-	/**
-	 * This method returns true if the eventId is available or false if not.
-	 * 
-	 * @param ControlEvent
-	 *            The current Event which will be checked.
-	 * @return true or false.
-	 */
-	/*public boolean eventIdAvailable(ControlEvent currentEvent) {
-
-		boolean idOK = false;
-		String checkNeu = null;
-		int indexNeu;
-		String checkString = null;
-
-		switch (this.currentControlEvent.getEventType()) {
-		case SCHEDULE:
-			idOK = true;
-			break;
-		case DETECTOR:
-			checkNeu = this.currentControlEvent.getId().replace("D-", "");
-			indexNeu = checkNeu.indexOf('-', 1);
-			indexNeu = checkNeu.indexOf('-', indexNeu + 1);
-			checkString = checkNeu.substring(indexNeu + 1);
-			if (this.measuringStation.getDetectorChannelById(checkString) != null) {
-				// DetektorChannel ist vorhanden, Event hinzufügen
-				idOK = true;
-			}
-			break;
-		case MONITOR:
-			checkNeu = this.currentControlEvent.getId();
-			indexNeu = checkNeu.indexOf('.', 1);
-			if (indexNeu > 0) {
-				checkString = checkNeu.substring(0, indexNeu);
-			} else {
-				checkString = checkNeu;
-			}
-
-			if (this.measuringStation.getMotorAxisById(checkString) != null) {
-				// MotorAxis ist vorhanden, Event hinzufügen
-				idOK = true;
-			} else if (this.measuringStation
-					.getDetectorChannelById(checkString) != null) {
-				// DetektorChannel ist vorhanden, Event hinzufügen
-				idOK = true;
-			} else {
-				for (Device device : this.measuringStation.getDevices()) {
-					if (device.getID().equals(checkString)) {
-						// Device ist vorhanden, Event hinzufügen
-						idOK = true;
-					}
-				}
-			}
-			break;
-		}
-		return idOK;
-	}*/
 	
 	/*
 	 * During Execution it is not possible to create the event object itself
@@ -2479,6 +2390,17 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 						this.detectorEventAdapter.marshal(pair.getValue()));
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
+			}
+		}
+		
+		// register events (see Redmine #1407 Comments #16,#17)
+		for (Chain chain : this.scanDescription.getChains()) {
+			chain.registerEventValidProperties();
+			for (ScanModule sm : chain.getScanModules()) {
+				sm.registerEventValidProperties();
+				for (Channel channel : sm.getChannels()) {
+					channel.registerEventValidProperties();
+				}
 			}
 		}
 	}

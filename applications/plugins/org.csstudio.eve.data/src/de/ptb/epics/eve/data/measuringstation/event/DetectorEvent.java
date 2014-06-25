@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.data.measuringstation.event;
 
+import org.apache.log4j.Logger;
+
 import javafx.collections.ListChangeListener;
 import de.ptb.epics.eve.data.scandescription.Channel;
 
@@ -10,7 +12,10 @@ import de.ptb.epics.eve.data.scandescription.Channel;
  * @since 1.19
  */
 public class DetectorEvent extends ScanEvent implements 
-	ListChangeListener<Channel> {
+		ListChangeListener<Channel> {
+	private static final Logger LOGGER = Logger.getLogger(DetectorEvent.class
+			.getName());
+	
 	private Channel channel;
 	private final String id;
 	private final String name;
@@ -24,6 +29,8 @@ public class DetectorEvent extends ScanEvent implements
 		this.name = this.channel.getAbstractDevice().getParent().getName() + 
 				" " + (char)187 + " " + 
 				this.channel.getAbstractDevice().getName();
+		this.channel.getScanModule().addChannelChangeListener(this);
+		//this.channel.getScanModule().getChain().addScanModuleChangeListener(this);
 	}
 
 	/**
@@ -71,7 +78,20 @@ public class DetectorEvent extends ScanEvent implements
 	@Override
 	public void onChanged(
 			ListChangeListener.Change<? extends Channel> change) {
-		// TODO Auto-generated method stub
-		// TODO chain and sm ?
+		while (change.next()) {
+			if (change.wasRemoved()) {
+				for (Channel ch : change.getRemoved()) {
+					if (ch == this.getChannel()) {
+						LOGGER.debug(ch.getDetectorChannel().getName() + 
+								" was deleted -> event is invalid");
+						ch.getScanModule().removeChannelChangeListener(this);
+						this.propertyChangeSupport.firePropertyChange(
+								ScanEvent.VALID_PROP, this.valid,
+								this.valid = false);
+					}
+				}
+			}
+		}
+		// TODO notify when the scan module the detector is in is being removed
 	}
 }

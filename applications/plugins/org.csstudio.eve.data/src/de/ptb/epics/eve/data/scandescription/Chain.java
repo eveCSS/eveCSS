@@ -1067,6 +1067,34 @@ public class Chain implements IModelUpdateProvider, IModelUpdateListener, IModel
 	}
 	
 	/**
+	 * Due to the late registration of ScanEvents (due to mutability) during 
+	 * scan description loading the control events don't register themselves 
+	 * via registerEventValidProperty(ControlEvent) because their events aren't
+	 * set at that time. So it must be triggered manually afterwards.
+	 * Usage of this function is therefore only necessary during scan description 
+	 * loading.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 * @see Redmine #1401 Comments #16,#17
+	 */
+	public void registerEventValidProperties() {
+		for (ControlEvent controlEvent : this.getPauseEvents()) {
+			this.registerEventValidProperty(controlEvent);
+		}
+		for (ControlEvent controlEvent : this.getRedoEvents()) {
+			this.registerEventValidProperty(controlEvent);
+		}
+		for (ControlEvent controlEvent : this.getStopEvents()) {
+			this.registerEventValidProperty(controlEvent);
+		}
+		for (ControlEvent controlEvent : this.getBreakEvents()) {
+			this.registerEventValidProperty(controlEvent);
+		}
+	}
+	
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
