@@ -1,5 +1,8 @@
 package de.ptb.epics.eve.data.measuringstation.event;
 
+import org.apache.log4j.Logger;
+
+import javafx.collections.ListChangeListener;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 
 /**
@@ -10,7 +13,10 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
  * @author Marcus Michalsky
  * @since 1.19
  */
-public class ScheduleEvent extends ScanEvent {
+public class ScheduleEvent extends ScanEvent implements 
+		ListChangeListener<ScanModule> {
+	private static final Logger LOGGER = Logger.getLogger(ScheduleEvent.class
+			.getName());
 	private ScanModule scanModule;
 	private ScheduleTime scheduleTime;
 	private final String id;
@@ -27,6 +33,7 @@ public class ScheduleEvent extends ScanEvent {
 				this.scanModule.getId() + "-" + 
 				this.scheduleTime.toString();
 		this.name = "Schedule ( " + this.id + " )";
+		this.scanModule.getChain().addScanModuleChangeListener(this);
 	}
 	
 	/**
@@ -71,5 +78,27 @@ public class ScheduleEvent extends ScanEvent {
 	@Override
 	public String getName() {
 		return this.name;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onChanged(
+			ListChangeListener.Change<? extends ScanModule> change) {
+		while (change.next()) {
+			if (change.wasRemoved()) {
+				for (ScanModule sm : change.getRemoved()) {
+					if (sm == this.scanModule) {
+						LOGGER.debug(sm.getName() + 
+								" was deleted -> event is invalid");
+						sm.getChain().removeScanModuleChangeListener(this);
+						this.propertyChangeSupport.firePropertyChange(
+								ScanEvent.VALID_PROP, this.valid,
+								this.valid = false);
+					}
+				}
+			}
+		}
 	}
 }

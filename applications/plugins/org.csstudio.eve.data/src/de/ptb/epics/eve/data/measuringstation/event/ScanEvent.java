@@ -14,8 +14,8 @@ import java.beans.PropertyChangeSupport;
 public abstract class ScanEvent extends Event {
 	public static final String VALID_PROP = "valid";
 	
-	private boolean valid;
-	private PropertyChangeSupport propertyChangeSupport;
+	protected boolean valid;
+	protected PropertyChangeSupport propertyChangeSupport;
 	
 	/**
 	 * Constructor.

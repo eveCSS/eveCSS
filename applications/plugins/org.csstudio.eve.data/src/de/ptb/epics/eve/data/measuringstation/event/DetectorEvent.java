@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.data.measuringstation.event;
 
+import javafx.collections.ListChangeListener;
 import de.ptb.epics.eve.data.scandescription.Channel;
 
 /**
@@ -8,7 +9,8 @@ import de.ptb.epics.eve.data.scandescription.Channel;
  * @author Marcus Michalsky
  * @since 1.19
  */
-public class DetectorEvent extends ScanEvent {
+public class DetectorEvent extends ScanEvent implements 
+	ListChangeListener<Channel> {
 	private Channel channel;
 	private final String id;
 	private final String name;
@@ -61,5 +63,15 @@ public class DetectorEvent extends ScanEvent {
 	 */
 	public int getScanModuleId() {
 		return this.channel.getScanModule().getId();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onChanged(
+			ListChangeListener.Change<? extends Channel> change) {
+		// TODO Auto-generated method stub
+		// TODO chain and sm ?
 	}
 }

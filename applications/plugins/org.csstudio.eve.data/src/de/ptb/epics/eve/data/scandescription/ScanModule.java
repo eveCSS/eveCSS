@@ -19,6 +19,9 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
+import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
+import de.ptb.epics.eve.data.measuringstation.event.ScanEvent;
+import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
@@ -870,6 +873,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public boolean addPauseEvent(final PauseEvent pauseEvent) {
 		if (this.pauseControlEventManager.addControlEvent(pauseEvent)) {
+			this.registerEventValidProperty(pauseEvent);
 			this.propertyChangeSupport.firePropertyChange(
 					ScanModule.PAUSE_EVENT_PROP, null, pauseEvent);
 			return true;
@@ -888,6 +892,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public boolean removePauseEvent(final PauseEvent pauseEvent) {
 		if (this.pauseControlEventManager.removeEvent(pauseEvent)) {
+			this.unregisterEventValidProperty(pauseEvent);
 			this.propertyChangeSupport.firePropertyChange(
 					ScanModule.PAUSE_EVENT_PROP, pauseEvent, null);
 			return true;
@@ -930,6 +935,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public boolean addBreakEvent(final ControlEvent breakEvent) {
 		if (this.breakControlEventManager.addControlEvent(breakEvent)) {
+			this.registerEventValidProperty(breakEvent);
 			this.propertyChangeSupport.firePropertyChange(
 					ScanModule.BREAK_EVENT_PROP, null, breakEvent);
 			return true;
@@ -948,6 +954,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public boolean removeBreakEvent(final ControlEvent breakEvent) {
 		if (this.breakControlEventManager.removeEvent(breakEvent)) {
+			this.unregisterEventValidProperty(breakEvent);
 			this.propertyChangeSupport.firePropertyChange(
 					ScanModule.BREAK_EVENT_PROP, breakEvent, null);
 			return true;
@@ -990,6 +997,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public boolean addRedoEvent(final ControlEvent redoEvent) {
 		if (this.redoControlEventManager.addControlEvent(redoEvent)) {
+			this.registerEventValidProperty(redoEvent);
 			this.propertyChangeSupport.firePropertyChange(
 					ScanModule.REDO_EVENT_PROP, null, redoEvent);
 			return true;
@@ -1008,6 +1016,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public boolean removeRedoEvent(final ControlEvent redoEvent) {
 		if (this.redoControlEventManager.removeEvent(redoEvent)) {
+			this.unregisterEventValidProperty(redoEvent);
 			this.propertyChangeSupport.firePropertyChange(
 					ScanModule.REDO_EVENT_PROP, redoEvent, null);
 			return true;
@@ -1050,6 +1059,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public boolean addTriggerEvent(final ControlEvent triggerEvent) {
 		if (this.triggerControlEventManager.addControlEvent(triggerEvent)) {
+			this.registerEventValidProperty(triggerEvent);
 			this.propertyChangeSupport.firePropertyChange(
 					ScanModule.TRIGGER_EVENT_PROP, null, triggerEvent);
 			return true;
@@ -1068,6 +1078,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 */
 	public boolean removeTriggerEvent(final ControlEvent triggerEvent) {
 		if (this.triggerControlEventManager.removeEvent(triggerEvent)) {
+			this.unregisterEventValidProperty(triggerEvent);
 			this.propertyChangeSupport.firePropertyChange(
 					ScanModule.TRIGGER_EVENT_PROP, triggerEvent, null);
 			return true;
@@ -1288,7 +1299,14 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			if (logger.isDebugEnabled()) {
 				logger.debug("Main Axis has been reset");
 			}
-		}	
+		}
+		if (e.getPropertyName().equals(ScanEvent.VALID_PROP) &&
+				e.getNewValue().equals(Boolean.FALSE)) {
+			logger.debug(((ScanEvent)e.getSource()).getName() + 
+					" (SM: " + this.getName() + ") " +
+					" got invalid -> start removal");
+			this.removeInvalidScanEvents();
+		}
 	}
 	
 	/**
@@ -1529,5 +1547,64 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	public void removeChannelChangeListener(ListChangeListener<? super Channel> 
 			listener) {
 		this.channels.removeListener(listener);
+	}
+	
+	private void registerEventValidProperty(ControlEvent controlEvent) {
+		if (controlEvent.getEvent() instanceof ScheduleEvent || 
+				controlEvent.getEvent() instanceof DetectorEvent) {
+			((ScanEvent) controlEvent.getEvent()).addPropertyChangeListener(
+					ScanEvent.VALID_PROP, this);
+		}
+	}
+	
+	private void unregisterEventValidProperty(ControlEvent controlEvent) {
+		if (controlEvent.getEvent() instanceof ScheduleEvent || 
+				controlEvent.getEvent() instanceof DetectorEvent) {
+			((ScanEvent) controlEvent.getEvent()).removePropertyChangeListener(
+					ScanEvent.VALID_PROP, this);
+		}
+	}
+	
+	private void removeInvalidScanEvents() {
+		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
+				this.getPauseEvents())) {
+			if (controlEvent.getEvent() instanceof ScanEvent &&
+					!((ScanEvent)controlEvent.getEvent()).isValid()) {
+				this.removePauseEvent((PauseEvent)controlEvent);
+				logger.debug("Pause Event " + 
+						controlEvent.getEvent().getName() + 
+						" removed from sm " + this.getName());
+			}
+		}
+		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
+				this.getRedoEvents())) {
+			if (controlEvent.getEvent() instanceof ScanEvent &&
+					!((ScanEvent)controlEvent.getEvent()).isValid()) {
+				this.removeRedoEvent(controlEvent);
+				logger.debug("Redo Event " + 
+						controlEvent.getEvent().getName() + 
+						" removed from sm " + this.getName());
+			}
+		}
+		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
+				this.getBreakEvents())) {
+			if (controlEvent.getEvent() instanceof ScanEvent &&
+					!((ScanEvent)controlEvent.getEvent()).isValid()) {
+				this.removeBreakEvent(controlEvent);
+				logger.debug("Break Event " + 
+						controlEvent.getEvent().getName() + 
+						" removed from sm " + this.getName());
+			}
+		}
+		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
+				this.getTriggerEvents())) {
+			if (controlEvent.getEvent() instanceof ScanEvent &&
+					!((ScanEvent)controlEvent.getEvent()).isValid()) {
+				this.removeTriggerEvent(controlEvent);
+				logger.debug("Trigger Event " + 
+						controlEvent.getEvent().getName() + 
+						" removed from sm " + this.getName());
+			}
+		}
 	}
 }

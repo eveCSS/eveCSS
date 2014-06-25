@@ -26,7 +26,6 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider, 
 														IModelErrorProvider {
-
 	// the event
 	private Event event;
 	
@@ -52,9 +51,6 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
 		this.limit = new Limit();
 		this.limit.addModelUpdateListener(this);
-		/*if((type != EventTypes.MONITOR) && (type != EventTypes.DETECTOR)) {
-			event = new Event(type); 
-		}*/
 	}
 	
 	/**
@@ -72,14 +68,6 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 		if (event instanceof MonitorEvent) {
 			this.limit.setType(((MonitorEvent)event).getTypeValue().getType());
 		}
-		/*
-		switch (this.eventType) {
-		case MONITOR:
-			this.limit.setType(event.getMonitor().getDataType().getType());
-			break;
-		default:
-			break;
-		}*/
 	}
 	
 	/**
