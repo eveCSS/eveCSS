@@ -26,7 +26,6 @@ import de.ptb.epics.eve.data.scandescription.processors.ScanDescriptionLoader;
  * @since 1.5
  */
 public class LostDevicesDialog extends TitleAreaDialog {
-
 	private ScanDescriptionLoader scanDescriptionLoader;
 	private TableViewer viewer;
 	
@@ -88,6 +87,16 @@ public class LostDevicesDialog extends TitleAreaDialog {
 		return new Point(this.viewer.getTable().computeSize(
 				SWT.DEFAULT, SWT.DEFAULT).x + 20, 350); 
 		// getButtonBar().getBounds().y + 20);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 1.19
+	 */
+	@Override
+	protected boolean isResizable() {
+		return true;
 	}
 	
 	/*

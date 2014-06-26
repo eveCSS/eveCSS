@@ -34,9 +34,10 @@ public class DetectorEventAdapter extends
 	@Override
 	public DetectorEvent marshal(DetectorEventAdaptee adaptee) throws Exception {
 		// detector event id format: D-<chainid>-<smid>-<detid> 
-		int chainId = Integer.parseInt(adaptee.getId().substring(2, 3));
-		int smId = Integer.parseInt(adaptee.getId().substring(4, 5));
-		String detectorId = adaptee.getId().substring(6);
+		String[] ids = adaptee.getId().split("-", 4);
+		int chainId = Integer.parseInt(ids[1]);
+		int smId = Integer.parseInt(ids[2]);
+		String detectorId = ids[3];
 		for (Chain chain : this.scanDescription.getChains()) {
 			if (chain.getId() != chainId) {
 				continue;

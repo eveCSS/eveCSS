@@ -22,5 +22,17 @@ public enum ScanDescriptionLoaderLostDeviceType {
 	PLUGIN_NOT_FOUND, 
 	
 	/** */
-	PLUGIN_LOCATION_CHANGED
+	PLUGIN_LOCATION_CHANGED, 
+	
+	/** 
+	 *
+	 * @since 1.19
+	 */
+	DETECTOR_OF_DETECTOREVENT_NOT_FOUND,
+	
+	/** 
+	 * 
+	 * @since 1.19
+	 */
+	SCANMODULE_OF_SCHEDULEEVENT_NOT_FOUND
 }

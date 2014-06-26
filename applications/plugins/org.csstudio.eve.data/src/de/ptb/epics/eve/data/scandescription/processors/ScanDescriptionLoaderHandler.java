@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.util.Pair;
 
@@ -37,7 +38,6 @@ import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.measuringstation.PlugIn;
 import de.ptb.epics.eve.data.measuringstation.event.Event;
-import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
 import de.ptb.epics.eve.data.measuringstation.event.ScheduleTime;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
@@ -137,9 +137,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 	// The list of all chains
 	private List<Chain> chainList;
 
-	// The list of all control events
-	private List<ControlEvent> controlEventList;
-
 	// A map from scan module id to scan module
 	private Map<Integer, ScanModule> idToScanModulMap;
 
@@ -182,7 +179,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		this.state = ScanDescriptionLoaderStates.ROOT;
 		this.subState = ScanDescriptionLoaderSubStates.NONE;
 		this.chainList = new ArrayList<Chain>();
-		this.controlEventList = new ArrayList<ControlEvent>();
 		this.relationReminders = new ArrayList<ScanModulRelationReminder>();
 
 		this.idToScanModulMap = new HashMap<Integer, ScanModule>();
@@ -1089,7 +1085,7 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 
 		case CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_NEXT:
 			if (this.currentChannel.getAbstractDevice() != null) {
-				this.createEventPair();
+				// this.createEventPair(); ??
 			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_DETECTOR_DETECTORREADYEVENT_READ;
 			break;
@@ -2173,54 +2169,6 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 		}
 
-		/*
-		// TODO Tidy up
-		// TODO events for the dectector list is not handled
-		for (ControlEvent controlEvent : this.controlEventList) {
-			if (controlEvent.getEventType() == EventTypes.SCHEDULE) {
-				break;
-			}
-			if (controlEvent.getEventType() == EventTypes.DETECTOR) {
-				break;
-			}
-			if (controlEvent.getEvent() == null) {
-				break;
-			}
-
-			MonitorEvent monEvent = (MonitorEvent)controlEvent.getEvent();
-
-			if (!monEvent.getTypeValue().isValuePossible(
-					controlEvent.getLimit().getValue())
-					|| !DataTypes.isComparisonTypePossible(monEvent
-							.getTypeValue().getType(), controlEvent.getLimit()
-							.getComparison())) {
-				Iterator<Chain> chainIterator = this.scanDescription
-						.getChains().iterator();
-				while (chainIterator.hasNext()) {
-					Chain chain = chainIterator.next();
-					if (chain.isAEventOfTheChain(controlEvent)) {
-						break;
-					}
-					Iterator<ScanModule> scanModulIterator = chain
-							.getScanModules().iterator();
-					while (scanModulIterator.hasNext()) {
-						ScanModule scanModul = scanModulIterator.next();
-						if (scanModul.isAEventOfTheScanModul(controlEvent)) {
-							break;
-						}
-					}
-				}
-
-				if (monEvent == null) {
-				} else if (!DataTypes.isComparisonTypePossible(monEvent
-						.getTypeValue().getType(), controlEvent.getLimit()
-						.getComparison())) {
-				} else {
-					// TODO check location for detector events
-				}
-			}
-		}*/
-
 		// --- Looking for chains with the same id
 		Chain[] chains = this.scanDescription.getChains().toArray(new Chain[0]);
 		for (int i = 0; i < chains.length; ++i) {
@@ -2375,6 +2323,12 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 		}
 	}
 	
+	/*
+	 * 
+	 * 
+	 * @since 1.19
+	 * @see Redmine #1401
+	 */
 	private void marshalEvents() {
 		for (Pair<ControlEvent, ScheduleEventAdaptee> pair : this.scheduleEventPairs) {
 			try {
@@ -2393,7 +2347,9 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			}
 		}
 		
-		// register events (see Redmine #1407 Comments #16,#17)
+		this.removeInvalidEvents();
+		
+		// register events (see Redmine #1401 Comments #16,#17)
 		for (Chain chain : this.scanDescription.getChains()) {
 			chain.registerEventValidProperties();
 			for (ScanModule sm : chain.getScanModules()) {
@@ -2402,6 +2358,141 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 					channel.registerEventValidProperties();
 				}
 			}
+		}
+	}
+	
+	/*
+	 * Due to the sequence of event loading a control event is created and 
+	 * added to the scan (Chain, SM or Channel) before it is connected with 
+	 * a schedule or detector event. 
+	 * When the schedule and detector events are marshaled it could occur that 
+	 * the corresponding detector or scan module is missing. Then no event is 
+	 * created and the control event remains "empty". In this case it has to 
+	 * be removed.
+	 * 
+	 * @since 1.19
+	 * @see Redmine #1401
+	 */
+	private void removeInvalidEvents() {
+		for (Chain chain : this.scanDescription.getChains()) {
+			for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
+					chain.getPauseEvents())) {
+				if (controlEvent.getEvent() == null) {
+					this.addLostDeviceEventEntry(controlEvent,
+							"Removing Pause Event of Chain " + chain.getId());
+					chain.removePauseEvent((PauseEvent) controlEvent);
+				}
+			}
+			for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
+					chain.getRedoEvents())) {
+				if (controlEvent.getEvent() == null) {
+					this.addLostDeviceEventEntry(controlEvent,
+							"Removing Redo Event of Chain " + chain.getId());
+					chain.removeRedoEvent(controlEvent);
+				}
+			}
+			for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
+					chain.getBreakEvents())) {
+				if (controlEvent.getEvent() == null) {
+					this.addLostDeviceEventEntry(controlEvent,
+							"Removing Break Event of Chain " + chain.getId());
+					chain.removeBreakEvent(controlEvent);
+				}
+			}
+			for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
+					chain.getStopEvents())) {
+				if (controlEvent.getEvent() == null) {
+					this.addLostDeviceEventEntry(controlEvent,
+							"Removing Stop Event of Chain " + chain.getId());
+					chain.removeStopEvent(controlEvent);
+				}
+			}
+			for (ScanModule sm : chain.getScanModules()) {
+				for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
+						sm.getPauseEvents())) {
+					if (controlEvent.getEvent() == null) {
+						this.addLostDeviceEventEntry(
+								controlEvent,
+								"Removing Pause Event of Scanmodule "
+										+ sm.getName() + " of Chain "
+										+ chain.getId());
+						sm.removePauseEvent((PauseEvent) controlEvent);
+					}
+				}
+				for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
+						sm.getRedoEvents())) {
+					if (controlEvent.getEvent() == null) {
+						this.addLostDeviceEventEntry(
+								controlEvent,
+								"Removing Redo Event of Scanmodule "
+										+ sm.getName() + " of Chain "
+										+ chain.getId());
+						sm.removeRedoEvent(controlEvent);
+					}
+				}
+				for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
+						sm.getBreakEvents())) {
+					if (controlEvent.getEvent() == null) {
+						this.addLostDeviceEventEntry(
+								controlEvent,
+								"Removing Break Event of Scanmodule "
+										+ sm.getName() + " of Chain "
+										+ chain.getId());
+						sm.removeBreakEvent(controlEvent);
+					}
+				}
+				for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
+						sm.getTriggerEvents())) {
+					if (controlEvent.getEvent() == null) {
+						this.addLostDeviceEventEntry(
+								controlEvent,
+								"Removing Trigger Event of Scanmodule "
+										+ sm.getName() + " of Chain "
+										+ chain.getId());
+						sm.removeTriggerEvent(controlEvent);
+					}
+				}
+				for (Channel channel : sm.getChannels()) {
+					for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
+							channel.getRedoEvents())) {
+						if (controlEvent.getEvent() == null) {
+							this.addLostDeviceEventEntry(
+									controlEvent,
+									"Removing Redo Event of Detector "
+											+ channel.getDetectorChannel()
+													.getName() + " in SM "
+											+ sm.getName() + " of Chain "
+											+ chain.getId());
+							channel.removeRedoEvent(controlEvent);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/*
+	 * 
+	 * @since 1.19
+	 */
+	private void addLostDeviceEventEntry(ControlEvent controlEvent,
+			String message) {
+		switch (controlEvent.getEventType()) {
+		case DETECTOR:
+			this.lostDevices
+					.add(new ScanDescriptionLoaderLostDeviceMessage(
+							ScanDescriptionLoaderLostDeviceType.DETECTOR_OF_DETECTOREVENT_NOT_FOUND,
+							"Channel of Detector Event is missing. " + message));
+			break;
+		case SCHEDULE:
+			this.lostDevices
+					.add(new ScanDescriptionLoaderLostDeviceMessage(
+							ScanDescriptionLoaderLostDeviceType.SCANMODULE_OF_SCHEDULEEVENT_NOT_FOUND,
+							"Scanmodule of Schedule Event is missing. "
+									+ message));
+			break;
+		default:
+			break;
 		}
 	}
 }

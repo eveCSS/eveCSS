@@ -31,6 +31,9 @@ public class ScheduleEventAdapter extends
 	 */
 	@Override
 	public ScheduleEvent marshal(ScheduleEventAdaptee adaptee) throws Exception {
+		if (adaptee.getChainId() == 0 && adaptee.getScanModuleId() == 0) {
+			return null;
+		}
 		ScanModule scanModule = scanDescription.getChain(adaptee.getChainId())
 				.getScanModuleById(adaptee.getScanModuleId());
 		return new ScheduleEvent(scanModule);
