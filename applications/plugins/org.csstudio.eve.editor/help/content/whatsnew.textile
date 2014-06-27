@@ -1,5 +1,19 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.19
+
+* [Feature] Added Cut, Copy and Paste for the Editor
+* [Feature] Removed "Append Schedule Event" and "Send Detector Ready Event" options (now all Scan Modules and all Detectors are available automatically)
+* [Feature] The Scan View now contains a table showing all active monitors
+
+* [Bug Fix] fixed a bug where the plot did not auto scale correctly at the start of a scan
+* [Bug Fix] fixed a bug where the storage option was not set to alternate for non-classic scan modules
+* [Bug Fix] fixed a bug where a detector channel used as detector event was falsely written (and loaded) in XML when used more than once
+* [Bug Fix] fixed a bug where no default values were given for a motor axis after switching step function
+* [Bug Fix] fixed a bug where a motor axis did not adjust for main axis after changing step function
+* [Bug Fix] Monitor Options are now always valid (not only after saving)
+* [Bug Fix] Schedule and Detector Events are now removed if their corresponding trigger (scan module or detector channel) is removed / not present in the scan
+
 h2(eveTopic). Version 1.18
 
 * [Feature] It is now possible to load SCML files from earlier versions (at least v1.17)

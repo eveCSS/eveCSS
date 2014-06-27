@@ -1,10 +1,18 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.19
+
+* [Feature] Scan Module Info Window (Engine View) now shows additional information
+
 h2(eveTopic). Version 1.18
 
 * [Feature] The Device Inspector now supports Drag and Drop (moving devices in a table)
+* [Feature] Changed plot update behavior: updated only at each 5th point if sample size is in [100, 500] or if 15 seconds are elapsed
 
+* [Bug Fix] Removed a memory leak in the plot causing increasing memory consumption after each plot initialization
 * [Bug Fix] fixed a bug where opening a detail dialog of a scan caused an error if certain axis were involved
+* [Bug Fix] The Engine View now is able to show more than ten entries
+* [Bug Fix] fixed a bug where the sec timer axis did not receive values from the engine (Device Inspector)
 
 h2(eveTopic). Version 1.17
 
