@@ -3,6 +3,7 @@ package de.ptb.epics.eve.editor.views.eventcomposite;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ICellEditorValidator;
 
+import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
 
 /**
@@ -34,7 +35,7 @@ public class LimitValidator implements ICellEditorValidator {
 	public String isValid(Object value) {
 		logger.debug(value);
 		String input = (String)value;
-		if(ce.getEvent().getMonitor().getAccess().isValuePossible(input)) {
+		if(((MonitorEvent)ce.getEvent()).getAccess().isValuePossible(input)) {
 			return null;
 		} 
 		return "value not possible";

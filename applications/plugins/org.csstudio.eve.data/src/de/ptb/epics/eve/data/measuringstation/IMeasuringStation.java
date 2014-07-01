@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateProvider;
 
 /**
@@ -35,10 +36,10 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 
 	/**
 	 * Returns a {@link java.util.List} of available 
-	 * 			{@link de.ptb.epics.eve.data.measuringstation.Event}s.
+	 * 			{@link de.ptb.epics.eve.data.measuringstation.event.Event}s.
 	 * 
 	 * @return a {@link java.util.List} of available 
-	 * 			{@link de.ptb.epics.eve.data.measuringstation.Event}s
+	 * 			{@link de.ptb.epics.eve.data.measuringstation.event.Event}s
 	 */
 	List<Event> getEvents();
 
@@ -152,13 +153,13 @@ public interface IMeasuringStation extends IModelUpdateProvider {
 	DetectorChannel getDetectorChannelById(final String id);
 
 	/**
-	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.Event} with 
+	 * Returns the {@link de.ptb.epics.eve.data.measuringstation.event.Event} with 
 	 * the given id.
 	 * 
 	 * @param id the id of the 
-	 * 		{@link de.ptb.epics.eve.data.measuringstation.Event} that should be 
+	 * 		{@link de.ptb.epics.eve.data.measuringstation.event.Event} that should be 
 	 * 		returned
-	 * @return the {@link de.ptb.epics.eve.data.measuringstation.Event} with 
+	 * @return the {@link de.ptb.epics.eve.data.measuringstation.event.Event} with 
 	 * 		   the given id or <code>null</code> if not found
 	 */
 	Event getEventById(final String id);

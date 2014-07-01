@@ -1,6 +1,5 @@
 package de.ptb.epics.eve.editor.dialogs.monitoroptions;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -36,7 +35,6 @@ import org.eclipse.ui.dialogs.SelectionDialog;
 
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
-import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.Option;

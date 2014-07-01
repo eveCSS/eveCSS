@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.ptb.epics.eve.data.EventTypes;
-import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.measuringstation.event.Event;
+import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
 import de.ptb.epics.eve.data.scandescription.errors.ControlEventError;
 import de.ptb.epics.eve.data.scandescription.errors.ControlEventErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -25,7 +26,6 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  */
 public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider, 
 														IModelErrorProvider {
-
 	// the event
 	private Event event;
 	
@@ -51,9 +51,6 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
 		this.limit = new Limit();
 		this.limit.addModelUpdateListener(this);
-		if((type != EventTypes.MONITOR) && (type != EventTypes.DETECTOR)) {
-			event = new Event(type); 
-		}
 	}
 	
 	/**
@@ -68,12 +65,8 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 		this.setEvent(event);
 		this.setId(id);
 
-		switch (this.eventType) {
-		case MONITOR:
-			this.limit.setType(event.getMonitor().getDataType().getType());
-			break;
-		default:
-			break;
+		if (event instanceof MonitorEvent) {
+			this.limit.setType(((MonitorEvent)event).getTypeValue().getType());
 		}
 	}
 	
@@ -88,7 +81,7 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 	public static ControlEvent newInstance(ControlEvent controlEvent) {
 		ControlEvent newControlEvent = new ControlEvent(
 				controlEvent.getEventType(), controlEvent.getEvent(),
-				controlEvent.getEvent().getID());
+				controlEvent.getEvent().getId());
 		newControlEvent.getLimit().setType(controlEvent.getLimit().getType());
 		newControlEvent.getLimit().setComparison(
 				controlEvent.getLimit().getComparison());
@@ -145,15 +138,6 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 	public String getDeviceId () {
 		return eventId;
 	}
-
-	/**
-	 * This method return the id of the device from the control event.
-	 * 
-	 * @return Returns the id of the device.
-	 */
-	public String getId () {
-		return eventId;
-	}
 	
 	/**
 	 * This method sets the id of this control event.
@@ -199,13 +183,13 @@ public class ControlEvent implements IModelUpdateListener, IModelUpdateProvider,
 	public List<IModelError> getModelErrors() {
 		final List<IModelError> errorList = new ArrayList<IModelError>();
 		
-		if(this.event.getType() == EventTypes.MONITOR) {
+		if(this.event instanceof MonitorEvent) {
 			// limit 
 			if (this.limit.getValue() == null || this.limit.getValue().isEmpty()) {
 				errorList.add(new ControlEventError(
 					this, ControlEventErrorTypes.MONITOR_LIMIT_NOT_SET));
-			} else if(this.event.getMonitor().getAccess() != null && 
-					!this.event.getMonitor().getAccess().
+			} else if(((MonitorEvent)this.event).getAccess() != null && 
+					!((MonitorEvent)this.event).getAccess().
 					isValuePossible(this.limit.getValue())) {
 				errorList.add(new ControlEventError(
 					this, ControlEventErrorTypes.VALUE_NOT_POSSIBLE));

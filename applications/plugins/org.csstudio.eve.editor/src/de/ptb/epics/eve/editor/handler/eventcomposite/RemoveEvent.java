@@ -90,7 +90,7 @@ public class RemoveEvent implements IHandler {
 			}
 		}
 		if (logger.isDebugEnabled()) {
-			logger.debug("event " + eventToRemove.getId() + " (" + 
+			logger.debug("event " + eventToRemove.getEvent().getId() + " (" + 
 					eventToRemove.getEventType() + "/" + 
 					eventImpact + ") removed.");
 		}

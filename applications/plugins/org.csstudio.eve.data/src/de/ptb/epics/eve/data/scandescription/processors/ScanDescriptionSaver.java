@@ -29,7 +29,6 @@ import de.ptb.epics.eve.data.TransportTypes;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
-import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.Function;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
@@ -40,11 +39,11 @@ import de.ptb.epics.eve.data.measuringstation.PluginParameter;
 import de.ptb.epics.eve.data.measuringstation.Access;
 import de.ptb.epics.eve.data.measuringstation.Selections;
 import de.ptb.epics.eve.data.measuringstation.Unit;
+import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ControlEvent;
-import de.ptb.epics.eve.data.scandescription.MonitorOption;
 import de.ptb.epics.eve.data.scandescription.PauseEvent;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
 import de.ptb.epics.eve.data.scandescription.PluginController;
@@ -1938,8 +1937,8 @@ public class ScanDescriptionSaver implements
 
 			if (controlEvent.getEventType() == EventTypes.MONITOR) {
 				this.contentHandler.startElement("", "id", "id", this.atts);
-				this.contentHandler.characters(controlEvent.getEvent().getID()
-						.toCharArray(), 0, controlEvent.getEvent().getID()
+				this.contentHandler.characters(controlEvent.getEvent().getId()
+						.toCharArray(), 0, controlEvent.getEvent().getId()
 						.length());
 				this.contentHandler.endElement("", "id", "id");
 
@@ -1969,30 +1968,30 @@ public class ScanDescriptionSaver implements
 			} else if (controlEvent.getEventType() == EventTypes.DETECTOR) {
 				this.atts.clear();
 				this.contentHandler.startElement("", "id", "id", this.atts);
-				this.contentHandler.characters(controlEvent.getEvent().getID()
-						.toCharArray(), 0, controlEvent.getEvent().getID()
+				this.contentHandler.characters(controlEvent.getEvent().getId()
+						.toCharArray(), 0, controlEvent.getEvent().getId()
 						.length());
 				this.contentHandler.endElement("", "id", "id");
-			} else {
+			} else if (controlEvent.getEventType() == EventTypes.SCHEDULE) {
 				this.contentHandler.startElement("", "incident", "incident",
 						this.atts);
-				String incident = "End";
-				if (controlEvent.getEvent().getScheduleIncident() == Event.ScheduleIncident.START) {
-					incident = "Start";
-				}
+				ScheduleEvent scheduleEvent = (ScheduleEvent) controlEvent
+						.getEvent();
+				String incident = scheduleEvent.getScheduleTime().toString();
 				this.contentHandler.characters(incident.toCharArray(), 0,
 						incident.length());
 				this.contentHandler.endElement("", "incident", "incident");
 
 				this.contentHandler.startElement("", "chainid", "chainid",
 						this.atts);
-				String tag = "" + controlEvent.getEvent().getChainId();
+				String tag = Integer.toString(scheduleEvent.getScanModule()
+						.getChain().getId());
 				this.contentHandler.characters(tag.toCharArray(), 0,
 						tag.length());
 				this.contentHandler.endElement("", "chainid", "chainid");
 
 				this.contentHandler.startElement("", "smid", "smid", this.atts);
-				tag = "" + controlEvent.getEvent().getScanModuleId();
+				tag = Integer.toString(scheduleEvent.getScanModule().getId());
 				this.contentHandler.characters(tag.toCharArray(), 0,
 						tag.length());
 				this.contentHandler.endElement("", "smid", "smid");

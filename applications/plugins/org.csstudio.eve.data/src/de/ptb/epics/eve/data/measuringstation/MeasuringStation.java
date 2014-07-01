@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
 
 /**
@@ -175,10 +176,10 @@ public class MeasuringStation extends AbstractMeasuringStation{
 	}
 
 	/**
-	 * Adds an {@link de.ptb.epics.eve.data.measuringstation.Event} to the 
+	 * Adds an {@link de.ptb.epics.eve.data.measuringstation.event.Event} to the 
 	 * measuring station. 
 	 * 
-	 * @param event the {@link de.ptb.epics.eve.data.measuringstation.Event} 
+	 * @param event the {@link de.ptb.epics.eve.data.measuringstation.event.Event} 
 			  that should be added.
 	 * @return <code>true</code> if the event was added, 
 	 * 		   <code>false</code> otherwise
@@ -189,7 +190,7 @@ public class MeasuringStation extends AbstractMeasuringStation{
 			throw new IllegalArgumentException(
 					"The parameter 'event' must not be null!");
 		}
-		this.eventsMap.put(event.getID(), event);
+		this.eventsMap.put(event.getId(), event);
 		return events.add(event);
 	}
 

@@ -14,7 +14,6 @@ import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.DisplayGroup;
-import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.Function;
 import de.ptb.epics.eve.data.measuringstation.MeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
@@ -24,12 +23,13 @@ import de.ptb.epics.eve.data.measuringstation.PluginParameter;
 import de.ptb.epics.eve.data.measuringstation.Access;
 import de.ptb.epics.eve.data.measuringstation.Unit;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
+import de.ptb.epics.eve.data.measuringstation.event.MonitorEvent;
 
 /**
  * This class is a SAX Handler to load a measuring station description.
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (- at -) ptb.de>
- * 
+ * @author Marcus Michalsky
  */
 public class MeasuringStationLoaderHandler extends DefaultHandler {
 
@@ -1220,28 +1220,17 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		for (Motor m : this.measuringStation.getMotors()) {
 			for (MotorAxis ma : m.getAxes()) {
 				if (ma.getPosition().getAccess().getMonitor()) {
-					this.measuringStation.add(new Event(ma.getPosition()
-							.getAccess(), ma.getPosition().getValue(), ma
-							.getName() + " " + (char) 187 + " " + "Position",
-							ma.getID()));
+					this.measuringStation.add(new MonitorEvent(ma));
 				}
 				for (Option o : ma.getOptions()) {
 					if (o.getValue().getAccess().getMonitor()) {
-						this.measuringStation.add(new Event(o.getValue()
-								.getAccess(), o.getValue().getValue(), ma
-								.getName()
-								+ " "
-								+ (char) 187
-								+ " "
-								+ o.getName(), o.getID()));
+						this.measuringStation.add(new MonitorEvent(o));
 					}
 				}
 			}
 			for (Option o : m.getOptions()) {
 				if (o.getValue().getAccess().getMonitor()) {
-					this.measuringStation.add(new Event(o.getValue()
-							.getAccess(), o.getValue().getValue(), m.getName()
-							+ " " + (char) 187 + " " + o.getName(), o.getID()));
+					this.measuringStation.add(new MonitorEvent(o));
 				}
 			}
 		}
@@ -1252,28 +1241,17 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		for (Detector det : this.measuringStation.getDetectors()) {
 			for (DetectorChannel ch : det.getChannels()) {
 				if (ch.getRead().getAccess().getMonitor()) {
-					this.measuringStation.add(new Event(ch.getRead()
-							.getAccess(), ch.getRead().getValue(), ch.getName()
-							+ " " + (char) 187 + " Value", ch.getID()));
+					this.measuringStation.add(new MonitorEvent(ch));
 				}
 				for (Option o : ch.getOptions()) {
 					if (o.getValue().getAccess().getMonitor()) {
-						this.measuringStation.add(new Event(o.getValue()
-								.getAccess(), o.getValue().getValue(), ch
-								.getName()
-								+ " "
-								+ (char) 187
-								+ " "
-								+ o.getName(), o.getID()));
+						this.measuringStation.add(new MonitorEvent(o));
 					}
 				}
 			}
 			for (Option o : det.getOptions()) {
 				if (o.getValue().getAccess().getMonitor()) {
-					this.measuringStation.add(new Event(o.getValue()
-							.getAccess(), o.getValue().getValue(), det
-							.getName() + " " + (char) 187 + " " + o.getName(),
-							o.getID()));
+					this.measuringStation.add(new MonitorEvent(o));
 				}
 			}
 		}
@@ -1282,9 +1260,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 		// value access with monitor equals true
 		for (Device dev : this.measuringStation.getDevices()) {
 			if (dev.getValue().getAccess().getMonitor()) {
-				this.measuringStation.add(new Event(dev.getValue().getAccess(),
-						dev.getValue().getValue(), dev.getName() + " "
-								+ (char) 187 + " Value", dev.getID()));
+				this.measuringStation.add(new MonitorEvent(dev));
 			}
 		}
 	}

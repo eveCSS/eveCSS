@@ -19,7 +19,8 @@ import org.eclipse.ui.menus.CommandContributionItemParameter;
 
 import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.data.EventTypes;
-import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
+import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
@@ -36,7 +37,6 @@ import static de.ptb.epics.eve.editor.views.eventcomposite.EventMenuContribution
  * @since 1.1
  */
 public class EventMenuContributionDetector extends CompoundContributionItem {
-
 	private static Logger logger = Logger
 			.getLogger(EventMenuContributionDetector.class.getName());
 
@@ -46,9 +46,6 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 	@Override
 	protected IContributionItem[] getContributionItems() {
 		ArrayList<IContributionItem> result = new ArrayList<IContributionItem>();
-		ScanDescription sd = ((ScanDescriptionEditor) Activator.getDefault()
-				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.getActiveEditor()).getContent();
 		
 		// create a (sorted) map, where each entry contains:
 		// - the channel as key (comparable)
@@ -56,7 +53,9 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 		// only modules of type classic will be considered
 		Map<Channel, List<Event>> detectorEventsMap = 
 				new TreeMap<Channel, List<Event>>();
-		
+		ScanDescription sd = ((ScanDescriptionEditor) Activator.getDefault()
+				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getActiveEditor()).getContent();
 		for (Chain chain : sd.getChains()) {
 			for (ScanModule sm : chain.getScanModules()) {
 				if (sm.getType() != ScanModuleTypes.CLASSIC) {
@@ -69,10 +68,7 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 						channelEvents = new LinkedList<Event>();
 						detectorEventsMap.put(channel, channelEvents);
 					}
-					channelEvents.add(new Event(channel.getAbstractDevice()
-							.getID(), channel.getAbstractDevice().getParent()
-							.getName(), channel.getAbstractDevice().getName(),
-							chain.getId(), sm.getId()));
+					channelEvents.add(new DetectorEvent(channel));
 				}
 			}
 		}
@@ -86,7 +82,7 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 			for (Event event : entry.getValue()) {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("de.ptb.epics.eve.editor.command.AddEvent.EventId",
-						event.getID());
+						event.getId());
 				params.put(
 						"de.ptb.epics.eve.editor.command.AddEvent.EventType",
 						EventTypes.DETECTOR.toString());
@@ -106,20 +102,6 @@ public class EventMenuContributionDetector extends CompoundContributionItem {
 				params.put(
 						"de.ptb.epics.eve.editor.command.AddEvent.ActivePart",
 						activePart.getViewSite().getId());
-				params.put("de.ptb.epics.eve.editor.command.AddEvent.chainId",
-						String.valueOf(event.getChainId()));
-				params.put(
-						"de.ptb.epics.eve.editor.command.AddEvent.scanModuleId",
-						String.valueOf(event.getScanModuleId()));
-				params.put(
-						"de.ptb.epics.eve.editor.command.AddEvent.detectorId",
-						entry.getKey().getAbstractDevice().getID());
-				params.put(
-						"de.ptb.epics.eve.editor.command.AddEvent.detectorName",
-						entry.getKey().getAbstractDevice().getName());
-				params.put(
-						"de.ptb.epics.eve.editor.command.AddEvent.parentName",
-						entry.getKey().getAbstractDevice().getParent().getName());
 				CommandContributionItemParameter p = new CommandContributionItemParameter(
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
 						"", "de.ptb.epics.eve.editor.command.addevent",

@@ -10,6 +10,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
+import de.ptb.epics.eve.data.measuringstation.event.ScanEvent;
+import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelError;
 import de.ptb.epics.eve.data.scandescription.errors.ChannelErrorTypes;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
@@ -306,6 +309,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 */
 	public boolean addRedoEvent(final ControlEvent redoEvent) {
 		if (this.redoControlEventManager.addControlEvent(redoEvent)) {
+			this.registerEventValidProperty(redoEvent);
 			this.propertyChangeSupport.firePropertyChange(
 					Channel.REDO_EVENT_PROP, null, redoEvent);
 			return true;
@@ -324,6 +328,7 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	 */
 	public boolean removeRedoEvent(final ControlEvent redoEvent) {
 		if (this.redoControlEventManager.removeEvent(redoEvent)) {
+			this.unregisterEventValidProperty(redoEvent);
 			this.propertyChangeSupport.firePropertyChange(
 					Channel.REDO_EVENT_PROP, redoEvent, null);
 			return true;
@@ -426,6 +431,14 @@ public class Channel extends AbstractMainPhaseBehavior implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals(ScanEvent.VALID_PROP) &&
+				e.getNewValue().equals(Boolean.FALSE)) {
+			logger.debug(((ScanEvent)e.getSource()).getName() +
+					" (Det: " + this.getDetectorChannel().getName() + ") " +
+					" got invalid -> start removal");
+			this.removeInvalidScanEvents();
+		}
+		
 		if (this.normalizeChannel == null) {
 			return;
 		}
@@ -467,5 +480,54 @@ public class Channel extends AbstractMainPhaseBehavior implements
 			PropertyChangeListener listener) {
 		this.propertyChangeSupport.removePropertyChangeListener(propertyName,
 				listener);
+	}
+	
+	private void registerEventValidProperty(ControlEvent controlEvent) {
+		if (controlEvent.getEvent() instanceof ScheduleEvent || 
+				controlEvent.getEvent() instanceof DetectorEvent) {
+			((ScanEvent) controlEvent.getEvent()).addPropertyChangeListener(
+					ScanEvent.VALID_PROP, this);
+		}
+	}
+	
+	private void unregisterEventValidProperty(ControlEvent controlEvent) {
+		if (controlEvent.getEvent() instanceof ScheduleEvent || 
+				controlEvent.getEvent() instanceof DetectorEvent) {
+			((ScanEvent) controlEvent.getEvent()).removePropertyChangeListener(
+					ScanEvent.VALID_PROP, this);
+		}
+	}
+	
+	/**
+	 * Due to the late registration of ScanEvents (due to mutability) during 
+	 * scan description loading the control events don't register themselves 
+	 * via registerEventValidProperty(ControlEvent) because their events aren't
+	 * set at that time. So it must be triggered manually afterwards.
+	 * Usage of this function is therefore only necessary during scan description 
+	 * loading.
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 * @see Redmine #1401 Comments #16,#17
+	 */
+	public void registerEventValidProperties() {
+		for (ControlEvent controlEvent : this.getRedoEvents()) {
+			this.registerEventValidProperty(controlEvent);
+		}
+	}
+	
+	private void removeInvalidScanEvents() {
+		for (ControlEvent controlEvent : new CopyOnWriteArrayList<ControlEvent>(
+				this.getRedoEvents())) {
+			if (controlEvent.getEvent() instanceof ScanEvent &&
+					!((ScanEvent)controlEvent.getEvent()).isValid()) {
+				this.removeRedoEvent(controlEvent);
+				logger.debug("Redo Event " + controlEvent.getEvent().getName()
+						+ " removed from channel "
+						+ this.getDetectorChannel().getName() + 
+						"(Chain  " + this.getScanModule().getChain().getId() + 
+						", SM " + this.getScanModule().getId() + ")");
+			}
+		}
 	}
 }

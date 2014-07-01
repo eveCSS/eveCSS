@@ -4,7 +4,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.ptb.epics.eve.data.EventActions;
 import de.ptb.epics.eve.data.EventTypes;
-import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessage;
 import de.ptb.epics.eve.data.scandescription.updatenotification.ControlEventMessageEnum;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
@@ -70,7 +70,7 @@ public class PauseEvent extends ControlEvent {
 	 */
 	public static PauseEvent newInstance(PauseEvent event) {
 		PauseEvent newPauseEvent = new PauseEvent(event.getEventType(),
-				event.getEvent(), event.getId());
+				event.getEvent(), event.getDeviceId()); // TODO ?
 		newPauseEvent.getLimit().setType(event.getLimit().getType());
 		newPauseEvent.getLimit().setComparison(event.getLimit().getComparison());
 		newPauseEvent.getLimit().setValue(event.getLimit().getValue());

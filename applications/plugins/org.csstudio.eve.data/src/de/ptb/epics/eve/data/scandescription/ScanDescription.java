@@ -14,9 +14,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.EventTypes;
-import de.ptb.epics.eve.data.measuringstation.Event;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Option;
+import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
+import de.ptb.epics.eve.data.measuringstation.event.Event;
+import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.updatenotification.IModelUpdateListener;
@@ -84,8 +86,10 @@ public class ScanDescription implements IModelUpdateProvider,
 		this.chains = new ArrayList<Chain>();
 		this.modelUpdateListener = new ArrayList<IModelUpdateListener>();
 		// default start event
-		startEvent = new Event(EventTypes.SCHEDULE);
-		startEvent.setName("Start");
+		Chain chain = new Chain(0);
+		ScanModule sm = new ScanModule(0);
+		chain.add(sm);
+		startEvent = new ScheduleEvent(sm);
 		this.fileName = "";
 		this.measuringStation = measuringStation;
 		this.dirty = false;
@@ -382,11 +386,13 @@ public class ScanDescription implements IModelUpdateProvider,
 			if (e.getEventType() != EventTypes.DETECTOR) {
 				continue;
 			}
-			if (e.getEvent().getDetectorId()
-					.equals(channel.getAbstractDevice().getID())
-					&& e.getEvent().getChainId() == channel.getScanModule()
-							.getChain().getId()
-					&& e.getEvent().getScanModuleId() == channel
+			DetectorEvent detectorEvent = (DetectorEvent)e.getEvent();
+			if (detectorEvent.getId().equals(
+					channel.getAbstractDevice().getID())
+					&& detectorEvent.getChannel().getScanModule().getChain()
+							.getId() == channel.getScanModule().getChain()
+							.getId()
+					&& detectorEvent.getChannel().getScanModule().getId() == channel
 							.getScanModule().getId()) {
 				return true;
 			}

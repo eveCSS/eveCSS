@@ -89,7 +89,7 @@ public class StartEventEditPart extends AbstractGraphicalEditPart implements
 	 */
 	@Override
 	protected IFigure createFigure() {
-		return new StartEventFigure(this.getModel().getEvent().getID(), 
+		return new StartEventFigure(this.getModel().getEvent().getId(), 
 				this.getModel().getX(), this.getModel().getY());
 	}
 

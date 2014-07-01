@@ -15,7 +15,7 @@ import org.eclipse.ui.menus.CommandContributionItemParameter;
 
 import de.ptb.epics.eve.data.EventImpacts;
 import de.ptb.epics.eve.data.EventTypes;
-import de.ptb.epics.eve.data.measuringstation.Event;
+import de.ptb.epics.eve.data.measuringstation.event.Event;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
@@ -48,7 +48,7 @@ public class EventMenuContributionSchedule extends CompoundContributionItem {
 
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("de.ptb.epics.eve.editor.command.AddEvent.EventId",
-					startEvent.getID());
+					startEvent.getId());
 			params.put("de.ptb.epics.eve.editor.command.AddEvent.EventType",
 					EventTypes.SCHEDULE.toString());
 			EventImpacts eventImpact = determineEventImpact();
@@ -65,8 +65,6 @@ public class EventMenuContributionSchedule extends CompoundContributionItem {
 			}
 			params.put("de.ptb.epics.eve.editor.command.AddEvent.ActivePart",
 					activePart.getViewSite().getId());
-			params.put("de.ptb.epics.eve.editor.command.AddEvent.chainId", "0");
-			params.put("de.ptb.epics.eve.editor.command.AddEvent.scanModuleId", "0");
 			CommandContributionItemParameter p = new CommandContributionItemParameter(
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow(), "",
 					"de.ptb.epics.eve.editor.command.addevent", SWT.PUSH);
@@ -103,11 +101,6 @@ public class EventMenuContributionSchedule extends CompoundContributionItem {
 				params.put(
 						"de.ptb.epics.eve.editor.command.AddEvent.ActivePart",
 						activePart.getViewSite().getId());
-				params.put("de.ptb.epics.eve.editor.command.AddEvent.chainId",
-						String.valueOf(chain.getId()));
-				params.put(
-						"de.ptb.epics.eve.editor.command.AddEvent.scanModuleId",
-						String.valueOf(sm.getId()));
 				CommandContributionItemParameter p = new CommandContributionItemParameter(
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
 						"", "de.ptb.epics.eve.editor.command.addevent",
