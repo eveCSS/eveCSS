@@ -3,7 +3,6 @@ h1(eveTopic). Release Notes
 h2(eveTopic). Version 1.19
 
 * [Bug Fix] improved performance by changing PV Formatting behavior
-* [Bug Fix] fixed malicious PV behavior by downgrading back to CSS 3.2.7
 
 h2(eveTopic). Version 1.18
 

@@ -17,6 +17,18 @@
       [Enter License Description here.]
    </license>
 
+   <includes
+         id="org.csstudio.libs.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.csstudio.pvmanager.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.csstudio.pvmanager.ca.feature"
+         version="0.0.0"/>
+
    <plugin
          id="org.csstudio.csdata"
          download-size="0"
@@ -249,6 +261,27 @@
          unpack="false"/>
 
    <plugin
+         id="org.csstudio.autocomplete"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.autocomplete.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.autocomplete.ui.rcp"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.csstudio.csdata.clipboard"
          download-size="0"
          install-size="0"
@@ -271,6 +304,34 @@
 
    <plugin
          id="org.csstudio.utility.singlesource.rcp"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.autocomplete.pvmanager.formula"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.autocomplete.pvmanager.loc"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.autocomplete.pvmanager.sim"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.autocomplete.pvmanager.sys"
          download-size="0"
          install-size="0"
          version="0.0.0"

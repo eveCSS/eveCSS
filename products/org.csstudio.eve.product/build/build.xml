@@ -9,7 +9,7 @@
 	<property name="build.path" location="${env.WORKSPACE}/../builds/${env.BUILD_ID}" />
 	<property name="workspace" location="${env.WORKSPACE}" />
 	<property name="platform" location="/messung/eve/java" />
-	<property name="css" location="${platform}/CSS/3.2.7" />
+	<property name="css" location="${platform}/CSS/3.2.15" />
 
 	<target name="fetching jars" description="">
 		<mkdir dir="${build.path}/base" />
