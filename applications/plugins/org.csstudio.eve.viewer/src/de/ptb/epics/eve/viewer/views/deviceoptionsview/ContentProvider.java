@@ -48,8 +48,6 @@ public class ContentProvider implements IStructuredContentProvider, PropertyChan
 	 */
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-
-		// deregister from old input
 		if(this.device != null) {
 			// clean up previous entries
 			for(OptionPV o : this.options) {
@@ -91,6 +89,10 @@ public class ContentProvider implements IStructuredContentProvider, PropertyChan
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
+		if (!((OptionPV)evt.getSource()).isConnected()) {
+			logger.debug("!! DISCONNECTED !!");
+			return;
+		}
 		logger.debug("Prop change in " + ((OptionPV)evt.getSource()).getName());
 		if(!evt.getPropertyName().equals("value")) {
 			return;

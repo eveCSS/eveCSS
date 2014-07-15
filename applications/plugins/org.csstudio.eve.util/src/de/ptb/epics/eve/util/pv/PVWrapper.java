@@ -51,6 +51,7 @@ public class PVWrapper {
 	
 	// the wrapped process variable
 	private org.epics.pvmanager.PV<Object,Object> pv;
+	private org.epics.pvmanager.PVWriter<Object> trigger;
 	
 	// the trigger pv (if a "goto" pv has to be triggered)
 	// also workaround until write issues with pvmanager are solved
@@ -87,6 +88,8 @@ public class PVWrapper {
 	
 	// listener for process variable updates
 	private PVReaderListener<Object> readListener;
+	
+	private PVWriterListener<Object> triggerListener;
 	
 	// Delegated Observable
 	private PropertyChangeSupport propertyChangeSupport;
@@ -128,6 +131,8 @@ public class PVWrapper {
 		this.readListener = new ReadListener();
 		this.pv.addPVReaderListener(this.readListener);
 		
+		this.trigger = null;
+		this.triggerListener = null;
 	}
 	
 	/**
@@ -147,10 +152,11 @@ public class PVWrapper {
 			LOGGER.debug("trigger is null.");
 			return;
 		}
-		try { // TODO
-			this.triggerPV = PVFactory.createPV("ca://" + triggerName);
-			this.triggerPV.start();
-			LOGGER.debug("set trigger to " + this.triggerPV);
+		try {
+			this.trigger = PVManager.write(channel(triggerName)).sync();
+			this.triggerListener = new WriteListener();
+			this.trigger.addPVWriterListener(this.triggerListener);
+			LOGGER.debug("set trigger to " + triggerName);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}
@@ -160,8 +166,9 @@ public class PVWrapper {
 	 * Disconnects the process variable.
 	 */
 	public void disconnect() {
-		if (this.triggerPV != null) {
-			this.triggerPV.stop();
+		if (this.trigger != null) {
+			this.trigger.removePVWriterListener(triggerListener);
+			this.trigger.close();
 		}
 		this.pv.removePVReaderListener(this.readListener);
 		this.pv.close();
@@ -204,10 +211,10 @@ public class PVWrapper {
 		}
 		try {
 			this.pv.write(newVal);
-			if (this.triggerPV != null) {
+			if (this.trigger != null) {
+				this.trigger.write(2);
 				// TODO: Die trigger PV soll nicht mit 2 oder 1 gesetzt werden
 				// sondern mit dem Wert der im XML-File steht!
-				this.triggerPV.setValue(2);
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
@@ -284,10 +291,6 @@ public class PVWrapper {
 		return this.isConnected;
 	}
 	
-	public boolean isConnected2() {
-		return this.isConnected;
-	}
-	
 	/**
 	 * Register to observe a certain property.
 	 * 
@@ -337,6 +340,11 @@ public class PVWrapper {
 			final PVReader<Object> pvReader = pvReaderEvent.getPvReader();
 			final Object value = pvReader.getValue();
 
+			if (pv.isClosed() && ! pvReaderEvent.isConnectionChanged()) {
+				LOGGER.error("!!! PV is closed !!!");
+				return;
+			}
+			
 			if (pvReaderEvent.isExceptionChanged()) {
 				Exception e = pvReader.lastException();
 				LOGGER.warn(e.getMessage(), e);
@@ -420,6 +428,23 @@ public class PVWrapper {
 					});
 				}
 			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.19
+	 */
+	private class WriteListener implements PVWriterListener<Object> {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void pvChanged(PVWriterEvent<Object> pvWriterEvent) {
+			// TODO Auto-generated method stub
+			LOGGER.debug("trigger written");
 		}
 	}
 }
