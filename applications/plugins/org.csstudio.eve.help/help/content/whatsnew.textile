@@ -3,6 +3,7 @@ h1(eveTopic). Release Notes
 h2(eveTopic). Version 1.19
 
 * [Bug Fix] improved performance by changing PV Formatting behavior
+* [Bug Fix] set "Notification on metadata update (DBE_PROPERTY monitor)" preferences entry to false due to version dependent incompatibility with CA gateway, for more information see ==<a href="http://www.aps.anl.gov/epics/tech-talk/2012/msg02352.php" target="_blank">Using CAJ in production (DBE_PROPERTY and CA gateway)</a>== and ==<a href="https://bugs.launchpad.net/epics-base/+bug/730720" target="_blank">bad resource id msg from portable cas</a>==
 
 h2(eveTopic). Version 1.18
 
