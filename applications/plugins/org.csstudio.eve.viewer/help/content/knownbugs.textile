@@ -17,3 +17,7 @@ p. If the following conditions are met, no file name is given in the engine view
 * a scan is send to the engine via the "Add to playlist and switch to Engine Perspective" button
 
 p. __Workaround:__ Disconnect and Reconnect the engine via the respective buttons.
+
+h3(eveKnownBug). (#1471) PV channel transport closed when using DBE_PROPERTY monitor
+
+p. When DBE_PROPERTY monitoring is set in CSS Core -> Epics preferences and a CA gateway with EPICS base 3.14.12.2 is used, PV access won't work properly. For more information see ==<a href="http://www.aps.anl.gov/epics/tech-talk/2012/msg02352.php" target="_blank">Using CAJ in production (DBE_PROPERTY and CA gateway)</a>== and ==<a href="https://bugs.launchpad.net/epics-base/+bug/730720" target="_blank">bad resource id msg from portable cas</a>==
