@@ -21,7 +21,8 @@ Export-Package: de.ptb.epics.eve.util;uses:="org.eclipse.ui.plugin",
  de.ptb.epics.eve.util.pdf,
  de.ptb.epics.eve.util.pv;uses:="org.epics.pvmanager.data",
  de.ptb.epics.eve.util.rcp;uses:="org.eclipse.ui,org.eclipse.jface.viewers",
- de.ptb.epics.eve.util.swt;uses:="org.eclipse.swt.events,org.eclipse.swt.widgets"
+ de.ptb.epics.eve.util.swt;uses:="org.eclipse.swt.events,org.eclipse.swt.widgets",
+ javafx.util
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.ptb.epics.eve.util.Activator
 Bundle-Vendor: PTB

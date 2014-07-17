@@ -369,7 +369,17 @@
                id="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup.dynamic">
          </dynamic>
          <separator
-               name="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup.separator"
+               name="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup.import.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="de.ptb.epics.eve.editor.command.importcsvaxes"
+               icon="icons/importpref_obj.gif"
+               label="Import CSV..."
+               style="push">
+         </command>
+         <separator
+               name="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.popup.remove.separator"
                visible="true">
          </separator>
          <command
@@ -913,6 +923,12 @@
                name="Motor Axis Id"
                optional="false">
          </commandParameter>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.commands"
+            defaultHandler="de.ptb.epics.eve.editor.handler.motoraxiscomposite.ImportCSVAxes"
+            id="de.ptb.epics.eve.editor.command.importcsvaxes"
+            name="Import Axes from csv">
       </command>
       <command
             categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.commands"
