@@ -22,10 +22,11 @@ public class CSVUtilTest {
 	
 	@Test
 	public void testGetColumns() {
-		assertNotNull(new File("test1.csv"));
+		assertNotNull(new File(CSVUtilTest.class.getResource("test1.csv").getFile()));
 		
 		List<Pair<String, List<String>>> csvdata = 
-				CSVUtil.getColumns(new File("test1.csv"));
+				CSVUtil.getColumns(new File(
+						CSVUtilTest.class.getResource("test1.csv").getFile()));
 		
 		for (Pair<String, List<String>> pair : csvdata) {
 			if (pair.getKey().equals("col1")) {
