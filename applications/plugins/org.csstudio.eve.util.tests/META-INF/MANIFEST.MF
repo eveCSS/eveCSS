@@ -8,3 +8,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: de.ptb.epics.eve.util,
  org.junit
 Import-Package: org.junit
+Bundle-ClassPath: files/,
+ .
