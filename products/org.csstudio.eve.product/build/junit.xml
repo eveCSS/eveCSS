@@ -34,6 +34,8 @@
 				<fileset dir="${env.WORKSPACE}/tests/bin">
 					<include name="**/*.jar" />
 				</fileset>
+				<pathelement
+						path="${env.WORKSPACE}/repo/applications/plugins/org.csstudio.eve.util/lib/jfxrt.jar" />
 			</classpath>
 		</javac>
 	</target>
