@@ -926,7 +926,7 @@
       </command>
       <command
             categoryId="de.ptb.epics.eve.editor.views.scanmoduleview.motoraxiscomposite.commands"
-            defaultHandler="de.ptb.epics.eve.editor.handler.motoraxiscomposite.ImportCSVAxes"
+            defaultHandler="de.ptb.epics.eve.editor.handler.motoraxiscomposite.ImportAxesFromCSV"
             id="de.ptb.epics.eve.editor.command.importcsvaxes"
             name="Import Axes from csv">
       </command>
