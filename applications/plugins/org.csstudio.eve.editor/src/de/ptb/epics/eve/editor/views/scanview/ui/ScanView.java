@@ -33,6 +33,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
@@ -61,7 +63,7 @@ import de.ptb.epics.eve.util.swt.TextSelectAllMouseListener;
  * @author Hartmut Scherr
  */
 public class ScanView extends ViewPart implements IEditorView,
-		ISelectionListener {
+		ISelectionListener, IPartListener, IPropertyListener {
 
 	/** the unique identifier of the view */
 	public static final String ID = "de.ptb.epics.eve.editor.views.ScanView";
@@ -179,6 +181,9 @@ public class ScanView extends ViewPart implements IEditorView,
 		perspectiveListener = new EditorViewPerspectiveListener(this);
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.addPerspectiveListener(perspectiveListener);
+		// listen to editor part changes, e.g. save as (title), bug #1475
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+			.getActivePage().addPartListener(this);
 
 		this.bindValues();
 	}
@@ -347,11 +352,59 @@ public class ScanView extends ViewPart implements IEditorView,
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChanged(Object source, int propId) {
+		if (propId == PROP_TITLE) {
+			this.setPartName("Scan: "
+					+ PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+							.getActivePage().getActiveEditor().getTitle());
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void partActivated(IWorkbenchPart part) {
+		part.addPropertyListener(this);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void partDeactivated(IWorkbenchPart part) {
+		part.removePropertyListener(this);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void partBroughtToTop(IWorkbenchPart part) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void partOpened(IWorkbenchPart part) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void partClosed(IWorkbenchPart part) {
+	}
+
+	/**
 	 * @author Marcus Michalsky
 	 * @since 1.10
 	 */
 	private class TextFocusListener extends FocusAdapter {
-
 		private Text widget;
 
 		/**
