@@ -153,6 +153,7 @@ public class ECP1Client {
 		this.classNames.add(packageName + "PlayListCommand");
 		this.classNames.add(packageName + "RemoveFromPlayListCommand");
 		this.classNames.add(packageName + "ReorderPlayListCommand");
+		this.classNames.add(packageName + "RepeatCountCommand");
 		this.classNames.add(packageName + "StartCommand");
 		this.classNames.add(packageName + "StopCommand");
 

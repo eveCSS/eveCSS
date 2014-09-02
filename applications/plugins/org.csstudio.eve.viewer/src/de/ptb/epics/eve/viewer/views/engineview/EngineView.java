@@ -1,11 +1,29 @@
 package de.ptb.epics.eve.viewer.views.engineview;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.databinding.Binding;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
+import org.eclipse.jface.databinding.swt.ISWTObservableValue;
+import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -49,6 +67,8 @@ import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
  */
 public final class EngineView extends ViewPart implements IUpdateListener, 
 		IConnectionStateListener, IErrorListener, IChainStatusListener {
+	public static final String REPEAT_COUNT_PROP = "repeatCount";
+	
 	public EngineView() {
 	}
 
@@ -78,6 +98,11 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	private Button autoPlayToggleButton;
 	private Label repeatCountLabel;
 	private Text repeatCountText;
+	private Binding repeatCountBinding;
+	private IObservableValue repeatCountModelObservable;
+	private IObservableValue repeatCountGUIObservable;
+	private ISWTObservableValue repeatCountGUIDelayedObservable;
+	private ControlDecorationSupport repeatCountTextControlDecoration;
 
 	private Label loadedScmlLabel;
 	private Text loadedScmlText;
@@ -96,6 +121,11 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	private Shell shellTable[] = new Shell[10];
 
 	private int repeatCount;
+	
+	private PropertyChangeSupport propertyChangeSupport = 
+			new PropertyChangeSupport(this);
+	
+	DataBindingContext context = new DataBindingContext();
 	
 	private Image playIcon;
 	private Image pauseIcon;
@@ -230,9 +260,36 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		gridData.grabExcessHorizontalSpace = true;
 		this.repeatCountLabel.setLayoutData(gridData);
 		this.repeatCountText = new Text(this.scanComposite, SWT.BORDER);
+		this.repeatCountText.setTextLimit(5);
+		gridData = new GridData();
+		gridData.horizontalIndent = 7;
+		gridData.widthHint = 50;
+		this.repeatCountText.setLayoutData(gridData);
 		repeatCount = 0;
-		repeatCountText.setText("000000");
-		this.repeatCountText.setEditable(false);
+		repeatCountText.setText("0");
+		this.repeatCountText.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				repeatCountBinding.updateModelToTarget();
+				repeatCountBinding.validateTargetToModel();
+				repeatCountText.setSelection(0);
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				repeatCountText.selectAll();
+			}
+		});
+		this.repeatCountText.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				if (e.button == 1) {
+					repeatCountText.selectAll();
+				}
+				super.mouseDown(e);
+			}
+		});
 		
 		this.loadedScmlLabel = new Label(this.top, SWT.NONE);
 		this.loadedScmlLabel.setText("loaded File:");
@@ -348,6 +405,52 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		} else {
 			this.setConnectionStatus(ConnectionStatus.DISCONNECTED);
 		}
+		
+		this.propertyChangeSupport.addPropertyChangeListener(
+				EngineView.REPEAT_COUNT_PROP, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+						Activator.getDefault().getEcp1Client()
+								.getPlayListController()
+								.setRepeatCount((Integer) evt.getNewValue());
+			}
+		});
+		this.bindValues();
+	}
+	
+	private void bindValues() {
+		this.repeatCountModelObservable = BeansObservables.observeValue(
+				this, EngineView.REPEAT_COUNT_PROP);
+		this.repeatCountGUIObservable = SWTObservables.observeText(
+				this.repeatCountText, SWT.Modify);
+		UpdateValueStrategy targetToModel = new UpdateValueStrategy(
+				UpdateValueStrategy.POLICY_UPDATE);
+		targetToModel.setAfterGetValidator(new IValidator() {
+			@Override
+			public IStatus validate(Object value) {
+				try {
+					int intValue = Integer.parseInt((String) value);
+					if (intValue < 0 || intValue > 65535) {
+						return ValidationStatus
+								.error("Repeat count must be in [0, 65535]");
+					}
+				} catch (NumberFormatException e) {
+					return ValidationStatus.error("cannot parse integer", e);
+				}
+				return ValidationStatus.ok();
+			}});
+		UpdateValueStrategy modelToTarget = new UpdateValueStrategy(
+				UpdateValueStrategy.POLICY_UPDATE);
+		modelToTarget.setConverter(new RepeatCountModelToTargetConverter());
+		this.repeatCountGUIDelayedObservable = SWTObservables.observeDelayedValue(
+				500, (ISWTObservableValue) this.repeatCountGUIObservable);
+		this.repeatCountBinding = context.bindValue(
+				this.repeatCountGUIDelayedObservable, 
+				this.repeatCountModelObservable, 
+				targetToModel, 
+				modelToTarget);
+		this.repeatCountTextControlDecoration = ControlDecorationSupport.create(
+				this.repeatCountBinding, SWT.LEFT);
 	}
 
 	/**
@@ -447,14 +550,17 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 	 * 
 	 */
 	private void setCurrentRepeatCount(final int repeatCount) {
-		if (this.repeatCount != repeatCount) {
-			this.repeatCount = repeatCount;
-			this.repeatCountText.getDisplay().syncExec(new Runnable() {
+	//	if (this.repeatCount != repeatCount) {
+			//this.repeatCount = repeatCount;
+			this.propertyChangeSupport.firePropertyChange(
+					EngineView.REPEAT_COUNT_PROP, this.repeatCount,
+					this.repeatCount = repeatCount);
+			/*this.repeatCountText.getDisplay().syncExec(new Runnable() {
 				@Override public void run() {
 					repeatCountText.setText(String.valueOf(repeatCount));
 				}
-			});
-		}
+			});*/
+		//}
 	}
 	
 	/*
@@ -823,7 +929,25 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 			});
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param property
+	 * @param listener
+	 */
+	public void addPropertyChangeListener(String property, PropertyChangeListener listener) {
+		this.propertyChangeSupport.addPropertyChangeListener(property, listener);
+	}
+	
+	/**
+	 * 
+	 * @param property
+	 * @param listener
+	 */
+	public void removePropertyChangeListener(String property, PropertyChangeListener listener) {
+		this.propertyChangeSupport.removePropertyChangeListener(property, listener);
+	}
+	
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of Start Button from
 	 * <code>EngineView</code>.
@@ -1505,4 +1629,19 @@ public final class EngineView extends ViewPart implements IUpdateListener,
 		DISCONNECTED
 	}
 
+	/**
+	 * @return the repeatCount
+	 */
+	public int getRepeatCount() {
+		return repeatCount;
+	}
+
+	/**
+	 * @param repeatCount the repeatCount to set
+	 */
+	public void setRepeatCount(int repeatCount) {
+		this.propertyChangeSupport.firePropertyChange(
+				EngineView.REPEAT_COUNT_PROP, this.repeatCount,
+				this.repeatCount = repeatCount);
+	}
 }

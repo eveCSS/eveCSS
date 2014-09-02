@@ -19,6 +19,7 @@ import de.ptb.epics.eve.ecp1.commands.CurrentXMLCommand;
 import de.ptb.epics.eve.ecp1.commands.PlayListCommand;
 import de.ptb.epics.eve.ecp1.commands.RemoveFromPlayListCommand;
 import de.ptb.epics.eve.ecp1.commands.ReorderPlayListCommand;
+import de.ptb.epics.eve.ecp1.commands.RepeatCountCommand;
 
 public class PlayListController implements IPlayListController {
 
@@ -138,7 +139,13 @@ public class PlayListController implements IPlayListController {
 			}
 		}
 	}
-
+	
+	public void setRepeatCount(final int repeatCount) {
+		final RepeatCountCommand repeatCountCommand = new RepeatCountCommand(
+				repeatCount);
+		this.ecp1Client.addToOutQueue(repeatCountCommand);
+	}
+	
 	protected void reportCurrentXMLCommand(
 			final CurrentXMLCommand currentXMLCommand) {
 		final Iterator<INewXMLFileListener> it = this.newXMLFileListener

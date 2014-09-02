@@ -52,6 +52,12 @@ public interface IPlayListController {
 
 	/**
 	 * 
+	 * @param repeatCount
+	 */
+	void setRepeatCount(final int repeatCount);
+	
+	/**
+	 * 
 	 * @param playListListener
 	 */
 	void addPlayListListener(final IPlayListListener playListListener);

@@ -17,7 +17,8 @@ Require-Bundle: de.ptb.epics.eve.data;bundle-version="1.0.0",
  de.ptb.epics.eve.resources;bundle-version="1.0.0",
  org.apache.log4j;bundle-version="1.2.16",
  org.epics.vtype;bundle-version="2.1.0",
- org.csstudio.utility.pv.epics;bundle-version="3.1.4"
+ org.csstudio.utility.pv.epics;bundle-version="3.1.4",
+ org.eclipse.core.databinding;bundle-version="1.4.0"
 Eclipse-LazyStart: true
 Bundle-ClassPath: de.ptb.epics.ecp1.client.jar,
  de.ptb.epics.ecp1.intern.jar,
@@ -27,6 +28,11 @@ Import-Package: de.ptb.epics.eve.util.data,
  de.ptb.epics.eve.util.jface,
  de.ptb.epics.eve.util.pdf,
  de.ptb.epics.eve.util.pv,
- de.ptb.epics.eve.util.swt
+ de.ptb.epics.eve.util.swt,
+ org.eclipse.core.databinding,
+ org.eclipse.core.databinding.beans,
+ org.eclipse.core.databinding.observable.value,
+ org.eclipse.jface.databinding.fieldassist,
+ org.eclipse.jface.databinding.swt
 Export-Package: de.ptb.epics.eve.viewer.views.plotview
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
