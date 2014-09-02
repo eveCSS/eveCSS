@@ -250,14 +250,29 @@
             <command
                   commandId="org.eclipse.ui.edit.cut"
                   style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </visibleWhen>
             </command>
             <command
                   commandId="org.eclipse.ui.edit.copy"
                   style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </visibleWhen>
             </command>
             <command
                   commandId="org.eclipse.ui.edit.paste"
                   style="push">
+               <visibleWhen>
+                  <reference
+                        definitionId="de.ptb.epics.eve.editor.EditorPerspectiveActive">
+                  </reference>
+               </visibleWhen>
             </command>
             <command
                   commandId="org.eclipse.ui.edit.delete"
