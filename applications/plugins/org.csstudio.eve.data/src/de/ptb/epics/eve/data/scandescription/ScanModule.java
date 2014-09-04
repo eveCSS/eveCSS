@@ -3,6 +3,7 @@ package de.ptb.epics.eve.data.scandescription;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -797,6 +798,30 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			list.add(pw.getId());
 		}
 		return list;
+	}
+	
+	/**
+	 * Returns the first found path of an axis (other than given axis) with 
+	 * step function file or <code>null</code> if none.
+	 * 
+	 * @param givenAxis axis which is ignored
+	 * @return the first found path of an axis with step function file or 
+	 * <code>null</code> if none.
+	 * @since 1.20
+	 */
+	public String getAxisPath(Axis givenAxis) {
+		for (Axis axis : this.getAxes()) {
+			if (axis.equals(givenAxis)) {
+				continue;
+			}
+			if (axis.getStepfunction().equals(Stepfunctions.FILE)) {
+				int lastSeperatorIndex = axis.getFile().getAbsolutePath()
+						.lastIndexOf(File.separatorChar);
+				return axis.getFile().getAbsolutePath()
+						.substring(0, lastSeperatorIndex + 1);
+			}
+		}
+		return null;
 	}
 	
 	/**

@@ -225,11 +225,7 @@ public class FileComposite extends MotorAxisViewComposite implements
 		this.viewer.getTable().setEnabled(false);
 		this.redraw();
 	}
-	
-	// **********************************************************************
-	// ************************** Listeners *********************************
-	// **********************************************************************
-	
+
 	/**
 	 * {@link org.eclipse.swt.events.SelectionListener} of 
 	 * <code>searchButton</code>.
@@ -251,11 +247,15 @@ public class FileComposite extends MotorAxisViewComposite implements
 			int lastSeperatorIndex;
 			final String filePath;
 
-			if (fileMode.getFile() == null
+			// Ticket #1481
+			String axisPath = fileMode.getAxis().getScanModule()
+					.getAxisPath(fileMode.getAxis());
+			if (axisPath != null) {
+				filePath = axisPath;
+			} else if (fileMode.getFile() == null
 					|| fileMode.getFile().getAbsolutePath().isEmpty()) {
 				filePath = Activator.getDefault().getRootDirectory();
 			} else {
-				// als filePath wird das vorhandene Verzeichnis gesetzt
 				lastSeperatorIndex = fileMode.getFile().getAbsolutePath()
 						.lastIndexOf(File.separatorChar);
 				filePath = fileMode.getFile().getAbsolutePath()
@@ -265,7 +265,6 @@ public class FileComposite extends MotorAxisViewComposite implements
 			fileWindow.setFilterPath(filePath);
 			String name = fileWindow.open();
 			if (name == null) {
-				// dialog was cancelled
 				return;
 			}
 			 filenameText.setText(name);
