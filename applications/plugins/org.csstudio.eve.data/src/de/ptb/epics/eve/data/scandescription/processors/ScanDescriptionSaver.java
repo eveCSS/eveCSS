@@ -505,6 +505,9 @@ public class ScanDescriptionSaver implements
 			if (axis.getStatus() != null) {
 				this.writeFunction(axis.getStatus(), "status");
 			}
+			if (axis.getMoveDone() != null) {
+				this.writeFunction(axis.getMoveDone(), "movedone");
+			}
 			if (axis.getTrigger() != null) {
 				this.writeFunction(axis.getTrigger(), "trigger");
 			}
