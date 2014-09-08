@@ -60,6 +60,15 @@ public abstract class AbstractPrePostscanBehavior extends AbstractBehavior {
 	}
 	
 	/**
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.20
+	 */
+	public void readDiscreteValues() {
+		this.getAbstractPrePostscanDevice().getValue().readDiscreteValues();
+	}
+	
+	/**
 	 * Gives back the AbstractPrePostscanDevice that is controlled by this behavior.
 	 * 
 	 * @return

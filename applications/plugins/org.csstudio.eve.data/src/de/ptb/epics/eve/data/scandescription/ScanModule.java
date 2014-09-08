@@ -335,6 +335,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param prescan The prescan that should be added to the Scan Modul.
 	 */
 	public void add(final Prescan prescan) {
+		prescan.readDiscreteValues();
 		this.prescans.add(prescan);
 		prescan.addModelUpdateListener(this);
 		updateListeners();
@@ -346,6 +347,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param postscan The postscan that should be added to the Scan Modul.
 	 */
 	public void add(final Postscan postscan) {
+		postscan.readDiscreteValues();
 		this.postscans.add(postscan);
 		postscan.addModelUpdateListener(this);
 		updateListeners();

@@ -121,6 +121,7 @@ public class TypeValue implements Cloneable {
 		if(values == null) {
 			return;
 		}
+		elements.clear();
 		
 		if (((type == DataTypes.INT) || (type == DataTypes.DOUBLE))
 				&& values.contains("to")) {

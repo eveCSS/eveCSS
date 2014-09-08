@@ -1,10 +1,16 @@
 package de.ptb.epics.eve.data.measuringstation;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.MethodTypes;
 import de.ptb.epics.eve.data.TypeValue;
+import de.ptb.epics.eve.util.io.StringUtil;
+import de.ptb.epics.eve.util.pv.PVWrapper;
 
 /**
  * A Function is a complex description that can extend the description of an 
@@ -13,8 +19,10 @@ import de.ptb.epics.eve.data.TypeValue;
  * @author Stephan Rehfeld <stephan.rehfeld( -at- )ptb.de>
  *
  */
-public class Function implements Cloneable {
-
+public class Function implements Cloneable, PropertyChangeListener {
+	private static final Logger LOGGER = Logger.getLogger(Function.class
+			.getName());
+	
 	/**
 	 * The Access of the function.
 	 */
@@ -24,6 +32,16 @@ public class Function implements Cloneable {
 	 * value which is sent or received using access.
 	 */
 	private TypeValue value;
+	
+	/**
+	 * indicates whether discrete values are read from channel access
+	 */
+	private boolean readDiscreteValues;
+	
+	/**
+	 * channel access connection (for reading discrete values)
+	 */
+	private PVWrapper pv;
 	
 	/**
 	 * This constructor constructs a new Function with a GET Access.
@@ -45,6 +63,7 @@ public class Function implements Cloneable {
 					"The parameter 'access' must not be null!");
 		}
 		this.access = access;
+		this.readDiscreteValues = false;
 	}
 
 	/**
@@ -62,6 +81,7 @@ public class Function implements Cloneable {
 		}
 		this.access = access;
 		this.value = value;
+		this.readDiscreteValues = false;
 	}
 
 	/**
@@ -185,7 +205,7 @@ public class Function implements Cloneable {
 	 * @return a <code>List</code> containing all possible discrete values. 
 	 * 			If this Function is not discrete null will be returned.
 	 */
-	public List <String> getDiscreteValues() {
+	public synchronized List <String> getDiscreteValues() {
 		return this.value.getDiscreteValues();
 	}
 	
@@ -199,6 +219,46 @@ public class Function implements Cloneable {
 			return access.isReadOnly();
 		} else {
 			return false;
+		}
+	}
+
+	/**
+	 * 
+	 * 
+	 * @author Marcus Michalsky
+	 * @since 1.20
+	 */
+	public void readDiscreteValues() {
+		if (this.readDiscreteValues || !this.isDiscrete()) {
+			LOGGER.debug("Function value is not discrete -> do nothing.");
+			return;
+		}
+		LOGGER.debug("Function connecting to pv for discrete values.");
+		this.pv = new PVWrapper(this.access.getVariableID());
+		this.pv.addPropertyChangeListener(PVWrapper.DISCRETE_VALUES, this);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals(PVWrapper.DISCRETE_VALUES)) {
+			this.getValue().setValues(
+					StringUtil.buildCommaSeparatedString((List<String>) evt
+							.getNewValue()));
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("received discrete values: "
+						+ StringUtil
+								.buildCommaSeparatedString((List<String>) evt
+										.getNewValue()));
+			}
+			this.pv.disconnect();
+			this.pv.removePropertyChangeListener(PVWrapper.DISCRETE_VALUES,
+					this);
+			this.readDiscreteValues = true;
+			LOGGER.debug("Function disconnected.");
 		}
 	}
 

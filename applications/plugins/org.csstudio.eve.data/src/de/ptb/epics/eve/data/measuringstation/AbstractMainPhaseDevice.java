@@ -2,8 +2,6 @@ package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.List;
 
-import de.ptb.epics.eve.data.measuringstation.exceptions.ParentNotAllowedException;
-
 /**
  * The base of all devices that can be used during the main phase of a scan 
  * module like motor axis and detector channels.
