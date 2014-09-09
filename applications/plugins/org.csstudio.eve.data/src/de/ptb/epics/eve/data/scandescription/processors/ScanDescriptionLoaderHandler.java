@@ -999,12 +999,16 @@ public class ScanDescriptionLoaderHandler extends DefaultHandler {
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_STEPFILENAME_NEXT:
-			this.currentAxis.setFile(new File(textBuffer.toString()));
+			if (this.currentAxis.getAbstractDevice() != null) {
+				this.currentAxis.setFile(new File(textBuffer.toString()));
+			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_STEPFILENAME_READ;
 			break;
 
 		case CHAIN_SCANMODULE_SMMOTOR_POSITIONLIST_NEXT:
-			this.currentAxis.setPositionlist(textBuffer.toString());
+			if (this.currentAxis.getAbstractDevice() != null) {
+				this.currentAxis.setPositionlist(textBuffer.toString());
+			}
 			this.state = ScanDescriptionLoaderStates.CHAIN_SCANMODULE_SMMOTOR_POSITIONLIST_READ;
 			break;
 
