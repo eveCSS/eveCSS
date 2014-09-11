@@ -26,13 +26,15 @@ public class CSVUtil {
 	 * of values.
 	 * 
 	 * @param csvFile the csv file to import
+	 * @param delimiter the delimiter to use
 	 * @return a List of Pairs. Each pair contains the column name and a list 
 	 * of values
 	 */
-	public static List<Pair<String, List<String>>> getColumns(File csvFile) {
+	public static List<Pair<String, List<String>>> getColumns(File csvFile, 
+			char delimiter) {
 		try {
 			CSVParser parser = CSVParser.parse(csvFile, Charset.defaultCharset(),
-					CSVFormat.DEFAULT.withHeader());
+					CSVFormat.DEFAULT.withHeader().withDelimiter(delimiter));
 			List<Pair<String, List<String>>> csvData = new LinkedList<>();
 			for (String s : parser.getHeaderMap().keySet()) {
 				Pair<String, List<String>> pair = new Pair<String, List<String>>(

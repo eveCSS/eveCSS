@@ -1179,4 +1179,13 @@
          </adapter>
       </factory>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.csstudio.platform.ui.css.applications.editors"
+            class="de.ptb.epics.eve.editor.preferences.PreferencePage"
+            id="de.ptb.epics.eve.editor.PreferencePage"
+            name="EVE Editor">
+      </page>
+   </extension>
 </plugin>

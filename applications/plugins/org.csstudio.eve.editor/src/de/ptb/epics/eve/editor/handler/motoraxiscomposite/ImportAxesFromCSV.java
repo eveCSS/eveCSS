@@ -26,6 +26,7 @@ import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.Stepfunctions;
 import de.ptb.epics.eve.editor.Activator;
 import de.ptb.epics.eve.editor.dialogs.csvimport.CSVImportDialog;
+import de.ptb.epics.eve.editor.preferences.PreferenceConstants;
 import de.ptb.epics.eve.editor.views.scanmoduleview.ScanModuleView;
 import de.ptb.epics.eve.util.csv.CSVUtil;
 import de.ptb.epics.eve.util.io.StringUtil;
@@ -72,8 +73,10 @@ public class ImportAxesFromCSV implements IHandler {
 				.equals("de.ptb.epics.eve.editor.views.ScanModulView")) {
 			ScanModule scanModule = ((ScanModuleView) activePart)
 					.getCurrentScanModule();
-			List<Pair<String, List<String>>> axesList = 
-					CSVUtil.getColumns(csvFile);
+			List<Pair<String, List<String>>> axesList = CSVUtil.getColumns(
+					csvFile, Activator.getDefault().getPreferenceStore()
+							.getString(PreferenceConstants.P_CSV_DELIMITER)
+							.charAt(0));
 			
 			List<Pair<String, List<String>>> present = new ArrayList<>();
 			List<Pair<String, List<String>>> absent = new ArrayList<>();

@@ -27,7 +27,7 @@ public class CSVUtilTest {
 		assertNotNull(new File("test1.csv"));
 		
 		List<Pair<String, List<String>>> csvdata = 
-				CSVUtil.getColumns(new File("test1.csv"));
+				CSVUtil.getColumns(new File("test1.csv"), ',');
 		
 		for (Pair<String, List<String>> pair : csvdata) {
 			if (pair.getKey().equals("col1")) {
