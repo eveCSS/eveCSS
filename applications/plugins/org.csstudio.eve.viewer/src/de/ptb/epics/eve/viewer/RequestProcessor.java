@@ -179,7 +179,7 @@ public class RequestProcessor implements IRequestListener {
 	 *            The request that dialog will be closed
 	 */
 	@Override
-	public void cancelRequest(Request request) {
+	public void cancelRequest(final Request request) {
 
 		LOGGER.debug("cancel request -> type: " + request.getRequestText());
 
@@ -188,6 +188,11 @@ public class RequestProcessor implements IRequestListener {
 			this.display.syncExec(new Runnable() {
 				@Override
 				public void run() {
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug(request.getRequestId() + " | " + 
+							request.getRequestType() + " | " + 
+							request.getRequestText());
+					}
 					yesNoMessageDialog.close();
 				}
 			});

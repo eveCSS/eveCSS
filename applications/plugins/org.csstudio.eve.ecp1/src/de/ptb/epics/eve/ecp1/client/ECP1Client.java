@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -494,6 +495,9 @@ public class ECP1Client {
 					final byte[] packageArray = inQueue.poll();
 					// long after = System.nanoTime();
 					// LOGGER.debug("Poll Time: " + (after - before));
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug(Arrays.toString(packageArray));
+					}
 					final ByteArrayInputStream byteArrayInputStream = 
 							new ByteArrayInputStream(packageArray);
 					final DataInputStream dataInputStream = new DataInputStream(
