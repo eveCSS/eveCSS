@@ -33,14 +33,19 @@ public class PlugIn {
 	 * This List contains all parameters of the plug in.
 	 */
 	private List<PluginParameter> parameters;
+
+	/**
+	 * the measuring station object
+	 */
+	private MeasuringStation measuringStation;
 	
 	/**
 	 * Constructs a <code>PlugIn</code> with a given type.
 	 * 
 	 * @param type the type of the plug in. Must not be null.
 	 */
-	public PlugIn(final PluginTypes type) {
-		this("", "", type);
+	public PlugIn(final PluginTypes type, final MeasuringStation measuringStation) {
+		this("", "", type, measuringStation);
 	}
 	
 	/**
@@ -55,7 +60,8 @@ public class PlugIn {
 	 * 			<code>null</code>
 	 */
 	public PlugIn(final String name, final String location, 
-					final PluginTypes type) {
+					final PluginTypes type, 
+					final MeasuringStation measuringStation) {
 		if(name == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'name' must not be null!");
@@ -68,6 +74,7 @@ public class PlugIn {
 		this.name = name;
 		this.location = location;
 		this.type = type;
+		this.measuringStation = measuringStation;
 		
 		this.parameters = new ArrayList<PluginParameter>();
 	}
@@ -97,6 +104,15 @@ public class PlugIn {
 	 */
 	public PluginTypes getType() {
 		return this.type;
+	}
+
+	/**
+	 * Returns the measuring Station.
+	 * 
+	 * @return the measuringStation
+	 */
+	public MeasuringStation getMeasuringstation() {
+		return this.measuringStation;
 	}
 	
 	/**

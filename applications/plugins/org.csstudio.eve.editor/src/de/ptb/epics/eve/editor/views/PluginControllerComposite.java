@@ -1,9 +1,7 @@
 package de.ptb.epics.eve.editor.views;
 
-import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -11,11 +9,6 @@ import org.eclipse.swt.widgets.Composite;
 
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-
-//import de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.ContentProvider;
-//import de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.LabelProvider;
-
-//import de.ptb.epics.eve.editor.views.scanmoduleview.prescancomposite.ValueEditingSupport;
 
 /**
  * 
@@ -51,56 +44,30 @@ public class PluginControllerComposite extends Composite {
 		gridData.grabExcessVerticalSpace = true;
 		
 		this.tableViewer = new TableViewer(this, SWT.BORDER);
-// getControl kann weg, getTable macht das gleiche!
-//		this.tableViewer.getControl().setLayoutData(gridData);
 		this.tableViewer.getTable().setLayoutData(gridData);
 		
 		// create columns
 		// Option column
-		TableViewerColumn optionColumn = new TableViewerColumn(
+		TableViewerColumn column = new TableViewerColumn(
 				this.tableViewer, SWT.LEFT, 0);
-	    optionColumn.getColumn().setText("Option");
-	    optionColumn.getColumn().setWidth(140);
+	    column.getColumn().setText("Option");
+	    column.getColumn().setWidth(140);
 
 	    // Value column
-	    TableViewerColumn valueColumn = new TableViewerColumn(
+	    column = new TableViewerColumn(
 	    		this.tableViewer, SWT.LEFT, 1);
-	    valueColumn.getColumn().setText("Value");
-	    valueColumn.getColumn().setWidth(60);
-	    
-	    // ANFANG NEU
-		valueColumn.setEditingSupport(new PluginControllerValueEditingSupport(this.tableViewer));
-		// ENDE NEU
-		
+	    column.getColumn().setText("Value");
+	    column.getColumn().setWidth(60);
+
+	    column.setEditingSupport(new ValueEditingSupport(this.tableViewer));
+
 	    this.tableViewer.getTable().setHeaderVisible(true);
 	    this.tableViewer.getTable().setLinesVisible(true);
+	    this.tableViewer.setContentProvider(new PluginControllerContentProvider());
 
-		this.tableViewer.setContentProvider(new PluginControllerContentProvider());
+	    this.pluginControllerLabelProvider = new PluginControllerLabelProvider(); 
+	    this.tableViewer.setLabelProvider(this.pluginControllerLabelProvider);
 
-		this.pluginControllerLabelProvider = new PluginControllerLabelProvider(); 
-		this.tableViewer.setLabelProvider(this.pluginControllerLabelProvider);
-
-// ANFANG ALT
-
-// Anfang alt bis zum Punkt Ende Alt kann weg und soll durch den
-// ValueEditingSupport ersetzt werden
-// Hierfür wird dann unbedingt der MyComboBoxCellEditor verwendet
-// In die ComboBox soll dann der Name des Gerätes geschrieben
-// In der Struktur soll aber die ID als String geschrieben werden
-	    
-	    // Der CellEditor kommt weg,
-	    // Hier wird jetzt der ValueEditingSupport verwendet
-//	    final CellEditor[] editors = new CellEditor[2];
-//	    final String[] props = {"option", "value"};
-	    
-//	    editors[0] = new TextCellEditor(this.tableViewer.getTable());
-//	    editors[1] = new TextCellEditor(this.tableViewer.getTable());
-   
-//	    this.tableViewer.setCellEditors(editors);
-//	    this.tableViewer.setCellModifier(
-//	    		new PluginControllerCellModifyer(this.tableViewer));
-//	    this.tableViewer.setColumnProperties(props);
-	    // ENDE ALT
 	}
 	
 	/**

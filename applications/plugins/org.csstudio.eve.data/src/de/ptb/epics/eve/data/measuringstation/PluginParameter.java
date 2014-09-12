@@ -1,7 +1,7 @@
 package de.ptb.epics.eve.data.measuringstation;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import de.ptb.epics.eve.data.PluginDataType;
@@ -38,18 +38,26 @@ public class PluginParameter {
 	 * The string that holds the limitations of the plug in Parameter.
 	 */
 	private String values;
+
+	/**
+	 * The string that holds the limitations of the plug in Parameter.
+	 */
+	private PlugIn plugin;
 	
 	/**
 	 * Constructs a <code>PluginParameter</code>.
 	 * 
+	 * @param plugin the plugin
 	 * @param name the name of the plug in parameter.
 	 * @param type the type of the plug in parameter.
 	 * @param defaultValue the default value for the plug in parameter.
 	 * @param mandatory a flag if the parameter is mandatory.
 	 * @throws IllegalArgumentException if type or name is <code>null</code>
 	 */
-	public PluginParameter(final String name, final PluginDataType type, 
-						final String defaultValue, final boolean mandatory) {
+	public PluginParameter(final PlugIn plugin, final String name, 
+				final PluginDataType type, final String defaultValue, 
+				final boolean mandatory) {
+		
 		if(type == null) {
 			throw new IllegalArgumentException(
 					"The parameter 'type' must not be null!");
@@ -58,8 +66,9 @@ public class PluginParameter {
 			throw new IllegalArgumentException(
 					"The parameter 'name' must not be null!");
 		}
-		this.type = type;
+		this.plugin = plugin;
 		this.name = name;
+		this.type = type;
 		this.defaultValue = defaultValue;
 		this.mandatory = mandatory;
 	}
@@ -129,6 +138,15 @@ public class PluginParameter {
 	}
 
 	/**
+	 * Returns the plugin of parameter.
+	 * 
+	 * @return the plugin of the parameter.
+	 */
+	public PlugIn getPlugin() {
+		return this.plugin;
+	}
+
+	/**
 	 * Sets the name of the parameter.
 	 * 
 	 * @param name the name of the parameter
@@ -190,22 +208,24 @@ public class PluginParameter {
 	 * 
 	 * @return <code>true</code> if the parameter values must be discrete, 
 	 * 			<code>false</code> otherwise
+	 * @since 1.20
 	 */
 	public boolean isDiscrete() {
-		if(values == null) {
+
+		switch (type) {
+		case AXISID:
+		case CHANNELID:
+		case DEVICEID:
+		case ONOFF:
+		case OPENCLOSE:
+			return true;
+		case DOUBLE:
+		case INT:
+		case STRING:
+			return false;
+		default:
 			return false;
 		}
-		StringBuffer buffer = new StringBuffer(this.values);
-		boolean escape = false;
-		escape = false;
-		for(int i=0; i<buffer.length(); ++i) {
-			if(buffer.charAt( i ) == '"') {
-				escape = !escape;
-			} else if(!escape && buffer.charAt( i ) == ',') {
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	/**
@@ -216,6 +236,43 @@ public class PluginParameter {
 	 */
 	public List<String> getDiscreteValues() {
 		if( this.isDiscrete() ) {
+
+			switch (type) {
+			case AXISID:
+				// Liste der möglichen Achsen (als Ziel) generieren
+				List<Motor> motorList = plugin.getMeasuringstation().getMotors();
+				// TODO: um die ID wegschreiben zu können, ist es besser
+				// hier in die Liste die Achsen zu schreiben.
+				List<String> axesList = new LinkedList<>();
+				for (Motor axis : plugin.getMeasuringstation().getMotors()) {
+					axesList.add(axis.getName());
+				}
+				return axesList;
+			case CHANNELID:
+				break;
+			case DEVICEID:
+				break;
+			case DOUBLE:
+				break;
+			case INT:
+				break;
+			case ONOFF:
+				List<String> discrList = new LinkedList<>();
+				discrList.add("On");
+				discrList.add("Off");
+				return discrList;
+			case OPENCLOSE:
+				List<String> openList = new LinkedList<>();
+				openList.add("Open");
+				openList.add("Close");
+				return openList;
+			case STRING:
+				break;
+			default:
+				break;
+			
+			}
+			
 			StringBuffer buffer = new StringBuffer(this.values);
 			boolean escape = false;
 			
@@ -285,7 +342,6 @@ public class PluginParameter {
 			return true;
 		}
 		
-		
 		StringBuffer buffer = new StringBuffer(this.values);
 		
 		boolean escape = false;
@@ -301,56 +357,8 @@ public class PluginParameter {
 		escape = false;
 
 		if(this.isDiscrete()) {
-			escape = false;
-			int lastIndex = 0;
-			List<String> elements = new ArrayList<String>();
-			for(int i=0; i<buffer.length(); ++i) {
-				if(buffer.charAt(i) == '"') {
-					escape = !escape;
-				} else if(!escape && buffer.charAt(i) == ',') {
-					StringBuffer buffer2 = new StringBuffer(buffer.substring(lastIndex, i));
-					if(buffer2.charAt(0) == '"') {
-						buffer2.deleteCharAt(0);
-					}
-					if(buffer2.charAt(buffer2.length() - 1) == '"') {
-						buffer2.deleteCharAt( buffer2.length() - 1);
-					}
-					elements.add(buffer2.toString());
-					lastIndex = i + 1;
-				}
-			}
-			StringBuffer buffer2 = new StringBuffer(
-					buffer.substring(lastIndex, buffer.length()));
-			if(buffer2.charAt(0) == '"') {
-				buffer2.deleteCharAt(0);
-			}
-			if(buffer2.charAt(buffer2.length() - 1) == '"') {
-				buffer2.deleteCharAt(buffer2.length() - 1);
-			}
-			elements.add(buffer2.toString());	
 			
-			Iterator<String> it = elements.iterator();
-			if(this.type == PluginDataType.INT) {
-				int val = Integer.parseInt(value);
-				while(it.hasNext()) {
-					if(Integer.parseInt(it.next()) == val) {
-						return true;
-					}
-				}
-			} else if(this.type == PluginDataType.DOUBLE) {
-				double val = Double.parseDouble(value);
-				while(it.hasNext()) {
-					if(Double.parseDouble(it.next()) == val) {
-						return true;
-					}
-				}
-			} else {
-				while(it.hasNext()) {
-					if(it.next().equals(value)) {
-						return true;
-					}
-				}
-			}
+			return true;
 			
 		} else {
 			String[] values = this.values.split("to");
