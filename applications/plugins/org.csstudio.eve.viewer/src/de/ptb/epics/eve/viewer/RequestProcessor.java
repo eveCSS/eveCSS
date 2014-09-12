@@ -3,6 +3,7 @@ package de.ptb.epics.eve.viewer;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
@@ -57,7 +58,7 @@ public class RequestProcessor implements IRequestListener {
 		case YES_NO: {
 			final String[] buttons = { "Yes", "No" };
 
-			this.display.syncExec(new Runnable() {
+			this.display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					yesNoMessageDialog = new MessageDialog(PlatformUI
@@ -68,7 +69,9 @@ public class RequestProcessor implements IRequestListener {
 
 					int answer = yesNoMessageDialog.open();
 					final boolean result = answer == 0;
-					request.sendYesNoAnswer(result);
+					if (answer != SWT.DEFAULT) {
+						request.sendYesNoAnswer(result);
+					}
 				}
 			});
 			break;
@@ -77,7 +80,7 @@ public class RequestProcessor implements IRequestListener {
 		case OK_CANCEL: {
 			final String[] buttons = { "OK", "Cancell" };
 
-			this.display.syncExec(new Runnable() {
+			this.display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					okCancelMessageDialog = new MessageDialog(PlatformUI
@@ -87,16 +90,18 @@ public class RequestProcessor implements IRequestListener {
 							1);
 					int answer = okCancelMessageDialog.open();
 					final boolean result = answer == 0;
-					request.sendOkCancelAnswer(result);
+					if (answer != SWT.DEFAULT) {
+						request.sendOkCancelAnswer(result);
+					}
 				}
 			});
 			break;
 		}
 
 		case TRIGGER: {
-			final String[] buttons = { "Trigger" };
+			final String[] buttons = {"Trigger"};
 
-			this.display.syncExec(new Runnable() {
+			this.display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					triggerMessageDialog = new MessageDialog(PlatformUI
@@ -107,7 +112,9 @@ public class RequestProcessor implements IRequestListener {
 
 					int answer = triggerMessageDialog.open();
 					final boolean result = answer == 0;
-					request.sendTriggerAnswer(result);
+					if (answer != SWT.DEFAULT) {
+						request.sendTriggerAnswer(result);
+					}
 				}
 			});
 			break;
@@ -115,7 +122,7 @@ public class RequestProcessor implements IRequestListener {
 
 		case INT32: {
 			// TODO: Dialog muß noch umgestellt werden
-			this.display.syncExec(new Runnable() {
+			this.display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					final InputDialog input = new InputDialog(PlatformUI
@@ -131,7 +138,7 @@ public class RequestProcessor implements IRequestListener {
 
 		case FLOAT32: {
 			// TODO: Dialog muß noch umgestellt werden
-			this.display.syncExec(new Runnable() {
+			this.display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					final InputDialog input = new InputDialog(PlatformUI
@@ -140,13 +147,14 @@ public class RequestProcessor implements IRequestListener {
 							.getRequestText(), "0", null);
 					input.open();
 					request.sendFloat32Answer(Float.parseFloat(input.getValue()));
+					
 				}
 			});
 			break;
 		}
 
 		case TEXT: {
-			this.display.syncExec(new Runnable() {
+			this.display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					MessageDialog.openInformation(PlatformUI.getWorkbench()
@@ -158,7 +166,7 @@ public class RequestProcessor implements IRequestListener {
 		}
 
 		case ERROR_TEXT: {
-			this.display.syncExec(new Runnable() {
+			this.display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					MessageDialog.openError(PlatformUI.getWorkbench()
@@ -180,19 +188,16 @@ public class RequestProcessor implements IRequestListener {
 	 */
 	@Override
 	public void cancelRequest(final Request request) {
-
-		LOGGER.debug("cancel request -> type: " + request.getRequestText());
-
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(request.getRequestId() + " | " + 
+				request.getRequestType() + " | " + 
+				request.getRequestText());
+		}
 		switch (request.getRequestType()) {
 		case YES_NO: {
-			this.display.syncExec(new Runnable() {
+			this.display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug(request.getRequestId() + " | " + 
-							request.getRequestType() + " | " + 
-							request.getRequestText());
-					}
 					yesNoMessageDialog.close();
 				}
 			});
@@ -200,7 +205,7 @@ public class RequestProcessor implements IRequestListener {
 		}
 
 		case OK_CANCEL: {
-			this.display.syncExec(new Runnable() {
+			this.display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					okCancelMessageDialog.close();
@@ -210,7 +215,7 @@ public class RequestProcessor implements IRequestListener {
 		}
 
 		case TRIGGER: {
-			this.display.syncExec(new Runnable() {
+			this.display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					triggerMessageDialog.close();
@@ -220,7 +225,7 @@ public class RequestProcessor implements IRequestListener {
 		}
 
 		case INT32: {
-			this.display.syncExec(new Runnable() {
+			this.display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					// INT32 Window muß geschlossen werden
@@ -230,7 +235,7 @@ public class RequestProcessor implements IRequestListener {
 		}
 
 		case FLOAT32: {
-			this.display.syncExec(new Runnable() {
+			this.display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					// FLOAT32 WIndow muß geschlossen werden
@@ -240,7 +245,7 @@ public class RequestProcessor implements IRequestListener {
 		}
 
 		case TEXT: {
-			this.display.syncExec(new Runnable() {
+			this.display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					// TEXT Window muß geschlossen werden
@@ -250,7 +255,7 @@ public class RequestProcessor implements IRequestListener {
 		}
 
 		case ERROR_TEXT: {
-			this.display.syncExec(new Runnable() {
+			this.display.asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					// ERROR TEXT Window muß geschlossen werden
