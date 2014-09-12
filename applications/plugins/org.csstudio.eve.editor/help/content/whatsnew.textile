@@ -1,5 +1,14 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.20
+
+* [Feature] added CSV import of motor axes position lists
+* [Feature] File mode axis default path is now context sensitive
+* [Feature] Discrete values options for pre- and post scans are now read from CA
+
+* [Bug Fix] fixed a bug where the ScanView did not refresh after save as...
+* [Bug Fix] fixed a bug where loading motor axes with certain step functions throwed an Exception
+
 h2(eveTopic). Version 1.19
 
 * [Feature] Added Cut, Copy and Paste for the Editor

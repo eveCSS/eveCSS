@@ -1,5 +1,12 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.20
+
+* [Feature] new template files
+* [Feature] scan files are now also validated before loading into engine playlist
+
+* [Bug fix] changed gtk theme to Raleigh due to a bug of oxygen-gtk2 with Eclipse/SWT, for more information see ==<a href="https://bugs.kde.org/show_bug.cgi?id=327441" target="_blank"> Bug 327441 - Using oxgen-gtk2 causes eclipse/swt to crash</a>
+
 h2(eveTopic). Version 1.19
 
 * [Bug Fix] improved performance by changing PV Formatting behavior

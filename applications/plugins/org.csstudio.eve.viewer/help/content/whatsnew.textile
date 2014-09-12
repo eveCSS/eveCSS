@@ -1,5 +1,12 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.20
+
+* [Feature] The Repeat Count of a scan is now modifiable
+
+* [Bug Fix] fixed a bug where moving motor axes did not change color (EngineView)
+* [Bug Fix] fixed a bug where certain dialogs did not close when triggered from another EVE client
+
 h2(eveTopic). Version 1.19
 
 * [Feature] Scan Module Info Window (Engine View) now shows additional information
