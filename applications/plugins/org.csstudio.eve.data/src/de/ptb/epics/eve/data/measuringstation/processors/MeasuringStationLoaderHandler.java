@@ -126,7 +126,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				} else if (pluginType.equals("postscanpositioning")) {
 					type = PluginTypes.POSTSCANPOSITIONING;
 				}
-				this.currentPlugin = new PlugIn(type);
+				this.currentPlugin = new PlugIn(type, measuringStation);
 				this.state = MeasuringStationLoaderStates.PLUGIN_LOADING;
 			}
 			break;
@@ -138,7 +138,7 @@ public class MeasuringStationLoaderHandler extends DefaultHandler {
 				this.state = MeasuringStationLoaderStates.PLUGIN_LOCATION_NEXT;
 			} else if (qName.equals("parameter")) {
 				this.state = MeasuringStationLoaderStates.PLUGIN_PARAMETER_NEXT;
-				this.currentPluginParameter = new PluginParameter(
+				this.currentPluginParameter = new PluginParameter(this.currentPlugin,
 						atts.getValue("name"), PluginDataType.stringToType(atts
 								.getValue("datatype")),
 						atts.getValue("default"), Boolean.parseBoolean(atts

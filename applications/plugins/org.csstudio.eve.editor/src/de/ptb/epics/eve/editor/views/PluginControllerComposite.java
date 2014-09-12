@@ -1,14 +1,11 @@
 package de.ptb.epics.eve.editor.views;
 
-import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.TableColumn;
 
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
@@ -48,38 +45,29 @@ public class PluginControllerComposite extends Composite {
 		gridData.grabExcessVerticalSpace = true;
 		
 		this.tableViewer = new TableViewer(this, SWT.BORDER);
-		this.tableViewer.getControl().setLayoutData(gridData);
+		this.tableViewer.getTable().setLayoutData(gridData);
 		
 		// Option column
-		TableColumn column = new TableColumn(
-				this.tableViewer.getTable(), SWT.LEFT, 0);
-	    column.setText("Option");
-	    column.setWidth(140);
+		TableViewerColumn column = new TableViewerColumn(
+				this.tableViewer, SWT.LEFT, 0);
+	    column.getColumn().setText("Option");
+	    column.getColumn().setWidth(140);
 
 	    // Value column
-	    column = new TableColumn(
-	    		this.tableViewer.getTable(), SWT.LEFT, 1);
-	    column.setText("Value");
-	    column.setWidth(60);
-	    
+	    column = new TableViewerColumn(
+	    		this.tableViewer, SWT.LEFT, 1);
+	    column.getColumn().setText("Value");
+	    column.getColumn().setWidth(60);
+
+	    column.setEditingSupport(new ValueEditingSupport(this.tableViewer));
+
 	    this.tableViewer.getTable().setHeaderVisible(true);
 	    this.tableViewer.getTable().setLinesVisible(true);
-	    
 	    this.tableViewer.setContentProvider(new PluginControllerContentProvider());
+
 	    this.pluginControllerLabelProvider = new PluginControllerLabelProvider(); 
 	    this.tableViewer.setLabelProvider(this.pluginControllerLabelProvider);
-	    
-	    final CellEditor[] editors = new CellEditor[2];
-	    
-	    final String[] props = {"option", "value"};
-	    
-	    editors[0] = new TextCellEditor(this.tableViewer.getTable());
-	    editors[1] = new TextCellEditor(this.tableViewer.getTable());
-	    
-	    this.tableViewer.setCellEditors(editors);
-	    this.tableViewer.setCellModifier(
-	    		new PluginControllerCellModifyer(this.tableViewer));
-	    this.tableViewer.setColumnProperties(props);
+
 	}
 	
 	/**

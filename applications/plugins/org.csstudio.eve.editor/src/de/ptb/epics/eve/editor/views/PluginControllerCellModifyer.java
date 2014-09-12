@@ -10,7 +10,6 @@ import org.eclipse.swt.widgets.Item;
 import de.ptb.epics.eve.data.PluginDataType;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.PluginParameter;
-import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
