@@ -10,7 +10,6 @@ import org.eclipse.swt.widgets.Item;
 import de.ptb.epics.eve.data.PluginDataType;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.data.measuringstation.PluginParameter;
-import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Channel;
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
@@ -143,11 +142,9 @@ public class PluginControllerCellModifyer implements ICellModifier {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object getValue(final Object element, final String property) {
-System.out.println("getValue event im pluginControllerCellModifier");
 		if (property.equals("value")) {
 			Map.Entry<String, String> entry = 
 					((Map.Entry<String, String>)element);
-System.out.println("  entry.getValue: " + entry.getValue());
 			if(this.tableViewer.getCellEditors()[1] instanceof TextCellEditor) {
 				return (entry.getValue() == null) ? "" : entry.getValue();
 			} else if(this.tableViewer.getCellEditors()[1] instanceof ComboBoxCellEditor) {
@@ -169,13 +166,9 @@ System.out.println("  entry.getValue: " + entry.getValue());
 	@SuppressWarnings("unchecked")
 	@Override
 	public void modify(final Object element, final String property, final Object value) {
-System.out.println("modify event im pluginControllerCellModifier, property: " + property);
 		if (property.equals("value")) {
 			Map.Entry<String, String> entry = 
 					((Map.Entry<String, String>)((Item)element).getData());
-
-
-System.out.println("   Option Name:" + ((Item)element).getText());
 
 			final PluginController pluginController = 
 					(PluginController)this.tableViewer.getInput();
@@ -185,17 +178,6 @@ System.out.println("   Option Name:" + ((Item)element).getText());
 				pluginController.set(entry.getKey(), ((ComboBoxCellEditor)
 						this.tableViewer.getCellEditors()[1]).
 						getItems()[(Integer)value]);
-
-				System.out.println("   Was wird gesetzt: "+ ((ComboBoxCellEditor)this.tableViewer.getCellEditors()[1]).getItems()[(Integer)value]);				
-// Hier wird der Eintrag zur referenceAxis gesetzt.
-// Wenn man weiß, das es die referenceAxis ist, soll hier nicht der Name der Axis sondern die ID 
-// weggeschrieben werden.
-
-System.out.println("   Was wird gesetzt: "+ (this.tableViewer.getCellEditors()[0]).toString());				
-System.out.println(" ViewerEditor: "+ this.tableViewer.getColumnViewerEditor().toString());
-
-System.out.println("   Was wird gesetzt: "+ (pluginController.getElements().toString()));				
-
 
 			// Es wird aus der MotorAxisMap eine Collection der
 			// MotorAxis ausgelesen
@@ -214,8 +196,6 @@ System.out.println("   Was wird gesetzt: "+ (pluginController.getElements().toSt
 				
 				}
 			}
-
-
 			}
 		}
 	}

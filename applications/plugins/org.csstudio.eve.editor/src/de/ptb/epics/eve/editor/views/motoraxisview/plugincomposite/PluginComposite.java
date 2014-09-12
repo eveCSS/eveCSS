@@ -241,8 +241,6 @@ public class PluginComposite extends Composite {
 
 				if (axis.getPluginController() == null) {
 					axis.setPluginController(new PluginController(plugin));
-					logger.debug("filled with default ? "
-							+ axis.getPluginController().isFilledWithDefault());
 				}
 
 				if (axis.getPluginController().getPlugin() != plugin) {
