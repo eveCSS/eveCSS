@@ -1,38 +1,35 @@
-/**
- * 
- */
 package de.ptb.epics.eve.viewer.views.engineview;
 
 import org.eclipse.core.databinding.conversion.IConverter;
 
 /**
- * @author mmichals
- *
+ * @author Marcus Michalsky
+ * @since 1.20
  */
 public class RepeatCountModelToTargetConverter implements IConverter {
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.databinding.conversion.IConverter#getFromType()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Object getFromType() {
 		return Integer.class;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.databinding.conversion.IConverter#getToType()
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Object getToType() {
 		return String.class;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.databinding.conversion.IConverter#convert(java.lang.Object)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Object convert(Object fromObject) {
-		return ((Long)fromObject).toString();
+		return ((Integer)fromObject).toString();
 	}
 
 }
