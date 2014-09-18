@@ -45,7 +45,6 @@ public class PluginComposite extends Composite {
 	private Label pluginErrorLabel;
 	private PluginControllerComposite pluginControllerComposite;
 	
-	
 	private Axis axis;
 	private ScanModule scanModule;
 	

@@ -119,7 +119,6 @@ public class PluginController implements IModelErrorProvider,
 		this.plugin = plugin;
 		this.values.clear();
 		if (this.plugin != null) {
-// auskommentiert am 12.9.14 von Hartmut
 			this.fillWithDefaults();
 		}
 		updateListeners();
@@ -214,12 +213,6 @@ public class PluginController implements IModelErrorProvider,
 		Iterator<PluginParameter> it = this.plugin.getParameters().iterator();
 		while (it.hasNext()) {
 			final PluginParameter currentPluginParameter = it.next();
-			// TODO um hier vernünftige Werte vorzuschlagen muß irgendwie
-			// erkannt werden, welche Parameter diskrete Werte beinhalten
-			// z.B. referenceaxis aus position Plugin.
-			// kann man da einen Zusatz in das Messplatz.xml File schreiben
-			// wie z.B. type=discrete?
-			// es müßte über den datatype axisid erkannt werden!!!
 			if (currentPluginParameter.getType().toString().equals("AXISID")) {
 				// aus dem scanModul wird der erste Wert des Plugins erzeugt!
 				if (scanModule != null) {

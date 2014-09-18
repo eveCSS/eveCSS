@@ -79,10 +79,9 @@ public class ValueEditingSupport extends EditingSupport {
 		if (pluginParameterValue.getPluginParameter().isDiscrete()) {
 			// Wert einer ComoboBox muss ermittelt werden
 			// Der Index muss zurückgegeben werden
-			// aktuelle Werte muss erst noch aus dem Model gelesen und dann gesetzt werden
-
-			// Bevor die Bestimmung klappt, wird erstmal index 0 gesetzt
-			return 0;
+			List <String> idList = pluginParameterValue.getPluginParameter().getDiscreteIDs();
+			int index = idList.indexOf(pluginParameterValue.getValue());
+			return index;
 		} else{
 			// Text Cell, es wird einfach der Wert zurückgegeben
 			return pluginParameterValue.getValue();
@@ -99,7 +98,8 @@ public class ValueEditingSupport extends EditingSupport {
 		
 		if (pluginParameterValue.getPluginParameter().isDiscrete()) {
 			// Wert einer ComoboBox muss mit dem Index gesetzt werden
-			pluginParameterValue.getPluginController().set(pluginParameterValue.getPluginParameter().getName(), pluginParameterValue.getPluginParameter().getDiscreteValues().get((int)value) );
+			pluginParameterValue.getPluginController().set(pluginParameterValue.getPluginParameter().getName(), 
+					pluginParameterValue.getPluginParameter().getDiscreteIDs().get((int)value) );
 		} else{
 			// Text Cell, es wird einfach der Wert zurückgegeben
 			pluginParameterValue.getPluginController().set(pluginParameterValue.getPluginParameter().getName(), value.toString());
