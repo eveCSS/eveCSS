@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.csstudio.utility.pv.PVFactory;
 import org.eclipse.swt.widgets.Display;
 import org.epics.pvmanager.*;
 import org.epics.vtype.AlarmSeverity;
@@ -19,6 +18,7 @@ import de.ptb.epics.eve.preferences.Activator;
 import de.ptb.epics.eve.preferences.PreferenceConstants;
 import static org.epics.pvmanager.ExpressionLanguage.*;
 import static org.epics.util.time.TimeDuration.*;
+
 
 /**
  * <code>PVWrapper</code> wraps a {@link org.epics.pvmanager.PV}. During object 
@@ -50,11 +50,10 @@ public class PVWrapper {
 			PVWrapper.class.getName());
 	
 	// the wrapped process variable
-	private org.epics.pvmanager.PV<Object,Object> pv;
+	private PV<Object,Object> pv;
 	
 	// the trigger pv (if a "goto" pv has to be triggered)
-	// also workaround until write issues with pvmanager are solved
-	private org.csstudio.utility.pv.PV triggerPV;
+	private PVWriter<Object> triggerPV;
 	
 	// the name of the process variable
 	private String pvName;
@@ -148,8 +147,7 @@ public class PVWrapper {
 			return;
 		}
 		try { // TODO
-			this.triggerPV = PVFactory.createPV("ca://" + triggerName);
-			this.triggerPV.start();
+			this.triggerPV = PVManager.write(channel(triggerName)).async();
 			LOGGER.debug("set trigger to " + this.triggerPV);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
@@ -161,7 +159,7 @@ public class PVWrapper {
 	 */
 	public void disconnect() {
 		if (this.triggerPV != null) {
-			this.triggerPV.stop();
+			this.triggerPV.close();
 		}
 		this.pv.removePVReaderListener(this.readListener);
 		this.pv.close();
@@ -207,7 +205,7 @@ public class PVWrapper {
 			if (this.triggerPV != null) {
 				// TODO: Die trigger PV soll nicht mit 2 oder 1 gesetzt werden
 				// sondern mit dem Wert der im XML-File steht!
-				this.triggerPV.setValue(2);
+				this.triggerPV.write(2);
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
@@ -216,8 +214,7 @@ public class PVWrapper {
 		if(LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Wrote " + this.getName() + ": " + newVal);
 			if(this.triggerPV != null) {
-				LOGGER.debug("Additionally send Trigger " + 
-						this.triggerPV.getName());
+				LOGGER.debug("Additionally send Trigger");
 			}
 		}
 	}
