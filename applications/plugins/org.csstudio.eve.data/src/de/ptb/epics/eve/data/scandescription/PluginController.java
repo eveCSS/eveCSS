@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.data.scandescription;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,10 +29,13 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * 
  * @author Stephan Rehfeld <stephan.rehfeld (-at-) ptb.de>
  * @author Marcus Michalsky
+ * @author Hartmut Scherr
  */
 public class PluginController implements IModelErrorProvider,
 		IModelUpdateProvider {
 
+	public static final String VALUES_PROP = "values";
+	
 	/* The plug in to control. */
 	private PlugIn plugin;
 
@@ -45,15 +50,12 @@ public class PluginController implements IModelErrorProvider,
 	private List<IModelUpdateListener> modelUpdateListener;
 
 	/*
-	 * This flag indicates if the values has been filled with default values.
-	 */
-	private boolean defaultFlag;
-
-	/*
 	 * The parent scan module.
 	 */
 	private ScanModule scanModule;
 
+	private PropertyChangeSupport propertyChangeSupport;
+	
 	/**
 	 * Constructs a(n) (empty) <code>PluginController</code>.
 	 */
@@ -76,6 +78,9 @@ public class PluginController implements IModelErrorProvider,
 		if (this.plugin != null) {
 			this.fillWithDefaults();
 		}
+
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
+	
 	}
 
 	/**
@@ -94,9 +99,6 @@ public class PluginController implements IModelErrorProvider,
 		newPluginController.setScanModule(scanModule);
 		newPluginController.setValues(new HashMap<String, String>(
 				pluginController.getValues()));
-		if (pluginController.isFilledWithDefault()) {
-			newPluginController.fillWithDefaults();
-		}
 		return newPluginController;
 	}
 	
@@ -133,8 +135,12 @@ public class PluginController implements IModelErrorProvider,
 	 *            the value for the parameter.
 	 */
 	public void set(final String name, final String value) {
+
+		String oldValue = this.values.get(name);
+		
 		this.values.put(name, value);
-		this.defaultFlag = false;
+
+		propertyChangeSupport.firePropertyChange(PluginController.VALUES_PROP, oldValue, value);
 		updateListeners();
 	}
 
@@ -197,43 +203,32 @@ public class PluginController implements IModelErrorProvider,
 	}
 
 	/**
-	 * Checks whether the values are filled with default values.
-	 * 
-	 * @return <code>true</code> if the values are filled, <code>false</code>
-	 *         otherwise
-	 */
-	public boolean isFilledWithDefault() {
-		return this.defaultFlag;
-	}
-
-	/**
 	 * Fills the values with default values specified by the plug in.
 	 */
 	private void fillWithDefaults() {
-		Iterator<PluginParameter> it = this.plugin.getParameters().iterator();
-		while (it.hasNext()) {
-			final PluginParameter currentPluginParameter = it.next();
-			if (currentPluginParameter.getType().toString().equals("AXISID")) {
-				// aus dem scanModul wird der erste Wert des Plugins erzeugt!
+		for (PluginParameter pluginParameter: this.plugin.getParameters()) {
+			
+			switch (pluginParameter.getType()){
+			case AXISID:
 				if (scanModule != null) {
-					Axis[] currentAxis = scanModule.getAxes();
-					String[] currentField = new String[currentAxis.length];
-					for (int i = 0; i < currentAxis.length; ++i) {
-						currentField[i] = currentAxis[i].getMotorAxis()
-								.getName();
-					}
-					this.values.put(currentPluginParameter.getName(),
-							currentField[0]);
-				} else {
-					this.values.put(currentPluginParameter.getName(),
-							currentPluginParameter.getDefaultValue());
+					this.values.put(pluginParameter.getName(), scanModule.getAxes()[0].getMotorAxis().getID());
 				}
-			} else {
-				this.values.put(currentPluginParameter.getName(),
-						currentPluginParameter.getDefaultValue());
+				else 
+					this.values.put(pluginParameter.getName(),
+							pluginParameter.getDefaultValue());
+				break;
+			case CHANNELID:
+			case DEVICEID:
+			case DOUBLE:
+			case INT:
+			case ONOFF:
+			case OPENCLOSE:
+			case STRING:
+				this.values.put(pluginParameter.getName(),
+						pluginParameter.getDefaultValue());
+				break;
 			}
 		}
-		this.defaultFlag = true;
 	}
 
 	/**
@@ -329,4 +324,15 @@ public class PluginController implements IModelErrorProvider,
 			it.next().updateEvent(new ModelUpdateEvent(this, null));
 		}
 	}
+
+	public void addPropertyChangeListener(String property,
+			PropertyChangeListener listener) {
+		propertyChangeSupport.addPropertyChangeListener(property, listener);
+	}
+
+	public void removePropertyChangeListener(String property,
+			PropertyChangeListener listener) {
+		propertyChangeSupport.removePropertyChangeListener(property, listener);
+	}
+
 }

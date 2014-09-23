@@ -87,8 +87,8 @@ public class PluginParameter {
 		}
 		else {
 			if (this.isDiscrete()) {
-				// Value ist diskret, ersten Eintrag als default setzen
-				String[] values = this.getDiscreteValues().toArray(new String[0]);
+				// Value ist diskret, ersten ID Eintrag als default setzen
+				String[] values = this.getDiscreteIDs().toArray(new String[0]);
 				return values[0];
 			}
 			else {
@@ -318,7 +318,6 @@ public class PluginParameter {
 				break;
 			default:
 				break;
-			
 			}
 			
 			return null;
@@ -344,7 +343,6 @@ public class PluginParameter {
 					   return axis.getName();
 				}
 			}
-
 		case CHANNELID:
 		case DEVICEID:
 		case DOUBLE:

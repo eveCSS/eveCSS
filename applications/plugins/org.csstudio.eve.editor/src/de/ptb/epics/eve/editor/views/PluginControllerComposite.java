@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.editor.views;
 
+import java.util.List;
+
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -7,6 +9,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
+import de.ptb.epics.eve.data.measuringstation.PluginParameter;
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 
@@ -19,7 +22,6 @@ public class PluginControllerComposite extends Composite {
 
 	private TableViewer tableViewer;
 	private PluginController pluginController;
-	private ScanModule scanModule;
 	private PluginControllerLabelProvider pluginControllerLabelProvider;
 	
 	/**
@@ -59,7 +61,7 @@ public class PluginControllerComposite extends Composite {
 	    column.getColumn().setText("Value");
 	    column.getColumn().setWidth(60);
 
-	    column.setEditingSupport(new ValueEditingSupport(this.tableViewer));
+	    column.setEditingSupport(new PluginControllerValueEditingSupport(this.tableViewer));
 
 	    this.tableViewer.getTable().setHeaderVisible(true);
 	    this.tableViewer.getTable().setLinesVisible(true);
@@ -78,9 +80,12 @@ public class PluginControllerComposite extends Composite {
 	 * 		  that should be set
 	 */
 	public void setPluginController(final PluginController pluginController) {
+
+		
 		this.pluginController = pluginController;
 		this.pluginControllerLabelProvider.setPluginController(pluginController);
 		this.tableViewer.setInput(pluginController);
+		
 	}
 	
 	/**
@@ -93,25 +98,4 @@ public class PluginControllerComposite extends Composite {
 		return this.pluginController;
 	}
 
-	/**
-	 * Returns the {@link de.ptb.epics.eve.data.scandescription.ScanModule}.
-	 * @return the {@link de.ptb.epics.eve.data.scandescription.ScanModule}
-	 */
-	public ScanModule getScanModule() {
-		return this.scanModule;
-	}
-	
-	/**
-	 * Sets the {@link de.ptb.epics.eve.data.scandescription.ScanModule}.
-	 * 
-	 * @param scanModule the 
-	 * 		  {@link de.ptb.epics.eve.data.scandescription.ScanModule} that
-	 * 		  should be set
-	 */
-	public void setScanModule(final ScanModule scanModule) {
-		this.scanModule = scanModule;
-		if(pluginController != null) {
-			pluginController.setScanModule(scanModule);
-		}
-	}
 }

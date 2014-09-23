@@ -1,5 +1,7 @@
 package de.ptb.epics.eve.data.scandescription.axismode;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +17,11 @@ import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent
  * @author Marcus Michalsky
  * @since 1.7
  */
-public class PluginMode extends AxisMode implements IModelUpdateListener {
+public class PluginMode extends AxisMode implements IModelUpdateListener, PropertyChangeListener {
 	private PluginController pluginController;
 
+	public static final String PLUGIN_PROP = "pluginController";
+	
 	/**
 	 * @param axis the axis this mode belongs to
 	 */
@@ -38,12 +42,14 @@ public class PluginMode extends AxisMode implements IModelUpdateListener {
 	public void setPluginController(PluginController pluginController) {
 		if (this.pluginController != null) {
 			this.pluginController.removeModelUpdateListener(this);
+			this.pluginController.removePropertyChangeListener(PluginController.VALUES_PROP, this);
 		}
 		this.propertyChangeSupport
 				.firePropertyChange("plugin", this.pluginController,
 						this.pluginController = pluginController);
 		if (this.pluginController != null) {
 			this.pluginController.addModelUpdateListener(this);
+			this.pluginController.addPropertyChangeListener(PluginController.VALUES_PROP, this);
 		}
 	}
 
@@ -78,5 +84,13 @@ public class PluginMode extends AxisMode implements IModelUpdateListener {
 	 */
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+
+		this.propertyChangeSupport.firePropertyChange(PLUGIN_PROP, null, pluginController);
+		
+		
 	}
 }

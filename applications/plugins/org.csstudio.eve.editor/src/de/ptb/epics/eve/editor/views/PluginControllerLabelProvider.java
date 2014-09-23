@@ -3,6 +3,7 @@ package de.ptb.epics.eve.editor.views;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -21,6 +22,9 @@ import de.ptb.epics.eve.editor.views.motoraxisview.plugincomposite.PluginParamet
  */
 public class PluginControllerLabelProvider implements ITableLabelProvider {
 
+	private static final Logger logger = Logger
+			.getLogger(PluginControllerLabelProvider.class.getName());
+
 	private PluginController pluginController;
 
 	/**
@@ -29,6 +33,8 @@ public class PluginControllerLabelProvider implements ITableLabelProvider {
 	@Override
 	@SuppressWarnings("unchecked")
 	public Image getColumnImage(final Object entry, final int colIndex) {
+		logger.debug("getColumnImage");
+
 		final List<IModelError> modelErrors = this.pluginController
 				.getModelErrors();
 
@@ -67,6 +73,9 @@ public class PluginControllerLabelProvider implements ITableLabelProvider {
 	@SuppressWarnings("unchecked")
 	public String getColumnText(final Object entry, final int colIndex) {
 
+		if (logger.isDebugEnabled()) {
+			logger.debug("getColumnText");
+		}
 		PluginParameterValue pluginParameterValue = (PluginParameterValue) entry;
 
 		switch (colIndex) {
@@ -76,7 +85,7 @@ public class PluginControllerLabelProvider implements ITableLabelProvider {
 			if (pluginParameterValue.getPluginParameter().isDiscrete() ) {
 				return pluginParameterValue.getPluginParameter().getNameFromId(
 						pluginParameterValue.getValue());
-			}
+				}
 			else
 			   return pluginParameterValue.getValue();
 		}
