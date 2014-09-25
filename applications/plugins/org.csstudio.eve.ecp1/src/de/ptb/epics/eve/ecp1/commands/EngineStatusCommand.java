@@ -65,7 +65,7 @@ public class EngineStatusCommand implements IECP1Command {
 		dataInputStream.readInt();
 		this.gerenalTimeStamp = dataInputStream.readInt();
 		this.nanoseconds = dataInputStream.readInt();
-		repeatCount = (int) dataInputStream.readShort();
+		repeatCount = dataInputStream.readUnsignedShort();
 		if (repeatCount < 0) {
 			repeatCount = 0xffff + repeatCount;
 		}
