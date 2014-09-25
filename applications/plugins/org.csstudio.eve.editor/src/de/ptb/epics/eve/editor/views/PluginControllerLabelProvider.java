@@ -2,15 +2,14 @@ package de.ptb.epics.eve.editor.views;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
-import de.ptb.epics.eve.data.measuringstation.PluginParameter;
 import de.ptb.epics.eve.data.scandescription.PluginController;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.PluginError;
@@ -23,6 +22,9 @@ import de.ptb.epics.eve.editor.views.motoraxisview.plugincomposite.PluginParamet
  */
 public class PluginControllerLabelProvider implements ITableLabelProvider {
 
+	private static final Logger logger = Logger
+			.getLogger(PluginControllerLabelProvider.class.getName());
+
 	private PluginController pluginController;
 
 	/**
@@ -31,6 +33,8 @@ public class PluginControllerLabelProvider implements ITableLabelProvider {
 	@Override
 	@SuppressWarnings("unchecked")
 	public Image getColumnImage(final Object entry, final int colIndex) {
+		logger.debug("getColumnImage");
+
 		final List<IModelError> modelErrors = this.pluginController
 				.getModelErrors();
 
@@ -69,13 +73,21 @@ public class PluginControllerLabelProvider implements ITableLabelProvider {
 	@SuppressWarnings("unchecked")
 	public String getColumnText(final Object entry, final int colIndex) {
 
+		if (logger.isDebugEnabled()) {
+			logger.debug("getColumnText");
+		}
 		PluginParameterValue pluginParameterValue = (PluginParameterValue) entry;
 
 		switch (colIndex) {
 		case 0:
 			return pluginParameterValue.getPluginParameter().getName();
 		case 1:
-			return pluginParameterValue.getValue();
+			if (pluginParameterValue.getPluginParameter().isDiscrete() ) {
+				return pluginParameterValue.getPluginParameter().getNameFromId(
+						pluginParameterValue.getValue());
+				}
+			else
+			   return pluginParameterValue.getValue();
 		}
 		return null;
 	}
