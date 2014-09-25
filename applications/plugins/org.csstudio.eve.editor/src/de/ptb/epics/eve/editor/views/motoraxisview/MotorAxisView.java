@@ -293,7 +293,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 					this.currentAxis.getStepfunction().toString());
 			this.addMultipyComposite.setAxis(null);
 			this.fileComposite.setAxis(null);
-			this.pluginComposite.setAxis(null, null);
+			this.pluginComposite.setAxis(null);
 			this.positionlistComposite.setAxis(null);
 			
 			this.currentAxis.getMotorAxis().connect();
@@ -338,7 +338,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			break;
 		case PLUGIN:
 			this.sashForm.setMaximizedControl(pluginComposite);
-			this.pluginComposite.setAxis(currentAxis, scanModule);
+			this.pluginComposite.setAxis(currentAxis);
 			targetWidth = pluginComposite.getTargetWidth() + sashX;
 			targetHeight = pluginComposite.getTargetHeight() + sashY;
 			break;
@@ -468,6 +468,7 @@ public class MotorAxisView extends ViewPart implements IEditorView,
 			if(currentAxis != null) {
 				if (currentAxis.getStepfunction().equals(
 						Stepfunctions.getEnum(stepFunctionCombo.getText()))) {
+					
 					return;
 				}
 				currentAxis.setStepfunction(Stepfunctions.getEnum(

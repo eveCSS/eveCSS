@@ -8,7 +8,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
@@ -45,7 +44,6 @@ public class PluginComposite extends Composite {
 	private Label pluginErrorLabel;
 	private PluginControllerComposite pluginControllerComposite;
 	
-	
 	private Axis axis;
 	private ScanModule scanModule;
 	
@@ -68,15 +66,17 @@ public class PluginComposite extends Composite {
 		this.pluginLabel.setText("Plug-In:");
 		
 		this.pluginCombo = new Combo(this, SWT.READ_ONLY);
-		
-		PlugIn[] plugins = Activator.getDefault().getMeasuringStation().
-									 getPlugins().toArray(new PlugIn[0]);
+
+		// TODO: Methode List<PlugIn> = getPlugins(PluginTypes)
+		// ist besser als die untere Schleife
 		List<String> pluginNames = new ArrayList<String>();
-		for(int i = 0; i < plugins.length; ++i) {
-			if(plugins[i].getType() == PluginTypes.POSITION) {
-				pluginNames.add(plugins[i].getName());
+		for (PlugIn plugIn : Activator.getDefault().getMeasuringStation().
+									 getPlugins().toArray(new PlugIn[0])) {
+			if(plugIn.getType() == PluginTypes.POSITION) {
+				pluginNames.add(plugIn.getName());
 			}
 		}
+
 		this.pluginCombo.setItems(pluginNames.toArray(new String[0]));
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
@@ -127,13 +127,13 @@ public class PluginComposite extends Composite {
 	 * @param axis
 	 * @param scanModule
 	 */
-	public void setAxis(final Axis axis, final ScanModule scanModule) {
+	public void setAxis(final Axis axis) {
 		removeListeners();
 		
 		this.axis = axis;
-		this.scanModule = scanModule;
 		
 		if(this.axis != null) {
+			this.scanModule = axis.getScanModule();
 			if(this.axis.getPluginController() != null &&
 			   this.axis.getPluginController().getPlugin() != null) {
 				this.pluginCombo.setText(
@@ -144,13 +144,13 @@ public class PluginComposite extends Composite {
 			}
 			this.pluginControllerComposite.setPluginController(
 					axis.getPluginController());
-			pluginControllerComposite.setScanModule(scanModule);
 			
 			checkForErrors();
 			
 			this.pluginCombo.setEnabled(true);
 			this.pluginControllerComposite.setEnabled(true);
 		} else { // axis == null -> reset all
+			this.scanModule = null;
 			this.pluginCombo.deselectAll();
 			this.pluginControllerComposite.setPluginController(null);
 			this.pluginCombo.setEnabled(false);
@@ -239,16 +239,10 @@ public class PluginComposite extends Composite {
 					logger.debug("Plugin: null");
 				}
 
-				if (axis.getPluginController() == null) {
-					axis.setPluginController(new PluginController(plugin));
-				}
+				axis.setPluginController(new PluginController(plugin));
 
-				if (axis.getPluginController().getPlugin() != plugin) {
-					axis.getPluginController().setPlugin(plugin);
-				}
 				pluginControllerComposite.setPluginController(axis
 						.getPluginController());
-				pluginControllerComposite.setScanModule(scanModule);
 			}
 			checkForErrors();
 		}

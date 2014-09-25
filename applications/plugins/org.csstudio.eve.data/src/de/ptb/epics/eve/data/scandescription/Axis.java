@@ -276,7 +276,9 @@ public class Axis extends AbstractMainPhaseBehavior implements
 		if (!this.getStepfunction().equals(Stepfunctions.PLUGIN)) {
 			this.setStepfunction(Stepfunctions.PLUGIN);
 		}
+
 		((PluginMode)this.mode).setPluginController(plugin);
+
 	}
 	
 	/**
@@ -644,6 +646,9 @@ public class Axis extends AbstractMainPhaseBehavior implements
 			}
 		}
 		if (e.getSource() instanceof AxisMode) {
+			// Ticket raussuchen wo steht, das das Diskettensymbol nicht aktiviert wird
+			// um das File zu speichern (Bei known bugs?)
+			logger.debug("AxisMode changed: ");
 			updateListeners();
 		}
 	}

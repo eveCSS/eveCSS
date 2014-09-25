@@ -1,6 +1,5 @@
 package de.ptb.epics.eve.data.measuringstation;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,6 +9,7 @@ import de.ptb.epics.eve.data.PluginDataType;
  * This class represents the parameter of a plug in. 
  * 
  * @author Stephan Rehfeld <stephan.rehfel( -at )ptb.de>
+ * @author Hartmut Scherr
  *
  */
 public class PluginParameter {
@@ -87,8 +87,8 @@ public class PluginParameter {
 		}
 		else {
 			if (this.isDiscrete()) {
-				// Value ist diskrete, ersten Eintrag als default setzen
-				String[] values = this.getDiscreteValues().toArray(new String[0]);
+				// Value ist diskret, ersten ID Eintrag als default setzen
+				String[] values = this.getDiscreteIDs().toArray(new String[0]);
 				return values[0];
 			}
 			else {
@@ -239,13 +239,12 @@ public class PluginParameter {
 
 			switch (type) {
 			case AXISID:
-				// Liste der möglichen Achsen (als Ziel) generieren
-				List<Motor> motorList = plugin.getMeasuringstation().getMotors();
-				// TODO: um die ID wegschreiben zu können, ist es besser
-				// hier in die Liste die Achsen zu schreiben.
+				// Liste der möglichen Achsen als Namen generieren
 				List<String> axesList = new LinkedList<>();
-				for (Motor axis : plugin.getMeasuringstation().getMotors()) {
-					axesList.add(axis.getName());
+				for (Motor motors : plugin.getMeasuringstation().getMotors() ) {
+					for (MotorAxis axis: motors.getAxes() ) {
+						axesList.add(axis.getName());
+					}
 				}
 				return axesList;
 			case CHANNELID:
@@ -272,49 +271,88 @@ public class PluginParameter {
 				break;
 			
 			}
-			
-			StringBuffer buffer = new StringBuffer(this.values);
-			boolean escape = false;
-			
-			for(int i=0; i<buffer.length(); ++i) {
-				if(buffer.charAt(i) == '"') {
-					escape = !escape;
-				} else if(!escape && buffer.charAt(i) == ' ') {
-					buffer.deleteCharAt(i);
-					--i;
-				}
-			}
-			
-			escape = false;
-			
-			int lastIndex = 0;
-			List<String> elements = new ArrayList<String>();
-			for(int i=0; i<buffer.length(); ++i) {
-				if(buffer.charAt( i ) == '"') {
-					escape = !escape;
-				} else if(!escape && buffer.charAt(i) == ',') {
-					StringBuffer buffer2 = new StringBuffer(buffer.substring(lastIndex, i));
-					if(buffer2.charAt(0) == '"') {
-						buffer2.deleteCharAt(0);
-					}
-					if(buffer2.charAt(buffer2.length() - 1) == '"') {
-						buffer2.deleteCharAt(buffer2.length() - 1);
-					}
-					elements.add( buffer2.toString());
-					lastIndex = i + 1;
-				}
-			}
-			StringBuffer buffer2 = new StringBuffer(buffer.substring(lastIndex, buffer.length()));
-			if(buffer2.charAt( 0 ) == '"') {
-				buffer2.deleteCharAt( 0 );
-			}
-			if(buffer2.charAt( buffer2.length() - 1) == '"') {
-				buffer2.deleteCharAt(buffer2.length() - 1);
-			}
-			elements.add(buffer2.toString());
-			
-			return elements;
+			return null;
 		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns a <code>List</code> containing all valid IDs. (if the 
+	 * parameter only has discrete values)
+	 * 
+	 * @return a <code>List</code> of all possible IDs.
+	 */
+	public List<String> getDiscreteIDs() {
+		if( this.isDiscrete() ) {
+
+			switch (type) {
+			case AXISID:
+				// Liste der möglichen Achsen als IDs generieren
+				List<String> axesList = new LinkedList<>();
+				for (Motor motors : plugin.getMeasuringstation().getMotors() ) {
+					for (MotorAxis axis: motors.getAxes() ) {
+						axesList.add(axis.getID());
+					}
+				}
+				return axesList;
+			case CHANNELID:
+				break;
+			case DEVICEID:
+				break;
+			case DOUBLE:
+				break;
+			case INT:
+				break;
+			case ONOFF:
+				List<String> discrList = new LinkedList<>();
+				discrList.add("On");
+				discrList.add("Off");
+				return discrList;
+			case OPENCLOSE:
+				List<String> openList = new LinkedList<>();
+				openList.add("Open");
+				openList.add("Close");
+				return openList;
+			case STRING:
+				break;
+			default:
+				break;
+			}
+			
+			return null;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns a <code>String</code> containing the associated name of the ID.
+	 * 
+	 * @return a <code>String</code> with the name of the device.
+	 * @since 1.20
+	 */
+	public String getNameFromId(String value) {
+		
+		switch (type) {
+		case AXISID:
+			// Zu der vorhandenen ID value wird die Name der Achse zurückgegeben
+			for (Motor motors : plugin.getMeasuringstation().getMotors() ) {
+				for (MotorAxis axis: motors.getAxes() ) {
+					if (value.equals(axis.getID()))
+					   return axis.getName();
+				}
+			}
+		case CHANNELID:
+		case DEVICEID:
+		case DOUBLE:
+		case INT:
+		case ONOFF:
+		case OPENCLOSE:
+		case STRING:
+			// In allen anderen Fällen wird erstmal die ID zurückgegeben
+			return value;
+		default:
 			return null;
 		}
 	}
@@ -450,4 +488,5 @@ public class PluginParameter {
 		}
 		return true;
 	}
+
 }
