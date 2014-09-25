@@ -29,6 +29,18 @@
          id="org.csstudio.pvmanager.ca.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.csstudio.pvmanager.autocomplete.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.csstudio.pvmanager.exec.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.csstudio.pvmanager.extra.feature"
+         version="0.0.0"/>
+
    <plugin
          id="org.csstudio.csdata"
          download-size="0"

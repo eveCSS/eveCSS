@@ -17,6 +17,14 @@
       [Enter License Description here.]
    </license>
 
+   <includes
+         id="org.csstudio.boy.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.csstudio.opibuilder.feature"
+         version="0.0.0"/>
+
    <plugin
          id="de.ptb.epics.eve.data"
          download-size="0"
