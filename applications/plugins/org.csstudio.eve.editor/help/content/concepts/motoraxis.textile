@@ -21,7 +21,7 @@ p. After moving to its __start__ position it will drive to __stepcount__ equally
 
 p=. !(eveImage)../../img/concepts/MotorAxis-StepFunctions-Add-Absolute.png(Add Absolute)!
 
-p. The above mode treats each value as __absolute__. If they are treated __relative__ the next position is calculated relative to the current motor position __mPos__:
+p. The above mode treats each value as __absolute__. If they are treated __relative__ the next position is calculated relative to the motor position at the beginning of the scan module __mPos__:
 
 p=. !(eveImage)../../img/concepts/MotorAxis-StepFunctions-Add-Relative.png(Add Relative)!
 
@@ -87,7 +87,7 @@ h3(eveTopic). Example 2
 
 p. Given: a list of values "3, 1, -7, 35, 14" (relative), __mPos__=3
 
-p. Motor positions: (6, 7, 0, 35, 49)
+p. Motor positions: (6, 4, -4, 38, 17)
 
 h2(eveTopic). Plugin
 
