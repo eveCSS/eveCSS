@@ -14,8 +14,11 @@ import javafx.collections.ObservableList;
 
 import org.apache.log4j.Logger;
 
+import de.ptb.epics.eve.data.ComparisonTypes;
+import de.ptb.epics.eve.data.EventTypes;
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
+import de.ptb.epics.eve.data.measuringstation.Device;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
@@ -1411,6 +1414,26 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 			channel.setDetectorChannel(ch);
 			channel.setAverageCount(1);
 			this.add(channel);
+		}
+	}
+	
+	/**
+	 * Makes the Scanmodule Top up aware by adding the necessary redo event.
+	 * Does nothing if the given Top Up PV does not exist
+	 * 
+	 * @param measuringStation the devicxe definition containing the top up device
+	 * @since 1.21
+	 */
+	public void topUp(IMeasuringStation measuringStation, String topUpPV) {
+		for (Device dev : measuringStation.getDevices()) {
+			if (dev.getID().equals(topUpPV)) {
+				ControlEvent ce = new ControlEvent(EventTypes.MONITOR,
+						measuringStation.getEventById(dev.getID()), dev.getID());
+				ce.getLimit().setComparison(ComparisonTypes.NE);
+				ce.getLimit().setValue("decay");
+				// ((MonitorEvent)ce.getEvent()).getTypeValue().getDiscreteValues().get(0)
+				this.addRedoEvent(ce);
+			}
 		}
 	}
 	

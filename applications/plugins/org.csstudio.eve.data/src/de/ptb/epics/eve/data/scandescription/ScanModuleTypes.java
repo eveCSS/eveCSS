@@ -28,6 +28,18 @@ public enum ScanModuleTypes {
 		public String toString() {
 			return "save_channel_values";
 		}
+	},
+	
+	/** 
+	 * top up aware scan module 
+	 * 
+	 * @since 1.20
+	 */
+	TOP_UP {
+		@Override
+		public String toString() {
+			return "top_up";
+		}
 	};
 	
 	/**
@@ -41,6 +53,8 @@ public enum ScanModuleTypes {
 			return ScanModuleTypes.SAVE_AXIS_POSITIONS;
 		} else if (value.equals("save_channel_values")) {
 			return ScanModuleTypes.SAVE_CHANNEL_VALUES;
+		} else if (value.equals("top_up")) {
+			return ScanModuleTypes.TOP_UP;
 		}
 		return null;
 	}

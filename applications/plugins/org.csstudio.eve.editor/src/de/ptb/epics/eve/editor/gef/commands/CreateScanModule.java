@@ -7,6 +7,8 @@ import org.eclipse.gef.commands.Command;
 import de.ptb.epics.eve.data.scandescription.Chain;
 import de.ptb.epics.eve.data.scandescription.ScanModule;
 import de.ptb.epics.eve.data.scandescription.ScanModuleTypes;
+import de.ptb.epics.eve.editor.Activator;
+import de.ptb.epics.eve.editor.preferences.PreferenceConstants;
 
 /**
  * @author Marcus Michalsky
@@ -61,6 +63,14 @@ public class CreateScanModule extends Command {
 			this.scanModule.saveAllChannelValues(this.chain
 					.getScanDescription().getMeasuringStation());
 			break;
+		case TOP_UP:
+			name = "TOP UP";
+			this.scanModule.setType(ScanModuleTypes.CLASSIC);
+			this.scanModule.topUp(
+					this.scanModule.getChain().getScanDescription()
+							.getMeasuringStation(),
+					Activator.getDefault().getPreferenceStore()
+							.getString(PreferenceConstants.P_TOPUP_PV));
 		}
 		this.scanModule.setName(name);
 	}
