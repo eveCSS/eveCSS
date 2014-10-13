@@ -34,7 +34,7 @@ public class PVWrapper {
 	public static final String VALUE = "value";
 	
 	/** the pv status bean property */
-	public static final String STATUS = "status";
+	public static final String SEVERITY = "severity";
 	
 	/** the pv connection status bean property */
 	public static final String CONNECTION_STATUS = "isConnected";
@@ -63,7 +63,7 @@ public class PVWrapper {
 	private String pvValue;
 	
 	// the severity of the process variable (status)
-	private AlarmSeverity pvStatus;
+	private AlarmSeverity severity;
 	
 	// indicates whether the process variable is discrete
 	private boolean isDiscrete;
@@ -103,7 +103,7 @@ public class PVWrapper {
 	public PVWrapper(String pvname) {
 		this.pvName = pvname;
 		this.pvValue = "";
-		this.pvStatus = AlarmSeverity.UNDEFINED;
+		this.severity = AlarmSeverity.UNDEFINED;
 		this.isConnected = false;
 		this.isReadOnly = true;
 		this.isDiscrete = false;
@@ -240,8 +240,8 @@ public class PVWrapper {
 	 * @return the status (severity) of the process variable
 	 * @see {@link org.epics.pvmanager.data.AlarmSeverity}
 	 */
-	public AlarmSeverity getStatus() {
-		return this.pvStatus;
+	public AlarmSeverity getSeverity() {
+		return this.severity;
 	} 
 	
 	/**
@@ -376,8 +376,8 @@ public class PVWrapper {
 					@Override
 					public void run() {
 						propertyChangeSupport.firePropertyChange(
-								PVWrapper.STATUS, pvStatus,
-								pvStatus = ValueUtil.alarmOf(value)
+								PVWrapper.SEVERITY, severity,
+								severity = ValueUtil.alarmOf(value)
 										.getAlarmSeverity());
 					}
 				});
