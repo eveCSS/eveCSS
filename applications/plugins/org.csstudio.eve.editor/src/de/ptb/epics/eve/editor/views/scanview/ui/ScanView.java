@@ -1,6 +1,9 @@
 package de.ptb.epics.eve.editor.views.scanview.ui;
 
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -33,8 +36,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IPartListener;
-import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
@@ -63,7 +64,7 @@ import de.ptb.epics.eve.util.swt.TextSelectAllMouseListener;
  * @author Hartmut Scherr
  */
 public class ScanView extends ViewPart implements IEditorView,
-		ISelectionListener, IPartListener, IPropertyListener {
+		ISelectionListener, PropertyChangeListener {
 
 	/** the unique identifier of the view */
 	public static final String ID = "de.ptb.epics.eve.editor.views.ScanView";
@@ -181,9 +182,6 @@ public class ScanView extends ViewPart implements IEditorView,
 		perspectiveListener = new EditorViewPerspectiveListener(this);
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.addPerspectiveListener(perspectiveListener);
-		// listen to editor part changes, e.g. save as (title), bug #1475
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-			.getActivePage().addPartListener(this);
 
 		this.bindValues();
 	}
@@ -268,6 +266,10 @@ public class ScanView extends ViewPart implements IEditorView,
 	 * 
 	 */
 	private void setCurrentScanDescription(ScanDescription scanDescription) {
+		if (this.currentScanDescription != null) {
+			this.currentScanDescription.removePropertyChangeListener(
+					ScanDescription.FILE_NAME_PROP, this);
+		}
 		this.currentScanDescription = scanDescription;
 		if (this.currentScanDescription == null) {
 			this.setPartName("Scan View");
@@ -279,7 +281,8 @@ public class ScanView extends ViewPart implements IEditorView,
 						+ PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 								.getActivePage().getActiveEditor().getTitle());
 			}
-
+			this.currentScanDescription.addPropertyChangeListener(
+					ScanDescription.FILE_NAME_PROP, this);
 			this.top.setVisible(true);
 		}
 	}
@@ -349,55 +352,6 @@ public class ScanView extends ViewPart implements IEditorView,
 	@Override
 	public void setFocus() {
 		this.top.setFocus();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void propertyChanged(Object source, int propId) {
-		if (propId == PROP_TITLE) {
-			this.setPartName("Scan: "
-					+ PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-							.getActivePage().getActiveEditor().getTitle());
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void partActivated(IWorkbenchPart part) {
-		part.addPropertyListener(this);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void partDeactivated(IWorkbenchPart part) {
-		part.removePropertyListener(this);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void partBroughtToTop(IWorkbenchPart part) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void partOpened(IWorkbenchPart part) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void partClosed(IWorkbenchPart part) {
 	}
 
 	/**
@@ -528,6 +482,17 @@ public class ScanView extends ViewPart implements IEditorView,
 			// but before the state has to be increased to the new state
 			deviceColumnSortState = ++deviceColumnSortState % 3;
 			logger.debug("new device table sort state: " + deviceColumnSortState);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals(ScanDescription.FILE_NAME_PROP)) {
+			this.setPartName("Scan: " + e.getNewValue());
+			logger.debug("new file name: " + e.getNewValue());
 		}
 	}
 }

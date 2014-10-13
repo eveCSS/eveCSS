@@ -85,6 +85,7 @@ public class ScanDescriptionLoader {
 			throws ParserConfigurationException, SAXException, IOException {
 		this.fileToLoad = fileToLoad;
 		this.load();
+		this.scanDescription.setFileName(fileToLoad.getName());
 	}
 
 	/**
