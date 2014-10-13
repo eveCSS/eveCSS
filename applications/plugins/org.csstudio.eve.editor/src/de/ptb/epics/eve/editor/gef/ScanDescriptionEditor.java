@@ -253,6 +253,7 @@ public class ScanDescriptionEditor extends GraphicalEditorWithFlyoutPalette
 		Activator.getDefault().saveDefaults(this.scanDescription);
 		this.updatePositionCounts();
 		this.firePropertyChange(PROP_TITLE);
+		this.scanDescription.setFileName(new File(saveFileName).getName());
 	}
 	
 	/*

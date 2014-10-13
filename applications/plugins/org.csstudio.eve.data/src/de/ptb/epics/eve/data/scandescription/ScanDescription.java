@@ -51,6 +51,9 @@ public class ScanDescription implements IModelUpdateProvider,
 	/** */
 	public static final String DIRTY_PROP = "dirty";
 	
+	/** */
+	public static final String FILE_NAME_PROP = "fileName";
+	
 	private String fileName;
 	
 	// version of the scan description.
@@ -139,7 +142,9 @@ public class ScanDescription implements IModelUpdateProvider,
 	 * @param fileName the fileName to set
 	 */
 	public void setFileName(String fileName) {
-		this.fileName = fileName;
+		this.propertyChangeSupport.firePropertyChange(
+				ScanDescription.FILE_NAME_PROP, this.fileName,
+				this.fileName = fileName);
 	}
 
 	/**
