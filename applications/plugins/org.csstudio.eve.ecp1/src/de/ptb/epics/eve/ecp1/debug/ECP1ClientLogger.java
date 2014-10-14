@@ -49,11 +49,32 @@ public class ECP1ClientLogger implements IEngineStatusListener,
 	 */
 	@Override
 	public void errorOccured(Error error) {
-		LOGGER.debug(error.getErrorType() + 
+		String errorText = error.getErrorType() + 
 				" | Facility: " + error.getErrorFacility() + 
 				" | Severity: " + error.getErrorSeverity() + 
-				" | : " + error.getText()
-				);
+				" | : " + error.getText();
+		switch (error.getErrorSeverity()) {
+		case DEBUG:
+			LOGGER.debug(errorText);
+			break;
+		case ERROR:
+			LOGGER.error(errorText);
+			break;
+		case FATAL:
+			LOGGER.fatal(errorText);
+			break;
+		case INFO:
+			LOGGER.info(errorText);
+			break;
+		case MINOR:
+			LOGGER.warn(errorText);
+			break;
+		case SYSTEM:
+			LOGGER.info(errorText);
+			break;
+		default:
+			break;
+		}
 	}
 
 	/**

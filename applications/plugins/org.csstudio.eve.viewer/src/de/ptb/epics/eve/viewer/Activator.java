@@ -138,7 +138,10 @@ public class Activator extends AbstractUIPlugin {
 			this.ecp1Client.addErrorListener(ecpLogger);
 			this.ecp1Client.addMeasurementDataListener(ecpLogger);
 			this.ecp1Client.addRequestListener(ecpLogger);
-		} 
+		} else {
+			this.ecpLogger = new ECP1ClientLogger();
+			this.ecp1Client.addErrorListener(ecpLogger);
+		}
 		
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().
 			 addPerspectiveListener(this.eveViewerPerspectiveListener);
