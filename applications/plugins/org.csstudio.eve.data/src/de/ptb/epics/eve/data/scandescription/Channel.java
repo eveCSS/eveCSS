@@ -449,10 +449,12 @@ public class Channel extends AbstractMainPhaseBehavior implements
 		}
 
 		if (e.getPropertyName().equals(ScanModule.CHANNELS_PROP)) {
-			if (!((List<Channel>)e.getNewValue()).contains(this.normalizeChannel)) {
-				// normalize channel has been deleted -> remove
-				this.setNormalizeChannel(null);
+			for (Channel channel : ((List<Channel>)e.getNewValue())) {
+				if (channel.getDetectorChannel().equals(this.normalizeChannel)) {
+					return;
+				}
 			}
+			this.setNormalizeChannel(null);
 		}
 	}
 
