@@ -24,6 +24,7 @@ import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
 import de.ptb.epics.eve.data.measuringstation.event.ScanEvent;
 import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
+import de.ptb.epics.eve.data.scandescription.axismode.AxisMode;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.errors.ScanModuleError;
@@ -386,7 +387,10 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 				ScanModule.MAIN_AXIS_PROP, axis);
 		this.axes.add(axis);
 		if (axis.isMainAxis()) {
+			// should only be executed during scml load
 			this.mainAxis = axis;
+			axis.addPropertyChangeListener(
+					AddMultiplyMode.STEPCOUNT_PROP, this);
 		}
 		if (axis.getMode() instanceof AddMultiplyMode<?>) {
 			((AddMultiplyMode<?>)axis.getMode()).matchMainAxis(this.mainAxis);
@@ -477,6 +481,8 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		propertyChangeSupport.firePropertyChange("removePosAxis", axis, null);
 		
 		if (this.mainAxis != null && this.mainAxis.equals(axis)) {
+			axis.removePropertyChangeListener(AddMultiplyMode.STEPCOUNT_PROP,
+					this);
 			this.propertyChangeSupport.firePropertyChange(
 					ScanModule.MAIN_AXIS_PROP, this.mainAxis,
 					this.mainAxis = null);
