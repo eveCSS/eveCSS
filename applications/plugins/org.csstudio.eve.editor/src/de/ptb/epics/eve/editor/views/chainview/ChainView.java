@@ -376,7 +376,7 @@ public class ChainView extends ViewPart implements IEditorView,
 
 		// events tab folder contains the tabs pause, redo, break & stop
 		eventsTabFolder = new CTabFolder(this.eventsComposite, SWT.FLAT);
-		this.eventsTabFolder.setSimple(false);
+		this.eventsTabFolder.setSimple(true);
 		this.eventsTabFolder.setBorderVisible(true);
 		eventsTabFolder
 				.addSelectionListener(new EventsTabFolderSelectionListener());
