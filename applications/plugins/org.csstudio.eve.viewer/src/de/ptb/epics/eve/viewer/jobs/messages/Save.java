@@ -4,10 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -54,18 +51,12 @@ public class Save extends Job {
 		monitor.beginTask("Saving messages", this.messages.size());
 
 		BufferedWriter bufferedWriter = null;
-		Calendar calendar = Calendar.getInstance(Locale.GERMAN);
-
 		try {
 			bufferedWriter = new BufferedWriter(new FileWriter(fileName));
 
 			for (ViewerMessage msg : this.messages) {
 				monitor.subTask("writing message: " + msg.getMessage());
-				calendar.setTime(new Date(
-						msg.getTimeStamp().secPastEpoch() * 1000));
-				// EPICS vs UNIX epoch diff is 20 years
-				calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 20);
-				bufferedWriter.write(calendar.getTime().toString() + " " + "["
+				bufferedWriter.write(msg.getDate() + " " + "["
 						+ msg.getMessageType() + "] " + msg.getMessageSource()
 						+ ": " + msg.getMessage());
 				bufferedWriter.newLine();
