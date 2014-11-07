@@ -374,7 +374,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		actionsLabel.setText("Actions:");
 
 		this.actionsTabFolder = new CTabFolder(this.actionsComposite, SWT.FLAT);
-		this.actionsTabFolder.setSimple(false);
+		this.actionsTabFolder.setSimple(true);
 		this.actionsTabFolder.setBorderVisible(true);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -446,7 +446,7 @@ public class ScanModuleView extends ViewPart implements IEditorView,
 		eventLabel.setText("Events:");
 
 		eventsTabFolder = new CTabFolder(this.eventsComposite, SWT.NONE);
-		this.eventsTabFolder.setSimple(false);
+		this.eventsTabFolder.setSimple(true);
 		this.eventsTabFolder.setBorderVisible(true);
 		this.eventsTabFolderSelectionListener = new EventsTabFolderSelectionListener();
 		eventsTabFolder.addSelectionListener(eventsTabFolderSelectionListener);

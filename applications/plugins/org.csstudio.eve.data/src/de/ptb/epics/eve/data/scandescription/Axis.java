@@ -120,27 +120,30 @@ public class Axis extends AbstractMainPhaseBehavior implements
 			this.mode.removePropertyChangeListener(this);
 		}
 
-		boolean oldMainAxis = false;	// Die bisherige MainAxis Einstellung der Achse
+		boolean oldMainAxis = false; // Die bisherige MainAxis Einstellung der
+										// Achse
 		if ((this.getStepfunction() != null) && (this.isMainAxis())) {
 			oldMainAxis = true;
 		}
 
-	    boolean resetMainAxis = false;	// Flag, ob MainAxis verändert werden muss
-	   	if ((this.stepfunction != null) && !stepfunction.equals(Stepfunctions.ADD) &&
-	   			!stepfunction.equals(Stepfunctions.MULTIPLY) && oldMainAxis) {
-	   		resetMainAxis = true;
+		boolean resetMainAxis = false; // Flag, ob MainAxis verändert werden
+										// muss
+		if ((this.stepfunction != null)
+				&& !stepfunction.equals(Stepfunctions.ADD)
+				&& !stepfunction.equals(Stepfunctions.MULTIPLY) && oldMainAxis) {
+			resetMainAxis = true;
 		}
-	    
+
 		this.stepfunction = stepfunction;
 		// listener to forward mode changes to the axis (dirty state)
 		this.mode = AxisMode.newMode(stepfunction, this);
 		this.mode.addPropertyChangeListener(this);
-		
+
 		if (resetMainAxis) {
 			// zurücksetzten der MainAxis
-			this.propertyChangeSupport.firePropertyChange(AddMultiplyMode.MAIN_AXIS_PROP, this, null);
+			this.propertyChangeSupport.firePropertyChange(
+					AddMultiplyMode.MAIN_AXIS_PROP, this, null);
 		}
-		
 		updateListeners();
 	}
 

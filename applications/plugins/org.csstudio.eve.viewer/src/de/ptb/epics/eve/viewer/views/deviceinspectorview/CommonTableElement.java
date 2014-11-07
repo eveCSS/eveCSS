@@ -488,13 +488,13 @@ public class CommonTableElement {
 			if (statusVal.equals("Moving")) {
 				return Activator.getDefault().getColor("COLOR_PV_MOVING");
 			}
-			status = valuePv.getStatus();
+			status = valuePv.getSeverity();
 		} else if (property.equals("unit") && unitPv != null) {
-				status = unitPv.getStatus();
+				status = unitPv.getSeverity();
 		} else if (property.equals("goto") && gotoPv != null) {
-				status = gotoPv.getStatus();
+				status = gotoPv.getSeverity();
 		} else if (property.equals("tweakvalue") && tweakvaluePv != null) {
-				status = tweakvaluePv.getStatus();
+				status = tweakvaluePv.getSeverity();
 		} else if ((property.equals("status")) && (statusPv != null)) {
 			String statusVal = getValue("status");
 			if (statusVal.equals("Moving")) {

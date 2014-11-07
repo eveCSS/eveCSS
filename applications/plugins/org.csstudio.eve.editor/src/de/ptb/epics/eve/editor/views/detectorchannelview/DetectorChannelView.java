@@ -320,7 +320,7 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 
 		// Event Options Tab
 		eventsTabFolder = new CTabFolder(this.eventComposite, SWT.FLAT);
-		this.eventsTabFolder.setSimple(false);
+		this.eventsTabFolder.setSimple(true);
 		this.eventsTabFolder.setBorderVisible(true);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
