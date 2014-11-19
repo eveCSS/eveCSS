@@ -1,10 +1,18 @@
 package de.ptb.epics.eve.viewer.views.messagesview.ui;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import org.apache.log4j.Logger;
+import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
@@ -13,24 +21,34 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.XMLDispatcher;
-import de.ptb.epics.eve.viewer.views.messages.TypeViewerComparator;
+import de.ptb.epics.eve.viewer.views.messagesview.FilterSettings;
+import de.ptb.epics.eve.viewer.views.messagesview.LevelFilter;
+import de.ptb.epics.eve.viewer.views.messagesview.MessageFilter;
+import de.ptb.epics.eve.viewer.views.messagesview.MessageList;
+import de.ptb.epics.eve.viewer.views.messagesview.SourceFilter;
+import de.ptb.epics.eve.viewer.views.messagesview.TypeViewerComparator;
 
 /**
  * 
  * @author ?
  * @author Marcus Michalsky
  */
-public final class MessagesView extends ViewPart {
-
+public final class MessagesView extends ViewPart implements PropertyChangeListener {
+	private static final Logger LOGGER = Logger.getLogger(MessagesView.class
+			.getName());
+	
 	// the only element in this view is a table viewer for the messages
 	private TableViewer tableViewer;
 	
 	private boolean sort;
 	private TypeViewerComparator typeViewerComparator;
+	private FilterSettings filterSettings;
+	
 	private Image sortImage;
 	
 	private IMemento memento;
+	
+	private int charWidth;
 	
 	/**
 	 * {@inheritDoc}
@@ -46,7 +64,6 @@ public final class MessagesView extends ViewPart {
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-
 		this.tableViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | 
 				SWT.V_SCROLL);
 
@@ -79,27 +96,49 @@ public final class MessagesView extends ViewPart {
 		this.tableViewer.getTable().setHeaderVisible(true);
 		this.tableViewer.getTable().setLinesVisible(true);
 
-		// set provider classes which fill the tables labels and content
-		ContentProvider cp = new ContentProvider();
-		this.tableViewer.setContentProvider(cp);
+		this.tableViewer.setContentProvider(new ObservableListContentProvider());
 		this.tableViewer.setLabelProvider(new LabelProvider());
 		
-		// if a new scan arrives, old messages are removed
-		Activator.getDefault().getXMLDispatcher().addPropertyChangeListener(
-				XMLDispatcher.DEVICE_DEFINITION_PROP, cp);
-
-		// the MessageContainer is the input object of the table viewer
 		this.tableViewer.setInput(Activator.getDefault().
-				getMessagesContainer());
+				getMessageList().getList());
+		
+		Activator.getDefault().getMessageList().addPropertyChangeListener(
+				MessageList.SOURCE_MAX_WIDTH_PROP, this);
+		Activator.getDefault().getMessageList().addPropertyChangeListener(
+				MessageList.MESSAGE_MAX_WIDTH_PROP, this);
 		
 		this.sortImage = Activator.getDefault().getImageRegistry()
 				.get("SORTARROW");
 		this.sort = false;
 		this.typeViewerComparator = new TypeViewerComparator();
 		
+		this.filterSettings = new FilterSettings();
+		MessageFilter sourceFilter = new SourceFilter(this.filterSettings);
+		MessageFilter levelFilter = new LevelFilter(this.filterSettings);
+		this.tableViewer.setFilters(new ViewerFilter[] { sourceFilter,
+				levelFilter });
+		
 		this.restoreState();
+		
+		GC gc = new GC(tableViewer.getTable());
+		FontMetrics fm = gc.getFontMetrics();
+		this.charWidth = fm.getAverageCharWidth();
+	}
+	
+	/**
+	 * @return the filterSettings
+	 */
+	public FilterSettings getFilterSettings() {
+		return this.filterSettings;
 	}
 
+	/**
+	 * Refreshes the table of messages.
+	 */
+	public void refresh() {
+		this.tableViewer.refresh();
+	}
+	
 	/*
 	 * 
 	 */
@@ -132,6 +171,31 @@ public final class MessagesView extends ViewPart {
 	@Override
 	public void setFocus() {
 		this.tableViewer.getTable().setFocus();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals(MessageList.SOURCE_MAX_WIDTH_PROP)) {
+			LOGGER.debug("max width of source column changed");
+			LOGGER.debug("current width: "
+					+ this.tableViewer.getTable().getColumn(1).getWidth());
+			LOGGER.debug(((int) e.getNewValue()) * this.charWidth + 8);
+			this.tableViewer.getTable().getColumn(1)
+					.setWidth(((int) e.getNewValue()) * this.charWidth + 8);
+			//this.tableViewer.getTable().getColumn(1).pack();
+		} else if (e.getPropertyName().equals(
+				MessageList.MESSAGE_MAX_WIDTH_PROP)) {
+			LOGGER.debug("max width of message column changed");
+			LOGGER.debug("current width: "
+					+ this.tableViewer.getTable().getColumn(1).getWidth());
+			LOGGER.debug(((int) e.getNewValue()) * this.charWidth + 8);
+			this.tableViewer.getTable().getColumn(3)
+					.setWidth(((int) e.getNewValue()) * this.charWidth + 8);
+			//this.tableViewer.getTable().getColumn(3).pack();
+		}
 	}
 	
 	/* ******************************************************************** */

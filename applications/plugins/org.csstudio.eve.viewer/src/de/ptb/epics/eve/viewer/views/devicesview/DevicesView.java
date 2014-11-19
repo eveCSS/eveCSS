@@ -46,8 +46,8 @@ import de.ptb.epics.eve.viewer.MessageSource;
 import de.ptb.epics.eve.viewer.XMLDispatcher;
 import de.ptb.epics.eve.viewer.views.deviceinspectorview.DragNDropPrefix;
 import de.ptb.epics.eve.viewer.views.deviceinspectorview.ui.DeviceInspectorView;
-import de.ptb.epics.eve.viewer.views.messages.Levels;
-import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.messagesview.Levels;
+import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
 
 /**
  * <code>DevicesView</code> visualizes available 
@@ -195,7 +195,7 @@ public final class DevicesView extends ViewPart implements PropertyChangeListene
 	 * @param measuringStation
 	 */
 	public void setMeasuringStation(final IMeasuringStation measuringStation) {
-		Activator.getDefault().getMessagesContainer().addMessage(
+		Activator.getDefault().getMessageList().add(
 				new ViewerMessage(MessageSource.VIEWER, Levels.INFO, 
 						"Got new measuring station description."));
 		this.measuringStation = measuringStation;

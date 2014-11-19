@@ -13,8 +13,8 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.MessageSource;
-import de.ptb.epics.eve.viewer.views.messages.Levels;
-import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.messagesview.Levels;
+import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
 
 /**
  * 
@@ -66,7 +66,7 @@ public class AddFileToPlayListAction extends Action implements IWorkbenchAction 
 				Activator.getDefault().getEcp1Client().getPlayListController().
 					addLocalFile(fileDialog.getFilterPath() + 
 								 File.separator + names[i]);
-				Activator.getDefault().getMessagesContainer().addMessage(
+				Activator.getDefault().getMessageList().add(
 					new ViewerMessage(MessageSource.UNKNOWN, Levels.INFO, 
 							"Adding file with the name: " + names[i] + "."));
 			} catch (IOException e) {

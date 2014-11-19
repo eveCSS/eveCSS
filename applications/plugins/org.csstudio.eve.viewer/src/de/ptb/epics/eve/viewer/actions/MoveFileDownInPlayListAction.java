@@ -7,8 +7,8 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 import de.ptb.epics.eve.ecp1.client.model.PlayListEntry;
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.views.messages.Levels;
-import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.messagesview.Levels;
+import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
 import de.ptb.epics.eve.viewer.views.playlistview.PlayListView;
 
 /**
@@ -46,7 +46,7 @@ public class MoveFileDownInPlayListAction extends Action
 		TableItem[] selectedItems = tableViewer.getTable().getSelection();
 		for(int i = selectedItems.length - 1; i >= 0; --i) {
 			final PlayListEntry entry = (PlayListEntry)selectedItems[i].getData();
-			Activator.getDefault().getMessagesContainer().addMessage(
+			Activator.getDefault().getMessageList().add(
 					new ViewerMessage(Levels.INFO, 
 									  "Moving down entry:" +
 									  " id = " + entry.getId() + 

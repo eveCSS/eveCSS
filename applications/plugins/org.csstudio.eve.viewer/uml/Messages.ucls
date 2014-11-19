@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+<class-diagram version="1.1.6" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true">  
   <class id="1" language="java" 
     name="de.ptb.epics.eve.viewer.views.messagesview.ui.MessagesView.TypeColumnSelectionListener" 
@@ -35,31 +35,31 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <enumeration id="4" language="java" name="de.ptb.epics.eve.viewer.views.messages.Sources" 
+  <enumeration id="4" language="java" name="de.ptb.epics.eve.viewer.views.messagesview.Sources" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/messages/Sources.java" binary="false" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/messagesview/Sources.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="621" y="685"/>    
+    <position height="-1" width="-1" x="908" y="687"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <enumeration id="5" language="java" name="de.ptb.epics.eve.viewer.views.messages.Levels" 
+  <enumeration id="5" language="java" name="de.ptb.epics.eve.viewer.views.messagesview.Levels" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/messages/Levels.java" binary="false" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/messagesview/Levels.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="884" y="732"/>    
+    <position height="-1" width="-1" x="1219" y="741"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <class id="6" language="java" name="de.ptb.epics.eve.viewer.views.messages.ViewerMessage" 
+  <class id="6" language="java" name="de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/messages/ViewerMessage.java" binary="false" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/messagesview/ViewerMessage.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1245" y="405"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -68,10 +68,10 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="de.ptb.epics.eve.viewer.views.messages.TypeViewerComparator" 
+  <class id="7" language="java" name="de.ptb.epics.eve.viewer.views.messagesview.TypeViewerComparator" 
     project="de.ptb.epics.eve.viewer" 
-    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/messages/TypeViewerComparator.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/views/messagesview/TypeViewerComparator.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="131" y="104"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -125,25 +125,53 @@
   </class>  
   <class id="12" language="java" name="de.ptb.epics.eve.viewer.Activator" project="de.ptb.epics.eve.viewer" 
     file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/Activator.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="368" y="690"/>    
+    <position height="-1" width="-1" x="497" y="694"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <association id="13">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="14" name="listener"/>      
-      <multiplicity id="15" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="16">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="8"/>  
-  </realization>  
+  <class id="13" language="java" name="de.ptb.epics.eve.viewer.EngineErrorReader" project="de.ptb.epics.eve.viewer" 
+    file="/de.ptb.epics.eve.viewer/src/de/ptb/epics/eve/viewer/EngineErrorReader.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="129" y="700"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="de.ptb.epics.eve.ecp1.client.ECP1Client" project="de.ptb.epics.eve.ecp1" 
+    file="/de.ptb.epics.eve.ecp1/src/de/ptb/epics/eve/ecp1/client/ECP1Client.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="498" y="812"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="de.ptb.epics.eve.ecp1.client.ECP1Client.InDispatcher" 
+    project="de.ptb.epics.eve.ecp1" file="/de.ptb.epics.eve.ecp1/src/de/ptb/epics/eve/ecp1/client/ECP1Client.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="854" y="814"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="16" language="java" name="de.ptb.epics.eve.ecp1.client.interfaces.IErrorListener" 
+    project="de.ptb.epics.eve.ecp1" 
+    file="/de.ptb.epics.eve.ecp1/src/de/ptb/epics/eve/ecp1/client/interfaces/IErrorListener.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="131" y="826"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
   <association id="17">    
     <end type="SOURCE" refId="3" navigable="false">      
       <attribute id="18" name="level"/>      
@@ -153,67 +181,119 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="20">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="21" name="messageType"/>      
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="21" name="dispatchHandler"/>      
       <multiplicity id="22" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
+    <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="23">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="1"/>  
-  </nesting>  
-  <association id="24">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="25" name="plugin"/>      
-      <multiplicity id="26" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="27">    
+  <association id="23">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="28" name="messages"/>      
-      <multiplicity id="29" minimum="0" maximum="2147483647"/>    
+      <attribute id="24" name="listener"/>      
+      <multiplicity id="25" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="26">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="27" name="errorListener"/>      
+      <multiplicity id="28" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="29">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="30" name="messages"/>      
+      <multiplicity id="31" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="30">    
+  <realization id="32">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <association id="33">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="34" name="plugin"/>      
+      <multiplicity id="35" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="36">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="37" name="messagesContainer">        
+        <position height="16" width="104" x="531" y="218"/>      
+      </attribute>      
+      <multiplicity id="38" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="39">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="40" name="messageType"/>      
+      <multiplicity id="41" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="42">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="15"/>  
+  </nesting>  
+  <nesting id="43">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </nesting>  
+  <association id="44">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="45" name="ecp1Client"/>      
+      <multiplicity id="46" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="47">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="16"/>  
+  </realization>  
+  <association id="48">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="49" name="ecp1Client"/>      
+      <multiplicity id="50" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="51">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="31" name="typeViewerComparator"/>      
-      <multiplicity id="32" minimum="0" maximum="1"/>    
+      <attribute id="52" name="typeViewerComparator"/>      
+      <multiplicity id="53" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="33">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="9"/>  
-  </realization>  
-  <association id="34">    
+  <association id="54">    
     <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="35" name="messagesContainer">        
+      <attribute id="55" name="messagesContainer">        
         <position height="16" width="104" x="436" y="554"/>      
       </attribute>      
-      <multiplicity id="36" minimum="0" maximum="1">        
+      <multiplicity id="56" minimum="0" maximum="1">        
         <position height="14" width="23" x="556" y="572"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="37">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="38" name="messagesContainer">        
-        <position height="16" width="104" x="531" y="218"/>      
-      </attribute>      
-      <multiplicity id="39" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
+  <realization id="57">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="8"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

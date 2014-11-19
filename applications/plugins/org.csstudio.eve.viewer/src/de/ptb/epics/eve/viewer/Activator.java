@@ -3,6 +3,7 @@ package de.ptb.epics.eve.viewer;
 import java.io.File;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Platform;
@@ -30,7 +31,8 @@ import de.ptb.epics.eve.ecp1.debug.ECP1ClientLogger;
 import de.ptb.epics.eve.resources.init.Parameters;
 import de.ptb.epics.eve.resources.init.Startup;
 import de.ptb.epics.eve.viewer.debug.PollInQueueSize;
-import de.ptb.epics.eve.viewer.views.messages.MessagesContainer;
+import de.ptb.epics.eve.viewer.views.messagesview.IMessageList;
+import de.ptb.epics.eve.viewer.views.messagesview.MessageList;
 import de.ptb.epics.eve.viewer.views.plotview.PlotDispatcher;
 
 /**
@@ -50,10 +52,9 @@ public class Activator extends AbstractUIPlugin {
 	private WorkbenchListener workbenchListener;
 	private String defaultWindowTitle;
 	
-	private final MessagesContainer messagesContainer;
+	private final IMessageList messageList;
 	private final XMLDispatcher xmlFileDispatcher;
 	private final PlotDispatcher plotDispatcher;
-	private final EngineErrorReader engineErrorReader;
 	private final ChainStatusAnalyzer chainStatusAnalyzer;
 	private IMeasuringStation measuringStation;
 	private ColorRegistry colorreg;
@@ -87,10 +88,9 @@ public class Activator extends AbstractUIPlugin {
 			this.defaultWindowTitle = "eveCSS";
 		}
 		this.ecp1Client = new ECP1Client();
-		this.messagesContainer = new MessagesContainer();
+		this.messageList = new MessageList(Realm.getDefault());
 		this.xmlFileDispatcher = new XMLDispatcher();
 		this.plotDispatcher = new PlotDispatcher();
-		this.engineErrorReader = new EngineErrorReader();
 		this.chainStatusAnalyzer = new ChainStatusAnalyzer();
 		
 		this.eveViewerPerspectiveListener = new EveViewerPerspectiveListener();
@@ -124,7 +124,9 @@ public class Activator extends AbstractUIPlugin {
 		this.xmlFileDispatcher.addPropertyChangeListener(
 				XMLDispatcher.SCAN_DESCRIPTION_PROP, plotDispatcher);
 		this.ecp1Client.addChainStatusListener(plotDispatcher);
-		this.ecp1Client.addErrorListener(this.engineErrorReader);
+		this.ecp1Client.addErrorListener(this.messageList);
+		this.xmlFileDispatcher.addPropertyChangeListener(
+				XMLDispatcher.DEVICE_DEFINITION_PROP, this.messageList);
 		this.ecp1Client.addEngineStatusListener(this.chainStatusAnalyzer);
 		this.ecp1Client.addChainStatusListener(this.chainStatusAnalyzer);
 		this.requestProcessor = new RequestProcessor(Display.getCurrent());
@@ -262,13 +264,12 @@ public class Activator extends AbstractUIPlugin {
 	}
 	
 	/**
-	 * Returns the {@link de.ptb.epics.eve.viewer.views.messages.MessagesContainer} 
-	 * used to collect messages of several types from different sources.
 	 * 
-	 * @return the messages container of the viewer
+	 * @return
+	 * @since 1.21
 	 */
-	public MessagesContainer getMessagesContainer() {
-		return this.messagesContainer;
+	public IMessageList getMessageList() {
+		return this.messageList;
 	}
 	
 	/**

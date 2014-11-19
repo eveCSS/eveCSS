@@ -21,7 +21,7 @@ public class Clear implements IHandler {
 	 */
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		Activator.getDefault().getMessagesContainer().clear();
+		Activator.getDefault().getMessageList().clear();
 		logger.debug("clear messages");
 		return null;
 	}

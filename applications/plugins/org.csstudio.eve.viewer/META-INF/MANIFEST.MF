@@ -35,6 +35,7 @@ Import-Package: de.ptb.epics.eve.util.data,
  org.eclipse.core.databinding.beans,
  org.eclipse.core.databinding.observable.value,
  org.eclipse.jface.databinding.fieldassist,
- org.eclipse.jface.databinding.swt
+ org.eclipse.jface.databinding.swt,
+ org.eclipse.jface.databinding.viewers
 Export-Package: de.ptb.epics.eve.viewer.views.plotview
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

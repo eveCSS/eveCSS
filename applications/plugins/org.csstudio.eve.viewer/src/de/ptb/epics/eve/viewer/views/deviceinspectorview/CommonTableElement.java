@@ -20,8 +20,8 @@ import de.ptb.epics.eve.data.measuringstation.Motor;
 import de.ptb.epics.eve.data.measuringstation.MotorAxis;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.MessageSource;
-import de.ptb.epics.eve.viewer.views.messages.Levels;
-import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.messagesview.Levels;
+import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
 
 /**
  * <code>CommonTableElement</code> is an element (row entry) of the tables 
@@ -700,7 +700,7 @@ public class CommonTableElement {
 					Double.parseDouble(offsetPv.getValue()) - 
 					Double.parseDouble(valuePv.getValue());
 			MotorAxis motorAxis = (MotorAxis)device;
-			Activator.getDefault().getMessagesContainer().addMessage(
+			Activator.getDefault().getMessageList().add(
 					new ViewerMessage(MessageSource.VIEWER, 
 							Levels.INFO, "Define " + 
 							motorAxis.getName() + " from " +

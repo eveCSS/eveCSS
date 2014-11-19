@@ -1,6 +1,7 @@
 package de.ptb.epics.eve.viewer.handler.messages;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,14 +15,13 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
 
 /**
  * @author Marcus Michalsky
  * @since 1.4
  */
 public class Save implements IHandler {
-
 	private static Logger logger = Logger.getLogger(Save.class.getName());
 	
 	/**
@@ -55,8 +55,9 @@ public class Save implements IHandler {
 			}
 		}
 		
-		List<ViewerMessage> messages = Activator.getDefault().
-				getMessagesContainer().getList();
+		@SuppressWarnings("unchecked")
+		List<ViewerMessage> messages = new ArrayList<ViewerMessage>(
+				Activator.getDefault().getMessageList().getList());
 		de.ptb.epics.eve.viewer.jobs.messages.Save saveJob = 
 				new de.ptb.epics.eve.viewer.jobs.messages.Save(
 						"Save Messages to File", name, messages);

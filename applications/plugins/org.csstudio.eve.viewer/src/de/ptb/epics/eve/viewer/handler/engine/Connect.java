@@ -9,8 +9,8 @@ import org.eclipse.core.commands.ExecutionException;
 
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
-import de.ptb.epics.eve.viewer.views.messages.Levels;
-import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.messagesview.Levels;
+import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
 
 /**
  * <code>ConnectCommandHandler</code> is the default command handler of the 
@@ -45,12 +45,12 @@ public class Connect extends AbstractHandler {
 							new InetSocketAddress(engineHost, enginePort), 
 							System.getProperty("user.name")+"@"+
 								localMachine.getHostName());
-					Activator.getDefault().getMessagesContainer().addMessage(
+					Activator.getDefault().getMessageList().add(
 						new ViewerMessage(Levels.INFO, 
 							"Connection established to: " + engineHost + ":" + 
 									Integer.toString(enginePort) + "."));
 			} catch(IOException e) {
-				Activator.getDefault().getMessagesContainer().addMessage(
+				Activator.getDefault().getMessageList().add(
 						new ViewerMessage(Levels.ERROR,
 								"Cannot establish connection! "
 										+ e.getMessage() + "."));

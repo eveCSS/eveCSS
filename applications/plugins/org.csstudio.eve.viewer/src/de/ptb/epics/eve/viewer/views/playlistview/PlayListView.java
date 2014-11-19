@@ -26,8 +26,8 @@ import de.ptb.epics.eve.viewer.actions.AddFileToPlayListAction;
 import de.ptb.epics.eve.viewer.actions.MoveFileDownInPlayListAction;
 import de.ptb.epics.eve.viewer.actions.MoveFileUpInPlayListAction;
 import de.ptb.epics.eve.viewer.actions.RemoveFileFromPlayListAction;
-import de.ptb.epics.eve.viewer.views.messages.Levels;
-import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.messagesview.Levels;
+import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
 
 /**
  * <code>PlayListView</code>.
@@ -231,13 +231,13 @@ public final class PlayListView extends ViewPart
 	@Override
 	public void playListHasChanged(final IPlayListController playListController) {
 		// Message View
-		Activator.getDefault().getMessagesContainer().addMessage(
+		Activator.getDefault().getMessageList().add(
 				new ViewerMessage(MessageSource.VIEWER, Levels.INFO, 
 						"Got new play list with " + 
 						playListController.getEntries().size() + 
 						" entries."));
 		for(PlayListEntry entry : playListController.getEntries()) {
-			Activator.getDefault().getMessagesContainer().addMessage(
+			Activator.getDefault().getMessageList().add(
 					new ViewerMessage(MessageSource.VIEWER, Levels.DEBUG, 
 							"PlayListEntry: id = " + entry.getId() + 
 							" name = " + entry.getName() + 
