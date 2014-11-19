@@ -1,5 +1,6 @@
 package de.ptb.epics.eve.viewer.views.messagesview.ui;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
@@ -14,20 +15,22 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Slider;
+import org.eclipse.ui.IWorkbenchPart;
 
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.views.messages.Levels;
-import de.ptb.epics.eve.viewer.views.messages.MessagesContainer;
-import de.ptb.epics.eve.viewer.views.messages.Sources;
+import de.ptb.epics.eve.viewer.views.messagesview.FilterSettings;
+import de.ptb.epics.eve.viewer.views.messagesview.Levels;
 
 /**
  * Dialog for choosing the sources messages should be shown from.
- * Choices are {@link de.ptb.epics.eve.viewer.views.messages.Sources}.
+ * Choices are {@link de.ptb.epics.eve.viewer.views.messagesview.Sources}.
  * 
  * @author Marcus Michalsky
  * @since 1.4
  */
 public class FilterDialog extends TitleAreaDialog {
+	private static final Logger LOGGER = Logger.getLogger(FilterDialog.class
+			.getName());
 	private Button showApplicationMessagesButton;
 	private ShowApplicationMessagesButtonSelectionListener 
 			showApplicationMessagesButtonSelectionListener;
@@ -126,17 +129,20 @@ public class FilterDialog extends TitleAreaDialog {
 	 * 
 	 */
 	private void initFields() {
-		MessagesContainer messagesContainer = Activator.getDefault().
-				getMessagesContainer();
-		this.showApplicationMessages = messagesContainer.isSourceShown(
-				Sources.VIEWER);
+		IWorkbenchPart part = Activator.getDefault().getWorkbench().
+				getActiveWorkbenchWindow().getActivePage().getActivePart();
+		if (!(part instanceof MessagesView)) {
+			LOGGER.error("active part is not MessagesView!");
+			return;
+		}
+		FilterSettings filterSettings = ((MessagesView)part).getFilterSettings();
+		this.showApplicationMessages = filterSettings.isShowViewerMessages(); 
 		this.showApplicationMessagesButton.setSelection(
 				this.showApplicationMessages);
-		this.showEngineMessages = messagesContainer.isSourceShown(
-				Sources.ENGINE);
+		this.showEngineMessages = filterSettings.isShowEngineMessages();
 		this.showEngineMessagesButton.setSelection(this.showEngineMessages);
 		
-		this.level = messagesContainer.getLevel();
+		this.level = filterSettings.getMessageThreshold();
 		
 		switch(this.level) {
 		case DEBUG:
@@ -187,10 +193,10 @@ public class FilterDialog extends TitleAreaDialog {
 	}
 	
 	/**
-	 * Returns the level (as in {@link de.ptb.epics.eve.viewer.views.messages.Levels}) 
+	 * Returns the level (as in {@link de.ptb.epics.eve.viewer.views.messagesview.Levels}) 
 	 * of the dialog.
 	 * 
-	 * @return the level (as in {@link de.ptb.epics.eve.viewer.views.messages.Levels})
+	 * @return the level (as in {@link de.ptb.epics.eve.viewer.views.messagesview.Levels})
 	 */
 	public Levels getLevel() {
 		return this.level;

@@ -12,7 +12,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
 
 /**
  * 
@@ -20,7 +20,6 @@ import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
  * @since 1.4
  */
 public class Save extends Job {
-
 	private static Logger logger = Logger.getLogger(Save.class.getName());
 	
 	private String family = "file";

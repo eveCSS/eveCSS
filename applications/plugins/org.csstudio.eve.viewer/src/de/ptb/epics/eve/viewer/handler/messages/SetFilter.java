@@ -8,9 +8,7 @@ import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.views.messages.MessagesContainer;
-import de.ptb.epics.eve.viewer.views.messages.Sources;
+import de.ptb.epics.eve.viewer.views.messagesview.FilterSettings;
 import de.ptb.epics.eve.viewer.views.messagesview.ui.FilterDialog;
 import de.ptb.epics.eve.viewer.views.messagesview.ui.MessagesView;
 
@@ -33,18 +31,21 @@ public class SetFilter implements IHandler {
 						"Active part not found.");
 			return null;
 		}
+		
 		final FilterDialog messagesFilterDialog = 
 				new FilterDialog(HandlerUtil.getActivePart(event).getSite().
 						getShell());
+		final MessagesView messagesView = (MessagesView) HandlerUtil
+				.getActivePart(event);
 		messagesFilterDialog.setBlockOnOpen(true);
 		if(messagesFilterDialog.open() == TitleAreaDialog.OK) {
-			MessagesContainer messagesContainer = Activator.getDefault().
-					getMessagesContainer();
-			messagesContainer.setSource(Sources.VIEWER,
-					messagesFilterDialog.isShowApplicationMessages());
-			messagesContainer.setSource(Sources.ENGINE, 
+			FilterSettings filterSettings = messagesView.getFilterSettings();
+			filterSettings.setShowEngineMessages(
 					messagesFilterDialog.isShowEngineMessages());
-			messagesContainer.setLevel(messagesFilterDialog.getLevel());
+			filterSettings.setShowViewerMessages(
+					messagesFilterDialog.isShowApplicationMessages());
+			filterSettings.setMessageThreshold(messagesFilterDialog.getLevel());
+			messagesView.refresh();
 		} else {
 			logger.debug("Dialog canceled.");
 		}

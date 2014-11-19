@@ -8,8 +8,8 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
 import de.ptb.epics.eve.viewer.Activator;
-import de.ptb.epics.eve.viewer.views.messages.Levels;
-import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.messagesview.Levels;
+import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
 
 /**
  * <code>DisconnectCommandHandler</code> is the default command handler of the 
@@ -35,7 +35,7 @@ public class Disconnect extends AbstractHandler {
 			} catch (IOException e) {
 				logger.error(e.getMessage(), e);
 			}
-			Activator.getDefault().getMessagesContainer().addMessage(
+			Activator.getDefault().getMessageList().add(
 				new ViewerMessage(Levels.INFO, "Disconnected from Engine"));
 		}
 		return null;

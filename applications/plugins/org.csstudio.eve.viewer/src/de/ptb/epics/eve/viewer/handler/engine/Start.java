@@ -17,8 +17,8 @@ import org.eclipse.ui.handlers.IHandlerService;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.preferences.EngineExecMacros;
 import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
-import de.ptb.epics.eve.viewer.views.messages.Levels;
-import de.ptb.epics.eve.viewer.views.messages.ViewerMessage;
+import de.ptb.epics.eve.viewer.views.messagesview.Levels;
+import de.ptb.epics.eve.viewer.views.messagesview.ViewerMessage;
 
 /**
  * <code>Start</code> is the default command handler of the engine start 
@@ -75,7 +75,7 @@ public class Start extends AbstractHandler {
 				String message = 
 					"Engine not started due to empty preferences entry!";
 				logger.error(message);
-				Activator.getDefault().getMessagesContainer().addMessage(
+				Activator.getDefault().getMessageList().add(
 						new ViewerMessage(Levels.ERROR, message));
 			} else {
 				ProcessBuilder pb = new ProcessBuilder(parameters);
@@ -104,7 +104,7 @@ public class Start extends AbstractHandler {
 				String message = "started engine process at: " + engineHost +
 				"(Port: " + enginePort + ")";
 				logger.info(message);
-				Activator.getDefault().getMessagesContainer().addMessage(
+				Activator.getDefault().getMessageList().add(
 						new ViewerMessage(Levels.INFO, message));
 			}
 			

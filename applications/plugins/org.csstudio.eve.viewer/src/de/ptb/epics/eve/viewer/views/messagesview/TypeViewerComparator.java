@@ -1,4 +1,4 @@
-package de.ptb.epics.eve.viewer.views.messages;
+package de.ptb.epics.eve.viewer.views.messagesview;
 
 import org.eclipse.jface.viewers.Viewer;
 
