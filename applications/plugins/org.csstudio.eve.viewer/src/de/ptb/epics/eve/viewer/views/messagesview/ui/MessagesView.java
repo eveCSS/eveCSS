@@ -71,7 +71,7 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 		TableViewerColumn timeColumn = new TableViewerColumn(this.tableViewer,
 				SWT.LEFT);
 		timeColumn.getColumn().setText("Time");
-		timeColumn.getColumn().setWidth(180);
+		timeColumn.getColumn().setWidth(220);
 
 		// second column: source (the sender of the message)
 		TableViewerColumn sourceColumn = new TableViewerColumn(this.tableViewer, 
