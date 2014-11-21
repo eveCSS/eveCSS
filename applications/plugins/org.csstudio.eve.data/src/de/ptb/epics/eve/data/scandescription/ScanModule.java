@@ -364,6 +364,12 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * Modul.
 	 */
 	public void add(final Channel channel) {
+		for (Channel chan : this.channels) {
+			if (chan.getAbstractDevice().getID()
+					.equals(channel.getAbstractDevice().getID())) {
+				return;
+			}
+		}
 		channel.addModelUpdateListener(this);
 		this.channels.add(channel);
 		this.propertyChangeSupport.firePropertyChange(ScanModule.CHANNELS_PROP,

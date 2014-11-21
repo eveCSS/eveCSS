@@ -47,9 +47,7 @@ public class AddChannel implements IHandler {
 				DefaultsChannel defCh = Activator.getDefault().getDefaults()
 						.getChannel(detChannel.getID());
 				if (defCh != null) {
-					DefaultsManager.transferDefaults(defCh, channel, scanModule
-							.getChain().getScanDescription()
-							.getMeasuringStation());
+					DefaultsManager.transferDefaults(defCh, channel);
 				}
 			}
 			scanModule.add(channel);
