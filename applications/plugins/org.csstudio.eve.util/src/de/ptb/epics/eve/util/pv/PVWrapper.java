@@ -123,6 +123,7 @@ public class PVWrapper {
 				//new DecimalFormat("##0.00000E00", symbols));
 		
 		this.pv = PVManager.readAndWrite(channel(pvname))
+				.timeout(ofSeconds(5), "Timeout: " + this.pvName)
 				.asynchWriteAndMaxReadRate(ofMillis(this.pvUpdateInterval));
 		
 		this.readListener = new ReadListener();
@@ -339,7 +340,11 @@ public class PVWrapper {
 
 			if (pvReaderEvent.isExceptionChanged()) {
 				Exception e = pvReader.lastException();
-				LOGGER.warn(e.getMessage(), e);
+				if (e instanceof TimeoutException) {
+					LOGGER.warn(e.getMessage());
+				} else {
+					LOGGER.warn(e.getMessage(), e);
+				}
 			}
 			if (pvReaderEvent.isConnectionChanged()) {
 				Display.getDefault().asyncExec(new Runnable() {
