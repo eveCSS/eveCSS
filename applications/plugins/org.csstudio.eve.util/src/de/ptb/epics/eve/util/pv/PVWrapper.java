@@ -122,13 +122,12 @@ public class PVWrapper {
 		this.valueFormat.setNumberFormat(new PVNumberFormat("##0.00000E00"));
 				//new DecimalFormat("##0.00000E00", symbols));
 		
+		this.readListener = new ReadListener();
+		
 		this.pv = PVManager.readAndWrite(channel(pvname))
 				.timeout(ofSeconds(5), "Timeout: " + this.pvName)
+				.readListener(this.readListener)
 				.asynchWriteAndMaxReadRate(ofMillis(this.pvUpdateInterval));
-		
-		this.readListener = new ReadListener();
-		this.pv.addPVReaderListener(this.readListener);
-		
 	}
 	
 	/**
