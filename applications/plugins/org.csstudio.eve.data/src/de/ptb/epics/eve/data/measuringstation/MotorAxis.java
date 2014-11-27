@@ -536,6 +536,10 @@ public class MotorAxis extends AbstractMainPhaseDevice implements Cloneable {
 				.clone() : null);
 		motorAxis.softLowLimit = (Function) (this.softLowLimit != null ? this.softLowLimit
 				.clone() : null);
+		motorAxis.status = (Function) (this.status != null ? this.status
+				.clone() : null);
+		motorAxis.moveDone = (Function) (this.moveDone != null ? this.moveDone
+				.clone() : null);
 		motorAxis.setClassName(this.getClassName());
 		motorAxis.setTrigger((Function) (this.getTrigger() != null ? this
 				.getTrigger().clone() : null));
