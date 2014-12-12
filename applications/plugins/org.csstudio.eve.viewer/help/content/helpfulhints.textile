@@ -1,0 +1,31 @@
+h1(eveTopic). Wichtige Hinweise
+
+h2(eveTopic). Zusammenspiel EveCSS <--> Engine
+
+p. Die Oberfläche EveCSS mit ihren Fenstern EveEditor, EveEngine und EveDevice wird über das Menu EveCSS im Launcher gestartet und dient dazu Scans zu editieren, Geräteeinstellungen vorzunehmen und Scans in die Engine zu laden und dort zu steuern.
+
+p. Die Engine ist ein eigener Prozess, der auf dem Messplatzrechner läuft und der nur dazu dient die Scans auszuführen.
+
+p. Über die EngineView im EveCSS werden die Scans in der Engine gesteuert. Die EngineView dient dazu sich mit einer Engine zu verbinden, dort Scans zu starten, anzuhalten usw.
+
+p. Es können sich beliebig viele EveCSS Programme mit der Engine verbinden und sehen, was dort für ein Scan ausgeführt wird. Es können auch alle mit der Engine verbundenen Programme diese bedienen und z.B. Scans beenden.
+
+p. Sollte das EveCSS Programm mal hängen bleiben oder abstürzen, hat das erstmal nichts mit der Engine zu tun. Diese läuft unabhängig weiter und führt die geladenen Scans aus. Man kann dann einfach eveCSS nochmal starten, sich wieder mit der Engine verbinden und sieht dann, was die Engine gerade macht.
+
+
+h2(eveTopic). Anhalten von Scans
+
+p. Das Anhalten von Scans geht mit den 3 Knöpfen Stop, Skip und Halt wobei alle 3 Knöpfe unterschiedliche Bedeutungen und Funktionen haben.
+
+h3(eveTopic). Stop
+
+p. Stop beendet den aktuellen Messpunkt und hört dann mit dem Scan auf. Alle Aktionen wie z.B. auch PreScan Aktionen werden nicht mehr ausgeführt. Es werden z.B. auch keine Shutter mehr geschlossen oder Channels wieder in einen anderen Scan Mode gesetzt.
+
+h3(eveTopic). Skip
+
+p. Skip beendet das aktuelle Scan Module mit all seinen Prescan und Positioning Aktionen und macht Scan dann mit dem nächsten Scan Modul weiter.
+
+h3(eveTopic). Halt
+
+p. Halt hört mit dem Scan sofort auf und beendet noch nicht einmal wie Stop den aktuellen Messpunkt.
+

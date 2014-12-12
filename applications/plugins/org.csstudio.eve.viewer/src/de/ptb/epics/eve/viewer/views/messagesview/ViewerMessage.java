@@ -161,6 +161,6 @@ public class ViewerMessage implements Comparable<ViewerMessage> {
 	 */
 	@Override
 	public int compareTo(ViewerMessage o) {
-		return -1 * this.getDate().compareTo(o.getDate());
+		return (int)(this.getTimeStamp().cmp(o.getTimeStamp()));
 	}
 }
