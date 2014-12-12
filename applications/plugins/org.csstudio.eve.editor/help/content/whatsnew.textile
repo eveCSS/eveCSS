@@ -1,5 +1,15 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.21
+
+* [Feature] added scan module template for top up mode
+* [Feature] a channel is now automatically added if it is used as a normalize channel in saved defaults
+
+* [Bug Fix] fixed a bug where the file name did not refresh in the scan view after save as
+* [Bug Fix] fixed a bug where a normalize channel was lost after adding a new channel
+* [Bug Fix] fixed a bug where main axis adjustments were not executed after loading a SCML
+* [Bug Fix] fixed a bug where the status and moveDone PVs were lost after saving a SCML
+
 h2(eveTopic). Version 1.20
 
 * [Feature] added CSV import of motor axes position lists
@@ -7,7 +17,7 @@ h2(eveTopic). Version 1.20
 * [Feature] Discrete values options for pre- and post scans are now read from CA
 
 * [Bug Fix] fixed a bug where the ScanView did not refresh after save as...
-* [Bug Fix] fixed a bug where loading motor axes with certain step functions throwed an Exception
+* [Bug Fix] fixed a bug where loading motor axes with certain step functions threw an Exception
 
 h2(eveTopic). Version 1.19
 

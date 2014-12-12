@@ -1,5 +1,11 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.21
+
+* [Bug Fix] removed performance issues in the messages View
+* [Bug Fix] removed a bug where the epics severity did not refresh properly
+* [Bug Fix] fixed time differences when saving the contents of the messages log to file
+
 h2(eveTopic). Version 1.20
 
 * [Feature] The Repeat Count of a scan is now modifiable

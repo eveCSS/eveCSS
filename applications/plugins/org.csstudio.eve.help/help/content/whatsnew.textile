@@ -1,5 +1,9 @@
 h1(eveTopic). Release Notes
 
+h2(eveTopic). Version 1.21
+
+* [Feature] eveCSS is now based on CSS 3.3.9
+
 h2(eveTopic). Version 1.20
 
 * [Feature] new template files
