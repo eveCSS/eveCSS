@@ -37,4 +37,10 @@ p. Wenn man bei der Verwendung von Monitored Devices nicht aufpasst, erzeugt man
 Auch die Verwendung von "used in scan" kann schnell zuviele Monitore setzen, wenn im Scan Axis Positions und/oder Channel Values weggeschrieben werden. Dadurch werden nämlich fast alle Geräte im Scan genutzt und somit werden dann auch zu diesen Geräten die Monitore gesetzt.
 
 Am sparsamsten ist es sich zu überlegen, welche Monitore einen wirklich interessieren und diese selbst auszuwählen über den edit Button.
+
+h2. Save Motor Positions
+
+p. Wenn man in einer Motor Achse den Plugin Type __MotionDisabled__ auswählt, so wird für diese Achse nur die Motorposition weggeschrieben ohne Positionierung.
+
+Wichtig: Die Achse __Counter__ nutzt für jedes Scan Modul einen separaten Counter und steht deswegen in dem ScanModul __SaveMotorPositions__ immer auf 0. Damit kann der __Counter__ auch weggelassen werden.
  
