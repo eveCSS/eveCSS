@@ -1,9 +1,6 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview.detectorchannelcomposite;
 
-import org.eclipse.jface.viewers.StructuredSelection;
-
 import de.ptb.epics.eve.data.scandescription.ScanModule;
-import de.ptb.epics.eve.data.scandescription.updatenotification.ModelUpdateEvent;
 import de.ptb.epics.eve.editor.views.scanmoduleview.CompositeContentProvider;
 
 /**
@@ -13,17 +10,6 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.CompositeContentProvider;
  */
 public class ContentProvider extends CompositeContentProvider {
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
-		super.updateEvent(modelUpdateEvent);
-		this.getTableViewer().setSelection(
-				new StructuredSelection(this.getScanModule().getChannels()[this
-						.getScanModule().getChannels().length - 1]), true);
-	}
-	
 	/**
 	 * {@inheritDoc}
 	 */
