@@ -22,9 +22,12 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.swt.custom.CTabFolder;
@@ -78,6 +81,8 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	 */
 	public static final String ID = "de.ptb.epics.eve.editor.views.DetectorChannelView";
 
+	private static final String MEMENTO_EVENTS_EXPANDED = "eventsExpanded";
+	
 	// logging
 	private static final Logger LOGGER = Logger
 			.getLogger(DetectorChannelView.class.getName());
@@ -159,6 +164,17 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 
 	private EditorViewPerspectiveListener editorViewPerspectiveListener;
 
+	private IMemento memento;
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		this.memento = memento;
+		super.init(site, memento);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -340,11 +356,13 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 
 		// expand item (Events)
 		this.eventExpandItem = new ExpandItem(this.bar, SWT.NONE, 0);
-		this.eventExpandItem.setText("Event options");
+		this.eventExpandItem.setText("Events");
 		this.eventExpandItem.setHeight(this.eventComposite.computeSize(
 				SWT.DEFAULT, SWT.DEFAULT).y);
 		this.eventExpandItem.setControl(this.eventComposite);
-
+		
+		this.eventsTabFolder.setSelection(this.redoEventTabItem);
+		
 		this.sc.setMinSize(this.top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
 		top.setVisible(false);
@@ -364,8 +382,10 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 				this);
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.addPerspectiveListener(this.editorViewPerspectiveListener);
-
+		
 		this.bindValues();
+		
+		this.loadState();
 	}
 
 	// ************************************************************************
@@ -470,6 +490,25 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void saveState(IMemento memento) {
+		memento.putBoolean(MEMENTO_EVENTS_EXPANDED,
+				this.eventExpandItem.getExpanded());
+		super.saveState(memento);
+	}
+	
+	private void loadState() {
+		if (this.memento.getBoolean(MEMENTO_EVENTS_EXPANDED) != null) {
+			this.eventExpandItem.setExpanded(memento
+					.getBoolean(MEMENTO_EVENTS_EXPANDED));
+		} else {
+			this.eventExpandItem.setExpanded(true);
+		}
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
