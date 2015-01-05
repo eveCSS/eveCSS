@@ -9,7 +9,7 @@ import de.ptb.epics.eve.editor.views.scanmoduleview.CompositeContentProvider;
  * @see de.ptb.epics.eve.editor.views.scanmoduleview.CompositeContentProvider
  */
 public class ContentProvider extends CompositeContentProvider {
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
