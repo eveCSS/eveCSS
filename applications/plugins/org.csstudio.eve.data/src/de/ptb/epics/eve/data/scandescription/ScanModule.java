@@ -27,7 +27,6 @@ import de.ptb.epics.eve.data.measuringstation.event.DetectorEvent;
 import de.ptb.epics.eve.data.measuringstation.event.ScanEvent;
 import de.ptb.epics.eve.data.measuringstation.event.ScheduleEvent;
 import de.ptb.epics.eve.data.scandescription.axismode.AddMultiplyMode;
-import de.ptb.epics.eve.data.scandescription.axismode.AxisMode;
 import de.ptb.epics.eve.data.scandescription.errors.IModelError;
 import de.ptb.epics.eve.data.scandescription.errors.IModelErrorProvider;
 import de.ptb.epics.eve.data.scandescription.errors.ScanModuleError;
@@ -139,7 +138,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	private ObservableList<Channel> channels;
 	
 	// a list containing all axes
-	private List<Axis> axes;
+	private ObservableList<Axis> axes;
 	
 	// indicates whether an axis in the scan module is set as main axis
 	private Axis mainAxis;
@@ -205,7 +204,7 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 		this.prescans = new ArrayList<Prescan>();
 		this.postscans = new ArrayList<Postscan>();
 		this.channels = FXCollections.observableList(new ArrayList<Channel>());
-		this.axes = new ArrayList<Axis>();
+		this.axes = FXCollections.observableList(new ArrayList<Axis>());
 		this.mainAxis = null;
 		this.plotWindows = new ArrayList<PlotWindow>();
 		this.valueCount = 1;
@@ -264,6 +263,33 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 										+ ch.getDetectorChannel().getName() 
 										+ "' was added to scan module '" 
 										+ ch.getScanModule().getName() + "'");
+							}
+						}
+					}
+				}
+			});
+			
+			this.addAxisChangeListener(new ListChangeListener<Axis>() {
+				@Override
+				public void onChanged(
+						javafx.collections.ListChangeListener.Change<? extends Axis> c) {
+					while (c.next()) {
+						if (c.wasPermutated()) {
+							logger.debug("axes permutated");
+						} else if (c.wasUpdated()) {
+							logger.debug("axis updated");
+						} else {
+							for (Axis axis : c.getRemoved()) {
+								logger.debug("axis '"
+										+ axis.getMotorAxis().getName()
+										+ "' was removed from scan module '"
+										+ axis.getScanModule().getName() + "'");
+							}
+							for (Axis axis : c.getAddedSubList()) {
+								logger.debug("axis '"
+										+ axis.getMotorAxis().getName()
+										+ "' was added to scan module '"
+										+ axis.getScanModule().getName() + "'");
 							}
 						}
 					}
@@ -1605,10 +1631,41 @@ public class ScanModule implements IModelUpdateListener, IModelUpdateProvider,
 	 * @param listener the list change listener
 	 * @since 1.19
 	 * @author Marcus Michalsky
+	 * @see {@link javafx.collections.ObservableList}
 	 */
 	public void removeChannelChangeListener(ListChangeListener<? super Channel> 
 			listener) {
 		this.channels.removeListener(listener);
+	}
+	
+	/**
+	 * Adds an axes list change listener.
+	 * <p>
+	 * A change can be one of the following:
+	 * <ul>
+	 * 	<li>an axis was updated</li>
+	 *  <li>one or more axes have been added</li>
+	 *  <li>one or more axes have been removed</li>
+	 * </ul>
+	 * @param listener the listener to add
+	 * @since 1.22
+	 * @author Marcus Michalsky
+	 * @see {@link javafx.collections.ObservableList}
+	 */
+	public void addAxisChangeListener(ListChangeListener<? super Axis> listener) {
+		this.axes.addListener(listener);
+	}
+	
+	/**
+	 * Removes an axes list change listener.
+	 * 
+	 * @param listener the listener to remove
+	 * @since 1.22
+	 * @author Marcus Michalsky
+	 * @see {@link javafx.collections.ObservableList}
+	 */
+	public void removeAxisChangeListener(ListChangeListener<? super Axis> listener) {
+		this.axes.removeListener(listener);
 	}
 	
 	private void registerEventValidProperty(ControlEvent controlEvent) {
