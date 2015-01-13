@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
@@ -17,18 +18,19 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.ui.dialogs.SelectionDialog;
 
 import de.ptb.epics.eve.data.measuringstation.Detector;
 import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
@@ -45,7 +47,7 @@ import de.ptb.epics.eve.editor.Activator;
  * @author Hartmut Scherr
  * @since 1.14
  */
-public class MonitorOptionsDialog extends SelectionDialog {
+public class MonitorOptionsDialog extends Dialog {
 	private static Logger LOGGER = 
 			Logger.getLogger(MonitorOptionsDialog.class.getName());
 
@@ -55,14 +57,18 @@ public class MonitorOptionsDialog extends SelectionDialog {
 	// tree viewer containing the device definition
 	private TreeViewer treeViewer;
 	private TreeViewerSelectionChangedListener treeViewerSelectionChangedListener;
+	private static final int TREEVIEWER_SASH_WEIGHT = 1;
 	
 	// table viewer showing options of selected devices
 	private TableViewer optionsTable;
 	private TableViewerContentProvider optionsTableContentProvider;
-
+	private static final int TABLEVIEWER_SASH_WEIGHT = 2;
+	
 	// List of abstract devices currently selected in tree viewer
 	// (where options are extracted from and shown in table)
 	private List<AbstractDevice> tableDevices;
+	
+	private SelectState selectState;
 	
 	private Image ascending;
 	private Image descending;
@@ -87,6 +93,7 @@ public class MonitorOptionsDialog extends SelectionDialog {
 			final ScanDescription scanDescription) {
 		super(shell);
 		this.scanDescription = scanDescription;
+		this.selectState = SelectState.NONE;
 	}
 
 	/**
@@ -95,26 +102,35 @@ public class MonitorOptionsDialog extends SelectionDialog {
 	protected Control createDialogArea(final Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
 
-		Composite container = new Composite(area, SWT.NONE);
-		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		container.setLayoutData(gridData);
-
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 2;
-		container.setLayout(gridLayout);
-
+		SashForm sashForm = new SashForm(area, SWT.HORIZONTAL | SWT.SMOOTH);
+		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true,
+				true);
+		sashForm.setLayoutData(gridData);
+		
 		measuringStation = Activator.getDefault().getDeviceDefinition();
-
 		this.tableDevices = new ArrayList<AbstractDevice>();
 		
-		this.createTreeViewer(container);
-		this.createTableViewer(container);
+		Composite treeComposite = new Composite(sashForm, SWT.NONE);
+		treeComposite.setLayout(new FillLayout());
+		this.createTreeViewer(treeComposite);
+		
+		Composite tableComposite = new Composite(sashForm, SWT.NONE);
+		tableComposite.setLayout(new FillLayout());
+		this.createTableViewer(tableComposite);
+		
+		sashForm.setWeights(new int[] {
+				MonitorOptionsDialog.TREEVIEWER_SASH_WEIGHT,
+				MonitorOptionsDialog.TABLEVIEWER_SASH_WEIGHT });
 		
 		return area;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Point getInitialSize() {
+		return new Point(800, 600);
 	}
 	
 	/**
@@ -135,37 +151,22 @@ public class MonitorOptionsDialog extends SelectionDialog {
 	
 	private void createTreeViewer(Composite parent) {
 		treeViewer = new TreeViewer(parent);
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		treeViewer.getTree().setLayoutData(gridData);
-		
 		treeViewer.setContentProvider(new TreeViewerContentProvider());
 		treeViewer.setLabelProvider(new TreeViewerLabelProvider());
 		treeViewer.setAutoExpandLevel(1);
-
 		treeViewer.setInput(measuringStation);
 	}
 	
 	private void createTableViewer(Composite parent) {
 		this.optionsTable = new TableViewer(parent);
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		this.optionsTable.getTable().setLayoutData(gridData);
 		this.optionsTable.getTable().setHeaderVisible(true);
 		this.optionsTable.getTable().setLinesVisible(true);
-		
 		this.optionsTableContentProvider = new TableViewerContentProvider();
 		this.optionsTable.setContentProvider(optionsTableContentProvider);
 		
-		this.optionsTable.setInput(this.tableDevices);
-		
 		createColumns(parent, optionsTable);
+		
+		this.optionsTable.setInput(this.tableDevices);
 		
 		// for sorting
 		ascending = de.ptb.epics.eve.util.Activator.getDefault()
@@ -182,7 +183,7 @@ public class MonitorOptionsDialog extends SelectionDialog {
 		treeViewer.addSelectionChangedListener(
 				treeViewerSelectionChangedListener);
 	}
-
+	
 	/*
 	 * helper for createPartControl
 	 */
@@ -209,8 +210,33 @@ public class MonitorOptionsDialog extends SelectionDialog {
 				}
 			}
 		});
+		selColumn.getColumn().setAlignment(SWT.CENTER);
 		selColumn.setEditingSupport(new SelColumnEditingSupport(
 				viewer, scanDescription));
+		selColumn.getColumn().addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				for (AbstractDevice device : tableDevices) {
+					for (Option o : device.getOptions()) {
+						switch (selectState) {
+						case NONE:
+							if (!scanDescription.getMonitors().contains(o)) {
+								scanDescription.addMonitor(o);
+							}
+							break;
+						case ALL:
+							if (scanDescription.getMonitors().contains(o)) {
+								scanDescription.removeMonitor(o);
+							}
+							break;
+						}
+					}
+				}
+				selectState = SelectState.values()[(selectState.ordinal() + 1) % 2];
+				LOGGER.debug("Select State: " + selectState.toString());
+				viewer.refresh();
+			}
+		});
 		
 		final TableViewerColumn optionViewerColumn = 
 				new TableViewerColumn(viewer, SWT.NONE);
@@ -314,6 +340,7 @@ public class MonitorOptionsDialog extends SelectionDialog {
 				}
 			}
 			optionsTable.setInput(tableDevices);
+			selectState = SelectState.NONE;
 		}
 	}
 	
@@ -323,6 +350,7 @@ public class MonitorOptionsDialog extends SelectionDialog {
 	 * @since 1.16
 	 */
 	class OptionsTableOptionNameColumnSelectionListener implements SelectionListener {
+		// TODO: extract common functionality to remove redundant code, see #1795
 		
 		/**
 		 * {@inheritDoc}
@@ -376,6 +404,7 @@ public class MonitorOptionsDialog extends SelectionDialog {
 	 * @since 1.16
 	 */
 	class OptionsTableDeviceNameColumnSelectionListener implements SelectionListener {
+		// TODO: extract common functionality to remove redundant code, see #1795
 		
 		/**
 		 * {@inheritDoc}

@@ -14,7 +14,6 @@ import de.ptb.epics.eve.data.scandescription.ScanDescription;
  * @since 1.14
  */
 public class SelColumnEditingSupport extends EditingSupport {
-
 	private TableViewer viewer;
 	private ScanDescription scanDescription;
 	
@@ -24,43 +23,42 @@ public class SelColumnEditingSupport extends EditingSupport {
 		this.scanDescription = scanDescription;
 	}
 	
-	@Override
-	protected CellEditor getCellEditor(Object element) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected boolean canEdit(Object element) {
-
 		final Option option = (Option)element;
-		
 		if (scanDescription.getMonitors().contains(option)) {
-			// Option wird schon gemonitort
 			scanDescription.removeMonitor(option);
-		}
-		else {
+		} else {
 			scanDescription.addMonitor(option);
 		}
-		// Tabelle muss aktualisiert werden
-		viewer.refresh();
-		// durch update Event wird registriert, dass der
-		// Scan geändert wurde
+		viewer.update(element, null);
 		scanDescription.updateEvent(null);
-		
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected Object getValue(Object element) {
-		// TODO Auto-generated method stub
+	protected CellEditor getCellEditor(Object element) {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected void setValue(Object element, Object value) {
-		// TODO Auto-generated method stub
-
+	protected Object getValue(Object element) {
+		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void setValue(Object element, Object value) {
+	}
 }

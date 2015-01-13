@@ -28,6 +28,8 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -190,7 +192,6 @@ public class ScanView extends ViewPart implements IEditorView,
 		this.monitorOptionsTable = new TableViewer(parent, SWT.BORDER);
 		this.monitorOptionsTable.getTable().setHeaderVisible(true);
 		this.monitorOptionsTable.getTable().setLinesVisible(true);
-		
 		this.optionColumnComparator = new OptionColumnComparator();
 		this.deviceColumnComparator = new DeviceColumnComparator();
 		this.optionColumnSortState = 0;
@@ -269,6 +270,8 @@ public class ScanView extends ViewPart implements IEditorView,
 		if (this.currentScanDescription != null) {
 			this.currentScanDescription.removePropertyChangeListener(
 					ScanDescription.FILE_NAME_PROP, this);
+			this.currentScanDescription.removePropertyChangeListener(
+					ScanDescription.MONITOR_OPTIONS_LIST_PROP, this);
 		}
 		this.currentScanDescription = scanDescription;
 		if (this.currentScanDescription == null) {
@@ -283,6 +286,8 @@ public class ScanView extends ViewPart implements IEditorView,
 			}
 			this.currentScanDescription.addPropertyChangeListener(
 					ScanDescription.FILE_NAME_PROP, this);
+			this.currentScanDescription.addPropertyChangeListener(
+					ScanDescription.MONITOR_OPTIONS_LIST_PROP, this);
 			this.top.setVisible(true);
 		}
 	}
@@ -493,6 +498,30 @@ public class ScanView extends ViewPart implements IEditorView,
 		if (e.getPropertyName().equals(ScanDescription.FILE_NAME_PROP)) {
 			this.setPartName("Scan: " + e.getNewValue());
 			logger.debug("new file name: " + e.getNewValue());
+		} else if (e.getPropertyName().equals(
+				ScanDescription.MONITOR_OPTIONS_LIST_PROP)) {
+			GC gc = new GC(this.monitorOptionsTable.getTable());
+			FontMetrics fm = gc.getFontMetrics();
+			final int avgCharWidth = fm.getAverageCharWidth();
+			final int charWidthTolerance = 4;
+			int optionColumnWidth = 120;
+			int deviceColumnWidth = 120;
+			for (Option o : this.currentScanDescription.getMonitors()) {
+				int deviceNameWidth = (o.getParent().getName().length() 
+						+ charWidthTolerance) * avgCharWidth;
+				if (deviceNameWidth > deviceColumnWidth) {
+					deviceColumnWidth = deviceNameWidth;
+				}
+				int optionNameWidth = (o.getName().length() + charWidthTolerance)
+						* avgCharWidth;
+				if (optionNameWidth > optionColumnWidth) {
+					optionColumnWidth = optionNameWidth;
+				}
+			}
+			this.monitorOptionsTable.getTable().getColumn(1)
+					.setWidth(optionColumnWidth);
+			this.monitorOptionsTable.getTable().getColumn(2)
+					.setWidth(deviceColumnWidth);
 		}
 	}
 }
