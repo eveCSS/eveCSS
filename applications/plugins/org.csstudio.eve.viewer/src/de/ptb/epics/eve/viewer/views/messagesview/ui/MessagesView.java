@@ -9,11 +9,11 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
+import de.ptb.epics.eve.util.swt.FontHelper;
 import de.ptb.epics.eve.viewer.Activator;
 import de.ptb.epics.eve.viewer.views.messagesview.FilterSettings;
 import de.ptb.epics.eve.viewer.views.messagesview.LevelFilter;
@@ -35,8 +35,6 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 	private TableViewer tableViewer;
 	
 	private FilterSettings filterSettings;
-	
-	private int charWidth;
 	
 	/**
 	 * {@inheritDoc}
@@ -93,10 +91,6 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 				levelFilter });
 		
 		this.tableViewer.setComparator(new TimeViewerComparator());
-		
-		GC gc = new GC(tableViewer.getTable());
-		FontMetrics fm = gc.getFontMetrics();
-		this.charWidth = fm.getAverageCharWidth();
 	}
 	
 	/**
@@ -127,22 +121,26 @@ public final class MessagesView extends ViewPart implements PropertyChangeListen
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
 		if (e.getPropertyName().equals(MessageList.SOURCE_MAX_WIDTH_PROP)) {
+			int charWidth = FontHelper.getCharWidth(
+					new GC(tableViewer.getTable()), Activator.getDefault()
+							.getMessageList().getSourceString());
 			LOGGER.debug("max width of source column changed");
 			LOGGER.debug("current width: "
-					+ this.tableViewer.getTable().getColumn(1).getWidth());
-			LOGGER.debug(((int) e.getNewValue()) * this.charWidth + 8);
+					+ this.tableViewer.getTable().getColumn(1).getWidth() + 
+					", new width: " + charWidth);
 			this.tableViewer.getTable().getColumn(1)
-					.setWidth(((int) e.getNewValue()) * this.charWidth + 8);
-			//this.tableViewer.getTable().getColumn(1).pack();
+					.setWidth(charWidth + FontHelper.MARGIN_WIDTH);
 		} else if (e.getPropertyName().equals(
 				MessageList.MESSAGE_MAX_WIDTH_PROP)) {
+			int charWidth = FontHelper.getCharWidth(
+					new GC(tableViewer.getTable()), Activator.getDefault()
+							.getMessageList().getMessageString());
 			LOGGER.debug("max width of message column changed");
 			LOGGER.debug("current width: "
-					+ this.tableViewer.getTable().getColumn(1).getWidth());
-			LOGGER.debug(((int) e.getNewValue()) * this.charWidth + 8);
+					+ this.tableViewer.getTable().getColumn(1).getWidth() + 
+					", new width: " + charWidth);
 			this.tableViewer.getTable().getColumn(3)
-					.setWidth(((int) e.getNewValue()) * this.charWidth + 8);
-			//this.tableViewer.getTable().getColumn(3).pack();
+					.setWidth(charWidth + FontHelper.MARGIN_WIDTH);
 		}
 	}
 }

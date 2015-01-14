@@ -1,6 +1,5 @@
 package de.ptb.epics.eve.editor.views.scanview.ui;
 
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -28,7 +27,6 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
@@ -57,6 +55,7 @@ import de.ptb.epics.eve.editor.views.IEditorView;
 import de.ptb.epics.eve.editor.views.scanview.DeviceColumnComparator;
 import de.ptb.epics.eve.editor.views.scanview.OptionColumnComparator;
 import de.ptb.epics.eve.editor.views.scanview.RepeatCountValidator;
+import de.ptb.epics.eve.util.swt.FontHelper;
 import de.ptb.epics.eve.util.swt.TextSelectAllFocusListener;
 import de.ptb.epics.eve.util.swt.TextSelectAllMouseListener;
 
@@ -288,6 +287,7 @@ public class ScanView extends ViewPart implements IEditorView,
 					ScanDescription.FILE_NAME_PROP, this);
 			this.currentScanDescription.addPropertyChangeListener(
 					ScanDescription.MONITOR_OPTIONS_LIST_PROP, this);
+			this.adjustColumnWidths();
 			this.top.setVisible(true);
 		}
 	}
@@ -500,28 +500,29 @@ public class ScanView extends ViewPart implements IEditorView,
 			logger.debug("new file name: " + e.getNewValue());
 		} else if (e.getPropertyName().equals(
 				ScanDescription.MONITOR_OPTIONS_LIST_PROP)) {
-			GC gc = new GC(this.monitorOptionsTable.getTable());
-			FontMetrics fm = gc.getFontMetrics();
-			final int avgCharWidth = fm.getAverageCharWidth();
-			final int charWidthTolerance = 4;
-			int optionColumnWidth = 120;
-			int deviceColumnWidth = 120;
-			for (Option o : this.currentScanDescription.getMonitors()) {
-				int deviceNameWidth = (o.getParent().getName().length() 
-						+ charWidthTolerance) * avgCharWidth;
-				if (deviceNameWidth > deviceColumnWidth) {
-					deviceColumnWidth = deviceNameWidth;
-				}
-				int optionNameWidth = (o.getName().length() + charWidthTolerance)
-						* avgCharWidth;
-				if (optionNameWidth > optionColumnWidth) {
-					optionColumnWidth = optionNameWidth;
-				}
-			}
-			this.monitorOptionsTable.getTable().getColumn(1)
-					.setWidth(optionColumnWidth);
-			this.monitorOptionsTable.getTable().getColumn(2)
-					.setWidth(deviceColumnWidth);
+			this.adjustColumnWidths();
 		}
+	}
+	
+	private void adjustColumnWidths() {
+		GC gc = new GC(this.monitorOptionsTable.getTable());
+		int optionColumnWidth = 120;
+		int deviceColumnWidth = 120;
+		for (Option o : this.currentScanDescription.getMonitors()) {
+			int deviceNameWidth = FontHelper.getCharWidth(gc, o.getParent()
+					.getName()) + FontHelper.MARGIN_WIDTH;
+			if (deviceNameWidth > deviceColumnWidth) {
+				deviceColumnWidth = deviceNameWidth;
+			}
+			int optionNameWidth = FontHelper.getCharWidth(gc, o.getName())
+					+ FontHelper.MARGIN_WIDTH;
+			if (optionNameWidth > optionColumnWidth) {
+				optionColumnWidth = optionNameWidth;
+			}
+		}
+		this.monitorOptionsTable.getTable().getColumn(1)
+				.setWidth(optionColumnWidth);
+		this.monitorOptionsTable.getTable().getColumn(2)
+				.setWidth(deviceColumnWidth);
 	}
 }

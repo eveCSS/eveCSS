@@ -6,12 +6,12 @@ import java.util.List;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Table;
 
 import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.Option;
+import de.ptb.epics.eve.util.swt.FontHelper;
 
 /**
  * @author Marcus Michalsky
@@ -46,23 +46,19 @@ public class TableViewerContentProvider implements IStructuredContentProvider {
 		if (devices == null) {
 			return;
 		}
-		
 		Table table = ((TableViewer)viewer).getTable();
 		GC gc = new GC(table);
-		FontMetrics fm = gc.getFontMetrics();
-		final int avgCharWidth = fm.getAverageCharWidth();
-		final int charWidthTolerance = 4;
 		int optionColumnWidth = 120;
 		int deviceColumnWidth = 120;
 		for (AbstractDevice device : devices) {
-			int deviceNameWidth = (device.getName().length() + 
-					charWidthTolerance) * avgCharWidth;
+			int deviceNameWidth = FontHelper.getCharWidth(gc, device.getName())
+					+ FontHelper.MARGIN_WIDTH;
 			if (deviceNameWidth > deviceColumnWidth) {
 				deviceColumnWidth = deviceNameWidth;
 			}
 			for (Option o : device.getOptions()) {
-				int optionNameWidth = (o.getName().length() + charWidthTolerance)
-						* avgCharWidth;
+				int optionNameWidth = FontHelper.getCharWidth(gc, o.getName())
+						+ FontHelper.MARGIN_WIDTH;
 				if (optionNameWidth > optionColumnWidth) {
 					optionColumnWidth = optionNameWidth;
 				}

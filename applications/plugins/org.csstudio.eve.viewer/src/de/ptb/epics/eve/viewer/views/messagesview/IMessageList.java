@@ -34,6 +34,20 @@ public interface IMessageList extends IErrorListener, PropertyChangeListener {
 	public abstract void clear();
 
 	/**
+	 * Returns the maximum width source of the list.
+	 * @return the maximum width source of the list
+	 * @since 1.22
+	 */
+	public abstract String getMessageString();
+
+	/**
+	 * Returns the maximum width message of the list.
+	 * @return the maximum width message of the list
+	 * @since 1.22
+	 */
+	public abstract String getSourceString();
+	
+	/**
 	 * @see 
 	 */
 	public abstract void addPropertyChangeListener(String property, 

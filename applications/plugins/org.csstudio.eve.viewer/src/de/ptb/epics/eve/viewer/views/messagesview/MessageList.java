@@ -33,6 +33,9 @@ public class MessageList implements IMessageList {
 	
 	private int sourceMaxWidth;
 	private int messageMaxWidth;
+	private String sourceMaxWidthString;
+	private String messageMaxWidthString;
+	
 	
 	private PropertyChangeSupport propertyChangeSupport;
 	
@@ -47,6 +50,8 @@ public class MessageList implements IMessageList {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.sourceMaxWidth = MessageList.SOURCE_MAX_WIDTH_DEFAULT;
 		this.messageMaxWidth = MessageList.MESSAGE_MAX_WIDTH_DEFAULT;
+		this.sourceMaxWidthString = "";
+		this.messageMaxWidthString = "";
 	}
 	
 	/**
@@ -68,6 +73,7 @@ public class MessageList implements IMessageList {
 				messageList.add(message);
 				
 				if (newSourceWidth > sourceMaxWidth) {
+					sourceMaxWidthString = message.getMessageSource().toString();
 					propertyChangeSupport.firePropertyChange(
 							MessageList.SOURCE_MAX_WIDTH_PROP, sourceMaxWidth,
 							newSourceWidth);
@@ -75,6 +81,7 @@ public class MessageList implements IMessageList {
 				}
 				
 				if (newMessageWidth > messageMaxWidth) {
+					messageMaxWidthString = message.getMessage();
 					propertyChangeSupport.firePropertyChange(
 							MessageList.MESSAGE_MAX_WIDTH_PROP, messageMaxWidth, 
 							newMessageWidth);
@@ -96,6 +103,26 @@ public class MessageList implements IMessageList {
 		});
 		this.sourceMaxWidth = 0;
 		this.messageMaxWidth = 0;
+	}
+	
+	/**
+	 * Returns the maximum width source of the list.
+	 * @return the maximum width source of the list
+	 * @since 1.22
+	 */
+	@Override
+	public String getSourceString() {
+		return this.sourceMaxWidthString;
+	}
+	
+	/**
+	 * Returns the maximum width message of the list.
+	 * @return the maximum width message of the list
+	 * @since 1.22
+	 */
+	@Override
+	public String getMessageString() {
+		return this.messageMaxWidthString;
 	}
 	
 	/**
