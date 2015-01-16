@@ -35,7 +35,10 @@
 <setEntry value="org.csstudio.eve.core.feature:default"/>
 <setEntry value="org.csstudio.eve.eclipse.feature:default"/>
 <setEntry value="org.csstudio.libs.feature:default"/>
+<setEntry value="org.csstudio.pvmanager.autocomplete.feature:default"/>
 <setEntry value="org.csstudio.pvmanager.ca.feature:default"/>
+<setEntry value="org.csstudio.pvmanager.exec.feature:default"/>
+<setEntry value="org.csstudio.pvmanager.extra.feature:default"/>
 <setEntry value="org.csstudio.pvmanager.feature:default"/>
 <setEntry value="org.eclipse.equinox.p2.core.feature:default"/>
 <setEntry value="org.eclipse.help:default"/>

@@ -29,6 +29,18 @@
          id="org.csstudio.pvmanager.ca.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.csstudio.pvmanager.autocomplete.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.csstudio.pvmanager.exec.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.csstudio.pvmanager.extra.feature"
+         version="0.0.0"/>
+
    <plugin
          id="org.csstudio.csdata"
          download-size="0"
@@ -101,27 +113,6 @@
 
    <plugin
          id="org.csstudio.ui.util"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.csstudio.utility.pv"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.csstudio.utility.pv.epics"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.csstudio.utility.pv.simu"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -332,6 +323,20 @@
 
    <plugin
          id="org.csstudio.autocomplete.pvmanager.sys"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.csstudio.utility.pvmanager.loc"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.python.jython"
          download-size="0"
          install-size="0"
          version="0.0.0"

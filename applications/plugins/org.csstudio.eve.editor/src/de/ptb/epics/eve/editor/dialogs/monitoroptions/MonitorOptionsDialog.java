@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
@@ -30,7 +28,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.dialogs.SelectionDialog;
 
 import de.ptb.epics.eve.data.measuringstation.Detector;
@@ -42,41 +39,39 @@ import de.ptb.epics.eve.data.measuringstation.AbstractDevice;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.views.scanmoduleview.ActionComposite;
 
 /**
  * 
  * @author Hartmut Scherr
  * @since 1.14
  */
-public class MonitorOptionDialog extends SelectionDialog {
-
-	private static Logger logger = 
-			Logger.getLogger(ActionComposite.class.getName());
+public class MonitorOptionsDialog extends SelectionDialog {
+	private static Logger LOGGER = 
+			Logger.getLogger(MonitorOptionsDialog.class.getName());
 
 	private ScanDescription scanDescription;
-	
-	// the model visualized by the tree
 	private IMeasuringStation measuringStation;
-
-	// the tree viewer visualizing the model
+	
+	// tree viewer containing the device definition
 	private TreeViewer treeViewer;
-
 	private TreeViewerSelectionChangedListener treeViewerSelectionChangedListener;
 	
-	// the table of options
+	// table viewer showing options of selected devices
 	private TableViewer optionsTable;
-	private ContentProvider optionsTableContentProvider;
+	private TableViewerContentProvider optionsTableContentProvider;
 
-	// Liste der Optionen die in der Tabelle angezeigt werden
+	// List of abstract devices currently selected in tree viewer
+	// (where options are extracted from and shown in table)
 	private List<AbstractDevice> tableDevices;
 	
 	private Image ascending;
 	private Image descending;
 
 	// sorting
-	private OptionsTableOptionNameColumnSelectionListener optionsTableOptionNameColumnSelectionListener;
-	private OptionsTableDeviceNameColumnSelectionListener optionsTableDeviceNameColumnSelectionListener;
+	private OptionsTableOptionNameColumnSelectionListener 
+			optionsTableOptionNameColumnSelectionListener;
+	private OptionsTableDeviceNameColumnSelectionListener 
+			optionsTableDeviceNameColumnSelectionListener;
 	private OptionColumnComparator optionsTableViewerComparator;
 	private DeviceColumnComparator deviceTableViewerComparator;
 	private int optionsTableSortState; // 0 no sort, 1 asc, 2 desc
@@ -85,10 +80,10 @@ public class MonitorOptionDialog extends SelectionDialog {
 	/**
 	 * Constructor.
 	 * 
-	 * @param shell 
-	 * @param scanDescriptionLoader
+	 * @param shell the shell
+	 * @param scanDescription the scan description
 	 */
-	public MonitorOptionDialog(final Shell shell,
+	public MonitorOptionsDialog(final Shell shell,
 			final ScanDescription scanDescription) {
 		super(shell);
 		this.scanDescription = scanDescription;
@@ -101,7 +96,6 @@ public class MonitorOptionDialog extends SelectionDialog {
 		Composite area = (Composite) super.createDialogArea(parent);
 
 		Composite container = new Composite(area, SWT.NONE);
-
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
@@ -113,11 +107,12 @@ public class MonitorOptionDialog extends SelectionDialog {
 		gridLayout.numColumns = 2;
 		container.setLayout(gridLayout);
 
-		measuringStation = Activator.getDefault().getMeasuringStation();
+		measuringStation = Activator.getDefault().getDeviceDefinition();
 
 		this.tableDevices = new ArrayList<AbstractDevice>();
 		
-		this.createViewer(container);
+		this.createTreeViewer(container);
+		this.createTableViewer(container);
 		
 		return area;
 	}
@@ -138,142 +133,118 @@ public class MonitorOptionDialog extends SelectionDialog {
 		);
 	}
 	
-	/*
-	 * 
-	 */
-	private void createViewer(Composite parent) {
-		
+	private void createTreeViewer(Composite parent) {
 		treeViewer = new TreeViewer(parent);
-		treeViewer.setContentProvider(new TreeViewerContentProvider());
-		treeViewer.setLabelProvider(new TreeViewerLabelProvider());
-		treeViewer.getTree().setEnabled(false);
-		treeViewer.setAutoExpandLevel(1);
-	
-		// create context menu
-		MenuManager menuManager = new MenuManager();
-		menuManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		menuManager.setRemoveAllWhenShown(true);
-		treeViewer.getTree().setMenu(
-				menuManager.createContextMenu(treeViewer.getTree()));
-		// register menu
-
-		treeViewer.setInput(measuringStation);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		treeViewer.getTree().setLayoutData(gridData);
-		treeViewer.getTree().setEnabled(measuringStation != null);
+		
+		treeViewer.setContentProvider(new TreeViewerContentProvider());
+		treeViewer.setLabelProvider(new TreeViewerLabelProvider());
+		treeViewer.setAutoExpandLevel(1);
 
-		optionsTable = new TableViewer(parent);
-
+		treeViewer.setInput(measuringStation);
+	}
+	
+	private void createTableViewer(Composite parent) {
+		this.optionsTable = new TableViewer(parent);
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		this.optionsTable.getTable().setLayoutData(gridData);
 		this.optionsTable.getTable().setHeaderVisible(true);
 		this.optionsTable.getTable().setLinesVisible(true);
-		this.optionsTableContentProvider = new ContentProvider();
+		
+		this.optionsTableContentProvider = new TableViewerContentProvider();
 		this.optionsTable.setContentProvider(optionsTableContentProvider);
+		
 		this.optionsTable.setInput(this.tableDevices);
+		
+		createColumns(parent, optionsTable);
 		
 		// for sorting
 		ascending = de.ptb.epics.eve.util.Activator.getDefault()
 				.getImageRegistry().get("SORT_ASCENDING");
 		descending = de.ptb.epics.eve.util.Activator.getDefault()
 				.getImageRegistry().get("SORT_DESCENDING");
-
-		optionsTableOptionNameColumnSelectionListener = 
-				new OptionsTableOptionNameColumnSelectionListener();
 		optionsTableSortState = 0;
-
-		optionsTableDeviceNameColumnSelectionListener = 
-				new OptionsTableDeviceNameColumnSelectionListener();
 		deviceTableSortState = 0;
-
 		optionsTableViewerComparator = new OptionColumnComparator();
 		deviceTableViewerComparator = new DeviceColumnComparator();
 
-		createColumns(parent, optionsTable);
-		
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		optionsTable.getTable().setLayoutData(gridData);
-
-		// Listener hinzufügen
 		this.treeViewerSelectionChangedListener =
 				new TreeViewerSelectionChangedListener();
 		treeViewer.addSelectionChangedListener(
 				treeViewerSelectionChangedListener);
-		
 	}
 
 	/*
 	 * helper for createPartControl
 	 */
 	private void createColumns(final Composite parent, final TableViewer viewer) {
-		
-		// Enable tooltips
-		ColumnViewerToolTipSupport.enableFor(
-				optionsTable, ToolTip.NO_RECREATE);
+		ColumnViewerToolTipSupport.enableFor(optionsTable, ToolTip.NO_RECREATE);
 
-		// check box column wird angelegt
 		final TableViewerColumn selColumn =
 				new TableViewerColumn(viewer, SWT.NONE);
-		selColumn.getColumn().setWidth(20);
-		selColumn.setEditingSupport(new SelColumnEditingSupport(
-				viewer, scanDescription));
-		selColumn.setLabelProvider(new ColumnLabelProvider(){
+		selColumn.getColumn().setWidth(25);
+		selColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				return "";
 			}
 			@Override
 			public Image getImage(Object element) {
-				Option o = (Option)element;
-
+				Option o = (Option) element;
 				if (scanDescription.getMonitors().contains(o)) {
-					// Option wird schon gemonitort
-					return Activator.getDefault().getImageRegistry().get("CHECKED");
-				}
-				else {
-					return Activator.getDefault().getImageRegistry().get("UNCHECKED");
+					return Activator.getDefault().getImageRegistry()
+							.get("CHECKED");
+				} else {
+					return Activator.getDefault().getImageRegistry()
+							.get("UNCHECKED");
 				}
 			}
 		});
+		selColumn.setEditingSupport(new SelColumnEditingSupport(
+				viewer, scanDescription));
 		
-		// column für option name wird angelegt
 		final TableViewerColumn optionViewerColumn = 
 				new TableViewerColumn(viewer, SWT.NONE);
 		final TableColumn optionColumn = optionViewerColumn.getColumn();
-		optionColumn.setText("Option Name");
+		optionColumn.setText("Option");
 		optionColumn.setWidth(120);
 		optionColumn.setResizable(true);
-
-		optionColumn.addSelectionListener(optionsTableOptionNameColumnSelectionListener);
-		
 		optionViewerColumn.setLabelProvider(new ColumnLabelProvider(){
 			@Override
 			public String getText(Object element) {
 				return ((Option)element).getName();
 			}
 		});
+		optionsTableOptionNameColumnSelectionListener = 
+				new OptionsTableOptionNameColumnSelectionListener();
+		optionColumn.addSelectionListener(
+				optionsTableOptionNameColumnSelectionListener);
 
-		// column for device name wird angelegt
 		final TableViewerColumn deviceViewerColumn = 
 				new TableViewerColumn(viewer, SWT.NONE);
 		final TableColumn deviceColumn = deviceViewerColumn.getColumn();
-		deviceColumn.setText("Device Name");
+		deviceColumn.setText("Device");
 		deviceColumn.setWidth(120);
 		deviceColumn.setResizable(true);
-		deviceColumn.addSelectionListener(optionsTableDeviceNameColumnSelectionListener);
-		deviceViewerColumn.setLabelProvider(new ColumnLabelProvider(){
+		deviceViewerColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				return ((Option)element).getParent().getName();
 			}
 		});
-		
+		optionsTableDeviceNameColumnSelectionListener = 
+				new OptionsTableDeviceNameColumnSelectionListener();
+		deviceColumn.addSelectionListener(
+				optionsTableDeviceNameColumnSelectionListener);
 	}
 	
 	/**
@@ -287,15 +258,15 @@ public class MonitorOptionDialog extends SelectionDialog {
 		
 		@Override
 		public void selectionChanged(SelectionChangedEvent event) {
+			// clear previous selected devices
 			tableDevices.clear();
 
 			ISelection selection = event.getSelection();
-			
 			if (!(selection instanceof IStructuredSelection)) {
 				return;
 			}
-			
 			for (Object o : ((IStructuredSelection)selection).toList()) {
+				// selections can be classes or abstract devices
 				if (o instanceof AbstractDevice) {
 					AbstractDevice device = (AbstractDevice)o;
 					if (device instanceof Motor) {
@@ -365,8 +336,8 @@ public class MonitorOptionDialog extends SelectionDialog {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			logger.debug("option name column clicked");
-			logger.debug("old option table sort state: " + optionsTableSortState);
+			LOGGER.debug("option name column clicked");
+			LOGGER.debug("old option table sort state: " + optionsTableSortState);
 			switch(optionsTableSortState) {
 				case 0: // was no sorting -> now ascending
 						optionsTableViewerComparator.setDirection(
@@ -395,7 +366,7 @@ public class MonitorOptionDialog extends SelectionDialog {
 			// if it becomes 3 it has to be 0 again
 			// but before the state has to be increased to the new state
 			optionsTableSortState = ++optionsTableSortState % 3;
-			logger.debug("new options table sort state: " + optionsTableSortState);
+			LOGGER.debug("new options table sort state: " + optionsTableSortState);
 		}
 	}
 
@@ -418,8 +389,8 @@ public class MonitorOptionDialog extends SelectionDialog {
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			logger.debug("device name column clicked");
-			logger.debug("old device table sort state: " + deviceTableSortState);
+			LOGGER.debug("device name column clicked");
+			LOGGER.debug("old device table sort state: " + deviceTableSortState);
 			switch(deviceTableSortState) {
 				case 0: // was no sorting -> now ascending
 						deviceTableViewerComparator.setDirection(
@@ -446,7 +417,7 @@ public class MonitorOptionDialog extends SelectionDialog {
 			// if it becomes 3 it has to be 0 again
 			// but before the state has to be increased to the new state
 			deviceTableSortState = ++deviceTableSortState % 3;
-			logger.debug("new device table sort state: " + deviceTableSortState);
+			LOGGER.debug("new device table sort state: " + deviceTableSortState);
 		}
 	}
 }

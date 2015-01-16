@@ -2,6 +2,7 @@ package de.ptb.epics.eve.editor.preferences;
 
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -37,5 +38,11 @@ public class PreferencePage extends FieldEditorPreferencePage implements
 				new String [][] {{"Comma", ","},{"Semicolon", ";"}}, 
 				this.getFieldEditorParent());
 		addField(csvDelimiter);
+		
+		StringFieldEditor topUpPV = new StringFieldEditor(
+				PreferenceConstants.P_TOPUP_PV, 
+				"TopUP PV name:", 
+				this.getFieldEditorParent());
+		addField(topUpPV);
 	}
 }

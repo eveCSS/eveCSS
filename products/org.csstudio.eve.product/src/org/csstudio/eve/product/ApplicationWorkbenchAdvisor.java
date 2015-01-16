@@ -42,7 +42,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	public void initialize(IWorkbenchConfigurer configurer) {
 		super.initialize(configurer);
 		PlatformUI.getPreferenceStore().setValue(IWorkbenchPreferenceConstants.
-				SHOW_TRADITIONAL_STYLE_TABS, false);
+				SHOW_TRADITIONAL_STYLE_TABS, true);
 		configurer.setSaveAndRestore(true);
 	}
 }

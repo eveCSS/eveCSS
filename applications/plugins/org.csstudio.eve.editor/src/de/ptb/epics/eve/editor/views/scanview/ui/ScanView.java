@@ -45,7 +45,7 @@ import de.ptb.epics.eve.data.measuringstation.Option;
 import de.ptb.epics.eve.data.scandescription.MonitorOption;
 import de.ptb.epics.eve.data.scandescription.ScanDescription;
 import de.ptb.epics.eve.editor.Activator;
-import de.ptb.epics.eve.editor.dialogs.monitoroptions.MonitorOptionDialog;
+import de.ptb.epics.eve.editor.dialogs.monitoroptions.MonitorOptionsDialog;
 import de.ptb.epics.eve.editor.gef.editparts.ChainEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanDescriptionEditPart;
 import de.ptb.epics.eve.editor.gef.editparts.ScanModuleEditPart;
@@ -396,7 +396,7 @@ public class ScanView extends ViewPart implements IEditorView,
 		 */
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-			MonitorOptionDialog dialog = new MonitorOptionDialog(PlatformUI
+			MonitorOptionsDialog dialog = new MonitorOptionsDialog(PlatformUI
 					.getWorkbench().getActiveWorkbenchWindow().getShell(),
 					currentScanDescription);
 			currentScanDescription.setMonitorOption(MonitorOption.CUSTOM);

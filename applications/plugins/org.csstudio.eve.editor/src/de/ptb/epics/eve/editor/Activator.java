@@ -57,7 +57,6 @@ public class Activator extends AbstractUIPlugin {
 	
 	private Parameters startupParams;
 
-	
 	// 
 	private EveEditorPerspectiveListener eveEditorPerspectiveListener;
 	
@@ -172,9 +171,19 @@ public class Activator extends AbstractUIPlugin {
 	 * @return measuring station
 	 */
 	public IMeasuringStation getMeasuringStation() {
+		// maybe rename this method, see also #1507
 		return this.excludeFilter;
 	}
 
+	/**
+	 * Returns the (unfiltered) device definition as loaded from file.
+	 * @return the device definition as loaded from file
+	 * @since 1.22
+	 */
+	public IMeasuringStation getDeviceDefinition() {
+		return this.measuringStation;
+	}
+	
 	/**
 	 * 
 	 * @return schema

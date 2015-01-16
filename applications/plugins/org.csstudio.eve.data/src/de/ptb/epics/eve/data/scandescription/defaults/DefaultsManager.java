@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import de.ptb.epics.eve.data.DataTypes;
+import de.ptb.epics.eve.data.measuringstation.DetectorChannel;
 import de.ptb.epics.eve.data.measuringstation.IMeasuringStation;
 import de.ptb.epics.eve.data.scandescription.Axis;
 import de.ptb.epics.eve.data.scandescription.Chain;
@@ -189,8 +190,7 @@ public class DefaultsManager {
 	 * @param to the target channel
 	 * @param measuringStation the device definition
 	 */
-	public static void transferDefaults(DefaultsChannel from, Channel to, 
-			IMeasuringStation measuringStation) {
+	public static void transferDefaults(DefaultsChannel from, Channel to) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("transfering defaults for "
 					+ to.getAbstractDevice().getID());
@@ -206,8 +206,28 @@ public class DefaultsManager {
 			to.setMinimum(from.getMinimum());
 		}
 		if (from.getNormalizeId() != null) {
-			to.setNormalizeChannel(measuringStation.getDetectorChannelById(from
-					.getNormalizeId()));
+			DetectorChannel normalizeChannel = to.getScanModule().getChain().
+					getScanDescription().getMeasuringStation().
+					getDetectorChannelById(from.getNormalizeId());
+			if (normalizeChannel != null) {
+				boolean found = false;
+				for (Channel channel : to.getScanModule().getChannels()) {
+					if (normalizeChannel.getID().equals(
+							channel.getDetectorChannel().getID())) {
+						found = true;
+					}
+				}
+				if (!found) {
+					to.getScanModule().add(
+							new Channel(to.getScanModule(), normalizeChannel));
+				}
+				to.setNormalizeChannel(to.getScanModule().getChain()
+						.getScanDescription().getMeasuringStation()
+						.getDetectorChannelById(from.getNormalizeId()));
+			} else {
+				LOGGER.warn("Normalize channel of channel '" + from.getId() + 
+					"' saved in defaults not found in current device definition.");
+			}
 		}
 		to.setDeferred(from.isDeferred());
 	}

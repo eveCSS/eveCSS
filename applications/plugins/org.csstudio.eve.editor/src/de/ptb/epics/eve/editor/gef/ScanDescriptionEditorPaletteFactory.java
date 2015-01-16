@@ -119,6 +119,23 @@ public final class ScanDescriptionEditorPaletteFactory {
 						"icons/devices/scanmodulechannels24.gif"));
 		componentsDrawer.add(componentSaveChannelValSM);
 		
+		CombinedTemplateCreationEntry componentTopUpSM = new CombinedTemplateCreationEntry(
+				"Scan Module", "Top Up", new CreationFactory() {
+					@Override
+					public Object getObjectType() {
+						return ScanModuleTypes.TOP_UP;
+					}
+					
+					@Override
+					public Object getNewObject() {
+						return null;
+					}
+				}, Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
+						"icons/devices/topup.gif"),
+				Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
+						"icons/devices/scanmoduletopup24.gif"));
+		componentsDrawer.add(componentTopUpSM);
+		
 		return componentsDrawer;
 	}
 }

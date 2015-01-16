@@ -13,7 +13,7 @@ import de.ptb.epics.eve.data.measuringstation.Option;
  * @author Marcus Michalsky
  * @since 1.14
  */
-public class ContentProvider implements IStructuredContentProvider {
+public class TableViewerContentProvider implements IStructuredContentProvider {
 	
 	/**
 	 * {@inheritDoc}

@@ -1,7 +1,6 @@
 package de.ptb.epics.eve.editor.views.scanmoduleview;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -23,22 +22,16 @@ public abstract class CompositeContentProvider implements
 		IStructuredContentProvider, IModelUpdateListener {
 	
 	private TableViewer currentViewer;
-	private int elementCount;
+	private ScanModule scanModule;
 
 	/**
-	 * {@inheritDoc}
+	 * Default Implementation. Does nothing. Should be overwritten to respond 
+	 * to changes of current input. Overwriting methods should still call it 
+	 * afterwards to ensure refresh of viewer.
 	 */
 	@Override
 	public void updateEvent(ModelUpdateEvent modelUpdateEvent) {
 		this.currentViewer.refresh();
-		final int currentCount = this.currentViewer.getTable().getItemCount();
-		if (currentCount > elementCount) {
-			// element added -> select it
-			currentViewer.setSelection(
-					new StructuredSelection(currentViewer
-							.getElementAt(currentCount - 1)), true);
-		}
-		elementCount = currentViewer.getTable().getItemCount();
 	}
 
 	/**
@@ -57,9 +50,17 @@ public abstract class CompositeContentProvider implements
 		if (oldInput != null) {
 			((ScanModule) oldInput).removeModelUpdateListener(this);
 		}
+		this.scanModule = (ScanModule)newInput;
 		if (newInput != null) {
 			((ScanModule) newInput).addModelUpdateListener(this);
-			elementCount = this.currentViewer.getTable().getItemCount();
 		}
+	}
+	
+	protected ScanModule getScanModule() {
+		return this.scanModule;
+	}
+	
+	protected TableViewer getTableViewer() {
+		return this.currentViewer;
 	}
 }

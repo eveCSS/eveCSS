@@ -66,7 +66,6 @@ public class MonitorDelegate implements IModelUpdateListener {
 					.getMonitorOptions());
 			break;
 		case CUSTOM:
-			this.monitors.clear();
 			break;
 		case NONE:
 			this.monitors.clear();

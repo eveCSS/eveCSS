@@ -67,6 +67,10 @@ public class ChainLayoutEditPolicy extends XYLayoutEditPolicy {
 			return new CreateScanModule((Chain) this.getHost().getModel(),
 					(Rectangle) this.getConstraintFor(request), 
 					ScanModuleTypes.SAVE_CHANNEL_VALUES);
+		} else if (request.getNewObjectType().equals(ScanModuleTypes.TOP_UP)) {
+			return new CreateScanModule((Chain) this.getHost().getModel(),
+					(Rectangle) this.getConstraintFor(request),
+					ScanModuleTypes.TOP_UP);
 		}
 		return null;
 	}
