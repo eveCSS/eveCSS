@@ -287,6 +287,42 @@
             id="de.ptb.epics.eve.viewer.views.plotview.exportpdf"
             name="Export PDF">
       </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.plotview"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.plot.AutoScale"
+            id="de.ptb.epics.eve.viewer.views.plotview.autoscale"
+            name="Auto Scale">
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.plotview"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.plot.AutoScaleAxis"
+            id="de.ptb.epics.eve.viewer.views.plotview.autoscalex"
+            name="Auto Scale x">
+         <state
+               class="org.eclipse.ui.handlers.RegistryToggleState:true"
+               id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.plotview"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.plot.AutoScaleAxis"
+            id="de.ptb.epics.eve.viewer.views.plotview.autoscaley1"
+            name="Auto Scale y1">
+         <state
+               class="org.eclipse.ui.handlers.RegistryToggleState:true"
+               id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
+      <command
+            categoryId="de.ptb.epics.eve.viewer.views.plotview"
+            defaultHandler="de.ptb.epics.eve.viewer.handler.plot.AutoScaleAxis"
+            id="de.ptb.epics.eve.viewer.views.plotview.autoscaley2"
+            name="Auto Scale y2">
+         <state
+               class="org.eclipse.ui.handlers.RegistryToggleState:true"
+               id="org.eclipse.ui.commands.toggleState">
+         </state>
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -568,6 +604,13 @@
       <menuContribution
             locationURI="toolbar:PlotView">
          <command
+               commandId="de.ptb.epics.eve.viewer.views.plotview.autoscale"
+               icon="icons/AutoScale.png"
+               id="autoScale"
+               label="Auto Scale"
+               style="pulldown">
+         </command>
+         <command
                commandId="de.ptb.epics.eve.viewer.views.plotview.togglestats"
                icon="icons/datasheet.gif"
                label="toggle statistics"
@@ -578,6 +621,24 @@
                icon="platform:/plugin/org.eclipse.pde.runtime/icons/obj16/save_image_as_obj.gif"
                label="Save as PDF"
                style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:autoScale">
+         <command
+               commandId="de.ptb.epics.eve.viewer.views.plotview.autoscalex"
+               label="x-Axis Auto Scale"
+               style="toggle">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.views.plotview.autoscaley1"
+               label="y1-Axis Auto Scale"
+               style="toggle">
+         </command>
+         <command
+               commandId="de.ptb.epics.eve.viewer.views.plotview.autoscaley2"
+               label="y2-Axis Auto Scale"
+               style="toggle">
          </command>
       </menuContribution>
    </extension>

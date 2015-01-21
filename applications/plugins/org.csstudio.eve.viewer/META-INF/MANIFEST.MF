@@ -20,7 +20,8 @@ Require-Bundle: de.ptb.epics.eve.data;bundle-version="1.0.0",
  org.eclipse.core.databinding;bundle-version="1.4.0",
  org.csstudio.utility.pvmanager.epics;bundle-version="3.3.0",
  org.epics.util;bundle-version="0.3.2",
- org.csstudio.platform.libs.epics;bundle-version="3.3.0"
+ org.csstudio.platform.libs.epics;bundle-version="3.3.0",
+ org.eclipse.core.commands
 Eclipse-LazyStart: true
 Bundle-ClassPath: de.ptb.epics.ecp1.client.jar,
  de.ptb.epics.ecp1.intern.jar,

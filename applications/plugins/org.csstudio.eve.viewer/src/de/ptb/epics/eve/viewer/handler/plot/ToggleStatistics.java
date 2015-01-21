@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.State;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.ptb.epics.eve.viewer.views.plotview.ui.PlotView;
@@ -23,12 +22,11 @@ public class ToggleStatistics extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		if (HandlerUtil.getActivePart(event) instanceof PlotView) {
-			State state = event.getCommand().getState(
-					"org.eclipse.ui.commands.toggleState");
-				boolean currentState = (Boolean)state.getValue();
+			boolean currentState = HandlerUtil.toggleCommandState(event
+					.getCommand());
 			((PlotView) HandlerUtil.getActivePart(event))
 					.showStatistics(!currentState);
-			HandlerUtil.toggleCommandState(event.getCommand());
+			LOGGER.debug("show statistics " + !currentState);
 		} else {
 			LOGGER.warn("no active plot view detected!");
 		}

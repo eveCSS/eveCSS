@@ -46,7 +46,8 @@ import de.ptb.epics.eve.viewer.views.plotview.XyPlot;
  * 
  * @author Marcus Michalsky
  */
-public class PlotView extends ViewPart implements IChainStatusListener, IUpdateListener {
+public class PlotView extends ViewPart implements IChainStatusListener,
+		IUpdateListener {
 	/** the unique identifier of this view */
 	public static final String ID = "PlotView";
 
@@ -96,7 +97,7 @@ public class PlotView extends ViewPart implements IChainStatusListener, IUpdateL
 		// use LightweightSystem to create the bridge between SWT and draw2D
 		final LightweightSystem lws = new LightweightSystem(canvas);
 		// set it as the content of LightwightSystem
-		xyPlot = new XyPlot();
+		xyPlot = new XyPlot(this);
 		lws.setContents(xyPlot);
 		
 		TabFolder tabFolder = new TabFolder(sashForm, SWT.BORDER);
@@ -124,8 +125,42 @@ public class PlotView extends ViewPart implements IChainStatusListener, IUpdateL
 		
 		this.restoreState();
 		this.refreshToggleButton();
+		
+		this.initAutoScale();
 	}
 
+	private void initAutoScale() {
+		ICommandService cmdService = (ICommandService) getSite().getService(
+				ICommandService.class);
+		
+		Command autoScaleCmdX = cmdService
+				.getCommand("de.ptb.epics.eve.viewer.views.plotview.autoscalex");
+		if (autoScaleCmdX.isDefined()) {
+			autoScaleCmdX.getState("org.eclipse.ui.commands.toggleState")
+					.addListener(this.xyPlot);
+		} else {
+			LOGGER.error("Command auto scale x not defined!");
+		}
+		
+		Command autoScaleCmdY1 = cmdService
+				.getCommand("de.ptb.epics.eve.viewer.views.plotview.autoscaley1");
+		if (autoScaleCmdY1.isDefined()) {
+			autoScaleCmdY1.getState("org.eclipse.ui.commands.toggleState")
+					.addListener(this.xyPlot);
+		} else {
+			LOGGER.error("Command auto scale y1 not defined!");
+		}
+		
+		Command autoScaleCmdY2 = cmdService
+				.getCommand("de.ptb.epics.eve.viewer.views.plotview.autoscaley1");
+		if (autoScaleCmdY2.isDefined()) {
+			autoScaleCmdY2.getState("org.eclipse.ui.commands.toggleState")
+					.addListener(this.xyPlot);
+		} else {
+			LOGGER.error("Command auto scale y1 not defined!");
+		}
+	}
+	
 	/*
 	 * 
 	 */
@@ -485,7 +520,9 @@ public class PlotView extends ViewPart implements IChainStatusListener, IUpdateL
 				.getState("org.eclipse.ui.commands.toggleState");
 
 		state.setValue(this.showStats);
-		commandService.refreshElements(toggleCommand.getId(), null);
+		
+		commandService.refreshElements(
+				"de.ptb.epics.eve.viewer.views.plotview.togglestats", null);
 	}
 	
 	/**
@@ -538,6 +575,30 @@ public class PlotView extends ViewPart implements IChainStatusListener, IUpdateL
 	 */
 	@Override
 	public void dispose() {
+		ICommandService cmdService = (ICommandService) getSite().getService(
+				ICommandService.class);
+		
+		Command autoScaleCmdX = cmdService
+				.getCommand("de.ptb.epics.eve.viewer.views.plotview.autoscalex");
+		if (autoScaleCmdX.isDefined()) {
+			autoScaleCmdX.getState("org.eclipse.ui.commands.toggleState").
+				removeListener(this.xyPlot);
+		}
+		
+		Command autoScaleCmdY1 = cmdService
+				.getCommand("de.ptb.epics.eve.viewer.views.plotview.autoscaley1");
+		if (autoScaleCmdY1.isDefined()) {
+			autoScaleCmdY1.getState("org.eclipse.ui.commands.toggleState").
+				removeListener(this.xyPlot);
+		}
+		
+		Command autoScaleCmdY2 = cmdService
+				.getCommand("de.ptb.epics.eve.viewer.views.plotview.autoscaley2");
+		if (autoScaleCmdY2.isDefined()) {
+			autoScaleCmdY2.getState("org.eclipse.ui.commands.toggleState").
+				removeListener(this.xyPlot);
+		}
+		
 		Activator.getDefault().getChainStatusAnalyzer().removeUpdateListener(this);
 		Activator.getDefault().getEcp1Client().removeChainStatusListener(this);
 		this.xyPlot.clear();

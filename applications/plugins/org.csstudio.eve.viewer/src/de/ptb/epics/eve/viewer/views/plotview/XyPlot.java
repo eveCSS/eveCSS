@@ -11,9 +11,13 @@ import org.csstudio.swt.xygraph.figures.Trace;
 import org.csstudio.swt.xygraph.figures.XYGraph;
 import org.csstudio.swt.xygraph.linearscale.AbstractScale.LabelSide;
 import org.csstudio.swt.xygraph.linearscale.Range;
+import org.eclipse.core.commands.IStateListener;
+import org.eclipse.core.commands.State;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.commands.ICommandService;
 
 import de.ptb.epics.eve.data.DataTypes;
 import de.ptb.epics.eve.data.scandescription.PlotWindow;
@@ -26,10 +30,11 @@ import de.ptb.epics.eve.viewer.preferences.PreferenceConstants;
  * @author Marcus Michalsky
  * @since 1.13
  */
-public class XyPlot extends Figure {
+public class XyPlot extends Figure implements IStateListener {
 	private static final Logger LOGGER = Logger.getLogger(XyPlot.class
 			.getName());
 	
+	private IViewPart parent;
 	private XYGraph xyGraph;
 	private ToolbarArmedXYGraph toolbarArmedXYGraph;
 	
@@ -40,8 +45,9 @@ public class XyPlot extends Figure {
 	/**
 	 * 
 	 */
-	public XyPlot() {
+	public XyPlot(IViewPart parent) {
 		LOGGER.debug("constructor");
+		this.parent = parent;
 		this.xyGraph = null;
 		this.toolbarArmedXYGraph = null;
 		this.currentPlotWindow = null;
@@ -71,6 +77,7 @@ public class XyPlot extends Figure {
 					+ ": no init -> reenable listeners");
 		}
 		LOGGER.debug("PlotWindow " + plotWindow.getId() + " set");
+		this.refreshAutoScaleStates();
 	}
 	
 	/*
@@ -295,5 +302,87 @@ public class XyPlot extends Figure {
 	protected void layout() {
 		toolbarArmedXYGraph.setBounds(bounds.getCopy().shrink(5, 5));
 		super.layout();
+	}
+	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void handleStateChange(State state, Object oldValue) {
+		LOGGER.debug("auto scale state changed.");
+		this.refreshAutoScaleStates();
+	}
+	
+	private void refreshAutoScaleStates() {
+		ICommandService cmdService = (ICommandService) this.parent.getSite()
+				.getService(ICommandService.class);
+		
+		State autoScaleX = cmdService.getCommand(
+				"de.ptb.epics.eve.viewer.views.plotview.autoscalex").getState(
+				"org.eclipse.ui.commands.toggleState");
+		State autoScaleY1 = cmdService.getCommand(
+				"de.ptb.epics.eve.viewer.views.plotview.autoscaley1").getState(
+				"org.eclipse.ui.commands.toggleState");
+		State autoScaleY2 = cmdService.getCommand(
+				"de.ptb.epics.eve.viewer.views.plotview.autoscaley2").getState(
+				"org.eclipse.ui.commands.toggleState");
+		
+		this.setAutoScaleX((Boolean)autoScaleX.getValue());
+		this.setAutoScaleY1((Boolean)autoScaleY1.getValue());
+		this.setAutoScaleY2((Boolean)autoScaleY2.getValue());
+	}
+	
+	/**
+	 * Sets whether the x axis should be auto scaled.
+	 * @param autoScale <code>true</code> if x axis should be auto scaled,
+	 * 		<code>false</code> otherwise
+	 * @since 1.22
+	 */
+	public void setAutoScaleX(boolean autoScale) {
+		if (this.currentPlotWindow == null) {
+			return;
+		}
+		if (this.xyGraph != null && this.xyGraph.primaryXAxis != null) {
+			this.xyGraph.primaryXAxis.setAutoScale(autoScale);
+		}
+		LOGGER.debug(currentPlotWindow.getName() + " auto scale x : " + autoScale);
+	}
+	
+	/**
+	 * Sets whether the y1 axis should be auto scaled.
+	 * @param autoScale <code>true</code> if y1 axis should be auto scaled,
+	 * 		<code>false</code> otherwise
+	 * @since 1.22
+	 */
+	public void setAutoScaleY1(boolean autoScale) {
+		if (this.currentPlotWindow == null) {
+			return;
+		}
+		if (this.xyGraph != null &&
+				this.xyGraph.getYAxisList() != null &&
+					this.xyGraph.getYAxisList().get(0) != null) {
+			this.xyGraph.getYAxisList().get(0).setAutoScale(autoScale);
+		}
+		LOGGER.debug(currentPlotWindow.getName() + " auto scale y1 : " + autoScale);
+	}
+	
+	/**
+	 * Sets whether the y2 axis should be auto scaled.
+	 * @param autoScale <code>true</code> if y2 axis should be auto scaled,
+	 * 		<code>false</code> otherwise
+	 * @since 1.22
+	 */
+	public void setAutoScaleY2(boolean autoScale) {
+		if (this.currentPlotWindow == null) {
+			return;
+		}
+		if (this.xyGraph != null &&
+				this.xyGraph.getYAxisList() != null &&
+					this.xyGraph.getYAxisList().size() > 1 &&
+						this.xyGraph.getYAxisList().get(1) != null) {
+			this.xyGraph.getYAxisList().get(1).setAutoScale(autoScale);
+		}
+		LOGGER.debug(currentPlotWindow.getName() + " auto scale y2 : " + autoScale);
 	}
 }
