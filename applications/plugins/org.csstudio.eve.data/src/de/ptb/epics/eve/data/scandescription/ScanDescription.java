@@ -392,7 +392,7 @@ public class ScanDescription implements IModelUpdateProvider,
 				continue;
 			}
 			DetectorEvent detectorEvent = (DetectorEvent)e.getEvent();
-			if (detectorEvent.getId().equals(
+			if (detectorEvent.getChannel().getAbstractDevice().getID().equals(
 					channel.getAbstractDevice().getID())
 					&& detectorEvent.getChannel().getScanModule().getChain()
 							.getId() == channel.getScanModule().getChain()
