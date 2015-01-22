@@ -501,6 +501,9 @@ public class DetectorChannelView extends ViewPart implements IEditorView,
 	}
 	
 	private void loadState() {
+		if (this.memento == null) {
+			return;
+		}
 		if (this.memento.getBoolean(MEMENTO_EVENTS_EXPANDED) != null) {
 			this.eventExpandItem.setExpanded(memento
 					.getBoolean(MEMENTO_EVENTS_EXPANDED));
