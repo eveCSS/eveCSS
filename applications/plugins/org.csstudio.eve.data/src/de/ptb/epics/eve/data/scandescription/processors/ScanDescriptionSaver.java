@@ -369,6 +369,11 @@ public class ScanDescriptionSaver implements
 				this.contentHandler.endElement("", "displaygroup",
 						"displaygroup");
 			}
+
+			for(Option o : device.getOptions()) {
+				this.writeOption(o);
+			}
+
 			this.contentHandler.endElement("", "device", "device");
 		} catch (SAXException e) {
 			logger.error(e.getMessage(), e);

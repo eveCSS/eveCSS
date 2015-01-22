@@ -55,6 +55,10 @@ h3(eveTopic). Center
 
 p. The __Center__ is the center position of the x-Axis and their associated y-Axis value.
 
+p. To calculate the __Center__ first determine the __Peak__: Minimum or Maximum of y axis which must not be the first or last measured value. If a minimum peak and a maximum peak exist, result of __Peak__ is the peak with the higher distance to the average.
+
+p. Then the __Center__ will calculated as follows: If a __Peak__ exist walk from that peak position in both x axis directions until the distance between the peak y value and the current y value is more than half the distance between __Minimum__ and __Maximum__ (half maximum). Both half maximum positions must be present to retrieve a result for __Center__. Do a linear Interpolation with the points before and after the half maximum to find the corresponding x values. The result of __Center__ is the middle position between the two x values.
+
 h3(eveTopic). Edge
 
 p. The __Edge__ is the edge position of the x-Axis and their associated y-Axis value.
