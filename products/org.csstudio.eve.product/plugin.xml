@@ -73,9 +73,6 @@
       <startupParameters
             class="org.csstudio.eve.product.StartupParameters">
       </startupParameters>
-      <workspace
-            class="org.csstudio.utility.product.WorkspacePrompt">
-      </workspace>
    </extension>
    <extension
          point="org.eclipse.ui.intro">
