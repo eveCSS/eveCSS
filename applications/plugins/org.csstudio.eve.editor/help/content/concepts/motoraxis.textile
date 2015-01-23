@@ -45,12 +45,12 @@ p. Given: __Start__=1, __Stop__=10, __Stepwidth__=1, __mPos__=5 (relative) ==&rA
 
 p. Motor positions: (6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
 
-h2(eveTopic). Add (msec Timer)
+h2(eveTopic). Add (Timer, msec Timer)
 
-p. There's a specific (pseudo-)motor called "msec Timer" allowing to define time points imitating motor positions. The __Position Mode__ has the following effects:
+p. There are two specific (pseudo-)motors called "Timer" and "msec Timer" allowing to define time points imitating motor positions. The __Position Mode__ has the following effects:
 
 absolute: By starting of this scan Modul, the Timer is setting to Null.
-relative: The Timer is setting to Null by loading the scan description into the engine.
+relative: The Timer is setting to Null by starting the scan.
 
 h2(eveTopic). Add (date Timer)
 

@@ -19,7 +19,8 @@ p. Das Anhalten von Scans geht mit den 3 Knöpfen Stop, Skip und Halt wobei alle
 
 h3(eveTopic). Stop
 
-p. Stop beendet den aktuellen Messpunkt und hört dann mit dem Scan auf. Alle Aktionen wie z.B. auch PreScan Aktionen werden nicht mehr ausgeführt. Es werden z.B. auch keine Shutter mehr geschlossen oder Channels wieder in einen anderen Scan Mode gesetzt.
+p. Bis zur Messprogrammversion 1.21 beendet Stop den aktuellen Messpunkt und hört dann mit dem Scan auf. Alle Aktionen wie z.B. auch PreScan Aktionen werden nicht mehr ausgeführt. Es werden z.B. auch keine Shutter mehr geschlossen oder Channels wieder in einen anderen Scan Mode gesetzt.
+Eigentlich ist vorgesehen, das Stop auch noch die PreScan und Positioning Aktionen ausführt bevor der Scan beendet wird. Das wird in einer der nächsten Versionen umgesetzt.
 
 h3(eveTopic). Skip
 
@@ -27,5 +28,4 @@ p. Skip beendet das aktuelle Scan Module mit all seinen Prescan und Positioning 
 
 h3(eveTopic). Halt
 
-p. Halt hört mit dem Scan sofort auf und beendet noch nicht einmal wie Stop den aktuellen Messpunkt.
-
+p. Halt hört mit dem Scan sofort auf und beendet noch nicht einmal wie Stop den aktuellen Messpunkt. Außerdem werden noch ein Stop Befehl an die gerade aktiven Motoren und Detektoren geschickt.
